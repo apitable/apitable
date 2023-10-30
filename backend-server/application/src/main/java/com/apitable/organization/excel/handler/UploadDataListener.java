@@ -169,7 +169,7 @@ public class UploadDataListener extends AnalysisEventListener<Map<Integer, Strin
         }
         if (currentMemberCount + successCount >= defaultMaxMemberCount) {
             // Specify exception
-            throw new BusinessException(LimitException.OVER_LIMIT);
+            throw new BusinessException(LimitException.SEATS_OVER_LIMIT);
         }
     }
 
@@ -271,7 +271,7 @@ public class UploadDataListener extends AnalysisEventListener<Map<Integer, Strin
         } else if (exception instanceof BusinessException){
             // If the seat limit is exceeded
             // specified exception needs to be thrown so that the front-end pop-up window prompts
-            throw new BusinessException(LimitException.OVER_LIMIT);
+            throw new BusinessException(LimitException.SEATS_OVER_LIMIT);
         }
     }
 

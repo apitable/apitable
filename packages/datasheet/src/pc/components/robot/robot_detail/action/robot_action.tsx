@@ -16,27 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import axios from 'axios';
 import cx from 'classnames';
 import produce from 'immer';
 import { useAtom } from 'jotai';
 import { isEqual } from 'lodash';
 import * as React from 'react';
 import { FC, memo, ReactNode, useCallback, useContext, useMemo } from 'react';
-import { shallowEqual } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import useSWR from 'swr';
 import { Box, SearchSelect, useThemeColors } from '@apitable/components';
-import { integrateCdnHost, Strings, t } from '@apitable/core';
+import { integrateCdnHost, IReduxState, Strings, t } from '@apitable/core';
 import { setSideBarVisible } from '@apitable/core/dist/modules/space/store/actions/space';
 import { ChevronDownOutlined } from '@apitable/icons';
+import { IFetchDatasheet } from '@apitable/widget-sdk/dist/message/interface';
+import { getTriggerDatasheetId } from 'pc/components/automation/controller/hooks/use_robot_fields';
 import { Message, Modal } from 'pc/components/common';
 import { useResponsive } from '../../../../hooks';
-import { useAutomationController } from '../../../automation/controller';
+import {getResourceAutomationDetailIntegrated, useAutomationController} from '../../../automation/controller';
 import {
   automationLocalMap,
   automationPanelAtom,
   automationStateAtom,
-  inheritedTriggerAtom,
   PanelName
 } from '../../../automation/controller/atoms';
 import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
@@ -45,14 +46,14 @@ import { ShareContext } from '../../../share';
 import styles from '../../../slate_editor/components/select/style.module.less';
 import { changeActionTypeId, getResourceAutomationDetail, updateActionInput } from '../../api';
 import { getFilterActionTypes, getNodeOutputSchemaList, getNodeTypeOptions, operand2PureValue } from '../../helper';
-import { useActionTypes, useRobotTriggerType, useTriggerTypes } from '../../hooks';
+import {useActionTypes, useRobotTriggerTypes, useTriggerTypes} from '../../hooks';
 import { IRobotAction } from '../../interface';
 import { MagicTextField } from '../magic_variable_container';
 import { NodeForm, NodeFormInfo } from '../node_form';
 import { IChangeEvent } from '../node_form/core/interface';
 import { EditType } from '../trigger/robot_trigger';
 import itemStyle from '../trigger/select_styles.module.less';
-import { getActionList } from '../utils';
+import {getActionList, getTriggerList} from '../utils';
 
 export interface IRobotActionProps {
   index: number;
@@ -64,8 +65,8 @@ export interface IRobotActionProps {
 export const RobotAction = memo((props: IRobotActionProps) => {
   const { editType, action, robotId, index = 0 } = props;
   const permissions = useAutomationResourcePermission();
-  const triggerType = useRobotTriggerType();
-  const { originData: actionTypes, data: aList } = useActionTypes();
+  const triggerType = useRobotTriggerTypes();
+  const { originData: actionTypes, data: actionTypeList } = useActionTypes();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.lg);
   const actionType = actionTypes?.find(item => item.actionTypeId === action.typeId);
@@ -77,20 +78,27 @@ export const RobotAction = memo((props: IRobotActionProps) => {
 
   const { shareInfo } = useContext(ShareContext);
 
+  const triggers = getTriggerList(automationState?.robot?.triggers ?? []);
   const actions = (automationState?.robot?.actions ?? []).map(action => ({ ...action,
     typeId: action.actionTypeId,
     id: action.actionId }));
 
   const actionList = useMemo(() => getActionList(actions), [actions]);
 
-  const [triggerV] = useAtom(inheritedTriggerAtom);
   const { data: triggerTypes } = useTriggerTypes();
+
+  const { data: dataList } = useSWR(['getRobotMagicDatasheet', triggers], () => getTriggerDatasheetId(triggers), {
+  });
+
+  const dataSheetMap = useSelector((state: IReduxState) => state.datasheetMap);
 
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
-    actionTypes: aList,
+    actionTypes: actionTypeList,
     triggerTypes: triggerTypes,
-    trigger: triggerV,
+    triggers,
+    triggerDataSheetIds: dataList ?? [],
+    dataSheetMap
   });
 
   const { api: { refresh, refreshItem } } = useAutomationController();
@@ -117,7 +125,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
             robotId: robotId,
           });
 
-          const itemDetail = await getResourceAutomationDetail(
+          const itemDetail = await getResourceAutomationDetailIntegrated(
               automationState?.resourceId!,
               robotId, {
                 shareId: shareInfo?.shareId
@@ -185,7 +193,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
     setMap(produce(draft => {
       draft.set(action.id, e.formData);
     }));
-  }, [action.id, propsFormData, setMap]);
+  }, [action.id, setMap]);
 
   if(!formData) {
     setMap(produce(map, (draft => {
@@ -313,7 +321,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
 const StyledSpan = styled(Box)`
   align-items: center
 `;
-export const DropdownTrigger : FC<{children: ReactNode, isActive: boolean, editable: boolean}>= ({ children, isActive , editable}) => {
+export const DropdownTrigger : FC<{children: ReactNode, isActive: boolean, editable: boolean}>= ({ children, isActive, editable }) => {
 
   const colors = useThemeColors();
 
@@ -323,11 +331,11 @@ export const DropdownTrigger : FC<{children: ReactNode, isActive: boolean, edita
 
       {
         editable && (
-              <Box alignItems={'center'} paddingLeft={'3px'} display={'inline-flex'}>
-                <ChevronDownOutlined
-                    color={colors.thirdLevelText} className={cx(styles.triggerIcon )} />
-              </Box>
-          )
+          <Box alignItems={'center'} paddingLeft={'3px'} display={'inline-flex'}>
+            <ChevronDownOutlined
+              color={colors.thirdLevelText} className={cx(styles.triggerIcon )} />
+          </Box>
+        )
       }
     </StyledSpan>
   );

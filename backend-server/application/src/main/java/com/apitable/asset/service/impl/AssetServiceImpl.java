@@ -279,8 +279,9 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
                                 && assetType.equals(AssetType.COVER);
                             Integer type = flag ? AssetType.COVER.getValue() : null;
                             if (assetType != AssetType.DATASHEET) {
-                                iSpaceAssetService.edit(assetDto.getId(),
-                                    assetDto.getCite() + 1, type);
+                                int cite = Boolean.TRUE.equals(assetDto.getIsDeleted())
+                                    ? 1 : assetDto.getCite() + 1;
+                                iSpaceAssetService.edit(assetDto.getId(), cite, type);
                                 spaceCapacityCacheService.del(spaceId);
                             }
                         } else {

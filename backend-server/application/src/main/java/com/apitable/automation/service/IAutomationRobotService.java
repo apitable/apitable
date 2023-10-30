@@ -97,4 +97,11 @@ public interface IAutomationRobotService {
      * @param updater updater
      */
     void deleteRobot(String robotId, Long updater);
+
+    /**
+     * get robot runs count by space id.
+     * @param spaceId
+     * @return
+     */
+    long getRobotRunsCountBySpaceId(String spaceId);
 }

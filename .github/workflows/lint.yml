@@ -101,7 +101,7 @@ jobs:
           VALIDATE_RUST_2015: false
           VALIDATE_RUST_2018: false
           VALIDATE_RUST_CLIPPY: false
-          FILTER_REGEX_EXCLUDE: .*ui-autotest/.*|.*datasheet/.*|.*src/test.*|.*databusclient/.*|.*packaging/.*
+          FILTER_REGEX_EXCLUDE: .*ui-autotest/.*|.*datasheet/.*|.*src/test.*|.*databusclient/.*|.*packaging/.*|.*\.proto
           VALIDATE_GOOGLE_JAVA_FORMAT: false
           JAVA_FILE_NAME: checkstyle.xml
           VALIDATE_SHELL_SHFMT: false

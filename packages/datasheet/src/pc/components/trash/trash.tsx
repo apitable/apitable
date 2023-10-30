@@ -245,7 +245,7 @@ const Trash: FC<React.PropsWithChildren<unknown>> = () => {
                       />
                     </div>
                     <Tooltip title={deletedAt} textEllipsis>
-                      <div className={styles.expirationTime}>{dayjs(deletedAt).format('YYYY-MM-DD HH:mm:ss')}</div>
+                      <div className={styles.expirationTime}>{dayjs.tz(deletedAt).format('YYYY-MM-DD HH:mm:ss')}</div>
                     </Tooltip>
 
                     <Tooltip title={delPath || spaceName} textEllipsis>

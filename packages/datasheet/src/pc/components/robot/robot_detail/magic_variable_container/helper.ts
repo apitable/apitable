@@ -56,6 +56,7 @@ export interface ISchemaPropertyListItem {
   schema?: IJsonSchema;
   uiSchema?: any;
   expression: IExpression;
+  description?: string;
   // The ability to continue the selection is irrelevant to the possibility of direct insertion. The two can coexist.
   hasChildren: boolean;
   canInsert: boolean;
@@ -269,8 +270,9 @@ export const getCurrentVariableList = (props: {
   const { schemaExpressionList, nodeOutputSchemaList, isJSONField = false } = props;
 
   if (schemaExpressionList.length === 0) {
+
     // The selection list of the first layer is the output of all the predecessor nodes.
-    return nodeOutputSchemaList.map(({ id, title, schema, icon, uiSchema }) => {
+    return nodeOutputSchemaList.map(({ id, title, schema, description, icon, uiSchema }) => {
       const expression: IExpression = {
         operator: OperatorEnums.GetNodeOutput,
         operands: [
@@ -285,6 +287,7 @@ export const getCurrentVariableList = (props: {
         label: title,
         icon: icon,
         schema,
+        description,
         uiSchema,
         expression,
         canInsert: false,

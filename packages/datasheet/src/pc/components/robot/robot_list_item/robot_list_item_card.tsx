@@ -20,7 +20,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useMemo } from 'react';
 import styled from 'styled-components';
-import { Box, Switch, Typography, useTheme, useThemeColors } from '@apitable/components';
+import { Box, Switch, Tooltip, Typography, useTheme, useThemeColors } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 
 import { ArrowRightOutlined, MoreOutlined } from '@apitable/icons';
@@ -29,8 +29,8 @@ import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import EllipsisText from '../../ellipsis_text';
 import { useActionTypes, useAutomationRobot, useToggleRobotActive, useTriggerTypes } from '../hooks';
-import { IAutomationDatum, IRobotNodeType, IRobotNodeTypeInfo } from '../interface';
-import { getActionList } from '../robot_detail/utils';
+import { IAutomationDatum, IRobotNodeType, IRobotNodeTypeInfo, IRobotTrigger } from '../interface';
+import { getActionList, getTriggerList } from '../robot_detail/utils';
 import styles from './styles.module.less';
 
 interface IRobotListItemCardProps {
@@ -44,6 +44,7 @@ const StyledBox = styled(Box)`
   &:hover {
     background-color: var(--bgBglessHover);
   }
+
   &:active {
     background-color: var(--bgBglessActive);
   }
@@ -55,29 +56,28 @@ interface INodeStep {
 }
 
 export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemCardProps>> = ({ index, robotCardInfo, onNavigate, readonly }) => {
-  const { name, robotId } = robotCardInfo;
-
+  const { name, robotId, isOverLimit } = robotCardInfo;
   const { data: triggerTypes } = useTriggerTypes();
   const { originData: actionTypes } = useActionTypes();
 
   // @ts-ignore
-  const list = getActionList((robotCardInfo.actions ?? []).map( action => ({
-    ...action,
-    id: action.actionId,
-  })))
-    .map((action) => {
-      const triggerType = actionTypes
-        .find((trigger) => trigger.actionTypeId === action.actionTypeId);
-      return {
-        // @ts-ignore
-        nodeTypeId: action.actionId,
-        service: triggerType?.service!,
-        type: IRobotNodeType.Action,
-      };
-    });
+  const list = getActionList(
+    (robotCardInfo.actions ?? []).map((action) => ({
+      ...action,
+      id: action.actionId,
+    })),
+  ).map((action) => {
+    const triggerType = actionTypes.find((trigger) => trigger.actionTypeId === action.actionTypeId);
+    return {
+      // @ts-ignore
+      nodeTypeId: action.actionId,
+      service: triggerType?.service!,
+      type: IRobotNodeType.Action,
+    };
+  });
 
   const nodeTypeList: IRobotNodeTypeInfo[] = [
-    ...robotCardInfo.triggers.map((trigger) => {
+    ...getTriggerList(robotCardInfo.triggers).slice(0, 1).map((trigger) => {
       const triggerType = triggerTypes.find((item) => trigger.triggerTypeId === item.triggerTypeId);
       return {
         nodeTypeId: trigger.triggerId,
@@ -85,7 +85,7 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
         type: IRobotNodeType.Trigger,
       };
     }),
-    ...list
+    ...list,
   ];
 
   const nodeSteps: INodeStep[] = useMemo(() => {
@@ -107,25 +107,22 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
   const theme = useTheme();
   const readonlyStyle: React.CSSProperties = readonly
     ? {
-      cursor: 'not-allowed',
-      pointerEvents: 'none',
-      opacity: 0.5,
-    }
+        cursor: 'not-allowed',
+        pointerEvents: 'none',
+        opacity: 0.5,
+      }
     : { cursor: 'pointer' };
 
   const { resourceId, currentRobotId, robot } = useAutomationRobot();
   const { loading, toggleRobotActive } = useToggleRobotActive(resourceId!, robotId);
-  const { api: { refresh } } = useAutomationList();
+  const {
+    api: { refresh },
+  } = useAutomationList();
 
   const colors = useThemeColors();
 
   return (
-    <StyledBox
-      border={`1px solid ${theme.color.borderCommonDefault}`}
-      borderRadius="4px"
-      marginTop="16px"
-      style={readonlyStyle}
-    >
+    <StyledBox border={`1px solid ${theme.color.borderCommonDefault}`} borderRadius="4px" marginTop="16px" style={readonlyStyle}>
       <Box padding="8px 0" margin="0 8px" onClick={onNavigate}>
         <Box display="flex" justifyContent="space-between" marginTop="8px" alignItems="center">
           <Box width="100%" display="flex" alignItems="center">
@@ -175,7 +172,7 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
             size="default"
             disabled={readonly}
             loading={loading}
-            onClick={ async (_value, e) => {
+            onClick={async (_value, e) => {
               stopPropagation(e);
               await toggleRobotActive(robotCardInfo!.isActive);
               await refresh();
@@ -185,12 +182,21 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
       </Box>
 
       <Box display="flex" alignItems="center" margin={'0 8px'} onClick={onNavigate}>
-        <Box display="flex" alignItems="center" marginBottom={'16px'} width={'100%'}>
+        <Box display="flex" justifyContent={'space-between'} alignItems="center" marginBottom={'16px'} width={'100%'}>
           <EllipsisText>
-            <Typography variant="h8" ellipsis>
+            <Typography variant="h8" ellipsis style={{ maxWidth: '78%' }}>
               {name || t(Strings.robot_unnamed)}
             </Typography>
           </EllipsisText>
+          {isOverLimit && (
+            <Tooltip content={t(Strings.automation_run_failure_tip)}>
+              <div className={'vk-border-[1px] vk-rounded-sm vk-border-solid vk-px-1'} style={{ borderColor: colors.borderDangerDefault }}>
+                <Typography variant={'body4'} color={colors.textDangerDefault}>
+                  {t(Strings.automation_run_failure)}
+                </Typography>
+              </div>
+            </Tooltip>
+          )}
         </Box>
       </Box>
     </StyledBox>

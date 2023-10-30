@@ -1,4 +1,4 @@
-/*
+/**
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,17 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.workspace.mapper;
+import { IErrorListProps } from '../../interface';
 
-import org.apache.ibatis.annotations.Param;
-
-public interface DocumentMapper {
-
-    /**
-     * Query space id
-     *
-     * @param name document name
-     * @return SpaceId
-     */
-    String selectSpaceIdByName(@Param("name") String name);
+export default function DefaultErrorList(props: IErrorListProps) {
+  const { errors } = props;
+  const newErrors = Array.from(new Set(errors.map(r => r.stack)));
+  console.log(errors);
+    console.log(newErrors);
+  return (
+    <div className="panel panel-danger errors">
+      <div className="panel-heading">
+        <h3 className="panel-title">Errors</h3>
+      </div>
+      <ul className="list-group">
+        {newErrors.map((error: any, i: number) => {
+          return (
+            <li key={i} className="list-group-item text-danger">
+              {error.stack}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
 }

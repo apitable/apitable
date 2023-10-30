@@ -43,7 +43,7 @@ import { DeveloperModule } from './developer/developer.module';
 import { BullModule } from '@nestjs/bull';
 import { DatabaseConfigService, EnvConfigModule, redisModuleOptions, bullModuleOptions } from 'shared/services/config';
 import { JaegerDynamicModule } from 'shared/services/jaeger/jaeger.dynamic.module';
-import { WorkDocModule } from 'workdoc/workdoc.module';
+import { WorkDocDynamicModule } from 'workdoc/workdoc.dynamic.module';
 
 @Module({
   imports: [
@@ -84,7 +84,7 @@ import { WorkDocModule } from 'workdoc/workdoc.module';
     AiDynamicModule.forRoot(),
     FusionApiDynamicModule.forRoot(),
     SocketModule.register(enableSocket),
-    WorkDocModule,
+    WorkDocDynamicModule.forRoot(),
     ActuatorModule,
     FusionApiModule,
     DatabaseModule,

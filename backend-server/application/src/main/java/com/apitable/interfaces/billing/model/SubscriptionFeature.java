@@ -30,6 +30,8 @@ import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeature
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.GanttViews;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.KanbanViews;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MessageCreditNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MessageAutomationRunNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MessageWidgetNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MirrorNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.NodePermissionNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.RowNums;
@@ -132,5 +134,13 @@ public interface SubscriptionFeature {
 
     default MessageCreditNums getMessageCreditNums() {
         return new MessageCreditNums(0L);
+    }
+
+    default MessageAutomationRunNums getMessageAutomationRunNums() {
+        return new MessageAutomationRunNums(0L);
+    }
+
+    default MessageWidgetNums getMessageWidgetNums() {
+        return new MessageWidgetNums(0L);
     }
 }

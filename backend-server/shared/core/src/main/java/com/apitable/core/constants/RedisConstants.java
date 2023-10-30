@@ -18,6 +18,7 @@
 
 package com.apitable.core.constants;
 
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 
@@ -121,6 +122,9 @@ public class RedisConstants {
      * notification frequency limit person/day.
      */
     private static final String NOTIFY_FREQUENCY_LIMIT = "notify:cache:frequency:{}:{}:{}";
+
+    private static final String SPACE_AUTOMATION_RUN_COUNT_KEY =
+        "cache:space:automation:count:{}:{}";
 
     /**
      * Get the key stored by the login user.
@@ -363,5 +367,18 @@ public class RedisConstants {
     public static String getGeneralStaticsOfRecordKey(String spaceId) {
         Assert.notBlank(spaceId, "space does not exist");
         return StrUtil.format(GENERAL_STATICS, "count:record", spaceId);
+    }
+
+    /**
+     * get space automation run count statistics.
+     *
+     * @param spaceId space id
+     * @return String
+     */
+    public static String getSpaceAutomationRunCountKey(String spaceId) {
+        Integer month = DateUtil.date().month() + 1;
+        Integer year = DateUtil.date().year();
+        return StrUtil.format(SPACE_AUTOMATION_RUN_COUNT_KEY, spaceId,
+            StrUtil.format("{}-{}", year, month));
     }
 }

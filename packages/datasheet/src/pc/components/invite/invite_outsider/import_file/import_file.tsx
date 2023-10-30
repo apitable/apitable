@@ -25,7 +25,6 @@ import { BeforeUpload, Fail, FileSelected, Processing, Success } from '../compon
 import { IErrorInfo, IKidType, IUploadFileResponse, KidType } from '../interface';
 import styles from './style.module.less';
 // @ts-ignore
-import { billingErrorCode, triggerUsageAlertUniversal } from 'enterprise';
 
 let reqToken: () => void;
 
@@ -84,27 +83,29 @@ export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({ setM
     nvcVal && formData.append('data', nvcVal);
     Api.uploadMemberFile(formData, onUploadProgress, (c: () => void) => {
       setReqToken(c);
-    }).then((res) => {
-      const { success, data, message, code } = res.data;
-      setResponseInfo(data);
-      if (success) {
-        setKid(KidType.Success);
-        updateSpaceMember && updateSpaceMember();
-        setErr('');
-        secondVerify && setSecondVerify(null);
-        setFile(undefined);
-      } else {
+    })
+      .then((res) => {
+        const { success, data, message, code } = res.data;
+        setResponseInfo(data);
+        if (success) {
+          setKid(KidType.Success);
+          updateSpaceMember && updateSpaceMember();
+          setErr('');
+          secondVerify && setSecondVerify(null);
+          setFile(undefined);
+        } else {
+          setKid(KidType.Fail);
+          setErr(message);
+          if (secondStepVerify(code) || code === StatusCode.COMMON_ERR) {
+            setFile(undefined);
+          }
+        }
+      })
+      .catch((e: any) => {
         setKid(KidType.Fail);
-        setErr(message);
-        if (code === billingErrorCode.OVER_LIMIT) {
-          setFile(undefined);
-          return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
-        }
-        if (secondStepVerify(code) || code === StatusCode.COMMON_ERR) {
-          setFile(undefined);
-        }
-      }
-    });
+        setErr(e.message);
+        setFile(undefined);
+      });
   };
 
   useEffect(() => {

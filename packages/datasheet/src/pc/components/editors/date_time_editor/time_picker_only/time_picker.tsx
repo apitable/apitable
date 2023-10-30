@@ -102,7 +102,7 @@ export class TimePicker extends React.Component<ITimePickerProps, ITimePickerSta
     this.props.onOpenChange?.(open);
     if (open) {
       if (!this.state.value) {
-        const date = this.props.timeZone ? dayjs.tz(dayjs(), this.props.timeZone) : dayjs();
+        const date = this.props.timeZone ? dayjs.tz(dayjs.tz(), this.props.timeZone) : dayjs.tz();
         this.setValue(date.format('HH:mm'));
       }
       this.saveInputRef.focus();

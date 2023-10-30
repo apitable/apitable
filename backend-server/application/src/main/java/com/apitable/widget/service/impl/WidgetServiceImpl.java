@@ -18,6 +18,9 @@
 
 package com.apitable.widget.service.impl;
 
+import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
+import com.apitable.interfaces.billing.model.SubscriptionInfo;
+import com.apitable.shared.exception.LimitException;
 import com.apitable.workspace.enums.IdRulePrefixEnum;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -123,6 +126,9 @@ public class WidgetServiceImpl implements IWidgetService {
 
     @Resource
     private ObjectMapper objectMapper;
+
+    @Resource
+    private EntitlementServiceFacade entitlementServiceFacade;
 
     @Override
     public List<WidgetStoreListInfo> widgetStoreList(Long userId, String spaceId, WidgetStoreListRo storeListRo) {
@@ -441,6 +447,23 @@ public class WidgetServiceImpl implements IWidgetService {
                     throw new BusinessException(TemplateException.FOLDER_DASHBOARD_LINK_FOREIGN_NODE, foreignMap);
                 }
             }
+        }
+    }
+
+    @Override
+    public void checkWidgetOverLimit(String spaceId) {
+        // get subscription max widget nums
+        SubscriptionInfo subscriptionInfo =
+                entitlementServiceFacade.getSpaceSubscription(spaceId);
+        // Only the free version requires verification
+        if (!subscriptionInfo.isFree()) {
+            return;
+        }
+        Long maxWidgerNums = subscriptionInfo.getFeature().getMessageWidgetNums().getValue();
+        // check the number of components in the space
+        Long count = widgetMapper.selectCountBySpaceId(spaceId);
+        if (maxWidgerNums != -1 && count >= maxWidgerNums) {
+            throw new BusinessException(LimitException.WIDGET_OVER_LIMIT);
         }
     }
 }

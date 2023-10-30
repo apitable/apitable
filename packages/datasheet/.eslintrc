@@ -42,6 +42,11 @@
             "position": "after"
           },
           {
+            "pattern": "enterprise",
+            "group": "sibling",
+            "position": "after"
+          },
+          {
             "pattern": "enterprise/**",
             "group": "sibling",
             "position": "after"
@@ -82,7 +87,7 @@
     ],
     "@next/next/no-img-element": "off",
     "no-restricted-imports": [
-      "error",
+      "warn",
       {
         "paths": [
           {

@@ -56,7 +56,6 @@ const getDefaultValue = (desc: INodeDescription | null) => {
 
 const getJsonValue = (value?: string) => {
   if (!value) return null;
-  debugger;
   try {
     return JSON.parse(value);
   } catch {

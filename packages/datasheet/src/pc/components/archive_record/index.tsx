@@ -236,7 +236,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       width: 200,
       render: (time) => (
         <div className={styles.cellValue}>
-          {dayjs(time).format('YYYY-MM-DD HH:mm:ss')}
+          {dayjs.tz(time).format('YYYY-MM-DD HH:mm:ss')}
         </div>
       )
     });

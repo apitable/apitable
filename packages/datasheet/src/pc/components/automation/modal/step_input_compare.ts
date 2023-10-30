@@ -3,16 +3,16 @@ import { customizer } from 'pc/components/robot/robot_detail/trigger/robot_trigg
 import { IRobotAction, IRobotTrigger } from '../../robot/interface';
 
 export const checkIfModified = (remote: {
-    trigger: IRobotTrigger,
+    triggers: IRobotTrigger[],
     actions: IRobotAction[]
 }, local: Map<string, IRobotTrigger | IRobotAction>) => {
 
-  if (local.get(remote.trigger.triggerId)) {
-    const isModifiedAction = !isEqualWith(remote.trigger.input, local.get(remote.trigger.triggerId), customizer);
-    if (isModifiedAction) {
-      return true;
+  return remote.triggers.some(trigger => {
+    if (!local.get(trigger.triggerId)) {
+      return false;
     }
-  }
+    return !isEqualWith(trigger.input, local.get(trigger.triggerId), customizer);
+  });
 
   return remote.actions.some(action => {
     if (!local.get(action.actionId)) {

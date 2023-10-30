@@ -4,9 +4,9 @@ import { ConfigConstant, INode, IPermissions, Strings, t } from '@apitable/core'
 import { Loading } from 'pc/components/common';
 import { LoaderContext } from 'pc/components/data_source_selector/context/loader_context';
 import { useFetchExtraData } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/hooks/use_fetch_extra_data';
-import { nodeStatusLoader } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/loaders/node_status_loader';
-import { nodeTypeFilterLoader } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/loaders/node_type_filter_loader';
-import { nodeVisibleFilterLoader } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/loaders/node_visible_filter_loader';
+import { nodeStatusLoader } from 'pc/components/data_source_selector/loaders/node_status_loader';
+import { nodeTypeFilterLoader } from 'pc/components/data_source_selector/loaders/node_type_filter_loader';
+import { nodeVisibleFilterLoader } from 'pc/components/data_source_selector/loaders/node_visible_filter_loader';
 import { useResponsive } from '../../../hooks';
 import { ScreenSize } from '../../common/component_display';
 import { DataSourceSelectorBase } from '../../data_source_selector/data_source_selector';

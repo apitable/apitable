@@ -86,7 +86,7 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = (
 
   if (defaultValue && durationValue === FilterDuration.DateRange && defaultValue[1]) {
     const [startDate, endDate] = toString(defaultValue[1]).split('-');
-    dataValue = [dayjs(Number(startDate)), dayjs(Number(endDate))];
+    dataValue = [dayjs.tz(Number(startDate)), dayjs.tz(Number(endDate))];
   }
 
   useEffect(() => {
@@ -109,7 +109,7 @@ export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = (
       onChange([defaultValue[0], null]);
       return;
     }
-    onChange([defaultValue[0], dayjs(date).valueOf()]);
+    onChange([defaultValue[0], dayjs.tz(date).valueOf()]);
   }
 
   useClickOutside(ref, () => {

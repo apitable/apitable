@@ -68,7 +68,7 @@ export const BasicInfo = () => {
       },
       {
         label: t(Strings.create_date),
-        value: <span>{createTime && dayjs(new Date(createTime)).format('YYYY-MM-DD')}</span>,
+        value: <span>{createTime && dayjs.tz(new Date(createTime)).format('YYYY-MM-DD')}</span>,
       },
       {
         label: t(Strings.primary_admin),

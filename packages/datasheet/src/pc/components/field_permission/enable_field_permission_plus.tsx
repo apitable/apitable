@@ -320,7 +320,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
       )}
       <PermissionInfoSetting
         className={styles.permissionInfoSetting}
-        totalMember={collaboratorInfo.total}
+        totalMember={collaboratorInfo?.total}
         isExtend={!enabledFieldPermission}
         resetPermission={resetPermission}
         toggleIsMemberDetail={toggleIsMemberDetail}

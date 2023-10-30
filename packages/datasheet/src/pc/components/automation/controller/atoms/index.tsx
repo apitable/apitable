@@ -1,4 +1,4 @@
-import { atom } from 'jotai';
+import {Atom, atom} from 'jotai';
 import { atomWithImmer } from 'jotai-immer';
 import { atomsWithQuery } from 'jotai-tanstack-query';
 import {Api, ConfigConstant, IServerFormPack} from '@apitable/core';
@@ -25,17 +25,27 @@ const automationTriggerDatasheetAtom = atomWithImmer<{
 
 const automationStateAtom = atomWithImmer<IRobotContext | undefined>(undefined);
 
+export const automationCacheAtom = atomWithImmer< {
+  map?: Map<string, IRobotTrigger | IRobotAction>,
+  id?:string,
+  panel?: IAutomationPanel
+}>({
+
+});
+export const automationCurrentTriggerId = atomWithImmer<string | undefined>(undefined);
+
 export interface ILocalAutomation {
   trigger: Map<string, IRobotTrigger>,
   action: Map<string, IRobotAction>,
 }
-
 const automationLocalMap = atomWithImmer<Map<string, IRobotTrigger | IRobotAction>>(
   new Map<string, IRobotTrigger | IRobotAction>()
 );
 
-const automationTriggerAtom = atom((get) => get(automationStateAtom)?.robot?.triggers?.[0]);
-export const inheritedTriggerAtom = automationTriggerAtom;
+const automationTriggerAtom: Atom<IRobotTrigger|undefined> = atom((get) => get(automationStateAtom)?.robot?.triggers?.find(item=> item.triggerId ===get(automationCurrentTriggerId)));
+
+export const automationTriggersAtom = atom((get) =>
+  (get(automationStateAtom)?.robot?.triggers ?? []).map(item => ({ ...item, id: item.triggerId })));
 export const formIdAtom = atom((get) => getFormId(get(automationTriggerAtom)));
 
 export const automationActionsAtom = atomWithImmer<IRobotAction[]>([]);
@@ -47,7 +57,8 @@ const automationHistoryAtom = atomWithImmer<{
   dialogVisible: false,
 });
 
-const automationPanelAtom = atomWithImmer<{
+interface IAutomationPanel {
+
   panelName?: PanelName;
   dataId?: string;
   data?: {
@@ -59,7 +70,8 @@ const automationPanelAtom = atomWithImmer<{
     description?: string;
     serviceLogo?: string;
   };
-}>({
+}
+const automationPanelAtom = atomWithImmer<IAutomationPanel>({
   panelName: PanelName.BasicInfo,
 });
 

@@ -1,5 +1,5 @@
-export const CONST_ENABLE_AUTOMATION_NODE = true;
-
+export const CONST_MAX_TRIGGER_COUNT = 3;
+export const CONST_MAX_ACTION_COUNT = 9;
 export function orDisabled<T>(arr: T[], enabled: boolean) {
-  return enabled ? arr : [];
+    return enabled ? arr : [];
 }

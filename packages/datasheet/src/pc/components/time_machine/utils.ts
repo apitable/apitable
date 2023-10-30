@@ -130,7 +130,7 @@ export const getOperationInfo = (ops: IOperation[]) =>ops.map((op) => {
         }
         if((item['oi']||item['od']).time)return actionCount=(item['oi']||item['od']).time;
         if (item['od']?.alarmAt || item['oi']?.alarmAt){
-          actionCount = dayjs((item['oi']?.alarmAt || item['od']?.alarmAt)).format(DATEFORMAT);
+          actionCount = dayjs.tz((item['oi']?.alarmAt || item['od']?.alarmAt)).format(DATEFORMAT);
         }
         if((item['oi']||item['od'])?.subtract){
           actionCount=(item['oi']||item['od'])?.subtract;

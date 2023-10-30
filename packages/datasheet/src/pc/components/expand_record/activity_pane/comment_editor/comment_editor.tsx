@@ -95,7 +95,7 @@ export const CommentEditor: React.FC<React.PropsWithChildren<IActivityPaneProps>
       type: IApi.MindType.Comment,
       extra: {
         content: serialize(content, spaceInfo, true).join(''),
-        createdAt: dayjs(Date.now()).format('YYYY-MM-DD HH:mm'),
+        createdAt: dayjs.tz(Date.now()).format('YYYY-MM-DD HH:mm'),
       },
     });
   }

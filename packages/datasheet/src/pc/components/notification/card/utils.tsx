@@ -395,14 +395,14 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
         case TemplateKeyword.ExpireAt: {
           return (
             <b>
-              &nbsp;{dayjs(Number(expireAt)).tz(timeZone).format('YYYY-MM-DD')}({abbr})
+              &nbsp;{dayjs.tz(Number(expireAt)).tz(timeZone).format('YYYY-MM-DD')}({abbr})
             </b>
           );
         }
         case TemplateKeyword.TaskExpireAt: {
           return (
             <b>
-              &nbsp;{dayjs(Number(taskExpireAt)).tz(timeZone).format('YYYY-MM-DD HH:mm')}({abbr})
+              &nbsp;{dayjs.tz(Number(taskExpireAt)).tz(timeZone).format('YYYY-MM-DD HH:mm')}({abbr})
             </b>
           );
         }
@@ -430,7 +430,7 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
         case TemplateKeyword.AutomationRunEndAt: {
           return (
             <b>
-              &nbsp;{dayjs(Number(automationRunEndAt)).tz(timeZone).format('YYYY-MM-DD HH:mm')}({abbr})
+              &nbsp;{dayjs.tz(Number(automationRunEndAt)).tz(timeZone).format('YYYY-MM-DD HH:mm')}({abbr})
             </b>
           );
         }
@@ -465,8 +465,8 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
       .replace(keyWordAddClass(TemplateKeyword.PlanName), planName)
       .replace(keyWordAddClass(TemplateKeyword.PayFee), payFee)
       .replace(keyWordAddClass(TemplateKeyword.FeatureName), featureName)
-      .replace(keyWordAddClass(TemplateKeyword.ExpireAt), dayjs(Number(expireAt)).format('YYYY-MM-DD'))
-      .replace(keyWordAddClass(TemplateKeyword.TaskExpireAt), dayjs(Number(taskExpireAt)).format('YYYY-MM-DD HH:mm'))
+      .replace(keyWordAddClass(TemplateKeyword.ExpireAt), dayjs.tz(Number(expireAt)).format('YYYY-MM-DD'))
+      .replace(keyWordAddClass(TemplateKeyword.TaskExpireAt), dayjs.tz(Number(taskExpireAt)).format('YYYY-MM-DD HH:mm'))
       .replace(keyWordAddClass(TemplateKeyword.NickName), nickName)
       .replace(keyWordAddClass(TemplateKeyword.OldDisplayValue), oldDisplayValue)
       .replace(keyWordAddClass(TemplateKeyword.NewDisplayValue), newDisplayValue)
@@ -474,7 +474,7 @@ export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBod
       .replace(keyWordAddClass(TemplateKeyword.Number), number)
       .replace(keyWordAddClass(TemplateKeyword.RoleName), roleName)
       .replace(keyWordAddClass(TemplateKeyword.AutomationName), automationName)
-      .replace(keyWordAddClass(TemplateKeyword.AutomationRunEndAt), dayjs(Number(automationRunEndAt)).format('YYYY-MM-DD HH:mm'));
+      .replace(keyWordAddClass(TemplateKeyword.AutomationRunEndAt), dayjs.tz(Number(automationRunEndAt)).format('YYYY-MM-DD HH:mm'));
   }
   return parser(template, parseOptions);
 };

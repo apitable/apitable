@@ -67,6 +67,8 @@ public class SubscribeAssembler {
         result.setFieldPermissionNums(feature.getFieldPermissionNums().getValue());
         result.setNodePermissionNums(feature.getNodePermissionNums().getValue());
         result.setMaxMessageCredits(feature.getMessageCreditNums().getValue());
+        result.setMaxAutomationRunNums(feature.getMessageAutomationRunNums().getValue());
+        result.setMaxWidgetNums(feature.getMessageWidgetNums().getValue());
 
         result.setIntegrationFeishu(feature.getSocialConnect().getValue());
         result.setIntegrationDingtalk(feature.getSocialConnect().getValue());

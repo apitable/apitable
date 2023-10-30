@@ -77,7 +77,6 @@ export const MonthListDiv = styled.div.attrs(applyDefaultTheme) <{ isMobile: boo
       text-overflow: ellipsis;
       white-space: nowrap;
       ${props => css`
-      box-shadow: ${props.theme.color.shadowCommonDefault};
       background-color: ${props.theme.color.defaultBg};
       color: ${props.theme.color.fc1};
     `}

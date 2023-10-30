@@ -59,7 +59,7 @@ export const DateRangePickerMobile: React.FC<
     if (!endDate || !startDate) {
       return;
     }
-    rangePickerChange([dayjs(startDate), dayjs(endDate)]);
+    rangePickerChange([dayjs.tz(startDate), dayjs.tz(endDate)]);
     // eslint-disable-next-line
   }, [endDate, startDate]);
 
@@ -90,7 +90,7 @@ export const DateRangePickerMobile: React.FC<
     <div className={styles.mobileRangePicker}>
       <div>
         <CustomChildren value={startDate} arrowIcon={null} disabled={disabled} onClick={() => !disabled && setStartVisible(true)}>
-          {startDate ? dayjs(startDate).format('YYYY-MM-DD') : 'YYYY-MM-DD'}
+          {startDate ? dayjs.tz(startDate).format('YYYY-MM-DD') : 'YYYY-MM-DD'}
         </CustomChildren>
         <DatePicker
           className={style.datePicker}
@@ -110,7 +110,7 @@ export const DateRangePickerMobile: React.FC<
       <div style={{ color: colors.thirdLevelText }}> -</div>
       <div>
         <CustomChildren value={endDate} arrowIcon={null} disabled={disabled} onClick={() => !disabled && setEndVisible(true)}>
-          {endDate ? dayjs(endDate).format('YYYY-MM-DD') : 'YYYY-MM-DD'}
+          {endDate ? dayjs.tz(endDate).format('YYYY-MM-DD') : 'YYYY-MM-DD'}
         </CustomChildren>
         <DatePicker
           className={style.datePicker}

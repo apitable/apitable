@@ -52,11 +52,11 @@ export const query2formData = (query: IFormQuery, fieldMap: IFieldMap, fieldPerm
           }
         } else if (FORM_FIELD_TYPE.datetime.includes(field.type)) {
           const _value = value as string;
-          const isValidDate = dayjs(_value).isValid();
+          const isValidDate = dayjs.tz(_value).isValid();
           if (isValidDate) {
             // only valid date valid, exam: 2023-10-30 or 1692028800000
             const isTimestamp = Field.bindModel(field).validateCellValue(_value);
-            res[key] = isTimestamp.error ? dayjs(_value).tz(field.property.timeZone).valueOf() : value;
+            res[key] = isTimestamp.error ? dayjs.tz(_value).tz(field.property.timeZone).valueOf() : value;
           }
         } else if (!FORM_FIELD_TYPE.filter.includes(field.type)) {
           res[key] = value;

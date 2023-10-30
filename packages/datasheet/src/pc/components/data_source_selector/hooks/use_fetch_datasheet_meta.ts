@@ -1,10 +1,10 @@
-import { getDatasheetMeta } from '../api';
-import { Url } from '@apitable/core';
-import { ISearchPanelState } from '../store/interface/search_panel';
-import urlcat from 'urlcat';
-import useSWR from 'swr';
 import { useEffect } from 'react';
+import useSWR from 'swr';
+import urlcat from 'urlcat';
+import { Url } from '@apitable/core';
 import { insertViewNode } from 'pc/components/data_source_selector/utils/insert_view_nodes';
+import { getDatasheetMeta } from '../api';
+import { ISearchPanelState } from '../store/interface/search_panel';
 
 const getApiKey = (datasheetId: string, needFetchDatasheetMeta: boolean) => {
   if (!needFetchDatasheetMeta || !datasheetId) return;
@@ -19,7 +19,7 @@ interface IParams {
 
 export const useFetchDatasheetMeta = ({ localState, needFetchDatasheetMeta, localDispatch }: IParams) => {
   const { data, mutate, isValidating } = useSWR(
-    getApiKey(localState.currentDatasheetId, needFetchDatasheetMeta),
+    getApiKey(localState.currentDatasheetId, Boolean(localState.nodes.length && needFetchDatasheetMeta)),
     () => getDatasheetMeta(localState.currentDatasheetId),
     { revalidateOnFocus: false },
   );

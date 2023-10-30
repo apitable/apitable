@@ -56,11 +56,11 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = (p
   const { RECORD_TASK_REMINDER_VISIBLE } = getEnvVariables();
   const timeZone = field.property.timeZone || userTimeZone;
 
-  // let alarmTime = alarm?.time || dayjs(alarm?.alarmAt).tz(timeZone).format('HH:mm');
+  // let alarmTime = alarm?.time || dayjs.tz(alarm?.alarmAt).tz(timeZone).format('HH:mm');
   const isInnerDay = alarm?.subtract && Object.keys(INNER_DAY_ALARM_SUBTRACT).includes(alarm?.subtract);
   const alarmRealTime = useMemo(() => {
-    let alarmTime = alarm?.time || dayjs(alarm?.alarmAt).tz(timeZone).format('HH:mm');
-    const alarmDate = dayjs(cellValue as number).tz(timeZone);
+    let alarmTime = alarm?.time || dayjs.tz(alarm?.alarmAt).tz(timeZone).format('HH:mm');
+    const alarmDate = dayjs.tz(cellValue as number).tz(timeZone);
     if (isInnerDay) {
       alarmTime = alarmDate.format('HH:mm');
     }

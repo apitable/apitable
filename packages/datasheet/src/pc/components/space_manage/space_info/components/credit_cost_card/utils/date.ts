@@ -32,17 +32,17 @@ const formatToday = (value: string) => {
 
 const formatWeekday = (value: string) => {
   // format Monday-Sunday, expect 1 = Monday, 7 = Sunday
-  return dayjs().day(Number(value)).format('dddd');
+  return dayjs.tz().day(Number(value)).format('dddd');
 };
 
 const formatMonth = (value: string) => {
   // format 1-31
-  return dayjs().date(Number(value)).format('DD');
+  return dayjs.tz().date(Number(value)).format('DD');
 };
 
 const formatYear = (value: string) => {
   // format January-December, expect 0 = January, 11 = December
-  return dayjs()
+  return dayjs.tz()
     .month(Number(value) - 1)
     .format('MMMM');
 };
