@@ -206,7 +206,7 @@
   "ai_message_credit_title": "Credit usage",
   "ai_new_agent": "New AI agent",
   "ai_new_chatbot": "New AI agent",
-  "ai_new_conversation_btn_text": "New conversation",
+  "ai_new_conversation_btn_text": "New chat",
   "ai_not_set_datasheet_source_error": "I'm sorry, but I don't have the answer to your question right now. Please click on the \"Training\" button in the top right corner of the interface to add datasheets and start training.",
   "ai_open_remark_can_not_empty": "Please provide a text to let users know how the AI agent can assist them.",
   "ai_open_remark_desc": "The content that the AI agent will say when a member chats with it for the first time.",
