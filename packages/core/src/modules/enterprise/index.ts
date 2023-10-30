@@ -1,23 +1,22 @@
 /**
- * APITable <https://github.com/apitable/apitable>
- * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+ * APITable Ltd. <legal@apitable.com>
+ * Copyright (C)  2022 APITable Ltd. <https://apitable.com>
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ * This code file is part of APITable Enterprise Edition.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * It is subject to the APITable Commercial License and conditional on having a fully paid-up license from APITable.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * Access to this code file or other code files in this `enterprise` directory and its subdirectories does not constitute permission to use this code or APITable Enterprise Edition features.
+ *
+ * Unless otherwise noted, all files Copyright © 2022 APITable Ltd.
+ *
+ * For purchase of APITable Enterprise Edition license, please contact <sales@apitable.com>.
  */
 
-export {};
+export * from './api';
+export * from './store';
+export * from './config/stringkeys.saas.interface';
 
-export type StringSaaSKeysMapType = {};
+import * as BillingConfig from './config/billing.auto.json';
+export { BillingConfig };
 
-export type StringSaaSKeysType = {};
