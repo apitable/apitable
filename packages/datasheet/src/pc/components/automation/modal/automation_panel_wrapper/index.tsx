@@ -1,4 +1,4 @@
-import { useAtom, useAtomValue } from 'jotai';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -14,14 +14,16 @@ import {
 } from 'pc/components/automation/controller';
 import { checkIfModified } from 'pc/components/automation/modal/step_input_compare';
 import { Modal as ConfirmModal } from 'pc/components/common';
+import { IRobotAction, IRobotTrigger } from 'pc/components/robot/interface';
 
 const CONST_ENABLE_PREVENT = true;
 const CONST_KEY_AUTOM_TRAGET_PAGE = 'CONST_KEY_AUTOM_TRAGET_PAGE';
+const CONST_KEY_AUTOM_TRAGET_VISIBLE = 'CONST_KEY_AUTOM_TRAGET_VISIBLE';
 export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
     automationId: string;
 }>> = React.memo(({ automationId }) => {
 
-  const localState = useAtomValue(automationLocalMap);
+  const setLocalState = useSetAtom(automationLocalMap);
   const [panel] = useAtom(automationPanelAtom);
 
   const [, setCache] = useAtom(automationCacheAtom);
@@ -33,18 +35,7 @@ export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
   const localMap = useAtomValue(automationLocalMap);
 
   const router = useRouter();
-  useEffect(() => {
 
-    return () => {
-      setCache({
-        id: automationId,
-        map: localState,
-        panel: panel
-      });
-    };
-  }, [automationId, localState, panel, setCache]);
-
-  const controlVisibleRef: React.MutableRefObject<boolean> = useRef(false);
   const handle = async (url) => {
     if(!CONST_ENABLE_PREVENT) {
       return ;
@@ -53,12 +44,18 @@ export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
       return;
     }
 
+    setCache({
+      id: automationId,
+      map: localMap,
+      panel: panel
+    });
+
     const gotUrl =sessionStorage.getItem(CONST_KEY_AUTOM_TRAGET_PAGE);
     sessionStorage.removeItem(CONST_KEY_AUTOM_TRAGET_PAGE);
     if(gotUrl === url) {
       return;
     }
-    sessionStorage.setItem(CONST_KEY_AUTOM_TRAGET_PAGE, url);
+
     if (!checkIfModified({
       triggers,
       actions
@@ -67,8 +64,8 @@ export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
     }
 
     router.events.emit('routeChangeError');
-    if (!controlVisibleRef.current) {
-      controlVisibleRef.current = true;
+    if (localStorage.getItem(CONST_KEY_AUTOM_TRAGET_VISIBLE) !== 'true') {
+      localStorage.setItem(CONST_KEY_AUTOM_TRAGET_VISIBLE, 'true');
       router.back();
       const confirmPromise = await new Promise<boolean>((resolve) => {
         ConfirmModal.confirm({
@@ -77,14 +74,20 @@ export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
           cancelText: t(Strings.cancel),
           okText: t(Strings.confirm),
           onOk: () => {
+            setCache({
+
+            });
             isClosedRef.current = true;
-
+            localStorage.setItem(CONST_KEY_AUTOM_TRAGET_VISIBLE, 'false');
             router.push(url);
-
+            setLocalState(
+              new Map<string, IRobotTrigger | IRobotAction>()
+            );
             sessionStorage.setItem(CONST_KEY_AUTOM_TRAGET_PAGE, url);
             resolve(true);
           },
           onCancel: () => {
+            localStorage.setItem(CONST_KEY_AUTOM_TRAGET_VISIBLE, 'false');
             resolve(false);
           },
           type: 'warning',
