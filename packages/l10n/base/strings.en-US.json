@@ -5561,7 +5561,7 @@
   "ai_chat_textarea_placeholder": "Talk to AI agent…",
   "ai_explore_card_title": "Here are some sample questions, give it a try by clicking on any of the messages:",
   "ai_explore_refresh_btn_text": "Refresh",
-  "ai_new_conversation_btn_text": "New conversation",
+  "ai_new_conversation_btn_text": "New chat",
   "ai_query_of_number": "Message Credit",
   "ai_training_message_title": "AI agent is training",
   "ai_training_message": "The AI agent is currently learning from all the data in datasheet. Please wait...",
