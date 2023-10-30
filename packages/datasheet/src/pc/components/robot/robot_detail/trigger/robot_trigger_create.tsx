@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useAtomValue, useAtom, useSetAtom} from 'jotai';
+import { useAtomValue, useAtom, useSetAtom } from 'jotai';
 import { useEffect, useMemo } from 'react';
 import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { applyDefaultTheme, SearchSelect } from '@apitable/components';
 import { ConfigConstant, Events, Player, Strings, t } from '@apitable/core';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
+import { CONST_MAX_TRIGGER_COUNT } from 'pc/components/automation/config';
 import {
   automationCurrentTriggerId,
   automationPanelAtom,
@@ -37,7 +38,6 @@ import { useDefaultTriggerFormData } from '../../hooks';
 import { ITriggerType } from '../../interface';
 import { NewItem } from '../../robot_list/new_item';
 import itemStyle from './select_styles.module.less';
-import {CONST_MAX_TRIGGER_COUNT} from "pc/components/automation/config";
 
 interface IRobotTriggerCreateProps {
   robotId: string;
@@ -68,9 +68,9 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
   } = useAutomationController();
   const state = useAtomValue(automationStateAtom);
   const [, setAutomationPanel] = useAtom(automationPanelAtom );
-  const setautomationCurrentTriggerId= useSetAtom(automationCurrentTriggerId)
+  const setautomationCurrentTriggerId= useSetAtom(automationCurrentTriggerId);
 
-  const triggerList = state?.robot?.triggers ?? []
+  const triggerList = state?.robot?.triggers ?? [];
   const triggerTypeOptions = useMemo(() => {
     return getNodeTypeOptions(triggerTypes);
   }, [triggerTypes]);
@@ -117,7 +117,7 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
         return triggerRes.data;
       }
     };
-  }, [triggerTypes, defaultFormData, state?.resourceId, state?.currentRobotId, robotId, preTriggerId, refresh, setautomationCurrentTriggerId, setAutomationPanel]);
+  }, [triggerTypes, defaultFormData, state?.robot, state?.resourceId, state?.currentRobotId, robotId, preTriggerId, refresh, setautomationCurrentTriggerId, setAutomationPanel]);
 
   if (!triggerTypes) {
     return null;

@@ -3818,6 +3818,7 @@
   "right": "Move to the right cell",
   "robot": "Automation",
   "robot_action_config": "Action configuration",
+  "robot_trigger_delete": "Delete trigger",
   "robot_action_delete": "Delete action",
   "robot_action_delete_confirm_desc": "This action may stop the automation from working. Continue?",
   "robot_action_delete_confirm_title": "Delete action",

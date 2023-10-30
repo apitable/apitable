@@ -17,7 +17,7 @@ export const getResourceAutomationDetailIntegrated = async (resourceId: string, 
   const resp = await getResourceAutomationDetail(resourceId, robotId, options);
   return {
     ...resp,
-    triggers: getTriggerList(resp.triggers),
+    triggers: resp.triggers,
     actions: getActionList(resp.actions)
   };
 };

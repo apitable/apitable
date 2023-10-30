@@ -50,30 +50,5 @@ export const getActionList = (actions?: IRobotAction[]): IRobotAction[] => {
 };
 
 export const getTriggerList = (actions?: IRobotTrigger[]): IRobotTrigger[] => {
-  if (!actions || actions.length === 0) {
-    return [];
-  }
-
-  const preActionIdMap:Record<string, IRobotTrigger> = actions.map((action: IRobotTrigger) => ({
-    [action.prevTriggerId]:  action,
-  })).reduce((acc: any, item: any) => ({ ...acc, ...item }), {});
-
-  const headOpt: IRobotTrigger|undefined = actions.find((item: IRobotTrigger) => item.prevTriggerId == null || item.prevTriggerId =='');
-  if(!headOpt) {
-    return [];
-  }
-  const head : IRobotTrigger= headOpt!;
-  const findNextAction = (count: number, current : string, resultList: IRobotTrigger[]): IRobotTrigger[] => {
-    if(count === 0 ) {
-      return resultList;
-    }
-    const action = preActionIdMap[current];
-
-    if(action) {
-      return findNextAction(count -1, action.triggerId, resultList.concat(action!));
-    }
-    return resultList;
-  };
-
-  return findNextAction(actions.length - 1, head.triggerId, [head]);
+  return actions ?? [];
 };

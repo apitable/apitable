@@ -4079,6 +4079,7 @@
   "right": "向右移动一个单元格",
   "robot": "自动化",
   "robot_action_config": "操作配置",
+  "robot_trigger_delete": "删除触发条件",
   "robot_action_delete": "删除操作",
   "robot_action_delete_confirm_desc": "该操作可能会造成自动化无法运行，确定删除吗？",
   "robot_action_delete_confirm_title": "删除操作",

@@ -158,7 +158,7 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
   const menuData = [
     [
       {
-        text: t(Strings.robot_action_delete),
+        text:type==='trigger' ? t(Strings.robot_trigger_delete): t(Strings.robot_action_delete),
         icon: <DeleteOutlined />,
         onClick: handleDeleteRobotAction,
       },

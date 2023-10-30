@@ -15,6 +15,8 @@ import {
 import { checkIfModified } from 'pc/components/automation/modal/step_input_compare';
 import { Modal as ConfirmModal } from 'pc/components/common';
 
+const CONST_ENABLE_PREVENT = true;
+const CONST_KEY_AUTOM_TRAGET_PAGE = 'CONST_KEY_AUTOM_TRAGET_PAGE';
 export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
     automationId: string;
 }>> = React.memo(({ automationId }) => {
@@ -44,6 +46,19 @@ export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
 
   const controlVisibleRef: React.MutableRefObject<boolean> = useRef(false);
   const handle = async (url) => {
+    if(!CONST_ENABLE_PREVENT) {
+      return ;
+    }
+    if(router.asPath === url) {
+      return;
+    }
+
+    const gotUrl =sessionStorage.getItem(CONST_KEY_AUTOM_TRAGET_PAGE);
+    sessionStorage.removeItem(CONST_KEY_AUTOM_TRAGET_PAGE);
+    if(gotUrl === url) {
+      return;
+    }
+    sessionStorage.setItem(CONST_KEY_AUTOM_TRAGET_PAGE, url);
     if (!checkIfModified({
       triggers,
       actions
@@ -66,6 +81,7 @@ export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
 
             router.push(url);
 
+            sessionStorage.setItem(CONST_KEY_AUTOM_TRAGET_PAGE, url);
             resolve(true);
           },
           onCancel: () => {

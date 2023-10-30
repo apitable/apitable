@@ -4249,6 +4249,7 @@ export type StringKeysMapType = {
   'robot_share_page_create_tip': 'robot_share_page_create_tip',
   'robot_trigger_add_match_condition_button': 'robot_trigger_add_match_condition_button',
   'robot_trigger_config': 'robot_trigger_config',
+  'robot_trigger_delete': 'robot_trigger_delete',
   'robot_trigger_form_submitted_config_1': 'robot_trigger_form_submitted_config_1',
   'robot_trigger_form_submitted_config_1_desc': 'robot_trigger_form_submitted_config_1_desc',
   'robot_trigger_form_submitted_desc': 'robot_trigger_form_submitted_desc',

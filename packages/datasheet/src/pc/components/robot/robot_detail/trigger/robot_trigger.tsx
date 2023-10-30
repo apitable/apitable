@@ -593,7 +593,7 @@ export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTri
         ))
       }
 
-      <OrEmpty visible={triggerList.length < CONST_MAX_TRIGGER_COUNT}>
+      <OrEmpty visible={triggerList.length < CONST_MAX_TRIGGER_COUNT && editType === EditType.entry}>
         <OrTooltip
           tooltipEnable={
             triggerList?.length >= CONST_MAX_TRIGGER_COUNT

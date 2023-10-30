@@ -114,7 +114,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
           {
             panelName: isLg? undefined: PanelName.BasicInfo
           });
-      }else {
+      } else {
         if(cache.panel) {
           setPanel(cache.panel);
         }
