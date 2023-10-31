@@ -24,7 +24,7 @@ import {
   OperandTypeEnums,
   OperatorEnums,
   TRIGGER_INPUT_FILTER_FUNCTIONS,
-  TRIGGER_INPUT_PARSER_FUNCTIONS
+  TRIGGER_INPUT_PARSER_FUNCTIONS,
 } from '@apitable/core';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { enableAutomationWorker } from 'app.environment';
@@ -45,9 +45,10 @@ export const OFFICIAL_SERVICE_SLUG = process.env.ROBOT_OFFICIAL_SERVICE_SLUG ? p
 export type IShouldFireRobot = {
   robotId: string;
   trigger: {
+    triggerId: string;
     input: any;
     output: any;
-  }
+  };
 };
 
 @Injectable()
@@ -114,13 +115,17 @@ export class TriggerEventHelper {
   async fireRoot(fireRobot: IShouldFireRobot) {
     const taskId = IdWorker.nextId().toString();
     const robot = await this.automationService.getRobotById(fireRobot.robotId);
-    await this.automationService.saveTaskContext({
-      taskId,
-      robotId: fireRobot.robotId,
-      triggerInput: fireRobot.trigger.input,
-      triggerOutput: fireRobot.trigger.output,
-      status: RunHistoryStatusEnum.PENDING
-    }, robot);
+    await this.automationService.saveTaskContext(
+      {
+        taskId,
+        robotId: fireRobot.robotId,
+        triggerId: robot.triggerId,
+        triggerInput: fireRobot.trigger.input,
+        triggerOutput: fireRobot.trigger.output,
+        status: RunHistoryStatusEnum.PENDING,
+      },
+      robot,
+    );
     await this.queueService.sendMessageWithId(taskId, automationExchangeName, automationRunning, { taskId: taskId, triggerId: robot.triggerId });
   }
 
@@ -139,9 +144,10 @@ export class TriggerEventHelper {
             prev.push({
               robotId: item.robotId,
               trigger: {
+                triggerId: item.triggerId,
                 input: triggerInput,
-                output: triggerOutput
-              }
+                output: triggerOutput,
+              },
             });
           }
           return prev;
@@ -156,9 +162,10 @@ export class TriggerEventHelper {
           prev.push({
             robotId: item.robotId,
             trigger: {
+              triggerId: item.triggerId,
               input: triggerInput,
               output: triggerOutput,
-            }
+            },
           });
         }
         return prev;

@@ -88,6 +88,7 @@ export class AutomationService {
     this.robotRunner = new AutomationRobotRunner({
       requestActionOutput: this.getActionOutput.bind(this),
       getRobotById: this.getRobotById.bind(this),
+      getRobotByRobotIdAndTriggerId: this.getRobotByRobotIdAndTriggerId.bind(this),
       reportResult: this.updateTaskRunHistory.bind(this),
     });
   }
@@ -159,6 +160,10 @@ export class AutomationService {
 
   async getRobotById(robotId: string) {
     return await this.robotService.getRobotById(robotId);
+  }
+
+  async getRobotByRobotIdAndTriggerId(robotId: string, triggerId: string) {
+    return await this.robotService.getRobotById(robotId, triggerId);
   }
 
   async saveTaskContext(robotTask: IRobotTask, robot: IRobot) {
@@ -239,7 +244,7 @@ export class AutomationService {
     }
   }
 
-  async handleTask(robotId: string, trigger: { input: any; output: any }) {
+  async handleTask(robotId: string, trigger: { triggerId: string; input: any; output: any }) {
     const spaceId = await this.getSpaceIdByRobotId(robotId);
     // there is no billing plan yet, so there is no limit. self-hosted should not limit the call.
     // there limit by billing plan
@@ -262,6 +267,7 @@ export class AutomationService {
       // 2. execute the robot
       await this.robotRunner.run({
         robotId,
+        triggerId: trigger.triggerId,
         triggerInput: trigger.input,
         triggerOutput: trigger.output,
         taskId,

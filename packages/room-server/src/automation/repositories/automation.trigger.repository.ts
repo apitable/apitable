@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ResourceRobotDto } from 'automation/dtos/robot.dto';
-import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
-import { EntityRepository, In, IsNull, Not, Repository } from 'typeorm';
-import { TriggerCreateRo } from '../ros/trigger.create.ro';
 import { generateRandomString } from '@apitable/core';
+import { ResourceRobotDto } from 'automation/dtos/robot.dto';
+import { EntityRepository, In, IsNull, Not, Repository } from 'typeorm';
 import { ResourceRobotTriggerDto, RobotTriggerBaseInfoDto, RobotTriggerInfoDto } from '../dtos/trigger.dto';
+import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
+import { TriggerCreateRo } from '../ros/trigger.create.ro';
 
 @EntityRepository(AutomationTriggerEntity)
 export class AutomationTriggerRepository extends Repository<AutomationTriggerEntity> {
@@ -78,6 +78,16 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
     });
   }
 
+  public async selectTriggerInfoByTriggerId(triggerId: string): Promise<RobotTriggerInfoDto | undefined> {
+    return await this.findOne({
+      select: ['triggerId', 'input', 'triggerTypeId'],
+      where: {
+        isDeleted: 0,
+        triggerId: triggerId,
+      },
+    });
+  }
+
   public async selectTriggerBaseInfosByRobotIds(robotIds: string[]): Promise<RobotTriggerBaseInfoDto[]> {
     return await this.find({
       select: ['triggerId', 'triggerTypeId', 'robotId'],
@@ -97,7 +107,7 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
         isDeleted: false,
       },
     });
-    return results.filter(i => i.robotId).map((result) => result.robotId);
+    return results.filter((i) => i.robotId).map((result) => result.robotId);
   }
 
   async selectRobotIdAndResourceIdByResourceIds(resourceIds: string[]): Promise<ResourceRobotDto[]> {

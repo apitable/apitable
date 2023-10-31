@@ -49,6 +49,7 @@ export interface IRobot {
 export interface IRobotTask {
   taskId: string;
   robotId: string;
+  triggerId: string;
   triggerInput: any;
   triggerOutput: any;
   status: number;

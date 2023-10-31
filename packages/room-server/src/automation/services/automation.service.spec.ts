@@ -212,7 +212,7 @@ describe('RobotActionTypeServiceTest', () => {
       },
     };
 
-    await automationService.handleTask('robotId', { input: {}, output: {} });
+    await automationService.handleTask('robotId', { triggerId: 'test', input: {}, output: {} });
     delete services['test'];
   });
 
