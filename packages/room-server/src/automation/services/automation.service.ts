@@ -253,13 +253,16 @@ export class AutomationService {
     //   return;
     // }
     const taskId = IdWorker.nextId().toString(); // TODO: use uuid
-    const automationRunsMessage = await this.restService.getSpaceAutomationRunsMessage(spaceId);
-    const maxAutomationRunsNums = automationRunsMessage.maxAutomationRunNums;
-    const automationRunNums = automationRunsMessage.automationRunNums;
-    if (maxAutomationRunsNums != -1 && automationRunNums > maxAutomationRunsNums) {
-      // The number of space station automation runs exceeds the limit and an excess record is generated.
-      await this.createRunHistory(robotId, taskId, spaceId, RunHistoryStatusEnum.EXCESS);
-      return;
+    try {
+      const automationRunsMessage = await this.restService.getSpaceAutomationRunsMessage(spaceId);
+      const allowRun = automationRunsMessage.allowRun;
+      if (!allowRun) {
+        // The number of space station automation runs exceeds the limit and an excess record is generated.
+        await this.createRunHistory(robotId, taskId, spaceId, RunHistoryStatusEnum.EXCESS);
+        return;
+      }
+    } catch (e) {
+        this.logger.error('verify automation run nums error', e);
     }
     // 1. create run history
     await this.createRunHistory(robotId, taskId, spaceId);

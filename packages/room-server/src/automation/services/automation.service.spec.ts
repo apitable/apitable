@@ -198,7 +198,7 @@ describe('RobotActionTypeServiceTest', () => {
     jest.spyOn(restService, 'getSpaceAutomationRunsMessage').mockResolvedValue({
       maxAutomationRunNums: 100,
       automationRunNums: 50, // The number of automation run in the space
-      allowOverLimit: false,
+      allowRun: false,
     } as InternalSpaceAutomationRunsMessageView);
     jest.spyOn(automationRunHistoryRepository, 'insert').mockImplementation();
 
