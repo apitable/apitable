@@ -162,6 +162,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
   const [formData, setFormData] = useState({});
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState<boolean>(false);
+  const [mount, setMount] = useState<boolean>(false);
   const [animationLoading, setAnimationLoading] = useState<boolean>(false);
   const lottieAnimate = useRef<AnimationItem>();
   const [contentType, setContentType] = useState<IFormContentType>(IFormContentType.Form);
@@ -540,6 +541,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
       setFormData({ ...cacheData, ...queryData });
       patchRecord({ id: recordId, data: cacheData, commentCount: 0 });
     }
+    setMount(true);
   });
 
   const removeTmpSnapshot = () => {
@@ -699,6 +701,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
   return (
     <FormContext.Provider
       value={{
+        mount,
         formProps,
         formData,
         formErrors,

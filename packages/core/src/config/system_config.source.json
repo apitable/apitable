@@ -168,6 +168,13 @@
       "descriptionId": "api_panel_type_desc_text",
       "valueType": "string"
     },
+    "Workdoc": {
+      "defaultExample": "文档内容",
+      "defaultExampleId": "api_panel_type_default_example_workdoc",
+      "description": "文档，可用于存放文档。",
+      "descriptionId": "api_panel_type_desc_workdoc",
+      "valueType": "array"
+    },
     "URL": {
       "defaultExample": "{\"title\":\"vika\",\"text\":\"https://vika.cn\", \"favicon\":\"https://s1.vika.cn/space/2022/12/20/73456950217f4f79b20c7ef1a49acf6e\"}",
       "defaultExampleId": "api_panel_type_default_example_url",

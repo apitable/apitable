@@ -65,6 +65,7 @@ import { ExpandNumber } from '../expand_number';
 import { ExpandSelect } from '../expand_select';
 // @ts-ignore
 import { convertAlarmStructure } from 'enterprise';
+import { ExpandWorkdoc } from '../expand_work_doc';
 
 export interface ICommonProps {
   style: React.CSSProperties;
@@ -298,6 +299,15 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = (
     case FieldType.Cascader:
       return (
         <ExpandCascader {...commonProps} isFocus={isFocus} cellValue={cellValue} field={commonProps.field as ILinkField} style={mobileEditorWidth} />
+      );
+    case FieldType.Workdoc:
+      return (
+        <ExpandWorkdoc
+          {...commonProps}
+          cellValue={cellValue}
+          datasheetId={datasheetId}
+          recordId={record.id}
+        />
       );
     default:
       return <div />;

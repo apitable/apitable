@@ -42,7 +42,7 @@ import {
   TelephoneOutlined,
   LookupOutlined,
   StarOutlined,
-  CascadeOutlined,
+  CascadeOutlined, FileOutlined,
   OneWayLinkOutlined,
   TwoWayLinkOutlined
 } from '@apitable/icons';
@@ -73,6 +73,7 @@ const FieldIconMap = {
   [FieldType.CreatedBy]: UserAddOutlined,
   [FieldType.LastModifiedBy]: UserEditOutlined,
   [FieldType.Cascader]: CascadeOutlined,
+  [FieldType.Workdoc]: FileOutlined,
 };
 
 export const getFieldTypeIcon = (type: FieldType, fillColor: string = colorVars.thirdLevelText, width = 16, height = 16): any => {

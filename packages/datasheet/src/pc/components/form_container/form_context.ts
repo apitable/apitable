@@ -20,6 +20,7 @@ import { createContext } from 'react';
 import { IFormProps } from '@apitable/core';
 
 export interface IFormContext {
+  mount: boolean;
   formProps: IFormProps;
   formData: { [key: string]: any };
   formErrors: { [key: string]: any };

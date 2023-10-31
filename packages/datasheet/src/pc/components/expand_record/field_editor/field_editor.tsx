@@ -190,7 +190,7 @@ const FieldEditorBase = (props: IFieldEditorProps) => {
           }}
         >
           <div
-            className={classNames({
+            className={classNames(styles.fieldBlockWrap, {
               [styles.mobileFieldContainer]: isMobile,
             })}
           >

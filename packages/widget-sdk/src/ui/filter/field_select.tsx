@@ -18,7 +18,7 @@ import {
   TelephoneOutlined,
   StarOutlined, SelectSingleOutlined, TextOutlined,
   LinkOutlined,
-  LockFilled, CascadeOutlined,
+  LockFilled, CascadeOutlined, FileOutlined,
 } from '@apitable/icons';
 import React from 'react';
 
@@ -50,6 +50,7 @@ const FieldIconMap = {
   [FieldType.CreatedBy]: UserAddOutlined,
   [FieldType.LastModifiedBy]: UserEditOutlined,
   [FieldType.Cascader]: CascadeOutlined,
+  [FieldType.Workdoc]: FileOutlined,
 };
 
 const transformOptions = (fields: IField[], theme: ITheme) => {

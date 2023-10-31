@@ -37,7 +37,8 @@ export enum IDPrefix {
   EmbedLink = 'emb',
   Form = 'fom',
   Dashboard = 'dsb',
-  AutomationAction = 'aac'
+  AutomationAction = 'aac',
+  Document = 'doc',
 }
 
 /**

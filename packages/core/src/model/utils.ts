@@ -176,6 +176,7 @@ const FieldTypeStringMap = {
   [FieldType.URL]: APIMetaFieldType.URL,
   [FieldType.Cascader]: APIMetaFieldType.Cascader,
   [FieldType.OneWayLink]: APIMetaFieldType.OneWayLink,
+  [FieldType.Workdoc]: APIMetaFieldType.Workdoc,
 };
 
 const ReversedFieldTypeStringMap = {
@@ -195,7 +196,6 @@ const ReversedFieldTypeStringMap = {
   [APIMetaFieldType.MagicLookUp]: FieldType.LookUp,
   [APIMetaFieldType.Member]: FieldType.Member,
   [APIMetaFieldType.MultiSelect]: FieldType.MultiSelect,
-  [APIMetaFieldType.NotSupport]: FieldType.NotSupport,
   [APIMetaFieldType.Number]: FieldType.Number,
   [APIMetaFieldType.Percent]: FieldType.Percent,
   [APIMetaFieldType.Phone]: FieldType.Phone,
@@ -206,6 +206,7 @@ const ReversedFieldTypeStringMap = {
   [APIMetaFieldType.URL]: FieldType.URL,
   [APIMetaFieldType.Cascader]: FieldType.Cascader,
   [APIMetaFieldType.OneWayLink]: FieldType.OneWayLink,
+  [APIMetaFieldType.Workdoc]: FieldType.Workdoc,
 };
 
 
@@ -213,7 +214,7 @@ export const getFieldTypeString = (fieldType: FieldType): APIMetaFieldType => {
   return FieldTypeStringMap[fieldType];
 };
 
-export const getFieldTypeByString = (fieldType: APIMetaFieldType): FieldType | undefined => {
+export const getFieldTypeByString = (fieldType: APIMetaFieldType) => {
   return ReversedFieldTypeStringMap[fieldType];
 };
 

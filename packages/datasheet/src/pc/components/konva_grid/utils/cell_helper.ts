@@ -38,6 +38,7 @@ import {
   ISegment,
   isGif,
   IUnitIds,
+  IWorkdocValue,
   LinkField,
   LOOKUP_VALUE_FUNC_SET,
   LookUpField,
@@ -92,6 +93,9 @@ import { IRenderProps } from '../interface';
 import { KonvaDrawer } from './drawer';
 import { imageCache } from './image_cache';
 import { IWrapTextDataProps } from './interface';
+import { FileOutlined } from '@apitable/icons';
+
+const FileOutlinedPath = FileOutlined.toString();
 
 // Simple recognition rules are used to process single line text enhancement fields.
 const isEmail = (text: string) => text && /.+@.+/.test(text);
@@ -161,7 +165,8 @@ export class CellHelper extends KonvaDrawer {
       case FieldType.Rating:
       case FieldType.CreatedBy:
       case FieldType.LastModifiedBy:
-      case FieldType.Cascader: {
+      case FieldType.Cascader:
+      case FieldType.Workdoc: {
         return this.setStyle({ fontSize: 13, fontWeight });
       }
       case FieldType.LookUp: {
@@ -199,6 +204,9 @@ export class CellHelper extends KonvaDrawer {
       case FieldType.SingleText:
       case FieldType.Cascader: {
         return this.renderCellText(renderProps, ctx);
+      }
+      case FieldType.Workdoc: {
+        return this.renderCellWorkdoc(renderProps, ctx);
       }
       case FieldType.DateTime:
       case FieldType.CreatedTime:
@@ -293,6 +301,115 @@ export class CellHelper extends KonvaDrawer {
       height: GRID_OPTION_ITEM_HEIGHT,
       isOverflow: false,
       renderContent,
+    };
+  }
+
+  private renderCellWorkdoc(renderProps: IRenderProps, ctx?: any) {
+    const { x, y, cellValue, rowHeight, rowHeightLevel, columnWidth, isActive, callback } = renderProps;
+    if (!(cellValue as IWorkdocValue[])?.length || !Array.isArray(cellValue)) return DEFAULT_RENDER_DATA;
+    const isOperating = isActive;
+    let currentX = isOperating ? GRID_CELL_VALUE_PADDING + GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4 : GRID_CELL_VALUE_PADDING;
+    let currentY = GRID_CELL_MULTI_PADDING_TOP;
+    const isShortHeight = rowHeightLevel === RowHeightLevel.Short;
+    const maxHeight = isActive ? 130 - GRID_CELL_MULTI_PADDING_TOP : rowHeight - GRID_CELL_MULTI_PADDING_TOP;
+    const maxTextWidth = isOperating
+      ? columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING) - GRID_CELL_DELETE_ITEM_BUTTON_SIZE - 12
+      : columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING);
+    const renderDataList: any[] = [];
+    const listCount = cellValue.length;
+    let isOverflow = false;
+
+    for (let index = 0; index < listCount; index++) {
+      const docItem = cellValue[index] as IWorkdocValue;
+      const color = colors.textBrandDefault;
+      const background = colors.bgBrandLightDefault;
+      const itemName = docItem.title || t(Strings.workdoc_unnamed);
+      let realMaxTextWidth = maxTextWidth;
+      if (index === 0 && isOperating) {
+        const operatingMaxWidth = maxTextWidth - (GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4);
+        // item no space to display, then perform a line feed
+        if (operatingMaxWidth <= 10) {
+          currentX = GRID_CELL_VALUE_PADDING;
+          currentY += GRID_OPTION_ITEM_HEIGHT + GRID_CELL_MULTI_ITEM_MARGIN_TOP;
+        } else {
+          realMaxTextWidth = operatingMaxWidth;
+        }
+      }
+      const { text: renderText, textWidth } = this.textEllipsis({
+        text: itemName,
+        maxWidth: columnWidth && realMaxTextWidth,
+        fontSize: 12,
+      });
+      const itemWidth = Math.max(
+        isOperating ? textWidth + 2 * GRID_OPTION_ITEM_PADDING + GRID_CELL_DELETE_ITEM_BUTTON_SIZE + 12 : textWidth + 2 * GRID_OPTION_ITEM_PADDING,
+        GRID_CELL_MULTI_ITEM_MIN_WIDTH,
+      );
+
+      if (columnWidth != null) {
+        // In the inactive state, subsequent items are not rendered when the line width is exceeded
+        if (!isActive && currentX >= columnWidth) break;
+        // If it is not the last line in the inactive state, perform a line feed on the overflow item
+        if (
+          !isActive &&
+          !isShortHeight &&
+          currentY + GRID_OPTION_ITEM_HEIGHT < maxHeight &&
+          currentX + itemWidth > columnWidth - GRID_CELL_VALUE_PADDING
+        ) {
+          currentX = GRID_CELL_VALUE_PADDING;
+          currentY += GRID_OPTION_ITEM_HEIGHT + GRID_CELL_MULTI_ITEM_MARGIN_TOP;
+        }
+        if (isActive && currentX + itemWidth > columnWidth - GRID_CELL_VALUE_PADDING) {
+          currentX = GRID_CELL_VALUE_PADDING;
+          currentY += GRID_OPTION_ITEM_HEIGHT + GRID_CELL_MULTI_ITEM_MARGIN_TOP;
+        }
+        if (isActive && currentY >= maxHeight) isOverflow = true;
+      }
+
+      const itemX = x + currentX;
+      const itemY = y + currentY;
+      if (ctx && !isActive) {
+        this.label({
+          x: itemX,
+          y: itemY,
+          width: itemWidth + 12,
+          height: GRID_OPTION_ITEM_HEIGHT,
+          background,
+          color,
+          radius: 4,
+          padding: GRID_OPTION_ITEM_PADDING,
+          text: renderText,
+          fontSize: 12,
+          textAlign: 'right',
+        });
+        this.path({
+          x: itemX + 4,
+          y: itemY + 2,
+          data: FileOutlinedPath,
+          size: 12,
+          fill: colors.textBrandDefault,
+        });
+      }
+
+      renderDataList.push({
+        x: currentX,
+        y: currentY,
+        width: itemWidth,
+        height: GRID_OPTION_ITEM_HEIGHT,
+        text: renderText,
+        style: {
+          background,
+          color,
+        },
+      });
+      currentX += itemWidth + GRID_CELL_MULTI_ITEM_MARGIN_LEFT;
+    }
+
+    callback?.({ width: currentX - GRID_CELL_MULTI_ITEM_MARGIN_LEFT });
+    return {
+      width: columnWidth,
+      height: currentY + GRID_OPTION_ITEM_HEIGHT + GRID_CELL_MULTI_ITEM_MARGIN_TOP,
+      renderContent: renderDataList,
+      isOverflow,
     };
   }
 
@@ -1237,6 +1354,7 @@ export class CellHelper extends KonvaDrawer {
         case FieldType.Text:
         case FieldType.SingleText:
         case FieldType.Cascader:
+        case FieldType.Workdoc:
           realRenderProps.realField = realField;
           return this.renderCellText(realRenderProps, ctx);
         case FieldType.NotSupport:

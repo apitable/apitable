@@ -1,0 +1,38 @@
+.createWorkdoc {
+  display: flex;
+  padding-top: 4px;
+  align-items: center;
+  color: var(--textCommonTertiary);
+  padding-left: 8px;
+  min-width: 100px;
+}
+.expandWorkdoc {
+  .workdocBtn {
+    border-radius: 4px;
+    display: inline-flex;
+    padding: 2px 8px;
+    margin-top: 4px;
+    margin-left: 8px;
+    align-items: center;
+    background-color: var(--bgBrandLightDefault);
+    cursor: pointer;
+    &:hover {
+      background-color: var(--bgBrandLightHover);
+    }
+    .workdocTitle {
+      color: var(--textBrandDefault);
+      font-size: 13px;
+    }
+    svg {
+      fill: var(--textBrandDefault);
+    }
+  }
+  &.disabled {
+    .workdocBtn {
+      cursor: not-allowed;
+      &:hover {
+        background-color: var(--bgBrandLightDefault);
+      }
+    }
+  }
+}

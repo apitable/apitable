@@ -32,6 +32,7 @@ import { CellMultiSelect } from './cell_multi_select';
 import { CellRating } from './cell_rating';
 import { CellSingleSelect } from './cell_single_select';
 import { CellText } from './cell_text';
+import { CellWorkdoc } from './cell_workdoc';
 import { IRenderData } from './interface';
 
 export interface ICellProps {
@@ -152,6 +153,8 @@ export const CellValue: FC<React.PropsWithChildren<ICellValueProps>> = memo((pro
       return <CellLookUp {...cellProps} />;
     case FieldType.Attachment:
       return <CellAttachment {...cellProps} />;
+    case FieldType.Workdoc:
+      return <CellWorkdoc {...cellProps} />;
     default:
       return null;
   }

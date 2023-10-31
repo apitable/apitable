@@ -584,6 +584,11 @@ export interface ICascaderField extends IBaseField {
   property: ICascaderProperty;
 }
 
+export interface IWorkdocField extends IBaseField {
+  type: FieldType.Workdoc;
+  property: IWorkdocProperty;
+}
+
 interface ILinkedFields {
   id: string;
   name: string;
@@ -597,6 +602,8 @@ interface ICascaderProperty {
   linkedFields: ILinkedFields[],
   fullLinkedFields: ILinkedFields[],
 }
+
+type IWorkdocProperty = null;
 
 export type IField =
   | INotSupportField
@@ -625,7 +632,8 @@ export type IField =
   | ILastModifiedTimeField
   | ICreatedByField
   | ILastModifiedByField
-  | ICascaderField;
+  | ICascaderField
+  | IWorkdocField;
 
 export enum FieldType {
   NotSupport = 0,
@@ -654,6 +662,7 @@ export enum FieldType {
   CreatedBy = 23,
   LastModifiedBy = 24,
   Cascader = 25,
+  Workdoc = 27,
   OneWayLink = 26,
   // Workdoc = 27,
   DeniedField = 999, // no permission column
@@ -923,5 +932,14 @@ export const FieldTypeDescriptionMap: {
     fieldGroup: FieldGroup.Advanced,
     help:  t(Strings.field_help_cascader),
     hasOptSetting: true,
+  },
+  [FieldType.Workdoc]: {
+    title: t(Strings.field_title_workdoc),
+    subTitle: t(Strings.field_desc_workdoc),
+    type: FieldType.Workdoc,
+    canBePrimaryField: false,
+    fieldGroup: FieldGroup.Common,
+    help:  t(Strings.field_help_workdoc),
+    hasOptSetting: false,
   },
 };

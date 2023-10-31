@@ -1,0 +1,63 @@
+import * as React from 'react';
+import { forwardRef, memo, useImperativeHandle } from 'react';
+import { ICellValue } from '@apitable/core';
+import { ExpandWorkdoc } from 'pc/components/expand_record/expand_work_doc';
+import { IBaseEditorProps, IEditor } from '../interface';
+
+export interface IWorkdocEditorProps extends IBaseEditorProps {
+  editable: boolean;
+  editing?: boolean;
+  cellValue?: ICellValue;
+  datasheetId: string;
+  toggleEditing?: (next?: boolean) => void;
+  recordId?: string;
+  onSave?: (val: any) => void;
+}
+
+const WorkdocEditorBase: React.ForwardRefRenderFunction<IEditor, IWorkdocEditorProps> = (props, ref) => {
+  const { onSave, datasheetId, recordId, field, cellValue, editable, editing } = props;
+
+  useImperativeHandle(
+    ref,
+    (): IEditor => ({
+      focus: () => {
+        focus();
+      },
+      onEndEdit: () => {
+        onEndEdit();
+      },
+      onStartEdit: () => {
+        onStartEdit();
+      },
+      setValue: () => {
+        onStartEdit();
+      },
+      saveValue: () => {
+        saveValue();
+      },
+    }),
+  );
+
+  const focus = () => {
+  };
+
+  const onEndEdit = () => {};
+
+  const saveValue = () => {};
+
+  const onStartEdit = () => {};
+
+  return (
+    <ExpandWorkdoc
+      datasheetId={datasheetId}
+      cellValue={cellValue}
+      editing={editing}
+      field={field}
+      recordId={recordId ? recordId.endsWith('_temp') ? undefined : recordId : undefined}
+      onSave={onSave}
+      editable={editable}
+    />
+  );
+};
+
+export const WorkdocEditor = memo(forwardRef(WorkdocEditorBase));

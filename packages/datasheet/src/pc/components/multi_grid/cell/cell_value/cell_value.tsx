@@ -35,6 +35,7 @@ import { CellFormula } from '../cell_formula';
 import { CellLookUp } from '../cell_lookup';
 import { CellMember } from '../cell_member';
 import { CellRating } from '../cell_rating';
+import { CellWorkdoc } from '../cell_work_doc';
 
 export interface ICellValueComponent {
   field: IField;
@@ -129,6 +130,8 @@ const CellValueBase: React.FC<React.PropsWithChildren<ICellValueComponent>> = (p
       return <CellCreatedBy {...cellProps} rowHeightLevel={rowHeightLevel} />;
     case FieldType.AutoNumber:
       return <CellAutoNumber {...cellProps} field={field} rowHeightLevel={rowHeightLevel} />;
+    case FieldType.Workdoc:
+      return <CellWorkdoc {...cellProps} field={field} />;
     default:
       return <></>;
   }

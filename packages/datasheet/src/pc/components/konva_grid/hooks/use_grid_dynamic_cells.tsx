@@ -358,7 +358,19 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
               strokeWidth={0.5}
             />
           );
-          if (fieldMaxIndex < frozenColumnCount) {
+          // select section with workdoc field cannot be filled
+          let selectWithWorkdocField = false;
+          for(let idx = fieldMinIndex; idx <= fieldMaxIndex; idx++) {
+            const { fieldId } = visibleColumns[idx];
+            const field = fieldMap[fieldId];
+            if (field.type === FieldType.Workdoc) {
+              selectWithWorkdocField = true;
+              break;
+            }
+          }
+          if (selectWithWorkdocField) {
+            fillHandler = null;
+          } else if (fieldMaxIndex < frozenColumnCount) {
             frozenFillHandler = currentHandler;
           } else {
             fillHandler = currentHandler;

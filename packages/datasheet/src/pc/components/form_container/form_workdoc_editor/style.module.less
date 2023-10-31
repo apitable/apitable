@@ -1,0 +1,26 @@
+@import "~pc/styles/lib_var.less";
+
+.formWorkdocEditor {
+  position: relative;
+  .status {
+    position: absolute;
+    right: 12px;
+    top: 8px;
+    .connecting {
+      color: var(--warningColor);
+    }
+    .disconnected {
+      color: var(--errorColor);
+    }
+  }
+  :global {
+    .editor {
+      min-height: 128px;
+      max-height: 560px;
+    }
+    .status {
+      line-height: 40px;
+      padding-left: 8px;
+    }
+  }
+}

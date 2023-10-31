@@ -27,8 +27,11 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { useResponsive } from 'pc/hooks';
 import { getFieldTypeIcon } from '../field_setting';
-import styles from './styles.module.less';
 import { useShowTip } from './use_show_tip';
+// @ts-ignore
+import { isEnterprise } from 'enterprise';
+import styles from './styles.module.less';
+import { getEnvVariables } from 'pc/utils/env';
 
 interface ITypeSelect {
   onClick: (type: number) => void;
@@ -63,6 +66,7 @@ const fieldSequence: FieldType[] = [
   FieldType.Phone,
   FieldType.Email,
   FieldType.Cascader,
+  FieldType.Workdoc,
 ];
 
 interface ITypeSelectItemProps extends ITypeSelect {
@@ -195,6 +199,7 @@ export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = (p
 
   function filterPrimaryType(fieldType: FieldType) {
     if (props.fieldIndex !== 0) return true;
+    if (isEnterprise && fieldType === FieldType.Workdoc && getEnvVariables().ENABLE_WORKDOC_FIELD) return true;
     return FieldTypeDescriptionMap[fieldType] && FieldTypeDescriptionMap[fieldType].canBePrimaryField;
   }
 
