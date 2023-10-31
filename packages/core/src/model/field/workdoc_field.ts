@@ -20,8 +20,8 @@ import { Strings, t } from 'exports/i18n';
 
 const baseWorkdocFieldSchema = {
   documentId: Joi.string().required(),
-  title: Joi.string()
-}
+  title: Joi.string().allow('')
+};
 
 export class WorkdocField extends ArrayValueField {
   constructor(public override field: IWorkdocField, public override state: IReduxState) {

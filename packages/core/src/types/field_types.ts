@@ -662,9 +662,8 @@ export enum FieldType {
   CreatedBy = 23,
   LastModifiedBy = 24,
   Cascader = 25,
-  Workdoc = 27,
   OneWayLink = 26,
-  // Workdoc = 27,
+  Workdoc = 27,
   DeniedField = 999, // no permission column
 }
 
