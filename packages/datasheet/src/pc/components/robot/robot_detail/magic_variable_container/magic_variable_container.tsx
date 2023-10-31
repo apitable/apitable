@@ -159,7 +159,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
       {
         title:
             t(Strings.action),
-        items: nodeOutputSchemaList.filter(item => item.id.startsWith('acc')).map(r => r.id),
+        items: nodeOutputSchemaList.filter(item => item.id.startsWith('aac')).map(r => r.id),
       }
     ];
   }
