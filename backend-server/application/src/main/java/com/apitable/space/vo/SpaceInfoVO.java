@@ -160,7 +160,8 @@ public class SpaceInfoVO {
     private BigDecimal usedCredit;
 
     @Schema(description = "Whether enable chatbot feature")
-    private Boolean isEnableChatbot = true;
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean isEnableChatbot;
 
     @Schema(description = "Seat usage")
     private SeatUsage seatUsage;

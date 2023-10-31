@@ -25,7 +25,6 @@ package com.apitable.shared.cache.service;
  *
  * @author Chambers
  */
-@Deprecated
 public interface CommonCacheService {
 
     boolean checkIfSpaceEnabledChatbot(String spaceId);
