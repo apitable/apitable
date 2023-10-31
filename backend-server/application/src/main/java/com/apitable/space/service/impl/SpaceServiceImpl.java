@@ -68,7 +68,6 @@ import com.apitable.organization.service.ITeamMemberRelService;
 import com.apitable.organization.service.ITeamService;
 import com.apitable.organization.service.IUnitService;
 import com.apitable.shared.cache.bean.UserSpaceDto;
-import com.apitable.shared.cache.service.CommonCacheService;
 import com.apitable.shared.cache.service.SpaceCapacityCacheService;
 import com.apitable.shared.cache.service.UserActiveSpaceCacheService;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
@@ -720,10 +719,6 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         // credit
         BigDecimal usedCredit = aiServiceFacade.getUsedCreditCount(spaceId);
         spaceInfoVO.setUsedCredit(usedCredit);
-
-        CommonCacheService cacheService = SpringContextHolder.getBean(CommonCacheService.class);
-        boolean isEnableChatbot = cacheService.checkIfSpaceEnabledChatbot(spaceId);
-        spaceInfoVO.setIsEnableChatbot(isEnableChatbot);
         return spaceInfoVO;
     }
 
