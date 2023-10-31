@@ -227,5 +227,7 @@ export const getEnvVars = () => {
     AI_API_HELP_URL: process.env.AI_API_HELP_URL,
     ARCHIVED_HELP_LINK: process.env.ARCHIVED_HELP_LINK,
     ENABLE_WORKDOC_FIELD: process.env.ENABLE_WORKDOC_FIELD === 'true',
+    AI_TRAINING_HELP_DOC_LINK: process.env.AI_TRAINING_HELP_DOC_LINK,
+    AI_SETTING_HELP_DOC_LINK: process.env.AI_SETTING_HELP_DOC_LINK,
   };
 };
