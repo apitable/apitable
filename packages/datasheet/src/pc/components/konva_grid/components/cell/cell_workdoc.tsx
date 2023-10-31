@@ -38,7 +38,7 @@ export const CellWorkdoc = (props: ICellProps) => {
     return (
       <Group
         x={10}
-        y={4}
+        y={5}
         listening={isActive}
         onMouseEnter={() => setHover(true)}
         onMouseOut={() => setHover(false)}
@@ -47,20 +47,20 @@ export const CellWorkdoc = (props: ICellProps) => {
       >
         <Rect
           name={name}
-          width={width - 6}
-          height={height + 4}
+          width={width}
+          height={height + 2}
           fill={isHover ? colors.bgBrandLightHover : colors.bgBrandLightDefault}
           cornerRadius={4}
         />
         <Icon
-          x={4}
-          y={2}
+          x={0}
+          y={0}
           data={FileOutlinedPath}
           backgroundWidth={22}
           backgroundHeight={22}
           fill={colors.textBrandDefault}
         />
-        <Text x={x - 10} y={y - 2} height={height} text={text} fill={colors.textBrandDefault} fontSize={13} />
+        <Text x={x - 12} y={y - 4} height={height} text={text} fill={colors.textBrandDefault} fontSize={13} />
       </Group>
     );
   };

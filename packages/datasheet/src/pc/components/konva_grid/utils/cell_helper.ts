@@ -81,9 +81,9 @@ import {
   GRID_CELL_MEMBER_ITEM_PADDING_LEFT,
   GRID_CELL_MULTI_ITEM_MARGIN_LEFT,
   GRID_CELL_MULTI_ITEM_MARGIN_TOP,
-  GRID_CELL_MULTI_ITEM_MIN_WIDTH,
+  GRID_CELL_MULTI_ITEM_MIN_WIDTH, GRID_CELL_MULTI_PADDING_LEFT,
   GRID_CELL_MULTI_PADDING_TOP,
-  GRID_CELL_VALUE_PADDING,
+  GRID_CELL_VALUE_PADDING, GRID_ICON_COMMON_SIZE, GRID_ICON_SMALL_SIZE,
   GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT,
   GRID_MEMBER_ITEM_PADDING_RIGHT,
   GRID_OPTION_ITEM_HEIGHT,
@@ -312,9 +312,7 @@ export class CellHelper extends KonvaDrawer {
     let currentY = GRID_CELL_MULTI_PADDING_TOP;
     const isShortHeight = rowHeightLevel === RowHeightLevel.Short;
     const maxHeight = isActive ? 130 - GRID_CELL_MULTI_PADDING_TOP : rowHeight - GRID_CELL_MULTI_PADDING_TOP;
-    const maxTextWidth = isOperating
-      ? columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING) - GRID_CELL_DELETE_ITEM_BUTTON_SIZE - 12
-      : columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING);
+    const maxTextWidth = columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING) - GRID_ICON_SMALL_SIZE - (isOperating ? 12 : 0);
     const renderDataList: any[] = [];
     const listCount = cellValue.length;
     let isOverflow = false;
@@ -325,8 +323,9 @@ export class CellHelper extends KonvaDrawer {
       const background = colors.bgBrandLightDefault;
       const itemName = docItem.title || t(Strings.workdoc_unnamed);
       let realMaxTextWidth = maxTextWidth;
+
       if (index === 0 && isOperating) {
-        const operatingMaxWidth = maxTextWidth - (GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4);
+        const operatingMaxWidth = maxTextWidth - 6;
         // item no space to display, then perform a line feed
         if (operatingMaxWidth <= 10) {
           currentX = GRID_CELL_VALUE_PADDING;
@@ -335,13 +334,13 @@ export class CellHelper extends KonvaDrawer {
           realMaxTextWidth = operatingMaxWidth;
         }
       }
-      const { text: renderText, textWidth } = this.textEllipsis({
+      const { text: renderText, textWidth, isEllipsis } = this.textEllipsis({
         text: itemName,
         maxWidth: columnWidth && realMaxTextWidth,
         fontSize: 12,
       });
       const itemWidth = Math.max(
-        isOperating ? textWidth + 2 * GRID_OPTION_ITEM_PADDING + GRID_CELL_DELETE_ITEM_BUTTON_SIZE + 12 : textWidth + 2 * GRID_OPTION_ITEM_PADDING,
+        textWidth + 2 * GRID_OPTION_ITEM_PADDING + GRID_ICON_SMALL_SIZE - (isEllipsis ? 8 : 0),
         GRID_CELL_MULTI_ITEM_MIN_WIDTH,
       );
 
@@ -368,10 +367,17 @@ export class CellHelper extends KonvaDrawer {
       const itemX = x + currentX;
       const itemY = y + currentY;
       if (ctx && !isActive) {
+        this.path({
+          x: itemX + 4,
+          y: itemY + 2,
+          data: FileOutlinedPath,
+          size: 12,
+          fill: colors.textBrandDefault,
+        });
         this.label({
           x: itemX,
           y: itemY,
-          width: itemWidth + 12,
+          width: itemWidth,
           height: GRID_OPTION_ITEM_HEIGHT,
           background,
           color,
@@ -380,13 +386,6 @@ export class CellHelper extends KonvaDrawer {
           text: renderText,
           fontSize: 12,
           textAlign: 'right',
-        });
-        this.path({
-          x: itemX + 4,
-          y: itemY + 2,
-          data: FileOutlinedPath,
-          size: 12,
-          fill: colors.textBrandDefault,
         });
       }
 
