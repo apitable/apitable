@@ -33,7 +33,7 @@ import { IFetchDatasheet } from '@apitable/widget-sdk/dist/message/interface';
 import { getTriggerDatasheetId } from 'pc/components/automation/controller/hooks/use_robot_fields';
 import { Message, Modal } from 'pc/components/common';
 import { useResponsive } from '../../../../hooks';
-import {getResourceAutomationDetailIntegrated, useAutomationController} from '../../../automation/controller';
+import { getResourceAutomationDetailIntegrated, useAutomationController } from '../../../automation/controller';
 import {
   automationLocalMap,
   automationPanelAtom,
@@ -46,14 +46,14 @@ import { ShareContext } from '../../../share';
 import styles from '../../../slate_editor/components/select/style.module.less';
 import { changeActionTypeId, getResourceAutomationDetail, updateActionInput } from '../../api';
 import { getFilterActionTypes, getNodeOutputSchemaList, getNodeTypeOptions, operand2PureValue } from '../../helper';
-import {useActionTypes, useRobotTriggerTypes, useTriggerTypes} from '../../hooks';
+import { useActionTypes, useRobotTriggerTypes, useTriggerTypes } from '../../hooks';
 import { IRobotAction } from '../../interface';
 import { MagicTextField } from '../magic_variable_container';
 import { NodeForm, NodeFormInfo } from '../node_form';
 import { IChangeEvent } from '../node_form/core/interface';
 import { EditType } from '../trigger/robot_trigger';
 import itemStyle from '../trigger/select_styles.module.less';
-import {getActionList, getTriggerList} from '../utils';
+import { getActionList, getTriggerList } from '../utils';
 
 export interface IRobotActionProps {
   index: number;
@@ -280,11 +280,15 @@ export const RobotAction = memo((props: IRobotActionProps) => {
     widgets={
       {
         TextWidget: (props: any) => {
-          return <MagicTextField
-            {...props}
-            nodeOutputSchemaList={prevActionSchemaList}
-            triggerType={triggerType}
-          />;
+          return (
+            <Box maxWidth={'100%'} maxHeight={'300px'} overflowY={'auto'} overflowX={'auto'}>
+              <MagicTextField
+                {...props}
+                nodeOutputSchemaList={prevActionSchemaList}
+                triggerType={triggerType}
+              />
+            </Box>
+          );
         }
       }
     }

@@ -2,7 +2,7 @@ import {
   cloneElement,
   isValidElement,
   ReactElement,
-  useCallback,
+  useCallback, useEffect,
   useRef,
   useState
 } from 'react';
@@ -41,6 +41,8 @@ export interface IDropdownProps {
       autoWidth?: boolean;
       selectedIndex?:number;
       stopPropagation?: boolean;
+      visible?: boolean;
+      disableClick?: boolean;
     },
     setTriggerRef?: (ref: HTMLElement|null) => void;
     middleware?: Array<Middleware>,
@@ -65,6 +67,12 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
   const arrowEnabled = options.arrow?? true;
   const disabled = options.disabled?? false;
   const [isOpen, setOpenValue] = useState(false);
+
+  useEffect(() => {
+    if(options?.visible != null) {
+      setOpenValue(options.visible);
+    }
+  }, [options?.visible]);
 
   const setOpen = useCallback((isOpenState: boolean) => {
     if(disabled) {
@@ -109,7 +117,7 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
   const role = useRole(context);
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
-    click,
+    ...(options?.disableClick === true ? []: [click]),
     dismiss,
     role
   ]);

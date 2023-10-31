@@ -16,35 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ReactNode } from 'react';
+import { ReactElement } from 'react';
 import { colorVars } from '@apitable/components';
 import { FieldType } from '@apitable/core';
 import {
   AttachmentOutlined,
   AutonumberOutlined,
-  UserOutlined,
+  CalendarOutlined,
   CheckboxOutlined,
-  HistoryFilled,
-  TextOutlined,
-  UserAddOutlined,
-  TimeOutlined,
-  SelectSingleOutlined,
   CurrencyUsdOutlined,
   EmailOutlined,
   FormulaOutlined,
-  PercentOutlined,
-  NumberOutlined,
-  SelectMultipleOutlined,
-  CalendarOutlined,
+  HistoryFilled,
   LinkOutlined,
-  UserEditOutlined,
   LongtextOutlined,
-  TelephoneOutlined,
   LookupOutlined,
   StarOutlined,
   CascadeOutlined, FileOutlined,
+  NumberOutlined,
   OneWayLinkOutlined,
-  TwoWayLinkOutlined
+  PercentOutlined,
+  SelectMultipleOutlined,
+  SelectSingleOutlined,
+  TelephoneOutlined,
+  TextOutlined,
+  TimeOutlined,
+  TwoWayLinkOutlined,
+  UserAddOutlined,
+  UserEditOutlined,
+  UserOutlined
 } from '@apitable/icons';
 
 const FieldIconMap = {
@@ -74,6 +74,10 @@ const FieldIconMap = {
   [FieldType.LastModifiedBy]: UserEditOutlined,
   [FieldType.Cascader]: CascadeOutlined,
   [FieldType.Workdoc]: FileOutlined,
+};
+
+export const getFieldTypeIconOrNull = (type: FieldType): ReactElement|null => {
+  return FieldIconMap[type];
 };
 
 export const getFieldTypeIcon = (type: FieldType, fillColor: string = colorVars.thirdLevelText, width = 16, height = 16): any => {

@@ -566,7 +566,6 @@ export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTri
   return (
     <>
       {
-        // TODO key info
         list.map((trigger, index) => (
           <>
             <RobotTriggerBase
@@ -577,8 +576,8 @@ export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTri
               triggerTypes={triggerTypes}
             />
 
-            <OrEmpty visible={index < CONST_MAX_TRIGGER_COUNT - 1}>
-              <Box display={'flex'} padding={index === list.length - 1 ? '12px 0 0 0' : '12px 0'}
+            <OrEmpty visible={index < CONST_MAX_TRIGGER_COUNT - 1 && editType === EditType.entry}>
+              <Box display={'flex'} padding={index === list.length - 1 ? '16px 0 0 0' : '16px 0'}
                 justifyContent={'center'} alignItems={'center'}>
                 <Box borderRadius={'12px'} background={colors.bgBrandLightDefault} padding={'2px 12px'}>
                   <UpperTypography variant={'body3'} color={colors.textBrandDefault}>

@@ -22,9 +22,10 @@ import styled from 'styled-components';
 import { Box, Button, ListDeprecate, stopPropagation, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, NumberOutlined } from '@apitable/icons';
+import { OrTooltip } from 'pc/components/common/or_tooltip';
+import EllipsisText from 'pc/components/ellipsis_text';
 import { useCssColors } from '../trigger/use_css_colors';
 import { ISchemaPropertyListItem, ISchemaPropertyListItemClickFunc } from './helper';
-
 
 interface ISchemaPropertyListItemProps {
   currentStep: number
@@ -45,7 +46,7 @@ const RowItem= styled(ListDeprecate.Item)`
     visibility: hidden;
   }
   height:  inherit !important;
-  padding: 8px 0;
+  padding: 8px 8px !important;
   
   &:hover {
     ${StyledButton} {
@@ -60,8 +61,6 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
   const colors = useCssColors();
   const imgSize = currentStep === 0 ? 32 : 24;
 
-  console.log('SchemaPropertyListItem', item);
-
   return (
     <Box ref={ref} key={item.key} marginBottom="4px">
       <RowItem
@@ -70,7 +69,7 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
         active={isActive}
         currentIndex={0}
         style={{
-          borderRadius: '4px',
+          borderRadius: '4px !important',
           height: 'inherit !important'
         }}
         className={isActive ? 'active' : ''}
@@ -100,7 +99,7 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
           }
         >
 
-          <Box display={'inline-flex'} alignItems='center'>
+          <Box display={'inline-flex'} alignItems='center' flex={'1 1 auto'} width={'100%'} overflowX={'hidden'}>
             {
               item.icon ? (isValidElement(item.icon) ? item.icon :
                 <Image src={String(item.icon)}
@@ -112,21 +111,29 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
                 <NumberOutlined size={16} color={colors.textCommonTertiary}/>
             }
 
-            <Box marginLeft={'8px'} alignItems={'flex-start'} display={'flex'} flexDirection={'column'}>
-              <Typography variant={'body3'} color={colors.textCommonPrimary} >
-                {item.label}
-              </Typography>
+            <Box marginLeft={'8px'} alignItems={'flex-start'} display={'flex'} flexDirection={'column'} width={'100%'}>
+              <Box maxWidth={'100%'}>
+                <EllipsisText>
+                  <Typography variant={'body3'} color={colors.textCommonPrimary} >
+                    {item.label}
+                  </Typography>
+                </EllipsisText>
+              </Box>
               {
                 item.description && (
-                  <StyledTypography variant={'body4'} color={colors.textCommonTertiary}>
-                    {item.description}
-                  </StyledTypography>
+                  <Box maxWidth={'100%'}>
+                    <EllipsisText>
+                      <StyledTypography variant={'body4'} color={colors.textCommonTertiary}>
+                        {item.description}
+                      </StyledTypography>
+                    </EllipsisText>
+                  </Box>
                 )
               }
             </Box>
 
           </Box>
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" flex={'0 none'}>
             {item.canInsert && (
               <StyledButton
                 size="small"

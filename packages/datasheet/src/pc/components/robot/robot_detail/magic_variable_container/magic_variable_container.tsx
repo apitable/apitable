@@ -45,6 +45,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
 
   const setCurrrentTrigger = useSetAtom(automationCurrentTriggerId);
 
+  const colors = useCssColors();
   const theme = useTheme();
   const searchRef = useRef<any>();
   const listContainerRef = useRef<any>();
@@ -56,8 +57,6 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
     nodeOutputSchemaList,
     isJSONField,
   });
-  const colors= useCssColors();
-
   // List of dynamic parameters after filtering by keyword search
   variableList = variableList.filter((item) => item.label?.includes(searchValue));
 
@@ -200,18 +199,22 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
   }
 
   return (
-    <Box backgroundColor={theme.color.bgCommonHighest} borderRadius="8px" border={`1px solid ${colors.borderCommonDefault}`} ref={ref as any} padding="8px 16px">
-      <StyledTextInput
-        type="text"
-        ref={searchRef}
-        // autoFocus
-        block
-        lineStyle
-        onChange={(e) => setSearchValue(e.target.value)}
-        value={searchValue}
-        placeholder={t(Strings.search)}
-        prefix={<SearchOutlined color={colors.textCommonPrimary} />}
-      />
+    <Box backgroundColor={colors.bgCommonHighest}
+      boxShadow={colors.shadowCommonHighest}
+      borderRadius="8px" border={`1px solid ${colors.borderCommonDefault}`} ref={ref as any} padding="8px 8px">
+      <Box padding={'0 8px'}>
+        <StyledTextInput
+          type="text"
+          ref={searchRef}
+          // autoFocus
+          block
+          lineStyle
+          onChange={(e) => setSearchValue(e.target.value)}
+          value={searchValue}
+          placeholder={t(Strings.search)}
+          prefix={<SearchOutlined color={colors.textCommonPrimary} />}
+        />
+      </Box>
       {
         !(currentStep === 0 && variableList.length === 0) && (
           <Box margin="8px 0px">

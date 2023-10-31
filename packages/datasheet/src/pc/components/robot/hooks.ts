@@ -322,11 +322,12 @@ export const useDefaultRobotDesc = () => {
   const robotActionTypes = robotActionTypesOriginal?.filter(Boolean);
   const comma = t(Strings.comma);
 
+  const triggerResult = robotTriggerType
+    ?.filter(Boolean)
+    .map((actionType) => actionType!.name)
+    .join(t(Strings.robot_trigger_or));
+
   return useMemo(() => {
-    const triggerResult = robotTriggerType
-      ?.filter(Boolean)
-      .map((actionType) => actionType!.name)
-      .join(t(Strings.robot_trigger_or));
 
     if (robotTriggerType != null && (isNil(robotActionTypes) || robotActionTypes?.length === 0)) {
       return t(Strings.automation_description_trigger, {
@@ -335,10 +336,7 @@ export const useDefaultRobotDesc = () => {
     }
 
     if (robotActionTypes?.length === 1) {
-      const triggerResult = robotTriggerType
-        ?.filter(Boolean)
-        .map((actionType) => actionType!.name)
-        .join(comma);
+
       const lastActionResult = robotActionTypes[robotActionTypes.length - 1]?.name;
       return t(Strings.automation_description_one, {
         triggerName: triggerResult,
@@ -347,10 +345,6 @@ export const useDefaultRobotDesc = () => {
     }
 
     if (robotTriggerType && Array.isArray(robotActionTypes)) {
-      const triggerResult = robotTriggerType
-        ?.filter(Boolean)
-        .map((actionType) => actionType!.name)
-        .join(t(Strings.robot_trigger_or));
       const actionResult = robotActionTypes
         .slice(0, robotActionTypes.length - 1)
         .map((actionType) => actionType!.name)
