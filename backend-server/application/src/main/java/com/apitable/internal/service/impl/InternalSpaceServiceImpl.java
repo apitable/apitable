@@ -120,7 +120,7 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
         vo.setAutomationRunNums(count);
         if (Boolean.TRUE.equals(skipAutomationRunNumValidate)) {
             vo.setAllowRun(true);
-        } else if (maxAutomationRunsNums != -1 && count > maxAutomationRunsNums) {
+        } else if (maxAutomationRunsNums != -1 && count >= maxAutomationRunsNums) {
             vo.setAllowRun(false);
         } else {
             vo.setAllowRun(true);
