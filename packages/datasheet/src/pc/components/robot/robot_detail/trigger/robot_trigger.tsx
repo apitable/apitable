@@ -20,20 +20,22 @@ import produce from 'immer';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { identity, isEqual, isEqualWith, isNil, pickBy } from 'lodash';
 import * as React from 'react';
-import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
+import { memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import styled from 'styled-components';
+import useSWR from 'swr';
 import { Box, IDropdownControl, SearchSelect, Typography } from '@apitable/components';
 import {
   EmptyNullOperand,
   IExpression,
   integrateCdnHost,
-  IReduxState,
+  IReduxState, IServerFormPack,
   OperatorEnums,
   Selectors,
   Strings,
   t
 } from '@apitable/core';
+import { fetchFormPack } from '@apitable/core/dist/modules/database/api/form_api';
 import { CONST_MAX_TRIGGER_COUNT } from 'pc/components/automation/config';
 import { Message, Modal } from 'pc/components/common';
 import { OrEmpty } from 'pc/components/common/or_empty';
@@ -41,7 +43,8 @@ import { OrTooltip } from 'pc/components/common/or_tooltip';
 import { Trigger } from 'pc/components/robot/robot_context';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { getTriggerList } from 'pc/components/robot/robot_detail/utils';
-import { useResponsive, useSideBarVisible } from '../../../../hooks';
+import { ShareContext } from 'pc/components/share';
+import { useQuery, useResponsive, useSideBarVisible } from '../../../../hooks';
 import {
   automationCurrentTriggerId,
   automationLocalMap,
@@ -431,6 +434,22 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
   }, [editType, handleClick]);
 
   const formMeta = useAtomValue(loadableFormItemAtom);
+
+  let formItemInfo = (formMeta?.data as any)?.form;
+
+  const formId = getFormId({ input: formData });
+
+  const { data } = useSWR([
+    'fetchFormPack', formId
+  ], () => fetchFormPack(String(formId!)).then(res => res?.data?.data ?? {
+  } as IServerFormPack), {
+    isPaused: () => formId == null
+  });
+
+  if(editType === EditType.entry) {
+    formItemInfo = data?.form;
+  }
+
   const handleUpdate = useCallback((e: any) => {
     const previous = getRelativedId({ input: formData });
     const current = getRelativedId({ input: e.formData });
@@ -447,6 +466,8 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       draft.set(trigger.triggerId, e.formData);
     }));
   }, [formData, setLocalStateMap, trigger.triggerId]);
+
+  const { shareInfo } = useContext(ShareContext);
 
   return (
     <NodeItem
@@ -474,8 +495,8 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
           e = errors as unknown as any[];
         }
 
-        if (formId != null) {
-          if (treeMaps[formId] == null && (!formMeta.loading && (formMeta?.data as any)?.form == null)) {
+        if (formId != null && shareInfo?.shareId == null) {
+          if (treeMaps[formId] == null && (!formMeta.loading && formItemInfo == null)) {
             if (!e.some(error => error.dataPath === '.formId')) {
               return {
                 formId: {
@@ -487,8 +508,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         }
 
         if (dstId != null) {
-          if (datasheetMaps[dstId] == null) {
-            // const e = (errors as unknown as any[]) ?? [];
+          if (datasheetMaps[dstId] == null && shareInfo?.shareId == null) {
             if (!e.some(error => error.dataPath === '.datasheetId')) {
               return {
                 datasheetId: {

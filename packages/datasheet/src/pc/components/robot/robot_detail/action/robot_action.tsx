@@ -19,19 +19,20 @@
 import cx from 'classnames';
 import produce from 'immer';
 import { useAtom } from 'jotai';
-import { isEqual } from 'lodash';
+import { isEqual, isString } from 'lodash';
 import * as React from 'react';
-import { FC, memo, ReactNode, useCallback, useContext, useMemo } from 'react';
+import { FC, memo, ReactNode, useCallback, useContext, useEffect, useMemo } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import { Box, SearchSelect, useThemeColors } from '@apitable/components';
-import { integrateCdnHost, IReduxState, Strings, t } from '@apitable/core';
+import { integrateCdnHost, IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import { setSideBarVisible } from '@apitable/core/dist/modules/space/store/actions/space';
 import { ChevronDownOutlined } from '@apitable/icons';
 import { IFetchDatasheet } from '@apitable/widget-sdk/dist/message/interface';
 import { getTriggerDatasheetId } from 'pc/components/automation/controller/hooks/use_robot_fields';
 import { Message, Modal } from 'pc/components/common';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useResponsive } from '../../../../hooks';
 import { getResourceAutomationDetailIntegrated, useAutomationController } from '../../../automation/controller';
 import {
@@ -86,9 +87,18 @@ export const RobotAction = memo((props: IRobotActionProps) => {
   const actionList = useMemo(() => getActionList(actions), [actions]);
 
   const { data: triggerTypes } = useTriggerTypes();
+  const dispatch = useAppDispatch();
 
   const { data: dataList } = useSWR(['getRobotMagicDatasheet', triggers], () => getTriggerDatasheetId(triggers), {
   });
+
+  useEffect(() => {
+    dataList?.forEach((item) => {
+      if(isString(item) && !dataSheetMap[item]) {
+        dispatch(StoreActions.fetchDatasheet(item) as any);
+      }
+    });
+  }, [dataList]);
 
   const dataSheetMap = useSelector((state: IReduxState) => state.datasheetMap);
 
