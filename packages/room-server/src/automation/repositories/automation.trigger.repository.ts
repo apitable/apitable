@@ -121,4 +121,10 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
     });
     return results as ResourceRobotDto[];
   }
+
+  async selectResourceIdCountByRobotId(robotId: string): Promise<number> {
+    return await this.count({
+      where: { robotId, isDeleted: 0, resourceId: Not('') },
+    });
+  }
 }

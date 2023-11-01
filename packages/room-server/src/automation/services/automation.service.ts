@@ -262,7 +262,7 @@ export class AutomationService {
         return;
       }
     } catch (e) {
-        this.logger.error('verify automation run nums error', e);
+      this.logger.error('verify automation run nums error', e);
     }
     // 1. create run history
     await this.createRunHistory(robotId, taskId, spaceId);
@@ -316,6 +316,12 @@ export class AutomationService {
   async activeRobot(robotId: string, user: IUserBaseInfo) {
     const errorsByNodeId: any = {};
     try {
+      const resourceCount = await this.automationTriggerRepository.selectResourceIdCountByRobotId(robotId);
+      if (resourceCount == 0) {
+        return {
+          ok: false,
+        };
+      }
       const robot = await this.robotService.getRobotDetailById(robotId);
       const actions = Object.values(robot.actionsById);
       const { trigger, triggerType } = robot as any;
