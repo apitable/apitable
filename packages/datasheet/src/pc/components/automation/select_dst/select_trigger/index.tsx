@@ -41,7 +41,7 @@ export const SelectTrigger: FC<React.PropsWithChildren< {
 
         <Box maxWidth={'calc(100% - 50px)'}>
           <EllipsisText>
-            <Typography variant={'body4'} color={colors.textCommonTertiary}>
+            <Typography variant={'body4'} color={colors.textCommonPrimary}>
               {label}
             </Typography>
           </EllipsisText>

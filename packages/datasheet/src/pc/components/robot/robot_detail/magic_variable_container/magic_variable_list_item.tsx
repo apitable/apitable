@@ -45,8 +45,9 @@ const RowItem= styled(ListDeprecate.Item)`
   ${StyledButton} {
     visibility: hidden;
   }
-  height:  inherit !important;
   padding: 8px 8px !important;
+  border-radius: 4px !important;
+  height: inherit !important;
   
   &:hover {
     ${StyledButton} {
@@ -68,10 +69,6 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
         id={item.key}
         active={isActive}
         currentIndex={0}
-        style={{
-          borderRadius: '4px !important',
-          height: 'inherit !important'
-        }}
         className={isActive ? 'active' : ''}
         onClick={(e) => {
           if (disabled) return;
@@ -87,7 +84,8 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
           display="flex"
           flexDirection="row"
           alignItems="center"
-          justifyContent="space-between"
+          justifyContent="flex-start"
+          overflowX={'hidden'}
           width="100%"
           style={
             disabled
@@ -100,18 +98,20 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
         >
 
           <Box display={'inline-flex'} alignItems='center' flex={'1 1 auto'} width={'100%'} overflowX={'hidden'}>
-            {
-              item.icon ? (isValidElement(item.icon) ? item.icon :
-                <Image src={String(item.icon)}
-                  width={imgSize}
-                  height={imgSize}
-                  alt=""
-                />)
-                :
-                <NumberOutlined size={16} color={colors.textCommonTertiary}/>
-            }
+            <Box flex={`0 0 ${imgSize}px`}>
+              {
+                item.icon ? (isValidElement(item.icon) ? item.icon :
+                  <Image src={String(item.icon)}
+                    width={imgSize}
+                    height={imgSize}
+                    alt=""
+                  />)
+                  :
+                  <NumberOutlined size={16} color={colors.textCommonTertiary}/>
+              }
+            </Box>
 
-            <Box marginLeft={'8px'} alignItems={'flex-start'} display={'flex'} flexDirection={'column'} width={'100%'}>
+            <Box marginLeft={'8px'} alignItems={'flex-start'} display={'flex'} flexDirection={'column'} width={'100%'} flex={'1 1 auto'}>
               <Box maxWidth={'100%'}>
                 <EllipsisText>
                   <Typography variant={'body3'} color={colors.textCommonPrimary} >
@@ -131,9 +131,9 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
                 )
               }
             </Box>
-
           </Box>
-          <Box display="flex" alignItems="center" flex={'0 none'}>
+
+          <Box display="flex" alignItems="center" flex={'none'} flexGrow={'0'} marginLeft="16px">
             {item.canInsert && (
               <StyledButton
                 size="small"
@@ -156,7 +156,6 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
             )}
             {item.hasChildren && (
               <Box
-                marginLeft="16px"
                 display="flex"
                 alignItems="center"
                 onClick={(e: any) => {

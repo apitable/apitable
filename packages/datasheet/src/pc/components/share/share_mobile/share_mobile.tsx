@@ -35,6 +35,7 @@ import { ApplicationJoinSpaceAlert } from '../application_join_space_alert';
 import { IShareMenu } from '../share_menu';
 import { ShareMenu } from '../share_menu/share_menu';
 import styles from './style.module.less';
+import { AutomationPanel } from "pc/components/automation";
 
 // @ts-ignore
 const AIPanel = dynamic(() => import('enterprise').then((module) => module.ChatPage));
@@ -44,7 +45,7 @@ export interface IShareMobileProps extends IShareMenu {
 }
 
 export const ShareMobile: React.FC<React.PropsWithChildren<IShareMobileProps>> = (props) => {
-  const { shareId, datasheetId, folderId, formId, dashboardId, mirrorId, aiId } = useSelector((state) => state.pageParams);
+  const { shareId, datasheetId, folderId, formId, dashboardId, mirrorId, automationId, aiId } = useSelector((state) => state.pageParams);
   const [viewListStatus, setViewListStatus] = useState(false);
   const [shareGuideStatus, setShareGuideStatus] = useState(false);
   const [descModalStatus, setDescModal] = useState(false);
@@ -73,7 +74,9 @@ export const ShareMobile: React.FC<React.PropsWithChildren<IShareMobileProps>> =
     if (!shareNode) {
       return;
     }
-    if (mirrorId) {
+    if (automationId) {
+      return <AutomationPanel resourceId={automationId}/>;
+    } else if (mirrorId) {
       return <MirrorRoute />;
     } else if (datasheetId) {
       return <DataSheetPane />;
