@@ -38,6 +38,7 @@ export interface IAddRecordsOptions {
   // Fill in the new value added to the cell, cellValues.length must be equal to count;
   cellValues?: { [fieldId: string]: ICellValue }[];
   ignoreFieldPermission?: boolean;
+  ignoreFieldLimit?: boolean;
 }
 
 export type IAddRecordsResult = string[];
@@ -48,7 +49,7 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
 
   execute: (context, options) => {
     const { state: state, ldcMaintainer, memberFieldMaintainer, fieldMapSnapshot } = context;
-    const { viewId, index, count, groupCellValues, cellValues, ignoreFieldPermission } = options;
+    const { viewId, index, count, groupCellValues, cellValues, ignoreFieldPermission, ignoreFieldLimit } = options;
     const datasheetId = options.datasheetId || Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId);
     const fieldPermissionMap = Selectors.getFieldPermissionMap(state, datasheetId);
@@ -150,7 +151,7 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
         const _recordData = {};
         for (const [fieldId, cellValue] of Object.entries(newRecord.data)) {
           // ignore workdoc field cellValue
-          if (!fieldMap[fieldId] || fieldMap[fieldId]!.type === FieldType.Workdoc) {
+          if (!fieldMap[fieldId] || (fieldMap[fieldId]!.type === FieldType.Workdoc && !ignoreFieldLimit)) {
             // Compatible processing for data exceptions, some tables in the template center have dirty data
             continue;
           }
