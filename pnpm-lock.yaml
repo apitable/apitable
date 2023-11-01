@@ -36450,7 +36450,7 @@ packages:
     dependencies:
       buffer: registry.npmmirror.com/buffer@5.7.1
       inherits: registry.npmmirror.com/inherits@2.0.4
-      readable-stream: registry.npmmirror.com/readable-stream@3.6.2
+      readable-stream: 3.6.2
 
   registry.npmmirror.com/brace-expansion@1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/brace-expansion/-/brace-expansion-1.1.11.tgz}
@@ -36727,7 +36727,7 @@ packages:
       supports-color:
         optional: true
     dependencies:
-      ms: registry.npmmirror.com/ms@2.0.0
+      ms: 2.0.0
 
   registry.npmmirror.com/debug@4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz}
@@ -37582,11 +37582,6 @@ packages:
     name: moment
     version: 2.29.4
     dev: false
-
-  registry.npmmirror.com/ms@2.0.0:
-    resolution: {integrity: sha512-Tpp60P6IUJDTuOq/5Z8cdskzJujfwqfOTkrwIwj7IRISpnkJnT6SyJ4PCPnGMoFjC9ddhal5KVIYtAt97ix05A==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/ms/-/ms-2.0.0.tgz}
-    name: ms
-    version: 2.0.0
 
   registry.npmmirror.com/ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/ms/-/ms-2.1.2.tgz}
