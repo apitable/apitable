@@ -404,6 +404,14 @@ export class DatasheetRecordService {
     return await this.recordArchiveRepo.countRowsByDstId(dstId);
   }
 
+  async getDeletedRecordsByDstId(dstId: string): Promise<string[]>{
+    const records = await this.recordRepo.find({
+      select: ['recordId'],
+      where: {dstId, isDeleted: true},
+    });
+    return records.map(record => record.recordId);
+  }
+
   async getArchivedRecords(dstId: string, query: IApiPaginateRo): Promise<IPaginateInfo<ArchivedRecord[]>> {
     const total = await this.recordArchiveRepo.countRowsByDstId(dstId);
     let { pageSize, pageNum } = query;
