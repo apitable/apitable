@@ -355,6 +355,7 @@
   "api_params_lookup_filter_field_not_exists": "The filtering field ID \"{fieldId}\" specified by the lookup field does not exist.",
   "api_params_lookup_filter_field_invalid_operation": "The filtering field ID \"{fieldId}\" specified by the lookup field does not support the \"{operator}\" operator.",
   "api_params_lookup_can_not_operate": "Lookup field can't be edited",
+  "api_params_workdoc_can_not_operate": "WorkDoc field can't be edited",
   "api_params_max_count_error": "{property} must contain no more than {value} elements",
   "api_params_max_error": "{property} must not be greater than {value}",
   "api_params_max_length_error": "${property}'s length must not be greater than ${value}",

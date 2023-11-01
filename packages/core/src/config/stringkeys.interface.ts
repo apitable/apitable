@@ -539,6 +539,7 @@ export type StringKeysMapType = {
   'api_params_updatedby_can_not_operate': 'api_params_updatedby_can_not_operate',
   'api_params_views_max_count_error': 'api_params_views_max_count_error',
   'api_params_widget_package_id_error': 'api_params_widget_package_id_error',
+  'api_params_workdoc_can_not_operate': 'api_params_workdoc_can_not_operate',
   'api_query_params_invalid_fields': 'api_query_params_invalid_fields',
   'api_query_params_view_id_not_exists': 'api_query_params_view_id_not_exists',
   'api_request_success': 'api_request_success',
