@@ -148,9 +148,13 @@ export class WorkdocField extends ArrayValueField {
       case FOperator.IsNot:
         return cellValueTitle == null || !isEqual(cellValueTitle, conditionValue);
       case FOperator.Contains:
-        return cellValueTitle != null && cellValueTitle.some(title => conditionValue.includes(title as string));
+        return cellValueTitle != null && cellValueTitle.some(title =>
+          conditionValue.some((v: string) => title.includes(v))
+        );
       case FOperator.DoesNotContain:
-        return cellValueTitle == null || !cellValueTitle.some(title => conditionValue.includes(title as string));
+        return cellValueTitle == null || !cellValueTitle.some(title =>
+          conditionValue.some((v: string) => title.includes(v))
+        );
       default:
         return super.isMeetFilter(operator, cellValue, conditionValue);
     }
