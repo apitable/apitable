@@ -189,6 +189,10 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   // };
 
   useEffect(() => {
+    // workdoc field editing should disable datasheet shortcut
+    if (editing && field.type === FieldType.Workdoc) {
+      return;
+    }
     ShortcutContext.bind(ContextName.isEditing, () => editing);
     return () => {
       ShortcutContext.unbind(ContextName.isEditing);
