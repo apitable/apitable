@@ -84,7 +84,7 @@ import { FormPropContainer } from './form_prop_container';
 import styles from './style.module.less';
 import { query2formData, string2Query } from './util';
 // @ts-ignore
-import { triggerUsageAlertForDatasheet, PreFillPanel } from 'enterprise';
+import { triggerUsageAlertForDatasheet, PreFillPanel, triggerUsageAlert, SubscribeUsageTipType } from 'enterprise';
 
 enum IFormContentType {
   Form = 'Form',
@@ -116,7 +116,12 @@ const defaultMeta = {
 
 const tempRecordID = `${getNewId(IDPrefix.Record)}_temp`;
 
-export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean; setPreFill: Dispatch<SetStateAction<boolean>> }>> = (props) => {
+export const FormContainer: React.FC<
+  React.PropsWithChildren<{
+    preFill: boolean;
+    setPreFill: Dispatch<SetStateAction<boolean>>;
+  }>
+> = (props) => {
   const { preFill, setPreFill } = props;
   const {
     id,
@@ -409,7 +414,10 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
           handleAddRecordError(code, message);
         })
         .catch(() => networkErrorTip())
-        .finally(() => setLoading(false));
+        .finally(() => {
+          setLoading(false);
+          setAnimationLoading(false)
+        });
     }
     return FormApi.addFormRecord(id, postData)
       .then((response) => {
@@ -420,14 +428,23 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
         handleAddRecordError(code, message);
       })
       .catch(() => networkErrorTip())
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        setAnimationLoading(false)
+      });
   };
 
-  const handleAddRecordError = (code: number, errMsg: string) => {
+  const handleAddRecordError = (code: number, errMsg: any) => {
     let str = t(Strings.form_error_tip);
     if (code === StatusCode.SPACE_CAPACITY_OVER_LIMIT) str = t(Strings.form_space_capacity_over_limit);
     if ([OVER_LIMIT_PER_SHEET_RECORDS, OVER_LIMIT_SPACE_RECORDS].includes(String(code))) {
-      return triggerUsageAlertForDatasheet?.(errMsg);
+      const { usage } = JSON.parse(errMsg);
+      triggerUsageAlert(
+        OVER_LIMIT_PER_SHEET_RECORDS === String(code) ? 'maxRowsPerSheet' : 'maxRowsInSpace',
+        { usage: usage, alwaysAlert: true },
+        SubscribeUsageTipType.Alert,
+      );
+      return;
     }
     warningTip(str);
   };
