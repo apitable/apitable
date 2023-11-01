@@ -21,9 +21,7 @@ package com.apitable.automation.model;
 import com.apitable.shared.support.serializer.NullArraySerializer;
 import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,8 +43,7 @@ public class AutomationTaskSimpleVO {
     private String taskId;
 
     @Schema(description = "Robot run at", type = "java.lang.Long", example = "233")
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
-    private LocalDateTime createdAt;
+    private Long createdAt;
 
     @Schema(description = "Robot run status", type = "java.lang.Integer", example = "2")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
