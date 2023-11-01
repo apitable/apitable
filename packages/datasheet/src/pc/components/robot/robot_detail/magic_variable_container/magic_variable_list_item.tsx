@@ -98,7 +98,7 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
         >
 
           <Box display={'inline-flex'} alignItems='center' flex={'1 1 auto'} width={'100%'} overflowX={'hidden'}>
-            <Box flex={`0 0 ${imgSize}px`}>
+            <Box flex={`0 0 ${imgSize}px`} display={'flex'} alignItesm={'center'} justifyContent={'center'}>
               {
                 item.icon ? (isValidElement(item.icon) ? item.icon :
                   <Image src={String(item.icon)}
