@@ -18,6 +18,7 @@
 
 import { useMount } from 'ahooks';
 import { ConfigProvider, message } from 'antd';
+import { Locale } from 'antd/lib/locale-provider';
 import axios from 'axios';
 import { releaseProxy } from 'comlink';
 import Image from 'next/image';
@@ -25,7 +26,7 @@ import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
-import { RecordVision, StoreActions, Strings, t, ThemeName } from '@apitable/core';
+import { getLanguage, RecordVision, StoreActions, Strings, t, ThemeName } from '@apitable/core';
 import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import VersionUpdater from 'pc/components/version_updater';
@@ -171,8 +172,20 @@ const RouterProvider = ({ children }: any) => {
 
   const dndManager = isDesktopDevice ? dndH5Manager : dndTouchManager;
 
+  const lang = getLanguage().replace('-', '_');
+  const [locale, setLocale] = React.useState<Locale>();
+
+  const getLocale = async (_lang) => {
+    const _locale = await import(`antd/es/locale/${_lang}`).then(module => module.default);
+    setLocale(_locale);
+  };
+
+  useEffect(() => {
+    getLocale(lang);
+  }, [lang]);
+
   return (
-    <ConfigProvider {...antdConfig}>
+    <ConfigProvider {...antdConfig} locale={locale}>
       <ResourceContext.Provider value={resourceService.instance}>
         <DndProvider manager={dndManager}>
           <ScrollContext.Provider
