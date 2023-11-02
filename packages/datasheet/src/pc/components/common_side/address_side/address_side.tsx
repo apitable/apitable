@@ -50,9 +50,9 @@ import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { AddressTreeMenu } from '../../address_list/address_tree_menu';
-import styles from './style.module.less';
 // @ts-ignore
 import { isSocialPlatformEnabled, syncOrgMember } from 'enterprise';
+import styles from './style.module.less';
 
 export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { teamList, spaceId, userInfo } = useSelector(
@@ -175,7 +175,7 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
       );
     }
 
-    return <div className={styles.empty} />;
+    return <div />;
     // eslint-disable-next-line
   }, [loading, isMobile, teamClick, inviteRes, CUSTOM_SYNC_CONTACTS_LINKID, userInfo, isSyncingMembers, btnSize]);
 
