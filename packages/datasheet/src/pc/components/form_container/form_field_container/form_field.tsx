@@ -188,11 +188,13 @@ export const FormField: React.FC<React.PropsWithChildren<IFormFieldProps>> = (pr
 
   const disableField = entityFieldType === FieldType.LookUp || entityFieldType === FieldType.Formula;
 
+  const wordNotActiveMobile = isMobile && entityFieldType === FieldType.Workdoc;
+
   return (
     <div
       className={classNames(styles.formFieldItem, {
         [styles.displayItem]: isNeedBgField,
-        [styles.active]: isFocus && editable && !notNeedActiveField.includes(entityFieldType),
+        [styles.active]: isFocus && editable && !notNeedActiveField.includes(entityFieldType) && !wordNotActiveMobile,
         [styles.autoFit]: entityFieldType === FieldType.Checkbox,
         [styles.displayItemMobile]: isMobile && entityFieldType !== FieldType.Checkbox,
         [styles.editable]: isNeedBgField && editable && !disableField,
