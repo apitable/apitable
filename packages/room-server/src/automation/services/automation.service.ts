@@ -31,7 +31,7 @@ import {
 } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
 import { Nack, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { Injectable, Logger } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { TriggerEventHelper } from 'automation/events/helpers/trigger.event.helper';
 import { isEmpty } from 'class-validator';
 import { I18nService } from 'nestjs-i18n';
@@ -87,6 +87,7 @@ export class AutomationService {
     private readonly queueSenderService: QueueSenderBaseService,
     private readonly i18n: I18nService,
     private readonly redisService: RedisService,
+    @Inject(forwardRef(() => TriggerEventHelper))
     private readonly triggerEventHelper: TriggerEventHelper,
   ) {
     this.robotRunner = new AutomationRobotRunner({

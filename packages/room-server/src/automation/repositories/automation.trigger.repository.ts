@@ -74,6 +74,11 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
       where: {
         isDeleted: 0,
         robotId: robotId,
+        resourceId: Not(''),
+        input: Not(IsNull()),
+      },
+      order: {
+        createdAt: 'ASC',
       },
     });
   }

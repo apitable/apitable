@@ -39,7 +39,7 @@ import { AutomationTriggerRepository } from '../repositories/automation.trigger.
 import { AutomationService } from './automation.service';
 import { RobotRobotService } from './robot.robot.service';
 
-describe('RobotActionTypeServiceTest', () => {
+describe('AutomationServiceTest', () => {
   let moduleFixture: TestingModule;
   let nodeService: NodeService;
   let automationRobotRepository: AutomationRobotRepository;
@@ -51,8 +51,6 @@ describe('RobotActionTypeServiceTest', () => {
   let restService: RestService;
 
   beforeEach(async () => {
-    // @ts-ignore
-    // @ts-ignore
     moduleFixture = await Test.createTestingModule({
       imports: [
         WinstonModule.forRootAsync({
@@ -102,17 +100,17 @@ describe('RobotActionTypeServiceTest', () => {
             },
           },
         },
+        AutomationRobotRepository,
+        AutomationRunHistoryRepository,
+        AutomationActionRepository,
+        AutomationTriggerRepository,
+        AmqpConnection,
         {
           provide: TriggerEventHelper,
           useValue: {
             getDefaultTriggerOutput: jest.fn(),
           },
         },
-        AutomationRobotRepository,
-        AutomationRunHistoryRepository,
-        AutomationActionRepository,
-        AutomationTriggerRepository,
-        AmqpConnection,
       ],
     }).compile();
     nodeService = moduleFixture.get<NodeService>(NodeService);

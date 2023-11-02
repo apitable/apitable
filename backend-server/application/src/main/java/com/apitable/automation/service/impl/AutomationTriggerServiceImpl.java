@@ -92,7 +92,7 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
             ExceptionUtil.isFalse(
                 AUTOMATION_TRIGGER_LIMIT.getCode().equals(response.getCode()),
                 AUTOMATION_TRIGGER_LIMIT);
-            if (null != response.getData() && response.getData().isEmpty()) {
+            if (null != response.getData()) {
                 log.error("GetTriggerEmpty:{}", data.getRobotId());
             }
             return formatVoFromDatabusResponse(response.getData());
