@@ -79,6 +79,7 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
   const [value, setValue] = useState(slateValue);
 
   const refV: MutableRefObject<any> = useRef(null);
+  const insertCheckRef: MutableRefObject<boolean> = useRef(false);
 
   useEffect(() => {
     if (!isOpen) {
@@ -181,9 +182,13 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
           }}
           onVisibleChange={(visible) => {
             setOpenState(visible);
-            if(!visible) {
+            if(visible) {
+              insertCheckRef.current = true;
+            }
+            if(!visible && !insertCheckRef.current ) {
               const { value: transformedValue } = transformSlateValue(refV.current);
               onChange && onChange(transformedValue);
+              insertCheckRef.current =true;
             }
           }}
           trigger={
@@ -208,6 +213,7 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
               <MagicVariableContainer
                 isJSONField={isJSONField}
                 insertMagicVariable={(data) => {
+                  insertCheckRef.current =true;
                   setOpen(false);
                   insertMagicVariable(data, editor, () => {
                     setTimeout(() => {
