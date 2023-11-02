@@ -19,9 +19,8 @@
 package com.apitable.starter.amqp.autoconfigure;
 
 import com.apitable.starter.amqp.core.RabbitSendConfirmCallback;
-import com.apitable.starter.amqp.core.RabbitSender;
 import com.apitable.starter.amqp.core.RabbitSenderService;
-
+import com.apitable.starter.amqp.core.RabbitSenderServiceImpl;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
@@ -34,11 +33,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 
 /**
- * <p>
- * This configuration class extend RabbitAutoConfiguration using spring rabbitmq properties when the RabbitMQ and Spring AMQP client
- * libraries are on the classpath.
- * <p>
+ * </p>
+ * This configuration class extend RabbitAutoConfiguration using spring rabbitmq properties
+ * when the RabbitMQ and Spring AMQP client libraries are on the classpath.
+ * </p>
  * Registers the following beans:
+ *
  * <ul>
  * <li>{@link org.springframework.amqp.support.converter.MessageConverter MessageConverter} if there
  * is no other bean of the same type in the context.</li>
@@ -49,6 +49,7 @@ import org.springframework.messaging.converter.MappingJackson2MessageConverter;
  * RabbitSenderService} instance if there is no other bean of the same type in the
  * context.</li>
  * </ul>
+ *
  * @author zoe zheng
  */
 @Configuration(proxyBeanMethods = false)
@@ -66,12 +67,18 @@ public class RabbitTemplateAutoConfiguration extends RabbitAutoConfiguration {
         return new MappingJackson2MessageConverter();
     }
 
+    /**
+     * rabbitmq sender service bean.
+     *
+     * @param rabbitTemplate rabbitTemplate
+     * @return rabbitmq sender service
+     */
     @Bean
     @ConditionalOnBean(RabbitTemplate.class)
     public RabbitSenderService rabbitSender(RabbitTemplate rabbitTemplate) {
         RabbitSendConfirmCallback callback = new RabbitSendConfirmCallback();
         rabbitTemplate.setReturnsCallback(callback);
         rabbitTemplate.setConfirmCallback(callback);
-        return new RabbitSender(rabbitTemplate);
+        return new RabbitSenderServiceImpl(rabbitTemplate);
     }
 }

@@ -21,16 +21,13 @@ package com.apitable.starter.amqp.core;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 /**
- * rabbitmq transmitter
+ * rabbitmq transmitter.
  */
-public class RabbitSender implements RabbitSenderService {
+public class RabbitSenderServiceImpl implements RabbitSenderService {
 
-    private RabbitTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
 
-    public RabbitSender() {
-    }
-
-    public RabbitSender(RabbitTemplate rabbitTemplate) {
+    public RabbitSenderServiceImpl(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 
