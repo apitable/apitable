@@ -5805,8 +5805,8 @@
   "workdoc_create": "创建文档",
   "workdoc_color_title": "字体颜色",
   "workdoc_background_title": "背景颜色",
-  "workdoc_color_default":"恢复默认",
-  "workdoc_link_placeholder":"请输入链接",
+  "workdoc_color_default": "恢复默认",
+  "workdoc_link_placeholder": "请输入链接",
   "workdoc_attach_uploading": "上传中...",
   "workdoc_title_placeholder": "请输入标题",
   "workdoc_code_placeholder": "输入代码片段",
@@ -5814,7 +5814,7 @@
   "selected_with_workdoc_no_copy": "选中包含富文本列，不允许复制",
   "automation_run_usage": "自动化用量",
   "automation_run_usage_info": "自动化的运行次数",
-  "widget_per_space": "Widget",
+  "widget_per_space": "小程序",
   "automation_manager_label": "拥有该自动化的所有操作权限",
   "automation_editor_label": "支持编辑自动化中的步骤和查看该自动化的运行历史",
   "automation_updater_label": "可以查看该自动化的运行历史",
@@ -5827,6 +5827,6 @@
   "automation_run_failure": "已失效",
   "automation_run_failure_tip": "当前额度已用完，该自动化已失效",
   "billing_over_limit_tip_common": "亲爱的用户，您当前的操作已经触发了您的订阅级别的用量限制。为了继续享受无限制的操作，我们建议您升级您的订阅。",
-  "billing_over_limit_tip_widget": "您的 widget 安装数量以达到上限，请升级订阅。",
+  "billing_over_limit_tip_widget": "您的小程序安装数量以达到上限，请升级订阅。",
   "automation_run_times_over_limit": "运行次数已达上限"
 }
