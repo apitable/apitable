@@ -662,10 +662,9 @@ export abstract class DateTimeBaseField extends Field {
 
   override isMeetFilter(operator: FOperator, cellValue: ITimestamp | null, conditionValue: Exclude<IFilterDateTime, null>) {
     let timeZone = getUserTimeZone(this.state);
-    let locale;
+    const locale = getUserLocale(this.state);
     if (isServer()) {
       timeZone = timeZone || DEFAULT_TIME_ZONE;
-      locale = getUserLocale(this.state);
     }
     return DateTimeBaseField._isMeetFilter(operator, cellValue, conditionValue, timeZone, locale);
   }
