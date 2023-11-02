@@ -92,15 +92,16 @@ export const RobotAction = memo((props: IRobotActionProps) => {
   const { data: dataList } = useSWR(['getRobotMagicDatasheet', triggers], () => getTriggerDatasheetId(triggers), {
   });
 
+  const dataSheetMap = useSelector((state: IReduxState) => state.datasheetMap);
+
   useEffect(() => {
     dataList?.forEach((item) => {
       if(isString(item) && !dataSheetMap[item]) {
         dispatch(StoreActions.fetchDatasheet(item) as any);
       }
     });
-  }, [dataList]);
+  }, [dataList, dataSheetMap, dispatch]);
 
-  const dataSheetMap = useSelector((state: IReduxState) => state.datasheetMap);
 
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
@@ -110,6 +111,8 @@ export const RobotAction = memo((props: IRobotActionProps) => {
     triggerDataSheetIds: dataList ?? [],
     dataSheetMap
   });
+
+  const [map, setMap] =useAtom(automationLocalMap);
 
   const { api: { refresh, refreshItem } } = useAutomationController();
   const handleActionTypeChange = useCallback((actionTypeId: string) => {
@@ -173,7 +176,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
       type: 'warning',
     });
   },
-  [action.id, action?.typeId, automationState, isMobile, nodeOutputSchemaList, refresh, robotId, setAutomationAtom, setAutomationPanel, shareInfo?.shareId],
+  [action.id, action?.typeId, automationState, isMobile, nodeOutputSchemaList, refresh, robotId, setAutomationAtom, setAutomationPanel, setMap, shareInfo?.shareId],
   );
 
   const dataClick = useCallback(() => {
@@ -191,7 +194,6 @@ export const RobotAction = memo((props: IRobotActionProps) => {
     });
   }, [action.id, editType, permissions.editable, props, setAutomationPanel]);
 
-  const [map, setMap] =useAtom(automationLocalMap);
 
   const formData = map.get(action.id!) ?? action.input;
 
@@ -201,9 +203,9 @@ export const RobotAction = memo((props: IRobotActionProps) => {
   }, [mapFormData, action.input]);
   const handleUpdate = useCallback((e: IChangeEvent) => {
     setMap(produce(draft => {
-      draft.set(action.id, e.formData);
+      draft.set(action.actionId, e.formData);
     }));
-  }, [action.id, setMap]);
+  }, [action.actionId, setMap]);
 
   if(!formData) {
     setMap(produce(map, (draft => {

@@ -7,13 +7,16 @@ export const checkIfModified = (remote: {
     actions: IRobotAction[]
 }, local: Map<string, IRobotTrigger | IRobotAction>) => {
 
-  return remote.triggers.some(trigger => {
+  const triggerResult = remote.triggers.some(trigger => {
     if (!local.get(trigger.triggerId)) {
       return false;
     }
     return !isEqualWith(trigger.input, local.get(trigger.triggerId), customizer);
   });
 
+  if(triggerResult) {
+    return true;
+  }
   return remote.actions.some(action => {
     if (!local.get(action.actionId)) {
       return false;

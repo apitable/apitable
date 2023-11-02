@@ -27,6 +27,11 @@ import EllipsisText from 'pc/components/ellipsis_text';
 import { useCssColors } from '../trigger/use_css_colors';
 import { ISchemaPropertyListItem, ISchemaPropertyListItemClickFunc } from './helper';
 
+const StyledBox = styled(Box)`
+    p {
+      width: 100%;
+    }
+  `;
 interface ISchemaPropertyListItemProps {
   currentStep: number
   item: ISchemaPropertyListItem;
@@ -97,7 +102,7 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
           }
         >
 
-          <Box display={'inline-flex'} alignItems='center' flex={'1 1 auto'} width={'100%'} overflowX={'hidden'}>
+          <Box display={'flex'} alignItems='center' flex={'1 1 auto'} overflowX={'hidden'} ba>
             <Box flex={`0 0 ${imgSize}px`} display={'flex'} alignItesm={'center'} justifyContent={'center'}>
               {
                 item.icon ? (isValidElement(item.icon) ? item.icon :
@@ -111,29 +116,27 @@ export const SchemaPropertyListItem = memo((props: ISchemaPropertyListItemProps)
               }
             </Box>
 
-            <Box marginLeft={'8px'} alignItems={'flex-start'} display={'flex'} flexDirection={'column'} width={'100%'} flex={'1 1 auto'}>
-              <Box maxWidth={'100%'}>
+            <Box paddingLeft={'8px'} width={'100%'} flex={'1 1 auto'} overflowX={'hidden'}>
+              <StyledBox width={'100%'} alignItems={'flex-start'} display={'flex'} flexDirection={'column'} overflowX={'hidden'}>
                 <EllipsisText>
                   <Typography variant={'body3'} color={colors.textCommonPrimary} >
                     {item.label}
                   </Typography>
                 </EllipsisText>
-              </Box>
-              {
-                item.description && (
-                  <Box maxWidth={'100%'}>
+                {
+                  item.description && (
                     <EllipsisText>
                       <StyledTypography variant={'body4'} color={colors.textCommonTertiary}>
                         {item.description}
                       </StyledTypography>
                     </EllipsisText>
-                  </Box>
-                )
-              }
+                  )
+                }
+              </StyledBox>
             </Box>
           </Box>
 
-          <Box display="flex" alignItems="center" flex={'none'} flexGrow={'0'} marginLeft="16px">
+          <Box display="flex" alignItems="center" flex={'none'} flexGrow={'0'} paddingLeft="16px">
             {item.canInsert && (
               <StyledButton
                 size="small"
