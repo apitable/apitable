@@ -72,18 +72,30 @@ export class AutomationRobotRunner extends IAutomationRobotRunner {
     return true;
   }
   initRuntimeContext(robotTask: IRobotTask, robot: IRobot): IRobotTaskRuntimeContext {
+    const context = {
+      [robot.triggerId]: {
+        typeId: robot.triggerTypeId,
+        input: robotTask.triggerInput,
+        output: robotTask.triggerOutput,
+      },
+    };
+    const executedNodeIds = [robot.triggerId];
+    if (robotTask.extraTrigger) {
+      for (const trigger of robotTask.extraTrigger) {
+        context[trigger.triggerId] = {
+          typeId: trigger.triggerTypeId,
+          input: trigger.triggerInput,
+          output: trigger.triggerOutput,
+        };
+        executedNodeIds.push(trigger.triggerId);
+      }
+    }
     return {
       robot: robot,
       taskId: robotTask.taskId,
-      executedNodeIds: [robot.triggerId],
+      executedNodeIds: executedNodeIds,
       currentNodeId: robot.triggerId,
-      context: {
-        [robot.triggerId]: {
-          typeId: robot.triggerTypeId,
-          input: robotTask.triggerInput,
-          output: robotTask.triggerOutput,
-        },
-      },
+      context: context,
       isDone: false,
       success: true,
     };
