@@ -1952,7 +1952,7 @@
   "fiji": "Fiji",
   "file": "file",
   "file_limits": "${limit} file limits in one space",
-  "file_name_with_bulk_download": "${fileName}, etc. ${count} files. Zip",
+  "file_name_with_bulk_download": "${fileName}, etc. ${count} files.zip",
   "file_notification": "Tips",
   "file_of_rest": "Remaining: ${nodeRest}",
   "file_sharing": "File sharing processing...",
