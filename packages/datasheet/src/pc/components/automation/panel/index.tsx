@@ -263,7 +263,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
                       <>
                         <OrEmpty visible={shareInfo?.shareId == null}>
                           <NodeFavoriteStatus nodeId={automationState?.resourceId ?? ''} enabled={
-                            nodeItem.nodeFavorite
+                            nodeItem?.nodeFavorite
                           }/>
                         </OrEmpty>
                         {
