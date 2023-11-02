@@ -7,12 +7,11 @@
   min-width: 100px;
 }
 .expandWorkdoc {
+  padding: 4px 8px 0;
   .workdocBtn {
     border-radius: 4px;
-    display: inline-flex;
+    display: flex;
     padding: 2px 8px;
-    margin-top: 4px;
-    margin-left: 8px;
     align-items: center;
     background-color: var(--bgBrandLightDefault);
     cursor: pointer;
@@ -22,6 +21,9 @@
     .workdocTitle {
       color: var(--textBrandDefault);
       font-size: 13px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     svg {
       fill: var(--textBrandDefault);
