@@ -58,7 +58,6 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
   const isJSONField = (schema as any)?.format === 'json';
   const [isOpen, setOpenState] = useState(false);
   const ref = useRef(null);
-  const isOpenRef = useRef(false);
 
   const triggerControllRef = useRef<IDropdownControl|null>(null);
 
@@ -93,13 +92,13 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
 
   const updateFormValue = useCallback(
     (value: any) => {
-      if(isOpenRef.current) {
+      if(isOpen) {
         return;
       }
       const { value: transformedValue } = transformSlateValue(value);
       onChange && onChange(transformedValue);
     },
-    [onChange],
+    [isOpen, onChange],
   );
 
   const handleKeyDown = useCallback(
@@ -119,8 +118,6 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
     refV.current = value;
     setValue(value);
   };
-
-  // const activeDatasheetId = useSelector(Selectors.getActiveDatasheetId);
 
   const triggers = state?.robot?.triggers ?? [];
   const { data: dataList } = useSWR(['getTriggersRelatedDatasheetId', triggers], () => getTriggerDatasheetId(triggers), {
@@ -184,6 +181,10 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
           }}
           onVisibleChange={(visible) => {
             setOpenState(visible);
+            if(!visible) {
+              const { value: transformedValue } = transformSlateValue(refV.current);
+              onChange && onChange(transformedValue);
+            }
           }}
           trigger={
             <Box width={'100%'} display={'block'}>
