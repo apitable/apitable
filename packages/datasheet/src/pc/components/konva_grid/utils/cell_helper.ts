@@ -57,6 +57,7 @@ import {
   t,
   ViewType,
 } from '@apitable/core';
+import { FileOutlined } from '@apitable/icons';
 import { assertSignatureManager } from '@apitable/widget-sdk';
 import { AvatarSize, AvatarType } from 'pc/components/common';
 import { GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT } from 'pc/components/gantt_view';
@@ -81,9 +82,9 @@ import {
   GRID_CELL_MEMBER_ITEM_PADDING_LEFT,
   GRID_CELL_MULTI_ITEM_MARGIN_LEFT,
   GRID_CELL_MULTI_ITEM_MARGIN_TOP,
-  GRID_CELL_MULTI_ITEM_MIN_WIDTH, GRID_CELL_MULTI_PADDING_LEFT,
+  GRID_CELL_MULTI_ITEM_MIN_WIDTH,
   GRID_CELL_MULTI_PADDING_TOP,
-  GRID_CELL_VALUE_PADDING, GRID_ICON_COMMON_SIZE, GRID_ICON_SMALL_SIZE,
+  GRID_CELL_VALUE_PADDING, GRID_ICON_SMALL_SIZE,
   GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT,
   GRID_MEMBER_ITEM_PADDING_RIGHT,
   GRID_OPTION_ITEM_HEIGHT,
@@ -93,7 +94,6 @@ import { IRenderProps } from '../interface';
 import { KonvaDrawer } from './drawer';
 import { imageCache } from './image_cache';
 import { IWrapTextDataProps } from './interface';
-import { FileOutlined } from '@apitable/icons';
 
 const FileOutlinedPath = FileOutlined.toString();
 
@@ -308,11 +308,11 @@ export class CellHelper extends KonvaDrawer {
     const { x, y, cellValue, rowHeight, rowHeightLevel, columnWidth, isActive, callback } = renderProps;
     if (!(cellValue as IWorkdocValue[])?.length || !Array.isArray(cellValue)) return DEFAULT_RENDER_DATA;
     const isOperating = isActive;
-    let currentX = isOperating ? GRID_CELL_VALUE_PADDING + GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4 : GRID_CELL_VALUE_PADDING;
+    let currentX = GRID_CELL_VALUE_PADDING;
     let currentY = GRID_CELL_MULTI_PADDING_TOP;
     const isShortHeight = rowHeightLevel === RowHeightLevel.Short;
     const maxHeight = isActive ? 130 - GRID_CELL_MULTI_PADDING_TOP : rowHeight - GRID_CELL_MULTI_PADDING_TOP;
-    const maxTextWidth = columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING) - GRID_ICON_SMALL_SIZE - (isOperating ? 12 : 0);
+    const maxTextWidth = columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING) - GRID_ICON_SMALL_SIZE;
     const renderDataList: any[] = [];
     const listCount = cellValue.length;
     let isOverflow = false;
@@ -359,7 +359,6 @@ export class CellHelper extends KonvaDrawer {
         }
         if (isActive && currentX + itemWidth > columnWidth - GRID_CELL_VALUE_PADDING) {
           currentX = GRID_CELL_VALUE_PADDING;
-          currentY += GRID_OPTION_ITEM_HEIGHT + GRID_CELL_MULTI_ITEM_MARGIN_TOP;
         }
         if (isActive && currentY >= maxHeight) isOverflow = true;
       }

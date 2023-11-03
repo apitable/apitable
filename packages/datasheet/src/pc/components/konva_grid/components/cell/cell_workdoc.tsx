@@ -47,20 +47,20 @@ export const CellWorkdoc = (props: ICellProps) => {
       >
         <Rect
           name={name}
-          width={width}
+          width={width + 6}
           height={height + 2}
           fill={isHover ? colors.bgBrandLightHover : colors.bgBrandLightDefault}
           cornerRadius={4}
         />
         <Icon
-          x={0}
+          x={1}
           y={0}
           data={FileOutlinedPath}
           backgroundWidth={22}
           backgroundHeight={22}
           fill={colors.textBrandDefault}
         />
-        <Text x={x - 12} y={y - 4} height={height} text={text} fill={colors.textBrandDefault} fontSize={13} />
+        <Text x={x + 13} y={y - 5} height={height} text={text} fill={colors.textBrandDefault} fontSize={13} />
       </Group>
     );
   };

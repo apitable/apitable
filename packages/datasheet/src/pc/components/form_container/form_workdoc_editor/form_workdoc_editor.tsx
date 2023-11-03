@@ -63,7 +63,12 @@ const FormWorkdocEditorBase: React.ForwardRefRenderFunction<IEditor, IFormWorkdo
   if(cellValue == null && !showWorkdoc) {
     return (
       <div className={styles.createWorkdoc}>
-        <IconButton disabled={!editable} icon={AddOutlined} onClick={() => setShowWorkdoc(true)} />
+        <IconButton disabled={!editable || isMobile} icon={AddOutlined} onClick={() => {
+          if (!editable || isMobile) {
+            return;
+          }
+          setShowWorkdoc(true);
+        }} />
         <div>{t(Strings.workdoc_create)}</div>
       </div>
     );
