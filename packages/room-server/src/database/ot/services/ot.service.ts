@@ -79,6 +79,7 @@ import {
 } from '../interfaces/ot.interface';
 import { FormOtService } from './form.ot.service';
 import { ResourceChangeHandler } from './resource.change.handler';
+import { OTEventService } from 'shared/event/ot.event.service';
 
 class CellActionMap {
   readonly map: Map<string, Map<string, IJOTAction>> = new Map();
@@ -136,7 +137,6 @@ export class OtService {
     private readonly datasheetService: DatasheetService,
     private readonly datasheetChangesetService: DatasheetChangesetService,
     private readonly datasheetChangesetSourceService: DatasheetChangesetSourceService,
-    private readonly datasheetRecordSubscriptionService: DatasheetRecordSubscriptionBaseService,
     private readonly relService: RoomResourceRelService,
     private readonly grpcSocketClient: GrpcSocketClient,
     private readonly changesetService: ChangesetService,
@@ -155,6 +155,7 @@ export class OtService {
     private readonly eventService: RobotEventService,
     private readonly nodeService: NodeService,
     private readonly recordSubscriptionService: DatasheetRecordSubscriptionBaseService,
+    private readonly otEventService: OTEventService,
   ) {
   }
 
@@ -324,8 +325,7 @@ export class OtService {
       this.logger.info('applyRoomChangeset-robot-event-end', { roomId: message.roomId, msgIds });
     }
 
-    // User subscription record change event
-    void this.datasheetRecordSubscriptionService.handleChangesets(results, context);
+    void this.otEventService.handleChangesets(results, context);
 
     // clear cached selectors, will remove after release/1.0.0
     clearCachedSelectors();
