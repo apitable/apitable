@@ -16,6 +16,7 @@ COPY packages/i18n-lang/package.json ./packages/i18n-lang/
 COPY packages/icons/package.json ./packages/icons/
 COPY packages/widget-sdk/package.json ./packages/widget-sdk/
 COPY packages/ai-components/package.json ./packages/ai-components/
+COPY packages/api-client/package.json ./packages/api-client/
 
 # datasheet main
 COPY packages/datasheet/package.json ./packages/datasheet/

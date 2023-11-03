@@ -22,7 +22,10 @@
     "node": "16.15.0"
   },
   "dependencies": {
+
     "@apitable/ai": "*",
+    "@apitable/api-client": "*",
+
     "@apitable/components": "*",
     "@apitable/core": "*",
     "@apitable/i18n-lang": "*",
