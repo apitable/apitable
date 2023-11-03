@@ -22,7 +22,6 @@ import classNames from 'classnames';
 import parser from 'html-react-parser';
 import { useContext } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import urlcat from 'urlcat';
 import { IconButton, useThemeColors, Switch } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, Selectors, ConfigConstant, Strings, t } from '@apitable/core';
@@ -38,6 +37,8 @@ import { copy2clipBoard } from 'pc/utils';
 import { EXPAND_RECORD_OPERATE_BUTTON } from 'pc/utils/test_id_constant';
 import EditorTitleContext from './editor_title_context';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IExpandRecordMoreOptionProps {
   expandRecordId: string;
   modalClose(): void;
@@ -51,18 +52,18 @@ const MORE_BTN_CLASS_NAME = 'expand-record-more-btn';
 export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRecordMoreOptionProps>> = (props) => {
   const { expandRecordId, modalClose, datasheetId, sourceViewId, fromCurrentDatasheet } = props;
   const colors = useThemeColors();
-  const rowRemovable = useSelector((state) => Selectors.getPermissions(state, datasheetId).rowRemovable);
-  const viewId = useSelector((state) => {
+  const rowRemovable = useAppSelector((state) => Selectors.getPermissions(state, datasheetId).rowRemovable);
+  const viewId = useAppSelector((state) => {
     return sourceViewId || Selectors.getCurrentView(state, datasheetId)!.id;
   });
-  const mirrorId = useSelector((state) => state.pageParams.mirrorId);
-  const showRecordHistory = useSelector((state) => Selectors.getRecordHistoryStatus(state, datasheetId))!;
+  const mirrorId = useAppSelector((state) => state.pageParams.mirrorId);
+  const showRecordHistory = useAppSelector((state) => Selectors.getRecordHistoryStatus(state, datasheetId))!;
 
-  const permissions = useSelector((state) => Selectors.getPermissions(state, datasheetId, undefined, mirrorId));
-  const curMirrorId = useSelector((state) => mirrorId || state.pageParams.mirrorId);
+  const permissions = useAppSelector((state) => Selectors.getPermissions(state, datasheetId, undefined, mirrorId));
+  const curMirrorId = useAppSelector((state) => mirrorId || state.pageParams.mirrorId);
   const showHistorySwitch = permissions.manageable && !curMirrorId;
-  
-  const isEmbed = useSelector((state) => Boolean(state.pageParams.embedId));
+
+  const isEmbed = useAppSelector((state) => Boolean(state.pageParams.embedId));
 
   const { updateNodeRecordHistoryReq } = useCatalogTreeRequest();
   const { run: updateNodeRecordHistory } = useRequest(updateNodeRecordHistoryReq, { manual: true });

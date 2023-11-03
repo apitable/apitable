@@ -120,7 +120,7 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
     setValue(value);
   };
 
-  // const activeDatasheetId = useSelector(Selectors.getActiveDatasheetId);
+  // const activeDatasheetId = useAppSelector(Selectors.getActiveDatasheetId);
 
   const triggers = state?.robot?.triggers ?? [];
   const { data: dataList } = useSWR(['getTriggersRelatedDatasheetId', triggers], () => getTriggerDatasheetId(triggers), {

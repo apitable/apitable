@@ -21,7 +21,7 @@ import classNames from 'classnames';
 import { usePostHog } from 'posthog-js/react';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button } from '@apitable/components';
 import {
   ADDRESS_ID,
@@ -54,8 +54,10 @@ import { AddressTreeMenu } from '../../address_list/address_tree_menu';
 import { isSocialPlatformEnabled, syncOrgMember } from 'enterprise';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
-  const { teamList, spaceId, userInfo } = useSelector(
+  const { teamList, spaceId, userInfo } = useAppSelector(
     (state: IReduxState) => ({
       teamList: state.addressList.teamList,
       spaceId: state.space.activeId,
@@ -73,7 +75,7 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
 
   const [inSearch, setInSearch] = useState<boolean>(false);
 
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
 
   useEffect(() => {
     if (spaceInfo && !isSocialPlatformEnabled?.(spaceInfo)) {

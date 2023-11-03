@@ -17,7 +17,7 @@
  */
 
 import React, { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { colors, IconButton } from '@apitable/components';
 import { RecordVision, StoreActions, Strings, t } from '@apitable/core';
 import { IIconProps, MiddlescreenOutlined, SidescreenOutlined } from '@apitable/icons';
@@ -25,6 +25,8 @@ import { IIconProps, MiddlescreenOutlined, SidescreenOutlined } from '@apitable/
 import { Tooltip } from 'pc/components/common';
 import { setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IIconButtonProps {
   active: boolean;
@@ -48,9 +50,9 @@ const OptionButton = ({ active, onClick, tooltipText, icon: Icon }: IIconButtonP
 };
 
 const ExpandRecordVisionOptionBase: FC<React.PropsWithChildren<unknown>> = () => {
-  const recordVision = useSelector((state) => state.recordVision);
+  const recordVision = useAppSelector((state) => state.recordVision);
   const dispatch = useDispatch();
-  const isRecordFullScreen = useSelector((state) => state.space.isRecordFullScreen);
+  const isRecordFullScreen = useAppSelector((state) => state.space.isRecordFullScreen);
 
   return (
     <div className={styles.visionOptionWrap}>

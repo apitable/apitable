@@ -22,7 +22,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, shallowEqual, useSelector } from 'react-redux';
+import { Provider, shallowEqual } from 'react-redux';
 import { stopPropagation, ThemeProvider } from '@apitable/components';
 import { FieldType, handleNullArray, IAttachmentValue, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
@@ -41,6 +41,8 @@ import styles from './style.module.less';
 // @ts-ignore
 import { OFFICE_APP_ID } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IPreviewFileModal {
   onClose: () => void;
 }
@@ -48,7 +50,7 @@ interface IPreviewFileModal {
 const PreviewFileModal: React.FC<React.PropsWithChildren<IPreviewFileModal>> = (props) => {
   const { onClose } = props;
   const [isFullScreen, { toggle: toggleIsFullScreen }] = useToggle(false);
-  const previewFile = useSelector((state) => state.previewFile, shallowEqual);
+  const previewFile = useAppSelector((state) => state.previewFile, shallowEqual);
   const { datasheetId, recordId, fieldId, activeIndex, editable, onChange, disabledDownload } = previewFile;
   let _cellValue = previewFile.cellValue;
 
@@ -66,7 +68,7 @@ const PreviewFileModal: React.FC<React.PropsWithChildren<IPreviewFileModal>> = (
     }
   }
 
-  const { userInfo, marketplaceApps, spaceId, shareInfo, rightPaneWidth, isSideRecordOpen, isRecordFullScreen, shareId, templateId } = useSelector(
+  const { userInfo, marketplaceApps, spaceId, shareInfo, rightPaneWidth, isSideRecordOpen, isRecordFullScreen, shareId, templateId } = useAppSelector(
     (state: IReduxState) => {
       return {
         spaceId: state.space.activeId,

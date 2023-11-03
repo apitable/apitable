@@ -19,7 +19,6 @@
 import RcTrigger from 'rc-trigger';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { IconButton, useThemeColors } from '@apitable/components';
 import { PermissionType, ResourceType, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, ChevronDownOutlined, ChevronLeftOutlined, CloseOutlined } from '@apitable/icons';
@@ -32,6 +31,8 @@ import { useJudgeReachInstalledCount } from '../hooks/use_judge_reach_installed_
 import styles from './style.module.less';
 import { WidgetPanelList } from './widget_panel_list';
 import { WrapperTooltip } from './wrapper_tooltip';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const ReactIconAdd = () => {
   const colors = useThemeColors();
@@ -52,15 +53,15 @@ export const WidgetPanelHeader = (props: { onClosePanel: () => void | Promise<vo
   const colors = useThemeColors();
   const triggerRef = useRef<any>(null);
   const [openPanelList, setOpenPanelList] = useState(false);
-  const { datasheetId, mirrorId } = useSelector((state) => state.pageParams);
-  const activeWidgetPanel = useSelector((state) => {
+  const { datasheetId, mirrorId } = useAppSelector((state) => state.pageParams);
+  const activeWidgetPanel = useAppSelector((state) => {
     const resourceId = mirrorId || datasheetId;
     const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;
     return Selectors.getResourceActiveWidgetPanel(state, resourceId!, resourceType);
   })!;
-  const spaceId = useSelector((state) => state.space.activeId);
-  const { embedId, shareId, templateId } = useSelector((state) => state.pageParams);
-  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
+  const spaceId = useAppSelector((state) => state.space.activeId);
+  const { embedId, shareId, templateId } = useAppSelector((state) => state.pageParams);
+  const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
   const embedHidden = embedId && embedInfo && embedInfo.permissionType !== PermissionType.PRIVATEEDIT;
   const hiddenAddButton = shareId || templateId || embedHidden;
   const activePanelName = activeWidgetPanel!.name;

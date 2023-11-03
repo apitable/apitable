@@ -21,7 +21,7 @@ import cls from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, useThemeColors, ThemeName } from '@apitable/components';
 import { IReduxState, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
@@ -30,6 +30,8 @@ import { useRequest, useSpaceRequest } from 'pc/hooks';
 import CreateSpaceIconDark from 'static/icon/space/space_add_name_dark.png';
 import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface ICreateSpaceModalProps {
   setShowCreateModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -40,9 +42,9 @@ export const CreateSpaceModal: FC<React.PropsWithChildren<ICreateSpaceModalProps
   const { isMobile } = props;
   const [spaceName, setSpaceName] = useState('');
   const dispatch = useDispatch();
-  const err = useSelector((state: IReduxState) => state.space.err);
+  const err = useAppSelector((state: IReduxState) => state.space.err);
   const colors = useThemeColors();
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const { createSpaceReq } = useSpaceRequest();
   const spaceNameImg = themeName === ThemeName.Light ? CreateSpaceIconLight : CreateSpaceIconDark;
   const { run: createSpace, loading } = useRequest(createSpaceReq, { manual: true });

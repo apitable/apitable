@@ -21,7 +21,6 @@ import classNames from 'classnames';
 import { keyBy } from 'lodash';
 import { useEffect, useState } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import { useSelector } from 'react-redux';
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName,
@@ -61,27 +60,29 @@ import { simpleEmitter, WidgetItem } from '../widget_item';
 import { installedWidgetHandle } from '../widget_panel_header';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const ResponsiveGridLayout: any = WidthProvider(Responsive);
 
 export const WIDGET_MENU = 'WIDGET_MENU';
 
 export const WidgetList = () => {
   const colors = useThemeColors();
-  const { datasheetId, widgetId, mirrorId } = useSelector((state) => state.pageParams);
+  const { datasheetId, widgetId, mirrorId } = useAppSelector((state) => state.pageParams);
   const resourceId = mirrorId || datasheetId;
   const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;
-  const activeWidgetPanel = useSelector((state) => {
+  const activeWidgetPanel = useAppSelector((state) => {
     return Selectors.getResourceActiveWidgetPanel(state, resourceId!, resourceType);
   })!;
   const widgetList = activeWidgetPanel.widgets;
-  const { editable, manageable } = useSelector((state) => {
+  const { editable, manageable } = useAppSelector((state) => {
     return Selectors.getResourcePermission(state, datasheetId!, ResourceType.Datasheet);
   });
-  const linkId = useSelector(Selectors.getLinkId);
+  const linkId = useAppSelector(Selectors.getLinkId);
   const hadWidgetExpanding = Boolean(widgetId);
   const [devWidgetId, setDevWidgetId] = useLocalStorageState<string>('devWidgetId');
   const [activeMenuWidget, setActiveMenuWidget] = useState<IWidget>();
-  const widgetMap = useSelector((state) => state.widgetMap);
+  const widgetMap = useAppSelector((state) => state.widgetMap);
   const readonly = !editable;
   // Is scaling in.
   const [dragging, setDragging] = useState<boolean>(false);

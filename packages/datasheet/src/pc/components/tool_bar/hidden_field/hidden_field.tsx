@@ -21,7 +21,6 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { useRef, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 
 import {
   Button,
@@ -73,6 +72,8 @@ import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { SyncViewTip } from '../sync_view_tip';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IHiddenFieldProps {
   type?: HideFieldType;
   triggerInfo?: IUseListenTriggerInfo;
@@ -112,7 +113,7 @@ const FieldItem = ({
   const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, item.fieldId);
   const { name, type } = fieldMap[item.fieldId];
   const isViewLock = useShowViewLockModal();
-  const activeCell = useSelector((state) => Selectors.getActiveCell(state));
+  const activeCell = useAppSelector((state) => Selectors.getActiveCell(state));
   const isFocus = activeCell && activeCell?.fieldId === item.fieldId;
 
   return (
@@ -205,9 +206,9 @@ const MAX_HEIGHT = 490;
 export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> = (props) => {
   const { type: hideFieldType = HideFieldType.Common, triggerInfo, mobileModalclose } = props;
   const colors = useThemeColors();
-  const { datasheetId, mirrorId } = useSelector((state) => state.pageParams)!;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
-  const activeView = useSelector((state) => Selectors.getCurrentView(state))!;
+  const { datasheetId, mirrorId } = useAppSelector((state) => state.pageParams)!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
+  const activeView = useAppSelector((state) => Selectors.getCurrentView(state))!;
   const viewType = activeView.type;
   const isGanttView = viewType === ViewType.Gantt;
   const isCalendarView = viewType === ViewType.Calendar;
@@ -221,10 +222,10 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
   const execute = (cmd: ICollaCommandOptions) => resourceService.instance!.commandManager.execute(cmd);
   const hiddenProp = getHiddenProps(viewType, hideFieldType);
   const handleHideField = useHideField(activeView, hiddenProp);
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
   const dispatch = useDispatch();
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const { editable } = useSelector((state) => Selectors.getPermissions(state));
+  const { editable } = useAppSelector((state) => Selectors.getPermissions(state));
   const isViewLock = useShowViewLockModal();
 
   const { style } = useListenVisualHeight({
@@ -269,8 +270,8 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
     handleHideField([fieldId], !checked);
   }
 
-  const visibleRows = useSelector((state) => Selectors.getVisibleRows(state));
-  const viewManualSave = useSelector((state) => state.labs.includes('view_manual_save'));
+  const visibleRows = useAppSelector((state) => Selectors.getVisibleRows(state));
+  const viewManualSave = useAppSelector((state) => state.labs.includes('view_manual_save'));
   const autoSave = Boolean(activeView.autoSave);
 
   function setActiveField(fieldId: string, ishidden: boolean, modalClose: (bool: boolean) => void) {

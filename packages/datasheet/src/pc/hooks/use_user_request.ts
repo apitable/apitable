@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { Api, ApiInterface, ConfigConstant, IReduxState, IUnitValue, Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
@@ -35,6 +34,8 @@ import { isLocalSite } from 'pc/utils/catalog';
 import { getEnvVariables } from 'pc/utils/env';
 import { deleteStorageByKey, StorageName } from '../utils/storage';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
 /**
@@ -44,9 +45,9 @@ export const useUserRequest = () => {
   const dispatch = useDispatch();
   const urlParams = getSearchParams();
   const reference = urlParams.get('reference') || undefined;
-  const activeSpaceId = useSelector((state) => state.space.activeId);
-  const userInfo = useSelector((state: IReduxState) => state.user.info);
-  const inviteEmailInfo = useSelector((state: IReduxState) => state.invite.inviteEmailInfo);
+  const activeSpaceId = useAppSelector((state) => state.space.activeId);
+  const userInfo = useAppSelector((state: IReduxState) => state.user.info);
+  const inviteEmailInfo = useAppSelector((state: IReduxState) => state.invite.inviteEmailInfo);
   const { join } = useLinkInvite();
   /**
    * Get the login status and update the user information into userMe in redux if you are already logged in.

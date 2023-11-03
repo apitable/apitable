@@ -18,11 +18,13 @@
 
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { getCustomConfig, Strings, t } from '@apitable/core';
 // @ts-ignore
 import { isDingtalkSkuPage } from 'enterprise';
 import { useQuery } from './';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const contacts = /(\/)?org(\/)?/; // Directory
 const template = /(\/)?template(\/)?/; // Template Centre
@@ -42,11 +44,11 @@ function combineEmojiAndName(emojiNative: string, name: string) {
 }
 
 export const useNavigatorName = () => {
-  const { datasheetId, folderId, categoryId, formId, mirrorId, dashboardId } = useSelector((state) => {
+  const { datasheetId, folderId, categoryId, formId, mirrorId, dashboardId } = useAppSelector((state) => {
     const { datasheetId, folderId, categoryId, formId, mirrorId, dashboardId } = state.pageParams;
     return { datasheetId, folderId, categoryId, formId, mirrorId, dashboardId };
   }, shallowEqual);
-  const treeNodesMap = useSelector((state) => state.catalogTree.treeNodesMap)!;
+  const treeNodesMap = useAppSelector((state) => state.catalogTree.treeNodesMap)!;
   const router = useRouter();
   const nodeId = mirrorId || datasheetId || folderId || formId || dashboardId;
   const query = useQuery();

@@ -22,7 +22,7 @@ import { XYCoord } from 'dnd-core';
 import { CSSProperties, useEffect } from 'react';
 import * as React from 'react';
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
-import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { areEqual } from 'react-window';
 import { useContextMenu, TextButton, useThemeColors } from '@apitable/components';
 import { DropDirectionType, Selectors, Strings, t, StoreActions, IViewRow } from '@apitable/core';
@@ -38,6 +38,8 @@ import { GroupCardTitle } from './group_card_title';
 import { IDragItem } from './interface';
 import styles from './style.module.less';
 import { getAddValue, getGroupTitlePaddingTip } from './utils';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IGalleryItemCardBase {
   columnIndex: number;
@@ -69,7 +71,7 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }: IGalleryIte
     _visibleRecords,
   } = data;
 
-  const { datasheetId, templateId, editable, viewId, groupingCollapseIds, isSearching } = useSelector((state) => {
+  const { datasheetId, templateId, editable, viewId, groupingCollapseIds, isSearching } = useAppSelector((state) => {
     const datasheet = Selectors.getDatasheet(state);
     return {
       datasheetId: Selectors.getActiveDatasheetId(state),

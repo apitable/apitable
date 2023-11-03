@@ -20,7 +20,6 @@ import { pickBy } from 'lodash';
 import Image from 'next/image';
 import * as React from 'react';
 import { useMemo, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Typography } from '@apitable/components';
 import { Api, ApiInterface, integrateCdnHost, Strings, SystemConfig, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
@@ -34,6 +33,8 @@ import style from './style.module.less';
 // @ts-ignore
 import { isWecomFunc } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IModalProps {
   onClose: () => void;
   status: boolean;
@@ -44,7 +45,7 @@ export const Modal: React.FC<React.PropsWithChildren<IModalProps>> = (props) => 
   const { onClose, feature, status } = props;
   const config = SystemConfig.test_function[feature.key];
   const loadingMessage = useRef<boolean>(false);
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const applyOpenFunction = useApplyOpenFunction();
 
   const btnClick = useMemo(() => {

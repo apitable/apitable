@@ -26,7 +26,6 @@ import { appendRow, Direction } from 'modules/shared/shortcut_key/shortcut_actio
 import path from 'path-browserify';
 import * as React from 'react';
 import { KeyboardEvent, useRef, useCallback } from 'react';
-import { useSelector } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { ContextMenu, IContextMenuItemProps, useThemeColors } from '@apitable/components';
 import {
@@ -69,6 +68,8 @@ import { isWindowsOS } from 'pc/utils/os';
 import { copy2clipBoard } from '../../../utils/dom';
 import { IInputEditor, InputMenuItem } from './input_menu_item';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const GRID_RECORD_MENU = 'GRID_RECORD_MENU';
 
 export function copyLink(recordId: string) {
@@ -96,22 +97,22 @@ export function copyRecord(recordId: string): Promise<ICollaCommandExecuteResult
 export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (props) => {
   const colors = useThemeColors();
   const { insertDirection = 'vertical', hideInsert, menuId, extraData } = props;
-  const recordRanges = useSelector((state) => Selectors.getSelectionRecordRanges(state));
-  const view = useSelector((state) => Selectors.getCurrentView(state))!;
+  const recordRanges = useAppSelector((state) => Selectors.getSelectionRecordRanges(state));
+  const view = useAppSelector((state) => Selectors.getCurrentView(state))!;
   const isOrgChart = view.type === ViewType.OrgChart;
   const isCalendar = view.type === ViewType.Calendar;
   const isGallery = view.type === ViewType.Gallery;
   const isKanban = view.type === ViewType.Kanban;
   const dispatch = useDispatch();
-  const { rowCreatable, rowRemovable } = useSelector(Selectors.getPermissions);
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-  const { mirrorId, shareId, templateId, embedId } = useSelector((state) => state.pageParams);
+  const { rowCreatable, rowRemovable } = useAppSelector(Selectors.getPermissions);
+  const datasheetId = useAppSelector(Selectors.getActiveDatasheetId)!;
+  const { mirrorId, shareId, templateId, embedId } = useAppSelector((state) => state.pageParams);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const beforeInputRef = useRef<IInputEditor>(null);
   const afterInputRef = useRef<IInputEditor>(null);
-  const selection = useSelector(Selectors.getSelectRanges);
-  const subscriptions = useSelector((state) => state.subscriptions)!;
-  const { manageable } = useSelector((state) => Selectors.getPermissions(state, datasheetId));
+  const selection = useAppSelector(Selectors.getSelectRanges);
+  const subscriptions = useAppSelector((state) => state.subscriptions)!;
+  const { manageable } = useAppSelector((state) => Selectors.getPermissions(state, datasheetId));
 
   const { run: subscribeRecordByIds } = useRequest(DatasheetApi.subscribeRecordByIds, { manual: true });
   const { run: unsubscribeRecordByIds } = useRequest(DatasheetApi.unsubscribeRecordByIds, { manual: true });

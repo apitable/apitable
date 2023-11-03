@@ -21,7 +21,7 @@ import type { InputRef } from 'antd';
 import { Input } from 'antd';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState, FC, PropsWithChildren } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { Button, Checkbox, TextButton, useListenVisualHeight, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName,
@@ -68,6 +68,8 @@ import { checkFactory, CheckFieldSettingBase } from './check_factory';
 import { FieldTypeSelect } from './field_type_select';
 import styles from './styles.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const OPERATE_WIDTH = parseInt(styles.fieldSettingBoxWidth, 10); // The width of the operation box
 // const EXCEPT_SCROLL_HEIGHT = 85; // Height of the non-scrollable part at the bottom, outside the area to be scrolled
 // const STAT_HEIGHT = 40; // Height of the bottom statistics column
@@ -99,7 +101,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
   const colors = useThemeColors();
   const { scrollToItem, datasheetId: propDatasheetId, viewId: propViewId, targetDOM, showAdvancedFields = true } = props;
   const dispatch = useDispatch();
-  const { visibleColumnsCount, columns, columnCount, snapshot, activeFieldState, viewId, linkId, datasheetId, spaceId } = useSelector((state) => {
+  const { visibleColumnsCount, columns, columnCount, snapshot, activeFieldState, viewId, linkId, datasheetId, spaceId } = useAppSelector((state) => {
     const columnCount = Selectors.getColumnCount(state)!;
     const datasheetId = propDatasheetId || Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId)!;

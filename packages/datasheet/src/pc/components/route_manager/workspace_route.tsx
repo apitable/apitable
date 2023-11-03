@@ -19,7 +19,6 @@
 import { useMount } from 'ahooks';
 import * as React from 'react';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { Events, IReduxState, Player, Selectors } from '@apitable/core';
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import { DashboardPanel } from '../dashboard_panel';
@@ -32,11 +31,13 @@ import { Welcome } from '../workspace/welcome';
 import { ChatPage } from 'enterprise';
 import {AutomationPanelWrapper} from "pc/components/automation/modal/automation_panel_wrapper";
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
-  const nodeId = useSelector((state) => Selectors.getNodeId(state));
-  const activeNodeError = useSelector((state) => state.catalogTree.activeNodeError);
-  const { datasheetId, folderId, automationId, formId, dashboardId, mirrorId, aiId } = useSelector((state: IReduxState) => state.pageParams);
-  const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const nodeId = useAppSelector((state) => Selectors.getNodeId(state));
+  const activeNodeError = useAppSelector((state) => state.catalogTree.activeNodeError);
+  const { datasheetId, folderId, automationId, formId, dashboardId, mirrorId, aiId } = useAppSelector((state: IReduxState) => state.pageParams);
+  const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
 
   useMount(() => {
     Player.doTrigger(Events.questionnaire_shown_after_sign);

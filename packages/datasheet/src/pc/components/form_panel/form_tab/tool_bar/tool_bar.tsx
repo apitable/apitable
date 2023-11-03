@@ -20,7 +20,7 @@ import classNames from 'classnames';
 import Trigger from 'rc-trigger';
 import { useState } from 'react';
 import * as React from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Selectors, t, Strings, IFormProps, CollaCommandName, DATASHEET_ID } from '@apitable/core';
 import { SettingOutlined, ShareOutlined } from '@apitable/icons';
@@ -31,6 +31,8 @@ import { ToolItem } from '../../../tool_bar/tool_item';
 import { SettingPanel } from './setting_panel';
 import { ShareModal } from './share_modal';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 interface IToolBarProps {
   nodeShared: boolean;
   showLabel?: boolean;
@@ -43,7 +45,7 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBarProps>> = (props)
   const [visible, setVisible] = useState<boolean>(false);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { formId, formProps, manageable } = useSelector((state) => {
+  const { formId, formProps, manageable } = useAppSelector((state) => {
     const { id, snapshot, permissions } = Selectors.getForm(state)!;
     const { manageable } = permissions;
     return {
@@ -65,9 +67,9 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBarProps>> = (props)
       formContainer?.scrollTo(0, 0);
     }
   };
-  const { embedId } = useSelector((state) => state.pageParams);
+  const { embedId } = useAppSelector((state) => state.pageParams);
 
-  const embedInfo = useSelector((state) => state.embedInfo);
+  const embedInfo = useAppSelector((state) => state.embedInfo);
 
   const showSetting = embedId ? embedInfo.viewControl?.toolBar?.formSettingBtn : true;
 

@@ -19,7 +19,7 @@
 import classnames from 'classnames';
 import * as React from 'react';
 import { FC, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ConfigConstant, IReduxState, Navigation, NodeErrorType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -31,6 +31,8 @@ import { isTouchDevice, shouldOpenInNewTab } from 'pc/utils';
 import { NodeItem } from './node_item';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const EMOJI_SIZE = 20;
 
 export interface ITreeProps {
@@ -38,9 +40,9 @@ export interface ITreeProps {
 }
 
 const TreeBase: FC<React.PropsWithChildren<ITreeProps>> = ({ rightClick }) => {
-  const catalogTree = useSelector((state: IReduxState) => state.catalogTree);
-  const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-  const activeNodeId = useSelector((state) => Selectors.getNodeId(state));
+  const catalogTree = useAppSelector((state: IReduxState) => state.catalogTree);
+  const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const activeNodeId = useAppSelector((state) => Selectors.getNodeId(state));
   const timerRef = useRef<any>(null);
   const lastOverNodeIdRef = useRef<any>(null);
   const treeViewRef = useRef<ITreeViewRef>(null);

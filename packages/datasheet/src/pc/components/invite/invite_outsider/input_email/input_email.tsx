@@ -19,7 +19,6 @@
 import { Input, InputRef, message } from 'antd';
 import * as React from 'react';
 import { forwardRef, useEffect, useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { Button } from '@apitable/components';
 import { ConfigConstant, IInviteMemberList, IReduxState, isEmail, Strings, t } from '@apitable/core';
 import { CheckOutlined, CloseOutlined, WarnOutlined } from '@apitable/icons';
@@ -27,6 +26,8 @@ import { useEmailInviteInModal } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
 import { InviteAlert } from '../components/invite-alert';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IInputEmailProps {
   cancel: () => void;
@@ -43,7 +44,7 @@ const ResIcon = {
 
 export const InputEmail = forwardRef(
   ({ cancel, setMemberInvited, shareId, secondVerify, setSecondVerify }: IInputEmailProps, ref: React.Ref<HTMLDivElement>) => {
-    const spaceId = useSelector((state: IReduxState) => state.space.activeId || '');
+    const spaceId = useAppSelector((state: IReduxState) => state.space.activeId || '');
     const [inviteLoading, setInviteLoading] = useState(false);
     const [inviteList, setInviteList] = useState<IInviteMemberList[]>([]);
     const { isInvited, invitedCount, err } = useEmailInviteInModal(spaceId, inviteList, shareId, secondVerify);

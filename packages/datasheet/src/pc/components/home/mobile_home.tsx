@@ -18,7 +18,6 @@
 
 import { useMount } from 'ahooks';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Space, ThemeName, useTheme } from '@apitable/components';
 import { integrateCdnHost, IReduxState, t, Strings } from '@apitable/core';
 import { getEnvVariables } from 'pc/utils/env';
@@ -30,9 +29,11 @@ import { SignUp } from './components/sign_up';
 import { ActionType } from './pc_home';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const MobileHome: React.FC<React.PropsWithChildren<unknown>> = () => {
-  const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
-  const inviteEmailInfo = useSelector((state: IReduxState) => state.invite.inviteEmailInfo);
+  const inviteLinkInfo = useAppSelector((state: IReduxState) => state.invite.inviteLinkInfo);
+  const inviteEmailInfo = useAppSelector((state: IReduxState) => state.invite.inviteEmailInfo);
   const [action, setAction] = useState<ActionType>(ActionType.SignUp);
   const [email, setEmail] = useState<string>('');
 

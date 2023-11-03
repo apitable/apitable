@@ -18,13 +18,14 @@
 
 import { useMount } from 'ahooks';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { IReduxState, t, Strings } from '@apitable/core';
 import { ForgetPassword } from './components/forget_password';
 import { Login } from './components/login';
 import { SignUp } from './components/sign_up';
 import { HomeWrapper } from './home_wrapper';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export enum ActionType {
   SignIn = 'SignIn',
@@ -33,8 +34,8 @@ export enum ActionType {
 }
 
 export const PcHome: React.FC<React.PropsWithChildren<unknown>> = () => {
-  const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
-  const inviteEmailInfo = useSelector((state: IReduxState) => state.invite.inviteEmailInfo);
+  const inviteLinkInfo = useAppSelector((state: IReduxState) => state.invite.inviteLinkInfo);
+  const inviteEmailInfo = useAppSelector((state: IReduxState) => state.invite.inviteEmailInfo);
   const [action, setAction] = useState<ActionType>(ActionType.SignUp);
   const [email, setEmail] = useState<string>('');
 

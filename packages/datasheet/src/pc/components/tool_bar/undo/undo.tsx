@@ -18,7 +18,7 @@
 
 import { Tooltip } from 'antd';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { IconButton, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { RedoOutlined, UndoOutlined } from '@apitable/icons';
@@ -28,6 +28,8 @@ import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { resourceService } from 'pc/resource_service';
 import styles from '../style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export const Undo: React.FC<React.PropsWithChildren<{ className?: string }>> = ({ className }) => {
   const colors = useThemeColors();
@@ -45,7 +47,7 @@ export const Undo: React.FC<React.PropsWithChildren<{ className?: string }>> = (
     }
   };
 
-  const { undoLength, redoLength } = useSelector(() => {
+  const { undoLength, redoLength } = useAppSelector(() => {
     return {
       undoLength: resourceService.instance!.undoManager?.getStockLength('undo'),
       redoLength: resourceService.instance!.undoManager?.getStockLength('redo'),

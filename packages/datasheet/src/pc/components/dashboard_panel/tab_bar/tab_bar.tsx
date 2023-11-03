@@ -19,7 +19,7 @@
 import { useFullscreen, useSize } from 'ahooks';
 import RcTrigger from 'rc-trigger';
 import { default as React, useEffect, useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { TextButton, useThemeColors } from '@apitable/components';
 import { ConfigConstant, PermissionType, ResourceType, Selectors, Strings, t } from '@apitable/core';
 import { AddFilled, AddOutlined, ExpandOutlined, ImportOutlined, ListOutlined, NarrowOutlined } from '@apitable/icons';
@@ -34,6 +34,8 @@ import { useNetwork } from 'pc/hooks/use_network';
 import styles from './style.module.less';
 // @ts-ignore
 import { isDingtalkSkuPage } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ITabBarProps {
   dashboardId: string;
@@ -58,7 +60,7 @@ const Menu: React.FC<
     }
   >
 > = ({ setVisibleRecommend, triggerRef, openWidgetCenter }) => {
-  const { embedId } = useSelector((state) => state.pageParams);
+  const { embedId } = useAppSelector((state) => state.pageParams);
   const colors = useThemeColors();
   return (
     <div className={styles.addWidgetMenu}>
@@ -102,8 +104,8 @@ export const TabBar: React.FC<React.PropsWithChildren<ITabBarProps>> = (props) =
   const [openTrigger, setOpenTrigger] = useState(false);
   const triggerRef = useRef<any>();
   const { status } = useNetwork(true, dashboardId, ResourceType.Dashboard);
-  const { templateId, shareId, embedId } = useSelector((state) => state.pageParams);
-  const { dashboardName, role, dashboardIcon, nodeFavorite, nodePermissions } = useSelector((state) => {
+  const { templateId, shareId, embedId } = useAppSelector((state) => state.pageParams);
+  const { dashboardName, role, dashboardIcon, nodeFavorite, nodePermissions } = useAppSelector((state) => {
     const dashboard = Selectors.getDashboard(state);
     return {
       dashboardName: dashboard?.name,
@@ -113,7 +115,7 @@ export const TabBar: React.FC<React.PropsWithChildren<ITabBarProps>> = (props) =
       nodePermissions: dashboard?.permissions,
     };
   }, shallowEqual);
-  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
+  const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
   const previousDashboardName = usePrevious(dashboardName);
 
   useEffect(() => {

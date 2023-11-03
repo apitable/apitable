@@ -1,6 +1,6 @@
 import { useAtomValue } from 'jotai';
 import { FC, memo, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import useSWR from 'swr';
 import { ConfigConstant, INode, IReduxState, Selectors, Strings, t } from '@apitable/core';
 import { getNodeInfo } from '@apitable/core/dist/modules/space/api/api.space';
@@ -12,17 +12,19 @@ import { RelatedResource } from '../../robot/robot_context';
 import { automationStateAtom, loadableFormItemAtom } from '../controller';
 import { SelectTrigger } from './select_trigger';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const SelectDst: FC<{ value: string; onChange: (dstId: string | undefined) => void }> = memo(({
   value,
   onChange
 }) => {
-  const datasheet = useSelector((a: IReduxState) => Selectors.getDatasheet(a, value), shallowEqual);
-  const { rootId } = useSelector((state: IReduxState) => state.catalogTree);
+  const datasheet = useAppSelector((a: IReduxState) => Selectors.getDatasheet(a, value), shallowEqual);
+  const { rootId } = useAppSelector((state: IReduxState) => state.catalogTree);
 
   const [visible, setVisible] = useState(false);
 
   const stateValue = useAtomValue(automationStateAtom);
-  const { shareId } = useSelector((state: IReduxState) => state.pageParams);
+  const { shareId } = useAppSelector((state: IReduxState) => state.pageParams);
   const name =
         shareId != null ? stateValue?.robot?.relatedResources?.find((item: RelatedResource) => item.nodeId === value)?.nodeName : datasheet?.name;
 
@@ -89,12 +91,12 @@ export const SelectForm: FC<{ value: string; onChange: (dstId: string | undefine
   value,
   onChange
 }) => {
-  const { rootId } = useSelector((state: IReduxState) => state.catalogTree);
-  const { shareId } = useSelector((state: IReduxState) => state.pageParams);
-  const treeMaps = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const { rootId } = useAppSelector((state: IReduxState) => state.catalogTree);
+  const { shareId } = useAppSelector((state: IReduxState) => state.pageParams);
+  const treeMaps = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   const [visible, setVisible] = useState(false);
 
-  const form = useSelector((state: IReduxState) => Selectors.getForm(state, value), shallowEqual);
+  const form = useAppSelector((state: IReduxState) => Selectors.getForm(state, value), shallowEqual);
 
   const formMeta = useAtomValue(loadableFormItemAtom);
 

@@ -18,7 +18,6 @@
 
 import classNames from 'classnames';
 import React, { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { TextButton, useThemeColors } from '@apitable/components';
 import { Strings, t, ViewType, IViewColumn } from '@apitable/core';
 import { TriangleDownFilled, TriangleRightFilled } from '@apitable/icons';
@@ -27,6 +26,8 @@ import { useGetViewByIdWithDefault } from 'pc/hooks';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
 import { FieldEditor } from './field_editor';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IFieldEditorContainer {
   fields: IViewColumn[];
@@ -105,7 +106,7 @@ export const EditorContainer: React.FC<React.PropsWithChildren<IEditorContainerP
   } = props;
   const view = useGetViewByIdWithDefault(datasheetId, viewId)!;
   const colors = useThemeColors();
-  const isSideRecordOpen = useSelector((state) => state.space.isSideRecordOpen);
+  const isSideRecordOpen = useAppSelector((state) => state.space.isSideRecordOpen);
 
   const getHiddenProps = () => {
     switch (view.type) {

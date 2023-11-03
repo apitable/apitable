@@ -5,7 +5,6 @@ import throttle from 'lodash/throttle';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors, ThemeName, TextInput, Typography } from '@apitable/components';
 import { Api, getArrayLoopIndex, Navigation, Strings, t } from '@apitable/core';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
@@ -22,6 +21,8 @@ import { FooterTips } from './footer_tips';
 import { ISearchNode, Node } from './node';
 import styles from './style.module.less';
 import { nodeTypeList, TabNodeType, TypeTab } from './type_tab';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 let reqToken: () => void;
 
@@ -45,7 +46,7 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
 
   const inputRef = useRef<InputRef>(null);
   const listContainerRef = useRef<any>(null);
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const ref = useRef<HTMLDivElement>(null);
@@ -99,7 +100,7 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const EmptyResultIcon = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   const focusIntoView = throttle((direction: 'up' | 'down') => {

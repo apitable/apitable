@@ -18,13 +18,15 @@
 
 import { ErrorBoundary } from '@sentry/nextjs';
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { ThemeProvider } from '@apitable/components';
 import { Api, Selectors } from '@apitable/core';
 import { store } from 'pc/store';
 import { EXPAND_SEARCH } from './const';
 import { ModalWrapper } from './modal_wrapper';
 import { SearchBase } from './search_base';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export function clearExpandModal() {
   const container = document.querySelectorAll(`.${EXPAND_SEARCH}`);
@@ -37,7 +39,7 @@ export function clearExpandModal() {
 }
 
 const WrapperWithTheme: React.FC<React.PropsWithChildren<any>> = (props) => {
-  const cacheTheme = useSelector(Selectors.getTheme);
+  const cacheTheme = useAppSelector(Selectors.getTheme);
   return <ThemeProvider theme={cacheTheme}>{props.children}</ThemeProvider>;
 };
 

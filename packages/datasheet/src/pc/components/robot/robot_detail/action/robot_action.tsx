@@ -22,7 +22,7 @@ import { useAtom } from 'jotai';
 import { isEqual, isString } from 'lodash';
 import * as React from 'react';
 import { FC, memo, ReactNode, useCallback, useContext, useEffect, useMemo } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import { Box, SearchSelect, useThemeColors } from '@apitable/components';
@@ -55,6 +55,8 @@ import { IChangeEvent } from '../node_form/core/interface';
 import { EditType } from '../trigger/robot_trigger';
 import itemStyle from '../trigger/select_styles.module.less';
 import { getActionList, getTriggerList } from '../utils';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IRobotActionProps {
   index: number;
@@ -92,7 +94,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
   const { data: dataList } = useSWR(['getRobotMagicDatasheet', triggers], () => getTriggerDatasheetId(triggers), {
   });
 
-  const dataSheetMap = useSelector((state: IReduxState) => state.datasheetMap);
+  const dataSheetMap = useAppSelector((state: IReduxState) => state.datasheetMap);
 
   useEffect(() => {
     dataList?.forEach((item) => {

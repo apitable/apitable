@@ -22,7 +22,6 @@ import { find, get, keyBy, keys, toPairs, values } from 'lodash';
 import * as React from 'react';
 import { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { useSelector } from 'react-redux';
 import { createEditor, Descendant, Editor, Node, Range, Text, Transforms } from 'slate';
 import { HistoryEditor, withHistory } from 'slate-history';
 import { Editable, ReactEditor, Slate, useFocused, useSelected, withReact } from 'slate-react';
@@ -42,6 +41,8 @@ import styles from './styles/style.module.less';
 import { draft2slate, EMPTY_CONTENT } from './utils/draft_slate';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const withLastSelection = (editor: ReactEditor) => {
   const { onChange } = editor;
@@ -86,8 +87,8 @@ const SlateEditor = (props: any, ref: React.Ref<unknown>) => {
   const [value, setValue] = useState<Descendant[]>(() => {
     return draft2slate(initialValue);
   });
-  const selfUserId = useSelector((state) => state.user.info?.userId);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const selfUserId = useAppSelector((state) => state.user.info?.userId);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const { mobile } = usePlatform();
   const {
     unitMap,

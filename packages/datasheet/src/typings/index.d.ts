@@ -32,10 +32,6 @@ declare module 'react-redux' {
   // eslint-disable-next-line
   interface DefaultRootState extends IReduxState {}
 
-  export function useSelector<TState = DefaultRootState, TSelected = unknown>(
-    selector: (state: TState, props?: any) => TSelected,
-    equalityFn?: (left: TSelected, right: TSelected) => boolean,
-  ): TSelected;
 }
 const envVars = getEnvVars();
 type IEnvVars = Object.Update<typeof envVars, 'THEME', ThemeName | undefined>;

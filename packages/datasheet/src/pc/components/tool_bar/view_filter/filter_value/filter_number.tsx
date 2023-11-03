@@ -19,7 +19,6 @@
 import debounce from 'lodash/debounce';
 import * as React from 'react';
 import { useContext, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { FieldType, IField, Selectors } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
@@ -30,9 +29,11 @@ import { useResponsive } from 'pc/hooks';
 import { IFilterNumberProps } from '../interface';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const FilterNumber: React.FC<React.PropsWithChildren<Omit<IFilterNumberProps, 'execute'>>> = (props) => {
   const { condition, onChange, field, disabled } = props;
-  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state))!;
+  const datasheetId = useAppSelector((state) => Selectors.getActiveDatasheetId(state))!;
   const numberRef = useRef<IEditor>(null);
   const defaultValue = condition.value;
   const { isViewLock } = useContext(ViewFilterContext);

@@ -21,7 +21,6 @@ import classNames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { ThemeName } from '@apitable/components';
 import { CollaCommandName, ConfigConstant, ExecuteResult, ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { RuntimeEnv } from '@apitable/widget-sdk';
@@ -52,6 +51,8 @@ import { WidgetLoading } from './widget_loading';
 import { EmbedContext } from 'enterprise';
 import { DataSourceSelectorForNode } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/data_source_selector_for_node';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const simpleEmitter = new SimpleEmitter();
 
 interface IWidgetItemProps extends IWidgetPropsBase {
@@ -77,17 +78,17 @@ export const WidgetItem: React.FC<React.PropsWithChildren<IWidgetItemProps>> = (
 
   const { folderId: folderIdForEmbed } = (useContext(EmbedContext || createContext({})) as any) || {};
 
-  const widget = useSelector((state) => Selectors.getWidget(state, widgetId));
+  const widget = useAppSelector((state) => Selectors.getWidget(state, widgetId));
   const widgetSnapshot = widget?.snapshot;
   const widgetBindDatasheetId = widgetSnapshot ? widgetSnapshot.datasheetId : '';
   const doNotBindDatasheet = !widgetBindDatasheetId;
-  const { templateId, shareId } = useSelector((state) => state.pageParams);
+  const { templateId, shareId } = useAppSelector((state) => state.pageParams);
   const linkId = templateId || shareId;
-  const rootNodeId = useSelector((state) => folderIdForEmbed || state.catalogTree.rootId);
-  const isExpandWidget = useSelector((state) => Boolean(state.pageParams.widgetId === widgetId));
-  const errorCode = useSelector((state) => Selectors.getDatasheetErrorCode(state, widgetBindDatasheetId));
+  const rootNodeId = useAppSelector((state) => folderIdForEmbed || state.catalogTree.rootId);
+  const isExpandWidget = useAppSelector((state) => Boolean(state.pageParams.widgetId === widgetId));
+  const errorCode = useAppSelector((state) => Selectors.getDatasheetErrorCode(state, widgetBindDatasheetId));
   const dispatch = useAppDispatch();
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const PngLinkdatasheet = themeName === ThemeName.Light ? PngLinkdatasheetLight : PngLinkdatasheetDark;
 
   const [searchPanelVisible, setSearchPanelVisible] = useState(false);

@@ -22,7 +22,6 @@ import { omit } from 'lodash';
 import * as React from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { DragDropContext, DragUpdate, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 import { Divider, Typography, useThemeColors } from '@apitable/components';
 import {
   Field,
@@ -45,6 +44,8 @@ import { createRainbowColorsArr } from 'pc/utils/color_utils';
 import styles from '../styles.module.less';
 import { FormatSelectItem } from './format_select_item';
 import { FormatSelectMobile } from './mobile/format_select_mobile';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IFormatSelect {
   currentField: ISelectField;
@@ -91,7 +92,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
 
   const { currentField, setCurrentField, isMulti, datasheetId } = props;
   const { options, defaultValue } = currentField.property;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId || state.pageParams.datasheetId!))!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId || state.pageParams.datasheetId!))!;
   const isPreview = isSelectField(currentField) && fieldMap[currentField.id] && !isSelectField(fieldMap[currentField.id]);
 
   function addNewItem() {

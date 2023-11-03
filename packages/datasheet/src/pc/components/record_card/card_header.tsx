@@ -19,7 +19,7 @@
 import { compact } from 'lodash';
 import Image from 'next/image';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import {
   cellValueToImageSrc,
   CutMethod,
@@ -42,6 +42,8 @@ import NoImage from 'static/icon/datasheet/gallery/emptystates_img_datasheet.png
 import { hasCover } from '../gallery_view/utils';
 import { ImageBox, ImageShowType } from './image_box';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const getImageSrc = (value: IAttachmentValue, height: number): string => {
   const file = { name: value.name, type: value.mimeType };
@@ -69,7 +71,7 @@ interface ICardHeaderProps {
 export const CardHeader: React.FC<React.PropsWithChildren<ICardHeaderProps>> = (props) => {
   const { coverFieldId, recordId, width, height, isCoverFit, showEmptyCover, showOneImage, datasheetId } = props;
 
-  const { recordSnapshot, permissions } = useSelector((state) => {
+  const { recordSnapshot, permissions } = useAppSelector((state) => {
     return {
       recordSnapshot: Selectors.getRecordSnapshot(state, datasheetId, recordId),
       permissions: Selectors.getPermissions(state),

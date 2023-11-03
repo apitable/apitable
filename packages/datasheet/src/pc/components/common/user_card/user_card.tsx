@@ -18,7 +18,7 @@
 
 import classNames from 'classnames';
 import { FC, useState, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Typography, useThemeColors } from '@apitable/components';
 import { Api, ConfigConstant, IShareSettings, Selectors, StoreActions, Strings, t, IMemberInfoInAddressList } from '@apitable/core';
 import { SettingOutlined, InfoCircleOutlined } from '@apitable/icons';
@@ -29,6 +29,8 @@ import { TagColors } from '../tag';
 import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IUserCard {
   memberId?: string;
@@ -64,8 +66,8 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
 }) => {
   const colors = useThemeColors();
   const [tagType, setTagType] = useState('');
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
-  const activeNodeId = useSelector((state) => Selectors.getNodeId(state));
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
+  const activeNodeId = useAppSelector((state) => Selectors.getNodeId(state));
   const { shareSettingsReq } = useCatalogTreeRequest();
   const { data: memberInfo, loading } = useRequest(getMemberInfo);
   const { run: getMemberRole, data: memberRole } = useRequest(getMemberRoleReq, { manual: true });

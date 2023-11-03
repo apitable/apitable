@@ -21,7 +21,6 @@ import dayjs from 'dayjs';
 import { last } from 'lodash';
 import Image from 'next/image';
 import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Skeleton, TextButton, Typography, useThemeColors, ThemeName } from '@apitable/components';
 import { Api, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { QuestionCircleOutlined, MoreStandOutlined, HistoryOutlined } from '@apitable/icons';
@@ -39,6 +38,8 @@ import styles from './style.module.less';
 import { TrashContextMenu } from './trash_context_menu';
 // @ts-ignore
 import { SubscribeGrade, SubscribeUsageTipType, triggerUsageAlert, getSocialWecomUnitName } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface ITrashItem {
   nodeId: string;
@@ -58,15 +59,15 @@ export interface ITrashItem {
 
 const Trash: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
-  const spaceName = useSelector((state: IReduxState) => state.user.info?.spaceName);
-  const spaceId = useSelector((state: IReduxState) => state.space.activeId);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
-  const product = useSelector((state: IReduxState) => state.billing?.subscription?.product);
-  const maxRemainTrashDays = useSelector((state: IReduxState) => state.billing?.subscription?.maxRemainTrashDays || 0);
+  const spaceName = useAppSelector((state: IReduxState) => state.user.info?.spaceName);
+  const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
+  const product = useAppSelector((state: IReduxState) => state.billing?.subscription?.product);
+  const maxRemainTrashDays = useAppSelector((state: IReduxState) => state.billing?.subscription?.maxRemainTrashDays || 0);
   const [trashList, setTrashList] = useState<ITrashItem[]>([]);
   const dispatch = useAppDispatch();
   const { loading: recoverLoading, run: trashRecover } = useRequest((nodeId) => Api.trashRecover(nodeId), { manual: true });
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const EmptyPng = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
 
   const [lastNodeId, setLastNodeId] = useState<string | undefined>(undefined);

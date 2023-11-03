@@ -19,7 +19,6 @@
 import { Checkbox, Tooltip } from 'antd';
 import { useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { QuestionCircleOutlined } from '@apitable/icons';
@@ -28,6 +27,8 @@ import { IToolBarBase } from './interface';
 import styles from './style.module.less';
 // @ts-ignore
 import { SubscribeGrade, SubscribeLabel, isEnterprise } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 enum IFormOptionType {
   CoverVisible = 'CoverVisible',
@@ -61,8 +62,8 @@ export const SettingPanel: React.FC<React.PropsWithChildren<IToolBarBase>> = (pr
     if (compactMode) set.add(IFormOptionType.CompactMode);
     return set;
   });
-  const product = useSelector((state) => state.billing?.subscription?.product);
-  const { embedId } = useSelector((state) => state.pageParams);
+  const product = useAppSelector((state) => state.billing?.subscription?.product);
+  const { embedId } = useAppSelector((state) => state.pageParams);
   const updateProps = (id: IFormOptionType, selected: boolean) => {
     switch (id) {
       case IFormOptionType.CoverVisible:

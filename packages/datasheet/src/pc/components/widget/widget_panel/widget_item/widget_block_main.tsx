@@ -1,6 +1,5 @@
 import { useMount, useUnmount } from 'ahooks';
 import React, { useEffect, useImperativeHandle, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { getComputeRefManager, ResourceStashManager, Selectors, StoreActions } from '@apitable/core';
 import {
   eventMessage,
@@ -24,6 +23,8 @@ import { patchDatasheet } from './utils';
 import { IWidgetBlockRefs } from './widget_block';
 import { WidgetLoading } from './widget_loading';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const WidgetBlockMainBase: React.ForwardRefRenderFunction<
   IWidgetBlockRefs,
   {
@@ -41,16 +42,16 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<
 > = (props, ref) => {
   const { widgetId, widgetPackageId, runtimeEnv, isExpandWidget, isSettingOpened, toggleSetting, toggleFullscreen, expandRecord, isDevMode, nodeId } =
     props;
-  const theme = useSelector((state) => state.theme);
+  const theme = useAppSelector((state) => state.theme);
   const [codeUrl, setCodeUrl] = useCloudStorage<string | undefined>(`widget_loader_code_url_${widgetPackageId}`, widgetId);
   const [widgetStore, setWidgetStore] = useState<any>();
-  const errorCode = useSelector((state) => {
+  const errorCode = useAppSelector((state) => {
     const widget = Selectors.getWidget(state, widgetId)!;
     const { sourceId, datasheetId } = widget.snapshot;
     return sourceId?.startsWith('mir') ? Selectors.getMirrorErrorCode(state, sourceId) : Selectors.getDatasheetErrorCode(state, datasheetId);
   });
 
-  const dashboardConnected = useSelector((state) => {
+  const dashboardConnected = useAppSelector((state) => {
     try {
       const dashboardId = state.pageParams.dashboardId;
       if (!dashboardId) {
@@ -62,7 +63,7 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<
     }
   });
 
-  const nodeConnected = useSelector((state) => {
+  const nodeConnected = useAppSelector((state) => {
     const datasheet = Selectors.getDatasheet(state, nodeId);
     const bindDatasheetLoaded = datasheet && !datasheet.isPartOfData;
     // The initialization of the widget must be done after the datasheet loaded.

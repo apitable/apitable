@@ -18,12 +18,14 @@
 
 import { isEqual } from 'lodash';
 import { useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { CellType, FieldType, Selectors } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { UploadManager } from 'pc/utils';
 import { GRID_ROW_HEAD_WIDTH } from '../constant';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IAttachmentEvent {
   instance: any;
@@ -36,7 +38,7 @@ interface IAttachmentEvent {
 export const useAttachmentEvent = (props: IAttachmentEvent) => {
   const { instance, gridBound, scrollTop, scrollLeft, offsetX } = props;
 
-  const { datasheetId, visibleColumns, fieldMap, linearRows, snapshot } = useSelector((state) => {
+  const { datasheetId, visibleColumns, fieldMap, linearRows, snapshot } = useAppSelector((state) => {
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     return {
       datasheetId,

@@ -20,7 +20,6 @@ import classnames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { BindAccount, ConfigConstant, QrAction, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -39,11 +38,13 @@ import styles from './style.module.less';
 // @ts-ignore
 import { getDingdingConfig, getQQConfig, Trial, QrCode } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const AccountManager: FC<React.PropsWithChildren<unknown>> = () => {
   // Control the display of the Wechat QR code modal box
   const [wechatVisible, setWechatVisible] = useState(false);
-  const userInfo = useSelector((state) => state.user.info);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const userInfo = useAppSelector((state) => state.user.info);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const dispatch = useAppDispatch();
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus } = useRequest(getLoginStatusReq, { manual: true });

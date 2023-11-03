@@ -18,7 +18,6 @@
 
 import Image from 'next/image';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { ThemeName } from '@apitable/components';
 import { ConfigConstant, INode, IViewColumn, Strings, t, ViewType } from '@apitable/core';
 import { File, Folder, FormSearchItem, View } from 'pc/components/datasheet_search_panel/components';
@@ -28,6 +27,8 @@ import { ScrollBar } from 'pc/components/scroll_bar';
 import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 import { SecondConfirmType } from './interface';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IViewNode {
   nodeId: string;
@@ -79,7 +80,7 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
     hideViewNode,
     secondConfirmType,
   } = props;
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const EmptyFolderImg = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
 
   const showForm = options?.showForm ?? false;

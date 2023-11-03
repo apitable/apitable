@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { Select, IOption, useThemeColors } from '@apitable/components';
 import { FieldType, Strings, t, Selectors, IViewColumn } from '@apitable/core';
@@ -7,6 +6,8 @@ import { DatasheetOutlined } from '@apitable/icons';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { store } from 'pc/store';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ISearchSelectFieldProps {
   datasheetId: string | undefined;
@@ -19,11 +20,11 @@ interface ISearchSelectFieldProps {
 export const SearchSelectField = (props: ISearchSelectFieldProps) => {
   const { datasheetId, fieldType = null, defaultFieldId, onChange, disabled = false } = props;
   const colors = useThemeColors();
-  const columns = useSelector((state) => {
+  const columns = useAppSelector((state) => {
     const view = Selectors.getCurrentView(state, datasheetId);
     return (view?.columns || []) as IViewColumn[];
   });
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
 
   const filter = (item: IViewColumn) => {
     if (fieldType) {

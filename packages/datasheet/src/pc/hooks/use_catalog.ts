@@ -16,12 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { IReduxState, StoreActions, Selectors, ConfigConstant, t, Strings, ResourceIdPrefix } from '@apitable/core';
 import { useRequest } from 'pc/hooks';
 
 import { getPropertyByTree } from 'pc/utils';
 import { useCatalogTreeRequest } from './use_catalogtree_request';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export enum NodeChangeInfoType {
   Create = 'nodeCreate',
@@ -34,8 +36,8 @@ export enum NodeChangeInfoType {
 }
 
 export const useCatalog = () => {
-  const { treeNodesMap, rootId, expandedKeys, editNodeId } = useSelector((state: IReduxState) => state.catalogTree);
-  const activeNodeId = useSelector((state) => Selectors.getNodeId(state));
+  const { treeNodesMap, rootId, expandedKeys, editNodeId } = useAppSelector((state: IReduxState) => state.catalogTree);
+  const activeNodeId = useAppSelector((state) => Selectors.getNodeId(state));
   const { addNodeReq } = useCatalogTreeRequest();
   const dispatch = useDispatch();
   const { run: addNode, loading: addNodeLoading } = useRequest(addNodeReq, { manual: true });

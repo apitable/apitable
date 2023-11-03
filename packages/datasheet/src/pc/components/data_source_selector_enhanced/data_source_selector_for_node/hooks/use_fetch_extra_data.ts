@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Selectors, StoreActions } from '@apitable/core';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export const useFetchExtraData = () => {
   const [process, setProcess] = useState<{
@@ -10,10 +12,10 @@ export const useFetchExtraData = () => {
     mirrorId?: string;
       } | null>(null);
   const dispatch = useDispatch();
-  const mirror = useSelector((state) => {
+  const mirror = useAppSelector((state) => {
     return process?.mirrorId ? Selectors.getMirror(state, process.mirrorId) : undefined;
   });
-  const datasheet = useSelector((state) => {
+  const datasheet = useAppSelector((state) => {
     return process?.datasheetId ? Selectors.getDatasheet(state, process.datasheetId) : undefined;
   });
 

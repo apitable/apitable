@@ -19,7 +19,6 @@
 import { Col, Row } from 'antd';
 import { isEqual } from 'lodash';
 import { FC, useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { colorVars, IconButton, WrapperTooltip } from '@apitable/components';
 import {
   ConfigConstant,
@@ -45,6 +44,8 @@ import { FilterValue } from './filter_value';
 import { ExecuteFilterFn } from './interface';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IConditionList {
   filterInfo?: IFilterInfo;
   fieldMap: IFieldMap;
@@ -57,11 +58,11 @@ interface IConditionList {
 const ConditionList: FC<React.PropsWithChildren<IConditionList>> = (props) => {
   const { filterInfo, fieldMap, changeFilter, deleteFilter, datasheetId, field } = props;
   const { conditions, conjunction = FilterConjunctionEnum.And } = filterInfo || {};
-  const columns = useSelector((state) => {
+  const columns = useAppSelector((state) => {
     const view = Selectors.getCurrentView(state, datasheetId);
     return view!.columns as IViewColumn[];
   });
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
   const { isViewLock } = useContext(ViewFilterContext);
 
   // Check if the magic lookup filter is circularly referenced

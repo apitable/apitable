@@ -22,7 +22,7 @@
 import Trigger from 'rc-trigger';
 import { useCallback, useMemo, useRef } from 'react';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import {
   ConfigConstant,
@@ -50,6 +50,8 @@ import { StatOption } from '../../../stat_option';
 import styles from '../../../styles.module.less';
 import { GROUP_HEIGHT } from '../constant';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IGroupTab {
   row: ILinearRowGroupTab;
   actualColumnIndex: number;
@@ -69,7 +71,7 @@ const GroupTabBase: React.FC<React.PropsWithChildren<IGroupTab>> = (props) => {
   const fieldId = groupInfo[row.depth]?.fieldId;
   const pathKey = `${row.recordId}_${row.depth}`;
   const colors = useThemeColors();
-  const { field, statTypeFieldId, viewId, datasheetId, groupingCollapseIds, isSearching, fieldPermissionMap } = useSelector((state) => {
+  const { field, statTypeFieldId, viewId, datasheetId, groupingCollapseIds, isSearching, fieldPermissionMap } = useAppSelector((state) => {
     const columns = Selectors.getVisibleColumns(state);
     const statTypeFieldId = columns[actualColumnIndex].fieldId;
     return {

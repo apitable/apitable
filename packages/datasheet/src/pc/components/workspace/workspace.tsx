@@ -21,7 +21,7 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { LinkButton, useTheme } from '@apitable/components';
 import { Api, AutoTestID, ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
 import { CollapseOpenOutlined, CollapseOutlined } from '@apitable/icons';
@@ -46,6 +46,8 @@ import { CommonSide } from '../common_side';
 import styles from './style.module.less';
 // @ts-ignore
 import { showOrderModal } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 // Restore the user's last opened datasheet.
 const resumeUserHistory = (path: string) => {
@@ -93,9 +95,9 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
   const localSize = getStorage(StorageName.SplitPos);
   const defaultSidePanelSize = localSize && localSize !== 280 ? localSize : 335;
-  const editNodeId = useSelector((state: IReduxState) => state.catalogTree.editNodeId);
-  const favoriteEditNodeId = useSelector((state: IReduxState) => state.catalogTree.favoriteEditNodeId);
-  const userSpaceId = useSelector((state: IReduxState) => state.user.info!.spaceId);
+  const editNodeId = useAppSelector((state: IReduxState) => state.catalogTree.editNodeId);
+  const favoriteEditNodeId = useAppSelector((state: IReduxState) => state.catalogTree.favoriteEditNodeId);
+  const userSpaceId = useAppSelector((state: IReduxState) => state.user.info!.spaceId);
   const { getFavoriteNodeListReq, getTreeDataReq } = useCatalogTreeRequest();
   const { run: getFavoriteNodeList } = useRequest(getFavoriteNodeListReq, { manual: true });
   const { run: getTreeData } = useRequest(getTreeDataReq, { manual: true });
@@ -112,7 +114,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
   const [clickType, setClickType] = useState<SideBarClickType>(SideBarClickType.None);
   const [panelVisible, setPanelVisible] = useState(false);
   const [newTdbId, setNewTdbId] = useState('');
-  const sideBarVisible = useSelector((state) => state.space.sideBarVisible);
+  const sideBarVisible = useAppSelector((state) => state.space.sideBarVisible);
 
   useMount(() => {
     if (!query.get('choosePlan') || isMobile) return;

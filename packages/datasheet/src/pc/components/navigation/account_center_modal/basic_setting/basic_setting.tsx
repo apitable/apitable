@@ -20,7 +20,7 @@ import { Spin } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { Button, LinkButton, stopPropagation, Typography, useThemeColors } from '@apitable/components';
 import { hiddenMobile, IReduxState, isIdassPrivateDeployment, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined } from '@apitable/icons';
@@ -43,6 +43,8 @@ import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName, isSocialWecom, isWecomFunc } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const customTips = {
   cropDesc: t(Strings.support_image_formats_limits, {
     number: 2,
@@ -50,7 +52,7 @@ const customTips = {
 };
 
 export const BasicSetting: FC<React.PropsWithChildren<unknown>> = () => {
-  const { user, spaceInfo } = useSelector(
+  const { user, spaceInfo } = useAppSelector(
     (state: IReduxState) => ({
       user: state.user.info,
       spaceInfo: state.space.curSpaceInfo,

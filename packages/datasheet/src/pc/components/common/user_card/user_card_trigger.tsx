@@ -18,11 +18,12 @@
 
 import Trigger, { TriggerProps } from 'rc-trigger';
 import { FC, isValidElement, useRef, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { IReduxState } from '@apitable/core';
 import { IAvatarProps } from 'pc/components/common';
 import styles from './style.module.less';
 import { UserCard, IUserCard } from './user_card';
+
+import {useAppSelector} from "pc/store/react-redux";
 interface IUserCardTrigger extends IUserCard, Partial<TriggerProps> {
   scrollTarget?: string;
   isDeleted?: boolean;
@@ -48,8 +49,8 @@ export const UserCardTrigger: FC<React.PropsWithChildren<IUserCardTrigger>> = (p
     avatarProps,
     ...rest
   } = props;
-  const shareId = useSelector((state: IReduxState) => state.pageParams.shareId);
-  const embedId = useSelector((state: IReduxState) => state.pageParams.embedId);
+  const shareId = useAppSelector((state: IReduxState) => state.pageParams.shareId);
+  const embedId = useAppSelector((state: IReduxState) => state.pageParams.embedId);
   const [cardVisible, setCardVisible] = useState(false);
   const ref = useRef<any>();
 

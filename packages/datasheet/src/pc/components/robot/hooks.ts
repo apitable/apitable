@@ -21,7 +21,6 @@ import { atom, useAtom, useAtomValue } from 'jotai';
 import { atomsWithQuery } from 'jotai-tanstack-query';
 import { isNil } from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import {
   ConfigConstant,
   getLanguage,
@@ -45,6 +44,8 @@ import { getFields } from './robot_detail/trigger/helper';
 import { getActionList, getTriggerList } from './robot_detail/utils';
 import { covertThemeIcon } from './utils';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const nestReq = axios.create({
   baseURL: '/nest/v1/',
 });
@@ -63,7 +64,7 @@ export const getAllFieldsByDstIdFp = (state: IReduxState, datasheetId?: string) 
 
 export const useAllFieldsByDstId = (datasheetId: string) => {
   const columns = useAllColumns(datasheetId, true);
-  const snapshot = useSelector((state) => {
+  const snapshot = useAppSelector((state) => {
     return Selectors.getSnapshot(state, datasheetId);
   });
 
@@ -80,7 +81,7 @@ export const useAllFields = () => {
   const value = useAtomValue(automationStateAtom);
   const datasheetId = value?.resourceId ?? '';
   const columns = useAllColumns(datasheetId, true);
-  const snapshot = useSelector((state) => {
+  const snapshot = useAppSelector((state) => {
     return Selectors.getSnapshot(state, datasheetId);
   });
 
@@ -93,7 +94,7 @@ export const useAllFields = () => {
 };
 
 export const useAddNewRobot = () => {
-  const permissions = useSelector(Selectors.getPermissions);
+  const permissions = useAppSelector(Selectors.getPermissions);
   const {
     state: { data: robotList },
   } = useAutomationList();
@@ -246,7 +247,7 @@ const [actionTypesAtom] = atomsWithQuery((get) => ({
 const loadableActionTypesAtom = loadableWithDefault(actionTypesAtom, []);
 
 export const useTriggerTypes = (): { loading: boolean; data: ITriggerType[] } => {
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const value = useAtomValue(loadableTriggerAtom);
   if (value.loading) {
     return {
@@ -261,7 +262,7 @@ export const useTriggerTypes = (): { loading: boolean; data: ITriggerType[] } =>
 };
 
 export const useActionTypes = (): { loading: boolean; originData: IActionType[]; data: IActionType[] } => {
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const actionTypeData = useAtomValue(loadableActionTypesAtom);
   const themedList = covertThemeIcon(actionTypeData?.data, themeName);
   if (actionTypeData.loading) {
@@ -362,7 +363,7 @@ export const useDefaultRobotDesc = () => {
 };
 
 export const useShowRobot = () => {
-  const isRobotFeatureOn = useSelector((state) => Selectors.labsFeatureOpen(state, SystemConfig.test_function.robot.feature_key));
+  const isRobotFeatureOn = useAppSelector((state) => Selectors.labsFeatureOpen(state, SystemConfig.test_function.robot.feature_key));
   return isRobotFeatureOn || isPrivateDeployment(); // Privatization unconditionally opens the robot portal
 };
 

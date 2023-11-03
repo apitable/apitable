@@ -19,7 +19,6 @@
 import { useAtomValue } from 'jotai';
 import * as React from 'react';
 import { memo, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Skeleton } from '@apitable/components';
 import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { automationDrawerVisibleAtom } from '../../automation/controller';
@@ -31,11 +30,13 @@ import { RobotListItemCard } from '../robot_list_item';
 import { NewItem } from './new_item';
 import { RobotEmptyList } from './robot_empty_list';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const RobotList = memo(() => {
-  const permissions = useSelector(Selectors.getPermissions);
+  const permissions = useAppSelector(Selectors.getPermissions);
   const canManageRobot = permissions.manageable;
 
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId);
+  const datasheetId = useAppSelector(Selectors.getActiveDatasheetId);
   const { state: { error, data: robotList }, api: { refresh } } = useAutomationList();
 
   const { data: triggerTypes, loading: triggerTypesLoading } = useTriggerTypes();

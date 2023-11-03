@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useEffect, useReducer, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { NarrowOutlined, QuestionCircleOutlined } from '@apitable/icons';
@@ -17,6 +16,8 @@ import { useFetchDatasheetMeta } from './hooks/use_fetch_datasheet_meta';
 import { useFetchFolderData } from './hooks/use_fetch_folder_data';
 import { searchPanelReducer } from './store/reducer/search_panel';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
   defaultNodeIds,
@@ -40,7 +41,7 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
     searchResult: '',
   });
   const colors = useThemeColors();
-  const { embedId } = useSelector((state) => state.pageParams);
+  const { embedId } = useAppSelector((state) => state.pageParams);
   const editorRef = useRef<{
     focus: () => void;
       } | null>(null);

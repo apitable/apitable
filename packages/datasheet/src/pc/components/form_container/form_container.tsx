@@ -27,7 +27,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import * as React from 'react';
 import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Node } from 'slate';
 import { Button, ContextMenu, TextButton, useThemeColors } from '@apitable/components';
 import {
@@ -86,6 +86,8 @@ import { query2formData, string2Query } from './util';
 // @ts-ignore
 import { triggerUsageAlertForDatasheet, PreFillPanel, triggerUsageAlert, SubscribeUsageTipType } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 enum IFormContentType {
   Form = 'Form',
   Welcome = 'Welcome',
@@ -136,7 +138,7 @@ export const FormContainer: React.FC<
     fieldPermissionMap,
     activeFieldId,
     activeFieldOperateType,
-  } = useSelector((state) => {
+  } = useAppSelector((state) => {
     const formState: IFormState = Selectors.getForm(state)!;
     const formRelMeta = Selectors.getFormRelMeta(state) || defaultMeta;
 
@@ -185,7 +187,7 @@ export const FormContainer: React.FC<
   const unmounted = useRef(false);
   const query = string2Query();
   const colors = useThemeColors();
-  const theme = useSelector(Selectors.getTheme);
+  const theme = useAppSelector(Selectors.getTheme);
   const { FORM_LOGIN_URL } = getEnvVariables();
 
   const dispatch = useDispatch();

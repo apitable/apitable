@@ -19,12 +19,13 @@
 import parser from 'html-react-parser';
 import Image from 'next/image';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { Typography, useThemeColors } from '@apitable/components';
 import { Strings, t, ThemeName } from '@apitable/core';
 import InfoStateDark from 'static/icon/common/info_state_dark.png';
 import InfoStateLight from 'static/icon/common/info_state_light.png';
 import styles from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IReadingProps {
   [key: string]: any;
@@ -34,7 +35,7 @@ const size = 160;
 
 export const Reading: FC<React.PropsWithChildren<IReadingProps>> = () => {
   const colors = useThemeColors();
-  const theme = useSelector((state) => state.theme);
+  const theme = useAppSelector((state) => state.theme);
   const InfoState = theme === ThemeName.Light ? InfoStateLight : InfoStateDark;
 
   return (

@@ -16,14 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { composeWithDevTools } from '@redux-devtools/extension';
-import { applyMiddleware, createStore as _createStore } from 'redux';
-import { enableBatching } from 'redux-batched-actions';
+import {composeWithDevTools} from '@redux-devtools/extension';
+import {applyMiddleware, createStore as _createStore} from 'redux';
+import {enableBatching} from 'redux-batched-actions';
 import thunkMiddleware from 'redux-thunk';
-import { IReduxState, Reducers } from '@apitable/core';
-import { viewDerivationMiddleware } from './view_derivation_middleware';
-import { widgetSyncDataMiddleware } from './widget_sync_data_middleware';
-import {TypedUseSelectorHook, useSelector} from "react-redux";
+import {IReduxState, Reducers} from '@apitable/core';
+import {viewDerivationMiddleware} from './view_derivation_middleware';
+import {widgetSyncDataMiddleware} from './widget_sync_data_middleware';
 
 declare const window: any;
 const composeEnhancers = composeWithDevTools({ trace: true });
@@ -38,10 +37,7 @@ export const createStore = () => {
 
 export const store = createStore();
 
-export const useAppSelector: TypedUseSelectorHook<IReduxState> = useSelector;
-
 export type AppDispatch = typeof store.dispatch;
-
 
 (() => {
   if (!process.env.SSR) {

@@ -22,7 +22,6 @@ import dayjs from 'dayjs';
 import { get, pick } from 'lodash';
 import * as React from 'react';
 import { useCallback, useContext, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Descendant } from 'slate';
 import { Button, LinkButton } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, IApi, Selectors, Strings, t } from '@apitable/core';
@@ -41,17 +40,19 @@ import { IActivityPaneProps } from '../interface';
 import { ReplyComment } from '../reply_comment';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const MAX_COMMENT_LENGTH = 1000;
 
 export const CommentEditor: React.FC<React.PropsWithChildren<IActivityPaneProps>> = (props) => {
   const { datasheetId, expandRecordId, viewId } = props;
-  const unitId = useSelector((state) => state.user.info?.unitId)!;
-  const curViewId = useSelector((state) => viewId || state.pageParams.viewId);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const unitId = useAppSelector((state) => state.user.info?.unitId)!;
+  const curViewId = useAppSelector((state) => viewId || state.pageParams.viewId);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const editRef = useRef<any>(null);
   const borderRef = useRef<HTMLDivElement>(null);
   const commentEditRef = useRef<HTMLDivElement>(null);
-  const mirrorId = useSelector((state) => state.pageParams.datasheetId === datasheetId && state.pageParams.mirrorId);
+  const mirrorId = useAppSelector((state) => state.pageParams.datasheetId === datasheetId && state.pageParams.mirrorId);
 
   const { replyText, setReplyText, focus: focusStatus, setFocus, setReplyUnitId } = useContext(ActivityContext);
 

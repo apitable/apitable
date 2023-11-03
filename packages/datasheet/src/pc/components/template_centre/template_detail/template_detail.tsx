@@ -22,7 +22,6 @@ import dd from 'dingtalk-jsapi';
 import { get } from 'lodash';
 import { useRouter } from 'next/router';
 import { FC, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
 import { useThemeColors } from '@apitable/components';
 import { AutoTestID, Events, findNode, IReduxState, ITemplateDirectory, Navigation, Player, Selectors, StoreActions } from '@apitable/core';
@@ -43,20 +42,22 @@ import styles from './style.module.less';
 // @ts-ignore
 import { isDingtalkSkuPage, isEnterprise } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const _SplitPane: any = SplitPane;
 
 export const TemplateDetail: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const router = useRouter();
   const { sideBarVisible: _sideBarVisible } = useSideBarVisible();
-  const pageParams = useSelector((state: IReduxState) => state.pageParams);
+  const pageParams = useAppSelector((state: IReduxState) => state.pageParams);
   const { datasheetId, automationId, folderId, templateId, categoryId, formId, dashboardId, mirrorId } = pageParams;
 
-  const spaceId = useSelector((state) => state.space.activeId);
-  const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
+  const spaceId = useAppSelector((state) => state.space.activeId);
+  const activeNodeId = useAppSelector((state: IReduxState) => Selectors.getNodeId(state));
   const { getTemplateDirectoryReq } = useTemplateRequest();
   const { run: getTemplateDirectory } = useRequest<ITemplateDirectory, any[]>(getTemplateDirectoryReq, { manual: true });
-  const templateDirectory = useSelector((state) => state.templateCentre.directory);
+  const templateDirectory = useAppSelector((state) => state.templateCentre.directory);
   const dispatch = useAppDispatch();
   const query = useQuery();
   const appId = query.get('appId') || '';

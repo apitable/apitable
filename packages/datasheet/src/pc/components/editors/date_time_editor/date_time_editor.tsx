@@ -36,7 +36,6 @@ import utc from 'dayjs/plugin/utc';
 import { isEqual } from 'lodash';
 import * as React from 'react';
 import { forwardRef, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Loading, lightColors } from '@apitable/components';
 import {
   DATASHEET_ID,
@@ -72,6 +71,8 @@ import style from './style.module.less';
 import { TimePicker } from './time_picker_only';
 // @ts-ignore
 import { DateTimeAlarm } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -571,8 +572,8 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
 }
 
 const DateTimeEditorHoc: React.ForwardRefRenderFunction<DateTimeEditorBase, IDateTimeEditorProps> = (props, ref) => {
-  const snapshot = useSelector(Selectors.getSnapshot);
-  const userTimeZone = useSelector(Selectors.getUserTimeZone)!;
+  const snapshot = useAppSelector(Selectors.getSnapshot);
+  const userTimeZone = useAppSelector(Selectors.getUserTimeZone)!;
   const alarm = props.recordId ? Selectors.getDateTimeCellAlarmForClient(snapshot!, props.recordId, props.field.id) : undefined;
   const previousAlarm = usePrevious(alarm);
   const [curAlarm, setCurAlarm] = useState<WithOptional<IRecordAlarmClient, 'id'> | undefined>();

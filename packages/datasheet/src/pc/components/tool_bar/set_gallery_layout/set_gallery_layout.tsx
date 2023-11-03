@@ -19,7 +19,6 @@
 // import * as React from 'react';
 import { Slider } from 'antd';
 import { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors, useListenVisualHeight, IUseListenTriggerInfo, WrapperTooltip, Switch } from '@apitable/components';
 import {
   CollaCommandName,
@@ -42,6 +41,8 @@ import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import ReduceIcon from 'static/icon/common/common_icon_reduce.svg';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const MAX_COLUMN_COUNT = 6;
 const MIN_COLUMN_COUNT = 1;
 
@@ -50,7 +51,7 @@ const MAX_HEIGHT = 340;
 export const SetGalleryLayout = (props: { triggerInfo?: IUseListenTriggerInfo }) => {
   const { triggerInfo } = props;
   const colors = useThemeColors();
-  const activeView = useSelector((state) => Selectors.getCurrentView(state))! as IGalleryViewProperty;
+  const activeView = useAppSelector((state) => Selectors.getCurrentView(state))! as IGalleryViewProperty;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { style, onListenResize } = useListenVisualHeight({
     listenNode: containerRef,

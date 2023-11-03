@@ -2,7 +2,7 @@ import { useAtomValue } from 'jotai';
 import { selectAtom } from 'jotai/utils';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { useThemeColors } from '@apitable/components';
 import { IReduxState, Strings, t } from '@apitable/core';
@@ -16,6 +16,8 @@ import { EditableText } from '../../../editable_text';
 import { updateRobotName } from '../../api';
 import { useAutomationRobot } from '../../hooks';
 import { AutomationScenario } from '../../interface';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export const WidthEditableText = styled(EditableText)`
   max-width: 400px;
@@ -33,7 +35,7 @@ export const InputTitle: FC = () => {
 
   const nodeItem = useAutomationResourceNode();
 
-  const { templateId } = useSelector((state: IReduxState) => state.pageParams);
+  const { templateId } = useAppSelector((state: IReduxState) => state.pageParams);
   const dispatch = useDispatch();
   useEffect(() => {
     if (!templateId) {

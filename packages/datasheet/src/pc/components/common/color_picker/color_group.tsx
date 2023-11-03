@@ -20,13 +20,14 @@ import { Tooltip } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { ISelectFieldOption, Selectors, Strings, t } from '@apitable/core';
 import { setColor } from 'pc/components/multi_grid/format';
 import { stopPropagation } from 'pc/utils';
 import { OptionSetting } from './enum';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IColorGroupProps {
   colorGroup: number[];
@@ -40,7 +41,7 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props)
   const { colorGroup, option, onChange, style, disabled } = props;
   const [colorIdx, setColorIdx] = useState<number>();
   const colors = useThemeColors();
-  const cacheTheme = useSelector(Selectors.getTheme);
+  const cacheTheme = useAppSelector(Selectors.getTheme);
 
   return (
     <ul className={styles.colorGroup} style={style}>
