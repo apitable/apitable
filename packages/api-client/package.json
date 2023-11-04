@@ -22,9 +22,7 @@
 
   "typings": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
-    "prepare": "npm run build",
-    "postinstall": "npm run build"
+    "build": "tsc"
   },
   "dependencies": {
     "whatwg-fetch": "^3.6.*",

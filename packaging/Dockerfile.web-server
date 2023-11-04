@@ -46,6 +46,7 @@ COPY --from=deps /workspace-install/packages/icons/node_modules ./packages/icons
 COPY --from=deps /workspace-install/packages/i18n-lang/node_modules ./packages/i18n-lang/node_modules
 COPY --from=deps /workspace-install/packages/widget-sdk/node_modules ./packages/widget-sdk/node_modules
 COPY --from=deps /workspace-install/packages/ai-components/node_modules ./packages/ai-components/node_modules
+COPY --from=deps /workspace-install/packages/api-client/node_modules ./packages/api-client/node_modules
 
 RUN set -eux; \
     sed -i~ '$a\WEB_CLIENT_VERSION='${SEMVER_FULL}'' packages/datasheet/.env; \
