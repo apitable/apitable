@@ -51,6 +51,7 @@ interface IAppendRowsOption {
 
 export function appendRow(option: IAppendRowsOption = {}): Promise<ICollaCommandExecuteResult<string[]>> {
   const state = store.getState();
+
   const activeCell = Selectors.getActiveCell(state)!;
   const { recordId = activeCell?.recordId, direction = Direction.Down, isDuplicate, recordData, count = 1 } = option;
   const view = Selectors.getCurrentView(state)!;

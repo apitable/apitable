@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { Api, INoticeDetail, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
@@ -26,9 +26,11 @@ import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 // @ts-ignore
 import { triggerUsageAlert } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const useNotificationRequest = () => {
   const dispatch = useDispatch();
-  const readCount = useSelector((state) => state.notification.readCount);
+  const readCount = useAppSelector((state) => state.notification.readCount);
   // Number of notifications obtained
   const notificationStatistics = () =>
     Api.getNotificationStatistics().then((res) => {
@@ -126,7 +128,7 @@ export const useNotificationRequest = () => {
 
 export const useNotificationCreate = ({ spaceId }: { fromUserId: string; spaceId: string }) => {
   const dispatch = useAppDispatch();
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
 
   // Space permissions change to normal members, i.e. delete sub-admin operations
   const delSubAdminAndNotice = (memberId: string) => {

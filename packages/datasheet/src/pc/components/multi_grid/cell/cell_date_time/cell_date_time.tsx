@@ -20,7 +20,6 @@ import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { AlarmUsersType, CollaCommandName, Field, IDateTimeField, Selectors, shallowEqual, Strings, t } from '@apitable/core';
 import { NotificationOutlined } from '@apitable/icons';
@@ -34,6 +33,8 @@ import styles from './styles.module.less';
 import { AlarmTipText } from 'enterprise';
 import { INNER_DAY_ALARM_SUBTRACT } from 'pc/utils';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface ICellDateTime extends ICellComponentProps {
   field: IDateTimeField;
 }
@@ -41,8 +42,8 @@ interface ICellDateTime extends ICellComponentProps {
 export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = (props) => {
   const colors = useThemeColors();
   const { className, field, recordId, cellValue, toggleEdit, showAlarm } = props;
-  const userTimeZone = useSelector(Selectors.getUserTimeZone)!;
-  const { snapshot, user, dstId } = useSelector((state) => {
+  const userTimeZone = useAppSelector(Selectors.getUserTimeZone)!;
+  const { snapshot, user, dstId } = useAppSelector((state) => {
     return {
       snapshot: Selectors.getSnapshot(state)!,
       user: state.user.info,

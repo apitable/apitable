@@ -53,7 +53,6 @@ import com.apitable.integration.grpc.NodeCopyRo;
 import com.apitable.integration.grpc.NodeDeleteRo;
 import com.apitable.interfaces.ai.facade.AiServiceFacade;
 import com.apitable.interfaces.ai.model.AiCreateParam;
-import com.apitable.interfaces.ai.model.AiType;
 import com.apitable.interfaces.ai.model.AiUpdateParam;
 import com.apitable.interfaces.document.facade.DocumentServiceFacade;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
@@ -1272,6 +1271,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 break;
         }
         NodeEntity toSaveNode = new NodeEntity();
+        toSaveNode.setId(IdWorker.getId());
         toSaveNode.setNodeId(toSaveNodeId);
         toSaveNode.setNodeName(name);
         toSaveNode.setCover(shareNode.getCover());
@@ -1301,7 +1301,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         toSaveNode.setExtra(JSONUtil.toJsonStr(extraObj));
         toSaveNode.setCreatedBy(userId);
         toSaveNode.setUpdatedBy(userId);
-        this.save(toSaveNode);
+        baseMapper.insert(toSaveNode);
         // description of batch replication nodes
         iNodeDescService.copyBatch(newNodeMap);
         // Batch copy of spatial attachment resources referenced by nodes
@@ -1620,7 +1620,6 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 aiServiceFacade.createAi(AiCreateParam.builder()
                     .spaceId(spaceId)
                     .aiId(nodeId)
-                    .type(AiType.QA)
                     .aiName(name)
                     .build()
                 );

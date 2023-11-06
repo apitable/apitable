@@ -18,18 +18,19 @@
 
 import Image from 'next/image';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { ThemeName } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 export interface ISearchResultProps {
   isEmpty?: boolean;
 }
 
 export const SearchResult: FC<React.PropsWithChildren<ISearchResultProps>> = ({ isEmpty, children }) => {
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const NotDataImg = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   if (isEmpty) {
     return (

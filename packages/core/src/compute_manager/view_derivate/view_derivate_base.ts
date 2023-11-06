@@ -1,13 +1,13 @@
 
 import { Field } from 'model/field';
 import { ViewFilterDerivate } from './slice/view_filter_derivate';
-
 import {
   IReduxState, ISearchResult, IViewDerivation, IViewProperty, IViewRow,
 } from 'exports/store/interfaces';
 import {
   getCellValue, getCurrentView, getGroupFields, getSearchKeyword, getStringifyCellValue, sortRowsBySortInfo,
 } from 'exports/store/selectors';
+import { FieldType } from 'types/field_types';
 
 export class ViewDerivateBase {
   viewFilterDerivate: ViewFilterDerivate;
@@ -95,7 +95,13 @@ export class ViewDerivateBase {
       const { recordId } = row;
       let isRecordDataMatchKeyword = false;
       visibleColumns.forEach(fieldId => {
-        const cellValue = getStringifyCellValue(this.state, snapshot, recordId, fieldId);
+        let cellValue = getStringifyCellValue(this.state, snapshot, recordId, fieldId);
+        const field = snapshot.meta.fieldMap[fieldId];
+        // currency and number fields ignore units when searching
+        if (field && (field.type === FieldType.Currency || field.type === FieldType.Number)) {
+          const cv = getCellValue(this.state, snapshot, row.recordId, fieldId);
+          cellValue = Field.bindContext(field, this.state).cellValueToString(cv, { hideUnit: true });
+        }
         if (cellValue && cellValue.toLowerCase().includes(lowerCaseSearchKeyword)) {
           searchResults.push([recordId, fieldId]);
           isRecordDataMatchKeyword = true;

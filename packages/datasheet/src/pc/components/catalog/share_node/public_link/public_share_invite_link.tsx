@@ -19,7 +19,7 @@
 import { useRequest } from 'ahooks';
 import { Tooltip } from 'antd';
 import { FC, useState, useCallback } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { Skeleton, IconButton, Button, LinkButton, DoubleSelect, IDoubleOptions, Switch, Typography, useThemeColors } from '@apitable/components';
 import { Api, Navigation, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
 import {
@@ -44,6 +44,8 @@ import { ShareQrCode } from '../share_qr_code';
 import styles from './style.module.less';
 // @ts-ignore
 import { WidgetEmbed } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IPublicShareLinkProps {
   nodeId: string;
@@ -72,7 +74,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
   const colors = useThemeColors();
   const { getShareSettingsReq } = useCatalogTreeRequest();
   const { run: getShareSettings, data: shareSettings } = useRequest<IShareSettings, any>(() => getShareSettingsReq(nodeId));
-  const { userInfo, treeNodesMap, spaceFeatures } = useSelector(
+  const { userInfo, treeNodesMap, spaceFeatures } = useAppSelector(
     (state: IReduxState) => ({
       treeNodesMap: state.catalogTree.treeNodesMap,
       userInfo: state.user.info,

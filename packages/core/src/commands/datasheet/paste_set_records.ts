@@ -95,7 +95,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
         cutRows.forEach(row => {
           cutColumns.forEach(column => {
             const field = fieldMap[column.fieldId];
-            if (field && field.type !== FieldType.NotSupport) {
+            if (field && field.type !== FieldType.NotSupport && field.type !== FieldType.Workdoc) {
               recordValues.push({
                 recordId: row.recordId,
                 fieldId: column.fieldId,
@@ -163,7 +163,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
     }
 
     function pushPasteValue(stdValue: IStandardValue, field: IField, recordId: string, oldRecordId?: string) {
-      if (!field || field.type === FieldType.NotSupport) {
+      if (!field || field.type === FieldType.NotSupport || field.type === FieldType.Workdoc) {
         return;
       }
 
@@ -238,7 +238,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
           const fieldId = columnsToPaste[column]!.fieldId;
           const stdValue = stdValuesRow[column]!;
           const field = fieldMap[fieldId];
-          if (!field || field.type === FieldType.NotSupport) {
+          if (!field || field.type === FieldType.NotSupport || field.type === FieldType.Workdoc) {
             continue;
           }
           let value = Field.bindContext(field, state).stdValueToCellValue(stdValue);

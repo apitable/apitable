@@ -20,12 +20,13 @@ import { useUpdateEffect } from 'ahooks';
 import { Form, Input } from 'antd';
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { ConfigConstant, IReduxState, Navigation, Selectors, Strings, t } from '@apitable/core';
 import { BaseModal, Message, Modal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useTemplateRequest } from 'pc/hooks';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IGenerateTemplateProps {
   nodeId?: string;
@@ -33,12 +34,12 @@ export interface IGenerateTemplateProps {
 }
 
 export const GenerateTemplate: FC<React.PropsWithChildren<IGenerateTemplateProps>> = ({ nodeId, onCancel }) => {
-  const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-  const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
+  const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const activeNodeId = useAppSelector((state: IReduxState) => Selectors.getNodeId(state));
   nodeId = nodeId || activeNodeId;
   const [name, setName] = useState(treeNodesMap[nodeId!].nodeName);
   const [errorMsg, setErrorMsg] = useState('');
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const { createTemplateReq, templateNameValidateReq } = useTemplateRequest();
   const { run: createTemplate, data: createTemplateData, loading } = useRequest(createTemplateReq, { manual: true });
   const { run: templateNameValidate } = useRequest(templateNameValidateReq, { manual: true });

@@ -19,7 +19,6 @@
 import { Modal } from 'antd';
 import { useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Tooltip, useThemeColors, ThemeProvider } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { QuestionCircleOutlined } from '@apitable/icons/dist/components';
@@ -32,11 +31,13 @@ import styles from 'pc/components/field_permission/styles.module.less';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { PermissionModalHeader } from './permission_modal_header';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const FieldPermission: React.FC<React.PropsWithChildren<IFieldPermissionProps>> = (props) => {
   const colors = useThemeColors();
   const { field, onModalClose } = props;
-  const theme = useSelector(Selectors.getTheme);
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
+  const theme = useAppSelector(Selectors.getTheme);
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
   const existFieldPermission = Boolean(fieldPermissionMap && fieldPermissionMap[field.id]);
   const [permissionStatus, setPermissionStatus] = useState(existFieldPermission);
 

@@ -20,7 +20,6 @@ import classnames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useContext, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Skeleton, ThemeName, Typography, useThemeColors } from '@apitable/components';
 import { ChevronRightOutlined, QuestionCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
@@ -30,6 +29,8 @@ import MarketingAdvertisementDark from 'static/icon/datasheet/overview_marketing
 import MarketingAdvertisementLight from 'static/icon/datasheet/overview_marketing_advertisement_light.png';
 import { SpaceContext } from '../context';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IAvertProps {
   className?: string;
@@ -48,7 +49,7 @@ export const Advert: FC<React.PropsWithChildren<IAvertProps>> = (props) => {
     }
   };
 
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const marketingAdvertisement = themeName === ThemeName.Light ? MarketingAdvertisementLight : MarketingAdvertisementDark;
 
   const style: React.CSSProperties = useMemo(() => {

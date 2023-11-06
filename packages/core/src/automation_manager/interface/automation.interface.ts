@@ -46,12 +46,23 @@ export interface IRobot {
   actionTypesById: Record<string, IActionType>;
 }
 
+export interface IRobotTaskExtraTrigger {
+  triggerId: string;
+  triggerTypeId: string;
+  triggerInput: any;
+  triggerOutput: any;
+}
+
 export interface IRobotTask {
   taskId: string;
   robotId: string;
+  // add on multi-trigger
+  triggerId: string;
   triggerInput: any;
   triggerOutput: any;
   status: number;
+  // add on multi-trigger
+  extraTrigger?: IRobotTaskExtraTrigger[];
 }
 
 /**

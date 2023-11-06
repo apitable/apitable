@@ -18,7 +18,6 @@
 
 import { Progress, Upload } from 'antd';
 import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { TextButton, useThemeColors } from '@apitable/components';
 import { Api, ConfigConstant, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { CheckOutlined, ImportOutlined, WarnOutlined } from '@apitable/icons';
@@ -28,6 +27,8 @@ import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { usePercent } from 'pc/hooks/use_percent';
 import { byte2Mb } from 'pc/utils';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const { Dragger } = Upload;
 
@@ -42,8 +43,8 @@ type ProgressType = 'normal' | 'active' | 'success' | 'exception' | undefined;
 
 export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({ parentId, onCancel }) => {
   const colors = useThemeColors();
-  const spaceId = useSelector((state) => state.space.activeId);
-  const expandedKeys = useSelector((state: IReduxState) => state.catalogTree.expandedKeys);
+  const spaceId = useAppSelector((state) => state.space.activeId);
+  const expandedKeys = useAppSelector((state: IReduxState) => state.catalogTree.expandedKeys);
   const [uploadPercent, setUploadPercent] = useState(0);
   const [file, setFile] = useState<File>();
   const [errMsg, setErrMsg] = useState<string>('');

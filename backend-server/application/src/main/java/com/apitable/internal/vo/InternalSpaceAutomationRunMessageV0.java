@@ -13,7 +13,7 @@ import lombok.Data;
 public class InternalSpaceAutomationRunMessageV0 {
     @Schema(description = "whether to allow over limiting", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
-    private Boolean allowOverLimit;
+    private Boolean allowRun;
 
     @Schema(description = "Number of automation run", example = "1000")
     @JsonSerialize(nullsUsing = CreditUnitSerializer.class)

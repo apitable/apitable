@@ -33,7 +33,7 @@ RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY ./pnpm-workspace.yaml  ./package.json ./pnpm-lock.yaml ./nx.json ./common-tsconfig.json ./tsconfig.json ./.eslintrc ./
+COPY ./pnpm-workspace.yaml ./build.js ./package.json ./pnpm-lock.yaml ./nx.json ./common-tsconfig.json ./tsconfig.json ./.eslintrc ./
 COPY packages/ ./packages/
 
 COPY --from=deps /workspace-install/node_modules ./node_modules

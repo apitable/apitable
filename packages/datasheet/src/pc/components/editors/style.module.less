@@ -5,6 +5,16 @@
   position: absolute;
   z-index: var(--container);
   background: var(--defaultBg);
+  :global {
+    .expandWorkdoc {
+      background: var(--defaultBg);
+      border-top: 0.5px solid var(--primaryColor);
+      .workdocBtn {
+        padding: 2px 10px;
+      }
+
+    }
+  }
 }
 
 .focusHolder {

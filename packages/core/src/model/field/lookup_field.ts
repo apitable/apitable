@@ -1249,17 +1249,20 @@ export class LookUpField extends ArrayValueField {
       const conditionIds = getNewIds(IDPrefix.Condition, apiFilterInfo.conditions.length);
       filterInfo = {
         conjunction: apiFilterInfo.conjunction,
-        conditions: apiFilterInfo.conditions.map((cond, i) => ({
-          ...cond,
-          fieldType: getFieldTypeByString(cond.fieldType)! as Exclude<FieldType, FieldType.DeniedField | FieldType.NotSupport>,
-          operator: cond.operator,
-          conditionId: conditionIds[i]!,
-          value: (filterOperatorAcceptsValue(cond.operator)
-            ? cond.fieldType === APIMetaFieldType.Checkbox || Array.isArray(cond.value)
-              ? cond.value
-              : [cond.value]
-            : undefined) as any,
-        })),
+        conditions: apiFilterInfo.conditions.map((cond, i) => {
+          const _fieldType = getFieldTypeByString(cond.fieldType)!;
+          return {
+            ...cond,
+            fieldType: _fieldType,
+            operator: cond.operator,
+            conditionId: conditionIds[i]!,
+            value: (filterOperatorAcceptsValue(cond.operator)
+              ? cond.fieldType === APIMetaFieldType.Checkbox || Array.isArray(cond.value)
+                ? cond.value
+                : [cond.value]
+              : undefined) as any,
+          }
+        }),
       };
     }
     return {

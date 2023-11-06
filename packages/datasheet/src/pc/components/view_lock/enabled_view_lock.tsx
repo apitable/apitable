@@ -19,12 +19,14 @@
 import { useMount } from 'ahooks';
 import keyBy from 'lodash/keyBy';
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Avatar, Button, Message, Typography } from '@apitable/components';
 import { Api, CollaCommandName, ExecuteResult, IViewProperty, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { IViewLockProps } from 'pc/components/view_lock/interface';
 import styles from 'pc/components/view_lock/style.module.less';
 import { resourceService } from 'pc/resource_service';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 type IEnabledViewLockProps = {
   view: IViewProperty;
@@ -33,8 +35,8 @@ type IEnabledViewLockProps = {
 export const EnabledViewLock: React.FC<React.PropsWithChildren<IEnabledViewLockProps>> = (props) => {
   const { view, onModalClose, unlockHandle } = props;
   const dispatch = useDispatch();
-  const unitMap = useSelector(Selectors.getUnitMap)!;
-  const { manageable } = useSelector(Selectors.getPermissions);
+  const unitMap = useAppSelector(Selectors.getUnitMap)!;
+  const { manageable } = useAppSelector(Selectors.getPermissions);
   useMount(() => {
     if (!view.lockInfo?.description) {
       return;

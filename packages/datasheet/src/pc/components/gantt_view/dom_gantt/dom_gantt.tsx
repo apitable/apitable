@@ -18,7 +18,7 @@
 
 import { FC, useContext } from 'react';
 import { isMobile as isTouchDevice } from 'react-device-detect';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { Select } from '@apitable/components';
 import { DateUnitType, IGanttViewStatus, StoreActions, Strings, t } from '@apitable/core';
@@ -30,6 +30,8 @@ import { KonvaGridContext } from 'pc/components/konva_grid';
 import { useResponsive } from 'pc/hooks';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IDomGanttBaseProps {
   containerWidth: number;
@@ -62,8 +64,8 @@ export const DomGantt: FC<React.PropsWithChildren<IDomGanttBaseProps>> = (props)
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const { containerWidth, gridWidth, gridVisible, dateUnitType } = props;
-  const { datasheetId, viewId } = useSelector((state) => state.pageParams);
-  const spaceId = useSelector((state) => state.space.activeId);
+  const { datasheetId, viewId } = useAppSelector((state) => state.pageParams);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);

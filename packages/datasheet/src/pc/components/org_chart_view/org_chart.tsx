@@ -21,7 +21,6 @@ import { FC, useContext, useRef } from 'react';
 import * as React from 'react';
 import { DropTargetMonitor } from 'react-dnd';
 import ReactDOM from 'react-dom';
-import { useSelector } from 'react-redux';
 import { useContextMenu } from '@apitable/components';
 import { ConfigConstant, Selectors } from '@apitable/core';
 import ReactFlow, { Edge, OnLoadParams, useStoreState, useZoomPanHelper } from '@apitable/react-flow';
@@ -44,6 +43,8 @@ import { IDragItem, NodeHandleState, ScrollBarType } from './interfaces';
 import styles from './styles.module.less';
 // @ts-ignore
 import { getWizardRunCount } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export const OrgChart: FC<React.PropsWithChildren<unknown>> = () => {
   const {
@@ -76,7 +77,7 @@ export const OrgChart: FC<React.PropsWithChildren<unknown>> = () => {
   const nodes = useStoreState((state) => state.nodes);
   const [, , scale] = useStoreState((state) => state.transform);
 
-  const searchRecordId = useSelector(Selectors.getCurrentSearchRecordId);
+  const searchRecordId = useAppSelector(Selectors.getCurrentSearchRecordId);
 
   const focusNode = (id: string) => {
     const node = nodes.find((n) => n.id === id);

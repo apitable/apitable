@@ -34,16 +34,36 @@ export const MagicVariableElement = (props: { nodeOutputSchemaList?: INodeOutput
 
   const nodeSchemaIndex = nodeOutputSchemaList.findIndex((item) => item.id === chainList[0].value);
   const nodeSchema = nodeOutputSchemaList[nodeSchemaIndex];
+
+  const stepIndexOriginal = nodeSchemaIndex + 1;
+  let stepIndex = nodeSchemaIndex + 1;
+
+
+  if(nodeSchema?.id?.startsWith('atr')) {
+    stepIndex=1;
+  }
+
+  if(stepIndexOriginal===0) {
+    stepIndex = 1;
+  }
+
+  let hasError = false;
   const nodeList: { type: 'function' | 'property'; title: string }[] = [
     {
       type: 'property',
       title: t(Strings.robot_inserted_variable_part_1, {
-        number: nodeSchemaIndex + 1,
+        number: stepIndex,
       }),
     },
   ];
+  if(stepIndexOriginal===0) {
+    hasError=true;
+    nodeList.push({
+      type: 'property',
+      title: t(Strings.robot_inserted_variable_invalid),
+    });
+  }
   let schema = nodeSchema?.schema;
-  let hasError = false;
   const getSchemaPropertyTitle = (chainNode: IExpressionChainNode) => {
     if (chainNode.type === 'function') {
       nodeList.push({

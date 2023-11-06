@@ -1,7 +1,8 @@
 import React, { FC } from 'react';
-import { Box, SelectItem, StyledSelectedContainer, StyledSelectTrigger } from '@apitable/components';
+import { Box, SelectItem, StyledSelectedContainer, StyledSelectTrigger, Typography } from '@apitable/components';
 import { NodeType } from '@apitable/core/dist/config/constant';
 import { DatasheetOutlined, FormOutlined } from '@apitable/icons';
+import EllipsisText from 'pc/components/ellipsis_text';
 import { useCssColors } from '../../../robot/robot_detail/trigger/use_css_colors';
 
 export const SelectTrigger: FC<React.PropsWithChildren< {
@@ -37,7 +38,14 @@ export const SelectTrigger: FC<React.PropsWithChildren< {
             </Box>
           )
         }
-        {label}
+
+        <Box maxWidth={'calc(100% - 50px)'}>
+          <EllipsisText>
+            <Typography variant={'body4'} color={colors.textCommonPrimary}>
+              {label}
+            </Typography>
+          </EllipsisText>
+        </Box>
         {!label && (
           value != null ? <SelectItem
             renderValue={(item) => item.label}

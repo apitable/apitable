@@ -207,6 +207,10 @@ export interface IFilterConditionMap {
     fieldType: FieldType.Cascader,
     value: any,
   };
+  [FieldType.Workdoc]: {
+    fieldType: FieldType.Workdoc,
+    value: any,
+  };
 }
 
 export type IFilterCondition<T extends FieldType = FieldType> = IFilterBaseCondition & IFilterConditionMap[T];

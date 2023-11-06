@@ -20,7 +20,6 @@ import { useMount } from 'ahooks';
 import cls from 'classnames';
 import { usePostHog } from 'posthog-js/react';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { Events, IReduxState, Player, TrackEvents } from '@apitable/core';
 import { SideWrapper } from 'pc/components/route_manager/side_wrapper';
 import { usePageParams, useQuery, useRequest, useUserRequest } from 'pc/hooks';
@@ -30,9 +29,11 @@ import styles from './style.module.less';
 // @ts-ignore
 import { WecomContactWrapper, isDingtalkSkuPage } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const TemplateCentre: FC<React.PropsWithChildren<unknown>> = (props) => {
   const { getLoginStatusReq } = useUserRequest();
-  const spaceId = useSelector((state: IReduxState) => state.space.activeId);
+  const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
   const { run: getLoginStatus, loading } = useRequest(getLoginStatusReq, { manual: true });
   const query = useQuery();
   const purchaseToken = query.get('purchaseToken') || '';

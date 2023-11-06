@@ -21,7 +21,6 @@ import { difference } from 'lodash';
 import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, useThemeColors, ThemeName } from '@apitable/components';
 import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { CheckOutlined } from '@apitable/icons';
@@ -31,6 +30,8 @@ import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { INodeInstalledWidget } from '../interface';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IWidgetPreviewProps {
   onChange(result: { datasheetId?: string; viewId?: string; widgetIds?: string[] }): void;
@@ -47,7 +48,7 @@ export const WidgetPreview: React.FC<React.PropsWithChildren<IWidgetPreviewProps
       setSelectedWidgetIds([...selectedWidgetIds, id]);
     }
   };
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   return (
     <div className={styles.widgetList}>

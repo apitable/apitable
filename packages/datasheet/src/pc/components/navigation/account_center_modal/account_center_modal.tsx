@@ -20,7 +20,6 @@ import { Drawer } from 'antd';
 import { compact } from 'lodash';
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { IconButton, useThemeColors } from '@apitable/components';
 import { getCustomConfig, IReduxState, isPrivateDeployment, Strings, t } from '@apitable/core';
 import { CloseOutlined, ListOutlined } from '@apitable/icons';
@@ -38,6 +37,8 @@ import { PersonalizedSetting } from './personalized_setting';
 import styles from './style.module.less';
 // @ts-ignore
 import { AccountWallet, isSocialWecom } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export enum AccountCenterModules {
   BasicSetting = 'BasicSetting',
@@ -61,7 +62,7 @@ export const AccountCenterModal: FC<React.PropsWithChildren<IAccountCenterModalP
   const colors = useThemeColors();
   const [activeItem, setActiveItem] = useState(props.defaultActiveItem || (isPrivateDeployment() && isMobile ? 1 : 0));
   const [showNav, setShowNav] = useState(false);
-  const userInfo = useSelector((state: IReduxState) => state.user.info);
+  const userInfo = useAppSelector((state: IReduxState) => state.user.info);
   const { socialLinkDisable } = getCustomConfig();
   const { ACCOUNT_WALLET_VISIBLE } = getEnvVariables();
   const env = getEnvVariables();

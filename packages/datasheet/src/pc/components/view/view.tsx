@@ -20,7 +20,7 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
 import {
@@ -55,10 +55,12 @@ import { OrgChartView } from '../org_chart_view';
 import { Toolbar } from '../tool_bar';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const DATASHEET_VIEW_CONTAINER_ID = 'DATASHEET_VIEW_CONTAINER_ID';
 export const View: React.FC<React.PropsWithChildren<any>> = () => {
   const colors = useThemeColors();
-  const { currentView, rows, fieldMap } = useSelector((state: IReduxState) => {
+  const { currentView, rows, fieldMap } = useAppSelector((state: IReduxState) => {
     const currentView = Selectors.getCurrentView(state)!;
     const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
     return {
@@ -71,12 +73,12 @@ export const View: React.FC<React.PropsWithChildren<any>> = () => {
   const { screenIsAtMost } = useResponsive();
   const query = useQuery();
   const activeRecordId = query.get('activeRecordId');
-  const views = useSelector(Selectors.getViewsList);
-  const { datasheetId, mirrorId, shareId, templateId, embedId } = useSelector((state) => {
+  const views = useAppSelector(Selectors.getViewsList);
+  const { datasheetId, mirrorId, shareId, templateId, embedId } = useAppSelector((state) => {
     const { datasheetId, mirrorId, shareId, templateId, embedId } = state.pageParams;
     return { datasheetId, mirrorId, shareId, templateId, embedId };
   }, shallowEqual);
-  const isSideRecordOpen = useSelector((state) => state.space.isSideRecordOpen);
+  const isSideRecordOpen = useAppSelector((state) => state.space.isSideRecordOpen);
   const router = useRouter();
   const isViewLock = useShowViewLockModal();
 
@@ -133,7 +135,7 @@ export const View: React.FC<React.PropsWithChildren<any>> = () => {
 
   const isOrgChart = currentView.type === ViewType.OrgChart;
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
+  const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
   const { isShowEmbedToolBar = true } = embedInfo;
 
   return (

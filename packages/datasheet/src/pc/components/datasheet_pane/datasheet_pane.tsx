@@ -23,7 +23,6 @@ import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortc
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { Skeleton } from '@apitable/components';
 import {
@@ -67,6 +66,8 @@ import { WidgetPanel } from '../widget';
 // @ts-ignore
 import { WeixinShareWrapper, createBackupSnapshot } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const RobotPanel = dynamic(() => import('pc/components/robot/robot_panel/robot_panel'), {
   ssr: false,
   loading: () => (
@@ -93,8 +94,8 @@ interface IDatasheetMain {
 
 const DatasheetMain = (props: IDatasheetMain) => {
   const { loading, datasheetErrorCode, isNoPermission, shareId, datasheetId, preview, testFunctions, handleExitTest, mirrorId, embedId } = props;
-  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
-  const previewDstType = useSelector((state) => {
+  const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
+  const previewDstType = useAppSelector((state) => {
     const datasheet = Selectors.getDatasheet(state);
     return datasheet && datasheet?.type;
   });
@@ -167,24 +168,24 @@ const DefaultPanelWidth = {
 const DISABLED_CLOSE_SIDEBAR_WIDTH = 1920;
 
 const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>> = (props) => {
-  const { shareId, datasheetId, templateId, mirrorId, embedId } = useSelector((state) => {
+  const { shareId, datasheetId, templateId, mirrorId, embedId } = useAppSelector((state) => {
     return state.pageParams;
   });
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const isLogin = useAppSelector((state) => state.user.isLogin);
 
   const isShareMode = shareId || templateId || (embedId && !isLogin);
   const { isMobile } = useResponsive();
-  const rightPanelWidth = useSelector((state) => state.rightPane.width);
-  const datasheetErrorCode = useSelector((state) => Selectors.getDatasheetErrorCode(state));
-  const loading = useSelector((state) => {
+  const rightPanelWidth = useAppSelector((state) => state.rightPane.width);
+  const datasheetErrorCode = useAppSelector((state) => Selectors.getDatasheetErrorCode(state));
+  const loading = useAppSelector((state) => {
     const datasheet = Selectors.getDatasheet(state);
     return Boolean(!datasheet || datasheet.isPartOfData || datasheet.sourceId);
   });
-  const preview = useSelector((state) => {
+  const preview = useAppSelector((state) => {
     const datasheet = Selectors.getDatasheet(state);
     return datasheet && datasheet.preview;
   });
-  const activeDatasheetId = useSelector(Selectors.getActiveDatasheetId);
+  const activeDatasheetId = useAppSelector(Selectors.getActiveDatasheetId);
   const dispatch = useAppDispatch();
   const testFunctions = useMemo(() => {
     const funcs = getStorage(StorageName.TestFunctions) || {};
@@ -194,19 +195,19 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
       .join(' , ');
   }, []);
 
-  const widgetPanelStatus = useSelector((state) => {
+  const widgetPanelStatus = useAppSelector((state) => {
     const { mirrorId, datasheetId } = state.pageParams;
     const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;
     const resourceId = mirrorId || datasheetId || '';
     return Selectors.getResourceWidgetPanelStatus(state, resourceId, resourceType);
   })!;
-  const isApiPanelOpen = useSelector((state) => state.space.isApiPanelOpen);
-  const isSideRecordOpen = useSelector((state) => state.space.isSideRecordOpen);
-  const isTimeMachinePanelOpen = useSelector((state) => {
+  const isApiPanelOpen = useAppSelector((state) => state.space.isApiPanelOpen);
+  const isSideRecordOpen = useAppSelector((state) => state.space.isSideRecordOpen);
+  const isTimeMachinePanelOpen = useAppSelector((state) => {
     const clientState = Selectors.getDatasheetClient(state, datasheetId);
     return clientState && clientState.isTimeMachinePanelOpen;
   });
-  const isArchivedRecordsPanelOpen = useSelector((state) => {
+  const isArchivedRecordsPanelOpen = useAppSelector((state) => {
     const clientState = Selectors.getDatasheetClient(state, datasheetId);
     return clientState && clientState.isArchivedRecordsPanelOpen;
   });

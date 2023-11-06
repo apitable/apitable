@@ -24,13 +24,16 @@ import {
   IActionType,
   IRobot,
   IRobotTask,
+  IRobotTaskExtraTrigger,
   NoticeTemplatesConstant,
   Strings,
   validateMagicForm,
 } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
 import { Nack, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { Injectable, Logger } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
+import { TriggerEventHelper } from 'automation/events/helpers/trigger.event.helper';
+import { isEmpty } from 'class-validator';
 import { I18nService } from 'nestjs-i18n';
 import fetch from 'node-fetch';
 import { NodeService } from 'node/services/node.service';
@@ -84,10 +87,13 @@ export class AutomationService {
     private readonly queueSenderService: QueueSenderBaseService,
     private readonly i18n: I18nService,
     private readonly redisService: RedisService,
+    @Inject(forwardRef(() => TriggerEventHelper))
+    private readonly triggerEventHelper: TriggerEventHelper,
   ) {
     this.robotRunner = new AutomationRobotRunner({
       requestActionOutput: this.getActionOutput.bind(this),
       getRobotById: this.getRobotById.bind(this),
+      getRobotByRobotIdAndTriggerId: this.getRobotByRobotIdAndTriggerId.bind(this),
       reportResult: this.updateTaskRunHistory.bind(this),
     });
   }
@@ -159,6 +165,10 @@ export class AutomationService {
 
   async getRobotById(robotId: string) {
     return await this.robotService.getRobotById(robotId);
+  }
+
+  async getRobotByRobotIdAndTriggerId(robotId: string, triggerId: string) {
+    return await this.robotService.getRobotById(robotId, triggerId);
   }
 
   async saveTaskContext(robotTask: IRobotTask, robot: IRobot) {
@@ -239,20 +249,11 @@ export class AutomationService {
     }
   }
 
-  async handleTask(robotId: string, trigger: { input: any; output: any }) {
+  async handleTask(robotId: string, trigger: { triggerId: string; input: any; output: any }) {
     const spaceId = await this.getSpaceIdByRobotId(robotId);
-    // there is no billing plan yet, so there is no limit. self-hosted should not limit the call.
-    // there limit by billing plan
-    // const spaceRobotRunTimes = await this.getRobotRunTimesBySpaceId(spaceId);
-    // if (spaceRobotRunTimes >= 100000) {
-    //   return;
-    // }
     const taskId = IdWorker.nextId().toString(); // TODO: use uuid
-    const automationRunsMessage = await this.restService.getSpaceAutomationRunsMessage(spaceId);
-    const maxAutomationRunsNums = automationRunsMessage.maxAutomationRunNums;
-    const automationRunNums = automationRunsMessage.automationRunNums;
-    if (maxAutomationRunsNums != -1 && automationRunNums > maxAutomationRunsNums) {
-      // The number of space station automation runs exceeds the limit and an excess record is generated.
+    const isAutomationRunnableInSpace = await this.isAutomationRunnableInSpace(spaceId);
+    if (!isAutomationRunnableInSpace) {
       await this.createRunHistory(robotId, taskId, spaceId, RunHistoryStatusEnum.EXCESS);
       return;
     }
@@ -262,10 +263,12 @@ export class AutomationService {
       // 2. execute the robot
       await this.robotRunner.run({
         robotId,
+        triggerId: trigger.triggerId,
         triggerInput: trigger.input,
         triggerOutput: trigger.output,
         taskId,
         status: RunHistoryStatusEnum.RUNNING,
+        extraTrigger: await this.getAutomationExtraTriggers(robotId, trigger),
       });
     } catch (error) {
       // 3. update run history when failed
@@ -307,6 +310,12 @@ export class AutomationService {
   async activeRobot(robotId: string, user: IUserBaseInfo) {
     const errorsByNodeId: any = {};
     try {
+      const resourceCount = await this.automationTriggerRepository.selectResourceIdCountByRobotId(robotId);
+      if (resourceCount == 0) {
+        return {
+          ok: false,
+        };
+      }
       const robot = await this.robotService.getRobotDetailById(robotId);
       const actions = Object.values(robot.actionsById);
       const { trigger, triggerType } = robot as any;
@@ -372,6 +381,44 @@ export class AutomationService {
     return false;
   }
 
+  /**
+   * add on multi-trigger.
+   * @param robotId robot id
+   * @param trigger trigger
+   */
+  private async getAutomationExtraTriggers(
+    robotId: string,
+    trigger: {
+      triggerId: string;
+      input: any;
+      output: any;
+    },
+  ): Promise<IRobotTaskExtraTrigger[]> {
+    const triggers = await this.automationTriggerRepository.selectTriggerInfosByRobotId(robotId);
+    let currentTriggerResourceId = '';
+    const extraTriggers = [];
+    for (const item of triggers) {
+      if (item.triggerId != trigger.triggerId && !isEmpty(item.resourceId) && !isEmpty(item.triggerTypeId)) {
+        extraTriggers.push(item);
+      }
+      if (item.triggerId == trigger.triggerId) {
+        currentTriggerResourceId = item.resourceId!;
+      }
+    }
+    const resourceIds = extraTriggers.map<string>((i) => i.resourceId!);
+    const resources = await this.nodeService.getNodeNameMapByNodeIds(resourceIds);
+    return extraTriggers.map<IRobotTaskExtraTrigger>((item) => {
+      return {
+        triggerId: item.triggerId,
+        triggerTypeId: item.triggerTypeId!,
+        triggerInput: item.resourceId == currentTriggerResourceId ? trigger.input : item.input,
+        triggerOutput:
+          item.resourceId == currentTriggerResourceId
+            ? trigger.output
+            : this.triggerEventHelper.getDefaultTriggerOutput(item.resourceId!, resources.get(item.resourceId!)!),
+      };
+    });
+  }
   /**
    * create an execution record before the task is about to run
    * @param robotId
@@ -455,5 +502,20 @@ export class AutomationService {
     if (keyExists) {
       await redisClient.incr(spaceTaskRunCountKey);
     }
+  }
+
+  private async isAutomationRunnableInSpace(spaceId: string): Promise<boolean> {
+    try {
+      const automationRunsMessage = await this.restService.getSpaceAutomationRunsMessage(spaceId);
+      const allowRun = automationRunsMessage?.allowRun;
+      if (!allowRun) {
+        // The number of space station automation runs exceeds the limit and an excess record is generated.
+        this.logger.log('Automation Subscription UsageExceeded', { spaceId });
+      }
+      return allowRun;
+    } catch (e) {
+      this.logger.error('Automation Subscription Error', { e });
+    }
+    return true;
   }
 }

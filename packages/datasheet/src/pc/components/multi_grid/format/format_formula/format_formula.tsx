@@ -21,7 +21,6 @@ import { Input } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 import { Dispatch, SetStateAction, useEffect, useMemo, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { BasicValueType, expressionTransform, IField, IFormulaField, parse, Selectors, Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
 import { assignDefaultFormatting } from '../format_lookup';
@@ -30,6 +29,8 @@ import { LookUpFormatNumber } from '../format_lookup/lookup_format_number';
 import formatStyles from '../styles.module.less';
 import { openFormulaModal } from './open_formula_modal';
 import styles from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IFormatFormulaProps {
   from?: string;
@@ -40,9 +41,9 @@ interface IFormatFormulaProps {
 
 export const FormatFormula: React.FC<React.PropsWithChildren<IFormatFormulaProps>> = (props: IFormatFormulaProps) => {
   const { from, currentField, setCurrentField, datasheetId: propDatasheetId } = props;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, propDatasheetId || state.pageParams.datasheetId!))!;
-  const fieldPermissionMap = useSelector((state) => Selectors.getFieldPermissionMap(state, propDatasheetId));
-  const datasheetId = useSelector((state) => propDatasheetId || Selectors.getActiveDatasheetId(state))!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, propDatasheetId || state.pageParams.datasheetId!))!;
+  const fieldPermissionMap = useAppSelector((state) => Selectors.getFieldPermissionMap(state, propDatasheetId));
+  const datasheetId = useAppSelector((state) => propDatasheetId || Selectors.getActiveDatasheetId(state))!;
   const inputRef = useRef<InputRef>(null);
   const transformedExp = useMemo(() => {
     try {

@@ -18,7 +18,7 @@
 
 import { useCreation } from 'ahooks';
 import { FC, useContext } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { CellType, DateUnitType, IGanttViewProperty, RowHeightLevel, Selectors, ViewType } from '@apitable/core';
 import { change, DEFAULT_SCROLL_STATE, GanttCoordinate, getDiffCount, getGanttHeaderHeight, KonvaGanttViewContext } from 'pc/components/gantt_view';
 import GanttStage from 'pc/components/gantt_view/gantt_stage/gantt_stage';
@@ -32,6 +32,8 @@ import {
   KonvaGridViewContext,
 } from 'pc/components/konva_grid';
 import { store } from 'pc/store';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const getUnitType = (dateUnitType: DateUnitType) => {
   switch (dateUnitType) {
@@ -50,7 +52,7 @@ interface IGanttExportProps {
 }
 
 export const GanttExport: FC<React.PropsWithChildren<IGanttExportProps>> = ({ dateUnitType }) => {
-  const { view, rowHeight, rowHeightLevel, ganttLinearRows, ganttStyle } = useSelector((state) => {
+  const { view, rowHeight, rowHeightLevel, ganttLinearRows, ganttStyle } = useAppSelector((state) => {
     const view = Selectors.getCurrentView(state)! as IGanttViewProperty;
     const rowHeightLevel = view.rowHeightLevel || RowHeightLevel.Short;
     return {

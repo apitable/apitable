@@ -80,7 +80,7 @@ import { AssetView, AttachmentVo } from './vos/attachment.vo';
 import { DatasheetCreateDto, DatasheetCreateVo, FieldCreateVo } from './vos/datasheet.create.vo';
 import { FieldDeleteVo } from './vos/field.delete.vo';
 import { FieldListVo } from './vos/field.list.vo';
-import { RecordListVo } from './vos/record.list.vo';
+import {RecordIdListVo, RecordListVo} from './vos/record.list.vo';
 import { RecordPageVo } from './vos/record.page.vo';
 import { ViewListVo } from './vos/view.list.vo';
 
@@ -468,6 +468,24 @@ export class FusionApiController {
     const { nodeId } = param;
     const nodeInfo = await this.fusionApiService.getNodeDetail(nodeId);
     return ApiResponse.success(nodeInfo);
+  }
+
+  @Get('/timemachine/:dstId')
+  @ApiOperation({
+    summary: 'get all deleted record by time machine',
+    description: 'via time machine api',
+    deprecated: false,
+  })
+  @ApiProduces('application/json')
+  @UseGuards(ApiDatasheetGuard)
+  @UseInterceptors(ApiCacheInterceptor)
+  @CacheTTL(apiCacheTTLFactory)
+  @SetMetadata(DATASHEET_OPTIONS, { requireMetadata: true, loadSingleView: true } as IApiDatasheetOptions)
+  public async getDeletedRecords(
+      @Param() param: RecordParamRo,
+  ): Promise<RecordIdListVo> {
+    const pageVo = await this.fusionApiService.getDeletedRecords(param.dstId);
+    return ApiResponse.success(pageVo);
   }
 
   /**

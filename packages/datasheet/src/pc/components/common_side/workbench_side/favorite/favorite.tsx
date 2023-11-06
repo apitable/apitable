@@ -20,7 +20,7 @@ import classnames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useContext, useMemo, useRef } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { Skeleton } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation, NodeErrorType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { NodeItem } from 'pc/components/catalog/tree/node_item';
@@ -33,10 +33,12 @@ import EmptyFavoritePng from 'static/icon/workbench/catalogue/favorite.png';
 import { WorkbenchSideContext } from '../workbench_side_context';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
-  const spaceId = useSelector((state: IReduxState) => state.space.activeId);
-  const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
+  const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
+  const activeNodeId = useAppSelector((state: IReduxState) => Selectors.getNodeId(state));
   const {
     favoriteTreeNodeIds: _favoriteTreeNodeIds,
     favoriteDelNodeId,
@@ -44,7 +46,7 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
     favoriteLoading,
     favoriteExpandedKeys,
     treeNodesMap,
-  } = useSelector(
+  } = useAppSelector(
     (state: IReduxState) => ({
       favoriteTreeNodeIds: state.catalogTree.favoriteTreeNodeIds,
       favoriteDelNodeId: state.catalogTree.favoriteDelNodeId,

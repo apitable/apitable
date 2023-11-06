@@ -20,7 +20,7 @@ import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import * as React from 'react';
 import { useContext, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Field, ILinkField, IOneWayLinkField, LinkField, RowHeightLevel, Selectors, StatusCode, Strings, t } from '@apitable/core';
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
@@ -37,6 +37,8 @@ import styles from '../cell_options/style.module.less';
 import { ICellComponentProps } from '../cell_value/interface';
 import { OptionalCellContainer } from '../optional_cell_container/optional_cell_container';
 import optionalStyle from '../optional_cell_container/style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const NO_DATA = Symbol('NO_DATA');
 const ERROR_DATA = Symbol('ERROR_DATA');
@@ -73,7 +75,7 @@ export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = (props) =>
   /**
    * In order for the cell to listen to changes in the foreignDatasheet record value, update the view
    */
-  const cellStringList = useSelector((state) => {
+  const cellStringList = useAppSelector((state) => {
     const emptyRecords: string[] = [];
     if (linkRecordIds && field) {
       const datasheet = getDatasheetOrLoad(state, field.property.foreignDatasheetId, baseDatasheetId, undefined, undefined, ignoreMirror);

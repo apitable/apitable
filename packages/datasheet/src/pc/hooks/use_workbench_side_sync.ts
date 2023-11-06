@@ -18,7 +18,7 @@
 
 import { has } from 'lodash';
 import { useContext, useEffect } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import {
   Api,
@@ -48,6 +48,8 @@ import { store } from 'pc/store';
 import { getNodeTypeByNodeId, getResourceTypeByNodeType } from 'pc/utils';
 import { useCatalogTreeRequest } from './use_catalogtree_request';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export enum NodeChangeInfoType {
   Create = 'nodeCreate',
   Update = 'nodeUpdate',
@@ -66,8 +68,8 @@ enum ErrorType {
 export const useWorkbenchSideSync = () => {
   const dispatch = useAppDispatch();
   const { getChildNodeListReq, updateNextNode, getPositionNodeReq } = useCatalogTreeRequest();
-  const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
-  const { treeNodesMap, socketData, expandedKeys, spaceId } = useSelector(
+  const activeNodeId = useAppSelector((state: IReduxState) => Selectors.getNodeId(state));
+  const { treeNodesMap, socketData, expandedKeys, spaceId } = useAppSelector(
     (state: IReduxState) => ({
       treeNodesMap: state.catalogTree.treeNodesMap,
       socketData: state.catalogTree.socketData,

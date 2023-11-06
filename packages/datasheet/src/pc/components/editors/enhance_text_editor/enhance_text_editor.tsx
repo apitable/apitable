@@ -19,7 +19,6 @@
 import classNames from 'classnames';
 import { find, omit } from 'lodash';
 import { ChangeEvent, default as React, forwardRef, memo, useImperativeHandle, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { LinkButton, useThemeColors } from '@apitable/components';
 import { Field, FieldType, ICellValue, IField, ISegment, SegmentType, Selectors, Strings, t } from '@apitable/core';
 import { EditOutlined, EmailOutlined, NewtabOutlined, TelephoneOutlined, WebOutlined } from '@apitable/icons';
@@ -31,6 +30,8 @@ import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enh
 import { stopPropagation } from 'pc/utils';
 import { IBaseEditorProps, IEditor } from '../interface';
 import style from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IEnhanceTextEditorProps extends IBaseEditorProps {
   placeholder?: string;
@@ -54,7 +55,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [focused, setFocused] = useState(false);
   const [activeUrlAction, setActiveUrlAction] = useState(false);
-  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state))!;
+  const datasheetId = useAppSelector((state) => Selectors.getActiveDatasheetId(state))!;
 
   useImperativeHandle(
     ref,

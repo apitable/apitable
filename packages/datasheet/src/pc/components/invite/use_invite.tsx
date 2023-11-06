@@ -17,7 +17,7 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Api, IInviteEmailInfo, IInviteLinkInfo, IInviteMemberList, IReduxState, Navigation, StatusCode, StoreActions } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { IParams } from 'pc/components/route_manager/interface';
@@ -25,6 +25,8 @@ import { Router } from 'pc/components/route_manager/router';
 import { secondStepVerify } from 'pc/hooks/utils';
 import { getSearchParams } from 'pc/utils';
 import { execNoTraceVerification } from 'pc/utils/no_trace_verification';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 // @ts-ignore
 
@@ -37,9 +39,9 @@ export const useLinkInvite = () => {
   const dispatch = useDispatch();
   const inviteLinkTokenInUrl = urlParams.get('inviteLinkToken');
   const inviteNodeIdInUrl = urlParams.get('nodeId');
-  const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
-  const inviteLinkTokenInStore = useSelector((state: IReduxState) => state.invite.linkToken);
-  const nodeId = useSelector((state: IReduxState) => state.invite.nodeId);
+  const inviteLinkInfo = useAppSelector((state: IReduxState) => state.invite.inviteLinkInfo);
+  const inviteLinkTokenInStore = useAppSelector((state: IReduxState) => state.invite.linkToken);
+  const nodeId = useAppSelector((state: IReduxState) => state.invite.nodeId);
 
   // Retrieval of information
   const reGetLinkInfo = (linkToken: string, nodeId?: string) => {
@@ -104,8 +106,8 @@ interface IInvitePageRefreshedProps {
 export const useInvitePageRefreshed = (data: IInvitePageRefreshedProps) => {
   const { type } = data;
   const urlParams = new URLSearchParams(window.location.search);
-  const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
-  const inviteEmailInfo = useSelector((state: IReduxState) => state.invite.inviteEmailInfo);
+  const inviteLinkInfo = useAppSelector((state: IReduxState) => state.invite.inviteLinkInfo);
+  const inviteEmailInfo = useAppSelector((state: IReduxState) => state.invite.inviteEmailInfo);
   let inviteTokenInUrl: string | null;
   let inviteInfo: IInviteLinkInfo | IInviteEmailInfo | null;
   let invitePath: IParams['invitePath'];

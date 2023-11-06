@@ -20,8 +20,9 @@
     "build": "nx run-many -t build",
     "build:web": "nx run @apitable/datasheet:build",
     "build:datasheet": "nx run @apitable/datasheet:build",
+    "build:api-client": "nx run @apitable/api-client:build",
     "build:ai-components": "node build.js",
-    "build:dst:pre": "nx run-many -t build -p @apitable/i18n-lang @apitable/core @apitable/icons @apitable/components @apitable/widget-sdk --parallel=5 && pnpm build:ai-components",
+    "build:dst:pre": "nx run-many -t build -p @apitable/i18n-lang @apitable/core @apitable/icons @apitable/components @apitable/widget-sdk --parallel=5 && pnpm build:ai-components &&  pnpm build:api-client",
     "build:dst": "nx run --verbose @apitable/datasheet:build",
     "build:air-agent:pre": "nx run-many -t build -p @apitable/i18n-lang @apitable/icons @apitable/core @apitable/components --parallel=5 && pnpm build:ai-components",
     "build:air-agent": "nx run --verbose @apitable/air-agent:build",
@@ -98,8 +99,8 @@
     "quicktype": "^23.0.75",
     "svgo": "^3.0.2",
     "ts-node": "^10.9.1",
-    "ts-pnp": "1.2.0",
-    "typescript": "5.2.2"
+    "typescript": "4.8.2",
+    "ts-pnp": "1.2.0"
   },
   "resolutions": {
     "webpack": "4.44.2",

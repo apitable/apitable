@@ -19,12 +19,14 @@
 import { Form } from 'antd';
 import * as React from 'react';
 import { FC, useState, useEffect } from 'react';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { useDispatch, shallowEqual } from 'react-redux';
 import { IReduxState, StoreActions, Api, t, Strings, ConfigConstant } from '@apitable/core';
 import { Message, NormalModal, WithTipTextInput } from 'pc/components/common';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IModifyNameModalProps {
   setNameModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,7 +36,7 @@ export interface IModifyNameModalProps {
 export const ModifyNameModal: FC<React.PropsWithChildren<IModifyNameModalProps>> = (props) => {
   const { setNameModal, originName } = props;
   const { getLoginStatusReq } = useUserRequest();
-  const { err, loading } = useSelector(
+  const { err, loading } = useAppSelector(
     (state: IReduxState) => ({
       err: state.user.err,
       loading: state.user.loading,

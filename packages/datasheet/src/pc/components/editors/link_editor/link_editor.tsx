@@ -21,7 +21,7 @@ import classNames from 'classnames';
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Align } from 'react-window';
 import { useThemeColors, Skeleton } from '@apitable/components';
 import { ConfigConstant, ILinkField, ILinkIds, IOneWayLinkField, Selectors, Strings, t } from '@apitable/core';
@@ -38,6 +38,8 @@ import { useCellEditorVisibleStyle } from '../hooks';
 import { IBaseEditorProps, IEditor } from '../interface';
 import { SearchContent } from './search_content';
 import style from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export enum LinkEditorModalLayout {
   Center = 'Center',
@@ -106,7 +108,7 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [focusIndex, setFocusIndex] = useState(-1);
 
-  const { foreignDatasheetId, foreignDatasheetName } = useSelector((state) => {
+  const { foreignDatasheetId, foreignDatasheetName } = useAppSelector((state) => {
     const foreignDatasheet = Selectors.getDatasheet(state, field.property.foreignDatasheetId);
     return { foreignDatasheetId: foreignDatasheet?.id, foreignDatasheetName: foreignDatasheet?.name };
   }, shallowEqual);

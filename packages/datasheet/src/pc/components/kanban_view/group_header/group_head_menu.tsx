@@ -21,7 +21,6 @@ import classNames from 'classnames';
 import produce from 'immer';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useContextMenu, useThemeColors } from '@apitable/components';
 import {
   ConfigConstant,
@@ -52,6 +51,8 @@ import { MemberFieldHead } from './member_field_head';
 import { OptionFieldHead } from './option_field_head';
 import styles from './styles.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface ICollapseWrapper {
   isCollapse?: boolean;
   children: any;
@@ -77,25 +78,25 @@ const CollapseWrapper = ({ isCollapse, children }: ICollapseWrapper) => {
 
 export const GroupHeader: React.FC<React.PropsWithChildren<IGroupHeaderProps>> = (props) => {
   const colors = useThemeColors();
-  const cacheTheme = useSelector(Selectors.getTheme);
+  const cacheTheme = useAppSelector(Selectors.getTheme);
   const { groupId, kanbanGroupMap, provided, setCollapse, collapse, scrollToItem } = props;
-  const datasheetId = useSelector((state) => state.pageParams.datasheetId)!;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
-  const kanbanFieldId = useSelector(Selectors.getKanbanFieldId)!;
-  const field = useSelector((state) => Selectors.getField(state, kanbanFieldId));
-  const view = useSelector(Selectors.getCurrentView) as IKanbanViewProperty;
+  const datasheetId = useAppSelector((state) => state.pageParams.datasheetId)!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
+  const kanbanFieldId = useAppSelector(Selectors.getKanbanFieldId)!;
+  const field = useAppSelector((state) => Selectors.getField(state, kanbanFieldId));
+  const view = useAppSelector(Selectors.getCurrentView) as IKanbanViewProperty;
   const cellValue = field.type === FieldType.Member ? [groupId] : groupId;
   const [editing, setEditing] = useState(false);
   const triggerRef = useRef<any>();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const command = useCommand();
-  const readOnly = useSelector((state) => !Selectors.getPermissions(state).manageable);
+  const readOnly = useAppSelector((state) => !Selectors.getPermissions(state).manageable);
   const divRef = useRef<HTMLDivElement | null>(null);
   const { show } = useContextMenu({
     id: KANBAN_GROUP_MORE,
   });
 
-  const fieldRole = useSelector((state) => {
+  const fieldRole = useAppSelector((state) => {
     const fieldPermissionMap = Selectors.getFieldPermissionMap(state);
     return Selectors.getFieldRoleByFieldId(fieldPermissionMap, kanbanFieldId);
   });

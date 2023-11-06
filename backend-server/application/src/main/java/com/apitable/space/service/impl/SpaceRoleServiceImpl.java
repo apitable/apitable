@@ -319,7 +319,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     @Transactional(rollbackFor = Exception.class)
     public void deleteRole(String spaceId, Long memberId) {
         log.info("delete role");
-        String roleCode = spaceMemberRoleRelMapper.selectRoleCodeByMemberId(spaceId, memberId);
+        String roleCode = iSpaceMemberRoleRelService.getRoleCodeByMemberId(spaceId, memberId);
 
         // If a role is bound to someone else, you cannot delete the role
         List<Long> memberIds = spaceMemberRoleRelMapper.selectMemberIdBySpaceIdAndRoleCodes(spaceId,
@@ -363,7 +363,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteBySpaceId(String spaceId) {
-        List<String> roleCodes = spaceMemberRoleRelMapper.selectRoleCodesBySpaceId(spaceId);
+        List<String> roleCodes = iSpaceMemberRoleRelService.getRoleCodesBySpaceId(spaceId);
         if (CollUtil.isNotEmpty(roleCodes)) {
             baseMapper.batchDeleteByRoleCode(roleCodes);
             spaceRoleResourceRelMapper.batchDeleteByRoleCodes(roleCodes);
@@ -402,10 +402,10 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
         if (memberId.equals(superAdmin)) {
             return;
         }
-        String roleCode = spaceMemberRoleRelMapper.selectRoleCodeByMemberId(spaceId, memberId);
+        String roleCode = iSpaceMemberRoleRelService.getRoleCodeByMemberId(spaceId, memberId);
         consumer.accept(null == roleCode);
         List<String> memberRoles =
-            spaceRoleResourceRelMapper.selectResourceCodesByRoleCode(roleCode);
+            iSpaceRoleResourceRelService.getResourceCodesByRoleCode(roleCode);
         consumer.accept(!new HashSet<>(memberRoles).containsAll(resourceCodes));
     }
 }

@@ -17,7 +17,7 @@
  */
 
 import { FC } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { IReduxState } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileBar } from 'pc/components/mobile_bar';
@@ -27,10 +27,12 @@ import { CreateDatasheet } from 'pc/components/workspace/welcome/components/crea
 import { Guide } from 'pc/components/workspace/welcome/components/guide/guide';
 import { getEnvVariables } from 'pc/utils/env';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 console.log({ ChatWelcome });
 
 export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
-  const { treeNodesMap, rootId } = useSelector(
+  const { treeNodesMap, rootId } = useAppSelector(
     (state: IReduxState) => ({
       treeNodesMap: state.catalogTree.treeNodesMap,
       rootId: state.catalogTree.rootId,
@@ -38,7 +40,7 @@ export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
     }),
     shallowEqual,
   );
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
 
   if (!treeNodesMap[rootId] || !spaceId) {
     return <></>;

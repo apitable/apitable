@@ -101,4 +101,14 @@ public class SpaceMemberRoleRelServiceImpl
         }
         return this.baseMapper.selectMemberIdBySpaceIdAndRoleCodes(spaceId, roleCodes);
     }
+
+    @Override
+    public String getRoleCodeByMemberId(String spaceId, Long memberId) {
+        return baseMapper.selectRoleCodeByMemberId(spaceId, memberId);
+    }
+
+    @Override
+    public List<String> getRoleCodesBySpaceId(String spaceId) {
+        return baseMapper.selectRoleCodesBySpaceId(spaceId);
+    }
 }

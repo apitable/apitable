@@ -19,21 +19,22 @@
 import cx from 'classnames';
 import produce from 'immer';
 import { useAtom } from 'jotai';
-import { isEqual } from 'lodash';
+import { isEqual, isString } from 'lodash';
 import * as React from 'react';
-import { FC, memo, ReactNode, useCallback, useContext, useMemo } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { FC, memo, ReactNode, useCallback, useContext, useEffect, useMemo } from 'react';
+import { shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import { Box, SearchSelect, useThemeColors } from '@apitable/components';
-import { integrateCdnHost, IReduxState, Strings, t } from '@apitable/core';
+import { integrateCdnHost, IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import { setSideBarVisible } from '@apitable/core/dist/modules/space/store/actions/space';
 import { ChevronDownOutlined } from '@apitable/icons';
 import { IFetchDatasheet } from '@apitable/widget-sdk/dist/message/interface';
 import { getTriggerDatasheetId } from 'pc/components/automation/controller/hooks/use_robot_fields';
 import { Message, Modal } from 'pc/components/common';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useResponsive } from '../../../../hooks';
-import {getResourceAutomationDetailIntegrated, useAutomationController} from '../../../automation/controller';
+import { getResourceAutomationDetailIntegrated, useAutomationController } from '../../../automation/controller';
 import {
   automationLocalMap,
   automationPanelAtom,
@@ -46,14 +47,16 @@ import { ShareContext } from '../../../share';
 import styles from '../../../slate_editor/components/select/style.module.less';
 import { changeActionTypeId, getResourceAutomationDetail, updateActionInput } from '../../api';
 import { getFilterActionTypes, getNodeOutputSchemaList, getNodeTypeOptions, operand2PureValue } from '../../helper';
-import {useActionTypes, useRobotTriggerTypes, useTriggerTypes} from '../../hooks';
+import { useActionTypes, useRobotTriggerTypes, useTriggerTypes } from '../../hooks';
 import { IRobotAction } from '../../interface';
 import { MagicTextField } from '../magic_variable_container';
 import { NodeForm, NodeFormInfo } from '../node_form';
 import { IChangeEvent } from '../node_form/core/interface';
 import { EditType } from '../trigger/robot_trigger';
 import itemStyle from '../trigger/select_styles.module.less';
-import {getActionList, getTriggerList} from '../utils';
+import { getActionList, getTriggerList } from '../utils';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IRobotActionProps {
   index: number;
@@ -86,11 +89,21 @@ export const RobotAction = memo((props: IRobotActionProps) => {
   const actionList = useMemo(() => getActionList(actions), [actions]);
 
   const { data: triggerTypes } = useTriggerTypes();
+  const dispatch = useAppDispatch();
 
   const { data: dataList } = useSWR(['getRobotMagicDatasheet', triggers], () => getTriggerDatasheetId(triggers), {
   });
 
-  const dataSheetMap = useSelector((state: IReduxState) => state.datasheetMap);
+  const dataSheetMap = useAppSelector((state: IReduxState) => state.datasheetMap);
+
+  useEffect(() => {
+    dataList?.forEach((item) => {
+      if(isString(item) && !dataSheetMap[item]) {
+        dispatch(StoreActions.fetchDatasheet(item) as any);
+      }
+    });
+  }, [dataList, dataSheetMap, dispatch]);
+
 
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
@@ -100,6 +113,8 @@ export const RobotAction = memo((props: IRobotActionProps) => {
     triggerDataSheetIds: dataList ?? [],
     dataSheetMap
   });
+
+  const [map, setMap] =useAtom(automationLocalMap);
 
   const { api: { refresh, refreshItem } } = useAutomationController();
   const handleActionTypeChange = useCallback((actionTypeId: string) => {
@@ -163,7 +178,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
       type: 'warning',
     });
   },
-  [action.id, action?.typeId, automationState, isMobile, nodeOutputSchemaList, refresh, robotId, setAutomationAtom, setAutomationPanel, shareInfo?.shareId],
+  [action.id, action?.typeId, automationState, isMobile, nodeOutputSchemaList, refresh, robotId, setAutomationAtom, setAutomationPanel, setMap, shareInfo?.shareId],
   );
 
   const dataClick = useCallback(() => {
@@ -181,7 +196,6 @@ export const RobotAction = memo((props: IRobotActionProps) => {
     });
   }, [action.id, editType, permissions.editable, props, setAutomationPanel]);
 
-  const [map, setMap] =useAtom(automationLocalMap);
 
   const formData = map.get(action.id!) ?? action.input;
 
@@ -191,9 +205,9 @@ export const RobotAction = memo((props: IRobotActionProps) => {
   }, [mapFormData, action.input]);
   const handleUpdate = useCallback((e: IChangeEvent) => {
     setMap(produce(draft => {
-      draft.set(action.id, e.formData);
+      draft.set(action.actionId, e.formData);
     }));
-  }, [action.id, setMap]);
+  }, [action.actionId, setMap]);
 
   if(!formData) {
     setMap(produce(map, (draft => {
@@ -280,11 +294,15 @@ export const RobotAction = memo((props: IRobotActionProps) => {
     widgets={
       {
         TextWidget: (props: any) => {
-          return <MagicTextField
-            {...props}
-            nodeOutputSchemaList={prevActionSchemaList}
-            triggerType={triggerType}
-          />;
+          return (
+            <Box maxWidth={'100%'} maxHeight={'300px'} overflowY={'auto'} overflowX={'auto'}>
+              <MagicTextField
+                {...props}
+                nodeOutputSchemaList={prevActionSchemaList}
+                triggerType={triggerType}
+              />
+            </Box>
+          );
         }
       }
     }

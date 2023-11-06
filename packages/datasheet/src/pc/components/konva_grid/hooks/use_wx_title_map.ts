@@ -18,10 +18,11 @@
 
 import { isObject } from 'lodash';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Selectors } from '@apitable/core';
 // @ts-ignore
 import { WecomOpenDataType, isSocialWecom } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IWxTitleMap {
   userNames?: { name: string; unitId: string }[];
@@ -30,8 +31,8 @@ interface IWxTitleMap {
 // Enterprise Wecom members canvas name collection
 export const useWxTitleMap = (props: IWxTitleMap = {}) => {
   const { userNames } = props;
-  const unitMap = useSelector(Selectors.getUnitMap);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const unitMap = useAppSelector(Selectors.getUnitMap);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   // Enterprise Wecom member name collection
   const [unitTitleMap, setUnitTitleMap] = useState<object>({});
   const WWOpenData: {

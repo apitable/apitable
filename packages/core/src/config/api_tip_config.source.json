@@ -944,6 +944,14 @@
         "message": "api_params_lookup_can_not_operate",
         "statusCode": 200
       },
+      "api_params_workdoc_can_not_operate": {
+        "apiTypes": "fusion_api",
+        "code": 400,
+        "id": "api_params_workdoc_can_not_operate",
+        "isRecordTimes": true,
+        "message": "api_params_workdoc_can_not_operate",
+        "statusCode": 200
+      },
       "api_params_max_count_error": {
         "apiTypes": "fusion_api",
         "code": 400,

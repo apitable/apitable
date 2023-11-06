@@ -19,7 +19,6 @@
 import { useDebounceFn } from 'ahooks';
 import * as React from 'react';
 import { useContext, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Selectors } from '@apitable/core';
 import { IEditor } from 'pc/components/editors/interface';
@@ -28,10 +27,12 @@ import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filte
 import { IFilterNumberProps } from '../interface';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const FilterRating: React.FC<React.PropsWithChildren<Omit<IFilterNumberProps, 'execute'>>> = (props) => {
   const { condition, onChange, disabled = false, field } = props;
   const colors = useThemeColors();
-  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state))!;
+  const datasheetId = useAppSelector((state) => Selectors.getActiveDatasheetId(state))!;
   const numberRef = useRef<IEditor>(null);
   const { isViewLock: isViewLockOriginal } = useContext(ViewFilterContext);
   const isViewLock = isViewLockOriginal || disabled;

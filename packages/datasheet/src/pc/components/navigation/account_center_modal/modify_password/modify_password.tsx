@@ -20,7 +20,7 @@ import { Form } from 'antd';
 import classNames from 'classnames';
 import { FC, useState } from 'react';
 import * as React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { TextInput, Button } from '@apitable/components';
 import { t, Strings, IReduxState, StoreActions, ConfigConstant, StatusCode, Api } from '@apitable/core';
 import { Message, PasswordInput, IdentifyingCodeInput, WithTipWrapper } from 'pc/components/common';
@@ -28,6 +28,8 @@ import { useRequest, useSetState, useUserRequest } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
 import { getVerifyData, VerifyTypes, IChangePasswordConfig } from '../utils';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IModifyPasswordProps {
   setActiveItem: React.Dispatch<React.SetStateAction<number>>;
@@ -57,7 +59,7 @@ export const ModifyPassword: FC<React.PropsWithChildren<IModifyPasswordProps>> =
   });
 
   const dispatch = useDispatch();
-  const user = useSelector((state: IReduxState) => state.user.info)!;
+  const user = useAppSelector((state: IReduxState) => state.user.info)!;
   const { modifyPasswordReq } = useUserRequest();
   const { run: modifyPassword, loading } = useRequest(modifyPasswordReq, { manual: true });
   const env = getEnvVariables();

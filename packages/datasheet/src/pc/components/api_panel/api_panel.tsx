@@ -19,7 +19,7 @@
 import { Tabs } from 'antd';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, Checkbox, Divider, useThemeColors } from '@apitable/components';
 import { ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { ApiOutlined, BookOutlined, AdjustmentOutlined, CloseOutlined } from '@apitable/icons';
@@ -32,21 +32,23 @@ import { FieldCode } from './field_codes/field_codes';
 import { FieldDocs } from './field_docs';
 import styles from './styles.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const ApiPanel: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
-  const isApiPanelOpen = useSelector((state) => state.space.isApiPanelOpen);
-  const apiToken = useSelector((state) => state.user.info!.apiKey);
+  const isApiPanelOpen = useAppSelector((state) => state.space.isApiPanelOpen);
+  const apiToken = useAppSelector((state) => state.user.info!.apiKey);
   const dispatch = useDispatch();
-  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state))!;
-  const datasheetLoaded = useSelector((state) => Boolean(Selectors.getSnapshot(state)));
-  const datasheet = useSelector((state) => Selectors.getDatasheet(state, datasheetId));
+  const datasheetId = useAppSelector((state) => Selectors.getActiveDatasheetId(state))!;
+  const datasheetLoaded = useAppSelector((state) => Boolean(Selectors.getSnapshot(state)));
+  const datasheet = useAppSelector((state) => Selectors.getDatasheet(state, datasheetId));
   const [byFieldId, setByFieldId] = useState(false);
   const [showApiToken, _setShowApiToken] = useState(false);
   const [paneType, setPaneType] = useState('fields');
   const [language, setLanguage] = useState(CodeLanguage.Curl);
   const [showAccountCenter, setShowAccountCenter] = useState(false);
   const token = showApiToken ? apiToken : t(Strings.api_your_token);
-  const isWidgetPanelOpening = useSelector((state) => {
+  const isWidgetPanelOpening = useAppSelector((state) => {
     const widgetPanelStatus = Selectors.getResourceWidgetPanelStatus(state, datasheetId, ResourceType.Datasheet);
     return widgetPanelStatus?.opening;
   });

@@ -20,7 +20,6 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { findNode, Selectors, Strings, t } from '@apitable/core';
 import { DashboardPanel } from 'pc/components/dashboard_panel';
 import { DataSheetPane } from 'pc/components/datasheet_pane';
@@ -35,6 +34,9 @@ import { ApplicationJoinSpaceAlert } from '../application_join_space_alert';
 import { IShareMenu } from '../share_menu';
 import { ShareMenu } from '../share_menu/share_menu';
 import styles from './style.module.less';
+import { AutomationPanel } from "pc/components/automation";
+
+import {useAppSelector} from "pc/store/react-redux";
 
 // @ts-ignore
 const AIPanel = dynamic(() => import('enterprise').then((module) => module.ChatPage));
@@ -44,11 +46,11 @@ export interface IShareMobileProps extends IShareMenu {
 }
 
 export const ShareMobile: React.FC<React.PropsWithChildren<IShareMobileProps>> = (props) => {
-  const { shareId, datasheetId, folderId, formId, dashboardId, mirrorId, aiId } = useSelector((state) => state.pageParams);
+  const { shareId, datasheetId, folderId, formId, dashboardId, mirrorId, automationId, aiId } = useAppSelector((state) => state.pageParams);
   const [viewListStatus, setViewListStatus] = useState(false);
   const [shareGuideStatus, setShareGuideStatus] = useState(false);
   const [descModalStatus, setDescModal] = useState(false);
-  const datasheetName = useSelector((state) => {
+  const datasheetName = useAppSelector((state) => {
     const treeNodesMap = state.catalogTree.treeNodesMap;
     const datasheet = Selectors.getDatasheet(state);
     if (shareId) {
@@ -73,7 +75,9 @@ export const ShareMobile: React.FC<React.PropsWithChildren<IShareMobileProps>> =
     if (!shareNode) {
       return;
     }
-    if (mirrorId) {
+    if (automationId) {
+      return <AutomationPanel resourceId={automationId}/>;
+    } else if (mirrorId) {
       return <MirrorRoute />;
     } else if (datasheetId) {
       return <DataSheetPane />;

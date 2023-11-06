@@ -30,7 +30,7 @@ function hasUrlIgnore(curUrl: string | undefined): boolean {
   return false;
 }
 
-function redirectIfUserApplyLogout() {
+export function redirectIfUserApplyLogout() {
   const state = store.getState();
   const initData = getInitializationData();
   const userInfo = state.user.info || initData.userInfo;

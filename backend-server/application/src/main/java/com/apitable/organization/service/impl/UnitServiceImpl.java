@@ -22,6 +22,7 @@ import static com.apitable.shared.constants.SpaceConstants.SPACE_ROOT_TEAM_UNIT_
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.control.service.IControlRoleService;
@@ -145,10 +146,11 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
     public UnitEntity create(String spaceId, UnitType unitType, Long unitRefId) {
         log.info("create unit，unit type:{}, unit id:{}", unitType, unitRefId);
         UnitEntity unit = new UnitEntity();
+        unit.setId(IdWorker.getId());
         unit.setSpaceId(spaceId);
         unit.setUnitType(unitType.getType());
         unit.setUnitRefId(unitRefId);
-        unit.setUnitId(IdWorker.get32UUID());
+        unit.setUnitId(IdUtil.fastSimpleUUID());
         boolean flag = save(unit);
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
         return unit;

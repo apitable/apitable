@@ -20,7 +20,6 @@ import classNames from 'classnames';
 import produce from 'immer';
 import * as React from 'react';
 import { useContext, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { IOption, Select, useThemeColors } from '@apitable/components';
 import {
@@ -48,6 +47,8 @@ import { useResponsive } from 'pc/hooks';
 import { ExecuteFilterFn } from '../interface';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IFilterFieldListProps {
   conditionIndex: number;
   changeFilter: (cb: ExecuteFilterFn) => void;
@@ -63,7 +64,7 @@ interface IFilterFieldListProps {
 const FilterFieldListBase: React.FC<React.PropsWithChildren<IFilterFieldListProps>> = (props) => {
   const { conditionIndex, changeFilter, condition, fieldMap, columns, warnTextObj, isCryptoField, fieldNotFound } = props;
   const colors = useThemeColors();
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
   const { isViewLock } = useContext(ViewFilterContext);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);

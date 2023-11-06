@@ -18,7 +18,7 @@
 
 import * as React from 'react';
 import { useEffect } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 
 import {
@@ -64,6 +64,8 @@ import { getEnvVariables } from 'pc/utils/env';
 import { useActiveFieldSetting, useDeleteField, useFilterField, useHideField, useSortField } from '../multi_grid/hooks';
 import { expandFieldDescEditorMobile } from './field_desc_editor';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IFieldMenu {
   onClose(): void;
   fieldId: string;
@@ -71,7 +73,7 @@ interface IFieldMenu {
 
 export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = ({ onClose, fieldId }) => {
   const colors = useThemeColors();
-  const { datasheetId, fieldMap, view, permissions, field, fieldIndex } = useSelector((state: IReduxState) => {
+  const { datasheetId, fieldMap, view, permissions, field, fieldIndex } = useAppSelector((state: IReduxState) => {
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const fieldMap = Selectors.getFieldMap(state, datasheetId)!;
     const view = Selectors.getCurrentView(state)!;
@@ -89,15 +91,15 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = ({ onClo
       fieldIndex,
     };
   }, shallowEqual);
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
-  const mirrorId = useSelector((state) => state.pageParams.mirrorId);
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
+  const mirrorId = useAppSelector((state) => state.pageParams.mirrorId);
   const dispatch = useAppDispatch();
   const handleHideField = useHideField(view);
   const handleSortField = useSortField();
   const handleFilterField = useFilterField();
   const activeFieldSettings = useActiveFieldSetting();
   const deleteField = useDeleteField(field.id, datasheetId);
-  const embedId = useSelector((state) => state.pageParams.embedId);
+  const embedId = useAppSelector((state) => state.pageParams.embedId);
   /**
    * Give a warning when a field is deleted during collaboration.
    * Ends rendering early.

@@ -20,7 +20,6 @@ import { Tree } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 import { ReactText } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { AutoTestID, ConfigConstant, Navigation, Selectors, Strings, t, ThemeName } from '@apitable/core';
 import { TriangleDownFilled } from '@apitable/icons';
@@ -36,6 +35,8 @@ import { ShareSave } from '../share_save';
 import { OperationCard } from './operation_card';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const { TreeNode, DirectoryTree } = Tree;
 
 export interface IShareMenu {
@@ -48,8 +49,8 @@ export interface IShareMenu {
 
 const NodeTree = (nodeTree: INodeTree | undefined) => {
   const colors = useThemeColors();
-  const activedNodeId = useSelector((state) => Selectors.getNodeId(state))!;
-  const shareId = useSelector((state) => state.pageParams.shareId);
+  const activedNodeId = useAppSelector((state) => Selectors.getNodeId(state))!;
+  const shareId = useAppSelector((state) => state.pageParams.shareId);
 
   if (!nodeTree) {
     return <></>;
@@ -116,11 +117,11 @@ const NodeTree = (nodeTree: INodeTree | undefined) => {
 };
 
 export const ShareMenu: React.FC<React.PropsWithChildren<IShareMenu>> = ({ shareSpace, shareNode, visible, setVisible, loading }) => {
-  const userInfo = useSelector((state) => state.user.info);
-  const { formId, viewId } = useSelector((state) => state.pageParams);
-  const activedNodeId = useSelector((state) => Selectors.getNodeId(state));
+  const userInfo = useAppSelector((state) => state.user.info);
+  const { formId, viewId } = useAppSelector((state) => state.pageParams);
+  const activedNodeId = useAppSelector((state) => Selectors.getNodeId(state));
   const env = getEnvVariables();
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const EditPng = themeName === ThemeName.Light ? EditPngLight : EditPngDark;
   const saveToMySpace = () => {
     setVisible(true);

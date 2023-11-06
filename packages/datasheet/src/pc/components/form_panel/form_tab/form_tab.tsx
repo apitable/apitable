@@ -20,7 +20,7 @@ import { useSize } from 'ahooks';
 import classNames from 'classnames';
 import { usePostHog } from 'posthog-js/react';
 import { Dispatch, memo, SetStateAction, useRef } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button, LinkButton, TextButton, useThemeColors } from '@apitable/components';
 import {
   ConfigConstant,
@@ -49,6 +49,8 @@ import { ToolBar } from './tool_bar';
 // @ts-ignore
 import { isEnterprise } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const HIDDEN_TOOLBAR_RIGHT_LABEL_WIDTH = 816;
 
 const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAction<boolean>>; preFill: boolean }) => {
@@ -58,7 +60,7 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { setSideBarVisible } = useSideBarVisible();
-  const { formId, shareId, templateId, embedId } = useSelector((state) => state.pageParams);
+  const { formId, shareId, templateId, embedId } = useAppSelector((state) => state.pageParams);
 
   const {
     icon,
@@ -75,7 +77,7 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
     datasheetIcon,
     viewName,
     viewType,
-  } = useSelector((state: IReduxState) => {
+  } = useAppSelector((state: IReduxState) => {
     const form = Selectors.getForm(state)!;
     const { icon, name, role, nodeShared, nodeFavorite, sourceInfo, permissions } = form;
     const formRelMeta = Selectors.getFormRelMeta(state);
@@ -104,7 +106,7 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
       viewType,
     };
   }, shallowEqual);
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
 
   const tabSize = useSize(tabRef);
 
@@ -119,7 +121,7 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
     setPreFill(true);
   };
 
-  const embedInfo = useSelector((state) => state.embedInfo);
+  const embedInfo = useAppSelector((state) => state.embedInfo);
 
   const showNodeInfoBar = embedId ? embedInfo.viewControl?.nodeInfoBar : true;
   const showCollaborator = embedId ? embedInfo.viewControl?.collaboratorStatusBar : true;

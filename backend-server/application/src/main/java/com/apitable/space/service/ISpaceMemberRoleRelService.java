@@ -60,4 +60,21 @@ public interface ISpaceMemberRoleRelService extends IService<SpaceMemberRoleRelE
      * @return member ids
      */
     List<Long> getMemberIdListByResourceGroupCodes(String spaceId, List<String> resourceGroupCodes);
+
+    /**
+     * get member role codes in space.
+     *
+     * @param spaceId  space id
+     * @param memberId member id
+     * @return member ids
+     */
+    String getRoleCodeByMemberId(String spaceId, Long memberId);
+
+    /**
+     * get role codes in space.
+     *
+     * @param spaceId space id
+     * @return role codes
+     */
+    List<String> getRoleCodesBySpaceId(String spaceId);
 }

@@ -2,7 +2,6 @@ import { useMount } from 'ahooks';
 import { Space } from 'antd';
 import { useAtom, useSetAtom } from 'jotai';
 import React, { FC, memo, useContext, useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import {
   Box,
@@ -59,6 +58,8 @@ import { useAutomationResourceNode, useAutomationResourcePermission } from '../c
 import AutomationHistoryPanel from '../run_history/modal/modal';
 import styles from '../style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const MenuID = 'MoreAction';
 
 const StyleIcon = styled(Box)`
@@ -80,7 +81,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
   const { initialize } = useAutomationNavigateController();
   const dispatch = useAppDispatch();
   const loading = false;
-  const { templateId } = useSelector((state: IReduxState) => state.pageParams);
+  const { templateId } = useAppSelector((state: IReduxState) => state.pageParams);
 
   const { screenIsAtMost } = useResponsive();
   const isLg = screenIsAtMost(ScreenSize.lg);
@@ -263,7 +264,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
                       <>
                         <OrEmpty visible={shareInfo?.shareId == null}>
                           <NodeFavoriteStatus nodeId={automationState?.resourceId ?? ''} enabled={
-                            nodeItem.nodeFavorite
+                            nodeItem?.nodeFavorite
                           }/>
                         </OrEmpty>
                         {

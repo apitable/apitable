@@ -19,7 +19,6 @@
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { useCallback, useContext, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import {
   CellType,
   FieldType,
@@ -55,6 +54,8 @@ import {
 import { store } from 'pc/store';
 import { GroupTab } from '../components/cell/cell_other/group_tab';
 import { RowHeadOperation } from '../components/operation_area';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 const ORIGIN_HEIGHT_SET = new Set([FieldType.Number, FieldType.Percent, FieldType.Currency, FieldType.AutoNumber]);
@@ -116,7 +117,7 @@ export const useGrid = (props: IUseGridProps) => {
   const columnLength = visibleColumns.length;
   const { scrollLeft, isScrolling } = scrollState;
   const [shadowHover, setShadowHover] = useState(false);
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
 
   /**
    * Field header
@@ -251,7 +252,7 @@ export const useGrid = (props: IUseGridProps) => {
 
   // Row head toolbar
   const hoverRowHeadOperation: React.ReactNode[] = [];
-  const datasheet = useSelector((state) => Selectors.getDatasheet(state));
+  const datasheet = useAppSelector((state) => Selectors.getDatasheet(state));
   for (let rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
     if (rowIndex > rowCount - 1) break;
     const row = linearRows[rowIndex];
@@ -283,8 +284,8 @@ export const useGrid = (props: IUseGridProps) => {
   /**
    * Add column button
    */
-  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
-  const { embedId } = useSelector((state) => state.pageParams);
+  const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
+  const { embedId } = useAppSelector((state) => state.pageParams);
   const isEmbedShow = embedId ? !embedInfo.isShowEmbedToolBar && !embedInfo.viewControl?.tabBar : false;
   const addFieldBtn = useMemo(() => {
     if (columnStopIndex !== columnLength - 1) return;
@@ -412,9 +413,9 @@ export const useGrid = (props: IUseGridProps) => {
         shadowBlur: 4,
         shadowOffsetX: 2,
         shadowForStrokeEnabled: true,
-      } 
+      }
       : {};
-      
+
     const top = <Line points={[0, 0, 0, rowInitSize]} {...commonProps} {...shadowProps} />;
     const middle = <Group x={0} y={0}>
       <Line points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]} {...baseProps} />

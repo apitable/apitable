@@ -18,13 +18,14 @@
 
 import { List } from 'antd';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { ITeamsInSearch, IMembersInSearch, t, Strings } from '@apitable/core';
 import { InfoCard } from 'pc/components/common';
 import { AvatarType } from '../../avatar';
 import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export enum ListType {
   MemberList = 'MEMBER_LIST',
@@ -55,7 +56,7 @@ const triggerBase = {
 };
 
 export const SearchList: FC<React.PropsWithChildren<ISearchListProps>> = (props) => {
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   return (
     <div className={styles.searchList}>
       {props.type === ListType.MemberList ? (

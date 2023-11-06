@@ -24,6 +24,7 @@ import { automationHistoryAtom, automationStateAtom } from '../../controller/ato
 import { useAutomationResourcePermission } from '../../controller/use_automation_permission';
 import { TaskList } from '../../run_history/list/task';
 import style from './styles.module.less';
+import EllipsisText from "pc/components/ellipsis_text";
 
 const StyledGrip = styled(Box)`
   gap: 16px;
@@ -195,10 +196,12 @@ export const BaseInfo: FC = () => {
                         } icon={item?.icon} editable={false} size={16} hasChildren/>
                       </span>
 
-                      <Box marginLeft={'8px'} display={'inline-flex'} alignItems={'center'}>
-                        <Typography variant="body4" color={colors.textCommonPrimary}>
-                          {item.nodeName}
-                        </Typography>
+                      <Box marginLeft={'8px'} display={'inline-flex'} alignItems={'center'} maxWidth={'80%'}>
+                        <EllipsisText>
+                          <Typography variant="body4" color={colors.textCommonPrimary}>
+                            {item.nodeName}
+                          </Typography>
+                        </EllipsisText>
                       </Box>
                     </Box>
 

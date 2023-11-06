@@ -22,7 +22,6 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { applyDefaultTheme, SearchSelect } from '@apitable/components';
 import { ConfigConstant, Events, Player, Strings, t } from '@apitable/core';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { CONST_MAX_TRIGGER_COUNT } from 'pc/components/automation/config';
 import {
   automationCurrentTriggerId,

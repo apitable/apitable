@@ -23,10 +23,10 @@ import { Skeleton } from '@apitable/components';
 import { DATASHEET_ID /* , Selectors, ViewType */ } from '@apitable/core';
 import styles from './style.module.less';
 import { Tab } from './tab';
-// import { useSelector } from 'react-redux';
+// import { useAppSelector } from 'react-redux';
 
 export const TabBar: FC<React.PropsWithChildren<{ loading: boolean }>> = ({ loading }) => {
-  // const currentView = useSelector(Selectors.getCurrentView)!;
+  // const currentView = useAppSelector(Selectors.getCurrentView)!;
   return (
     <div className={styles.tabBarWrapper} id={DATASHEET_ID.VIEW_TAB_BAR}>
       {loading ? (

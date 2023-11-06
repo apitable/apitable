@@ -56,4 +56,8 @@ export class FusionApiRecordService {
   public getBasicRecordsByRecordIds(dstId: string, recordIds: string[]): Promise<IRecordMap> {
     return this.recordService.getBasicRecordsByRecordIds(dstId, recordIds);
   }
+
+  public async getDeletedRecordsByDstId(dstId: string): Promise<string[]> {
+    return this.recordService.getDeletedRecordsByDstId(dstId);
+  }
 }

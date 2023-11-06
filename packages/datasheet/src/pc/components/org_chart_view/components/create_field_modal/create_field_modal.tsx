@@ -20,7 +20,6 @@ import { Modal } from 'antd';
 import Image from 'next/image';
 import * as React from 'react';
 import { useContext } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Typography, useThemeColors, ThemeName } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
@@ -30,6 +29,8 @@ import OrgChartCreationLinkLight from 'static/icon/account/architecture_add_link
 import OrgChartCreationNoPermission from 'static/icon/account/org_chart_creation_no_permission.png';
 import { FlowContext } from '../../context/flow_context';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ICreateFieldModalProps {
   onAdd: () => void;
@@ -41,7 +42,7 @@ export const CreateFieldModal: React.FC<React.PropsWithChildren<ICreateFieldModa
   const {
     permissions: { manageable },
   } = useContext(FlowContext);
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const OrgChartCreationLink = themeName === ThemeName.Light ? OrgChartCreationLinkLight : OrgChartCreationLinkDark;
 
   return (

@@ -20,7 +20,6 @@ import dayjs from 'dayjs';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, ButtonGroup, Typography, useThemeColors } from '@apitable/components';
 import { IReduxState, Navigation, Strings, t } from '@apitable/core';
 import { QuestionCircleOutlined } from '@apitable/icons';
@@ -33,6 +32,8 @@ import { useLevelInfo } from '../../utils';
 import styles from './style.module.less';
 // @ts-ignore
 import { showUpgradeContactUs, SubscribePageType, isEnterprise } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ILevelCard {
   type: ISpaceLevelType;
@@ -63,8 +64,8 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
     strokeColor,
   } = useLevelInfo(type, deadline);
   const colors = useThemeColors();
-  const space = useSelector((state) => state.space);
-  const onTrial = useSelector((state: IReduxState) => state.billing?.subscription?.onTrial);
+  const space = useAppSelector((state) => state.space);
+  const onTrial = useAppSelector((state: IReduxState) => state.billing?.subscription?.onTrial);
   const appType = space.curSpaceInfo?.social.appType;
   const expirationText = useMemo(() => {
     if (expiration <= 0) {

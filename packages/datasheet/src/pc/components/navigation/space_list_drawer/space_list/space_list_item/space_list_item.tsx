@@ -23,7 +23,6 @@ import { truncate } from 'lodash';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useContext, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { IReduxState, ISpaceInfo, IUserInfo, Navigation, Strings, t } from '@apitable/core';
 import { LogoutOutlined, MoreStandOutlined, SettingOutlined } from '@apitable/icons';
@@ -38,6 +37,8 @@ import styles from './style.module.less';
 // @ts-ignore
 import { isSocialPlatformEnabled, SocialPlatformMap } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export interface ISpaceListItemProps {
   spaceInfo: ISpaceInfo;
   actived?: boolean;
@@ -49,7 +50,7 @@ export const SpaceListItem: FC<React.PropsWithChildren<ISpaceListItemProps>> = (
   const colors = useThemeColors();
   const [visible, setVisible] = useState(false);
   const { closeSpaceListDrawer } = useContext(NavigationContext);
-  const user = useSelector((state: IReduxState) => state.user.info) as IUserInfo;
+  const user = useAppSelector((state: IReduxState) => state.user.info) as IUserInfo;
   const { memberQuitSpaceAndNotice } = useNotificationCreate({ fromUserId: user.uuid, spaceId: user.spaceId });
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);

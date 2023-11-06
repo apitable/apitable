@@ -18,7 +18,6 @@
 
 import template from 'lodash/template';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { ModalType, Strings, t } from '@apitable/core';
 import { Modal } from 'pc/components/common';
 import { getEnvVariables } from 'pc/utils/env';
@@ -26,6 +25,8 @@ import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import { CodeLanguage } from './enum';
 import { getDoc } from './examples';
 import mdStyles from './markdown.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IDocInnerHtmlProps {
   language: CodeLanguage;
@@ -48,7 +49,7 @@ export const DEBUG_BUTTON_CLASS_NAME = 'markdown-it-code-button-debug';
 const DocInnerHtml: React.FC<React.PropsWithChildren<IDocInnerHtmlProps>> = (props) => {
   const { language, exampleConfig, showApiToken } = props;
   const docHtml = getDoc(language, exampleConfig);
-  const apiToken = useSelector((state) => state.user.info!.apiKey);
+  const apiToken = useAppSelector((state) => state.user.info!.apiKey);
 
   const preTriggerToDebug = (e: any) => {
     const debugButtonList = document.getElementsByClassName(DEBUG_BUTTON_CLASS_NAME);

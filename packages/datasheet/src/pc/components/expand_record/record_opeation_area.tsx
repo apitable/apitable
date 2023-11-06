@@ -18,13 +18,15 @@
 
 import { Tooltip } from 'antd';
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { colorVars, IconButton, LinkButton } from '@apitable/components';
 import { StoreActions, Strings, t } from '@apitable/core';
 import { CloseOutlined, ExpandOutlined, GotoOutlined, NarrowOutlined } from '@apitable/icons';
 
 import { RecordPageTurn } from './record_page_turn/record_page_turn';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IRecordOperationArea {
   datasheetId: string;
@@ -41,8 +43,8 @@ interface IRecordOperationArea {
 export const RecordOperationArea: React.FC<React.PropsWithChildren<IRecordOperationArea>> = (props) => {
   const { datasheetId, activeRecordId, recordIds, fromCurrentDatasheet, modalClose, switchRecord, gotoSourceDst, showPageTurn } = props;
   const dispatch = useDispatch();
-  const isEmbed = useSelector((state) => Boolean(state.pageParams.embedId));
-  const isRecordFullScreen = useSelector((state) => state.space.isRecordFullScreen);
+  const isEmbed = useAppSelector((state) => Boolean(state.pageParams.embedId));
+  const isRecordFullScreen = useAppSelector((state) => state.space.isRecordFullScreen);
   const showLinkBtn = !fromCurrentDatasheet && !isEmbed;
   const showOperateArea = showLinkBtn || showPageTurn;
   return (

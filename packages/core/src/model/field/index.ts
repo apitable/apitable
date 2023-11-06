@@ -25,41 +25,41 @@ import { NumberField } from './number_field';
 import { CurrencyField } from './currency_field';
 import { PercentField } from './percent_field';
 import { AutoNumberField } from './auto_number_field';
-import {
-  SingleSelectField,
-  MultiSelectField,
-} from './select_field';
+import { MultiSelectField, SingleSelectField } from './select_field';
 import { LinkField } from './link_field';
 import { URLField } from './url_field';
-import { NotSupportField, DeniedField } from './virtual_field';
+import { DeniedField, NotSupportField } from './virtual_field';
 import {
-  ISingleSelectField,
-  IMultiSelectField,
-  INumberField,
-  IAutoNumberField,
-  ICurrencyField,
-  IPercentField,
-  ITextField,
-  IDateTimeField,
-  ICreatedTimeField,
-  ILastModifiedTimeField,
-  IAttacheField,
-  ILinkField,
-  IField,
   FieldType,
-  IURLField,
-  IEmailField,
-  IPhoneField,
-  IRatingField,
+  IAttacheField,
+  IAutoNumberField,
+  ICascaderField,
   ICheckboxField,
+  ICreatedByField,
+  ICreatedTimeField,
+  ICurrencyField,
+  IDateTimeField,
+  IDeniedField,
+  IEmailField,
+  IField,
   IFormulaField,
+  ILastModifiedByField,
+  ILastModifiedTimeField,
+  ILinkField,
   ILookUpField,
   IMemberField,
-  ICreatedByField,
-  ILastModifiedByField,
+  IMultiSelectField,
+  INotSupportField,
+  INumberField,
+  IPercentField,
+  IPhoneField,
+  IRatingField,
+  ISingleSelectField,
   ISingleTextField,
-  IDeniedField,
-  INotSupportField, ICascaderField, IOneWayLinkField,
+  ITextField,
+  IURLField,
+  IWorkdocField,
+  IOneWayLinkField,
 } from 'types/field_types';
 import { Field } from './field';
 import { EmailField } from './email_field';
@@ -73,6 +73,7 @@ import { CreatedByField } from './created_by_field';
 import { LastModifiedByField } from './last_modified_by_field';
 import { SingleTextField } from './single_text_field';
 import { CascaderField } from './cascader_field';
+import { WorkdocField } from './workdoc_field';
 import { IReduxState } from '../../exports/store';
 import { Store } from 'redux';
 import { OneWayLinkField } from './one_way_link_field';
@@ -100,6 +101,7 @@ export * from './last_modified_time_field';
 export * from './created_by_field';
 export * from './last_modified_by_field';
 export * from './text_base_field';
+export * from './workdoc_field';
 export { numberThresholdValue } from './number_base_field';
 export { OtherTypeUnitId } from './member_base_field';
 
@@ -129,6 +131,7 @@ export interface IBindFieldModel {
   (field: ICreatedByField, state?: IReduxState, newInstance?: boolean): CreatedByField;
   (field: ILastModifiedByField, state?: IReduxState, newInstance?: boolean): LastModifiedByField;
   (field: ICascaderField, state?: IReduxState, newInstance?: boolean): CascaderField;
+  (field: IWorkdocField, state?: IReduxState, newInstance?: boolean): WorkdocField;
   (field: IDeniedField, state?: IReduxState, newInstance?: boolean): DeniedField;
   (field: INotSupportField, state?: IReduxState, newInstance?: boolean): NotSupportField;
   (field: IField, state?: IReduxState, newInstance?: boolean): Field;
@@ -159,6 +162,7 @@ export interface IBindFieldContext {
   (field: ICreatedByField, state: IReduxState): CreatedByField;
   (field: ILastModifiedByField, state: IReduxState): LastModifiedByField;
   (field: ICascaderField, state: IReduxState): CascaderField;
+  (field: IWorkdocField, state: IReduxState): WorkdocField;
   (field: IDeniedField, state: IReduxState): DeniedField;
   (field: INotSupportField, state: IReduxState): NotSupportField;
   (field: IField, state: IReduxState): Field;
@@ -243,6 +247,9 @@ export const getFieldClass = (type: FieldType) => {
     }
     case FieldType.Cascader: {
       return CascaderField;
+    }
+    case FieldType.Workdoc: {
+      return WorkdocField;
     }
     case FieldType.DeniedField: {
       return DeniedField;

@@ -18,7 +18,7 @@
 
 import { useRouter } from 'next/router';
 import { FC, useEffect } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { Api, Navigation, Selectors, StatusCode, StoreActions } from '@apitable/core';
 import { NoAccess } from 'pc/components/invalid_page/no_access';
 import { Router } from 'pc/components/route_manager/router';
@@ -26,10 +26,12 @@ import { usePageParams, useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { getEnvVariables } from 'pc/utils/env';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const PrivateRoute: FC<React.PropsWithChildren<unknown>> = ({ children }) => {
-  const user = useSelector((state) => Selectors.getUserState(state), shallowEqual);
+  const user = useAppSelector((state) => Selectors.getUserState(state), shallowEqual);
   const dispatch = useDispatch();
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const { run: getLabsFeature } = useRequest(Api.getLabsFeature, { manual: true });
   const router = useRouter();
   usePageParams();

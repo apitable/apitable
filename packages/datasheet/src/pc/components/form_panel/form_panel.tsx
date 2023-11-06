@@ -18,7 +18,6 @@
 
 import classNames from 'classnames';
 import { memo, FC, useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Selectors, StatusCode, Strings, t } from '@apitable/core';
 import { ShareContext } from 'pc/components/share/share';
 import { ServerError } from '../invalid_page/server_error';
@@ -29,11 +28,13 @@ import { ViewContainer } from './view_container';
 // @ts-ignore
 import { WeixinShareWrapper } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const FormPanelBase: FC<React.PropsWithChildren<{ loading?: boolean }>> = (props) => {
-  const { shareId, templateId, embedId } = useSelector((state) => state.pageParams);
-  const formErrCode = useSelector((state) => Selectors.getFormErrorCode(state));
+  const { shareId, templateId, embedId } = useAppSelector((state) => state.pageParams);
+  const formErrCode = useAppSelector((state) => Selectors.getFormErrorCode(state));
   const [preFill, setPreFill] = useState(false);
-  const loading = useSelector((state) => {
+  const loading = useAppSelector((state) => {
     const form = Selectors.getForm(state);
     const formLoading = Selectors.getFormLoading(state);
     return Boolean(!form) || formLoading;
@@ -62,11 +63,11 @@ const FormPanelBase: FC<React.PropsWithChildren<{ loading?: boolean }>> = (props
     formErrCode === StatusCode.NODE_NOT_EXIST ||
     formErrCode === StatusCode.NODE_DELETED;
   const { shareInfo } = useContext(ShareContext);
-  const userLoading = useSelector((state) => state.user.loading);
+  const userLoading = useAppSelector((state) => state.user.loading);
 
   const noPermissionDesc = formErrCode === StatusCode.FORM_FOREIGN_DATASHEET_NOT_EXIST ? t(Strings.current_form_is_invalid) : '';
 
-  const embedInfo = useSelector((state) => state.embedInfo);
+  const embedInfo = useAppSelector((state) => state.embedInfo);
 
   const showTabBar = embedId ? embedInfo.viewControl?.tabBar : true;
 
