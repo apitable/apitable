@@ -21,7 +21,7 @@ import dayjs from 'dayjs';
 import { FC, useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { Button, Calendar, Tooltip, useThemeColors } from '@apitable/components';
 import {
@@ -60,6 +60,8 @@ import { Drop } from './drop';
 import { RecordList } from './record_list';
 import styles from './styles.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface ICalendarViewProps {
   height: number;
   width: number;
@@ -88,7 +90,7 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
     viewId,
     cacheTheme,
     activeCell,
-  } = useSelector((state) => {
+  } = useAppSelector((state) => {
     const dstId = Selectors.getActiveDatasheetId(state)!;
     const currSnapshot = Selectors.getSnapshot(state, dstId)!;
     const currView = Selectors.getCurrentView(state)!;
@@ -143,7 +145,7 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
   const startField = fieldMap[startFieldId];
   const endField = fieldMap[endFieldId];
   const dispatch = useDispatch();
-  const mirrorId = useSelector((state) => state.pageParams.mirrorId);
+  const mirrorId = useAppSelector((state) => state.pageParams.mirrorId);
 
   useEffect(() => {
     /**

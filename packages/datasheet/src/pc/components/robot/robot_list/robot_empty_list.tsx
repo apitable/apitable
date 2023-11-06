@@ -17,7 +17,6 @@
  */
 
 import Image from 'next/image';
-import { useSelector } from 'react-redux';
 import { Box, Button, Typography, useTheme, ThemeName } from '@apitable/components';
 import { Api, Selectors, Strings, SystemConfig, t } from '@apitable/core';
 import { useApplyOpenFunction } from 'pc/components/navigation/account_center_modal/test_function/hooks';
@@ -31,6 +30,8 @@ import { useAddNewRobot, useShowRobot } from '../hooks';
 // @ts-ignore
 import { isWecomFunc } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const RobotEmptyList = () => {
   const theme = useTheme();
   const { canAddNewRobot } = useAddNewRobot();
@@ -39,12 +40,12 @@ export const RobotEmptyList = () => {
   const applyOpenTestFunction = useApplyOpenFunction();
 
   const { data: labsFeatureListData } = useRequest(Api.getLabsFeatureList);
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const ImageNoRecord = themeName === ThemeName.Light ? ImageNoRecordLight : ImageNoRecordDark;
 
   const { createNewRobot } = useAutomationNavigateController();
 
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId);
+  const datasheetId = useAppSelector(Selectors.getActiveDatasheetId);
   const openTestFunction = () => {
     const { space: spaceLabs = [] } = labsFeatureListData!.data.data.features;
     const { url: _url, key } = spaceLabs.find((lab) => lab.key === SystemConfig.test_function.robot.feature_key) || {};

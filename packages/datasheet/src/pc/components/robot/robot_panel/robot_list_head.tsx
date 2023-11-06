@@ -17,7 +17,6 @@
  */
 
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Box, IconButton, Tooltip, Typography, useTheme } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
@@ -25,6 +24,8 @@ import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortc
 import { useAutomationNavigateController } from '../../automation/controller/controller';
 import { OrTooltip } from '../../common/or_tooltip';
 import { useAddNewRobot } from '../hooks';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export const Beta = () => {
   const theme = useTheme();
@@ -38,7 +39,7 @@ export const Beta = () => {
 };
 
 export const AddRobotButton = () => {
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId);
+  const datasheetId = useAppSelector(Selectors.getActiveDatasheetId);
   const { canAddNewRobot, disableTip } = useAddNewRobot();
 
   const { createNewRobot } = useAutomationNavigateController();

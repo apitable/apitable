@@ -17,7 +17,6 @@
  */
 
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { ConfigConstant, IReduxState, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
@@ -26,6 +25,8 @@ import { TComponent } from 'pc/components/common/t_component';
 // import HeaderPng from 'static/icon/datasheet/share/datasheet_img_share.png';
 import { ShareContent } from './share_content';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IShareNodeProps {
   /** Information about the node being operated on */
@@ -48,7 +49,7 @@ export enum ShareTab {
 }
 
 export const ShareNode: FC<React.PropsWithChildren<IShareNodeProps>> = ({ data, visible, onClose, isTriggerRender }) => {
-  const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
   const { nodeName } = treeNodesMap[data.nodeId];
 
   if (isTriggerRender) {

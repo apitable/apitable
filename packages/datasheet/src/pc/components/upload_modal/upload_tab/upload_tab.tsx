@@ -22,7 +22,6 @@ import classNames from 'classnames';
 import {uniqBy} from 'lodash';
 import {useContext, useEffect, useRef, useState} from 'react';
 import * as React from 'react';
-import {useSelector} from 'react-redux';
 import {useThemeColors} from '@apitable/components';
 import {ConfigConstant, IAttachmentValue, Strings, t} from '@apitable/core';
 import {FileAddOutlined, LinkOutlined, PasteOutlined} from '@apitable/icons';
@@ -34,6 +33,8 @@ import {IUploadFileList} from '../upload_core';
 import {UploadPaste} from '../upload_paste/upload_paste';
 import {IUploadZoneItem, UploadZone} from '../upload_zone';
 import styles from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export enum UploadTabType {
   Drag = 'Drag',
@@ -86,8 +87,8 @@ export const UploadTab: React.FC<React.PropsWithChildren<IUploadTabProps>> = (pr
   const {isFocus} = useContext(ExpandAttachContext);
 
   const [currentTab, setCurrentTab] = useState(UploadTabType.Drag);
-  const userInfo = useSelector((state) => state.user.info);
-  const {shareId, formId, aiId} = useSelector((state) => state.pageParams);
+  const userInfo = useAppSelector((state) => state.user.info);
+  const {shareId, formId, aiId} = useAppSelector((state) => state.pageParams);
   useMount(() => {
     if (!shareId || (!formId && !aiId)) {
       return;

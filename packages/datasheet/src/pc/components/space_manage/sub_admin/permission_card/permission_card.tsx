@@ -18,7 +18,6 @@
 
 import { Checkbox } from 'antd';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { Strings, t, IReduxState } from '@apitable/core';
 import { QuestionCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
@@ -26,6 +25,8 @@ import { Tooltip } from 'pc/components/common';
 import styles from './style.module.less';
 // @ts-ignore
 import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IPermissionCardProps {
   defaultChecked?: string[];
@@ -35,7 +36,7 @@ interface IPermissionCardProps {
 }
 
 export const PermissionCard: FC<React.PropsWithChildren<IPermissionCardProps>> = ({ defaultChecked, checked, onChange, inRead }) => {
-  const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state: IReduxState) => state.space.curSpaceInfo);
 
   const onCheckChange = (value: string, checked: boolean) => {
     if (onChange) {

@@ -21,7 +21,7 @@ import classNames from 'classnames';
 import RcTrigger, { TriggerProps } from 'rc-trigger';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { IUseListenTriggerInfo } from '@apitable/components';
 import { Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
@@ -43,6 +43,8 @@ import { ViewGroup, ViewSort } from '../view_sort_and_group';
 import { ViewSwitcher } from '../view_switcher';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IDisplay extends Partial<TriggerProps> {
   style?: React.CSSProperties;
   type: ToolHandleType;
@@ -58,23 +60,23 @@ const OFFSET = [0, 8];
 
 export const Display: React.FC<React.PropsWithChildren<IDisplay>> = (props) => {
   const { style, children, type, className, onVisibleChange, disableAutoActiveItem = false } = props;
-  const editable = useSelector((state) => {
+  const editable = useAppSelector((state) => {
     const permissions = Selectors.getPermissions(state);
     return permissions.visualizationEditable || permissions.editable;
   });
-  const canOpenShare = useSelector((state) => {
+  const canOpenShare = useAppSelector((state) => {
     const permissions = Selectors.getPermissions(state);
     return permissions.editable || permissions.manageable;
   });
-  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state)!);
-  const activeView = useSelector((state) => Selectors.getCurrentView(state))!;
+  const datasheetId = useAppSelector((state) => Selectors.getActiveDatasheetId(state)!);
+  const activeView = useAppSelector((state) => Selectors.getCurrentView(state))!;
   const ref = useRef<any>();
   const dispatch = useDispatch();
   const [action, setAction] = useState(['click']);
   const { open, setToolbarMenuCardOpen } = useToolbarMenuCardOpen(type);
   const disabledToolBarWithMirror = useDisabledOperateWithMirror();
   const [triggerInfo, setTriggerInfo] = useState<IUseListenTriggerInfo>();
-  const activeNodeId = useSelector((state) => Selectors.getNodeId(state));
+  const activeNodeId = useAppSelector((state) => Selectors.getNodeId(state));
 
   useEffect(() => {
     if (!editable && type !== ToolHandleType.ViewSwitcher) {

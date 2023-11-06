@@ -17,7 +17,7 @@
  */
 
 import { FC } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Typography, useThemeColors } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
 import { CopyOutlined } from '@apitable/icons';
@@ -32,8 +32,10 @@ import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName, isSocialPlatformEnabled } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const SpaceInfoPopover: FC<React.PropsWithChildren<unknown>> = () => {
-  const { spaceInfo, spaceId, userInfo, subscription, spaceFeatures } = useSelector(
+  const { spaceInfo, spaceId, userInfo, subscription, spaceFeatures } = useAppSelector(
     (state) => ({
       spaceInfo: state.space.curSpaceInfo,
       spaceId: state.space.activeId || '',

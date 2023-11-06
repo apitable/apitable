@@ -1,11 +1,12 @@
 import { debounce } from 'lodash';
 import * as React from 'react';
 import { useEffect, useMemo, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { Api, ConfigConstant, INode } from '@apitable/core';
 import { IViewNode } from 'pc/components/data_source_selector/folder_content';
 import { useLoader } from 'pc/components/data_source_selector/hooks/use_loader';
 import { ISearchPanelState } from '../store/interface/search_panel';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IParams {
   localDispatch: React.Dispatch<Partial<ISearchPanelState>>;
@@ -13,7 +14,7 @@ interface IParams {
 }
 
 export const useSearch = ({ localDispatch, localState }: IParams) => {
-  const spaceId = useSelector((state) => state.space.activeId!);
+  const spaceId = useAppSelector((state) => state.space.activeId!);
   const { nodeTypeFilterLoader } = useLoader();
   const requestNumberRef = useRef(0);
 

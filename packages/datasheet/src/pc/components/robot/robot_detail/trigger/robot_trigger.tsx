@@ -21,7 +21,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { identity, isEqual, isEqualWith, isNil, pickBy } from 'lodash';
 import * as React from 'react';
 import { memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import { Box, IDropdownControl, SearchSelect, Typography } from '@apitable/components';
@@ -67,6 +67,8 @@ import { literal2Operand } from '../node_form/ui/utils';
 import { RecordMatchesConditionsFilter } from './record_matches_conditions_filter';
 import { RobotTriggerCreateForm } from './robot_trigger_create';
 import itemStyle from './select_styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IRobotTriggerProps {
     robotId: string;
@@ -142,17 +144,17 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
   const setTriggerDatasheetValue = useSetAtom(automationTriggerDatasheetAtom);
   let datasheetId = triggerDatasheetValue.id;
   const automationState = useAtomValue(automationStateAtom);
-  const activeDstId = useSelector(Selectors.getActiveDatasheetId);
+  const activeDstId = useAppSelector(Selectors.getActiveDatasheetId);
 
   if (automationState?.scenario === AutomationScenario.datasheet) {
     datasheetId = activeDstId;
   }
 
-  const datasheet = useSelector(a => Selectors.getDatasheet(a, datasheetId), shallowEqual);
+  const datasheet = useAppSelector(a => Selectors.getDatasheet(a, datasheetId), shallowEqual);
   const datasheetName = datasheet?.name;
 
-  const treeMaps = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-  const datasheetMaps = useSelector((state: IReduxState) => state.datasheetMap);
+  const treeMaps = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const datasheetMaps = useAppSelector((state: IReduxState) => state.datasheetMap);
 
   const ref = useRef<IDropdownControl>();
   const {

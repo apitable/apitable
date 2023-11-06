@@ -19,7 +19,6 @@
 import { useDebounceFn } from 'ahooks';
 import * as React from 'react';
 import { FC, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { IShowCaseData, Selectors } from '@apitable/core';
 import { BaseModal } from 'pc/components/common';
 // import classNames from 'classnames';
@@ -29,6 +28,8 @@ import { Network } from 'pc/components/network_status';
 import { SlateEditor, Deserializer, EditorValue, IEditorData, Serializer } from 'pc/components/slate_editor';
 import { useRequest, useCatalogTreeRequest, useImageUpload, useResponsive } from 'pc/hooks';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IDescriptionModalProps {
   onCancel: () => void;
@@ -56,7 +57,7 @@ export const DescriptionModal: FC<React.PropsWithChildren<IDescriptionModalProps
   const [value, setValue] = useState<EditorValue | IEditorData>(polyfillData(nodeInfo.description));
   const [description, setDescription] = useState(nodeInfo.description);
   const descHtml = useRef('');
-  const nodeId = useSelector((state) => Selectors.getNodeId(state))!;
+  const nodeId = useAppSelector((state) => Selectors.getNodeId(state))!;
   const { updateNodeDescriptionReq } = useCatalogTreeRequest();
   const { uploadImage } = useImageUpload();
   const { run: updateNodeDescription } = useRequest(updateNodeDescriptionReq, { manual: true });

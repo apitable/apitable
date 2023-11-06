@@ -19,7 +19,7 @@
 import { useBoolean } from 'ahooks';
 import { useEffect, useRef, useState } from 'react';
 import * as React from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import {
   ISetRecordOptions,
@@ -47,6 +47,8 @@ import { getCellValuesForGroupRecord } from '../../../../modules/shared/shortcut
 import { HoverLine } from '../hover_line/hover_line';
 import { MicroComponent } from '../micro_component';
 import { IDragOption, IDragProps, IGlobalRef } from './interface';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export const dependsGroup2ChangeData = (
   dragData: { recordId: string }[],
@@ -101,7 +103,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = (props) => {
     keepSort,
     fieldIndexMap,
     rowsIndexMap,
-  } = useSelector((state: IReduxState) => {
+  } = useAppSelector((state: IReduxState) => {
     const { columnSortable, columnWidthEditable } = Selectors.getPermissions(state);
 
     return {
@@ -145,7 +147,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = (props) => {
     originPageX: 0,
     changeWidthFieldId: '',
   });
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
   const scrollValue = useCacheScroll();
 
   function getGlobalRef() {

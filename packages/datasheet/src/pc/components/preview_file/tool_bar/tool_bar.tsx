@@ -20,7 +20,6 @@ import classNames from 'classnames';
 import FileSaver from 'file-saver';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Loading, useThemeColors } from '@apitable/components';
 import { DatasheetApi, IAttachmentValue, isImage, isPdf, isPrivateDeployment, Strings, t } from '@apitable/core';
 import {
@@ -43,6 +42,8 @@ import { MAX_SCALE, MIN_SCALE } from '../preview_main/constant';
 import { getFile } from '../preview_main/util';
 import styles from './style.module.less';
 import { IPreviewToolItem, PreviewToolItem } from './tool_item';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IToolBar {
   transformInfo: ITransFormInfo;
@@ -137,8 +138,8 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBar>> = (props) => {
   const { scale, initActualScale } = transformInfo;
 
   const [adaptiveMode, setAdaptiveMode] = useState(true);
-  const isSideRecordOpen = useSelector((state) => state.space.isSideRecordOpen);
-  const isRecordFullScreen = useSelector((state) => state.space.isRecordFullScreen);
+  const isSideRecordOpen = useAppSelector((state) => state.space.isSideRecordOpen);
+  const isRecordFullScreen = useAppSelector((state) => state.space.isRecordFullScreen);
 
   useEffect(() => {
     // initActualScale changes, which means that the image is switched, and the adaptiveMode should be reset.

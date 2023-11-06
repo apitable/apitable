@@ -20,7 +20,7 @@ import { useMount } from 'ahooks';
 import { Form, Input } from 'antd';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, IUnitValue, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { EditOutlined } from '@apitable/icons';
@@ -32,6 +32,8 @@ import { useQuery } from '../../hooks/use_home';
 import { defaultAvatars } from '../navigation/account_center_modal/basic_setting/default_avatar';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const customTips = {
   cropDesc: t(Strings.support_image_formats_limits, { number: 2 }),
 };
@@ -41,8 +43,8 @@ const SettingNickname: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const [avatarSelectModalVisible, setAvatarSelectModalVisible] = useState(false);
   const dispatch = useDispatch();
-  const error = useSelector((state: IReduxState) => state.user.err);
-  const user = useSelector((state: IReduxState) => state.user.info);
+  const error = useAppSelector((state: IReduxState) => state.user.err);
+  const user = useAppSelector((state: IReduxState) => state.user.info);
   const { getLoginStatusReq, customOrOfficialAvatarUpload } = useUserRequest();
   const { loading } = useRequest(getLoginStatusReq);
   const { run: updateAvatar } = useRequest(customOrOfficialAvatarUpload, { manual: true });

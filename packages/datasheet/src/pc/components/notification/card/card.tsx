@@ -22,7 +22,6 @@ import QueueAnim from 'rc-queue-anim';
 import * as React from 'react';
 import { FC, useRef, useState } from 'react';
 
-import { useSelector } from 'react-redux';
 import { Button, ButtonGroup } from '@apitable/components';
 import { Api, INoticeDetail, INotifyBody, Strings, t } from '@apitable/core';
 import { Modal } from 'pc/components/common';
@@ -41,6 +40,8 @@ import { HandleMsg } from './handle_msg';
 import { canJumpWhenClickCard, commentContentFormat, getNoticeUrlParams, isAskForJoiningMsg, NotifyType, renderNoticeBody } from './utils';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface ICard {
   data: INoticeDetail;
   isProcessed?: boolean;
@@ -55,7 +56,7 @@ export const Card: FC<React.PropsWithChildren<ICard>> = ({ data, isProcessed }) 
   const notifyType = data.notifyType;
   const isAskForJoining = isAskForJoiningMsg(data);
   const { transferNoticeToRead, transferNoticeToReadAndRefresh } = useNotificationRequest();
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const { run: processJoin } = useRequest((agree: boolean) => Api.processSpaceJoin(data.id, agree), {
     manual: true,
     onSuccess: (res) => {

@@ -19,7 +19,6 @@
 import { Modal } from 'antd';
 import { useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { IAttachmentValue, IAttacheField, RowHeightLevel, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
@@ -29,6 +28,8 @@ import { BulkDownload } from '../preview_file/preview_main/bulk_download';
 import { Memory } from './memory';
 import styles from './styles.module.less';
 import { UploadCore } from './upload_core';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IUploadAttachment {
   datasheetId: string;
@@ -46,7 +47,7 @@ interface IUploadAttachment {
 export const UploadModal: React.FC<React.PropsWithChildren<IUploadAttachment>> = (props) => {
   const colors = useThemeColors();
   const { recordId, field, datasheetId, cellValue, rowHeightLevel, visible: _visible, setVisible: _setVisible, onSave } = props;
-  const isInWebsite = useSelector((state) => state.space.activeId);
+  const isInWebsite = useAppSelector((state) => state.space.activeId);
   const [visible, setVisible] = useState(_visible ?? true);
   const allowedDownload = useAllowDownloadAttachment(field.id);
 

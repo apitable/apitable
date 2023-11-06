@@ -19,7 +19,7 @@
 import { isNull } from 'util';
 import classNames from 'classnames';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { BasicValueType, Field, FieldType, getTextFieldType, ICellValue, IField, IViewColumn, Selectors, Strings, t } from '@apitable/core';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
@@ -32,6 +32,8 @@ import { ScreenSize } from '../common/component_display';
 import { getFieldHeight, getShowFieldType, getVietualFieldHeight } from '../gallery_view/utils';
 import { CardText } from './card_text';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const showTitle = (cellValue: ICellValue, field: IField) => {
   if (isNull(cellValue)) return t(Strings.record_unnamed);
@@ -54,7 +56,7 @@ const SINGLE_TEXT_TYPE = [FieldType.Formula, FieldType.Number, FieldType.Currenc
 
 export const CardBody: React.FC<React.PropsWithChildren<IGalleryCardBodyProps>> = (props) => {
   const { visibleFields, recordId, showEmptyField, multiTextMaxLine, isColNameVisible, className, isVirtual, isGallery, datasheetId } = props;
-  const recordSnapshot = useSelector((state) => Selectors.getRecordSnapshot(state, datasheetId, recordId), shallowEqual);
+  const recordSnapshot = useAppSelector((state) => Selectors.getRecordSnapshot(state, datasheetId, recordId), shallowEqual);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const colors = useThemeColors();

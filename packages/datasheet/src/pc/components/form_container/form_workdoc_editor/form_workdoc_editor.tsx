@@ -1,12 +1,16 @@
 import { get } from 'lodash';
 import * as React from 'react';
-import { useEffect, useImperativeHandle, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useContext, useEffect, useImperativeHandle, useState } from 'react';
+import { IconButton } from '@apitable/components';
 import { ICellValue, Strings, t } from '@apitable/core';
+import { AddOutlined } from '@apitable/icons';
 import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
+import { FormContext } from '../form_context';
 // @ts-ignore
 import { Status, CollaborationEditor } from 'enterprise';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IFormWorkdocEditorProps extends Pick<IBaseEditorProps, 'onSave'> {
   cellValue?: ICellValue;
@@ -20,10 +24,11 @@ interface IFormWorkdocEditorProps extends Pick<IBaseEditorProps, 'onSave'> {
 
 const FormWorkdocEditorBase: React.ForwardRefRenderFunction<IEditor, IFormWorkdocEditorProps> = (porps, ref) => {
   const { cellValue, fieldId, editing, editable, datasheetId, mount, onSave, isMobile } = porps;
-  const { formId } = useSelector((state) => state.pageParams);
+  const { formId } = useAppSelector((state) => state.pageParams);
 
   const [status, setStatus] = React.useState<Status>(Status.Connecting);
   const [title, setTitle] = useState<string>(get(cellValue, '0.title') || '');
+  const { showWorkdoc, setShowWorkdoc } = useContext(FormContext);
 
   useEffect(() => {
     const cellValueTitle = get(cellValue, '0.title');
@@ -55,7 +60,21 @@ const FormWorkdocEditorBase: React.ForwardRefRenderFunction<IEditor, IFormWorkdo
       },
     }),
   );
-  
+
+  if(cellValue == null && !showWorkdoc) {
+    return (
+      <div className={styles.createWorkdoc}>
+        <IconButton disabled={!editable || isMobile} icon={AddOutlined} onClick={() => {
+          if (!editable || isMobile) {
+            return;
+          }
+          setShowWorkdoc(true);
+        }} />
+        <div>{t(Strings.workdoc_create)}</div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.formWorkdocEditor}>
       <div className={styles.status}>

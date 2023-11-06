@@ -19,7 +19,6 @@
 import { difference } from 'lodash';
 import { forwardRef, useRef, useContext, useCallback } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Button } from '@apitable/components';
 import {
   IField,
@@ -56,6 +55,8 @@ import { ComputedFieldWrapper } from './computed_field_wrapper';
 import { OptionFieldEditor, MemberFieldEditor } from './form_editors';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export interface ICommonProps {
   style: React.CSSProperties;
   datasheetId: string;
@@ -88,7 +89,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
   const { field, editable, recordId } = baseProps;
   const { formProps, setFormData, setFormErrors, setFormToStorage, mount } = useContext(FormContext);
   const attachmentRef = useRef<IAttachmentValue[]>([]);
-  const shareId = useSelector((state) => state.pageParams.shareId);
+  const shareId = useAppSelector((state) => state.pageParams.shareId);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const compactMode = formProps?.compactMode;

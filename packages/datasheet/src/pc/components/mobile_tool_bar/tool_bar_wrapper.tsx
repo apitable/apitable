@@ -20,7 +20,6 @@ import classNames from 'classnames';
 import { get } from 'lodash';
 import { useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { ResourceType, Selectors, ViewType } from '@apitable/core';
 import { ListOutlined } from '@apitable/icons';
@@ -35,6 +34,8 @@ import { ViewMenu } from './view_menu/view_menu';
 import { ViewSwitcherHorizontal } from './view_switcher_horizontal';
 import { WidgetTool } from './widget_tool/widget_tool';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export interface IToolBarWrapperProps {
   hideToolBar?: boolean;
 }
@@ -42,18 +43,18 @@ export interface IToolBarWrapperProps {
 export const ToolBarWrapper: React.FC<React.PropsWithChildren<IToolBarWrapperProps>> = ({ hideToolBar }) => {
   const { setSideBarVisible } = useSideBarVisible();
   const [viewMenuVisible, setViewMenuVisible] = useState(false);
-  const { datasheetId, mirrorId, embedId } = useSelector((state) => state.pageParams);
+  const { datasheetId, mirrorId, embedId } = useAppSelector((state) => state.pageParams);
   const networkParams: [boolean, string, ResourceType] = mirrorId
     ? [true, mirrorId!, ResourceType.Mirror]
     : [true, datasheetId!, ResourceType.Datasheet];
   useNetwork(...networkParams);
   const colors = useThemeColors();
   const hideViewList = Boolean(mirrorId);
-  const activeView = useSelector((state) => Selectors.getCurrentView(state))!;
+  const activeView = useAppSelector((state) => Selectors.getCurrentView(state))!;
   const isCalendarView = activeView && activeView.type === ViewType.Calendar;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
+  const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
   const { isShowEmbedToolBar = true } = embedInfo;
 
   const isOnlyView = get(embedInfo, 'viewControl.viewId', false);

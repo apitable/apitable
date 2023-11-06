@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { FC, memo, useContext, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ContextMenu, IContextMenuClickState } from '@apitable/components';
 import { ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
 import { judgeShowAIEntrance, getAIOpenFormUrl } from 'pc/components/catalog/node_context_menu/utils';
@@ -37,6 +37,8 @@ import { MobileNodeContextMenuTitle } from './mobile_context_menu_title';
 // @ts-ignore
 import { createBackupSnapshot, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export interface INodeContextMenuProps {
   onHidden: () => void;
   openDatasheetPanel: (info: IPanelInfo, previous?: boolean) => void;
@@ -50,10 +52,10 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
     const dispatch = useDispatch();
     const { rightClickInfo } = useContext(WorkbenchSideContext);
     const { setNewTdbId } = useContext(SideBarContext);
-    const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-    const rootId = useSelector((state: IReduxState) => state.catalogTree.rootId);
-    const spaceId = useSelector((state) => state.space.activeId);
-    const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+    const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+    const rootId = useAppSelector((state: IReduxState) => state.catalogTree.rootId);
+    const spaceId = useAppSelector((state) => state.space.activeId);
+    const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
     const { updateNodeFavoriteStatusReq, copyNodeReq } = useCatalogTreeRequest();
     const { run: updateNodeFavoriteStatus } = useRequest(updateNodeFavoriteStatusReq, { manual: true });
     const { run: copyNode } = useRequest(copyNodeReq, { manual: true });

@@ -19,7 +19,7 @@
 import Image from 'next/image';
 import * as React from 'react';
 import { FC } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
@@ -31,6 +31,8 @@ import { useRequest } from 'pc/hooks';
 import DeleteIcon from 'static/icon/space/space_img_delete.png';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export interface IDelConfirmModalProps {
   setIsDelSpaceModal: React.Dispatch<React.SetStateAction<boolean>>;
   setIsDelConfirmModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -41,7 +43,7 @@ export const DelConfirmModal: FC<React.PropsWithChildren<IDelConfirmModalProps>>
   const { setIsDelConfirmModal, setIsDelSpaceModal, isMobile } = props;
   const colors = useThemeColors();
 
-  const { user, spaceId } = useSelector(
+  const { user, spaceId } = useAppSelector(
     (state: IReduxState) => ({
       spaceId: state.space.activeId || '',
       user: state.user.info,

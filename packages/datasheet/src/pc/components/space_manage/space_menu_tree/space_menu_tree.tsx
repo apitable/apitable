@@ -21,7 +21,7 @@ import { compact } from 'lodash';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { ReactText, useEffect, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Typography } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation as NavigationConst, Strings, t } from '@apitable/core';
 import {
@@ -44,6 +44,8 @@ import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import styles from './style.module.less';
 // @ts-ignore
 import { isEnterprise, Log, Marketing } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const { TreeNode, DirectoryTree } = Tree;
 
@@ -159,7 +161,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
   ]);
 
 export const SpaceMenuTree: React.FC<React.PropsWithChildren<unknown>> = () => {
-  const { spaceId, spaceResource, userInfo, appType } = useSelector(
+  const { spaceId, spaceResource, userInfo, appType } = useAppSelector(
     (state: IReduxState) => ({
       spaceId: state.space.activeId || '',
       spaceResource: state.spacePermissionManage.spaceResource,

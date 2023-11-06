@@ -21,7 +21,6 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import SplitPane from 'react-split-pane';
 import { ThemeName } from '@apitable/components';
 import { integrateCdnHost, IShareInfo, Navigation, StoreActions, Strings, t } from '@apitable/core';
@@ -48,6 +47,8 @@ import { ShareMobile } from './share_mobile/share_mobile';
 import styles from './style.module.less';
 import { useMountShare } from './use_mount_share';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const _SplitPane: any = SplitPane;
 
 export const ShareContext = React.createContext({} as { shareInfo: IShareSpaceInfo });
@@ -58,12 +59,12 @@ interface IShareProps {
 
 const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) => {
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
-  const { shareId, nodeId, formId } = useSelector((state) => state.pageParams);
-  const userInfo = useSelector((state) => state.user.info);
+  const { shareId, nodeId, formId } = useAppSelector((state) => state.pageParams);
+  const userInfo = useAppSelector((state) => state.user.info);
   const [visible, setVisible] = useState(false);
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const { nodeTree, shareSpace, shareClose, spaceList, spaceListLoading, loading, getSpaceList, getLoginStatus } = useMountShare(shareInfo);
 
   usePageParams();

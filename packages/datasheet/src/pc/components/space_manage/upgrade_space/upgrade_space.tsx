@@ -17,7 +17,6 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Skeleton } from '@apitable/components';
 import { Strings, t, Api } from '@apitable/core';
 import { Modal } from 'pc/components/common';
@@ -25,6 +24,8 @@ import { getEnvVariables } from 'pc/utils/env';
 import styles from './style.module.less';
 // @ts-ignore
 import { showUpgradeContactUs, Trial } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const upperCaseFirstWord = (str: string) => {
   if (str.length < 2) {
@@ -43,8 +44,8 @@ function getStripeCoupon() {
 
 const UpgradeSpace = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const spaceId = useSelector((state) => state.space.activeId);
-  const { product, recurringInterval, onTrial } = useSelector((state) => state.billing?.subscription) || {};
+  const spaceId = useAppSelector((state) => state.space.activeId);
+  const { product, recurringInterval, onTrial } = useAppSelector((state) => state.billing?.subscription) || {};
   const [loading, setLoading] = useState(true);
   const vars = getEnvVariables();
 

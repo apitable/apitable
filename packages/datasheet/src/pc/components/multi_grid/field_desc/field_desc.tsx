@@ -22,12 +22,14 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, useDispatch, useSelector } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import { CollaCommandName, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
 import { resourceService } from '../../../resource_service';
 import { useFieldOperate } from '../hooks';
 import styles from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const { TextArea } = Input;
 
@@ -48,7 +50,7 @@ export interface IFieldDescRef {
 
 export const FieldDescBase: React.ForwardRefRenderFunction<IFieldDescRef, IFieldDescProps> = (props, ref) => {
   const { fieldId, readOnly, style, datasheetId, targetDOM } = props;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
   const field = fieldMap[fieldId];
   const positionStyle = useFieldOperate(FIELD_DESC_WIDTH, datasheetId, targetDOM);
   const [fieldDesc, setFieldDesc] = useState(field.desc ? field.desc : '');

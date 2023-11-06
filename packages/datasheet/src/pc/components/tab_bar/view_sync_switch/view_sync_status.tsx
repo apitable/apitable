@@ -21,13 +21,14 @@ import { Badge } from 'antd';
 import classNames from 'classnames';
 import { useEffect, useRef } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Box, FloatUiTooltip, IOverLayProps, Dropdown, IDropdownControl } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { AutoSaveLottie } from 'pc/components/tab_bar/view_sync_switch/auto_save_lottie';
 import { ManualSaveLottie } from 'pc/components/tab_bar/view_sync_switch/manual_save_lottie';
 import { PopupContent } from 'pc/components/tab_bar/view_sync_switch/popup_content/pc';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const CONST_VIEW_PROPERTY_CONFIGURATION_POPUP = 'view_property_manually_save_popup';
 
@@ -36,7 +37,7 @@ interface IPopupConfigurations {
 }
 
 export const ViewSyncStatus = ({ viewId }: { viewId: string }) => {
-  const { datasheetId, shareId } = useSelector((state) => state.pageParams)!;
+  const { datasheetId, shareId } = useAppSelector((state) => state.pageParams)!;
 
   const [popupConfiguration, setPopupConfiguration] = useLocalStorageState<IPopupConfigurations | undefined>(
     CONST_VIEW_PROPERTY_CONFIGURATION_POPUP,
@@ -45,9 +46,9 @@ export const ViewSyncStatus = ({ viewId }: { viewId: string }) => {
     },
   );
 
-  const snapshot = useSelector(Selectors.getSnapshot)!;
+  const snapshot = useAppSelector(Selectors.getSnapshot)!;
   const contentRef = useRef<HTMLDivElement | null>(null);
-  const currentView = useSelector(() => {
+  const currentView = useAppSelector(() => {
     return Selectors.getCurrentViewBase(snapshot, viewId, datasheetId);
   });
   const isViewAutoSave = Boolean(currentView?.autoSave);

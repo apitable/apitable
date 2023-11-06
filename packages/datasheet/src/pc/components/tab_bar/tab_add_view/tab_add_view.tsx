@@ -21,7 +21,6 @@ import { get } from 'lodash';
 import RcTrigger from 'rc-trigger';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { IUseListenTriggerInfo } from '@apitable/components';
 import {
   CollaCommandName,
@@ -56,6 +55,8 @@ import { stopPropagation } from '../../../utils/dom';
 import styles from './style.module.less';
 import { ViewIntroduceList } from './view_introduce_list';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 // const ReactIconAddTag = () => <IconAddTag width={16} height={16} />;
 
 interface ITabAddView {
@@ -72,7 +73,7 @@ const OFFSET = [0, 8];
 
 export const TabAddView: React.FC<React.PropsWithChildren<ITabAddView>> = (props) => {
   const { activityViewId, viewCount, switchView, setEditIndex, disabled = false } = props;
-  const permissions = useSelector((state: IReduxState) => Selectors.getPermissions(state));
+  const permissions = useAppSelector((state: IReduxState) => Selectors.getPermissions(state));
   // const [plusVisible, setPlusVisible] = useState(false);
   const ref = useRef<any>();
   const close = useCallback(
@@ -81,10 +82,10 @@ export const TabAddView: React.FC<React.PropsWithChildren<ITabAddView>> = (props
     },
     [ref],
   );
-  const { info } = useSelector((state) => state.user);
-  const embedId = useSelector((state) => state.pageParams.embedId);
-  const isLogin = useSelector((state) => state.user.isLogin);
-  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
+  const { info } = useAppSelector((state) => state.user);
+  const embedId = useAppSelector((state) => state.pageParams.embedId);
+  const isLogin = useAppSelector((state) => state.user.isLogin);
+  const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
 
   const isOnlyView = embedId ? get(embedInfo, 'viewControl.viewId', false) : false;
 

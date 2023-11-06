@@ -1,12 +1,12 @@
-import { useAtomValue } from 'jotai';
-import { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { IReduxState, IServerFormPack, Selectors, StoreActions } from '@apitable/core';
-import { fetchFormPack } from '@apitable/core/dist/modules/database/api/form_api';
-import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
-import { getAllFieldsByDstIdFp, useAllFieldsByDstId } from '../../../robot/hooks';
-import { AutomationScenario, IRobotTrigger } from '../../../robot/interface';
-import { automationStateAtom, automationTriggerAtom, loadableFormMeta } from '../index';
+import {useAtomValue} from 'jotai';
+import {useEffect, useMemo} from 'react';
+import {IReduxState, IServerFormPack, Selectors, StoreActions} from '@apitable/core';
+import {fetchFormPack} from '@apitable/core/dist/modules/database/api/form_api';
+import {useAppDispatch} from 'pc/hooks/use_app_dispatch';
+import {getAllFieldsByDstIdFp, useAllFieldsByDstId} from '../../../robot/hooks';
+import {AutomationScenario, IRobotTrigger} from '../../../robot/interface';
+import {automationStateAtom, automationTriggerAtom, loadableFormMeta} from '../index';
+import {useSelector} from "react-redux";
 
 export const getDatasheetId = (trigger?: Pick<IRobotTrigger, 'input'>) => {
   if (!trigger) {

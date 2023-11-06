@@ -21,7 +21,7 @@ import cls from 'classnames';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { VariableSizeGrid as Grid } from 'react-window';
 import {
   CollaCommandName,
@@ -62,6 +62,8 @@ import { ICommitDragDropState } from './interface';
 import styles from './style.module.less';
 import { getColumnWidthAndCount, getGalleryLinearRows, getGroupLinearRows, getGroupTitlePaddingTip, getSearchItemIndex } from './utils';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IGalleryViewProps {
   height?: number;
   width?: number;
@@ -89,7 +91,7 @@ export const GalleryViewBase: React.FC<React.PropsWithChildren<IGalleryViewProps
     getSnapshot,
     getFieldPermissionMap,
   } = Selectors;
-  const datasheetId = useSelector(getActiveDatasheetId)!;
+  const datasheetId = useAppSelector(getActiveDatasheetId)!;
   const {
     groupInfo,
     _visibleRecords,
@@ -110,7 +112,7 @@ export const GalleryViewBase: React.FC<React.PropsWithChildren<IGalleryViewProps
     fieldPermissionMap,
     templateId,
     editable,
-  } = useSelector((state) => {
+  } = useAppSelector((state) => {
     const groupInfo = getActiveViewGroupInfo(state);
     const isGrouped = groupInfo && groupInfo.length;
     const snapshot = getSnapshot(state)!;

@@ -19,7 +19,7 @@
 import { useContext, useEffect, useState } from 'react';
 import * as React from 'react';
 import { DndProvider } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Skeleton } from '@apitable/components';
 import { ConfigConstant, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
@@ -32,16 +32,18 @@ import { WorkbenchSideContext } from '../common_side/workbench_side/workbench_si
 import styles from './style.module.less';
 import { Tree } from './tree';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const CatalogBase: React.FC<React.PropsWithChildren<unknown>> = () => {
   // Whether the node is loaded or not (expand the node)
   const [isLoaded, setIsLoaded] = useState(false);
   // Type of operation to perform, 0 means add folder node, 1 means add file node, 2 means import excel
   const [optType, setOptType] = useState<number | null>(null);
   const dispatch = useDispatch();
-  const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-  const rootId = useSelector((state: IReduxState) => state.catalogTree.rootId);
+  const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const rootId = useAppSelector((state: IReduxState) => state.catalogTree.rootId);
   const { setRightClickInfo, onSetContextMenu } = useContext(WorkbenchSideContext);
-  const activedNodeId = useSelector((state) => Selectors.getNodeId(state));
+  const activedNodeId = useAppSelector((state) => Selectors.getNodeId(state));
   const { rootManageable } = useRootManageable();
   const { addTreeNode } = useCatalog();
 

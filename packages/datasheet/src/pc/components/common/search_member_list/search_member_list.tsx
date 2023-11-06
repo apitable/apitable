@@ -20,7 +20,6 @@ import cls from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { TextInput, ThemeName } from '@apitable/components';
 import { ISearchMemberData, Strings, t } from '@apitable/core';
 import { SearchOutlined } from '@apitable/icons';
@@ -30,6 +29,8 @@ import { InfoCard } from '../index';
 import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName, isSocialWecom, WecomOpenData } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ISearchMemberListProps {
   onChange: (value: string) => void;
@@ -43,11 +44,11 @@ export const SearchMemberList: FC<React.PropsWithChildren<ISearchMemberListProps
   const { searchResult, initInputText } = props;
   const [keyword, setKeyword] = useState('');
   const [listVisible, setListVisible] = useState(false);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const [isMemberInputFocus, setMemberInputFocus] = useState(false);
   const _isSocialWecom = isSocialWecom?.(spaceInfo);
   const wecomMemberNameVisible = _isSocialWecom && !isMemberInputFocus && keyword !== '' && !listVisible;
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const SearchImage = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   useEffect(() => {
     initInputText && setKeyword(initInputText);

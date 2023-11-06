@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useSelector } from 'react-redux';
 import { Skeleton } from '@apitable/components';
 import { Selectors, StatusCode } from '@apitable/core';
 import 'react-grid-layout/css/styles.css';
@@ -25,10 +24,12 @@ import { NoPermission } from '../no_permission';
 import { Dashboard } from './dashboard';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const DashboardPanel = () => {
-  const loading = useSelector((state) => Boolean(Selectors.getDashboardLoading(state)));
-  const dashboardErrCode = useSelector(Selectors.getDashboardErrCode);
-  const dashboardPack = useSelector(Selectors.getDashboardPack);
+  const loading = useAppSelector((state) => Boolean(Selectors.getDashboardLoading(state)));
+  const dashboardErrCode = useAppSelector(Selectors.getDashboardErrCode);
+  const dashboardPack = useAppSelector(Selectors.getDashboardPack);
 
   const isNoPermission =
     dashboardErrCode === StatusCode.NODE_NOT_EXIST || dashboardErrCode === StatusCode.NOT_PERMISSION || dashboardErrCode === StatusCode.NODE_DELETED;

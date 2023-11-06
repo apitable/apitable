@@ -20,10 +20,11 @@ import { Spin } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { Strings, t } from '@apitable/core';
 import { LoadingOutlined } from '@apitable/icons';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface ILoadingProps {
   showText?: boolean;
@@ -33,7 +34,7 @@ export interface ILoadingProps {
 
 export const Loading: FC<React.PropsWithChildren<ILoadingProps>> = (props) => {
   const { showText = true, style, className } = props;
-  const shareId = useSelector((state) => state.pageParams.shareId);
+  const shareId = useAppSelector((state) => state.pageParams.shareId);
   return (
     <div
       className={classNames(styles.loading, className)}

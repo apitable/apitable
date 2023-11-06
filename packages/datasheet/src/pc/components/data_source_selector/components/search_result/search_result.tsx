@@ -18,7 +18,6 @@
 
 import Image from 'next/image';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { ConfigConstant, INode, Strings, t, ThemeName } from '@apitable/core';
 import { TComponent } from 'pc/components/common/t_component';
 import { useLoader } from 'pc/components/data_source_selector/hooks/use_loader';
@@ -26,6 +25,8 @@ import { File, Folder } from 'pc/components/datasheet_search_panel/components';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ISearchResultProps {
   searchResult:
@@ -41,7 +42,7 @@ interface ISearchResultProps {
 
 export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>> = (props) => {
   const { searchResult, onlyShowAvailable, onNodeClick } = props;
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const EmptyResultImage = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   const { nodeVisibleFilterLoader, nodeStatusLoader } = useLoader();
 
@@ -121,7 +122,7 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
 
   const folders = searchResult.folders;
   const files = onlyShowAvailable ? nodeVisibleFilterLoader(searchResult.files) : searchResult.files;
-  
+
   return (
     <div className={styles.searchResult}>
       {FolderList(folders)}

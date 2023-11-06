@@ -20,7 +20,6 @@ import { useUnmount, useMount } from 'ahooks';
 import classNames from 'classnames';
 import { useCallback, useEffect, useRef, useContext } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { FieldType, IField, ILookUpField, Selectors, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
@@ -30,6 +29,8 @@ import { usePrevious, useResponsive } from 'pc/hooks';
 import { FormContext } from '../form_context';
 import { FieldEditor } from './field_editor';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export type IFieldEditRef = Pick<IEditor, 'focus' | 'setValue' | 'saveValue'>;
 
@@ -61,7 +62,7 @@ const compactField = [FieldType.SingleSelect, FieldType.MultiSelect, FieldType.C
 
 export const FormField: React.FC<React.PropsWithChildren<IFormFieldProps>> = (props) => {
   const colors = useThemeColors();
-  const shareId = useSelector((state) => state.pageParams.shareId);
+  const shareId = useAppSelector((state) => state.pageParams.shareId);
   const { datasheetId, field, isFocus = false, setFocusId, onClose, editable, recordId } = props;
   const previousFocus = usePrevious(isFocus);
   const editorRef = useRef<(IFieldEditRef & HTMLDivElement) | null>(null) as any as React.MutableRefObject<IEditor>;
@@ -72,7 +73,7 @@ export const FormField: React.FC<React.PropsWithChildren<IFormFieldProps>> = (pr
   // const defaultValue = Field.bindModel(field).defaultValue();
   // const cellValue = hasSetField ? (formData[fieldId] ?? null) : defaultValue;
   const cellValue = formData ? formData[fieldId] ?? null : null;
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const isLogin = useAppSelector((state) => state.user.isLogin);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const compactMode = formProps?.compactMode;
@@ -136,7 +137,7 @@ export const FormField: React.FC<React.PropsWithChildren<IFormFieldProps>> = (pr
     Message.destroy();
   });
 
-  const { entityField, lookupCellValue } = useSelector((state) => {
+  const { entityField, lookupCellValue } = useAppSelector((state) => {
     if (field.type !== FieldType.LookUp) {
       return {
         entityField: undefined,

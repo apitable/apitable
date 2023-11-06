@@ -4,7 +4,6 @@ import classnames from 'classnames';
 import dayjs from 'dayjs';
 import { produce } from 'immer';
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Box, IconButton } from '@apitable/components';
 import { DATASHEET_ID, Strings, t, DatasheetApi, Selectors, CollaCommandName, fastCloneDeep, Field, FieldType } from '@apitable/core';
 import { RestoreOutlined, DeleteOutlined, ArchiveOutlined, QuestionCircleOutlined } from '@apitable/icons';
@@ -18,7 +17,9 @@ import { getEnvVariables } from 'pc/utils/env';
 import { IArchivedRecordsProps } from './interface';
 // eslint-disable-next-line no-restricted-imports
 import styles from './style.module.less';
-interface ITableParams { 
+
+import {useAppSelector} from "pc/store/react-redux";
+interface ITableParams {
   pageNum: number,
   pageSize: number
 }
@@ -34,9 +35,9 @@ const handleRecordsData = (recordsData) => {
         archivedUser: archivedUser,
         archivedTime: archivedAt
       };
-    } 
+    }
     return null;
-    
+
   }).filter(item => item !== null);
   return data;
 };
@@ -53,11 +54,11 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
   const [recordData, setRecordData] = useState<any[]>([]);
   const [recordsDataMap, setRecordsDataMap] = useState(new Map());
 
-  const datasheetId = useSelector((state) => state.pageParams.datasheetId)!;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
+  const datasheetId = useAppSelector((state) => state.pageParams.datasheetId)!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const visibleColumns = useSelector((state) => Selectors.getVisibleColumns(state, datasheetId))!;
-  const permissions = useSelector((state) => Selectors.getPermissions(state, datasheetId));
+  const visibleColumns = useAppSelector((state) => Selectors.getVisibleColumns(state, datasheetId))!;
+  const permissions = useAppSelector((state) => Selectors.getPermissions(state, datasheetId));
   const { run: getArchivedRecords, loading: archivedRecordsLoading } = useRequest(() => DatasheetApi.getArchivedRecords(datasheetId, tableParams), {
     manual: true,
     onSuccess(res) {
@@ -84,13 +85,13 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
   }, [tableParams, open]);
 
   const updateRecordData = (records: any[]) => {
-    const newRecords = produce(recordData, draft => { 
-      records.forEach(record => { 
-        const index = draft.findIndex(item => item.record.id === record.id); 
-        if(index !== -1) { 
-          draft.splice(index, 1); 
-        } 
-      }); 
+    const newRecords = produce(recordData, draft => {
+      records.forEach(record => {
+        const index = draft.findIndex(item => item.record.id === record.id);
+        if(index !== -1) {
+          draft.splice(index, 1);
+        }
+      });
     });
     setRecordData(newRecords);
     setTotal(total - records.length);
@@ -215,7 +216,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     }).filter(item => item !== null);
 
     fieldMapColums.unshift(firstColumn);
-    
+
     fieldMapColums.push({
       title: t(Strings.archived_by),
       key: 'archivedUser',
@@ -319,7 +320,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
               shape="square"
               icon={QuestionCircleOutlined}
               onClick={() => {
-                window.open(getEnvVariables().ARCHIVED_HELP_LINK); 
+                window.open(getEnvVariables().ARCHIVED_HELP_LINK);
               }}
             />
           </Box>
@@ -340,15 +341,15 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
         id={DATASHEET_ID.ARCHIVED_RECORDS_BTN}
         disabled={!permissions.editable}
       />
-      <Drawer 
-        className='archiveDrawer' 
-        title={<TitleComponents />} 
-        placement="right" 
-        onClose={onDrawerClose} 
-        width={window.innerWidth * 0.9} 
+      <Drawer
+        className='archiveDrawer'
+        title={<TitleComponents />}
+        placement="right"
+        onClose={onDrawerClose}
+        width={window.innerWidth * 0.9}
         open={open}
       >
-        
+
         <div className={styles.batchHandle}>
           <Button disabled={!hasSelected} onClick={() => {
             Modal.warning({

@@ -20,7 +20,6 @@ import classNames from 'classnames';
 import produce from 'immer';
 import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Field, IField, ISelectField, isSelectField, moveArrayElement, SelectField, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
@@ -32,6 +31,8 @@ import { Modal } from 'pc/components/common/mobile/modal';
 import { useResponsive } from 'pc/hooks';
 import styles from '../../styles.module.less';
 import { FormatSelectItem } from './format_select_item';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IFormatSelect {
   currentField: ISelectField;
@@ -45,7 +46,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
   const isMobile = screenIsAtMost(ScreenSize.md);
 
   const { currentField, setCurrentField } = props;
-  const fieldMap = useSelector((state) => {
+  const fieldMap = useAppSelector((state) => {
     const { formId, datasheetId } = state.pageParams;
     if (formId) {
       const sourceInfo = Selectors.getForm(state, formId)?.sourceInfo;

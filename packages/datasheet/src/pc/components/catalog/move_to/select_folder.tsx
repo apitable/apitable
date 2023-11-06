@@ -20,7 +20,6 @@ import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import throttle from 'lodash/throttle';
 import { useEffect, useState, useMemo, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { Box, LinkButton, Loading, Message, TextInput, useThemeColors } from '@apitable/components';
 import { Api, ApiInterface, ConfigConstant, INode, INodesMapItem, IParent, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, SearchOutlined } from '@apitable/icons';
@@ -31,6 +30,8 @@ import { SelectFolderTips } from './select_folder_tips';
 
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const SelectFolder: React.FC<
   React.PropsWithChildren<{
     selectedFolderId?: string;
@@ -39,9 +40,9 @@ export const SelectFolder: React.FC<
   }>
 > = (props) => {
   const { selectedFolderId, selectedFolderParentList, onChange } = props;
-  const rootId = useSelector((state) => state.catalogTree.rootId);
-  const spaceName = useSelector((state) => state.user.info?.spaceName);
-  const spaceId = useSelector((state) => state.space.activeId);
+  const rootId = useAppSelector((state) => state.catalogTree.rootId);
+  const spaceName = useAppSelector((state) => state.user.info?.spaceName);
+  const spaceId = useAppSelector((state) => state.space.activeId);
 
   const currentFolderId = selectedFolderId || rootId;
   const isWhole = Boolean(selectedFolderId);

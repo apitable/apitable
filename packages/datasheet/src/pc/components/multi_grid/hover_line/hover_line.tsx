@@ -18,12 +18,13 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { DATASHEET_ID, DropDirectionType, Selectors } from '@apitable/core';
 import { CELL_CLASS, FIELD_DOT, FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass, OPACITY_LINE_CLASS, OPERATE_HEAD_CLASS } from 'pc/utils';
 import { IDragOption, IDragProps } from '../drag/interface';
 import { IElementRectProps, MoveType } from './interface';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IHoverLineOwnProps {
   isChangeColumnsWidth: boolean;
@@ -52,8 +53,8 @@ export const HoverLine: React.FC<React.PropsWithChildren<IHoverLine>> = (props) 
     getElementRect,
   } = props;
   const colors = useThemeColors();
-  const dragTarget = useSelector((state) => Selectors.getGridViewDragState(state).dragTarget);
-  const primaryFieldId = useSelector((state) => {
+  const dragTarget = useAppSelector((state) => Selectors.getGridViewDragState(state).dragTarget);
+  const primaryFieldId = useAppSelector((state) => {
     const view = Selectors.getCurrentView(state)!;
     return view.columns[0].fieldId;
   });

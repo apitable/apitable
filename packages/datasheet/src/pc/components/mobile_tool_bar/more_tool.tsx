@@ -19,7 +19,7 @@
 import classNames from 'classnames';
 import { useEffect } from 'react';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { LinkButton, IconButton, useThemeColors } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { FolderNormalFilled, MoreStandOutlined, RedoOutlined, UndoOutlined } from '@apitable/icons';
@@ -32,13 +32,15 @@ import { NotifyKey } from '../common/notify/notify.interface';
 import { expandNodeDescription, elementHasChild } from '../tab_bar/description_modal';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
-  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state))!;
-  const shareId = useSelector((state) => state.pageParams.shareId);
-  const embedId = useSelector((state) => state.pageParams.embedId);
+  const datasheetId = useAppSelector((state) => Selectors.getActiveDatasheetId(state))!;
+  const shareId = useAppSelector((state) => state.pageParams.shareId);
+  const embedId = useAppSelector((state) => state.pageParams.embedId);
   const undoManager = resourceService.instance!.undoManager!;
-  const datasheetName = useSelector((state) => {
+  const datasheetName = useAppSelector((state) => {
     const treeNodesMap = state.catalogTree.treeNodesMap;
     const datasheet = Selectors.getDatasheet(state);
     if (shareId) return datasheet ? datasheet.name : null;
@@ -67,7 +69,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
     }
   };
 
-  const { undoLength, redoLength } = useSelector(() => {
+  const { undoLength, redoLength } = useAppSelector(() => {
     if (!undoManager) {
       return {
         undoLength: 0,
@@ -114,7 +116,7 @@ export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
     </div>
   );
 
-  const desc = useSelector((state) => Selectors.getNodeDesc(state), shallowEqual);
+  const desc = useAppSelector((state) => Selectors.getNodeDesc(state), shallowEqual);
 
   useEffect(() => {
     const storage = getStorage(StorageName.Description) || [];

@@ -1,10 +1,11 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { findNode } from '@apitable/core';
 import { AutomationPanelContent } from '../automation/content';
 import { AutomationPanel } from '../automation/panel';
 import { INodeTree } from './interface';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const MirrorRoute = dynamic(() => import('../mirror/mirror_route').then((module) => module.MirrorRoute));
 const DataSheetPane = dynamic(() => import('../datasheet_pane').then((module) => module.DataSheetPane));
@@ -21,8 +22,8 @@ interface IShareContentProps {
 
 export const ShareContent: React.FC<IShareContentProps> = (props) => {
   const { nodeTree, loading } = props;
-  const { datasheetId, folderId, formId, automationId, dashboardId, mirrorId, aiId } = useSelector((state) => state.pageParams);
-  const treeNodesMap = useSelector((state) => state.catalogTree.treeNodesMap);
+  const { datasheetId, folderId, formId, automationId, dashboardId, mirrorId, aiId } = useAppSelector((state) => state.pageParams);
+  const treeNodesMap = useAppSelector((state) => state.catalogTree.treeNodesMap);
 
   if (!nodeTree) {
     return null;

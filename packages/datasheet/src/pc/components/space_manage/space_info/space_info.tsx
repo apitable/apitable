@@ -18,7 +18,7 @@
 
 import { useMount } from 'ahooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useContextMenu } from '@apitable/components';
 import { Api, Events, getLanguage, IApi, IReduxState, Player, ScreenWidth, StoreActions, Strings, t } from '@apitable/core';
 // @ts-ignore
@@ -33,8 +33,10 @@ import { ISpaceLevelType, LevelType } from './interface';
 import { Lg, Md, Sm, Xs } from './layout';
 import { DELETE_SPACE_CONTEXT_MENU_ID } from './utils';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const SpaceInfo = () => {
-  const { spaceInfo, spaceFeatures, subscription, spaceId } = useSelector(
+  const { spaceInfo, spaceFeatures, subscription, spaceId } = useAppSelector(
     (state: IReduxState) => ({
       spaceInfo: state.space.curSpaceInfo,
       spaceFeatures: state.space.spaceFeatures,

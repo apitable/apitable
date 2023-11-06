@@ -19,7 +19,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { forwardRef, ForwardRefRenderFunction, memo, useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Message } from '@apitable/components';
 import {
   CollaCommandName,
@@ -68,6 +68,8 @@ import { StatMenu } from './components/stat_menu';
 import { StatRightClickMenu } from './components/stat_right_click_menu';
 import { UrlActionContainer } from './components/url_action_container';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IDomGridBaseProps {
   datasheetId: string;
@@ -125,7 +127,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     activeFieldId,
     activeFieldOperateType,
     gridViewDragState,
-  } = useSelector((state) => {
+  } = useAppSelector((state) => {
     const { fieldId, operate } = Selectors.gridViewActiveFieldState(state);
     return {
       activeFieldId: fieldId,

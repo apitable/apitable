@@ -24,7 +24,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Events, IReduxState, NAV_ID, Player, Settings, StoreActions, Strings, t } from '@apitable/core';
 import {
@@ -69,6 +69,8 @@ import { User } from './user';
 // @ts-ignore
 import { inSocialApp, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 enum NavKey {
   SpaceManagement = 'management',
   Org = 'org',
@@ -85,7 +87,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   const [notice, { toggle: toggleNotice, set: setNotice }] = useToggle(false);
   const [upgradePopup, { set: setUpgradePopup }] = useToggle(false);
   const dispatch = useDispatch();
-  const { user, space, unReadCount, newNoticeListFromWs } = useSelector(
+  const { user, space, unReadCount, newNoticeListFromWs } = useAppSelector(
     (state: IReduxState) => ({
       user: state.user.info,
       space: state.space.curSpaceInfo,

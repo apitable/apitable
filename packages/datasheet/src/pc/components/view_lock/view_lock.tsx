@@ -18,7 +18,6 @@
 
 import { Modal } from 'antd';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Typography, useThemeColors } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
@@ -27,10 +26,12 @@ import { EnabledViewLock } from 'pc/components/view_lock/enabled_view_lock';
 import { IViewLockProps } from './interface';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const ViewLock: React.FC<React.PropsWithChildren<IViewLockProps>> = (props) => {
   const colors = useThemeColors();
   const { viewId, onModalClose, unlockHandle } = props;
-  const view = useSelector((state) => {
+  const view = useAppSelector((state) => {
     const datasheetId = state.pageParams.datasheetId;
     const snapshot = Selectors.getSnapshot(state, datasheetId)!;
     return Selectors.getViewById(snapshot, viewId);

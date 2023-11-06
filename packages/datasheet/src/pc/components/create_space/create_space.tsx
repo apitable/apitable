@@ -20,7 +20,7 @@ import { Form, Input } from 'antd';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { Button, ThemeName } from '@apitable/components';
 import { IReduxState, Navigation, StoreActions, Strings, t, Selectors } from '@apitable/core';
 import { Logo } from 'pc/components/common';
@@ -29,6 +29,8 @@ import { useRequest, useSpaceRequest } from 'pc/hooks';
 import CreateSpaceIconDark from 'static/icon/space/space_add_name_dark.png';
 import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ICreateSpace {
   isShare?: boolean;
@@ -39,11 +41,11 @@ const CreateSpace: FC<React.PropsWithChildren<ICreateSpace>> = (props) => {
   const [disabled, setDisabled] = useState(true);
   const [spaceName, setSpaceName] = useState('');
   const dispatch = useDispatch();
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const CreateSpaceIcon = themeName === ThemeName.Light ? CreateSpaceIconLight : CreateSpaceIconDark;
-  const theme = useSelector(Selectors.getTheme);
+  const theme = useAppSelector(Selectors.getTheme);
 
-  const { isCreateSpace, err, user } = useSelector(
+  const { isCreateSpace, err, user } = useAppSelector(
     (state: IReduxState) => ({
       isCreateSpace: state.user.isCreateSpace,
       err: state.space.err,

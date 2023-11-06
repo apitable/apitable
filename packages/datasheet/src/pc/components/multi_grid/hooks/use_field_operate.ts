@@ -19,7 +19,7 @@
 import { has } from 'lodash';
 import * as React from 'react';
 import { useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   BasicValueType,
   CollaCommandName,
@@ -50,6 +50,8 @@ import { store } from 'pc/store';
 import { getFieldHeaderByFieldId } from 'pc/utils';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 function returnCurrentOffsetX(newOffsetX: number, lastOffsetX: number): number {
   if (newOffsetX === lastOffsetX) {
     return 0;
@@ -60,7 +62,7 @@ function returnCurrentOffsetX(newOffsetX: number, lastOffsetX: number): number {
 }
 
 export const useFieldOperate = (modalWidth: number, datasheetId?: string, targetDOM?: HTMLElement | null) => {
-  const { fieldRectLeft, fieldRectBottom, clickLogOffsetX } = useSelector((state) => Selectors.gridViewActiveFieldState(state, datasheetId));
+  const { fieldRectLeft, fieldRectBottom, clickLogOffsetX } = useAppSelector((state) => Selectors.gridViewActiveFieldState(state, datasheetId));
   const { scrollLeft = 0 } = useCacheScroll();
   const diffOffsetX = scrollLeft ? returnCurrentOffsetX(scrollLeft, clickLogOffsetX) : 0;
 
@@ -156,9 +158,9 @@ export const useHideField = (currentView: IViewProperty | undefined, hiddenProp 
 };
 
 export const useFilterField = () => {
-  const currentView = useSelector((state) => Selectors.getCurrentView(state));
-  const activeViewFilter: undefined | IFilterInfo = useSelector((state) => Selectors.getFilterInfo(state));
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const currentView = useAppSelector((state) => Selectors.getCurrentView(state));
+  const activeViewFilter: undefined | IFilterInfo = useAppSelector((state) => Selectors.getFilterInfo(state));
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
   const filterField = (fieldId: string) => {
     if (!currentView) {
       return;
@@ -200,8 +202,8 @@ export const useFilterField = () => {
 };
 
 export const useGroupField = () => {
-  const currentView = useSelector((state) => Selectors.getCurrentView(state));
-  const activeViewGroupInfo = useSelector((state) => Selectors.getActiveViewGroupInfo(state)); // store Total stored data
+  const currentView = useAppSelector((state) => Selectors.getCurrentView(state));
+  const activeViewGroupInfo = useAppSelector((state) => Selectors.getActiveViewGroupInfo(state)); // store Total stored data
   const canGroup = activeViewGroupInfo.length < 3;
   const groupField = (fieldId: string) => {
     if (!currentView) {
@@ -237,7 +239,7 @@ export const useGroupField = () => {
 };
 
 export const useSortField = () => {
-  const currentView = useSelector((state) => Selectors.getCurrentView(state));
+  const currentView = useAppSelector((state) => Selectors.getCurrentView(state));
 
   const sortField = (desc: boolean, fieldId: string) => {
     if (!currentView) {
@@ -287,8 +289,8 @@ export const useSortField = () => {
 };
 
 export const useActiveFieldSetting = () => {
-  const permissions = useSelector((state) => Selectors.getPermissions(state));
-  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state)!);
+  const permissions = useAppSelector((state) => Selectors.getPermissions(state));
+  const datasheetId = useAppSelector((state) => Selectors.getActiveDatasheetId(state)!);
   const { scrollLeft } = useCacheScroll();
 
   const activeFieldSetting = (fieldId: string, from?: SetFieldFrom): boolean => {
