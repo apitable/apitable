@@ -21,17 +21,17 @@ import React, { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import useSWR from 'swr';
 import { Box } from '@apitable/components';
-import { IReduxState, Strings, t } from '@apitable/core';
+import { IReduxState, Selectors, Strings, t } from '@apitable/core';
 import { IFetchDatasheet } from '@apitable/widget-sdk/dist/message/interface';
 import { CONST_MAX_ACTION_COUNT } from 'pc/components/automation/config';
-import {getTriggerDatasheetId, IFetchedDatasheet} from 'pc/components/automation/controller/hooks/use_robot_fields';
+import { getTriggerDatasheetId, IFetchedDatasheet } from 'pc/components/automation/controller/hooks/use_robot_fields';
 import { OrEmpty } from 'pc/components/common/or_empty';
 import { automationActionsAtom, automationStateAtom } from '../../../automation/controller';
 import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
 import { OrTooltip } from '../../../common/or_tooltip';
 import { getNodeOutputSchemaList } from '../../helper';
 import { useActionTypes } from '../../hooks';
-import { ITriggerType } from '../../interface';
+import { AutomationScenario, ITriggerType } from '../../interface';
 import { EditType } from '../trigger/robot_trigger';
 import { getActionList, getTriggerList } from '../utils';
 import { LinkButton } from './link';
@@ -55,6 +55,7 @@ export const RobotActions = ({
   const actions = (robot?.robot?.actions ?? []).map(action => ({ ...action,
     typeId: action.actionTypeId,
     id: action.actionId }));
+  const activeDstId = useSelector(Selectors.getActiveDatasheetId);
 
   const setActions = useSetAtom(automationActionsAtom);
   useEffect(( ) => {
@@ -72,7 +73,7 @@ export const RobotActions = ({
 
   const dataSheetMap = useSelector((state: IReduxState) => state.datasheetMap);
 
-  const triggerDataSheetIds : IFetchedDatasheet[] = (dataList1 ?? []) as IFetchedDatasheet[];
+  const triggerDataSheetIds : IFetchedDatasheet[] = robot?.scenario === AutomationScenario?.datasheet ? [activeDstId] : (dataList1 ?? []) as IFetchedDatasheet[];
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
     actionTypes,
