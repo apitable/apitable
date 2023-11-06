@@ -62,7 +62,7 @@
     "uuid": "^9.0.1"
   },
   "scripts": {
-    "build": "rm -rf ./dist && rollup -c --bundleConfigAsCjs",
+    "build": "node build.js",
     "dev": "rollup -c -w --bundleConfigAsCjs",
     "start": "concurrently \"tsc -w\" \"tsc-alias -w\"",
     "test-dev": "npx majestic",

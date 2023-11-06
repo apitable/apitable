@@ -103,7 +103,7 @@ build-local:
 
 _build-ts:
 	pnpm install
-	nx run-many -t build --exclude @apitable/datasheet --exclude @apitable/ai
+	nx run-many -t build --exclude @apitable/datasheet
 
 _build-java:
 	cd backend-server && ./gradlew build -x test --stacktrace
@@ -536,6 +536,6 @@ api-codegen:
        --additional-properties=npmName=@apitable/api-client  \
        --additional-properties=npmVersion=0.0.1 \
        --additional-properties=useObjectParameters=true  --additional-properties=prependFormOrBodyParameters=true  -o  ./packages/api-client
-	cp -rf /tmp/api-client_package.json.bak  packages/api-client/package.json 
+	cp -rf /tmp/api-client_package.json.bak  packages/api-client/package.json
 
 
