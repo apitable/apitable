@@ -213,7 +213,7 @@ export class WorkdocField extends ArrayValueField {
 
   cellValueToStdValue(val: IWorkdocValue[] | null): IStandardValue {
     const stdVal: IStandardValue = {
-      sourceType: FieldType.Attachment,
+      sourceType: FieldType.Workdoc,
       data: [],
     };
 
