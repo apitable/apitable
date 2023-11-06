@@ -116,7 +116,7 @@ const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (pro
       abbr = ` (${getTimeZoneAbbrByUtc(tz)!})`;
     }
     if (value) {
-      const dateTime = timeZone ? dayjs.tz(value).tz(timeZone) : dayjs.tz(value);
+      const dateTime = timeZone ? dayjs(value).tz(timeZone) : dayjs.tz(value);
       return `${dateTime.format(mode == 'day' ? dateFormat : dateTimeFormat)}${abbr}`;
     }
     return `${mode == 'day' ? dateFormat.toLowerCase() : dateTimeFormat.toLocaleLowerCase()}${abbr}`;
