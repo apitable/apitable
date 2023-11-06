@@ -379,7 +379,7 @@ public class PlayerNotificationServiceImpl
             return notificationRecordList;
         }
         dtos = dtos.stream().filter(dto -> {
-            if (ro.getIsRead() == 1) {
+            if (Boolean.TRUE.equals(ro.getIsRead())) {
                 return true;
             }
             // check expired
@@ -400,7 +400,7 @@ public class PlayerNotificationServiceImpl
 
     @Override
     public List<NotificationModelDTO> getUserNotificationByTypeAndIsRead(Long toUser,
-                                                                         Integer isRead) {
+                                                                         Boolean isRead) {
         return baseMapper.selectDtoByTypeAndIsRead(toUser, isRead);
     }
 
@@ -515,7 +515,7 @@ public class PlayerNotificationServiceImpl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean setNotificationIsRead(String[] ids, Integer isAll) {
+    public boolean setNotificationIsRead(String[] ids, Boolean isAll) {
         Long userId = SessionContext.getUserId();
         if (ArrayUtil.isNotEmpty(ids)) {
             // It may be jumped by mail, you need to find the specific ID in redis, and then mark it as read
@@ -530,7 +530,7 @@ public class PlayerNotificationServiceImpl
             if (NumberUtil.isLong(ids[0])) {
                 return baseMapper.updateReadIsTrueByIds(ids);
             }
-        } else if (isAll != 0) {
+        } else if (Boolean.TRUE.equals(isAll)) {
             return baseMapper.updateReadIsTrueByUserId(userId);
         }
         return true;
