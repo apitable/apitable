@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-<<<<<<<< HEAD:apitable/packages/room-server/src/shared/event/event.module.ts
 import { Module } from '@nestjs/common';
 import { OTEventService } from './ot.event.service';
 
@@ -26,20 +25,3 @@ import { OTEventService } from './ot.event.service';
   exports: [OTEventService],
 })
 export class EventModule {}
-========
-package com.apitable.interfaces.document.facade;
-
-import java.util.List;
-
-/**
- * document service facade.
- */
-public interface DocumentServiceFacade {
-
-    String getSpaceIdByDocumentName(String documentName);
-
-    void remove(Long userId, List<String> nodeIds);
-
-    void recover(Long userId, List<String> nodeIds);
-}
->>>>>>>> 9bb4ea7908331ff48e515120432efc95f83d16c8:apitable/backend-server/application/src/main/java/com/apitable/interfaces/document/facade/DocumentServiceFacade.java
