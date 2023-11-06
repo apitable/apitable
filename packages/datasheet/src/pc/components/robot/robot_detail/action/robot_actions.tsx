@@ -18,7 +18,6 @@
 
 import { useSetAtom, useAtomValue } from 'jotai';
 import React, { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import useSWR from 'swr';
 import { Box } from '@apitable/components';
 import { IReduxState, Strings, t } from '@apitable/core';
@@ -40,6 +39,8 @@ import {
   CreateNewAction,
   CreateNewActionLineButton,
 } from './robot_action_create';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export const RobotActions = ({
   robotId,
@@ -70,7 +71,7 @@ export const RobotActions = ({
   const { data: dataList1 } = useSWR(['getRobotMagicDatasheet', triggers], () => getTriggerDatasheetId(triggers), {
   });
 
-  const dataSheetMap = useSelector((state: IReduxState) => state.datasheetMap);
+  const dataSheetMap = useAppSelector((state: IReduxState) => state.datasheetMap);
 
   const triggerDataSheetIds : IFetchedDatasheet[] = (dataList1 ?? []) as IFetchedDatasheet[];
   const nodeOutputSchemaList = getNodeOutputSchemaList({

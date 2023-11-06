@@ -2,10 +2,11 @@ import { usePrevious } from 'ahooks';
 import throttle from 'lodash/throttle';
 import { useEffect, useMemo } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Api, ConfigConstant, INode } from '@apitable/core';
 import { ISearchPanelState } from 'pc/components/datasheet_search_panel/store/interface/search_panel';
 import { ISearchShowOption } from '../datasheet_search_panel';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IParams {
   folderId: string;
@@ -15,7 +16,7 @@ interface IParams {
 }
 
 export const useSearch = ({ localDispatch, folderId, localState, options }: IParams) => {
-  const spaceId = useSelector((state) => state.space.activeId!);
+  const spaceId = useAppSelector((state) => state.space.activeId!);
   const previousCurrentFolderId = usePrevious(localState.currentFolderId);
 
   const search = useMemo(() => {

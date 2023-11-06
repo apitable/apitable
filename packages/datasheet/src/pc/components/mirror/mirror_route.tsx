@@ -17,7 +17,6 @@
  */
 
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { Skeleton } from '@apitable/components';
 import { Navigation, Selectors, StatusCode, Strings, t } from '@apitable/core';
@@ -27,18 +26,20 @@ import styles from 'pc/components/mirror/style.module.less';
 import { NoPermission } from 'pc/components/no_permission';
 import { Router } from 'pc/components/route_manager/router';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const MirrorRoute = () => {
-  const { mirrorId, shareId, datasheetId, templateId, categoryId } = useSelector((state) => state.pageParams)!;
-  const mirrorSourceInfo = useSelector((state) => {
+  const { mirrorId, shareId, datasheetId, templateId, categoryId } = useAppSelector((state) => state.pageParams)!;
+  const mirrorSourceInfo = useAppSelector((state) => {
     return Selectors.getMirrorSourceInfo(state, mirrorId!);
   });
-  const recordId = useSelector((state) => {
+  const recordId = useAppSelector((state) => {
     return state.pageParams.recordId;
   });
-  const mirror = useSelector((state) => {
+  const mirror = useAppSelector((state) => {
     return Selectors.getMirror(state, mirrorId!);
   });
-  const sourceDatasheet = useSelector((state) => {
+  const sourceDatasheet = useAppSelector((state) => {
     if (!mirror) {
       return;
     }
@@ -68,7 +69,7 @@ export const MirrorRoute = () => {
     });
   }, [mirrorSourceInfo, mirrorId, categoryId, shareId, templateId, recordId, datasheetId]);
 
-  const errorCode = useSelector((state) => {
+  const errorCode = useAppSelector((state) => {
     return (
       Selectors.getMirrorErrorCode(state, mirrorId!) ||
       (mirrorSourceInfo?.datasheetId && Selectors.getDatasheetErrorCode(state, mirrorSourceInfo.datasheetId))

@@ -21,7 +21,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { Button, Skeleton, ThemeName, useThemeColors } from '@apitable/components';
 import { Api, CollaCommandName, ConfigConstant, ExecuteResult, Navigation, Selectors, StoreActions, Strings, t, WidgetApi } from '@apitable/core';
 import { DashboardOutlined } from '@apitable/icons';
@@ -35,6 +35,8 @@ import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
 import {copyWidgetsToNode} from "api/widget/api";
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ISentToDashboardProps {
   widgetId: string;
@@ -65,7 +67,7 @@ const SentToDashboard: React.FC<React.PropsWithChildren<ISentToDashboardProps>> 
   const onClick = (nodeId: string) => {
     setSelectedId(nodeId);
   };
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   async function copyWidget(dashboardId: string) {

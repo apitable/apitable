@@ -21,6 +21,7 @@ import qs from 'qs';
 import {IAutomationDatum, IRobotHistoryTask, IRobotTrigger} from './interface';
 import {IAutomationRobotDetailItem} from './robot_context';
 import {IRunHistoryDatum} from './robot_detail/robot_run_history';
+import {automationApiClient} from "pc/common/api-client";
 
 export const nestReq = axios.create({
     baseURL: '/nest/v1/',
@@ -61,16 +62,15 @@ export const updateAutomationRobot = async (resourceId: string, robotId: string,
     return res.data.success;
 };
 
-export const getResourceAutomations = (resourceId: string, options?: {
+export const getResourceAutomations = async (resourceId: string, options?: {
     shareId: string
 }): Promise<IAutomationDatum[]> => {
-    const query = options != null ? qs.stringify(options) : '';
-    return axios.get(`/automation/robots?resourceId=${resourceId}&${query}`).then((res) => {
-        if (res.data.success) {
-            return res.data.data;
-        }
-        return [];
+    const resp = await automationApiClient.getResourceRobots({
+        resourceId: resourceId,
+        // @ts-ignore
+        shareId: options?.shareId ?? '',
     });
+    return (resp?.data ?? []) as unknown as IAutomationDatum[]
 };
 
 // export const createAutomationRobot = (robot: { resourceId: string; name: string }): Promise<IAutomationDatum> => {
@@ -200,4 +200,3 @@ export const getAutomationRunHistoryDetail = (taskId: string): Promise<IRobotHis
         return taskDetail;
     });
 };
-

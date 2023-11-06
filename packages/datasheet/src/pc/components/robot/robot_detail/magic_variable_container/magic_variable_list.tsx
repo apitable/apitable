@@ -94,7 +94,7 @@ export const SchemaPropertyList = (props: ISchemaPropertyListProps) => {
         }
         return (
           <>
-            <Box paddingBottom={'8px'}>
+            <Box>
               <Typography
                 variant="body4"
                 color={colors.textCommonTertiary}

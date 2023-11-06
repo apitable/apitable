@@ -18,7 +18,7 @@
 
 import classNames from 'classnames';
 import React, { useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, Strings, t } from '@apitable/core';
 import { DeleteOutlined, MoreOutlined, PlanetOutlined } from '@apitable/icons';
@@ -29,6 +29,8 @@ import { Tag } from 'pc/components/common/tag/tag';
 import { MyTrigger } from 'pc/components/multi_grid/format/trigger';
 import AvatarBgIcon from 'static/icon/template/template_img_cardbg.svg';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 enum Types {
   BANNER = 'banner',
@@ -83,7 +85,7 @@ export const TemplateItem: React.FC<React.PropsWithChildren<ITemplateItemProps>>
     bannerType = ConfigConstant.BannerType.LARGE,
   } = props;
   const [showPopup, setShowPopup] = useState(false);
-  const { user, spaceResource } = useSelector(
+  const { user, spaceResource } = useAppSelector(
     (state: IReduxState) => ({
       user: state.user.info,
       spaceResource: state.spacePermissionManage.spaceResource,

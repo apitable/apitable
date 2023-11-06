@@ -19,7 +19,7 @@
 import { useMount } from 'ahooks';
 import Image from 'next/image';
 import { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button } from '@apitable/components';
 import { Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t, ThemeName } from '@apitable/core';
 import { Message, Wrapper } from 'pc/components/common';
@@ -32,17 +32,19 @@ import inviteImageLight from 'static/icon/common/invitation_link_page_light.png'
 import { InviteTitle } from '../components/invite_title';
 import { useInvitePageRefreshed } from '../use_invite';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'linkInvite' });
   const query = useQuery();
-  const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
+  const inviteLinkInfo = useAppSelector((state: IReduxState) => state.invite.inviteLinkInfo);
   const inviteLinkToken = query.get('inviteLinkToken');
   const inviteCode = query.get('inviteCode') || undefined;
   const nodeId = query.get('nodeId');
   const shareId = query.get('shareId') || '';
   const { LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL, INVITE_USER_BY_AUTH0, IS_ENTERPRISE } = getEnvVariables();
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
 
   const InviteImage = themeName === ThemeName.Light ? inviteImageLight : inviteImageDark;
 

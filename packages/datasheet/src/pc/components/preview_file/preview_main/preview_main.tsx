@@ -20,7 +20,6 @@ import { useKeyPress } from 'ahooks';
 import mime from 'mime-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { stopPropagation, useThemeColors } from '@apitable/components';
 import { Api, IAttachmentValue, isImage, IUserInfo, IReduxState } from '@apitable/core';
 import { RotateOutlined } from '@apitable/icons';
@@ -39,6 +38,8 @@ import { initTransformInfo, initTranslatePosition, MAX_SCALE, MIN_SCALE } from '
 import styles from './style.module.less';
 import { Swiper } from './swiper';
 import { isFocusingInput } from './util';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IPreviewMain {
   activeIndex: number;
@@ -72,7 +73,7 @@ export const PreviewMain: React.FC<React.PropsWithChildren<IPreviewMain>> = (pro
   } = props;
   const colors = useThemeColors();
   const { screenIsAtMost, clientWidth: _clientWidth } = useResponsive();
-  const rightPaneWidth = useSelector((state: IReduxState) => state.rightPane.width);
+  const rightPaneWidth = useAppSelector((state: IReduxState) => state.rightPane.width);
   const isMobile = screenIsAtMost(ScreenSize.md);
   const clientWidth = typeof rightPaneWidth == 'number' && !isFullScreen ? _clientWidth - rightPaneWidth : _clientWidth;
 

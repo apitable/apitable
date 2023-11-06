@@ -1,13 +1,14 @@
 import Image from 'next/image';
-import { useSelector } from 'react-redux';
 import { Box, ThemeName, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import quicksearchDark from 'static/icon/common/quicksearch_default_dark.png';
 import quicksearchLight from 'static/icon/common/quicksearch_default_light.png';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const DefaultContent = () => {
-  const theme = useSelector((state) => state.theme);
+  const theme = useAppSelector((state) => state.theme);
   const defaultImg = theme === ThemeName.Light ? quicksearchLight : quicksearchDark;
   return (
     <div className={styles.defaultContent}>

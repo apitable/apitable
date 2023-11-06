@@ -18,28 +18,30 @@
 
 package com.apitable.space.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.space.mapper.SpaceRoleResourceRelMapper;
-import com.apitable.space.service.ISpaceRoleResourceRelService;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.space.entity.SpaceRoleResourceRelEntity;
-
-import org.springframework.stereotype.Service;
-
 import static com.apitable.workspace.enums.PermissionException.CREATE_SUB_ADMIN_ERROR;
 import static com.apitable.workspace.enums.PermissionException.DELETE_ROLE_ERROR;
 import static com.apitable.workspace.enums.PermissionException.UPDATE_ROLE_ERROR;
 
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.space.entity.SpaceRoleResourceRelEntity;
+import com.apitable.space.mapper.SpaceRoleResourceRelMapper;
+import com.apitable.space.service.ISpaceRoleResourceRelService;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+/**
+ * Space role resource relation service implements.
+ */
 @Service
 @Slf4j
-public class SpaceRoleResourceRelServiceImpl extends ServiceImpl<SpaceRoleResourceRelMapper, SpaceRoleResourceRelEntity> implements ISpaceRoleResourceRelService {
+public class SpaceRoleResourceRelServiceImpl
+    extends ServiceImpl<SpaceRoleResourceRelMapper, SpaceRoleResourceRelEntity>
+    implements ISpaceRoleResourceRelService {
 
     @Override
     public void createBatch(List<String> roleCodes, List<String> resourceCodes) {
@@ -68,7 +70,13 @@ public class SpaceRoleResourceRelServiceImpl extends ServiceImpl<SpaceRoleResour
     @Override
     public void deleteBatch(String roleCode, List<String> resourceCodes) {
         log.info("Batch deleting role permission");
-        boolean flag = SqlHelper.retBool(baseMapper.deleteByRoleCodeAndResourceCodes(roleCode, resourceCodes));
+        boolean flag =
+            SqlHelper.retBool(baseMapper.deleteByRoleCodeAndResourceCodes(roleCode, resourceCodes));
         ExceptionUtil.isTrue(flag, UPDATE_ROLE_ERROR);
+    }
+
+    @Override
+    public List<String> getResourceCodesByRoleCode(String roleCode) {
+        return baseMapper.selectResourceCodesByRoleCode(roleCode);
     }
 }

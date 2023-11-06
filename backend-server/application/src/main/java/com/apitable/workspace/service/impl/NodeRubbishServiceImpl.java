@@ -100,6 +100,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
     @Resource
     private LimitProperties limitProperties;
 
+
     @Override
     public List<RubbishNodeVo> getRubbishNodeList(String spaceId, Long memberId, Integer size, String lastNodeId, Boolean isOverLimit) {
         log.info("The member [{}] of the space [{}] obtains the node list of the rubbish, and the ID of the last node in the loaded list:[{}]", memberId, spaceId, lastNodeId);

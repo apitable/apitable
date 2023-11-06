@@ -19,7 +19,6 @@
 import { Steps } from 'antd';
 import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Typography } from '@apitable/components';
 import { IReduxState, Navigation, Strings, t } from '@apitable/core';
 import { CheckCircleFilled } from '@apitable/icons';
@@ -29,6 +28,8 @@ import { SelectAdmin } from '../select_admin';
 import { VerifyAdmin } from '../verify_admin';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const { Step } = Steps;
 
 interface IModalProps {
@@ -37,7 +38,7 @@ interface IModalProps {
 
 export const MainAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancelModal }) => {
   const [current, setCurrent] = useState(0);
-  const userInfo = useSelector((state: IReduxState) => state.user.info);
+  const userInfo = useAppSelector((state: IReduxState) => state.user.info);
   const progressDot = (_dot: any, { status, index }: any) => {
     return (
       <span

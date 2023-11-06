@@ -19,7 +19,7 @@
 import classNames from 'classnames';
 import { PropsWithChildren } from 'react';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { GridChildComponentProps, ListChildComponentProps } from 'react-window';
 import { useThemeColors } from '@apitable/components';
 import { BasicValueType, Field, Selectors } from '@apitable/core';
@@ -29,6 +29,8 @@ import { FIELD_HEAD_CLASS } from 'pc/utils';
 import { FieldTitle } from '../expand_record/field_editor/field_title';
 import { CellValue } from '../multi_grid/cell/cell_value';
 import styles from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 enum CellType {
   HEAD,
@@ -50,7 +52,7 @@ const CellFunc: React.FC<React.PropsWithChildren<ChildProps & ICellFuncOwnProps>
 
   const { datasheetId, firstColumn, remainingColumns, fieldMap, rows, containerWidth, manageable, searchKeyword, snapshot } = data;
 
-  const activeCell = useSelector((state) => Selectors.getActiveCell(state));
+  const activeCell = useAppSelector((state) => Selectors.getActiveCell(state));
   const activeSelectFieldId = activeCell?.fieldId;
   const matched = (recordId: string, fieldId: string) => {
     if (!searchKeyword) {

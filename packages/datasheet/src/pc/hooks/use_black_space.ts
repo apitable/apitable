@@ -17,11 +17,12 @@
  */
 
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Strings, t } from '@apitable/core';
 import { showBannerAlert } from 'pc/components/notification/banner_alert';
 // @ts-ignore
 import { goToUpgrade } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const BLACK_SPACE_BANNER_ALERT = 'BLACK_SPACE_BANNER_ALERT';
 
@@ -36,7 +37,7 @@ const _showBannerAlert = (destroyPrev = false) => {
 };
 
 export const useBlackSpace = () => {
-  const isBlackSpace = useSelector((state) => state.billing?.subscription?.blackSpace);
+  const isBlackSpace = useAppSelector((state) => state.billing?.subscription?.blackSpace);
 
   useEffect(() => {
     if (!isBlackSpace || location.href.includes('upgrade')) {

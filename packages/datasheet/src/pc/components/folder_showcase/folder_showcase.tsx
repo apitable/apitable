@@ -23,7 +23,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { ContextMenuTrigger } from 'react-contextmenu';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, ContextMenu, Skeleton, useContextMenu, useThemeColors } from '@apitable/components';
 import {
   AutoTestID,
@@ -68,6 +68,8 @@ import styles from './style.module.less';
 // @ts-ignore
 import { inSocialApp, WeixinShareWrapper } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const _ContextMenuTrigger: any = ContextMenuTrigger;
 
 export interface IFolderShowcaseProps {
@@ -106,9 +108,9 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
   const [shareNodeId, setShareNodeId] = useState('');
   const moreRef = useRef<any>();
   const dispatch = useDispatch();
-  const { folderId: _folderId, templateId, shareId, categoryId } = useSelector((state: IReduxState) => state.pageParams);
-  const spaceId = useSelector((state) => state.space.activeId);
-  const { treeNodesMap, socketData } = useSelector((state: IReduxState) => state.catalogTree);
+  const { folderId: _folderId, templateId, shareId, categoryId } = useAppSelector((state: IReduxState) => state.pageParams);
+  const spaceId = useAppSelector((state) => state.space.activeId);
+  const { treeNodesMap, socketData } = useAppSelector((state: IReduxState) => state.catalogTree);
   const { getNodeShowcaseReq, updateNodeReq, getChildNodeListReq } = useCatalogTreeRequest();
   const { run: updateNode } = useRequest(updateNodeReq, { manual: true });
   const { run: getChildNodeList, loading: getChildNodeListLoading } = useRequest(getChildNodeListReq, { manual: true });

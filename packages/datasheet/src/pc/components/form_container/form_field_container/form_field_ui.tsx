@@ -19,7 +19,6 @@
 import classnames from 'classnames';
 import isNumber from 'lodash/isNumber';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { colorVars, IconButton, useContextMenu } from '@apitable/components';
 import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, MoreOutlined } from '@apitable/icons';
@@ -34,6 +33,8 @@ import { UrlDiscern } from 'pc/components/multi_grid/cell/cell_text/url_discern'
 import { isTouchDevice } from 'pc/utils';
 
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IFormFieldUIProps {
   index: number;
@@ -60,7 +61,7 @@ export const FormFieldUI: React.FC<React.PropsWithChildren<IFormFieldUIProps>> =
   editable,
 }) => {
   const { formProps } = React.useContext(FormContext);
-  const formState = useSelector((state) => Selectors.getForm(state));
+  const formState = useAppSelector((state) => Selectors.getForm(state));
 
   const { show: showMenu } = useContextMenu({ id: ConfigConstant.ContextMenuType.FORM_FIELD_OP });
   const onEditField = useEditField({ datasheetId, fieldId, colIndex });

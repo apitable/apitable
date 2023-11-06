@@ -17,10 +17,11 @@
  */
 
 import { sum } from 'lodash';
-import { useSelector } from 'react-redux';
 import { IViewColumn, Selectors } from '@apitable/core';
 import { getFieldHeight, getVietualFieldHeight, hasCover } from 'pc/components/gallery_view/utils';
 import { store } from 'pc/store';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const FIRST_FIELD_HEIGHT = 16;
 const FIELD_PADDING_TOP = 4;
@@ -63,9 +64,9 @@ export const useCardHeight = (props: IUseCardHeightProps) => {
     titleHeight = 22,
     isGallery,
   } = props;
-  const snapshot = useSelector(Selectors.getSnapshot)!;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!));
-  let visibleColumns = useSelector(Selectors.getVisibleColumns);
+  const snapshot = useAppSelector(Selectors.getSnapshot)!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!));
+  let visibleColumns = useAppSelector(Selectors.getVisibleColumns);
   visibleColumns = props.visibleColumns || visibleColumns;
 
   /**

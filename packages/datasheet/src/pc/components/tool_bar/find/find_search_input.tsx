@@ -20,7 +20,6 @@ import { useDebounce, useClickAway } from 'ahooks';
 import classNames from 'classnames';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Loading, useThemeColors } from '@apitable/components';
 import { getArrayLoopIndex, Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
 import { ChevronDownOutlined, ChevronUpOutlined, CloseCircleFilled, SearchOutlined } from '@apitable/icons';
@@ -29,6 +28,8 @@ import { ButtonPlus, Tooltip } from 'pc/components/common';
 import { KeyCode } from 'pc/utils';
 import { dispatch } from 'pc/worker/store';
 import styles from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ISearchPanelProps {
   setVisible(visible: boolean): void;
@@ -46,12 +47,12 @@ export const SearchInputBase: React.ForwardRefRenderFunction<ISearchInputRef, IS
   const [isSearching, setIsSearching] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const _keyword = useDebounce(keyword, { wait: 300 });
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-  const searchKeyword = useSelector(Selectors.getSearchKeyword);
-  const currentView = useSelector(Selectors.getCurrentView);
-  const searchResultCursorIndex = useSelector(Selectors.getSearchResultCursorIndex);
-  const searchResultArray = useSelector(Selectors.getSearchResult);
-  const calcSearching = useSelector(Selectors.getComputedStatus)?.computing;
+  const datasheetId = useAppSelector(Selectors.getActiveDatasheetId)!;
+  const searchKeyword = useAppSelector(Selectors.getSearchKeyword);
+  const currentView = useAppSelector(Selectors.getCurrentView);
+  const searchResultCursorIndex = useAppSelector(Selectors.getSearchResultCursorIndex);
+  const searchResultArray = useAppSelector(Selectors.getSearchResult);
+  const calcSearching = useAppSelector(Selectors.getComputedStatus)?.computing;
   const searchResultItemCount = (searchResultArray && searchResultArray.length) || 0;
   const lock = useRef(false);
   const [refreshIndex, setRefreshIndex] = useState(0);

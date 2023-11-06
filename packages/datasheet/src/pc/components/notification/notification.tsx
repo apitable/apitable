@@ -21,7 +21,7 @@ import { Tabs } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { Button, TextButton } from '@apitable/components';
 import { Api, IReduxState, NOTIFICATION_ID, StoreActions, Strings, t } from '@apitable/core';
 import { NotificationCheckOutlined } from '@apitable/icons';
@@ -31,6 +31,8 @@ import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
 import { Card } from './card';
 import { NoData } from './no_data';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const { TabPane } = Tabs;
 
@@ -48,7 +50,7 @@ type ITabKeyType = keyof ITabKey;
 const DOM_WRAP_CLS = styles.notification;
 
 export const Notification: FC<React.PropsWithChildren<any>> = () => {
-  const { unReadCount, readCount, unReadNoticeList, readNoticeList, newNoticeListFromWs } = useSelector(
+  const { unReadCount, readCount, unReadNoticeList, readNoticeList, newNoticeListFromWs } = useAppSelector(
     (state: IReduxState) => ({
       unReadCount: state.notification.unReadCount,
       readCount: state.notification.readCount,

@@ -18,7 +18,7 @@
 
 import classNames from 'classnames';
 import { FC, useState } from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { IReduxState } from '@apitable/core';
 import { Avatar, AvatarSize } from 'pc/components/common';
 import { ScreenSize, ComponentDisplay } from 'pc/components/common/component_display';
@@ -29,8 +29,10 @@ import { InviteCodeModal } from '../invite_code_modal';
 import { UserMenu } from '../user_menu';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const User: FC<React.PropsWithChildren<unknown>> = () => {
-  const { user } = useSelector(
+  const { user } = useAppSelector(
     (state: IReduxState) => ({
       user: state.user.info,
       unReadCount: state.notification.unReadCount,

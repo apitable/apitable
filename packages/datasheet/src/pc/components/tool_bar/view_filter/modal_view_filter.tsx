@@ -19,7 +19,6 @@
 import classNames from 'classnames';
 import { useRef, useEffect } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors, useListenVisualHeight } from '@apitable/components';
 import {
   BasicValueType,
@@ -42,6 +41,8 @@ import ConditionList from './condition_list';
 import { ExecuteFilterFn } from './interface';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const MIN_HEIGHT = 70;
 const MAX_HEIGHT = 260;
 
@@ -55,9 +56,9 @@ interface IViewFilter {
 const ViewFilterBase: React.FC<React.PropsWithChildren<IViewFilter>> = (props) => {
   const colors = useThemeColors();
   const { datasheetId, filterInfo, setFilters, field } = props;
-  const view = useSelector((state) => Selectors.getCurrentView(state, datasheetId))! as IGridViewProperty;
+  const view = useAppSelector((state) => Selectors.getCurrentView(state, datasheetId))! as IGridViewProperty;
   const columns = view.columns;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
 
   const changeFilter = (cb: ExecuteFilterFn) => {
     const result = cb(filterInfo!);

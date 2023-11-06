@@ -21,13 +21,14 @@ import produce from 'immer';
 import { size } from 'lodash';
 import { useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Field, FieldType, IField, IMemberField, ISelectField, Selectors, SingleSelectField, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import { MemberFieldHead, OptionFieldHead } from '../group_header';
 import { useCommand } from '../hooks/use_command';
 import styles from '../styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IAddGroup {
   kanbanFieldId: string;
@@ -36,8 +37,8 @@ interface IAddGroup {
 export const AddGroup: React.FC<React.PropsWithChildren<IAddGroup>> = (props) => {
   const colors = useThemeColors();
   const { kanbanFieldId } = props;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
-  const recordMap = useSelector((state) => {
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const recordMap = useAppSelector((state) => {
     const sanpshot = Selectors.getSnapshot(state)!;
     return sanpshot.recordMap;
   });

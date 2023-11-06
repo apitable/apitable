@@ -45,6 +45,7 @@ export enum APIMetaFieldType {
   Cascader = 'Cascader',
   OneWayLink = 'OneWayLink',
   TwoWayLink = 'TwoWayLink',
+  Workdoc = 'Workdoc',
 }
 
 export enum APIMetaViewType {

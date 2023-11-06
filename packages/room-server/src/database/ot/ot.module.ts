@@ -45,6 +45,7 @@ import { RobotEventModule } from 'database/robot/robot.event.module';
 import {
   DatasheetRecordArchiveRepository,
 } from '../datasheet/repositories/datasheet.record.archive.repository';
+import { EventModule } from 'shared/event/event.module';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import {
       // TODO(Troy): stop using other modules's repositories, use service instead, via importing the module
       DatasheetWidgetRepository,
     ]),
+    EventModule,
   ],
   providers: [
     OtService,

@@ -20,20 +20,22 @@ import produce from 'immer';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { identity, isEqual, isEqualWith, isNil, pickBy } from 'lodash';
 import * as React from 'react';
-import { memo, useCallback, useEffect, useMemo, useRef } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import { shallowEqual } from 'react-redux';
 import styled from 'styled-components';
+import useSWR from 'swr';
 import { Box, IDropdownControl, SearchSelect, Typography } from '@apitable/components';
 import {
   EmptyNullOperand,
   IExpression,
   integrateCdnHost,
-  IReduxState,
+  IReduxState, IServerFormPack,
   OperatorEnums,
   Selectors,
   Strings,
   t
 } from '@apitable/core';
+import { fetchFormPack } from '@apitable/core/dist/modules/database/api/form_api';
 import { CONST_MAX_TRIGGER_COUNT } from 'pc/components/automation/config';
 import { Message, Modal } from 'pc/components/common';
 import { OrEmpty } from 'pc/components/common/or_empty';
@@ -41,7 +43,8 @@ import { OrTooltip } from 'pc/components/common/or_tooltip';
 import { Trigger } from 'pc/components/robot/robot_context';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { getTriggerList } from 'pc/components/robot/robot_detail/utils';
-import { useResponsive, useSideBarVisible } from '../../../../hooks';
+import { ShareContext } from 'pc/components/share';
+import { useQuery, useResponsive, useSideBarVisible } from '../../../../hooks';
 import {
   automationCurrentTriggerId,
   automationLocalMap,
@@ -64,6 +67,8 @@ import { literal2Operand } from '../node_form/ui/utils';
 import { RecordMatchesConditionsFilter } from './record_matches_conditions_filter';
 import { RobotTriggerCreateForm } from './robot_trigger_create';
 import itemStyle from './select_styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IRobotTriggerProps {
     robotId: string;
@@ -139,17 +144,17 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
   const setTriggerDatasheetValue = useSetAtom(automationTriggerDatasheetAtom);
   let datasheetId = triggerDatasheetValue.id;
   const automationState = useAtomValue(automationStateAtom);
-  const activeDstId = useSelector(Selectors.getActiveDatasheetId);
+  const activeDstId = useAppSelector(Selectors.getActiveDatasheetId);
 
   if (automationState?.scenario === AutomationScenario.datasheet) {
     datasheetId = activeDstId;
   }
 
-  const datasheet = useSelector(a => Selectors.getDatasheet(a, datasheetId), shallowEqual);
+  const datasheet = useAppSelector(a => Selectors.getDatasheet(a, datasheetId), shallowEqual);
   const datasheetName = datasheet?.name;
 
-  const treeMaps = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-  const datasheetMaps = useSelector((state: IReduxState) => state.datasheetMap);
+  const treeMaps = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const datasheetMaps = useAppSelector((state: IReduxState) => state.datasheetMap);
 
   const ref = useRef<IDropdownControl>();
   const {
@@ -431,6 +436,22 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
   }, [editType, handleClick]);
 
   const formMeta = useAtomValue(loadableFormItemAtom);
+
+  let formItemInfo = (formMeta?.data as any)?.form;
+
+  const formId = getFormId({ input: formData });
+
+  const { data } = useSWR([
+    'fetchFormPack', formId
+  ], () => fetchFormPack(String(formId!)).then(res => res?.data?.data ?? {
+  } as IServerFormPack), {
+    isPaused: () => formId == null
+  });
+
+  if(editType === EditType.entry) {
+    formItemInfo = data?.form;
+  }
+
   const handleUpdate = useCallback((e: any) => {
     const previous = getRelativedId({ input: formData });
     const current = getRelativedId({ input: e.formData });
@@ -447,6 +468,8 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       draft.set(trigger.triggerId, e.formData);
     }));
   }, [formData, setLocalStateMap, trigger.triggerId]);
+
+  const { shareInfo } = useContext(ShareContext);
 
   return (
     <NodeItem
@@ -474,8 +497,8 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
           e = errors as unknown as any[];
         }
 
-        if (formId != null) {
-          if (treeMaps[formId] == null && (!formMeta.loading && (formMeta?.data as any)?.form == null)) {
+        if (formId != null && shareInfo?.shareId == null) {
+          if (treeMaps[formId] == null && (!formMeta.loading && formItemInfo == null)) {
             if (!e.some(error => error.dataPath === '.formId')) {
               return {
                 formId: {
@@ -487,8 +510,7 @@ const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         }
 
         if (dstId != null) {
-          if (datasheetMaps[dstId] == null) {
-            // const e = (errors as unknown as any[]) ?? [];
+          if (datasheetMaps[dstId] == null && shareInfo?.shareId == null) {
             if (!e.some(error => error.dataPath === '.datasheetId')) {
               return {
                 datasheetId: {
@@ -566,7 +588,6 @@ export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTri
   return (
     <>
       {
-        // TODO key info
         list.map((trigger, index) => (
           <>
             <RobotTriggerBase
@@ -577,8 +598,8 @@ export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTri
               triggerTypes={triggerTypes}
             />
 
-            <OrEmpty visible={index < CONST_MAX_TRIGGER_COUNT - 1}>
-              <Box display={'flex'} padding={index === list.length - 1 ? '12px 0 0 0' : '12px 0'}
+            <OrEmpty visible={index < CONST_MAX_TRIGGER_COUNT - 1 && editType === EditType.entry}>
+              <Box display={'flex'} padding={index === list.length - 1 ? '16px 0 0 0' : '16px 0'}
                 justifyContent={'center'} alignItems={'center'}>
                 <Box borderRadius={'12px'} background={colors.bgBrandLightDefault} padding={'2px 12px'}>
                   <UpperTypography variant={'body3'} color={colors.textBrandDefault}>

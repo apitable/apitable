@@ -20,7 +20,6 @@ import classNames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { Field, FieldType, IField, IRecord, IReduxState, IViewColumn, Selectors, Strings, t } from '@apitable/core';
 import { SubtractCircleFilled } from '@apitable/icons';
 import { DisplayFile } from 'pc/components/display_file';
@@ -30,6 +29,8 @@ import { store } from 'pc/store';
 import NoImage from 'static/icon/datasheet/gallery/emptystates_img_datasheet.png';
 import { ScreenSize } from '../component_display';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IRecordCardProps {
   record: IRecord;
@@ -51,7 +52,7 @@ export const RecordCard: React.FC<React.PropsWithChildren<IRecordCardProps>> = (
     return field?.type === FieldType.Attachment;
   });
 
-  const { formId, primaryCellValue } = useSelector((state) => {
+  const { formId, primaryCellValue } = useAppSelector((state) => {
     const primaryCellValue = Selectors.getCellValue(
       state,
       {
@@ -69,7 +70,7 @@ export const RecordCard: React.FC<React.PropsWithChildren<IRecordCardProps>> = (
   });
   const { screenIsAtMost } = useResponsive();
 
-  const _foreignDstReadable = useSelector((state: IReduxState) => Selectors.getPermissions(state, datasheetId).readable);
+  const _foreignDstReadable = useAppSelector((state: IReduxState) => Selectors.getPermissions(state, datasheetId).readable);
   const foreignDstReadable = Boolean(_foreignDstReadable || formId);
 
   const normalColumnsCount = attachmentColumn || screenIsAtMost(ScreenSize.md) ? 4 : 5;

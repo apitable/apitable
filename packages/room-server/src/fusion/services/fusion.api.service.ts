@@ -326,6 +326,16 @@ export class FusionApiService {
     };
   }
 
+
+  /**
+   * Query datasheet records have deleted
+   *
+   * @param dstId datasheet id
+   */
+  public async getDeletedRecords(dstId: string): Promise<string[]> {
+    return this.fusionApiRecordService.getDeletedRecordsByDstId(dstId);
+  }
+
   public async getFieldCreateDtos(datasheetId: string): Promise<FieldCreateDto[]> {
     const meta: IMeta = await this.metaService.getMetaDataByDstId(datasheetId);
     return Object.keys(meta.fieldMap).map((fieldId) => {

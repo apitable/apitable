@@ -19,7 +19,7 @@
 import { Input, TreeSelect } from 'antd';
 import type { DataNode } from 'antd/es/tree';
 import { useEffect, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button, ButtonGroup, Skeleton, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, ITeamTreeNode, StoreActions, Strings, t } from '@apitable/core';
 import { ChevronDownOutlined, DeleteOutlined, TimeOutlined, CopyOutlined, TriangleRightFilled } from '@apitable/icons';
@@ -32,12 +32,14 @@ import { copy2clipBoard } from 'pc/utils';
 import { InviteAlert } from '../components/invite-alert';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const { TreeNode } = TreeSelect;
 
 export const LinkInvite = () => {
   const colors = useThemeColors();
   const dispatch = useAppDispatch();
-  const { linkList, userInfo, teamList } = useSelector(
+  const { linkList, userInfo, teamList } = useAppSelector(
     (state: IReduxState) => ({
       linkList: state.invite.linkList,
       userInfo: state.user.info,

@@ -18,7 +18,6 @@
 
 import classNames from 'classnames';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { IGroupInfo, IPermissions, ILinearRowAdd, RowHeight, Selectors, ILinearRowRecord } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
@@ -27,6 +26,8 @@ import { OPERATE_BUTTON_CLASS, ButtonOperateType } from 'pc/utils';
 import { useShowKeepSortBorder } from '../../hooks/use_show_keep_sort_border';
 import styles from '../../styles.module.less';
 import { PRIMARY_COLOR_BORDER, GRAY_COLOR_BORDER } from '../cell_group_tab/cell_group_tab';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ICellAddRecord {
   row: ILinearRowAdd;
@@ -50,7 +51,7 @@ export const CellAddRecord: React.FC<React.PropsWithChildren<ICellAddRecord>> = 
   const marginTop = 0;
   const height = RowHeight.Short;
   const addIconClass = classNames(styles.addRecordIcon, OPERATE_BUTTON_CLASS);
-  const hoverRowOfAddRecord = useSelector((state) => Selectors.getGridViewDragState(state).hoverRowOfAddRecord);
+  const hoverRowOfAddRecord = useAppSelector((state) => Selectors.getGridViewDragState(state).hoverRowOfAddRecord);
   let width = parseInt(style.width as string, 10);
 
   if (columnsLength > 1 && actualColumnIndex === columnsLength - 1 && groupInfo && groupInfo.length === 3) {

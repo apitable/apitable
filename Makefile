@@ -527,3 +527,15 @@ help:
 	@echo '  '
 	@read -p "What do you want?>> " command; \
 	make $$command;
+
+
+api-codegen:
+	cp packages/api-client/package.json /tmp/api-client_package.json.bak
+	rm -rf packages/api-client/**
+	openapi-generator generate --skip-validate-spec -g typescript -i https://integration.vika.ltd/api/v1/v3/api-docs/  --additional-properties=stringEnums=false \
+       --additional-properties=npmName=@apitable/api-client  \
+       --additional-properties=npmVersion=0.0.1 \
+       --additional-properties=useObjectParameters=true  --additional-properties=prependFormOrBodyParameters=true  -o  ./packages/api-client
+	cp -rf /tmp/api-client_package.json.bak  packages/api-client/package.json 
+
+

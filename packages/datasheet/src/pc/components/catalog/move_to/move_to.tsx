@@ -18,7 +18,7 @@
 
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Api, IParent, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Message } from 'pc/components/common/message/message';
@@ -30,6 +30,8 @@ import { SelectFolder } from './select_folder';
 import styles from './style.module.less';
 import { MobileFooter, MobileTitle, Title } from './title';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const MoveTo: React.FC<
   React.PropsWithChildren<{
     nodeIds: string[];
@@ -40,11 +42,11 @@ export const MoveTo: React.FC<
   const [selectedNodeId, setSelectedNodeId] = useState<string>();
   const [parentList, setParentList] = useState<IParent[]>([]);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const { nodeName, parentId, nodePermitSet } = useSelector((state) => {
+  const { nodeName, parentId, nodePermitSet } = useAppSelector((state) => {
     const { nodeName, parentId, nodePermitSet } = state.catalogTree.treeNodesMap[nodeIds[0]];
     return { nodeName, parentId, nodePermitSet };
   });
-  const currentNodeId = useSelector((state) => state.pageParams.nodeId);
+  const currentNodeId = useAppSelector((state) => state.pageParams.nodeId);
 
   const dispatch = useDispatch();
 

@@ -290,6 +290,9 @@ public class NodeController {
         schema = @Schema(type = "string"), example = "nodRTGSy43DJ9,nodRTGSy43DJ9")
     public ResponseData<List<NodeInfoVo>> getByNodeId(
         @RequestParam("nodeIds") List<String> nodeIds) {
+        if (nodeIds.isEmpty()) {
+            return ResponseData.success(ListUtil.empty());
+        }
         // Obtain the space ID. The method includes determining whether the node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeIds.get(0));
         // Gets the member ID by determining whether the user is in this space.

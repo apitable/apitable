@@ -24,8 +24,8 @@ jobs:
     permissions:
       contents: read
       security-events: write
-      # only required for a private repository by 
-      # github/codeql-action/upload-sarif 
+      # only required for a private repository by
+      # github/codeql-action/upload-sarif
       # to get the Action run status
       actions: read
     steps:
@@ -101,7 +101,7 @@ jobs:
           VALIDATE_RUST_2015: false
           VALIDATE_RUST_2018: false
           VALIDATE_RUST_CLIPPY: false
-          FILTER_REGEX_EXCLUDE: .*ui-autotest/.*|.*datasheet/.*|.*src/test.*|.*databusclient/.*|.*packaging/.*|.*\.proto
+          FILTER_REGEX_EXCLUDE: .*ui-autotest/.*|.*datasheet/.*|.*src/test.*|.*databusclient/.*|.*packaging/.*|.*\.proto|.*api-client/.*
           VALIDATE_GOOGLE_JAVA_FORMAT: false
           JAVA_FILE_NAME: checkstyle.xml
           VALIDATE_SHELL_SHFMT: false

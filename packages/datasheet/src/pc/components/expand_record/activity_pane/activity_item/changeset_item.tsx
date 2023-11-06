@@ -22,7 +22,6 @@ import dayjs from 'dayjs';
 import { find, get, toPairs } from 'lodash';
 import * as React from 'react';
 import { useContext, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { IconButton } from '@apitable/components';
 import {
   CollaCommandName,
@@ -55,6 +54,8 @@ import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 type IChangesetItem = IActivityPaneProps & {
   unit: IUnitValue | undefined;
   changeset: WithOptional<IRemoteChangeset, 'messageId' | 'resourceType'>;
@@ -72,7 +73,7 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = (pr
   const { mobile: isMobile } = usePlatform();
 
   const { setReplyText, emojis, setFocus, setReplyUnitId } = useContext(ActivityContext);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
 
   const actions = operations.reduce((actionArr: IJOTAction[], op: IOperation) => {
     let { actions } = op;
@@ -113,11 +114,11 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = (pr
 
   const { cmd } = operations[0];
 
-  const selfUserId = useSelector((state) => state.user.info?.userId);
+  const selfUserId = useAppSelector((state) => state.user.info?.userId);
   const isSelf = selfUserId === userId;
   const relativeTime = dayjs.tz(Number(createdAt)).fromNow();
 
-  const allowDeleteComment = useSelector((state) => {
+  const allowDeleteComment = useAppSelector((state) => {
     const spacePermissions = state.spacePermissionManage.spaceResource?.permissions;
     const isSpaceAdmin = spacePermissions && spacePermissions.includes('MANAGE_WORKBENCH');
     return Boolean(isSpaceAdmin || isSelf);

@@ -58,20 +58,23 @@ export class RobotTriggerService {
 
   public async getTriggersGroupByResourceId(resourceIds: string[]): Promise<IResourceTriggerGroupVo> {
     const resourceRobotDtos = await this.getActiveRobotsByResourceIds(resourceIds);
-    const robotIdToResourceId = resourceRobotDtos.reduce((robotIdToResourceId, item) => {
-      robotIdToResourceId[item.robotId] = item.resourceId;
-      return robotIdToResourceId;
-    }, {} as { [key: string]: string });
+    const robotIdToResourceId = resourceRobotDtos.reduce(
+      (robotIdToResourceId, item) => {
+        robotIdToResourceId[item.robotId] = item.resourceId;
+        return robotIdToResourceId;
+      },
+      {} as { [key: string]: string },
+    );
     const triggers = await this.automationTriggerRepository.getAllTriggersByRobotIds(Object.keys(robotIdToResourceId));
     return triggers.reduce((resourceIdToTriggers, item) => {
-      const resourceId = robotIdToResourceId[item.robotId]!;
+      const resourceId = item.resourceId || robotIdToResourceId[item.robotId]!;
       resourceIdToTriggers[resourceId] = !resourceIdToTriggers[resourceId] ? [] : resourceIdToTriggers[resourceId]!;
       resourceIdToTriggers[resourceId]!.push(item);
       return resourceIdToTriggers;
     }, {} as IResourceTriggerGroupVo);
   }
 
-  async getActiveRobotsByResourceIds(resourceIds: string[] = []):Promise<ResourceRobotDto[]> {
+  async getActiveRobotsByResourceIds(resourceIds: string[] = []): Promise<ResourceRobotDto[]> {
     const resourceRobotDtos = await this.automationRobotRepository.getActiveRobotsByResourceIds(resourceIds);
     // get resource rel node id
     const nodeRelIds = await this.nodeService.getRelNodeIdsByMainNodeIds(resourceIds);
@@ -79,7 +82,7 @@ export class RobotTriggerService {
     // get resource from trigger
     const triggerResourceDtos = await this.automationTriggerRepository.selectRobotIdAndResourceIdByResourceIds(resourceIds);
     if (triggerResourceDtos.length > 0) {
-      const robotIds = new Set(triggerResourceDtos.map(i => i.robotId));
+      const robotIds = new Set(triggerResourceDtos.map((i) => i.robotId));
       // check the robot status
       const activeRobotIds = await this.automationRobotRepository.selectActiveRobotIdsByRobotIds(Array.from(robotIds));
       if (activeRobotIds.length > 0) {
@@ -98,7 +101,7 @@ export class RobotTriggerService {
     // get the datasheet's robots' id.
     const datasheetRobots = await this.automationRobotRepository.selectRobotIdByResourceId(resourceId);
     let robotIds = await this.automationTriggerRepository.getRobotIdsByResourceIdsAndHasInput([formId]);
-    robotIds.push(...datasheetRobots.map(i => i.robotId));
+    robotIds.push(...datasheetRobots.map((i) => i.robotId));
     // filter active robot
     robotIds = await this.automationRobotRepository.selectActiveRobotIdsByRobotIds(robotIds);
     for (const robotId of robotIds) {

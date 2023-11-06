@@ -17,12 +17,14 @@
  */
 
 import { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { Select, Typography } from '@apitable/components';
 import { RecordVision, StoreActions, Strings, t } from '@apitable/core';
 import { setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const options = [
   {
@@ -36,7 +38,7 @@ const options = [
 ];
 
 export const RecordVisionSetting: FC<React.PropsWithChildren<unknown>> = () => {
-  const value = useSelector((state) => state.recordVision);
+  const value = useAppSelector((state) => state.recordVision);
 
   const dispatch = useDispatch();
 

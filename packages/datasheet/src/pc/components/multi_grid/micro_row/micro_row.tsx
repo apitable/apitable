@@ -18,15 +18,17 @@
 
 import { Modal } from 'antd';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { IGridViewColumn, Selectors, Strings, t, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
 import { CellValue } from '../cell/cell_value';
 import styles from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 const { getSnapshot, getVisibleColumns, getGridViewDragState } = Selectors;
 
 const MicroRowBase: React.FC<React.PropsWithChildren<unknown>> = () => {
-  const { snapshot, recordRanges, rowsIndexMap, visibleColumn, dragTarget, datasheetId } = useSelector((state) => {
+  const { snapshot, recordRanges, rowsIndexMap, visibleColumn, dragTarget, datasheetId } = useAppSelector((state) => {
     const { dragTarget } = getGridViewDragState(state);
     return {
       snapshot: getSnapshot(state)!,

@@ -21,7 +21,6 @@ import cls from 'classnames';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, TextButton, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, Strings, t, ThemeName } from '@apitable/core';
 import { UndoFilled } from '@apitable/icons';
@@ -33,15 +32,17 @@ import SpaceDeleteLight from 'static/icon/common/space_delete_img_light.png';
 import { DelSuccess } from '../del_success/del.success';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const RecoverSpace = () => {
-  const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo);
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceInfo = useAppSelector((state: IReduxState) => state.space.curSpaceInfo);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const [delSuccess, setDelSuccess] = useState(false);
   const colors = useThemeColors();
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const theme = useSelector((state) => state.theme);
+  const theme = useAppSelector((state) => state.theme);
   const DeleteIcon = theme === ThemeName.Light ? SpaceDeleteLight : SpaceDeleteDark;
   const recoverSpaceConfirm = () => {
     if (!spaceId) return;

@@ -168,9 +168,12 @@
     </select>
 
     <select id="selectCountBySpaceId" resultType="java.lang.Long">
-        SELECT count(1)
-        FROM ${tablePrefix}widget
-        WHERE space_id = #{spaceId}
-          AND is_deleted = 0
+        SELECT COUNT(1)
+        FROM ${tablePrefix}widget AS w
+        JOIN ${tablePrefix}node AS n ON w.node_id = n.node_id
+        WHERE w.space_id = #{spaceId}
+        AND w.is_deleted = 0
+        AND n.is_rubbish = 0
     </select>
+
 </mapper>

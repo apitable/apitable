@@ -19,7 +19,7 @@
 import { isEmpty } from 'lodash';
 import * as React from 'react';
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button, useThemeColors } from '@apitable/components';
 import { ILinkField, ILinkIds, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { AddOutlined, ChevronDownOutlined } from '@apitable/icons';
@@ -39,6 +39,8 @@ import { DEFAULT_LINK_RECORD_COUNT, KeyCode, stopPropagation } from 'pc/utils';
 import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
 import { IExpandFieldEditRef } from '../field_editor';
 import style from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IExpandLinkProps extends IBaseEditorProps {
   field: ILinkField;
@@ -90,14 +92,14 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
     : manualFetchForeignDatasheet === FetchForeignTimes.OnlyOnce
       ? !manualFetch.current
       : false;
-  const { foreignDatasheet, foreignDatasheetErrorCode } = useSelector((state: IReduxState) => {
+  const { foreignDatasheet, foreignDatasheetErrorCode } = useAppSelector((state: IReduxState) => {
     return {
       foreignDatasheet: Selectors.getDatasheet(state, field.property.foreignDatasheetId)!,
       foreignDatasheetErrorCode: Selectors.getDatasheetErrorCode(state, field.property.foreignDatasheetId),
     };
   });
 
-  const { foreignSnapshot, foreignDatasheetName } = useSelector((state: IReduxState) => {
+  const { foreignSnapshot, foreignDatasheetName } = useAppSelector((state: IReduxState) => {
     if (!editing && isEmpty(showCellValues)) {
       return {
         foreignSnapshot: undefined,
@@ -124,7 +126,7 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
   }, shallowEqual);
   const foreignActiveView = useGetViewByIdWithDefault(field.property.foreignDatasheetId, field.property.limitToView);
 
-  const datasheetLoading = useSelector((state) => {
+  const datasheetLoading = useAppSelector((state) => {
     return Selectors.getDatasheetLoading(state, field.property.foreignDatasheetId);
   });
 

@@ -71,7 +71,7 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
         invitationService.createMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);
         invitationService.closeMemberInvitationBySpaceId(userSpace.getSpaceId());
         InvitationEntity entity =
-            invitationMapper.selectByMemberIdAndSpaceIdAndNodeId(memberId, spaceId, nodeId);
+            invitationService.getByMemberIdAndSpaceIdAndNodeId(memberId, spaceId, nodeId);
         assertThat(entity.getStatus()).isEqualTo(false);
     }
 

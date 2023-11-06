@@ -20,7 +20,6 @@ import { useMount } from 'ahooks';
 import { useSetAtom } from 'jotai';
 import { Provider } from 'jotai/react';
 import React, { memo } from 'react';
-import { useSelector } from 'react-redux';
 import { SWRConfig } from 'swr';
 import { Box, ThemeProvider, useTheme } from '@apitable/components';
 import { Selectors } from '@apitable/core';
@@ -31,8 +30,10 @@ import { RobotList } from '../robot_list';
 import { AutomationDrawer } from './automation_modal';
 import { RobotListHead } from './robot_list_head';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const RobotBase = () => {
-  const cachedTheme = useSelector(Selectors.getTheme);
+  const cachedTheme = useAppSelector(Selectors.getTheme);
 
   const theme = useTheme();
 

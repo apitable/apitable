@@ -19,7 +19,6 @@
 import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, IconButton, Skeleton, ThemeName, useThemeColors } from '@apitable/components';
 import { integrateCdnHost, IReduxState, Settings, Strings, t, WidgetApi } from '@apitable/core';
 import { ChevronRightOutlined, CloseOutlined } from '@apitable/icons';
@@ -32,6 +31,8 @@ import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { ScrollBar } from '../../scroll_bar';
 import { createWidgetByExistWidgetId } from '../utils';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IRecommendWidgetPanelProps {
   setVisibleRecommend: React.Dispatch<React.SetStateAction<boolean>>;
@@ -53,12 +54,12 @@ export const RecommendWidgetPanel: React.FC<React.PropsWithChildren<IRecommendWi
   const colors = useThemeColors();
   const [loading, setLoading] = useState(false);
   const [installingWidgetIds, setInstallingWidgetIds] = useState<null | string[]>(null);
-  const dashboardId = useSelector((state) => state.pageParams.dashboardId)!;
-  const spaceId = useSelector((state) => state.space.activeId);
+  const dashboardId = useAppSelector((state) => state.pageParams.dashboardId)!;
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const [recommendList, serRecommendList] = useState<IRecentInstalledItem[]>([]);
   const [searchPanelVisible, setSearchPanelVisible] = useState(false);
-  const rootNodeId = useSelector((state: IReduxState) => state.catalogTree.rootId);
-  const themeName = useSelector((state) => state.theme);
+  const rootNodeId = useAppSelector((state: IReduxState) => state.catalogTree.rootId);
+  const themeName = useAppSelector((state) => state.theme);
   const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   const importWidget = ({ widgetIds }: any) => {

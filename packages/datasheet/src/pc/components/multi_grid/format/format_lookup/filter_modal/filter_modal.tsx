@@ -20,7 +20,6 @@ import produce from 'immer';
 import { FC, useMemo, useCallback } from 'react';
 import * as React from 'react';
 import { DropResult } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 import { Button } from '@apitable/components';
 import { t, Strings, IFilterInfo, IFilterCondition, FilterConjunction, ILookUpField, Selectors, FieldType, ILookUpSortInfo } from '@apitable/core';
 import { BaseModal, Message } from 'pc/components/common';
@@ -31,6 +30,8 @@ import { ModalViewFilter } from 'pc/components/tool_bar/view_filter';
 import { CommonViewSet } from '../common_view_set';
 import { SortFieldOptions } from '../sort_field_options';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IFilterModalProps extends IModalProps {
   title?: React.ReactNode;
@@ -56,7 +57,7 @@ export const FilterModal: FC<React.PropsWithChildren<IFilterModalProps>> = (prop
 
   const [sortInfo, setSortInfo] = React.useState<ILookUpSortInfo>(props.sortInfo || { rules: [] });
   const sortFieldIds = sortInfo ? sortInfo.rules.map((item) => item.fieldId) : [];
-  const fieldMap = useSelector((state) => {
+  const fieldMap = useAppSelector((state) => {
     return Selectors.getFieldMap(state, datasheetId);
   })!;
   const [optionsVisible, setOptionsVisible] = React.useState<boolean | undefined>(false);

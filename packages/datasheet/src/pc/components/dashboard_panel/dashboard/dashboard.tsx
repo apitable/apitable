@@ -23,7 +23,6 @@ import { keyBy } from 'lodash';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import { useSelector } from 'react-redux';
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName,
@@ -67,6 +66,8 @@ import styles from './style.module.less';
 // @ts-ignore
 import { isDingtalkSkuPage } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const DASHBOARD_PANEL_ID = 'DASHBOARD_PANEL_ID';
 
 const ResponsiveGridLayout: any = WidthProvider(Responsive);
@@ -78,15 +79,15 @@ export const Dashboard = () => {
   const [activeMenuWidget, setActiveMenuWidget] = useState<IWidget>();
   const [dragging, setDragging] = useState<boolean>(false);
 
-  const dashboardPack = useSelector(Selectors.getDashboardPack);
-  const dashboardLayout = useSelector(Selectors.getDashboardLayout);
-  const { dashboardId, templateId, shareId, widgetId, embedId } = useSelector((state) => state.pageParams);
-  const { editable, manageable } = useSelector(Selectors.getDashboardPermission);
-  const spaceId = useSelector((state) => state.space.activeId);
-  const widgetMap = useSelector((state) => state.widgetMap);
-  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
-  const linkId = useSelector(Selectors.getLinkId);
-  const installedWidgetIds = useSelector(Selectors.getInstalledWidgetInDashboard);
+  const dashboardPack = useAppSelector(Selectors.getDashboardPack);
+  const dashboardLayout = useAppSelector(Selectors.getDashboardLayout);
+  const { dashboardId, templateId, shareId, widgetId, embedId } = useAppSelector((state) => state.pageParams);
+  const { editable, manageable } = useAppSelector(Selectors.getDashboardPermission);
+  const spaceId = useAppSelector((state) => state.space.activeId);
+  const widgetMap = useAppSelector((state) => state.widgetMap);
+  const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
+  const linkId = useAppSelector(Selectors.getLinkId);
+  const installedWidgetIds = useAppSelector(Selectors.getInstalledWidgetInDashboard);
   const reachInstalledLimit = installedWidgetIds && installedWidgetIds.length >= Number(getEnvVariables().DASHBOARD_WIDGET_MAX_NUM);
 
   // Custom hooks start

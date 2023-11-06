@@ -21,7 +21,7 @@ import {
   ACTION_INPUT_PARSER_BASE_FUNCTIONS,
   ACTION_INPUT_PARSER_PASS_THROUGH_FUNCTIONS,
   ConfigConstant,
-  Field, IDatasheetMap,
+  Field, FieldType, IDatasheetMap,
   IField,
   IFieldPermissionMap,
   InputParser,
@@ -35,7 +35,7 @@ import { IFetchDatasheet } from '@apitable/widget-sdk/dist/message/interface';
 // @ts-ignore
 import { isWecomFunc } from 'enterprise';
 import { getEnvVariables } from 'pc/utils/env';
-import { getFieldTypeIcon } from '../multi_grid/field_setting';
+import {getFieldTypeIcon, getFieldTypeIconOrNull} from '../multi_grid/field_setting';
 import { IActionType, IJsonSchema, INodeOutputSchema, INodeType, IRobotAction, IRobotTrigger, ITriggerType } from './interface';
 import { IFetchedDatasheet } from "pc/components/automation/controller/hooks/use_robot_fields";
 
@@ -166,7 +166,7 @@ export const fields2Schema = (fields: IField[], fieldPermissionMap: IFieldPermis
     const isCryptoField = Selectors.getFieldRoleByFieldId(fieldPermissionMap, field.id) === ConfigConstant.Role.None;
     return {
       title: isCryptoField ? t(Strings.robot_variables_cant_view_field) : field.name,
-      icon: getFieldTypeIcon(field.type),
+      icon: getFieldTypeIconOrNull(field.type) == null ? getFieldTypeIcon(FieldType.Number): getFieldTypeIcon(field.type),
       disabled: isCryptoField,
     };
   };

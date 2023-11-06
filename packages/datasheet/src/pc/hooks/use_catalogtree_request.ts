@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import {
   Api,
   ConfigConstant,
@@ -41,9 +41,11 @@ import { Router } from 'pc/components/route_manager/router';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const useCatalogTreeRequest = () => {
   const dispatch = useAppDispatch();
-  const { spaceId, formId, datasheetId, automationId, dashboardId, mirrorId, embedId } = useSelector((state: IReduxState) => {
+  const { spaceId, formId, datasheetId, automationId, dashboardId, mirrorId, embedId } = useAppSelector((state: IReduxState) => {
     const spaceId = state.space.activeId;
     const { datasheetId, formId, automationId, dashboardId, mirrorId, embedId } = state.pageParams;
     return {
@@ -56,10 +58,10 @@ export const useCatalogTreeRequest = () => {
       embedId,
     };
   }, shallowEqual);
-  const activedNodeId = useSelector((state) => Selectors.getNodeId(state));
-  const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-  const expandedKeys = useSelector((state: IReduxState) => state.catalogTree.expandedKeys);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo)!;
+  const activedNodeId = useAppSelector((state) => Selectors.getNodeId(state));
+  const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const expandedKeys = useAppSelector((state: IReduxState) => state.catalogTree.expandedKeys);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo)!;
 
   const checkNodeNumberLimit = (nodeType: ConfigConstant.NodeType) => {
     // First check that the total number of nodes is as required

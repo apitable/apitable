@@ -17,7 +17,7 @@
  */
 
 import { FC, useEffect, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button, TextButton } from '@apitable/components';
 import { Api, IMember, IReduxState, ISubAdminList, Strings, t, UnitItem } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
@@ -30,6 +30,8 @@ import { PermissionCard } from '../permission_card';
 import styles from './style.module.less';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert, getSocialWecomUnitName } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const modalTitle = {
   read: t(Strings.sub_admin_view),
@@ -51,14 +53,14 @@ export enum ModalType {
 }
 
 export const AddAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancelModal, editOrReadSubMainInfo, existSubAdminNum, source }) => {
-  const { subAdminList, userInfo } = useSelector(
+  const { subAdminList, userInfo } = useAppSelector(
     (state: IReduxState) => ({
       subAdminList: state.spacePermissionManage.subAdminListData ? state.spacePermissionManage.subAdminListData.records : [],
       userInfo: state.user.info,
     }),
     shallowEqual,
   );
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const [selectMemberModal, setSelectMemberModal] = useState(false);
   const [selectedMembers, setSelectedMembers] = useState<UnitItem[]>([]);
   const [resourceCodes, setResourceCodes] = useState<string[]>([]);

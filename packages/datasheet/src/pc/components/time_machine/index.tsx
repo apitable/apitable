@@ -23,7 +23,6 @@ import { difference } from 'lodash';
 import Image from 'next/image';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Box, IconButton, Loading, Skeleton, Tooltip, Typography } from '@apitable/components';
 import {
   Api,
@@ -60,20 +59,22 @@ import { TabPaneKeys } from './interface';
 import { getForeignDatasheetIdsByOp, getOperationInfo } from './utils';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const { TabPane } = Tabs;
 
 const MAX_COUNT = Number.MAX_SAFE_INTEGER;
 const DATEFORMAT = 'YYYY-MM-DD HH:mm:ss';
 
 export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: boolean) => void }>> = ({ onClose }) => {
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-  const curDatasheet = useSelector((state) => Selectors.getDatasheet(state, datasheetId));
+  const datasheetId = useAppSelector(Selectors.getActiveDatasheetId)!;
+  const curDatasheet = useAppSelector((state) => Selectors.getDatasheet(state, datasheetId));
   const [curPreview, setCurPreview] = useState<number | string>();
   const [changesetList, setChangesetList] = useState<IRemoteChangeset[]>([]);
   const [fetching, setFetching] = useState(false);
   const [uuidMap, setUuidMap] = useState<Record<string, IMemberInfoInAddressList>>();
-  const currentRevision = useSelector((state) => Selectors.getResourceRevision(state, datasheetId, ResourceType.Datasheet)!);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const currentRevision = useAppSelector((state) => Selectors.getResourceRevision(state, datasheetId, ResourceType.Datasheet)!);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
 
   const uuids = useMemo(() => {
     const uuids =
@@ -88,11 +89,11 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
     return !changesetList?.length;
   }, [changesetList?.length]);
 
-  const currentDatasheetIds = useSelector(Selectors.getDatasheetIds);
+  const currentDatasheetIds = useAppSelector(Selectors.getDatasheetIds);
   const [rollbackIng, setRollbackIng] = useState(false);
   const dispatch = useAppDispatch();
 
-  const theme = useSelector((state) => state.theme);
+  const theme = useAppSelector((state) => state.theme);
   const DataEmpty = theme === ThemeName.Light ? DataEmptyLight : DataEmptyDark;
 
   const fetchChangesets = (lastRevision: number) => {

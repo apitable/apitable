@@ -20,7 +20,6 @@ import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import parser from 'html-react-parser';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { ApiInterface, ConfigConstant, IReduxState, Strings, t } from '@apitable/core';
 import { Wrapper } from 'pc/components/common';
 import { useUserRequest } from 'pc/hooks';
@@ -31,9 +30,11 @@ import styles from './style.module.less';
 // @ts-ignore
 import { IdentifyingCodeLogin } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const MailBindPhone: FC<React.PropsWithChildren<unknown>> = () => {
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'mailInvite' });
-  const inviteEmailInfo = useSelector((state: IReduxState) => state.invite.inviteEmailInfo);
+  const inviteEmailInfo = useAppSelector((state: IReduxState) => state.invite.inviteEmailInfo);
   const { loginOrRegisterReq } = useUserRequest();
 
   useMount(() => {

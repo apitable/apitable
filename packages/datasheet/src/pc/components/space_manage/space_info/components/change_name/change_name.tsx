@@ -18,7 +18,7 @@
 
 import { useEffect, useState } from 'react';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { IconButton, Skeleton } from '@apitable/components';
 import { Strings, t, IReduxState, ConfigConstant } from '@apitable/core';
 import { EditOutlined } from '@apitable/icons';
@@ -26,8 +26,10 @@ import { EditOutlined } from '@apitable/icons';
 import { Tooltip, NormalModal, WithTipTextInput } from 'pc/components/common';
 import { useNotificationCreate } from 'pc/hooks';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 export const ChangeName = () => {
-  const { spaceInfo, spaceResource, spaceId, userInfo } = useSelector(
+  const { spaceInfo, spaceResource, spaceId, userInfo } = useAppSelector(
     (state: IReduxState) => ({
       spaceInfo: state.space.curSpaceInfo,
       spaceId: state.space.activeId,

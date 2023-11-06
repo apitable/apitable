@@ -20,7 +20,7 @@ import { useMount } from 'ahooks';
 import classnames from 'classnames';
 import { FC, useEffect, useState } from 'react';
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List } from 'react-window';
 import { Button, TextInput } from '@apitable/components';
@@ -41,6 +41,8 @@ import styles from './style.module.less';
 // @ts-ignore
 import { isSocialPlatformEnabled } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export interface ITeamworkProps {
   nodeId: string;
   jumpPublicLink: () => void;
@@ -50,8 +52,8 @@ export const Teamwork: FC<React.PropsWithChildren<ITeamworkProps>> = ({ nodeId, 
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
   const [joinTeamId, setJoinTeamId] = useState('');
-  const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-  const socketData = useSelector((state: IReduxState) => state.catalogTree.socketData);
+  const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const socketData = useAppSelector((state: IReduxState) => state.catalogTree.socketData);
   const { getNodeRoleListReq } = useCatalogTreeRequest();
   const { sendInviteReq } = useInviteRequest();
   const { getInviteStatus } = useUserRequest();
@@ -65,7 +67,7 @@ export const Teamwork: FC<React.PropsWithChildren<ITeamworkProps>> = ({ nodeId, 
   const isMobile = screenIsAtMost(ScreenSize.md);
   const dispatch = useDispatch();
   const [secondVerify, setSecondVerify] = useState<null | string>(null);
-  const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo)!;
+  const spaceInfo = useAppSelector((state: IReduxState) => state.space.curSpaceInfo)!;
 
   useMount(() => {
     initNoTraceVerification(setSecondVerify, ConfigConstant.CaptchaIds.LOGIN);

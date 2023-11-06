@@ -27,6 +27,7 @@ import com.apitable.automation.model.AutomationTaskSimpleVO;
 import com.apitable.automation.service.IAutomationRunHistoryService;
 import com.apitable.databusclient.api.AutomationDaoApiApi;
 import com.apitable.databusclient.model.AutomationRunHistoryPO;
+import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.workspace.enums.IdRulePrefixEnum;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,7 @@ public class AutomationRunHistoryServiceImpl implements IAutomationRunHistorySer
 
     @Resource
     private AutomationDaoApiApi automationDaoApiApi;
+
 
     @Override
     public List<AutomationTaskSimpleVO> getRobotRunHistory(String robotId, Integer pageSize,
@@ -67,7 +69,9 @@ public class AutomationRunHistoryServiceImpl implements IAutomationRunHistorySer
                 result.setRobotId(task.getRobotId());
                 result.setStatus(task.getStatus());
                 result.setTaskId(task.getTaskId());
-                result.setCreatedAt(LocalDateTimeUtil.parse(task.getCreatedAt()));
+                result.setCreatedAt(
+                    LocalDateTimeUtil.parse(task.getCreatedAt())
+                        .atZone(ClockManager.me().getDefaultTimeZone()).toInstant().toEpochMilli());
                 result.setRobotId(task.getRobotId());
                 // format action execution list
                 if (StrUtil.isNotBlank(task.getActionIds())) {

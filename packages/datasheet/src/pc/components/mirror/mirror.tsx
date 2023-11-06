@@ -17,7 +17,6 @@
  */
 
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { IMirror, ResourceType } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { DataSheetPane } from 'pc/components/datasheet_pane';
@@ -30,9 +29,11 @@ import { View } from 'pc/components/view';
 import { useNetwork } from 'pc/hooks/use_network';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const Mirror: React.FC<React.PropsWithChildren<{ mirror: IMirror }>> = ({ mirror }) => {
   const { status } = useNetwork(true, mirror!.id, ResourceType.Mirror);
-  const { shareId, datasheetId } = useSelector((state) => state.pageParams);
+  const { shareId, datasheetId } = useAppSelector((state) => state.pageParams);
 
   return (
     <DataSheetPane

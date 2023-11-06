@@ -17,7 +17,7 @@
  */
 
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import ReactJson from 'react18-json-view';
 import styled from 'styled-components';
 import useSWR from 'swr';
@@ -32,6 +32,8 @@ import { RecordMatchesConditionsFilter } from '../trigger/record_matches_conditi
 import { KeyValueDisplay, StyledTitle } from './common';
 import { FormDataRender } from './form_data_render';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IRobotRunHistoryTriggerDetail {
     nodeType: INodeType;
@@ -73,9 +75,9 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
   const { data: dataList1 } = useSWR(['getRobotMagicDatasheetByResourceId', resourceId], () => getTriggerDstId(resourceId), {});
 
   const datasheetId = dataList1 ?? '';
-  const datasheet = useSelector(a => Selectors.getDatasheet(a, datasheetId), shallowEqual);
+  const datasheet = useAppSelector(a => Selectors.getDatasheet(a, datasheetId), shallowEqual);
 
-  const fieldPermissionMap = useSelector((state) => {
+  const fieldPermissionMap = useAppSelector((state) => {
     return Selectors.getFieldPermissionMap(state, datasheetId);
   });
   const theme = useTheme();

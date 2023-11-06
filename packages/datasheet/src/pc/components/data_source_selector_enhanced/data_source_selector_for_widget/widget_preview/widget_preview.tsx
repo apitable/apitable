@@ -28,7 +28,9 @@ import React, { useEffect, useState } from 'react';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
-import { useSelector } from 'react-redux';
+
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IWidgetPreviewProps {
   onChange(result: { datasheetId?: string; viewId?: string; widgetIds?: string[] }): void;
@@ -76,7 +78,7 @@ export const WidgetPreview: React.FC<React.PropsWithChildren<IWidgetPreviewProps
       setSelectedWidgetIds([...selectedWidgetIds, id]);
     }
   };
-  const themeName = useSelector(state => state.theme);
+  const themeName = useAppSelector(state => state.theme);
   const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   return (
     <div className={styles.widgetList}>

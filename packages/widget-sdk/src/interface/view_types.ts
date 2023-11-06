@@ -204,6 +204,10 @@ export interface IFilterConditionMap {
     fieldType: FieldType.Text;
     value: IFilterText;
   };
+  [FieldType.Workdoc]: {
+    fieldType: FieldType.Text;
+    value: IFilterText;
+  };
 }
 
 export type IFilterCondition<T extends FieldType = FieldType> = IFilterBaseCondition & IFilterConditionMap[T];

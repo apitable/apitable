@@ -17,7 +17,7 @@
  */
 
 import { useEffect, useState, FC, ChangeEvent } from 'react';
-import { shallowEqual, useSelector, useDispatch } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { TextInput, Button, TextButton, colorVars } from '@apitable/components';
 import { ConfigConstant, IReduxState, ITeamsInSpace, IUpdateMemberInfo, Strings, t, StoreActions, isIdassPrivateDeployment } from '@apitable/core';
 import { AddOutlined, CloseCircleOutlined } from '@apitable/icons';
@@ -34,6 +34,8 @@ import styles from './style.module.less';
 // @ts-ignore
 import { WecomOpenData, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IModalProps {
   cancelModalVisible: () => void;
   onSubmit?: () => void;
@@ -42,7 +44,7 @@ interface IModalProps {
 }
 
 export const EditMemberModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancelModalVisible, pageNo, removeCallback }) => {
-  const { spaceId, teamId, memberInfoInSpace, selectedTeamInfoInSpace, userInfo, selectMemberListInSpace, spaceInfo } = useSelector(
+  const { spaceId, teamId, memberInfoInSpace, selectedTeamInfoInSpace, userInfo, selectMemberListInSpace, spaceInfo } = useAppSelector(
     (state: IReduxState) => ({
       spaceId: state.space.activeId || '',
       teamId: state.spaceMemberManage.selectedTeamInfoInSpace ? state.spaceMemberManage.selectedTeamInfoInSpace.teamId : ConfigConstant.ROOT_TEAM_ID,

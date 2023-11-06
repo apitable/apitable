@@ -11,6 +11,7 @@
   }
   svg {
     cursor: pointer;
+    fill: var(--textCommonTertiary);
     &:hover {
       fill: var(--textBrandDefault);
     }
@@ -64,6 +65,11 @@
 
 
 :global {
+
+  .ant-table-thead > tr > th {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+  }
 
   .archiveDrawer {
     .ant-drawer-header {

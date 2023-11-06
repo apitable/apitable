@@ -720,7 +720,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         // credit
         BigDecimal usedCredit = aiServiceFacade.getUsedCreditCount(spaceId);
         spaceInfoVO.setUsedCredit(usedCredit);
-
+        // chat bot status
         CommonCacheService cacheService = SpringContextHolder.getBean(CommonCacheService.class);
         boolean isEnableChatbot = cacheService.checkIfSpaceEnabledChatbot(spaceId);
         spaceInfoVO.setIsEnableChatbot(isEnableChatbot);

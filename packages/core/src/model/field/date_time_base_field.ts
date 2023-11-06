@@ -22,7 +22,7 @@ import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/zh-hk';
 import 'dayjs/locale/zh-tw';
 import timezone from 'dayjs/plugin/timezone';
-// timezone
+import weekday from 'dayjs/plugin/weekday';
 import utc from 'dayjs/plugin/utc';
 import { getUserLocale, getUserTimeZone } from 'exports/store/selectors';
 import Joi from 'joi';
@@ -125,6 +125,7 @@ const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
 // plugin before import, prevent circular import
 dayjs.extend(utc);
 dayjs.extend(patchDayjsTimezone(timezone));
+dayjs.extend(weekday);
 
 export type IOptionalDateTimeFieldProperty = Partial<IDateTimeFieldProperty>;
 
@@ -661,10 +662,9 @@ export abstract class DateTimeBaseField extends Field {
 
   override isMeetFilter(operator: FOperator, cellValue: ITimestamp | null, conditionValue: Exclude<IFilterDateTime, null>) {
     let timeZone = getUserTimeZone(this.state);
-    let locale;
+    const locale = getUserLocale(this.state);
     if (isServer()) {
       timeZone = timeZone || DEFAULT_TIME_ZONE;
-      locale = getUserLocale(this.state);
     }
     return DateTimeBaseField._isMeetFilter(operator, cellValue, conditionValue, timeZone, locale);
   }

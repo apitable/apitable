@@ -22,6 +22,10 @@
     "node": "16.15.0"
   },
   "dependencies": {
+
+    "@apitable/ai": "*",
+    "@apitable/api-client": "*",
+
     "@apitable/components": "*",
     "@apitable/core": "*",
     "@apitable/i18n-lang": "*",
@@ -31,6 +35,7 @@
     "@apitable/widget-sdk": "*",
     "@floating-ui/react": "0.24.5",
     "@futpib/dagre": "^0.8.5-pre1",
+    "@hocuspocus/provider": "^2.5.0",
     "@huse/click-outside": "^1.0.1",
     "@microsoft/fetch-event-source": "^2.0.1",
     "@popperjs/core": "^2.11.8",
@@ -46,6 +51,26 @@
     "@sentry/tracing": "^7.18.0",
     "@tanstack/query-core": "^4.36.1",
     "@testing-library/jest-dom": "^5.11.10",
+    "@tiptap/core": "^2.1.8",
+    "@tiptap/extension-blockquote": "^2.1.8",
+    "@tiptap/extension-collaboration": "^2.1.11",
+    "@tiptap/extension-collaboration-cursor": "^2.1.11",
+    "@tiptap/extension-color": "^2.1.8",
+    "@tiptap/extension-document": "^2.1.8",
+    "@tiptap/extension-highlight": "^2.1.8",
+    "@tiptap/extension-horizontal-rule": "^2.1.8",
+    "@tiptap/extension-image": "^2.1.8",
+    "@tiptap/extension-link": "^2.1.8",
+    "@tiptap/extension-placeholder": "^2.1.8",
+    "@tiptap/extension-task-item": "^2.1.8",
+    "@tiptap/extension-task-list": "^2.1.8",
+    "@tiptap/extension-text-align": "^2.1.9",
+    "@tiptap/extension-text-style": "^2.1.8",
+    "@tiptap/extension-underline": "^2.1.8",
+    "@tiptap/pm": "^2.1.8",
+    "@tiptap/react": "^2.1.8",
+    "@tiptap/starter-kit": "^2.1.8",
+    "@tiptap/suggestion": "^2.1.8",
     "@types/color": "^3.0.1",
     "@types/json-schema": "^7.0.12",
     "@types/react-highlight-words": "^0.16.1",
@@ -183,7 +208,8 @@
     "uuid": "^9.0.1",
     "webkit-line-clamp": "^1.2.2",
     "weixin-js-sdk": "^1.6.0",
-    "xgplayer": "^2.20.12"
+    "xgplayer": "^2.20.12",
+    "yjs": "^13.6.8"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^12.2.2",

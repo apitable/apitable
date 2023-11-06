@@ -19,7 +19,6 @@
 import classnames from 'classnames';
 import Image from 'next/image';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Skeleton, TextButton, useThemeColors } from '@apitable/components';
 import { ConfigConstant, DATASHEET_ID, Navigation, Strings, t, ThemeName } from '@apitable/core';
 import { AddOutlined, FormOutlined, QuestionCircleOutlined } from '@apitable/icons';
@@ -31,6 +30,8 @@ import { useCatalog } from 'pc/hooks/use_catalog';
 import FormEmptyDark from 'static/icon/common/form_empty_dark.png';
 import FormEmptyLight from 'static/icon/common/form_empty_light.png';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IFormNodeItem {
   nodeId: string;
@@ -54,7 +55,7 @@ export const FormListPanel: FC<React.PropsWithChildren<IFormListPanelProps>> = (
   const colors = useThemeColors();
   const { addTreeNode } = useCatalog();
   const isEmpty = !formList?.length;
-  const theme = useSelector((state) => state.theme);
+  const theme = useAppSelector((state) => state.theme);
   const EmptyState = theme === ThemeName.Light ? FormEmptyLight : FormEmptyDark;
 
   const addForm = () => {

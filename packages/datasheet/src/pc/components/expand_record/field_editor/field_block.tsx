@@ -17,7 +17,6 @@
  */
 
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import {
   CollaCommandName,
   FieldType,
@@ -65,6 +64,9 @@ import { ExpandNumber } from '../expand_number';
 import { ExpandSelect } from '../expand_select';
 // @ts-ignore
 import { convertAlarmStructure } from 'enterprise';
+import { ExpandWorkdoc } from '../expand_work_doc';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface ICommonProps {
   style: React.CSSProperties;
@@ -98,8 +100,8 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = (
   const mobileEditorWidth: React.CSSProperties = isMobile ? { width: '100%' } : {};
 
   const state = store.getState();
-  const activeView = useSelector((state) => Selectors.getCurrentView(state));
-  const visibleRows = useSelector((state) => Selectors.getVisibleRows(state));
+  const activeView = useAppSelector((state) => Selectors.getCurrentView(state));
+  const visibleRows = useAppSelector((state) => Selectors.getVisibleRows(state));
 
   const onSave = (value: ICellValue, curAlarm?: Omit<IRecordAlarmClient, 'id'>) => {
     const isUrlWithRecogURLFlag = field.type === FieldType.URL && field.property?.isRecogURLFlag && Array.isArray(value);
@@ -298,6 +300,15 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = (
     case FieldType.Cascader:
       return (
         <ExpandCascader {...commonProps} isFocus={isFocus} cellValue={cellValue} field={commonProps.field as ILinkField} style={mobileEditorWidth} />
+      );
+    case FieldType.Workdoc:
+      return (
+        <ExpandWorkdoc
+          {...commonProps}
+          cellValue={cellValue}
+          datasheetId={datasheetId}
+          recordId={record.id}
+        />
       );
     default:
       return <div />;

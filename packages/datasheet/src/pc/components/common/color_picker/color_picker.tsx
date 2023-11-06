@@ -21,7 +21,6 @@ import RcTrigger from 'rc-trigger';
 import { forwardRef, useImperativeHandle, useState } from 'react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { useSelector } from 'react-redux';
 import { Selectors } from '@apitable/core';
 import { setColor } from 'pc/components/multi_grid/format';
 import { stopPropagation } from '../../../utils/dom';
@@ -31,6 +30,8 @@ import { ColorPickerMobile } from './color_picker_mobile';
 import { ColorPickerPane } from './color_picker_pane';
 import { IColorPicker } from './interface';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IColorPickerRef {
   open(): void;
@@ -47,8 +48,8 @@ const ColorPickerBase: React.ForwardRefRenderFunction<IColorPickerRef, IColorPic
   const [adjustX, setAdjustX] = useState(false);
   const [arrowOffsetY, setArrowOffsetY] = useState(0);
   const [visible, setVisible] = useState(false);
-  const cacheTheme = useSelector(Selectors.getTheme);
-  const fieldEditable = useSelector((state) => Selectors.getPermissions(state).manageable);
+  const cacheTheme = useAppSelector(Selectors.getTheme);
+  const fieldEditable = useAppSelector((state) => Selectors.getPermissions(state).manageable);
   const optionColor = setColor(option.color, cacheTheme);
 
   useImperativeHandle(

@@ -395,6 +395,7 @@ export function createNewField(
   options?: { viewId?: string; index?: number; fieldId?: string, offset?: number, hiddenColumn?: boolean }
 ) {
   if (!field.property) {
+    // @ts-ignore
     field.property = getFieldClass(field.type).defaultProperty();
   }
 

@@ -24,7 +24,7 @@ import { AnimationItem } from 'lottie-web';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button, useThemeColors } from '@apitable/components';
 import { ConfigConstant, Events, hiddenMobile, IReduxState, isIdassPrivateDeployment, NAV_ID, Player, Selectors, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, CopyOutlined, EditOutlined, LogoutOutlined, UserOutlined } from '@apitable/icons';
@@ -56,6 +56,8 @@ import {
   // @ts-ignore
 } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export interface IUserMenuProps {
   setShowUserMenu: React.Dispatch<React.SetStateAction<boolean>>;
   setShowAccountCenter: React.Dispatch<React.SetStateAction<boolean>>;
@@ -75,7 +77,7 @@ const customTips = {
 export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = (props) => {
   const colors = useThemeColors();
   const { ACCOUNT_LOGOUT_VISIBLE, USER_BIND_PHONE_VISIBLE, IS_SELFHOST, IS_APITABLE } = getEnvVariables();
-  const { userInfo, spaceId, spaceInfo, unitMap } = useSelector(
+  const { userInfo, spaceId, spaceInfo, unitMap } = useAppSelector(
     (state: IReduxState) => ({
       userInfo: state.user.info,
       spaceId: state.space.activeId || '',

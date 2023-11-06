@@ -22,15 +22,16 @@ import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useQuery, useSideBarVisible } from 'pc/hooks';
 import { CommonSide } from '../common_side';
 import { Navigation } from '../navigation';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const MobileSideBar: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const router = useRouter();
   const pathname = router.asPath;
 

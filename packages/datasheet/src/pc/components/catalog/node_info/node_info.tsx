@@ -20,7 +20,7 @@ import classNames from 'classnames';
 import dayjs from 'dayjs';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { Skeleton } from '@apitable/components';
 import { Api, Strings, t } from '@apitable/core';
 import { Avatar, AvatarSize } from 'pc/components/common/avatar';
@@ -33,6 +33,8 @@ import styles from './styles.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface INodeInfoProps {
   nodeId: string;
   onClose?: () => void;
@@ -43,7 +45,7 @@ const NodeInfoModal: React.FC<React.PropsWithChildren<INodeInfoProps>> = (props)
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { data, loading } = useRequest(() => Api.getNodeInfoWindow(nodeId));
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const nodeInfo = data?.data?.data;
   const Title = () => {
     if (!nodeInfo) {
