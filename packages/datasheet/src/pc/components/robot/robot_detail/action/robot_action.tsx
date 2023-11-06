@@ -103,7 +103,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
     });
   }, [dataList, dataSheetMap, dispatch]);
 
-  const triggerDataSheetIds : IFetchedDatasheet[] = automationState?.scenario === AutomationScenario?.datasheet ? Array.from({ length: triggers.length }, () => activeDstId) : (dataList1 ?? []) as IFetchedDatasheet[];
+  const triggerDataSheetIds : IFetchedDatasheet[] = automationState?.scenario === AutomationScenario?.datasheet ? Array.from({ length: triggers.length }, () => activeDstId) : (dataList ?? []) as IFetchedDatasheet[];
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
     actionTypes: actionTypeList,
