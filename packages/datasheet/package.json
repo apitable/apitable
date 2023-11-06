@@ -30,6 +30,7 @@
     "@apitable/core": "*",
     "@apitable/i18n-lang": "*",
     "@apitable/icons": "*",
+    "@apitable/ai": "*",
     "@apitable/react-flow": "^9.6.12",
     "@apitable/widget-sdk": "*",
     "@floating-ui/react": "0.24.5",
