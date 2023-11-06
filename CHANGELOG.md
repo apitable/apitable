@@ -16,7 +16,6 @@
 
 * fix: ai components build by ([#1430](https://github.com/apitable/apitable/pull/1430)) @jeremyyin2012
 
-
 ## [v1.4.0-beta](https://github.com/apitable/apitable/releases/tag/v1.4.0-beta) (2023-10-30)
 
 
