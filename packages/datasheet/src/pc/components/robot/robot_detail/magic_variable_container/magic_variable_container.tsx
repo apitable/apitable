@@ -17,12 +17,13 @@
  */
 
 import { useAtomValue, useSetAtom } from 'jotai';
-import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Box, TextInput, Typography, useSelectIndex, useTheme } from '@apitable/components';
 import { IExpression, OperandTypeEnums, OperatorEnums, Strings, t } from '@apitable/core';
 import { SearchOutlined } from '@apitable/icons';
 import { automationCurrentTriggerId } from 'pc/components/automation/controller';
+import EllipsisText from 'pc/components/ellipsis_text';
 import { INodeOutputSchema, IUISchemaLayoutGroup } from '../../interface';
 import { useCssColors } from '../trigger/use_css_colors';
 import { getCurrentVariableList, getGroupedVariableList, ISchemaAndExpressionItem, ISchemaPropertyListItem } from './helper';
@@ -233,15 +234,24 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
                   <span style={{ marginLeft: '4px' }}>
               /&nbsp;
                   </span>
+
                   <span
                     onClick={() => {
                       setSchemaExpressionList(l => l.slice(0, index +1));
                     }}
                     style={{
                       cursor: 'pointer',
-                      color: index === schemaExpressionList.length -1 ? colors.textBrandDefault:
-                        colors.textCommonTertiary
-                    }}>{index ===0 && `${index + 1}.`}  {schema?.title}</span>
+                      color: index === schemaExpressionList.length -1 ? colors.textBrandDefault: colors.textCommonTertiary
+                    }}>
+                    <Box maxWidth={'200px'} display={'inline-flex'}>
+                      <EllipsisText>
+                        <Typography variant="body4"
+                          color={index === schemaExpressionList.length -1 ? colors.textBrandDefault: colors.textCommonTertiary}>
+                          {index ===0 && `${index + 1}.`}  {schema?.title}
+                        </Typography>
+                      </EllipsisText>
+                    </Box>
+                  </span>
                 </span>;
               })}
             </Typography>
