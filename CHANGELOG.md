@@ -1,5 +1,19 @@
 # APITable CHANGELOG
 
+## [v1.4.0-beta](https://github.com/apitable/apitable/releases/tag/v1.4.0-beta) (2023-10-30)
+
+
+### Bug fixes
+
+* fix: welcome crash ([#1429](https://github.com/apitable/apitable/pull/1429)) @wangkailang 
+
+### What's more
+
+* docs: add one-click-deploy link @jbgh 
+* add Dome one-click badge @jbgh 
+* docs: add one-click-deploy link ([#1378](https://github.com/apitable/apitable/pull/1378)) @paylm 
+* sync: hosted cloud ([#1407](https://github.com/apitable/apitable/pull/1407)) @shawndenggh 
+* sync: hosted cloud ([#1427](https://github.com/apitable/apitable/pull/1427)) @jeremyyin2012 
 ## [v1.3.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.3.0-beta.1) (2023-10-17)
 
 
