@@ -73,7 +73,7 @@ export const RobotActions = ({
 
   const dataSheetMap = useSelector((state: IReduxState) => state.datasheetMap);
 
-  const triggerDataSheetIds : IFetchedDatasheet[] = robot?.scenario === AutomationScenario?.datasheet ? [activeDstId] : (dataList1 ?? []) as IFetchedDatasheet[];
+  const triggerDataSheetIds : IFetchedDatasheet[] = robot?.scenario === AutomationScenario?.datasheet ? Array.from({ length: triggers.length }, () => activeDstId) : (dataList1 ?? []) as IFetchedDatasheet[];
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
     actionTypes,
