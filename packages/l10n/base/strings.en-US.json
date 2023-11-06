@@ -5821,8 +5821,6 @@
   "workdoc_unsave_content": "Are you sure you want to exit without saving?",
   "workdoc_unsave_ok": "Exit without saving",
   "workdoc_unsave_cancel": "Cancel",
-  "automation_run_usage": "自动化用量",
-  "automation_run_usage_info": "自动化的运行次数",
   "widget_per_space": "Widget",
   "automation_manager_label": "Can perform all actions on the automation",
   "automation_editor_label": "Can edit steps in automation and viewing the run history of the automation",
