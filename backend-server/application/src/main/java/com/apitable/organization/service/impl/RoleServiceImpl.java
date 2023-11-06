@@ -25,6 +25,7 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.vika.core.utils.StringUtil;
@@ -48,7 +49,6 @@ import com.apitable.organization.service.IUnitService;
 import com.apitable.organization.vo.RoleInfoVo;
 import com.apitable.organization.vo.RoleVo;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -264,7 +264,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         for (RoleEntity role : roles) {
             UnitEntity unit = UnitEntity.builder()
                 .spaceId(spaceId)
-                .unitId(IdWorker.get32UUID())
+                .unitId(IdUtil.fastSimpleUUID())
                 .unitRefId(role.getId())
                 .unitType(UnitType.ROLE.getType())
                 .build();

@@ -1271,6 +1271,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 break;
         }
         NodeEntity toSaveNode = new NodeEntity();
+        toSaveNode.setId(IdWorker.getId());
         toSaveNode.setNodeId(toSaveNodeId);
         toSaveNode.setNodeName(name);
         toSaveNode.setCover(shareNode.getCover());
@@ -1300,7 +1301,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         toSaveNode.setExtra(JSONUtil.toJsonStr(extraObj));
         toSaveNode.setCreatedBy(userId);
         toSaveNode.setUpdatedBy(userId);
-        this.save(toSaveNode);
+        baseMapper.insert(toSaveNode);
         // description of batch replication nodes
         iNodeDescService.copyBatch(newNodeMap);
         // Batch copy of spatial attachment resources referenced by nodes

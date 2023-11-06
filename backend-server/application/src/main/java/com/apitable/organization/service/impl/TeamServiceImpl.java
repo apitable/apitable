@@ -23,6 +23,7 @@ import static com.apitable.organization.enums.OrganizationException.GET_TEAM_ERR
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.BooleanUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.core.support.tree.DefaultTreeBuildFactory;
 import com.apitable.core.util.ExceptionUtil;
@@ -326,7 +327,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         entities.forEach(team -> {
             UnitEntity unit = new UnitEntity();
             unit.setId(IdWorker.getId());
-            unit.setUnitId(IdWorker.get32UUID());
+            unit.setUnitId(IdUtil.fastSimpleUUID());
             unit.setSpaceId(spaceId);
             unit.setUnitType(UnitType.TEAM.getType());
             unit.setUnitRefId(team.getId());
