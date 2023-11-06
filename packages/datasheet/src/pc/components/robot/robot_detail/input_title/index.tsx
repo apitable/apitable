@@ -45,7 +45,7 @@ export const InputTitle: FC = () => {
     }else {
       setValue(automationName);
     }
-  }, [automationName, automationState?.scenario, dispatch, nodeItem.nodeId, nodeItem?.nodeName, nodeItem.type, templateId]);
+  }, [automationName, automationState?.scenario, dispatch, nodeItem?.nodeId, nodeItem?.nodeName, nodeItem?.type, templateId]);
 
   const { manageable } = useAutomationResourcePermission();
   if (!robot) {

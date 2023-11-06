@@ -5831,9 +5831,9 @@
   "automation_variable_trigger_many": "来自 ${Trigger_Multiple} 和 ${Trigger_Last}",
   "automation_variabel_empty": "前置步骤中没有可以引用的数据，请调整后重试",
   "delete_archive_record_success": "已删除归档记录",
-  "automation_run_failure": "已失效",
-  "automation_run_failure_tip": "当前额度已用完，该自动化已失效",
+  "automation_run_failure": "已超限",
+  "automation_run_failure_tip": "当前空间站自动化流程运行次数已用完",
   "billing_over_limit_tip_common": "亲爱的用户，您当前的操作已经触发了您的订阅级别的用量限制。为了继续享受无限制的操作，我们建议您升级您的订阅。",
-  "billing_over_limit_tip_widget": "您的小程序安装数量以达到上限，请升级订阅。",
-  "automation_run_times_over_limit": "运行次数已达上限"
+  "billing_over_limit_tip_widget": "空间站的小程序安装数量已达到上限，请升级订阅。",
+  "automation_run_times_over_limit": "自动化运行次数已达上限"
 }

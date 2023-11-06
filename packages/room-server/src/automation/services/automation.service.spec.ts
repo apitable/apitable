@@ -20,6 +20,7 @@ import { ConfigConstant } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { Test, TestingModule } from '@nestjs/testing';
+import { TriggerEventHelper } from 'automation/events/helpers/trigger.event.helper';
 import { WinstonModule } from 'nest-winston';
 import { I18nService } from 'nestjs-i18n';
 import { NodeService } from 'node/services/node.service';
@@ -38,7 +39,7 @@ import { AutomationTriggerRepository } from '../repositories/automation.trigger.
 import { AutomationService } from './automation.service';
 import { RobotRobotService } from './robot.robot.service';
 
-describe('RobotActionTypeServiceTest', () => {
+describe('AutomationServiceTest', () => {
   let moduleFixture: TestingModule;
   let nodeService: NodeService;
   let automationRobotRepository: AutomationRobotRepository;
@@ -50,8 +51,6 @@ describe('RobotActionTypeServiceTest', () => {
   let restService: RestService;
 
   beforeEach(async () => {
-    // @ts-ignore
-    // @ts-ignore
     moduleFixture = await Test.createTestingModule({
       imports: [
         WinstonModule.forRootAsync({
@@ -106,6 +105,12 @@ describe('RobotActionTypeServiceTest', () => {
         AutomationActionRepository,
         AutomationTriggerRepository,
         AmqpConnection,
+        {
+          provide: TriggerEventHelper,
+          useValue: {
+            getDefaultTriggerOutput: jest.fn(),
+          },
+        },
       ],
     }).compile();
     nodeService = moduleFixture.get<NodeService>(NodeService);

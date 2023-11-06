@@ -20,7 +20,7 @@ export const useFetchFolderData = ({ localState, localDispatch }: IParams) => {
 
   useEffect(() => {
     const nodes = childrenData || [];
-    localDispatch({ nodes: nodeTypeFilterLoader(nodes), showSearch: false });
+    localDispatch({ nodes: nodeTypeFilterLoader(nodes), showSearch: false, searchResult: undefined, searchValue: '' });
   }, [childrenData, localDispatch]);
 
   return {

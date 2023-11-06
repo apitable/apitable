@@ -58,7 +58,6 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
   const isJSONField = (schema as any)?.format === 'json';
   const [isOpen, setOpenState] = useState(false);
   const ref = useRef(null);
-  const isOpenRef = useRef(false);
 
   const triggerControllRef = useRef<IDropdownControl|null>(null);
 
@@ -80,6 +79,7 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
   const [value, setValue] = useState(slateValue);
 
   const refV: MutableRefObject<any> = useRef(null);
+  const insertCheckRef: MutableRefObject<boolean> = useRef(false);
 
   useEffect(() => {
     if (!isOpen) {
@@ -93,13 +93,13 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
 
   const updateFormValue = useCallback(
     (value: any) => {
-      if(isOpenRef.current) {
+      if(isOpen) {
         return;
       }
       const { value: transformedValue } = transformSlateValue(value);
       onChange && onChange(transformedValue);
     },
-    [onChange],
+    [isOpen, onChange],
   );
 
   const handleKeyDown = useCallback(
@@ -184,6 +184,14 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
           }}
           onVisibleChange={(visible) => {
             setOpenState(visible);
+            if(visible) {
+              insertCheckRef.current = true;
+            }
+            if(!visible && !insertCheckRef.current ) {
+              const { value: transformedValue } = transformSlateValue(refV.current);
+              onChange && onChange(transformedValue);
+              insertCheckRef.current =true;
+            }
           }}
           trigger={
             <Box width={'100%'} display={'block'}>
@@ -207,6 +215,7 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
               <MagicVariableContainer
                 isJSONField={isJSONField}
                 insertMagicVariable={(data) => {
+                  insertCheckRef.current =true;
                   setOpen(false);
                   insertMagicVariable(data, editor, () => {
                     setTimeout(() => {

@@ -19,7 +19,7 @@
 import { NodeBaseInfo } from 'database/interfaces';
 import { NodeEntity } from 'node/entities/node.entity';
 import { INodeExtra } from 'shared/interfaces';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, In, Repository } from 'typeorm';
 
 @EntityRepository(NodeEntity)
 export class NodeRepository extends Repository<NodeEntity> {
@@ -27,7 +27,7 @@ export class NodeRepository extends Repository<NodeEntity> {
    * Obtain the number of nodes with the given node ID
    */
   public async selectCountByNodeId(nodeId: string): Promise<number> {
-    return await this.count({ where: { nodeId, isRubbish: false }});
+    return await this.count({ where: { nodeId, isRubbish: false } });
   }
 
   public async selectNameByNodeId(nodeId: string): Promise<string> {
@@ -42,14 +42,14 @@ export class NodeRepository extends Repository<NodeEntity> {
    * Obtain the number of templates with the given node ID
    */
   public async selectTemplateCountByNodeId(nodeId: string): Promise<number> {
-    return await this.count({ where: { nodeId, isTemplate: true, isRubbish: false }});
+    return await this.count({ where: { nodeId, isTemplate: true, isRubbish: false } });
   }
 
   /**
    * Obtain the number of nodes with the given parent node ID
    */
   public async selectCountByParentId(parentId: string): Promise<number> {
-    return await this.count({ where: { parentId, isRubbish: false }});
+    return await this.count({ where: { parentId, isRubbish: false } });
   }
 
   /**
@@ -155,6 +155,13 @@ export class NodeRepository extends Repository<NodeEntity> {
         };
       }
       return undefined;
+    });
+  }
+
+  public async selectNodeNameByNodeIds(nodeIds: string[]): Promise<NodeEntity[]> {
+    return await this.find({
+      select: ['nodeName', 'nodeId'],
+      where: { nodeId: In(nodeIds), isDeleted: 0, isRubbish: 0 },
     });
   }
 }

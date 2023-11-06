@@ -78,13 +78,13 @@ export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref
     if(disabled) {
       return;
     }
+    onVisibleChange?.(isOpenState);
     setOpenValue(isOpenState);
-  }, [setOpenValue, disabled]);
+  }, [disabled, onVisibleChange]);
 
   const toggle = useCallback(() => {
     setOpen(!isOpen);
-    onVisibleChange?.(!isOpen);
-  }, [isOpen, onVisibleChange, setOpen]);
+  }, [isOpen, setOpen]);
 
   const open = useCallback(() => {
     setOpen(true);

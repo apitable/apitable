@@ -53,7 +53,6 @@ export type IShouldFireRobot = {
 
 @Injectable()
 export class TriggerEventHelper {
-
   private _triggerInputParser: InputParser<any>;
 
   private _triggerFilterInputParser: InputParser<any>;
@@ -100,16 +99,17 @@ export class TriggerEventHelper {
     }
 
     this.logger.info(`messageIds: [${msgIds}]: Execute ${eventType} handler. `, {
-      shouldFireRobotIds: shouldFireRobots.map(robot => robot.robotId),
+      shouldFireRobotIds: shouldFireRobots.map((robot) => robot.robotId),
     });
 
-    await Promise.all(shouldFireRobots.map(robot => {
-      if (enableAutomationWorker) {
-        return this.fireRoot(robot);
-      }
-      return this.automationService.handleTask(robot.robotId, robot.trigger).then(_ => {
-      });
-    }));
+    await Promise.all(
+      shouldFireRobots.map((robot) => {
+        if (enableAutomationWorker) {
+          return this.fireRoot(robot);
+        }
+        return this.automationService.handleTask(robot.robotId, robot.trigger).then((_) => {});
+      }),
+    );
   }
 
   async fireRoot(fireRobot: IShouldFireRobot) {
@@ -133,7 +133,7 @@ export class TriggerEventHelper {
     const { datasheetId, datasheetName, recordId } = eventContext;
     if (eventType == EventTypeEnums.RecordMatchesConditions) {
       return conditionalTriggers
-        .filter(item => Boolean(item.input))
+        .filter((item) => Boolean(item.input))
         .reduce((prev, item) => {
           const triggerInput = this.renderInput(item.input!);
           const isSameResource = triggerInput.datasheetId === datasheetId;
@@ -154,7 +154,7 @@ export class TriggerEventHelper {
         }, [] as IShouldFireRobot[]);
     }
     return conditionalTriggers
-      .filter(item => Boolean(item.input))
+      .filter((item) => Boolean(item.input))
       .reduce((prev, item) => {
         const triggerInput = this.renderInput(item.input!);
         if (triggerInput.datasheetId === datasheetId) {
@@ -170,7 +170,6 @@ export class TriggerEventHelper {
         }
         return prev;
       }, [] as IShouldFireRobot[]);
-
   }
 
   public getTriggerOutput(datasheetId: string, datasheetName: string, recordId: string, eventContext: CommonEventContext) {
@@ -178,19 +177,27 @@ export class TriggerEventHelper {
       // the old structure: left for Qianfan, should delete later
       datasheet: {
         id: datasheetId,
-        name: datasheetName
+        name: datasheetName,
       },
       record: {
         id: recordId,
         url: getRecordUrl(datasheetId, recordId),
-        fields: eventContext.eventFields
+        fields: eventContext.eventFields,
       },
       // the new structure below: flat data structure
       datasheetId,
       datasheetName,
       recordId,
       recordUrl: getRecordUrl(datasheetId, recordId),
-      ...eventContext.eventFields
+      ...eventContext.eventFields,
+    };
+  }
+
+  public getDefaultTriggerOutput(datasheetId: string, datasheetName: string) {
+    return {
+      // the new structure below: flat data structure
+      datasheetId,
+      datasheetName,
     };
   }
 
@@ -198,7 +205,7 @@ export class TriggerEventHelper {
     if (!triggers) {
       return [];
     }
-    return triggers.filter(item => triggerTypeId === item.triggerTypeId);
+    return triggers.filter((item) => triggerTypeId === item.triggerTypeId);
   }
 
   // Field matches condition filter
@@ -210,7 +217,7 @@ export class TriggerEventHelper {
     const getAllFilterFieldIds = (filter: IExpression) => {
       if (filter.operator === OperatorEnums.And || filter.operator === OperatorEnums.Or) {
         // When the operator is AND or OR, operands are always expressions.
-        filter.operands.forEach(operand => {
+        filter.operands.forEach((operand) => {
           if (operand.type === OperandTypeEnums.Expression) {
             getAllFilterFieldIds(operand.value);
           }
@@ -227,9 +234,8 @@ export class TriggerEventHelper {
     const filterFieldIds = Array.from(filterFieldIdsSet);
     // const filterFieldIds: string[] = filter.operands.map(item => item.value.operands[0].value);
     // If intersection exists, only when listened-on field changes, trigger
-    const isIntersect = filterFieldIds.some(item => eventContext.diffFields.includes(item));
+    const isIntersect = filterFieldIds.some((item) => eventContext.diffFields.includes(item));
     // triggerInput.filter is also an expression.
     return isIntersect && this._triggerFilterInputParser.expressionParser.exec(filter, eventContext);
   }
-
 }
