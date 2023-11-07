@@ -83,7 +83,7 @@ public class InternalFieldPermissionController {
         + "delete field operation call")
     @Parameters({
         @Parameter(name = "dstId", description = "table id", required = true, schema =
-            @Schema(type = "String"), in = ParameterIn.PATH, example = "dstGxznHFXf9pvF1LZ"),
+            @Schema(type = "string"), in = ParameterIn.PATH, example = "dstGxznHFXf9pvF1LZ"),
         @Parameter(name = "fieldIds", description = "list of field ids", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "fldB7uWmwYrQf,"
             + "fldB7uWmwYrQf")
