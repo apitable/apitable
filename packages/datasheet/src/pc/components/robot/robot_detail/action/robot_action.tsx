@@ -33,6 +33,7 @@ import { IFetchDatasheet } from '@apitable/widget-sdk/dist/message/interface';
 import { getTriggerDatasheetId } from 'pc/components/automation/controller/hooks/use_robot_fields';
 import { Message, Modal } from 'pc/components/common';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import { useResponsive } from '../../../../hooks';
 import { getResourceAutomationDetailIntegrated, useAutomationController } from '../../../automation/controller';
 import {
@@ -40,12 +41,12 @@ import {
   automationPanelAtom,
   automationStateAtom,
   PanelName
-} from '../../../automation/controller/atoms';
+} from 'pc/components/automation/controller';
 import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
 import { ScreenSize } from '../../../common/component_display';
 import { ShareContext } from '../../../share';
 import styles from '../../../slate_editor/components/select/style.module.less';
-import { changeActionTypeId, getResourceAutomationDetail, updateActionInput } from '../../api';
+import { changeActionTypeId, updateActionInput } from '../../api';
 import { getFilterActionTypes, getNodeOutputSchemaList, getNodeTypeOptions, operand2PureValue } from '../../helper';
 import { useActionTypes, useRobotTriggerTypes, useTriggerTypes } from '../../hooks';
 import { IRobotAction } from '../../interface';
@@ -55,8 +56,6 @@ import { IChangeEvent } from '../node_form/core/interface';
 import { EditType } from '../trigger/robot_trigger';
 import itemStyle from '../trigger/select_styles.module.less';
 import { getActionList, getTriggerList } from '../utils';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IRobotActionProps {
   index: number;
@@ -103,7 +102,6 @@ export const RobotAction = memo((props: IRobotActionProps) => {
       }
     });
   }, [dataList, dataSheetMap, dispatch]);
-
 
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
@@ -195,7 +193,6 @@ export const RobotAction = memo((props: IRobotActionProps) => {
       data: props
     });
   }, [action.id, editType, permissions.editable, props, setAutomationPanel]);
-
 
   const formData = map.get(action.id!) ?? action.input;
 

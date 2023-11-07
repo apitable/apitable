@@ -21,10 +21,10 @@ import React, { useEffect, useMemo } from 'react';
 import useSWR from 'swr';
 import { Box } from '@apitable/components';
 import { IReduxState, Strings, t } from '@apitable/core';
-import { IFetchDatasheet } from '@apitable/widget-sdk/dist/message/interface';
 import { CONST_MAX_ACTION_COUNT } from 'pc/components/automation/config';
-import {getTriggerDatasheetId, IFetchedDatasheet} from 'pc/components/automation/controller/hooks/use_robot_fields';
+import { getTriggerDatasheetId, IFetchedDatasheet } from 'pc/components/automation/controller/hooks/use_robot_fields';
 import { OrEmpty } from 'pc/components/common/or_empty';
+import { useAppSelector } from 'pc/store/react-redux';
 import { automationActionsAtom, automationStateAtom } from '../../../automation/controller';
 import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
 import { OrTooltip } from '../../../common/or_tooltip';
@@ -39,8 +39,6 @@ import {
   CreateNewAction,
   CreateNewActionLineButton,
 } from './robot_action_create';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const RobotActions = ({
   robotId,
