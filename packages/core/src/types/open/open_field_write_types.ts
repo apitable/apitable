@@ -133,6 +133,8 @@ export interface IAddOpenFormulaFieldProperty {
   format?: IOpenComputedFormat;
 }
 
+export type IAddOpenWorkdocFieldProperty = null;
+
 export type IAddOpenAutoNumberFieldProperty = null;
 
 export type IAddOpenCreatedTimeFieldProperty = IOpenCreatedTimeFieldProperty;
@@ -178,6 +180,7 @@ export type IAddOpenFieldProperty =
   | IAddOpenMagicLinkFieldProperty
   | IAddOpenMagicLookUpFieldProperty
   | IAddOpenFormulaFieldProperty
+  | IAddOpenWorkdocFieldProperty
   | IAddOpenAutoNumberFieldProperty
   | IAddOpenCreatedTimeFieldProperty
   | IAddOpenLastModifiedTimeFieldProperty

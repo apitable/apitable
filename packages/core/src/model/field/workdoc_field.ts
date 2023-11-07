@@ -4,6 +4,7 @@ import {
   BasicValueType,
   FieldType,
   FOperator,
+  IAddOpenWorkdocFieldProperty,
   IAttachmentValue,
   IField, IFilterCondition, IFilterText, ISegment,
   IStandardValue,
@@ -262,6 +263,13 @@ export class WorkdocField extends ArrayValueField {
 
   validateOpenWriteValue(owv: IAttachmentValue[] | null) {
     return WorkdocField.cellValueSchema.validate(owv);
+  }
+
+  override validateAddOpenFieldProperty(updateProperty: IAddOpenWorkdocFieldProperty) {
+    if (updateProperty === null) {
+      return { error: undefined, value: null };
+    }
+    return this.validateUpdateOpenProperty(updateProperty);
   }
 
 }
