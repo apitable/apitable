@@ -145,6 +145,11 @@ const ChangesetItemActionBase: React.FC<React.PropsWithChildren<IChangesetItemAc
             ...odField,
             type: SegmentType.Email === od[0].type ? FieldType.Email : FieldType.Text,
           } as IField;
+        } else if (od[0].documentId) {
+          odField = {
+            ...odField,
+            type: FieldType.Workdoc,
+          } as IField;
         } else {
           odField = {
             type: FieldType.Attachment,

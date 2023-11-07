@@ -5310,6 +5310,7 @@ export type StringKeysMapType = {
   'tooltip_cannot_create_widget_from_dashboard': 'tooltip_cannot_create_widget_from_dashboard',
   'tooltip_edit_form_formula_field': 'tooltip_edit_form_formula_field',
   'tooltip_edit_form_lookup_field': 'tooltip_edit_form_lookup_field',
+  'tooltip_edit_form_workdoc_field': 'tooltip_edit_form_workdoc_field',
   'tooltip_primary_field_type_select': 'tooltip_primary_field_type_select',
   'tooltip_workspace_up_to_bound_no_new': 'tooltip_workspace_up_to_bound_no_new',
   'total': 'total',

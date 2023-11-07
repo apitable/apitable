@@ -299,6 +299,9 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
         </ComputedFieldWrapper>
       );
     case FieldType.Workdoc:
+      if (isMobile) {
+        return <ComputedFieldWrapper className={styles.formWorkdoc} title={t(Strings.tooltip_edit_form_workdoc_field)} />;
+      }
       return (
         <FormWorkdocEditor
           cellValue={cellValue}

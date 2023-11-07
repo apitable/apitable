@@ -5279,6 +5279,7 @@
   "tool_bar_hidden": "隐藏",
   "tooltip_cannot_create_widget_from_dashboard": "无法从仪表盘创建小程序，请前往一张维格表创建小程序",
   "tooltip_edit_form_formula_field": "当前字段的数据来自公式计算结果，不能编辑",
+  "tooltip_edit_form_workdoc_field": "移动端不支持编辑富文本字段",
   "tooltip_edit_form_lookup_field": "当前字段的数据来自关联表的引用结果，不能编辑",
   "tooltip_primary_field_type_select": "为保证首列内容的唯一性，仅支持部分列类型",
   "tooltip_workspace_up_to_bound_no_new": "空间站数量已达 ${count} 个上限，暂时无法新建空间站",
