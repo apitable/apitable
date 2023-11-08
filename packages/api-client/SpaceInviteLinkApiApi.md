@@ -4,15 +4,15 @@ All URIs are relative to *http://backend/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**delete15**](SpaceInviteLinkApiApi.md#delete15) | **DELETE** /space/link/delete | Delete link
+[**delete6**](SpaceInviteLinkApiApi.md#delete6) | **DELETE** /space/link/delete | Delete link
 [**generate**](SpaceInviteLinkApiApi.md#generate) | **POST** /space/link/generate | Generate or refresh link
 [**join**](SpaceInviteLinkApiApi.md#join) | **POST** /space/link/join | Join the space using the public link
-[**list3**](SpaceInviteLinkApiApi.md#list3) | **GET** /space/link/list | Get a list of links
+[**list1**](SpaceInviteLinkApiApi.md#list1) | **GET** /space/link/list | Get a list of links
 [**valid**](SpaceInviteLinkApiApi.md#valid) | **POST** /space/link/valid | Valid invite link token
 
 
-# **delete15**
-> ResponseDataVoid delete15(spaceLinkOpRo, )
+# **delete6**
+> ResponseDataVoid delete6(spaceLinkOpRo, )
 
 
 ### Example
@@ -25,7 +25,7 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .SpaceInviteLinkApiApi(configuration);
 
-let body:.SpaceInviteLinkApiApiDelete15Request = {
+let body:.SpaceInviteLinkApiApiDelete6Request = {
   // SpaceLinkOpRo
   spaceLinkOpRo: {
     teamId: 1254,
@@ -35,7 +35,7 @@ let body:.SpaceInviteLinkApiApiDelete15Request = {
   xSpaceId: "spcyQkKp9XJEl",
 };
 
-apiInstance.delete15(body).then((data:any) => {
+apiInstance.delete6(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -66,8 +66,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -127,8 +127,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -185,13 +185,13 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **list3**
-> ResponseDataListSpaceLinkVo list3()
+# **list1**
+> ResponseDataListSpaceLinkVo list1()
 
 
 ### Example
@@ -204,12 +204,12 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .SpaceInviteLinkApiApi(configuration);
 
-let body:.SpaceInviteLinkApiApiList3Request = {
+let body:.SpaceInviteLinkApiApiList1Request = {
   // string | space id
   xSpaceId: "spczJrh2i3tLW",
 };
 
-apiInstance.list3(body).then((data:any) => {
+apiInstance.list1(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -239,8 +239,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -297,8 +297,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 

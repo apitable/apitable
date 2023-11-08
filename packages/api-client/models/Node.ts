@@ -13,57 +13,21 @@
 import { HttpFile } from '../http/http';
 
 /**
-* Node Info
+* node
 */
 export class Node {
     /**
-    * node id
+    * Node ID
     */
     'nodeId'?: string;
     /**
-    * node type
-    */
-    'nodeType'?: number;
-    /**
-    * old parent node name（before operation, fixed）
-    */
-    'oldParentName'?: string;
-    /**
-    * parent node name（operating at the time，fixed）
-    */
-    'parentName'?: string;
-    /**
-    * old node name（before operation, fixed）
-    */
-    'oldNodeName'?: string;
-    /**
-    * node name（operating at the time，fixed)
+    * Node Information
     */
     'nodeName'?: string;
     /**
-    * current node name（the latest，dynamic）
+    * Node icon
     */
-    'currentNodeName'?: string;
-    /**
-    * old node icon（before operation, fixed）
-    */
-    'oldNodeIcon'?: string;
-    /**
-    * node icon（operating at the time，fixed）
-    */
-    'nodeIcon'?: string;
-    /**
-    * current node icon（the latest，dynamic）
-    */
-    'currentNodeIcon'?: string;
-    /**
-    * the replicated node id
-    */
-    'sourceNodeId'?: string;
-    /**
-    * the replicated node name（operating at the time，fixed）
-    */
-    'sourceNodeName'?: string;
+    'icon'?: string;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -75,68 +39,14 @@ export class Node {
             "format": ""
         },
         {
-            "name": "nodeType",
-            "baseName": "nodeType",
-            "type": "number",
-            "format": "int32"
-        },
-        {
-            "name": "oldParentName",
-            "baseName": "oldParentName",
-            "type": "string",
-            "format": ""
-        },
-        {
-            "name": "parentName",
-            "baseName": "parentName",
-            "type": "string",
-            "format": ""
-        },
-        {
-            "name": "oldNodeName",
-            "baseName": "oldNodeName",
-            "type": "string",
-            "format": ""
-        },
-        {
             "name": "nodeName",
             "baseName": "nodeName",
             "type": "string",
             "format": ""
         },
         {
-            "name": "currentNodeName",
-            "baseName": "currentNodeName",
-            "type": "string",
-            "format": ""
-        },
-        {
-            "name": "oldNodeIcon",
-            "baseName": "oldNodeIcon",
-            "type": "string",
-            "format": ""
-        },
-        {
-            "name": "nodeIcon",
-            "baseName": "nodeIcon",
-            "type": "string",
-            "format": ""
-        },
-        {
-            "name": "currentNodeIcon",
-            "baseName": "currentNodeIcon",
-            "type": "string",
-            "format": ""
-        },
-        {
-            "name": "sourceNodeId",
-            "baseName": "sourceNodeId",
-            "type": "string",
-            "format": ""
-        },
-        {
-            "name": "sourceNodeName",
-            "baseName": "sourceNodeName",
+            "name": "icon",
+            "baseName": "icon",
             "type": "string",
             "format": ""
         }    ];

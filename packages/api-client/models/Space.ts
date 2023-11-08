@@ -13,29 +13,21 @@
 import { HttpFile } from '../http/http';
 
 /**
-* Space Info
+* space
 */
 export class Space {
     /**
-    * spaceId
+    * Space ID
     */
     'spaceId'?: string;
     /**
-    * old space name（before operation, fixed）
-    */
-    'oldSpaceName'?: string;
-    /**
-    * space name（operating at the time，fixed）
+    * Space name
     */
     'spaceName'?: string;
     /**
-    * old space logo（before operation, fixed）
+    * Space avatar
     */
-    'oldSpaceLogo'?: string;
-    /**
-    * space log（operating at the time，fixed）
-    */
-    'spaceLogo'?: string;
+    'logo'?: string;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -47,26 +39,14 @@ export class Space {
             "format": ""
         },
         {
-            "name": "oldSpaceName",
-            "baseName": "oldSpaceName",
-            "type": "string",
-            "format": ""
-        },
-        {
             "name": "spaceName",
             "baseName": "spaceName",
             "type": "string",
             "format": ""
         },
         {
-            "name": "oldSpaceLogo",
-            "baseName": "oldSpaceLogo",
-            "type": "string",
-            "format": ""
-        },
-        {
-            "name": "spaceLogo",
-            "baseName": "spaceLogo",
+            "name": "logo",
+            "baseName": "logo",
             "type": "string",
             "format": ""
         }    ];

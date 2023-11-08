@@ -21,12 +21,12 @@ export class InternalServiceNotificationInterfaceApiRequestFactory extends BaseA
      * send a message
      * @param notificationCreateRo 
      */
-    public async create7(notificationCreateRo: Array<NotificationCreateRo>, _options?: Configuration): Promise<RequestContext> {
+    public async create4(notificationCreateRo: Array<NotificationCreateRo>, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
 
         // verify required parameter 'notificationCreateRo' is not null or undefined
         if (notificationCreateRo === null || notificationCreateRo === undefined) {
-            throw new RequiredError("InternalServiceNotificationInterfaceApi", "create7", "notificationCreateRo");
+            throw new RequiredError("InternalServiceNotificationInterfaceApi", "create4", "notificationCreateRo");
         }
 
 
@@ -66,24 +66,24 @@ export class InternalServiceNotificationInterfaceApiResponseProcessor {
      * Unwraps the actual response sent by the server from the response context and deserializes the response content
      * to the expected objects
      *
-     * @params response Response returned by the server for a request to create7
+     * @params response Response returned by the server for a request to create4
      * @throws ApiException if the response code was not in [200, 299]
      */
-     public async create7WithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataVoid >> {
+     public async create4WithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataVoid >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
-        if (isCodeInRange("500", response.httpStatusCode)) {
-            const body: ResponseDataVoid = ObjectSerializer.deserialize(
-                ObjectSerializer.parse(await response.body.text(), contentType),
-                "ResponseDataVoid", ""
-            ) as ResponseDataVoid;
-            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
-        }
         if (isCodeInRange("200", response.httpStatusCode)) {
             const body: ResponseDataVoid = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "ResponseDataVoid", ""
             ) as ResponseDataVoid;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+        if (isCodeInRange("500", response.httpStatusCode)) {
+            const body: ResponseDataVoid = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ResponseDataVoid", ""
+            ) as ResponseDataVoid;
+            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
         }
 
         // Work around for missing responses in specification, e.g. for petstore.yaml
