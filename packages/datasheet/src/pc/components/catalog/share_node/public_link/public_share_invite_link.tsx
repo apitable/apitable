@@ -37,15 +37,14 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { Router } from 'pc/components/route_manager/router';
 import { automationReg, useCatalogTreeRequest, useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
 import { ShareQrCode } from '../share_qr_code';
-import styles from './style.module.less';
 // @ts-ignore
 import { WidgetEmbed } from 'enterprise';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export interface IPublicShareLinkProps {
   nodeId: string;
@@ -232,8 +231,8 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
       },
     ];
   }
-  console.log('automationId', automationId)
-  console.log('Permission', Permission)
+  console.log('automationId', automationId);
+  console.log('Permission', Permission);
 
   let value = '';
   if (shareSettings) {
