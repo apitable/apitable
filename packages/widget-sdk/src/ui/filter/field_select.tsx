@@ -50,7 +50,7 @@ const FieldIconMap = {
   [FieldType.CreatedBy]: UserAddOutlined,
   [FieldType.LastModifiedBy]: UserEditOutlined,
   [FieldType.Cascader]: CascadeOutlined,
-  [FieldType.Workdoc]: FileOutlined,
+  [FieldType.WorkDoc]: FileOutlined,
 };
 
 const transformOptions = (fields: IField[], theme: ITheme) => {

@@ -17,9 +17,9 @@
  */
 
 import classNames from 'classnames';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { CollaCommandName, FieldType, ICellValue, IField, Selectors } from '@apitable/core';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { CellAttachment } from 'pc/components/multi_grid/cell/cell_attachment';
 import { CellCreatedTime } from 'pc/components/multi_grid/cell/cell_created_time';
 import { CellDateTime } from 'pc/components/multi_grid/cell/cell_date_time';
@@ -27,6 +27,7 @@ import { CellLink } from 'pc/components/multi_grid/cell/cell_link';
 import { CellOptions } from 'pc/components/multi_grid/cell/cell_options';
 import { CellText } from 'pc/components/multi_grid/cell/cell_text';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { CellAutoNumber } from '../cell_auto_number';
 import { CellCheckbox } from '../cell_checkbox';
 import { CellCreatedBy } from '../cell_created_by';
@@ -35,8 +36,6 @@ import { CellLookUp } from '../cell_lookup';
 import { CellMember } from '../cell_member';
 import { CellRating } from '../cell_rating';
 import { CellWorkdoc } from '../cell_work_doc';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface ICellValueComponent {
   field: IField;
@@ -131,7 +130,7 @@ const CellValueBase: React.FC<React.PropsWithChildren<ICellValueComponent>> = (p
       return <CellCreatedBy {...cellProps} rowHeightLevel={rowHeightLevel} />;
     case FieldType.AutoNumber:
       return <CellAutoNumber {...cellProps} field={field} rowHeightLevel={rowHeightLevel} />;
-    case FieldType.Workdoc:
+    case FieldType.WorkDoc:
       return <CellWorkdoc {...cellProps} field={field} />;
     default:
       return <></>;

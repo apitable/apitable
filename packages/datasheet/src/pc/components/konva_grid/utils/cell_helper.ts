@@ -38,7 +38,7 @@ import {
   ISegment,
   isGif,
   IUnitIds,
-  IWorkdocValue,
+  IWorkDocValue,
   LinkField,
   LOOKUP_VALUE_FUNC_SET,
   LookUpField,
@@ -166,7 +166,7 @@ export class CellHelper extends KonvaDrawer {
       case FieldType.CreatedBy:
       case FieldType.LastModifiedBy:
       case FieldType.Cascader:
-      case FieldType.Workdoc: {
+      case FieldType.WorkDoc: {
         return this.setStyle({ fontSize: 13, fontWeight });
       }
       case FieldType.LookUp: {
@@ -205,7 +205,7 @@ export class CellHelper extends KonvaDrawer {
       case FieldType.Cascader: {
         return this.renderCellText(renderProps, ctx);
       }
-      case FieldType.Workdoc: {
+      case FieldType.WorkDoc: {
         return this.renderCellWorkdoc(renderProps, ctx);
       }
       case FieldType.DateTime:
@@ -306,7 +306,7 @@ export class CellHelper extends KonvaDrawer {
 
   private renderCellWorkdoc(renderProps: IRenderProps, ctx?: any) {
     const { x, y, cellValue, rowHeight, rowHeightLevel, columnWidth, isActive, callback } = renderProps;
-    if (!(cellValue as IWorkdocValue[])?.length || !Array.isArray(cellValue)) return DEFAULT_RENDER_DATA;
+    if (!(cellValue as IWorkDocValue[])?.length || !Array.isArray(cellValue)) return DEFAULT_RENDER_DATA;
     const isOperating = isActive;
     let currentX = GRID_CELL_VALUE_PADDING;
     let currentY = GRID_CELL_MULTI_PADDING_TOP;
@@ -318,7 +318,7 @@ export class CellHelper extends KonvaDrawer {
     let isOverflow = false;
 
     for (let index = 0; index < listCount; index++) {
-      const docItem = cellValue[index] as IWorkdocValue;
+      const docItem = cellValue[index] as IWorkDocValue;
       const color = colors.textBrandDefault;
       const background = colors.bgBrandLightDefault;
       const itemName = docItem.title || t(Strings.workdoc_unnamed);
@@ -1352,7 +1352,7 @@ export class CellHelper extends KonvaDrawer {
         case FieldType.Text:
         case FieldType.SingleText:
         case FieldType.Cascader:
-        case FieldType.Workdoc:
+        case FieldType.WorkDoc:
           realRenderProps.realField = realField;
           return this.renderCellText(realRenderProps, ctx);
         case FieldType.NotSupport:

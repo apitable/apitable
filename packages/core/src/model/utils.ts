@@ -176,7 +176,7 @@ const FieldTypeStringMap = {
   [FieldType.URL]: APIMetaFieldType.URL,
   [FieldType.Cascader]: APIMetaFieldType.Cascader,
   [FieldType.OneWayLink]: APIMetaFieldType.OneWayLink,
-  [FieldType.Workdoc]: APIMetaFieldType.Workdoc,
+  [FieldType.WorkDoc]: APIMetaFieldType.WorkDoc,
 };
 
 const ReversedFieldTypeStringMap = {
@@ -206,9 +206,8 @@ const ReversedFieldTypeStringMap = {
   [APIMetaFieldType.URL]: FieldType.URL,
   [APIMetaFieldType.Cascader]: FieldType.Cascader,
   [APIMetaFieldType.OneWayLink]: FieldType.OneWayLink,
-  [APIMetaFieldType.Workdoc]: FieldType.Workdoc,
+  [APIMetaFieldType.WorkDoc]: FieldType.WorkDoc,
 };
-
 
 export const getFieldTypeString = (fieldType: FieldType): APIMetaFieldType => {
   return FieldTypeStringMap[fieldType];

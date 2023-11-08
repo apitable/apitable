@@ -18,9 +18,9 @@
 
 import { useUnmount } from 'ahooks';
 import dayjs from 'dayjs';
-// @ts-ignore
-import { convertAlarmStructure } from 'enterprise';
 import { isEmpty, isEqual, noop, omit } from 'lodash';
+import { ContextName, ShortcutActionManager, ShortcutActionName, ShortcutContext } from 'modules/shared/shortcut_key';
+import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import * as React from 'react';
 import { ClipboardEvent, forwardRef, KeyboardEvent, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { shallowEqual } from 'react-redux';
@@ -53,12 +53,11 @@ import {
   t,
   ViewType,
 } from '@apitable/core';
-import { ContextName, ShortcutActionManager, ShortcutActionName, ShortcutContext } from 'modules/shared/shortcut_key';
-import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import { autoTaskScheduling } from 'pc/components/gantt_view/utils/auto_task_line_layout';
 import { useDispatch } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { IURLMeta, printableKey, recognizeURLAndSetTitle, stopPropagation } from 'pc/utils';
 import { EDITOR_CONTAINER } from 'pc/utils/constant';
 import { expandRecordIdNavigate } from '../expand_record';
@@ -81,9 +80,9 @@ import { OptionsEditor } from './options_editor';
 import { RatingEditor } from './rating_editor';
 import { TextEditor } from './text_editor';
 import { WorkdocEditor } from './workdoc_editor/workdoc_editor';
+// @ts-ignore
+import { convertAlarmStructure } from 'enterprise';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IEditorPosition {
   width: number;
@@ -133,7 +132,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
   const recordEditable = field ? Field.bindModel(field).recordEditable() : false;
   // workdoc cellValue not empty can expand and read
-  const isWorkdoc = field?.type === FieldType.Workdoc && !isEmpty(cellValue);
+  const isWorkdoc = field?.type === FieldType.WorkDoc && !isEmpty(cellValue);
   const isRecordExpanded = useAppSelector((state) => Boolean(state.pageParams.recordId));
   const previewModalVisible = useAppSelector((state) => state.space.previewModalVisible);
   const allowCopyDataToExternal = useAppSelector((state) => {
@@ -192,7 +191,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
 
   useEffect(() => {
     // workdoc field editing should disable datasheet shortcut
-    if (editing && field.type === FieldType.Workdoc) {
+    if (editing && field.type === FieldType.WorkDoc) {
       return;
     }
     ShortcutContext.bind(ContextName.isEditing, () => editing);
@@ -861,7 +860,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
             recordId={record.id}
           />
         );
-      case FieldType.Workdoc:
+      case FieldType.WorkDoc:
         return (
           <WorkdocEditor
             ref={editorRef}

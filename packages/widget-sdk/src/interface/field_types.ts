@@ -1038,6 +1038,6 @@ export enum NumFieldType {
   LastModifiedBy = 24,
   Cascader = 25,
   OneWayLink = 26,
-  Workdoc = 27,
+  WorkDoc = 27,
   DeniedField = 999, // no permission column
 }

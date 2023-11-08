@@ -50,12 +50,11 @@ import { ExpandNumber } from 'pc/components/expand_record/expand_number';
 import { ExpandSelect } from 'pc/components/expand_record/expand_select';
 import { FormWorkdocEditor } from 'pc/components/form_container/form_workdoc_editor';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { FormContext } from '../form_context';
 import { ComputedFieldWrapper } from './computed_field_wrapper';
 import { OptionFieldEditor, MemberFieldEditor } from './form_editors';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface ICommonProps {
   style: React.CSSProperties;
@@ -298,7 +297,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
           <ExpandFormula {...commonProps} recordId={recordId} />
         </ComputedFieldWrapper>
       );
-    case FieldType.Workdoc:
+    case FieldType.WorkDoc:
       if (isMobile) {
         return <ComputedFieldWrapper className={styles.formWorkdoc} title={t(Strings.tooltip_edit_form_workdoc_field)} />;
       }

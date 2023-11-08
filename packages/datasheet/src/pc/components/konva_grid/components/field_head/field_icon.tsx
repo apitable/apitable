@@ -138,7 +138,7 @@ export const FieldIcon: FC<React.PropsWithChildren<IFieldIconProps>> = memo((pro
       return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnLastmodifiedbyFilledPath} fill={fill} />;
     case FieldType.Cascader:
       return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnCascadeOutlinedPath} fill={fill} />;
-    case FieldType.Workdoc:
+    case FieldType.WorkDoc:
       return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnWorkdocPath} fill={fill} />;
     default:
       return null;

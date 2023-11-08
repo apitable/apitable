@@ -151,7 +151,7 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
         const _recordData = {};
         for (const [fieldId, cellValue] of Object.entries(newRecord.data)) {
           // ignore workdoc field cellValue
-          if (!fieldMap[fieldId] || (fieldMap[fieldId]!.type === FieldType.Workdoc && !ignoreFieldLimit)) {
+          if (!fieldMap[fieldId] || (fieldMap[fieldId]!.type === FieldType.WorkDoc && !ignoreFieldLimit)) {
             // Compatible processing for data exceptions, some tables in the template center have dirty data
             continue;
           }
