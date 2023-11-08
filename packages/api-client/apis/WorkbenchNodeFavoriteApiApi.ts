@@ -21,12 +21,12 @@ export class WorkbenchNodeFavoriteApiApiRequestFactory extends BaseAPIRequestFac
      * Get favorite nodes
      * @param xSpaceId space id
      */
-    public async list7(xSpaceId: string, _options?: Configuration): Promise<RequestContext> {
+    public async list5(xSpaceId: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
 
         // verify required parameter 'xSpaceId' is not null or undefined
         if (xSpaceId === null || xSpaceId === undefined) {
-            throw new RequiredError("WorkbenchNodeFavoriteApiApi", "list7", "xSpaceId");
+            throw new RequiredError("WorkbenchNodeFavoriteApiApi", "list5", "xSpaceId");
         }
 
 
@@ -155,24 +155,24 @@ export class WorkbenchNodeFavoriteApiApiResponseProcessor {
      * Unwraps the actual response sent by the server from the response context and deserializes the response content
      * to the expected objects
      *
-     * @params response Response returned by the server for a request to list7
+     * @params response Response returned by the server for a request to list5
      * @throws ApiException if the response code was not in [200, 299]
      */
-     public async list7WithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataListFavoriteNodeInfo >> {
+     public async list5WithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataListFavoriteNodeInfo >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
-        if (isCodeInRange("500", response.httpStatusCode)) {
-            const body: ResponseDataVoid = ObjectSerializer.deserialize(
-                ObjectSerializer.parse(await response.body.text(), contentType),
-                "ResponseDataVoid", ""
-            ) as ResponseDataVoid;
-            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
-        }
         if (isCodeInRange("200", response.httpStatusCode)) {
             const body: ResponseDataListFavoriteNodeInfo = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "ResponseDataListFavoriteNodeInfo", ""
             ) as ResponseDataListFavoriteNodeInfo;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+        if (isCodeInRange("500", response.httpStatusCode)) {
+            const body: ResponseDataVoid = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ResponseDataVoid", ""
+            ) as ResponseDataVoid;
+            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
         }
 
         // Work around for missing responses in specification, e.g. for petstore.yaml
@@ -196,19 +196,19 @@ export class WorkbenchNodeFavoriteApiApiResponseProcessor {
      */
      public async move1WithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataVoid >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
-        if (isCodeInRange("500", response.httpStatusCode)) {
-            const body: ResponseDataVoid = ObjectSerializer.deserialize(
-                ObjectSerializer.parse(await response.body.text(), contentType),
-                "ResponseDataVoid", ""
-            ) as ResponseDataVoid;
-            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
-        }
         if (isCodeInRange("200", response.httpStatusCode)) {
             const body: ResponseDataVoid = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "ResponseDataVoid", ""
             ) as ResponseDataVoid;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+        if (isCodeInRange("500", response.httpStatusCode)) {
+            const body: ResponseDataVoid = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ResponseDataVoid", ""
+            ) as ResponseDataVoid;
+            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
         }
 
         // Work around for missing responses in specification, e.g. for petstore.yaml
@@ -232,19 +232,19 @@ export class WorkbenchNodeFavoriteApiApiResponseProcessor {
      */
      public async updateStatusWithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataVoid >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
-        if (isCodeInRange("500", response.httpStatusCode)) {
-            const body: ResponseDataVoid = ObjectSerializer.deserialize(
-                ObjectSerializer.parse(await response.body.text(), contentType),
-                "ResponseDataVoid", ""
-            ) as ResponseDataVoid;
-            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
-        }
         if (isCodeInRange("200", response.httpStatusCode)) {
             const body: ResponseDataVoid = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "ResponseDataVoid", ""
             ) as ResponseDataVoid;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+        if (isCodeInRange("500", response.httpStatusCode)) {
+            const body: ResponseDataVoid = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ResponseDataVoid", ""
+            ) as ResponseDataVoid;
+            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
         }
 
         // Work around for missing responses in specification, e.g. for petstore.yaml

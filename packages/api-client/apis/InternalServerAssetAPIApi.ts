@@ -144,19 +144,19 @@ export class InternalServerAssetAPIApiResponseProcessor {
      */
      public async getWithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataAssetUploadResult >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
-        if (isCodeInRange("500", response.httpStatusCode)) {
-            const body: ResponseDataVoid = ObjectSerializer.deserialize(
-                ObjectSerializer.parse(await response.body.text(), contentType),
-                "ResponseDataVoid", ""
-            ) as ResponseDataVoid;
-            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
-        }
         if (isCodeInRange("200", response.httpStatusCode)) {
             const body: ResponseDataAssetUploadResult = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "ResponseDataAssetUploadResult", ""
             ) as ResponseDataAssetUploadResult;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+        if (isCodeInRange("500", response.httpStatusCode)) {
+            const body: ResponseDataVoid = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ResponseDataVoid", ""
+            ) as ResponseDataVoid;
+            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
         }
 
         // Work around for missing responses in specification, e.g. for petstore.yaml
@@ -180,19 +180,19 @@ export class InternalServerAssetAPIApiResponseProcessor {
      */
      public async getSignatureUrls1WithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataListAssetUrlSignatureVo >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
-        if (isCodeInRange("500", response.httpStatusCode)) {
-            const body: ResponseDataVoid = ObjectSerializer.deserialize(
-                ObjectSerializer.parse(await response.body.text(), contentType),
-                "ResponseDataVoid", ""
-            ) as ResponseDataVoid;
-            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
-        }
         if (isCodeInRange("200", response.httpStatusCode)) {
             const body: ResponseDataListAssetUrlSignatureVo = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "ResponseDataListAssetUrlSignatureVo", ""
             ) as ResponseDataListAssetUrlSignatureVo;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+        if (isCodeInRange("500", response.httpStatusCode)) {
+            const body: ResponseDataVoid = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ResponseDataVoid", ""
+            ) as ResponseDataVoid;
+            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
         }
 
         // Work around for missing responses in specification, e.g. for petstore.yaml
@@ -216,19 +216,19 @@ export class InternalServerAssetAPIApiResponseProcessor {
      */
      public async getSpaceCapacity1WithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataListAssetUploadCertificateVO >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
-        if (isCodeInRange("500", response.httpStatusCode)) {
-            const body: ResponseDataVoid = ObjectSerializer.deserialize(
-                ObjectSerializer.parse(await response.body.text(), contentType),
-                "ResponseDataVoid", ""
-            ) as ResponseDataVoid;
-            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
-        }
         if (isCodeInRange("200", response.httpStatusCode)) {
             const body: ResponseDataListAssetUploadCertificateVO = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "ResponseDataListAssetUploadCertificateVO", ""
             ) as ResponseDataListAssetUploadCertificateVO;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+        if (isCodeInRange("500", response.httpStatusCode)) {
+            const body: ResponseDataVoid = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ResponseDataVoid", ""
+            ) as ResponseDataVoid;
+            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
         }
 
         // Work around for missing responses in specification, e.g. for petstore.yaml

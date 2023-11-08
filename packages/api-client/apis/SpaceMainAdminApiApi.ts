@@ -114,19 +114,19 @@ export class SpaceMainAdminApiApiResponseProcessor {
      */
      public async getMainAdminInfoWithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataMainAdminInfoVo >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
-        if (isCodeInRange("500", response.httpStatusCode)) {
-            const body: ResponseDataVoid = ObjectSerializer.deserialize(
-                ObjectSerializer.parse(await response.body.text(), contentType),
-                "ResponseDataVoid", ""
-            ) as ResponseDataVoid;
-            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
-        }
         if (isCodeInRange("200", response.httpStatusCode)) {
             const body: ResponseDataMainAdminInfoVo = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "ResponseDataMainAdminInfoVo", ""
             ) as ResponseDataMainAdminInfoVo;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+        if (isCodeInRange("500", response.httpStatusCode)) {
+            const body: ResponseDataVoid = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ResponseDataVoid", ""
+            ) as ResponseDataVoid;
+            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
         }
 
         // Work around for missing responses in specification, e.g. for petstore.yaml
@@ -150,19 +150,19 @@ export class SpaceMainAdminApiApiResponseProcessor {
      */
      public async replaceWithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataVoid >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
-        if (isCodeInRange("500", response.httpStatusCode)) {
-            const body: ResponseDataVoid = ObjectSerializer.deserialize(
-                ObjectSerializer.parse(await response.body.text(), contentType),
-                "ResponseDataVoid", ""
-            ) as ResponseDataVoid;
-            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
-        }
         if (isCodeInRange("200", response.httpStatusCode)) {
             const body: ResponseDataVoid = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "ResponseDataVoid", ""
             ) as ResponseDataVoid;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+        if (isCodeInRange("500", response.httpStatusCode)) {
+            const body: ResponseDataVoid = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ResponseDataVoid", ""
+            ) as ResponseDataVoid;
+            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
         }
 
         // Work around for missing responses in specification, e.g. for petstore.yaml

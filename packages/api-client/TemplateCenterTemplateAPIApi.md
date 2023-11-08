@@ -4,8 +4,8 @@ All URIs are relative to *http://backend/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**create3**](TemplateCenterTemplateAPIApi.md#create3) | **POST** /template/create | Create Template
-[**delete14**](TemplateCenterTemplateAPIApi.md#delete14) | **DELETE** /template/delete/{templateId} | Delete Template
+[**create**](TemplateCenterTemplateAPIApi.md#create) | **POST** /template/create | Create Template
+[**delete5**](TemplateCenterTemplateAPIApi.md#delete5) | **DELETE** /template/delete/{templateId} | Delete Template
 [**directory**](TemplateCenterTemplateAPIApi.md#directory) | **GET** /template/directory | Get Template Directory Info
 [**getCategoryContent**](TemplateCenterTemplateAPIApi.md#getCategoryContent) | **GET** /template/categories/{categoryCode} | Get The Template Category Content
 [**getCategoryList**](TemplateCenterTemplateAPIApi.md#getCategoryList) | **GET** /template/categoryList | Get Template Category List
@@ -16,8 +16,8 @@ Method | HTTP request | Description
 [**validate**](TemplateCenterTemplateAPIApi.md#validate) | **GET** /template/validate | Check if the template name already exists
 
 
-# **create3**
-> ResponseDataString create3(createTemplateRo)
+# **create**
+> ResponseDataString create(createTemplateRo)
 
 Created nodes (including child descendant nodes) have administrative rights and are not associated with data tables other than nodes.
 
@@ -31,7 +31,7 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .TemplateCenterTemplateAPIApi(configuration);
 
-let body:.TemplateCenterTemplateAPIApiCreate3Request = {
+let body:.TemplateCenterTemplateAPIApiCreateRequest = {
   // CreateTemplateRo
   createTemplateRo: {
     name: "This is a template",
@@ -40,7 +40,7 @@ let body:.TemplateCenterTemplateAPIApiCreate3Request = {
   },
 };
 
-apiInstance.create3(body).then((data:any) => {
+apiInstance.create(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -70,13 +70,13 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **delete14**
-> ResponseDataVoid delete14()
+# **delete5**
+> ResponseDataVoid delete5()
 
 Deletion objects: main administrator, sub-admins with template permissions, creator of the template
 
@@ -90,12 +90,12 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .TemplateCenterTemplateAPIApi(configuration);
 
-let body:.TemplateCenterTemplateAPIApiDelete14Request = {
+let body:.TemplateCenterTemplateAPIApiDelete5Request = {
   // string | Template ID
   templateId: "tplHTbkg7qbNJ",
 };
 
-apiInstance.delete14(body).then((data:any) => {
+apiInstance.delete5(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -125,8 +125,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -185,8 +185,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -239,8 +239,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -287,8 +287,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -344,8 +344,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -401,8 +401,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -462,8 +462,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -510,8 +510,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -568,8 +568,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 

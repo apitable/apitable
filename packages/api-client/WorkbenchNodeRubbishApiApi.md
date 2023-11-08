@@ -4,14 +4,14 @@ All URIs are relative to *http://backend/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**delete6**](WorkbenchNodeRubbishApiApi.md#delete6) | **POST** /node/rubbish/delete/{nodeId} | Delete node in rubbish
-[**delete7**](WorkbenchNodeRubbishApiApi.md#delete7) | **DELETE** /node/rubbish/delete/{nodeId} | Delete node in rubbish
-[**list5**](WorkbenchNodeRubbishApiApi.md#list5) | **GET** /node/rubbish/list | Get node in rubbish
+[**_delete**](WorkbenchNodeRubbishApiApi.md#_delete) | **POST** /node/rubbish/delete/{nodeId} | Delete node in rubbish
+[**delete1**](WorkbenchNodeRubbishApiApi.md#delete1) | **DELETE** /node/rubbish/delete/{nodeId} | Delete node in rubbish
+[**list3**](WorkbenchNodeRubbishApiApi.md#list3) | **GET** /node/rubbish/list | Get node in rubbish
 [**recover**](WorkbenchNodeRubbishApiApi.md#recover) | **POST** /node/rubbish/recover | Recover node
 
 
-# **delete6**
-> ResponseDataVoid delete6()
+# **_delete**
+> ResponseDataVoid _delete()
 
 
 ### Example
@@ -24,14 +24,14 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .WorkbenchNodeRubbishApiApi(configuration);
 
-let body:.WorkbenchNodeRubbishApiApiDelete6Request = {
+let body:.WorkbenchNodeRubbishApiApiDeleteRequest = {
   // string | node id
   nodeId: "fod8mXUeiXyVo",
   // string | space id
   xSpaceId: "spczJrh2i3tLW",
 };
 
-apiInstance.delete6(body).then((data:any) => {
+apiInstance._delete(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -62,13 +62,13 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **delete7**
-> ResponseDataVoid delete7()
+# **delete1**
+> ResponseDataVoid delete1()
 
 
 ### Example
@@ -81,14 +81,14 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .WorkbenchNodeRubbishApiApi(configuration);
 
-let body:.WorkbenchNodeRubbishApiApiDelete7Request = {
+let body:.WorkbenchNodeRubbishApiApiDelete1Request = {
   // string | node id
   nodeId: "fod8mXUeiXyVo",
   // string | space id
   xSpaceId: "spczJrh2i3tLW",
 };
 
-apiInstance.delete7(body).then((data:any) => {
+apiInstance.delete1(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -119,13 +119,13 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **list5**
-> ResponseDataListRubbishNodeVo list5()
+# **list3**
+> ResponseDataListRubbishNodeVo list3()
 
 If the last node id is passed in, the service status code 422 is returned.It means that the node is no longer in the recovery compartment, the positioning fails, and the last node can be requested again.
 
@@ -139,7 +139,7 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .WorkbenchNodeRubbishApiApi(configuration);
 
-let body:.WorkbenchNodeRubbishApiApiList5Request = {
+let body:.WorkbenchNodeRubbishApiApiList3Request = {
   // string | space id
   xSpaceId: "spczJrh2i3tLW",
   // number | expected load quantity（May be because the total number or permissions are not enough） (optional)
@@ -150,7 +150,7 @@ let body:.WorkbenchNodeRubbishApiApiList5Request = {
   lastNodeId: "dstM5qG7",
 };
 
-apiInstance.list5(body).then((data:any) => {
+apiInstance.list3(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -183,8 +183,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -243,8 +243,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 

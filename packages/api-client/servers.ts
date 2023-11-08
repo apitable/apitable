@@ -50,6 +50,6 @@ export class ServerConfiguration<T extends { [key: string]: string }> implements
     }
 }
 
-export const server1 = new ServerConfiguration<{  }>("http://backend/api/v1", {  })
+export const server1 = new ServerConfiguration<{  }>("http://127.0.0.1:8081/api/v1", {  })
 
 export const servers = [server1];

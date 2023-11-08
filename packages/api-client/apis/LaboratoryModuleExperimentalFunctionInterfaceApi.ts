@@ -52,19 +52,19 @@ export class LaboratoryModuleExperimentalFunctionInterfaceApiResponseProcessor {
      */
      public async showAvailableLabsFeaturesWithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataUserSpaceLabsFeatureVo >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
-        if (isCodeInRange("500", response.httpStatusCode)) {
-            const body: ResponseDataVoid = ObjectSerializer.deserialize(
-                ObjectSerializer.parse(await response.body.text(), contentType),
-                "ResponseDataVoid", ""
-            ) as ResponseDataVoid;
-            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
-        }
         if (isCodeInRange("200", response.httpStatusCode)) {
             const body: ResponseDataUserSpaceLabsFeatureVo = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "ResponseDataUserSpaceLabsFeatureVo", ""
             ) as ResponseDataUserSpaceLabsFeatureVo;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+        if (isCodeInRange("500", response.httpStatusCode)) {
+            const body: ResponseDataVoid = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ResponseDataVoid", ""
+            ) as ResponseDataVoid;
+            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
         }
 
         // Work around for missing responses in specification, e.g. for petstore.yaml

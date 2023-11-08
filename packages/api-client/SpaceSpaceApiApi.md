@@ -6,19 +6,19 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**cancel**](SpaceSpaceApiApi.md#cancel) | **POST** /space/cancel/{spaceId} | Undo delete space
 [**capacity**](SpaceSpaceApiApi.md#capacity) | **GET** /space/capacity | Get space capacity info
-[**create4**](SpaceSpaceApiApi.md#create4) | **POST** /space/create | Create Space
+[**create1**](SpaceSpaceApiApi.md#create1) | **POST** /space/create | Create Space
 [**del**](SpaceSpaceApiApi.md#del) | **DELETE** /space/del | Delete space immediately
-[**delete16**](SpaceSpaceApiApi.md#delete16) | **DELETE** /space/delete/{spaceId} | Delete space
+[**delete7**](SpaceSpaceApiApi.md#delete7) | **DELETE** /space/delete/{spaceId} | Delete space
 [**feature**](SpaceSpaceApiApi.md#feature) | **GET** /space/features | Get space feature
 [**getCreditUsages**](SpaceSpaceApiApi.md#getCreditUsages) | **GET** /space/{spaceId}/credit/chart | Gets message credit chart data for the space
 [**getSpaceResource**](SpaceSpaceApiApi.md#getSpaceResource) | **GET** /space/resource | Get user space resource
-[**info1**](SpaceSpaceApiApi.md#info1) | **GET** /space/info/{spaceId} | Get space info
-[**list2**](SpaceSpaceApiApi.md#list2) | **GET** /space/list | Get space list
+[**info**](SpaceSpaceApiApi.md#info) | **GET** /space/info/{spaceId} | Get space info
+[**list**](SpaceSpaceApiApi.md#list) | **GET** /space/list | Get space list
 [**quit**](SpaceSpaceApiApi.md#quit) | **POST** /space/quit/{spaceId} | Quit space
 [**remove**](SpaceSpaceApiApi.md#remove) | **POST** /space/remove/{spaceId} | Remove hot point in space
 [**subscribe**](SpaceSpaceApiApi.md#subscribe) | **GET** /space/subscribe/{spaceId} | Gets subscription information for the space
 [**switchSpace**](SpaceSpaceApiApi.md#switchSpace) | **POST** /space/{spaceId}/switch | switch space
-[**update3**](SpaceSpaceApiApi.md#update3) | **POST** /space/update | Update space
+[**update1**](SpaceSpaceApiApi.md#update1) | **POST** /space/update | Update space
 [**updateMemberSetting**](SpaceSpaceApiApi.md#updateMemberSetting) | **POST** /space/updateMemberSetting | Update member setting
 [**updateSecuritySetting**](SpaceSpaceApiApi.md#updateSecuritySetting) | **POST** /space/updateSecuritySetting | Update security setting
 [**updateWorkbenchSetting**](SpaceSpaceApiApi.md#updateWorkbenchSetting) | **POST** /space/updateWorkbenchSetting | Update workbench setting
@@ -73,8 +73,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -127,13 +127,13 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **create4**
-> ResponseDataCreateSpaceResultVo create4(spaceOpRo)
+# **create1**
+> ResponseDataCreateSpaceResultVo create1(spaceOpRo)
 
 
 ### Example
@@ -146,14 +146,14 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .SpaceSpaceApiApi(configuration);
 
-let body:.SpaceSpaceApiApiCreate4Request = {
+let body:.SpaceSpaceApiApiCreate1Request = {
   // SpaceOpRo
   spaceOpRo: {
     name: "This is a space",
   },
 };
 
-apiInstance.create4(body).then((data:any) => {
+apiInstance.create1(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -183,8 +183,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -231,13 +231,13 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **delete16**
-> ResponseDataVoid delete16(spaceDeleteRo, )
+# **delete7**
+> ResponseDataVoid delete7(spaceDeleteRo, )
 
 
 ### Example
@@ -250,7 +250,7 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .SpaceSpaceApiApi(configuration);
 
-let body:.SpaceSpaceApiApiDelete16Request = {
+let body:.SpaceSpaceApiApiDelete7Request = {
   // SpaceDeleteRo
   spaceDeleteRo: {
     type: "sms_code",
@@ -260,7 +260,7 @@ let body:.SpaceSpaceApiApiDelete16Request = {
   spaceId: "spc8mXUeiXyVo",
 };
 
-apiInstance.delete16(body).then((data:any) => {
+apiInstance.delete7(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -291,8 +291,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -345,8 +345,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -402,8 +402,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -456,13 +456,13 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **info1**
-> ResponseDataSpaceInfoVO info1()
+# **info**
+> ResponseDataSpaceInfoVO info()
 
 
 ### Example
@@ -475,12 +475,12 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .SpaceSpaceApiApi(configuration);
 
-let body:.SpaceSpaceApiApiInfo1Request = {
+let body:.SpaceSpaceApiApiInfoRequest = {
   // string | space id
   spaceId: "spc8mXUeiXyVo",
 };
 
-apiInstance.info1(body).then((data:any) => {
+apiInstance.info(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -510,13 +510,13 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **list2**
-> ResponseDataListSpaceVO list2()
+# **list**
+> ResponseDataListSpaceVO list()
 
 
 ### Example
@@ -529,12 +529,12 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .SpaceSpaceApiApi(configuration);
 
-let body:.SpaceSpaceApiApiList2Request = {
+let body:.SpaceSpaceApiApiListRequest = {
   // boolean | Whether to query only the managed space list. By default, not include (optional)
   onlyManageable: true,
 };
 
-apiInstance.list2(body).then((data:any) => {
+apiInstance.list(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -564,8 +564,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -618,8 +618,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -673,8 +673,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -727,8 +727,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -781,13 +781,13 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **update3**
-> ResponseDataVoid update3(spaceUpdateOpRo, )
+# **update1**
+> ResponseDataVoid update1(spaceUpdateOpRo, )
 
 at least one item is name and logo
 
@@ -801,7 +801,7 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .SpaceSpaceApiApi(configuration);
 
-let body:.SpaceSpaceApiApiUpdate3Request = {
+let body:.SpaceSpaceApiApiUpdate1Request = {
   // SpaceUpdateOpRo
   spaceUpdateOpRo: {
     name: "This is a new space name",
@@ -811,7 +811,7 @@ let body:.SpaceSpaceApiApiUpdate3Request = {
   xSpaceId: "spcyQkKp9XJEl",
 };
 
-apiInstance.update3(body).then((data:any) => {
+apiInstance.update1(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -842,8 +842,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -903,8 +903,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -971,8 +971,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -1031,8 +1031,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 

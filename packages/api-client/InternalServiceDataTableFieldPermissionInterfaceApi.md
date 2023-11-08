@@ -25,8 +25,8 @@ const configuration = .createConfiguration();
 const apiInstance = new .InternalServiceDataTableFieldPermissionInterfaceApi(configuration);
 
 let body:.InternalServiceDataTableFieldPermissionInterfaceApiDisableRolesRequest = {
-  // ModelString | table id
-  dstId: dstGxznHFXf9pvF1LZ,
+  // string | table id
+  dstId: "dstGxznHFXf9pvF1LZ",
   // string | list of field ids
   fieldIds: "fldB7uWmwYrQf,fldB7uWmwYrQf",
 };
@@ -41,7 +41,7 @@ apiInstance.disableRoles(body).then((data:any) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **dstId** | **ModelString** | table id | defaults to undefined
+ **dstId** | [**string**] | table id | defaults to undefined
  **fieldIds** | [**string**] | list of field ids | defaults to undefined
 
 
@@ -62,8 +62,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -122,8 +122,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -180,8 +180,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
