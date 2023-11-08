@@ -22,15 +22,12 @@
     "node": "16.15.0"
   },
   "dependencies": {
-
     "@apitable/ai": "*",
     "@apitable/api-client": "*",
-
     "@apitable/components": "*",
     "@apitable/core": "*",
     "@apitable/i18n-lang": "*",
     "@apitable/icons": "*",
-    "@apitable/ai": "*",
     "@apitable/react-flow": "^9.6.12",
     "@apitable/widget-sdk": "*",
     "@floating-ui/react": "0.24.5",
@@ -140,6 +137,7 @@
     "path-browserify": "^1.0.1",
     "pingpp-js": "^2.2.24",
     "polyfill-object.fromentries": "^1.0.1",
+    "portfinder": "^1.0.32",
     "posthog-js": "^1.57.2",
     "prettier-plugin-tailwindcss": "^0.4.1",
     "prismjs": "^1.29.0",
