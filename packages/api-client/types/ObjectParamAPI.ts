@@ -363,7 +363,7 @@ export interface AccountCenterModuleUserManagementInterfaceApiApplyForClosingReq
 
 export interface AccountCenterModuleUserManagementInterfaceApiBindEmailRequest {
     /**
-     * 
+     *
      * @type EmailCodeValidateRo
      * @memberof AccountCenterModuleUserManagementInterfaceApibindEmail
      */
@@ -381,7 +381,7 @@ export interface AccountCenterModuleUserManagementInterfaceApiDelActiveSpaceCach
 
 export interface AccountCenterModuleUserManagementInterfaceApiGetEnabledLabFeaturesRequest {
     /**
-     * 
+     *
      * @type string
      * @memberof AccountCenterModuleUserManagementInterfaceApigetEnabledLabFeatures
      */
@@ -390,7 +390,7 @@ export interface AccountCenterModuleUserManagementInterfaceApiGetEnabledLabFeatu
 
 export interface AccountCenterModuleUserManagementInterfaceApiLinkInviteEmailRequest {
     /**
-     * 
+     *
      * @type UserLinkEmailRo
      * @memberof AccountCenterModuleUserManagementInterfaceApilinkInviteEmail
      */
@@ -402,7 +402,7 @@ export interface AccountCenterModuleUserManagementInterfaceApiResetPasswordReque
 
 export interface AccountCenterModuleUserManagementInterfaceApiRetrievePwdRequest {
     /**
-     * 
+     *
      * @type RetrievePwdOpRo
      * @memberof AccountCenterModuleUserManagementInterfaceApiretrievePwd
      */
@@ -411,7 +411,7 @@ export interface AccountCenterModuleUserManagementInterfaceApiRetrievePwdRequest
 
 export interface AccountCenterModuleUserManagementInterfaceApiUnbindEmailRequest {
     /**
-     * 
+     *
      * @type CodeValidateRo
      * @memberof AccountCenterModuleUserManagementInterfaceApiunbindEmail
      */
@@ -420,7 +420,7 @@ export interface AccountCenterModuleUserManagementInterfaceApiUnbindEmailRequest
 
 export interface AccountCenterModuleUserManagementInterfaceApiUnbindPhoneRequest {
     /**
-     * 
+     *
      * @type CodeValidateRo
      * @memberof AccountCenterModuleUserManagementInterfaceApiunbindPhone
      */
@@ -429,7 +429,7 @@ export interface AccountCenterModuleUserManagementInterfaceApiUnbindPhoneRequest
 
 export interface AccountCenterModuleUserManagementInterfaceApiUpdateRequest {
     /**
-     * 
+     *
      * @type UserOpRo
      * @memberof AccountCenterModuleUserManagementInterfaceApiupdate
      */
@@ -438,7 +438,7 @@ export interface AccountCenterModuleUserManagementInterfaceApiUpdateRequest {
 
 export interface AccountCenterModuleUserManagementInterfaceApiUpdateLabsFeatureStatusRequest {
     /**
-     * 
+     *
      * @type UserLabsFeatureRo
      * @memberof AccountCenterModuleUserManagementInterfaceApiupdateLabsFeatureStatus
      */
@@ -447,7 +447,7 @@ export interface AccountCenterModuleUserManagementInterfaceApiUpdateLabsFeatureS
 
 export interface AccountCenterModuleUserManagementInterfaceApiUpdatePwdRequest {
     /**
-     * 
+     *
      * @type UpdatePwdOpRo
      * @memberof AccountCenterModuleUserManagementInterfaceApiupdatePwd
      */
@@ -480,7 +480,7 @@ export interface AccountCenterModuleUserManagementInterfaceApiValidBindEmailRequ
 
 export interface AccountCenterModuleUserManagementInterfaceApiValidSameEmailRequest {
     /**
-     * 
+     *
      * @type CheckUserEmailRo
      * @memberof AccountCenterModuleUserManagementInterfaceApivalidSameEmail
      */
@@ -489,7 +489,7 @@ export interface AccountCenterModuleUserManagementInterfaceApiValidSameEmailRequ
 
 export interface AccountCenterModuleUserManagementInterfaceApiVerifyPhoneRequest {
     /**
-     * 
+     *
      * @type SmsCodeValidateRo
      * @memberof AccountCenterModuleUserManagementInterfaceApiverifyPhone
      */
@@ -822,7 +822,7 @@ import { AuthorizationRelatedInterfaceApiRequestFactory, AuthorizationRelatedInt
 
 export interface AuthorizationRelatedInterfaceApiLoginRequest {
     /**
-     * 
+     *
      * @type LoginRo
      * @memberof AuthorizationRelatedInterfaceApilogin
      */
@@ -837,7 +837,7 @@ export interface AuthorizationRelatedInterfaceApiLogout1Request {
 
 export interface AuthorizationRelatedInterfaceApiRegisterRequest {
     /**
-     * 
+     *
      * @type RegisterRO
      * @memberof AuthorizationRelatedInterfaceApiregister
      */
@@ -930,7 +930,7 @@ import { AutomationApiRequestFactory, AutomationApiResponseProcessor} from "../a
 
 export interface AutomationApiCreateActionRequest {
     /**
-     * 
+     *
      * @type CreateActionRO
      * @memberof AutomationApicreateAction
      */
@@ -951,7 +951,7 @@ export interface AutomationApiCreateActionRequest {
 
 export interface AutomationApiCreateTriggerRequest {
     /**
-     * 
+     *
      * @type CreateTriggerRO
      * @memberof AutomationApicreateTrigger
      */
@@ -1098,7 +1098,7 @@ export interface AutomationApiGetRunHistoryRequest {
 
 export interface AutomationApiModifyRobotRequest {
     /**
-     * 
+     *
      * @type UpdateRobotRO
      * @memberof AutomationApimodifyRobot
      */
@@ -1125,7 +1125,7 @@ export interface AutomationApiModifyRobotRequest {
 
 export interface AutomationApiUpdateActionRequest {
     /**
-     * 
+     *
      * @type UpdateActionRO
      * @memberof AutomationApiupdateAction
      */
@@ -1152,7 +1152,7 @@ export interface AutomationApiUpdateActionRequest {
 
 export interface AutomationApiUpdateTriggerRequest {
     /**
-     * 
+     *
      * @type UpdateTriggerRO
      * @memberof AutomationApiupdateTrigger
      */
@@ -1265,7 +1265,7 @@ export class ObjectAutomationApi {
     }
 
     /**
-     * Get node automation detail. 
+     * Get node automation detail.
      * @param param the request object
      */
     public getNodeRobotWithHttpInfo(param: AutomationApiGetNodeRobotRequest, options?: Configuration): Promise<HttpInfo<ResponseDataAutomationVO>> {
@@ -1273,7 +1273,7 @@ export class ObjectAutomationApi {
     }
 
     /**
-     * Get node automation detail. 
+     * Get node automation detail.
      * @param param the request object
      */
     public getNodeRobot(param: AutomationApiGetNodeRobotRequest, options?: Configuration): Promise<ResponseDataAutomationVO> {
@@ -1367,7 +1367,7 @@ import { BasicModuleAccessoryCallbackInterfaceApiRequestFactory, BasicModuleAcce
 
 export interface BasicModuleAccessoryCallbackInterfaceApiNotifyCallbackRequest {
     /**
-     * 
+     *
      * @type AssetUploadNotifyRO
      * @memberof BasicModuleAccessoryCallbackInterfaceApinotifyCallback
      */
@@ -1376,7 +1376,7 @@ export interface BasicModuleAccessoryCallbackInterfaceApiNotifyCallbackRequest {
 
 export interface BasicModuleAccessoryCallbackInterfaceApiWidgetCallbackRequest {
     /**
-     * 
+     *
      * @type WidgetUploadNotifyRO
      * @memberof BasicModuleAccessoryCallbackInterfaceApiwidgetCallback
      */
@@ -1431,7 +1431,7 @@ import { BasicModuleAttachmentInterfaceApiRequestFactory, BasicModuleAttachmentI
 
 export interface BasicModuleAttachmentInterfaceApiCiteRequest {
     /**
-     * 
+     *
      * @type SpaceAssetOpRo
      * @memberof BasicModuleAttachmentInterfaceApicite
      */
@@ -1440,7 +1440,7 @@ export interface BasicModuleAttachmentInterfaceApiCiteRequest {
 
 export interface BasicModuleAttachmentInterfaceApiReadReviewsRequest {
     /**
-     * 
+     *
      * @type Page
      * @memberof BasicModuleAttachmentInterfaceApireadReviews
      */
@@ -1455,7 +1455,7 @@ export interface BasicModuleAttachmentInterfaceApiReadReviewsRequest {
 
 export interface BasicModuleAttachmentInterfaceApiSubmitAuditResultRequest {
     /**
-     * 
+     *
      * @type AssetsAuditRo
      * @memberof BasicModuleAttachmentInterfaceApisubmitAuditResult
      */
@@ -1464,7 +1464,7 @@ export interface BasicModuleAttachmentInterfaceApiSubmitAuditResultRequest {
 
 export interface BasicModuleAttachmentInterfaceApiUploadRequest {
     /**
-     * 
+     *
      * @type AttachOpRo
      * @memberof BasicModuleAttachmentInterfaceApiupload
      */
@@ -1473,7 +1473,7 @@ export interface BasicModuleAttachmentInterfaceApiUploadRequest {
 
 export interface BasicModuleAttachmentInterfaceApiUrlUploadRequest {
     /**
-     * 
+     *
      * @type AttachUrlOpRo
      * @memberof BasicModuleAttachmentInterfaceApiurlUpload
      */
@@ -1580,7 +1580,7 @@ import { BasicModuleVerifyActionModuleInterfaceApiRequestFactory, BasicModuleVer
 
 export interface BasicModuleVerifyActionModuleInterfaceApiInviteTokenValidRequest {
     /**
-     * 
+     *
      * @type InviteValidRo
      * @memberof BasicModuleVerifyActionModuleInterfaceApiinviteTokenValid
      */
@@ -1589,7 +1589,7 @@ export interface BasicModuleVerifyActionModuleInterfaceApiInviteTokenValidReques
 
 export interface BasicModuleVerifyActionModuleInterfaceApiMailRequest {
     /**
-     * 
+     *
      * @type EmailOpRo
      * @memberof BasicModuleVerifyActionModuleInterfaceApimail
      */
@@ -1598,7 +1598,7 @@ export interface BasicModuleVerifyActionModuleInterfaceApiMailRequest {
 
 export interface BasicModuleVerifyActionModuleInterfaceApiSendRequest {
     /**
-     * 
+     *
      * @type SmsOpRo
      * @memberof BasicModuleVerifyActionModuleInterfaceApisend
      */
@@ -1607,7 +1607,7 @@ export interface BasicModuleVerifyActionModuleInterfaceApiSendRequest {
 
 export interface BasicModuleVerifyActionModuleInterfaceApiValidateEmailRequest {
     /**
-     * 
+     *
      * @type EmailCodeValidateRo
      * @memberof BasicModuleVerifyActionModuleInterfaceApivalidateEmail
      */
@@ -1616,7 +1616,7 @@ export interface BasicModuleVerifyActionModuleInterfaceApiValidateEmailRequest {
 
 export interface BasicModuleVerifyActionModuleInterfaceApiVerifyPhone1Request {
     /**
-     * 
+     *
      * @type SmsCodeValidateRo
      * @memberof BasicModuleVerifyActionModuleInterfaceApiverifyPhone1
      */
@@ -1727,7 +1727,7 @@ import { BasicsAttachmentUploadTokenInterfaceApiRequestFactory, BasicsAttachment
 
 export interface BasicsAttachmentUploadTokenInterfaceApiGeneratePreSignedUrlRequest {
     /**
-     * 
+     *
      * @type AssetUploadCertificateRO
      * @memberof BasicsAttachmentUploadTokenInterfaceApigeneratePreSignedUrl
      */
@@ -1736,7 +1736,7 @@ export interface BasicsAttachmentUploadTokenInterfaceApiGeneratePreSignedUrlRequ
 
 export interface BasicsAttachmentUploadTokenInterfaceApiGetSignatureUrlRequest {
     /**
-     * 
+     *
      * @type string
      * @memberof BasicsAttachmentUploadTokenInterfaceApigetSignatureUrl
      */
@@ -1745,7 +1745,7 @@ export interface BasicsAttachmentUploadTokenInterfaceApiGetSignatureUrlRequest {
 
 export interface BasicsAttachmentUploadTokenInterfaceApiGetSignatureUrlsRequest {
     /**
-     * 
+     *
      * @type AssetUrlSignatureRo
      * @memberof BasicsAttachmentUploadTokenInterfaceApigetSignatureUrls
      */
@@ -1814,7 +1814,7 @@ import { ClientInterfaceApiRequestFactory, ClientInterfaceApiResponseProcessor} 
 
 export interface ClientInterfaceApiGetTemplateInfoRequest {
     /**
-     * 
+     *
      * @type string
      * @memberof ClientInterfaceApigetTemplateInfo
      */
@@ -1859,7 +1859,7 @@ import { ContactMemberApiApiRequestFactory, ContactMemberApiApiResponseProcessor
 
 export interface ContactMemberApiApiAddMemberRequest {
     /**
-     * 
+     *
      * @type TeamAddMemberRo
      * @memberof ContactMemberApiApiaddMember
      */
@@ -1889,7 +1889,7 @@ export interface ContactMemberApiApiCheckEmailInSpaceRequest {
 
 export interface ContactMemberApiApiDeleteBatchMemberRequest {
     /**
-     * 
+     *
      * @type DeleteBatchMemberRo
      * @memberof ContactMemberApiApideleteBatchMember
      */
@@ -1904,7 +1904,7 @@ export interface ContactMemberApiApiDeleteBatchMemberRequest {
 
 export interface ContactMemberApiApiDeleteMemberRequest {
     /**
-     * 
+     *
      * @type DeleteMemberRo
      * @memberof ContactMemberApiApideleteMember
      */
@@ -1973,7 +1973,7 @@ export interface ContactMemberApiApiGetUnitsRequest {
 
 export interface ContactMemberApiApiInviteMemberRequest {
     /**
-     * 
+     *
      * @type InviteRo
      * @memberof ContactMemberApiApiinviteMember
      */
@@ -1988,7 +1988,7 @@ export interface ContactMemberApiApiInviteMemberRequest {
 
 export interface ContactMemberApiApiInviteMemberSingleRequest {
     /**
-     * 
+     *
      * @type InviteMemberAgainRo
      * @memberof ContactMemberApiApiinviteMemberSingle
      */
@@ -2024,7 +2024,7 @@ export interface ContactMemberApiApiRead1Request {
 
 export interface ContactMemberApiApiReadPageRequest {
     /**
-     * 
+     *
      * @type Page
      * @memberof ContactMemberApiApireadPage
      */
@@ -2057,7 +2057,7 @@ export interface ContactMemberApiApiReadPageRequest {
 
 export interface ContactMemberApiApiUpdate2Request {
     /**
-     * 
+     *
      * @type UpdateMemberOpRo
      * @memberof ContactMemberApiApiupdate2
      */
@@ -2072,7 +2072,7 @@ export interface ContactMemberApiApiUpdate2Request {
 
 export interface ContactMemberApiApiUpdateInfoRequest {
     /**
-     * 
+     *
      * @type UpdateMemberRo
      * @memberof ContactMemberApiApiupdateInfo
      */
@@ -2087,7 +2087,7 @@ export interface ContactMemberApiApiUpdateInfoRequest {
 
 export interface ContactMemberApiApiUpdateTeam1Request {
     /**
-     * 
+     *
      * @type UpdateMemberTeamRo
      * @memberof ContactMemberApiApiupdateTeam1
      */
@@ -2102,7 +2102,7 @@ export interface ContactMemberApiApiUpdateTeam1Request {
 
 export interface ContactMemberApiApiUploadExcelRequest {
     /**
-     * 
+     *
      * @type UploadMemberTemplateRo
      * @memberof ContactMemberApiApiuploadExcel
      */
@@ -2438,7 +2438,7 @@ export interface ContactOrganizationApiApiGetSubUnitListRequest {
 
 export interface ContactOrganizationApiApiLoadOrSearchRequest {
     /**
-     * 
+     *
      * @type LoadSearchDTO
      * @memberof ContactOrganizationApiApiloadOrSearch
      */
@@ -2558,7 +2558,7 @@ export interface ContactOrganizationApiApiSearchTeamInfoRequest {
 
 export interface ContactOrganizationApiApiSearchUnitInfoVoRequest {
     /**
-     * 
+     *
      * @type SearchUnitRo
      * @memberof ContactOrganizationApiApisearchUnitInfoVo
      */
@@ -2693,13 +2693,13 @@ import { ContactsRoleApiApiRequestFactory, ContactsRoleApiApiResponseProcessor} 
 
 export interface ContactsRoleApiApiAddRoleMembersRequest {
     /**
-     * 
+     *
      * @type AddRoleMemberRo
      * @memberof ContactsRoleApiApiaddRoleMembers
      */
     addRoleMemberRo: AddRoleMemberRo
     /**
-     * 
+     *
      * @type number
      * @memberof ContactsRoleApiApiaddRoleMembers
      */
@@ -2711,7 +2711,7 @@ export interface ContactsRoleApiApiAddRoleMembersRequest {
      */
     xSpaceId: string
     /**
-     * 
+     *
      * @type string
      * @memberof ContactsRoleApiApiaddRoleMembers
      */
@@ -2720,7 +2720,7 @@ export interface ContactsRoleApiApiAddRoleMembersRequest {
 
 export interface ContactsRoleApiApiCreateRoleRequest {
     /**
-     * 
+     *
      * @type CreateRoleRo
      * @memberof ContactsRoleApiApicreateRole
      */
@@ -2735,7 +2735,7 @@ export interface ContactsRoleApiApiCreateRoleRequest {
 
 export interface ContactsRoleApiApiDeleteRole1Request {
     /**
-     * 
+     *
      * @type number
      * @memberof ContactsRoleApiApideleteRole1
      */
@@ -2747,7 +2747,7 @@ export interface ContactsRoleApiApiDeleteRole1Request {
      */
     xSpaceId: string
     /**
-     * 
+     *
      * @type string
      * @memberof ContactsRoleApiApideleteRole1
      */
@@ -2756,13 +2756,13 @@ export interface ContactsRoleApiApiDeleteRole1Request {
 
 export interface ContactsRoleApiApiGetRoleMembersRequest {
     /**
-     * 
+     *
      * @type number
      * @memberof ContactsRoleApiApigetRoleMembers
      */
     roleId: number
     /**
-     * 
+     *
      * @type PageVoid
      * @memberof ContactsRoleApiApigetRoleMembers
      */
@@ -2774,7 +2774,7 @@ export interface ContactsRoleApiApiGetRoleMembersRequest {
      */
     xSpaceId: string
     /**
-     * 
+     *
      * @type string
      * @memberof ContactsRoleApiApigetRoleMembers
      */
@@ -2807,13 +2807,13 @@ export interface ContactsRoleApiApiInitRolesRequest {
 
 export interface ContactsRoleApiApiRemoveRoleMembersRequest {
     /**
-     * 
+     *
      * @type DeleteRoleMemberRo
      * @memberof ContactsRoleApiApiremoveRoleMembers
      */
     deleteRoleMemberRo: DeleteRoleMemberRo
     /**
-     * 
+     *
      * @type number
      * @memberof ContactsRoleApiApiremoveRoleMembers
      */
@@ -2825,7 +2825,7 @@ export interface ContactsRoleApiApiRemoveRoleMembersRequest {
      */
     xSpaceId: string
     /**
-     * 
+     *
      * @type string
      * @memberof ContactsRoleApiApiremoveRoleMembers
      */
@@ -2834,13 +2834,13 @@ export interface ContactsRoleApiApiRemoveRoleMembersRequest {
 
 export interface ContactsRoleApiApiUpdateRoleRequest {
     /**
-     * 
+     *
      * @type UpdateRoleRo
      * @memberof ContactsRoleApiApiupdateRole
      */
     updateRoleRo: UpdateRoleRo
     /**
-     * 
+     *
      * @type number
      * @memberof ContactsRoleApiApiupdateRole
      */
@@ -2852,7 +2852,7 @@ export interface ContactsRoleApiApiUpdateRoleRequest {
      */
     xSpaceId: string
     /**
-     * 
+     *
      * @type string
      * @memberof ContactsRoleApiApiupdateRole
      */
@@ -3017,7 +3017,7 @@ import { ContactsTeamApiApiRequestFactory, ContactsTeamApiApiResponseProcessor} 
 
 export interface ContactsTeamApiApiCreateTeamRequest {
     /**
-     * 
+     *
      * @type CreateTeamRo
      * @memberof ContactsTeamApiApicreateTeam
      */
@@ -3116,7 +3116,7 @@ export interface ContactsTeamApiApiReadTeamInfoRequest {
 
 export interface ContactsTeamApiApiUpdateTeamRequest {
     /**
-     * 
+     *
      * @type UpdateTeamRo
      * @memberof ContactsTeamApiApiupdateTeam
      */
@@ -3288,7 +3288,7 @@ export interface DeveloperConfigAPIApiCreateApiKeyRequest {
 
 export interface DeveloperConfigAPIApiRefreshApiKeyRequest {
     /**
-     * 
+     *
      * @type RefreshApiKeyRo
      * @memberof DeveloperConfigAPIApirefreshApiKey
      */
@@ -3297,7 +3297,7 @@ export interface DeveloperConfigAPIApiRefreshApiKeyRequest {
 
 export interface DeveloperConfigAPIApiValidateApiKeyRequest {
     /**
-     * 
+     *
      * @type string
      * @memberof DeveloperConfigAPIApivalidateApiKey
      */
@@ -3381,7 +3381,7 @@ export interface InternalServerAssetAPIApiGetRequest {
 
 export interface InternalServerAssetAPIApiGetSignatureUrls1Request {
     /**
-     * 
+     *
      * @type Array&lt;string&gt;
      * @memberof InternalServerAssetAPIApigetSignatureUrls1
      */
@@ -3467,7 +3467,7 @@ import { InternalServerOrgAPIApiRequestFactory, InternalServerOrgAPIApiResponseP
 
 export interface InternalServerOrgAPIApiLoadOrSearch1Request {
     /**
-     * 
+     *
      * @type LoadSearchDTO
      * @memberof InternalServerOrgAPIApiloadOrSearch1
      */
@@ -3584,7 +3584,7 @@ export interface InternalServiceDataTableFieldPermissionInterfaceApiGetFieldPerm
 
 export interface InternalServiceDataTableFieldPermissionInterfaceApiGetMultiFieldPermissionViewsRequest {
     /**
-     * 
+     *
      * @type InternalPermissionRo
      * @memberof InternalServiceDataTableFieldPermissionInterfaceApigetMultiFieldPermissionViews
      */
@@ -3655,7 +3655,7 @@ import { InternalServiceFieldServiceInterfaceApiRequestFactory, InternalServiceF
 
 export interface InternalServiceFieldServiceInterfaceApiUrlContentsAwareFillRequest {
     /**
-     * 
+     *
      * @type UrlsWrapperRo
      * @memberof InternalServiceFieldServiceInterfaceApiurlContentsAwareFill
      */
@@ -3694,13 +3694,13 @@ import { InternalServiceNodeInterfaceApiRequestFactory, InternalServiceNodeInter
 
 export interface InternalServiceNodeInterfaceApiCreateDatasheetRequest {
     /**
-     * 
+     *
      * @type CreateDatasheetRo
      * @memberof InternalServiceNodeInterfaceApicreateDatasheet
      */
     createDatasheetRo: CreateDatasheetRo
     /**
-     * 
+     *
      * @type string
      * @memberof InternalServiceNodeInterfaceApicreateDatasheet
      */
@@ -3709,13 +3709,13 @@ export interface InternalServiceNodeInterfaceApiCreateDatasheetRequest {
 
 export interface InternalServiceNodeInterfaceApiDeleteNodeRequest {
     /**
-     * 
+     *
      * @type string
      * @memberof InternalServiceNodeInterfaceApideleteNode
      */
     spaceId: string
     /**
-     * 
+     *
      * @type string
      * @memberof InternalServiceNodeInterfaceApideleteNode
      */
@@ -3724,25 +3724,25 @@ export interface InternalServiceNodeInterfaceApiDeleteNodeRequest {
 
 export interface InternalServiceNodeInterfaceApiFilterRequest {
     /**
-     * 
+     *
      * @type string
      * @memberof InternalServiceNodeInterfaceApifilter
      */
     spaceId: string
     /**
-     * 
+     *
      * @type number
      * @memberof InternalServiceNodeInterfaceApifilter
      */
     type: number
     /**
-     * 
+     *
      * @type Array&lt;number&gt;
      * @memberof InternalServiceNodeInterfaceApifilter
      */
     nodePermissions?: Array<number>
     /**
-     * 
+     *
      * @type string
      * @memberof InternalServiceNodeInterfaceApifilter
      */
@@ -3817,7 +3817,7 @@ import { InternalServiceNodePermissionInterfaceApiRequestFactory, InternalServic
 
 export interface InternalServiceNodePermissionInterfaceApiGetMultiNodePermissionsRequest {
     /**
-     * 
+     *
      * @type InternalPermissionRo
      * @memberof InternalServiceNodePermissionInterfaceApigetMultiNodePermissions
      */
@@ -3885,7 +3885,7 @@ import { InternalServiceNotificationInterfaceApiRequestFactory, InternalServiceN
 
 export interface InternalServiceNotificationInterfaceApiCreate4Request {
     /**
-     * 
+     *
      * @type Array&lt;NotificationCreateRo&gt;
      * @memberof InternalServiceNotificationInterfaceApicreate4
      */
@@ -3924,7 +3924,7 @@ import { InternalServiceSpaceInterfaceApiRequestFactory, InternalServiceSpaceInt
 
 export interface InternalServiceSpaceInterfaceApiApiRateLimitRequest {
     /**
-     * 
+     *
      * @type string
      * @memberof InternalServiceSpaceInterfaceApiapiRateLimit
      */
@@ -3933,7 +3933,7 @@ export interface InternalServiceSpaceInterfaceApiApiRateLimitRequest {
 
 export interface InternalServiceSpaceInterfaceApiApiUsagesRequest {
     /**
-     * 
+     *
      * @type string
      * @memberof InternalServiceSpaceInterfaceApiapiUsages
      */
@@ -3987,7 +3987,7 @@ export interface InternalServiceSpaceInterfaceApiGetSpaceUsagesRequest {
 
 export interface InternalServiceSpaceInterfaceApiLabsRequest {
     /**
-     * 
+     *
      * @type string
      * @memberof InternalServiceSpaceInterfaceApilabs
      */
@@ -3996,13 +3996,13 @@ export interface InternalServiceSpaceInterfaceApiLabsRequest {
 
 export interface InternalServiceSpaceInterfaceApiStatisticsRequest {
     /**
-     * 
+     *
      * @type SpaceStatisticsRo
      * @memberof InternalServiceSpaceInterfaceApistatistics
      */
     spaceStatisticsRo: SpaceStatisticsRo
     /**
-     * 
+     *
      * @type string
      * @memberof InternalServiceSpaceInterfaceApistatistics
      */
@@ -4171,7 +4171,7 @@ import { InternalServiceUserInterfaceApiRequestFactory, InternalServiceUserInter
 
 export interface InternalServiceUserInterfaceApiClosePausedUserAccountRequest {
     /**
-     * 
+     *
      * @type number
      * @memberof InternalServiceUserInterfaceApiclosePausedUserAccount
      */
@@ -4183,7 +4183,7 @@ export interface InternalServiceUserInterfaceApiGetPausedUsersRequest {
 
 export interface InternalServiceUserInterfaceApiGetUserHistoriesRequest {
     /**
-     * 
+     *
      * @type PausedUserHistoryRo
      * @memberof InternalServiceUserInterfaceApigetUserHistories
      */
@@ -4331,7 +4331,7 @@ import { PlayerSystemActivityAPIApiRequestFactory, PlayerSystemActivityAPIApiRes
 
 export interface PlayerSystemActivityAPIApiTriggerWizardRequest {
     /**
-     * 
+     *
      * @type ActivityStatusRo
      * @memberof PlayerSystemActivityAPIApitriggerWizard
      */
@@ -4370,7 +4370,7 @@ import { PlayerSystemNotificationAPIApiRequestFactory, PlayerSystemNotificationA
 
 export interface PlayerSystemNotificationAPIApiCreate2Request {
     /**
-     * 
+     *
      * @type Array&lt;NotificationCreateRo&gt;
      * @memberof PlayerSystemNotificationAPIApicreate2
      */
@@ -4379,7 +4379,7 @@ export interface PlayerSystemNotificationAPIApiCreate2Request {
 
 export interface PlayerSystemNotificationAPIApiDelete4Request {
     /**
-     * 
+     *
      * @type NotificationReadRo
      * @memberof PlayerSystemNotificationAPIApidelete4
      */
@@ -4388,7 +4388,7 @@ export interface PlayerSystemNotificationAPIApiDelete4Request {
 
 export interface PlayerSystemNotificationAPIApiList2Request {
     /**
-     * 
+     *
      * @type NotificationListRo
      * @memberof PlayerSystemNotificationAPIApilist2
      */
@@ -4397,7 +4397,7 @@ export interface PlayerSystemNotificationAPIApiList2Request {
 
 export interface PlayerSystemNotificationAPIApiPageRequest {
     /**
-     * 
+     *
      * @type NotificationPageRo
      * @memberof PlayerSystemNotificationAPIApipage
      */
@@ -4406,7 +4406,7 @@ export interface PlayerSystemNotificationAPIApiPageRequest {
 
 export interface PlayerSystemNotificationAPIApiReadRequest {
     /**
-     * 
+     *
      * @type NotificationReadRo
      * @memberof PlayerSystemNotificationAPIApiread
      */
@@ -4530,7 +4530,7 @@ import { SpaceApplyJoiningSpaceApiApiRequestFactory, SpaceApplyJoiningSpaceApiAp
 
 export interface SpaceApplyJoiningSpaceApiApiApplyRequest {
     /**
-     * 
+     *
      * @type SpaceJoinApplyRo
      * @memberof SpaceApplyJoiningSpaceApiApiapply
      */
@@ -4539,7 +4539,7 @@ export interface SpaceApplyJoiningSpaceApiApiApplyRequest {
 
 export interface SpaceApplyJoiningSpaceApiApiProcessRequest {
     /**
-     * 
+     *
      * @type SpaceJoinProcessRo
      * @memberof SpaceApplyJoiningSpaceApiApiprocess
      */
@@ -4592,7 +4592,7 @@ import { SpaceInviteLinkApiApiRequestFactory, SpaceInviteLinkApiApiResponseProce
 
 export interface SpaceInviteLinkApiApiDelete6Request {
     /**
-     * 
+     *
      * @type SpaceLinkOpRo
      * @memberof SpaceInviteLinkApiApidelete6
      */
@@ -4607,7 +4607,7 @@ export interface SpaceInviteLinkApiApiDelete6Request {
 
 export interface SpaceInviteLinkApiApiGenerateRequest {
     /**
-     * 
+     *
      * @type SpaceLinkOpRo
      * @memberof SpaceInviteLinkApiApigenerate
      */
@@ -4622,7 +4622,7 @@ export interface SpaceInviteLinkApiApiGenerateRequest {
 
 export interface SpaceInviteLinkApiApiJoinRequest {
     /**
-     * 
+     *
      * @type InviteValidRo
      * @memberof SpaceInviteLinkApiApijoin
      */
@@ -4640,7 +4640,7 @@ export interface SpaceInviteLinkApiApiList1Request {
 
 export interface SpaceInviteLinkApiApiValidRequest {
     /**
-     * 
+     *
      * @type InviteValidRo
      * @memberof SpaceInviteLinkApiApivalid
      */
@@ -4756,7 +4756,7 @@ export interface SpaceMainAdminApiApiGetMainAdminInfoRequest {
 
 export interface SpaceMainAdminApiApiReplaceRequest {
     /**
-     * 
+     *
      * @type SpaceMainAdminChangeOpRo
      * @memberof SpaceMainAdminApiApireplace
      */
@@ -4833,7 +4833,7 @@ export interface SpaceSpaceApiApiCapacityRequest {
 
 export interface SpaceSpaceApiApiCreate1Request {
     /**
-     * 
+     *
      * @type SpaceOpRo
      * @memberof SpaceSpaceApiApicreate1
      */
@@ -4845,7 +4845,7 @@ export interface SpaceSpaceApiApiDelRequest {
 
 export interface SpaceSpaceApiApiDelete7Request {
     /**
-     * 
+     *
      * @type SpaceDeleteRo
      * @memberof SpaceSpaceApiApidelete7
      */
@@ -4875,7 +4875,7 @@ export interface SpaceSpaceApiApiGetCreditUsagesRequest {
      */
     spaceId: string
     /**
-     * 
+     *
      * @type string
      * @memberof SpaceSpaceApiApigetCreditUsages
      */
@@ -4947,7 +4947,7 @@ export interface SpaceSpaceApiApiSwitchSpaceRequest {
 
 export interface SpaceSpaceApiApiUpdate1Request {
     /**
-     * 
+     *
      * @type SpaceUpdateOpRo
      * @memberof SpaceSpaceApiApiupdate1
      */
@@ -4962,7 +4962,7 @@ export interface SpaceSpaceApiApiUpdate1Request {
 
 export interface SpaceSpaceApiApiUpdateMemberSettingRequest {
     /**
-     * 
+     *
      * @type SpaceMemberSettingRo
      * @memberof SpaceSpaceApiApiupdateMemberSetting
      */
@@ -4977,7 +4977,7 @@ export interface SpaceSpaceApiApiUpdateMemberSettingRequest {
 
 export interface SpaceSpaceApiApiUpdateSecuritySettingRequest {
     /**
-     * 
+     *
      * @type SpaceSecuritySettingRo
      * @memberof SpaceSpaceApiApiupdateSecuritySetting
      */
@@ -4992,7 +4992,7 @@ export interface SpaceSpaceApiApiUpdateSecuritySettingRequest {
 
 export interface SpaceSpaceApiApiUpdateWorkbenchSettingRequest {
     /**
-     * 
+     *
      * @type SpaceWorkbenchSettingRo
      * @memberof SpaceSpaceApiApiupdateWorkbenchSetting
      */
@@ -5311,7 +5311,7 @@ import { SpaceSubAdminApiApiRequestFactory, SpaceSubAdminApiApiResponseProcessor
 
 export interface SpaceSubAdminApiApiAddRoleRequest {
     /**
-     * 
+     *
      * @type AddSpaceRoleRo
      * @memberof SpaceSubAdminApiApiaddRole
      */
@@ -5326,7 +5326,7 @@ export interface SpaceSubAdminApiApiAddRoleRequest {
 
 export interface SpaceSubAdminApiApiDeleteRoleRequest {
     /**
-     * 
+     *
      * @type number
      * @memberof SpaceSubAdminApiApideleteRole
      */
@@ -5341,7 +5341,7 @@ export interface SpaceSubAdminApiApiDeleteRoleRequest {
 
 export interface SpaceSubAdminApiApiEditRoleRequest {
     /**
-     * 
+     *
      * @type UpdateSpaceRoleRo
      * @memberof SpaceSubAdminApiApieditRole
      */
@@ -5356,7 +5356,7 @@ export interface SpaceSubAdminApiApiEditRoleRequest {
 
 export interface SpaceSubAdminApiApiGetRoleDetailRequest {
     /**
-     * 
+     *
      * @type number
      * @memberof SpaceSubAdminApiApigetRoleDetail
      */
@@ -5371,7 +5371,7 @@ export interface SpaceSubAdminApiApiGetRoleDetailRequest {
 
 export interface SpaceSubAdminApiApiListRoleRequest {
     /**
-     * 
+     *
      * @type Page
      * @memberof SpaceSubAdminApiApilistRole
      */
@@ -5488,7 +5488,7 @@ import { TemplateCenterTemplateAPIApiRequestFactory, TemplateCenterTemplateAPIAp
 
 export interface TemplateCenterTemplateAPIApiCreateRequest {
     /**
-     * 
+     *
      * @type CreateTemplateRo
      * @memberof TemplateCenterTemplateAPIApicreate
      */
@@ -5539,7 +5539,7 @@ export interface TemplateCenterTemplateAPIApiGetCategoryListRequest {
 
 export interface TemplateCenterTemplateAPIApiGetSpaceTemplatesRequest {
     /**
-     * 
+     *
      * @type string
      * @memberof TemplateCenterTemplateAPIApigetSpaceTemplates
      */
@@ -5569,7 +5569,7 @@ export interface TemplateCenterTemplateAPIApiGlobalSearchRequest {
 
 export interface TemplateCenterTemplateAPIApiQuoteRequest {
     /**
-     * 
+     *
      * @type QuoteTemplateRo
      * @memberof TemplateCenterTemplateAPIApiquote
      */
@@ -5848,7 +5848,7 @@ import { WidgetSDKPackageApiApiRequestFactory, WidgetSDKPackageApiApiResponsePro
 
 export interface WidgetSDKPackageApiApiCreateWidgetRequest {
     /**
-     * 
+     *
      * @type WidgetPackageCreateRo
      * @memberof WidgetSDKPackageApiApicreateWidget
      */
@@ -5863,7 +5863,7 @@ export interface WidgetSDKPackageApiApiCreateWidgetRequest {
 
 export interface WidgetSDKPackageApiApiGetWidgetPackageInfoRequest {
     /**
-     * 
+     *
      * @type string
      * @memberof WidgetSDKPackageApiApigetWidgetPackageInfo
      */
@@ -5884,7 +5884,7 @@ export interface WidgetSDKPackageApiApiGetWidgetPackageInfoRequest {
 
 export interface WidgetSDKPackageApiApiGetWidgetPackageListInfoRequest {
     /**
-     * 
+     *
      * @type string
      * @memberof WidgetSDKPackageApiApigetWidgetPackageListInfo
      */
@@ -5911,7 +5911,7 @@ export interface WidgetSDKPackageApiApiReleaseListWidgetRequest {
      */
     packageId: number
     /**
-     * 
+     *
      * @type Page
      * @memberof WidgetSDKPackageApiApireleaseListWidget
      */
@@ -5932,7 +5932,7 @@ export interface WidgetSDKPackageApiApiReleaseListWidgetRequest {
 
 export interface WidgetSDKPackageApiApiReleaseWidgetV2Request {
     /**
-     * 
+     *
      * @type WidgetPackageReleaseV2Ro
      * @memberof WidgetSDKPackageApiApireleaseWidgetV2
      */
@@ -5947,7 +5947,7 @@ export interface WidgetSDKPackageApiApiReleaseWidgetV2Request {
 
 export interface WidgetSDKPackageApiApiRollbackWidgetRequest {
     /**
-     * 
+     *
      * @type WidgetPackageRollbackRo
      * @memberof WidgetSDKPackageApiApirollbackWidget
      */
@@ -5962,7 +5962,7 @@ export interface WidgetSDKPackageApiApiRollbackWidgetRequest {
 
 export interface WidgetSDKPackageApiApiSubmitWidgetV2Request {
     /**
-     * 
+     *
      * @type WidgetPackageSubmitV2Ro
      * @memberof WidgetSDKPackageApiApisubmitWidgetV2
      */
@@ -5983,7 +5983,7 @@ export interface WidgetSDKPackageApiApiSubmitWidgetV2Request {
 
 export interface WidgetSDKPackageApiApiTransferWidgetOwnerRequest {
     /**
-     * 
+     *
      * @type WidgetTransferOwnerRo
      * @memberof WidgetSDKPackageApiApitransferWidgetOwner
      */
@@ -6004,7 +6004,7 @@ export interface WidgetSDKPackageApiApiTransferWidgetOwnerRequest {
 
 export interface WidgetSDKPackageApiApiUnpublishWidgetRequest {
     /**
-     * 
+     *
      * @type WidgetPackageUnpublishRo
      * @memberof WidgetSDKPackageApiApiunpublishWidget
      */
@@ -6019,7 +6019,7 @@ export interface WidgetSDKPackageApiApiUnpublishWidgetRequest {
 
 export interface WidgetSDKPackageApiApiWidgetAuthRequest {
     /**
-     * 
+     *
      * @type WidgetPackageAuthRo
      * @memberof WidgetSDKPackageApiApiwidgetAuth
      */
@@ -6220,7 +6220,7 @@ import { WidgetSDKWidgetApiApiRequestFactory, WidgetSDKWidgetApiApiResponseProce
 
 export interface WidgetSDKWidgetApiApiCopyWidgetRequest {
     /**
-     * 
+     *
      * @type WidgetCopyRo
      * @memberof WidgetSDKWidgetApiApicopyWidget
      */
@@ -6229,7 +6229,7 @@ export interface WidgetSDKWidgetApiApiCopyWidgetRequest {
 
 export interface WidgetSDKWidgetApiApiCreateWidget1Request {
     /**
-     * 
+     *
      * @type WidgetCreateRo
      * @memberof WidgetSDKWidgetApiApicreateWidget1
      */
@@ -6301,7 +6301,7 @@ export interface WidgetSDKWidgetApiApiFindWidgetPackByWidgetIdsRequest {
 
 export interface WidgetSDKWidgetApiApiWidgetStoreListRequest {
     /**
-     * 
+     *
      * @type WidgetStoreListRo
      * @memberof WidgetSDKWidgetApiApiwidgetStoreList
      */
@@ -6466,13 +6466,13 @@ import { WidgetUploadAPIApiRequestFactory, WidgetUploadAPIApiResponseProcessor} 
 
 export interface WidgetUploadAPIApiGenerateWidgetPreSignedUrlRequest {
     /**
-     * 
+     *
      * @type WidgetAssetUploadCertificateRO
      * @memberof WidgetUploadAPIApigenerateWidgetPreSignedUrl
      */
     widgetAssetUploadCertificateRO: WidgetAssetUploadCertificateRO
     /**
-     * 
+     *
      * @type string
      * @memberof WidgetUploadAPIApigenerateWidgetPreSignedUrl
      */
@@ -6530,7 +6530,7 @@ import { WorkbenchNodeApiApiRequestFactory, WorkbenchNodeApiApiResponseProcessor
 
 export interface WorkbenchNodeApiApiActiveSheetsRequest {
     /**
-     * 
+     *
      * @type ActiveSheetsOpRo
      * @memberof WorkbenchNodeApiApiactiveSheets
      */
@@ -6545,7 +6545,7 @@ export interface WorkbenchNodeApiApiActiveSheetsRequest {
 
 export interface WorkbenchNodeApiApiAnalyzeBundleRequest {
     /**
-     * 
+     *
      * @type NodeBundleOpRo
      * @memberof WorkbenchNodeApiApianalyzeBundle
      */
@@ -6575,7 +6575,7 @@ export interface WorkbenchNodeApiApiCheckRelNodeRequest {
 
 export interface WorkbenchNodeApiApiCopyRequest {
     /**
-     * 
+     *
      * @type NodeCopyOpRo
      * @memberof WorkbenchNodeApiApicopy
      */
@@ -6590,7 +6590,7 @@ export interface WorkbenchNodeApiApiCopyRequest {
 
 export interface WorkbenchNodeApiApiCreate3Request {
     /**
-     * 
+     *
      * @type NodeOpRo
      * @memberof WorkbenchNodeApiApicreate3
      */
@@ -6725,7 +6725,7 @@ export interface WorkbenchNodeApiApiGetTreeRequest {
 
 export interface WorkbenchNodeApiApiImportExcelRequest {
     /**
-     * 
+     *
      * @type ImportExcelOpRo
      * @memberof WorkbenchNodeApiApiimportExcel
      */
@@ -6734,7 +6734,7 @@ export interface WorkbenchNodeApiApiImportExcelRequest {
 
 export interface WorkbenchNodeApiApiImportExcel1Request {
     /**
-     * 
+     *
      * @type ImportExcelOpRo
      * @memberof WorkbenchNodeApiApiimportExcel1
      */
@@ -6764,7 +6764,7 @@ export interface WorkbenchNodeApiApiList4Request {
 
 export interface WorkbenchNodeApiApiMoveRequest {
     /**
-     * 
+     *
      * @type NodeMoveOpRo
      * @memberof WorkbenchNodeApiApimove
      */
@@ -6794,7 +6794,7 @@ export interface WorkbenchNodeApiApiPositionRequest {
 
 export interface WorkbenchNodeApiApiPostRemindUnitsNoPermissionRequest {
     /**
-     * 
+     *
      * @type RemindUnitsNoPermissionRo
      * @memberof WorkbenchNodeApiApipostRemindUnitsNoPermission
      */
@@ -6812,7 +6812,7 @@ export interface WorkbenchNodeApiApiRecentListRequest {
 
 export interface WorkbenchNodeApiApiRemindRequest {
     /**
-     * 
+     *
      * @type RemindMemberRo
      * @memberof WorkbenchNodeApiApiremind
      */
@@ -6842,7 +6842,7 @@ export interface WorkbenchNodeApiApiSearchNodeRequest {
 
 export interface WorkbenchNodeApiApiShowNodeInfoWindowRequest {
     /**
-     * 
+     *
      * @type string
      * @memberof WorkbenchNodeApiApishowNodeInfoWindow
      */
@@ -6866,7 +6866,7 @@ export interface WorkbenchNodeApiApiShowcaseRequest {
 
 export interface WorkbenchNodeApiApiUpdate3Request {
     /**
-     * 
+     *
      * @type NodeUpdateOpRo
      * @memberof WorkbenchNodeApiApiupdate3
      */
@@ -6887,7 +6887,7 @@ export interface WorkbenchNodeApiApiUpdate3Request {
 
 export interface WorkbenchNodeApiApiUpdateDescRequest {
     /**
-     * 
+     *
      * @type NodeDescOpRo
      * @memberof WorkbenchNodeApiApiupdateDesc
      */
@@ -7383,7 +7383,7 @@ export interface WorkbenchNodeFavoriteApiApiList5Request {
 
 export interface WorkbenchNodeFavoriteApiApiMove1Request {
     /**
-     * 
+     *
      * @type MarkNodeMoveRo
      * @memberof WorkbenchNodeFavoriteApiApimove1
      */
@@ -7479,13 +7479,13 @@ import { WorkbenchNodeRoleApiApiRequestFactory, WorkbenchNodeRoleApiApiResponseP
 
 export interface WorkbenchNodeRoleApiApiGetCollaboratorInfoRequest {
     /**
-     * 
+     *
      * @type string
      * @memberof WorkbenchNodeRoleApiApigetCollaboratorInfo
      */
     uuid: string
     /**
-     * 
+     *
      * @type string
      * @memberof WorkbenchNodeRoleApiApigetCollaboratorInfo
      */
@@ -7587,7 +7587,7 @@ export interface WorkbenchNodeRubbishApiApiList3Request {
 
 export interface WorkbenchNodeRubbishApiApiRecoverRequest {
     /**
-     * 
+     *
      * @type NodeRecoverRo
      * @memberof WorkbenchNodeRubbishApiApirecover
      */
@@ -7677,6 +7677,7 @@ export class ObjectWorkbenchNodeRubbishApiApi {
 
 import { ObservableWorkbenchNodeShareApiApi } from "./ObservableAPI";
 import { WorkbenchNodeShareApiApiRequestFactory, WorkbenchNodeShareApiApiResponseProcessor} from "../apis/WorkbenchNodeShareApiApi";
+import { ModelString } from '../models/ModelString';
 
 export interface WorkbenchNodeShareApiApiDisableShareRequest {
     /**
@@ -7707,7 +7708,7 @@ export interface WorkbenchNodeShareApiApiReadShareInfoRequest {
 
 export interface WorkbenchNodeShareApiApiStoreShareDataRequest {
     /**
-     * 
+     *
      * @type StoreShareNodeRo
      * @memberof WorkbenchNodeShareApiApistoreShareData
      */
@@ -7722,7 +7723,7 @@ export interface WorkbenchNodeShareApiApiStoreShareDataRequest {
 
 export interface WorkbenchNodeShareApiApiUpdateNodeShareRequest {
     /**
-     * 
+     *
      * @type UpdateNodeShareSettingRo
      * @memberof WorkbenchNodeShareApiApiupdateNodeShare
      */
