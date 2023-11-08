@@ -1,2 +1,2 @@
 
-export type ModelString=string
+export type ModelString = string

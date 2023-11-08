@@ -71,6 +71,6 @@ export class NotificationPageRo {
 
 
 export enum NotificationPageRoIsReadEnum {
-    NUMBER_null
+    NUMBER_null 
 }
 

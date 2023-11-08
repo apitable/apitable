@@ -4,11 +4,11 @@ All URIs are relative to *http://backend/api/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**create7**](InternalServiceNotificationInterfaceApi.md#create7) | **POST** /internal/notification/create | send a message
+[**create4**](InternalServiceNotificationInterfaceApi.md#create4) | **POST** /internal/notification/create | send a message
 
 
-# **create7**
-> ResponseDataVoid create7(notificationCreateRo)
+# **create4**
+> ResponseDataVoid create4(notificationCreateRo)
 
 send a message
 
@@ -22,7 +22,7 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .InternalServiceNotificationInterfaceApi(configuration);
 
-let body:.InternalServiceNotificationInterfaceApiCreate7Request = {
+let body:.InternalServiceNotificationInterfaceApiCreate4Request = {
   // Array<NotificationCreateRo>
   notificationCreateRo: [
     {
@@ -49,7 +49,7 @@ let body:.InternalServiceNotificationInterfaceApiCreate7Request = {
   ],
 };
 
-apiInstance.create7(body).then((data:any) => {
+apiInstance.create4(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -79,8 +79,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 

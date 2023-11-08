@@ -8,9 +8,9 @@ Method | HTTP request | Description
 [**analyzeBundle**](WorkbenchNodeApiApi.md#analyzeBundle) | **POST** /node/analyzeBundle | Analyze Bundle
 [**checkRelNode**](WorkbenchNodeApiApi.md#checkRelNode) | **GET** /node/checkRelNode | check for associated nodes
 [**copy**](WorkbenchNodeApiApi.md#copy) | **POST** /node/copy | Copy node
-[**create6**](WorkbenchNodeApiApi.md#create6) | **POST** /node/create | Create child node
-[**delete8**](WorkbenchNodeApiApi.md#delete8) | **POST** /node/delete/{nodeId} | Delete node
-[**delete9**](WorkbenchNodeApiApi.md#delete9) | **DELETE** /node/delete/{nodeId} | Delete node
+[**create3**](WorkbenchNodeApiApi.md#create3) | **POST** /node/create | Create child node
+[**delete2**](WorkbenchNodeApiApi.md#delete2) | **POST** /node/delete/{nodeId} | Delete node
+[**delete3**](WorkbenchNodeApiApi.md#delete3) | **DELETE** /node/delete/{nodeId} | Delete node
 [**exportBundle**](WorkbenchNodeApiApi.md#exportBundle) | **GET** /node/exportBundle | Export Bundle
 [**getByNodeId**](WorkbenchNodeApiApi.md#getByNodeId) | **GET** /node/get | Query nodes
 [**getNodeChildrenList**](WorkbenchNodeApiApi.md#getNodeChildrenList) | **GET** /node/children | Get child nodes
@@ -19,7 +19,7 @@ Method | HTTP request | Description
 [**getTree**](WorkbenchNodeApiApi.md#getTree) | **GET** /node/tree | Query tree node
 [**importExcel**](WorkbenchNodeApiApi.md#importExcel) | **POST** /node/import | Import excel
 [**importExcel1**](WorkbenchNodeApiApi.md#importExcel1) | **POST** /node/{parentId}/importExcel | Import excel
-[**list6**](WorkbenchNodeApiApi.md#list6) | **GET** /node/list | Get nodes of the specified type
+[**list4**](WorkbenchNodeApiApi.md#list4) | **GET** /node/list | Get nodes of the specified type
 [**move**](WorkbenchNodeApiApi.md#move) | **POST** /node/move | Move node
 [**position**](WorkbenchNodeApiApi.md#position) | **GET** /node/position/{nodeId} | Position node
 [**postRemindUnitsNoPermission**](WorkbenchNodeApiApi.md#postRemindUnitsNoPermission) | **POST** /node/remind/units/noPermission | Gets no permission member before remind
@@ -28,7 +28,7 @@ Method | HTTP request | Description
 [**searchNode**](WorkbenchNodeApiApi.md#searchNode) | **GET** /node/search | Fuzzy search node
 [**showNodeInfoWindow**](WorkbenchNodeApiApi.md#showNodeInfoWindow) | **GET** /node/window | Node info window
 [**showcase**](WorkbenchNodeApiApi.md#showcase) | **GET** /node/showcase | Folder preview
-[**update5**](WorkbenchNodeApiApi.md#update5) | **POST** /node/update/{nodeId} | Edit node
+[**update3**](WorkbenchNodeApiApi.md#update3) | **POST** /node/update/{nodeId} | Edit node
 [**updateDesc**](WorkbenchNodeApiApi.md#updateDesc) | **POST** /node/updateDesc | Update node description
 
 
@@ -89,8 +89,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -149,8 +149,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -210,8 +210,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -271,13 +271,13 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **create6**
-> ResponseDataNodeInfoVo create6(nodeOpRo)
+# **create3**
+> ResponseDataNodeInfoVo create3(nodeOpRo)
 
 create a new node under the node<br/>Role Type：<br/>1.owner can add, edit, move, sort, delete, copy folders in the specified working directory。<br/>2.manager can add, edit, move, sort, delete, and copy folders in the specified working directory.<br/>3.editor can only edit records and views of the data table, but not edit fields<br/>4.readonly can only view the number table, you cannot make any edits and modifications, you can only assign read-only permissions to other members。<br/>
 
@@ -291,7 +291,7 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .WorkbenchNodeApiApi(configuration);
 
-let body:.WorkbenchNodeApiApiCreate6Request = {
+let body:.WorkbenchNodeApiApiCreate3Request = {
   // NodeOpRo
   nodeOpRo: {
     parentId: "nod10",
@@ -309,7 +309,7 @@ let body:.WorkbenchNodeApiApiCreate6Request = {
   xSocketId: "QkKp9XJEl",
 };
 
-apiInstance.create6(body).then((data:any) => {
+apiInstance.create3(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -340,13 +340,13 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **delete8**
-> ResponseDataVoid delete8()
+# **delete2**
+> ResponseDataVoid delete2()
 
 You can pass in an ID array and delete multiple nodes.
 
@@ -360,14 +360,14 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .WorkbenchNodeApiApi(configuration);
 
-let body:.WorkbenchNodeApiApiDelete8Request = {
+let body:.WorkbenchNodeApiApiDelete2Request = {
   // string | node id
   nodeId: "nodRTGSy43DJ9",
   // string | user socket id (optional)
   xSocketId: "QkKp9XJEl",
 };
 
-apiInstance.delete8(body).then((data:any) => {
+apiInstance.delete2(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -398,13 +398,13 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **delete9**
-> ResponseDataVoid delete9()
+# **delete3**
+> ResponseDataVoid delete3()
 
 You can pass in an ID array and delete multiple nodes.
 
@@ -418,14 +418,14 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .WorkbenchNodeApiApi(configuration);
 
-let body:.WorkbenchNodeApiApiDelete9Request = {
+let body:.WorkbenchNodeApiApiDelete3Request = {
   // string | node id
   nodeId: "nodRTGSy43DJ9",
   // string | user socket id (optional)
   xSocketId: "QkKp9XJEl",
 };
 
-apiInstance.delete9(body).then((data:any) => {
+apiInstance.delete3(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -456,8 +456,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -516,8 +516,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -571,8 +571,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -629,8 +629,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -690,8 +690,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -745,8 +745,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -803,8 +803,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -862,8 +862,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -921,13 +921,13 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **list6**
-> ResponseDataListNodeInfo list6()
+# **list4**
+> ResponseDataListNodeInfo list4()
 
 scenario: query an existing dashboard
 
@@ -941,7 +941,7 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .WorkbenchNodeApiApi(configuration);
 
-let body:.WorkbenchNodeApiApiList6Request = {
+let body:.WorkbenchNodeApiApiList4Request = {
   // number | node type
   type: 2,
   // string | space id
@@ -950,7 +950,7 @@ let body:.WorkbenchNodeApiApiList6Request = {
   role: "manager",
 };
 
-apiInstance.list6(body).then((data:any) => {
+apiInstance.list4(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -982,8 +982,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -1047,8 +1047,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -1102,8 +1102,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -1161,8 +1161,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -1216,8 +1216,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -1289,8 +1289,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -1350,8 +1350,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -1405,8 +1405,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -1463,13 +1463,13 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **update5**
-> ResponseDataNodeInfoVo update5(nodeUpdateOpRo, )
+# **update3**
+> ResponseDataNodeInfoVo update3(nodeUpdateOpRo, )
 
 node id must. name, icon is not required<br/>Role Type：<br/>1.owner can add, edit, move, sort, delete, copy folders in the specified working directory。<br/>2.manager can add, edit, move, sort, delete, and copy folders in the specified working directory.<br/>3.editor can only edit records and views of the data table, but not edit fields<br/>4.readonly can only view the number table, you cannot make any edits and modifications, you can only assign read-only permissions to other members。<br/>
 
@@ -1483,7 +1483,7 @@ import * as fs from 'fs';
 const configuration = .createConfiguration();
 const apiInstance = new .WorkbenchNodeApiApi(configuration);
 
-let body:.WorkbenchNodeApiApiUpdate5Request = {
+let body:.WorkbenchNodeApiApiUpdate3Request = {
   // NodeUpdateOpRo
   nodeUpdateOpRo: {
     nodeName: "This is a new node name",
@@ -1497,7 +1497,7 @@ let body:.WorkbenchNodeApiApiUpdate5Request = {
   xSocketId: "QkKp9XJEl",
 };
 
-apiInstance.update5(body).then((data:any) => {
+apiInstance.update3(body).then((data:any) => {
   console.log('API called successfully. Returned data: ' + data);
 }).catch((error:any) => console.error(error));
 ```
@@ -1529,8 +1529,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
@@ -1589,8 +1589,8 @@ No authorization required
 ### HTTP response details
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**500** | Internal Server Error |  -  |
 **200** | OK |  -  |
+**500** | Internal Server Error |  -  |
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 

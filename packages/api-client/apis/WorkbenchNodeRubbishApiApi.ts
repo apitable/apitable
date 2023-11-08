@@ -23,18 +23,18 @@ export class WorkbenchNodeRubbishApiApiRequestFactory extends BaseAPIRequestFact
      * @param nodeId node id
      * @param xSpaceId space id
      */
-    public async delete6(nodeId: string, xSpaceId: string, _options?: Configuration): Promise<RequestContext> {
+    public async _delete(nodeId: string, xSpaceId: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
 
         // verify required parameter 'nodeId' is not null or undefined
         if (nodeId === null || nodeId === undefined) {
-            throw new RequiredError("WorkbenchNodeRubbishApiApi", "delete6", "nodeId");
+            throw new RequiredError("WorkbenchNodeRubbishApiApi", "_delete", "nodeId");
         }
 
 
         // verify required parameter 'xSpaceId' is not null or undefined
         if (xSpaceId === null || xSpaceId === undefined) {
-            throw new RequiredError("WorkbenchNodeRubbishApiApi", "delete6", "xSpaceId");
+            throw new RequiredError("WorkbenchNodeRubbishApiApi", "_delete", "xSpaceId");
         }
 
 
@@ -64,18 +64,18 @@ export class WorkbenchNodeRubbishApiApiRequestFactory extends BaseAPIRequestFact
      * @param nodeId node id
      * @param xSpaceId space id
      */
-    public async delete7(nodeId: string, xSpaceId: string, _options?: Configuration): Promise<RequestContext> {
+    public async delete1(nodeId: string, xSpaceId: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
 
         // verify required parameter 'nodeId' is not null or undefined
         if (nodeId === null || nodeId === undefined) {
-            throw new RequiredError("WorkbenchNodeRubbishApiApi", "delete7", "nodeId");
+            throw new RequiredError("WorkbenchNodeRubbishApiApi", "delete1", "nodeId");
         }
 
 
         // verify required parameter 'xSpaceId' is not null or undefined
         if (xSpaceId === null || xSpaceId === undefined) {
-            throw new RequiredError("WorkbenchNodeRubbishApiApi", "delete7", "xSpaceId");
+            throw new RequiredError("WorkbenchNodeRubbishApiApi", "delete1", "xSpaceId");
         }
 
 
@@ -108,12 +108,12 @@ export class WorkbenchNodeRubbishApiApiRequestFactory extends BaseAPIRequestFact
      * @param isOverLimit whether to request an overrun node（default FALSE）
      * @param lastNodeId id of the last node in the loaded list
      */
-    public async list5(xSpaceId: string, size?: number, isOverLimit?: boolean, lastNodeId?: string, _options?: Configuration): Promise<RequestContext> {
+    public async list3(xSpaceId: string, size?: number, isOverLimit?: boolean, lastNodeId?: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
 
         // verify required parameter 'xSpaceId' is not null or undefined
         if (xSpaceId === null || xSpaceId === undefined) {
-            throw new RequiredError("WorkbenchNodeRubbishApiApi", "list5", "xSpaceId");
+            throw new RequiredError("WorkbenchNodeRubbishApiApi", "list3", "xSpaceId");
         }
 
 
@@ -214,24 +214,24 @@ export class WorkbenchNodeRubbishApiApiResponseProcessor {
      * Unwraps the actual response sent by the server from the response context and deserializes the response content
      * to the expected objects
      *
-     * @params response Response returned by the server for a request to delete6
+     * @params response Response returned by the server for a request to _delete
      * @throws ApiException if the response code was not in [200, 299]
      */
-     public async delete6WithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataVoid >> {
+     public async _deleteWithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataVoid >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
-        if (isCodeInRange("500", response.httpStatusCode)) {
-            const body: ResponseDataVoid = ObjectSerializer.deserialize(
-                ObjectSerializer.parse(await response.body.text(), contentType),
-                "ResponseDataVoid", ""
-            ) as ResponseDataVoid;
-            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
-        }
         if (isCodeInRange("200", response.httpStatusCode)) {
             const body: ResponseDataVoid = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "ResponseDataVoid", ""
             ) as ResponseDataVoid;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+        if (isCodeInRange("500", response.httpStatusCode)) {
+            const body: ResponseDataVoid = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ResponseDataVoid", ""
+            ) as ResponseDataVoid;
+            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
         }
 
         // Work around for missing responses in specification, e.g. for petstore.yaml
@@ -250,24 +250,24 @@ export class WorkbenchNodeRubbishApiApiResponseProcessor {
      * Unwraps the actual response sent by the server from the response context and deserializes the response content
      * to the expected objects
      *
-     * @params response Response returned by the server for a request to delete7
+     * @params response Response returned by the server for a request to delete1
      * @throws ApiException if the response code was not in [200, 299]
      */
-     public async delete7WithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataVoid >> {
+     public async delete1WithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataVoid >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
-        if (isCodeInRange("500", response.httpStatusCode)) {
-            const body: ResponseDataVoid = ObjectSerializer.deserialize(
-                ObjectSerializer.parse(await response.body.text(), contentType),
-                "ResponseDataVoid", ""
-            ) as ResponseDataVoid;
-            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
-        }
         if (isCodeInRange("200", response.httpStatusCode)) {
             const body: ResponseDataVoid = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "ResponseDataVoid", ""
             ) as ResponseDataVoid;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+        if (isCodeInRange("500", response.httpStatusCode)) {
+            const body: ResponseDataVoid = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ResponseDataVoid", ""
+            ) as ResponseDataVoid;
+            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
         }
 
         // Work around for missing responses in specification, e.g. for petstore.yaml
@@ -286,24 +286,24 @@ export class WorkbenchNodeRubbishApiApiResponseProcessor {
      * Unwraps the actual response sent by the server from the response context and deserializes the response content
      * to the expected objects
      *
-     * @params response Response returned by the server for a request to list5
+     * @params response Response returned by the server for a request to list3
      * @throws ApiException if the response code was not in [200, 299]
      */
-     public async list5WithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataListRubbishNodeVo >> {
+     public async list3WithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataListRubbishNodeVo >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
-        if (isCodeInRange("500", response.httpStatusCode)) {
-            const body: ResponseDataVoid = ObjectSerializer.deserialize(
-                ObjectSerializer.parse(await response.body.text(), contentType),
-                "ResponseDataVoid", ""
-            ) as ResponseDataVoid;
-            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
-        }
         if (isCodeInRange("200", response.httpStatusCode)) {
             const body: ResponseDataListRubbishNodeVo = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "ResponseDataListRubbishNodeVo", ""
             ) as ResponseDataListRubbishNodeVo;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+        if (isCodeInRange("500", response.httpStatusCode)) {
+            const body: ResponseDataVoid = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ResponseDataVoid", ""
+            ) as ResponseDataVoid;
+            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
         }
 
         // Work around for missing responses in specification, e.g. for petstore.yaml
@@ -327,19 +327,19 @@ export class WorkbenchNodeRubbishApiApiResponseProcessor {
      */
      public async recoverWithHttpInfo(response: ResponseContext): Promise<HttpInfo<ResponseDataNodeInfoVo >> {
         const contentType = ObjectSerializer.normalizeMediaType(response.headers["content-type"]);
-        if (isCodeInRange("500", response.httpStatusCode)) {
-            const body: ResponseDataVoid = ObjectSerializer.deserialize(
-                ObjectSerializer.parse(await response.body.text(), contentType),
-                "ResponseDataVoid", ""
-            ) as ResponseDataVoid;
-            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
-        }
         if (isCodeInRange("200", response.httpStatusCode)) {
             const body: ResponseDataNodeInfoVo = ObjectSerializer.deserialize(
                 ObjectSerializer.parse(await response.body.text(), contentType),
                 "ResponseDataNodeInfoVo", ""
             ) as ResponseDataNodeInfoVo;
             return new HttpInfo(response.httpStatusCode, response.headers, response.body, body);
+        }
+        if (isCodeInRange("500", response.httpStatusCode)) {
+            const body: ResponseDataVoid = ObjectSerializer.deserialize(
+                ObjectSerializer.parse(await response.body.text(), contentType),
+                "ResponseDataVoid", ""
+            ) as ResponseDataVoid;
+            throw new ApiException<ResponseDataVoid>(response.httpStatusCode, "Internal Server Error", body, response.headers);
         }
 
         // Work around for missing responses in specification, e.g. for petstore.yaml
