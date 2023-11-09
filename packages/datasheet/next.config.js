@@ -36,7 +36,7 @@ const plugins = [
       },
     },
   ],
-  [withTM(['@apitable/components', 'antd', 'antd-mobile', 'rc-util', 'rc-picker', 'rc-notification', 'rc-calendar'])],
+  [withTM(['@apitable/components', '@apitable/ai', 'antd', 'antd-mobile', 'rc-util', 'rc-picker', 'rc-notification', 'rc-calendar'])],
   [withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' })],
 ];
 /** @type {import('next').NextConfig} */
