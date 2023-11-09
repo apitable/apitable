@@ -1277,7 +1277,7 @@
   "cui_select_link_text": "选择了 ${links} 个",
   "cui_select_user_text": "选择了 ${users} 个",
   "cui_wizard_select_chatbot_model": "选择 AI 助手模型",
-  "cui_wizard_select_chatbot_model_message": "第二步，请选择您想要使用的 AI 助手模型：GPT-3.5-Turbo或其他选项。",
+  "cui_wizard_select_chatbot_model_message": "第二步，请选择您想要使用的 AI 助手模型：${model}或其他选项。",
   "cui_wizard_select_chatbot_type": "请选择 AI 助手的类型",
   "cui_wizard_select_chatbot_type_chat_desc": "在没有特定数据集的情况下进行自由的对话和话题探讨。",
   "cui_wizard_select_chatbot_type_qa_desc": "使用预定义数据集来回答特定问题，轻松进行训练和自定义。",

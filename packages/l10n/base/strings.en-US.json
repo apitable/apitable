@@ -5660,7 +5660,7 @@
   "cui_wizard_select_chatbot_type_chat_desc": "Engage in free-flowing conversations without specific dataset, adaptable to various topics.",
   "cui_wizard_select_datasheet_message": "We're almost there, but not quite done yet. Please select a datasheet to serve as the dataset. The AI agent will refer to the knowledge within the dataset to assist with answering the questions you pose.",
   "cui_wizard_select_datasheet": "Select a datasheet as dataset",
-  "cui_wizard_select_chatbot_model_message": "OK. Now, please select the bot model you'd like to use: GPT-3.5-turbo or other options.",
+  "cui_wizard_select_chatbot_model_message": "OK. Now, please select the bot model you'd like to use: ${model} or other options.",
   "cui_wizard_select_chatbot_model": "Select bot model",
   "cui_select_user_text": "Selected ${users}",
   "cui_select_link_text": "Selected ${links}",
