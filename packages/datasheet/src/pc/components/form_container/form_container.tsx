@@ -171,7 +171,6 @@ export const FormContainer: React.FC<
   const [loading, setLoading] = useState<boolean>(false);
   const [mount, setMount] = useState<boolean>(false);
   const [animationLoading, setAnimationLoading] = useState<boolean>(false);
-  const [showWorkdoc, setShowWorkdoc] = useState<boolean>(false);
   const lottieAnimate = useRef<AnimationItem>();
   const [contentType, setContentType] = useState<IFormContentType>(IFormContentType.Form);
   const { datasheetId, viewId } = sourceInfo;
@@ -461,7 +460,6 @@ export const FormContainer: React.FC<
     commitRemind(realRecordId, shareId);
     setFormData({});
     setFormErrors({});
-    setShowWorkdoc(false);
     patchRecord({ id: recordId, data: {}, commentCount: 0 });
     Message.success({ content: t(Strings.form_submit_success) });
     if (shareId) {
@@ -726,8 +724,6 @@ export const FormContainer: React.FC<
         formProps,
         formData,
         formErrors,
-        showWorkdoc,
-        setShowWorkdoc,
         setFormData: _setFormData,
         setFormErrors: (fieldId, errMsg) => {
           setFormErrors({ ...formErrors, [fieldId]: errMsg });

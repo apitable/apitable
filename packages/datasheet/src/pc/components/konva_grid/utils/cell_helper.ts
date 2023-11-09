@@ -366,13 +366,6 @@ export class CellHelper extends KonvaDrawer {
       const itemX = x + currentX;
       const itemY = y + currentY;
       if (ctx && !isActive) {
-        this.path({
-          x: itemX + 4,
-          y: itemY + 2,
-          data: FileOutlinedPath,
-          size: 12,
-          fill: colors.textBrandDefault,
-        });
         this.label({
           x: itemX,
           y: itemY,
@@ -385,6 +378,13 @@ export class CellHelper extends KonvaDrawer {
           text: renderText,
           fontSize: 12,
           textAlign: 'right',
+        });
+        this.path({
+          x: itemX + 4,
+          y: itemY + 2,
+          data: FileOutlinedPath,
+          size: 12,
+          fill: colors.textBrandDefault,
         });
       }
 
