@@ -5,16 +5,30 @@ image:
 tasks:
   - name: install dependency
     init: |
-      npm install -g pnpm
       make install
+      make dataenv
+
+  - name: run APITable1
     command: |
-      echo "Happy Coding"
-  - name: start APITable
+      sleep 600
+      make _run-local-backend-server
+
+  - name: run APITable2
     command: |
-      make devenv-up
-      echo "Welcome to APITable"
+      sleep 600
+      make _run-local-room-server
+
+  - name: run APITable3
+    command: |
+      sleep 600
+      make _run-local-web-server
+
+  - name: run APITable4
+    command: |
+      sleep 700
+      curl 'http://localhost:3000/workbench/1'
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
 ports:
-  - port: 80
+  - port: 3000
     onOpen: open-preview
