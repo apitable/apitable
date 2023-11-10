@@ -18,11 +18,12 @@ import {
   TelephoneOutlined,
   StarOutlined, SelectSingleOutlined, TextOutlined,
   LinkOutlined,
-  LockFilled, CascadeOutlined, FileOutlined,
+  LockFilled, CascadeOutlined, FileOutlined, IIconProps,
 } from '@apitable/icons';
-import React from 'react';
+import React, { FC } from 'react';
 
-const FieldIconMap = {
+export const FieldIconMap: {[key in FieldType]: FC<IIconProps> }= {
+  [FieldType.NotSupport]: LockFilled,
   [FieldType.DeniedField]: LockFilled,
   [FieldType.Text]: LongtextOutlined,
   [FieldType.Number]: NumberOutlined,
@@ -83,7 +84,7 @@ interface IFieldSelectProps {
 export const FieldSelect = ({ fields, value, onChange }: IFieldSelectProps) => {
   const theme = useTheme();
   const options = transformOptions(fields, theme);
-  
+
   return <>
     <Select
       placeholder={t(Strings.pick_one_option)}

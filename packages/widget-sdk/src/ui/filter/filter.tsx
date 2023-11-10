@@ -7,6 +7,8 @@ import { FilterBase } from './filter_base';
 import { Store } from 'redux';
 import { useSelector } from 'react-redux';
 import { getSnapshot } from 'store';
+import { FieldIconMap } from './field_select';
+export { FieldIconMap };
 
 interface IFilterProps {
   filter?: IOpenFilterConditionGroup;
