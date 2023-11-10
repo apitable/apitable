@@ -81,7 +81,7 @@
     "antd": "4.23.5",
     "antd-mobile": "5.32.4",
     "attr-accept": "^2.1.0",
-    "axios": "0.21.4",
+    "axios": "1.6.0",
     "bowser": "^2.11.0",
     "canvas": "2.9.1",
     "classnames": "2.2.6",
