@@ -5836,5 +5836,11 @@
   "automation_run_failure_tip": "当前空间站自动化流程运行次数已用完",
   "billing_over_limit_tip_common": "亲爱的用户，您当前的操作已经触发了您的订阅级别的用量限制。为了继续享受无限制的操作，我们建议您升级您的订阅。",
   "billing_over_limit_tip_widget": "空间站的小程序安装数量已达到上限，请升级订阅。",
-  "automation_run_times_over_limit": "自动化运行次数已达上限"
+  "automation_run_times_over_limit": "自动化运行次数已达上限",
+  "training_data_source_title": "通过 \"dataDource\"，您可以上传、导入和添加数据到数据集中。您可以将各种类型的数据文件包括图像、文本、等添加到数据集中，以满足您的训练需求。",
+  "training_add_data_source_btn_text": "Add DataSource",
+  "training_data_source_table_column_1": "Source",
+  "training_data_source_table_column_2": "Last Training",
+  "training_data_source_table_column_3": "Status",
+  "training_data_source_table_column_4": "Operation"
 }

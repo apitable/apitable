@@ -5832,5 +5832,11 @@
   "automation_run_failure_tip": "The current usage of automation run has been used up",
   "billing_over_limit_tip_common": "The usage of the space has exceeded the limit, and you can enjoy a higher amount after upgrading.",
   "billing_over_limit_tip_widget": "The number of widget installations has exceeded the limit, and you can upgrade to get higher usage.",
-  "automation_run_times_over_limit": "The number of automation runs has exceeded the limit."
+  "automation_run_times_over_limit": "The number of automation runs has exceeded the limit.",
+  "training_data_source_title": "通过 \"dataDource\"，您可以上传、导入和添加数据到数据集中。您可以将各种类型的数据文件包括图像、文本、等添加到数据集中，以满足您的训练需求。",
+  "training_add_data_source_btn_text": "Add DataSource",
+  "training_data_source_table_column_1": "Source",
+  "training_data_source_table_column_2": "Last Training",
+  "training_data_source_table_column_3": "Status",
+  "training_data_source_table_column_4": "Operation"
 }
