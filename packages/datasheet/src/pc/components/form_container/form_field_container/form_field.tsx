@@ -149,7 +149,7 @@ export const FormField: React.FC<React.PropsWithChildren<IFormFieldProps>> = (pr
     let lookupCellValue;
     try {
       lookupCellValue = Selectors.getCellValue(state, snapshot, recordId, field.id, true);
-    } catch {
+    } catch (_e) {
       lookupCellValue = null;
     }
     const entityField = Selectors.findRealField(state, field) as ILookUpField;

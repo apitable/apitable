@@ -60,7 +60,7 @@ const getJsonValue = (value?: string) => {
   if (!value) return null;
   try {
     return JSON.parse(value);
-  } catch {
+  } catch(_e) {
     return null;
   }
 };
