@@ -46,7 +46,7 @@ public class ImageSerializer extends JsonSerializer<String> {
                 gen.writeString(value);
             }
             else {
-                OssSignatureTemplate ossSignatureTemplate = null;
+                OssSignatureTemplate ossSignatureTemplate;
                 try {
                     ossSignatureTemplate = SpringContextHolder.getBean(OssSignatureTemplate.class);
                     String signatureUrl = ossSignatureTemplate.getSignatureUrl(this.getResourceUrlNOTrim(), value);
