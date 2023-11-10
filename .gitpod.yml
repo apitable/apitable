@@ -11,7 +11,7 @@ tasks:
       echo "Happy Coding"
   - name: start APITable
     command: |
-      make up
+      make devenv-up
       echo "Welcome to APITable"
 
 # List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
