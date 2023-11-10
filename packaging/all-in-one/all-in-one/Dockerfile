@@ -44,7 +44,7 @@ ENV SEMVER_FULL=${SEMVER_FULL}
 
 ENV \
     BACKEND_BASE_URL=http://backend-server:8081/api/v1/ \
-    NEST_GRPC_URL=0.0.0.0:3334 \
+    ROOM_GRPC_URL=0.0.0.0:3334 \
     SOCKET_GRPC_URL=0.0.0.0:3007 \
     DATABUS_SERVER_BASE_URL=http://databus-server:8625 \
     \

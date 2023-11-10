@@ -29,7 +29,12 @@ import { Logger } from 'winston';
 export class GrpcSocketClient implements OnModuleInit {
   private socketClient!: SocketService;
 
-  constructor(@Inject(SOCKET_GRPC_CLIENT) private readonly client: ClientGrpc, @InjectLogger() private readonly logger: Logger) {}
+  constructor(
+    // @ts-ignore
+    @InjectLogger() private readonly logger: Logger,
+    // @ts-ignore
+    @Inject(SOCKET_GRPC_CLIENT) private readonly client: ClientGrpc,
+  ) {}
 
   onModuleInit(): any {
     this.socketClient = this.client.getService<SocketService>('SocketService');

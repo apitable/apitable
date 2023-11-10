@@ -23,6 +23,9 @@ import { GrpcSocketClient } from 'grpc/client/grpc.socket.client';
 import { protobufPackage } from 'grpc/generated/serving/SocketServingService';
 import { join } from 'path';
 import { GRPC_MAX_PACKAGE_SIZE, SOCKET_GRPC_CLIENT } from 'shared/common';
+import { BootstrapConstants } from 'shared/common/constants/bootstrap.constants';
+import { GatewayConstants } from 'shared/common/constants/socket.module.constants';
+import { BackendGrpcClient } from './backend.grpc.client';
 
 @Global()
 @Injectable()
@@ -31,7 +34,7 @@ export class GrpcSocketClientModuleOption implements ClientsModuleOptionsFactory
     return {
       transport: Transport.GRPC,
       options: {
-        url: process.env.SOCKET_GRPC_URL,
+        url: BootstrapConstants.SOCKET_GRPC_URL,
         package: [protobufPackage],
         protoPath: [
           join(__dirname, '../generated/serving/SocketServingService.proto'),
@@ -48,6 +51,25 @@ export class GrpcSocketClientModuleOption implements ClientsModuleOptionsFactory
   }
 }
 
+export const backendGrpcClientProvider = (): ClientProvider => {
+  return {
+    transport: Transport.GRPC,
+    options: {
+      url: BootstrapConstants.BACKEND_GRPC_URL,
+      maxSendMessageLength: GRPC_MAX_PACKAGE_SIZE,
+      maxReceiveMessageLength: GRPC_MAX_PACKAGE_SIZE,
+      package: [protobufPackage],
+      protoPath: [
+        join(__dirname, '../generated/serving/BackendServingService.proto'),
+        join(__dirname, '../generated/common/Core.proto')
+      ],
+      loader: {
+        json: true,
+      },
+    },
+  };
+};
+
 @Module({
   imports: [
     ClientsModule.registerAsync([
@@ -55,10 +77,14 @@ export class GrpcSocketClientModuleOption implements ClientsModuleOptionsFactory
         name: SOCKET_GRPC_CLIENT,
         useClass: GrpcSocketClientModuleOption,
       },
+      {
+        name: GatewayConstants.BACKEND_SERVICE,
+        useFactory: () => backendGrpcClientProvider(),
+      },
     ]),
   ],
-  providers: [GrpcSocketClient],
-  exports: [GrpcSocketClient],
+  providers: [BackendGrpcClient, GrpcSocketClient],
+  exports: [BackendGrpcClient, GrpcSocketClient],
 })
 export class GrpcClientModule {}
 
