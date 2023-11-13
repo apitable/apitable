@@ -55,6 +55,8 @@ import com.apitable.interfaces.billing.model.SubscriptionFeature;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
+import com.apitable.internal.service.InternalSpaceService;
+import com.apitable.internal.vo.InternalSpaceAutomationRunMessageV0;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
 import com.apitable.internal.vo.InternalSpaceUsageVo;
 import com.apitable.organization.dto.MemberDTO;
@@ -138,12 +140,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -242,6 +240,9 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
 
     @Resource
     private AutomationRobotServiceImpl automationRobotService;
+
+    @Resource
+    private InternalSpaceService internalSpaceService;
 
     @Value("${BILLING_APITABLE_ENABLED:false}")
     private Boolean billingApitableEnabled;
@@ -642,8 +643,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         long widgetCount = widgetMapper.selectCountBySpaceId(spaceId);
         spaceInfoVO.setWidgetNums(widgetCount);
         // robot runs statistics
-        long automationRunsNums = automationRobotService.getRobotRunsCountBySpaceId(spaceId);
-        spaceInfoVO.setAutomationRunsNums(automationRunsNums);
+        InternalSpaceAutomationRunMessageV0 automationRunMessageV0 = internalSpaceService.getAutomationRunMessageV0(spaceId);
+        spaceInfoVO.setAutomationRunsNums(automationRunMessageV0.getAutomationRunNums());
         // teams statistics
         long teamCount = iStaticsService.getTeamTotalCountBySpaceId(spaceId);
         spaceInfoVO.setDeptNumber(teamCount);
