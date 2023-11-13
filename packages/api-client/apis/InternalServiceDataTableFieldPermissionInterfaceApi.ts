@@ -9,7 +9,6 @@ import {SecurityAuthentication} from '../auth/auth';
 
 
 import { InternalPermissionRo } from '../models/InternalPermissionRo';
-import { ModelString } from '../models/ModelString';
 import { ResponseDataFieldPermissionView } from '../models/ResponseDataFieldPermissionView';
 import { ResponseDataListFieldPermissionView } from '../models/ResponseDataListFieldPermissionView';
 import { ResponseDataVoid } from '../models/ResponseDataVoid';
@@ -25,7 +24,7 @@ export class InternalServiceDataTableFieldPermissionInterfaceApiRequestFactory e
      * @param dstId table id
      * @param fieldIds list of field ids
      */
-    public async disableRoles(dstId: ModelString, fieldIds: string, _options?: Configuration): Promise<RequestContext> {
+    public async disableRoles(dstId: string, fieldIds: string, _options?: Configuration): Promise<RequestContext> {
         let _config = _options || this.configuration;
 
         // verify required parameter 'dstId' is not null or undefined

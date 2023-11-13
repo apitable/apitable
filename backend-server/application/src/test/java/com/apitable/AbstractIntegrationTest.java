@@ -20,6 +20,7 @@ package com.apitable;
 
 import cn.hutool.core.collection.CollUtil;
 import com.apitable.asset.service.IAssetCallbackService;
+import com.apitable.asset.service.IAssetService;
 import com.apitable.asset.service.IAssetUploadTokenService;
 import com.apitable.asset.task.AssetTask;
 import com.apitable.auth.service.IAuthService;
@@ -57,6 +58,7 @@ import com.apitable.space.service.ISpaceService;
 import com.apitable.space.service.IStaticsService;
 import com.apitable.sql.script.enhance.TablePrefixUtil;
 import com.apitable.starter.mail.autoconfigure.MailTemplate;
+import com.apitable.starter.oss.core.OssClientTemplate;
 import com.apitable.template.service.ITemplateAlbumService;
 import com.apitable.template.service.ITemplateService;
 import com.apitable.user.entity.UserEntity;
@@ -216,6 +218,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     @Autowired
     protected InternalSpaceService internalSpaceService;
 
+    @Autowired
+    protected IAssetService iAssetService;
+
     @Value("#{'${exclude}'.split(',')}")
     private List<String> excludeTables;
 
@@ -227,6 +232,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @MockBean
     protected MailTemplate mailTemplate;
+
+    @MockBean
+    protected OssClientTemplate ossTemplate;
 
     @BeforeEach
     public void beforeMethod() {

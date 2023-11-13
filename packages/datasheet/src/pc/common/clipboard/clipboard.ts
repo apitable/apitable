@@ -237,12 +237,12 @@ export class Clipboard {
       const fieldMap = Selectors.getFieldMap(state)!;
       if (tableHeader) { // paste
         // loop tableHeader to check if there is workdoc field
-        _selectWithWorkdocField = tableHeader.some((field) => field.type === FieldType.Workdoc);
+        _selectWithWorkdocField = tableHeader.some((field) => field.type === FieldType.WorkDoc);
       } else { // copy
         for(let idx = fieldMinIndex; idx <= fieldMaxIndex; idx++) {
           const { fieldId } = visibleColumns[idx];
           const field = fieldMap[fieldId];
-          if (field.type === FieldType.Workdoc) {
+          if (field.type === FieldType.WorkDoc) {
             _selectWithWorkdocField = true;
             break;
           }

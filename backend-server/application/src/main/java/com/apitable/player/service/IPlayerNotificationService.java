@@ -95,7 +95,7 @@ public interface IPlayerNotificationService extends IService<PlayerNotificationE
     /**
      * Set notification read
      */
-    boolean setNotificationIsRead(String[] ids, Integer isAll);
+    boolean setNotificationIsRead(String[] ids, Boolean isAll);
 
     /**
      * User message statistics
@@ -127,7 +127,7 @@ public interface IPlayerNotificationService extends IService<PlayerNotificationE
     /**
      * Get user notification list
      */
-    List<NotificationModelDTO> getUserNotificationByTypeAndIsRead(Long toUser, Integer isRead);
+    List<NotificationModelDTO> getUserNotificationByTypeAndIsRead(Long toUser, Boolean isRead);
 
     /**
      * Revoke notification

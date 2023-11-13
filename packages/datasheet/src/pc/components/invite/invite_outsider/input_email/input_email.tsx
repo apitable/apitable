@@ -23,11 +23,10 @@ import { Button } from '@apitable/components';
 import { ConfigConstant, IInviteMemberList, IReduxState, isEmail, Strings, t } from '@apitable/core';
 import { CheckOutlined, CloseOutlined, WarnOutlined } from '@apitable/icons';
 import { useEmailInviteInModal } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { InviteAlert } from '../components/invite-alert';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IInputEmailProps {
   cancel: () => void;
@@ -90,7 +89,7 @@ export const InputEmail = forwardRef(
     };
 
     const handleKeyDown = (e: any) => {
-      if (e.key === 'Enter' || e.key === ';') {
+      if (e.key === 'Enter' || e.key === ';' || e.key === ' ') {
         const inputValue = currentInput.trim();
 
         if (!inputValue || !isEmail(inputValue)) {
@@ -106,7 +105,7 @@ export const InputEmail = forwardRef(
         setMemberArr([...memberArr, inputValue]);
         setCurrentInput('');
 
-        if (e.key === ';') {
+        if (e.key === ';' || e.key === ' ') {
           e.preventDefault();
         }
       }

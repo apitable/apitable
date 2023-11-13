@@ -406,7 +406,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Bind mail and modify mail
      * Bind mail
-     * @param emailCodeValidateRo
+     * @param emailCodeValidateRo 
      */
     public bindEmailWithHttpInfo(emailCodeValidateRo: EmailCodeValidateRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.bindEmail(emailCodeValidateRo, _options);
@@ -430,7 +430,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Bind mail and modify mail
      * Bind mail
-     * @param emailCodeValidateRo
+     * @param emailCodeValidateRo 
      */
     public bindEmail(emailCodeValidateRo: EmailCodeValidateRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.bindEmailWithHttpInfo(emailCodeValidateRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -529,7 +529,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
 
     /**
      * Get the enabled experimental functions
-     * @param spaceId
+     * @param spaceId 
      */
     public getEnabledLabFeaturesWithHttpInfo(spaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataLabsFeatureVo>> {
         const requestContextPromise = this.requestFactory.getEnabledLabFeatures(spaceId, _options);
@@ -552,7 +552,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
 
     /**
      * Get the enabled experimental functions
-     * @param spaceId
+     * @param spaceId 
      */
     public getEnabledLabFeatures(spaceId: string, _options?: Configuration): Observable<ResponseDataLabsFeatureVo> {
         return this.getEnabledLabFeaturesWithHttpInfo(spaceId, _options).pipe(map((apiResponse: HttpInfo<ResponseDataLabsFeatureVo>) => apiResponse.data));
@@ -561,7 +561,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Users can only associate with invited mail when they have no other mail
      * Associate the invited mail
-     * @param userLinkEmailRo
+     * @param userLinkEmailRo 
      */
     public linkInviteEmailWithHttpInfo(userLinkEmailRo: UserLinkEmailRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.linkInviteEmail(userLinkEmailRo, _options);
@@ -585,7 +585,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Users can only associate with invited mail when they have no other mail
      * Associate the invited mail
-     * @param userLinkEmailRo
+     * @param userLinkEmailRo 
      */
     public linkInviteEmail(userLinkEmailRo: UserLinkEmailRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.linkInviteEmailWithHttpInfo(userLinkEmailRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -622,7 +622,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
 
     /**
      * Retrieve password
-     * @param retrievePwdOpRo
+     * @param retrievePwdOpRo 
      */
     public retrievePwdWithHttpInfo(retrievePwdOpRo: RetrievePwdOpRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.retrievePwd(retrievePwdOpRo, _options);
@@ -645,7 +645,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
 
     /**
      * Retrieve password
-     * @param retrievePwdOpRo
+     * @param retrievePwdOpRo 
      */
     public retrievePwd(retrievePwdOpRo: RetrievePwdOpRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.retrievePwdWithHttpInfo(retrievePwdOpRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -654,7 +654,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Bind mail and modify mail
      * Unbind mail
-     * @param codeValidateRo
+     * @param codeValidateRo 
      */
     public unbindEmailWithHttpInfo(codeValidateRo: CodeValidateRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.unbindEmail(codeValidateRo, _options);
@@ -678,7 +678,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Bind mail and modify mail
      * Unbind mail
-     * @param codeValidateRo
+     * @param codeValidateRo 
      */
     public unbindEmail(codeValidateRo: CodeValidateRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.unbindEmailWithHttpInfo(codeValidateRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -686,7 +686,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
 
     /**
      * Unbind mobile phone
-     * @param codeValidateRo
+     * @param codeValidateRo 
      */
     public unbindPhoneWithHttpInfo(codeValidateRo: CodeValidateRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.unbindPhone(codeValidateRo, _options);
@@ -709,7 +709,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
 
     /**
      * Unbind mobile phone
-     * @param codeValidateRo
+     * @param codeValidateRo 
      */
     public unbindPhone(codeValidateRo: CodeValidateRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.unbindPhoneWithHttpInfo(codeValidateRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -718,7 +718,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Request parameters cannot be all empty
      * Edit user information
-     * @param userOpRo
+     * @param userOpRo 
      */
     public updateWithHttpInfo(userOpRo: UserOpRo, _options?: Configuration): Observable<HttpInfo<ResponseDataString>> {
         const requestContextPromise = this.requestFactory.update(userOpRo, _options);
@@ -742,7 +742,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Request parameters cannot be all empty
      * Edit user information
-     * @param userOpRo
+     * @param userOpRo 
      */
     public update(userOpRo: UserOpRo, _options?: Configuration): Observable<ResponseDataString> {
         return this.updateWithHttpInfo(userOpRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataString>) => apiResponse.data));
@@ -751,7 +751,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Update the usage status of laboratory functions
      * Update the usage status of laboratory functions
-     * @param userLabsFeatureRo
+     * @param userLabsFeatureRo 
      */
     public updateLabsFeatureStatusWithHttpInfo(userLabsFeatureRo: UserLabsFeatureRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.updateLabsFeatureStatus(userLabsFeatureRo, _options);
@@ -775,7 +775,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Update the usage status of laboratory functions
      * Update the usage status of laboratory functions
-     * @param userLabsFeatureRo
+     * @param userLabsFeatureRo 
      */
     public updateLabsFeatureStatus(userLabsFeatureRo: UserLabsFeatureRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.updateLabsFeatureStatusWithHttpInfo(userLabsFeatureRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -784,7 +784,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Scene: 1. Personal setting and password modification; 2. Initialize after login for accounts without password
      * Change Password
-     * @param updatePwdOpRo
+     * @param updatePwdOpRo 
      */
     public updatePwdWithHttpInfo(updatePwdOpRo: UpdatePwdOpRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.updatePwd(updatePwdOpRo, _options);
@@ -808,7 +808,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Scene: 1. Personal setting and password modification; 2. Initialize after login for accounts without password
      * Change Password
-     * @param updatePwdOpRo
+     * @param updatePwdOpRo 
      */
     public updatePwd(updatePwdOpRo: UpdatePwdOpRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.updatePwdWithHttpInfo(updatePwdOpRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -883,7 +883,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Query whether the user is consistent with the specified mail. It can only be determined if the user has bound the mail
      * Query whether the user is consistent with the specified mail
-     * @param checkUserEmailRo
+     * @param checkUserEmailRo 
      */
     public validSameEmailWithHttpInfo(checkUserEmailRo: CheckUserEmailRo, _options?: Configuration): Observable<HttpInfo<ResponseDataBoolean>> {
         const requestContextPromise = this.requestFactory.validSameEmail(checkUserEmailRo, _options);
@@ -907,7 +907,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Query whether the user is consistent with the specified mail. It can only be determined if the user has bound the mail
      * Query whether the user is consistent with the specified mail
-     * @param checkUserEmailRo
+     * @param checkUserEmailRo 
      */
     public validSameEmail(checkUserEmailRo: CheckUserEmailRo, _options?: Configuration): Observable<ResponseDataBoolean> {
         return this.validSameEmailWithHttpInfo(checkUserEmailRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataBoolean>) => apiResponse.data));
@@ -916,7 +916,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Bind a new phone
      * Bind a new phone
-     * @param smsCodeValidateRo
+     * @param smsCodeValidateRo 
      */
     public verifyPhoneWithHttpInfo(smsCodeValidateRo: SmsCodeValidateRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.verifyPhone(smsCodeValidateRo, _options);
@@ -940,7 +940,7 @@ export class ObservableAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Bind a new phone
      * Bind a new phone
-     * @param smsCodeValidateRo
+     * @param smsCodeValidateRo 
      */
     public verifyPhone(smsCodeValidateRo: SmsCodeValidateRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.verifyPhoneWithHttpInfo(smsCodeValidateRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -967,7 +967,7 @@ export class ObservableAuthorizationRelatedInterfaceApi {
     /**
      * description:verifyType，available values: password sms_code email_code
      * login
-     * @param loginRo
+     * @param loginRo 
      */
     public loginWithHttpInfo(loginRo: LoginRo, _options?: Configuration): Observable<HttpInfo<ResponseDataLoginResultVO>> {
         const requestContextPromise = this.requestFactory.login(loginRo, _options);
@@ -991,7 +991,7 @@ export class ObservableAuthorizationRelatedInterfaceApi {
     /**
      * description:verifyType，available values: password sms_code email_code
      * login
-     * @param loginRo
+     * @param loginRo 
      */
     public login(loginRo: LoginRo, _options?: Configuration): Observable<ResponseDataLoginResultVO> {
         return this.loginWithHttpInfo(loginRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataLoginResultVO>) => apiResponse.data));
@@ -1062,7 +1062,7 @@ export class ObservableAuthorizationRelatedInterfaceApi {
     /**
      * serving for community edition
      * register
-     * @param registerRO
+     * @param registerRO 
      */
     public registerWithHttpInfo(registerRO: RegisterRO, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.register(registerRO, _options);
@@ -1086,7 +1086,7 @@ export class ObservableAuthorizationRelatedInterfaceApi {
     /**
      * serving for community edition
      * register
-     * @param registerRO
+     * @param registerRO 
      */
     public register(registerRO: RegisterRO, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.registerWithHttpInfo(registerRO, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -1112,7 +1112,7 @@ export class ObservableAutomationApi {
 
     /**
      * Create automation action
-     * @param createActionRO
+     * @param createActionRO 
      * @param resourceId node id
      * @param shareId share id
      */
@@ -1137,7 +1137,7 @@ export class ObservableAutomationApi {
 
     /**
      * Create automation action
-     * @param createActionRO
+     * @param createActionRO 
      * @param resourceId node id
      * @param shareId share id
      */
@@ -1147,7 +1147,7 @@ export class ObservableAutomationApi {
 
     /**
      * Create automation robot trigger
-     * @param createTriggerRO
+     * @param createTriggerRO 
      * @param resourceId node id
      * @param shareId share id
      */
@@ -1172,7 +1172,7 @@ export class ObservableAutomationApi {
 
     /**
      * Create automation robot trigger
-     * @param createTriggerRO
+     * @param createTriggerRO 
      * @param resourceId node id
      * @param shareId share id
      */
@@ -1284,7 +1284,7 @@ export class ObservableAutomationApi {
     }
 
     /**
-     * Get node automation detail.
+     * Get node automation detail. 
      * @param resourceId node id
      * @param robotId robot id
      * @param shareId share id
@@ -1309,7 +1309,7 @@ export class ObservableAutomationApi {
     }
 
     /**
-     * Get node automation detail.
+     * Get node automation detail. 
      * @param resourceId node id
      * @param robotId robot id
      * @param shareId share id
@@ -1392,7 +1392,7 @@ export class ObservableAutomationApi {
 
     /**
      * Update automation info.
-     * @param updateRobotRO
+     * @param updateRobotRO 
      * @param resourceId node id
      * @param robotId robot id
      * @param shareId share id
@@ -1418,7 +1418,7 @@ export class ObservableAutomationApi {
 
     /**
      * Update automation info.
-     * @param updateRobotRO
+     * @param updateRobotRO 
      * @param resourceId node id
      * @param robotId robot id
      * @param shareId share id
@@ -1429,7 +1429,7 @@ export class ObservableAutomationApi {
 
     /**
      * Update automation action
-     * @param updateActionRO
+     * @param updateActionRO 
      * @param resourceId node id
      * @param actionId action id
      * @param shareId share id
@@ -1455,7 +1455,7 @@ export class ObservableAutomationApi {
 
     /**
      * Update automation action
-     * @param updateActionRO
+     * @param updateActionRO 
      * @param resourceId node id
      * @param actionId action id
      * @param shareId share id
@@ -1466,7 +1466,7 @@ export class ObservableAutomationApi {
 
     /**
      * Update automation robot trigger
-     * @param updateTriggerRO
+     * @param updateTriggerRO 
      * @param resourceId node id
      * @param triggerId trigger id
      * @param shareId share id
@@ -1492,7 +1492,7 @@ export class ObservableAutomationApi {
 
     /**
      * Update automation robot trigger
-     * @param updateTriggerRO
+     * @param updateTriggerRO 
      * @param resourceId node id
      * @param triggerId trigger id
      * @param shareId share id
@@ -1522,7 +1522,7 @@ export class ObservableBasicModuleAccessoryCallbackInterfaceApi {
     /**
      * After S3 completes the client upload, it actively reaches the notification server
      * Resource upload completion notification callback
-     * @param assetUploadNotifyRO
+     * @param assetUploadNotifyRO 
      */
     public notifyCallbackWithHttpInfo(assetUploadNotifyRO: AssetUploadNotifyRO, _options?: Configuration): Observable<HttpInfo<ResponseDataListAssetUploadResult>> {
         const requestContextPromise = this.requestFactory.notifyCallback(assetUploadNotifyRO, _options);
@@ -1546,7 +1546,7 @@ export class ObservableBasicModuleAccessoryCallbackInterfaceApi {
     /**
      * After S3 completes the client upload, it actively reaches the notification server
      * Resource upload completion notification callback
-     * @param assetUploadNotifyRO
+     * @param assetUploadNotifyRO 
      */
     public notifyCallback(assetUploadNotifyRO: AssetUploadNotifyRO, _options?: Configuration): Observable<ResponseDataListAssetUploadResult> {
         return this.notifyCallbackWithHttpInfo(assetUploadNotifyRO, _options).pipe(map((apiResponse: HttpInfo<ResponseDataListAssetUploadResult>) => apiResponse.data));
@@ -1554,7 +1554,7 @@ export class ObservableBasicModuleAccessoryCallbackInterfaceApi {
 
     /**
      * widget upload callback
-     * @param widgetUploadNotifyRO
+     * @param widgetUploadNotifyRO 
      */
     public widgetCallbackWithHttpInfo(widgetUploadNotifyRO: WidgetUploadNotifyRO, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.widgetCallback(widgetUploadNotifyRO, _options);
@@ -1577,7 +1577,7 @@ export class ObservableBasicModuleAccessoryCallbackInterfaceApi {
 
     /**
      * widget upload callback
-     * @param widgetUploadNotifyRO
+     * @param widgetUploadNotifyRO 
      */
     public widgetCallback(widgetUploadNotifyRO: WidgetUploadNotifyRO, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.widgetCallbackWithHttpInfo(widgetUploadNotifyRO, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -1604,7 +1604,7 @@ export class ObservableBasicModuleAttachmentInterfaceApi {
     /**
      * The same attachment needs to pass the token repeatedly
      * Changes in the number of references to space attachment resources
-     * @param spaceAssetOpRo
+     * @param spaceAssetOpRo 
      */
     public citeWithHttpInfo(spaceAssetOpRo: SpaceAssetOpRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.cite(spaceAssetOpRo, _options);
@@ -1628,7 +1628,7 @@ export class ObservableBasicModuleAttachmentInterfaceApi {
     /**
      * The same attachment needs to pass the token repeatedly
      * Changes in the number of references to space attachment resources
-     * @param spaceAssetOpRo
+     * @param spaceAssetOpRo 
      */
     public cite(spaceAssetOpRo: SpaceAssetOpRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.citeWithHttpInfo(spaceAssetOpRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -1636,7 +1636,7 @@ export class ObservableBasicModuleAttachmentInterfaceApi {
 
     /**
      * Paging query pictures that need manual review
-     * @param page
+     * @param page 
      * @param pageObjectParams Page params
      */
     public readReviewsWithHttpInfo(page: Page, pageObjectParams: string, _options?: Configuration): Observable<HttpInfo<ResponseDataPageInfoAssetsAuditVo>> {
@@ -1660,7 +1660,7 @@ export class ObservableBasicModuleAttachmentInterfaceApi {
 
     /**
      * Paging query pictures that need manual review
-     * @param page
+     * @param page 
      * @param pageObjectParams Page params
      */
     public readReviews(page: Page, pageObjectParams: string, _options?: Configuration): Observable<ResponseDataPageInfoAssetsAuditVo> {
@@ -1670,7 +1670,7 @@ export class ObservableBasicModuleAttachmentInterfaceApi {
     /**
      * Submit the image review results, enter the reviewer\'s name when submitting
      * Submit image review results
-     * @param assetsAuditRo
+     * @param assetsAuditRo 
      */
     public submitAuditResultWithHttpInfo(assetsAuditRo: AssetsAuditRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.submitAuditResult(assetsAuditRo, _options);
@@ -1694,7 +1694,7 @@ export class ObservableBasicModuleAttachmentInterfaceApi {
     /**
      * Submit the image review results, enter the reviewer\'s name when submitting
      * Submit image review results
-     * @param assetsAuditRo
+     * @param assetsAuditRo 
      */
     public submitAuditResult(assetsAuditRo: AssetsAuditRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.submitAuditResultWithHttpInfo(assetsAuditRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -1703,7 +1703,7 @@ export class ObservableBasicModuleAttachmentInterfaceApi {
     /**
      * Upload resource files, any file type is unlimited
      * Upload resources
-     * @param attachOpRo
+     * @param attachOpRo 
      */
     public uploadWithHttpInfo(attachOpRo?: AttachOpRo, _options?: Configuration): Observable<HttpInfo<ResponseDataAssetUploadResult>> {
         const requestContextPromise = this.requestFactory.upload(attachOpRo, _options);
@@ -1727,7 +1727,7 @@ export class ObservableBasicModuleAttachmentInterfaceApi {
     /**
      * Upload resource files, any file type is unlimited
      * Upload resources
-     * @param attachOpRo
+     * @param attachOpRo 
      */
     public upload(attachOpRo?: AttachOpRo, _options?: Configuration): Observable<ResponseDataAssetUploadResult> {
         return this.uploadWithHttpInfo(attachOpRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataAssetUploadResult>) => apiResponse.data));
@@ -1735,7 +1735,7 @@ export class ObservableBasicModuleAttachmentInterfaceApi {
 
     /**
      * Image URL upload interface
-     * @param attachUrlOpRo
+     * @param attachUrlOpRo 
      */
     public urlUploadWithHttpInfo(attachUrlOpRo?: AttachUrlOpRo, _options?: Configuration): Observable<HttpInfo<ResponseDataAssetUploadResult>> {
         const requestContextPromise = this.requestFactory.urlUpload(attachUrlOpRo, _options);
@@ -1758,7 +1758,7 @@ export class ObservableBasicModuleAttachmentInterfaceApi {
 
     /**
      * Image URL upload interface
-     * @param attachUrlOpRo
+     * @param attachUrlOpRo 
      */
     public urlUpload(attachUrlOpRo?: AttachUrlOpRo, _options?: Configuration): Observable<ResponseDataAssetUploadResult> {
         return this.urlUploadWithHttpInfo(attachUrlOpRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataAssetUploadResult>) => apiResponse.data));
@@ -1785,7 +1785,7 @@ export class ObservableBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Invitation link token verification, the relevant invitation information can be obtained after the verification is successful
      * Invitation temporary code verification
-     * @param inviteValidRo
+     * @param inviteValidRo 
      */
     public inviteTokenValidWithHttpInfo(inviteValidRo: InviteValidRo, _options?: Configuration): Observable<HttpInfo<ResponseDataInviteInfoVo>> {
         const requestContextPromise = this.requestFactory.inviteTokenValid(inviteValidRo, _options);
@@ -1809,7 +1809,7 @@ export class ObservableBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Invitation link token verification, the relevant invitation information can be obtained after the verification is successful
      * Invitation temporary code verification
-     * @param inviteValidRo
+     * @param inviteValidRo 
      */
     public inviteTokenValid(inviteValidRo: InviteValidRo, _options?: Configuration): Observable<ResponseDataInviteInfoVo> {
         return this.inviteTokenValidWithHttpInfo(inviteValidRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataInviteInfoVo>) => apiResponse.data));
@@ -1818,7 +1818,7 @@ export class ObservableBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Email verification code; 1:Email binding, 2: Email registration, 3: General verification
      * Send email verification code
-     * @param emailOpRo
+     * @param emailOpRo 
      */
     public mailWithHttpInfo(emailOpRo: EmailOpRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.mail(emailOpRo, _options);
@@ -1842,7 +1842,7 @@ export class ObservableBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Email verification code; 1:Email binding, 2: Email registration, 3: General verification
      * Send email verification code
-     * @param emailOpRo
+     * @param emailOpRo 
      */
     public mail(emailOpRo: EmailOpRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.mailWithHttpInfo(emailOpRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -1851,7 +1851,7 @@ export class ObservableBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding, 8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
      * Send SMS verification code
-     * @param smsOpRo
+     * @param smsOpRo 
      */
     public sendWithHttpInfo(smsOpRo: SmsOpRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.send(smsOpRo, _options);
@@ -1875,7 +1875,7 @@ export class ObservableBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding, 8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
      * Send SMS verification code
-     * @param smsOpRo
+     * @param smsOpRo 
      */
     public send(smsOpRo: SmsOpRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.sendWithHttpInfo(smsOpRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -1884,7 +1884,7 @@ export class ObservableBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Usage scenario: Verify identity before changing email address when no mobile phone, change the main administrator
      * Email verification code verification
-     * @param emailCodeValidateRo
+     * @param emailCodeValidateRo 
      */
     public validateEmailWithHttpInfo(emailCodeValidateRo: EmailCodeValidateRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.validateEmail(emailCodeValidateRo, _options);
@@ -1908,7 +1908,7 @@ export class ObservableBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Usage scenario: Verify identity before changing email address when no mobile phone, change the main administrator
      * Email verification code verification
-     * @param emailCodeValidateRo
+     * @param emailCodeValidateRo 
      */
     public validateEmail(emailCodeValidateRo: EmailCodeValidateRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.validateEmailWithHttpInfo(emailCodeValidateRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -1917,7 +1917,7 @@ export class ObservableBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Usage scenarios: DingTalk binding, identity verification before changing the mobile phone mailbox, changing the main administrator
      * Mobile verification code verification
-     * @param smsCodeValidateRo
+     * @param smsCodeValidateRo 
      */
     public verifyPhone1WithHttpInfo(smsCodeValidateRo: SmsCodeValidateRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.verifyPhone1(smsCodeValidateRo, _options);
@@ -1941,7 +1941,7 @@ export class ObservableBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Usage scenarios: DingTalk binding, identity verification before changing the mobile phone mailbox, changing the main administrator
      * Mobile verification code verification
-     * @param smsCodeValidateRo
+     * @param smsCodeValidateRo 
      */
     public verifyPhone1(smsCodeValidateRo: SmsCodeValidateRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.verifyPhone1WithHttpInfo(smsCodeValidateRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -1967,7 +1967,7 @@ export class ObservableBasicsAttachmentUploadTokenInterfaceApi {
 
     /**
      * Get upload presigned URL
-     * @param assetUploadCertificateRO
+     * @param assetUploadCertificateRO 
      */
     public generatePreSignedUrlWithHttpInfo(assetUploadCertificateRO: AssetUploadCertificateRO, _options?: Configuration): Observable<HttpInfo<ResponseDataListAssetUploadCertificateVO>> {
         const requestContextPromise = this.requestFactory.generatePreSignedUrl(assetUploadCertificateRO, _options);
@@ -1990,7 +1990,7 @@ export class ObservableBasicsAttachmentUploadTokenInterfaceApi {
 
     /**
      * Get upload presigned URL
-     * @param assetUploadCertificateRO
+     * @param assetUploadCertificateRO 
      */
     public generatePreSignedUrl(assetUploadCertificateRO: AssetUploadCertificateRO, _options?: Configuration): Observable<ResponseDataListAssetUploadCertificateVO> {
         return this.generatePreSignedUrlWithHttpInfo(assetUploadCertificateRO, _options).pipe(map((apiResponse: HttpInfo<ResponseDataListAssetUploadCertificateVO>) => apiResponse.data));
@@ -1998,7 +1998,7 @@ export class ObservableBasicsAttachmentUploadTokenInterfaceApi {
 
     /**
      * Get asset signature url
-     * @param token
+     * @param token 
      */
     public getSignatureUrlWithHttpInfo(token: string, _options?: Configuration): Observable<HttpInfo<ResponseDataString>> {
         const requestContextPromise = this.requestFactory.getSignatureUrl(token, _options);
@@ -2021,7 +2021,7 @@ export class ObservableBasicsAttachmentUploadTokenInterfaceApi {
 
     /**
      * Get asset signature url
-     * @param token
+     * @param token 
      */
     public getSignatureUrl(token: string, _options?: Configuration): Observable<ResponseDataString> {
         return this.getSignatureUrlWithHttpInfo(token, _options).pipe(map((apiResponse: HttpInfo<ResponseDataString>) => apiResponse.data));
@@ -2029,7 +2029,7 @@ export class ObservableBasicsAttachmentUploadTokenInterfaceApi {
 
     /**
      * Batch get asset signature url
-     * @param assetUrlSignatureRo
+     * @param assetUrlSignatureRo 
      */
     public getSignatureUrlsWithHttpInfo(assetUrlSignatureRo: AssetUrlSignatureRo, _options?: Configuration): Observable<HttpInfo<ResponseDataListAssetUrlSignatureVo>> {
         const requestContextPromise = this.requestFactory.getSignatureUrls(assetUrlSignatureRo, _options);
@@ -2052,7 +2052,7 @@ export class ObservableBasicsAttachmentUploadTokenInterfaceApi {
 
     /**
      * Batch get asset signature url
-     * @param assetUrlSignatureRo
+     * @param assetUrlSignatureRo 
      */
     public getSignatureUrls(assetUrlSignatureRo: AssetUrlSignatureRo, _options?: Configuration): Observable<ResponseDataListAssetUrlSignatureVo> {
         return this.getSignatureUrlsWithHttpInfo(assetUrlSignatureRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataListAssetUrlSignatureVo>) => apiResponse.data));
@@ -2079,7 +2079,7 @@ export class ObservableClientInterfaceApi {
     /**
      * Get the application client version rendering information
      * Get application version information
-     * @param spaceId
+     * @param spaceId 
      * @param pipeline Construction serial number
      */
     public getTemplateInfoWithHttpInfo(spaceId?: string, pipeline?: string, _options?: Configuration): Observable<HttpInfo<ClientInfoVO>> {
@@ -2104,7 +2104,7 @@ export class ObservableClientInterfaceApi {
     /**
      * Get the application client version rendering information
      * Get application version information
-     * @param spaceId
+     * @param spaceId 
      * @param pipeline Construction serial number
      */
     public getTemplateInfo(spaceId?: string, pipeline?: string, _options?: Configuration): Observable<ClientInfoVO> {
@@ -2132,7 +2132,7 @@ export class ObservableContactMemberApiApi {
     /**
      * When adding new members, they can only be selected from within the organization structure and can be transferred by department
      * Add member
-     * @param teamAddMemberRo
+     * @param teamAddMemberRo 
      * @param xSpaceId space id
      */
     public addMemberWithHttpInfo(teamAddMemberRo: TeamAddMemberRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -2157,7 +2157,7 @@ export class ObservableContactMemberApiApi {
     /**
      * When adding new members, they can only be selected from within the organization structure and can be transferred by department
      * Add member
-     * @param teamAddMemberRo
+     * @param teamAddMemberRo 
      * @param xSpaceId space id
      */
     public addMember(teamAddMemberRo: TeamAddMemberRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -2202,7 +2202,7 @@ export class ObservableContactMemberApiApi {
     /**
      * action provides two deletion modes，1.delete from organization 2. delete from team
      * Delete members
-     * @param deleteBatchMemberRo
+     * @param deleteBatchMemberRo 
      * @param xSpaceId space id
      */
     public deleteBatchMemberWithHttpInfo(deleteBatchMemberRo: DeleteBatchMemberRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -2227,7 +2227,7 @@ export class ObservableContactMemberApiApi {
     /**
      * action provides two deletion modes，1.delete from organization 2. delete from team
      * Delete members
-     * @param deleteBatchMemberRo
+     * @param deleteBatchMemberRo 
      * @param xSpaceId space id
      */
     public deleteBatchMember(deleteBatchMemberRo: DeleteBatchMemberRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -2237,7 +2237,7 @@ export class ObservableContactMemberApiApi {
     /**
      * action provides two deletion modes.1.delete from organization 2. delete from team
      * Delete a Member
-     * @param deleteMemberRo
+     * @param deleteMemberRo 
      * @param xSpaceId space id
      */
     public deleteMemberWithHttpInfo(deleteMemberRo: DeleteMemberRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -2262,7 +2262,7 @@ export class ObservableContactMemberApiApi {
     /**
      * action provides two deletion modes.1.delete from organization 2. delete from team
      * Delete a Member
-     * @param deleteMemberRo
+     * @param deleteMemberRo 
      * @param xSpaceId space id
      */
     public deleteMember(deleteMemberRo: DeleteMemberRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -2410,7 +2410,7 @@ export class ObservableContactMemberApiApi {
     /**
      * Send an email to invite. The email is automatically bound to the platform user. The invited member will be in the state to be activated, and will not take effect until the user self activates.
      * Send an email to invite members
-     * @param inviteRo
+     * @param inviteRo 
      * @param xSpaceId space id
      */
     public inviteMemberWithHttpInfo(inviteRo: InviteRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataMemberUnitsVo>> {
@@ -2435,7 +2435,7 @@ export class ObservableContactMemberApiApi {
     /**
      * Send an email to invite. The email is automatically bound to the platform user. The invited member will be in the state to be activated, and will not take effect until the user self activates.
      * Send an email to invite members
-     * @param inviteRo
+     * @param inviteRo 
      * @param xSpaceId space id
      */
     public inviteMember(inviteRo: InviteRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataMemberUnitsVo> {
@@ -2445,7 +2445,7 @@ export class ObservableContactMemberApiApi {
     /**
      * If a member is not activated, it can send an invitation again regardless of whether the invitation has expired. After the invitation is successfully sent, the invitation link sent last time will be invalid.
      * Again send an email to invite members
-     * @param inviteMemberAgainRo
+     * @param inviteMemberAgainRo 
      * @param xSpaceId space id
      */
     public inviteMemberSingleWithHttpInfo(inviteMemberAgainRo: InviteMemberAgainRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -2470,7 +2470,7 @@ export class ObservableContactMemberApiApi {
     /**
      * If a member is not activated, it can send an invitation again regardless of whether the invitation has expired. After the invitation is successfully sent, the invitation link sent last time will be invalid.
      * Again send an email to invite members
-     * @param inviteMemberAgainRo
+     * @param inviteMemberAgainRo 
      * @param xSpaceId space id
      */
     public inviteMemberSingle(inviteMemberAgainRo: InviteMemberAgainRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -2517,7 +2517,7 @@ export class ObservableContactMemberApiApi {
     /**
      * Query all the members of the department,  including the members of the sub department. The query must be paging not full query. Description of Paging: <br/> pageNo: number of paging <br/>pageSize: size of paging。<br/>order: order in current page。<br/>sort: sorting in current page。<br/>simple usage example：{\"pageNo\":1,\"pageSize\":20}<br/>complex usage example：{\"pageNo\":1,\"pageSize\":20,\"order\":\"createTime,updateTime\",\"sort\":\"asc,desc\"}
      * Page query the team\'s member
-     * @param page
+     * @param page 
      * @param xSpaceId space id
      * @param pageObjectParams page\&#39;s parameter
      * @param teamId team id. if root team can lack teamId, teamId default 0.
@@ -2545,7 +2545,7 @@ export class ObservableContactMemberApiApi {
     /**
      * Query all the members of the department,  including the members of the sub department. The query must be paging not full query. Description of Paging: <br/> pageNo: number of paging <br/>pageSize: size of paging。<br/>order: order in current page。<br/>sort: sorting in current page。<br/>simple usage example：{\"pageNo\":1,\"pageSize\":20}<br/>complex usage example：{\"pageNo\":1,\"pageSize\":20,\"order\":\"createTime,updateTime\",\"sort\":\"asc,desc\"}
      * Page query the team\'s member
-     * @param page
+     * @param page 
      * @param xSpaceId space id
      * @param pageObjectParams page\&#39;s parameter
      * @param teamId team id. if root team can lack teamId, teamId default 0.
@@ -2558,7 +2558,7 @@ export class ObservableContactMemberApiApi {
     /**
      * Edit self member information
      * Edit self member information
-     * @param updateMemberOpRo
+     * @param updateMemberOpRo 
      * @param xSpaceId space id
      */
     public update2WithHttpInfo(updateMemberOpRo: UpdateMemberOpRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -2583,7 +2583,7 @@ export class ObservableContactMemberApiApi {
     /**
      * Edit self member information
      * Edit self member information
-     * @param updateMemberOpRo
+     * @param updateMemberOpRo 
      * @param xSpaceId space id
      */
     public update2(updateMemberOpRo: UpdateMemberOpRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -2593,7 +2593,7 @@ export class ObservableContactMemberApiApi {
     /**
      * Edit member info
      * Edit member info
-     * @param updateMemberRo
+     * @param updateMemberRo 
      * @param xSpaceId space id
      */
     public updateInfoWithHttpInfo(updateMemberRo: UpdateMemberRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -2618,7 +2618,7 @@ export class ObservableContactMemberApiApi {
     /**
      * Edit member info
      * Edit member info
-     * @param updateMemberRo
+     * @param updateMemberRo 
      * @param xSpaceId space id
      */
     public updateInfo(updateMemberRo: UpdateMemberRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -2628,7 +2628,7 @@ export class ObservableContactMemberApiApi {
     /**
      * assign members to departments
      * Update team
-     * @param updateMemberTeamRo
+     * @param updateMemberTeamRo 
      * @param xSpaceId space id
      */
     public updateTeam1WithHttpInfo(updateMemberTeamRo: UpdateMemberTeamRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -2653,7 +2653,7 @@ export class ObservableContactMemberApiApi {
     /**
      * assign members to departments
      * Update team
-     * @param updateMemberTeamRo
+     * @param updateMemberTeamRo 
      * @param xSpaceId space id
      */
     public updateTeam1(updateMemberTeamRo: UpdateMemberTeamRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -2663,7 +2663,7 @@ export class ObservableContactMemberApiApi {
     /**
      * Upload employee sheet，then parse it.
      * Upload employee sheet
-     * @param data
+     * @param data 
      * @param xSpaceId space id
      */
     public uploadExcelWithHttpInfo(data: UploadMemberTemplateRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataUploadParseResultVO>> {
@@ -2688,7 +2688,7 @@ export class ObservableContactMemberApiApi {
     /**
      * Upload employee sheet，then parse it.
      * Upload employee sheet
-     * @param data
+     * @param data 
      * @param xSpaceId space id
      */
     public uploadExcel(data: UploadMemberTemplateRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataUploadParseResultVO> {
@@ -2753,7 +2753,7 @@ export class ObservableContactOrganizationApiApi {
     /**
      * The most recently selected units are loaded by default when not keyword. The most recently added member of the same group are loaded when not selected. Load max 10
      * Load/search departments and members
-     * @param params
+     * @param params 
      * @param xSpaceId space id
      * @param linkId link id: node share id | template id
      * @param keyword keyword
@@ -2784,7 +2784,7 @@ export class ObservableContactOrganizationApiApi {
     /**
      * The most recently selected units are loaded by default when not keyword. The most recently added member of the same group are loaded when not selected. Load max 10
      * Load/search departments and members
-     * @param params
+     * @param params 
      * @param xSpaceId space id
      * @param linkId link id: node share id | template id
      * @param keyword keyword
@@ -2913,7 +2913,7 @@ export class ObservableContactOrganizationApiApi {
     /**
      * scenario field conversion（If the amount of data is large, the content requested by GET will exceed the limit.）
      * accurately query departments and members
-     * @param searchUnitRo
+     * @param searchUnitRo 
      * @param xSpaceId space id
      */
     public searchUnitInfoVoWithHttpInfo(searchUnitRo: SearchUnitRo, xSpaceId?: string, _options?: Configuration): Observable<HttpInfo<ResponseDataListUnitInfoVo>> {
@@ -2938,7 +2938,7 @@ export class ObservableContactOrganizationApiApi {
     /**
      * scenario field conversion（If the amount of data is large, the content requested by GET will exceed the limit.）
      * accurately query departments and members
-     * @param searchUnitRo
+     * @param searchUnitRo 
      * @param xSpaceId space id
      */
     public searchUnitInfoVo(searchUnitRo: SearchUnitRo, xSpaceId?: string, _options?: Configuration): Observable<ResponseDataListUnitInfoVo> {
@@ -2966,10 +2966,10 @@ export class ObservableContactsRoleApiApi {
     /**
      * add role members
      * add role members
-     * @param addRoleMemberRo
-     * @param roleId
+     * @param addRoleMemberRo 
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public addRoleMembersWithHttpInfo(addRoleMemberRo: AddRoleMemberRo, roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.addRoleMembers(addRoleMemberRo, roleId, xSpaceId, roleId2, _options);
@@ -2993,10 +2993,10 @@ export class ObservableContactsRoleApiApi {
     /**
      * add role members
      * add role members
-     * @param addRoleMemberRo
-     * @param roleId
+     * @param addRoleMemberRo 
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public addRoleMembers(addRoleMemberRo: AddRoleMemberRo, roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.addRoleMembersWithHttpInfo(addRoleMemberRo, roleId, xSpaceId, roleId2, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -3005,7 +3005,7 @@ export class ObservableContactsRoleApiApi {
     /**
      * create new role
      * create new role
-     * @param createRoleRo
+     * @param createRoleRo 
      * @param xSpaceId space id
      */
     public createRoleWithHttpInfo(createRoleRo: CreateRoleRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -3030,7 +3030,7 @@ export class ObservableContactsRoleApiApi {
     /**
      * create new role
      * create new role
-     * @param createRoleRo
+     * @param createRoleRo 
      * @param xSpaceId space id
      */
     public createRole(createRoleRo: CreateRoleRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -3040,9 +3040,9 @@ export class ObservableContactsRoleApiApi {
     /**
      * delete role
      * delete role
-     * @param roleId
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public deleteRole1WithHttpInfo(roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.deleteRole1(roleId, xSpaceId, roleId2, _options);
@@ -3066,9 +3066,9 @@ export class ObservableContactsRoleApiApi {
     /**
      * delete role
      * delete role
-     * @param roleId
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public deleteRole1(roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.deleteRole1WithHttpInfo(roleId, xSpaceId, roleId2, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -3077,10 +3077,10 @@ export class ObservableContactsRoleApiApi {
     /**
      * query the role\'s members
      * query role members
-     * @param roleId
-     * @param page
+     * @param roleId 
+     * @param page 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      * @param pageObjectParams page parameters
      */
     public getRoleMembersWithHttpInfo(roleId: number, page: PageVoid, xSpaceId: string, roleId2: string, pageObjectParams: string, _options?: Configuration): Observable<HttpInfo<ResponseDataPageInfoRoleMemberVo>> {
@@ -3105,10 +3105,10 @@ export class ObservableContactsRoleApiApi {
     /**
      * query the role\'s members
      * query role members
-     * @param roleId
-     * @param page
+     * @param roleId 
+     * @param page 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      * @param pageObjectParams page parameters
      */
     public getRoleMembers(roleId: number, page: PageVoid, xSpaceId: string, roleId2: string, pageObjectParams: string, _options?: Configuration): Observable<ResponseDataPageInfoRoleMemberVo> {
@@ -3184,10 +3184,10 @@ export class ObservableContactsRoleApiApi {
     /**
      * remove role members
      * remove role members
-     * @param deleteRoleMemberRo
-     * @param roleId
+     * @param deleteRoleMemberRo 
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public removeRoleMembersWithHttpInfo(deleteRoleMemberRo: DeleteRoleMemberRo, roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.removeRoleMembers(deleteRoleMemberRo, roleId, xSpaceId, roleId2, _options);
@@ -3211,10 +3211,10 @@ export class ObservableContactsRoleApiApi {
     /**
      * remove role members
      * remove role members
-     * @param deleteRoleMemberRo
-     * @param roleId
+     * @param deleteRoleMemberRo 
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public removeRoleMembers(deleteRoleMemberRo: DeleteRoleMemberRo, roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.removeRoleMembersWithHttpInfo(deleteRoleMemberRo, roleId, xSpaceId, roleId2, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -3223,10 +3223,10 @@ export class ObservableContactsRoleApiApi {
     /**
      * update role information
      * update role information
-     * @param updateRoleRo
-     * @param roleId
+     * @param updateRoleRo 
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public updateRoleWithHttpInfo(updateRoleRo: UpdateRoleRo, roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.updateRole(updateRoleRo, roleId, xSpaceId, roleId2, _options);
@@ -3250,10 +3250,10 @@ export class ObservableContactsRoleApiApi {
     /**
      * update role information
      * update role information
-     * @param updateRoleRo
-     * @param roleId
+     * @param updateRoleRo 
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public updateRole(updateRoleRo: UpdateRoleRo, roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.updateRoleWithHttpInfo(updateRoleRo, roleId, xSpaceId, roleId2, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -3280,7 +3280,7 @@ export class ObservableContactsTeamApiApi {
     /**
      * Create team
      * Create team
-     * @param createTeamRo
+     * @param createTeamRo 
      * @param xSpaceId space id
      */
     public createTeamWithHttpInfo(createTeamRo: CreateTeamRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -3305,7 +3305,7 @@ export class ObservableContactsTeamApiApi {
     /**
      * Create team
      * Create team
-     * @param createTeamRo
+     * @param createTeamRo 
      * @param xSpaceId space id
      */
     public createTeam(createTeamRo: CreateTeamRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -3521,7 +3521,7 @@ export class ObservableContactsTeamApiApi {
     /**
      * Update team info. If modify team level,default sort in the end of parent team.
      * Update team info
-     * @param updateTeamRo
+     * @param updateTeamRo 
      * @param xSpaceId space id
      */
     public updateTeamWithHttpInfo(updateTeamRo: UpdateTeamRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -3546,7 +3546,7 @@ export class ObservableContactsTeamApiApi {
     /**
      * Update team info. If modify team level,default sort in the end of parent team.
      * Update team info
-     * @param updateTeamRo
+     * @param updateTeamRo 
      * @param xSpaceId space id
      */
     public updateTeam(updateTeamRo: UpdateTeamRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -3605,7 +3605,7 @@ export class ObservableDeveloperConfigAPIApi {
     /**
      * Refresh developer access token before verifying phone number.If there is no verification mailbox, skip verification.
      * Refresh the developer access token
-     * @param refreshApiKeyRo
+     * @param refreshApiKeyRo 
      */
     public refreshApiKeyWithHttpInfo(refreshApiKeyRo: RefreshApiKeyRo, _options?: Configuration): Observable<HttpInfo<ResponseDataDeveloperInfoVo>> {
         const requestContextPromise = this.requestFactory.refreshApiKey(refreshApiKeyRo, _options);
@@ -3629,7 +3629,7 @@ export class ObservableDeveloperConfigAPIApi {
     /**
      * Refresh developer access token before verifying phone number.If there is no verification mailbox, skip verification.
      * Refresh the developer access token
-     * @param refreshApiKeyRo
+     * @param refreshApiKeyRo 
      */
     public refreshApiKey(refreshApiKeyRo: RefreshApiKeyRo, _options?: Configuration): Observable<ResponseDataDeveloperInfoVo> {
         return this.refreshApiKeyWithHttpInfo(refreshApiKeyRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataDeveloperInfoVo>) => apiResponse.data));
@@ -3638,7 +3638,7 @@ export class ObservableDeveloperConfigAPIApi {
     /**
      * Provides a mid-tier validation access token.
      * Verify the access token
-     * @param apiKey
+     * @param apiKey 
      */
     public validateApiKeyWithHttpInfo(apiKey: string, _options?: Configuration): Observable<HttpInfo<ResponseDataBoolean>> {
         const requestContextPromise = this.requestFactory.validateApiKey(apiKey, _options);
@@ -3662,7 +3662,7 @@ export class ObservableDeveloperConfigAPIApi {
     /**
      * Provides a mid-tier validation access token.
      * Verify the access token
-     * @param apiKey
+     * @param apiKey 
      */
     public validateApiKey(apiKey: string, _options?: Configuration): Observable<ResponseDataBoolean> {
         return this.validateApiKeyWithHttpInfo(apiKey, _options).pipe(map((apiResponse: HttpInfo<ResponseDataBoolean>) => apiResponse.data));
@@ -3721,7 +3721,7 @@ export class ObservableInternalServerAssetAPIApi {
 
     /**
      * Batch get asset signature url
-     * @param resourceKeys
+     * @param resourceKeys 
      */
     public getSignatureUrls1WithHttpInfo(resourceKeys: Array<string>, _options?: Configuration): Observable<HttpInfo<ResponseDataListAssetUrlSignatureVo>> {
         const requestContextPromise = this.requestFactory.getSignatureUrls1(resourceKeys, _options);
@@ -3744,7 +3744,7 @@ export class ObservableInternalServerAssetAPIApi {
 
     /**
      * Batch get asset signature url
-     * @param resourceKeys
+     * @param resourceKeys 
      */
     public getSignatureUrls1(resourceKeys: Array<string>, _options?: Configuration): Observable<ResponseDataListAssetUrlSignatureVo> {
         return this.getSignatureUrls1WithHttpInfo(resourceKeys, _options).pipe(map((apiResponse: HttpInfo<ResponseDataListAssetUrlSignatureVo>) => apiResponse.data));
@@ -3804,7 +3804,7 @@ export class ObservableInternalServerOrgAPIApi {
     /**
      * The most recently selected units are loaded by default when not keyword. The most recently added member of the same group are loaded when not selected. Load max 10
      * Load/search departments and members
-     * @param params
+     * @param params 
      * @param xSpaceId space id
      * @param userId user id
      * @param keyword keyword
@@ -3835,7 +3835,7 @@ export class ObservableInternalServerOrgAPIApi {
     /**
      * The most recently selected units are loaded by default when not keyword. The most recently added member of the same group are loaded when not selected. Load max 10
      * Load/search departments and members
-     * @param params
+     * @param params 
      * @param xSpaceId space id
      * @param userId user id
      * @param keyword keyword
@@ -3872,7 +3872,7 @@ export class ObservableInternalServiceDataTableFieldPermissionInterfaceApi {
      * @param dstId table id
      * @param fieldIds list of field ids
      */
-    public disableRolesWithHttpInfo(dstId: ModelString, fieldIds: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
+    public disableRolesWithHttpInfo(dstId: string, fieldIds: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.disableRoles(dstId, fieldIds, _options);
 
         // build promise chain
@@ -3897,7 +3897,7 @@ export class ObservableInternalServiceDataTableFieldPermissionInterfaceApi {
      * @param dstId table id
      * @param fieldIds list of field ids
      */
-    public disableRoles(dstId: ModelString, fieldIds: string, _options?: Configuration): Observable<ResponseDataVoid> {
+    public disableRoles(dstId: string, fieldIds: string, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.disableRolesWithHttpInfo(dstId, fieldIds, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
     }
 
@@ -3938,7 +3938,7 @@ export class ObservableInternalServiceDataTableFieldPermissionInterfaceApi {
 
     /**
      * get field permission set for multiple nodes
-     * @param internalPermissionRo
+     * @param internalPermissionRo 
      */
     public getMultiFieldPermissionViewsWithHttpInfo(internalPermissionRo: InternalPermissionRo, _options?: Configuration): Observable<HttpInfo<ResponseDataListFieldPermissionView>> {
         const requestContextPromise = this.requestFactory.getMultiFieldPermissionViews(internalPermissionRo, _options);
@@ -3961,7 +3961,7 @@ export class ObservableInternalServiceDataTableFieldPermissionInterfaceApi {
 
     /**
      * get field permission set for multiple nodes
-     * @param internalPermissionRo
+     * @param internalPermissionRo 
      */
     public getMultiFieldPermissionViews(internalPermissionRo: InternalPermissionRo, _options?: Configuration): Observable<ResponseDataListFieldPermissionView> {
         return this.getMultiFieldPermissionViewsWithHttpInfo(internalPermissionRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataListFieldPermissionView>) => apiResponse.data));
@@ -3988,7 +3988,7 @@ export class ObservableInternalServiceFieldServiceInterfaceApi {
     /**
      * get url related information
      * get url related information
-     * @param urlsWrapperRo
+     * @param urlsWrapperRo 
      */
     public urlContentsAwareFillWithHttpInfo(urlsWrapperRo: UrlsWrapperRo, _options?: Configuration): Observable<HttpInfo<ResponseDataUrlAwareContentsVo>> {
         const requestContextPromise = this.requestFactory.urlContentsAwareFill(urlsWrapperRo, _options);
@@ -4012,7 +4012,7 @@ export class ObservableInternalServiceFieldServiceInterfaceApi {
     /**
      * get url related information
      * get url related information
-     * @param urlsWrapperRo
+     * @param urlsWrapperRo 
      */
     public urlContentsAwareFill(urlsWrapperRo: UrlsWrapperRo, _options?: Configuration): Observable<ResponseDataUrlAwareContentsVo> {
         return this.urlContentsAwareFillWithHttpInfo(urlsWrapperRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataUrlAwareContentsVo>) => apiResponse.data));
@@ -4039,8 +4039,8 @@ export class ObservableInternalServiceNodeInterfaceApi {
     /**
      * create a table node
      * create a table node
-     * @param createDatasheetRo
-     * @param spaceId
+     * @param createDatasheetRo 
+     * @param spaceId 
      */
     public createDatasheetWithHttpInfo(createDatasheetRo: CreateDatasheetRo, spaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataCreateDatasheetVo>> {
         const requestContextPromise = this.requestFactory.createDatasheet(createDatasheetRo, spaceId, _options);
@@ -4064,8 +4064,8 @@ export class ObservableInternalServiceNodeInterfaceApi {
     /**
      * create a table node
      * create a table node
-     * @param createDatasheetRo
-     * @param spaceId
+     * @param createDatasheetRo 
+     * @param spaceId 
      */
     public createDatasheet(createDatasheetRo: CreateDatasheetRo, spaceId: string, _options?: Configuration): Observable<ResponseDataCreateDatasheetVo> {
         return this.createDatasheetWithHttpInfo(createDatasheetRo, spaceId, _options).pipe(map((apiResponse: HttpInfo<ResponseDataCreateDatasheetVo>) => apiResponse.data));
@@ -4074,8 +4074,8 @@ export class ObservableInternalServiceNodeInterfaceApi {
     /**
      * delete node
      * delete node
-     * @param spaceId
-     * @param nodeId
+     * @param spaceId 
+     * @param nodeId 
      */
     public deleteNodeWithHttpInfo(spaceId: string, nodeId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.deleteNode(spaceId, nodeId, _options);
@@ -4099,8 +4099,8 @@ export class ObservableInternalServiceNodeInterfaceApi {
     /**
      * delete node
      * delete node
-     * @param spaceId
-     * @param nodeId
+     * @param spaceId 
+     * @param nodeId 
      */
     public deleteNode(spaceId: string, nodeId: string, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.deleteNodeWithHttpInfo(spaceId, nodeId, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -4109,10 +4109,10 @@ export class ObservableInternalServiceNodeInterfaceApi {
     /**
      * scenario: query an existing read-only dashboard
      * Get filter nodes by type, permissions and node name.
-     * @param spaceId
-     * @param type
-     * @param nodePermissions
-     * @param keyword
+     * @param spaceId 
+     * @param type 
+     * @param nodePermissions 
+     * @param keyword 
      */
     public filterWithHttpInfo(spaceId: string, type: number, nodePermissions?: Array<number>, keyword?: string, _options?: Configuration): Observable<HttpInfo<ResponseDataListNodeInfo>> {
         const requestContextPromise = this.requestFactory.filter(spaceId, type, nodePermissions, keyword, _options);
@@ -4136,10 +4136,10 @@ export class ObservableInternalServiceNodeInterfaceApi {
     /**
      * scenario: query an existing read-only dashboard
      * Get filter nodes by type, permissions and node name.
-     * @param spaceId
-     * @param type
-     * @param nodePermissions
-     * @param keyword
+     * @param spaceId 
+     * @param type 
+     * @param nodePermissions 
+     * @param keyword 
      */
     public filter(spaceId: string, type: number, nodePermissions?: Array<number>, keyword?: string, _options?: Configuration): Observable<ResponseDataListNodeInfo> {
         return this.filterWithHttpInfo(spaceId, type, nodePermissions, keyword, _options).pipe(map((apiResponse: HttpInfo<ResponseDataListNodeInfo>) => apiResponse.data));
@@ -4165,7 +4165,7 @@ export class ObservableInternalServiceNodePermissionInterfaceApi {
 
     /**
      * Get permission set for multiple nodes
-     * @param internalPermissionRo
+     * @param internalPermissionRo 
      */
     public getMultiNodePermissionsWithHttpInfo(internalPermissionRo: InternalPermissionRo, _options?: Configuration): Observable<HttpInfo<ResponseDataListDatasheetPermissionView>> {
         const requestContextPromise = this.requestFactory.getMultiNodePermissions(internalPermissionRo, _options);
@@ -4188,7 +4188,7 @@ export class ObservableInternalServiceNodePermissionInterfaceApi {
 
     /**
      * Get permission set for multiple nodes
-     * @param internalPermissionRo
+     * @param internalPermissionRo 
      */
     public getMultiNodePermissions(internalPermissionRo: InternalPermissionRo, _options?: Configuration): Observable<ResponseDataListDatasheetPermissionView> {
         return this.getMultiNodePermissionsWithHttpInfo(internalPermissionRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataListDatasheetPermissionView>) => apiResponse.data));
@@ -4248,7 +4248,7 @@ export class ObservableInternalServiceNotificationInterfaceApi {
     /**
      * send a message
      * send a message
-     * @param notificationCreateRo
+     * @param notificationCreateRo 
      */
     public create4WithHttpInfo(notificationCreateRo: Array<NotificationCreateRo>, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.create4(notificationCreateRo, _options);
@@ -4272,7 +4272,7 @@ export class ObservableInternalServiceNotificationInterfaceApi {
     /**
      * send a message
      * send a message
-     * @param notificationCreateRo
+     * @param notificationCreateRo 
      */
     public create4(notificationCreateRo: Array<NotificationCreateRo>, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.create4WithHttpInfo(notificationCreateRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -4299,7 +4299,7 @@ export class ObservableInternalServiceSpaceInterfaceApi {
     /**
      * Provides the authentication function of the middle layer request, and queries the API aps information in the subscription plan corresponding to the space.
      * get api qps information of a specified space
-     * @param spaceId
+     * @param spaceId 
      */
     public apiRateLimitWithHttpInfo(spaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataInternalSpaceApiRateLimitVo>> {
         const requestContextPromise = this.requestFactory.apiRateLimit(spaceId, _options);
@@ -4323,7 +4323,7 @@ export class ObservableInternalServiceSpaceInterfaceApi {
     /**
      * Provides the authentication function of the middle layer request, and queries the API aps information in the subscription plan corresponding to the space.
      * get api qps information of a specified space
-     * @param spaceId
+     * @param spaceId 
      */
     public apiRateLimit(spaceId: string, _options?: Configuration): Observable<ResponseDataInternalSpaceApiRateLimitVo> {
         return this.apiRateLimitWithHttpInfo(spaceId, _options).pipe(map((apiResponse: HttpInfo<ResponseDataInternalSpaceApiRateLimitVo>) => apiResponse.data));
@@ -4332,7 +4332,7 @@ export class ObservableInternalServiceSpaceInterfaceApi {
     /**
      * Provides the authentication function of the middle layer request, and queries the API usage information in the subscription plan corresponding to the space.
      * get api usage information of a specified space
-     * @param spaceId
+     * @param spaceId 
      */
     public apiUsagesWithHttpInfo(spaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataInternalSpaceApiUsageVo>> {
         const requestContextPromise = this.requestFactory.apiUsages(spaceId, _options);
@@ -4356,7 +4356,7 @@ export class ObservableInternalServiceSpaceInterfaceApi {
     /**
      * Provides the authentication function of the middle layer request, and queries the API usage information in the subscription plan corresponding to the space.
      * get api usage information of a specified space
-     * @param spaceId
+     * @param spaceId 
      */
     public apiUsages(spaceId: string, _options?: Configuration): Observable<ResponseDataInternalSpaceApiUsageVo> {
         return this.apiUsagesWithHttpInfo(spaceId, _options).pipe(map((apiResponse: HttpInfo<ResponseDataInternalSpaceApiUsageVo>) => apiResponse.data));
@@ -4519,7 +4519,7 @@ export class ObservableInternalServiceSpaceInterfaceApi {
 
     /**
      * get space information
-     * @param spaceId
+     * @param spaceId 
      */
     public labsWithHttpInfo(spaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataInternalSpaceInfoVo>> {
         const requestContextPromise = this.requestFactory.labs(spaceId, _options);
@@ -4542,7 +4542,7 @@ export class ObservableInternalServiceSpaceInterfaceApi {
 
     /**
      * get space information
-     * @param spaceId
+     * @param spaceId 
      */
     public labs(spaceId: string, _options?: Configuration): Observable<ResponseDataInternalSpaceInfoVo> {
         return this.labsWithHttpInfo(spaceId, _options).pipe(map((apiResponse: HttpInfo<ResponseDataInternalSpaceInfoVo>) => apiResponse.data));
@@ -4550,8 +4550,8 @@ export class ObservableInternalServiceSpaceInterfaceApi {
 
     /**
      * get space information
-     * @param spaceStatisticsRo
-     * @param spaceId
+     * @param spaceStatisticsRo 
+     * @param spaceId 
      */
     public statisticsWithHttpInfo(spaceStatisticsRo: SpaceStatisticsRo, spaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.statistics(spaceStatisticsRo, spaceId, _options);
@@ -4574,8 +4574,8 @@ export class ObservableInternalServiceSpaceInterfaceApi {
 
     /**
      * get space information
-     * @param spaceStatisticsRo
-     * @param spaceId
+     * @param spaceStatisticsRo 
+     * @param spaceId 
      */
     public statistics(spaceStatisticsRo: SpaceStatisticsRo, spaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.statisticsWithHttpInfo(spaceStatisticsRo, spaceId, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -4602,7 +4602,7 @@ export class ObservableInternalServiceUserInterfaceApi {
     /**
      * Close and log off the cooling-off period user account
      * Close and log off the cooling-off period user account
-     * @param userId
+     * @param userId 
      */
     public closePausedUserAccountWithHttpInfo(userId: number, _options?: Configuration): Observable<HttpInfo<ResponseDataBoolean>> {
         const requestContextPromise = this.requestFactory.closePausedUserAccount(userId, _options);
@@ -4626,7 +4626,7 @@ export class ObservableInternalServiceUserInterfaceApi {
     /**
      * Close and log off the cooling-off period user account
      * Close and log off the cooling-off period user account
-     * @param userId
+     * @param userId 
      */
     public closePausedUserAccount(userId: number, _options?: Configuration): Observable<ResponseDataBoolean> {
         return this.closePausedUserAccountWithHttpInfo(userId, _options).pipe(map((apiResponse: HttpInfo<ResponseDataBoolean>) => apiResponse.data));
@@ -4666,7 +4666,7 @@ export class ObservableInternalServiceUserInterfaceApi {
     /**
      * get the cooling-off period user operation record
      * get the cooling-off period user operation record
-     * @param pausedUserHistoryRo
+     * @param pausedUserHistoryRo 
      */
     public getUserHistoriesWithHttpInfo(pausedUserHistoryRo: PausedUserHistoryRo, _options?: Configuration): Observable<HttpInfo<ResponseDataListPausedUserHistoryDto>> {
         const requestContextPromise = this.requestFactory.getUserHistories(pausedUserHistoryRo, _options);
@@ -4690,7 +4690,7 @@ export class ObservableInternalServiceUserInterfaceApi {
     /**
      * get the cooling-off period user operation record
      * get the cooling-off period user operation record
-     * @param pausedUserHistoryRo
+     * @param pausedUserHistoryRo 
      */
     public getUserHistories(pausedUserHistoryRo: PausedUserHistoryRo, _options?: Configuration): Observable<ResponseDataListPausedUserHistoryDto> {
         return this.getUserHistoriesWithHttpInfo(pausedUserHistoryRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataListPausedUserHistoryDto>) => apiResponse.data));
@@ -4826,7 +4826,7 @@ export class ObservablePlayerSystemActivityAPIApi {
     /**
      * Scene: After triggering the guided click event, modify the state or the cumulative number of times.
      * Trigger Wizard
-     * @param activityStatusRo
+     * @param activityStatusRo 
      */
     public triggerWizardWithHttpInfo(activityStatusRo: ActivityStatusRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.triggerWizard(activityStatusRo, _options);
@@ -4850,7 +4850,7 @@ export class ObservablePlayerSystemActivityAPIApi {
     /**
      * Scene: After triggering the guided click event, modify the state or the cumulative number of times.
      * Trigger Wizard
-     * @param activityStatusRo
+     * @param activityStatusRo 
      */
     public triggerWizard(activityStatusRo: ActivityStatusRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.triggerWizardWithHttpInfo(activityStatusRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -4876,7 +4876,7 @@ export class ObservablePlayerSystemNotificationAPIApi {
 
     /**
      * Create Notification
-     * @param notificationCreateRo
+     * @param notificationCreateRo 
      */
     public create2WithHttpInfo(notificationCreateRo: Array<NotificationCreateRo>, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.create2(notificationCreateRo, _options);
@@ -4899,7 +4899,7 @@ export class ObservablePlayerSystemNotificationAPIApi {
 
     /**
      * Create Notification
-     * @param notificationCreateRo
+     * @param notificationCreateRo 
      */
     public create2(notificationCreateRo: Array<NotificationCreateRo>, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.create2WithHttpInfo(notificationCreateRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -4907,7 +4907,7 @@ export class ObservablePlayerSystemNotificationAPIApi {
 
     /**
      * Delete Notification
-     * @param notificationReadRo
+     * @param notificationReadRo 
      */
     public delete4WithHttpInfo(notificationReadRo: NotificationReadRo, _options?: Configuration): Observable<HttpInfo<ResponseDataBoolean>> {
         const requestContextPromise = this.requestFactory.delete4(notificationReadRo, _options);
@@ -4930,7 +4930,7 @@ export class ObservablePlayerSystemNotificationAPIApi {
 
     /**
      * Delete Notification
-     * @param notificationReadRo
+     * @param notificationReadRo 
      */
     public delete4(notificationReadRo: NotificationReadRo, _options?: Configuration): Observable<ResponseDataBoolean> {
         return this.delete4WithHttpInfo(notificationReadRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataBoolean>) => apiResponse.data));
@@ -4939,7 +4939,7 @@ export class ObservablePlayerSystemNotificationAPIApi {
     /**
      * Default: System Notification
      * Get Notification Detail List
-     * @param notificationListRo
+     * @param notificationListRo 
      */
     public list2WithHttpInfo(notificationListRo: NotificationListRo, _options?: Configuration): Observable<HttpInfo<ResponseDataListNotificationDetailVo>> {
         const requestContextPromise = this.requestFactory.list2(notificationListRo, _options);
@@ -4963,7 +4963,7 @@ export class ObservablePlayerSystemNotificationAPIApi {
     /**
      * Default: System Notification
      * Get Notification Detail List
-     * @param notificationListRo
+     * @param notificationListRo 
      */
     public list2(notificationListRo: NotificationListRo, _options?: Configuration): Observable<ResponseDataListNotificationDetailVo> {
         return this.list2WithHttpInfo(notificationListRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataListNotificationDetailVo>) => apiResponse.data));
@@ -4972,7 +4972,7 @@ export class ObservablePlayerSystemNotificationAPIApi {
     /**
      * Description of Paging: <br/> pageNo: number of paging <br/>pageSize: size of paging。<br/>order: order in current page。<br/>sort: sorting in current page。<br/>simple usage example：{\"pageNo\":1,\"pageSize\":20}<br/>complex usage example：{\"pageNo\":1,\"pageSize\":20,\"order\":\"createTime,updateTime\",\"sort\":\"asc,desc\"}
      * Get Notification Page Info
-     * @param notificationPageRo
+     * @param notificationPageRo 
      */
     public pageWithHttpInfo(notificationPageRo: NotificationPageRo, _options?: Configuration): Observable<HttpInfo<ResponseDataListNotificationDetailVo>> {
         const requestContextPromise = this.requestFactory.page(notificationPageRo, _options);
@@ -4996,7 +4996,7 @@ export class ObservablePlayerSystemNotificationAPIApi {
     /**
      * Description of Paging: <br/> pageNo: number of paging <br/>pageSize: size of paging。<br/>order: order in current page。<br/>sort: sorting in current page。<br/>simple usage example：{\"pageNo\":1,\"pageSize\":20}<br/>complex usage example：{\"pageNo\":1,\"pageSize\":20,\"order\":\"createTime,updateTime\",\"sort\":\"asc,desc\"}
      * Get Notification Page Info
-     * @param notificationPageRo
+     * @param notificationPageRo 
      */
     public page(notificationPageRo: NotificationPageRo, _options?: Configuration): Observable<ResponseDataListNotificationDetailVo> {
         return this.pageWithHttpInfo(notificationPageRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataListNotificationDetailVo>) => apiResponse.data));
@@ -5004,7 +5004,7 @@ export class ObservablePlayerSystemNotificationAPIApi {
 
     /**
      * Mark Notification Read
-     * @param notificationReadRo
+     * @param notificationReadRo 
      */
     public readWithHttpInfo(notificationReadRo: NotificationReadRo, _options?: Configuration): Observable<HttpInfo<ResponseDataBoolean>> {
         const requestContextPromise = this.requestFactory.read(notificationReadRo, _options);
@@ -5027,7 +5027,7 @@ export class ObservablePlayerSystemNotificationAPIApi {
 
     /**
      * Mark Notification Read
-     * @param notificationReadRo
+     * @param notificationReadRo 
      */
     public read(notificationReadRo: NotificationReadRo, _options?: Configuration): Observable<ResponseDataBoolean> {
         return this.readWithHttpInfo(notificationReadRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataBoolean>) => apiResponse.data));
@@ -5082,7 +5082,7 @@ export class ObservableSpaceApplyJoiningSpaceApiApi {
 
     /**
      * Applying to join the space
-     * @param spaceJoinApplyRo
+     * @param spaceJoinApplyRo 
      */
     public applyWithHttpInfo(spaceJoinApplyRo: SpaceJoinApplyRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.apply(spaceJoinApplyRo, _options);
@@ -5105,7 +5105,7 @@ export class ObservableSpaceApplyJoiningSpaceApiApi {
 
     /**
      * Applying to join the space
-     * @param spaceJoinApplyRo
+     * @param spaceJoinApplyRo 
      */
     public apply(spaceJoinApplyRo: SpaceJoinApplyRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.applyWithHttpInfo(spaceJoinApplyRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -5113,7 +5113,7 @@ export class ObservableSpaceApplyJoiningSpaceApiApi {
 
     /**
      * Process joining application
-     * @param spaceJoinProcessRo
+     * @param spaceJoinProcessRo 
      */
     public processWithHttpInfo(spaceJoinProcessRo: SpaceJoinProcessRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.process(spaceJoinProcessRo, _options);
@@ -5136,7 +5136,7 @@ export class ObservableSpaceApplyJoiningSpaceApiApi {
 
     /**
      * Process joining application
-     * @param spaceJoinProcessRo
+     * @param spaceJoinProcessRo 
      */
     public process(spaceJoinProcessRo: SpaceJoinProcessRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.processWithHttpInfo(spaceJoinProcessRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -5162,7 +5162,7 @@ export class ObservableSpaceInviteLinkApiApi {
 
     /**
      * Delete link
-     * @param spaceLinkOpRo
+     * @param spaceLinkOpRo 
      * @param xSpaceId space id
      */
     public delete6WithHttpInfo(spaceLinkOpRo: SpaceLinkOpRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -5186,7 +5186,7 @@ export class ObservableSpaceInviteLinkApiApi {
 
     /**
      * Delete link
-     * @param spaceLinkOpRo
+     * @param spaceLinkOpRo 
      * @param xSpaceId space id
      */
     public delete6(spaceLinkOpRo: SpaceLinkOpRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -5196,7 +5196,7 @@ export class ObservableSpaceInviteLinkApiApi {
     /**
      * return token，the front end stitching $DOMAIN/invite/link?token=:token
      * Generate or refresh link
-     * @param spaceLinkOpRo
+     * @param spaceLinkOpRo 
      * @param xSpaceId space id
      */
     public generateWithHttpInfo(spaceLinkOpRo: SpaceLinkOpRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataString>> {
@@ -5221,7 +5221,7 @@ export class ObservableSpaceInviteLinkApiApi {
     /**
      * return token，the front end stitching $DOMAIN/invite/link?token=:token
      * Generate or refresh link
-     * @param spaceLinkOpRo
+     * @param spaceLinkOpRo 
      * @param xSpaceId space id
      */
     public generate(spaceLinkOpRo: SpaceLinkOpRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataString> {
@@ -5231,7 +5231,7 @@ export class ObservableSpaceInviteLinkApiApi {
     /**
      * If return code status 201,the user redirects to the login page due to unauthorized.
      * Join the space using the public link
-     * @param inviteValidRo
+     * @param inviteValidRo 
      */
     public joinWithHttpInfo(inviteValidRo: InviteValidRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.join(inviteValidRo, _options);
@@ -5255,7 +5255,7 @@ export class ObservableSpaceInviteLinkApiApi {
     /**
      * If return code status 201,the user redirects to the login page due to unauthorized.
      * Join the space using the public link
-     * @param inviteValidRo
+     * @param inviteValidRo 
      */
     public join(inviteValidRo: InviteValidRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.joinWithHttpInfo(inviteValidRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -5295,7 +5295,7 @@ export class ObservableSpaceInviteLinkApiApi {
     /**
      * After the verification is successful, it can obtain related invitation information
      * Valid invite link token
-     * @param inviteValidRo
+     * @param inviteValidRo 
      */
     public validWithHttpInfo(inviteValidRo: InviteValidRo, _options?: Configuration): Observable<HttpInfo<ResponseDataSpaceLinkInfoVo>> {
         const requestContextPromise = this.requestFactory.valid(inviteValidRo, _options);
@@ -5319,7 +5319,7 @@ export class ObservableSpaceInviteLinkApiApi {
     /**
      * After the verification is successful, it can obtain related invitation information
      * Valid invite link token
-     * @param inviteValidRo
+     * @param inviteValidRo 
      */
     public valid(inviteValidRo: InviteValidRo, _options?: Configuration): Observable<ResponseDataSpaceLinkInfoVo> {
         return this.validWithHttpInfo(inviteValidRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataSpaceLinkInfoVo>) => apiResponse.data));
@@ -5376,7 +5376,7 @@ export class ObservableSpaceMainAdminApiApi {
 
     /**
      * Change main admin
-     * @param spaceMainAdminChangeOpRo
+     * @param spaceMainAdminChangeOpRo 
      * @param xSpaceId space id
      */
     public replaceWithHttpInfo(spaceMainAdminChangeOpRo: SpaceMainAdminChangeOpRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -5400,7 +5400,7 @@ export class ObservableSpaceMainAdminApiApi {
 
     /**
      * Change main admin
-     * @param spaceMainAdminChangeOpRo
+     * @param spaceMainAdminChangeOpRo 
      * @param xSpaceId space id
      */
     public replace(spaceMainAdminChangeOpRo: SpaceMainAdminChangeOpRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -5489,7 +5489,7 @@ export class ObservableSpaceSpaceApiApi {
 
     /**
      * Create Space
-     * @param spaceOpRo
+     * @param spaceOpRo 
      */
     public create1WithHttpInfo(spaceOpRo: SpaceOpRo, _options?: Configuration): Observable<HttpInfo<ResponseDataCreateSpaceResultVo>> {
         const requestContextPromise = this.requestFactory.create1(spaceOpRo, _options);
@@ -5512,7 +5512,7 @@ export class ObservableSpaceSpaceApiApi {
 
     /**
      * Create Space
-     * @param spaceOpRo
+     * @param spaceOpRo 
      */
     public create1(spaceOpRo: SpaceOpRo, _options?: Configuration): Observable<ResponseDataCreateSpaceResultVo> {
         return this.create1WithHttpInfo(spaceOpRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataCreateSpaceResultVo>) => apiResponse.data));
@@ -5549,7 +5549,7 @@ export class ObservableSpaceSpaceApiApi {
 
     /**
      * Delete space
-     * @param spaceDeleteRo
+     * @param spaceDeleteRo 
      * @param spaceId space id
      */
     public delete7WithHttpInfo(spaceDeleteRo: SpaceDeleteRo, spaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -5573,7 +5573,7 @@ export class ObservableSpaceSpaceApiApi {
 
     /**
      * Delete space
-     * @param spaceDeleteRo
+     * @param spaceDeleteRo 
      * @param spaceId space id
      */
     public delete7(spaceDeleteRo: SpaceDeleteRo, spaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -5614,7 +5614,7 @@ export class ObservableSpaceSpaceApiApi {
     /**
      * Gets message credit chart data for the space
      * @param spaceId space id
-     * @param timeDimension
+     * @param timeDimension 
      */
     public getCreditUsagesWithHttpInfo(spaceId: string, timeDimension?: string, _options?: Configuration): Observable<HttpInfo<ResponseDataCreditUsages>> {
         const requestContextPromise = this.requestFactory.getCreditUsages(spaceId, timeDimension, _options);
@@ -5638,7 +5638,7 @@ export class ObservableSpaceSpaceApiApi {
     /**
      * Gets message credit chart data for the space
      * @param spaceId space id
-     * @param timeDimension
+     * @param timeDimension 
      */
     public getCreditUsages(spaceId: string, timeDimension?: string, _options?: Configuration): Observable<ResponseDataCreditUsages> {
         return this.getCreditUsagesWithHttpInfo(spaceId, timeDimension, _options).pipe(map((apiResponse: HttpInfo<ResponseDataCreditUsages>) => apiResponse.data));
@@ -5866,7 +5866,7 @@ export class ObservableSpaceSpaceApiApi {
     /**
      * at least one item is name and logo
      * Update space
-     * @param spaceUpdateOpRo
+     * @param spaceUpdateOpRo 
      * @param xSpaceId space id
      */
     public update1WithHttpInfo(spaceUpdateOpRo: SpaceUpdateOpRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -5891,7 +5891,7 @@ export class ObservableSpaceSpaceApiApi {
     /**
      * at least one item is name and logo
      * Update space
-     * @param spaceUpdateOpRo
+     * @param spaceUpdateOpRo 
      * @param xSpaceId space id
      */
     public update1(spaceUpdateOpRo: SpaceUpdateOpRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -5900,7 +5900,7 @@ export class ObservableSpaceSpaceApiApi {
 
     /**
      * Update member setting
-     * @param spaceMemberSettingRo
+     * @param spaceMemberSettingRo 
      * @param xSpaceId space id
      */
     public updateMemberSettingWithHttpInfo(spaceMemberSettingRo: SpaceMemberSettingRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -5924,7 +5924,7 @@ export class ObservableSpaceSpaceApiApi {
 
     /**
      * Update member setting
-     * @param spaceMemberSettingRo
+     * @param spaceMemberSettingRo 
      * @param xSpaceId space id
      */
     public updateMemberSetting(spaceMemberSettingRo: SpaceMemberSettingRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -5933,7 +5933,7 @@ export class ObservableSpaceSpaceApiApi {
 
     /**
      * Update security setting
-     * @param spaceSecuritySettingRo
+     * @param spaceSecuritySettingRo 
      * @param xSpaceId space id
      */
     public updateSecuritySettingWithHttpInfo(spaceSecuritySettingRo: SpaceSecuritySettingRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -5957,7 +5957,7 @@ export class ObservableSpaceSpaceApiApi {
 
     /**
      * Update security setting
-     * @param spaceSecuritySettingRo
+     * @param spaceSecuritySettingRo 
      * @param xSpaceId space id
      */
     public updateSecuritySetting(spaceSecuritySettingRo: SpaceSecuritySettingRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -5966,7 +5966,7 @@ export class ObservableSpaceSpaceApiApi {
 
     /**
      * Update workbench setting
-     * @param spaceWorkbenchSettingRo
+     * @param spaceWorkbenchSettingRo 
      * @param xSpaceId space id
      */
     public updateWorkbenchSettingWithHttpInfo(spaceWorkbenchSettingRo: SpaceWorkbenchSettingRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -5990,7 +5990,7 @@ export class ObservableSpaceSpaceApiApi {
 
     /**
      * Update workbench setting
-     * @param spaceWorkbenchSettingRo
+     * @param spaceWorkbenchSettingRo 
      * @param xSpaceId space id
      */
     public updateWorkbenchSetting(spaceWorkbenchSettingRo: SpaceWorkbenchSettingRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -6017,7 +6017,7 @@ export class ObservableSpaceSubAdminApiApi {
 
     /**
      * Create space role
-     * @param addSpaceRoleRo
+     * @param addSpaceRoleRo 
      * @param xSpaceId space id
      */
     public addRoleWithHttpInfo(addSpaceRoleRo: AddSpaceRoleRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -6041,7 +6041,7 @@ export class ObservableSpaceSubAdminApiApi {
 
     /**
      * Create space role
-     * @param addSpaceRoleRo
+     * @param addSpaceRoleRo 
      * @param xSpaceId space id
      */
     public addRole(addSpaceRoleRo: AddSpaceRoleRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -6051,7 +6051,7 @@ export class ObservableSpaceSubAdminApiApi {
     /**
      * delete admin
      * delete admin
-     * @param memberId
+     * @param memberId 
      * @param xSpaceId space id
      */
     public deleteRoleWithHttpInfo(memberId: number, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseData>> {
@@ -6076,7 +6076,7 @@ export class ObservableSpaceSubAdminApiApi {
     /**
      * delete admin
      * delete admin
-     * @param memberId
+     * @param memberId 
      * @param xSpaceId space id
      */
     public deleteRole(memberId: number, xSpaceId: string, _options?: Configuration): Observable<ResponseData> {
@@ -6085,7 +6085,7 @@ export class ObservableSpaceSubAdminApiApi {
 
     /**
      * Edite space role
-     * @param updateSpaceRoleRo
+     * @param updateSpaceRoleRo 
      * @param xSpaceId space id
      */
     public editRoleWithHttpInfo(updateSpaceRoleRo: UpdateSpaceRoleRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseData>> {
@@ -6109,7 +6109,7 @@ export class ObservableSpaceSubAdminApiApi {
 
     /**
      * Edite space role
-     * @param updateSpaceRoleRo
+     * @param updateSpaceRoleRo 
      * @param xSpaceId space id
      */
     public editRole(updateSpaceRoleRo: UpdateSpaceRoleRo, xSpaceId: string, _options?: Configuration): Observable<ResponseData> {
@@ -6118,7 +6118,7 @@ export class ObservableSpaceSubAdminApiApi {
 
     /**
      * query admin detail
-     * @param memberId
+     * @param memberId 
      * @param xSpaceId space id
      */
     public getRoleDetailWithHttpInfo(memberId: number, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataSpaceRoleDetailVo>> {
@@ -6142,7 +6142,7 @@ export class ObservableSpaceSubAdminApiApi {
 
     /**
      * query admin detail
-     * @param memberId
+     * @param memberId 
      * @param xSpaceId space id
      */
     public getRoleDetail(memberId: number, xSpaceId: string, _options?: Configuration): Observable<ResponseDataSpaceRoleDetailVo> {
@@ -6152,7 +6152,7 @@ export class ObservableSpaceSubAdminApiApi {
     /**
      * Page query sub admin.Description of Paging: <br/> pageNo: number of paging <br/>pageSize: size of paging。<br/>order: order in current page。<br/>sort: sorting in current page。<br/>simple usage example：{\"pageNo\":1,\"pageSize\":20}<br/>complex usage example：{\"pageNo\":1,\"pageSize\":20,\"order\":\"createTime,updateTime\",\"sort\":\"asc,desc\"}
      * Query admins
-     * @param page
+     * @param page 
      * @param xSpaceId space id
      * @param pageObjectParams paging parameters
      */
@@ -6178,7 +6178,7 @@ export class ObservableSpaceSubAdminApiApi {
     /**
      * Page query sub admin.Description of Paging: <br/> pageNo: number of paging <br/>pageSize: size of paging。<br/>order: order in current page。<br/>sort: sorting in current page。<br/>simple usage example：{\"pageNo\":1,\"pageSize\":20}<br/>complex usage example：{\"pageNo\":1,\"pageSize\":20,\"order\":\"createTime,updateTime\",\"sort\":\"asc,desc\"}
      * Query admins
-     * @param page
+     * @param page 
      * @param xSpaceId space id
      * @param pageObjectParams paging parameters
      */
@@ -6207,7 +6207,7 @@ export class ObservableTemplateCenterTemplateAPIApi {
     /**
      * Created nodes (including child descendant nodes) have administrative rights and are not associated with data tables other than nodes.
      * Create Template
-     * @param createTemplateRo
+     * @param createTemplateRo 
      */
     public createWithHttpInfo(createTemplateRo: CreateTemplateRo, _options?: Configuration): Observable<HttpInfo<ResponseDataString>> {
         const requestContextPromise = this.requestFactory.create(createTemplateRo, _options);
@@ -6231,7 +6231,7 @@ export class ObservableTemplateCenterTemplateAPIApi {
     /**
      * Created nodes (including child descendant nodes) have administrative rights and are not associated with data tables other than nodes.
      * Create Template
-     * @param createTemplateRo
+     * @param createTemplateRo 
      */
     public create(createTemplateRo: CreateTemplateRo, _options?: Configuration): Observable<ResponseDataString> {
         return this.createWithHttpInfo(createTemplateRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataString>) => apiResponse.data));
@@ -6367,7 +6367,7 @@ export class ObservableTemplateCenterTemplateAPIApi {
 
     /**
      * Get Space Templates
-     * @param spaceId
+     * @param spaceId 
      * @param xSpaceId Space Id
      */
     public getSpaceTemplatesWithHttpInfo(spaceId: string, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataListTemplateVo>> {
@@ -6391,7 +6391,7 @@ export class ObservableTemplateCenterTemplateAPIApi {
 
     /**
      * Get Space Templates
-     * @param spaceId
+     * @param spaceId 
      * @param xSpaceId Space Id
      */
     public getSpaceTemplates(spaceId: string, xSpaceId: string, _options?: Configuration): Observable<ResponseDataListTemplateVo> {
@@ -6433,7 +6433,7 @@ export class ObservableTemplateCenterTemplateAPIApi {
 
     /**
      * Quote Template
-     * @param quoteTemplateRo
+     * @param quoteTemplateRo 
      * @param xSocketId user socket id
      */
     public quoteWithHttpInfo(quoteTemplateRo: QuoteTemplateRo, xSocketId?: string, _options?: Configuration): Observable<HttpInfo<ResponseDataNodeInfoVo>> {
@@ -6457,7 +6457,7 @@ export class ObservableTemplateCenterTemplateAPIApi {
 
     /**
      * Quote Template
-     * @param quoteTemplateRo
+     * @param quoteTemplateRo 
      * @param xSocketId user socket id
      */
     public quote(quoteTemplateRo: QuoteTemplateRo, xSocketId?: string, _options?: Configuration): Observable<ResponseDataNodeInfoVo> {
@@ -6631,7 +6631,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * widget-cli initialization create widget
      * Create widget
-     * @param widgetPackageCreateRo
+     * @param widgetPackageCreateRo 
      * @param authorization developer token
      */
     public createWidgetWithHttpInfo(widgetPackageCreateRo: WidgetPackageCreateRo, authorization: string, _options?: Configuration): Observable<HttpInfo<ResponseDataWidgetReleaseCreateVo>> {
@@ -6656,7 +6656,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * widget-cli initialization create widget
      * Create widget
-     * @param widgetPackageCreateRo
+     * @param widgetPackageCreateRo 
      * @param authorization developer token
      */
     public createWidget(widgetPackageCreateRo: WidgetPackageCreateRo, authorization: string, _options?: Configuration): Observable<ResponseDataWidgetReleaseCreateVo> {
@@ -6666,7 +6666,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * widget-cli get widget package info
      * Get widget package info
-     * @param packageId
+     * @param packageId 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -6692,7 +6692,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * widget-cli get widget package info
      * Get widget package info
-     * @param packageId
+     * @param packageId 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -6703,7 +6703,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * widget-cli get widget store information
      * Get widget store information
-     * @param spaceId
+     * @param spaceId 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -6729,7 +6729,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * widget-cli get widget store information
      * Get widget store information
-     * @param spaceId
+     * @param spaceId 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -6740,7 +6740,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * Get widget release history
      * @param packageId widget package id
-     * @param page
+     * @param page 
      * @param authorization developer token
      * @param pageObjectParams page
      */
@@ -6766,7 +6766,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * Get widget release history
      * @param packageId widget package id
-     * @param page
+     * @param page 
      * @param authorization developer token
      * @param pageObjectParams page
      */
@@ -6777,7 +6777,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * widget-cli release widget
      * release widget v2
-     * @param widgetPackageReleaseV2Ro
+     * @param widgetPackageReleaseV2Ro 
      * @param authorization developer token
      */
     public releaseWidgetV2WithHttpInfo(widgetPackageReleaseV2Ro: WidgetPackageReleaseV2Ro, authorization: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -6802,7 +6802,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * widget-cli release widget
      * release widget v2
-     * @param widgetPackageReleaseV2Ro
+     * @param widgetPackageReleaseV2Ro 
      * @param authorization developer token
      */
     public releaseWidgetV2(widgetPackageReleaseV2Ro: WidgetPackageReleaseV2Ro, authorization: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -6811,7 +6811,7 @@ export class ObservableWidgetSDKPackageApiApi {
 
     /**
      * Rollback widget
-     * @param widgetPackageRollbackRo
+     * @param widgetPackageRollbackRo 
      * @param authorization developer token
      */
     public rollbackWidgetWithHttpInfo(widgetPackageRollbackRo: WidgetPackageRollbackRo, authorization: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -6835,7 +6835,7 @@ export class ObservableWidgetSDKPackageApiApi {
 
     /**
      * Rollback widget
-     * @param widgetPackageRollbackRo
+     * @param widgetPackageRollbackRo 
      * @param authorization developer token
      */
     public rollbackWidget(widgetPackageRollbackRo: WidgetPackageRollbackRo, authorization: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -6845,7 +6845,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * widget-cli submit widget
      * submit widget v2
-     * @param widgetPackageSubmitV2Ro
+     * @param widgetPackageSubmitV2Ro 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -6871,7 +6871,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * widget-cli submit widget
      * submit widget v2
-     * @param widgetPackageSubmitV2Ro
+     * @param widgetPackageSubmitV2Ro 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -6882,7 +6882,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * widget-cli transfer widget owner
      * Transfer widget owner
-     * @param widgetTransferOwnerRo
+     * @param widgetTransferOwnerRo 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -6908,7 +6908,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * widget-cli transfer widget owner
      * Transfer widget owner
-     * @param widgetTransferOwnerRo
+     * @param widgetTransferOwnerRo 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -6918,7 +6918,7 @@ export class ObservableWidgetSDKPackageApiApi {
 
     /**
      * Unpublish widget
-     * @param widgetPackageUnpublishRo
+     * @param widgetPackageUnpublishRo 
      * @param authorization developer token
      */
     public unpublishWidgetWithHttpInfo(widgetPackageUnpublishRo: WidgetPackageUnpublishRo, authorization: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -6942,7 +6942,7 @@ export class ObservableWidgetSDKPackageApiApi {
 
     /**
      * Unpublish widget
-     * @param widgetPackageUnpublishRo
+     * @param widgetPackageUnpublishRo 
      * @param authorization developer token
      */
     public unpublishWidget(widgetPackageUnpublishRo: WidgetPackageUnpublishRo, authorization: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -6952,7 +6952,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * widget-cli widget development authentication verification
      * Auth widget
-     * @param widgetPackageAuthRo
+     * @param widgetPackageAuthRo 
      * @param authorization developer token
      */
     public widgetAuthWithHttpInfo(widgetPackageAuthRo: WidgetPackageAuthRo, authorization: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -6977,7 +6977,7 @@ export class ObservableWidgetSDKPackageApiApi {
     /**
      * widget-cli widget development authentication verification
      * Auth widget
-     * @param widgetPackageAuthRo
+     * @param widgetPackageAuthRo 
      * @param authorization developer token
      */
     public widgetAuth(widgetPackageAuthRo: WidgetPackageAuthRo, authorization: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -7005,7 +7005,7 @@ export class ObservableWidgetSDKWidgetApiApi {
     /**
      * Scenario: 1、dashboard import widget2:the widget panel sends applets to the dashboard; 3:copy widget
      * Copy widget
-     * @param widgetCopyRo
+     * @param widgetCopyRo 
      */
     public copyWidgetWithHttpInfo(widgetCopyRo: WidgetCopyRo, _options?: Configuration): Observable<HttpInfo<ResponseDataListWidgetPack>> {
         const requestContextPromise = this.requestFactory.copyWidget(widgetCopyRo, _options);
@@ -7029,7 +7029,7 @@ export class ObservableWidgetSDKWidgetApiApi {
     /**
      * Scenario: 1、dashboard import widget2:the widget panel sends applets to the dashboard; 3:copy widget
      * Copy widget
-     * @param widgetCopyRo
+     * @param widgetCopyRo 
      */
     public copyWidget(widgetCopyRo: WidgetCopyRo, _options?: Configuration): Observable<ResponseDataListWidgetPack> {
         return this.copyWidgetWithHttpInfo(widgetCopyRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataListWidgetPack>) => apiResponse.data));
@@ -7038,7 +7038,7 @@ export class ObservableWidgetSDKWidgetApiApi {
     /**
      * Scenario:1、dashboard new applet 2、datasheet widget panel new widget
      * Create widget
-     * @param widgetCreateRo
+     * @param widgetCreateRo 
      */
     public createWidget1WithHttpInfo(widgetCreateRo: WidgetCreateRo, _options?: Configuration): Observable<HttpInfo<ResponseDataWidgetPack>> {
         const requestContextPromise = this.requestFactory.createWidget1(widgetCreateRo, _options);
@@ -7062,7 +7062,7 @@ export class ObservableWidgetSDKWidgetApiApi {
     /**
      * Scenario:1、dashboard new applet 2、datasheet widget panel new widget
      * Create widget
-     * @param widgetCreateRo
+     * @param widgetCreateRo 
      */
     public createWidget1(widgetCreateRo: WidgetCreateRo, _options?: Configuration): Observable<ResponseDataWidgetPack> {
         return this.createWidget1WithHttpInfo(widgetCreateRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataWidgetPack>) => apiResponse.data));
@@ -7237,7 +7237,7 @@ export class ObservableWidgetSDKWidgetApiApi {
 
     /**
      * Get widget store
-     * @param widgetStoreListRo
+     * @param widgetStoreListRo 
      * @param xSpaceId space id
      */
     public widgetStoreListWithHttpInfo(widgetStoreListRo: WidgetStoreListRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataListWidgetStoreListInfo>> {
@@ -7261,7 +7261,7 @@ export class ObservableWidgetSDKWidgetApiApi {
 
     /**
      * Get widget store
-     * @param widgetStoreListRo
+     * @param widgetStoreListRo 
      * @param xSpaceId space id
      */
     public widgetStoreList(widgetStoreListRo: WidgetStoreListRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataListWidgetStoreListInfo> {
@@ -7288,8 +7288,8 @@ export class ObservableWidgetUploadAPIApi {
 
     /**
      * Get widget file upload pre signed url
-     * @param widgetAssetUploadCertificateRO
-     * @param packageId
+     * @param widgetAssetUploadCertificateRO 
+     * @param packageId 
      */
     public generateWidgetPreSignedUrlWithHttpInfo(widgetAssetUploadCertificateRO: WidgetAssetUploadCertificateRO, packageId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataListWidgetUploadTokenVo>> {
         const requestContextPromise = this.requestFactory.generateWidgetPreSignedUrl(widgetAssetUploadCertificateRO, packageId, _options);
@@ -7312,8 +7312,8 @@ export class ObservableWidgetUploadAPIApi {
 
     /**
      * Get widget file upload pre signed url
-     * @param widgetAssetUploadCertificateRO
-     * @param packageId
+     * @param widgetAssetUploadCertificateRO 
+     * @param packageId 
      */
     public generateWidgetPreSignedUrl(widgetAssetUploadCertificateRO: WidgetAssetUploadCertificateRO, packageId: string, _options?: Configuration): Observable<ResponseDataListWidgetUploadTokenVo> {
         return this.generateWidgetPreSignedUrlWithHttpInfo(widgetAssetUploadCertificateRO, packageId, _options).pipe(map((apiResponse: HttpInfo<ResponseDataListWidgetUploadTokenVo>) => apiResponse.data));
@@ -7371,7 +7371,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * node id and view id are not required（do not pass means all closed）
      * Record active node
-     * @param activeSheetsOpRo
+     * @param activeSheetsOpRo 
      * @param xSpaceId space id
      */
     public activeSheetsWithHttpInfo(activeSheetsOpRo: ActiveSheetsOpRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -7396,7 +7396,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * node id and view id are not required（do not pass means all closed）
      * Record active node
-     * @param activeSheetsOpRo
+     * @param activeSheetsOpRo 
      * @param xSpaceId space id
      */
     public activeSheets(activeSheetsOpRo: ActiveSheetsOpRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -7406,7 +7406,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * The front node is saved in the first place of the parent node when it is not under the parent node. Save in the first place of the first level directory when it is not transmitted.
      * Analyze Bundle
-     * @param nodeBundleOpRo
+     * @param nodeBundleOpRo 
      */
     public analyzeBundleWithHttpInfo(nodeBundleOpRo?: NodeBundleOpRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.analyzeBundle(nodeBundleOpRo, _options);
@@ -7430,7 +7430,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * The front node is saved in the first place of the parent node when it is not under the parent node. Save in the first place of the first level directory when it is not transmitted.
      * Analyze Bundle
-     * @param nodeBundleOpRo
+     * @param nodeBundleOpRo 
      */
     public analyzeBundle(nodeBundleOpRo?: NodeBundleOpRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.analyzeBundleWithHttpInfo(nodeBundleOpRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -7476,7 +7476,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * node id is required, whether to copy data is not required.
      * Copy node
-     * @param nodeCopyOpRo
+     * @param nodeCopyOpRo 
      * @param xSocketId user socket id
      */
     public copyWithHttpInfo(nodeCopyOpRo: NodeCopyOpRo, xSocketId?: string, _options?: Configuration): Observable<HttpInfo<ResponseDataNodeInfoVo>> {
@@ -7501,7 +7501,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * node id is required, whether to copy data is not required.
      * Copy node
-     * @param nodeCopyOpRo
+     * @param nodeCopyOpRo 
      * @param xSocketId user socket id
      */
     public copy(nodeCopyOpRo: NodeCopyOpRo, xSocketId?: string, _options?: Configuration): Observable<ResponseDataNodeInfoVo> {
@@ -7511,7 +7511,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * create a new node under the node<br/>Role Type：<br/>1.owner can add, edit, move, sort, delete, copy folders in the specified working directory。<br/>2.manager can add, edit, move, sort, delete, and copy folders in the specified working directory.<br/>3.editor can only edit records and views of the data table, but not edit fields<br/>4.readonly can only view the number table, you cannot make any edits and modifications, you can only assign read-only permissions to other members。<br/>
      * Create child node
-     * @param nodeOpRo
+     * @param nodeOpRo 
      * @param xSocketId user socket id
      */
     public create3WithHttpInfo(nodeOpRo: NodeOpRo, xSocketId?: string, _options?: Configuration): Observable<HttpInfo<ResponseDataNodeInfoVo>> {
@@ -7536,7 +7536,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * create a new node under the node<br/>Role Type：<br/>1.owner can add, edit, move, sort, delete, copy folders in the specified working directory。<br/>2.manager can add, edit, move, sort, delete, and copy folders in the specified working directory.<br/>3.editor can only edit records and views of the data table, but not edit fields<br/>4.readonly can only view the number table, you cannot make any edits and modifications, you can only assign read-only permissions to other members。<br/>
      * Create child node
-     * @param nodeOpRo
+     * @param nodeOpRo 
      * @param xSocketId user socket id
      */
     public create3(nodeOpRo: NodeOpRo, xSocketId?: string, _options?: Configuration): Observable<ResponseDataNodeInfoVo> {
@@ -7824,7 +7824,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * all parameters must be
      * Import excel
-     * @param importExcelOpRo
+     * @param importExcelOpRo 
      */
     public importExcelWithHttpInfo(importExcelOpRo?: ImportExcelOpRo, _options?: Configuration): Observable<HttpInfo<ResponseDataNodeInfoVo>> {
         const requestContextPromise = this.requestFactory.importExcel(importExcelOpRo, _options);
@@ -7848,7 +7848,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * all parameters must be
      * Import excel
-     * @param importExcelOpRo
+     * @param importExcelOpRo 
      */
     public importExcel(importExcelOpRo?: ImportExcelOpRo, _options?: Configuration): Observable<ResponseDataNodeInfoVo> {
         return this.importExcelWithHttpInfo(importExcelOpRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataNodeInfoVo>) => apiResponse.data));
@@ -7857,7 +7857,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * all parameters must be
      * Import excel
-     * @param importExcelOpRo
+     * @param importExcelOpRo 
      */
     public importExcel1WithHttpInfo(importExcelOpRo?: ImportExcelOpRo, _options?: Configuration): Observable<HttpInfo<ResponseDataNodeInfoVo>> {
         const requestContextPromise = this.requestFactory.importExcel1(importExcelOpRo, _options);
@@ -7881,7 +7881,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * all parameters must be
      * Import excel
-     * @param importExcelOpRo
+     * @param importExcelOpRo 
      */
     public importExcel1(importExcelOpRo?: ImportExcelOpRo, _options?: Configuration): Observable<ResponseDataNodeInfoVo> {
         return this.importExcel1WithHttpInfo(importExcelOpRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataNodeInfoVo>) => apiResponse.data));
@@ -7927,7 +7927,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * Node ID and parent node ID are required, and pre Node Id is not required.
      * Move node
-     * @param nodeMoveOpRo
+     * @param nodeMoveOpRo 
      * @param xSpaceId space id
      * @param xSocketId user socket id
      */
@@ -7953,7 +7953,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * Node ID and parent node ID are required, and pre Node Id is not required.
      * Move node
-     * @param nodeMoveOpRo
+     * @param nodeMoveOpRo 
      * @param xSpaceId space id
      * @param xSocketId user socket id
      */
@@ -7996,7 +7996,7 @@ export class ObservableWorkbenchNodeApiApi {
 
     /**
      * Gets no permission member before remind
-     * @param remindUnitsNoPermissionRo
+     * @param remindUnitsNoPermissionRo 
      */
     public postRemindUnitsNoPermissionWithHttpInfo(remindUnitsNoPermissionRo: RemindUnitsNoPermissionRo, _options?: Configuration): Observable<HttpInfo<ResponseDataListMemberBriefInfoVo>> {
         const requestContextPromise = this.requestFactory.postRemindUnitsNoPermission(remindUnitsNoPermissionRo, _options);
@@ -8019,7 +8019,7 @@ export class ObservableWorkbenchNodeApiApi {
 
     /**
      * Gets no permission member before remind
-     * @param remindUnitsNoPermissionRo
+     * @param remindUnitsNoPermissionRo 
      */
     public postRemindUnitsNoPermission(remindUnitsNoPermissionRo: RemindUnitsNoPermissionRo, _options?: Configuration): Observable<ResponseDataListMemberBriefInfoVo> {
         return this.postRemindUnitsNoPermissionWithHttpInfo(remindUnitsNoPermissionRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataListMemberBriefInfoVo>) => apiResponse.data));
@@ -8060,7 +8060,7 @@ export class ObservableWorkbenchNodeApiApi {
 
     /**
      * Remind notification
-     * @param remindMemberRo
+     * @param remindMemberRo 
      */
     public remindWithHttpInfo(remindMemberRo: RemindMemberRo, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
         const requestContextPromise = this.requestFactory.remind(remindMemberRo, _options);
@@ -8083,7 +8083,7 @@ export class ObservableWorkbenchNodeApiApi {
 
     /**
      * Remind notification
-     * @param remindMemberRo
+     * @param remindMemberRo 
      */
     public remind(remindMemberRo: RemindMemberRo, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.remindWithHttpInfo(remindMemberRo, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
@@ -8129,7 +8129,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * Nodes that are not in the center of the template, make spatial judgments.
      * Node info window
-     * @param nodeId
+     * @param nodeId 
      */
     public showNodeInfoWindowWithHttpInfo(nodeId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataNodeInfoWindowVo>> {
         const requestContextPromise = this.requestFactory.showNodeInfoWindow(nodeId, _options);
@@ -8153,7 +8153,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * Nodes that are not in the center of the template, make spatial judgments.
      * Node info window
-     * @param nodeId
+     * @param nodeId 
      */
     public showNodeInfoWindow(nodeId: string, _options?: Configuration): Observable<ResponseDataNodeInfoWindowVo> {
         return this.showNodeInfoWindowWithHttpInfo(nodeId, _options).pipe(map((apiResponse: HttpInfo<ResponseDataNodeInfoWindowVo>) => apiResponse.data));
@@ -8197,7 +8197,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * node id must. name, icon is not required<br/>Role Type：<br/>1.owner can add, edit, move, sort, delete, copy folders in the specified working directory。<br/>2.manager can add, edit, move, sort, delete, and copy folders in the specified working directory.<br/>3.editor can only edit records and views of the data table, but not edit fields<br/>4.readonly can only view the number table, you cannot make any edits and modifications, you can only assign read-only permissions to other members。<br/>
      * Edit node
-     * @param nodeUpdateOpRo
+     * @param nodeUpdateOpRo 
      * @param nodeId node id
      * @param xSocketId user socket id
      */
@@ -8223,7 +8223,7 @@ export class ObservableWorkbenchNodeApiApi {
     /**
      * node id must. name, icon is not required<br/>Role Type：<br/>1.owner can add, edit, move, sort, delete, copy folders in the specified working directory。<br/>2.manager can add, edit, move, sort, delete, and copy folders in the specified working directory.<br/>3.editor can only edit records and views of the data table, but not edit fields<br/>4.readonly can only view the number table, you cannot make any edits and modifications, you can only assign read-only permissions to other members。<br/>
      * Edit node
-     * @param nodeUpdateOpRo
+     * @param nodeUpdateOpRo 
      * @param nodeId node id
      * @param xSocketId user socket id
      */
@@ -8233,7 +8233,7 @@ export class ObservableWorkbenchNodeApiApi {
 
     /**
      * Update node description
-     * @param nodeDescOpRo
+     * @param nodeDescOpRo 
      * @param xSocketId user socket id
      */
     public updateDescWithHttpInfo(nodeDescOpRo: NodeDescOpRo, xSocketId?: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -8257,7 +8257,7 @@ export class ObservableWorkbenchNodeApiApi {
 
     /**
      * Update node description
-     * @param nodeDescOpRo
+     * @param nodeDescOpRo 
      * @param xSocketId user socket id
      */
     public updateDesc(nodeDescOpRo: NodeDescOpRo, xSocketId?: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -8315,7 +8315,7 @@ export class ObservableWorkbenchNodeFavoriteApiApi {
 
     /**
      * Move favorite node
-     * @param markNodeMoveRo
+     * @param markNodeMoveRo 
      * @param xSpaceId space id
      */
     public move1WithHttpInfo(markNodeMoveRo: MarkNodeMoveRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
@@ -8339,7 +8339,7 @@ export class ObservableWorkbenchNodeFavoriteApiApi {
 
     /**
      * Move favorite node
-     * @param markNodeMoveRo
+     * @param markNodeMoveRo 
      * @param xSpaceId space id
      */
     public move1(markNodeMoveRo: MarkNodeMoveRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
@@ -8402,8 +8402,8 @@ export class ObservableWorkbenchNodeRoleApiApi {
     /**
      * Scene: Collaborator Card Information
      * Get Collaborator Info
-     * @param uuid
-     * @param nodeId
+     * @param uuid 
+     * @param nodeId 
      * @param xSpaceId space id
      */
     public getCollaboratorInfoWithHttpInfo(uuid: string, nodeId: string, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataNodeCollaboratorVO>> {
@@ -8428,8 +8428,8 @@ export class ObservableWorkbenchNodeRoleApiApi {
     /**
      * Scene: Collaborator Card Information
      * Get Collaborator Info
-     * @param uuid
-     * @param nodeId
+     * @param uuid 
+     * @param nodeId 
      * @param xSpaceId space id
      */
     public getCollaboratorInfo(uuid: string, nodeId: string, xSpaceId: string, _options?: Configuration): Observable<ResponseDataNodeCollaboratorVO> {
@@ -8561,7 +8561,7 @@ export class ObservableWorkbenchNodeRubbishApiApi {
 
     /**
      * Recover node
-     * @param nodeRecoverRo
+     * @param nodeRecoverRo 
      * @param xSpaceId space id
      */
     public recoverWithHttpInfo(nodeRecoverRo: NodeRecoverRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataNodeInfoVo>> {
@@ -8585,7 +8585,7 @@ export class ObservableWorkbenchNodeRubbishApiApi {
 
     /**
      * Recover node
-     * @param nodeRecoverRo
+     * @param nodeRecoverRo 
      * @param xSpaceId space id
      */
     public recover(nodeRecoverRo: NodeRecoverRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataNodeInfoVo> {
@@ -8595,7 +8595,6 @@ export class ObservableWorkbenchNodeRubbishApiApi {
 }
 
 import { WorkbenchNodeShareApiApiRequestFactory, WorkbenchNodeShareApiApiResponseProcessor} from "../apis/WorkbenchNodeShareApiApi";
-import { ModelString } from '../models/ModelString';
 export class ObservableWorkbenchNodeShareApiApi {
     private requestFactory: WorkbenchNodeShareApiApiRequestFactory;
     private responseProcessor: WorkbenchNodeShareApiApiResponseProcessor;
@@ -8708,7 +8707,7 @@ export class ObservableWorkbenchNodeShareApiApi {
 
     /**
      * Sotre share data
-     * @param storeShareNodeRo
+     * @param storeShareNodeRo 
      * @param xSocketId user socket id
      */
     public storeShareDataWithHttpInfo(storeShareNodeRo: StoreShareNodeRo, xSocketId?: string, _options?: Configuration): Observable<HttpInfo<ResponseDataStoreNodeInfoVO>> {
@@ -8732,7 +8731,7 @@ export class ObservableWorkbenchNodeShareApiApi {
 
     /**
      * Sotre share data
-     * @param storeShareNodeRo
+     * @param storeShareNodeRo 
      * @param xSocketId user socket id
      */
     public storeShareData(storeShareNodeRo: StoreShareNodeRo, xSocketId?: string, _options?: Configuration): Observable<ResponseDataStoreNodeInfoVO> {
@@ -8742,7 +8741,7 @@ export class ObservableWorkbenchNodeShareApiApi {
     /**
      * Update node share setting  stringObjectParams share setting parameter description: <br/> There are three option parameters for sharing settings. Only one can be set true, and more than two cannot be set to true at the same time.<br/>onlyRead: Bool, whether to set sharing only for others to view.<br/>canBeEdited: Bool, whether to set up sharing to others for collaborative editing.<br/>canBeStored: Bool, whether to set up sharing to others and save as a copy.<br/>Example: Set <Share Only for Others to View>, parameters:{\"onlyRead\": true}
      * Update node share setting
-     * @param updateNodeShareSettingRo
+     * @param updateNodeShareSettingRo 
      * @param nodeId node id
      */
     public updateNodeShareWithHttpInfo(updateNodeShareSettingRo: UpdateNodeShareSettingRo, nodeId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataShareBaseInfoVo>> {
@@ -8767,7 +8766,7 @@ export class ObservableWorkbenchNodeShareApiApi {
     /**
      * Update node share setting  stringObjectParams share setting parameter description: <br/> There are three option parameters for sharing settings. Only one can be set true, and more than two cannot be set to true at the same time.<br/>onlyRead: Bool, whether to set sharing only for others to view.<br/>canBeEdited: Bool, whether to set up sharing to others for collaborative editing.<br/>canBeStored: Bool, whether to set up sharing to others and save as a copy.<br/>Example: Set <Share Only for Others to View>, parameters:{\"onlyRead\": true}
      * Update node share setting
-     * @param updateNodeShareSettingRo
+     * @param updateNodeShareSettingRo 
      * @param nodeId node id
      */
     public updateNodeShare(updateNodeShareSettingRo: UpdateNodeShareSettingRo, nodeId: string, _options?: Configuration): Observable<ResponseDataShareBaseInfoVo> {

@@ -36,8 +36,7 @@ public class NotificationReadRo {
         requiredMode = RequiredMode.REQUIRED, example = "[\"124324324\",\"243242\"]")
     private String[] id;
 
-    @Max(1)
     @Schema(description = "Full 1 full, 0 incomplete", allowableValues = "range[0,1]",
-        type = "Integer", example = "0")
-    private Integer isAll;
+        type = "Boolean", example = "0")
+    private Boolean isAll;
 }

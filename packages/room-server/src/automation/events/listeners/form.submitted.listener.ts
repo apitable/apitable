@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { defaultEventListenerOptions, FieldType, IEventListenerOptions, IWorkdocValue, OPEventNameEnums } from '@apitable/core';
+import { defaultEventListenerOptions, FieldType, IEventListenerOptions, IWorkDocValue, OPEventNameEnums } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { InjectLogger } from 'shared/common';
@@ -100,10 +100,10 @@ export class FormSubmittedListener {
     }
     const documentIds = [];
     for (const [fieldId, type] of (context.fieldTypeMap as Map<string, number>).entries()) {
-      if (FieldType.Workdoc !== type || !context[fieldId]) {
+      if (FieldType.WorkDoc !== type || !context[fieldId]) {
         continue;
       }
-      const cellValue = context[fieldId] as IWorkdocValue[];
+      const cellValue = context[fieldId] as IWorkDocValue[];
       for (const value of cellValue) {
         value.documentId && documentIds.push(value.documentId);
       }

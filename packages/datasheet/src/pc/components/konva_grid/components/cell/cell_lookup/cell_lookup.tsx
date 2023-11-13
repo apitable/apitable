@@ -109,7 +109,7 @@ export const CellLookUp: React.FC<React.PropsWithChildren<ICellProps>> = (props)
     case FieldType.CreatedTime:
     case FieldType.LastModifiedTime:
     case FieldType.Cascader:
-    case FieldType.Workdoc:
+    case FieldType.WorkDoc:
       return <CellText {...commonProps} />;
     case FieldType.NotSupport:
     default:

@@ -461,9 +461,9 @@ import { NodeSimpleVO } from '../models/NodeSimpleVO';
 import { NodeUpdateOpRo } from '../models/NodeUpdateOpRo';
 import { NotificationCreateRo } from '../models/NotificationCreateRo';
 import { NotificationDetailVo } from '../models/NotificationDetailVo';
-import { NotificationListRo, NotificationListRoIsReadEnum    } from '../models/NotificationListRo';
-import { NotificationPageRo, NotificationPageRoIsReadEnum      } from '../models/NotificationPageRo';
-import { NotificationReadRo , NotificationReadRoIsAllEnum   } from '../models/NotificationReadRo';
+import { NotificationListRo } from '../models/NotificationListRo';
+import { NotificationPageRo } from '../models/NotificationPageRo';
+import { NotificationReadRo } from '../models/NotificationReadRo';
 import { NotificationStatisticsVo } from '../models/NotificationStatisticsVo';
 import { NotifyBody } from '../models/NotifyBody';
 import { OpAssetRo } from '../models/OpAssetRo';
@@ -730,9 +730,6 @@ const supportedMediaTypes: { [mediaType: string]: number } = {
 
 let enumsMap: Set<string> = new Set<string>([
     "LoginRoTypeEnum",
-    "NotificationListRoIsReadEnum",
-    "NotificationPageRoIsReadEnum",
-    "NotificationReadRoIsAllEnum",
     "RefreshApiKeyRoTypeEnum",
     "RetrievePwdOpRoTypeEnum",
     "SpaceDeleteRoTypeEnum",

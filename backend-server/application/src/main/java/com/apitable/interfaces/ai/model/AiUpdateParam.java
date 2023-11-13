@@ -19,9 +19,5 @@ public class AiUpdateParam {
 
     private String name;
 
-    private String type;
-
-    private String model;
-
     private Map<String, Object> setting;
 }

@@ -32,12 +32,12 @@ import {
   t,
 } from '@apitable/core';
 import { IFetchDatasheet } from '@apitable/widget-sdk/dist/message/interface';
+import { IFetchedDatasheet } from 'pc/components/automation/controller/hooks/use_robot_fields';
+import { getEnvVariables } from 'pc/utils/env';
+import { getFieldTypeIcon, getFieldTypeIconOrNull } from '../multi_grid/field_setting';
+import { IActionType, IJsonSchema, INodeOutputSchema, INodeType, IRobotAction, IRobotTrigger, ITriggerType } from './interface';
 // @ts-ignore
 import { isWecomFunc } from 'enterprise';
-import { getEnvVariables } from 'pc/utils/env';
-import {getFieldTypeIcon, getFieldTypeIconOrNull} from '../multi_grid/field_setting';
-import { IActionType, IJsonSchema, INodeOutputSchema, INodeType, IRobotAction, IRobotTrigger, ITriggerType } from './interface';
-import { IFetchedDatasheet } from "pc/components/automation/controller/hooks/use_robot_fields";
 
 /**
  * The client parses the expression without context, skipping dynamic parameters.
@@ -79,7 +79,7 @@ export const checkIfDatasheetResourceValid = (
   }
   try {
     return dataSheetMap[dstId]?.datasheet?.name != null;
-  }catch {
+  } catch (_e) {
     return false;
   }
 };
@@ -131,7 +131,11 @@ export const getNodeOutputSchemaList = (props: {
             icon: integrateCdnHost(
               getEnvVariables().ROBOT_TRIGGER_ICON ? getEnvVariables().ROBOT_TRIGGER_ICON! : triggerType?.service?.logo,
             ),
-            schema: triggerType.outputJsonSchema,
+            schema: { ...triggerType.outputJsonSchema,
+              title: t(Strings.automation_variable_datasheet, {
+                NODE_NAME: dataSheetMap[resourceId]?.datasheet?.name
+              }),
+            },
           });
         }
       }

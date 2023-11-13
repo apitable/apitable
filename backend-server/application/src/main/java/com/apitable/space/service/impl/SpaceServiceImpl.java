@@ -620,6 +620,50 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         }
     }
 
+    @Override
+    public boolean checkSeatOverLimitAndSendNotify(Long userId, String spaceId, long addedSeatNums, boolean isAllMember, boolean sendNotify) {
+        // get subscription max seat nums
+        SubscriptionInfo subscriptionInfo =
+                entitlementServiceFacade.getSpaceSubscription(spaceId);
+        if (!subscriptionInfo.isFree() && billingApitableEnabled) {
+            // apitable billing mode, paid space，skip validation
+            return true;
+        }
+        long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
+        SeatUsage seatUsage = getSeatUsageForIM(spaceId);
+        long totalSeatNums = seatUsage.getTotal() + addedSeatNums;
+        if (isAllMember){
+            totalSeatNums = addedSeatNums;
+        }
+        if (maxSeatNums != -1 && (totalSeatNums > maxSeatNums)) {
+            if (sendNotify){
+                // Send space station notifications
+                try {
+                    String spaceName = getNameBySpaceId(spaceId);
+                    long finalTotalSeatNums = totalSeatNums;
+                    TaskManager.me().execute(() -> NotificationManager.me()
+                            .playerNotify(NotificationTemplateId.SPACE_REFRESH_CONTACT_SEATS_LIMIT,
+                                    ListUtil.toList(userId), 0L, spaceId,
+                                    Dict.create().set("spaceName", spaceName).set("specification", maxSeatNums).set("usage", finalTotalSeatNums)));
+                } catch (Exception e) {
+                    log.error("send space station notifications error", e);
+                }
+            }
+            log.warn("seats over limit");
+            return false;
+        }
+        return true;
+    }
+
+
+    @Override
+    public SeatUsage getSeatUsageForIM(String spaceId) {
+        long memberCount =
+                iMemberService.getTotalMemberCountBySpaceId(spaceId);
+        long chatBotCount = iStaticsService.getTotalChatbotNodesfromCache(spaceId);
+        return new SeatUsage(chatBotCount, memberCount);
+    }
+
     /**
      * Get Space Info.
      *

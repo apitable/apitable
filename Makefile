@@ -103,7 +103,7 @@ build-local:
 
 _build-ts:
 	pnpm install
-	nx run-many -t build --exclude @apitable/datasheet --exclude @apitable/ai
+	nx run-many -t build --exclude @apitable/datasheet
 
 _build-java:
 	cd backend-server && ./gradlew build -x test --stacktrace
@@ -529,13 +529,38 @@ help:
 	make $$command;
 
 
-api-codegen:
+define CONFIGURE_ENV_CHOOSE
+Which .env(envinroment) do you want to configure?
+  1) intergration
+  2) test
+endef
+export CONFIGURE_ENV_CHOOSE
+
+api-codegen: ##
+	@echo "$$CONFIGURE_ENV_CHOOSE"
+	@read -p "ENTER THE NUMBER: " ENV_NUMBER ;\
+ 	if [ "$$ENV_NUMBER" = "" ]; then make api-codegen-integration; fi ;\
+ 	if [ "$$ENV_NUMBER" = "1" ]; then make api-codegen-integration; fi ;\
+ 	if [ "$$ENV_NUMBER" = "2" ]; then make api-codegen-test; fi;
+
+api-codegen-test:
+	touch packages/api-client/package.json
+	cp packages/api-client/package.json /tmp/api-client_package.json.bak
+	rm -rf packages/api-client/**
+	openapi-generator generate --skip-validate-spec -g typescript -i https://test.vika.ltd/api/v1/v3/api-docs/  --additional-properties=stringEnums=false \
+       --additional-properties=npmName=@apitable/api-client  \
+       --additional-properties=npmVersion=0.0.1 \
+       --additional-properties=useObjectParameters=true  --additional-properties=prependFormOrBodyParameters=true  -o  ./packages/api-client
+	cp -rf /tmp/api-client_package.json.bak  packages/api-client/package.json
+
+
+
+api-codegen-integration:
+	touch packages/api-client/package.json
 	cp packages/api-client/package.json /tmp/api-client_package.json.bak
 	rm -rf packages/api-client/**
 	openapi-generator generate --skip-validate-spec -g typescript -i https://integration.vika.ltd/api/v1/v3/api-docs/  --additional-properties=stringEnums=false \
        --additional-properties=npmName=@apitable/api-client  \
        --additional-properties=npmVersion=0.0.1 \
        --additional-properties=useObjectParameters=true  --additional-properties=prependFormOrBodyParameters=true  -o  ./packages/api-client
-	cp -rf /tmp/api-client_package.json.bak  packages/api-client/package.json 
-
-
+	cp -rf /tmp/api-client_package.json.bak  packages/api-client/package.json

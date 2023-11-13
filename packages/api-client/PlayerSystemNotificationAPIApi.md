@@ -106,7 +106,7 @@ let body:.PlayerSystemNotificationAPIApiDelete4Request = {
   // NotificationReadRo
   notificationReadRo: {
     id: ["124324324","243242"],
-    isAll: 0,
+    isAll: false,
   },
 };
 
@@ -163,7 +163,7 @@ const apiInstance = new .PlayerSystemNotificationAPIApi(configuration);
 let body:.PlayerSystemNotificationAPIApiList2Request = {
   // NotificationListRo
   notificationListRo: {
-    isRead: 1,
+    isRead: false,
     notifyType: "system",
   },
 };
@@ -221,7 +221,7 @@ const apiInstance = new .PlayerSystemNotificationAPIApi(configuration);
 let body:.PlayerSystemNotificationAPIApiPageRequest = {
   // NotificationPageRo
   notificationPageRo: {
-    isRead: 0,
+    isRead: false,
     notifyType: "system",
     rowNo: 10,
     pageSize: 20,
@@ -281,7 +281,7 @@ let body:.PlayerSystemNotificationAPIApiReadRequest = {
   // NotificationReadRo
   notificationReadRo: {
     id: ["124324324","243242"],
-    isAll: 0,
+    isAll: false,
   },
 };
 

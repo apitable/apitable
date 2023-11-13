@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IAttachmentValue, ILinkIds, IMultiSelectedIds, ISegment, ITimestamp, IUnitIds, IWorkdocValue } from 'types/field_types';
+import { IAttachmentValue, ILinkIds, IMultiSelectedIds, ISegment, ITimestamp, IUnitIds, IWorkDocValue } from 'types/field_types';
 
 export type ICellValueBase =
   | null
@@ -27,7 +27,7 @@ export type ICellValueBase =
   | IMultiSelectedIds
   | ITimestamp
   | IAttachmentValue[]
-  | IWorkdocValue[]
+  | IWorkDocValue[]
   | ILinkIds
   | IUnitIds;
 

@@ -26,11 +26,10 @@ import { Message } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { IEditor } from 'pc/components/editors/interface';
 import { usePrevious, useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { FormContext } from '../form_context';
 import { FieldEditor } from './field_editor';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export type IFieldEditRef = Pick<IEditor, 'focus' | 'setValue' | 'saveValue'>;
 
@@ -150,7 +149,7 @@ export const FormField: React.FC<React.PropsWithChildren<IFormFieldProps>> = (pr
     let lookupCellValue;
     try {
       lookupCellValue = Selectors.getCellValue(state, snapshot, recordId, field.id, true);
-    } catch {
+    } catch (_e) {
       lookupCellValue = null;
     }
     const entityField = Selectors.findRealField(state, field) as ILookUpField;
@@ -189,7 +188,7 @@ export const FormField: React.FC<React.PropsWithChildren<IFormFieldProps>> = (pr
 
   const disableField = entityFieldType === FieldType.LookUp || entityFieldType === FieldType.Formula;
 
-  const wordNotActiveMobile = isMobile && entityFieldType === FieldType.Workdoc;
+  const wordNotActiveMobile = isMobile && entityFieldType === FieldType.WorkDoc;
 
   return (
     <div

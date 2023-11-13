@@ -25,8 +25,8 @@ const configuration = .createConfiguration();
 const apiInstance = new .InternalServiceDataTableFieldPermissionInterfaceApi(configuration);
 
 let body:.InternalServiceDataTableFieldPermissionInterfaceApiDisableRolesRequest = {
-  // ModelString | table id
-  dstId: dstGxznHFXf9pvF1LZ,
+  // string | table id
+  dstId: "dstGxznHFXf9pvF1LZ",
   // string | list of field ids
   fieldIds: "fldB7uWmwYrQf,fldB7uWmwYrQf",
 };
@@ -41,7 +41,7 @@ apiInstance.disableRoles(body).then((data:any) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **dstId** | **ModelString** | table id | defaults to undefined
+ **dstId** | [**string**] | table id | defaults to undefined
  **fieldIds** | [**string**] | list of field ids | defaults to undefined
 
 

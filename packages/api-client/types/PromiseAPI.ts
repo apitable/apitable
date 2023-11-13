@@ -389,7 +389,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Bind mail and modify mail
      * Bind mail
-     * @param emailCodeValidateRo
+     * @param emailCodeValidateRo 
      */
     public bindEmailWithHttpInfo(emailCodeValidateRo: EmailCodeValidateRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.bindEmailWithHttpInfo(emailCodeValidateRo, _options);
@@ -399,7 +399,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Bind mail and modify mail
      * Bind mail
-     * @param emailCodeValidateRo
+     * @param emailCodeValidateRo 
      */
     public bindEmail(emailCodeValidateRo: EmailCodeValidateRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.bindEmail(emailCodeValidateRo, _options);
@@ -460,7 +460,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
 
     /**
      * Get the enabled experimental functions
-     * @param spaceId
+     * @param spaceId 
      */
     public getEnabledLabFeaturesWithHttpInfo(spaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataLabsFeatureVo>> {
         const result = this.api.getEnabledLabFeaturesWithHttpInfo(spaceId, _options);
@@ -469,7 +469,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
 
     /**
      * Get the enabled experimental functions
-     * @param spaceId
+     * @param spaceId 
      */
     public getEnabledLabFeatures(spaceId: string, _options?: Configuration): Promise<ResponseDataLabsFeatureVo> {
         const result = this.api.getEnabledLabFeatures(spaceId, _options);
@@ -479,7 +479,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Users can only associate with invited mail when they have no other mail
      * Associate the invited mail
-     * @param userLinkEmailRo
+     * @param userLinkEmailRo 
      */
     public linkInviteEmailWithHttpInfo(userLinkEmailRo: UserLinkEmailRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.linkInviteEmailWithHttpInfo(userLinkEmailRo, _options);
@@ -489,7 +489,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Users can only associate with invited mail when they have no other mail
      * Associate the invited mail
-     * @param userLinkEmailRo
+     * @param userLinkEmailRo 
      */
     public linkInviteEmail(userLinkEmailRo: UserLinkEmailRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.linkInviteEmail(userLinkEmailRo, _options);
@@ -514,7 +514,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
 
     /**
      * Retrieve password
-     * @param retrievePwdOpRo
+     * @param retrievePwdOpRo 
      */
     public retrievePwdWithHttpInfo(retrievePwdOpRo: RetrievePwdOpRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.retrievePwdWithHttpInfo(retrievePwdOpRo, _options);
@@ -523,7 +523,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
 
     /**
      * Retrieve password
-     * @param retrievePwdOpRo
+     * @param retrievePwdOpRo 
      */
     public retrievePwd(retrievePwdOpRo: RetrievePwdOpRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.retrievePwd(retrievePwdOpRo, _options);
@@ -533,7 +533,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Bind mail and modify mail
      * Unbind mail
-     * @param codeValidateRo
+     * @param codeValidateRo 
      */
     public unbindEmailWithHttpInfo(codeValidateRo: CodeValidateRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.unbindEmailWithHttpInfo(codeValidateRo, _options);
@@ -543,7 +543,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Bind mail and modify mail
      * Unbind mail
-     * @param codeValidateRo
+     * @param codeValidateRo 
      */
     public unbindEmail(codeValidateRo: CodeValidateRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.unbindEmail(codeValidateRo, _options);
@@ -552,7 +552,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
 
     /**
      * Unbind mobile phone
-     * @param codeValidateRo
+     * @param codeValidateRo 
      */
     public unbindPhoneWithHttpInfo(codeValidateRo: CodeValidateRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.unbindPhoneWithHttpInfo(codeValidateRo, _options);
@@ -561,7 +561,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
 
     /**
      * Unbind mobile phone
-     * @param codeValidateRo
+     * @param codeValidateRo 
      */
     public unbindPhone(codeValidateRo: CodeValidateRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.unbindPhone(codeValidateRo, _options);
@@ -571,7 +571,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Request parameters cannot be all empty
      * Edit user information
-     * @param userOpRo
+     * @param userOpRo 
      */
     public updateWithHttpInfo(userOpRo: UserOpRo, _options?: Configuration): Promise<HttpInfo<ResponseDataString>> {
         const result = this.api.updateWithHttpInfo(userOpRo, _options);
@@ -581,7 +581,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Request parameters cannot be all empty
      * Edit user information
-     * @param userOpRo
+     * @param userOpRo 
      */
     public update(userOpRo: UserOpRo, _options?: Configuration): Promise<ResponseDataString> {
         const result = this.api.update(userOpRo, _options);
@@ -591,7 +591,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Update the usage status of laboratory functions
      * Update the usage status of laboratory functions
-     * @param userLabsFeatureRo
+     * @param userLabsFeatureRo 
      */
     public updateLabsFeatureStatusWithHttpInfo(userLabsFeatureRo: UserLabsFeatureRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.updateLabsFeatureStatusWithHttpInfo(userLabsFeatureRo, _options);
@@ -601,7 +601,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Update the usage status of laboratory functions
      * Update the usage status of laboratory functions
-     * @param userLabsFeatureRo
+     * @param userLabsFeatureRo 
      */
     public updateLabsFeatureStatus(userLabsFeatureRo: UserLabsFeatureRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.updateLabsFeatureStatus(userLabsFeatureRo, _options);
@@ -611,7 +611,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Scene: 1. Personal setting and password modification; 2. Initialize after login for accounts without password
      * Change Password
-     * @param updatePwdOpRo
+     * @param updatePwdOpRo 
      */
     public updatePwdWithHttpInfo(updatePwdOpRo: UpdatePwdOpRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.updatePwdWithHttpInfo(updatePwdOpRo, _options);
@@ -621,7 +621,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Scene: 1. Personal setting and password modification; 2. Initialize after login for accounts without password
      * Change Password
-     * @param updatePwdOpRo
+     * @param updatePwdOpRo 
      */
     public updatePwd(updatePwdOpRo: UpdatePwdOpRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.updatePwd(updatePwdOpRo, _options);
@@ -671,7 +671,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Query whether the user is consistent with the specified mail. It can only be determined if the user has bound the mail
      * Query whether the user is consistent with the specified mail
-     * @param checkUserEmailRo
+     * @param checkUserEmailRo 
      */
     public validSameEmailWithHttpInfo(checkUserEmailRo: CheckUserEmailRo, _options?: Configuration): Promise<HttpInfo<ResponseDataBoolean>> {
         const result = this.api.validSameEmailWithHttpInfo(checkUserEmailRo, _options);
@@ -681,7 +681,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Query whether the user is consistent with the specified mail. It can only be determined if the user has bound the mail
      * Query whether the user is consistent with the specified mail
-     * @param checkUserEmailRo
+     * @param checkUserEmailRo 
      */
     public validSameEmail(checkUserEmailRo: CheckUserEmailRo, _options?: Configuration): Promise<ResponseDataBoolean> {
         const result = this.api.validSameEmail(checkUserEmailRo, _options);
@@ -691,7 +691,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Bind a new phone
      * Bind a new phone
-     * @param smsCodeValidateRo
+     * @param smsCodeValidateRo 
      */
     public verifyPhoneWithHttpInfo(smsCodeValidateRo: SmsCodeValidateRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.verifyPhoneWithHttpInfo(smsCodeValidateRo, _options);
@@ -701,7 +701,7 @@ export class PromiseAccountCenterModuleUserManagementInterfaceApi {
     /**
      * Bind a new phone
      * Bind a new phone
-     * @param smsCodeValidateRo
+     * @param smsCodeValidateRo 
      */
     public verifyPhone(smsCodeValidateRo: SmsCodeValidateRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.verifyPhone(smsCodeValidateRo, _options);
@@ -730,7 +730,7 @@ export class PromiseAuthorizationRelatedInterfaceApi {
     /**
      * description:verifyType，available values: password sms_code email_code
      * login
-     * @param loginRo
+     * @param loginRo 
      */
     public loginWithHttpInfo(loginRo: LoginRo, _options?: Configuration): Promise<HttpInfo<ResponseDataLoginResultVO>> {
         const result = this.api.loginWithHttpInfo(loginRo, _options);
@@ -740,7 +740,7 @@ export class PromiseAuthorizationRelatedInterfaceApi {
     /**
      * description:verifyType，available values: password sms_code email_code
      * login
-     * @param loginRo
+     * @param loginRo 
      */
     public login(loginRo: LoginRo, _options?: Configuration): Promise<ResponseDataLoginResultVO> {
         const result = this.api.login(loginRo, _options);
@@ -786,7 +786,7 @@ export class PromiseAuthorizationRelatedInterfaceApi {
     /**
      * serving for community edition
      * register
-     * @param registerRO
+     * @param registerRO 
      */
     public registerWithHttpInfo(registerRO: RegisterRO, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.registerWithHttpInfo(registerRO, _options);
@@ -796,7 +796,7 @@ export class PromiseAuthorizationRelatedInterfaceApi {
     /**
      * serving for community edition
      * register
-     * @param registerRO
+     * @param registerRO 
      */
     public register(registerRO: RegisterRO, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.register(registerRO, _options);
@@ -824,7 +824,7 @@ export class PromiseAutomationApi {
 
     /**
      * Create automation action
-     * @param createActionRO
+     * @param createActionRO 
      * @param resourceId node id
      * @param shareId share id
      */
@@ -835,7 +835,7 @@ export class PromiseAutomationApi {
 
     /**
      * Create automation action
-     * @param createActionRO
+     * @param createActionRO 
      * @param resourceId node id
      * @param shareId share id
      */
@@ -846,7 +846,7 @@ export class PromiseAutomationApi {
 
     /**
      * Create automation robot trigger
-     * @param createTriggerRO
+     * @param createTriggerRO 
      * @param resourceId node id
      * @param shareId share id
      */
@@ -857,7 +857,7 @@ export class PromiseAutomationApi {
 
     /**
      * Create automation robot trigger
-     * @param createTriggerRO
+     * @param createTriggerRO 
      * @param resourceId node id
      * @param shareId share id
      */
@@ -931,7 +931,7 @@ export class PromiseAutomationApi {
     }
 
     /**
-     * Get node automation detail.
+     * Get node automation detail. 
      * @param resourceId node id
      * @param robotId robot id
      * @param shareId share id
@@ -942,7 +942,7 @@ export class PromiseAutomationApi {
     }
 
     /**
-     * Get node automation detail.
+     * Get node automation detail. 
      * @param resourceId node id
      * @param robotId robot id
      * @param shareId share id
@@ -1000,7 +1000,7 @@ export class PromiseAutomationApi {
 
     /**
      * Update automation info.
-     * @param updateRobotRO
+     * @param updateRobotRO 
      * @param resourceId node id
      * @param robotId robot id
      * @param shareId share id
@@ -1012,7 +1012,7 @@ export class PromiseAutomationApi {
 
     /**
      * Update automation info.
-     * @param updateRobotRO
+     * @param updateRobotRO 
      * @param resourceId node id
      * @param robotId robot id
      * @param shareId share id
@@ -1024,7 +1024,7 @@ export class PromiseAutomationApi {
 
     /**
      * Update automation action
-     * @param updateActionRO
+     * @param updateActionRO 
      * @param resourceId node id
      * @param actionId action id
      * @param shareId share id
@@ -1036,7 +1036,7 @@ export class PromiseAutomationApi {
 
     /**
      * Update automation action
-     * @param updateActionRO
+     * @param updateActionRO 
      * @param resourceId node id
      * @param actionId action id
      * @param shareId share id
@@ -1048,7 +1048,7 @@ export class PromiseAutomationApi {
 
     /**
      * Update automation robot trigger
-     * @param updateTriggerRO
+     * @param updateTriggerRO 
      * @param resourceId node id
      * @param triggerId trigger id
      * @param shareId share id
@@ -1060,7 +1060,7 @@ export class PromiseAutomationApi {
 
     /**
      * Update automation robot trigger
-     * @param updateTriggerRO
+     * @param updateTriggerRO 
      * @param resourceId node id
      * @param triggerId trigger id
      * @param shareId share id
@@ -1092,7 +1092,7 @@ export class PromiseBasicModuleAccessoryCallbackInterfaceApi {
     /**
      * After S3 completes the client upload, it actively reaches the notification server
      * Resource upload completion notification callback
-     * @param assetUploadNotifyRO
+     * @param assetUploadNotifyRO 
      */
     public notifyCallbackWithHttpInfo(assetUploadNotifyRO: AssetUploadNotifyRO, _options?: Configuration): Promise<HttpInfo<ResponseDataListAssetUploadResult>> {
         const result = this.api.notifyCallbackWithHttpInfo(assetUploadNotifyRO, _options);
@@ -1102,7 +1102,7 @@ export class PromiseBasicModuleAccessoryCallbackInterfaceApi {
     /**
      * After S3 completes the client upload, it actively reaches the notification server
      * Resource upload completion notification callback
-     * @param assetUploadNotifyRO
+     * @param assetUploadNotifyRO 
      */
     public notifyCallback(assetUploadNotifyRO: AssetUploadNotifyRO, _options?: Configuration): Promise<ResponseDataListAssetUploadResult> {
         const result = this.api.notifyCallback(assetUploadNotifyRO, _options);
@@ -1111,7 +1111,7 @@ export class PromiseBasicModuleAccessoryCallbackInterfaceApi {
 
     /**
      * widget upload callback
-     * @param widgetUploadNotifyRO
+     * @param widgetUploadNotifyRO 
      */
     public widgetCallbackWithHttpInfo(widgetUploadNotifyRO: WidgetUploadNotifyRO, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.widgetCallbackWithHttpInfo(widgetUploadNotifyRO, _options);
@@ -1120,7 +1120,7 @@ export class PromiseBasicModuleAccessoryCallbackInterfaceApi {
 
     /**
      * widget upload callback
-     * @param widgetUploadNotifyRO
+     * @param widgetUploadNotifyRO 
      */
     public widgetCallback(widgetUploadNotifyRO: WidgetUploadNotifyRO, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.widgetCallback(widgetUploadNotifyRO, _options);
@@ -1149,7 +1149,7 @@ export class PromiseBasicModuleAttachmentInterfaceApi {
     /**
      * The same attachment needs to pass the token repeatedly
      * Changes in the number of references to space attachment resources
-     * @param spaceAssetOpRo
+     * @param spaceAssetOpRo 
      */
     public citeWithHttpInfo(spaceAssetOpRo: SpaceAssetOpRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.citeWithHttpInfo(spaceAssetOpRo, _options);
@@ -1159,7 +1159,7 @@ export class PromiseBasicModuleAttachmentInterfaceApi {
     /**
      * The same attachment needs to pass the token repeatedly
      * Changes in the number of references to space attachment resources
-     * @param spaceAssetOpRo
+     * @param spaceAssetOpRo 
      */
     public cite(spaceAssetOpRo: SpaceAssetOpRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.cite(spaceAssetOpRo, _options);
@@ -1168,7 +1168,7 @@ export class PromiseBasicModuleAttachmentInterfaceApi {
 
     /**
      * Paging query pictures that need manual review
-     * @param page
+     * @param page 
      * @param pageObjectParams Page params
      */
     public readReviewsWithHttpInfo(page: Page, pageObjectParams: string, _options?: Configuration): Promise<HttpInfo<ResponseDataPageInfoAssetsAuditVo>> {
@@ -1178,7 +1178,7 @@ export class PromiseBasicModuleAttachmentInterfaceApi {
 
     /**
      * Paging query pictures that need manual review
-     * @param page
+     * @param page 
      * @param pageObjectParams Page params
      */
     public readReviews(page: Page, pageObjectParams: string, _options?: Configuration): Promise<ResponseDataPageInfoAssetsAuditVo> {
@@ -1189,7 +1189,7 @@ export class PromiseBasicModuleAttachmentInterfaceApi {
     /**
      * Submit the image review results, enter the reviewer\'s name when submitting
      * Submit image review results
-     * @param assetsAuditRo
+     * @param assetsAuditRo 
      */
     public submitAuditResultWithHttpInfo(assetsAuditRo: AssetsAuditRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.submitAuditResultWithHttpInfo(assetsAuditRo, _options);
@@ -1199,7 +1199,7 @@ export class PromiseBasicModuleAttachmentInterfaceApi {
     /**
      * Submit the image review results, enter the reviewer\'s name when submitting
      * Submit image review results
-     * @param assetsAuditRo
+     * @param assetsAuditRo 
      */
     public submitAuditResult(assetsAuditRo: AssetsAuditRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.submitAuditResult(assetsAuditRo, _options);
@@ -1209,7 +1209,7 @@ export class PromiseBasicModuleAttachmentInterfaceApi {
     /**
      * Upload resource files, any file type is unlimited
      * Upload resources
-     * @param attachOpRo
+     * @param attachOpRo 
      */
     public uploadWithHttpInfo(attachOpRo?: AttachOpRo, _options?: Configuration): Promise<HttpInfo<ResponseDataAssetUploadResult>> {
         const result = this.api.uploadWithHttpInfo(attachOpRo, _options);
@@ -1219,7 +1219,7 @@ export class PromiseBasicModuleAttachmentInterfaceApi {
     /**
      * Upload resource files, any file type is unlimited
      * Upload resources
-     * @param attachOpRo
+     * @param attachOpRo 
      */
     public upload(attachOpRo?: AttachOpRo, _options?: Configuration): Promise<ResponseDataAssetUploadResult> {
         const result = this.api.upload(attachOpRo, _options);
@@ -1228,7 +1228,7 @@ export class PromiseBasicModuleAttachmentInterfaceApi {
 
     /**
      * Image URL upload interface
-     * @param attachUrlOpRo
+     * @param attachUrlOpRo 
      */
     public urlUploadWithHttpInfo(attachUrlOpRo?: AttachUrlOpRo, _options?: Configuration): Promise<HttpInfo<ResponseDataAssetUploadResult>> {
         const result = this.api.urlUploadWithHttpInfo(attachUrlOpRo, _options);
@@ -1237,7 +1237,7 @@ export class PromiseBasicModuleAttachmentInterfaceApi {
 
     /**
      * Image URL upload interface
-     * @param attachUrlOpRo
+     * @param attachUrlOpRo 
      */
     public urlUpload(attachUrlOpRo?: AttachUrlOpRo, _options?: Configuration): Promise<ResponseDataAssetUploadResult> {
         const result = this.api.urlUpload(attachUrlOpRo, _options);
@@ -1266,7 +1266,7 @@ export class PromiseBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Invitation link token verification, the relevant invitation information can be obtained after the verification is successful
      * Invitation temporary code verification
-     * @param inviteValidRo
+     * @param inviteValidRo 
      */
     public inviteTokenValidWithHttpInfo(inviteValidRo: InviteValidRo, _options?: Configuration): Promise<HttpInfo<ResponseDataInviteInfoVo>> {
         const result = this.api.inviteTokenValidWithHttpInfo(inviteValidRo, _options);
@@ -1276,7 +1276,7 @@ export class PromiseBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Invitation link token verification, the relevant invitation information can be obtained after the verification is successful
      * Invitation temporary code verification
-     * @param inviteValidRo
+     * @param inviteValidRo 
      */
     public inviteTokenValid(inviteValidRo: InviteValidRo, _options?: Configuration): Promise<ResponseDataInviteInfoVo> {
         const result = this.api.inviteTokenValid(inviteValidRo, _options);
@@ -1286,7 +1286,7 @@ export class PromiseBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Email verification code; 1:Email binding, 2: Email registration, 3: General verification
      * Send email verification code
-     * @param emailOpRo
+     * @param emailOpRo 
      */
     public mailWithHttpInfo(emailOpRo: EmailOpRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.mailWithHttpInfo(emailOpRo, _options);
@@ -1296,7 +1296,7 @@ export class PromiseBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Email verification code; 1:Email binding, 2: Email registration, 3: General verification
      * Send email verification code
-     * @param emailOpRo
+     * @param emailOpRo 
      */
     public mail(emailOpRo: EmailOpRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.mail(emailOpRo, _options);
@@ -1306,7 +1306,7 @@ export class PromiseBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding, 8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
      * Send SMS verification code
-     * @param smsOpRo
+     * @param smsOpRo 
      */
     public sendWithHttpInfo(smsOpRo: SmsOpRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.sendWithHttpInfo(smsOpRo, _options);
@@ -1316,7 +1316,7 @@ export class PromiseBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding, 8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
      * Send SMS verification code
-     * @param smsOpRo
+     * @param smsOpRo 
      */
     public send(smsOpRo: SmsOpRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.send(smsOpRo, _options);
@@ -1326,7 +1326,7 @@ export class PromiseBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Usage scenario: Verify identity before changing email address when no mobile phone, change the main administrator
      * Email verification code verification
-     * @param emailCodeValidateRo
+     * @param emailCodeValidateRo 
      */
     public validateEmailWithHttpInfo(emailCodeValidateRo: EmailCodeValidateRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.validateEmailWithHttpInfo(emailCodeValidateRo, _options);
@@ -1336,7 +1336,7 @@ export class PromiseBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Usage scenario: Verify identity before changing email address when no mobile phone, change the main administrator
      * Email verification code verification
-     * @param emailCodeValidateRo
+     * @param emailCodeValidateRo 
      */
     public validateEmail(emailCodeValidateRo: EmailCodeValidateRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.validateEmail(emailCodeValidateRo, _options);
@@ -1346,7 +1346,7 @@ export class PromiseBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Usage scenarios: DingTalk binding, identity verification before changing the mobile phone mailbox, changing the main administrator
      * Mobile verification code verification
-     * @param smsCodeValidateRo
+     * @param smsCodeValidateRo 
      */
     public verifyPhone1WithHttpInfo(smsCodeValidateRo: SmsCodeValidateRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.verifyPhone1WithHttpInfo(smsCodeValidateRo, _options);
@@ -1356,7 +1356,7 @@ export class PromiseBasicModuleVerifyActionModuleInterfaceApi {
     /**
      * Usage scenarios: DingTalk binding, identity verification before changing the mobile phone mailbox, changing the main administrator
      * Mobile verification code verification
-     * @param smsCodeValidateRo
+     * @param smsCodeValidateRo 
      */
     public verifyPhone1(smsCodeValidateRo: SmsCodeValidateRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.verifyPhone1(smsCodeValidateRo, _options);
@@ -1384,7 +1384,7 @@ export class PromiseBasicsAttachmentUploadTokenInterfaceApi {
 
     /**
      * Get upload presigned URL
-     * @param assetUploadCertificateRO
+     * @param assetUploadCertificateRO 
      */
     public generatePreSignedUrlWithHttpInfo(assetUploadCertificateRO: AssetUploadCertificateRO, _options?: Configuration): Promise<HttpInfo<ResponseDataListAssetUploadCertificateVO>> {
         const result = this.api.generatePreSignedUrlWithHttpInfo(assetUploadCertificateRO, _options);
@@ -1393,7 +1393,7 @@ export class PromiseBasicsAttachmentUploadTokenInterfaceApi {
 
     /**
      * Get upload presigned URL
-     * @param assetUploadCertificateRO
+     * @param assetUploadCertificateRO 
      */
     public generatePreSignedUrl(assetUploadCertificateRO: AssetUploadCertificateRO, _options?: Configuration): Promise<ResponseDataListAssetUploadCertificateVO> {
         const result = this.api.generatePreSignedUrl(assetUploadCertificateRO, _options);
@@ -1402,7 +1402,7 @@ export class PromiseBasicsAttachmentUploadTokenInterfaceApi {
 
     /**
      * Get asset signature url
-     * @param token
+     * @param token 
      */
     public getSignatureUrlWithHttpInfo(token: string, _options?: Configuration): Promise<HttpInfo<ResponseDataString>> {
         const result = this.api.getSignatureUrlWithHttpInfo(token, _options);
@@ -1411,7 +1411,7 @@ export class PromiseBasicsAttachmentUploadTokenInterfaceApi {
 
     /**
      * Get asset signature url
-     * @param token
+     * @param token 
      */
     public getSignatureUrl(token: string, _options?: Configuration): Promise<ResponseDataString> {
         const result = this.api.getSignatureUrl(token, _options);
@@ -1420,7 +1420,7 @@ export class PromiseBasicsAttachmentUploadTokenInterfaceApi {
 
     /**
      * Batch get asset signature url
-     * @param assetUrlSignatureRo
+     * @param assetUrlSignatureRo 
      */
     public getSignatureUrlsWithHttpInfo(assetUrlSignatureRo: AssetUrlSignatureRo, _options?: Configuration): Promise<HttpInfo<ResponseDataListAssetUrlSignatureVo>> {
         const result = this.api.getSignatureUrlsWithHttpInfo(assetUrlSignatureRo, _options);
@@ -1429,7 +1429,7 @@ export class PromiseBasicsAttachmentUploadTokenInterfaceApi {
 
     /**
      * Batch get asset signature url
-     * @param assetUrlSignatureRo
+     * @param assetUrlSignatureRo 
      */
     public getSignatureUrls(assetUrlSignatureRo: AssetUrlSignatureRo, _options?: Configuration): Promise<ResponseDataListAssetUrlSignatureVo> {
         const result = this.api.getSignatureUrls(assetUrlSignatureRo, _options);
@@ -1458,7 +1458,7 @@ export class PromiseClientInterfaceApi {
     /**
      * Get the application client version rendering information
      * Get application version information
-     * @param spaceId
+     * @param spaceId 
      * @param pipeline Construction serial number
      */
     public getTemplateInfoWithHttpInfo(spaceId?: string, pipeline?: string, _options?: Configuration): Promise<HttpInfo<ClientInfoVO>> {
@@ -1469,7 +1469,7 @@ export class PromiseClientInterfaceApi {
     /**
      * Get the application client version rendering information
      * Get application version information
-     * @param spaceId
+     * @param spaceId 
      * @param pipeline Construction serial number
      */
     public getTemplateInfo(spaceId?: string, pipeline?: string, _options?: Configuration): Promise<ClientInfoVO> {
@@ -1499,7 +1499,7 @@ export class PromiseContactMemberApiApi {
     /**
      * When adding new members, they can only be selected from within the organization structure and can be transferred by department
      * Add member
-     * @param teamAddMemberRo
+     * @param teamAddMemberRo 
      * @param xSpaceId space id
      */
     public addMemberWithHttpInfo(teamAddMemberRo: TeamAddMemberRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -1510,7 +1510,7 @@ export class PromiseContactMemberApiApi {
     /**
      * When adding new members, they can only be selected from within the organization structure and can be transferred by department
      * Add member
-     * @param teamAddMemberRo
+     * @param teamAddMemberRo 
      * @param xSpaceId space id
      */
     public addMember(teamAddMemberRo: TeamAddMemberRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -1543,7 +1543,7 @@ export class PromiseContactMemberApiApi {
     /**
      * action provides two deletion modes，1.delete from organization 2. delete from team
      * Delete members
-     * @param deleteBatchMemberRo
+     * @param deleteBatchMemberRo 
      * @param xSpaceId space id
      */
     public deleteBatchMemberWithHttpInfo(deleteBatchMemberRo: DeleteBatchMemberRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -1554,7 +1554,7 @@ export class PromiseContactMemberApiApi {
     /**
      * action provides two deletion modes，1.delete from organization 2. delete from team
      * Delete members
-     * @param deleteBatchMemberRo
+     * @param deleteBatchMemberRo 
      * @param xSpaceId space id
      */
     public deleteBatchMember(deleteBatchMemberRo: DeleteBatchMemberRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -1565,7 +1565,7 @@ export class PromiseContactMemberApiApi {
     /**
      * action provides two deletion modes.1.delete from organization 2. delete from team
      * Delete a Member
-     * @param deleteMemberRo
+     * @param deleteMemberRo 
      * @param xSpaceId space id
      */
     public deleteMemberWithHttpInfo(deleteMemberRo: DeleteMemberRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -1576,7 +1576,7 @@ export class PromiseContactMemberApiApi {
     /**
      * action provides two deletion modes.1.delete from organization 2. delete from team
      * Delete a Member
-     * @param deleteMemberRo
+     * @param deleteMemberRo 
      * @param xSpaceId space id
      */
     public deleteMember(deleteMemberRo: DeleteMemberRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -1673,7 +1673,7 @@ export class PromiseContactMemberApiApi {
     /**
      * Send an email to invite. The email is automatically bound to the platform user. The invited member will be in the state to be activated, and will not take effect until the user self activates.
      * Send an email to invite members
-     * @param inviteRo
+     * @param inviteRo 
      * @param xSpaceId space id
      */
     public inviteMemberWithHttpInfo(inviteRo: InviteRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataMemberUnitsVo>> {
@@ -1684,7 +1684,7 @@ export class PromiseContactMemberApiApi {
     /**
      * Send an email to invite. The email is automatically bound to the platform user. The invited member will be in the state to be activated, and will not take effect until the user self activates.
      * Send an email to invite members
-     * @param inviteRo
+     * @param inviteRo 
      * @param xSpaceId space id
      */
     public inviteMember(inviteRo: InviteRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataMemberUnitsVo> {
@@ -1695,7 +1695,7 @@ export class PromiseContactMemberApiApi {
     /**
      * If a member is not activated, it can send an invitation again regardless of whether the invitation has expired. After the invitation is successfully sent, the invitation link sent last time will be invalid.
      * Again send an email to invite members
-     * @param inviteMemberAgainRo
+     * @param inviteMemberAgainRo 
      * @param xSpaceId space id
      */
     public inviteMemberSingleWithHttpInfo(inviteMemberAgainRo: InviteMemberAgainRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -1706,7 +1706,7 @@ export class PromiseContactMemberApiApi {
     /**
      * If a member is not activated, it can send an invitation again regardless of whether the invitation has expired. After the invitation is successfully sent, the invitation link sent last time will be invalid.
      * Again send an email to invite members
-     * @param inviteMemberAgainRo
+     * @param inviteMemberAgainRo 
      * @param xSpaceId space id
      */
     public inviteMemberSingle(inviteMemberAgainRo: InviteMemberAgainRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -1741,7 +1741,7 @@ export class PromiseContactMemberApiApi {
     /**
      * Query all the members of the department,  including the members of the sub department. The query must be paging not full query. Description of Paging: <br/> pageNo: number of paging <br/>pageSize: size of paging。<br/>order: order in current page。<br/>sort: sorting in current page。<br/>simple usage example：{\"pageNo\":1,\"pageSize\":20}<br/>complex usage example：{\"pageNo\":1,\"pageSize\":20,\"order\":\"createTime,updateTime\",\"sort\":\"asc,desc\"}
      * Page query the team\'s member
-     * @param page
+     * @param page 
      * @param xSpaceId space id
      * @param pageObjectParams page\&#39;s parameter
      * @param teamId team id. if root team can lack teamId, teamId default 0.
@@ -1755,7 +1755,7 @@ export class PromiseContactMemberApiApi {
     /**
      * Query all the members of the department,  including the members of the sub department. The query must be paging not full query. Description of Paging: <br/> pageNo: number of paging <br/>pageSize: size of paging。<br/>order: order in current page。<br/>sort: sorting in current page。<br/>simple usage example：{\"pageNo\":1,\"pageSize\":20}<br/>complex usage example：{\"pageNo\":1,\"pageSize\":20,\"order\":\"createTime,updateTime\",\"sort\":\"asc,desc\"}
      * Page query the team\'s member
-     * @param page
+     * @param page 
      * @param xSpaceId space id
      * @param pageObjectParams page\&#39;s parameter
      * @param teamId team id. if root team can lack teamId, teamId default 0.
@@ -1769,7 +1769,7 @@ export class PromiseContactMemberApiApi {
     /**
      * Edit self member information
      * Edit self member information
-     * @param updateMemberOpRo
+     * @param updateMemberOpRo 
      * @param xSpaceId space id
      */
     public update2WithHttpInfo(updateMemberOpRo: UpdateMemberOpRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -1780,7 +1780,7 @@ export class PromiseContactMemberApiApi {
     /**
      * Edit self member information
      * Edit self member information
-     * @param updateMemberOpRo
+     * @param updateMemberOpRo 
      * @param xSpaceId space id
      */
     public update2(updateMemberOpRo: UpdateMemberOpRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -1791,7 +1791,7 @@ export class PromiseContactMemberApiApi {
     /**
      * Edit member info
      * Edit member info
-     * @param updateMemberRo
+     * @param updateMemberRo 
      * @param xSpaceId space id
      */
     public updateInfoWithHttpInfo(updateMemberRo: UpdateMemberRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -1802,7 +1802,7 @@ export class PromiseContactMemberApiApi {
     /**
      * Edit member info
      * Edit member info
-     * @param updateMemberRo
+     * @param updateMemberRo 
      * @param xSpaceId space id
      */
     public updateInfo(updateMemberRo: UpdateMemberRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -1813,7 +1813,7 @@ export class PromiseContactMemberApiApi {
     /**
      * assign members to departments
      * Update team
-     * @param updateMemberTeamRo
+     * @param updateMemberTeamRo 
      * @param xSpaceId space id
      */
     public updateTeam1WithHttpInfo(updateMemberTeamRo: UpdateMemberTeamRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -1824,7 +1824,7 @@ export class PromiseContactMemberApiApi {
     /**
      * assign members to departments
      * Update team
-     * @param updateMemberTeamRo
+     * @param updateMemberTeamRo 
      * @param xSpaceId space id
      */
     public updateTeam1(updateMemberTeamRo: UpdateMemberTeamRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -1835,7 +1835,7 @@ export class PromiseContactMemberApiApi {
     /**
      * Upload employee sheet，then parse it.
      * Upload employee sheet
-     * @param data
+     * @param data 
      * @param xSpaceId space id
      */
     public uploadExcelWithHttpInfo(data: UploadMemberTemplateRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataUploadParseResultVO>> {
@@ -1846,7 +1846,7 @@ export class PromiseContactMemberApiApi {
     /**
      * Upload employee sheet，then parse it.
      * Upload employee sheet
-     * @param data
+     * @param data 
      * @param xSpaceId space id
      */
     public uploadExcel(data: UploadMemberTemplateRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataUploadParseResultVO> {
@@ -1900,7 +1900,7 @@ export class PromiseContactOrganizationApiApi {
     /**
      * The most recently selected units are loaded by default when not keyword. The most recently added member of the same group are loaded when not selected. Load max 10
      * Load/search departments and members
-     * @param params
+     * @param params 
      * @param xSpaceId space id
      * @param linkId link id: node share id | template id
      * @param keyword keyword
@@ -1917,7 +1917,7 @@ export class PromiseContactOrganizationApiApi {
     /**
      * The most recently selected units are loaded by default when not keyword. The most recently added member of the same group are loaded when not selected. Load max 10
      * Load/search departments and members
-     * @param params
+     * @param params 
      * @param xSpaceId space id
      * @param linkId link id: node share id | template id
      * @param keyword keyword
@@ -2008,7 +2008,7 @@ export class PromiseContactOrganizationApiApi {
     /**
      * scenario field conversion（If the amount of data is large, the content requested by GET will exceed the limit.）
      * accurately query departments and members
-     * @param searchUnitRo
+     * @param searchUnitRo 
      * @param xSpaceId space id
      */
     public searchUnitInfoVoWithHttpInfo(searchUnitRo: SearchUnitRo, xSpaceId?: string, _options?: Configuration): Promise<HttpInfo<ResponseDataListUnitInfoVo>> {
@@ -2019,7 +2019,7 @@ export class PromiseContactOrganizationApiApi {
     /**
      * scenario field conversion（If the amount of data is large, the content requested by GET will exceed the limit.）
      * accurately query departments and members
-     * @param searchUnitRo
+     * @param searchUnitRo 
      * @param xSpaceId space id
      */
     public searchUnitInfoVo(searchUnitRo: SearchUnitRo, xSpaceId?: string, _options?: Configuration): Promise<ResponseDataListUnitInfoVo> {
@@ -2049,10 +2049,10 @@ export class PromiseContactsRoleApiApi {
     /**
      * add role members
      * add role members
-     * @param addRoleMemberRo
-     * @param roleId
+     * @param addRoleMemberRo 
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public addRoleMembersWithHttpInfo(addRoleMemberRo: AddRoleMemberRo, roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.addRoleMembersWithHttpInfo(addRoleMemberRo, roleId, xSpaceId, roleId2, _options);
@@ -2062,10 +2062,10 @@ export class PromiseContactsRoleApiApi {
     /**
      * add role members
      * add role members
-     * @param addRoleMemberRo
-     * @param roleId
+     * @param addRoleMemberRo 
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public addRoleMembers(addRoleMemberRo: AddRoleMemberRo, roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.addRoleMembers(addRoleMemberRo, roleId, xSpaceId, roleId2, _options);
@@ -2075,7 +2075,7 @@ export class PromiseContactsRoleApiApi {
     /**
      * create new role
      * create new role
-     * @param createRoleRo
+     * @param createRoleRo 
      * @param xSpaceId space id
      */
     public createRoleWithHttpInfo(createRoleRo: CreateRoleRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -2086,7 +2086,7 @@ export class PromiseContactsRoleApiApi {
     /**
      * create new role
      * create new role
-     * @param createRoleRo
+     * @param createRoleRo 
      * @param xSpaceId space id
      */
     public createRole(createRoleRo: CreateRoleRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -2097,9 +2097,9 @@ export class PromiseContactsRoleApiApi {
     /**
      * delete role
      * delete role
-     * @param roleId
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public deleteRole1WithHttpInfo(roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.deleteRole1WithHttpInfo(roleId, xSpaceId, roleId2, _options);
@@ -2109,9 +2109,9 @@ export class PromiseContactsRoleApiApi {
     /**
      * delete role
      * delete role
-     * @param roleId
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public deleteRole1(roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.deleteRole1(roleId, xSpaceId, roleId2, _options);
@@ -2121,10 +2121,10 @@ export class PromiseContactsRoleApiApi {
     /**
      * query the role\'s members
      * query role members
-     * @param roleId
-     * @param page
+     * @param roleId 
+     * @param page 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      * @param pageObjectParams page parameters
      */
     public getRoleMembersWithHttpInfo(roleId: number, page: PageVoid, xSpaceId: string, roleId2: string, pageObjectParams: string, _options?: Configuration): Promise<HttpInfo<ResponseDataPageInfoRoleMemberVo>> {
@@ -2135,10 +2135,10 @@ export class PromiseContactsRoleApiApi {
     /**
      * query the role\'s members
      * query role members
-     * @param roleId
-     * @param page
+     * @param roleId 
+     * @param page 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      * @param pageObjectParams page parameters
      */
     public getRoleMembers(roleId: number, page: PageVoid, xSpaceId: string, roleId2: string, pageObjectParams: string, _options?: Configuration): Promise<ResponseDataPageInfoRoleMemberVo> {
@@ -2189,10 +2189,10 @@ export class PromiseContactsRoleApiApi {
     /**
      * remove role members
      * remove role members
-     * @param deleteRoleMemberRo
-     * @param roleId
+     * @param deleteRoleMemberRo 
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public removeRoleMembersWithHttpInfo(deleteRoleMemberRo: DeleteRoleMemberRo, roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.removeRoleMembersWithHttpInfo(deleteRoleMemberRo, roleId, xSpaceId, roleId2, _options);
@@ -2202,10 +2202,10 @@ export class PromiseContactsRoleApiApi {
     /**
      * remove role members
      * remove role members
-     * @param deleteRoleMemberRo
-     * @param roleId
+     * @param deleteRoleMemberRo 
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public removeRoleMembers(deleteRoleMemberRo: DeleteRoleMemberRo, roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.removeRoleMembers(deleteRoleMemberRo, roleId, xSpaceId, roleId2, _options);
@@ -2215,10 +2215,10 @@ export class PromiseContactsRoleApiApi {
     /**
      * update role information
      * update role information
-     * @param updateRoleRo
-     * @param roleId
+     * @param updateRoleRo 
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public updateRoleWithHttpInfo(updateRoleRo: UpdateRoleRo, roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.updateRoleWithHttpInfo(updateRoleRo, roleId, xSpaceId, roleId2, _options);
@@ -2228,10 +2228,10 @@ export class PromiseContactsRoleApiApi {
     /**
      * update role information
      * update role information
-     * @param updateRoleRo
-     * @param roleId
+     * @param updateRoleRo 
+     * @param roleId 
      * @param xSpaceId space id
-     * @param roleId2
+     * @param roleId2 
      */
     public updateRole(updateRoleRo: UpdateRoleRo, roleId: number, xSpaceId: string, roleId2: string, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.updateRole(updateRoleRo, roleId, xSpaceId, roleId2, _options);
@@ -2260,7 +2260,7 @@ export class PromiseContactsTeamApiApi {
     /**
      * Create team
      * Create team
-     * @param createTeamRo
+     * @param createTeamRo 
      * @param xSpaceId space id
      */
     public createTeamWithHttpInfo(createTeamRo: CreateTeamRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -2271,7 +2271,7 @@ export class PromiseContactsTeamApiApi {
     /**
      * Create team
      * Create team
-     * @param createTeamRo
+     * @param createTeamRo 
      * @param xSpaceId space id
      */
     public createTeam(createTeamRo: CreateTeamRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -2410,7 +2410,7 @@ export class PromiseContactsTeamApiApi {
     /**
      * Update team info. If modify team level,default sort in the end of parent team.
      * Update team info
-     * @param updateTeamRo
+     * @param updateTeamRo 
      * @param xSpaceId space id
      */
     public updateTeamWithHttpInfo(updateTeamRo: UpdateTeamRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -2421,7 +2421,7 @@ export class PromiseContactsTeamApiApi {
     /**
      * Update team info. If modify team level,default sort in the end of parent team.
      * Update team info
-     * @param updateTeamRo
+     * @param updateTeamRo 
      * @param xSpaceId space id
      */
     public updateTeam(updateTeamRo: UpdateTeamRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -2469,7 +2469,7 @@ export class PromiseDeveloperConfigAPIApi {
     /**
      * Refresh developer access token before verifying phone number.If there is no verification mailbox, skip verification.
      * Refresh the developer access token
-     * @param refreshApiKeyRo
+     * @param refreshApiKeyRo 
      */
     public refreshApiKeyWithHttpInfo(refreshApiKeyRo: RefreshApiKeyRo, _options?: Configuration): Promise<HttpInfo<ResponseDataDeveloperInfoVo>> {
         const result = this.api.refreshApiKeyWithHttpInfo(refreshApiKeyRo, _options);
@@ -2479,7 +2479,7 @@ export class PromiseDeveloperConfigAPIApi {
     /**
      * Refresh developer access token before verifying phone number.If there is no verification mailbox, skip verification.
      * Refresh the developer access token
-     * @param refreshApiKeyRo
+     * @param refreshApiKeyRo 
      */
     public refreshApiKey(refreshApiKeyRo: RefreshApiKeyRo, _options?: Configuration): Promise<ResponseDataDeveloperInfoVo> {
         const result = this.api.refreshApiKey(refreshApiKeyRo, _options);
@@ -2489,7 +2489,7 @@ export class PromiseDeveloperConfigAPIApi {
     /**
      * Provides a mid-tier validation access token.
      * Verify the access token
-     * @param apiKey
+     * @param apiKey 
      */
     public validateApiKeyWithHttpInfo(apiKey: string, _options?: Configuration): Promise<HttpInfo<ResponseDataBoolean>> {
         const result = this.api.validateApiKeyWithHttpInfo(apiKey, _options);
@@ -2499,7 +2499,7 @@ export class PromiseDeveloperConfigAPIApi {
     /**
      * Provides a mid-tier validation access token.
      * Verify the access token
-     * @param apiKey
+     * @param apiKey 
      */
     public validateApiKey(apiKey: string, _options?: Configuration): Promise<ResponseDataBoolean> {
         const result = this.api.validateApiKey(apiKey, _options);
@@ -2547,7 +2547,7 @@ export class PromiseInternalServerAssetAPIApi {
 
     /**
      * Batch get asset signature url
-     * @param resourceKeys
+     * @param resourceKeys 
      */
     public getSignatureUrls1WithHttpInfo(resourceKeys: Array<string>, _options?: Configuration): Promise<HttpInfo<ResponseDataListAssetUrlSignatureVo>> {
         const result = this.api.getSignatureUrls1WithHttpInfo(resourceKeys, _options);
@@ -2556,7 +2556,7 @@ export class PromiseInternalServerAssetAPIApi {
 
     /**
      * Batch get asset signature url
-     * @param resourceKeys
+     * @param resourceKeys 
      */
     public getSignatureUrls1(resourceKeys: Array<string>, _options?: Configuration): Promise<ResponseDataListAssetUrlSignatureVo> {
         const result = this.api.getSignatureUrls1(resourceKeys, _options);
@@ -2605,7 +2605,7 @@ export class PromiseInternalServerOrgAPIApi {
     /**
      * The most recently selected units are loaded by default when not keyword. The most recently added member of the same group are loaded when not selected. Load max 10
      * Load/search departments and members
-     * @param params
+     * @param params 
      * @param xSpaceId space id
      * @param userId user id
      * @param keyword keyword
@@ -2622,7 +2622,7 @@ export class PromiseInternalServerOrgAPIApi {
     /**
      * The most recently selected units are loaded by default when not keyword. The most recently added member of the same group are loaded when not selected. Load max 10
      * Load/search departments and members
-     * @param params
+     * @param params 
      * @param xSpaceId space id
      * @param userId user id
      * @param keyword keyword
@@ -2661,7 +2661,7 @@ export class PromiseInternalServiceDataTableFieldPermissionInterfaceApi {
      * @param dstId table id
      * @param fieldIds list of field ids
      */
-    public disableRolesWithHttpInfo(dstId: ModelString, fieldIds: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
+    public disableRolesWithHttpInfo(dstId: string, fieldIds: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.disableRolesWithHttpInfo(dstId, fieldIds, _options);
         return result.toPromise();
     }
@@ -2672,7 +2672,7 @@ export class PromiseInternalServiceDataTableFieldPermissionInterfaceApi {
      * @param dstId table id
      * @param fieldIds list of field ids
      */
-    public disableRoles(dstId: ModelString, fieldIds: string, _options?: Configuration): Promise<ResponseDataVoid> {
+    public disableRoles(dstId: string, fieldIds: string, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.disableRoles(dstId, fieldIds, _options);
         return result.toPromise();
     }
@@ -2701,7 +2701,7 @@ export class PromiseInternalServiceDataTableFieldPermissionInterfaceApi {
 
     /**
      * get field permission set for multiple nodes
-     * @param internalPermissionRo
+     * @param internalPermissionRo 
      */
     public getMultiFieldPermissionViewsWithHttpInfo(internalPermissionRo: InternalPermissionRo, _options?: Configuration): Promise<HttpInfo<ResponseDataListFieldPermissionView>> {
         const result = this.api.getMultiFieldPermissionViewsWithHttpInfo(internalPermissionRo, _options);
@@ -2710,7 +2710,7 @@ export class PromiseInternalServiceDataTableFieldPermissionInterfaceApi {
 
     /**
      * get field permission set for multiple nodes
-     * @param internalPermissionRo
+     * @param internalPermissionRo 
      */
     public getMultiFieldPermissionViews(internalPermissionRo: InternalPermissionRo, _options?: Configuration): Promise<ResponseDataListFieldPermissionView> {
         const result = this.api.getMultiFieldPermissionViews(internalPermissionRo, _options);
@@ -2739,7 +2739,7 @@ export class PromiseInternalServiceFieldServiceInterfaceApi {
     /**
      * get url related information
      * get url related information
-     * @param urlsWrapperRo
+     * @param urlsWrapperRo 
      */
     public urlContentsAwareFillWithHttpInfo(urlsWrapperRo: UrlsWrapperRo, _options?: Configuration): Promise<HttpInfo<ResponseDataUrlAwareContentsVo>> {
         const result = this.api.urlContentsAwareFillWithHttpInfo(urlsWrapperRo, _options);
@@ -2749,7 +2749,7 @@ export class PromiseInternalServiceFieldServiceInterfaceApi {
     /**
      * get url related information
      * get url related information
-     * @param urlsWrapperRo
+     * @param urlsWrapperRo 
      */
     public urlContentsAwareFill(urlsWrapperRo: UrlsWrapperRo, _options?: Configuration): Promise<ResponseDataUrlAwareContentsVo> {
         const result = this.api.urlContentsAwareFill(urlsWrapperRo, _options);
@@ -2778,8 +2778,8 @@ export class PromiseInternalServiceNodeInterfaceApi {
     /**
      * create a table node
      * create a table node
-     * @param createDatasheetRo
-     * @param spaceId
+     * @param createDatasheetRo 
+     * @param spaceId 
      */
     public createDatasheetWithHttpInfo(createDatasheetRo: CreateDatasheetRo, spaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataCreateDatasheetVo>> {
         const result = this.api.createDatasheetWithHttpInfo(createDatasheetRo, spaceId, _options);
@@ -2789,8 +2789,8 @@ export class PromiseInternalServiceNodeInterfaceApi {
     /**
      * create a table node
      * create a table node
-     * @param createDatasheetRo
-     * @param spaceId
+     * @param createDatasheetRo 
+     * @param spaceId 
      */
     public createDatasheet(createDatasheetRo: CreateDatasheetRo, spaceId: string, _options?: Configuration): Promise<ResponseDataCreateDatasheetVo> {
         const result = this.api.createDatasheet(createDatasheetRo, spaceId, _options);
@@ -2800,8 +2800,8 @@ export class PromiseInternalServiceNodeInterfaceApi {
     /**
      * delete node
      * delete node
-     * @param spaceId
-     * @param nodeId
+     * @param spaceId 
+     * @param nodeId 
      */
     public deleteNodeWithHttpInfo(spaceId: string, nodeId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.deleteNodeWithHttpInfo(spaceId, nodeId, _options);
@@ -2811,8 +2811,8 @@ export class PromiseInternalServiceNodeInterfaceApi {
     /**
      * delete node
      * delete node
-     * @param spaceId
-     * @param nodeId
+     * @param spaceId 
+     * @param nodeId 
      */
     public deleteNode(spaceId: string, nodeId: string, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.deleteNode(spaceId, nodeId, _options);
@@ -2822,10 +2822,10 @@ export class PromiseInternalServiceNodeInterfaceApi {
     /**
      * scenario: query an existing read-only dashboard
      * Get filter nodes by type, permissions and node name.
-     * @param spaceId
-     * @param type
-     * @param nodePermissions
-     * @param keyword
+     * @param spaceId 
+     * @param type 
+     * @param nodePermissions 
+     * @param keyword 
      */
     public filterWithHttpInfo(spaceId: string, type: number, nodePermissions?: Array<number>, keyword?: string, _options?: Configuration): Promise<HttpInfo<ResponseDataListNodeInfo>> {
         const result = this.api.filterWithHttpInfo(spaceId, type, nodePermissions, keyword, _options);
@@ -2835,10 +2835,10 @@ export class PromiseInternalServiceNodeInterfaceApi {
     /**
      * scenario: query an existing read-only dashboard
      * Get filter nodes by type, permissions and node name.
-     * @param spaceId
-     * @param type
-     * @param nodePermissions
-     * @param keyword
+     * @param spaceId 
+     * @param type 
+     * @param nodePermissions 
+     * @param keyword 
      */
     public filter(spaceId: string, type: number, nodePermissions?: Array<number>, keyword?: string, _options?: Configuration): Promise<ResponseDataListNodeInfo> {
         const result = this.api.filter(spaceId, type, nodePermissions, keyword, _options);
@@ -2866,7 +2866,7 @@ export class PromiseInternalServiceNodePermissionInterfaceApi {
 
     /**
      * Get permission set for multiple nodes
-     * @param internalPermissionRo
+     * @param internalPermissionRo 
      */
     public getMultiNodePermissionsWithHttpInfo(internalPermissionRo: InternalPermissionRo, _options?: Configuration): Promise<HttpInfo<ResponseDataListDatasheetPermissionView>> {
         const result = this.api.getMultiNodePermissionsWithHttpInfo(internalPermissionRo, _options);
@@ -2875,7 +2875,7 @@ export class PromiseInternalServiceNodePermissionInterfaceApi {
 
     /**
      * Get permission set for multiple nodes
-     * @param internalPermissionRo
+     * @param internalPermissionRo 
      */
     public getMultiNodePermissions(internalPermissionRo: InternalPermissionRo, _options?: Configuration): Promise<ResponseDataListDatasheetPermissionView> {
         const result = this.api.getMultiNodePermissions(internalPermissionRo, _options);
@@ -2924,7 +2924,7 @@ export class PromiseInternalServiceNotificationInterfaceApi {
     /**
      * send a message
      * send a message
-     * @param notificationCreateRo
+     * @param notificationCreateRo 
      */
     public create4WithHttpInfo(notificationCreateRo: Array<NotificationCreateRo>, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.create4WithHttpInfo(notificationCreateRo, _options);
@@ -2934,7 +2934,7 @@ export class PromiseInternalServiceNotificationInterfaceApi {
     /**
      * send a message
      * send a message
-     * @param notificationCreateRo
+     * @param notificationCreateRo 
      */
     public create4(notificationCreateRo: Array<NotificationCreateRo>, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.create4(notificationCreateRo, _options);
@@ -2963,7 +2963,7 @@ export class PromiseInternalServiceSpaceInterfaceApi {
     /**
      * Provides the authentication function of the middle layer request, and queries the API aps information in the subscription plan corresponding to the space.
      * get api qps information of a specified space
-     * @param spaceId
+     * @param spaceId 
      */
     public apiRateLimitWithHttpInfo(spaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataInternalSpaceApiRateLimitVo>> {
         const result = this.api.apiRateLimitWithHttpInfo(spaceId, _options);
@@ -2973,7 +2973,7 @@ export class PromiseInternalServiceSpaceInterfaceApi {
     /**
      * Provides the authentication function of the middle layer request, and queries the API aps information in the subscription plan corresponding to the space.
      * get api qps information of a specified space
-     * @param spaceId
+     * @param spaceId 
      */
     public apiRateLimit(spaceId: string, _options?: Configuration): Promise<ResponseDataInternalSpaceApiRateLimitVo> {
         const result = this.api.apiRateLimit(spaceId, _options);
@@ -2983,7 +2983,7 @@ export class PromiseInternalServiceSpaceInterfaceApi {
     /**
      * Provides the authentication function of the middle layer request, and queries the API usage information in the subscription plan corresponding to the space.
      * get api usage information of a specified space
-     * @param spaceId
+     * @param spaceId 
      */
     public apiUsagesWithHttpInfo(spaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataInternalSpaceApiUsageVo>> {
         const result = this.api.apiUsagesWithHttpInfo(spaceId, _options);
@@ -2993,7 +2993,7 @@ export class PromiseInternalServiceSpaceInterfaceApi {
     /**
      * Provides the authentication function of the middle layer request, and queries the API usage information in the subscription plan corresponding to the space.
      * get api usage information of a specified space
-     * @param spaceId
+     * @param spaceId 
      */
     public apiUsages(spaceId: string, _options?: Configuration): Promise<ResponseDataInternalSpaceApiUsageVo> {
         const result = this.api.apiUsages(spaceId, _options);
@@ -3092,7 +3092,7 @@ export class PromiseInternalServiceSpaceInterfaceApi {
 
     /**
      * get space information
-     * @param spaceId
+     * @param spaceId 
      */
     public labsWithHttpInfo(spaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataInternalSpaceInfoVo>> {
         const result = this.api.labsWithHttpInfo(spaceId, _options);
@@ -3101,7 +3101,7 @@ export class PromiseInternalServiceSpaceInterfaceApi {
 
     /**
      * get space information
-     * @param spaceId
+     * @param spaceId 
      */
     public labs(spaceId: string, _options?: Configuration): Promise<ResponseDataInternalSpaceInfoVo> {
         const result = this.api.labs(spaceId, _options);
@@ -3110,8 +3110,8 @@ export class PromiseInternalServiceSpaceInterfaceApi {
 
     /**
      * get space information
-     * @param spaceStatisticsRo
-     * @param spaceId
+     * @param spaceStatisticsRo 
+     * @param spaceId 
      */
     public statisticsWithHttpInfo(spaceStatisticsRo: SpaceStatisticsRo, spaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.statisticsWithHttpInfo(spaceStatisticsRo, spaceId, _options);
@@ -3120,8 +3120,8 @@ export class PromiseInternalServiceSpaceInterfaceApi {
 
     /**
      * get space information
-     * @param spaceStatisticsRo
-     * @param spaceId
+     * @param spaceStatisticsRo 
+     * @param spaceId 
      */
     public statistics(spaceStatisticsRo: SpaceStatisticsRo, spaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.statistics(spaceStatisticsRo, spaceId, _options);
@@ -3150,7 +3150,7 @@ export class PromiseInternalServiceUserInterfaceApi {
     /**
      * Close and log off the cooling-off period user account
      * Close and log off the cooling-off period user account
-     * @param userId
+     * @param userId 
      */
     public closePausedUserAccountWithHttpInfo(userId: number, _options?: Configuration): Promise<HttpInfo<ResponseDataBoolean>> {
         const result = this.api.closePausedUserAccountWithHttpInfo(userId, _options);
@@ -3160,7 +3160,7 @@ export class PromiseInternalServiceUserInterfaceApi {
     /**
      * Close and log off the cooling-off period user account
      * Close and log off the cooling-off period user account
-     * @param userId
+     * @param userId 
      */
     public closePausedUserAccount(userId: number, _options?: Configuration): Promise<ResponseDataBoolean> {
         const result = this.api.closePausedUserAccount(userId, _options);
@@ -3188,7 +3188,7 @@ export class PromiseInternalServiceUserInterfaceApi {
     /**
      * get the cooling-off period user operation record
      * get the cooling-off period user operation record
-     * @param pausedUserHistoryRo
+     * @param pausedUserHistoryRo 
      */
     public getUserHistoriesWithHttpInfo(pausedUserHistoryRo: PausedUserHistoryRo, _options?: Configuration): Promise<HttpInfo<ResponseDataListPausedUserHistoryDto>> {
         const result = this.api.getUserHistoriesWithHttpInfo(pausedUserHistoryRo, _options);
@@ -3198,7 +3198,7 @@ export class PromiseInternalServiceUserInterfaceApi {
     /**
      * get the cooling-off period user operation record
      * get the cooling-off period user operation record
-     * @param pausedUserHistoryRo
+     * @param pausedUserHistoryRo 
      */
     public getUserHistories(pausedUserHistoryRo: PausedUserHistoryRo, _options?: Configuration): Promise<ResponseDataListPausedUserHistoryDto> {
         const result = this.api.getUserHistories(pausedUserHistoryRo, _options);
@@ -3298,7 +3298,7 @@ export class PromisePlayerSystemActivityAPIApi {
     /**
      * Scene: After triggering the guided click event, modify the state or the cumulative number of times.
      * Trigger Wizard
-     * @param activityStatusRo
+     * @param activityStatusRo 
      */
     public triggerWizardWithHttpInfo(activityStatusRo: ActivityStatusRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.triggerWizardWithHttpInfo(activityStatusRo, _options);
@@ -3308,7 +3308,7 @@ export class PromisePlayerSystemActivityAPIApi {
     /**
      * Scene: After triggering the guided click event, modify the state or the cumulative number of times.
      * Trigger Wizard
-     * @param activityStatusRo
+     * @param activityStatusRo 
      */
     public triggerWizard(activityStatusRo: ActivityStatusRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.triggerWizard(activityStatusRo, _options);
@@ -3336,7 +3336,7 @@ export class PromisePlayerSystemNotificationAPIApi {
 
     /**
      * Create Notification
-     * @param notificationCreateRo
+     * @param notificationCreateRo 
      */
     public create2WithHttpInfo(notificationCreateRo: Array<NotificationCreateRo>, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.create2WithHttpInfo(notificationCreateRo, _options);
@@ -3345,7 +3345,7 @@ export class PromisePlayerSystemNotificationAPIApi {
 
     /**
      * Create Notification
-     * @param notificationCreateRo
+     * @param notificationCreateRo 
      */
     public create2(notificationCreateRo: Array<NotificationCreateRo>, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.create2(notificationCreateRo, _options);
@@ -3354,7 +3354,7 @@ export class PromisePlayerSystemNotificationAPIApi {
 
     /**
      * Delete Notification
-     * @param notificationReadRo
+     * @param notificationReadRo 
      */
     public delete4WithHttpInfo(notificationReadRo: NotificationReadRo, _options?: Configuration): Promise<HttpInfo<ResponseDataBoolean>> {
         const result = this.api.delete4WithHttpInfo(notificationReadRo, _options);
@@ -3363,7 +3363,7 @@ export class PromisePlayerSystemNotificationAPIApi {
 
     /**
      * Delete Notification
-     * @param notificationReadRo
+     * @param notificationReadRo 
      */
     public delete4(notificationReadRo: NotificationReadRo, _options?: Configuration): Promise<ResponseDataBoolean> {
         const result = this.api.delete4(notificationReadRo, _options);
@@ -3373,7 +3373,7 @@ export class PromisePlayerSystemNotificationAPIApi {
     /**
      * Default: System Notification
      * Get Notification Detail List
-     * @param notificationListRo
+     * @param notificationListRo 
      */
     public list2WithHttpInfo(notificationListRo: NotificationListRo, _options?: Configuration): Promise<HttpInfo<ResponseDataListNotificationDetailVo>> {
         const result = this.api.list2WithHttpInfo(notificationListRo, _options);
@@ -3383,7 +3383,7 @@ export class PromisePlayerSystemNotificationAPIApi {
     /**
      * Default: System Notification
      * Get Notification Detail List
-     * @param notificationListRo
+     * @param notificationListRo 
      */
     public list2(notificationListRo: NotificationListRo, _options?: Configuration): Promise<ResponseDataListNotificationDetailVo> {
         const result = this.api.list2(notificationListRo, _options);
@@ -3393,7 +3393,7 @@ export class PromisePlayerSystemNotificationAPIApi {
     /**
      * Description of Paging: <br/> pageNo: number of paging <br/>pageSize: size of paging。<br/>order: order in current page。<br/>sort: sorting in current page。<br/>simple usage example：{\"pageNo\":1,\"pageSize\":20}<br/>complex usage example：{\"pageNo\":1,\"pageSize\":20,\"order\":\"createTime,updateTime\",\"sort\":\"asc,desc\"}
      * Get Notification Page Info
-     * @param notificationPageRo
+     * @param notificationPageRo 
      */
     public pageWithHttpInfo(notificationPageRo: NotificationPageRo, _options?: Configuration): Promise<HttpInfo<ResponseDataListNotificationDetailVo>> {
         const result = this.api.pageWithHttpInfo(notificationPageRo, _options);
@@ -3403,7 +3403,7 @@ export class PromisePlayerSystemNotificationAPIApi {
     /**
      * Description of Paging: <br/> pageNo: number of paging <br/>pageSize: size of paging。<br/>order: order in current page。<br/>sort: sorting in current page。<br/>simple usage example：{\"pageNo\":1,\"pageSize\":20}<br/>complex usage example：{\"pageNo\":1,\"pageSize\":20,\"order\":\"createTime,updateTime\",\"sort\":\"asc,desc\"}
      * Get Notification Page Info
-     * @param notificationPageRo
+     * @param notificationPageRo 
      */
     public page(notificationPageRo: NotificationPageRo, _options?: Configuration): Promise<ResponseDataListNotificationDetailVo> {
         const result = this.api.page(notificationPageRo, _options);
@@ -3412,7 +3412,7 @@ export class PromisePlayerSystemNotificationAPIApi {
 
     /**
      * Mark Notification Read
-     * @param notificationReadRo
+     * @param notificationReadRo 
      */
     public readWithHttpInfo(notificationReadRo: NotificationReadRo, _options?: Configuration): Promise<HttpInfo<ResponseDataBoolean>> {
         const result = this.api.readWithHttpInfo(notificationReadRo, _options);
@@ -3421,7 +3421,7 @@ export class PromisePlayerSystemNotificationAPIApi {
 
     /**
      * Mark Notification Read
-     * @param notificationReadRo
+     * @param notificationReadRo 
      */
     public read(notificationReadRo: NotificationReadRo, _options?: Configuration): Promise<ResponseDataBoolean> {
         const result = this.api.read(notificationReadRo, _options);
@@ -3465,7 +3465,7 @@ export class PromiseSpaceApplyJoiningSpaceApiApi {
 
     /**
      * Applying to join the space
-     * @param spaceJoinApplyRo
+     * @param spaceJoinApplyRo 
      */
     public applyWithHttpInfo(spaceJoinApplyRo: SpaceJoinApplyRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.applyWithHttpInfo(spaceJoinApplyRo, _options);
@@ -3474,7 +3474,7 @@ export class PromiseSpaceApplyJoiningSpaceApiApi {
 
     /**
      * Applying to join the space
-     * @param spaceJoinApplyRo
+     * @param spaceJoinApplyRo 
      */
     public apply(spaceJoinApplyRo: SpaceJoinApplyRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.apply(spaceJoinApplyRo, _options);
@@ -3483,7 +3483,7 @@ export class PromiseSpaceApplyJoiningSpaceApiApi {
 
     /**
      * Process joining application
-     * @param spaceJoinProcessRo
+     * @param spaceJoinProcessRo 
      */
     public processWithHttpInfo(spaceJoinProcessRo: SpaceJoinProcessRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.processWithHttpInfo(spaceJoinProcessRo, _options);
@@ -3492,7 +3492,7 @@ export class PromiseSpaceApplyJoiningSpaceApiApi {
 
     /**
      * Process joining application
-     * @param spaceJoinProcessRo
+     * @param spaceJoinProcessRo 
      */
     public process(spaceJoinProcessRo: SpaceJoinProcessRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.process(spaceJoinProcessRo, _options);
@@ -3520,7 +3520,7 @@ export class PromiseSpaceInviteLinkApiApi {
 
     /**
      * Delete link
-     * @param spaceLinkOpRo
+     * @param spaceLinkOpRo 
      * @param xSpaceId space id
      */
     public delete6WithHttpInfo(spaceLinkOpRo: SpaceLinkOpRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -3530,7 +3530,7 @@ export class PromiseSpaceInviteLinkApiApi {
 
     /**
      * Delete link
-     * @param spaceLinkOpRo
+     * @param spaceLinkOpRo 
      * @param xSpaceId space id
      */
     public delete6(spaceLinkOpRo: SpaceLinkOpRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -3541,7 +3541,7 @@ export class PromiseSpaceInviteLinkApiApi {
     /**
      * return token，the front end stitching $DOMAIN/invite/link?token=:token
      * Generate or refresh link
-     * @param spaceLinkOpRo
+     * @param spaceLinkOpRo 
      * @param xSpaceId space id
      */
     public generateWithHttpInfo(spaceLinkOpRo: SpaceLinkOpRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataString>> {
@@ -3552,7 +3552,7 @@ export class PromiseSpaceInviteLinkApiApi {
     /**
      * return token，the front end stitching $DOMAIN/invite/link?token=:token
      * Generate or refresh link
-     * @param spaceLinkOpRo
+     * @param spaceLinkOpRo 
      * @param xSpaceId space id
      */
     public generate(spaceLinkOpRo: SpaceLinkOpRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataString> {
@@ -3563,7 +3563,7 @@ export class PromiseSpaceInviteLinkApiApi {
     /**
      * If return code status 201,the user redirects to the login page due to unauthorized.
      * Join the space using the public link
-     * @param inviteValidRo
+     * @param inviteValidRo 
      */
     public joinWithHttpInfo(inviteValidRo: InviteValidRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.joinWithHttpInfo(inviteValidRo, _options);
@@ -3573,7 +3573,7 @@ export class PromiseSpaceInviteLinkApiApi {
     /**
      * If return code status 201,the user redirects to the login page due to unauthorized.
      * Join the space using the public link
-     * @param inviteValidRo
+     * @param inviteValidRo 
      */
     public join(inviteValidRo: InviteValidRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.join(inviteValidRo, _options);
@@ -3601,7 +3601,7 @@ export class PromiseSpaceInviteLinkApiApi {
     /**
      * After the verification is successful, it can obtain related invitation information
      * Valid invite link token
-     * @param inviteValidRo
+     * @param inviteValidRo 
      */
     public validWithHttpInfo(inviteValidRo: InviteValidRo, _options?: Configuration): Promise<HttpInfo<ResponseDataSpaceLinkInfoVo>> {
         const result = this.api.validWithHttpInfo(inviteValidRo, _options);
@@ -3611,7 +3611,7 @@ export class PromiseSpaceInviteLinkApiApi {
     /**
      * After the verification is successful, it can obtain related invitation information
      * Valid invite link token
-     * @param inviteValidRo
+     * @param inviteValidRo 
      */
     public valid(inviteValidRo: InviteValidRo, _options?: Configuration): Promise<ResponseDataSpaceLinkInfoVo> {
         const result = this.api.valid(inviteValidRo, _options);
@@ -3657,7 +3657,7 @@ export class PromiseSpaceMainAdminApiApi {
 
     /**
      * Change main admin
-     * @param spaceMainAdminChangeOpRo
+     * @param spaceMainAdminChangeOpRo 
      * @param xSpaceId space id
      */
     public replaceWithHttpInfo(spaceMainAdminChangeOpRo: SpaceMainAdminChangeOpRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -3667,7 +3667,7 @@ export class PromiseSpaceMainAdminApiApi {
 
     /**
      * Change main admin
-     * @param spaceMainAdminChangeOpRo
+     * @param spaceMainAdminChangeOpRo 
      * @param xSpaceId space id
      */
     public replace(spaceMainAdminChangeOpRo: SpaceMainAdminChangeOpRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -3732,7 +3732,7 @@ export class PromiseSpaceSpaceApiApi {
 
     /**
      * Create Space
-     * @param spaceOpRo
+     * @param spaceOpRo 
      */
     public create1WithHttpInfo(spaceOpRo: SpaceOpRo, _options?: Configuration): Promise<HttpInfo<ResponseDataCreateSpaceResultVo>> {
         const result = this.api.create1WithHttpInfo(spaceOpRo, _options);
@@ -3741,7 +3741,7 @@ export class PromiseSpaceSpaceApiApi {
 
     /**
      * Create Space
-     * @param spaceOpRo
+     * @param spaceOpRo 
      */
     public create1(spaceOpRo: SpaceOpRo, _options?: Configuration): Promise<ResponseDataCreateSpaceResultVo> {
         const result = this.api.create1(spaceOpRo, _options);
@@ -3766,7 +3766,7 @@ export class PromiseSpaceSpaceApiApi {
 
     /**
      * Delete space
-     * @param spaceDeleteRo
+     * @param spaceDeleteRo 
      * @param spaceId space id
      */
     public delete7WithHttpInfo(spaceDeleteRo: SpaceDeleteRo, spaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -3776,7 +3776,7 @@ export class PromiseSpaceSpaceApiApi {
 
     /**
      * Delete space
-     * @param spaceDeleteRo
+     * @param spaceDeleteRo 
      * @param spaceId space id
      */
     public delete7(spaceDeleteRo: SpaceDeleteRo, spaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -3805,7 +3805,7 @@ export class PromiseSpaceSpaceApiApi {
     /**
      * Gets message credit chart data for the space
      * @param spaceId space id
-     * @param timeDimension
+     * @param timeDimension 
      */
     public getCreditUsagesWithHttpInfo(spaceId: string, timeDimension?: string, _options?: Configuration): Promise<HttpInfo<ResponseDataCreditUsages>> {
         const result = this.api.getCreditUsagesWithHttpInfo(spaceId, timeDimension, _options);
@@ -3815,7 +3815,7 @@ export class PromiseSpaceSpaceApiApi {
     /**
      * Gets message credit chart data for the space
      * @param spaceId space id
-     * @param timeDimension
+     * @param timeDimension 
      */
     public getCreditUsages(spaceId: string, timeDimension?: string, _options?: Configuration): Promise<ResponseDataCreditUsages> {
         const result = this.api.getCreditUsages(spaceId, timeDimension, _options);
@@ -3953,7 +3953,7 @@ export class PromiseSpaceSpaceApiApi {
     /**
      * at least one item is name and logo
      * Update space
-     * @param spaceUpdateOpRo
+     * @param spaceUpdateOpRo 
      * @param xSpaceId space id
      */
     public update1WithHttpInfo(spaceUpdateOpRo: SpaceUpdateOpRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -3964,7 +3964,7 @@ export class PromiseSpaceSpaceApiApi {
     /**
      * at least one item is name and logo
      * Update space
-     * @param spaceUpdateOpRo
+     * @param spaceUpdateOpRo 
      * @param xSpaceId space id
      */
     public update1(spaceUpdateOpRo: SpaceUpdateOpRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -3974,7 +3974,7 @@ export class PromiseSpaceSpaceApiApi {
 
     /**
      * Update member setting
-     * @param spaceMemberSettingRo
+     * @param spaceMemberSettingRo 
      * @param xSpaceId space id
      */
     public updateMemberSettingWithHttpInfo(spaceMemberSettingRo: SpaceMemberSettingRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -3984,7 +3984,7 @@ export class PromiseSpaceSpaceApiApi {
 
     /**
      * Update member setting
-     * @param spaceMemberSettingRo
+     * @param spaceMemberSettingRo 
      * @param xSpaceId space id
      */
     public updateMemberSetting(spaceMemberSettingRo: SpaceMemberSettingRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -3994,7 +3994,7 @@ export class PromiseSpaceSpaceApiApi {
 
     /**
      * Update security setting
-     * @param spaceSecuritySettingRo
+     * @param spaceSecuritySettingRo 
      * @param xSpaceId space id
      */
     public updateSecuritySettingWithHttpInfo(spaceSecuritySettingRo: SpaceSecuritySettingRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -4004,7 +4004,7 @@ export class PromiseSpaceSpaceApiApi {
 
     /**
      * Update security setting
-     * @param spaceSecuritySettingRo
+     * @param spaceSecuritySettingRo 
      * @param xSpaceId space id
      */
     public updateSecuritySetting(spaceSecuritySettingRo: SpaceSecuritySettingRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -4014,7 +4014,7 @@ export class PromiseSpaceSpaceApiApi {
 
     /**
      * Update workbench setting
-     * @param spaceWorkbenchSettingRo
+     * @param spaceWorkbenchSettingRo 
      * @param xSpaceId space id
      */
     public updateWorkbenchSettingWithHttpInfo(spaceWorkbenchSettingRo: SpaceWorkbenchSettingRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -4024,7 +4024,7 @@ export class PromiseSpaceSpaceApiApi {
 
     /**
      * Update workbench setting
-     * @param spaceWorkbenchSettingRo
+     * @param spaceWorkbenchSettingRo 
      * @param xSpaceId space id
      */
     public updateWorkbenchSetting(spaceWorkbenchSettingRo: SpaceWorkbenchSettingRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -4053,7 +4053,7 @@ export class PromiseSpaceSubAdminApiApi {
 
     /**
      * Create space role
-     * @param addSpaceRoleRo
+     * @param addSpaceRoleRo 
      * @param xSpaceId space id
      */
     public addRoleWithHttpInfo(addSpaceRoleRo: AddSpaceRoleRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -4063,7 +4063,7 @@ export class PromiseSpaceSubAdminApiApi {
 
     /**
      * Create space role
-     * @param addSpaceRoleRo
+     * @param addSpaceRoleRo 
      * @param xSpaceId space id
      */
     public addRole(addSpaceRoleRo: AddSpaceRoleRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -4074,7 +4074,7 @@ export class PromiseSpaceSubAdminApiApi {
     /**
      * delete admin
      * delete admin
-     * @param memberId
+     * @param memberId 
      * @param xSpaceId space id
      */
     public deleteRoleWithHttpInfo(memberId: number, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseData>> {
@@ -4085,7 +4085,7 @@ export class PromiseSpaceSubAdminApiApi {
     /**
      * delete admin
      * delete admin
-     * @param memberId
+     * @param memberId 
      * @param xSpaceId space id
      */
     public deleteRole(memberId: number, xSpaceId: string, _options?: Configuration): Promise<ResponseData> {
@@ -4095,7 +4095,7 @@ export class PromiseSpaceSubAdminApiApi {
 
     /**
      * Edite space role
-     * @param updateSpaceRoleRo
+     * @param updateSpaceRoleRo 
      * @param xSpaceId space id
      */
     public editRoleWithHttpInfo(updateSpaceRoleRo: UpdateSpaceRoleRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseData>> {
@@ -4105,7 +4105,7 @@ export class PromiseSpaceSubAdminApiApi {
 
     /**
      * Edite space role
-     * @param updateSpaceRoleRo
+     * @param updateSpaceRoleRo 
      * @param xSpaceId space id
      */
     public editRole(updateSpaceRoleRo: UpdateSpaceRoleRo, xSpaceId: string, _options?: Configuration): Promise<ResponseData> {
@@ -4115,7 +4115,7 @@ export class PromiseSpaceSubAdminApiApi {
 
     /**
      * query admin detail
-     * @param memberId
+     * @param memberId 
      * @param xSpaceId space id
      */
     public getRoleDetailWithHttpInfo(memberId: number, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataSpaceRoleDetailVo>> {
@@ -4125,7 +4125,7 @@ export class PromiseSpaceSubAdminApiApi {
 
     /**
      * query admin detail
-     * @param memberId
+     * @param memberId 
      * @param xSpaceId space id
      */
     public getRoleDetail(memberId: number, xSpaceId: string, _options?: Configuration): Promise<ResponseDataSpaceRoleDetailVo> {
@@ -4136,7 +4136,7 @@ export class PromiseSpaceSubAdminApiApi {
     /**
      * Page query sub admin.Description of Paging: <br/> pageNo: number of paging <br/>pageSize: size of paging。<br/>order: order in current page。<br/>sort: sorting in current page。<br/>simple usage example：{\"pageNo\":1,\"pageSize\":20}<br/>complex usage example：{\"pageNo\":1,\"pageSize\":20,\"order\":\"createTime,updateTime\",\"sort\":\"asc,desc\"}
      * Query admins
-     * @param page
+     * @param page 
      * @param xSpaceId space id
      * @param pageObjectParams paging parameters
      */
@@ -4148,7 +4148,7 @@ export class PromiseSpaceSubAdminApiApi {
     /**
      * Page query sub admin.Description of Paging: <br/> pageNo: number of paging <br/>pageSize: size of paging。<br/>order: order in current page。<br/>sort: sorting in current page。<br/>simple usage example：{\"pageNo\":1,\"pageSize\":20}<br/>complex usage example：{\"pageNo\":1,\"pageSize\":20,\"order\":\"createTime,updateTime\",\"sort\":\"asc,desc\"}
      * Query admins
-     * @param page
+     * @param page 
      * @param xSpaceId space id
      * @param pageObjectParams paging parameters
      */
@@ -4179,7 +4179,7 @@ export class PromiseTemplateCenterTemplateAPIApi {
     /**
      * Created nodes (including child descendant nodes) have administrative rights and are not associated with data tables other than nodes.
      * Create Template
-     * @param createTemplateRo
+     * @param createTemplateRo 
      */
     public createWithHttpInfo(createTemplateRo: CreateTemplateRo, _options?: Configuration): Promise<HttpInfo<ResponseDataString>> {
         const result = this.api.createWithHttpInfo(createTemplateRo, _options);
@@ -4189,7 +4189,7 @@ export class PromiseTemplateCenterTemplateAPIApi {
     /**
      * Created nodes (including child descendant nodes) have administrative rights and are not associated with data tables other than nodes.
      * Create Template
-     * @param createTemplateRo
+     * @param createTemplateRo 
      */
     public create(createTemplateRo: CreateTemplateRo, _options?: Configuration): Promise<ResponseDataString> {
         const result = this.api.create(createTemplateRo, _options);
@@ -4274,7 +4274,7 @@ export class PromiseTemplateCenterTemplateAPIApi {
 
     /**
      * Get Space Templates
-     * @param spaceId
+     * @param spaceId 
      * @param xSpaceId Space Id
      */
     public getSpaceTemplatesWithHttpInfo(spaceId: string, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataListTemplateVo>> {
@@ -4284,7 +4284,7 @@ export class PromiseTemplateCenterTemplateAPIApi {
 
     /**
      * Get Space Templates
-     * @param spaceId
+     * @param spaceId 
      * @param xSpaceId Space Id
      */
     public getSpaceTemplates(spaceId: string, xSpaceId: string, _options?: Configuration): Promise<ResponseDataListTemplateVo> {
@@ -4314,7 +4314,7 @@ export class PromiseTemplateCenterTemplateAPIApi {
 
     /**
      * Quote Template
-     * @param quoteTemplateRo
+     * @param quoteTemplateRo 
      * @param xSocketId user socket id
      */
     public quoteWithHttpInfo(quoteTemplateRo: QuoteTemplateRo, xSocketId?: string, _options?: Configuration): Promise<HttpInfo<ResponseDataNodeInfoVo>> {
@@ -4324,7 +4324,7 @@ export class PromiseTemplateCenterTemplateAPIApi {
 
     /**
      * Quote Template
-     * @param quoteTemplateRo
+     * @param quoteTemplateRo 
      * @param xSocketId user socket id
      */
     public quote(quoteTemplateRo: QuoteTemplateRo, xSocketId?: string, _options?: Configuration): Promise<ResponseDataNodeInfoVo> {
@@ -4449,7 +4449,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * widget-cli initialization create widget
      * Create widget
-     * @param widgetPackageCreateRo
+     * @param widgetPackageCreateRo 
      * @param authorization developer token
      */
     public createWidgetWithHttpInfo(widgetPackageCreateRo: WidgetPackageCreateRo, authorization: string, _options?: Configuration): Promise<HttpInfo<ResponseDataWidgetReleaseCreateVo>> {
@@ -4460,7 +4460,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * widget-cli initialization create widget
      * Create widget
-     * @param widgetPackageCreateRo
+     * @param widgetPackageCreateRo 
      * @param authorization developer token
      */
     public createWidget(widgetPackageCreateRo: WidgetPackageCreateRo, authorization: string, _options?: Configuration): Promise<ResponseDataWidgetReleaseCreateVo> {
@@ -4471,7 +4471,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * widget-cli get widget package info
      * Get widget package info
-     * @param packageId
+     * @param packageId 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -4483,7 +4483,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * widget-cli get widget package info
      * Get widget package info
-     * @param packageId
+     * @param packageId 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -4495,7 +4495,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * widget-cli get widget store information
      * Get widget store information
-     * @param spaceId
+     * @param spaceId 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -4507,7 +4507,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * widget-cli get widget store information
      * Get widget store information
-     * @param spaceId
+     * @param spaceId 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -4519,7 +4519,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * Get widget release history
      * @param packageId widget package id
-     * @param page
+     * @param page 
      * @param authorization developer token
      * @param pageObjectParams page
      */
@@ -4531,7 +4531,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * Get widget release history
      * @param packageId widget package id
-     * @param page
+     * @param page 
      * @param authorization developer token
      * @param pageObjectParams page
      */
@@ -4543,7 +4543,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * widget-cli release widget
      * release widget v2
-     * @param widgetPackageReleaseV2Ro
+     * @param widgetPackageReleaseV2Ro 
      * @param authorization developer token
      */
     public releaseWidgetV2WithHttpInfo(widgetPackageReleaseV2Ro: WidgetPackageReleaseV2Ro, authorization: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -4554,7 +4554,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * widget-cli release widget
      * release widget v2
-     * @param widgetPackageReleaseV2Ro
+     * @param widgetPackageReleaseV2Ro 
      * @param authorization developer token
      */
     public releaseWidgetV2(widgetPackageReleaseV2Ro: WidgetPackageReleaseV2Ro, authorization: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -4564,7 +4564,7 @@ export class PromiseWidgetSDKPackageApiApi {
 
     /**
      * Rollback widget
-     * @param widgetPackageRollbackRo
+     * @param widgetPackageRollbackRo 
      * @param authorization developer token
      */
     public rollbackWidgetWithHttpInfo(widgetPackageRollbackRo: WidgetPackageRollbackRo, authorization: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -4574,7 +4574,7 @@ export class PromiseWidgetSDKPackageApiApi {
 
     /**
      * Rollback widget
-     * @param widgetPackageRollbackRo
+     * @param widgetPackageRollbackRo 
      * @param authorization developer token
      */
     public rollbackWidget(widgetPackageRollbackRo: WidgetPackageRollbackRo, authorization: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -4585,7 +4585,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * widget-cli submit widget
      * submit widget v2
-     * @param widgetPackageSubmitV2Ro
+     * @param widgetPackageSubmitV2Ro 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -4597,7 +4597,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * widget-cli submit widget
      * submit widget v2
-     * @param widgetPackageSubmitV2Ro
+     * @param widgetPackageSubmitV2Ro 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -4609,7 +4609,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * widget-cli transfer widget owner
      * Transfer widget owner
-     * @param widgetTransferOwnerRo
+     * @param widgetTransferOwnerRo 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -4621,7 +4621,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * widget-cli transfer widget owner
      * Transfer widget owner
-     * @param widgetTransferOwnerRo
+     * @param widgetTransferOwnerRo 
      * @param authorization developer token
      * @param acceptLanguage developer\&#39;s language
      */
@@ -4632,7 +4632,7 @@ export class PromiseWidgetSDKPackageApiApi {
 
     /**
      * Unpublish widget
-     * @param widgetPackageUnpublishRo
+     * @param widgetPackageUnpublishRo 
      * @param authorization developer token
      */
     public unpublishWidgetWithHttpInfo(widgetPackageUnpublishRo: WidgetPackageUnpublishRo, authorization: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -4642,7 +4642,7 @@ export class PromiseWidgetSDKPackageApiApi {
 
     /**
      * Unpublish widget
-     * @param widgetPackageUnpublishRo
+     * @param widgetPackageUnpublishRo 
      * @param authorization developer token
      */
     public unpublishWidget(widgetPackageUnpublishRo: WidgetPackageUnpublishRo, authorization: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -4653,7 +4653,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * widget-cli widget development authentication verification
      * Auth widget
-     * @param widgetPackageAuthRo
+     * @param widgetPackageAuthRo 
      * @param authorization developer token
      */
     public widgetAuthWithHttpInfo(widgetPackageAuthRo: WidgetPackageAuthRo, authorization: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -4664,7 +4664,7 @@ export class PromiseWidgetSDKPackageApiApi {
     /**
      * widget-cli widget development authentication verification
      * Auth widget
-     * @param widgetPackageAuthRo
+     * @param widgetPackageAuthRo 
      * @param authorization developer token
      */
     public widgetAuth(widgetPackageAuthRo: WidgetPackageAuthRo, authorization: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -4694,7 +4694,7 @@ export class PromiseWidgetSDKWidgetApiApi {
     /**
      * Scenario: 1、dashboard import widget2:the widget panel sends applets to the dashboard; 3:copy widget
      * Copy widget
-     * @param widgetCopyRo
+     * @param widgetCopyRo 
      */
     public copyWidgetWithHttpInfo(widgetCopyRo: WidgetCopyRo, _options?: Configuration): Promise<HttpInfo<ResponseDataListWidgetPack>> {
         const result = this.api.copyWidgetWithHttpInfo(widgetCopyRo, _options);
@@ -4704,7 +4704,7 @@ export class PromiseWidgetSDKWidgetApiApi {
     /**
      * Scenario: 1、dashboard import widget2:the widget panel sends applets to the dashboard; 3:copy widget
      * Copy widget
-     * @param widgetCopyRo
+     * @param widgetCopyRo 
      */
     public copyWidget(widgetCopyRo: WidgetCopyRo, _options?: Configuration): Promise<ResponseDataListWidgetPack> {
         const result = this.api.copyWidget(widgetCopyRo, _options);
@@ -4714,7 +4714,7 @@ export class PromiseWidgetSDKWidgetApiApi {
     /**
      * Scenario:1、dashboard new applet 2、datasheet widget panel new widget
      * Create widget
-     * @param widgetCreateRo
+     * @param widgetCreateRo 
      */
     public createWidget1WithHttpInfo(widgetCreateRo: WidgetCreateRo, _options?: Configuration): Promise<HttpInfo<ResponseDataWidgetPack>> {
         const result = this.api.createWidget1WithHttpInfo(widgetCreateRo, _options);
@@ -4724,7 +4724,7 @@ export class PromiseWidgetSDKWidgetApiApi {
     /**
      * Scenario:1、dashboard new applet 2、datasheet widget panel new widget
      * Create widget
-     * @param widgetCreateRo
+     * @param widgetCreateRo 
      */
     public createWidget1(widgetCreateRo: WidgetCreateRo, _options?: Configuration): Promise<ResponseDataWidgetPack> {
         const result = this.api.createWidget1(widgetCreateRo, _options);
@@ -4835,7 +4835,7 @@ export class PromiseWidgetSDKWidgetApiApi {
 
     /**
      * Get widget store
-     * @param widgetStoreListRo
+     * @param widgetStoreListRo 
      * @param xSpaceId space id
      */
     public widgetStoreListWithHttpInfo(widgetStoreListRo: WidgetStoreListRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataListWidgetStoreListInfo>> {
@@ -4845,7 +4845,7 @@ export class PromiseWidgetSDKWidgetApiApi {
 
     /**
      * Get widget store
-     * @param widgetStoreListRo
+     * @param widgetStoreListRo 
      * @param xSpaceId space id
      */
     public widgetStoreList(widgetStoreListRo: WidgetStoreListRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataListWidgetStoreListInfo> {
@@ -4874,8 +4874,8 @@ export class PromiseWidgetUploadAPIApi {
 
     /**
      * Get widget file upload pre signed url
-     * @param widgetAssetUploadCertificateRO
-     * @param packageId
+     * @param widgetAssetUploadCertificateRO 
+     * @param packageId 
      */
     public generateWidgetPreSignedUrlWithHttpInfo(widgetAssetUploadCertificateRO: WidgetAssetUploadCertificateRO, packageId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataListWidgetUploadTokenVo>> {
         const result = this.api.generateWidgetPreSignedUrlWithHttpInfo(widgetAssetUploadCertificateRO, packageId, _options);
@@ -4884,8 +4884,8 @@ export class PromiseWidgetUploadAPIApi {
 
     /**
      * Get widget file upload pre signed url
-     * @param widgetAssetUploadCertificateRO
-     * @param packageId
+     * @param widgetAssetUploadCertificateRO 
+     * @param packageId 
      */
     public generateWidgetPreSignedUrl(widgetAssetUploadCertificateRO: WidgetAssetUploadCertificateRO, packageId: string, _options?: Configuration): Promise<ResponseDataListWidgetUploadTokenVo> {
         const result = this.api.generateWidgetPreSignedUrl(widgetAssetUploadCertificateRO, packageId, _options);
@@ -4932,7 +4932,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * node id and view id are not required（do not pass means all closed）
      * Record active node
-     * @param activeSheetsOpRo
+     * @param activeSheetsOpRo 
      * @param xSpaceId space id
      */
     public activeSheetsWithHttpInfo(activeSheetsOpRo: ActiveSheetsOpRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -4943,7 +4943,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * node id and view id are not required（do not pass means all closed）
      * Record active node
-     * @param activeSheetsOpRo
+     * @param activeSheetsOpRo 
      * @param xSpaceId space id
      */
     public activeSheets(activeSheetsOpRo: ActiveSheetsOpRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -4954,7 +4954,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * The front node is saved in the first place of the parent node when it is not under the parent node. Save in the first place of the first level directory when it is not transmitted.
      * Analyze Bundle
-     * @param nodeBundleOpRo
+     * @param nodeBundleOpRo 
      */
     public analyzeBundleWithHttpInfo(nodeBundleOpRo?: NodeBundleOpRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.analyzeBundleWithHttpInfo(nodeBundleOpRo, _options);
@@ -4964,7 +4964,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * The front node is saved in the first place of the parent node when it is not under the parent node. Save in the first place of the first level directory when it is not transmitted.
      * Analyze Bundle
-     * @param nodeBundleOpRo
+     * @param nodeBundleOpRo 
      */
     public analyzeBundle(nodeBundleOpRo?: NodeBundleOpRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.analyzeBundle(nodeBundleOpRo, _options);
@@ -4998,7 +4998,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * node id is required, whether to copy data is not required.
      * Copy node
-     * @param nodeCopyOpRo
+     * @param nodeCopyOpRo 
      * @param xSocketId user socket id
      */
     public copyWithHttpInfo(nodeCopyOpRo: NodeCopyOpRo, xSocketId?: string, _options?: Configuration): Promise<HttpInfo<ResponseDataNodeInfoVo>> {
@@ -5009,7 +5009,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * node id is required, whether to copy data is not required.
      * Copy node
-     * @param nodeCopyOpRo
+     * @param nodeCopyOpRo 
      * @param xSocketId user socket id
      */
     public copy(nodeCopyOpRo: NodeCopyOpRo, xSocketId?: string, _options?: Configuration): Promise<ResponseDataNodeInfoVo> {
@@ -5020,7 +5020,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * create a new node under the node<br/>Role Type：<br/>1.owner can add, edit, move, sort, delete, copy folders in the specified working directory。<br/>2.manager can add, edit, move, sort, delete, and copy folders in the specified working directory.<br/>3.editor can only edit records and views of the data table, but not edit fields<br/>4.readonly can only view the number table, you cannot make any edits and modifications, you can only assign read-only permissions to other members。<br/>
      * Create child node
-     * @param nodeOpRo
+     * @param nodeOpRo 
      * @param xSocketId user socket id
      */
     public create3WithHttpInfo(nodeOpRo: NodeOpRo, xSocketId?: string, _options?: Configuration): Promise<HttpInfo<ResponseDataNodeInfoVo>> {
@@ -5031,7 +5031,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * create a new node under the node<br/>Role Type：<br/>1.owner can add, edit, move, sort, delete, copy folders in the specified working directory。<br/>2.manager can add, edit, move, sort, delete, and copy folders in the specified working directory.<br/>3.editor can only edit records and views of the data table, but not edit fields<br/>4.readonly can only view the number table, you cannot make any edits and modifications, you can only assign read-only permissions to other members。<br/>
      * Create child node
-     * @param nodeOpRo
+     * @param nodeOpRo 
      * @param xSocketId user socket id
      */
     public create3(nodeOpRo: NodeOpRo, xSocketId?: string, _options?: Configuration): Promise<ResponseDataNodeInfoVo> {
@@ -5216,7 +5216,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * all parameters must be
      * Import excel
-     * @param importExcelOpRo
+     * @param importExcelOpRo 
      */
     public importExcelWithHttpInfo(importExcelOpRo?: ImportExcelOpRo, _options?: Configuration): Promise<HttpInfo<ResponseDataNodeInfoVo>> {
         const result = this.api.importExcelWithHttpInfo(importExcelOpRo, _options);
@@ -5226,7 +5226,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * all parameters must be
      * Import excel
-     * @param importExcelOpRo
+     * @param importExcelOpRo 
      */
     public importExcel(importExcelOpRo?: ImportExcelOpRo, _options?: Configuration): Promise<ResponseDataNodeInfoVo> {
         const result = this.api.importExcel(importExcelOpRo, _options);
@@ -5236,7 +5236,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * all parameters must be
      * Import excel
-     * @param importExcelOpRo
+     * @param importExcelOpRo 
      */
     public importExcel1WithHttpInfo(importExcelOpRo?: ImportExcelOpRo, _options?: Configuration): Promise<HttpInfo<ResponseDataNodeInfoVo>> {
         const result = this.api.importExcel1WithHttpInfo(importExcelOpRo, _options);
@@ -5246,7 +5246,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * all parameters must be
      * Import excel
-     * @param importExcelOpRo
+     * @param importExcelOpRo 
      */
     public importExcel1(importExcelOpRo?: ImportExcelOpRo, _options?: Configuration): Promise<ResponseDataNodeInfoVo> {
         const result = this.api.importExcel1(importExcelOpRo, _options);
@@ -5280,7 +5280,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * Node ID and parent node ID are required, and pre Node Id is not required.
      * Move node
-     * @param nodeMoveOpRo
+     * @param nodeMoveOpRo 
      * @param xSpaceId space id
      * @param xSocketId user socket id
      */
@@ -5292,7 +5292,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * Node ID and parent node ID are required, and pre Node Id is not required.
      * Move node
-     * @param nodeMoveOpRo
+     * @param nodeMoveOpRo 
      * @param xSpaceId space id
      * @param xSocketId user socket id
      */
@@ -5323,7 +5323,7 @@ export class PromiseWorkbenchNodeApiApi {
 
     /**
      * Gets no permission member before remind
-     * @param remindUnitsNoPermissionRo
+     * @param remindUnitsNoPermissionRo 
      */
     public postRemindUnitsNoPermissionWithHttpInfo(remindUnitsNoPermissionRo: RemindUnitsNoPermissionRo, _options?: Configuration): Promise<HttpInfo<ResponseDataListMemberBriefInfoVo>> {
         const result = this.api.postRemindUnitsNoPermissionWithHttpInfo(remindUnitsNoPermissionRo, _options);
@@ -5332,7 +5332,7 @@ export class PromiseWorkbenchNodeApiApi {
 
     /**
      * Gets no permission member before remind
-     * @param remindUnitsNoPermissionRo
+     * @param remindUnitsNoPermissionRo 
      */
     public postRemindUnitsNoPermission(remindUnitsNoPermissionRo: RemindUnitsNoPermissionRo, _options?: Configuration): Promise<ResponseDataListMemberBriefInfoVo> {
         const result = this.api.postRemindUnitsNoPermission(remindUnitsNoPermissionRo, _options);
@@ -5361,7 +5361,7 @@ export class PromiseWorkbenchNodeApiApi {
 
     /**
      * Remind notification
-     * @param remindMemberRo
+     * @param remindMemberRo 
      */
     public remindWithHttpInfo(remindMemberRo: RemindMemberRo, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
         const result = this.api.remindWithHttpInfo(remindMemberRo, _options);
@@ -5370,7 +5370,7 @@ export class PromiseWorkbenchNodeApiApi {
 
     /**
      * Remind notification
-     * @param remindMemberRo
+     * @param remindMemberRo 
      */
     public remind(remindMemberRo: RemindMemberRo, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.remind(remindMemberRo, _options);
@@ -5404,7 +5404,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * Nodes that are not in the center of the template, make spatial judgments.
      * Node info window
-     * @param nodeId
+     * @param nodeId 
      */
     public showNodeInfoWindowWithHttpInfo(nodeId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataNodeInfoWindowVo>> {
         const result = this.api.showNodeInfoWindowWithHttpInfo(nodeId, _options);
@@ -5414,7 +5414,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * Nodes that are not in the center of the template, make spatial judgments.
      * Node info window
-     * @param nodeId
+     * @param nodeId 
      */
     public showNodeInfoWindow(nodeId: string, _options?: Configuration): Promise<ResponseDataNodeInfoWindowVo> {
         const result = this.api.showNodeInfoWindow(nodeId, _options);
@@ -5446,7 +5446,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * node id must. name, icon is not required<br/>Role Type：<br/>1.owner can add, edit, move, sort, delete, copy folders in the specified working directory。<br/>2.manager can add, edit, move, sort, delete, and copy folders in the specified working directory.<br/>3.editor can only edit records and views of the data table, but not edit fields<br/>4.readonly can only view the number table, you cannot make any edits and modifications, you can only assign read-only permissions to other members。<br/>
      * Edit node
-     * @param nodeUpdateOpRo
+     * @param nodeUpdateOpRo 
      * @param nodeId node id
      * @param xSocketId user socket id
      */
@@ -5458,7 +5458,7 @@ export class PromiseWorkbenchNodeApiApi {
     /**
      * node id must. name, icon is not required<br/>Role Type：<br/>1.owner can add, edit, move, sort, delete, copy folders in the specified working directory。<br/>2.manager can add, edit, move, sort, delete, and copy folders in the specified working directory.<br/>3.editor can only edit records and views of the data table, but not edit fields<br/>4.readonly can only view the number table, you cannot make any edits and modifications, you can only assign read-only permissions to other members。<br/>
      * Edit node
-     * @param nodeUpdateOpRo
+     * @param nodeUpdateOpRo 
      * @param nodeId node id
      * @param xSocketId user socket id
      */
@@ -5469,7 +5469,7 @@ export class PromiseWorkbenchNodeApiApi {
 
     /**
      * Update node description
-     * @param nodeDescOpRo
+     * @param nodeDescOpRo 
      * @param xSocketId user socket id
      */
     public updateDescWithHttpInfo(nodeDescOpRo: NodeDescOpRo, xSocketId?: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -5479,7 +5479,7 @@ export class PromiseWorkbenchNodeApiApi {
 
     /**
      * Update node description
-     * @param nodeDescOpRo
+     * @param nodeDescOpRo 
      * @param xSocketId user socket id
      */
     public updateDesc(nodeDescOpRo: NodeDescOpRo, xSocketId?: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -5526,7 +5526,7 @@ export class PromiseWorkbenchNodeFavoriteApiApi {
 
     /**
      * Move favorite node
-     * @param markNodeMoveRo
+     * @param markNodeMoveRo 
      * @param xSpaceId space id
      */
     public move1WithHttpInfo(markNodeMoveRo: MarkNodeMoveRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
@@ -5536,7 +5536,7 @@ export class PromiseWorkbenchNodeFavoriteApiApi {
 
     /**
      * Move favorite node
-     * @param markNodeMoveRo
+     * @param markNodeMoveRo 
      * @param xSpaceId space id
      */
     public move1(markNodeMoveRo: MarkNodeMoveRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
@@ -5588,8 +5588,8 @@ export class PromiseWorkbenchNodeRoleApiApi {
     /**
      * Scene: Collaborator Card Information
      * Get Collaborator Info
-     * @param uuid
-     * @param nodeId
+     * @param uuid 
+     * @param nodeId 
      * @param xSpaceId space id
      */
     public getCollaboratorInfoWithHttpInfo(uuid: string, nodeId: string, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataNodeCollaboratorVO>> {
@@ -5600,8 +5600,8 @@ export class PromiseWorkbenchNodeRoleApiApi {
     /**
      * Scene: Collaborator Card Information
      * Get Collaborator Info
-     * @param uuid
-     * @param nodeId
+     * @param uuid 
+     * @param nodeId 
      * @param xSpaceId space id
      */
     public getCollaboratorInfo(uuid: string, nodeId: string, xSpaceId: string, _options?: Configuration): Promise<ResponseDataNodeCollaboratorVO> {
@@ -5696,7 +5696,7 @@ export class PromiseWorkbenchNodeRubbishApiApi {
 
     /**
      * Recover node
-     * @param nodeRecoverRo
+     * @param nodeRecoverRo 
      * @param xSpaceId space id
      */
     public recoverWithHttpInfo(nodeRecoverRo: NodeRecoverRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataNodeInfoVo>> {
@@ -5706,7 +5706,7 @@ export class PromiseWorkbenchNodeRubbishApiApi {
 
     /**
      * Recover node
-     * @param nodeRecoverRo
+     * @param nodeRecoverRo 
      * @param xSpaceId space id
      */
     public recover(nodeRecoverRo: NodeRecoverRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataNodeInfoVo> {
@@ -5722,7 +5722,6 @@ export class PromiseWorkbenchNodeRubbishApiApi {
 import { ObservableWorkbenchNodeShareApiApi } from './ObservableAPI';
 
 import { WorkbenchNodeShareApiApiRequestFactory, WorkbenchNodeShareApiApiResponseProcessor} from "../apis/WorkbenchNodeShareApiApi";
-import { ModelString } from '../models/ModelString';
 export class PromiseWorkbenchNodeShareApiApi {
     private api: ObservableWorkbenchNodeShareApiApi
 
@@ -5792,7 +5791,7 @@ export class PromiseWorkbenchNodeShareApiApi {
 
     /**
      * Sotre share data
-     * @param storeShareNodeRo
+     * @param storeShareNodeRo 
      * @param xSocketId user socket id
      */
     public storeShareDataWithHttpInfo(storeShareNodeRo: StoreShareNodeRo, xSocketId?: string, _options?: Configuration): Promise<HttpInfo<ResponseDataStoreNodeInfoVO>> {
@@ -5802,7 +5801,7 @@ export class PromiseWorkbenchNodeShareApiApi {
 
     /**
      * Sotre share data
-     * @param storeShareNodeRo
+     * @param storeShareNodeRo 
      * @param xSocketId user socket id
      */
     public storeShareData(storeShareNodeRo: StoreShareNodeRo, xSocketId?: string, _options?: Configuration): Promise<ResponseDataStoreNodeInfoVO> {
@@ -5813,7 +5812,7 @@ export class PromiseWorkbenchNodeShareApiApi {
     /**
      * Update node share setting  stringObjectParams share setting parameter description: <br/> There are three option parameters for sharing settings. Only one can be set true, and more than two cannot be set to true at the same time.<br/>onlyRead: Bool, whether to set sharing only for others to view.<br/>canBeEdited: Bool, whether to set up sharing to others for collaborative editing.<br/>canBeStored: Bool, whether to set up sharing to others and save as a copy.<br/>Example: Set <Share Only for Others to View>, parameters:{\"onlyRead\": true}
      * Update node share setting
-     * @param updateNodeShareSettingRo
+     * @param updateNodeShareSettingRo 
      * @param nodeId node id
      */
     public updateNodeShareWithHttpInfo(updateNodeShareSettingRo: UpdateNodeShareSettingRo, nodeId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataShareBaseInfoVo>> {
@@ -5824,7 +5823,7 @@ export class PromiseWorkbenchNodeShareApiApi {
     /**
      * Update node share setting  stringObjectParams share setting parameter description: <br/> There are three option parameters for sharing settings. Only one can be set true, and more than two cannot be set to true at the same time.<br/>onlyRead: Bool, whether to set sharing only for others to view.<br/>canBeEdited: Bool, whether to set up sharing to others for collaborative editing.<br/>canBeStored: Bool, whether to set up sharing to others and save as a copy.<br/>Example: Set <Share Only for Others to View>, parameters:{\"onlyRead\": true}
      * Update node share setting
-     * @param updateNodeShareSettingRo
+     * @param updateNodeShareSettingRo 
      * @param nodeId node id
      */
     public updateNodeShare(updateNodeShareSettingRo: UpdateNodeShareSettingRo, nodeId: string, _options?: Configuration): Promise<ResponseDataShareBaseInfoVo> {

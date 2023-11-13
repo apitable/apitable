@@ -36,7 +36,7 @@
             AND vp.notify_type = #{notificationPageRo.notifyType}
         </if>
         <choose>
-            <when test="notificationPageRo.isRead != null and notificationPageRo.isRead.equals(1)">
+            <when test="notificationPageRo.isRead != null and notificationPageRo.isRead">
                 <trim prefix="ORDER BY">
                     vp.updated_at desc, vp.id desc
                 </trim>

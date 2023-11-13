@@ -207,8 +207,8 @@ export interface IFilterConditionMap {
     fieldType: FieldType.Cascader,
     value: any,
   };
-  [FieldType.Workdoc]: {
-    fieldType: FieldType.Workdoc,
+  [FieldType.WorkDoc]: {
+    fieldType: FieldType.WorkDoc,
     value: any,
   };
 }

@@ -46,6 +46,7 @@ import { CellAutoNumber } from 'pc/components/multi_grid/cell/cell_auto_number';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { IURLMeta, recognizeURLAndSetTitle } from 'pc/utils';
 import { dispatch } from 'pc/worker/store';
 import { EnhanceTextEditor } from '../../editors/enhance_text_editor';
@@ -62,11 +63,9 @@ import { ExpandLink } from '../expand_link';
 import { ExpandLookUp } from '../expand_lookup';
 import { ExpandNumber } from '../expand_number';
 import { ExpandSelect } from '../expand_select';
+import { ExpandWorkdoc } from '../expand_work_doc';
 // @ts-ignore
 import { convertAlarmStructure } from 'enterprise';
-import { ExpandWorkdoc } from '../expand_work_doc';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface ICommonProps {
   style: React.CSSProperties;
@@ -301,7 +300,7 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = (
       return (
         <ExpandCascader {...commonProps} isFocus={isFocus} cellValue={cellValue} field={commonProps.field as ILinkField} style={mobileEditorWidth} />
       );
-    case FieldType.Workdoc:
+    case FieldType.WorkDoc:
       return (
         <ExpandWorkdoc
           {...commonProps}
