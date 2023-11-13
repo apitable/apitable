@@ -183,25 +183,6 @@ public interface ISpaceService extends IService<SpaceEntity> {
     void checkSeatOverLimit(String spaceId, long addedSeatNums);
 
     /**
-     * check whether seat nums of the space is over limit.
-     * If the limit is exceeded, a notification needs to be sent
-     *
-     * @param spaceId       space id
-     * @param addedSeatNums added seat nums
-     * @param sendNotify    whether send notify
-     * @param isAllMember   whether all member
-     */
-    boolean checkSeatOverLimitAndSendNotify(Long userId, String spaceId, long addedSeatNums, boolean isAllMember, boolean sendNotify);
-
-    /**\
-     *
-     * Get the seat usage status of third-party IM
-     * @param spaceId
-     * @return
-     */
-    SeatUsage getSeatUsageForIM(String spaceId);
-
-    /**
      * get space info.
      *
      * @param spaceId space id
