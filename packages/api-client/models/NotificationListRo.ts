@@ -19,7 +19,7 @@ export class NotificationListRo {
     /**
     * Read 1 Read, 0 Unread, Default Unread
     */
-    'isRead'?: NotificationListRoIsReadEnum;
+    'isRead'?: boolean;
     /**
     * Notification type, default to system notification system
     */
@@ -31,8 +31,8 @@ export class NotificationListRo {
         {
             "name": "isRead",
             "baseName": "isRead",
-            "type": "NotificationListRoIsReadEnum",
-            "format": "int32"
+            "type": "boolean",
+            "format": ""
         },
         {
             "name": "notifyType",
@@ -47,10 +47,5 @@ export class NotificationListRo {
 
     public constructor() {
     }
-}
-
-
-export enum NotificationListRoIsReadEnum {
-    NUMBER_null
 }
 
