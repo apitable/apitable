@@ -80,7 +80,7 @@ export const CommentEditor: React.FC<React.PropsWithChildren<IActivityPaneProps>
       return;
     }
     const recordTitle = getFirstColumnValue();
-
+    
     verificationPermission({
       isNotify: true,
       nodeId: mirrorId || datasheetId,
@@ -90,11 +90,12 @@ export const CommentEditor: React.FC<React.PropsWithChildren<IActivityPaneProps>
         {
           recordIds: [expandRecordId],
           unitIds: unitIds,
-          recordTitle: recordTitle,
+          recordTitle,
         },
       ],
       type: IApi.MindType.Comment,
       extra: {
+        recordTitle,
         content: serialize(content, spaceInfo, true).join(''),
         createdAt: dayjs.tz(Date.now()).format('YYYY-MM-DD HH:mm'),
       },

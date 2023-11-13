@@ -59,6 +59,7 @@ export interface ICommitRemind {
   // Default: MindType.Member
   type?: MindType;
   extra?: {
+    recordTitle: string;
     content?: string;
     createdAt?: string;
   };

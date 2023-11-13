@@ -19,22 +19,24 @@
 import { useAtomValue } from 'jotai';
 import * as React from 'react';
 import { memo, MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { createEditor, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import useSWR from 'swr';
 import { Dropdown, IDropdownControl, IOverLayProps, Box } from '@apitable/components';
 
+import { Selectors } from '@apitable/core';
 import {
   automationStateAtom
 } from 'pc/components/automation/controller';
 import { map2Text } from 'pc/components/robot/robot_detail/magic_variable_container/config';
 import { fixImeInputBug } from 'pc/components/slate_editor/slate_editor';
 import {
-  getTriggerDatasheetId,
+  getTriggerDatasheetId, IFetchedDatasheet,
   useAutomationFieldInfo
 } from '../../../automation/controller/hooks/use_robot_fields';
-import { INodeOutputSchema, ITriggerType } from '../../interface';
+import { AutomationScenario, INodeOutputSchema, ITriggerType } from '../../interface';
 import { IWidgetProps } from '../node_form/core/interface';
 import { enrichDatasheetTriggerOutputSchema, formData2SlateValue, insertMagicVariable, transformSlateValue, withMagicVariable } from './helper';
 import { MagicVariableContainer } from './magic_variable_container';
@@ -126,7 +128,8 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
   const { data: dataList } = useSWR(['getTriggersRelatedDatasheetId', triggers], () => getTriggerDatasheetId(triggers), {
   });
 
-  const dataLis = dataList ?? [];
+  const activeDstId = useSelector(Selectors.getActiveDatasheetId);
+  const dataLis : IFetchedDatasheet[] = state?.scenario === AutomationScenario?.datasheet ? Array.from({ length: triggers.length }, () => activeDstId) : (dataList ?? []) as IFetchedDatasheet[];
 
   const l = useAutomationFieldInfo(triggers, dataLis);
 

@@ -22,15 +22,15 @@ import { useAtom } from 'jotai';
 import { isEqual, isString } from 'lodash';
 import * as React from 'react';
 import { FC, memo, ReactNode, useCallback, useContext, useEffect, useMemo } from 'react';
-import { shallowEqual } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import { Box, SearchSelect, useThemeColors } from '@apitable/components';
-import { integrateCdnHost, IReduxState, StoreActions, Strings, t } from '@apitable/core';
+import { integrateCdnHost, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { setSideBarVisible } from '@apitable/core/dist/modules/space/store/actions/space';
 import { ChevronDownOutlined } from '@apitable/icons';
 import { IFetchDatasheet } from '@apitable/widget-sdk/dist/message/interface';
-import { getTriggerDatasheetId } from 'pc/components/automation/controller/hooks/use_robot_fields';
+import { getTriggerDatasheetId, IFetchedDatasheet } from 'pc/components/automation/controller/hooks/use_robot_fields';
 import { Message, Modal } from 'pc/components/common';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useAppSelector } from 'pc/store/react-redux';
@@ -49,7 +49,7 @@ import styles from '../../../slate_editor/components/select/style.module.less';
 import { changeActionTypeId, updateActionInput } from '../../api';
 import { getFilterActionTypes, getNodeOutputSchemaList, getNodeTypeOptions, operand2PureValue } from '../../helper';
 import { useActionTypes, useRobotTriggerTypes, useTriggerTypes } from '../../hooks';
-import { IRobotAction } from '../../interface';
+import { AutomationScenario, IRobotAction } from '../../interface';
 import { MagicTextField } from '../magic_variable_container';
 import { NodeForm, NodeFormInfo } from '../node_form';
 import { IChangeEvent } from '../node_form/core/interface';
@@ -90,6 +90,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
   const { data: triggerTypes } = useTriggerTypes();
   const dispatch = useAppDispatch();
 
+  const activeDstId = useSelector(Selectors.getActiveDatasheetId);
   const { data: dataList } = useSWR(['getRobotMagicDatasheet', triggers], () => getTriggerDatasheetId(triggers), {
   });
 
@@ -103,12 +104,13 @@ export const RobotAction = memo((props: IRobotActionProps) => {
     });
   }, [dataList, dataSheetMap, dispatch]);
 
+  const triggerDataSheetIds : IFetchedDatasheet[] = automationState?.scenario === AutomationScenario?.datasheet ? Array.from({ length: triggers.length }, () => activeDstId) : (dataList ?? []) as IFetchedDatasheet[];
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
     actionTypes: actionTypeList,
     triggerTypes: triggerTypes,
     triggers,
-    triggerDataSheetIds: dataList ?? [],
+    triggerDataSheetIds: triggerDataSheetIds,
     dataSheetMap
   });
 
