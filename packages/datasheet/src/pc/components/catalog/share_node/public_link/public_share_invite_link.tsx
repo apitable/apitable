@@ -43,7 +43,7 @@ import { getEnvVariables } from 'pc/utils/env';
 import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
 import { ShareQrCode } from '../share_qr_code';
 // @ts-ignore
-import { WidgetEmbed } from 'enterprise';
+import { WidgetEmbed } from 'enterprise/chat/widget_embed';
 import styles from './style.module.less';
 
 

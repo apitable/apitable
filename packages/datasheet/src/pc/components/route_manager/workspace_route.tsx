@@ -20,7 +20,9 @@ import { useMount } from 'ahooks';
 import * as React from 'react';
 import { FC } from 'react';
 import { Events, IReduxState, Player, Selectors } from '@apitable/core';
+import { AutomationPanelWrapper } from 'pc/components/automation/modal/automation_panel_wrapper';
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
+import { useAppSelector } from 'pc/store/react-redux';
 import { DashboardPanel } from '../dashboard_panel';
 import { DataSheetPane } from '../datasheet_pane';
 import { FolderShowcase } from '../folder_showcase';
@@ -28,10 +30,7 @@ import { FormPanel } from '../form_panel';
 import { NoPermission } from '../no_permission';
 import { Welcome } from '../workspace/welcome';
 // @ts-ignore
-import { ChatPage } from 'enterprise';
-import {AutomationPanelWrapper} from "pc/components/automation/modal/automation_panel_wrapper";
-
-import {useAppSelector} from "pc/store/react-redux";
+import { ChatPage } from 'enterprise/chat/chat_page';
 
 const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
   const nodeId = useAppSelector((state) => Selectors.getNodeId(state));
@@ -87,6 +86,8 @@ const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
     if (dashboardId) {
       return <DashboardPanel />;
     }
+    console.log(ChatPage)
+
     if (aiId && ChatPage) {
       return <ChatPage />;
     }

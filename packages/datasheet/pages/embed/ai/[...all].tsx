@@ -23,7 +23,7 @@ import { Api, IShareInfo } from '@apitable/core';
 import { getRegResult, shareIdReg } from 'pc/hooks';
 import { getBaseUrl } from '../../../utils/get_base_url';
 // @ts-ignore
-import { PublishPage } from 'enterprise';
+import { PublishPage } from 'enterprise/embed/ai';
 
 const App = (props: { shareInfo: Required<IShareInfo> | undefined }) => {
   /* @ts-ignore */
