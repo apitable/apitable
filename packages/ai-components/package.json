@@ -65,7 +65,7 @@
     "tailwindcss": "3.3.3"
   },
   "scripts": {
-    "build": "node build.js",
+    "build": "rm -rf ./dist && rollup -c --bundleConfigAsCjs",
     "dev": "rollup -c -w --bundleConfigAsCjs",
     "start": "concurrently \"tsc -w\" \"tsc-alias -w\"",
     "test-dev": "npx majestic",

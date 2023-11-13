@@ -46,6 +46,8 @@ import { ShareQrCode } from '../share_qr_code';
 import { WidgetEmbed } from 'enterprise';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export interface IPublicShareLinkProps {
   nodeId: string;
 }
