@@ -20,9 +20,44 @@ import {
   LinkOutlined,
   LockFilled, CascadeOutlined, FileOutlined, IIconProps,
 } from '@apitable/icons';
+
+import { FieldType as WidgetFieldType } from '../../interface/field_types';
+
 import React, { FC } from 'react';
 
-export const FieldIconMap: {[key in FieldType]: FC<IIconProps> }= {
+const FieldIconMap : {[key in WidgetFieldType]: FC<IIconProps> }= {
+  [WidgetFieldType.Text]: LongtextOutlined,
+  [WidgetFieldType.Number]: NumberOutlined,
+  [WidgetFieldType.SingleSelect]: SelectSingleOutlined,
+  [WidgetFieldType.MultiSelect]: SelectMultipleOutlined,
+  [WidgetFieldType.DateTime]: CalendarOutlined,
+  [WidgetFieldType.Attachment]: AttachmentOutlined,
+  [WidgetFieldType.TwoWayLink]: TwoWayLinkOutlined,
+  [WidgetFieldType.OneWayLink]: OneWayLinkOutlined,
+  [WidgetFieldType.URL]: LinkOutlined,
+  [WidgetFieldType.Email]: EmailOutlined,
+  [WidgetFieldType.Phone]: TelephoneOutlined,
+  [WidgetFieldType.Checkbox]: CheckboxOutlined,
+  [WidgetFieldType.Rating]: StarOutlined,
+  [WidgetFieldType.Member]: UserOutlined,
+  [WidgetFieldType.MagicLookUp]: LookupOutlined,
+  [WidgetFieldType.Formula]: FormulaOutlined,
+  [WidgetFieldType.Currency]: CurrencyUsdOutlined,
+  [WidgetFieldType.Currency]: CurrencyCnyOutlined,
+  [WidgetFieldType.Percent]: PercentOutlined,
+  [WidgetFieldType.SingleText]: TextOutlined,
+  [WidgetFieldType.AutoNumber]: AutonumberOutlined,
+  [WidgetFieldType.CreatedTime]: TimeFilled,
+  [WidgetFieldType.LastModifiedTime]: HistoryFilled,
+  [WidgetFieldType.CreatedBy]: UserAddOutlined,
+  [WidgetFieldType.LastModifiedBy]: UserEditOutlined,
+  [WidgetFieldType.Cascader]: CascadeOutlined,
+  [WidgetFieldType.WorkDoc]: FileOutlined,
+};
+
+export { FieldIconMap };
+
+const FieldIconMapFieldType: {[key in FieldType]: FC<IIconProps> }= {
   [FieldType.NotSupport]: LockFilled,
   [FieldType.DeniedField]: LockFilled,
   [FieldType.Text]: LongtextOutlined,
@@ -67,7 +102,7 @@ const transformOptions = (fields: IField[], theme: ITheme) => {
       label: field.name,
       value: field.id,
     };
-    const FieldIcon = FieldIconMap[field.type];
+    const FieldIcon = FieldIconMapFieldType[field.type];
     return {
       ...res,
       disabled: field.type === FieldType.DeniedField,
