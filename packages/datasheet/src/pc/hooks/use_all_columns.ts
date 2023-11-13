@@ -33,6 +33,9 @@ export const getAllColumnsFp = (state: IReduxState, dstId: string, withNoPermiss
     if (withNoPermissionField) {
       return true;
     }
+    if (!col) {
+      return false;
+    }
     const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, col.fieldId);
     return fieldRole !== Role.None;
   });
@@ -50,6 +53,9 @@ export const useAllColumnsFp1 = (state: IReduxState, dstId: string, withNoPermis
   return firstView?.columns.filter((col) => {
     if (withNoPermissionField) {
       return true;
+    }
+    if (!col) {
+      return false;
     }
     const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, col.fieldId);
     return fieldRole !== Role.None;
@@ -73,6 +79,9 @@ export const useAllColumns = (dstId: string, withNoPermissionField?: boolean) =>
     return firstView?.columns.filter((col) => {
       if (withNoPermissionField) {
         return true;
+      }
+      if (!col) {
+        return false;
       }
       const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, col.fieldId);
       return fieldRole !== Role.None;
