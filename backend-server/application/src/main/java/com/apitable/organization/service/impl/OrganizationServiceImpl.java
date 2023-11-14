@@ -18,10 +18,22 @@
 
 package com.apitable.organization.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import javax.annotation.Resource;
+
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Editor;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.BooleanUtil;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import lombok.extern.slf4j.Slf4j;
+
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.organization.dto.LoadSearchDTO;
 import com.apitable.organization.dto.TeamCteInfo;
@@ -44,14 +56,7 @@ import com.apitable.shared.cache.service.UserSpaceRemindRecordCacheService;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.workspace.service.impl.NodeRoleServiceImpl;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import javax.annotation.Resource;
-import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -261,14 +266,14 @@ public class OrganizationServiceImpl implements IOrganizationService {
         Long sharer) {
         log.info("load or search unit");
         List<Long> unitIds = this.getLoadedUnitIds(userId, spaceId, params, sharer);
+        if (CollUtil.isEmpty(unitIds)) {
+            return new ArrayList<>();
+        }
         // Specifies the ID of the organizational unit to filter
         if (CollUtil.isNotEmpty(params.getFilterIds())) {
             unitIds.removeAll(params.getFilterIds());
         }
-        if (CollUtil.isNotEmpty(unitIds)) {
-            return iUnitService.getUnitInfoList(spaceId, unitIds);
-        }
-        return new ArrayList<>();
+        return iUnitService.getUnitInfoList(spaceId, unitIds);
     }
 
     private List<Long> getLoadedUnitIds(Long userId, String spaceId, LoadSearchDTO params,
@@ -279,37 +284,39 @@ public class OrganizationServiceImpl implements IOrganizationService {
         if (BooleanUtil.isTrue(params.getAll())) {
             return unitMapper.selectIdBySpaceId(spaceId);
         }
-        List<Long> unitIds = new ArrayList<>();
-        List<Long> refIds = new ArrayList<>();
         String likeWord = CharSequenceUtil.trim(params.getKeyword());
         if (CharSequenceUtil.isNotBlank(likeWord)) {
-            refIds = this.getSearchUnitRefIds(spaceId, likeWord, params.getSearchEmail());
-        } else {
-            if (sharer != null) {
-                // a sharer of node sharing
-                refIds.add(sharer);
-            } else if (userId != null) {
-                // Load the most recently selected members and departments
-                unitIds = userSpaceRemindRecordCacheService.getRemindUnitIds(userId, spaceId);
-                Integer loadCount = limitProperties.getMemberFieldMaxLoadCount();
-                if (CollUtil.isEmpty(unitIds) || unitIds.size() < loadCount) {
-                    // Gets the group members of the latest group that the member joined
-                    Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
-                    List<Long> teamIds = teamMemberRelMapper.selectTeamIdsByMemberId(memberId);
-                    if (CollUtil.isNotEmpty(teamIds)) {
-                        List<Long> ids =
-                            teamMemberRelMapper.selectMemberIdsByTeamId(
-                                teamIds.get(teamIds.size() - 1));
-                        refIds = CollUtil.sub(CollUtil.reverse(ids), 0, loadCount - unitIds.size());
-                    }
-                }
-            }
+            List<Long> refIds = this.getSearchUnitRefIds(spaceId, likeWord, params.getSearchEmail());
+            return unitMapper.selectIdsByRefIds(refIds);
         }
-        if (CollUtil.isNotEmpty(refIds)) {
-            List<Long> ids = unitMapper.selectIdsByRefIds(refIds);
-            CollUtil.addAllIfNotContains(unitIds, ids);
+        if (sharer != null) {
+            // a sharer of node sharing
+            return unitMapper.selectIdsByRefIds(Collections.singletonList(sharer));
         }
-        return unitIds;
+        if (userId == null) {
+            return new ArrayList<>();
+        }
+        // Load the most recently selected members and departments
+        List<Long> unitIds = userSpaceRemindRecordCacheService.getRemindUnitIds(userId, spaceId);
+        if (CollUtil.isNotEmpty(unitIds)) {
+            return unitIds;
+        }
+        Integer loadCount = limitProperties.getMemberFieldMaxLoadCount();
+        // Gets the group members of the latest group that the member joined
+        Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
+        List<Long> teamIds = teamMemberRelMapper.selectTeamIdsByMemberId(memberId);
+        if (CollUtil.isEmpty(teamIds)) {
+            return new ArrayList<>();
+        }
+        Long lastTeamId = teamIds.get(teamIds.size() - 1);
+        List<Long> mIds = teamMemberRelMapper.selectMemberIdsByTeamId(lastTeamId);
+        if (CollUtil.isEmpty(mIds)) {
+            return new ArrayList<>();
+        }
+        List<Long> refIds = CollUtil.sub(CollUtil.reverse(mIds), 0, loadCount);
+        List<Long> uIds = unitMapper.selectIdsByRefIds(refIds);
+        userSpaceRemindRecordCacheService.refresh(userId, spaceId, uIds);
+        return uIds;
     }
 
     private List<Long> getSearchUnitRefIds(String spaceId, String likeWord, Boolean searchEmail) {
