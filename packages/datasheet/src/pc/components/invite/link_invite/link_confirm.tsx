@@ -15,30 +15,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 import { useMount } from 'ahooks';
 import Image from 'next/image';
-import { FC } from 'react';
+import { useState, FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from '@apitable/components';
-import { Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t, ThemeName } from '@apitable/core';
+import { ConfigConstant, Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t, ThemeName } from '@apitable/core';
 import { Message, Wrapper } from 'pc/components/common';
 import { HomeWrapper } from 'pc/components/home/home_wrapper';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
+import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import inviteImageDark from 'static/icon/common/invitation_link_page_dark.png';
 import inviteImageLight from 'static/icon/common/invitation_link_page_light.png';
 import { InviteTitle } from '../components/invite_title';
 import { useInvitePageRefreshed } from '../use_invite';
 
-import {useAppSelector} from "pc/store/react-redux";
-
 const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
+  const [noTraceVerification, setNoTraceVerification] = useState<string | null>(null);
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'linkInvite' });
   const query = useQuery();
   const inviteLinkInfo = useAppSelector((state: IReduxState) => state.invite.inviteLinkInfo);
+  const isLogin = useAppSelector((state) => state.user.isLogin);
   const inviteLinkToken = query.get('inviteLinkToken');
   const inviteCode = query.get('inviteCode') || undefined;
   const nodeId = query.get('nodeId');
@@ -48,7 +49,7 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
 
   const InviteImage = themeName === ThemeName.Light ? inviteImageLight : inviteImageDark;
 
-  const { loading, run: join } = useRequest((linkToken, nodeId) => Api.joinViaSpace(linkToken, nodeId), {
+  const { loading, run: join } = useRequest((linkToken, nodeId, data = '') => Api.joinViaSpace(linkToken, nodeId, data), {
     onSuccess: (res) => {
       const { success, code } = res.data;
       if (success) {
@@ -89,10 +90,17 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
 
   useMount(() => {
     whenPageRefreshed();
+    initNoTraceVerification(setNoTraceVerification, ConfigConstant.CaptchaIds.LOGIN);
   });
 
   const confirmBtn = () => {
-    join(inviteLinkToken, nodeId);
+    if (isLogin) {
+      execNoTraceVerification((data) => {
+        join(inviteLinkToken, nodeId, data);
+      });
+    } else {
+      join(inviteLinkToken, nodeId);
+    }
   };
   if (!inviteLinkInfo) {
     return null;
