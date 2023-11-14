@@ -25,13 +25,21 @@ option java_package = "com.apitable.integration.grpc";
 option java_outer_classname = "GrpcBackendServingService";
 
 // backend-server provided service
-// socket->backend
 service ApiServingService {
-  // socket->java
+  // ============ socket->backend ===================================
   rpc RecordNodeBrowsing (NodeBrowsingRo) returns (grpc.common.BasicResult);
+
+  // ============ room->backend =====================================
+  rpc DocumentOperate (DocumentOperateRo) returns (grpc.common.BasicResult);
 }
 
 message NodeBrowsingRo {
   string node_id = 1;
   string uuid = 2;
+}
+
+message DocumentOperateRo {
+  repeated string remove_document_names = 1;
+  repeated string recover_document_names =  2;
+  optional string user_id = 3;
 }

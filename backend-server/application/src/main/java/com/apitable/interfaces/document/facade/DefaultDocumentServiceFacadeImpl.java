@@ -39,4 +39,10 @@ public class DefaultDocumentServiceFacadeImpl implements DocumentServiceFacade {
     public void recover(Long userId, List<String> nodeIds) {
 
     }
+
+    @Override
+    public void cellValueOperate(Long userId, List<String> recoverDocumentNames,
+            List<String> removeDocumentNames) {
+
+    }
 }

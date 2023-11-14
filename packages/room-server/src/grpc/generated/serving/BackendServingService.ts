@@ -29,6 +29,12 @@ export interface NodeBrowsingRo {
   uuid: string;
 }
 
+export interface DocumentOperateRo {
+  removeDocumentNames: string[];
+  recoverDocumentNames: string[];
+  userId?: string | undefined;
+}
+
 function createBaseNodeBrowsingRo(): NodeBrowsingRo {
   return { nodeId: "", uuid: "" };
 }
@@ -87,13 +93,91 @@ export const NodeBrowsingRo = {
   },
 };
 
-/**
- * backend-server provided service
- * socket->backend
- */
+function createBaseDocumentOperateRo(): DocumentOperateRo {
+  return { removeDocumentNames: [], recoverDocumentNames: [], userId: undefined };
+}
+
+export const DocumentOperateRo = {
+  encode(message: DocumentOperateRo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.removeDocumentNames) {
+      writer.uint32(10).string(v!);
+    }
+    for (const v of message.recoverDocumentNames) {
+      writer.uint32(18).string(v!);
+    }
+    if (message.userId !== undefined) {
+      writer.uint32(26).string(message.userId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DocumentOperateRo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = Object.create(createBaseDocumentOperateRo()) as DocumentOperateRo;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.removeDocumentNames.push(reader.string());
+          break;
+        case 2:
+          message.recoverDocumentNames.push(reader.string());
+          break;
+        case 3:
+          message.userId = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DocumentOperateRo {
+    return {
+      removeDocumentNames: Array.isArray(object?.removeDocumentNames)
+        ? object.removeDocumentNames.map((e: any) => String(e))
+        : [],
+      recoverDocumentNames: Array.isArray(object?.recoverDocumentNames)
+        ? object.recoverDocumentNames.map((e: any) => String(e))
+        : [],
+      userId: isSet(object.userId) ? String(object.userId) : undefined,
+    };
+  },
+
+  toJSON(message: DocumentOperateRo): unknown {
+    const obj: any = {};
+    if (message.removeDocumentNames) {
+      obj.removeDocumentNames = message.removeDocumentNames.map((e) => e);
+    } else {
+      obj.removeDocumentNames = [];
+    }
+    if (message.recoverDocumentNames) {
+      obj.recoverDocumentNames = message.recoverDocumentNames.map((e) => e);
+    } else {
+      obj.recoverDocumentNames = [];
+    }
+    message.userId !== undefined && (obj.userId = message.userId);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DocumentOperateRo>, I>>(object: I): DocumentOperateRo {
+    const message = Object.create(createBaseDocumentOperateRo()) as DocumentOperateRo;
+    message.removeDocumentNames = object.removeDocumentNames?.map((e) => e) || [];
+    message.recoverDocumentNames = object.recoverDocumentNames?.map((e) => e) || [];
+    message.userId = object.userId ?? undefined;
+    return message;
+  },
+};
+
+/** backend-server provided service */
 export interface ApiServingService {
-  /** socket->java */
+  /** ============ socket->backend =================================== */
   recordNodeBrowsing(request: NodeBrowsingRo, metadata?: Metadata): Observable<BasicResult>;
+  /** ============ room->backend ===================================== */
+  documentOperate(request: DocumentOperateRo, metadata?: Metadata): Observable<BasicResult>;
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

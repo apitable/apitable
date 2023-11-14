@@ -23,17 +23,18 @@ import { PROJECT_DIR } from 'app.environment';
 import { protobufPackage } from 'grpc/generated/serving/RoomServingService';
 import { join } from 'path';
 import { BootstrapConstants } from 'shared/common/constants/bootstrap.constants';
-import { GatewayConstants, SocketConstants } from 'shared/common/constants/socket.module.constants';
+import { SocketConstants } from 'shared/common/constants/socket.module.constants';
 import { RedisModule } from 'socket/services/redis/redis.module';
 import { RedisService } from 'socket/services/redis/redis.service';
 import { GrpcClient } from './grpc.client';
 import { GrpcClientProxy } from './grpc.client.proxy';
+import { ROOM_GRPC_CLIENT } from 'shared/common';
 
 @Module({
   imports: [
     ClientsModule.registerAsync([
       {
-        name: GatewayConstants.ROOM_SERVICE,
+        name: ROOM_GRPC_CLIENT,
         imports: [RedisModule, HttpModule],
         inject: [RedisService, HttpService],
         useFactory: (redisService: RedisService, httpService: HttpService) => {

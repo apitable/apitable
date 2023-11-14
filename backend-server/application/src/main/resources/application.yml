@@ -175,7 +175,7 @@ sentry:
 
 grpc:
   server:
-    port: ${BACKEND_GRPC_PORT:0}
+    port: ${BACKEND_GRPC_PORT:8083}
   client:
     nest-grpc-server:
       address: ${NEST_GRPC_ADDRESS:static://localhost:3334}

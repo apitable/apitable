@@ -30,4 +30,7 @@ public interface DocumentServiceFacade {
     void remove(Long userId, List<String> nodeIds);
 
     void recover(Long userId, List<String> nodeIds);
+
+    void cellValueOperate(Long userId, List<String> recoverDocumentNames,
+            List<String> removeDocumentNames);
 }

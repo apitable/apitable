@@ -57,6 +57,7 @@ export class OPEventRecordCreated extends IAtomEventType<IRecordCreated> {
     return {
       pass,
       context: {
+        action,
         datasheetId: resourceId,
         recordId,
         op,

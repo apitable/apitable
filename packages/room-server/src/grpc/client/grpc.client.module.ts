@@ -19,13 +19,12 @@
 import { Global, Injectable, Module } from '@nestjs/common';
 import { ClientProvider, ClientsModule, Transport } from '@nestjs/microservices';
 import { ClientsModuleOptionsFactory } from '@nestjs/microservices/module/interfaces/clients-module.interface';
-import { GrpcSocketClient } from 'grpc/client/grpc.socket.client';
 import { protobufPackage } from 'grpc/generated/serving/SocketServingService';
 import { join } from 'path';
-import { GRPC_MAX_PACKAGE_SIZE, SOCKET_GRPC_CLIENT } from 'shared/common';
+import { BACKEND_GRPC_CLIENT, GRPC_MAX_PACKAGE_SIZE, SOCKET_GRPC_CLIENT } from 'shared/common';
 import { BootstrapConstants } from 'shared/common/constants/bootstrap.constants';
-import { GatewayConstants } from 'shared/common/constants/socket.module.constants';
 import { BackendGrpcClient } from './backend.grpc.client';
+import { SocketGrpcClient } from './socket.grpc.client';
 
 @Global()
 @Injectable()
@@ -78,13 +77,13 @@ export const backendGrpcClientProvider = (): ClientProvider => {
         useClass: GrpcSocketClientModuleOption,
       },
       {
-        name: GatewayConstants.BACKEND_SERVICE,
+        name: BACKEND_GRPC_CLIENT,
         useFactory: () => backendGrpcClientProvider(),
       },
     ]),
   ],
-  providers: [BackendGrpcClient, GrpcSocketClient],
-  exports: [BackendGrpcClient, GrpcSocketClient],
+  providers: [BackendGrpcClient, SocketGrpcClient],
+  exports: [BackendGrpcClient, SocketGrpcClient],
 })
 export class GrpcClientModule {}
 
