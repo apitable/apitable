@@ -38,7 +38,7 @@ import {
   ISegment,
   isGif,
   IUnitIds,
-  IWorkdocValue,
+  IWorkDocValue,
   LinkField,
   LOOKUP_VALUE_FUNC_SET,
   LookUpField,
@@ -57,6 +57,7 @@ import {
   t,
   ViewType,
 } from '@apitable/core';
+import { FileOutlined } from '@apitable/icons';
 import { assertSignatureManager } from '@apitable/widget-sdk';
 import { AvatarSize, AvatarType } from 'pc/components/common';
 import { GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT } from 'pc/components/gantt_view';
@@ -81,9 +82,9 @@ import {
   GRID_CELL_MEMBER_ITEM_PADDING_LEFT,
   GRID_CELL_MULTI_ITEM_MARGIN_LEFT,
   GRID_CELL_MULTI_ITEM_MARGIN_TOP,
-  GRID_CELL_MULTI_ITEM_MIN_WIDTH, GRID_CELL_MULTI_PADDING_LEFT,
+  GRID_CELL_MULTI_ITEM_MIN_WIDTH,
   GRID_CELL_MULTI_PADDING_TOP,
-  GRID_CELL_VALUE_PADDING, GRID_ICON_COMMON_SIZE, GRID_ICON_SMALL_SIZE,
+  GRID_CELL_VALUE_PADDING, GRID_ICON_SMALL_SIZE,
   GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT,
   GRID_MEMBER_ITEM_PADDING_RIGHT,
   GRID_OPTION_ITEM_HEIGHT,
@@ -93,7 +94,6 @@ import { IRenderProps } from '../interface';
 import { KonvaDrawer } from './drawer';
 import { imageCache } from './image_cache';
 import { IWrapTextDataProps } from './interface';
-import { FileOutlined } from '@apitable/icons';
 
 const FileOutlinedPath = FileOutlined.toString();
 
@@ -166,7 +166,7 @@ export class CellHelper extends KonvaDrawer {
       case FieldType.CreatedBy:
       case FieldType.LastModifiedBy:
       case FieldType.Cascader:
-      case FieldType.Workdoc: {
+      case FieldType.WorkDoc: {
         return this.setStyle({ fontSize: 13, fontWeight });
       }
       case FieldType.LookUp: {
@@ -205,7 +205,7 @@ export class CellHelper extends KonvaDrawer {
       case FieldType.Cascader: {
         return this.renderCellText(renderProps, ctx);
       }
-      case FieldType.Workdoc: {
+      case FieldType.WorkDoc: {
         return this.renderCellWorkdoc(renderProps, ctx);
       }
       case FieldType.DateTime:
@@ -306,19 +306,19 @@ export class CellHelper extends KonvaDrawer {
 
   private renderCellWorkdoc(renderProps: IRenderProps, ctx?: any) {
     const { x, y, cellValue, rowHeight, rowHeightLevel, columnWidth, isActive, callback } = renderProps;
-    if (!(cellValue as IWorkdocValue[])?.length || !Array.isArray(cellValue)) return DEFAULT_RENDER_DATA;
+    if (!(cellValue as IWorkDocValue[])?.length || !Array.isArray(cellValue)) return DEFAULT_RENDER_DATA;
     const isOperating = isActive;
-    let currentX = isOperating ? GRID_CELL_VALUE_PADDING + GRID_CELL_ADD_ITEM_BUTTON_SIZE + 4 : GRID_CELL_VALUE_PADDING;
+    let currentX = GRID_CELL_VALUE_PADDING;
     let currentY = GRID_CELL_MULTI_PADDING_TOP;
     const isShortHeight = rowHeightLevel === RowHeightLevel.Short;
     const maxHeight = isActive ? 130 - GRID_CELL_MULTI_PADDING_TOP : rowHeight - GRID_CELL_MULTI_PADDING_TOP;
-    const maxTextWidth = columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING) - GRID_ICON_SMALL_SIZE - (isOperating ? 12 : 0);
+    const maxTextWidth = columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING) - GRID_ICON_SMALL_SIZE;
     const renderDataList: any[] = [];
     const listCount = cellValue.length;
     let isOverflow = false;
 
     for (let index = 0; index < listCount; index++) {
-      const docItem = cellValue[index] as IWorkdocValue;
+      const docItem = cellValue[index] as IWorkDocValue;
       const color = colors.textBrandDefault;
       const background = colors.bgBrandLightDefault;
       const itemName = docItem.title || t(Strings.workdoc_unnamed);
@@ -359,7 +359,6 @@ export class CellHelper extends KonvaDrawer {
         }
         if (isActive && currentX + itemWidth > columnWidth - GRID_CELL_VALUE_PADDING) {
           currentX = GRID_CELL_VALUE_PADDING;
-          currentY += GRID_OPTION_ITEM_HEIGHT + GRID_CELL_MULTI_ITEM_MARGIN_TOP;
         }
         if (isActive && currentY >= maxHeight) isOverflow = true;
       }
@@ -367,13 +366,6 @@ export class CellHelper extends KonvaDrawer {
       const itemX = x + currentX;
       const itemY = y + currentY;
       if (ctx && !isActive) {
-        this.path({
-          x: itemX + 4,
-          y: itemY + 2,
-          data: FileOutlinedPath,
-          size: 12,
-          fill: colors.textBrandDefault,
-        });
         this.label({
           x: itemX,
           y: itemY,
@@ -386,6 +378,13 @@ export class CellHelper extends KonvaDrawer {
           text: renderText,
           fontSize: 12,
           textAlign: 'right',
+        });
+        this.path({
+          x: itemX + 4,
+          y: itemY + 2,
+          data: FileOutlinedPath,
+          size: 12,
+          fill: colors.textBrandDefault,
         });
       }
 
@@ -1353,7 +1352,7 @@ export class CellHelper extends KonvaDrawer {
         case FieldType.Text:
         case FieldType.SingleText:
         case FieldType.Cascader:
-        case FieldType.Workdoc:
+        case FieldType.WorkDoc:
           realRenderProps.realField = realField;
           return this.renderCellText(realRenderProps, ctx);
         case FieldType.NotSupport:

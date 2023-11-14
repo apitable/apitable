@@ -22,7 +22,6 @@ import classnames from 'classnames';
 import * as React from 'react';
 import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import * as components from '@apitable/components';
 import * as core from '@apitable/core';
@@ -45,6 +44,8 @@ import { patchDatasheet } from './utils';
 import { WidgetLoading } from './widget_loading';
 // @ts-ignore
 import { isSocialWecom } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 (() => {
   if (!process.env.SSR) {
@@ -120,7 +121,7 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<
   const widgetCanRender = useWidgetCanRender(widgetId);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [codeUrl, setCodeUrl] = useCloudStorage<string | undefined>(`widget_loader_code_url_${widgetPackageId}`, widgetId);
-  const nodeConnected = useSelector((state) => {
+  const nodeConnected = useAppSelector((state) => {
     const datasheet = Selectors.getDatasheet(state, nodeId);
     const bindDatasheetLoaded = datasheet && !datasheet.isPartOfData;
     // The initialization of the widget must be done after the datasheet loaded.
@@ -130,14 +131,14 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<
     const { templateId } = state.pageParams;
     return templateId || nodeId !== state.pageParams.nodeId || Selectors.getDatasheetPack(state, nodeId)?.connected;
   });
-  const errorCode = useSelector((state) => {
+  const errorCode = useAppSelector((state) => {
     const widget = Selectors.getWidget(state, widgetId)!;
     const { sourceId, datasheetId } = widget.snapshot;
     return sourceId?.startsWith('mir') ? Selectors.getMirrorErrorCode(state, sourceId) : Selectors.getDatasheetErrorCode(state, datasheetId);
   });
-  const theme = useSelector((state) => state.theme);
+  const theme = useAppSelector((state) => state.theme);
 
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
 
   const isWecom = isSocialWecom?.(spaceInfo);
 

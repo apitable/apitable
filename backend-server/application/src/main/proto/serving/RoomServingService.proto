@@ -26,8 +26,8 @@ option java_package = "com.apitable.integration.grpc";
 option java_outer_classname = "GrpcRoomServingService";
 
 // room-server provided service
-// socket->room
 service RoomServingService {
+  // ============ socket->room ======================================
   // user join datasheet room
   rpc WatchRoom (WatchRoomRo) returns (WatchRoomVo);
   // user leave datasheet room
@@ -38,6 +38,8 @@ service RoomServingService {
   rpc GetActiveCollaborators (WatchRoomRo) returns (GetActiveCollaboratorsVo);
   // Server sends room Change event
   rpc ServerRoomChange (grpc.common.ServerRoomChangeRo) returns (grpc.common.BasicResult);
+
+  // ============ backend->room ======================================
   // copy datasheet effect ot
   rpc CopyNodeEffectOt (NodeCopyRo) returns (grpc.common.BasicResult);
   // delete datasheet effect ot

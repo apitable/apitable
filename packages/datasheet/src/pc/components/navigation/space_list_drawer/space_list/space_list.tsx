@@ -21,7 +21,6 @@ import { Space, Tabs } from 'antd';
 import classnames from 'classnames';
 import Image from 'next/image';
 import { FC, useCallback, useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Skeleton, ThemeName, TextInput, Typography } from '@apitable/components';
 import { getMaxManageableSpaceCount, ISpaceInfo, Strings, t } from '@apitable/core';
 import { SearchOutlined, CloseCircleFilled } from '@apitable/icons';
@@ -39,6 +38,8 @@ import styles from './style.module.less';
 // @ts-ignore
 import { isSocialWecom } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 enum TabPaneKeys {
   MANAGABLE = 'MANAGABLE',
   INTRANT = 'INTRANT',
@@ -54,16 +55,16 @@ export const SpaceList: FC<React.PropsWithChildren<unknown>> = () => {
   /* The currently active tab key */
   const [activeKey, setActiveKey] = useState<string>('');
   const { openCreateSpaceModal, closeSpaceListDrawer } = useContext(NavigationContext);
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const { getSpaceListReq } = useSpaceRequest();
   const { data: spaceList, loading, run: runGetSpaceListReq } = useRequest(getSpaceListReq);
   // const { screenIsAtMost } = useResponsive();
   // const isMobile = screenIsAtMost(ScreenSize.md);
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const EmptyIntrantListPng = themeName === ThemeName.Light ? EmptyIntrantListPngLight : EmptyIntrantListPngDark;
   const EmptyManagableListPng = themeName === ThemeName.Light ? CreateSpaceIconLight : CreateSpaceIconDark;
   const EmptyPng = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const isWecom = isSocialWecom?.(spaceInfo);
 
   const [searchKeyword, setSearchKeyword] = useState('');

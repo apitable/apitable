@@ -17,37 +17,28 @@
  */
 
 import { Inject, Injectable, Logger, OnModuleInit } from '@nestjs/common';
-import { ClientGrpcProxy } from '@nestjs/microservices';
 import { BasicResult } from 'grpc/generated/common/Core';
 import { Any } from 'grpc/generated/google/protobuf/any';
 import { Value } from 'grpc/generated/google/protobuf/struct';
-import { ApiServingService, NodeBrowsingRo } from 'grpc/generated/serving/BackendServingService';
 import { LeaveRoomRo, RoomServingService, UserRoomChangeRo, WatchRoomRo } from 'grpc/generated/serving/RoomServingService';
 import { lastValueFrom } from 'rxjs';
-import { GatewayConstants } from 'shared/common/constants/socket.module.constants';
 import { GrpcClientProxy } from './grpc.client.proxy';
+import { ROOM_GRPC_CLIENT } from 'shared/common';
 
 @Injectable()
 export class GrpcClient implements OnModuleInit {
-  // backend-server grpc service
-  private backendService!: ApiServingService;
   // room-server grpc service
   private roomService!: RoomServingService;
 
   private readonly logger = new Logger(GrpcClient.name);
 
   constructor(
-    @Inject(GatewayConstants.BACKEND_SERVICE) private readonly backendClient: ClientGrpcProxy,
-    @Inject(GatewayConstants.ROOM_SERVICE) private readonly roomClient: GrpcClientProxy,
+    // @ts-ignore
+    @Inject(ROOM_GRPC_CLIENT) private readonly roomClient: GrpcClientProxy,
   ) {}
 
   async onModuleInit() {
-    this.backendService = await this.backendClient.getService<ApiServingService>('ApiServingService');
     this.roomService = await this.roomClient.getService<RoomServingService>('RoomServingService');
-  }
-
-  async recordNodeBrowsing(message: NodeBrowsingRo): Promise<BasicResult> {
-    return await lastValueFrom(this.backendService.recordNodeBrowsing(message));
   }
 
   async watchRoom(message: WatchRoomRo, metadata: any): Promise<any | null> {

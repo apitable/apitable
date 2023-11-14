@@ -25,7 +25,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
 import { DndProvider } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getLanguage, RecordVision, StoreActions, Strings, t, ThemeName } from '@apitable/core';
 import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
@@ -44,12 +44,14 @@ import { comlinkStore } from 'pc/worker';
 import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 message.config({
   maxCount: 1,
 });
 
 const RenderEmpty = () => {
-  const theme = useSelector((state) => state.theme);
+  const theme = useAppSelector((state) => state.theme);
   const NoDataImg = theme === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
   return (
     <div className="emptyPlaceholder">

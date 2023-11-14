@@ -4,11 +4,12 @@ import {
   BasicValueType,
   FieldType,
   FOperator,
+  IAddOpenWorkDocFieldProperty,
   IAttachmentValue,
   IField, IFilterCondition, IFilterText, ISegment,
   IStandardValue,
-  IWorkdocField,
-  IWorkdocValue,
+  IWorkDocField,
+  IWorkDocValue,
 } from 'types';
 import { ArrayValueField, zhIntlCollator } from './field';
 import { ICellValue } from '../record';
@@ -18,19 +19,19 @@ import { DatasheetActions } from '../../commands_actions/datasheet';
 import { isNullValue } from '../utils';
 import { Strings, t } from 'exports/i18n';
 
-const baseWorkdocFieldSchema = {
+const baseWorkDocFieldSchema = {
   documentId: Joi.string().required(),
   title: Joi.string().allow('')
 };
 
-export class WorkdocField extends ArrayValueField {
-  constructor(public override field: IWorkdocField, public override state: IReduxState) {
+export class WorkDocField extends ArrayValueField {
+  constructor(public override field: IWorkDocField, public override state: IReduxState) {
     super(field, state);
   }
 
   static propertySchema = Joi.equal(null);
 
-  static cellValueSchema = Joi.array().items(Joi.object(baseWorkdocFieldSchema).required()).allow(null).required();
+  static cellValueSchema = Joi.array().items(Joi.object(baseWorkDocFieldSchema).required()).allow(null).required();
 
   static defaultProperty() {
     return null;
@@ -79,24 +80,24 @@ export class WorkdocField extends ArrayValueField {
     return BasicValueType.String;
   }
 
-  static createDefault(fieldMap: { [fieldId: string]: IField }): IWorkdocField {
+  static createDefault(fieldMap: { [fieldId: string]: IField }): IWorkDocField {
     return {
       id: DatasheetActions.getNewFieldId(fieldMap),
-      type: FieldType.Workdoc,
+      type: FieldType.WorkDoc,
       name: DatasheetActions.getDefaultFieldName(fieldMap),
       property: null,
     };
   }
 
   validateProperty() {
-    return WorkdocField.propertySchema.validate(this.field.property);
+    return WorkDocField.propertySchema.validate(this.field.property);
   }
 
   validateCellValue(cv: ICellValue) {
-    return WorkdocField.cellValueSchema.validate(cv);
+    return WorkDocField.cellValueSchema.validate(cv);
   }
 
-  override eq(cv1: IWorkdocValue[] | null, cv2: IWorkdocValue[] | null): boolean {
+  override eq(cv1: IWorkDocValue[] | null, cv2: IWorkDocValue[] | null): boolean {
     if (cv1 == null || cv2 == null) {
       return cv1 === cv2;
     }
@@ -107,8 +108,8 @@ export class WorkdocField extends ArrayValueField {
   }
 
   override compare(
-    cellValue1: IWorkdocValue[] | null,
-    cellValue2: IWorkdocValue[] | null,
+    cellValue1: IWorkDocValue[] | null,
+    cellValue2: IWorkDocValue[] | null,
   ): number {
     if (isEqual(cellValue1, cellValue2)) {
       return 0;
@@ -160,8 +161,8 @@ export class WorkdocField extends ArrayValueField {
     }
   }
 
-  validate(value: any): value is IWorkdocValue[] {
-    return isArray(value) && (value as IWorkdocValue[]).every((doc: IWorkdocValue) => {
+  validate(value: any): value is IWorkDocValue[] {
+    return isArray(value) && (value as IWorkDocValue[]).every((doc: IWorkDocValue) => {
       return Boolean(
         doc &&
         isString(doc.documentId) &&
@@ -207,13 +208,13 @@ export class WorkdocField extends ArrayValueField {
     return this.cellValueToString(cellValue);
   }
 
-  cellValueToOpenValue(cellValue: IWorkdocValue[] | null): BasicOpenValueTypeBase | null {
+  cellValueToOpenValue(cellValue: IWorkDocValue[] | null): BasicOpenValueTypeBase | null {
     return cellValue;
   }
 
-  cellValueToStdValue(val: IWorkdocValue[] | null): IStandardValue {
+  cellValueToStdValue(val: IWorkDocValue[] | null): IStandardValue {
     const stdVal: IStandardValue = {
-      sourceType: FieldType.Attachment,
+      sourceType: FieldType.WorkDoc,
       data: [],
     };
 
@@ -233,7 +234,7 @@ export class WorkdocField extends ArrayValueField {
     return null;
   }
 
-  openWriteValueToCellValue(openWriteValue: IWorkdocValue[] | null): ICellValue | null {
+  openWriteValueToCellValue(openWriteValue: IWorkDocValue[] | null): ICellValue | null {
     if (isNullValue(openWriteValue)) {
       return null;
     }
@@ -243,7 +244,7 @@ export class WorkdocField extends ArrayValueField {
     }));
   }
 
-  stdValueToCellValue(stdVal: IStandardValue): IWorkdocValue[] | null {
+  stdValueToCellValue(stdVal: IStandardValue): IWorkDocValue[] | null {
     if (stdVal.data.length === 0) {
       return null;
     }
@@ -261,7 +262,14 @@ export class WorkdocField extends ArrayValueField {
   }
 
   validateOpenWriteValue(owv: IAttachmentValue[] | null) {
-    return WorkdocField.cellValueSchema.validate(owv);
+    return WorkDocField.cellValueSchema.validate(owv);
+  }
+
+  override validateAddOpenFieldProperty(updateProperty: IAddOpenWorkDocFieldProperty) {
+    if (updateProperty === null) {
+      return { error: undefined, value: null };
+    }
+    return this.validateUpdateOpenProperty(updateProperty);
   }
 
 }

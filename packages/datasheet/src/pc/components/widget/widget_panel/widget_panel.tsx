@@ -18,7 +18,7 @@
 
 import { useMount } from 'ahooks';
 import Image from 'next/image';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button, IconButton, Skeleton, ThemeName } from '@apitable/components';
 import { Events, IWidgetPanelStatus, Player, ResourceType, Selectors, Strings, t, PermissionType } from '@apitable/core';
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
@@ -34,6 +34,8 @@ import styles from './style.module.less';
 import { WidgetList } from './widget_list';
 import { WidgetPanelHeader } from './widget_panel_header';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const EmptyPanel = ({ onClosePanel }: { onClosePanel?: () => void | Promise<void> }) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -43,10 +45,10 @@ const EmptyPanel = ({ onClosePanel }: { onClosePanel?: () => void | Promise<void
   useMount(() => {
     Player.doTrigger(Events.datasheet_wigdet_empty_panel_shown);
   });
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const widgetEmpty = themeName === ThemeName.Light ? WidgetEmptyLight : WidgetEmptyDark;
-  const { embedId, shareId, templateId } = useSelector((state) => state.pageParams);
-  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
+  const { embedId, shareId, templateId } = useAppSelector((state) => state.pageParams);
+  const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
   const embedHidden = embedId && embedInfo && embedInfo.permissionType !== PermissionType.PRIVATEEDIT;
   const hiddenAddButton = shareId || templateId || embedHidden;
 
@@ -80,16 +82,16 @@ const EmptyPanel = ({ onClosePanel }: { onClosePanel?: () => void | Promise<void
 };
 
 export const WidgetPanel = () => {
-  const { datasheetId, mirrorId } = useSelector((state) => state.pageParams);
+  const { datasheetId, mirrorId } = useAppSelector((state) => state.pageParams);
   const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;
   const resourceId = mirrorId || datasheetId || '';
-  const activeWidgetPanel = useSelector((state) => {
+  const activeWidgetPanel = useAppSelector((state) => {
     return Selectors.getResourceActiveWidgetPanel(state, resourceId, resourceType);
   });
-  const netWorking = useSelector((state) => Selectors.getResourceNetworking(state, datasheetId!, ResourceType.Datasheet), shallowEqual);
+  const netWorking = useAppSelector((state) => Selectors.getResourceNetworking(state, datasheetId!, ResourceType.Datasheet), shallowEqual);
   const isEmptyPanel = !activeWidgetPanel;
   const isEmptyWidget = !(activeWidgetPanel && activeWidgetPanel.widgets.length);
-  const { opening: isPanelOpening } = useSelector((state) => {
+  const { opening: isPanelOpening } = useAppSelector((state) => {
     return Selectors.getResourceWidgetPanelStatus(state, resourceId, resourceType) || ({} as IWidgetPanelStatus);
   });
   const onClosePanel = async () => {

@@ -1,6 +1,5 @@
 import classnames from 'classnames';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import useSWR from 'swr';
 import urlcat from 'urlcat';
@@ -13,6 +12,8 @@ import { getCreditStatisticsFetcher } from 'pc/components/space_manage/space_inf
 import { CardTitle } from 'pc/components/space_manage/space_info/ui';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface ICreditCostCardProps {
   minHeight?: string | number;
   className?: string;
@@ -23,7 +24,7 @@ interface ICreditCostCardProps {
 
 export const CreditCostCard: React.FC<ICreditCostCardProps> = ({ strokeColor, minHeight, className, titleTip, ...props }) => {
   const color = useThemeColors();
-  const spaceId = useSelector((state: IReduxState) => state.space.activeId);
+  const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
   const [timeDimension, setTimeDimension] = useState(TimeDimension.WEEKDAY);
 
   const { data } = useSWR(urlcat(GET_CREDIT_STATISTICS, { spaceId }) + `?timeDimension=${timeDimension}`, getCreditStatisticsFetcher);

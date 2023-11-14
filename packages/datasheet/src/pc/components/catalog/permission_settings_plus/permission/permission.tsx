@@ -18,7 +18,6 @@
 
 import { useToggle } from 'ahooks';
 import { FC, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Box, IOption, Skeleton } from '@apitable/components';
 import {
   Api,
@@ -46,6 +45,8 @@ import { UnitList } from './unit_list';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export interface IPermissionSettingProps {
   data: INodePermissionData;
 }
@@ -62,14 +63,14 @@ export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = 
   const [isAppointMode, setIsAppointMode] = useState(true);
   // Whether to display the View Member Details modal box
   const [isMemberDetail, { toggle: toggleIsMemberDetail }] = useToggle(false);
-  const ownUnitId = useSelector((state: IReduxState) => state.user.info?.unitId);
+  const ownUnitId = useAppSelector((state: IReduxState) => state.user.info?.unitId);
   const { getNodeRoleListReq, getCollaboratorListPageReq } = useCatalogTreeRequest();
   const { run: getNodeRoleMap, data: roleMap } = useRequest<IRoleMap>(() => getNodeRoleListReq(data.nodeId));
-  const treeNodesMap = useSelector((state) => state.catalogTree.treeNodesMap);
+  const treeNodesMap = useAppSelector((state) => state.catalogTree.treeNodesMap);
   const nodeAssignable = treeNodesMap[data.nodeId]?.permissions.nodeAssignable;
   const unitListScroll = useRef<HTMLDivElement>(null);
-  const spaceId = useSelector((state) => state.space.activeId)!;
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceId = useAppSelector((state) => state.space.activeId)!;
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const [pageNo, setPageNo] = useState<number>(1);
   const [memberList, setMemberList] = useState<IMemberList[]>([]);
   const { run: getCollaboratorReq, data: collaboratorInfo } = useRequest((pageNo) => getCollaboratorListPageReq(pageNo, data.nodeId), {

@@ -20,7 +20,7 @@ import classNames from 'classnames';
 import { uniqBy } from 'lodash';
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Tooltip, useThemeColors } from '@apitable/components';
 import { Field, IAttacheField, IAttachmentValue, IReduxState, isGif, isImage, RowHeight, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
@@ -38,6 +38,8 @@ import { MouseDownType } from '../../enum';
 import { ICellComponentProps } from '../cell_value/interface';
 import optionalStyle from '../optional_cell_container/style.module.less';
 import styles from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ICellAttachmentProps extends ICellComponentProps {
   field: IAttacheField;
@@ -79,7 +81,7 @@ export const CellAttachment: React.FC<React.PropsWithChildren<ICellAttachmentPro
 
   const fileList: IAttachmentValue[] = useGetSignatureAssertByToken(cellValue as IAttachmentValue[]);
 
-  const { datasheetId, permissions } = useSelector(
+  const { datasheetId, permissions } = useAppSelector(
     (state: IReduxState) => ({
       permissions: Selectors.getPermissions(state),
       datasheetId: state.pageParams.datasheetId,
@@ -88,7 +90,7 @@ export const CellAttachment: React.FC<React.PropsWithChildren<ICellAttachmentPro
     shallowEqual,
   );
   const disabledDownload = !useAllowDownloadAttachment(field.id, datasheetId);
-  const rowHeightLevel = useSelector(Selectors.getViewRowHeight);
+  const rowHeightLevel = useAppSelector(Selectors.getViewRowHeight);
   const height = rowHeight - CELL_PADDING_OFFSET;
   const editable = Field.bindModel(field).recordEditable() && permissions.cellEditable;
   const { mobile } = usePlatform();

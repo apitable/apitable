@@ -20,7 +20,6 @@ import { useClickAway } from 'ahooks';
 import classNames from 'classnames';
 import * as React from 'react';
 import { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Dropdown, useThemeColors } from '@apitable/components';
 import { FieldType, ICellValue, IField, IMultiSelectedIds, ISelectFieldOption, IUnitValue, IUserValue, Selectors, Strings, t } from '@apitable/core';
 import { ChevronDownOutlined } from '@apitable/icons';
@@ -32,6 +31,8 @@ import { CellCreatedBy } from 'pc/components/multi_grid/cell/cell_created_by';
 import { CellMember } from 'pc/components/multi_grid/cell/cell_member';
 import { CellOptions } from '../../../multi_grid/cell/cell_options/cell_options';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IFilterGeneralSelectProps {
   placeholder?: string;
@@ -83,7 +84,7 @@ export const FilterGeneralSelect: React.FC<React.PropsWithChildren<IFilterGenera
       break;
   }
 
-  const unitMap = useSelector(Selectors.getUnitMap);
+  const unitMap = useAppSelector(Selectors.getUnitMap);
 
   const [visible, setVisible] = useState(false);
 

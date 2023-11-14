@@ -23,6 +23,7 @@ import com.apitable.shared.clock.Clock;
 import com.apitable.shared.clock.DefaultClock;
 import com.apitable.shared.clock.MockClock;
 import com.apitable.shared.config.properties.SystemProperties;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -102,6 +103,11 @@ public class ClockManager implements InitializingBean {
      */
     public ZoneId getDefaultTimeZone() {
         return this.systemProperties.getTimeZoneId();
+    }
+
+    public LocalDateTime convertMillis(long unixTimestamp) {
+        Instant instant = Instant.ofEpochMilli(unixTimestamp);
+        return LocalDateTime.ofInstant(instant, getDefaultTimeZone());
     }
 
     public long convertUnixTimeToMillis(LocalDateTime dateTime) {

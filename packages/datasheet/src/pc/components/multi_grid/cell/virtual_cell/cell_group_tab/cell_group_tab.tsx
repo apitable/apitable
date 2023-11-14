@@ -53,7 +53,7 @@ export const PRIMARY_COLOR_BORDER = ' 1px solid ' + colorVars.primaryColor;
 
 export const CellGroupTab: React.FC<React.PropsWithChildren<ICellGroupTab>> = React.memo((props) => {
   const { actualColumnIndex, row, style, columnsLength, groupInfo, isSort } = props;
-  // const groupingCollapseMap = useSelector(state => Selectors.getGroupingCollapseMap(state));
+  // const groupingCollapseMap = useAppSelector(state => Selectors.getGroupingCollapseMap(state));
   let width = parseInt(style.width as string, 10);
   if (actualColumnIndex === 0) {
     width = width + groupInfo.length * GROUP_OFFSET;

@@ -19,7 +19,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Field, IViewColumn, Selectors, Strings, t } from '@apitable/core';
 import { ChevronDownOutlined } from '@apitable/icons';
@@ -30,6 +29,8 @@ import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { renderComputeFieldError } from 'pc/components/multi_grid/header';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IViewFieldOptionsMobile {
   onChange: (targetId: string) => void;
@@ -44,8 +45,8 @@ interface IViewFieldOptionsMobile {
 export const ViewFieldOptionsMobile: React.FC<React.PropsWithChildren<IViewFieldOptionsMobile>> = (props) => {
   const { existFieldIds, onChange, defaultFieldId, isCryptoField, fieldNotFound } = props;
   const colors = useThemeColors();
-  const currentViewAllField = useSelector((state) => Selectors.getCurrentView(state))!.columns;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const currentViewAllField = useAppSelector((state) => Selectors.getCurrentView(state))!.columns;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
   const isViewLock = useShowViewLockModal();
 
   function predicate(item: IViewColumn) {

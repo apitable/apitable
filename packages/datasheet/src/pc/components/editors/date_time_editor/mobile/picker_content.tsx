@@ -21,11 +21,12 @@ import classNames from 'classnames';
 import dayjs from 'dayjs';
 import * as React from 'react';
 import { FC, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { DateRange, getTimeZoneAbbrByUtc, IRecordAlarmClient, Strings, t, WithOptional, diffTimeZone, getTimeZone, Selectors } from '@apitable/core';
 import { ChevronDownOutlined, NotificationOutlined } from '@apitable/icons';
 import style from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IPickerContentProps {
   value: Date | undefined;
@@ -97,7 +98,7 @@ const PickerContentBase: FC<React.PropsWithChildren<IPickerContentProps>> = (pro
     disabled,
   } = props;
 
-  const userTimeZone = useSelector(Selectors.getUserTimeZone)!;
+  const userTimeZone = useAppSelector(Selectors.getUserTimeZone)!;
 
   const alarmRealTime = useMemo(() => {
     let alarmDate = dayjs.tz(value);

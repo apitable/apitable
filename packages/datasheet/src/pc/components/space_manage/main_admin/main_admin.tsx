@@ -18,7 +18,6 @@
 
 import { useMount } from 'ahooks';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Typography, useThemeColors } from '@apitable/components';
 import { Events, IReduxState, Player, StoreActions, Strings, t } from '@apitable/core';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
@@ -27,11 +26,13 @@ import { AdminInfo } from './admin_info';
 import { MainAdminModal } from './main_admin_modal';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const MainAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const dispatch = useAppDispatch();
-  const spaceResource = useSelector((state: IReduxState) => state.spacePermissionManage.spaceResource);
-  const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo);
+  const spaceResource = useAppSelector((state: IReduxState) => state.spacePermissionManage.spaceResource);
+  const spaceInfo = useAppSelector((state: IReduxState) => state.space.curSpaceInfo);
   const [modalVisible, setModalVisible] = useState(false);
   useMount(() => {
     Player.doTrigger(Events.space_setting_main_admin_shown);

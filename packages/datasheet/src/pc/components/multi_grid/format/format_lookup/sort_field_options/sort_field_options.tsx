@@ -1,7 +1,6 @@
 import classNames from 'classnames';
 import { memo, useMemo, useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { IOption, Select, useThemeColors, WrapperTooltip } from '@apitable/components';
 import { Field, IViewColumn, Selectors, Strings, t } from '@apitable/core';
@@ -10,6 +9,8 @@ import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { renderComputeFieldError } from 'pc/components/multi_grid/header';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IViewFieldOptions {
   defaultFieldId: string;
@@ -38,14 +39,14 @@ export const SortFieldOptions: React.FC<React.PropsWithChildren<IViewFieldOption
     fieldNotFound,
   } = props;
 
-  const columns = useSelector((state) => {
+  const columns = useAppSelector((state) => {
     const view = Selectors.getCurrentView(state, datasheetId);
     return view!.columns as IViewColumn[];
   });
 
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
   const [isOpen, setIsOpen] = useState(false);
-  const fieldPermissionMap = useSelector((state) => {
+  const fieldPermissionMap = useAppSelector((state) => {
     return Selectors.getFieldPermissionMap(state);
   });
   const isViewLock = useShowViewLockModal();

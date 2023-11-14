@@ -20,8 +20,11 @@ package com.apitable;
 
 import cn.hutool.core.collection.CollUtil;
 import com.apitable.asset.service.IAssetCallbackService;
+import com.apitable.asset.service.IAssetService;
 import com.apitable.asset.service.IAssetUploadTokenService;
+import com.apitable.asset.task.AssetTask;
 import com.apitable.auth.service.IAuthService;
+import com.apitable.client.task.ClientTasks;
 import com.apitable.control.service.IControlRoleService;
 import com.apitable.control.service.IControlService;
 import com.apitable.internal.service.IFieldService;
@@ -42,24 +45,25 @@ import com.apitable.shared.captcha.sms.SmsValidateCodeProcessor;
 import com.apitable.shared.clock.MockClock;
 import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.shared.component.notification.INotificationFactory;
+import com.apitable.shared.component.notification.queue.NotificationConsumer;
 import com.apitable.shared.config.properties.SystemProperties;
 import com.apitable.shared.holder.UserHolder;
 import com.apitable.shared.util.IdUtil;
-import com.apitable.space.mapper.InvitationMapper;
-import com.apitable.space.mapper.SpaceMapper;
-import com.apitable.space.mapper.SpaceMemberRoleRelMapper;
-import com.apitable.space.mapper.SpaceRoleResourceRelMapper;
 import com.apitable.space.service.IInvitationService;
 import com.apitable.space.service.ISpaceInviteLinkService;
+import com.apitable.space.service.ISpaceMemberRoleRelService;
+import com.apitable.space.service.ISpaceRoleResourceRelService;
 import com.apitable.space.service.ISpaceRoleService;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.space.service.IStaticsService;
 import com.apitable.sql.script.enhance.TablePrefixUtil;
+import com.apitable.starter.mail.autoconfigure.MailTemplate;
+import com.apitable.starter.oss.core.OssClientTemplate;
 import com.apitable.template.service.ITemplateAlbumService;
 import com.apitable.template.service.ITemplateService;
 import com.apitable.user.entity.UserEntity;
-import com.apitable.user.mapper.UserMapper;
 import com.apitable.user.service.IUserService;
+import com.apitable.user.task.UserTasks;
 import com.apitable.widget.service.IWidgetPackageService;
 import com.apitable.widget.service.IWidgetUploadService;
 import com.apitable.workspace.dto.CreateNodeDto;
@@ -79,6 +83,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -88,6 +94,14 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(value = {
     "classpath:test.properties", "classpath:spring.properties"
 })
+@ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,
+    classes = {
+        UserTasks.class,
+        AssetTask.class,
+        ClientTasks.class,
+        NotificationConsumer.class
+    })
+)
 public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
@@ -169,6 +183,12 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     protected ISpaceRoleService iSpaceRoleService;
 
     @Autowired
+    protected ISpaceMemberRoleRelService iSpaceMemberRoleRelService;
+
+    @Autowired
+    protected ISpaceRoleResourceRelService iSpaceRoleResourceRelService;
+
+    @Autowired
     protected IStaticsService iStaticsService;
 
     @Autowired
@@ -198,6 +218,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     @Autowired
     protected InternalSpaceService internalSpaceService;
 
+    @Autowired
+    protected IAssetService iAssetService;
+
     @Value("#{'${exclude}'.split(',')}")
     private List<String> excludeTables;
 
@@ -207,20 +230,11 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     @MockBean
     protected SmsValidateCodeProcessor smsValidateCodeProcessor;
 
-    @Autowired
-    protected InvitationMapper invitationMapper;
+    @MockBean
+    protected MailTemplate mailTemplate;
 
-    @Autowired
-    protected SpaceMapper spaceMapper;
-
-    @Autowired
-    protected UserMapper userMapper;
-
-    @Autowired
-    protected SpaceMemberRoleRelMapper spaceMemberRoleRelMapper;
-
-    @Autowired
-    protected SpaceRoleResourceRelMapper spaceRoleResourceRelMapper;
+    @MockBean
+    protected OssClientTemplate ossTemplate;
 
     @BeforeEach
     public void beforeMethod() {
@@ -245,8 +259,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     }
 
     protected void execute(String sql) {
-        String newSql = TablePrefixUtil.changeTablePrefix(sql, tablePrefix());
-        jdbcTemplate.execute(newSql);
+        jdbcTemplate.execute(TablePrefixUtil.changeTablePrefix(sql, tablePrefix()));
     }
 
     @Override
@@ -263,18 +276,8 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
         return ClockManager.me().getMockClock();
     }
 
-    protected UserEntity createUserRandom() {
-        UserEntity user = createUserWithEmailAndPassword(IdWorker.getIdStr() + "@apitable.com");
-        initCallContext(user.getId());
-        return user;
-    }
-
     protected UserEntity createUserWithEmail(String email) {
         return iUserService.createUserByEmail(email);
-    }
-
-    protected UserEntity createUserWithEmailAndPassword(String email) {
-        return iUserService.createUserByEmail(email, "123456");
     }
 
     protected String createSpaceWithoutName(UserEntity user) {
@@ -291,7 +294,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     }
 
     protected MockUserSpace createSingleUserAndSpace() {
-        UserEntity user = createUserWithEmailAndPassword("test_user@apitable.com");
+        UserEntity user = iUserService.createUserByEmail("test_user@apitable.com", "123456");
         String spaceId = createSpaceWithoutName(user);
 
         // init context

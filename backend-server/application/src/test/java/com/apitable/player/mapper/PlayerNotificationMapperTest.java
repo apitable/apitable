@@ -42,7 +42,7 @@ public class PlayerNotificationMapperTest extends AbstractMyBatisMapperTest {
     @Sql("/sql/player-notification-data.sql")
     void testSelectPlayerNotificationPage() {
         NotificationPageRo notificationPageRo = new NotificationPageRo();
-        notificationPageRo.setIsRead(1);
+        notificationPageRo.setIsRead(true);
         notificationPageRo.setNotifyType("member");
         notificationPageRo.setRowNo(1);
         List<NotificationModelDTO> entities =
@@ -75,7 +75,7 @@ public class PlayerNotificationMapperTest extends AbstractMyBatisMapperTest {
     @Sql("/sql/player-notification-data.sql")
     void testSelectTotalCountByRoAndToUser() {
         NotificationPageRo notificationPageRo = new NotificationPageRo();
-        notificationPageRo.setIsRead(1);
+        notificationPageRo.setIsRead(true);
         notificationPageRo.setNotifyType("member");
         Integer count =
             playerNotificationMapper.selectTotalCountByRoAndToUser(notificationPageRo, 41L);
@@ -86,7 +86,7 @@ public class PlayerNotificationMapperTest extends AbstractMyBatisMapperTest {
     @Sql("/sql/player-notification-data.sql")
     void testSelectDtoByTypeAndIsRead() {
         List<NotificationModelDTO> entities =
-            playerNotificationMapper.selectDtoByTypeAndIsRead(41L, 1);
+            playerNotificationMapper.selectDtoByTypeAndIsRead(41L, true);
         assertThat(entities).isNotEmpty();
     }
 

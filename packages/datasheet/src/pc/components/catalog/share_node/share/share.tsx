@@ -19,7 +19,7 @@
 import { Popover, Radio } from 'antd';
 import classnames from 'classnames';
 import { FC, useEffect, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { Button, Skeleton } from '@apitable/components';
 import { Api, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
 import { TriangleDownFilled, CheckOutlined } from '@apitable/icons';
@@ -31,6 +31,8 @@ import { TComponent } from 'pc/components/common/t_component';
 import { useRequest, useCatalogTreeRequest, useResponsive } from 'pc/hooks';
 import { ShareLink } from './share_link';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IShareProps {
   shareSettings: IShareSettings;
@@ -45,7 +47,7 @@ export const Share: FC<React.PropsWithChildren<IShareProps>> = ({ shareSettings,
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { userInfo, treeNodesMap } = useSelector(
+  const { userInfo, treeNodesMap } = useAppSelector(
     (state: IReduxState) => ({
       treeNodesMap: state.catalogTree.treeNodesMap,
       userInfo: state.user.info,

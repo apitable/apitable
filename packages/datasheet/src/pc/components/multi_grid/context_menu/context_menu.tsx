@@ -18,7 +18,7 @@
 
 import { useEffect, useState } from 'react';
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useContextMenu } from '@apitable/components';
 import { DATASHEET_ID, Selectors, StoreActions } from '@apitable/core';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
@@ -37,6 +37,8 @@ import { stopPropagation } from 'pc/utils/dom';
 import { FieldMenu } from './field_menu';
 import { GRID_RECORD_MENU, RecordMenu } from './record_menu';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 type IdMap = {
   recordId?: string | null;
   fieldId?: string | null;
@@ -54,8 +56,8 @@ export const ContextMenuBase: React.FC<React.PropsWithChildren<IContextFieldOwnP
   const { getIdMapByEvent, parentRef, editFieldSetting, editFieldDesc, onFrozenColumn } = props;
   const [fieldIdForMenu, setFieldIdForMenu] = useState('');
   const dispatch = useDispatch();
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-  const recordRanges = useSelector((state) => Selectors.getSelectionRecordRanges(state));
+  const datasheetId = useAppSelector(Selectors.getActiveDatasheetId)!;
+  const recordRanges = useAppSelector((state) => Selectors.getSelectionRecordRanges(state));
 
   const { show: showField, hideAll } = useContextMenu({ id: DATASHEET_ID.FIELD_CONTEXT });
   const { show: showGrid } = useContextMenu({ id: GRID_RECORD_MENU });

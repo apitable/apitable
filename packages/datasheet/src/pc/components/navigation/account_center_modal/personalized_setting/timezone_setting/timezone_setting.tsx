@@ -17,7 +17,6 @@
  */
 
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { colorVars, Select, Typography } from '@apitable/components';
 import {
@@ -33,6 +32,8 @@ import {
 import { Message } from 'pc/components/common';
 import { store } from 'pc/store';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const updateUserTimeZone = (timeZone: string, cb?: () => void) => {
   Api.updateUser({ timeZone }).then((res: any) => {
@@ -53,7 +54,7 @@ const options = [
 ];
 
 export const TimezoneSetting: FC = () => {
-  const timeZone = useSelector(Selectors.getUserTimeZone)!;
+  const timeZone = useAppSelector(Selectors.getUserTimeZone)!;
 
   const handleSelected = (option: any) => {
     const newValue: string = option.value;

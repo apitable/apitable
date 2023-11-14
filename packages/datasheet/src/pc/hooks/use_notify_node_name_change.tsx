@@ -1,15 +1,17 @@
 import { useEffect } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Api, ConfigConstant, INodeMeta, IReduxState, StoreActions } from '@apitable/core';
 import { useDispatch } from 'pc/hooks/use_dispatch';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const useNotifyNOdeNameChange = () => {
   const dispatch = useDispatch();
-  const nodeId = useSelector((state) => {
+  const nodeId = useAppSelector((state) => {
     return state.pageParams.nodeId;
   });
 
-  const { socketData, spaceId, treeNodesMap } = useSelector(
+  const { socketData, spaceId, treeNodesMap } = useAppSelector(
     (state: IReduxState) => ({
       treeNodesMap: state.catalogTree.treeNodesMap,
       socketData: state.catalogTree.socketData,

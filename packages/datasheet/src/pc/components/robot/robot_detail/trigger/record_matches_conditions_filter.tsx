@@ -19,7 +19,6 @@
 import produce from 'immer';
 import { isEqual, PropertyPath, set } from 'lodash';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Box, Button, IconButton, Typography, useTheme } from '@apitable/components';
 import {
   ConfigConstant,
@@ -46,6 +45,8 @@ import {
   op2fop
 } from './helper';
 import styles from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const transformNullFilter = (filter?: IExpression | null) => {
   return filter == null || isEqual(filter, EmptyNullOperand)
@@ -152,10 +153,10 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
 
   const columns = useAllColumnsOrEmpty(datasheetId);
 
-  const snapshot = useSelector((state) => {
+  const snapshot = useAppSelector((state) => {
     return Selectors.getSnapshot(state, datasheetId)!;
   });
-  const fieldPermissionMap = useSelector((state) => {
+  const fieldPermissionMap = useAppSelector((state) => {
     return Selectors.getFieldPermissionMap(state, datasheetId);
   });
 

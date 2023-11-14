@@ -31,7 +31,7 @@ public class UserTasks {
      * cron: 0 0 0 * * ?
      * preview execute desc: ****-03-07 00:00:00, ****-03-08 00:00:00, ****-03-09 00:00:00
      */
-    @Scheduled(cron = "${const.close-paused-user-cron}")
+    @Scheduled(cron = "${CLOSE_PAUSED_USER_CRON:0 0 0 * * ?}")
     @SchedulerLock(name = "closePausedUser", lockAtMostFor = "1h", lockAtLeastFor = "30m")
     public void closePausedUser() {
         assertLocked();

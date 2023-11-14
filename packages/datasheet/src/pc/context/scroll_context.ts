@@ -17,7 +17,9 @@
  */
 
 import { createContext, RefObject, useContext } from 'react';
-import { useSelector } from 'react-redux';
+
+
+import {useAppSelector} from "pc/store/react-redux";
 
 // Cache page location object
 export interface IScrollOffset {
@@ -42,7 +44,7 @@ export const ScrollContext = createContext<IScrollContextProps>({
 
 export const useCacheScroll = (): Required<IScrollOffset> & Pick<IScrollContextProps, 'changeCacheScroll'> => {
   const { cacheScrollMap, changeCacheScroll } = useContext(ScrollContext) || {};
-  const { datasheetId, viewId } = useSelector((state) => state.pageParams);
+  const { datasheetId, viewId } = useAppSelector((state) => state.pageParams);
   const defaultValue = { scrollLeft: 0, scrollTop: 0, changeCacheScroll };
   return cacheScrollMap.current && cacheScrollMap.current[`${datasheetId},${viewId}`]
     ? {

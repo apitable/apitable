@@ -19,7 +19,7 @@
 import { Input } from 'antd';
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, ButtonGroup, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import { AddOutlined, CopyOutlined, ReloadOutlined } from '@apitable/icons';
@@ -35,12 +35,14 @@ import { getEnvVariables } from 'pc/utils/env';
 import { getMaskToken, getVerifyData, IRefreshConfigConfig, VerifyTypes } from '../utils';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export interface IDeveloperConfigProps {
   setActiveItem: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export const DeveloperConfiguration: FC<React.PropsWithChildren<IDeveloperConfigProps>> = ({ setActiveItem }) => {
-  const user = useSelector((state: IReduxState) => state.user.info);
+  const user = useAppSelector((state: IReduxState) => state.user.info);
   const colors = useThemeColors();
   const [identifyingCode, setIdentifyingCode] = useState('');
   const [inputValue, setInputValue] = useState(user!.apiKey);

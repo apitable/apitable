@@ -19,7 +19,6 @@
 import { difference } from 'lodash';
 import { forwardRef, useRef, useContext, useCallback } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Button } from '@apitable/components';
 import {
   IField,
@@ -51,6 +50,7 @@ import { ExpandNumber } from 'pc/components/expand_record/expand_number';
 import { ExpandSelect } from 'pc/components/expand_record/expand_select';
 import { FormWorkdocEditor } from 'pc/components/form_container/form_workdoc_editor';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { FormContext } from '../form_context';
 import { ComputedFieldWrapper } from './computed_field_wrapper';
 import { OptionFieldEditor, MemberFieldEditor } from './form_editors';
@@ -88,7 +88,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
   const { field, editable, recordId } = baseProps;
   const { formProps, setFormData, setFormErrors, setFormToStorage, mount } = useContext(FormContext);
   const attachmentRef = useRef<IAttachmentValue[]>([]);
-  const shareId = useSelector((state) => state.pageParams.shareId);
+  const shareId = useAppSelector((state) => state.pageParams.shareId);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const compactMode = formProps?.compactMode;
@@ -297,7 +297,10 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
           <ExpandFormula {...commonProps} recordId={recordId} />
         </ComputedFieldWrapper>
       );
-    case FieldType.Workdoc:
+    case FieldType.WorkDoc:
+      if (isMobile) {
+        return <ComputedFieldWrapper className={styles.formWorkdoc} title={t(Strings.tooltip_edit_form_workdoc_field)} />;
+      }
       return (
         <FormWorkdocEditor
           cellValue={cellValue}

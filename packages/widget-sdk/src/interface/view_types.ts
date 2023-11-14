@@ -204,7 +204,7 @@ export interface IFilterConditionMap {
     fieldType: FieldType.Text;
     value: IFilterText;
   };
-  [FieldType.Workdoc]: {
+  [FieldType.WorkDoc]: {
     fieldType: FieldType.Text;
     value: IFilterText;
   };

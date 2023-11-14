@@ -17,13 +17,14 @@
  */
 
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Field, FieldType, FieldTypeDescriptionMap, Selectors, Strings, t } from '@apitable/core';
 import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { getFieldDocs } from './api_panel_config';
 import styles from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IFieldDocs {
   recordId?: string;
@@ -42,8 +43,8 @@ const convertToPrintString = (v: any) => {
 const FieldDocsItem: React.FC<React.PropsWithChildren<IFieldDocs>> = (props) => {
   const colors = useThemeColors();
   const { fieldId, recordId } = props;
-  const field = useSelector((state) => Selectors.getField(state, fieldId));
-  const cellValue = useSelector((state) => {
+  const field = useAppSelector((state) => Selectors.getField(state, fieldId));
+  const cellValue = useAppSelector((state) => {
     if (!recordId) {
       return null;
     }
@@ -95,8 +96,8 @@ const FieldDocsItem: React.FC<React.PropsWithChildren<IFieldDocs>> = (props) => 
 };
 
 export const FieldDocs: React.FC<React.PropsWithChildren<unknown>> = () => {
-  const columns = useSelector(Selectors.getVisibleColumns);
-  const firstRecordId = useSelector((state) => {
+  const columns = useAppSelector(Selectors.getVisibleColumns);
+  const firstRecordId = useAppSelector((state) => {
     const firstRow = Selectors.getVisibleRows(state)[0];
     return firstRow?.recordId;
   });

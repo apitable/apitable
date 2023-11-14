@@ -19,7 +19,6 @@
 import { values } from 'lodash';
 import * as React from 'react';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { IReduxState, StoreActions } from '@apitable/core';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
@@ -33,14 +32,16 @@ import { useWxTitleMap } from '../konva_grid';
 // @ts-ignore
 import { WatermarkWrapper, WecomContactWrapper, isDingtalkSkuPage, isEnterprise } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const SideWrapper = (props: { children: any }) => {
-  const spaceId = useSelector((state: IReduxState) => state.space.activeId);
+  const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
   const dispatch = useAppDispatch();
-  const shortcutKeyPanelVisible = useSelector((state: IReduxState) => state.space.shortcutKeyPanelVisible);
+  const shortcutKeyPanelVisible = useAppSelector((state: IReduxState) => state.space.shortcutKeyPanelVisible);
   const query = useQuery();
   const purchaseToken = query.get('purchaseToken') || '';
   const isSkuPage = isDingtalkSkuPage?.(purchaseToken);
-  const user = useSelector((state: IReduxState) => state.user.info);
+  const user = useAppSelector((state: IReduxState) => state.user.info);
   const { unitTitleMap } = useWxTitleMap({
     userNames: user
       ? [

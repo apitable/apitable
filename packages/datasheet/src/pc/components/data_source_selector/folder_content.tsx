@@ -18,7 +18,6 @@
 
 import Image from 'next/image';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { ThemeName } from '@apitable/components';
 import { ConfigConstant, INode, IViewColumn, Strings, t, ViewType } from '@apitable/core';
 import { useLoader } from 'pc/components/data_source_selector/hooks/use_loader';
@@ -27,6 +26,8 @@ import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 import { File, Folder, View } from './components';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IViewNode {
   nodeId: string;
@@ -54,7 +55,7 @@ interface IFolderContentProps {
 
 export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps>> = (props) => {
   const { nodes, onlyShowAvailable, onNodeClick, currentViewId, currentMirrorId, loading, currentDatasheetId, hideViewNode, currentFormId } = props;
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const EmptyFolderImg = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
   const { nodeVisibleFilterLoader, nodeStatusLoader } = useLoader();
 

@@ -19,7 +19,6 @@
 import classNames from 'classnames';
 import { useEffect, useRef } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Selectors } from '@apitable/core';
 import { AutosaveOutlined } from '@apitable/icons';
@@ -28,9 +27,11 @@ import { changeView } from 'pc/hooks';
 import { isInContainer } from 'pc/utils';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const ViewSwitcherHorizontal: React.FC<React.PropsWithChildren<unknown>> = () => {
-  const snapshot = useSelector((state) => Selectors.getSnapshot(state));
-  const activeViewId = useSelector((state) => Selectors.getActiveViewId(state));
+  const snapshot = useAppSelector((state) => Selectors.getSnapshot(state));
+  const activeViewId = useAppSelector((state) => Selectors.getActiveViewId(state));
   const colors = useThemeColors();
   const containerRef = useRef<HTMLDivElement>(null);
 

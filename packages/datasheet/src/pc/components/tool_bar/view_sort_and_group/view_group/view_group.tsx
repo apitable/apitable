@@ -20,7 +20,6 @@ import produce from 'immer';
 import { useCallback, useRef } from 'react';
 import * as React from 'react';
 import { DropResult } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 import { IUseListenTriggerInfo, useListenVisualHeight } from '@apitable/components';
 import { CollaCommandName, IGroupInfo, Selectors, Strings, t, ViewType } from '@apitable/core';
 import { PopUpTitle } from 'pc/components/common';
@@ -32,6 +31,8 @@ import { CommonViewSet } from '../common_view_set';
 import styles from '../style.module.less';
 import { ViewFieldOptions } from '../view_field_options';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IViewSetting {
   close(e: React.MouseEvent): void;
   triggerInfo?: IUseListenTriggerInfo;
@@ -42,8 +43,8 @@ const MAX_HEIGHT = 340;
 
 export const ViewGroup: React.FC<React.PropsWithChildren<IViewSetting>> = (props) => {
   const { triggerInfo } = props;
-  const activeViewGroupInfo = useSelector((state) => Selectors.getActiveViewGroupInfo(state));
-  const activityView = useSelector((state) => Selectors.getCurrentView(state))!;
+  const activeViewGroupInfo = useAppSelector((state) => Selectors.getActiveViewGroupInfo(state));
+  const activityView = useAppSelector((state) => Selectors.getCurrentView(state))!;
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { style, onListenResize } = useListenVisualHeight({

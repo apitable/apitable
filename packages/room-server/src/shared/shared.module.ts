@@ -28,6 +28,7 @@ import { JavaModule } from './services/java/java.module';
 import { QueueDynamicModule } from './services/queue/queue.dynamic.module';
 import { RestService } from './services/rest/rest.service';
 import { ClientStorage } from './services/socket/client.storage';
+import { EventModule } from './event/event.module';
 
 @Global()
 @Module({
@@ -44,17 +45,17 @@ import { ClientStorage } from './services/socket/client.storage';
     QueueDynamicModule.forRoot(),
   ],
   controllers: [],
-  providers: [DatabaseConfigService, RestService, ClientStorage],
+  providers: [DatabaseConfigService, EventModule, RestService, ClientStorage],
   exports: [
     JavaModule,
     HttpModule,
     MiddlewareModule,
     EnvConfigModule,
+    EventModule,
     DatabaseConfigService,
     RestService,
     ClientStorage,
     QueueDynamicModule.forRoot(),
   ],
 })
-export class SharedModule {
-}
+export class SharedModule {}

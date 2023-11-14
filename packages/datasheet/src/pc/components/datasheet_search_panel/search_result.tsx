@@ -18,7 +18,6 @@
 
 import Image from 'next/image';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { INode, Strings, t, ThemeName, ConfigConstant } from '@apitable/core';
 import { TComponent } from 'pc/components/common/t_component';
 import { File, Folder } from 'pc/components/datasheet_search_panel/components';
@@ -27,6 +26,8 @@ import styles from 'pc/components/datasheet_search_panel/style.module.less';
 import { checkNodeDisable } from 'pc/components/datasheet_search_panel/utils/check_node_disabled';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ISearchResultProps {
   searchResult: { folders: INode[]; files: INode[] } | string;
@@ -40,7 +41,7 @@ interface ISearchResultProps {
 
 export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>> = (props) => {
   const { searchResult, noCheckPermission, options, onlyShowAvailable, onNodeClick } = props;
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const EmptyResultImage = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   if (typeof searchResult === 'string') {
     return (

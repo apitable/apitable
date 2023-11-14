@@ -79,7 +79,7 @@ export const checkIfDatasheetResourceValid = (
   }
   try {
     return dataSheetMap[dstId]?.datasheet?.name != null;
-  }catch {
+  } catch (_e) {
     return false;
   }
 };

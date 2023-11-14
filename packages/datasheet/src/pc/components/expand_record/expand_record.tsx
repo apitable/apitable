@@ -23,7 +23,7 @@ import { last } from 'lodash';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { Provider, shallowEqual, useDispatch } from 'react-redux';
 import { IconButton, Skeleton, ThemeProvider, useThemeColors } from '@apitable/components';
 import {
   Api,
@@ -79,6 +79,8 @@ import { IFieldDescCollapseStatus } from './field_editor';
 import { MoreTool } from './more_tool';
 import { RecordOperationArea } from './record_opeation_area';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const CommentButton = ({ active, onClick }: IPaneIconProps): JSX.Element => {
   const colors = useThemeColors();
@@ -222,7 +224,7 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = (pr
   const [realRecordIds, setRealRecordIds] = useState(recordIds);
   const isMirror = nodeId.startsWith(ResourceIdPrefix.Mirror);
   const [datasheetId, setDatasheetId] = useState<string | undefined>(nodeId);
-  const { snapshot, isPartOfData, visibleRows, datasheetErrorCode, pageParamsRecordId, activeDatasheetId, mirrorSourceDstId } = useSelector(
+  const { snapshot, isPartOfData, visibleRows, datasheetErrorCode, pageParamsRecordId, activeDatasheetId, mirrorSourceDstId } = useAppSelector(
     (state) => ({
       snapshot: Selectors.getSnapshot(state, datasheetId),
       isPartOfData: Selectors.getDatasheet(state, datasheetId)?.isPartOfData,
@@ -389,7 +391,7 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = (pr
 };
 
 const WrapperWithTheme = (props: any) => {
-  const cacheTheme = useSelector(Selectors.getTheme);
+  const cacheTheme = useAppSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>
       <Wrapper {...props} />
@@ -400,7 +402,7 @@ const WrapperWithTheme = (props: any) => {
 const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordComponentProp>> = (props) => {
   const colors = useThemeColors();
   const { activeRecordId, datasheetId, mirrorId, recordIds, modalClose, switchRecord, recordType, pageParamsRecordId } = props;
-  const { allowShowCommentPane, activeDatasheetId, snapshot, shareId, templateId, embedId } = useSelector(
+  const { allowShowCommentPane, activeDatasheetId, snapshot, shareId, templateId, embedId } = useAppSelector(
     (state) => ({
       nodeName: mirrorId ? Selectors.getMirror(state, mirrorId)?.name : Selectors.getDatasheet(state, datasheetId)!.name,
       allowShowCommentPane: Selectors.allowShowCommentPane(state),
@@ -412,8 +414,8 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
     }),
     shallowEqual,
   );
-  // const { fieldId: activeFieldId, operate: activeFieldOperateType } = useSelector(state => Selectors.gridViewActiveFieldState(state, datasheetId));
-  const subscriptions = useSelector((state) => state.subscriptions)!;
+  // const { fieldId: activeFieldId, operate: activeFieldOperateType } = useAppSelector(state => Selectors.gridViewActiveFieldState(state, datasheetId));
+  const subscriptions = useAppSelector((state) => state.subscriptions)!;
   const [commentPaneShow, { toggle: toggleCommentPane, set: setCommentPane }] = useToggle(Boolean(allowShowCommentPane));
   const { screenIsAtMost } = useResponsive();
   const query = useQuery();
@@ -422,7 +424,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
   const viewId = props.viewId || view.id;
   const clickWithinField = useRef<boolean>();
   const _dispatch = useDispatch();
-  const embedInfo = useSelector((state) => state.embedInfo);
+  const embedInfo = useAppSelector((state) => state.embedInfo);
   const isEmbedShowCommentPane = embedId ? embedInfo.permissionType === PermissionType.PRIVATEEDIT : true;
 
   const { run: subscribeRecordByIds } = useRequest(DatasheetApi.subscribeRecordByIds, { manual: true });
@@ -433,8 +435,8 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
     { defaultValue: {} },
   );
 
-  const isSideRecordOpen = useSelector((state) => state.space.isSideRecordOpen);
-  const recordVision = useSelector((state) => state.recordVision);
+  const isSideRecordOpen = useAppSelector((state) => state.space.isSideRecordOpen);
+  const recordVision = useAppSelector((state) => state.recordVision);
   const isColumnLayout = recordVision === RecordVision.Side && isSideRecordOpen && !props.forceCenter;
   const isSetFocusIdByClickFieldRef = useRef(false);
 
@@ -453,7 +455,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
     fieldId: activeFieldId,
     operate: activeFieldOperateType,
     from: setFieldFrom,
-  } = useSelector((state) => Selectors.gridViewActiveFieldState(state, datasheetId));
+  } = useAppSelector((state) => Selectors.gridViewActiveFieldState(state, datasheetId));
 
   useMount(() => {
     if (!allowShowCommentPane) {
@@ -480,7 +482,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
   }, [_dispatch, recordVision]);
 
   const fromCurrentDatasheet = datasheetId === activeDatasheetId;
-  const activeCellFieldId = useSelector((state) => {
+  const activeCellFieldId = useAppSelector((state) => {
     const activeCell = Selectors.getActiveCell(state);
     return activeCell?.fieldId || null;
   });

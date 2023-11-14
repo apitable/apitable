@@ -20,13 +20,13 @@ import { Tree } from 'antd';
 import type { DataNode } from 'antd/es/tree';
 import { AntTreeNodeSelectedEvent } from 'antd/lib/tree';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { ITeamTreeNode, IReduxState, StoreActions } from '@apitable/core';
 import { TriangleRightFilled } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import styles from './style.module.less';
+import {useAppSelector} from "pc/store/react-redux";
 
 const { TreeNode, DirectoryTree } = Tree;
 
@@ -37,7 +37,7 @@ export interface IAddressTreeMenu {
 }
 export const AddressTreeMenu: FC<React.PropsWithChildren<IAddressTreeMenu>> = (props) => {
   const { listData, onSelect } = props;
-  const { teamId } = useSelector((state: IReduxState) => state.addressList.selectedTeamInfo);
+  const { teamId } = useAppSelector((state: IReduxState) => state.addressList.selectedTeamInfo);
   const dispatch = useAppDispatch();
 
   const renderTreeNode = (data: ITeamTreeNode[]) => {

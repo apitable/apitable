@@ -18,16 +18,17 @@
 
 import { useCounter } from 'ahooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { ResourceType, Selectors } from '@apitable/core';
 import { loadWidgetCheck, WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import { useUrlQuery } from 'pc/hooks';
 import { closeWidgetRoute, expandWidgetRoute, IWidgetFullScreenType } from '../expand_widget';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export * from './use_manage_widget_map';
 
 export const useResourceManageable = () => {
-  const { manageable } = useSelector((state) => {
+  const { manageable } = useAppSelector((state) => {
     const { dashboardId, datasheetId } = state.pageParams;
     const resourceType = dashboardId ? ResourceType.Dashboard : ResourceType.Datasheet;
     const resourceId = dashboardId || datasheetId!;
@@ -42,7 +43,7 @@ export const useDevLoadCheck = (
 ): [boolean, boolean, WidgetLoadError | undefined, (delta?: number | undefined) => void] => {
   const [devSandbox, setDevSandbox] = useState<boolean>(false);
   const [devSandboxLoading, setDevSandboxLoading] = useState<boolean>(false);
-  const widget = useSelector((state) => Selectors.getWidget(state, widgetId));
+  const widget = useAppSelector((state) => Selectors.getWidget(state, widgetId));
   const widgetPackageId = widget?.widgetPackageId;
   const devWidgetUrl = widget && widget.widgetPackageId && widget.snapshot.storage[`widget_loader_code_url_${widget.widgetPackageId}`];
   const [error, setError] = useState<WidgetLoadError>();

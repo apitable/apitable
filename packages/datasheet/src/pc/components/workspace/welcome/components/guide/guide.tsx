@@ -19,7 +19,6 @@
 import { get } from 'lodash';
 import Image from 'next/image';
 import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { TextButton, Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, integrateCdnHost, IReduxState, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, PlayFilled } from '@apitable/icons';
@@ -31,6 +30,8 @@ import { getEnvVariables } from 'pc/utils/env';
 import styles from 'pc/components/workspace/welcome/style.module.less';
 // @ts-ignore
 import { isDingtalkFunc, isSocialPlatformEnabled, showModal } from 'enterprise';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const openUrl = (url: string) => {
   if (url.includes('http')) {
@@ -45,7 +46,7 @@ export const Guide: FC<React.PropsWithChildren<unknown>> = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [downModuleId, setDownModuleId] = useState('');
   const env = getEnvVariables();
-  const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state: IReduxState) => state.space.curSpaceInfo);
   const isBindDingTalk = spaceInfo && isSocialPlatformEnabled?.(spaceInfo, ConfigConstant.SocialType.DINGTALK);
   const isBindWecom = spaceInfo && isSocialPlatformEnabled?.(spaceInfo, ConfigConstant.SocialType.WECOM);
   const isBindFeishu = spaceInfo && isSocialPlatformEnabled?.(spaceInfo, ConfigConstant.SocialType.FEISHU);

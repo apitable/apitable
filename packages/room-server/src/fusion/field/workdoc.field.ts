@@ -23,13 +23,13 @@ import { IFieldValue } from 'shared/interfaces';
 import { BaseField } from './base.field';
 
 @Injectable()
-export class WorkdocField extends BaseField implements OnApplicationBootstrap {
+export class WorkDocField extends BaseField implements OnApplicationBootstrap {
   constructor() {
     super();
   }
 
   onApplicationBootstrap(): any {
-    FieldManager.setService(WorkdocField.name, this);
+    FieldManager.setService(WorkDocField.name, this);
   }
 
   override validate(fieldValues: IFieldValue, field: IField) {

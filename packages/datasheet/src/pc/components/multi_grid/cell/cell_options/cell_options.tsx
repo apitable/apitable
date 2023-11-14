@@ -20,7 +20,6 @@ import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { useCallback } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Button, useThemeColors, Typography } from '@apitable/components';
 import { FieldType, IField, IMultiSelectedIds, RowHeightLevel, Selectors, ThemeName } from '@apitable/core';
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
@@ -33,6 +32,8 @@ import { ICellComponentProps } from '../cell_value/interface';
 import { OptionalCellContainer } from '../optional_cell_container/optional_cell_container';
 import optionalStyle from '../optional_cell_container/style.module.less';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export function inquiryValueByKey(key: 'name' | 'color', id: string, field: IField, theme: ThemeName) {
   const item = field.property.options.find((item: { id: string }) => item.id === id);
@@ -57,7 +58,7 @@ export const CellOptions: React.FC<React.PropsWithChildren<ICellOptionsProps>> =
   const field = Selectors.findRealField(store.getState(), propsField);
 
   const colors = useThemeColors();
-  const cacheTheme = useSelector(Selectors.getTheme);
+  const cacheTheme = useAppSelector(Selectors.getTheme);
   const getOptionNameColor = useCallback(
     (id: string, field: IField) => {
       const item = field.property.options.find((item: { id: string }) => item.id === id);

@@ -25,18 +25,11 @@
  * @Last Modified time: 2022-12-17 13:30:18
  */
 import { SystemConfigInterfacePlayer, SystemConfigInterfaceGuide, Api } from '@apitable/core';
-import {
-  openVikaby,
-  openGuideWizard,
-  openGuideWizards,
-  openGuideNextStep,
-  skipCurrentWizard,
-  skipAllWizards,
-  clearGuideUis,
-  clearGuideAllUi,
-  setWizardCompleted,
-  // @ts-ignore
-} from 'enterprise';
+
+// @ts-ignore
+import { openGuideWizard, openGuideWizards, openGuideNextStep, skipCurrentWizard, skipAllWizards, clearGuideUis, clearGuideAllUi, setWizardCompleted } from 'enterprise/guide/trigger_guide_commands';
+// @ts-ignore
+import { openVikaby } from 'enterprise/vikaby/vikaby';
 
 interface IWizardsConfig {
   player: SystemConfigInterfacePlayer;

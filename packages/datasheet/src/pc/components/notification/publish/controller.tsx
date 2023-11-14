@@ -132,7 +132,7 @@ export const PublishController = (props: INoticeDetail) => {
         }
       });
     }
-  } catch {}
+  } catch (_e) {}
 };
 
 export const navigationToConfigUrl = (configUrl: string) => {

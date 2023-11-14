@@ -151,6 +151,12 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
     }
 
     @Override
+    public InvitationEntity getByMemberIdAndSpaceIdAndNodeId(Long memberId, String spaceId,
+                                                             String nodeId) {
+        return invitationMapper.selectByMemberIdAndSpaceIdAndNodeId(memberId, spaceId, nodeId);
+    }
+
+    @Override
     public String getMemberInvitationTokenByNodeId(Long memberId, String spaceId, String nodeId) {
         // whether members can invite other users
         SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
@@ -158,7 +164,7 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
         // check if node exists and doesn't span spaces
         iNodeService.checkNodeIfExist(spaceId, nodeId);
         // teamId must be root teamId, so there is no need to query by teamId
-        InvitationEntity entity = invitationMapper.selectByMemberIdAndSpaceIdAndNodeId(memberId, spaceId, nodeId);
+        InvitationEntity entity = getByMemberIdAndSpaceIdAndNodeId(memberId, spaceId, nodeId);
         if (entity == null) {
             return this.createMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);
         }

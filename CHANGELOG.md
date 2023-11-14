@@ -1,5 +1,35 @@
 # APITable CHANGELOG
 
+## [v1.4.0-beta.2](https://github.com/apitable/apitable/releases/tag/v1.4.0-beta.2) (2023-11-06)
+
+
+### What's more
+
+* chore: fix all-in-one pnpm canvas path ([#1431](https://github.com/apitable/apitable/pull/1431)) @networkhermit
+* merge Release/1.4.0 fix back develop ([#1437](https://github.com/apitable/apitable/pull/1437)) @jeremyyin2012
+* sync: hosted cloud ([#1440](https://github.com/apitable/apitable/pull/1440)) @chalme
+
+## [v1.4.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.4.0-beta.1) (2023-10-31)
+
+
+### What's more
+
+* fix: ai components build by ([#1430](https://github.com/apitable/apitable/pull/1430)) @jeremyyin2012
+
+## [v1.4.0-beta](https://github.com/apitable/apitable/releases/tag/v1.4.0-beta) (2023-10-30)
+
+
+### Bug fixes
+
+* fix: welcome crash ([#1429](https://github.com/apitable/apitable/pull/1429)) @wangkailang 
+
+### What's more
+
+* docs: add one-click-deploy link @jbgh 
+* add Dome one-click badge @jbgh 
+* docs: add one-click-deploy link ([#1378](https://github.com/apitable/apitable/pull/1378)) @paylm 
+* sync: hosted cloud ([#1407](https://github.com/apitable/apitable/pull/1407)) @shawndenggh 
+* sync: hosted cloud ([#1427](https://github.com/apitable/apitable/pull/1427)) @jeremyyin2012 
 ## [v1.3.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.3.0-beta.1) (2023-10-17)
 
 

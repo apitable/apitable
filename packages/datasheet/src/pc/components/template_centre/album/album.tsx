@@ -21,7 +21,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Typography, Loading } from '@apitable/components';
 import { getLanguage, Navigation, Strings, t, Api } from '@apitable/core';
 import { ChevronLeftOutlined, DescriptionOutlined, ShareOutlined } from '@apitable/icons';
@@ -33,6 +32,8 @@ import { getEnvVariables } from 'pc/utils/env';
 import albumTemplateEnPng from 'static/icon/template/album_template_en.png';
 import albumTemplateZhPng from 'static/icon/template/album_template_zh.png';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const md = new MarkdownIt({
   html: true,
@@ -58,8 +59,8 @@ interface IAlbumDetail {
 }
 
 const AlbumDetail = () => {
-  const categoryId = useSelector((state) => state.pageParams.categoryId);
-  const spaceId = useSelector((state) => state.space.activeId);
+  const categoryId = useAppSelector((state) => state.pageParams.categoryId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const isZh = getLanguage() === 'zh-CN';
   const env = getEnvVariables();
 

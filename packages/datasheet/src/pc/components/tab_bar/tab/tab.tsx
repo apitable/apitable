@@ -20,7 +20,6 @@ import classNames from 'classnames';
 import { get } from 'lodash';
 import * as React from 'react';
 import { FC, memo, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Typography, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName,
@@ -50,6 +49,8 @@ import { TabAddView } from '../tab_add_view';
 import styles from './style.module.less';
 import { ViewBar } from './view_bar';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export interface ITabStateProps {
   width: number;
 }
@@ -60,11 +61,11 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo((props) => 
   const [editIndex, setEditIndex] = useState<null | number>(null);
   const [viewEditor, setViewEditor] = useState(false);
 
-  const { datasheetId, viewId: activeView, templateId, shareId, embedId } = useSelector((state) => state.pageParams);
-  const datasheet = useSelector((state: IReduxState) => Selectors.getDatasheet(state));
-  const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-  const { viewCreatable, editable, iconEditable, renamable } = useSelector((state: IReduxState) => Selectors.getDatasheet(state)?.permissions) || {};
-  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
+  const { datasheetId, viewId: activeView, templateId, shareId, embedId } = useAppSelector((state) => state.pageParams);
+  const datasheet = useAppSelector((state: IReduxState) => Selectors.getDatasheet(state));
+  const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const { viewCreatable, editable, iconEditable, renamable } = useAppSelector((state: IReduxState) => Selectors.getDatasheet(state)?.permissions) || {};
+  const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
 
   const datasheetName = treeNodesMap[datasheetId!]?.nodeName || datasheet?.name;
   const datasheetIcon = datasheet?.icon;
@@ -79,7 +80,7 @@ export const Tab: FC<React.PropsWithChildren<ITabStateProps>> = memo((props) => 
   const { status } = useNetwork(true, datasheetId!, ResourceType.Datasheet);
   const { errMsg, checkViewName } = useViewNameChecker();
   const colors = useThemeColors();
-  const operateViewIds = useSelector((state) => {
+  const operateViewIds = useAppSelector((state) => {
     return Selectors.getDatasheetClient(state)?.operateViewIds;
   });
   const [currentView, setCurrentView] = useState<IViewProperty>();

@@ -19,7 +19,7 @@
 import { useMount } from 'ahooks';
 import * as React from 'react';
 import { memo, useMemo, useRef } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { ContextMenu, useThemeColors } from '@apitable/components';
 import {
   BasicValueType,
@@ -77,6 +77,8 @@ import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { FIELD_HEAD_CLASS } from '../../../utils/constant';
 import { useActiveFieldSetting, useFilterField, useGroupField, useHideField, useSortField } from '../hooks';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IFieldMenuProps {
   fieldId: string;
   editFieldSetting?: (fieldId: string) => void;
@@ -87,9 +89,9 @@ interface IFieldMenuProps {
 export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = memo(
   ({ fieldId, editFieldSetting: _editFieldSetting, editFieldDesc: _editFieldDesc, onFrozenColumn }) => {
     const colors = useThemeColors();
-    const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-    const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
-    const view = useSelector(Selectors.getCurrentView)!;
+    const datasheetId = useAppSelector(Selectors.getActiveDatasheetId)!;
+    const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
+    const view = useAppSelector(Selectors.getCurrentView)!;
     const frozenColumnCount = (view as IGridViewProperty)?.frozenColumnCount;
     const dispatch = useAppDispatch();
     const handleHideField = useHideField(view);
@@ -102,10 +104,10 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
       return view.columns.findIndex((item) => item.fieldId === fieldId);
     }, [fieldId, view]);
     const isGanttView = view.type === ViewType.Gantt;
-    const mirrorId = useSelector((state) => state.pageParams.mirrorId);
+    const mirrorId = useAppSelector((state) => state.pageParams.mirrorId);
 
     const wrapperRef = useRef<HTMLDivElement>(null);
-    const { permissions, fieldRanges, visibleColumns } = useSelector((state) => {
+    const { permissions, fieldRanges, visibleColumns } = useAppSelector((state) => {
       return {
         visibleColumns: Selectors.getVisibleColumns(state),
         permissions: Selectors.getPermissions(state, undefined, field?.id),
@@ -113,10 +115,10 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
       };
     }, shallowEqual);
     const hasChosenMulti = fieldRanges && fieldRanges.length > 1;
-    const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
+    const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
     const isViewLock = Boolean(view.lockInfo);
-    const embedId = useSelector((state) => state.pageParams.embedId);
-    const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
+    const embedId = useAppSelector((state) => state.pageParams.embedId);
+    const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
     const isEmbedHiddenFieldPermission = embedId && embedInfo?.permissionType !== PermissionType.PRIVATEEDIT;
     const chosenCount = fieldRanges ? fieldRanges.filter((id) => id !== visibleColumns[0].fieldId).length : 1;
 

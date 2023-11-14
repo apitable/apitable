@@ -51,7 +51,7 @@ import { ResourceService } from 'database/resource/services/resource.service';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 import { RobotEventService } from 'database/robot/services/robot.event.service';
 import { DatasheetRecordSubscriptionBaseService } from 'database/subscription/datasheet.record.subscription.base.service';
-import { GrpcSocketClient } from 'grpc/client/grpc.socket.client';
+import { SocketGrpcClient } from 'grpc/client/socket.grpc.client';
 import { difference, intersection, isEqual, isNil, sortBy, union } from 'lodash';
 import { NodePermissionService } from 'node/services/node.permission.service';
 import { NodeService } from 'node/services/node.service';
@@ -79,6 +79,7 @@ import {
 } from '../interfaces/ot.interface';
 import { FormOtService } from './form.ot.service';
 import { ResourceChangeHandler } from './resource.change.handler';
+import { OTEventService } from 'shared/event/ot.event.service';
 
 class CellActionMap {
   readonly map: Map<string, Map<string, IJOTAction>> = new Map();
@@ -136,9 +137,8 @@ export class OtService {
     private readonly datasheetService: DatasheetService,
     private readonly datasheetChangesetService: DatasheetChangesetService,
     private readonly datasheetChangesetSourceService: DatasheetChangesetSourceService,
-    private readonly datasheetRecordSubscriptionService: DatasheetRecordSubscriptionBaseService,
     private readonly relService: RoomResourceRelService,
-    private readonly grpcSocketClient: GrpcSocketClient,
+    private readonly socketGrpcClient: SocketGrpcClient,
     private readonly changesetService: ChangesetService,
     private readonly resourceMetaService: MetaService,
     private readonly mirrorService: MirrorService,
@@ -155,6 +155,7 @@ export class OtService {
     private readonly eventService: RobotEventService,
     private readonly nodeService: NodeService,
     private readonly recordSubscriptionService: DatasheetRecordSubscriptionBaseService,
+    private readonly otEventService: OTEventService,
   ) {
   }
 
@@ -324,8 +325,7 @@ export class OtService {
       this.logger.info('applyRoomChangeset-robot-event-end', { roomId: message.roomId, msgIds });
     }
 
-    // User subscription record change event
-    void this.datasheetRecordSubscriptionService.handleChangesets(results, context);
+    void this.otEventService.handleChangesets(results, context);
 
     // clear cached selectors, will remove after release/1.0.0
     clearCachedSelectors();
@@ -807,7 +807,7 @@ export class OtService {
    */
   public async nestRoomChange(roomId: string, changesets: IRemoteChangeset[]) {
     const data = await this.relService.getRoomChangeResult(roomId, changesets);
-    await this.grpcSocketClient.nestRoomChange(roomId, data);
+    await this.socketGrpcClient.nestRoomChange(roomId, data);
   }
 
   async applyChangesets(roomId: string, changesets: ILocalChangeset[], auth: IAuthHeader, shareId?: string) {

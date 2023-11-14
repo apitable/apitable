@@ -17,7 +17,6 @@
  */
 
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Button, IconButton, LinkButton, Message, Typography, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
@@ -29,6 +28,8 @@ import { expandViewLock } from '../../../view_lock/expand_view_lock';
 import { cancelModification, IViewPropertyUpdateProps, modifyViewProperty } from '../request_view_property_change';
 import styles from '../style.module.less';
 import { requestServerView } from './request_server_view';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IPopupContentProps extends IViewPropertyUpdateProps {
   contentRef: React.MutableRefObject<HTMLDivElement | null> | null;
@@ -80,7 +81,7 @@ export const PopupContent: React.FC<React.PropsWithChildren<IPopupContentProps>>
   const colors = useThemeColors();
   const { datasheetId, viewId, autoSave, onClose, contentRef, shareId, isViewLock } = props;
   // TODO: Replace the permissions here with more granular ones
-  const { editable } = useSelector((state) => Selectors.getPermissions(state, datasheetId));
+  const { editable } = useAppSelector((state) => Selectors.getPermissions(state, datasheetId));
 
   const viewPropertyProps = {
     autoSave: autoSave,

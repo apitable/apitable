@@ -21,7 +21,6 @@ import { Col, Row } from 'antd';
 
 import { take, takeRight } from 'lodash';
 import React, { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Carousel } from 'react-responsive-carousel';
 import { Typography } from '@apitable/components';
 import {
@@ -50,6 +49,8 @@ import styles from './style.module.less';
 // @ts-ignore
 import { isDingtalkFunc } from 'enterprise';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const defaultBanner = integrateCdnHost(Settings.workbench_folder_default_cover_list.value.split(',')[0]);
 
 export interface ITemplateChoiceProps {
@@ -67,8 +68,8 @@ export const imgUrl = (token: string, imageHeight: number) => {
 export const TemplateChoice: FC<React.PropsWithChildren<ITemplateChoiceProps>> = (props) => {
   const { setUsingTemplate } = props;
   const [_templateRecommendData, setTemplateRecommendData] = useState<api.ITemplateRecommendResponse>();
-  const categoryId = useSelector((state: IReduxState) => state.pageParams.categoryId);
-  const spaceId = useSelector((state: IReduxState) => state.space.activeId);
+  const categoryId = useAppSelector((state: IReduxState) => state.pageParams.categoryId);
+  const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
   const { templateRecommendReq } = useTemplateRequest();
   const { data: templateRecommendData } = useRequest(templateRecommendReq);
   const env = getEnvVariables();

@@ -58,7 +58,7 @@ import {
   ISingleTextField,
   ITextField,
   IURLField,
-  IWorkdocField,
+  IWorkDocField,
   IOneWayLinkField,
 } from 'types/field_types';
 import { Field } from './field';
@@ -73,7 +73,7 @@ import { CreatedByField } from './created_by_field';
 import { LastModifiedByField } from './last_modified_by_field';
 import { SingleTextField } from './single_text_field';
 import { CascaderField } from './cascader_field';
-import { WorkdocField } from './workdoc_field';
+import { WorkDocField } from './workdoc_field';
 import { IReduxState } from '../../exports/store';
 import { Store } from 'redux';
 import { OneWayLinkField } from './one_way_link_field';
@@ -131,7 +131,7 @@ export interface IBindFieldModel {
   (field: ICreatedByField, state?: IReduxState, newInstance?: boolean): CreatedByField;
   (field: ILastModifiedByField, state?: IReduxState, newInstance?: boolean): LastModifiedByField;
   (field: ICascaderField, state?: IReduxState, newInstance?: boolean): CascaderField;
-  (field: IWorkdocField, state?: IReduxState, newInstance?: boolean): WorkdocField;
+  (field: IWorkDocField, state?: IReduxState, newInstance?: boolean): WorkDocField;
   (field: IDeniedField, state?: IReduxState, newInstance?: boolean): DeniedField;
   (field: INotSupportField, state?: IReduxState, newInstance?: boolean): NotSupportField;
   (field: IField, state?: IReduxState, newInstance?: boolean): Field;
@@ -162,7 +162,7 @@ export interface IBindFieldContext {
   (field: ICreatedByField, state: IReduxState): CreatedByField;
   (field: ILastModifiedByField, state: IReduxState): LastModifiedByField;
   (field: ICascaderField, state: IReduxState): CascaderField;
-  (field: IWorkdocField, state: IReduxState): WorkdocField;
+  (field: IWorkDocField, state: IReduxState): WorkDocField;
   (field: IDeniedField, state: IReduxState): DeniedField;
   (field: INotSupportField, state: IReduxState): NotSupportField;
   (field: IField, state: IReduxState): Field;
@@ -248,8 +248,8 @@ export const getFieldClass = (type: FieldType) => {
     case FieldType.Cascader: {
       return CascaderField;
     }
-    case FieldType.Workdoc: {
-      return WorkdocField;
+    case FieldType.WorkDoc: {
+      return WorkDocField;
     }
     case FieldType.DeniedField: {
       return DeniedField;

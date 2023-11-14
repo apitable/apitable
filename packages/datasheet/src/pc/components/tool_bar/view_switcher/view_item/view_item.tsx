@@ -18,13 +18,14 @@
 
 import { Tooltip } from 'antd';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { AutosaveOutlined } from '@apitable/icons';
 import { stopPropagation } from 'pc/utils';
 import { ViewIcon } from '../view_icon';
 import { OperateItem } from './operate_item';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IViewItemOwnProps {
   currentViewId: string;
@@ -65,8 +66,8 @@ export const ViewItem: React.FC<React.PropsWithChildren<IViewItemProps>> = (prop
     isViewLock,
   } = props;
   const colors = useThemeColors();
-  const { viewCreatable, viewRenamable, viewMovable, viewRemovable } = useSelector(Selectors.getPermissions);
-  const spaceManualSaveViewIsOpen = useSelector((state) => {
+  const { viewCreatable, viewRenamable, viewMovable, viewRemovable } = useAppSelector(Selectors.getPermissions);
+  const spaceManualSaveViewIsOpen = useAppSelector((state) => {
     return state.labs.includes('view_manual_save');
   });
 

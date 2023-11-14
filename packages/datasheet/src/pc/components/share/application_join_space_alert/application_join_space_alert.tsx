@@ -19,7 +19,6 @@
 import classnames from 'classnames';
 import { FC, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { useSelector } from 'react-redux';
 import { Button, useThemeColors } from '@apitable/components';
 import { AutoTestID, DATASHEET_ID, IReduxState, Navigation, Strings, t } from '@apitable/core';
 import { CloseOutlined, Star2Filled, UserAddOutlined } from '@apitable/icons';
@@ -29,6 +28,8 @@ import { TComponent } from 'pc/components/common/t_component';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useResponsive, useSpaceRequest } from 'pc/hooks';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IApplicationJoinSpaceAlertProps {
   spaceId: string;
@@ -47,7 +48,7 @@ export const ApplicationJoinSpaceAlert: FC<React.PropsWithChildren<IApplicationJ
   const [minimized, setMinimized] = useState(isMobile ? true : !defaultVisible);
   const { applyJoinSpaceReq } = useSpaceRequest();
   const { run: applyJoinSpace } = useRequest(applyJoinSpaceReq, { manual: true });
-  const userInfo = useSelector((state: IReduxState) => state.user.info);
+  const userInfo = useAppSelector((state: IReduxState) => state.user.info);
 
   const renderMinimized = () => {
     const container = document.getElementById(DATASHEET_ID.APPLICATION_JOIN_SPACE_BTN);

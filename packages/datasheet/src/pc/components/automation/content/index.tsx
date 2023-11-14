@@ -3,7 +3,6 @@ import TabPane from 'antd/es/tabs/TabPane';
 import { useAtom } from 'jotai';
 import * as React from 'react';
 import { FunctionComponent, memo, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import styled, { css } from 'styled-components';
 import { Box, Switch, Typography, useThemeColors, useThemeMode } from '@apitable/components';
@@ -21,6 +20,8 @@ import { automationPanelAtom, PanelName } from '../controller/atoms';
 import { useAutomationResourcePermission } from '../controller/use_automation_permission';
 import { Side } from './side';
 import styles from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export const ConstAutomationContentLeft = 'automation-content-left';
 
@@ -82,7 +83,7 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
       }
     }
   }, [isXl, setPanel, setSideBarVisible, sideBarVisible]);
-  const user = useSelector((state: IReduxState) => state.user);
+  const user = useAppSelector((state: IReduxState) => state.user);
 
   if (!robot) {
     return null;

@@ -36,7 +36,7 @@ const plugins = [
       },
     },
   ],
-  [withTM(['@apitable/components', '@apitable/ai', 'antd', 'antd-mobile', 'rc-util', 'rc-picker', 'rc-notification', 'rc-calendar'])],
+  [withTM(['antd', 'antd-mobile', 'rc-util', 'rc-picker', 'rc-notification', 'rc-calendar'])],
   [withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' })],
 ];
 /** @type {import('next').NextConfig} */
@@ -71,7 +71,7 @@ module.exports = withPlugins(plugins, {
       },
     ],
   },
-  swcMinify: true,
+  // swcMinify: true,
   poweredByHeader: false,
   publicRuntimeConfig: {
     // use local public folder for editions, e.g. apitable

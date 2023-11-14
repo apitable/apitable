@@ -19,7 +19,6 @@
 import { usePostHog } from 'posthog-js/react';
 import * as React from 'react';
 import { FC, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { IconButton, LinkButton, Radio, RadioGroup, useContextMenu, useThemeColors } from '@apitable/components';
 import {
   ConfigConstant,
@@ -64,6 +63,8 @@ import { SpaceInfo } from './space-info';
 import styles from './style.module.less';
 import { WorkbenchSideContext } from './workbench_side_context';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const [rightClickInfo, setRightClickInfo] = useState<IRightClickInfo | null>(null);
@@ -83,7 +84,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
     loading,
     err,
     moveToNodeIds,
-  } = useSelector((state: IReduxState) => {
+  } = useAppSelector((state: IReduxState) => {
     return {
       spaceId: state.space.activeId,
       treeNodesMap: state.catalogTree.treeNodesMap,
@@ -100,7 +101,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   }, shallowEqual);
 
   const isFormShare = /fom\w+/.test(shareModalNodeId);
-  const activedNodeId = useSelector((state) => Selectors.getNodeId(state));
+  const activedNodeId = useAppSelector((state) => Selectors.getNodeId(state));
   const { getTreeDataReq } = useCatalogTreeRequest();
   const { run: getTreeData } = useRequest(getTreeDataReq, { manual: true });
   const { getPositionNodeReq } = useCatalogTreeRequest();
@@ -114,9 +115,9 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useAppDispatch();
   const posthog = usePostHog();
 
-  const userInfo = useSelector((state) => state.user.info);
-  const spaceFeatures = useSelector((state) => state.space.spaceFeatures);
-  const spacePermissions = useSelector((state) => state.spacePermissionManage.spaceResource?.permissions);
+  const userInfo = useAppSelector((state) => state.user.info);
+  const spaceFeatures = useAppSelector((state) => state.space.spaceFeatures);
+  const spacePermissions = useAppSelector((state) => state.spacePermissionManage.spaceResource?.permissions);
   const isSpaceAdmin = spacePermissions && spacePermissions.includes('MANAGE_WORKBENCH');
   const rootManageable = userInfo?.isMainAdmin || isSpaceAdmin || spaceFeatures?.rootManageable;
 
@@ -288,7 +289,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
     [rightClickInfo, openFavorite, onSetContextMenu],
   );
 
-  const permissionCommitRemindStatus = useSelector((state) => state.catalogTree.permissionCommitRemindStatus);
+  const permissionCommitRemindStatus = useAppSelector((state) => state.catalogTree.permissionCommitRemindStatus);
 
   function onClosePermissionSettingModal() {
     dispatch(StoreActions.updatePermissionModalNodeId(''));

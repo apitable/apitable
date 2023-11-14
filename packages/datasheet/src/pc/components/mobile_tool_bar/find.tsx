@@ -21,12 +21,13 @@ import type { InputRef } from 'antd';
 import { Input } from 'antd';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { IconButton, LinkButton, useThemeColors } from '@apitable/components';
 import { StoreActions, Strings, t } from '@apitable/core';
 import { CloseCircleFilled, SearchOutlined } from '@apitable/icons';
 import { useDispatch } from 'pc/hooks';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IFind {
   datasheetId: string;
@@ -122,7 +123,7 @@ const Search: React.FC<React.PropsWithChildren<ISearch>> = ({ datasheetId, onClo
 export const Find: React.FC<React.PropsWithChildren<IFind>> = ({ datasheetId }) => {
   const [visible, setVisible] = useState(false);
   const colors = useThemeColors();
-  const viewId = useSelector((state) => state.pageParams.viewId);
+  const viewId = useAppSelector((state) => state.pageParams.viewId);
 
   useEffect(() => {
     setVisible(false);

@@ -28,8 +28,8 @@ import { store } from 'pc/store';
 import { stopPropagation } from 'pc/utils';
 import EditorTitleContext from '../../editor_title_context';
 import ChangesetItemHeader from '../changeset_item_header';
-import styles from './style.module.less';
 import { supplyExtraField, supplyMemberField, supplyMultiSelectField, supplySelectField } from './utils';
+import styles from './style.module.less';
 
 const TEXT_TYPES = [
   FieldType.Text,
@@ -144,6 +144,11 @@ const ChangesetItemActionBase: React.FC<React.PropsWithChildren<IChangesetItemAc
           odField = {
             ...odField,
             type: SegmentType.Email === od[0].type ? FieldType.Email : FieldType.Text,
+          } as IField;
+        } else if (od[0].documentId) {
+          odField = {
+            ...odField,
+            type: FieldType.WorkDoc,
           } as IField;
         } else {
           odField = {

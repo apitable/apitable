@@ -22,7 +22,6 @@ import classNames from 'classnames';
 import { pick } from 'lodash';
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { IconButton, useThemeColors } from '@apitable/components';
 import { CollaCommandName, Selectors, Strings, t } from '@apitable/core';
 import { CloseOutlined, DeleteOutlined, QuestionCircleOutlined, ChevronDownOutlined } from '@apitable/icons';
@@ -41,6 +40,8 @@ import { CommentEditor } from './comment_editor';
 import { IActivityPaneProps, ICacheType, IChooseComment } from './interface';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const ActivityPaneBase: React.FC<React.PropsWithChildren<IActivityPaneProps>> = (props) => {
   const { expandRecordId, datasheetId, viewId, mirrorId, fromCurrentDatasheet, style, closable, onClose } = props;
   const colors = useThemeColors();
@@ -58,8 +59,8 @@ export const ActivityPaneBase: React.FC<React.PropsWithChildren<IActivityPanePro
   const [selectOpen, setSelectOpen] = useState(false);
 
   // Current operating mode
-  const unitMap = useSelector((state) => Selectors.getUnitMap(state));
-  const showRecordHistory = useSelector((state) => Selectors.getRecordHistoryStatus(state, datasheetId))!;
+  const unitMap = useAppSelector((state) => Selectors.getUnitMap(state));
+  const showRecordHistory = useAppSelector((state) => Selectors.getRecordHistoryStatus(state, datasheetId))!;
   const [cacheType, setCacheType] = useLocalStorageState<ICacheType>('vika_activity_type', { defaultValue: {} });
   const handleCacheType = useCallback(
     (type: ActivitySelectType) => {

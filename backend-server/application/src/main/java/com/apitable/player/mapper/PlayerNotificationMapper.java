@@ -140,7 +140,7 @@ public interface PlayerNotificationMapper extends BaseMapper<PlayerNotificationE
      * @param toUser user id
      * @return List<NotificationModelDto>
      */
-    List<NotificationModelDTO> selectDtoByTypeAndIsRead(@Param("toUser") Long toUser, @Param("isRead") Integer isRead);
+    List<NotificationModelDTO> selectDtoByTypeAndIsRead(@Param("toUser") Long toUser, @Param("isRead") Boolean isRead);
 
     /**
      * Batch delete by condition

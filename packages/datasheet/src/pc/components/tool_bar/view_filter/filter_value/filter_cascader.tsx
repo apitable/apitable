@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { DatasheetApi, ICascaderField, ICascaderNode, ILinkField, ILinkedField, Selectors } from '@apitable/core';
 import { ICascaderOption, mapTreeNodesRecursively } from '../../../../utils';
 import { Cascader } from '../../../cascader';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IFilterCascader {
   field: ICascaderField;
@@ -15,8 +16,8 @@ interface IFilterCascader {
 }
 
 export const FilterCascader = (props: IFilterCascader) => {
-  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state))!;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId));
+  const datasheetId = useAppSelector((state) => Selectors.getActiveDatasheetId(state))!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId));
   const { field, disabled, onChange, value, linkedFieldId } = props;
   const linkedDatasheetId = linkedFieldId ? (fieldMap?.[linkedFieldId] as ILinkField)?.property.foreignDatasheetId : '';
   const [options, setOptions] = useState<ICascaderOption[]>([]);

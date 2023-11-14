@@ -521,7 +521,7 @@ export enum LinkFieldSet {
   Add = 'add',
 }
 
-export interface IWorkdocValue {
+export interface IWorkDocValue {
   documentId: string;
   title: string;
 }
@@ -584,9 +584,9 @@ export interface ICascaderField extends IBaseField {
   property: ICascaderProperty;
 }
 
-export interface IWorkdocField extends IBaseField {
-  type: FieldType.Workdoc;
-  property: IWorkdocProperty;
+export interface IWorkDocField extends IBaseField {
+  type: FieldType.WorkDoc;
+  property: IWorkDocProperty;
 }
 
 interface ILinkedFields {
@@ -603,7 +603,7 @@ interface ICascaderProperty {
   fullLinkedFields: ILinkedFields[],
 }
 
-type IWorkdocProperty = null;
+type IWorkDocProperty = null;
 
 export type IField =
   | INotSupportField
@@ -633,7 +633,7 @@ export type IField =
   | ICreatedByField
   | ILastModifiedByField
   | ICascaderField
-  | IWorkdocField;
+  | IWorkDocField;
 
 export enum FieldType {
   NotSupport = 0,
@@ -663,7 +663,7 @@ export enum FieldType {
   LastModifiedBy = 24,
   Cascader = 25,
   OneWayLink = 26,
-  Workdoc = 27,
+  WorkDoc = 27,
   DeniedField = 999, // no permission column
 }
 
@@ -932,10 +932,10 @@ export const FieldTypeDescriptionMap: {
     help:  t(Strings.field_help_cascader),
     hasOptSetting: true,
   },
-  [FieldType.Workdoc]: {
+  [FieldType.WorkDoc]: {
     title: t(Strings.field_title_workdoc),
     subTitle: t(Strings.field_desc_workdoc),
-    type: FieldType.Workdoc,
+    type: FieldType.WorkDoc,
     canBePrimaryField: false,
     fieldGroup: FieldGroup.Common,
     help:  t(Strings.field_help_workdoc),

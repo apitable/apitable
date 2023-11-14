@@ -21,7 +21,6 @@ import produce from 'immer';
 import * as React from 'react';
 import { useCallback, useMemo, useRef } from 'react';
 import { DropResult } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 import {
   Button,
   IUseListenTriggerInfo,
@@ -45,6 +44,8 @@ import styles from '../style.module.less';
 import { ViewFieldOptions } from '../view_field_options';
 import { ViewFieldOptionsMobile } from '../view_field_options/view_field_options_mobile';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IViewSetting {
   close(e: React.MouseEvent): void;
   triggerInfo?: IUseListenTriggerInfo;
@@ -56,16 +57,16 @@ const MAX_HEIGHT = 340;
 export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = (props) => {
   const { triggerInfo } = props;
   const colors = useThemeColors();
-  const activeViewGroupInfo = useSelector(Selectors.getActiveViewGroupInfo);
-  const fieldMap = useSelector((state) => {
+  const activeViewGroupInfo = useAppSelector(Selectors.getActiveViewGroupInfo);
+  const fieldMap = useAppSelector((state) => {
     return Selectors.getFieldMap(state, state.pageParams.datasheetId!);
   })!;
-  const sortInfo = useSelector(Selectors.getActiveViewSortInfo);
-  const activityViewId = useSelector(Selectors.getActiveViewId)!;
+  const sortInfo = useAppSelector(Selectors.getActiveViewSortInfo);
+  const activityViewId = useAppSelector(Selectors.getActiveViewId)!;
   const sortFieldIds = sortInfo ? sortInfo.rules.map((item) => item.fieldId) : [];
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { editable } = useSelector(Selectors.getPermissions);
+  const { editable } = useAppSelector(Selectors.getPermissions);
   const isViewLock = useShowViewLockModal();
 
   const containerRef = useRef<HTMLDivElement | null>(null);

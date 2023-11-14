@@ -18,14 +18,15 @@
 
 import { useSetAtom, useAtomValue } from 'jotai';
 import React, { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import useSWR from 'swr';
+import { useSelector } from 'react-redux';
 import { Box } from '@apitable/components';
 import { IReduxState, Selectors, Strings, t } from '@apitable/core';
 import { IFetchDatasheet } from '@apitable/widget-sdk/dist/message/interface';
 import { CONST_MAX_ACTION_COUNT } from 'pc/components/automation/config';
 import { getTriggerDatasheetId, IFetchedDatasheet } from 'pc/components/automation/controller/hooks/use_robot_fields';
 import { OrEmpty } from 'pc/components/common/or_empty';
+import { useAppSelector } from 'pc/store/react-redux';
 import { automationActionsAtom, automationStateAtom } from '../../../automation/controller';
 import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
 import { OrTooltip } from '../../../common/or_tooltip';
@@ -40,6 +41,7 @@ import {
   CreateNewAction,
   CreateNewActionLineButton,
 } from './robot_action_create';
+
 
 export const RobotActions = ({
   robotId,
@@ -71,7 +73,7 @@ export const RobotActions = ({
   const { data: dataList1 } = useSWR(['getRobotMagicDatasheet', triggers], () => getTriggerDatasheetId(triggers), {
   });
 
-  const dataSheetMap = useSelector((state: IReduxState) => state.datasheetMap);
+  const dataSheetMap = useAppSelector((state: IReduxState) => state.datasheetMap);
 
   const triggerDataSheetIds : IFetchedDatasheet[] = robot?.scenario === AutomationScenario?.datasheet ? Array.from({ length: triggers.length }, () => activeDstId) : (dataList1 ?? []) as IFetchedDatasheet[];
   const nodeOutputSchemaList = getNodeOutputSchemaList({

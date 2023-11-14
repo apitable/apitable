@@ -23,7 +23,7 @@ import {
   ExecuteResult,
   FieldType,
   IAttachmentValue,
-  ICollaCommandExecuteResult,
+  ICollaCommandExecuteResult, IField,
   IGridViewColumn,
   IGridViewProperty,
   IRange,
@@ -221,7 +221,7 @@ export class Clipboard {
   };
   isCutting = false;
 
-  get selectWithWorkdocField() {
+  selectWithWorkdocField(tableHeader?: IField[]) {
     const state = store.getState() as IReduxState;
     const selections = Selectors.getSelectRanges(state);
     const range = selections[0];
@@ -233,14 +233,19 @@ export class Clipboard {
     let _selectWithWorkdocField = false;
     if (fieldMaxIndex != null && !isNaN(fieldMaxIndex)) {
       // select section with workdoc field cannot be
-      const visibleColumns = Selectors.getGanttVisibleColumns(state);
+      const visibleColumns = Selectors.getVisibleColumns(state);
       const fieldMap = Selectors.getFieldMap(state)!;
-      for(let idx = fieldMinIndex; idx <= fieldMaxIndex; idx++) {
-        const { fieldId } = visibleColumns[idx];
-        const field = fieldMap[fieldId];
-        if (field.type === FieldType.Workdoc) {
-          _selectWithWorkdocField = true;
-          break;
+      if (tableHeader) { // paste
+        // loop tableHeader to check if there is workdoc field
+        _selectWithWorkdocField = tableHeader.some((field) => field.type === FieldType.WorkDoc);
+      } else { // copy
+        for(let idx = fieldMinIndex; idx <= fieldMaxIndex; idx++) {
+          const { fieldId } = visibleColumns[idx];
+          const field = fieldMap[fieldId];
+          if (field.type === FieldType.WorkDoc) {
+            _selectWithWorkdocField = true;
+            break;
+          }
         }
       }
     }
@@ -294,14 +299,12 @@ export class Clipboard {
 
     e.preventDefault();
     e.stopImmediatePropagation();
-
     extendViewIfNeed(state, selection, stdValueTable, (paste) => {
       if (paste) {
-        if (this.selectWithWorkdocField) {
+        if (this.selectWithWorkdocField(stdValueTable?.header)) {
           Message.warning({
             content: t(Strings.selected_with_workdoc_no_copy),
           });
-          return;
         }
         notify.open({ message: t(Strings.message_coping), key: NotifyKey.Paste });
         const pasteCellCount = stdValueTable!.body.length * (stdValueTable!.body[0]?.length || 0);
@@ -464,7 +467,7 @@ export class Clipboard {
 
     const range = selections[0];
     const selection = Range.bindModel(range).toNumberBaseRange(state)!;
-    if (this.selectWithWorkdocField) {
+    if (this.selectWithWorkdocField()) {
       return;
     }
     const isSelectRecord = isCopyCutCheckedRecords || selection.columnCount === Selectors.getVisibleColumns(state).length;

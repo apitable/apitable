@@ -18,15 +18,17 @@
 
 import { useCallback, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { AnyAction } from 'redux';
 import { batchActions } from 'redux-batched-actions';
 import { IWidgetPanelStatus, ResourceType, Selectors, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
 import { EXPAND_WIDGET } from '../components/widget/expand_widget';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const useExpandWidget = () => {
-  const { widgetId, datasheetId, mirrorId } = useSelector((state) => state.pageParams);
+  const { widgetId, datasheetId, mirrorId } = useAppSelector((state) => state.pageParams);
   const dispatch = useDispatch();
 
   const openWidgetPanel = useCallback(() => {
