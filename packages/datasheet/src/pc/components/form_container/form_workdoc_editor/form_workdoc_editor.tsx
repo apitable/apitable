@@ -28,7 +28,7 @@ const FormWorkdocEditorBase: React.ForwardRefRenderFunction<IEditor, IFormWorkdo
   const { cellValue, fieldId, editing, editable, datasheetId, mount, onSave, isMobile } = porps;
   const { formId } = useAppSelector((state) => state.pageParams);
 
-  const [status, setStatus] = React.useState<Status>(Status.Connecting);
+  const [status, setStatus] = React.useState<Status>(Status?.Connecting);
   const [title, setTitle] = useState<string>(get(cellValue, '0.title') || '');
 
   useEffect(() => {
