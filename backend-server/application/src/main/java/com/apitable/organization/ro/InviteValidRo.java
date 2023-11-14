@@ -38,4 +38,9 @@ public class InviteValidRo {
 
     @Schema(description = "nodeId", example = "dst****")
     private String nodeId;
+
+    @Schema(description = "Password login for human-machine verification, and the front end "
+            + "obtains the value of get NVC Val function (human-machine verification will be "
+            + "performed when not logged in)", example = "FutureIsComing")
+    private String data;
 }
