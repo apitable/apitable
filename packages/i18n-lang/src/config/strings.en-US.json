@@ -2682,7 +2682,7 @@
   "invite_outsider_invite_btn_tip": "Invited members will be able to manage the workbench by default",
   "invite_outsider_invite_input_already_exist": "This email has been added.",
   "invite_outsider_invite_input_invalid": "Invalid email address",
-  "invite_outsider_invite_input_placeholder": "Enter one or more email addresses, confirm with Enter",
+  "invite_outsider_invite_input_placeholder": "Enter one or more email addresses, confirm with Enter key",
   "invite_outsider_keep_on": "Invite more",
   "invite_outsider_send_invitation": "Send invitation",
   "invite_qr_code_download": "Download this QR code",

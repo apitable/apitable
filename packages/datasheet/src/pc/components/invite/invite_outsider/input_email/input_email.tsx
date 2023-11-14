@@ -189,7 +189,6 @@ export const InputEmail = forwardRef(
                       border: 'none',
                       height: '40px',
                     }}
-                    className={isFocused ? styles.emailEnterBoxInputFocused : styles.emailEnterBoxInput}
                   />
                 </div>
               </div>

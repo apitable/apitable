@@ -2686,7 +2686,7 @@
   "invite_outsider_invite_btn_tip": "受邀新成员的「工作台」权限当前默认为「可以管理」",
   "invite_outsider_invite_input_already_exist": "此邮箱已经添加",
   "invite_outsider_invite_input_invalid": "邮箱格式不正确",
-  "invite_outsider_invite_input_placeholder": "输入一个或多个电子邮件地址，用回车确认",
+  "invite_outsider_invite_input_placeholder": "输入一个或多个电子邮件地址，用回车键确认",
   "invite_outsider_keep_on": "继续邀请",
   "invite_outsider_send_invitation": "发送邀请",
   "invite_qr_code_download": "下载二维码",
