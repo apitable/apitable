@@ -54,7 +54,7 @@ export const isUserInOldVersionOrLocal = (latestVersion: string) => {
   return semver.lt(removeFirstV(curVersion), removeFirstV(latestVersion));
 };
 
-export const stringToActions = (arr: string[], id: string, url?: string) => {
+export const stringToActions = (arr: string[], id: string, url?: string | { text: string }) => {
   arr.forEach((str) => {
     const firstIndex = str.indexOf('(');
     const secondIndex = str.lastIndexOf(')');
@@ -67,8 +67,9 @@ export const stringToActions = (arr: string[], id: string, url?: string) => {
         break;
       case 'window_open_url':
       case 'window_location_href_to':
-        if (url) {
-          TriggerCommands[actionStr]?.(url);
+        const _url = typeof url === 'string' ? url : url?.text;
+        if (_url) {
+          TriggerCommands[actionStr]?.(_url);
         }
         break;
       default:

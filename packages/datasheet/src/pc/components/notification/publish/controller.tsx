@@ -39,7 +39,7 @@ export interface IToast {
   onBtnClick?: string[] | (() => void);
   onClose?: string[] | (() => void);
   showVikaby?: boolean;
-  url?: string;
+  url?: string | { text: string };
 }
 
 enum NotifyChannel {
