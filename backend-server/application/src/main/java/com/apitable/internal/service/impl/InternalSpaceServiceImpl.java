@@ -82,7 +82,7 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
     @Resource
     RedisTemplate<String, Object> redisTemplate;
 
-    @Value("${SKIP_AUTOMATION_RUN_NUM_VALIDATE:true}")
+    @Value("${SKIP_AUTOMATION_RUN_NUM_VALIDATE:false}")
     private Boolean skipAutomationRunNumValidate;
 
     @Override
