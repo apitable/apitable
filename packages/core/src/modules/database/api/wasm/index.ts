@@ -139,17 +139,15 @@ const getBrowserDatabusApiEnabled = () => {
     return true;
   }
 
-  return false;
-
-  // try {
-  //   // @ts-ignore
-  //   const testFunctionSettings = window.localStorage.getItem('_common_datasheet.TestFunctions');
-  //   const parsedTestFunctionSettings = testFunctionSettings == null ? {} : JSON.parse(testFunctionSettings);
-  //   return parsedTestFunctionSettings['dataBusWasmEnable'] != null;
-  // } catch (e) {
-  //   console.error('error getting browser databus api enabled', e);
-  //   return false;
-  // }
+  try {
+    // @ts-ignore
+    const testFunctionSettings = window.localStorage.getItem('_common_datasheet.TestFunctions');
+    const parsedTestFunctionSettings = testFunctionSettings == null ? {} : JSON.parse(testFunctionSettings);
+    return parsedTestFunctionSettings['dataBusWasmEnable'] != null;
+  } catch (e) {
+    console.error('error getting browser databus api enabled', e);
+    return false;
+  }
 };
 
 export { getInstance, initializeDatabusWasm, getDatasheetPack, getBrowserDatabusApiEnabled };
