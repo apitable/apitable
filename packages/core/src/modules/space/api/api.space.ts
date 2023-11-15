@@ -165,7 +165,7 @@ export function addNode(nodeInfo: IAddNodeParams) {
  */
 export function delNode(nodeId: string) {
   if (getBrowserDatabusApiEnabled()){
-    WasmApi.getInstance().delete_cache(nodeId).then((result: any) => {
+    WasmApi.getInstance().delete_cache(nodeId).then((result) => {
       console.log('delete indexDb cache', result);
     });
   }
