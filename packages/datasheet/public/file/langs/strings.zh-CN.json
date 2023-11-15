@@ -284,6 +284,7 @@
   "ai_training_message": "AI 助手正在学习所有数据表格中的内容。请稍等片刻...",
   "ai_training_message_title": "AI 助手训练中",
   "ai_training_page_desc": "让 AI 助手读取表格、附件、网页的文本内容并进行训练，从而智能地与你进行对话",
+  "ai_try_again": "点此重试",
   "ai_typing": "输入中...",
   "ai_update_setting_success": "更新成功。",
   "alarm_no_member_field_tips": "请在表中先新建一列成员字段",

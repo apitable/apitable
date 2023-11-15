@@ -5561,6 +5561,7 @@
   "share_copy_url_link": "Copy link",
   "share_embed": "Embed",
   "share_tips": "Publish a share link for this file. Users who obtain the link on the Internet can view, edit, or copy the file based on their permissions.",
+  "ai_try_again": "Try again",
   "ai_new_chatbot": "New AI agent",
   "ai_new_agent": "New AI agent",
   "ai_create_guide_content": "As an AI agent, I can answer your questions based on the knowledge I have learned. Before starting the conversation, please select a datasheet as a knowledge base, and I will read all the data in it for learning.",

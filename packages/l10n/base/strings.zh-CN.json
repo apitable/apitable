@@ -138,6 +138,7 @@
   "aggregate_values_describle": "将散点值聚合统计",
   "agree": "同意",
   "agreed": "已同意",
+  "ai_try_again": "点此重试",
   "ai_advanced_mode_desc": "高级模式允许用户自定义提示，从而更好地控制 AI 助手的行为和响应。",
   "ai_advanced_mode_title": "高级模式",
   "ai_api_curl_template": "## Create chat completions\n\n```bash\n\ncurl -X POST \"{{apiBase}}/fusion/v1/ai/{{aiId}}/chat/completions\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer {{token}}\" \\\n  -d '{\n    \"model\": \"gpt-3.5-turbo\",\n    \"messages\": [\n      {\n        \"role\": \"system\",\n        \"content\": \"You are a helpful assistant.\"\n      },\n      {\n        \"role\": \"user\",\n        \"content\": \"Hello!\"\n      }\n    ]\n  }'\n\n```\n\n## Returned data example\n\n```json\n{\n  \"id\": \"aitable_ai_CkZH2zQokhry31j_1693452659\",\n  \"conversation_id\": \"CS-0253eb8d-d6c6-4543-88d4-fcb555f52982\",\n  \"actions\": null,\n  \"object\": \"chat.completion\",\n  \"created\": 1693452659,\n  \"model\":\"gpt-3.5-turbo\",\n  \"choices\": [{\n    \"index\": 0,\n    \"message\": {\n      \"role\": \"assistant\",\n      \"content\": \"\\n\\nHello there, how may I assist you today\",\n    },\n    \"finish_reason\": \"stop\"\n  }],\n  \"usage\": {\n    \"prompt_tokens\": 9,\n    \"completion_tokens\": 12,\n    \"total_tokens\": 21,\n    \"total_cost\": 7.900000000000001e-05,\n    \"result\": \"I am an AI, specifically a language model developed by OpenAI.\"\n  }\n}\n```\n",

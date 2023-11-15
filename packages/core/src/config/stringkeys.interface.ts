@@ -283,6 +283,7 @@ export type StringKeysMapType = {
   'ai_training_message': 'ai_training_message',
   'ai_training_message_title': 'ai_training_message_title',
   'ai_training_page_desc': 'ai_training_page_desc',
+  'ai_try_again': 'ai_try_again',
   'ai_typing': 'ai_typing',
   'ai_update_setting_success': 'ai_update_setting_success',
   'alarm_no_member_field_tips': 'alarm_no_member_field_tips',
