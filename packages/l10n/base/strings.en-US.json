@@ -5714,7 +5714,7 @@
   "automation_action_num_warning": "Each automation supports up to ${value} actions at most",
   "subscribe_seats_usage_over_limit": "The number of seats in the current space exceeds the limit, please upgrade your subscription.\n（Seats include number of members and AI agents）",
   "subscribe_credit_usage_over_limit": "The number of credits in the current space exceeds the limit, please upgrade your subscription.\n",
-  "ai_input_credit_usage_tooltip": "One Al query with gpt-3.5-turbo (the default) costs 1 message credit.One Al query with gpt-4 costs 20 message credit.Different models have different consumption.",
+  "ai_input_credit_usage_tooltip": "Engaging in a conversation uses computational power points, and different conversation models consume varying amounts of these points.",
   "ai_credit_time_dimension_today": "Today",
   "ai_credit_time_dimension_week": "This week",
   "ai_credit_time_dimension_month": "This month",

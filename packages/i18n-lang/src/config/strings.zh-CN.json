@@ -202,7 +202,7 @@
   "ai_feedback_time": "反馈时间",
   "ai_feedback_user": "用户",
   "ai_form_submit_success": "感谢你的提交！",
-  "ai_input_credit_usage_tooltip": "进行一次gpt-3.5-turbo（默认）对话消耗1点算力点。进行一次gpt-4对话消耗20点算力点。选择不同模型对话会消耗不同算力点",
+  "ai_input_credit_usage_tooltip": "进行对话会消耗算力点，选择不同模型对话会消耗不同算力点",
   "ai_latest_train_date": "上一次训练：${date}",
   "ai_mark_state": "标记状态",
   "ai_message_credit_title": "算力点消耗",

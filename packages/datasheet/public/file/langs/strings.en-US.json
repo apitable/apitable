@@ -200,7 +200,7 @@
   "ai_feedback_time": "Time",
   "ai_feedback_user": "User",
   "ai_form_submit_success": "Thank you for your submission!",
-  "ai_input_credit_usage_tooltip": "One Al query with gpt-3.5-turbo (the default) costs 1 message credit.One Al query with gpt-4 costs 20 message credit.Different models have different consumption.",
+  "ai_input_credit_usage_tooltip": "Engaging in a conversation uses computational power points, and different conversation models consume varying amounts of these points.",
   "ai_latest_train_date": "Last Trained: ${date}",
   "ai_mark_state": "Mark as:",
   "ai_message_credit_title": "Credit usage",

@@ -201,7 +201,7 @@
   "ai_feedback_time": "時間です",
   "ai_feedback_user": "ユーザー.ユーザー",
   "ai_form_submit_success": "ご提出ありがとうございます。",
-  "ai_input_credit_usage_tooltip": "Gpt-3.5-ターボ(デフォルト)を用いた1つのAI問合せには1つのメッセージクレジット，GPT-4を用いた1つのAl問合せには20個のメッセージクレジットがかかり，異なるモデルによって消費がある.",
+  "ai_input_credit_usage_tooltip": "対話を行うと計算力ポイントが消費され、異なるモデルを選択すると異なる計算力ポイントが消費されます。",
   "ai_latest_train_date": "最終トレーニング時間：${date}",
   "ai_mark_state": "以下のように表記する",
   "ai_message_credit_title": "情報信用",

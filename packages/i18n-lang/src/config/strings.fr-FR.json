@@ -201,7 +201,7 @@
   "ai_feedback_time": "Temps",
   "ai_feedback_user": "Utilisateur",
   "ai_form_submit_success": "Merci pour votre soumission!",
-  "ai_input_credit_usage_tooltip": "Une requête Al avec gpt-3.5-turbo (la valeur par défaut) coûte 1 crédit.Une requête Al avec gpt-4 coûte 20 crédit.Différents modèles ont une consommation différente.",
+  "ai_input_credit_usage_tooltip": "Participer à une conversation nécessite des points de puissance de calcul, et choisir différents modèles de conversation utilisera des quantités variables de points de puissance de calcul.",
   "ai_latest_train_date": "Dernière formation: ${date}",
   "ai_mark_state": "Marquer comme & # 160;:",
   "ai_message_credit_title": "Crédit de message",

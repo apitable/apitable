@@ -201,7 +201,7 @@
   "ai_feedback_time": "시간",
   "ai_feedback_user": "사용자",
   "ai_form_submit_success": "제출해 주셔서 감사합니다!",
-  "ai_input_credit_usage_tooltip": "Gpt-3.5-turbo(기본값)의 AI 쿼리 하나로 메시지 크레딧 1개, GPT-4의 Al 쿼리 하나로 메시지 크레딧 20개를 쓰는 등 모델에 따라 다른 소모가 있다.",
+  "ai_input_credit_usage_tooltip": "대화에 참여하면 계산 능력 포인트가 소모되며, 다양한 모델을 선택하면 서로 다른 계산 능력 포인트가 소모됩니다.",
   "ai_latest_train_date": "마지막 교육 시간: ${date}",
   "ai_mark_state": "태그 지정:",
   "ai_message_credit_title": "메시지 크레딧",
