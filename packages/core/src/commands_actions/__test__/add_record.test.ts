@@ -29,7 +29,7 @@ describe('test add record', () => {
       commentCount: 0,
       comments: [],
       recordMeta: {},
-    }, index: 3 };
+    }, index: 3, newRecordIndex: 0 };
     const result = DatasheetActions.addRecord2Action(snapshot, payload);
     const resul2 = action_add_record(snapshot, payload);
 
@@ -44,7 +44,7 @@ describe('test add record', () => {
       commentCount: 0,
       comments: [],
       recordMeta: {},
-    }, index: 0 };
+    }, index: 0, newRecordIndex: 0 };
     const result = DatasheetActions.addRecord2Action(snapshot, payload);
     const resul2 = action_add_record(snapshot, payload);
 
@@ -59,7 +59,7 @@ describe('test add record', () => {
       commentCount: 0,
       comments: [],
       recordMeta: {},
-    }, index: 2 };
+    }, index: 2, newRecordIndex: 0 };
     const result = DatasheetActions.addRecord2Action(snapshot, payload);
     const resul2 = action_add_record(snapshot, payload);
 

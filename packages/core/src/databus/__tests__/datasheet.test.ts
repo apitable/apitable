@@ -193,8 +193,8 @@ describe('addRecords', () => {
         id: recordIds[1]!,
         rows: [
           { view: 0, index: 4 },
-          { view: 1, index: 5 },
-          { view: 2, index: 5 },
+          { view: 1, index: 6 },
+          { view: 2, index: 6 },
         ],
       },
     ]);
@@ -281,8 +281,8 @@ describe('addRecords', () => {
         id: recordIds[1]!,
         rows: [
           { view: 0, index: 4 },
-          { view: 1, index: 5 },
-          { view: 2, index: 5 },
+          { view: 1, index: 6 },
+          { view: 2, index: 6 },
         ],
         values: {
           fld1: [{ type: SegmentType.Text, text: 'second' }],

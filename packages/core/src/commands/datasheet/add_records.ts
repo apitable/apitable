@@ -180,6 +180,7 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
         viewId,
         record: newRecord,
         index: index + i,
+        newRecordIndex: i,
       });
       
       if (!action) {
