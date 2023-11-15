@@ -23,10 +23,9 @@ import { Message } from 'pc/components/common';
 import { IParams } from 'pc/components/route_manager/interface';
 import { Router } from 'pc/components/route_manager/router';
 import { secondStepVerify } from 'pc/hooks/utils';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getSearchParams } from 'pc/utils';
 import { execNoTraceVerification } from 'pc/utils/no_trace_verification';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 // @ts-ignore
 
@@ -38,19 +37,20 @@ export const useLinkInvite = () => {
   const urlParams = getSearchParams();
   const dispatch = useDispatch();
   const inviteLinkTokenInUrl = urlParams.get('inviteLinkToken');
+  const inviteLinkData = urlParams.get('inviteLinkData');
   const inviteNodeIdInUrl = urlParams.get('nodeId');
   const inviteLinkInfo = useAppSelector((state: IReduxState) => state.invite.inviteLinkInfo);
-  const inviteLinkTokenInStore = useAppSelector((state: IReduxState) => state.invite.linkToken);
+  const inviteLinkTokenInStore = useAppSelector((state: IReduxState) => state.invite);
   const nodeId = useAppSelector((state: IReduxState) => state.invite.nodeId);
 
   // Retrieval of information
-  const reGetLinkInfo = (linkToken: string, nodeId?: string) => {
+  const reGetLinkInfo = (linkToken: string, nodeId: string, inviteLinkData?: string) => {
     Api.linkValid(linkToken, nodeId).then((res) => {
       const { success, data: info } = res.data;
       dispatch(StoreActions.updateInviteLinkInfo(res.data));
       dispatch(StoreActions.updateMailToken(linkToken));
       if (success) {
-        Api.joinViaSpace(linkToken, nodeId).then((res) => {
+        Api.joinViaSpace(linkToken, nodeId, inviteLinkData).then((res) => {
           if (res.data.success) {
             Router.redirect(Navigation.WORKBENCH, { query: { spaceId: info.spaceId }, clearQuery: true });
             return;
@@ -68,17 +68,17 @@ export const useLinkInvite = () => {
 
   const join = (props?: IJoinFuncProps) => {
     const fromLocalStorage = props ? Boolean(props.fromLocalStorage) : false;
-    const inviteLinkData = localStorage.getItem('invite_link_data');
+    const inviteLinkDataStorage = localStorage.getItem('invite_link_data');
     // Retrieval of information
-    if (fromLocalStorage && inviteLinkData) {
-      const { linkToken, nodeId } = JSON.parse(inviteLinkData);
-      reGetLinkInfo(linkToken, nodeId);
+    if (fromLocalStorage && inviteLinkDataStorage) {
+      const { linkToken, nodeId, inviteLinkData } = JSON.parse(inviteLinkDataStorage);
+      reGetLinkInfo(linkToken, nodeId, inviteLinkData);
       return;
     }
 
     // Get data from the store
     if (inviteLinkTokenInStore && inviteLinkInfo && nodeId) {
-      Api.joinViaSpace(inviteLinkTokenInStore, nodeId).then((res) => {
+      Api.joinViaSpace(inviteLinkTokenInStore.linkToken, nodeId, inviteLinkTokenInStore.inviteLinkData).then((res) => {
         if (res.data.success) {
           Router.redirect(Navigation.WORKBENCH, { query: { spaceId: inviteLinkInfo.data.spaceId }, clearQuery: true });
         } else {
@@ -89,7 +89,7 @@ export const useLinkInvite = () => {
     }
     // The user refreshes the page and re-fetches the data
     if (inviteLinkTokenInUrl) {
-      reGetLinkInfo(inviteLinkTokenInUrl, inviteNodeIdInUrl);
+      reGetLinkInfo(inviteLinkTokenInUrl, inviteNodeIdInUrl, inviteLinkData);
       return;
     }
   };
