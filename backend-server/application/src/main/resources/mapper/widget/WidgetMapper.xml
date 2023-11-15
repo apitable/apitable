@@ -63,7 +63,10 @@
         WHERE vw.space_id = #{spaceId}
           AND vw.is_deleted = 0
           AND vwp.status = 3
-        ORDER BY vw.created_at DESC
+        ORDER BY vw.id DESC
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
     </select>
 
     <select id="selectInfoByNodeId" resultType="com.apitable.widget.vo.WidgetInfo">

@@ -51,7 +51,8 @@ public interface WidgetMapper {
      * @param nodeType  node type
      * @return WidgetInfo
      */
-    List<WidgetInfo> selectInfoBySpaceIdAndNodeType(@Param("spaceId") String spaceId, @Param("nodeType") Integer nodeType);
+    List<WidgetInfo> selectInfoBySpaceIdAndNodeType(@Param("spaceId") String spaceId,
+            @Param("nodeType") Integer nodeType, @Param("limit") Integer limit);
 
     /**
      * @param nodeId node id

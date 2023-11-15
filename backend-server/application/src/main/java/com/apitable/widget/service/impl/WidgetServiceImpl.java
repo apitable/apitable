@@ -158,7 +158,8 @@ public class WidgetServiceImpl implements IWidgetService {
     public List<WidgetInfo> getWidgetInfoList(String spaceId, Long memberId, Integer count) {
         log.info("Gets the component information in the specified space.");
         // load only the components in the datasheet
-        List<WidgetInfo> widgetInfos = widgetMapper.selectInfoBySpaceIdAndNodeType(spaceId, NodeType.DATASHEET.getNodeType());
+        List<WidgetInfo> widgetInfos = widgetMapper.selectInfoBySpaceIdAndNodeType(spaceId,
+                NodeType.DATASHEET.getNodeType(), count);
         if (CollUtil.isEmpty(widgetInfos)) {
             return new ArrayList<>();
         }
