@@ -75,6 +75,7 @@
     "@types/styled-components": "^5.1.26",
     "ahooks": "^3.5.0",
     "ajv": "^6.12.6",
+    "ajv-i18n": "^4.2.0",
     "antd": "4.23.5",
     "antd-mobile": "5.32.4",
     "attr-accept": "^2.1.0",

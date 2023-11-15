@@ -45,6 +45,7 @@
     "@rjsf5/utils": "npm:@rjsf/utils@^5.13.2",
     "@rjsf5/validator-ajv8": "npm:@rjsf/validator-ajv8@^5.13.2",
     "ahooks": "^3.5.0",
+    "ajv-i18n": "^4.2.0",
     "antd": "4.23.5",
     "axios": "0.21.2",
     "classnames": "2.2.6",
