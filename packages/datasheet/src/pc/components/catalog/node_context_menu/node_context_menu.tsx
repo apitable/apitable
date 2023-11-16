@@ -154,6 +154,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
       const removable = permissions.removable && targetManageable;
       const movable = permissions.movable && targetManageable;
       const parentPermissions = treeNodesMap[parentId]?.permissions;
+      const backupcreatAble = permissions.manageable && Boolean(createBackupSnapshot);
       const copyable =
         parentPermissions && parentPermissions.manageable && permissions.manageable && module === ConfigConstant.Modules.CATALOG && targetManageable;
       const nodeUrl = `${window.location.protocol}//${window.location.host}/workbench/${nodeId}`;
@@ -200,7 +201,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
             ],
             [
               contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
-              contextItemMap.get(ContextItemKey.CreateBackup)(() => _createBackupSnapshot(nodeId), !createBackupSnapshot),
+              contextItemMap.get(ContextItemKey.CreateBackup)(() => _createBackupSnapshot(nodeId), !backupcreatAble),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
