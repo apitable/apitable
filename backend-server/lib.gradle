@@ -6,7 +6,7 @@ ext {
             'configuration-processor'      : 'org.springframework.boot:spring-boot-configuration-processor',
             'spring-logging-starter'       : 'org.springframework.boot:spring-boot-starter-logging',
             'spring-web-starter'           : 'org.springframework.boot:spring-boot-starter-web',
-            'spring-webflux-starter'           : 'org.springframework.boot:spring-boot-starter-webflux',
+            'spring-webflux-starter'       : 'org.springframework.boot:spring-boot-starter-webflux',
             'spring-thymeleaf'             : 'org.springframework.boot:spring-boot-starter-thymeleaf',
             'spring-actuator-starter'      : 'org.springframework.boot:spring-boot-starter-actuator',
             'spring-validation-starter'    : 'org.springframework.boot:spring-boot-starter-validation',
@@ -157,6 +157,7 @@ ext {
             'stripe'                       : "com.stripe:stripe-java:${stripe_version}",
             'shedlock'                     : "net.javacrumbs.shedlock:shedlock-spring:${shedlock_version}",
             'shedlock-redis'               : "net.javacrumbs.shedlock:shedlock-provider-redis-spring:${shedlock_version}",
-            'reactor-test'               : "io.projectreactor:reactor-test",
+            'reactor-test'                 : "io.projectreactor:reactor-test",
+            'jose4j'                       : "org.bitbucket.b_c:jose4j:${jose4j_version}",
     ]
 }

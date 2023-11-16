@@ -18,8 +18,8 @@
 
 package com.apitable.space.service;
 
-import com.apitable.interfaces.ai.model.CreditInfo;
 import com.apitable.interfaces.ai.model.ChartTimeDimension;
+import com.apitable.interfaces.ai.model.CreditInfo;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
 import com.apitable.internal.vo.InternalSpaceUsageVo;
 import com.apitable.space.dto.GetSpaceListFilterCondition;

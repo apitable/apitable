@@ -100,6 +100,7 @@ dependencies {
     implementation(rootProject.ext.dependencies['aliyun-core'])
     implementation(rootProject.ext.dependencies['aliyun-afs'])
     implementation rootProject.ext.dependencies['nimbus']
+    implementation rootProject.ext.dependencies['jose4j']
     implementation files('lib/aegis-java-sdk-2.3.3.jar')
     implementation(rootProject.ext.dependencies['wx-miniapp'])
     implementation(rootProject.ext.dependencies['wx-mp'])

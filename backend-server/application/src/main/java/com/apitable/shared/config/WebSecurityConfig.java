@@ -78,7 +78,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .ignoringAntMatchers("/auth0/**")
             .ignoringAntMatchers("/idaas/**")
             .ignoringAntMatchers("/ai/**")
-            .ignoringAntMatchers("/airagent/**");
+            .ignoringAntMatchers("/airagent/**")
+            .ignoringAntMatchers("/appsumo/**");
         http.addFilterBefore(new CsrfBeforeFilter(), CsrfFilter.class);
     }
 }

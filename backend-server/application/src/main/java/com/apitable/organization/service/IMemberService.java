@@ -690,4 +690,12 @@ public interface IMemberService extends IService<MemberEntity> {
      * @return member id
      */
     Long getMemberIdByUnitId(String spaceId, String unitId);
+
+    /**
+     * select space id by user id.
+     *
+     * @param userId user id
+     * @return space ids
+     */
+    List<String> getUserOwnSpaceIds(Long userId);
 }
