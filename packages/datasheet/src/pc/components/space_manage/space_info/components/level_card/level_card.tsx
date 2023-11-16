@@ -26,14 +26,14 @@ import { QuestionCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { ISpaceLevelType, LevelType, Position } from '../../interface';
 import { useLevelInfo } from '../../utils';
-import styles from './style.module.less';
 // @ts-ignore
-import { showUpgradeContactUs, SubscribePageType, isEnterprise } from 'enterprise';
+import { isEnterprise, showUpgradeContactUs, SubscribePageType } from 'enterprise';
+import styles from './style.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ILevelCard {
   type: ISpaceLevelType;
@@ -65,7 +65,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
   } = useLevelInfo(type, deadline);
   const colors = useThemeColors();
   const space = useAppSelector((state) => state.space);
-  const onTrial = useAppSelector((state: IReduxState) => state.billing?.subscription?.onTrial);
+  const { onTrial, product } = useAppSelector((state: IReduxState) => state.billing?.subscription) || {};
   const appType = space.curSpaceInfo?.social.appType;
   const expirationText = useMemo(() => {
     if (expiration <= 0) {
@@ -209,7 +209,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
             </span>
           )}
         </div>
-        {isEnterprise && operateButton}
+        {isEnterprise && !product?.includes('appsumo') && operateButton}
       </div>
     </div>
   );

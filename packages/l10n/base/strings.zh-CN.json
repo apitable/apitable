@@ -5843,5 +5843,7 @@
   "training_data_source_table_column_1": "Source",
   "training_data_source_table_column_2": "Last Training",
   "training_data_source_table_column_3": "Status",
-  "training_data_source_table_column_4": "Operation"
+  "training_data_source_table_column_4": "Operation",
+  "bind_app_sumo_btn_str": "激活账户",
+  "app_sumo_plan_desc": "App Sumo 的描述"
 }
