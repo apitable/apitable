@@ -54,6 +54,7 @@ import com.apitable.organization.vo.UnitTeamVo;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.cache.service.UserSpaceRemindRecordCacheService;
 import com.apitable.shared.config.properties.LimitProperties;
+import com.apitable.shared.util.DBUtil;
 import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.workspace.service.impl.NodeRoleServiceImpl;
 
@@ -211,7 +212,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
     @Override
     public List<UnitTeamVo> findUnitTeamVo(String spaceId, List<Long> teamIds) {
         log.info("query the teams' unit info.");
-        List<UnitTeamVo> unitTeamList = teamMapper.selectUnitTeamVoByTeamIds(spaceId, teamIds);
+        List<UnitTeamVo> unitTeamList = iTeamService.getUnitTeamVo(spaceId, teamIds);
         CollUtil.filter(unitTeamList, (Editor<UnitTeamVo>) unitTeamVo -> {
             // the number of statistics
             long memberCount = iTeamService.countMemberCountByParentId(unitTeamVo.getTeamId());
@@ -242,12 +243,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
         if (CollUtil.isEmpty(memberIds)) {
             return new ArrayList<>();
         }
-        List<UnitMemberVo> vos = new ArrayList<>();
-        List<List<Long>> split = CollUtil.split(memberIds, 1000);
-        for (List<Long> ids : split) {
-            vos.addAll(memberMapper.selectUnitMemberByMemberIds(ids));
-        }
-        return vos;
+        return DBUtil.batchSelectByFieldIn(memberIds, memberMapper::selectUnitMemberByMemberIds);
     }
 
     @Override
@@ -380,7 +376,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
     public List<Long> loadMemberFirstTeamIds(String spaceId, List<Long> teamIds) {
         log.info("Load the first department id of the organization tree to which a member belongs");
         // Member's department's and all sub-departments' id and parentId
-        List<TeamCteInfo> teamsInfo = teamMapper.selectChildTreeByTeamIds(spaceId, teamIds);
+        List<TeamCteInfo> teamsInfo = DBUtil.batchSelectByFieldIn(teamIds, (ids) -> teamMapper.selectChildTreeByTeamIds(spaceId, ids));
         // the member's team and all child teams id
         List<Long> teamIdList =
             teamsInfo.stream().map(TeamCteInfo::getId).collect(Collectors.toList());
