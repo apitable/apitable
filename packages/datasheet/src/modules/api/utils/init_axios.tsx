@@ -1,34 +1,32 @@
 import axios from 'axios';
 import { Store } from 'redux';
-import { IReduxState, Navigation, Url } from '@apitable/core';
+import { IReduxState, Navigation } from '@apitable/core';
 import { apiErrorManager } from 'api/utils/error_manager';
-// @ts-ignore
-import { isSocialUrlIgnored } from 'enterprise';
 import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
 import { getInitializationData, getReleaseVersion, getSpaceIdFormTemplate } from 'pc/utils/env';
 
 declare let window: any;
 
-function hasUrlIgnore(curUrl: string | undefined): boolean {
-  if (!curUrl) {
-    return false;
-  }
-
-  if (isSocialUrlIgnored?.(curUrl)) {
-    return true;
-  }
-
-  const ignoreData = [Url.USER_ME, Url.KEEP_TAB_BAR, Url.JOIN_VIA_LINK, Url.LINK_VALID];
-
-  for (const url of ignoreData) {
-    if (curUrl.includes(url) || curUrl.includes('dataPack')) {
-      return true;
-    }
-  }
-
-  return false;
-}
+// function hasUrlIgnore(curUrl: string | undefined): boolean {
+//   if (!curUrl) {
+//     return false;
+//   }
+//
+//   if (isSocialUrlIgnored?.(curUrl)) {
+//     return true;
+//   }
+//
+//   const ignoreData = [Url.USER_ME, Url.KEEP_TAB_BAR, Url.JOIN_VIA_LINK, Url.LINK_VALID];
+//
+//   for (const url of ignoreData) {
+//     if (curUrl.includes(url) || curUrl.includes('dataPack')) {
+//       return true;
+//     }
+//   }
+//
+//   return false;
+// }
 
 export function redirectIfUserApplyLogout() {
   const state = store.getState();

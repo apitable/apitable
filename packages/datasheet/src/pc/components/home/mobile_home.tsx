@@ -53,8 +53,9 @@ export const MobileHome: React.FC<React.PropsWithChildren<unknown>> = () => {
       case ActionType.SignIn:
         return <Login switchClick={switchActionType} email={email} setEmail={setEmail} />;
         break;
+      case ActionType.BindAppSumo:
       case ActionType.SignUp:
-        return <SignUp switchClick={switchActionType} email={email} setEmail={setEmail} />;
+        return <SignUp switchClick={switchActionType} />;
         break;
       case ActionType.ForgetPassword:
         return <ForgetPassword switchClick={switchActionType} email={email} setEmail={setEmail} />;
@@ -73,6 +74,8 @@ export const MobileHome: React.FC<React.PropsWithChildren<unknown>> = () => {
       case ActionType.ForgetPassword:
         return 'Reset Password';
         break;
+      case ActionType.BindAppSumo:
+        return 'APP SUMO';
     }
   };
 

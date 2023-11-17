@@ -65,7 +65,12 @@ export type ISpaceLevelType =
   | 'wecom_profession'
   | 'free'
   | 'plus'
-  | 'pro';
+  | 'pro'
+  | 'appsumo_tier1'
+  | 'appsumo_tier2'
+  | 'appsumo_tier3'
+  | 'appsumo_tier4'
+  | 'appsumo_tier5';
 
 export interface ISpaceLevelTagInfo {
   label: React.ReactNode;

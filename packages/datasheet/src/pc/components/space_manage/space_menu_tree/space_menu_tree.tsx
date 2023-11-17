@@ -25,27 +25,26 @@ import { shallowEqual } from 'react-redux';
 import { Typography } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation as NavigationConst, Strings, t } from '@apitable/core';
 import {
-  LogOutlined,
-  ShieldCheckOutlined,
-  RocketOutlined,
-  TestOutlined,
-  ManageApplicationOutlined,
-  TriangleRightFilled,
+  BankOutlined,
   DashboardOutlined,
   DepartmentOutlined,
+  LogOutlined,
+  ManageApplicationOutlined,
+  RocketOutlined,
+  ShieldCheckOutlined,
+  TestOutlined,
+  TriangleRightFilled,
   WorkbenchOutlined,
-  BankOutlined,
 } from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { OrganizationHead } from 'pc/components/organization_head';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
-import styles from './style.module.less';
 // @ts-ignore
 import { isEnterprise, Log, Marketing } from 'enterprise';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const { TreeNode, DirectoryTree } = Tree;
 
@@ -104,7 +103,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
       title: t(Strings.billing_info_billing),
       key: 'billing',
       icon: <BankOutlined />,
-      valid: getEnvVariables().IS_APITABLE && getEnvVariables().IS_ENTERPRISE && !getEnvVariables().IS_SELFHOST,
+      valid: getEnvVariables().IS_ENTERPRISE && !getEnvVariables().IS_SELFHOST,
       routeAddress: '/billing',
     },
     {
