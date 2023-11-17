@@ -406,9 +406,9 @@ export const ROOT_TEAM_ID = '0';
 export const SPACE_NAME_LENGTH = 100;
 
 // space-members-members list query pages number
-export const MEMBER_LIST_PAGE_SIZE = 13;
+export const MEMBER_LIST_PAGE_SIZE = 20;
 // space - sub admin - sub admin list query pages number
-export const SUB_ADMIN_LIST_PAGE_SIZE = 12;
+export const SUB_ADMIN_LIST_PAGE_SIZE = 20;
 
 // gifted space query page number
 export const CAPACITY_REWARD_LIST_PAGE_SIZE = 12;

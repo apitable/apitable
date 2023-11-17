@@ -37,7 +37,8 @@ export class CreatedByField extends MemberBaseField {
   }
 
   static propertySchema = Joi.object({
-    uuids: Joi.array().items(Joi.string()).required(),
+    // anonymous uuid is null
+    uuids: Joi.array().items(Joi.string(), null).required(),
     datasheetId: datasheetIdString().required(),
     subscription: Joi.boolean(),
   }).required();

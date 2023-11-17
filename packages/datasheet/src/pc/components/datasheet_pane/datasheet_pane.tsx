@@ -19,7 +19,6 @@
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
 import { get } from 'lodash';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
@@ -39,8 +38,8 @@ import {
   SystemConfig,
   t,
 } from '@apitable/core';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ApiPanel } from 'pc/components/api_panel';
-import { ArchivedRecords } from 'pc/components/archive_record';
 import { Message, VikaSplitPanel } from 'pc/components/common';
 import { TimeMachine } from 'pc/components/time_machine';
 import { useMountWidgetPanelShortKeys } from 'pc/components/widget/hooks';
@@ -48,10 +47,9 @@ import { SideBarClickType, SideBarContext, SideBarType, useSideBar } from 'pc/co
 import { useResponsive } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { exportDatasheetBase } from 'pc/utils';
-import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
-import styles from './style.module.less';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { DevToolsPanel } from '../development/dev_tools_panel';
 import { closeAllExpandRecord } from '../expand_record';
@@ -67,8 +65,7 @@ import { WidgetPanel } from '../widget';
 import { createBackupSnapshot } from 'enterprise/time_machine/backup/backup';
 // @ts-ignore
 import { WeixinShareWrapper } from 'enterprise/wechat/weixin_share_wrapper/weixin_share_wrapper';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const RobotPanel = dynamic(() => import('pc/components/robot/robot_panel/robot_panel'), {
   ssr: false,
@@ -187,6 +184,7 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
     const datasheet = Selectors.getDatasheet(state);
     return datasheet && datasheet.preview;
   });
+  const manageable = useAppSelector((state) => Selectors.getPermissions(state, datasheetId).manageable);
   const activeDatasheetId = useAppSelector(Selectors.getActiveDatasheetId);
   const dispatch = useAppDispatch();
   const testFunctions = useMemo(() => {
@@ -275,12 +273,12 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
   }, [toggleTimeMachineOpen]);
 
   useEffect(() => {
-    if (Boolean(createBackupSnapshot) && !getEnvVariables().IS_APITABLE) {
+    if (manageable && Boolean(createBackupSnapshot)) {
       ShortcutActionManager.bind(ShortcutActionName.CreateBackup, () => {
         _createBackupSnapshot();
       });
     }
-  }, [_createBackupSnapshot]);
+  }, [_createBackupSnapshot, manageable]);
 
   useEffect(() => {
     if (!activeDatasheetId) {
