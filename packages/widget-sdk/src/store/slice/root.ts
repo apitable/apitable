@@ -35,7 +35,10 @@ export const rootReducers = combineReducers<IWidgetState>({
   user: (state: IUserInfo | null = null, action) => {
     switch (action.type) {
       case SET_USER_INFO: {
-        state = action.payload;
+        state = {
+          ...action.payload,
+          info: action.payload
+        };
         return state;
       }
       default:
