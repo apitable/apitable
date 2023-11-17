@@ -59,7 +59,7 @@ export class IO {
           interval && clearInterval(interval as any);
 
           if ('success' in msg && msg.success) {
-            console.log('watched in ', roomId, this.socket.id, 'msg:', msg);
+            // console.log('watched in ', roomId, this.socket.id, 'msg:', msg);
             resolve(msg);
           } else {
             Player.doTrigger(Events.app_error_logger, {

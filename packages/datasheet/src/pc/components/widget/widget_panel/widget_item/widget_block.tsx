@@ -43,7 +43,7 @@ import styles from './style.module.less';
 import { patchDatasheet } from './utils';
 import { WidgetLoading } from './widget_loading';
 // @ts-ignore
-import { isSocialWecom } from 'enterprise';
+import { isSocialWecom } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

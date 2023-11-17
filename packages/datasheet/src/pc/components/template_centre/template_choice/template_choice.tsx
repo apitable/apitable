@@ -47,7 +47,7 @@ import categoryStyles from '../template_category_detail/style.module.less';
 import { TemplateItem } from '../template_item';
 import styles from './style.module.less';
 // @ts-ignore
-import { isDingtalkFunc } from 'enterprise';
+import { isDingtalkFunc } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

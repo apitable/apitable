@@ -81,7 +81,7 @@ import { RatingEditor } from './rating_editor';
 import { TextEditor } from './text_editor';
 import { WorkdocEditor } from './workdoc_editor/workdoc_editor';
 // @ts-ignore
-import { convertAlarmStructure } from 'enterprise';
+import { convertAlarmStructure } from 'enterprise/alarm/date_time_alarm/utils';
 import styles from './style.module.less';
 
 export interface IEditorPosition {

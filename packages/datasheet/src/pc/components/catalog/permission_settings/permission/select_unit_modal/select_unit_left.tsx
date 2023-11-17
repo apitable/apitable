@@ -34,7 +34,7 @@ import { getEnvVariables } from 'pc/utils/env';
 import { SearchResult } from '../search_result';
 import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import { SelectUnitSource } from '.';
 
 import {useAppSelector} from "pc/store/react-redux";

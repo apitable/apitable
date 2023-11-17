@@ -50,7 +50,7 @@ import { Check } from '../common_list/check';
 import { IMemberOptionListProps } from './member_option_list.interface';
 import styles from './styles.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

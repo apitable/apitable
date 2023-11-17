@@ -43,7 +43,7 @@ import { PermissionInfoSetting } from './permission_info_setting';
 import styles from './style.module.less';
 import { UnitList } from './unit_list';
 // @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
 
 import {useAppSelector} from "pc/store/react-redux";
 

@@ -20,7 +20,7 @@ import { IWizardsConfig, Player, SystemConfig } from '@apitable/core';
 import { startActions, TriggerCommands } from '../apphook/trigger_commands';
 import { isEventStateMatch, isRulesPassed, isTimeRulePassed } from './rules';
 // @ts-ignore
-import { getPlayerHooks, updatePlayerConfig } from 'enterprise';
+import { getPlayerHooks, updatePlayerConfig } from 'enterprise/guide/utils';
 
 // const Triggers = SystemConfig.player.trigger;
 
@@ -30,7 +30,7 @@ import { getPlayerHooks, updatePlayerConfig } from 'enterprise';
  * @export
  */
 export function init() {
-  console.log('init', updatePlayerConfig, getPlayerHooks);
+  // console.log('init', updatePlayerConfig, getPlayerHooks);
   // Get configuration file
   const HooksConfig = window.__initialization_data__.wizards;
 

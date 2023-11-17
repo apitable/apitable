@@ -29,7 +29,7 @@ import { getEnvVariables } from 'pc/utils/env';
 import { directDownload } from '../tool_bar';
 import styles from './style.module.less';
 // @ts-ignore
-import { Marketing } from 'enterprise';
+import { Marketing } from 'enterprise/marketing/marketing';
 
 interface INoSupportProps {
   icon?: React.ReactNode;

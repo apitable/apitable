@@ -24,7 +24,7 @@ import { Method } from '../components/route_manager/const';
 import { navigationToUrl } from '../components/route_manager/navigation_to_url';
 import { Router } from '../components/route_manager/router';
 // @ts-ignore
-import { isSocialDomain } from 'enterprise';
+import { isSocialDomain } from 'enterprise/home/social_platform/utils';
 
 export const useSpaceRequest = () => {
   const dispatch = useDispatch();

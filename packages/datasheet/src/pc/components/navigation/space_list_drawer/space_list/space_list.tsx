@@ -36,7 +36,7 @@ import { NavigationContext } from '../../navigation_context';
 import { SpaceListItem } from './space_list_item';
 import styles from './style.module.less';
 // @ts-ignore
-import { isSocialWecom } from 'enterprise';
+import { isSocialWecom } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

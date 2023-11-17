@@ -37,7 +37,11 @@ import { TComponent } from '../common/t_component';
 import styles from './style.module.less';
 import { TrashContextMenu } from './trash_context_menu';
 // @ts-ignore
-import { SubscribeGrade, SubscribeUsageTipType, triggerUsageAlert, getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert,} from 'enterprise/billing/trigger_usage_alert'
+// @ts-ignore
+import { SubscribeGrade } from 'enterprise/subscribe_system/subscribe_label/subscribe_label';
 
 import {useAppSelector} from "pc/store/react-redux";
 

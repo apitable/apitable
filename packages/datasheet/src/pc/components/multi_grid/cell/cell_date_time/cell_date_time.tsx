@@ -30,7 +30,7 @@ import { getEnvVariables } from 'pc/utils/env';
 import { ICellComponentProps } from '../cell_value/interface';
 import styles from './styles.module.less';
 // @ts-ignore
-import { AlarmTipText } from 'enterprise';
+import { AlarmTipText } from 'enterprise/alarm/alarm_tip_text';
 import { INNER_DAY_ALARM_SUBTRACT } from 'pc/utils';
 
 import {useAppSelector} from "pc/store/react-redux";

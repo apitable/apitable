@@ -48,7 +48,7 @@ import { IWidgetBlockRefs, WidgetBlock } from './widget_block';
 import { WidgetBlockMain } from './widget_block_main';
 import { WidgetLoading } from './widget_loading';
 // @ts-ignore
-import { EmbedContext } from 'enterprise';
+import { EmbedContext } from 'enterprise/embed/embed_context';
 import { DataSourceSelectorForNode } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/data_source_selector_for_node';
 
 import {useAppSelector} from "pc/store/react-redux";

@@ -28,7 +28,7 @@ import { useInvitePageRefreshed } from '../use_invite';
 import styles from './style.module.less';
 // import '../invite.common.less';
 // @ts-ignore
-import { LoginToggle } from 'enterprise';
+import { LoginToggle } from 'enterprise/home/login_toggle/login_toggle';
 
 import {useAppSelector} from "pc/store/react-redux";
 

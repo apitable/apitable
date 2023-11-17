@@ -64,7 +64,9 @@ import { TabBar } from '../tab_bar';
 import { ViewContainer } from '../view_container';
 import { WidgetPanel } from '../widget';
 // @ts-ignore
-import { WeixinShareWrapper, createBackupSnapshot } from 'enterprise';
+import { createBackupSnapshot } from 'enterprise/time_machine/backup/backup';
+// @ts-ignore
+import { WeixinShareWrapper } from 'enterprise/wechat/weixin_share_wrapper/weixin_share_wrapper';
 
 import {useAppSelector} from "pc/store/react-redux";
 

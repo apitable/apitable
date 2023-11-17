@@ -18,7 +18,9 @@
 
 import React from 'react';
 // @ts-ignore
-import { WecomIntegration, WecomIntegrationBind } from 'enterprise';
+import { WecomIntegrationBind } from 'enterprise/wecom/wecom_integration/wecom_integration_bind/wecom_integration_bind';
+// @ts-ignore
+import { WecomIntegration } from 'enterprise/wecom/wecom_integration/wecom_integration';
 
 const App = () => {
   return (

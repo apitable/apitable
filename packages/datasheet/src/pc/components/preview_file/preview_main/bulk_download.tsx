@@ -25,7 +25,7 @@ import { Message } from 'pc/components/common';
 import styles from './style.module.less';
 import { bulkDownload } from './util';
 // @ts-ignore
-import { SubscribeGrade, SubscribeLabel } from 'enterprise';
+import { SubscribeGrade, SubscribeLabel } from 'enterprise/subscribe_system/subscribe_label/subscribe_label';
 
 interface IBulkDownloadProps {
   files: IAttachmentValue[];

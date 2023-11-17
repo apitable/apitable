@@ -36,7 +36,9 @@ import { Nav } from './nav';
 import { PersonalizedSetting } from './personalized_setting';
 import styles from './style.module.less';
 // @ts-ignore
-import { AccountWallet, isSocialWecom } from 'enterprise';
+import { AccountWallet } from 'enterprise/account_wallet/account_wallet';
+// @ts-ignore
+import { isSocialWecom } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

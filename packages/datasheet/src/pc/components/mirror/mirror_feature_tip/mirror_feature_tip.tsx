@@ -5,7 +5,7 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import ProtectIcon from 'static/icon/protect_img.png';
 import styles from './style.module.less';
 // @ts-ignore
-import { addWizardNumberAndApiRun } from 'enterprise';
+import { addWizardNumberAndApiRun } from 'enterprise/guide/utils';
 
 export const MirrorFeatureWarn: React.FC<{ onModalClose: () => void }> = ({ onModalClose }) => {
   return (

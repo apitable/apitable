@@ -39,7 +39,7 @@ import { AutomationPanel } from "pc/components/automation";
 import {useAppSelector} from "pc/store/react-redux";
 
 // @ts-ignore
-const AIPanel = dynamic(() => import('enterprise').then((module) => module.ChatPage));
+const AIPanel = dynamic(() => import('enterprise/chat/chat_page').then((module) => module.ChatPage));
 
 export interface IShareMobileProps extends IShareMenu {
   applicationJoinAlertVisible: boolean;

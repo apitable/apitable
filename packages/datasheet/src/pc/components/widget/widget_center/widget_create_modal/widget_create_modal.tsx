@@ -64,7 +64,7 @@ import { installedWidgetHandle } from '../../widget_panel/widget_panel_header';
 import { Steps } from './steps';
 import styles from './styles.module.less';
 // @ts-ignore
-import { clearWizardsData } from 'enterprise';
+import { clearWizardsData } from 'enterprise/guide/utils';
 import { createWidget } from 'api/widget/api';
 
 import {useAppSelector} from "pc/store/react-redux";

@@ -71,7 +71,7 @@ export class RoomService {
 
   /**
    * Create a roomId based on the resource main resource ID
-   * What is a resource resource, a resource is a summary of data entities, 
+   * What is a resource resource, a resource is a summary of data entities,
    * such as a datasheet, a widget, and a dashboard. Their data are collectively referred to as resources
    * The main resource ID generally refers to the node page that the current user mainly accesses, such as the datasheet, dashboard, etc.
    * The main resource may come with multiple other resources, such as an associated table of a table, a widget on a dashboard
@@ -280,8 +280,8 @@ export class RoomService {
    * 1. Create a room on the client side and add it to the service
    * 2. Register listening events for various sockets
    * 3. Start the event coordination monitor on the client to ensure that blocked messages will be processed at intervals
-   * Originally considered to compensate for the missing version in watch, 
-   * but the compensation behavior is already in init, handled by each engine itself, 
+   * Originally considered to compensate for the missing version in watch,
+   * but the compensation behavior is already in init, handled by each engine itself,
    * so watch does not need to pay attention to version compensation anymore
    * @returns
    */
@@ -299,7 +299,7 @@ export class RoomService {
       return;
     }
     const { resourceRevisions, collaborators } = watchResponse.data!;
-    console.log('resourceRevisions:', resourceRevisions);
+    // console.log('resourceRevisions:', resourceRevisions);
     const collaEngine = this.collaEngineMap.get(this.roomId);
     if (!collaEngine) {
       return;
@@ -366,10 +366,10 @@ export class RoomService {
   }
 
   /**
-   * @description unwatch no longer needs to pay attention to whether the coordinator queue is emptied, 
-   * there are two cases here: switch table and complete disconnection of ƒ socket. 
+   * @description unwatch no longer needs to pay attention to whether the coordinator queue is emptied,
+   * there are two cases here: switch table and complete disconnection of ƒ socket.
    * The processing of the latter needs to rely on locally stored data, and the unwatch event here will not be triggered.
-   * For the former, the service has already converted the engine data in the process of switching rooms, 
+   * For the former, the service has already converted the engine data in the process of switching rooms,
    * which ensures that even if there is unsent data in the previous room, it can be coordinated after switching rooms.
    * So here you only need to pay attention to the notification that the middle server(room) leaves the room
    * @private
@@ -647,7 +647,7 @@ export class RoomService {
 
   /**
    * Push the operation into the send queue, SyncEngine will ensure that the data is sent to the server in version order
-   * And provide temporary local persistence capabilities to 
+   * And provide temporary local persistence capabilities to
    * prevent users from losing data in the case of accidental network disconnection and active refresh
    *
    * Notice: Multiple operations may be merged into one changeset and sent to the server at one time
@@ -693,7 +693,7 @@ export class RoomService {
   }
 
   /**
-   * Activate the collaborator. After calling this method, 
+   * Activate the collaborator. After calling this method,
    * the avatar of the current user will be displayed on the interface of all collaborators who open this table
    */
   handleActiveCollaborators(data: { collaborators: ICollaborator[] }) {
@@ -708,11 +708,11 @@ export class RoomService {
   }
 
   /**
-   * Deactivate the collaborator. 
+   * Deactivate the collaborator.
    * After calling this method, the avatar of the current user will be left on the interface of all collaborators who open this table
    */
   handleDeactivateCollaborator(data: ICollaborator) {
-    console.log('deactivate collaborator', data);
+    // console.log('deactivate collaborator', data);
     const collaEngine = this.getCollaEngine();
     if (!collaEngine) {
       return;
@@ -721,7 +721,7 @@ export class RoomService {
   }
 
   handleCursor(data: IEngagementCursorData) {
-    console.log('RECEIVED IEngagementCursorData: ', { data });
+    // console.log('RECEIVED IEngagementCursorData: ', { data });
     const { cursorInfo } = data;
     this.store.dispatch(StoreActions.cursorMove({
       fieldId: cursorInfo.fieldId,

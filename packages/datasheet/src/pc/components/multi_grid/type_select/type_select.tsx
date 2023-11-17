@@ -29,8 +29,6 @@ import { useResponsive } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
 import { getFieldTypeIcon } from '../field_setting';
 import { useShowTip } from './use_show_tip';
-// @ts-ignore
-import { isEnterprise } from 'enterprise';
 import styles from './styles.module.less';
 
 interface ITypeSelect {
@@ -157,6 +155,7 @@ function filterAdvanceGroup(fieldType: FieldType) {
 }
 
 export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = (props) => {
+  const { IS_ENTERPRISE } = getEnvVariables();
   const colors = useThemeColors();
   const divRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -199,7 +198,7 @@ export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = (p
 
   function filterPrimaryType(fieldType: FieldType) {
     if (props.fieldIndex !== 0) return true;
-    if (isEnterprise && fieldType === FieldType.WorkDoc && getEnvVariables().ENABLE_WORKDOC_FIELD) return true;
+    if (IS_ENTERPRISE && fieldType === FieldType.WorkDoc && getEnvVariables().ENABLE_WORKDOC_FIELD) return true;
     return FieldTypeDescriptionMap[fieldType] && FieldTypeDescriptionMap[fieldType].canBePrimaryField;
   }
 

@@ -44,7 +44,7 @@ import { IShareSpaceInfo } from 'pc/components/share/interface';
 import { store } from 'pc/store';
 import { runInTimeSlicing } from './utils';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 
 export const nodeConfigData = [
   {

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 // @ts-ignore
-import { IEmbedProps } from 'enterprise';
+import { IEmbedProps } from 'enterprise/embed/embed';
 import { NextPageContext } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -25,7 +25,7 @@ import { getRegResult, embedIdReg } from 'pc/hooks';
 const DynamicComponentWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/embed/embed').then((components) => {
       return components.Embed;
     }),
   { ssr: false },

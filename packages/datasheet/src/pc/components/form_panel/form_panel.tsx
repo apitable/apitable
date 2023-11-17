@@ -26,7 +26,7 @@ import { TabBar } from './form_tab';
 import styles from './style.module.less';
 import { ViewContainer } from './view_container';
 // @ts-ignore
-import { WeixinShareWrapper } from 'enterprise';
+import { WeixinShareWrapper } from 'enterprise/wechat/weixin_share_wrapper/weixin_share_wrapper';
 
 import {useAppSelector} from "pc/store/react-redux";
 

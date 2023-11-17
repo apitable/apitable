@@ -24,7 +24,6 @@ const automationTriggerDatasheetAtom = atomWithImmer<{
 });
 
 const automationStateAtom = atomWithImmer<IRobotContext | undefined>(undefined);
-
 export const automationCacheAtom = atomWithImmer< {
   map?: Map<string, IRobotTrigger | IRobotAction>,
   id?:string,

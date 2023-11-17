@@ -31,7 +31,7 @@ import { TemplateChoice } from '../template_choice';
 import { UsingTemplateModal } from '../using_template_modal';
 import styles from './style.module.less';
 // @ts-ignore
-import { LoginModal } from 'enterprise';
+import { LoginModal } from 'enterprise/home/login_modal/login_modal';
 
 import {useAppSelector} from "pc/store/react-redux";
 

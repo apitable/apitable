@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { useThemeColors } from '@apitable/components';
 import { IReduxState, Strings, t } from '@apitable/core';
 import { updateNodeInfo } from '@apitable/core/dist/modules/space/store/actions/catalog_tree';
-import { automationStateAtom } from '../../../automation/controller';
+import { automationStateAtom } from 'pc/components/automation/controller/atoms';
 import {
   useAutomationResourceNode,
   useAutomationResourcePermission

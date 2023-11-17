@@ -28,7 +28,7 @@ import { AvatarType, InfoCard, Tooltip } from 'pc/components/common';
 import { IRoleOption, IUnitItemProps } from './interface';
 import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

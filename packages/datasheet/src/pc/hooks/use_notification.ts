@@ -24,7 +24,7 @@ import { PublishControllers } from 'pc/components/notification/publish';
 import { Router } from 'pc/components/route_manager/router';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 // @ts-ignore
-import { triggerUsageAlert } from 'enterprise';
+import { triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
 
 import {useAppSelector} from "pc/store/react-redux";
 

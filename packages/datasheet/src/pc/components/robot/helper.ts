@@ -37,7 +37,7 @@ import { getEnvVariables } from 'pc/utils/env';
 import { getFieldTypeIcon, getFieldTypeIconOrNull } from '../multi_grid/field_setting';
 import { IActionType, IJsonSchema, INodeOutputSchema, INodeType, IRobotAction, IRobotTrigger, ITriggerType } from './interface';
 // @ts-ignore
-import { isWecomFunc } from 'enterprise';
+import { isWecomFunc } from 'enterprise/home/social_platform/utils';
 
 /**
  * The client parses the expression without context, skipping dynamic parameters.

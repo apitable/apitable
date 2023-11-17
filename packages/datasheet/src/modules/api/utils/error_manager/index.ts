@@ -1,6 +1,6 @@
 import { Strings, t } from '@apitable/core';
 // @ts-ignore
-import { triggerUsageAlertUniversal } from 'enterprise';
+import { triggerUsageAlertUniversal } from 'enterprise/billing';
 import { BillingErrorCode } from './const';
 import { ApiErrorManager } from './error_manager';
 
