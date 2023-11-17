@@ -1430,4 +1430,9 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         ExceptionUtil.isNotNull(memberId, NOT_EXIST_MEMBER);
         return memberId;
     }
+
+    @Override
+    public List<String> getUserOwnSpaceIds(Long userId) {
+        return baseMapper.selectSpaceIdsByUserIdAndIsAdmin(userId, true);
+    }
 }

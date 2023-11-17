@@ -999,4 +999,14 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      */
     List<MemberUserDTO> selectMemberNameByUserIdsAndSpaceIds(@Param("spaceId") String spaceId,
                                                              @Param("userIds") List<Long> userIds);
+
+    /**
+     * query user space ids.
+     *
+     * @param userId  user id
+     * @param isAdmin is admin
+     * @return list of space id
+     */
+    List<String> selectSpaceIdsByUserIdAndIsAdmin(@Param("userId") Long userId,
+                                                  @Param("isAdmin") boolean isAdmin);
 }

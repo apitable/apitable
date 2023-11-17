@@ -1161,5 +1161,4 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             iStaticsService.getActiveMemberTotalCountFromCache(spaceId);
         return seat - activeMemberTotalCount > 0;
     }
-
 }
