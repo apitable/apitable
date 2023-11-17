@@ -86,7 +86,6 @@ const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
     if (dashboardId) {
       return <DashboardPanel />;
     }
-    console.log(ChatPage)
 
     if (aiId && ChatPage) {
       return <ChatPage />;
