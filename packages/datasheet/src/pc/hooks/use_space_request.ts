@@ -92,31 +92,6 @@ export const useSpaceRequest = () => {
     });
   };
 
-  // Changing member settings
-  const updateMemberSettingReq = (data: { invitable?: boolean; joinable?: boolean; mobileShowable?: boolean }) => {
-    return Api.updateMemberSetting(data).then((res) => {
-      const { success } = res.data;
-      if (success) {
-        Message.success({ content: t(Strings.operate_success) });
-      } else {
-        Message.error({ content: t(Strings.operate_fail) });
-      }
-      return res.data;
-    });
-  };
-  // Changing workbench settings
-  const updateWorkbenchSettingReq = (data: { nodeExportable?: boolean; watermarkEnable?: boolean }) => {
-    return Api.updateWorkbenchSetting(data).then((res) => {
-      const { success } = res.data;
-      if (success) {
-        Message.success({ content: t(Strings.operate_success) });
-      } else {
-        Message.error({ content: t(Strings.operate_fail) });
-      }
-      return res.data;
-    });
-  };
-
   // Determine if a member mailbox exists in the space
   const checkEmailReq = (email: string) => {
     return Api.isExistEmail(email).then((res) => {
@@ -184,8 +159,6 @@ export const useSpaceRequest = () => {
     spaceFeaturesReq,
     getEmbedInfoReq,
     checkEmailReq,
-    updateMemberSettingReq,
-    updateWorkbenchSettingReq,
     updateSecuritySettingReq,
     getUserAndRedirect,
     createSpaceReq,

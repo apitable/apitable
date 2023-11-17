@@ -392,7 +392,7 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/unit-member-data.sql")
     void testSelectByOpenIdIgnoreDelete() {
-        Long id = memberMapper.selectByOpenIdIgnoreDelete("spc41", "41");
+        Long id = memberMapper.selectIdByOpenIdIgnoreDelete("spc41", "41");
         assertThat(id).isEqualTo(41L);
     }
 

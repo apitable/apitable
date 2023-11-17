@@ -124,6 +124,13 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     private IRoleMemberService iRoleMemberService;
 
     @Override
+    public String getSpaceIdByTeamId(Long teamId) {
+        String spaceId = teamMapper.selectSpaceIdById(teamId);
+        ExceptionUtil.isNotNull(spaceId, GET_TEAM_ERROR);
+        return spaceId;
+    }
+
+    @Override
     public List<TeamBaseInfoDTO> getTeamBaseInfo(List<Long> teamIds) {
         return teamMapper.selectBaseInfoDTOByIds(teamIds);
     }
@@ -527,7 +534,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         ExceptionUtil.isTrue(flag, OrganizationException.DELETE_TEAM_ERROR);
         iUnitService.removeByTeamId(teamId);
         // delete the department and remove the public link
-        iSpaceInviteLinkService.deleteByTeamId(teamId);
+        iSpaceInviteLinkService.deleteByTeamIds(Collections.singletonList(teamId));
     }
 
     @Override

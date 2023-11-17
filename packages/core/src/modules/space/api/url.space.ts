@@ -36,8 +36,6 @@ export const SWITCH_SPACE = '/space/:spaceId/switch';
 export const DELETE_SPACE_NOW = '/space/del';
 // edit space
 export const UPDATE_SPACE = '/space/update';
-// remove the red dot from the space list
-export const REMOVE_RED_POINT = '/space/remove/';
 // exit space
 export const QUIT_SPACE = '/space/quit/';
 // space station-main administrator-get main administrator information
@@ -54,12 +52,8 @@ export const ADD_SUB_ADMIN = '/space/addRole';
 export const EDIT_SUB_ADMIN = '/space/editRole';
 // space station-sub-admin-delete-admin
 export const DELETE_SUB_ADMIN = '/space/deleteRole/';
-// space station - change member settings
-export const UPDATE_MEMBER_SETTING = '/space/updateMemberSetting';
 // Space Station - Get the status of prohibiting all members from exporting the Wig table
 export const FORBID_STATUS = '/space/getForbidStatus';
-// space station - change workbench settings
-export const UPDATE_WORKBENCH_SETTING = '/space/updateWorkbenchSetting';
 // space station - get the properties of space
 export const GET_SPACE_FEATURES = '/space/features';
 // space station - get the properties of space

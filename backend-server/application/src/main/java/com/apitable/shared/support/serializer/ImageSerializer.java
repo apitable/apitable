@@ -41,23 +41,20 @@ public class ImageSerializer extends JsonSerializer<String> {
 
     @Override
     public void serialize(String value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-        if (StrUtil.isNotBlank(value)) {
-            if (value.startsWith("http")) {
-                gen.writeString(value);
-            }
-            else {
-                OssSignatureTemplate ossSignatureTemplate;
-                try {
-                    ossSignatureTemplate = SpringContextHolder.getBean(OssSignatureTemplate.class);
-                    String signatureUrl = ossSignatureTemplate.getSignatureUrl(this.getResourceUrlNOTrim(), value);
-                    gen.writeString(signatureUrl);
-                } catch (Exception e) {
-                    gen.writeString(this.getResourceUrl() + value);
-                }
-            }
-        }
-        else {
+        if (StrUtil.isBlank(value)) {
             gen.writeString("");
+            return;
+        }
+        if (value.startsWith("http")) {
+            gen.writeString(value);
+            return;
+        }
+        try {
+            OssSignatureTemplate ossSignatureTemplate = SpringContextHolder.getBean(OssSignatureTemplate.class);
+            String signatureUrl = ossSignatureTemplate.getSignatureUrl(this.getResourceUrlNOTrim(), value);
+            gen.writeString(signatureUrl);
+        } catch (Exception e) {
+            gen.writeString(this.getResourceUrl() + value);
         }
     }
 

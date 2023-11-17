@@ -108,8 +108,8 @@ public interface WidgetMapper {
 
     /**
      * Query all widget num of the space
-     * @param spaceId
-     * @return
+     * @param spaceId   space ID
+     * @return count
      */
     Long selectCountBySpaceId(@Param("spaceId") String spaceId);
 }

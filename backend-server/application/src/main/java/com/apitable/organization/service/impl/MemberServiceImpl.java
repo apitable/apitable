@@ -22,6 +22,7 @@ import static com.apitable.organization.enums.OrganizationException.NOT_EXIST_ME
 import static com.apitable.shared.constants.NotificationConstants.INVOLVE_MEMBER_ID;
 import static com.apitable.shared.constants.NotificationConstants.TEAM_ID;
 import static com.apitable.shared.constants.NotificationConstants.TEAM_NAME;
+import static com.apitable.workspace.enums.PermissionException.MEMBER_NOT_IN_SPACE;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
@@ -209,12 +210,22 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public Long getMemberIdByUserIdAndSpaceId(Long userId, String spaceId) {
-        return baseMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
+        return memberMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
+    }
+
+    @Override
+    public Long getUserIdByMemberId(Long memberId) {
+        return memberMapper.selectUserIdByMemberId(memberId);
     }
 
     @Override
     public List<Long> getUserIdsByMemberIds(List<Long> memberIds) {
         return baseMapper.selectUserIdsByMemberIds(memberIds);
+    }
+
+    @Override
+    public List<String> getEmailsByMemberIds(List<Long> memberIds) {
+        return memberMapper.selectEmailByBatchMemberId(memberIds);
     }
 
     @Override
@@ -242,6 +253,20 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     public void checkUserIfInSpace(Long userId, String spaceId) {
         Long memberId = getMemberIdByUserIdAndSpaceId(userId, spaceId);
         ExceptionUtil.isNotNull(memberId, SpaceException.NO_ALLOW_OPERATE);
+    }
+
+    @Override
+    public void checkMemberInSpace(final String spaceId, final Long memberId) {
+        String memberSpaceId = this.getSpaceIdByMemberId(memberId);
+        ExceptionUtil.isTrue(spaceId.equals(memberSpaceId), MEMBER_NOT_IN_SPACE);
+    }
+
+    @Override
+    public void checkMembersInSpace(final String spaceId, final List<Long> memberIds) {
+        List<String> spaceIds = memberMapper.selectSpaceIdByMemberIds(memberIds);
+        ExceptionUtil.isTrue(spaceIds.size() == memberIds.size(), MEMBER_NOT_IN_SPACE);
+        Optional<String> first = spaceIds.stream().filter(id -> !spaceId.equals(id)).findFirst();
+        ExceptionUtil.isFalse(first.isPresent(), MEMBER_NOT_IN_SPACE);
     }
 
     @Override
@@ -332,7 +357,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public Long getMemberIdByOpenIdIgnoreDelete(String spaceId, String openId) {
-        return baseMapper.selectByOpenIdIgnoreDelete(spaceId, openId);
+        return memberMapper.selectIdByOpenIdIgnoreDelete(spaceId, openId);
     }
 
     @Override
@@ -743,7 +768,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             Optional<Long> first = addTeamList.stream().findFirst();
             if (first.isPresent()) {
                 Long operatorMemberId =
-                    memberMapper.selectIdByUserIdAndSpaceId(userId, member.getSpaceId());
+                    this.getMemberIdByUserIdAndSpaceId(userId, member.getSpaceId());
                 if (operatorMemberId == null || operatorMemberId.equals(memberId)) {
                     return;
                 }
@@ -926,7 +951,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             return;
         }
         String spaceName = iSpaceService.getNameBySpaceId(spaceId);
-        final List<String> emails = baseMapper.selectEmailByBatchMemberId(memberIds);
+        final List<String> emails = this.getEmailsByMemberIds(memberIds);
         Dict dict = Dict.create();
         dict.set("SPACE_NAME", spaceName);
         Dict mapDict = Dict.create();
@@ -1398,7 +1423,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public void handleMemberTeamInfo(MemberInfoVo memberInfoVo) {
-        String spaceId = memberMapper.selectSpaceIdByMemberId(memberInfoVo.getMemberId());
+        String spaceId = this.getSpaceIdByMemberId(memberInfoVo.getMemberId());
         List<Long> memberIds = CollUtil.newArrayList(memberInfoVo.getMemberId());
         // handle member's team name, get full hierarchy team path name
         Map<Long, List<MemberTeamPathInfo>> memberTeamPathInfosMap =

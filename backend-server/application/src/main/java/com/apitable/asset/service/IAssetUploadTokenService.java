@@ -21,12 +21,31 @@ package com.apitable.asset.service;
 import java.util.List;
 
 import com.apitable.asset.vo.AssetUploadCertificateVO;
+import com.apitable.asset.vo.AssetUrlSignatureVo;
 
 
 /**
  * Asset Upload Credentials Service.
  */
 public interface IAssetUploadTokenService {
+
+    /**
+     * Get signature url.
+     *
+     * @param fileName file name
+     * @return url
+     * @author Chambers
+     */
+    String getSignatureUrl(String fileName);
+
+    /**
+     * Get asset url signature vos.
+     *
+     * @param fileNames file names
+     * @return List<AssetUrlSignatureVo>
+     * @author Chambers
+     */
+    List<AssetUrlSignatureVo> getAssetUrlSignatureVos(List<String> fileNames);
 
     /**
      * create public asset pre-signed url.
