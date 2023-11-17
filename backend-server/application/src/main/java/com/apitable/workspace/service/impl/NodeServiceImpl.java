@@ -72,6 +72,7 @@ import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.shared.util.CollectionUtil;
+import com.apitable.shared.util.DBUtil;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.shared.util.StringUtil;
 import com.apitable.shared.util.information.ClientOriginInfo;
@@ -365,7 +366,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public List<NodeBaseInfoDTO> getParentPathNodes(List<String> nodeIds, boolean includeRootNode) {
-        return nodeMapper.selectAllParentNodeIds(nodeIds, includeRootNode);
+        List<NodeBaseInfoDTO> nodes = DBUtil.batchSelectByFieldIn(nodeIds,
+                (ids) -> nodeMapper.selectAllParentNodeIds(ids, includeRootNode));
+        return CollectionUtil.distinctByProperty(nodes, NodeBaseInfoDTO::getNodeId);
     }
 
     @Override

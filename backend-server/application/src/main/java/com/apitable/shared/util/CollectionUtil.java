@@ -21,7 +21,9 @@ package com.apitable.shared.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -132,5 +134,14 @@ public class CollectionUtil {
         return indexList.stream().filter(Objects::nonNull)
                 .mapToInt(Integer::intValue)
                 .toArray();
+    }
+
+    public static <T, K> List<T> distinctByProperty(List<T> list, Function<T, K> keyExtractor) {
+        Map<K, T> map = new LinkedHashMap<>();
+        for (T item : list) {
+            K key = keyExtractor.apply(item);
+            map.putIfAbsent(key, item);
+        }
+        return new ArrayList<>(map.values());
     }
 }
