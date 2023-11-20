@@ -31,9 +31,8 @@ import { ModalWithTheme } from './modal_with_theme';
 import styles from './style.module.less';
 import { destroyFns } from './utils';
 // @ts-ignore
-import { getBillingInfo } from 'enterprise/billing';
-// @ts-ignore
 import { isSocialDingTalk } from 'enterprise/home/social_platform/utils';
+import {getBillingInfo} from "modules/billing";
 
 const ModalBase: FC<React.PropsWithChildren<IModalProps>> = (props) => {
   const {

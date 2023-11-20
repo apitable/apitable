@@ -195,7 +195,7 @@ export const useWorkbenchSideSync = () => {
   const popErrorModal = (nodeId: string, errorType: ErrorType, nodeType: ConfigConstant.NodeType = ConfigConstant.NodeType.DATASHEET) => {
     if (errorType === ErrorType.Delete) {
       Api.keepTabbar({}).then(() => {
-        window.location.reload();
+        // window.location.reload();
       });
       return;
     }
