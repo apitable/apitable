@@ -161,6 +161,7 @@ const FieldTypeStringMap = {
   [FieldType.LastModifiedBy]: APIMetaFieldType.LastModifiedBy,
   [FieldType.LastModifiedTime]: APIMetaFieldType.LastModifiedTime,
   [FieldType.Link]: APIMetaFieldType.MagicLink,
+  // @ts-ignore
   [FieldType.Link]: APIMetaFieldType.TwoWayLink,
   [FieldType.LookUp]: APIMetaFieldType.MagicLookUp,
   [FieldType.Member]: APIMetaFieldType.Member,
@@ -175,6 +176,7 @@ const FieldTypeStringMap = {
   [FieldType.Text]: APIMetaFieldType.Text,
   [FieldType.URL]: APIMetaFieldType.URL,
   [FieldType.Cascader]: APIMetaFieldType.Cascader,
+  [FieldType.Button]: APIMetaFieldType.Button,
   [FieldType.OneWayLink]: APIMetaFieldType.OneWayLink,
   [FieldType.WorkDoc]: APIMetaFieldType.WorkDoc,
 };
@@ -206,6 +208,7 @@ const ReversedFieldTypeStringMap = {
   [APIMetaFieldType.URL]: FieldType.URL,
   [APIMetaFieldType.Cascader]: FieldType.Cascader,
   [APIMetaFieldType.OneWayLink]: FieldType.OneWayLink,
+  [APIMetaFieldType.Button]: FieldType.Button,
   [APIMetaFieldType.WorkDoc]: FieldType.WorkDoc,
 };
 

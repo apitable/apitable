@@ -16,40 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import type { IMeta } from '@apitable/core';
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Headers,
-  Param,
-  Post,
-  Query,
-  UseInterceptors,
-} from '@nestjs/common';
-import { UserService } from 'user/services/user.service';
-import {
-  DatasheetException,
-  PermissionException,
-  ServerException,
-} from 'shared/exception';
-import {
-  ResourceDataInterceptor,
-} from 'database/resource/middleware/resource.data.interceptor';
-import type { CommentReplyDto } from '../dtos/comment.reply.dto';
-import {
-  DatasheetRecordSubscriptionBaseService,
-} from 'database/subscription/datasheet.record.subscription.base.service';
-import type { DatasheetPack, RecordsMapView, UserInfo, ViewPack } from '../../interfaces';
-import { DatasheetPackRo } from '../ros/datasheet.pack.ro';
+import type { IButtonField, IMeta } from '@apitable/core';
+import { Body, Controller, Delete, Get, Headers, Param, Post, Query, UseInterceptors } from '@nestjs/common';
+import { TriggerAutomationRO } from 'database/datasheet/ros/trigger.automation';
+import { ResourceDataInterceptor } from 'database/resource/middleware/resource.data.interceptor';
+import { MetaService } from 'database/resource/services/meta.service';
+import { DatasheetRecordSubscriptionBaseService } from 'database/subscription/datasheet.record.subscription.base.service';
+import { ApiResponse } from 'fusion/vos/api.response';
 import { NodeService } from 'node/services/node.service';
 import { NodeShareSettingService } from 'node/services/node.share.setting.service';
+import { DatasheetException, PermissionException, ServerException } from 'shared/exception';
+import { UserService } from 'user/services/user.service';
+import { IApiPaginateRo } from '../../../shared/interfaces';
+import type { DatasheetPack, RecordsMapView, UserInfo, ViewPack } from '../../interfaces';
+import type { CommentReplyDto } from '../dtos/comment.reply.dto';
+import { DatasheetPackRo } from '../ros/datasheet.pack.ro';
 import { DatasheetMetaService } from '../services/datasheet.meta.service';
 import { DatasheetRecordService } from '../services/datasheet.record.service';
 import { DatasheetService } from '../services/datasheet.service';
-import { MetaService } from 'database/resource/services/meta.service';
-import { IApiPaginateRo } from '../../../shared/interfaces';
 
 /**
  * Datasheet APIs
@@ -65,16 +49,11 @@ export class DatasheetController {
     private readonly datasheetRecordService: DatasheetRecordService,
     private readonly datasheetRecordSubscriptionService: DatasheetRecordSubscriptionBaseService,
     private readonly resourceMetaService: MetaService,
-  ) {
-  }
+  ) {}
 
   @Get('datasheets/:dstId/dataPack')
   @UseInterceptors(ResourceDataInterceptor)
-  async getDataPack(
-    @Headers('cookie') cookie: string,
-    @Param('dstId') dstId: string,
-    @Query() query: DatasheetPackRo,
-  ): Promise<DatasheetPack> {
+  async getDataPack(@Headers('cookie') cookie: string, @Param('dstId') dstId: string, @Query() query: DatasheetPackRo): Promise<DatasheetPack> {
     // check if the user belongs to this space
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, dstId);
@@ -191,10 +170,29 @@ export class DatasheetController {
   }
 
   @Get('datasheets/:dstId/records/archived')
-  async getArchivedRecords(@Headers('cookie') cookie: string, @Param('dstId') dstId: string, @Query() query: IApiPaginateRo){
+  async getArchivedRecords(@Headers('cookie') cookie: string, @Param('dstId') dstId: string, @Query() query: IApiPaginateRo) {
     const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, dstId);
     return await this.datasheetRecordService.getArchivedRecords(dstId, query);
   }
 
+  @Post('datasheets/:dstId/triggers')
+  @UseInterceptors(ResourceDataInterceptor)
+  async triggerAutomation(@Headers('cookie') cookie: string, @Param('dstId') dstId: string, @Body() data: TriggerAutomationRO) {
+    // check if the user belongs to this space
+    const { userId } = await this.userService.getMe({ cookie });
+    await this.nodeService.checkUserForNode(userId, dstId);
+    const field: IButtonField = (await this.datasheetMetaService.getFieldByFldIdAndDstId(dstId, data.fieldId)) as IButtonField;
+    if (!field) {
+      throw new ServerException(DatasheetException.FIELD_NOT_EXIST);
+    }
+    if (!field.property.action.automationId) {
+      throw new ServerException(DatasheetException.BUTTON_FIELD_AUTOMATION_NOT_CONFIGURED);
+    }
+    if (!field.property.action.triggerId) {
+      throw new ServerException(DatasheetException.BUTTON_FIELD_AUTOMATION_TRIGGER_NOT_CONFIGURED);
+    }
+    await this.datasheetService.triggerAutomation(field.property.action.automationId, field.property.action.triggerId, dstId, data.recordId, userId);
+    return ApiResponse.success(undefined);
+  }
 }
