@@ -47,9 +47,7 @@ export const getBillingInfo = async (spaceId: string) => {
 };
 
 export const updateSubscription = (spaceId: string) => {
-  debugger
   getBillingInfo(spaceId).then(data => {
-    debugger
     store.dispatch(StoreActions.updateSubscription(data));
   });
 };
