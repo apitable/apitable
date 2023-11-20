@@ -265,6 +265,11 @@ public enum NotificationTemplateId implements BaseTemplateId{
     SPACE_WATERMARK_NOTIFY("space_watermark_notify"),
 
     /**
+     * Notify administrators that refresh contact failed
+     */
+    SPACE_REFRESH_CONTACT_SEATS_LIMIT("space_refresh_contact_seats_limit"),
+
+    /**
      * Notify administrators that YozoOffice is an enterprise-level space feature
      */
     SPACE_YOZOOFFICE_NOTIFY("space_yozooffice_notify"),
