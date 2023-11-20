@@ -28,7 +28,9 @@ import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { InfoCard } from '../index';
 import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName, isSocialWecom, WecomOpenData } from 'enterprise';
+import { WecomOpenData } from 'enterprise/wecom/wecom_open_data/wecom_open_data';
+// @ts-ignore
+import { getSocialWecomUnitName, isSocialWecom } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

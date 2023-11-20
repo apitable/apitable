@@ -9,7 +9,7 @@ import { Box, Switch, Typography, useThemeColors, useThemeMode } from '@apitable
 import { IReduxState, Strings, t } from '@apitable/core';
 import { InfoCircleOutlined } from '@apitable/icons';
 // @ts-ignore
-import { goToUpgrade } from 'enterprise';
+import { goToUpgrade } from 'enterprise/subscribe_system/upgrade_method';
 import { VikaSplitPanel } from 'pc/components/common';
 import { useResponsive, useSideBarVisible } from '../../../hooks';
 import { ScreenSize } from '../../common/component_display';

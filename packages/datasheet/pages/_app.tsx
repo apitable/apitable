@@ -220,7 +220,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           spaceId,
         },
       });
-      console.log(res);
+      // console.log(res);
       let userInfo: IUserInfo | undefined;
       try {
         userInfo = JSON.parse(res.data.userInfo);

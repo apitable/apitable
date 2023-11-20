@@ -490,12 +490,6 @@
         and is_deleted = 0
     </select>
 
-    <update id="updateIsPointById">
-        update ${tablePrefix}unit_member
-        set is_point = 0
-        where id = #{memberId} and is_deleted = 0
-    </update>
-
     <select id="selectMemberIdAndSpaceId" resultType="com.apitable.organization.entity.MemberEntity">
         SELECT *
         FROM ${tablePrefix}unit_member
@@ -664,6 +658,16 @@
         SELECT space_id
         FROM ${tablePrefix}unit_member
         WHERE id = #{memberId}
+    </select>
+
+    <select id="selectSpaceIdByMemberIds" resultType="java.lang.String">
+        SELECT space_id
+        FROM ${tablePrefix}unit_member
+        WHERE id IN
+        <foreach item="item" index="index" collection="memberIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
     <select id="selectActiveEmailBySpaceId" resultType="java.lang.String">
@@ -856,7 +860,7 @@
         WHERE space_id = #{spaceId} AND open_id = #{openId} AND is_deleted = 0 LIMIT 0,1
     </select>
 
-    <select id="selectByOpenIdIgnoreDelete" resultType="java.lang.Long">
+    <select id="selectIdByOpenIdIgnoreDelete" resultType="java.lang.Long">
         SELECT id
         FROM ${tablePrefix}unit_member
         WHERE open_id = #{openId} AND space_id = #{spaceId} LIMIT 0,1
@@ -1131,6 +1135,14 @@
             #{item}
         </foreach>
         AND space_id = #{spaceId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectSpaceIdsByUserIdAndIsAdmin" resultType="java.lang.String">
+        SELECT space_id
+        FROM ${tablePrefix}unit_member
+        WHERE user_id = #{userId}
+        AND is_admin = #{isAdmin}
         AND is_deleted = 0
     </select>
 </mapper>

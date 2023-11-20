@@ -35,7 +35,9 @@ import { Router } from 'pc/components/route_manager/router';
 import { useNotificationCreate, useResponsive } from 'pc/hooks';
 import styles from './style.module.less';
 // @ts-ignore
-import { isSocialPlatformEnabled, SocialPlatformMap } from 'enterprise';
+import { SocialPlatformMap } from 'enterprise/home/social_platform/config';
+// @ts-ignore
+import { isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

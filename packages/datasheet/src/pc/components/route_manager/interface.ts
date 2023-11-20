@@ -47,6 +47,7 @@ export interface IQuery {
   token?: string;
   inviteMailToken?: string;
   inviteLinkToken?: string;
+  inviteLinkData?: string;
   loginType?: ConfigConstant.LoginTypes;
   reference?: string;
   inputDisabled?: boolean;

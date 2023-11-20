@@ -31,11 +31,25 @@
     padding: 0px 2px;
     border-radius: 4px !important;
     background-color: var(--bgControlsDefault) !important;
+
+    :global {
+      .ant-input {
+        background-color: transparent !important;
+        // background-color: var(--bgControlsDefault) !important;
+      }
+    }
   }
   .inputItemBoxFocused {
     padding: 0px 2px;
     border-radius: 4px !important;
     border: 1px solid var(--borderBrandDefault);
+
+    :global {
+      .ant-input {
+        background-color: transparent !important;
+        // background-color: var(--bgControlsElevateDefault) !important;
+      }
+    }
   }
   .inputItemLeft {
     flex: 1;
@@ -204,15 +218,4 @@
   &:active {
     background-color: var(--bgBglessActive);
   }
-}
-
-.emailEnterBoxInput {
-  border: 'none';
-  background-color: var(--bgControlsDefault) !important;
-}
-
-.emailEnterBoxInputFocused {
-  border: 'none';
-  background-color: var(--bgControlsElevateDefault) !important;
-  transition: none !important;
 }

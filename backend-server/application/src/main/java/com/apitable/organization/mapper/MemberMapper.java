@@ -442,13 +442,6 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     List<Long> selectUserIdsByMemberIds(@Param("memberIds") List<Long> memberIds);
 
     /**
-     * remove space's red point.
-     *
-     * @param memberId member id
-     */
-    int updateIsPointById(@Param("memberId") Long memberId);
-
-    /**
      * query member by space id and member id.
      *
      * @param spaceId  space id
@@ -547,6 +540,15 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @return space id
      */
     String selectSpaceIdByMemberId(@Param("memberId") Long memberId);
+
+    /**
+     * Query space ids.
+     *
+     * @param memberIds member table ids
+     * @return space id list
+     * @author Chambers
+     */
+    List<String> selectSpaceIdByMemberIds(@Param("memberIds") List<Long> memberIds);
 
     /**
      * query admin's user id by space id.
@@ -725,7 +727,7 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @param openId  the third platform user's open id
      * @return member id
      */
-    Long selectByOpenIdIgnoreDelete(@Param("spaceId") String spaceId,
+    Long selectIdByOpenIdIgnoreDelete(@Param("spaceId") String spaceId,
                                     @Param("openId") String openId);
 
     /**
@@ -999,4 +1001,14 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      */
     List<MemberUserDTO> selectMemberNameByUserIdsAndSpaceIds(@Param("spaceId") String spaceId,
                                                              @Param("userIds") List<Long> userIds);
+
+    /**
+     * query user space ids.
+     *
+     * @param userId  user id
+     * @param isAdmin is admin
+     * @return list of space id
+     */
+    List<String> selectSpaceIdsByUserIdAndIsAdmin(@Param("userId") Long userId,
+                                                  @Param("isAdmin") boolean isAdmin);
 }

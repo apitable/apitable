@@ -51,23 +51,6 @@ export const setSpaceList = (data: ISpaceInfo[]) => {
 };
 
 /**
- * Remove Red dot
- * @param spaceId Space ID
- */
-export const removeRedPoint = (spaceId: string) => {
-  return (dispatch: any) => {
-    Api.removeSpaceRedPoint(spaceId).then((res) => {
-      const { success } = res.data;
-      if (success) {
-        dispatch(spaceList());
-      }
-    }, err => {
-      console.log('API.removeSpaceRedPoint error', err);
-    });
-  };
-};
-
-/**
  * set the space id will quite
  * @param spaceId
  */

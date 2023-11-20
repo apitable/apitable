@@ -201,7 +201,7 @@
   "ai_feedback_time": "Time",
   "ai_feedback_user": "Benutzer",
   "ai_form_submit_success": "Vielen Dank für Ihre Bitte!",
-  "ai_input_credit_usage_tooltip": "Eine Al Abfrage mit gpt-3,5-turbo (Standardeinstellung) kostet 1 Nachrichtenkredit.Eine Al Abfrage mit gpt-4 kostet 20 Nachrichtenkredit.Verschiedene Modelle haben einen anderen Verbrauch.",
+  "ai_input_credit_usage_tooltip": "Die Teilnahme an einem Gespräch verbraucht Rechenleistungspunkte, und die Auswahl verschiedener Gesprächsmodelle verbraucht unterschiedliche Mengen an Rechenleistungspunkten.",
   "ai_latest_train_date": "Zuletzt trainiert: ${date}",
   "ai_mark_state": "Markieren Sie als:",
   "ai_message_credit_title": "Nachricht Guthaben",

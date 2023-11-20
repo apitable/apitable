@@ -20,7 +20,7 @@ import { CacheManager, StoreActions } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 // @ts-ignore
-import { updateSubscription } from 'enterprise';
+import { updateSubscription } from 'enterprise/billing/get_billing_info';
 
 let spaceId: string | null;
 

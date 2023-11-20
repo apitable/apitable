@@ -65,7 +65,7 @@ import { ExpandNumber } from '../expand_number';
 import { ExpandSelect } from '../expand_select';
 import { ExpandWorkdoc } from '../expand_work_doc';
 // @ts-ignore
-import { convertAlarmStructure } from 'enterprise';
+import { convertAlarmStructure } from 'enterprise/alarm/date_time_alarm/utils';
 
 export interface ICommonProps {
   style: React.CSSProperties;

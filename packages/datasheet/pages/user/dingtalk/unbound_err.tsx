@@ -23,7 +23,7 @@ import React from 'react';
 const DingtalkUnboundErrWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/dingtalk/dingtalk_h5').then((components) => {
       return components.DingtalkUnboundErr;
     }),
   { ssr: false },

@@ -31,7 +31,9 @@ import { getEnvVariables } from 'pc/utils/env';
 import { AddAdminModal, ModalType } from './add_admin_modal';
 import styles from './style.module.less';
 // @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert, getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert'
 
 import {useAppSelector} from "pc/store/react-redux";
 

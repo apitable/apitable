@@ -47,7 +47,7 @@ public class AssetCallbackController {
     private IAssetCallbackService iAssetCallbackService;
 
     /**
-     * Resource upload completion notification callbac.
+     * Resource upload completion notification callback.
      */
     @PostResource(path = "/upload/callback", requiredLogin = false)
     @Operation(summary = "Resource upload completion notification callback",

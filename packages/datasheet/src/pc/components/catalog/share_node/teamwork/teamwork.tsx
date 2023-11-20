@@ -39,7 +39,7 @@ import { UnitItem } from '../../permission_settings/permission/unit_item';
 import { TeamTreeSelect } from '../team_tree_select';
 import styles from './style.module.less';
 // @ts-ignore
-import { isSocialPlatformEnabled } from 'enterprise';
+import { isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

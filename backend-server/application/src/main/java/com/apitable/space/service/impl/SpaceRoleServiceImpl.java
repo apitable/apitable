@@ -33,7 +33,7 @@ import com.apitable.core.util.SqlTool;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
 import com.apitable.organization.entity.MemberEntity;
-import com.apitable.organization.mapper.MemberMapper;
+import com.apitable.organization.service.IMemberService;
 import com.apitable.shared.cache.bean.SpaceMenuResourceGroupDto;
 import com.apitable.shared.cache.bean.SpaceResourceGroupDto;
 import com.apitable.shared.cache.service.SpaceResourceCacheService;
@@ -48,7 +48,6 @@ import com.apitable.space.entity.SpaceMemberRoleRelEntity;
 import com.apitable.space.entity.SpaceRoleEntity;
 import com.apitable.space.enums.SpaceException;
 import com.apitable.space.enums.SpaceResourceGroupCode;
-import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.space.mapper.SpaceMemberRoleRelMapper;
 import com.apitable.space.mapper.SpaceResourceMapper;
 import com.apitable.space.mapper.SpaceRoleMapper;
@@ -90,6 +89,9 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     private ISpaceService iSpaceService;
 
     @Resource
+    private IMemberService iMemberService;
+
+    @Resource
     private ISpaceMemberRoleRelService iSpaceMemberRoleRelService;
 
     @Resource
@@ -108,16 +110,10 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     private SpaceRoleResourceRelMapper spaceRoleResourceRelMapper;
 
     @Resource
-    private MemberMapper memberMapper;
-
-    @Resource
     private SpaceResourceCacheService spaceResourceFactory;
 
     @Resource
     private ISpaceInviteLinkService iSpaceInviteLinkService;
-
-    @Resource
-    private SpaceMapper spaceMapper;
 
     @Resource
     private SocialServiceFacade socialServiceFacade;
@@ -133,7 +129,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
         log.info(
             "Queries all space administrators who have workbench permission，including the main admin.");
         List<Long> admins = new ArrayList<>();
-        Long superAdmin = spaceMapper.selectSpaceMainAdmin(spaceId);
+        Long superAdmin = iSpaceService.getSpaceMainAdminMemberId(spaceId);
         if (superAdmin != null) {
             admins.add(superAdmin);
         }
@@ -234,14 +230,14 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
 
     @Override
     public void checkBeforeCreate(String spaceId, Long memberId) {
-        iSpaceService.checkMemberInSpace(spaceId, memberId);
+        iMemberService.checkMemberInSpace(spaceId, memberId);
         iSpaceService.checkMemberIsMainAdmin(spaceId, memberId,
             isMainAdmin -> ExceptionUtil.isFalse(isMainAdmin, CAN_OP_MAIN_ADMIN));
         this.checkIsNotSubAdmin(spaceId, memberId);
     }
 
     private void checkBeforeCreate(String spaceId, List<Long> memberIds) {
-        iSpaceService.checkMembersInSpace(spaceId, memberIds);
+        iMemberService.checkMembersInSpace(spaceId, memberIds);
         iSpaceService.checkMembersIsMainAdmin(spaceId, memberIds);
         this.checkIsNotSubAdmin(spaceId, memberIds);
     }
@@ -249,8 +245,9 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     @Override
     public SpaceRoleDetailVo getRoleDetail(String spaceId, Long memberId) {
         log.info("get admin info");
-        MemberEntity memberEntity = memberMapper.selectMemberIdAndSpaceId(spaceId, memberId);
-        ExceptionUtil.isNotNull(memberEntity, MEMBER_NOT_IN_SPACE);
+        MemberEntity memberEntity = iMemberService.getById(memberId);
+        ExceptionUtil.isTrue(memberEntity != null
+                && spaceId.equals(memberEntity.getSpaceId()), MEMBER_NOT_IN_SPACE);
         SpaceRoleDetailVo spaceRoleDetailVo = new SpaceRoleDetailVo();
         spaceRoleDetailVo.setMemberName(memberEntity.getMemberName());
 
@@ -398,7 +395,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     @Override
     public void checkCanOperate(String spaceId, Long memberId, List<String> resourceCodes,
                                 Consumer<Boolean> consumer) {
-        Long superAdmin = spaceMapper.selectSpaceMainAdmin(spaceId);
+        Long superAdmin = iSpaceService.getSpaceMainAdminMemberId(spaceId);
         if (memberId.equals(superAdmin)) {
             return;
         }

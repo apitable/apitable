@@ -18,6 +18,7 @@
 
 import { OPEventManager, OPEventNameEnums, IReduxState, OP2Event, IRemoteChangeset } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
+import { IOtEventContext } from 'database/ot/interfaces/ot.interface';
 import { InjectLogger } from 'shared/common';
 import { Logger } from 'winston';
 import { OTEventManager } from './ot.event.manager';
@@ -55,7 +56,7 @@ export class OTEventService {
     });
   }
 
-  async handleChangesets(changesets: IRemoteChangeset[], context: any) {
+  async handleChangesets(changesets: IRemoteChangeset[], context: IOtEventContext) {
     if (OTEventManager.isEmpty()) {
       this.logger.debug('OT event executor is empty');
       return;

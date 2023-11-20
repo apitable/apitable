@@ -26,7 +26,7 @@ import { InjectLogger, SOCKET_GRPC_CLIENT } from 'shared/common';
 import { IClientRoomChangeResult } from 'shared/services/socket/socket.interface';
 import { Logger } from 'winston';
 
-export class GrpcSocketClient implements OnModuleInit {
+export class SocketGrpcClient implements OnModuleInit {
   private socketClient!: SocketService;
 
   constructor(

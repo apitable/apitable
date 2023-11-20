@@ -35,7 +35,10 @@ import { expandNodeInfo } from '../node_info';
 import { ContextItemKey, contextItemMap } from './context_menu_data';
 import { MobileNodeContextMenuTitle } from './mobile_context_menu_title';
 // @ts-ignore
-import { createBackupSnapshot, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { createBackupSnapshot } from 'enterprise/time_machine/backup/backup';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing';
+
 
 import {useAppSelector} from "pc/store/react-redux";
 
@@ -154,6 +157,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
       const removable = permissions.removable && targetManageable;
       const movable = permissions.movable && targetManageable;
       const parentPermissions = treeNodesMap[parentId]?.permissions;
+      const backupcreatAble = permissions.manageable && Boolean(createBackupSnapshot);
       const copyable =
         parentPermissions && parentPermissions.manageable && permissions.manageable && module === ConfigConstant.Modules.CATALOG && targetManageable;
       const nodeUrl = `${window.location.protocol}//${window.location.host}/workbench/${nodeId}`;
@@ -200,7 +204,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
             ],
             [
               contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
-              contextItemMap.get(ContextItemKey.CreateBackup)(() => _createBackupSnapshot(nodeId), !createBackupSnapshot),
+              contextItemMap.get(ContextItemKey.CreateBackup)(() => _createBackupSnapshot(nodeId), !backupcreatAble),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),

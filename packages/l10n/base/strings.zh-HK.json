@@ -201,7 +201,7 @@
   "ai_feedback_time": "時間",
   "ai_feedback_user": "用戶",
   "ai_form_submit_success": "感謝您的提交！",
-  "ai_input_credit_usage_tooltip": "使用gpt-3.5-turbo(默認)的一個AI查詢花費1個消息信用，使用GPT-4的一個Al查詢花費20個消息信用，不同的模型有不同的消耗。",
+  "ai_input_credit_usage_tooltip": "進行對話會消耗算力點，選擇不同模型則消耗不同算力點",
   "ai_latest_train_date": "上一次訓練：${date}",
   "ai_mark_state": "標記為：",
   "ai_message_credit_title": "消息信用",

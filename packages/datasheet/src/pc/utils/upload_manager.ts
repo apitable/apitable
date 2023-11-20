@@ -26,7 +26,7 @@ import { store } from 'pc/store';
 import { byte2Mb, execNoTraceVerification } from 'pc/utils';
 import { getEnvVariables } from './env';
 // @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing';
 
 interface IUploadMap {
   [key: string]: IUploadMapItem;

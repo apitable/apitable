@@ -21,6 +21,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { findNode, Selectors, Strings, t } from '@apitable/core';
+import { AutomationPanel } from 'pc/components/automation';
 import { DashboardPanel } from 'pc/components/dashboard_panel';
 import { DataSheetPane } from 'pc/components/datasheet_pane';
 import { FolderShowcase } from 'pc/components/folder_showcase';
@@ -28,18 +29,16 @@ import { FormPanel } from 'pc/components/form_panel';
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import { ViewListBox } from 'pc/components/mobile_bar/view_list_box';
 import { useSideBarVisible } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import IconWechatGuide from 'static/icon/common/common_tip_guide.png';
 import { RenderModal } from '../../tab_bar/description_modal/description_modal';
 import { ApplicationJoinSpaceAlert } from '../application_join_space_alert';
 import { IShareMenu } from '../share_menu';
 import { ShareMenu } from '../share_menu/share_menu';
 import styles from './style.module.less';
-import { AutomationPanel } from "pc/components/automation";
-
-import {useAppSelector} from "pc/store/react-redux";
 
 // @ts-ignore
-const AIPanel = dynamic(() => import('enterprise').then((module) => module.ChatPage));
+const AIPanel = dynamic(() => import('enterprise/chat/chat_page').then((module) => module.ChatPage));
 
 export interface IShareMobileProps extends IShareMenu {
   applicationJoinAlertVisible: boolean;

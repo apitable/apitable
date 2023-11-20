@@ -145,6 +145,13 @@ export abstract class Field {
   }
 
   /**
+   * whether the field can be filter
+   */
+  get canFilter(): boolean {
+    return true;
+  }
+
+  /**
    * calc field exception info
    */
   get warnText(): string {

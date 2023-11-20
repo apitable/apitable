@@ -28,7 +28,9 @@ import { useRequest, useUserRequest } from 'pc/hooks';
 import { UsingTemplateModal } from '../using_template_modal';
 import styles from './style.module.less';
 // @ts-ignore
-import { LoginModal, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
+// @ts-ignore
+import { LoginModal } from 'enterprise/home/login_modal/login_modal';
 
 import {useAppSelector} from "pc/store/react-redux";
 

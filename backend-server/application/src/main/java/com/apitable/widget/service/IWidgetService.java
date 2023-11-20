@@ -32,6 +32,15 @@ import com.apitable.workspace.dto.DatasheetWidgetDTO;
 public interface IWidgetService {
 
     /**
+     * Get space widget count.
+     *
+     * @param spaceId   space id
+     * @return count
+     * @author Chambers
+     */
+    Long getSpaceWidgetCount(String spaceId);
+
+    /**
      * @param userId user id
      * @param spaceId space id
      * @param storeListRo   request parameters

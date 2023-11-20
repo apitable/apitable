@@ -1,33 +1,43 @@
+import axios from 'axios';
 import {
   createConfiguration,
   AutomationApi,
   RequestContext, ResponseContext,
-  ServerConfiguration
+  ServerConfiguration, WorkbenchNodeApiApi
 } from '@apitable/api-client';
+import { isServer } from '@apitable/core/dist/utils/env';
 import { apiErrorManager, redirectIfUserApplyLogout } from 'api/utils';
-import { getEnvVariables, getReleaseVersion, getSpaceIdFormTemplate } from 'pc/utils/env';
-import { isServer } from "@apitable/core/dist/utils/env";
+import { getCookie } from 'pc/utils';
+import { getReleaseVersion, getSpaceIdFormTemplate } from 'pc/utils/env';
 
+const CONST_XSRF_TOKEN = 'XSRF-TOKEN';
 const defaultMiddleware = [
   {
-    pre: (context: RequestContext): Promise<RequestContext> => {
+    pre: async (context: RequestContext): Promise<RequestContext> => {
       redirectIfUserApplyLogout();
-      // @ts-ignore
-      const customHeaders = window.__initialization_data__.headers;
-      if (customHeaders && Object.keys(customHeaders).length) {
-        for (const k in customHeaders) {
-          context.setHeaderParam(k, customHeaders[k]);
+      if(!isServer()) {
+        // @ts-ignore
+        const customHeaders = window.__initialization_data__.headers;
+        if (customHeaders && Object.keys(customHeaders).length) {
+          for (const k in customHeaders) {
+            context.setHeaderParam(k, customHeaders[k]);
+          }
         }
+
+        const xsrfToken = getCookie(CONST_XSRF_TOKEN);
+        context.setHeaderParam('X-XSRF-TOKEN', xsrfToken);
+
+        const spaceId = getSpaceIdFormTemplate();
+
+        context.setHeaderParam('X-Space-Id', spaceId ?? axios.defaults.headers.common['X-Space-Id']);
       }
 
       if (process.env.NODE_ENV === 'production') {
         context.setHeaderParam('X-Front-Version', getReleaseVersion());
-        const spaceId = getSpaceIdFormTemplate();
-        if (spaceId) {
-          context.setHeaderParam('X-Space-Id', spaceId);
-        }
       }
-      return new Promise((resolve) => resolve(context));
+
+      const requestContextPromise : Promise<RequestContext>= new Promise((resolve) => resolve(context));
+      return await requestContextPromise;
     },
     post: async (context: ResponseContext): Promise<ResponseContext> => {
       const text = await context.body.text();
@@ -42,7 +52,7 @@ const defaultMiddleware = [
         binary: () => context.body.binary(),
       });
       if (!response) return new Promise((resolve) => resolve(newContext));
-      const { success, code, data, message = 'Error' } = response;
+      const { success, code, message = 'Error' } = response;
       if(!success) {
         try {
           apiErrorManager.handleError(code);
@@ -57,6 +67,11 @@ const defaultMiddleware = [
 
 const endpoint =isServer() ? process?.env?.API_PROXY : '';
 export const automationApiClient = new AutomationApi(createConfiguration({
+  baseServer: new ServerConfiguration(`${endpoint}/api/v1`, {}),
+  promiseMiddleware: defaultMiddleware
+}));
+
+export const workbenchClient = new WorkbenchNodeApiApi(createConfiguration({
   baseServer: new ServerConfiguration(`${endpoint}/api/v1`, {}),
   promiseMiddleware: defaultMiddleware
 }));

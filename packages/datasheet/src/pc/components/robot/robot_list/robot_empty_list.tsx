@@ -28,7 +28,7 @@ import ImageNoRecordLight from 'static/icon/datasheet/automation_empty_light.png
 import { useAutomationNavigateController } from '../../automation/controller/controller';
 import { useAddNewRobot, useShowRobot } from '../hooks';
 // @ts-ignore
-import { isWecomFunc } from 'enterprise';
+import { isWecomFunc } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

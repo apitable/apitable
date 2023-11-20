@@ -96,9 +96,6 @@ export class GatewayConstants {
 
   public static readonly SOCKET_SERVER_NOTIFY_PATH = '/socket/notify';
 
-  public static readonly ROOM_SERVICE = 'ROOM_SERVICE';
-
-  public static readonly BACKEND_SERVICE = 'BACKEND_SERVICE';
 }
 
 export class HealthConstants {

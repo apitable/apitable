@@ -2,11 +2,11 @@ import dayjs from 'dayjs';
 import { compact, find } from 'lodash';
 import qs from 'qs';
 import { Field, FieldType, IFieldMap, IFieldPermissionMap, Selectors, string2Segment } from '@apitable/core';
-import { IFormQuery, IFormData } from './interface';
+import { IFormData, IFormQuery } from './interface';
 
 export const FORM_FIELD_TYPE = {
   select: [FieldType.SingleSelect, FieldType.MultiSelect],
-  primary: [FieldType.Member, FieldType.Link],
+  primary: [FieldType.Member, FieldType.Link, FieldType.OneWayLink],
   number: [FieldType.Rating, FieldType.Percent, FieldType.Currency, FieldType.Number, FieldType.Phone],
   bool: [FieldType.Checkbox],
   datetime: [FieldType.DateTime],

@@ -34,7 +34,7 @@ import { nameColRender, OperateCol } from '../ui';
 import { isPrimaryOrOwnFunc } from '../utils';
 import styles from './style.module.less';
 // @ts-ignore
-import { isSocialDingTalk, isSocialFeiShu, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
+import { isSocialDingTalk, isSocialFeiShu, isSocialPlatformEnabled, isSocialWecom } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

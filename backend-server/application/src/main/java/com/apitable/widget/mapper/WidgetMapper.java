@@ -51,7 +51,8 @@ public interface WidgetMapper {
      * @param nodeType  node type
      * @return WidgetInfo
      */
-    List<WidgetInfo> selectInfoBySpaceIdAndNodeType(@Param("spaceId") String spaceId, @Param("nodeType") Integer nodeType);
+    List<WidgetInfo> selectInfoBySpaceIdAndNodeType(@Param("spaceId") String spaceId,
+            @Param("nodeType") Integer nodeType, @Param("limit") Integer limit);
 
     /**
      * @param nodeId node id
@@ -107,8 +108,8 @@ public interface WidgetMapper {
 
     /**
      * Query all widget num of the space
-     * @param spaceId
-     * @return
+     * @param spaceId   space ID
+     * @return count
      */
     Long selectCountBySpaceId(@Param("spaceId") String spaceId);
 }

@@ -33,7 +33,7 @@ import { usePrevious, useQuery, useSideBarVisible } from 'pc/hooks';
 import { useNetwork } from 'pc/hooks/use_network';
 import styles from './style.module.less';
 // @ts-ignore
-import { isDingtalkSkuPage } from 'enterprise';
+import { isDingtalkSkuPage } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

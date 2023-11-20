@@ -22,8 +22,8 @@ import { Any } from 'grpc/generated/google/protobuf/any';
 import { Value } from 'grpc/generated/google/protobuf/struct';
 import { LeaveRoomRo, RoomServingService, UserRoomChangeRo, WatchRoomRo } from 'grpc/generated/serving/RoomServingService';
 import { lastValueFrom } from 'rxjs';
-import { GatewayConstants } from 'shared/common/constants/socket.module.constants';
 import { GrpcClientProxy } from './grpc.client.proxy';
+import { ROOM_GRPC_CLIENT } from 'shared/common';
 
 @Injectable()
 export class GrpcClient implements OnModuleInit {
@@ -34,7 +34,7 @@ export class GrpcClient implements OnModuleInit {
 
   constructor(
     // @ts-ignore
-    @Inject(GatewayConstants.ROOM_SERVICE) private readonly roomClient: GrpcClientProxy,
+    @Inject(ROOM_GRPC_CLIENT) private readonly roomClient: GrpcClientProxy,
   ) {}
 
   async onModuleInit() {

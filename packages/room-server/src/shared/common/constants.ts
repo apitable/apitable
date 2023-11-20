@@ -146,6 +146,8 @@ export class NodeExtraConstant {
   public static readonly SHOW_RECORD_HISTORY = 'showRecordHistory';
 }
 
+export const BACKEND_GRPC_CLIENT = 'BACKEND_GRPC_CLIENT';
+export const ROOM_GRPC_CLIENT = 'ROOM_GRPC_CLIENT';
 export const SOCKET_GRPC_CLIENT = 'SOCKET_GRPC_CLIENT';
 
 // 100M

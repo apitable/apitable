@@ -131,6 +131,11 @@ public class WidgetServiceImpl implements IWidgetService {
     private EntitlementServiceFacade entitlementServiceFacade;
 
     @Override
+    public Long getSpaceWidgetCount(String spaceId) {
+        return widgetMapper.selectCountBySpaceId(spaceId);
+    }
+
+    @Override
     public List<WidgetStoreListInfo> widgetStoreList(Long userId, String spaceId, WidgetStoreListRo storeListRo) {
         if (null != storeListRo && WidgetReleaseType.WAIT_REVIEW.getValue().equals(storeListRo.getType())) {
             // show a list of global widgets to be reviewed
@@ -158,7 +163,8 @@ public class WidgetServiceImpl implements IWidgetService {
     public List<WidgetInfo> getWidgetInfoList(String spaceId, Long memberId, Integer count) {
         log.info("Gets the component information in the specified space.");
         // load only the components in the datasheet
-        List<WidgetInfo> widgetInfos = widgetMapper.selectInfoBySpaceIdAndNodeType(spaceId, NodeType.DATASHEET.getNodeType());
+        List<WidgetInfo> widgetInfos = widgetMapper.selectInfoBySpaceIdAndNodeType(spaceId,
+                NodeType.DATASHEET.getNodeType(), count);
         if (CollUtil.isEmpty(widgetInfos)) {
             return new ArrayList<>();
         }
@@ -461,7 +467,7 @@ public class WidgetServiceImpl implements IWidgetService {
         }
         Long maxWidgerNums = subscriptionInfo.getFeature().getMessageWidgetNums().getValue();
         // check the number of components in the space
-        Long count = widgetMapper.selectCountBySpaceId(spaceId);
+        Long count = this.getSpaceWidgetCount(spaceId);
         if (maxWidgerNums != -1 && count >= maxWidgerNums) {
             throw new BusinessException(LimitException.WIDGET_OVER_LIMIT);
         }

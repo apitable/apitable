@@ -37,6 +37,15 @@ import java.util.function.Consumer;
 public interface ITeamService extends IService<TeamEntity> {
 
     /**
+     * Get space id.
+     *
+     * @param teamId team table ID
+     * @return Space ID
+     * @author Chambers
+     */
+    String getSpaceIdByTeamId(Long teamId);
+
+    /**
      * Get Team Base Information.
      *
      * @param teamIds team ids

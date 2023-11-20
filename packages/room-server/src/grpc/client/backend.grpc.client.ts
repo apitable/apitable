@@ -19,16 +19,16 @@
 import { Inject, OnModuleInit } from '@nestjs/common';
 import { ClientGrpc } from '@nestjs/microservices';
 import { BasicResult } from 'grpc/generated/common/Core';
-import { ApiServingService, NodeBrowsingRo } from 'grpc/generated/serving/BackendServingService';
+import { ApiServingService, DocumentOperateRo, NodeBrowsingRo } from 'grpc/generated/serving/BackendServingService';
 import { lastValueFrom } from 'rxjs';
-import { GatewayConstants } from 'shared/common/constants/socket.module.constants';
+import { BACKEND_GRPC_CLIENT } from 'shared/common';
 
 export class BackendGrpcClient implements OnModuleInit {
   private backendService!: ApiServingService;
 
   constructor(
     // @ts-ignore
-    @Inject(GatewayConstants.BACKEND_SERVICE) private readonly client: ClientGrpc,
+    @Inject(BACKEND_GRPC_CLIENT) private readonly client: ClientGrpc,
   ) {}
 
   onModuleInit(): any {
@@ -37,5 +37,9 @@ export class BackendGrpcClient implements OnModuleInit {
 
   async recordNodeBrowsing(message: NodeBrowsingRo): Promise<BasicResult> {
     return await lastValueFrom(this.backendService.recordNodeBrowsing(message));
+  }
+
+  async documentOperate(message: DocumentOperateRo): Promise<BasicResult> {
+    return await lastValueFrom(this.backendService.documentOperate(message));
   }
 }

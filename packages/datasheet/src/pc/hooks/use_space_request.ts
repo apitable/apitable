@@ -24,7 +24,7 @@ import { Method } from '../components/route_manager/const';
 import { navigationToUrl } from '../components/route_manager/navigation_to_url';
 import { Router } from '../components/route_manager/router';
 // @ts-ignore
-import { isSocialDomain } from 'enterprise';
+import { isSocialDomain } from 'enterprise/home/social_platform/utils';
 
 export const useSpaceRequest = () => {
   const dispatch = useDispatch();
@@ -88,31 +88,6 @@ export const useSpaceRequest = () => {
       message.config({
         top: 80,
       });
-      return res.data;
-    });
-  };
-
-  // Changing member settings
-  const updateMemberSettingReq = (data: { invitable?: boolean; joinable?: boolean; mobileShowable?: boolean }) => {
-    return Api.updateMemberSetting(data).then((res) => {
-      const { success } = res.data;
-      if (success) {
-        Message.success({ content: t(Strings.operate_success) });
-      } else {
-        Message.error({ content: t(Strings.operate_fail) });
-      }
-      return res.data;
-    });
-  };
-  // Changing workbench settings
-  const updateWorkbenchSettingReq = (data: { nodeExportable?: boolean; watermarkEnable?: boolean }) => {
-    return Api.updateWorkbenchSetting(data).then((res) => {
-      const { success } = res.data;
-      if (success) {
-        Message.success({ content: t(Strings.operate_success) });
-      } else {
-        Message.error({ content: t(Strings.operate_fail) });
-      }
       return res.data;
     });
   };
@@ -184,8 +159,6 @@ export const useSpaceRequest = () => {
     spaceFeaturesReq,
     getEmbedInfoReq,
     checkEmailReq,
-    updateMemberSettingReq,
-    updateWorkbenchSettingReq,
     updateSecuritySettingReq,
     getUserAndRedirect,
     createSpaceReq,

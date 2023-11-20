@@ -21,7 +21,7 @@ import dayjs from 'dayjs';
 import Calendar from 'dayjs/plugin/calendar';
 import relativeTime from 'dayjs/plugin/relativeTime';
 // @ts-ignore
-import { getSocialWecomUnitName, isSocialWecom } from 'enterprise';
+import { getSocialWecomUnitName, isSocialWecom } from 'enterprise/home/social_platform/utils';
 import parser, { HTMLReactParserOptions } from 'html-react-parser';
 import { isArray } from 'lodash';
 import { FC } from 'react';

@@ -55,6 +55,12 @@ import { Field } from './field';
 import { StatTranslate, StatType } from './stat';
 
 const dfzFormatWithValid = (date: any, format: string, timeZone?: string) => {
+  /**
+   * fix issue: https://github.com/vikadata/vikadata/issues/8805
+   */
+  if (!dayjs(Number(date)).isValid()) {
+    return null;
+  }
   try {
     return dfzFormat(date, covertDayjsFormat2DateFnsFormat(format), timeZone ? { timeZone } : undefined);
   } catch(_e) {

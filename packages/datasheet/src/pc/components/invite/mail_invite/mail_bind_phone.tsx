@@ -28,7 +28,7 @@ import { InviteTitle } from '../components';
 import { useInvitePageRefreshed } from '../use_invite';
 import styles from './style.module.less';
 // @ts-ignore
-import { IdentifyingCodeLogin } from 'enterprise';
+import { IdentifyingCodeLogin } from 'enterprise/home/login/identifying_code_login/identifying_code_login';
 
 import {useAppSelector} from "pc/store/react-redux";
 

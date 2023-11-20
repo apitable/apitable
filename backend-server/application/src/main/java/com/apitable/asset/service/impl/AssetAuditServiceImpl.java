@@ -120,8 +120,7 @@ public class AssetAuditServiceImpl extends ServiceImpl<AssetAuditMapper, AssetAu
     @Override
     public IPage<AssetsAuditVo> readReviews(Page page) {
         log.info("query the list of pictures that need manual review");
-        IPage<AssetsAuditVo> assetsAuditList = assetAuditMapper.getArtificialAssetsAuditList(page);
-        return assetsAuditList;
+        return assetAuditMapper.getArtificialAssetsAuditList(page);
     }
 
     @Override

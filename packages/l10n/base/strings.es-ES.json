@@ -201,7 +201,7 @@
   "ai_feedback_time": "Tiempo",
   "ai_feedback_user": "User",
   "ai_form_submit_success": "¡Gracias por su sumisión!",
-  "ai_input_credit_usage_tooltip": "Una consulta Al con gpt - 3.5 - turbo (el defecto) cuesta 1 mensaje credito. Una consulta Al con gpt - 4 cuesta 20 mensajes credito. Diferentes modelos tienen un consumo diferente.",
+  "ai_input_credit_usage_tooltip": "Participar en una conversación consumirá puntos de potencia computacional, y elegir diferentes modelos de conversación consumirá diferentes cantidades de puntos de potencia computacional.",
   "ai_latest_train_date": "Último tiempo de entrenamiento: ${date}",
   "ai_mark_state": "Marca como:",
   "ai_message_credit_title": "Crédito del mensaje",

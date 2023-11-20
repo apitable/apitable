@@ -1,6 +1,6 @@
 {
   "name": "@apitable/core",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "datasheet core",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,6 +22,8 @@
   },
   "dependencies": {
     "@apitable/i18n-lang": "*",
+    "@apitable/databus-wasm-nodejs": "*",
+    "@apitable/databus-wasm-web": "*",
     "@apitable/i18n": "^1.0.4",
     "@types/lodash": "^4.14.197",
     "@types/socket.io-client": "^1.4.36",

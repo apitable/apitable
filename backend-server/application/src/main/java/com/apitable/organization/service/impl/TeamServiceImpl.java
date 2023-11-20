@@ -55,6 +55,7 @@ import com.apitable.organization.vo.TeamInfoVo;
 import com.apitable.organization.vo.TeamTreeVo;
 import com.apitable.organization.vo.TeamVo;
 import com.apitable.organization.vo.UnitTeamVo;
+import com.apitable.shared.util.DBUtil;
 import com.apitable.space.service.ISpaceInviteLinkService;
 import com.apitable.space.service.ISpaceRoleService;
 import com.apitable.space.service.ISpaceService;
@@ -123,6 +124,13 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     private IRoleMemberService iRoleMemberService;
 
     @Override
+    public String getSpaceIdByTeamId(Long teamId) {
+        String spaceId = teamMapper.selectSpaceIdById(teamId);
+        ExceptionUtil.isNotNull(spaceId, GET_TEAM_ERROR);
+        return spaceId;
+    }
+
+    @Override
     public List<TeamBaseInfoDTO> getTeamBaseInfo(List<Long> teamIds) {
         return teamMapper.selectBaseInfoDTOByIds(teamIds);
     }
@@ -162,7 +170,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     private List<TeamTreeVo> getTeamViewInTeamTree(List<Long> teamIds, Integer depth) {
-        List<TeamTreeVo> teamTreeVos = teamMapper.selectTeamTreeVoByTeamIdIn(teamIds);
+        List<TeamTreeVo> teamTreeVos = DBUtil.batchSelectByFieldIn(teamIds, teamMapper::selectTeamTreeVoByTeamIdIn);
         Map<Long, TeamTreeVo> teamIdToTeamInfoMap = teamTreeVos.stream()
             .collect(Collectors.toMap(TeamTreeVo::getTeamId, Function.identity(),
                 (k1, k2) -> k1, LinkedHashMap::new));
@@ -170,7 +178,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
             .filter(i -> BooleanUtil.isTrue(i.getHasChildren()))
             .map(TeamTreeVo::getTeamId).collect(Collectors.toSet());
         while (!parentIds.isEmpty() && depth > 0) {
-            List<TeamTreeVo> treeVos = teamMapper.selectTeamTreeVoByParentIdIn(parentIds);
+            List<TeamTreeVo> treeVos = DBUtil.batchSelectByFieldIn(parentIds, teamMapper::selectTeamTreeVoByParentIdIn);
             if (treeVos.isEmpty()) {
                 return new ArrayList<>(teamIdToTeamInfoMap.values());
             }
@@ -526,7 +534,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         ExceptionUtil.isTrue(flag, OrganizationException.DELETE_TEAM_ERROR);
         iUnitService.removeByTeamId(teamId);
         // delete the department and remove the public link
-        iSpaceInviteLinkService.deleteByTeamId(teamId);
+        iSpaceInviteLinkService.deleteByTeamIds(Collections.singletonList(teamId));
     }
 
     @Override
@@ -650,7 +658,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public List<UnitTeamVo> getUnitTeamVo(String spaceId, List<Long> teamIds) {
-        return baseMapper.selectUnitTeamVoByTeamIds(spaceId, teamIds);
+        return DBUtil.batchSelectByFieldIn(teamIds, (ids) -> teamMapper.selectUnitTeamVoByTeamIds(spaceId, ids));
     }
 
     @Override

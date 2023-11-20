@@ -5561,6 +5561,7 @@
   "share_copy_url_link": "Copy link",
   "share_embed": "Embed",
   "share_tips": "Publish a share link for this file. Users who obtain the link on the Internet can view, edit, or copy the file based on their permissions.",
+  "ai_try_again": "Try again",
   "ai_new_chatbot": "New AI agent",
   "ai_new_agent": "New AI agent",
   "ai_create_guide_content": "As an AI agent, I can answer your questions based on the knowledge I have learned. Before starting the conversation, please select a datasheet as a knowledge base, and I will read all the data in it for learning.",
@@ -5713,7 +5714,7 @@
   "automation_action_num_warning": "Each automation supports up to ${value} actions at most",
   "subscribe_seats_usage_over_limit": "The number of seats in the current space exceeds the limit, please upgrade your subscription.\n（Seats include number of members and AI agents）",
   "subscribe_credit_usage_over_limit": "The number of credits in the current space exceeds the limit, please upgrade your subscription.\n",
-  "ai_input_credit_usage_tooltip": "One Al query with gpt-3.5-turbo (the default) costs 1 message credit.One Al query with gpt-4 costs 20 message credit.Different models have different consumption.",
+  "ai_input_credit_usage_tooltip": "Engaging in a conversation uses computational power points, and different conversation models consume varying amounts of these points.",
   "ai_credit_time_dimension_today": "Today",
   "ai_credit_time_dimension_week": "This week",
   "ai_credit_time_dimension_month": "This month",
@@ -5838,5 +5839,7 @@
   "training_data_source_table_column_1": "Source",
   "training_data_source_table_column_2": "Last Training",
   "training_data_source_table_column_3": "Status",
-  "training_data_source_table_column_4": "Operation"
+  "training_data_source_table_column_4": "Operation",
+  "bind_app_sumo_btn_str": "Activate account",
+  "app_sumo_plan_desc": "App Sumo 的描述"
 }

@@ -333,6 +333,36 @@ export const SpaceLevelInfo: ISpaceLevelInfo = {
     buttonText: t(Strings.renew),
     tagText: t(Strings.paid_edition),
   }),
+  appsumo_tier1: getSpaceConfig('enterprise', {
+    title: 'AppSumo Tier 1',
+    titleTip: t(Strings.app_sumo_plan_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  appsumo_tier2: getSpaceConfig('enterprise', {
+    title: 'AppSumo Tier 2',
+    titleTip: t(Strings.app_sumo_plan_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  appsumo_tier3: getSpaceConfig('enterprise', {
+    title: 'AppSumo Tier 3',
+    titleTip: t(Strings.app_sumo_plan_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  appsumo_tier4: getSpaceConfig('enterprise', {
+    title: 'AppSumo Tier 4',
+    titleTip: t(Strings.app_sumo_plan_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  appsumo_tier5: getSpaceConfig('enterprise', {
+    title: 'AppSumo Tier 5',
+    titleTip: t(Strings.app_sumo_plan_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
   atlas: getSpaceConfig('golden', {
     title: t(Strings.atlas),
     titleTip: t(Strings.atlas_grade_desc),

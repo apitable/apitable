@@ -362,8 +362,8 @@ export function linkValid(token: string, nodeId?: string) {
  * @param nodeId
  * @returns
  */
-export function joinViaSpace(token: string, nodeId?: string) {
-  return axios.post(Url.JOIN_VIA_LINK, { token, nodeId });
+export function joinViaSpace(token: string, nodeId: string, data?: string) {
+  return axios.post(Url.JOIN_VIA_LINK, { token, nodeId, data });
 }
 
 export function getCollaboratorListPage(pageObjectParams: string, nodeId: string) {

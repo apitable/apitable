@@ -138,6 +138,7 @@
   "aggregate_values_describle": "将散点值聚合统计",
   "agree": "同意",
   "agreed": "已同意",
+  "ai_try_again": "点此重试",
   "ai_advanced_mode_desc": "高级模式允许用户自定义提示，从而更好地控制 AI 助手的行为和响应。",
   "ai_advanced_mode_title": "高级模式",
   "ai_api_curl_template": "## Create chat completions\n\n```bash\n\ncurl -X POST \"{{apiBase}}/fusion/v1/ai/{{aiId}}/chat/completions\" \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Bearer {{token}}\" \\\n  -d '{\n    \"model\": \"gpt-3.5-turbo\",\n    \"messages\": [\n      {\n        \"role\": \"system\",\n        \"content\": \"You are a helpful assistant.\"\n      },\n      {\n        \"role\": \"user\",\n        \"content\": \"Hello!\"\n      }\n    ]\n  }'\n\n```\n\n## Returned data example\n\n```json\n{\n  \"id\": \"aitable_ai_CkZH2zQokhry31j_1693452659\",\n  \"conversation_id\": \"CS-0253eb8d-d6c6-4543-88d4-fcb555f52982\",\n  \"actions\": null,\n  \"object\": \"chat.completion\",\n  \"created\": 1693452659,\n  \"model\":\"gpt-3.5-turbo\",\n  \"choices\": [{\n    \"index\": 0,\n    \"message\": {\n      \"role\": \"assistant\",\n      \"content\": \"\\n\\nHello there, how may I assist you today\",\n    },\n    \"finish_reason\": \"stop\"\n  }],\n  \"usage\": {\n    \"prompt_tokens\": 9,\n    \"completion_tokens\": 12,\n    \"total_tokens\": 21,\n    \"total_cost\": 7.900000000000001e-05,\n    \"result\": \"I am an AI, specifically a language model developed by OpenAI.\"\n  }\n}\n```\n",
@@ -199,7 +200,7 @@
   "ai_feedback_time": "反馈时间",
   "ai_feedback_user": "用户",
   "ai_form_submit_success": "感谢你的提交！",
-  "ai_input_credit_usage_tooltip": "进行一次gpt-3.5-turbo（默认）对话消耗1点算力点。进行一次gpt-4对话消耗20点算力点。选择不同模型对话会消耗不同算力点",
+  "ai_input_credit_usage_tooltip": "进行对话会消耗算力点，选择不同模型对话会消耗不同算力点",
   "ai_latest_train_date": "上一次训练：${date}",
   "ai_mark_state": "标记状态",
   "ai_message_credit_title": "算力点消耗",
@@ -2654,7 +2655,7 @@
   "invite_outsider_invite_btn_tip": "受邀新成员的「工作台」权限当前默认为「可以管理」",
   "invite_outsider_invite_input_already_exist": "此邮箱已经添加",
   "invite_outsider_invite_input_invalid": "邮箱格式不正确",
-  "invite_outsider_invite_input_placeholder": "输入一个或多个电子邮件地址，用回车确认",
+  "invite_outsider_invite_input_placeholder": "输入一个或多个电子邮件地址，用回车键确认",
   "invite_outsider_keep_on": "继续邀请",
   "invite_outsider_send_invitation": "发送邀请",
   "invite_qr_code_download": "下载二维码",
@@ -5842,5 +5843,7 @@
   "training_data_source_table_column_1": "Source",
   "training_data_source_table_column_2": "Last Training",
   "training_data_source_table_column_3": "Status",
-  "training_data_source_table_column_4": "Operation"
+  "training_data_source_table_column_4": "Operation",
+  "bind_app_sumo_btn_str": "激活账户",
+  "app_sumo_plan_desc": "App Sumo 的描述"
 }

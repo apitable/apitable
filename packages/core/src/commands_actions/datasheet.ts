@@ -737,13 +737,14 @@ export class DatasheetActions {
   /**
    * add record to table
    */
-  static addRecord2Action(snapshot: ISnapshot, payload: { viewId: string; record: IRecord; index: number }): IJOTAction[] | null {
+  static addRecord2Action(snapshot: ISnapshot, payload: { viewId: string; record: IRecord; index: number, newRecordIndex: number }): IJOTAction[] | null {
     const recordMap = snapshot.recordMap;
     const views = snapshot.meta.views;
-    const { record, index, viewId } = payload;
+    const { record, index, viewId, newRecordIndex } = payload;
 
     const actions = views.reduce<IJOTAction[]>((pre, cur, viewIndex) => {
-      let rowIndex = cur.rows.length;
+      // multi add rows length no change
+      let rowIndex = cur.rows.length + newRecordIndex;
       if (cur.rows.some(row => row.recordId === record.id)) {
         return pre;
       }

@@ -41,7 +41,7 @@ import { ModifyMobileModal } from './modify_mobile_modal';
 import { ModifyNameModal } from './modify_name_modal';
 import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName, isSocialWecom, isWecomFunc } from 'enterprise';
+import { getSocialWecomUnitName, isSocialWecom, isWecomFunc } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

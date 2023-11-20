@@ -22,7 +22,7 @@ import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { getEnvVariables } from 'pc/utils/env';
 // @ts-ignore
-import { clearWizardsData } from 'enterprise';
+import { clearWizardsData } from 'enterprise/guide/utils';
 
 export const useContactUs = () => {
   return useCallback(() => {

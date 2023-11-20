@@ -61,6 +61,7 @@ public class ClientTasks {
     @SchedulerLock(name = "heartbeat", lockAtMostFor = "1h", lockAtLeastFor = "30m")
     public void heartbeat() {
         assertLocked();
+        log.info("Execute Heartbeat Cron");
         HttpHeaders headers = new HttpHeaders();
         Map<String, Object> message = new HashMap<>();
         if (StrUtil.isNotBlank(constProperties.getServerDomain())) {

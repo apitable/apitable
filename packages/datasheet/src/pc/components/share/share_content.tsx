@@ -1,11 +1,10 @@
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { findNode } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { AutomationPanelContent } from '../automation/content';
 import { AutomationPanel } from '../automation/panel';
 import { INodeTree } from './interface';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const MirrorRoute = dynamic(() => import('../mirror/mirror_route').then((module) => module.MirrorRoute));
 const DataSheetPane = dynamic(() => import('../datasheet_pane').then((module) => module.DataSheetPane));
@@ -13,7 +12,7 @@ const FormPanel = dynamic(() => import('../form_panel').then((module) => module.
 const DashboardPanel = dynamic(() => import('../dashboard_panel').then((module) => module.DashboardPanel));
 const FolderShowcase = dynamic(() => import('../folder_showcase').then((module) => module.FolderShowcase));
 // @ts-ignore
-const AIPanel = dynamic(() => import('enterprise').then((module) => module.ChatPage));
+const AIPanel = dynamic(() => import('enterprise/chat/chat_page').then((module) => module.ChatPage));
 
 interface IShareContentProps {
   loading: boolean;
@@ -28,7 +27,6 @@ export const ShareContent: React.FC<IShareContentProps> = (props) => {
   if (!nodeTree) {
     return null;
   }
-
   if (automationId) {
     return <AutomationPanel resourceId={automationId} />;
   } else if (mirrorId) {

@@ -23,8 +23,9 @@ import { Modal } from 'pc/components/common';
 import { getEnvVariables } from 'pc/utils/env';
 import styles from './style.module.less';
 // @ts-ignore
-import { showUpgradeContactUs, Trial } from 'enterprise';
-
+import { Trial } from 'enterprise/log/trial';
+// @ts-ignore
+import { showUpgradeContactUs } from 'enterprise/subscribe_system/order_modal/pay_order_success';
 import {useAppSelector} from "pc/store/react-redux";
 
 const upperCaseFirstWord = (str: string) => {

@@ -23,11 +23,11 @@ import { BasicResult, ServerRoomChangeRo } from "../common/Core";
 
 export const protobufPackage = "grpc.serving";
 
-/**
- * socket-server provided service
- * room->socket
- */
+/** socket-server provided service */
 export interface SocketService {
-  /** Server sends room Change event */
+  /**
+   * ============ room->socket ======================================
+   * Server sends room Change event
+   */
   serverRoomChange(request: ServerRoomChangeRo, metadata?: Metadata): Observable<BasicResult>;
 }

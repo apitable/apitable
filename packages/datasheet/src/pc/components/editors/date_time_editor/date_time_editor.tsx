@@ -70,7 +70,7 @@ import { DatePickerMobile } from './mobile';
 import style from './style.module.less';
 import { TimePicker } from './time_picker_only';
 // @ts-ignore
-import { DateTimeAlarm } from 'enterprise';
+import DateTimeAlarm from 'enterprise/alarm/date_time_alarm/date_time_alarm';
 
 import {useAppSelector} from "pc/store/react-redux";
 

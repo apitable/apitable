@@ -29,7 +29,9 @@ import { useResponsive } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
 import styles from 'pc/components/workspace/welcome/style.module.less';
 // @ts-ignore
-import { isDingtalkFunc, isSocialPlatformEnabled, showModal } from 'enterprise';
+import { showModal } from 'enterprise/guide/ui/modal';
+// @ts-ignore
+import { isDingtalkFunc, isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils'
 
 import {useAppSelector} from "pc/store/react-redux";
 
