@@ -18,29 +18,27 @@
   }
 }
 
-.previewing {
-  font-size: 20px;
-  font-weight: bold;
-  color: var(--primaryColor);
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 10000;
-  pointer-events: none;
-
-  .previewTip {
-    position: absolute;
-    right: 8px;
-    bottom: 8px;
-    pointer-events: all;
-    user-select: none;
-
-    a {
-      margin-left: 16px;
-      text-decoration: underline;
-      user-select: normal;
+div.previewing {
+  position: fixed;
+    left: calc(50% - 320px);
+    bottom: 24px;
+    width: 640px;
+    height: 48px;
+    border: 1px solid var(--borderOnbrandLight);
+    background: linear-gradient(0deg, var(--bgBrandLightDefault) 0%, var(--bgBrandLightDefault) 100%), var(--bgCommonDefault);
+    & > div {
+      display: block;
+      margin-right: 0;
     }
-  }
+    .previewTip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      button {
+        min-width: 68px;
+        span {
+          vertical-align: baseline;
+        }
+      }
+    }
 }
