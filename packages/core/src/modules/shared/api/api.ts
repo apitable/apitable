@@ -402,7 +402,7 @@ export function enableRoleExtend(nodeId: string) {
 export function disableRoleExtend(nodeId: string, includeExtend?: boolean) {
   const params = includeExtend ? { includeExtend } : {};
   if (getBrowserDatabusApiEnabled()){
-    WasmApi.getInstance().delete_cache(nodeId).then((result: any) => {
+    WasmApi.getInstance().delete_cache(nodeId).then((result) => {
       console.log('delete indexDb cache', result);
     });
   }
