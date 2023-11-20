@@ -1,6 +1,6 @@
 # APITable CHANGELOG
 
-## [HEAD](https://github.com/apitable/apitable/releases/tag/HEAD) (2023-11-20)
+## [v1.5.0-beta](https://github.com/apitable/apitable/releases/tag/v1.5.0-beta) (2023-11-20)
 
 
 ### What's more
