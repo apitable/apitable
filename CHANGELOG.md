@@ -1,5 +1,11 @@
 # APITable CHANGELOG
 
+## [v1.5.0-beta](https://github.com/apitable/apitable/releases/tag/v1.5.0-beta) (2023-11-20)
+
+
+### What's more
+
+* sync: hosted cloud ([#1469](https://github.com/apitable/apitable/pull/1469)) @robot518 
 ## [v1.4.0-beta.3](https://github.com/apitable/apitable/releases/tag/v1.4.0-beta.3) (2023-11-13)
 
 
