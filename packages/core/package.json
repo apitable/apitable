@@ -22,6 +22,8 @@
   },
   "dependencies": {
     "@apitable/i18n-lang": "*",
+    "@apitable/databus-wasm-nodejs": "*",
+    "@apitable/databus-wasm-web": "*",
     "@apitable/i18n": "^1.0.4",
     "@types/lodash": "^4.14.197",
     "@types/socket.io-client": "^1.4.36",
