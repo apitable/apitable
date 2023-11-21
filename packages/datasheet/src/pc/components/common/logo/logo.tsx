@@ -47,6 +47,7 @@ interface ILogoProps {
   text?: boolean;
   size?: 'mini' | 'small' | 'large';
   theme?: ThemeName;
+  type?:'LOGO'|'SHARE_LOGO'
 }
 
 export const LogoText: React.FunctionComponent<React.PropsWithChildren<React.SVGProps<SVGSVGElement>>> = {
@@ -57,7 +58,7 @@ export const LogoText: React.FunctionComponent<React.PropsWithChildren<React.SVG
 export const Logo: React.FC<React.PropsWithChildren<ILogoProps>> = (props) => {
   const colors = useThemeColors();
 
-  const { size = 'small', text = true, className, theme = ThemeName.Light } = props;
+  const { size = 'small', text = true, className, theme = ThemeName.Light, type='LOGO' } = props;
   const isLightTheme = theme === ThemeName.Light;
   const logoSize = LogoSize[size];
 
@@ -67,7 +68,7 @@ export const Logo: React.FC<React.PropsWithChildren<ILogoProps>> = (props) => {
     return (
       <img
         alt="logo"
-        src={integrateCdnHost(getEnvVariables().LOGO!)}
+        src={integrateCdnHost(envVars[type]||envVars.LOGO)}
         style={{ display: 'block', height: `${logoSize.logoSize}px` }}
         width={logoSize.logoSize}
       />
