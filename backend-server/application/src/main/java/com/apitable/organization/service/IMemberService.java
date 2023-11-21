@@ -263,7 +263,7 @@ public interface IMemberService extends IService<MemberEntity> {
      * @param openId
      * @return
      */
-    Long getUserIdByOpenId(String openId);
+    Long getUserIdByOpenId(String spaceId, String openId);
 
     /**
      * get member id even if he was deleted.
