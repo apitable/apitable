@@ -619,7 +619,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     }
 
     @Override
-    public boolean checkSeatOverLimitAndSendNotify(Long userId, String spaceId, long addedSeatNums, boolean isAllMember, boolean sendNotify) {
+    public boolean checkSeatOverLimitAndSendNotify(List<Long> userIds, String spaceId, long addedSeatNums, boolean isAllMember, boolean sendNotify) {
         // get subscription max seat nums
         SubscriptionInfo subscriptionInfo =
                 entitlementServiceFacade.getSpaceSubscription(spaceId);
@@ -641,7 +641,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
                     long finalTotalSeatNums = totalSeatNums;
                     TaskManager.me().execute(() -> NotificationManager.me()
                             .playerNotify(NotificationTemplateId.SPACE_REFRESH_CONTACT_SEATS_LIMIT,
-                                    ListUtil.toList(userId), 0L, spaceId,
+                                    userIds, 0L, spaceId,
                                     Dict.create().set("spaceName", spaceName).set("specification", maxSeatNums).set("usage", finalTotalSeatNums)));
                 } catch (Exception e) {
                     log.error("send space station notifications error", e);
@@ -1155,6 +1155,15 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             Boolean.FALSE) : Boolean.FALSE;
         result.setBlackSpace(blackSpace);
         return result;
+    }
+
+    @Override
+    public String getSpaceOwnerOpenId(String spaceId) {
+        Long adminMemberId = baseMapper.selectSpaceMainAdmin(spaceId);
+        if (adminMemberId == null) {
+            return null;
+        }
+        return memberMapper.selectOpenIdByMemberId(adminMemberId);
     }
 
     @Override

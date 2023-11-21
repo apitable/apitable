@@ -434,6 +434,14 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     Long selectUserIdByMemberId(@Param("memberId") Long memberId);
 
     /**
+     * query user id by open id.
+     *
+     * @param openId open id
+     * @return user id
+     */
+    Long selectUserIdByOpenId(@Param("openId") String openId);
+
+    /**
      * get user id by member id.
      *
      * @param memberIds member id

@@ -356,6 +356,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     @Override
+    public Long getUserIdByOpenId(String openId) {
+        return baseMapper.selectUserIdByOpenId(openId);
+    }
+
+    @Override
     public Long getMemberIdByOpenIdIgnoreDelete(String spaceId, String openId) {
         return memberMapper.selectIdByOpenIdIgnoreDelete(spaceId, openId);
     }
