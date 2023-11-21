@@ -29,10 +29,9 @@ public interface INodeRubbishService {
      * @param memberId member id
      * @param size          expected load quantity（May be because the total number or permissions are not enough）
      * @param lastNodeId    id of the last node in the loaded list
-     * @param isOverLimit   whether to request an overrun node
      * @return DeletedNodeVo
      */
-    List<RubbishNodeVo> getRubbishNodeList(String spaceId, Long memberId, Integer size, String lastNodeId, Boolean isOverLimit);
+    List<RubbishNodeVo> getRubbishNodeList(String spaceId, Long memberId, Integer size, String lastNodeId);
 
     /**
      * Check whether the rubbish node exists and whether the members have permissions.

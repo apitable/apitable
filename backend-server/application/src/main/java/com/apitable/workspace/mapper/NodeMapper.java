@@ -510,11 +510,10 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      *
      * @param spaceId   space id
      * @param nodeIds   node ids
-     * @param retainDay days retained
      * @return node info in rubbish
      */
     List<RubbishNodeVo> selectRubbishNodeInfo(@Param("spaceId") String spaceId,
-        @Param("nodeIds") List<String> nodeIds, @Param("retainDay") Long retainDay);
+        @Param("nodeIds") List<String> nodeIds);
 
     /**
      * update node extra.
