@@ -529,19 +529,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     private List<String> sortNodeAtSameLevel(List<NodeTreeDTO> sub, NodeType nodeType) {
-        List<String> subNodeIds =
-            sub.stream().map(NodeTreeDTO::getNodeId).collect(Collectors.toList());
-        List<NodeTreeDTO> nodes = new ArrayList<>();
-        Optional<NodeTreeDTO> first =
-            sub.stream().filter(i -> i.getPreNodeId() == null).findFirst();
-        first.ifPresent(nodes::add);
-        nodes.addAll(sub.stream()
-            .filter(i -> i.getPreNodeId() != null && !subNodeIds.contains(i.getPreNodeId()))
-            .collect(Collectors.toList()));
-        if (nodes.isEmpty()) {
-            return subNodeIds;
-        }
-        List<String> nodeIds = new ArrayList<>();
+        List<NodeTreeDTO> firstNodes = sub.stream()
+                .filter(i -> i.getPreNodeId() == null)
+                .collect(Collectors.toList());
         Map<String, List<NodeTreeDTO>> preNodeIdToNodesMap = new LinkedHashMap<>();
         for (NodeTreeDTO node : sub) {
             String preNodeId = node.getPreNodeId();
@@ -549,10 +539,19 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     preNodeIdToNodesMap.computeIfAbsent(preNodeId, k -> new ArrayList<>());
             sufNodes.add(node);
         }
-        for (NodeTreeDTO node : nodes) {
-            List<NodeTreeDTO> suffixNodes = Collections.singletonList(node);
-            this.sufNodeRecurrence(suffixNodes, nodeType, preNodeIdToNodesMap, nodeIds::add);
+        List<String> nodeIds = new ArrayList<>();
+        this.sufNodeRecurrence(firstNodes, nodeType, preNodeIdToNodesMap, nodeIds::add);
+        if (nodeIds.size() == sub.size()) {
+            return nodeIds;
         }
+        List<String> subNodeIds =
+            sub.stream().map(NodeTreeDTO::getNodeId).collect(Collectors.toList());
+        sub.stream()
+            .filter(i -> i.getPreNodeId() != null && !subNodeIds.contains(i.getPreNodeId()))
+            .forEach(node -> {
+                List<NodeTreeDTO> suffixNodes = Collections.singletonList(node);
+                this.sufNodeRecurrence(suffixNodes, nodeType, preNodeIdToNodesMap, nodeIds::add);
+            });
         return nodeIds;
     }
 
