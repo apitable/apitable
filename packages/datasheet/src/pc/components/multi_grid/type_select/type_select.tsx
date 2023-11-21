@@ -64,7 +64,7 @@ const fieldSequence: FieldType[] = [
   FieldType.Phone,
   FieldType.Email,
   FieldType.Cascader,
-  // FieldType.WorkDoc,
+  FieldType.WorkDoc,
 ];
 
 interface ITypeSelectItemProps extends ITypeSelect {
