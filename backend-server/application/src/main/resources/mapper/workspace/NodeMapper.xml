@@ -69,6 +69,7 @@
                 AND pre_node_id IS NULL
             </otherwise>
         </choose>
+        AND is_rubbish = 0
         LIMIT 1
     </select>
 
