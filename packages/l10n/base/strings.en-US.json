@@ -5722,7 +5722,7 @@
   "ai_setting_temperature": "Temperature",
   "ai_setting_temperature_desc": "The higher the temperature, the more creative the AI agent will be. The lower the temperature, the more predictable the AI agent will be.",
   "ai_feedback_insight_pagination_total": "Total ${total} items",
-  "ai_remain_credit_label": "Message Left: ${credit}",
+  "ai_remain_credit_label": "Chat Left Times: ${credit}",
   "ai_api_footer_desc": "Embed the AI agent into your website? Learn more",
   "ai_settings_similarity_filter": "Similarity Filter",
   "ai_settings_similarity_filter_advanced": "score_threshold",
