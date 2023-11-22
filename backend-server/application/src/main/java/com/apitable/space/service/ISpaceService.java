@@ -183,6 +183,25 @@ public interface ISpaceService extends IService<SpaceEntity> {
     void checkSeatOverLimit(String spaceId, long addedSeatNums);
 
     /**
+     * check whether seat nums of the space is over limit.
+     * If the limit is exceeded, a notification needs to be sent
+     *
+     * @param spaceId       space id
+     * @param addedSeatNums added seat nums
+     * @param sendNotify    whether send notify
+     * @param isAllMember   whether all member
+     */
+    boolean checkSeatOverLimitAndSendNotify(List<Long> userIds, String spaceId, long addedSeatNums, boolean isAllMember, boolean sendNotify);
+
+    /**\
+     *
+     * Get the seat usage status of third-party IM
+     * @param spaceId
+     * @return
+     */
+    SeatUsage getSeatUsageForIM(String spaceId);
+
+    /**
      * get space info.
      *
      * @param spaceId space id
@@ -275,22 +294,6 @@ public interface ISpaceService extends IService<SpaceEntity> {
     void checkMembersIsMainAdmin(String spaceId, List<Long> memberIds);
 
     /**
-     * queries whether a member is in a space.
-     *
-     * @param spaceId  space id
-     * @param memberId memberId
-     */
-    void checkMemberInSpace(String spaceId, Long memberId);
-
-    /**
-     * batch queries whether a member is in a space.
-     *
-     * @param spaceId   space id
-     * @param memberIds memberIds
-     */
-    void checkMembersInSpace(String spaceId, List<Long> memberIds);
-
-    /**
      * get permission resource in space.
      *
      * @param userId  userId
@@ -367,8 +370,9 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * check space available.
      *
      * @param spaceId spaceId
+     * @return SpaceEntity
      */
-    void isSpaceAvailable(String spaceId);
+    SpaceEntity isSpaceAvailable(String spaceId);
 
     /**
      * Check whether the user is in space.
@@ -386,6 +390,15 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @return SpaceSubscribeVo
      */
     SpaceSubscribeVo getSpaceSubscriptionInfo(String spaceId);
+
+    /**
+     * get space owner open id.
+     *
+     * @param spaceId space id
+     * @return open id
+     */
+    String getSpaceOwnerOpenId(String spaceId);
+
 
     /**
      * Get space seat available status.

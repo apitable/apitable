@@ -26,7 +26,7 @@ import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { getEnvVariables } from 'pc/utils/env';
 // @ts-ignore
-import { AlarmIcon } from 'enterprise';
+import { AlarmIcon } from 'enterprise/alarm/alarm_icon/alarm_icon';
 
 interface IUseCellAlarmProps {
   instance: GridCoordinate;

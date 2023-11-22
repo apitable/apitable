@@ -31,7 +31,9 @@ import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { ISpaceLevelType, LevelType, Position } from '../../interface';
 import { useLevelInfo } from '../../utils';
 // @ts-ignore
-import { isEnterprise, showUpgradeContactUs, SubscribePageType } from 'enterprise';
+import { SubscribePageType } from 'enterprise/subscribe_system/config';
+// @ts-ignore
+import { showUpgradeContactUs } from 'enterprise/subscribe_system/order_modal/pay_order_success';
 import styles from './style.module.less';
 
 
@@ -63,6 +65,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
     },
     strokeColor,
   } = useLevelInfo(type, deadline);
+  const { IS_ENTERPRISE } = getEnvVariables();
   const colors = useThemeColors();
   const space = useAppSelector((state) => state.space);
   const { onTrial, product } = useAppSelector((state: IReduxState) => state.billing?.subscription) || {};
@@ -209,7 +212,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
             </span>
           )}
         </div>
-        {isEnterprise && !product?.includes('appsumo') && operateButton}
+        {IS_ENTERPRISE && !product?.includes('appsumo') && operateButton}
       </div>
     </div>
   );

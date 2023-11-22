@@ -45,16 +45,15 @@ import { ReplyBox } from 'pc/components/expand_record/activity_pane/reply_box/re
 import { useResponsive } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { commandTran } from 'pc/utils';
 import { EXPAND_RECORD_ACTIVITY_ITEM, EXPAND_RECORD_DELETE_COMMENT_MORE } from 'pc/utils/test_id_constant';
 import { ActivityContext } from '../activity_context';
 import { IActivityPaneProps, IChooseComment } from '../interface';
 import { ChangesetItemAction } from './changeset_item_action';
-import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
-
-import {useAppSelector} from "pc/store/react-redux";
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 type IChangesetItem = IActivityPaneProps & {
   unit: IUnitValue | undefined;
@@ -240,8 +239,8 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = (pr
               <div className={styles.title}>
                 <div className={styles.activityInfo}>
                   <div className={styles.nickName}>
-                    <span className={styles.name}>{isSelf ? t(Strings.you) : title || unit.name}</span>
-                    <span className={styles.op}>{commandTran(cmd)}</span>
+                    <div className={styles.name}>{isSelf ? t(Strings.you) : title || unit.name}</div>
+                    <div className={styles.op}>{commandTran(cmd)}</div>
                   </div>
                   {Boolean(action) && (
                     <div className={styles.activityAction}>

@@ -30,7 +30,7 @@ import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
 import { copy2clipBoard } from 'pc/utils';
 import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName, isSocialPlatformEnabled } from 'enterprise';
+import { getSocialWecomUnitName, isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

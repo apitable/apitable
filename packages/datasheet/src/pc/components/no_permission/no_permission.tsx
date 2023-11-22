@@ -31,10 +31,8 @@ import restrictedAccessLight from 'static/icon/datasheet/restricted_access_light
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { MobileBar } from '../mobile_bar';
 import styles from './style.module.less';
-
 import {useAppSelector} from "pc/store/react-redux";
-// // @ts-ignore
-// import { ServiceQrCode } from 'enterprise';
+
 
 export const NoPermission: FC<React.PropsWithChildren<{ desc?: string }>> = ({ desc }) => {
   const pageParams = useAppSelector((state: IReduxState) => state.pageParams);

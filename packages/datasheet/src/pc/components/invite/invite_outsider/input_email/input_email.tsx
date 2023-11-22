@@ -89,7 +89,7 @@ export const InputEmail = forwardRef(
     };
 
     const handleKeyDown = (e: any) => {
-      if (e.key === 'Enter' || e.key === ';' || e.key === ' ') {
+      if (e.key === 'Enter') {
         const inputValue = currentInput.trim();
 
         if (!inputValue || !isEmail(inputValue)) {
@@ -104,10 +104,6 @@ export const InputEmail = forwardRef(
 
         setMemberArr([...memberArr, inputValue]);
         setCurrentInput('');
-
-        if (e.key === ';' || e.key === ' ') {
-          e.preventDefault();
-        }
       }
     };
 

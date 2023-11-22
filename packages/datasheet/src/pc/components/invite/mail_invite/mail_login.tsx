@@ -30,7 +30,7 @@ import { InviteTitle } from '../components';
 import { useInvitePageRefreshed } from '../use_invite';
 import styles from './style.module.less';
 // @ts-ignore
-import { LoginWithoutOther } from 'enterprise';
+import { LoginWithoutOther } from 'enterprise/home/login/login_without_other';
 
 import {useAppSelector} from "pc/store/react-redux";
 

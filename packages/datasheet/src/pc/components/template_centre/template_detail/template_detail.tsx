@@ -40,7 +40,7 @@ import { getEnvVariables } from 'pc/utils/env';
 import { AutomationPanel } from '../../automation/panel';
 import styles from './style.module.less';
 // @ts-ignore
-import { isDingtalkSkuPage, isEnterprise } from 'enterprise';
+import { isDingtalkSkuPage } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 
@@ -48,6 +48,7 @@ const _SplitPane: any = SplitPane;
 
 export const TemplateDetail: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
+  const { IS_ENTERPRISE } = getEnvVariables();
   const router = useRouter();
   const { sideBarVisible: _sideBarVisible } = useSideBarVisible();
   const pageParams = useAppSelector((state: IReduxState) => state.pageParams);
@@ -85,7 +86,7 @@ export const TemplateDetail: FC<React.PropsWithChildren<unknown>> = () => {
     const isPrivate = categoryId === 'tpcprivate';
     getTemplateDirectory(templateId, isPrivate, categoryId);
     // Use the spaceId of the official template space in the configuration table under the official template to query
-    if (templateId && categoryId !== 'tpcprivate' && isEnterprise) {
+    if (templateId && categoryId !== 'tpcprivate' && IS_ENTERPRISE) {
       dispatch(StoreActions.fetchMarketplaceApps(getEnvVariables().TEMPLATE_SPACE_ID!));
     }
   }, [templateId, getTemplateDirectory, categoryId, dispatch, spaceId]);

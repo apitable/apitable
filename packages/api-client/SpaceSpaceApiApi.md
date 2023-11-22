@@ -15,13 +15,10 @@ Method | HTTP request | Description
 [**info**](SpaceSpaceApiApi.md#info) | **GET** /space/info/{spaceId} | Get space info
 [**list**](SpaceSpaceApiApi.md#list) | **GET** /space/list | Get space list
 [**quit**](SpaceSpaceApiApi.md#quit) | **POST** /space/quit/{spaceId} | Quit space
-[**remove**](SpaceSpaceApiApi.md#remove) | **POST** /space/remove/{spaceId} | Remove hot point in space
 [**subscribe**](SpaceSpaceApiApi.md#subscribe) | **GET** /space/subscribe/{spaceId} | Gets subscription information for the space
 [**switchSpace**](SpaceSpaceApiApi.md#switchSpace) | **POST** /space/{spaceId}/switch | switch space
 [**update1**](SpaceSpaceApiApi.md#update1) | **POST** /space/update | Update space
-[**updateMemberSetting**](SpaceSpaceApiApi.md#updateMemberSetting) | **POST** /space/updateMemberSetting | Update member setting
 [**updateSecuritySetting**](SpaceSpaceApiApi.md#updateSecuritySetting) | **POST** /space/updateSecuritySetting | Update security setting
-[**updateWorkbenchSetting**](SpaceSpaceApiApi.md#updateWorkbenchSetting) | **POST** /space/updateWorkbenchSetting | Update workbench setting
 
 
 # **cancel**
@@ -623,61 +620,6 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **remove**
-> ResponseDataVoid remove()
-
-Scenario: Remove the red dot in the inactive space
-
-### Example
-
-
-```typescript
-import {  } from '';
-import * as fs from 'fs';
-
-const configuration = .createConfiguration();
-const apiInstance = new .SpaceSpaceApiApi(configuration);
-
-let body:.SpaceSpaceApiApiRemoveRequest = {
-  // string | space id
-  spaceId: "spc8mXUeiXyVo",
-};
-
-apiInstance.remove(body).then((data:any) => {
-  console.log('API called successfully. Returned data: ' + data);
-}).catch((error:any) => console.error(error));
-```
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **spaceId** | [**string**] | space id | defaults to undefined
-
-
-### Return type
-
-**ResponseDataVoid**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: Not defined
- - **Accept**: */*
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | OK |  -  |
-**500** | Internal Server Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
-
 # **subscribe**
 > ResponseDataSpaceSubscribeVo subscribe()
 
@@ -847,67 +789,6 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
 
-# **updateMemberSetting**
-> ResponseDataVoid updateMemberSetting(spaceMemberSettingRo, )
-
-
-### Example
-
-
-```typescript
-import {  } from '';
-import * as fs from 'fs';
-
-const configuration = .createConfiguration();
-const apiInstance = new .SpaceSpaceApiApi(configuration);
-
-let body:.SpaceSpaceApiApiUpdateMemberSettingRequest = {
-  // SpaceMemberSettingRo
-  spaceMemberSettingRo: {
-    invitable: true,
-    joinable: false,
-    mobileShowable: false,
-  },
-  // string | space id
-  xSpaceId: "spczJrh2i3tLW",
-};
-
-apiInstance.updateMemberSetting(body).then((data:any) => {
-  console.log('API called successfully. Returned data: ' + data);
-}).catch((error:any) => console.error(error));
-```
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **spaceMemberSettingRo** | **SpaceMemberSettingRo**|  |
- **xSpaceId** | [**string**] | space id | defaults to undefined
-
-
-### Return type
-
-**ResponseDataVoid**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: */*
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | OK |  -  |
-**500** | Internal Server Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
-
 # **updateSecuritySetting**
 > ResponseDataVoid updateSecuritySetting(spaceSecuritySettingRo, )
 
@@ -951,66 +832,6 @@ apiInstance.updateSecuritySetting(body).then((data:any) => {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **spaceSecuritySettingRo** | **SpaceSecuritySettingRo**|  |
- **xSpaceId** | [**string**] | space id | defaults to undefined
-
-
-### Return type
-
-**ResponseDataVoid**
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: */*
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-**200** | OK |  -  |
-**500** | Internal Server Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
-
-# **updateWorkbenchSetting**
-> ResponseDataVoid updateWorkbenchSetting(spaceWorkbenchSettingRo, )
-
-
-### Example
-
-
-```typescript
-import {  } from '';
-import * as fs from 'fs';
-
-const configuration = .createConfiguration();
-const apiInstance = new .SpaceSpaceApiApi(configuration);
-
-let body:.SpaceSpaceApiApiUpdateWorkbenchSettingRequest = {
-  // SpaceWorkbenchSettingRo
-  spaceWorkbenchSettingRo: {
-    nodeExportable: true,
-    watermarkEnable: true,
-  },
-  // string | space id
-  xSpaceId: "spczJrh2i3tLW",
-};
-
-apiInstance.updateWorkbenchSetting(body).then((data:any) => {
-  console.log('API called successfully. Returned data: ' + data);
-}).catch((error:any) => console.error(error));
-```
-
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **spaceWorkbenchSettingRo** | **SpaceWorkbenchSettingRo**|  |
  **xSpaceId** | [**string**] | space id | defaults to undefined
 
 

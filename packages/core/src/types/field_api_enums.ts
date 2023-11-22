@@ -43,6 +43,7 @@ export enum APIMetaFieldType {
   CreatedBy = 'CreatedBy',
   LastModifiedBy = 'LastModifiedBy',
   Cascader = 'Cascader',
+  Button = 'Button',
   OneWayLink = 'OneWayLink',
   TwoWayLink = 'TwoWayLink',
   WorkDoc = 'WorkDoc',
@@ -83,4 +84,9 @@ export enum TSymbolAlign {
   Default = 'Default',
   Left = 'Left',
   Right = 'Right'
+}
+
+export enum APIMetaButtonActionType {
+  OpenLink = 'OpenLink',
+  TriggerAutomation = 'TriggerAutomation',
 }

@@ -20,6 +20,7 @@ package com.apitable.space.service.impl;
 
 import static com.apitable.shared.component.notification.NotificationTemplateId.SPACE_JOIN_APPLY_APPROVED;
 import static com.apitable.shared.component.notification.NotificationTemplateId.SPACE_JOIN_APPLY_REFUSED;
+import static com.apitable.shared.constants.MailPropConstants.SUBJECT_SPACE_APPLY;
 import static com.apitable.shared.constants.NotificationConstants.APPLY_ID;
 import static com.apitable.shared.constants.NotificationConstants.APPLY_STATUS;
 import static com.apitable.shared.constants.NotificationConstants.BODY_EXTRAS;
@@ -32,33 +33,51 @@ import static com.apitable.space.enums.SpaceApplyException.EXIST_MEMBER;
 import static com.apitable.space.enums.SpacePermissionException.INSUFFICIENT_PERMISSIONS;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
-import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.player.mapper.PlayerNotificationMapper;
 import com.apitable.shared.cache.bean.UserSpaceDto;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.component.TaskManager;
 import com.apitable.shared.component.notification.NotificationManager;
+import com.apitable.shared.component.notification.NotificationRenderField;
 import com.apitable.shared.component.notification.NotificationTemplateId;
+import com.apitable.shared.component.notification.NotifyMailFactory;
+import com.apitable.shared.component.notification.NotifyMailFactory.MailWithLang;
+import com.apitable.shared.config.properties.ConstProperties;
+import com.apitable.shared.constants.NotificationConstants;
+import com.apitable.shared.context.LoginContext;
+import com.apitable.shared.holder.NotificationRenderFieldHolder;
 import com.apitable.space.dto.SpaceApplyDTO;
 import com.apitable.space.entity.SpaceApplyEntity;
+import com.apitable.space.entity.SpaceEntity;
 import com.apitable.space.enums.SpaceApplyStatus;
 import com.apitable.space.mapper.SpaceApplyMapper;
 import com.apitable.space.service.ISpaceApplyService;
+import com.apitable.space.service.ISpaceMemberRoleRelService;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.space.vo.SpaceGlobalFeature;
+import com.apitable.user.dto.UserLangDTO;
+import com.apitable.user.service.IUserService;
+
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -72,22 +91,28 @@ import org.springframework.transaction.support.TransactionTemplate;
 public class SpaceApplyServiceImpl implements ISpaceApplyService {
 
     @Resource
+    private IUserService userService;
+
+    @Resource
     private SpaceApplyMapper spaceApplyMapper;
 
     @Resource
     private ISpaceService iSpaceService;
 
     @Resource
-    private IMemberService iMemberService;
+    private ISpaceMemberRoleRelService spaceMemberRoleRelService;
 
     @Resource
-    private MemberMapper memberMapper;
+    private IMemberService iMemberService;
 
     @Resource
     private UserSpaceCacheService userSpaceCacheService;
 
     @Resource
     private PlayerNotificationMapper playerNotificationMapper;
+
+    @Resource
+    private ConstProperties constProperties;
 
     @Resource
     private TransactionTemplate transactionTemplate;
@@ -104,7 +129,7 @@ public class SpaceApplyServiceImpl implements ISpaceApplyService {
                 SpaceApplyStatus.PENDING.getStatus()));
         ExceptionUtil.isTrue(count == 0, APPLY_DUPLICATE);
         // Check whether users already exist in the space
-        Long memberId = memberMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
         ExceptionUtil.isNull(memberId, EXIST_MEMBER);
         SpaceApplyEntity entity = SpaceApplyEntity.builder()
             .id(IdWorker.getId())
@@ -115,6 +140,43 @@ public class SpaceApplyServiceImpl implements ISpaceApplyService {
         boolean flag = SqlHelper.retBool(spaceApplyMapper.insertApply(entity));
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
         return entity.getId();
+    }
+
+    @Override
+    public void sendApplyNotify(Long userId, String spaceId, Long applyId) {
+        // generate and send notifications
+        NotificationRenderFieldHolder.set(NotificationRenderField.builder()
+                .spaceId(spaceId)
+                .bodyExtras(Dict.create()
+                        .set(APPLY_ID, applyId)
+                        .set(APPLY_STATUS, SpaceApplyStatus.PENDING.getStatus()))
+                .fromUserId(userId)
+                .build());
+        List<Long> memberIds =
+                spaceMemberRoleRelService.getMemberIdListByResourceGroupCodes(spaceId,
+                ListUtil.toList(NotificationConstants.TO_MANAGE_MEMBER_RESOURCE_CODE));
+        SpaceEntity space = iSpaceService.getBySpaceId(spaceId);
+        if (space.getOwner() != null) {
+            memberIds.add(space.getOwner());
+        }
+        List<String> emails = iMemberService.getEmailsByMemberIds(memberIds);
+        if (CollUtil.isEmpty(emails)) {
+            return;
+        }
+        Dict dict = Dict.create();
+        String nickName = LoginContext.me().getLoginUser().getNickName();
+        dict.set("MEMBER_NAME", nickName);
+        dict.set("SPACE_NAME", space.getName());
+        dict.set("URL", constProperties.getServerDomain() + "/notify");
+        String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
+        List<UserLangDTO> emailsWithLang = userService.getLangByEmails(defaultLang, emails);
+        List<MailWithLang> tos = emailsWithLang.stream()
+                .map(emailWithLang ->
+                        new MailWithLang(emailWithLang.getLocale(),
+                                emailWithLang.getEmail()))
+                .collect(Collectors.toList());
+        TaskManager.me().execute(() ->
+                NotifyMailFactory.me().sendMail(SUBJECT_SPACE_APPLY, dict, dict, tos));
     }
 
     @Override
@@ -156,7 +218,7 @@ public class SpaceApplyServiceImpl implements ISpaceApplyService {
                                    String applyStatusKey) {
         // verify whether the applicant is already in space
         Long memberId =
-            memberMapper.selectIdByUserIdAndSpaceId(apply.getCreatedBy(), apply.getSpaceId());
+                iMemberService.getMemberIdByUserIdAndSpaceId(apply.getCreatedBy(), apply.getSpaceId());
         if (memberId != null) {
             spaceApplyMapper.invalidateTheApply(Collections.singletonList(apply.getCreatedBy()),
                 apply.getSpaceId(), null);

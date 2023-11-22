@@ -22,7 +22,11 @@ import { shallowEqual } from 'react-redux';
 import { useContextMenu } from '@apitable/components';
 import { Api, Events, getLanguage, IApi, IReduxState, Player, ScreenWidth, StoreActions, Strings, t } from '@apitable/core';
 // @ts-ignore
-import { isSocialPlatformEnabled, subscribeUsageCheck, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
+// @ts-ignore
+import { subscribeUsageCheck } from 'enterprise/billing/subscribe_usage_check';
+// @ts-ignore
+import { isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display/enum';
 import { ScrollBar } from 'pc/components/scroll_bar';

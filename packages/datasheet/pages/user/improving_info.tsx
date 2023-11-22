@@ -23,7 +23,7 @@ import React from 'react';
 const ImprovingInfoWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/home/improving_info').then((components) => {
       return components.ImprovingInfo;
     }),
   { ssr: false },

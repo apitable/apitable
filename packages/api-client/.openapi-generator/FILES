@@ -360,7 +360,6 @@ models/SpaceLinkInfoVo.ts
 models/SpaceLinkOpRo.ts
 models/SpaceLinkVo.ts
 models/SpaceMainAdminChangeOpRo.ts
-models/SpaceMemberSettingRo.ts
 models/SpaceOpRo.ts
 models/SpaceRoleDetailVo.ts
 models/SpaceRoleVo.ts
@@ -370,7 +369,6 @@ models/SpaceStatisticsRo.ts
 models/SpaceSubscribeVo.ts
 models/SpaceUpdateOpRo.ts
 models/SpaceVO.ts
-models/SpaceWorkbenchSettingRo.ts
 models/StoreNodeInfoVO.ts
 models/StoreShareNodeRo.ts
 models/SubUnitResultVo.ts

@@ -268,7 +268,6 @@ export * from '../models/SpaceLinkInfoVo';
 export * from '../models/SpaceLinkOpRo';
 export * from '../models/SpaceLinkVo';
 export * from '../models/SpaceMainAdminChangeOpRo';
-export * from '../models/SpaceMemberSettingRo';
 export * from '../models/SpaceOpRo';
 export * from '../models/SpaceRoleDetailVo';
 export * from '../models/SpaceRoleVo';
@@ -278,7 +277,6 @@ export * from '../models/SpaceStatisticsRo';
 export * from '../models/SpaceSubscribeVo';
 export * from '../models/SpaceUpdateOpRo';
 export * from '../models/SpaceVO';
-export * from '../models/SpaceWorkbenchSettingRo';
 export * from '../models/StoreNodeInfoVO';
 export * from '../models/StoreShareNodeRo';
 export * from '../models/SubUnitResultVo';
@@ -622,7 +620,6 @@ import { SpaceLinkInfoVo } from '../models/SpaceLinkInfoVo';
 import { SpaceLinkOpRo } from '../models/SpaceLinkOpRo';
 import { SpaceLinkVo } from '../models/SpaceLinkVo';
 import { SpaceMainAdminChangeOpRo } from '../models/SpaceMainAdminChangeOpRo';
-import { SpaceMemberSettingRo } from '../models/SpaceMemberSettingRo';
 import { SpaceOpRo } from '../models/SpaceOpRo';
 import { SpaceRoleDetailVo } from '../models/SpaceRoleDetailVo';
 import { SpaceRoleVo } from '../models/SpaceRoleVo';
@@ -632,7 +629,6 @@ import { SpaceStatisticsRo } from '../models/SpaceStatisticsRo';
 import { SpaceSubscribeVo } from '../models/SpaceSubscribeVo';
 import { SpaceUpdateOpRo } from '../models/SpaceUpdateOpRo';
 import { SpaceVO } from '../models/SpaceVO';
-import { SpaceWorkbenchSettingRo } from '../models/SpaceWorkbenchSettingRo';
 import { StoreNodeInfoVO } from '../models/StoreNodeInfoVO';
 import { StoreShareNodeRo } from '../models/StoreShareNodeRo';
 import { SubUnitResultVo } from '../models/SubUnitResultVo';
@@ -1007,7 +1003,6 @@ let typeMap: {[index: string]: any} = {
     "SpaceLinkOpRo": SpaceLinkOpRo,
     "SpaceLinkVo": SpaceLinkVo,
     "SpaceMainAdminChangeOpRo": SpaceMainAdminChangeOpRo,
-    "SpaceMemberSettingRo": SpaceMemberSettingRo,
     "SpaceOpRo": SpaceOpRo,
     "SpaceRoleDetailVo": SpaceRoleDetailVo,
     "SpaceRoleVo": SpaceRoleVo,
@@ -1017,7 +1012,6 @@ let typeMap: {[index: string]: any} = {
     "SpaceSubscribeVo": SpaceSubscribeVo,
     "SpaceUpdateOpRo": SpaceUpdateOpRo,
     "SpaceVO": SpaceVO,
-    "SpaceWorkbenchSettingRo": SpaceWorkbenchSettingRo,
     "StoreNodeInfoVO": StoreNodeInfoVO,
     "StoreShareNodeRo": StoreShareNodeRo,
     "SubUnitResultVo": SubUnitResultVo,

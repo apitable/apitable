@@ -32,7 +32,9 @@ import { isPrimaryOrOwnFunc } from '../../utils';
 import { ChangeMemberTeam } from '../change_member_team';
 import styles from './style.module.less';
 // @ts-ignore
-import { WecomOpenData, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise';
+import { isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise/home/social_platform/utils';
+// @ts-ignore
+import { WecomOpenData } from 'enterprise/wecom/wecom_open_data/wecom_open_data';
 
 import {useAppSelector} from "pc/store/react-redux";
 

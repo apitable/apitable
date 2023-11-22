@@ -23,7 +23,7 @@ import React from 'react';
 const WechatCallbackWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/home/wechat_callback/wechat_callback').then((components) => {
       return components.WechatCallback;
     }),
   { ssr: false },

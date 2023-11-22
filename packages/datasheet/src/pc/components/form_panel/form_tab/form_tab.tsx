@@ -46,9 +46,7 @@ import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { useResponsive, useSideBarVisible } from 'pc/hooks';
 import styles from './style.module.less';
 import { ToolBar } from './tool_bar';
-// @ts-ignore
-import { isEnterprise } from 'enterprise';
-
+import { getEnvVariables } from 'pc/utils/env';
 import {useAppSelector} from "pc/store/react-redux";
 
 const HIDDEN_TOOLBAR_RIGHT_LABEL_WIDTH = 816;
@@ -61,6 +59,7 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { setSideBarVisible } = useSideBarVisible();
   const { formId, shareId, templateId, embedId } = useAppSelector((state) => state.pageParams);
+  const { IS_ENTERPRISE } = getEnvVariables();
 
   const {
     icon,
@@ -201,7 +200,7 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
               </LinkButton>
             </a>
           )}
-          {isEnterprise &&
+          {IS_ENTERPRISE &&
             editable &&
             (preFill ? (
               <Button

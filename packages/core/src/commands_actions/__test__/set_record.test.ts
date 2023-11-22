@@ -101,11 +101,11 @@ describe('test set record', () => {
       p: ['recordMap', 'reclx3H5CZbZP', 'data', 'fldmHjmSjZxVn'] };
     const snapshot = MockDataForAction as any as ISnapshot;
     const payload = { recordId: 'reclx3H5CZbZP', fieldId: 'fldmHjmSjZxVn', value: [
-      {
-        text: '说的是你吗',
-        type: 1
-      }
-    ] };
+        {
+          text: '说的是你吗',
+          type: 1
+        }
+      ] };
     const result = action_set_cell(snapshot, payload);
     const result3 = DatasheetActions.setRecord2Action(snapshot, payload);
     expect(result !== null).toBe(true);

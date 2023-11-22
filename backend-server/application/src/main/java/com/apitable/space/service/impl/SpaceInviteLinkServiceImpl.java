@@ -18,7 +18,6 @@
 
 package com.apitable.space.service.impl;
 
-import static com.apitable.organization.enums.OrganizationException.GET_TEAM_ERROR;
 import static com.apitable.organization.enums.OrganizationException.INVITE_EXPIRE;
 import static com.apitable.organization.enums.OrganizationException.INVITE_TOO_OFTEN;
 import static com.apitable.space.enums.SpaceException.NOT_IN_SPACE;
@@ -35,11 +34,10 @@ import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.HttpContextUtil;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.user.facade.UserServiceFacade;
-import com.apitable.organization.mapper.MemberMapper;
-import com.apitable.organization.mapper.TeamMapper;
 import com.apitable.organization.mapper.TeamMemberRelMapper;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.organization.service.ITeamMemberRelService;
+import com.apitable.organization.service.ITeamService;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.space.dto.InvitationUserDTO;
 import com.apitable.space.dto.SpaceLinkDTO;
@@ -47,13 +45,14 @@ import com.apitable.space.dto.SpaceMemberResourceDto;
 import com.apitable.space.entity.SpaceInviteLinkEntity;
 import com.apitable.space.enums.InviteType;
 import com.apitable.space.mapper.SpaceInviteLinkMapper;
-import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.space.mapper.SpaceResourceMapper;
 import com.apitable.space.service.IAuditInviteRecordService;
 import com.apitable.space.service.IInvitationService;
 import com.apitable.space.service.ISpaceInviteLinkService;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.space.vo.SpaceLinkInfoVo;
+import com.apitable.space.vo.SpaceLinkVo;
+
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.util.ArrayList;
@@ -83,6 +82,9 @@ public class SpaceInviteLinkServiceImpl
     private ISpaceService iSpaceService;
 
     @Resource
+    private ITeamService iTeamService;
+
+    @Resource
     private IMemberService iMemberService;
 
     @Resource
@@ -90,15 +92,6 @@ public class SpaceInviteLinkServiceImpl
 
     @Resource
     private IAuditInviteRecordService iAuditInviteRecordService;
-
-    @Resource
-    private SpaceMapper spaceMapper;
-
-    @Resource
-    private TeamMapper teamMapper;
-
-    @Resource
-    private MemberMapper memberMapper;
 
     @Resource
     private TeamMemberRelMapper teamMemberRelMapper;
@@ -119,13 +112,17 @@ public class SpaceInviteLinkServiceImpl
     private IInvitationService invitationService;
 
     @Override
+    public List<SpaceLinkVo> getSpaceLinkVos(Long memberId) {
+        return baseMapper.selectLinkVo(memberId);
+    }
+
+    @Override
     public String saveOrUpdate(String spaceId, Long teamId, Long memberId) {
         // whether a space can create an invitation link
         boolean isBindSocial = socialServiceFacade.checkSocialBind(spaceId);
         ExceptionUtil.isFalse(isBindSocial, NO_ALLOW_OPERATE);
-        String teamSpaceId = teamMapper.selectSpaceIdById(teamId);
+        String teamSpaceId = iTeamService.getSpaceIdByTeamId(teamId);
         // Verify that the department exists and is in the same space
-        ExceptionUtil.isNotNull(teamSpaceId, GET_TEAM_ERROR);
         ExceptionUtil.isTrue(spaceId.equals(teamSpaceId), NOT_IN_SPACE);
         Long id = baseMapper.selectIdByTeamIdAndMemberId(teamId, memberId);
         String token = IdUtil.fastSimpleUUID();
@@ -257,61 +254,62 @@ public class SpaceInviteLinkServiceImpl
      * @return true | false
      */
     private boolean joinTeamIfInSpace(Long userId, String spaceId, Long teamId) {
-        Long memberId = memberMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
         if (ObjectUtil.isNull(memberId)) {
             return false;
-        } else {
-            Long rootTeamId = teamMapper.selectRootIdBySpaceId(spaceId);
-            if (rootTeamId.equals(teamId)) {
-                return true;
-            }
-            // Determine whether the user is already in the invited department, and automatically join the department if it does not exist
-            List<Long> teamIds = teamMemberRelMapper.selectTeamIdsByMemberId(memberId);
-            if (teamIds.contains(teamId)) {
-                return true;
-            }
-            // When joining other departments, unbind from the root department
-            if (teamIds.contains(rootTeamId)) {
-                teamMemberRelMapper.deleteByTeamIdsAndMemberId(memberId,
-                    Collections.singletonList(rootTeamId));
-            }
-            iTeamMemberRelService.addMemberTeams(Collections.singletonList(memberId),
-                Collections.singletonList(teamId));
+        }
+        Long rootTeamId = iTeamService.getRootTeamId(spaceId);
+        if (rootTeamId.equals(teamId)) {
             return true;
         }
+        // Determine whether the user is already in the invited department,
+        // and automatically join the department if it does not exist.
+        List<Long> teamIds = teamMemberRelMapper.selectTeamIdsByMemberId(memberId);
+        if (teamIds.contains(teamId)) {
+            return true;
+        }
+        // When joining other departments, unbind from the root department
+        if (teamIds.contains(rootTeamId)) {
+            teamMemberRelMapper.deleteByTeamIdsAndMemberId(memberId,
+                Collections.singletonList(rootTeamId));
+        }
+        iTeamMemberRelService.addMemberTeams(Collections.singletonList(memberId),
+            Collections.singletonList(teamId));
+        return true;
     }
 
     @Override
     public void delNoPermitMemberLink(String spaceId) {
         List<Long> memberIds = baseMapper.selectCreatorBySpaceId(spaceId);
-        if (CollUtil.isNotEmpty(memberIds)) {
-            // remove space master
-            Long adminMemberId = spaceMapper.selectSpaceMainAdmin(spaceId);
-            if (memberIds.contains(adminMemberId)) {
-                if (memberIds.size() == 1) {
-                    return;
-                } else {
-                    CollUtil.removeAny(memberIds, adminMemberId);
-                }
+        if (CollUtil.isEmpty(memberIds)) {
+            return;
+        }
+        // remove space master
+        Long mainAdminMemberId = iSpaceService.getSpaceMainAdminMemberId(spaceId);
+        if (memberIds.contains(mainAdminMemberId)) {
+            if (memberIds.size() == 1) {
+                return;
+            } else {
+                CollUtil.removeAny(memberIds, mainAdminMemberId);
             }
-            List<SpaceMemberResourceDto> dtoList =
-                spaceResourceMapper.selectMemberResource(memberIds);
-            Map<Long, List<String>> map = dtoList.stream()
+        }
+        List<SpaceMemberResourceDto> dtoList =
+            spaceResourceMapper.selectMemberResource(memberIds);
+        Map<Long, List<String>> map = dtoList.stream()
                 .collect(Collectors.toMap(SpaceMemberResourceDto::getMemberId,
-                    SpaceMemberResourceDto::getResources));
-            // records members without permission
-            List<Long> list = new ArrayList<>();
-            String tag = "INVITE_MEMBER";
-            memberIds.forEach(id -> {
-                List<String> resources = map.get(id);
-                if (CollUtil.isEmpty(resources) || !resources.contains(tag)) {
-                    list.add(id);
-                }
-            });
-            // remove links generated by these members
-            if (CollUtil.isNotEmpty(list)) {
-                baseMapper.delByTeamIdAndMemberId(null, list);
+                SpaceMemberResourceDto::getResources));
+        // records members without permission
+        List<Long> list = new ArrayList<>();
+        String tag = "INVITE_MEMBER";
+        memberIds.forEach(id -> {
+            List<String> resources = map.get(id);
+            if (CollUtil.isEmpty(resources) || !resources.contains(tag)) {
+                list.add(id);
             }
+        });
+        // remove links generated by these members
+        if (CollUtil.isNotEmpty(list)) {
+            baseMapper.delByTeamIdAndMemberId(null, list);
         }
     }
 
@@ -329,8 +327,8 @@ public class SpaceInviteLinkServiceImpl
     }
 
     @Override
-    public void deleteByTeamId(Long teamId) {
-        Long id = baseMapper.selectIdByTeamId(teamId);
+    public void deleteByTeamIdAndMemberId(Long teamId, Long memberId) {
+        Long id = baseMapper.selectIdByTeamIdAndMemberId(teamId, memberId);
         if (id != null) {
             removeById(id);
         }

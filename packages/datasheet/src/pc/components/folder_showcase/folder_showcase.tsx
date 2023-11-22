@@ -66,7 +66,9 @@ import { DescriptionModal } from './description_modal';
 import { DingTalkDa } from './dingtalk_da';
 import styles from './style.module.less';
 // @ts-ignore
-import { inSocialApp, WeixinShareWrapper } from 'enterprise';
+import { inSocialApp } from 'enterprise/home/social_platform/utils';
+// @ts-ignore
+import { WeixinShareWrapper } from 'enterprise/wechat/weixin_share_wrapper/weixin_share_wrapper';
 
 import {useAppSelector} from "pc/store/react-redux";
 

@@ -1,4 +1,4 @@
-/*
+/**
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,24 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.space.ro;
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmpty } from 'class-validator';
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
+export class TriggerAutomationRO {
+  @ApiProperty({
+    required: true,
+    example: 'rec4zxfWB5uyM',
+    description: 'Record id',
+  })
+  @IsEmpty()
+  recordId!: string;
 
-/**
- * <p>
- * Space Management - Workbench Set Request Parameters.
- * </p>
- * The status field is consistent with the serialized object of the read library
- */
-@Data
-@Schema(description = "Space Management - Workbench Set Request Parameters")
-public class SpaceWorkbenchSettingRo {
-
-    @Schema(description = "All members of the node can be exported", example = "true")
-    private Boolean nodeExportable;
-
-    @Schema(description = "Global Watermark On Status", example = "true")
-    private Boolean watermarkEnable;
+  @ApiProperty({
+    required: true,
+    example: 'fl4zxfWB5uyM',
+    description: 'Field id',
+  })
+  @IsEmpty()
+  fieldId!: string;
 }

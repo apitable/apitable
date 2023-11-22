@@ -35,9 +35,18 @@ export class CommonException implements IBaseException {
 
   static readonly NODE_SHARE_NO_ALLOW_EDIT = new CommonException(601, 'It is not allowed to edit');
 
+  static readonly AUTOMATION_NOT_ACTIVE = new CommonException(1106, 'The automation not activated');
+
+  static readonly AUTOMATION_TRIGGER_NOT_EXIST = new CommonException(1107, 'The automation trigger not exits');
+
+  static readonly AUTOMATION_TRIGGER_INVALID = new CommonException(1108, 'The automation trigger invalid');
+
   // Exception type --------------------------------
 
-  public constructor(public readonly code: number, public readonly message: string) {
+  public constructor(
+    public readonly code: number,
+    public readonly message: string,
+  ) {
     CommonException.AllValues[message] = this;
   }
 

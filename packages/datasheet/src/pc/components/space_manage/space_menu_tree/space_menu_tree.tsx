@@ -43,7 +43,9 @@ import { useResponsive } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 // @ts-ignore
-import { isEnterprise, Log, Marketing } from 'enterprise';
+import { Marketing } from 'enterprise/marketing/marketing';
+// @ts-ignore
+import { Log } from 'enterprise/log/log';
 import styles from './style.module.less';
 
 const { TreeNode, DirectoryTree } = Tree;
@@ -180,6 +182,7 @@ export const SpaceMenuTree: React.FC<React.PropsWithChildren<unknown>> = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { SPACE_INTEGRATION_PAGE_VISIBLE } = getEnvVariables();
   const [menuTree, setMenuTree] = useState<ISpaceNavInfo[]>([]);
+  const { IS_ENTERPRISE } = getEnvVariables();
 
   const onSelect = (key: ReactText[]) => {
     Router.push(NavigationConst.SPACE_MANAGE, {
@@ -210,7 +213,7 @@ export const SpaceMenuTree: React.FC<React.PropsWithChildren<unknown>> = () => {
       return null;
     }
     return data.map((item) => {
-      if (!isEnterprise && ['upgrade', 'security'].includes(item.key)) {
+      if (!IS_ENTERPRISE && ['upgrade', 'security'].includes(item.key)) {
         return [];
       }
       if (userInfo && userInfo.isDelSpace && item.key !== SPACE_INFO_KEY) {

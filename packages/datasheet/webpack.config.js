@@ -64,7 +64,7 @@ const setResolveAlias = (config) => {
     api: path.resolve(__dirname, './src/modules/api'),
     pc: path.resolve(__dirname, './src/pc'),
     static: path.resolve(__dirname, './public/static'),
-    enterprise: process.env.IS_ENTERPRISE === 'true' ? path.resolve(__dirname, './src/modules/enterprise') : path.resolve(__dirname, './src/noop'),
+    enterprise: process.env.IS_ENTERPRISE === 'true' ? path.resolve(__dirname, './src/modules/enterprise') : false,
   };
 };
 

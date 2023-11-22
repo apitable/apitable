@@ -23,7 +23,7 @@ import React from 'react';
 const QqCallbackWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/home/qq_callback/qq_callback').then((components) => {
       return components.QqCallback;
     }),
   { ssr: false },

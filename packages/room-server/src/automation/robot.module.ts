@@ -80,13 +80,8 @@ import { DocumentServiceDynamicModule } from 'workdoc/services/document.service.
     RecordUpdatedListener,
     RobotActionService,
     RobotRobotService,
-    AmqpConnection
+    AmqpConnection,
   ],
-  exports: [
-    AutomationService,
-    RobotTriggerService,
-    RobotTriggerTypeService,
-  ],
+  exports: [AutomationService, RobotTriggerService, RobotTriggerTypeService, TriggerEventHelper],
 })
-export class RobotModule {
-}
+export class RobotModule {}

@@ -35,7 +35,10 @@ import { expandNodeInfo } from '../node_info';
 import { ContextItemKey, contextItemMap } from './context_menu_data';
 import { MobileNodeContextMenuTitle } from './mobile_context_menu_title';
 // @ts-ignore
-import { createBackupSnapshot, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { createBackupSnapshot } from 'enterprise/time_machine/backup/backup';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing';
+
 
 import {useAppSelector} from "pc/store/react-redux";
 

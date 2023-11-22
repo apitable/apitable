@@ -26,8 +26,18 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.apitable.space.vo.SpaceLinkInfoVo;
 import com.apitable.space.dto.InvitationUserDTO;
 import com.apitable.space.entity.SpaceInviteLinkEntity;
+import com.apitable.space.vo.SpaceLinkVo;
 
 public interface ISpaceInviteLinkService extends IService<SpaceInviteLinkEntity> {
+
+    /**
+     * Get space link vos.
+     *
+     * @param memberId  member table id
+     * @return List<SpaceLinkVo>
+     * @author Chambers
+     */
+    List<SpaceLinkVo> getSpaceLinkVos(Long memberId);
 
     /**
      * Generate or refresh links
@@ -86,9 +96,13 @@ public interface ISpaceInviteLinkService extends IService<SpaceInviteLinkEntity>
     void deleteByMemberIds(List<Long> memberIds);
 
     /**
-     * @param teamId teamId
+     * Delete by team id and member id.
+     *
+     * @param teamId    team table id
+     * @param memberId  member table id
+     * @author Chambers
      */
-    void deleteByTeamId(Long teamId);
+    void deleteByTeamIdAndMemberId(Long teamId, Long memberId);
 
     /**
      * @param teamIds teamIds

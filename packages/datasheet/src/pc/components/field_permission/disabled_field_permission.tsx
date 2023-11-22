@@ -25,7 +25,7 @@ import { IDisabledPermission } from 'pc/components/field_permission/interface';
 import styles from 'pc/components/field_permission/styles.module.less';
 import permissionImage from 'static/icon/datasheet/datasheet_img_field_permission.png';
 // @ts-ignore
-import { triggerUsageAlert } from 'enterprise';
+import { triggerUsageAlert } from 'enterprise/billing';
 
 import {useAppSelector} from "pc/store/react-redux";
 

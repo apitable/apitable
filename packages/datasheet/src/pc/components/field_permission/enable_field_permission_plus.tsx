@@ -32,7 +32,7 @@ import { dispatch } from 'pc/worker/store';
 import { IMemberList } from '../catalog/permission_settings_plus/permission/permission';
 import { PermissionInfoSetting } from '../catalog/permission_settings_plus/permission/permission_info_setting';
 // @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing';
 
 import {useAppSelector} from "pc/store/react-redux";
 

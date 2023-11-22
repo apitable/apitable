@@ -18,7 +18,7 @@
 
 import { Api, ITagsInSpace, ISubTeamListInSpaceBase, IMemberInfoInSpace, ISpaceInfo, ISpaceBasicInfo } from '@apitable/core';
 // @ts-ignore
-import { socialPlatPreOperate } from 'enterprise';
+import { socialPlatPreOperate } from 'enterprise/home/social_platform/utils';
 
 export const verifyTeamName = async (_spaceId: string, teamId: string, inputContent: string) => {
   let questRes = false;

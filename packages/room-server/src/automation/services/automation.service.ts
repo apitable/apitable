@@ -82,6 +82,7 @@ export class AutomationService {
     private readonly automationActionRepository: AutomationActionRepository,
     private readonly automationTriggerRepository: AutomationTriggerRepository,
     private readonly robotService: RobotRobotService,
+    @Inject(forwardRef(() => NodeService))
     private readonly nodeService: NodeService,
     private readonly restService: RestService,
     private readonly queueSenderService: QueueSenderBaseService,

@@ -45,7 +45,7 @@ import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { CommonSide } from '../common_side';
 import styles from './style.module.less';
 // @ts-ignore
-import { showOrderModal } from 'enterprise';
+import { showOrderModal } from 'enterprise/subscribe_system/order_modal/pay_order_success';
 
 import {useAppSelector} from "pc/store/react-redux";
 

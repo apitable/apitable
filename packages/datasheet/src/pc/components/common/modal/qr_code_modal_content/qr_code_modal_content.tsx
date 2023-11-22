@@ -25,7 +25,7 @@ import { store } from 'pc/store';
 import { getEnvVariables } from 'pc/utils/env';
 import styles from './style.module.less';
 // @ts-ignore
-import { ServiceQrCode } from 'enterprise';
+import { ServiceQrCode } from 'enterprise/guide/ui/qr_code';
 
 interface IModalContentProps {
   content: string;

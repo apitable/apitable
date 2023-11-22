@@ -139,7 +139,7 @@ export class ResourceService implements IResourceService {
   }
 
   async switchResource(params: { from?: string; to: string; resourceType: ResourceType; extra?: { [key: string]: any } }) {
-    console.log('enter datasheet', params);
+    // console.log('enter datasheet', params);
     const { to, resourceType, extra } = params;
     const allowSwitchRoom = this.allowSwitchRoom();
 

@@ -22,7 +22,7 @@ import { generateUserInfo } from 'pc/utils';
 import styles from './style.module.less';
 import { UnitTag } from './unit_tag';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import { SelectUnitSource } from '.';
 
 import {useAppSelector} from "pc/store/react-redux";

@@ -40,7 +40,7 @@ import { ActivityContext } from '../expand_record/activity_pane/activity_context
 import styles from './styles/style.module.less';
 import { draft2slate, EMPTY_CONTENT } from './utils/draft_slate';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home';
 
 import {useAppSelector} from "pc/store/react-redux";
 

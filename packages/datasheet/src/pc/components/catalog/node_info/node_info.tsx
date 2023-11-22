@@ -31,7 +31,7 @@ import { store } from 'pc/store';
 import { getNodeIcon } from '../tree/node_icon';
 import styles from './styles.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

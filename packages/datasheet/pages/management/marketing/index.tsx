@@ -24,7 +24,7 @@ const DynamicComponentWithNoSSR = dynamic(() => import('pc/components/route_mana
 const MarketingWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/marketing').then((components) => {
       return components.Marketing;
     }),
   { ssr: false },

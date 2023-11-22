@@ -52,11 +52,10 @@ import {
   freshWecomOrg,
   freshWoaContact,
   freshIdaasOrg,
-  isSocialDingTalk,
-  isSocialPlatformEnabled,
-  isSocialWecom,
   // @ts-ignore
-} from 'enterprise';
+} from 'enterprise/organization/utils/index';
+// @ts-ignore
+import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise/home/social_platform/utils'
 
 import {useAppSelector} from "pc/store/react-redux";
 

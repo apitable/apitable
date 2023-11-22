@@ -21,7 +21,7 @@ import { useEffect } from 'react';
 import { shallowEqual } from 'react-redux';
 import { getCustomConfig, Strings, t } from '@apitable/core';
 // @ts-ignore
-import { isDingtalkSkuPage } from 'enterprise';
+import { isDingtalkSkuPage } from 'enterprise/home/social_platform/utils';
 import { useQuery } from './';
 
 import {useAppSelector} from "pc/store/react-redux";

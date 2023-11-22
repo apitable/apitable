@@ -36,7 +36,11 @@ import WeChatPng from 'static/icon/signin/signin_img_wechat.png';
 import { ModeItem } from './mode_item';
 import styles from './style.module.less';
 // @ts-ignore
-import { getDingdingConfig, getQQConfig, Trial, QrCode } from 'enterprise';
+import { getDingdingConfig, getQQConfig } from 'enterprise/login/utils/get_config'
+// @ts-ignore
+import { QrCode } from 'enterprise/home/qr_code/qr_code';
+// @ts-ignore
+import { Trial } from 'enterprise/log/trial';
 
 import {useAppSelector} from "pc/store/react-redux";
 

@@ -26,7 +26,13 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.json.JSONObject;
 import com.apitable.starter.oss.autoconfigure.OssProperties.Callback;
-import com.apitable.starter.oss.core.*;
+import com.apitable.starter.oss.core.AbstractOssClientRequest;
+import com.apitable.starter.oss.core.OssObject;
+import com.apitable.starter.oss.core.OssSignatureTemplate;
+import com.apitable.starter.oss.core.OssStatObject;
+import com.apitable.starter.oss.core.OssUploadAuth;
+import com.apitable.starter.oss.core.OssUploadPolicy;
+import com.apitable.starter.oss.core.UrlFetchResponse;
 import com.google.gson.Gson;
 import com.qiniu.cdn.CdnManager;
 import com.qiniu.cdn.CdnResult;
@@ -109,7 +115,8 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     private static final int RESUMABLE_UPLOAD_MAX_CONCURRENT_COUNT = 8;
 
     public QiniuOssClientRequest(Auth auth, String regionId, String downloadDomain,
-        Callback callback, String uploadUrl, boolean autoCreateBucket, OssSignatureTemplate ossSignatureTemplate) {
+                                 Callback callback, String uploadUrl, boolean autoCreateBucket,
+                                 OssSignatureTemplate ossSignatureTemplate) {
         this.auth = auth;
         this.regionId = regionId;
         this.downloadDomain = downloadDomain;
@@ -127,29 +134,27 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     }
 
     @Override
-    protected boolean isBucketExist(String bucketName) {
+    protected void isBucketExist(String bucketName) {
         try {
             String[] buckets = bucketManager.buckets();
             boolean bucketExists = ArrayUtil.contains(buckets, bucketName);
             if (!bucketExists) {
                 if (autoCreateBucket) {
                     bucketManager.createBucket(bucketName, regionId);
-                    return true;
-                }
-                else {
-                    throw new UnsupportedOperationException("Your bucket does not exist and cannot be initialized");
+                } else {
+                    throw new UnsupportedOperationException(
+                        "Your bucket does not exist and cannot be initialized");
                 }
             }
-        }
-        catch (QiniuException e) {
+        } catch (QiniuException e) {
             // HTTP exception
             throw new RuntimeException("barrel operation failed");
         }
-        return false;
     }
 
     @Override
-    public UrlFetchResponse uploadRemoteUrl(String bucketName, String remoteSrcUrl, String keyPath) throws IOException {
+    public UrlFetchResponse uploadRemoteUrl(String bucketName, String remoteSrcUrl, String keyPath)
+        throws IOException {
         // grab network resources to space
         try {
             StopWatch stopWatch = new StopWatch("time consuming to upload network resources");
@@ -157,22 +162,25 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
             FetchRet fetchRet = bucketManager.fetch(remoteSrcUrl, bucketName, keyPath);
             stopWatch.stop();
             LOGGER.info(stopWatch.prettyPrint());
-            LOGGER.info("Upload succeeded, Key: {}, file type: {}, size: {}", fetchRet.key, fetchRet.mimeType, fetchRet.fsize);
-            return new UrlFetchResponse(fetchRet.key, fetchRet.hash, fetchRet.fsize, fetchRet.mimeType);
-        }
-        catch (QiniuException ex) {
+            LOGGER.info("Upload succeeded, Key: {}, file type: {}, size: {}", fetchRet.key,
+                fetchRet.mimeType, fetchRet.fsize);
+            return new UrlFetchResponse(fetchRet.key, fetchRet.hash, fetchRet.fsize,
+                fetchRet.mimeType);
+        } catch (QiniuException ex) {
             LOGGER.error("failed to upload network resources", ex);
             throw new IOException(ex.error(), ex);
         }
     }
 
     @Override
-    public void uploadStreamForObject(String bucketName, InputStream in, String keyPath) throws IOException {
+    public void uploadStreamForObject(String bucketName, InputStream in, String keyPath)
+        throws IOException {
         uploadStreamForObject(bucketName, in, keyPath, null, null);
     }
 
     @Override
-    public void uploadStreamForObject(String bucketName, InputStream in, String keyPath, String mimeType, String digest) throws IOException {
+    public void uploadStreamForObject(String bucketName, InputStream in, String keyPath,
+                                      String mimeType, String digest) throws IOException {
         isBucketExist(bucketName);
         // limit upload file types
         StringMap policy = new StringMap();
@@ -198,8 +206,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
             LOGGER.info(stopWatch.prettyPrint());
             LOGGER.info("Upload succeeded: {} - {}", putRet.key, putRet.hash);
 
-        }
-        catch (QiniuException ex) {
+        } catch (QiniuException ex) {
             LOGGER.error("Upload failed", ex);
             throw new IOException(ex.error(), ex);
         }
@@ -216,28 +223,27 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
             InputStream in = URLUtil.getStream(URLUtil.url(urlString));
             FileInfo fileInfo = bucketManager.stat(bucketName, keyPath);
             return new OssObject(fileInfo.md5, fileInfo.fsize, fileInfo.mimeType, in);
-        }
-        catch (QiniuException e) {
-            e.printStackTrace();
+        } catch (QiniuException e) {
+            LOGGER.error("failed to get object", e);
         }
         return null;
     }
 
     @Override
-    public void executeStreamFunction(String bucketName, String key, Consumer<InputStream> function) {
+    public void executeStreamFunction(String bucketName, String key,
+                                      Consumer<InputStream> function) {
         try {
             DownloadUrl downloadUrl = new DownloadUrl(downloadDomain, true, key);
             String urlString = downloadUrl.buildURL();
-            if (ossSignatureTemplate != null){
+            if (ossSignatureTemplate != null) {
                 // If signature is turned on, you need to call the signature method
                 String host = getUrlPrefix(true, downloadDomain);
                 urlString = ossSignatureTemplate.getSignatureUrl(host, key);
             }
             InputStream in = URLUtil.getStream(URLUtil.url(urlString));
             function.accept(in);
-        }
-        catch (QiniuException e) {
-            e.printStackTrace();
+        } catch (QiniuException e) {
+            LOGGER.error("error occurred when executing stream function", e);
         }
     }
 
@@ -247,8 +253,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
             Response response = bucketManager.delete(bucketName, key);
             LOGGER.info("Delete Resource Response: {}", response.bodyString());
             return true;
-        }
-        catch (QiniuException e) {
+        } catch (QiniuException e) {
             LOGGER.error("Failed to delete resource", e);
         }
         return false;
@@ -260,15 +265,16 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
         CdnManager cdnManager = new CdnManager(auth);
         try {
             CdnResult.RefreshResult result = cdnManager.refreshUrls(url);
-            LOGGER.info("CDN cache refresh result code：" + result.code + ", status：" + result.error);
-        }
-        catch (QiniuException e) {
-            e.printStackTrace();
+            LOGGER.info(
+                "CDN cache refresh result code：" + result.code + ", status：" + result.error);
+        } catch (QiniuException e) {
+            LOGGER.error("Failed to refresh cdn cache", e);
         }
     }
 
     @Override
-    public OssUploadAuth uploadToken(String bucket, String key, long expires, @NonNull OssUploadPolicy uploadPolicy) {
+    public OssUploadAuth uploadToken(String bucket, String key, long expires,
+                                     @NonNull OssUploadPolicy uploadPolicy) {
         isBucketExist(bucket);
         OssUploadAuth ossUploadAuth = new OssUploadAuth();
 
@@ -277,10 +283,8 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
 
         String uploadToken = auth.uploadToken(bucket, key, expires, new StringMap(policy), true);
         ossUploadAuth.setUploadToken(uploadToken);
-        StringBuilder builder = new StringBuilder();
-        builder.append(uploadUrl).append("?key").append(key).append("&token=").append(uploadToken);
-        String uploadUrl = builder.toString();
-        ossUploadAuth.setUploadUrl(uploadUrl);
+        String newUploadUrl = uploadUrl + "?key" + key + "&token=" + uploadToken;
+        ossUploadAuth.setUploadUrl(newUploadUrl);
         ossUploadAuth.setUploadRequestMethod("POST");
         return ossUploadAuth;
     }
@@ -291,13 +295,14 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
             FileInfo stat = bucketManager.stat(bucketName, key);
             return new OssStatObject(stat.key, stat.hash, stat.fsize, stat.mimeType);
         } catch (QiniuException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to get resource information", e);
         }
         return null;
     }
 
     @Override
-    public boolean isValidCallback(String originAuthorization, String url, byte[] body, String contentType) {
+    public boolean isValidCallback(String originAuthorization, String url, byte[] body,
+                                   String contentType) {
         return auth.isValidCallback(originAuthorization, url, body, contentType);
     }
 
@@ -312,6 +317,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
 
     /**
      * The default callback information, which the business developer should not pay too much attention to, is all configuration items
+     *
      * @param putExtra put extra param
      * @return map
      */
@@ -332,18 +338,18 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
      */
     private String createCallbackBody(Map<String, Object> putExtra) {
         JSONObject callBackBody = new JSONObject()
-                .set("key", "$(key)")
-                .set("hash", "$(etag)")
-                .set("bucket", "$(bucket)")
+            .set("key", "$(key)")
+            .set("hash", "$(etag)")
+            .set("bucket", "$(bucket)")
 
-                .set("fname", "$(fname)")
-                .set("fsize", "$(fsize)")
-                .set("ext", "$(ext)")
-                .set("mimeType", "$(mimeType)")
-                .set("suffix", "$(suffix)")
+            .set("fname", "$(fname)")
+            .set("fsize", "$(fsize)")
+            .set("ext", "$(ext)")
+            .set("mimeType", "$(mimeType)")
+            .set("suffix", "$(suffix)")
 
-                .set("imageWidth", "$(imageInfo.width)")
-                .set("imageHeight", "$(imageInfo.height)");
+            .set("imageWidth", "$(imageInfo.width)")
+            .set("imageHeight", "$(imageInfo.height)");
 
         if (MapUtil.isNotEmpty(putExtra)) {
             callBackBody.putAll(putExtra);

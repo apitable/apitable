@@ -51,7 +51,9 @@ import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { AddressTreeMenu } from '../../address_list/address_tree_menu';
 // @ts-ignore
-import { isSocialPlatformEnabled, syncOrgMember } from 'enterprise';
+import { syncOrgMember } from 'enterprise/organization/utils/index';
+// @ts-ignore
+import { isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
 
 import {useAppSelector} from "pc/store/react-redux";

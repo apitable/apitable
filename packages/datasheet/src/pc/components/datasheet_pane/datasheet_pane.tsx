@@ -19,11 +19,12 @@
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
 import { get } from 'lodash';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { Skeleton } from '@apitable/components';
+import { Alert, Button, Skeleton } from '@apitable/components';
 import {
   ConfigConstant,
   Events,
@@ -38,7 +39,6 @@ import {
   SystemConfig,
   t,
 } from '@apitable/core';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ApiPanel } from 'pc/components/api_panel';
 import { Message, VikaSplitPanel } from 'pc/components/common';
 import { TimeMachine } from 'pc/components/time_machine';
@@ -62,7 +62,9 @@ import { TabBar } from '../tab_bar';
 import { ViewContainer } from '../view_container';
 import { WidgetPanel } from '../widget';
 // @ts-ignore
-import { WeixinShareWrapper, createBackupSnapshot } from 'enterprise';
+import { createBackupSnapshot } from 'enterprise/time_machine/backup/backup';
+// @ts-ignore
+import { WeixinShareWrapper } from 'enterprise/wechat/weixin_share_wrapper/weixin_share_wrapper';
 import styles from './style.module.less';
 
 const RobotPanel = dynamic(() => import('pc/components/robot/robot_panel/robot_panel'), {
@@ -136,19 +138,23 @@ const DatasheetMain = (props: IDatasheetMain) => {
         )}
       </div>
       <SuspensionPanel shareId={shareId} datasheetId={datasheetId} />
-      {(preview || testFunctions) && previewDstType !== PREVIEW_DATASHEET_BACKUP && (
-        <div className={styles.previewing}>
-          <div className={styles.previewTip}>
-            {preview ? t(Strings.preview_time_machine, { version: preview }) : t(Strings.experience_test_function, { testFunctions })}
-            {testFunctions && <a onClick={handleExitTest}>{t(Strings.exist_experience)}</a>}
-            {preview && (
-              <span style={{ marginLeft: 14, cursor: 'pointer', textDecoration: 'underline' }} onClick={exportPreviewCsv}>
-                {t(Strings.export_current_preview_view_data)}
-              </span>
+      {(preview || testFunctions) && previewDstType !== PREVIEW_DATASHEET_BACKUP && 
+          <Alert
+            className={styles.previewing}
+            type="default"
+            content={(
+              <div className={styles.previewTip}>
+                <span>{preview ? t(Strings.preview_time_machine, { version: preview }) : 
+                  t(Strings.experience_test_function, { testFunctions })}</span>
+                <Button
+                  size="small"
+                  color="primary"
+                  onClick={exportPreviewCsv}
+                >{t(Strings.export_current_preview_view_data)}</Button>
+              </div>
             )}
-          </div>
-        </div>
-      )}
+          />
+      }
     </div>
   );
 };
