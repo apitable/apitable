@@ -45,7 +45,7 @@ const LogoSize = {
 interface ILogoProps {
   className?: string;
   text?: boolean;
-  size?: 'mini' | 'small' | 'large';
+  size?: 'mini' | 'small' | 'large' | number;
   theme?: ThemeName;
   type?:'LOGO'|'SHARE_LOGO'
 }
@@ -60,7 +60,10 @@ export const Logo: React.FC<React.PropsWithChildren<ILogoProps>> = (props) => {
 
   const { size = 'small', text = true, className, theme = ThemeName.Light, type='LOGO' } = props;
   const isLightTheme = theme === ThemeName.Light;
-  const logoSize = LogoSize[size];
+  const logoSize = typeof size === 'number' ? {
+    logoSize: size,
+    logoTextHeight: size,
+  } : LogoSize[size];
 
   const envVars = getEnvVariables();
 
