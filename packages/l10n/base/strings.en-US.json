@@ -5845,5 +5845,6 @@
   "training_data_source_table_column_3": "Status",
   "training_data_source_table_column_4": "Operation",
   "bind_app_sumo_btn_str": "Activate account",
-  "app_sumo_plan_desc": "App Sumo 的描述"
+  "app_sumo_plan_desc": "App Sumo 的描述",
+  "ad_card_desc": "For a demo, quote, or business communication, please contact us by clicking the button below"
 }

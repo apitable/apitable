@@ -48,6 +48,7 @@ export type StringKeysMapType = {
   'activity_statement': 'activity_statement',
   'activity_time': 'activity_time',
   'activity_tip': 'activity_tip',
+  'ad_card_desc': 'ad_card_desc',
   'adaptive': 'adaptive',
   'add': 'add',
   'add_a_trigger': 'add_a_trigger',

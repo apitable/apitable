@@ -5849,5 +5849,6 @@
   "training_data_source_table_column_3": "Status",
   "training_data_source_table_column_4": "Operation",
   "bind_app_sumo_btn_str": "激活账户",
-  "app_sumo_plan_desc": "App Sumo 的描述"
+  "app_sumo_plan_desc": "App Sumo 的描述",
+  "ad_card_desc": "如果需要获取演示、报价、商务沟通，请点击下方按钮联系我们"
 }
