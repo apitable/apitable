@@ -21,9 +21,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import { useContextMenu } from '@apitable/components';
 import { Events, IReduxState, Player, ScreenWidth, StoreActions, Strings, t } from '@apitable/core';
-// @ts-ignore
-// @ts-ignore
-// @ts-ignore
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display/enum';
 import { ScrollBar } from 'pc/components/scroll_bar';
@@ -33,9 +30,11 @@ import { DelConfirmModal, DelSpaceModal, DelSuccess, RecoverSpace } from './comp
 import { ISpaceLevelType, LevelType } from './interface';
 import { Lg, Md, Sm, Xs } from './layout';
 import { DELETE_SPACE_CONTEXT_MENU_ID } from './utils';
-
+// @ts-ignore
 import { subscribeUsageCheck } from 'enterprise/billing/subscribe_usage_check';
+// @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
+// @ts-ignore
 import { isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 
 export const SpaceInfo = () => {
