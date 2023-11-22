@@ -47,7 +47,7 @@ import styles from './style.module.less';
 // @ts-ignore
 import { showOrderModal } from 'enterprise';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 // Restore the user's last opened datasheet.
 const resumeUserHistory = (path: string) => {
@@ -56,7 +56,6 @@ const resumeUserHistory = (path: string) => {
   const spaceId = state.space.activeId;
   const { nodeId, datasheetId, folderId, viewId, recordId, formId, widgetId, mirrorId, dashboardId, automationId, aiId } = getPageParams(path);
   if (spaceId === user.spaceId) {
-
     if (mirrorId) {
       Router.replace(Navigation.WORKBENCH, {
         params: {
@@ -108,7 +107,8 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
   const query = useQuery();
   const router = useRouter();
   const theme = useTheme();
-
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
+  const social = spaceInfo?.social;
   // Directory tree toggle source status, directory tree click status, sidebar switch.
   const [toggleType, setToggleType] = useState<SideBarType>(SideBarType.None);
   const [clickType, setClickType] = useState<SideBarClickType>(SideBarClickType.None);
@@ -118,6 +118,9 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
 
   useMount(() => {
     if (!query.get('choosePlan') || isMobile) return;
+    if (social?.appType === 1 || social?.appType === 2) {
+      return;
+    }
     expandUpgradeSpace();
   });
 
