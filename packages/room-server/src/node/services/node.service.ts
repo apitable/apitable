@@ -21,7 +21,7 @@ import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { NodeBaseInfo, NodeDetailInfo, NodeRelInfo } from 'database/interfaces';
 import { MetaService } from 'database/resource/services/meta.service';
-import { get, omit } from 'lodash';
+import { get, keyBy, omit } from 'lodash';
 import { NodeDescriptionService } from 'node/services/node.description.service';
 import { NodeExtraConstant } from 'shared/common';
 import { DatasheetException, PermissionException, ServerException } from 'shared/exception';
@@ -247,14 +247,20 @@ export class NodeService {
     return await this.nodeRelRepository.selectRelNodeIdsByMainNodeIds(mainNodeIds);
   }
 
-  async getNodeNameMapByNodeIds(nodeIds: string[]): Promise<Map<string, string>> {
-    const nodeMap = new Map<string, string>();
+  async getNodeInfoMapByNodeIds(nodeIds: string[]): Promise<Map<string, { nodeName: string; relNodeId?: string }>> {
+    const nodeMap: Map<string, any> = new Map<string, any>();
     if (!nodeIds.length) {
       return nodeMap;
     }
     const nodes = await this.nodeRepository.selectNodeNameByNodeIds(nodeIds);
+    const nodeRel = await this.nodeRelRepository.selectRelNodeInfoByMainNodeIds(nodeIds);
+    const nodeRelMap = keyBy(nodeRel, 'mainNodeId');
     for (const node of nodes) {
-      nodeMap.set(node.nodeId, node.nodeName);
+      const info = {
+        nodeName: node.nodeName,
+        relNodeId: nodeRelMap[node.nodeId]?.relNodeId,
+      };
+      nodeMap.set(node.nodeId, info);
     }
     return nodeMap;
   }
