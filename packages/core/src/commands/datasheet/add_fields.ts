@@ -44,7 +44,9 @@ export interface IAddFieldOptions {
 export interface IAddFieldsOptions {
   cmd: CollaCommandName.AddFields;
   data: IAddFieldOptions[];
+  resourceType?: ResourceType,
   datasheetId?: string;
+  resourceId?: string;
   copyCell?: boolean;
   fieldId?: string;
   internalFix?: IInternalFix;
@@ -56,9 +58,10 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
 
   execute: (context, options) => {
     const { state: state } = context;
-    const activeDatasheetId = Selectors.getActiveDatasheetId(state)!;
-    const { data, copyCell, internalFix, fieldId, datasheetId = activeDatasheetId } = options;
-    const snapshot = Selectors.getSnapshot(state, datasheetId);
+    const activeDatasheetId = options.datasheetId ?? Selectors.getActiveDatasheetId(state)!;
+    const datasheetId = activeDatasheetId;
+    const { data, copyCell, internalFix, fieldId } = options;
+    const snapshot = Selectors.getSnapshot(state, activeDatasheetId);
     const recordMap = snapshot!.recordMap;
 
     const maxFieldCountPerSheet = getMaxFieldCountPerSheet();
@@ -68,9 +71,11 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
     }
     const isOverLimit = data.length + snapshot.meta.views[0]!.columns.length > maxFieldCountPerSheet;
     if (isOverLimit) {
-      throw new Error(t(Strings.columns_count_limit_tips, {
-        column_limit: maxFieldCountPerSheet,
-      }));
+      throw new Error(
+        t(Strings.columns_count_limit_tips, {
+          column_limit: maxFieldCountPerSheet,
+        }),
+      );
     }
     const newFieldIds = getNewIds(IDPrefix.Field, data.length, Object.keys(snapshot.meta.fieldMap));
     const frozenCountMap = new Map();
@@ -80,17 +85,14 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
     const actions = data.reduce<IJOTAction[]>((collected, fieldOption, index) => {
       newFieldId = newFieldIds[index]!;
       const { index: columnIndex, viewId } = fieldOption;
-      const view = snapshot.meta.views.find(view => view.id === viewId);
+      const view = snapshot.meta.views.find((view) => view.id === viewId);
       const frozenColumnCount = (view as IGridViewProperty)?.frozenColumnCount;
 
       // special handling for associated fields
-      // When the table associated with the newly added associated field cannot be queried in the state, 
+      // When the table associated with the newly added associated field cannot be queried in the state,
       // an association cannot be established at this time.
       // Here we convert this field directly to a text field.
-      if (
-        fieldOption.data.type === FieldType.Link &&
-        !Selectors.getDatasheet(state, fieldOption.data.property.foreignDatasheetId)
-      ) {
+      if (fieldOption.data.type === FieldType.Link && !Selectors.getDatasheet(state, fieldOption.data.property.foreignDatasheetId)) {
         fieldOption = {
           ...fieldOption,
           data: {
@@ -107,7 +109,7 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
         property: fieldOption.data.property,
       } as IField;
 
-      // Calculated fields need to determine their own datasheet through the field property, 
+      // Calculated fields need to determine their own datasheet through the field property,
       // here we force him to specify the datasheetId of the current command
       if (Field.bindContext(field, state).isComputed) {
         field.property = {
@@ -125,7 +127,7 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
       // AutoNumber needs to record the current view index
       if (field.type === FieldType.AutoNumber) {
         const datasheet = getDatasheet(state, datasheetId);
-        const viewIdx = snapshot.meta.views.findIndex(item => item.id === datasheet?.activeView) || 0;
+        const viewIdx = snapshot.meta.views.findIndex((item) => item.id === datasheet?.activeView) || 0;
         field.property = { ...field.property, viewIdx };
       }
 

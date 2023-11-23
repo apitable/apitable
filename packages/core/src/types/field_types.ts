@@ -81,7 +81,7 @@ export enum RollUpFuncType {
   AND = 'AND',
   OR = 'OR',
   XOR = 'XOR',
-  
+
   // Currently processed in lookup
   // // will be converted to string
   CONCATENATE = 'CONCATENATE',
@@ -618,14 +618,35 @@ export interface IButtonStyle {
   color: number
 }
 
+export enum OpenLinkType {
+  Url = 0,
+  Expression = 1,
+}
+
 export interface IButtonAction {
-  type: ButtonActionType,
-  expression?: string,
-  automationId?: string,
-  triggerId?: string,
+  type?: ButtonActionType;
+  openLink?: {
+    type: OpenLinkType;
+    expression: string;
+  };
+  automation?: {
+    automationId: string;
+    triggerId: string;
+  };
+}
+
+export interface IButtonActionMeta {
+  type?: ButtonActionType;
+    // type: OpenLinkType;
+    expression?: string;
+  // automation?: {
+    automationId?: string;
+    triggerId?: string;
+  // };
 }
 
 export interface IButtonProperty {
+  datasheetId?: string;
   text: string,
   style: IButtonStyle
   action: IButtonAction,

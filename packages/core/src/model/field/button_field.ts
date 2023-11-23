@@ -23,18 +23,27 @@ import { ICellToStringOption, ICellValue } from 'model/record';
 import { Strings, t } from 'exports/i18n';
 import { IReduxState } from 'exports/store';
 import {
-  APIMetaButtonActionType, BasicOpenValueType,
+  APIMetaButtonActionType,
+  BasicOpenValueType,
   BasicValueType,
   ButtonActionType,
   ButtonStyleType,
   CollectType,
-  FieldType, FOperator,
+  FieldType,
+  FOperator,
   IAPIMetaButtonFieldProperty,
-  IButtonField,
-  IField, IFilterCondition,
+  IButtonField, IButtonProperty,
+  IField,
+  IFilterCondition,
   IStandardValue,
+  OpenLinkType,
 } from 'types';
-import { joiErrorResult } from './validate_schema';
+import { joiErrorResult, datasheetIdString } from './validate_schema';
+
+export const AutomationConstant = {
+  DEFAULT_TEXT : t(Strings.click_start),
+  defaultColor : 50,
+};
 
 export class ButtonField extends Field {
   constructor(
@@ -45,6 +54,7 @@ export class ButtonField extends Field {
   }
 
   static propertySchema = Joi.object({
+    datasheetId: datasheetIdString().required(),
     text: Joi.string().required(),
     style: Joi.object({
       type: Joi.number().valid(ButtonStyleType.Background, ButtonStyleType.OnlyText),
@@ -52,14 +62,19 @@ export class ButtonField extends Field {
     }).required(),
     action: Joi.object({
       type: Joi.number().valid(ButtonActionType.OpenLink, ButtonActionType.TriggerAutomation),
-      expression: Joi.string().when('type', { is: ButtonActionType.OpenLink, then: Joi.string().allow('').required() }),
-      automationId: Joi.string().when('type', {
-        is: ButtonActionType.TriggerAutomation,
-        then: Joi.string()
-          .pattern(/^aut.+/, 'automationId')
-          .required(),
+      openLink: Joi.object({
+        type: Joi.number().valid(OpenLinkType.Url, OpenLinkType.Expression),
+        expression: Joi.string().when('type', { is: ButtonActionType.OpenLink, then: Joi.string().allow('').required() }),
       }),
-      triggerId: Joi.string().pattern(/^atr.+/, 'triggerId'),
+      automation: Joi.object({
+        automationId: Joi.string().when('type', {
+          is: ButtonActionType.TriggerAutomation,
+          then: Joi.string()
+            .pattern(/^aut.+/, 'automationId')
+            .required(),
+        }),
+        triggerId: Joi.string().pattern(/^atr.+/, 'triggerId'),
+      }),
     }).required(),
   }).required();
 
@@ -67,9 +82,11 @@ export class ButtonField extends Field {
     return {
       action: {
         ...this.field.property.action,
-        type: this.field.property.action.type == ButtonActionType.TriggerAutomation
-          ? APIMetaButtonActionType.TriggerAutomation : APIMetaButtonActionType.OpenLink,
-      }
+        type:
+          this.field.property.action.type == ButtonActionType.TriggerAutomation
+            ? APIMetaButtonActionType.TriggerAutomation
+            : APIMetaButtonActionType.OpenLink,
+      },
     };
   }
 
@@ -77,17 +94,30 @@ export class ButtonField extends Field {
     return {};
   }
 
-  static defaultProperty() {
+  override get canGroup(): boolean {
+    return false;
+  }
+
+  override get canFilter(): boolean {
+    return false;
+  }
+
+  static defaultProperty(): IButtonProperty {
     return {
+      datasheetId: '',
       text: t(Strings.button_text_click_start),
       style: {
         type: ButtonStyleType.Background,
-        color: 1
+        color: 50,
       },
       action: {
-        type: ButtonActionType.OpenLink,
-        expression: ''
-      }
+        // type:
+        // ButtonActionType.OpenLink,
+        // openLink: {
+        //   type: undefined,
+        //   expression: '',
+        // },
+      },
     };
   }
 
@@ -161,7 +191,8 @@ export class ButtonField extends Field {
   }
 
   public cellValueToString(_cellValue: ICellValue, _cellToStringOption?: ICellToStringOption): string | null {
-    return null;
+
+    return this.field.property.text;
   }
 
   public defaultValueForCondition(_condition: IFilterCondition): ICellValue {

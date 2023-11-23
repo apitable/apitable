@@ -19,6 +19,7 @@
     "start:components": "nx start @apitable/components",
     "build": "nx run-many -t build",
     "build:web": "nx run @apitable/datasheet:build",
+    "build:room-server": "nx run @apitable/room-server:build",
     "build:datasheet": "nx run @apitable/datasheet:build",
     "build:api-client": "nx run @apitable/api-client:build",
     "build:ai-components": "node build.js",

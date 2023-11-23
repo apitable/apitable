@@ -186,13 +186,13 @@ export class DatasheetController {
     if (!field) {
       throw new ServerException(DatasheetException.FIELD_NOT_EXIST);
     }
-    if (!field.property.action.automationId) {
+    if (!field.property.action.automation?.automationId) {
       throw new ServerException(DatasheetException.BUTTON_FIELD_AUTOMATION_NOT_CONFIGURED);
     }
-    if (!field.property.action.triggerId) {
+    if (!field.property.action?.automation?.triggerId) {
       throw new ServerException(DatasheetException.BUTTON_FIELD_AUTOMATION_TRIGGER_NOT_CONFIGURED);
     }
-    await this.datasheetService.triggerAutomation(field.property.action.automationId, field.property.action.triggerId, dstId, data.recordId, userId);
+    await this.datasheetService.triggerAutomation(field.property.action?.automation?.automationId, field.property.action?.automation?.triggerId, dstId, data.recordId, userId);
     return ApiResponse.success(undefined);
   }
 }
