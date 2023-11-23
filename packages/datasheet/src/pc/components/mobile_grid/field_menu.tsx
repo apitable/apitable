@@ -120,6 +120,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = ({ onClo
     permissions;
 
   const fieldError = Boolean(Field.bindModel(field).validateProperty().error);
+  const canFilter = Boolean(Field.bindModel(field).canFilter);
   const showFieldName = getShowFieldName(field.name);
   // Special judgment, when the link field error, need to allow the user to delete the current link field
   const linkedFieldError = field.type === FieldType.Link && fieldError;
@@ -317,7 +318,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = ({ onClo
       {
         icon: <FilterOutlined color={colors.thirdLevelText} />,
         text: t(Strings.filter_fields, { field_name: showFieldName }),
-        hidden: !editable || Boolean(mirrorId),
+        hidden: !editable || Boolean(mirrorId) || !canFilter,
         onClick: filterField,
       },
     ],

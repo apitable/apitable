@@ -32,7 +32,8 @@ import {
   LongtextOutlined,
   LookupOutlined,
   StarOutlined,
-  CascadeOutlined, FileOutlined,
+  CascadeOutlined,
+  FileOutlined,
   NumberOutlined,
   OneWayLinkOutlined,
   PercentOutlined,
@@ -44,8 +45,9 @@ import {
   TwoWayLinkOutlined,
   UserAddOutlined,
   UserEditOutlined,
-  UserOutlined
+  UserOutlined,
 } from '@apitable/icons';
+import { CursorButtonOutlined } from '@apitable/icons';
 
 const FieldIconMap = {
   [FieldType.Text]: LongtextOutlined,
@@ -74,10 +76,11 @@ const FieldIconMap = {
   [FieldType.LastModifiedBy]: UserEditOutlined,
   [FieldType.Cascader]: CascadeOutlined,
   [FieldType.WorkDoc]: FileOutlined,
+  [FieldType.Button]: CursorButtonOutlined,
 };
 
-export const getFieldTypeIconOrNull = (type: FieldType): ReactElement|null => {
-  return FieldIconMap[type];
+export const getFieldTypeIconOrNull = (type: FieldType): ReactElement | null => {
+  return FieldIconMap[type] as unknown as ReactElement;
 };
 
 export const getFieldTypeIcon = (type: FieldType, fillColor: string = colorVars.thirdLevelText, width = 16, height = 16): any => {

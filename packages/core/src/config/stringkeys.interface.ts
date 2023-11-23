@@ -910,6 +910,7 @@ export type StringKeysMapType = {
   'button_come_on': 'button_come_on',
   'button_execute_error': 'button_execute_error',
   'button_field_invalid': 'button_field_invalid',
+  'button_maxium_text': 'button_maxium_text',
   'button_operation': 'button_operation',
   'button_style': 'button_style',
   'button_sub_team': 'button_sub_team',

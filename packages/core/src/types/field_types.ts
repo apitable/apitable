@@ -477,6 +477,7 @@ export interface ISelectFieldOption {
   color: number;
 }
 
+
 export interface ISelectFieldProperty {
   options: ISelectFieldOption[];
   defaultValue?: string | IMultiSelectedIds;
@@ -637,12 +638,9 @@ export interface IButtonAction {
 
 export interface IButtonActionMeta {
   type?: ButtonActionType;
-    // type: OpenLinkType;
     expression?: string;
-  // automation?: {
     automationId?: string;
     triggerId?: string;
-  // };
 }
 
 export interface IButtonProperty {

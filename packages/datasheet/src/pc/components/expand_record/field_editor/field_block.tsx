@@ -37,6 +37,7 @@ import {
   ViewType,
 } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
+import { ButtonFieldItem } from 'pc/components/editors/button_editor/buton_item';
 import { CheckboxEditor } from 'pc/components/editors/checkbox_editor';
 import { FocusHolder } from 'pc/components/editors/focus_holder';
 import { IEditor } from 'pc/components/editors/interface';
@@ -299,6 +300,11 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = (
     case FieldType.Cascader:
       return (
         <ExpandCascader {...commonProps} isFocus={isFocus} cellValue={cellValue} field={commonProps.field as ILinkField} style={mobileEditorWidth} />
+      );
+    case FieldType.Button:
+
+      return (
+        <ButtonFieldItem recordId={record.id} field={field} />
       );
     case FieldType.WorkDoc:
       return (

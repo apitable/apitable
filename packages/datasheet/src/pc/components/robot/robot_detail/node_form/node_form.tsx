@@ -20,7 +20,7 @@ import { useHover } from 'ahooks';
 import { useAtom, useAtomValue } from 'jotai';
 import { JSONSchema7 } from 'json-schema';
 import Image from 'next/image';
-import { memo, ReactElement, useRef } from 'react';
+import { forwardRef, memo, ReactElement, useImperativeHandle, useRef } from 'react';
 import {
   Box,
   Button,
@@ -34,6 +34,7 @@ import {
 import { IJsonSchema, Strings, t, validateMagicFormWithCustom } from '@apitable/core';
 import { DeleteOutlined, MoreStandOutlined, WarnCircleFilled } from '@apitable/icons';
 import { Modal } from 'pc/components/common';
+import { deleteRobotAction, deleteTrigger } from 'pc/components/robot/api';
 import { flatContextData } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { automationPanelAtom, automationStateAtom, PanelName, useAutomationController } from '../../../automation/controller';
@@ -44,7 +45,6 @@ import { INodeOutputSchema, IRobotNodeType } from '../../interface';
 import { useCssColors } from '../trigger/use_css_colors';
 import { IFormProps } from './core/interface';
 import { MagicVariableForm } from './ui';
-import {deleteRobotAction, deleteTrigger} from "pc/components/robot/api";
 
 type INodeFormProps<T> = Omit<IFormProps<T>, 'schema' | 'nodeOutputSchemaList'> & {
   index: number;
@@ -58,14 +58,23 @@ type INodeFormProps<T> = Omit<IFormProps<T>, 'schema' | 'nodeOutputSchemaList'> 
   type?: 'trigger' | 'action';
   children?: ReactElement;
   handleClick?: () => void;
+  handleSubmit?: () => void;
   unsaved?: boolean;
 };
 
-export const NodeForm = memo((props: INodeFormProps<any>) => {
-  const ref = useRef<any>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+export interface INodeFormControlProps {
+  submit?: () => void
+}
+export const NodeForm = memo(forwardRef<INodeFormControlProps, INodeFormProps<any>>((props: INodeFormProps<any>, ref) => {
+  const formRef = useRef<any>(null);
   const { description, title, unsaved, type = 'trigger', children, handleClick, ...restProps } = props;
   const colors = useCssColors();
+
+  useImperativeHandle(ref, () => ({
+    submit: () => {
+      (formRef.current as any)?.submit();
+    },
+  }));
 
   return (
     <Box height={'100%'} display={'flex'} flexDirection={'column'}>
@@ -78,7 +87,7 @@ export const NodeForm = memo((props: INodeFormProps<any>) => {
           {description}
         </Typography>
 
-        <MagicVariableForm {...restProps} ref={ref} liveValidate noValidate={false} style={{ marginTop: -24 }}>
+        <MagicVariableForm {...restProps} ref={formRef} liveValidate noValidate={false} style={{ marginTop: -24 }}>
           <></>
         </MagicVariableForm>
       </Box>
@@ -90,7 +99,7 @@ export const NodeForm = memo((props: INodeFormProps<any>) => {
             style={{ width: '128px' }}
             size="middle"
             onClick={() => {
-              (ref.current as any)?.submit();
+              (formRef.current as any)?.submit();
             }}
             color="primary"
           >
@@ -100,9 +109,9 @@ export const NodeForm = memo((props: INodeFormProps<any>) => {
       </Box>
     </Box>
   );
-});
+}));
 
-export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
+export const NodeFormInfo = memo(forwardRef<INodeFormControlProps, INodeFormProps<any>>((props: INodeFormProps<any>, ref) => {
   const { title, serviceLogo, unsaved, type = 'trigger', nodeId, children, handleClick, index = 0, ...restProps } = props;
   const theme = useTheme();
   // @ts-ignore
@@ -116,9 +125,15 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
   } = useAutomationController();
   const colors = useCssColors();
 
+  useImperativeHandle(ref, () => ({
+    submit: () => {
+      console.error('is not supported');
+    },
+  }));
+
   const handleDeleteRobotAction = () => {
     Modal.confirm({
-      title: t(Strings.robot_action_delete),
+      title: type === 'action' ? t(Strings.robot_action_delete): t(Strings.robot_trigger_delete),
       content: t(Strings.robot_action_delete_confirm_desc),
       cancelText: t(Strings.cancel),
       okText: t(Strings.confirm),
@@ -164,8 +179,8 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
       },
     ],
   ];
-  const ref = useRef(null);
-  const isHovering = useHover(ref);
+  const itemRef = useRef(null);
+  const isHovering = useHover(itemRef);
   const { show: showMenu } = useContextMenu({
     id: menuId,
   });
@@ -174,7 +189,7 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
     <Box
       border={!isActive ? `1px solid ${theme.color.lineColor}` : `1px solid ${theme.color.borderBrandDefault}`}
       borderRadius="4px"
-      ref={ref}
+      ref={itemRef}
       width="100%"
       padding="16px"
       onClick={handleClick}
@@ -248,4 +263,4 @@ export const NodeFormInfo = memo((props: INodeFormProps<any>) => {
       </Box>
     </Box>
   );
-});
+}));

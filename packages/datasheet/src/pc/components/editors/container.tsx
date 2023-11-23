@@ -19,12 +19,10 @@
 import { useUnmount } from 'ahooks';
 import dayjs from 'dayjs';
 import { isEmpty, isEqual, noop, omit } from 'lodash';
-import { ContextName, ShortcutActionManager, ShortcutActionName, ShortcutContext } from 'modules/shared/shortcut_key';
-import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import * as React from 'react';
 import { ClipboardEvent, forwardRef, KeyboardEvent, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { shallowEqual } from 'react-redux';
-import { Message } from '@apitable/components';
+import { Button, Message } from '@apitable/components';
 import {
   Cell,
   CellDirection,
@@ -33,7 +31,7 @@ import {
   DATASHEET_ID,
   Field,
   FieldType,
-  Group,
+  Group, IButtonField,
   ICell,
   ICellValue,
   IDateTimeField,
@@ -53,6 +51,9 @@ import {
   t,
   ViewType,
 } from '@apitable/core';
+import { ContextName, ShortcutActionManager, ShortcutActionName, ShortcutContext } from 'modules/shared/shortcut_key';
+import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
+import { ButtonEditor } from 'pc/components/editors/button_editor';
 import { autoTaskScheduling } from 'pc/components/gantt_view/utils/auto_task_line_layout';
 import { useDispatch } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
@@ -860,6 +861,11 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
             recordId={record.id}
           />
         );
+      case FieldType.Button:
+        return <ButtonEditor
+          ref={editorRef} toggleEditing={toggleEditing} recordId={record.id} cellValue={cellValue} {...commonProps}
+          field={commonProps.field as IButtonField}
+        />;
       case FieldType.WorkDoc:
         return (
           <WorkdocEditor

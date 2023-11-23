@@ -29,7 +29,7 @@ import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import EllipsisText from '../../ellipsis_text';
 import { useActionTypes, useAutomationRobot, useToggleRobotActive, useTriggerTypes } from '../hooks';
-import { IAutomationDatum, IRobotNodeType, IRobotNodeTypeInfo, IRobotTrigger } from '../interface';
+import { IAutomationDatum, IRobotNodeType, IRobotNodeTypeInfo } from '../interface';
 import { getActionList, getTriggerList } from '../robot_detail/utils';
 import styles from './styles.module.less';
 
@@ -77,14 +77,15 @@ export const RobotListItemCard: React.FC<React.PropsWithChildren<IRobotListItemC
   });
 
   const nodeTypeList: IRobotNodeTypeInfo[] = [
-    ...getTriggerList(robotCardInfo.triggers).slice(0, 1).map((trigger) => {
-      const triggerType = triggerTypes.find((item) => trigger.triggerTypeId === item.triggerTypeId);
-      return {
-        nodeTypeId: trigger.triggerId,
-        service: triggerType?.service!,
-        type: IRobotNodeType.Trigger,
-      };
-    }),
+    ...getTriggerList(robotCardInfo.triggers)
+      .map((trigger) => {
+        const triggerType = triggerTypes.find((item) => trigger.triggerTypeId === item.triggerTypeId);
+        return {
+          nodeTypeId: trigger.triggerId,
+          service: triggerType?.service!,
+          type: IRobotNodeType.Trigger,
+        };
+      }),
     ...list,
   ];
 

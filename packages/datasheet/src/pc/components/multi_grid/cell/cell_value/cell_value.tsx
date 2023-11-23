@@ -130,6 +130,8 @@ const CellValueBase: React.FC<React.PropsWithChildren<ICellValueComponent>> = (p
       return <CellCreatedBy {...cellProps} rowHeightLevel={rowHeightLevel} />;
     case FieldType.AutoNumber:
       return <CellAutoNumber {...cellProps} field={field} rowHeightLevel={rowHeightLevel} />;
+    case FieldType.Button:
+      return <></>;
     case FieldType.WorkDoc:
       return <CellWorkdoc {...cellProps} field={field} />;
     default:

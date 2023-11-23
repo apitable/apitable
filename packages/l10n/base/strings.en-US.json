@@ -5877,6 +5877,7 @@
   "open_url_tips_switch": "Switch to ${INPUT_MODE}",
   "create_new_button_field": "Create a new button column field",
   "please_select": "please select",
+  "button_maxium_text": "maximum words ${count} is allowed",
   "open_url_emby_warning": "URL cannot be empty",
   "the_current_button_column_has_expired_please_reselect": "The current button column has expired, please reselect",
   "open_url_formula_emby_warning": "Formula can not be empty",
