@@ -17,7 +17,7 @@
  */
 
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmpty } from 'class-validator';
+import { IsNotEmpty } from "class-validator";
 
 export class TriggerAutomationRO {
   @ApiProperty({
@@ -25,7 +25,7 @@ export class TriggerAutomationRO {
     example: 'rec4zxfWB5uyM',
     description: 'Record id',
   })
-  @IsEmpty()
+  @IsNotEmpty()
   recordId!: string;
 
   @ApiProperty({
@@ -33,6 +33,6 @@ export class TriggerAutomationRO {
     example: 'fl4zxfWB5uyM',
     description: 'Field id',
   })
-  @IsEmpty()
+  @IsNotEmpty()
   fieldId!: string;
 }
