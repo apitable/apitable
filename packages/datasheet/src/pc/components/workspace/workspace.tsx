@@ -37,17 +37,16 @@ import Trash from 'pc/components/trash/trash';
 import { ISideBarContextProps, SideBarClickType, SideBarContext, SideBarType } from 'pc/context';
 import { getPageParams, useCatalogTreeRequest, useQuery, useRequest, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
 import UpgradeSucceedDark from 'static/icon/workbench/workbench_upgrade_succeed_dark.png';
 import UpgradeSucceedLight from 'static/icon/workbench/workbench_upgrade_succeed_light.png';
 import { Tooltip, VikaSplitPanel } from '../common';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { CommonSide } from '../common_side';
-import styles from './style.module.less';
 // @ts-ignore
 import { showOrderModal } from 'enterprise';
-
-import { useAppSelector } from 'pc/store/react-redux';
+import styles from './style.module.less';
 
 // Restore the user's last opened datasheet.
 const resumeUserHistory = (path: string) => {
@@ -116,9 +115,9 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
   const [newTdbId, setNewTdbId] = useState('');
   const sideBarVisible = useAppSelector((state) => state.space.sideBarVisible);
 
-  useMount(() => {
+  useEffect(() => {
     if (!query.get('choosePlan') || isMobile) return;
-    if (social?.appType === 1 || social?.appType === 2) {
+    if (!social || social?.appType === 1 || social?.appType === 2) {
       return;
     }
     expandUpgradeSpace();
