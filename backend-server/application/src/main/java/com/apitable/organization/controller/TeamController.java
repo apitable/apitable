@@ -253,7 +253,7 @@ public class TeamController {
      * Delete team.
      */
     @PostResource(path = "/delete/{teamId}",
-        method = { RequestMethod.DELETE }, tags = "DELETE_TEAM")
+        method = {RequestMethod.DELETE}, tags = "DELETE_TEAM")
     @Operation(summary = "Delete team",
         description = "Delete team. If team has members, it can be deleted.")
     @Parameters({

@@ -18,15 +18,14 @@
 
 package com.apitable.widget.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +35,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Workbench - Widget Package Table
+ * Workbench - Widget Package Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -53,161 +52,161 @@ public class WidgetPackageEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Widget ID
+     * Widget ID.
      */
     private String packageId;
 
     /**
-     * Internationalized widget name
+     * Internationalized widget name.
      */
     private String i18nName;
 
     /**
-     * Internationalization Widget Description
+     * Internationalization Widget Description.
      */
     private String i18nDescription;
 
     /**
-     * Icon
+     * Icon.
      */
     private String icon;
 
     /**
-     * Cover draw TOKEN
+     * Cover draw TOKEN.
      */
     private String cover;
 
     /**
-     * Status (0: under development, 1: banned, 2: to be published, 3: published, 4: off the shelf - global temporarily closed) 3, 4
+     * Status (0: under development, 1: banned, 2: to be published, 3: published, 4: off the shelf - global temporarily closed) 3, 4.
      */
     private Integer status;
 
     /**
-     * Number of installations
+     * Number of installations.
      */
     private Integer installedNum;
 
     /**
-     * Name - 【Discard Delete】
+     * Name - 【Discard Delete】.
      */
     private String name;
 
     /**
-     * English name - 【Discard Delete】
+     * English name - 【Discard Delete】.
      */
     private String nameEn;
 
     /**
-     * Version - 【Discard Delete】
+     * Version - 【Discard Delete】.
      */
     private String version;
 
     /**
-     * Description - 【Discard Delete】
+     * Description - 【Discard Delete】.
      */
     private String description;
 
     /**
-     * Author Name
+     * Author Name.
      */
     private String authorName;
 
     /**
-     * Author email
+     * Author email.
      */
     private String authorEmail;
 
     /**
-     * Author icon TOKEN
+     * Author icon TOKEN.
      */
     private String authorIcon;
 
     /**
-     * Author website address
+     * Author website address.
      */
     private String authorLink;
 
     /**
-     * Widget package type (0: third party, 1: official)
+     * Widget package type (0: third party, 1: official).
      */
     private Integer packageType;
 
     /**
-     * 0: Publish to the component store in the space station, 1: Publish to the global application store (only allowed if the package_type is 0)
+     * 0: Publish to the component store in the space station, 1: Publish to the global application store (only allowed if the package_type is 0).
      */
     private Integer releaseType;
 
     /**
-     * Widget package extension information
+     * Widget package extension information.
      */
     private String widgetBody;
 
     /**
-     * Whether the sandbox runs (0: No, 1: Yes)
+     * Whether the sandbox runs (0: No, 1: Yes).
      */
     private Boolean sandbox;
 
     /**
-     * The release version ID, the currently active version, can be empty. When it is empty, it is only displayed to Creator in the build store
+     * The release version ID, the currently active version, can be empty. When it is empty, it is only displayed to Creator in the build store.
      */
     private Long releaseId;
 
     /**
-     * Is template (0: No, 1: Yes)
+     * Is template (0: No, 1: Yes).
      */
     private Boolean isTemplate;
 
     /**
-     * Enable or not, only for global widgets (0: not enabled, 1: enabled)
+     * Enable or not, only for global widgets (0: not enabled, 1: enabled).
      */
     private Boolean isEnabled;
 
     /**
-     * Delete Tag(0: No, 1: Yes)
+     * Delete Tag(0: No, 1: Yes).
      */
     @TableLogic
     private Boolean isDeleted;
 
     /**
-     * Owner Id(link#xxxx_user#id)
+     * Owner Id(link#xxxx_user#id).
      */
     private Long owner;
 
     /**
-     * Creator
+     * Creator.
      */
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
 
     /**
-     * Last Update By
+     * Last Update By.
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updatedBy;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 
     /**
-     * Installation environment code
+     * Installation environment code.
      */
     private String installEnvCode;
 
     /**
-     * Operate environment code
+     * Operate environment code.
      */
     private String runtimeEnvCode;
 

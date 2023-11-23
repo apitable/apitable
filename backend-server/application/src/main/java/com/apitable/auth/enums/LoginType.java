@@ -24,7 +24,7 @@ import lombok.Getter;
 
 /**
  * <p>
- * login verification type
+ * login verification type.
  * </p>
  *
  * @author Shawn Deng
@@ -34,22 +34,22 @@ import lombok.Getter;
 public enum LoginType {
 
     /**
-     * password
+     * password.
      */
     PASSWORD("password"),
 
     /**
-     * sms code
+     * sms code.
      */
     SMS_CODE("sms_code"),
 
     /**
-     * email code
+     * email code.
      */
     EMAIL_CODE("email_code"),
 
     /**
-     * sso auth
+     * sso auth.
      */
     SSO_AUTH("sso_auth");
 

@@ -736,7 +736,7 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @return member id
      */
     Long selectIdByOpenIdIgnoreDelete(@Param("spaceId") String spaceId,
-                                    @Param("openId") String openId);
+                                      @Param("openId") String openId);
 
     /**
      * !!! even if the member is deleted logically.
@@ -908,7 +908,8 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @param userIds user id
      * @return MemberEntity
      */
-    List<MemberEntity> selectByUserIds(@Param("spaceId") String spaceId, @Param("userIds") List<Long> userIds);
+    List<MemberEntity> selectByUserIds(@Param("spaceId") String spaceId,
+                                       @Param("userIds") List<Long> userIds);
 
     /**
      * query member name by user id and space id.

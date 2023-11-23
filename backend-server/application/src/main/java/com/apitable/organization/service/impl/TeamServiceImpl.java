@@ -170,7 +170,8 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     private List<TeamTreeVo> getTeamViewInTeamTree(List<Long> teamIds, Integer depth) {
-        List<TeamTreeVo> teamTreeVos = DBUtil.batchSelectByFieldIn(teamIds, teamMapper::selectTeamTreeVoByTeamIdIn);
+        List<TeamTreeVo> teamTreeVos =
+            DBUtil.batchSelectByFieldIn(teamIds, teamMapper::selectTeamTreeVoByTeamIdIn);
         Map<Long, TeamTreeVo> teamIdToTeamInfoMap = teamTreeVos.stream()
             .collect(Collectors.toMap(TeamTreeVo::getTeamId, Function.identity(),
                 (k1, k2) -> k1, LinkedHashMap::new));
@@ -178,7 +179,8 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
             .filter(i -> BooleanUtil.isTrue(i.getHasChildren()))
             .map(TeamTreeVo::getTeamId).collect(Collectors.toSet());
         while (!parentIds.isEmpty() && depth > 0) {
-            List<TeamTreeVo> treeVos = DBUtil.batchSelectByFieldIn(parentIds, teamMapper::selectTeamTreeVoByParentIdIn);
+            List<TeamTreeVo> treeVos =
+                DBUtil.batchSelectByFieldIn(parentIds, teamMapper::selectTeamTreeVoByParentIdIn);
             if (treeVos.isEmpty()) {
                 return new ArrayList<>(teamIdToTeamInfoMap.values());
             }
@@ -473,7 +475,8 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         teamInfo.setTeamName(team.getTeamName());
         if (team.getParentId() == 0L) {
             teamInfo.setTeamId(0L);
-            Long memberCount = SqlTool.retCount(memberMapper.selectCountBySpaceId(team.getSpaceId()));
+            Long memberCount =
+                SqlTool.retCount(memberMapper.selectCountBySpaceId(team.getSpaceId()));
             teamInfo.setMemberCount(memberCount);
             return teamInfo;
         }
@@ -658,7 +661,8 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Override
     public List<UnitTeamVo> getUnitTeamVo(String spaceId, List<Long> teamIds) {
-        return DBUtil.batchSelectByFieldIn(teamIds, (ids) -> teamMapper.selectUnitTeamVoByTeamIds(spaceId, ids));
+        return DBUtil.batchSelectByFieldIn(teamIds,
+            (ids) -> teamMapper.selectUnitTeamVoByTeamIds(spaceId, ids));
     }
 
     @Override

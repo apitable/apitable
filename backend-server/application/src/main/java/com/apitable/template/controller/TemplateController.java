@@ -345,7 +345,7 @@ public class TemplateController {
         method = RequestMethod.DELETE, requiredPermission = false)
     @Operation(summary = "Delete Template",
         description = "Deletion objects: main administrator, "
-        + "sub-admins with template permissions, creator of the template")
+            + "sub-admins with template permissions, creator of the template")
     @Parameter(name = "templateId", description = "Template ID", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "tplHTbkg7qbNJ")
     public ResponseData<Void> delete(@PathVariable("templateId") String templateId) {

@@ -19,8 +19,7 @@
 package com.apitable.core.support;
 
 /**
- * default response data builder
- *
+ * default response data builder.
  */
 public class DefaultResponseDataBuilder implements ResponseDataBuilder {
 
@@ -30,6 +29,13 @@ public class DefaultResponseDataBuilder implements ResponseDataBuilder {
 
     private final String message;
 
+    /**
+     * constructor.
+     *
+     * @param success    success
+     * @param statusCode status code
+     * @param message    message
+     */
     public DefaultResponseDataBuilder(Boolean success, Integer statusCode, String message) {
         this.success = success;
         this.statusCode = statusCode;

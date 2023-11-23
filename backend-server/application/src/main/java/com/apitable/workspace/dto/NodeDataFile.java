@@ -18,15 +18,14 @@
 
 package com.apitable.workspace.dto;
 
+import com.apitable.workspace.ro.SnapshotMapRo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.workspace.ro.SnapshotMapRo;
-
 /**
  * <p>
- * Bundle data file
+ * Bundle data file.
  * </p>
  */
 @Data

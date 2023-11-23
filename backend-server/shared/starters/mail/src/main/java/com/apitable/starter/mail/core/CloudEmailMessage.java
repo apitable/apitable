@@ -22,34 +22,33 @@ import java.util.List;
 
 /**
  * <p>
- * Cloud platform mail push message template
+ * Cloud platform mail push message template.
  * </p>
- *
  */
 public class CloudEmailMessage {
 
     /**
-     * sender personalized name
+     * sender personalized name.
      */
     private String personal;
 
     /**
-     * email subject
+     * email subject.
      */
     private String subject;
 
     /**
-     * email template ID
+     * email template ID.
      */
     private Long templateId;
 
     /**
-     * variable parameters in the template
+     * variable parameters in the template.
      */
     private String templateData;
 
     /**
-     * recipient list (multiple supported)
+     * recipient list (multiple supported).
      */
     private List<String> to;
 

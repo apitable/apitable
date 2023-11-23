@@ -59,7 +59,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 
 /**
- * qiniu cloud realization
+ * qiniu cloud realization.
  */
 public class QiniuOssClientRequest extends AbstractOssClientRequest {
 
@@ -70,21 +70,21 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     private final Auth auth;
 
     /**
-     * storage area ID
+     * storage area ID.
      * eg: South China is z2
      * doc: <a href="https://developer.qiniu.com/kodo/1671/region-endpoint-fq">...</a>
      */
     private final String regionId;
 
     /**
-     * domain name corresponding to the space
+     * domain name corresponding to the space.
      */
     private final String downloadDomain;
 
     private final Callback callback;
 
     /**
-     * upload url
+     * upload url.
      */
     private final String uploadUrl;
 
@@ -104,16 +104,26 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     private static final int MULTIPART_UPLOAD_THRESHOLD = 100 * 1024 * 1024;
 
     /**
-     * minimum fragment upload size
+     * minimum fragment upload size.
      * default: 10MB
      */
     private static final int MINIMUM_UPLOAD_PART_SIZE = 10 * 1024 * 1024;
 
     /**
-     * maximum number of thread pools used for fragment upload
+     * maximum number of thread pools used for fragment upload.
      */
     private static final int RESUMABLE_UPLOAD_MAX_CONCURRENT_COUNT = 8;
 
+    /**
+     * constructor.
+     *
+     * @param auth             auth
+     * @param regionId         region id
+     * @param downloadDomain   download domain
+     * @param callback         callback
+     * @param uploadUrl        upload url
+     * @param autoCreateBucket auto create bucket
+     */
     public QiniuOssClientRequest(Auth auth, String regionId, String downloadDomain,
                                  Callback callback, String uploadUrl, boolean autoCreateBucket,
                                  OssSignatureTemplate ossSignatureTemplate) {
@@ -316,7 +326,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     }
 
     /**
-     * The default callback information, which the business developer should not pay too much attention to, is all configuration items
+     * The default callback information, which the business developer should not pay too much attention to, is all configuration items.
      *
      * @param putExtra put extra param
      * @return map

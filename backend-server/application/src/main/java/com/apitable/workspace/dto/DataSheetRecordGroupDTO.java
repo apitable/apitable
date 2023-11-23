@@ -18,12 +18,13 @@
 
 package com.apitable.workspace.dto;
 
+import com.apitable.workspace.vo.DatasheetRecordVo;
 import java.util.List;
-
 import lombok.Data;
 
-import com.apitable.workspace.vo.DatasheetRecordVo;
-
+/**
+ * datasheet record group dto.
+ */
 @Data
 public class DataSheetRecordGroupDTO {
 

@@ -145,15 +145,6 @@ bootJar {
 // SpringBoot Plugin On Gradle
 springBoot {
     mainClass.set('com.apitable.Application')
-    // build-info.properties in resources/main/META-INF directory
-    buildInfo {
-        properties {
-            artifact = 'Api Server'
-            version = rootProject.version
-            group = rootProject.group
-            name = 'Api Server'
-        }
-    }
 }
 
 test {
@@ -165,7 +156,6 @@ protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:${protobuf_java_version}"
     }
-    generatedFilesBaseDir = "$projectDir/src/generated"
     clean {
         delete generatedFilesBaseDir
     }

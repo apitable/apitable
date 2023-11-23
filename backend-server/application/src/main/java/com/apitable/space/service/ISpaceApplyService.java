@@ -25,6 +25,7 @@ public interface ISpaceApplyService {
 
     /**
      * create space join application.
+     *
      * @param userId  userId
      * @param spaceId space id
      * @return ID
@@ -34,9 +35,9 @@ public interface ISpaceApplyService {
     /**
      * Send apply notifications.
      *
-     * @param userId    user ID
-     * @param spaceId   space ID
-     * @param applyId   apply ID
+     * @param userId  user ID
+     * @param spaceId space ID
+     * @param applyId apply ID
      * @author Chambers
      */
     void sendApplyNotify(Long userId, String spaceId, Long applyId);

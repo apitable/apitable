@@ -21,7 +21,8 @@ package com.apitable.control.infrastructure;
 import java.io.Serializable;
 
 /**
- * Control Request Executor option
+ * Control Request Executor option.
+ *
  * @author Shawn Deng
  */
 public class ControlRequestOption implements Serializable {

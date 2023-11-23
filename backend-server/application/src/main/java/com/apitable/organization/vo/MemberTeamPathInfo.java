@@ -23,19 +23,19 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 /**
- * member's teamId and team full hierarchy path name
+ * member's teamId and team full hierarchy path name.
  */
 @Data
 public class MemberTeamPathInfo {
 
     /**
-     * team's id
+     * team's id.
      */
     @JsonSerialize(using = ToStringSerializer.class)
     private Long teamId;
 
     /**
-     * team's full hierarchy path name
+     * team's full hierarchy path name.
      */
     private String fullHierarchyTeamName;
 }

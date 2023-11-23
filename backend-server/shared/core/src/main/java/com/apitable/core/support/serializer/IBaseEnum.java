@@ -20,13 +20,13 @@ package com.apitable.core.support.serializer;
 
 /**
  * <p>
- * interface: common enumeration
+ * interface: common enumeration.
  * </p>
  */
 public interface IBaseEnum {
 
     /**
-     * the enum's value
+     * the enum's value.
      *
      * @return Integer
      */

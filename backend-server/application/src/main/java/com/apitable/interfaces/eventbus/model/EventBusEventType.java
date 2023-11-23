@@ -18,6 +18,9 @@
 
 package com.apitable.interfaces.eventbus.model;
 
+/**
+ * event type.
+ */
 public enum EventBusEventType {
 
     CAPTCHA_GET,

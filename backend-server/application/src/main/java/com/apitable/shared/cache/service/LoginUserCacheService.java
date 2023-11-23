@@ -22,7 +22,7 @@ import com.apitable.shared.cache.bean.LoginUserDto;
 
 /**
  * <p>
- * login user cache interface
+ * login user cache interface.
  * </p>
  *
  * @author Shawn Deng
@@ -30,7 +30,7 @@ import com.apitable.shared.cache.bean.LoginUserDto;
 public interface LoginUserCacheService {
 
     /**
-     * get login user info
+     * get login user info.
      *
      * @param userId user id
      * @return LoginUserDto
@@ -38,7 +38,7 @@ public interface LoginUserCacheService {
     LoginUserDto getLoginUser(Long userId);
 
     /**
-     * delete cache
+     * delete cache.
      *
      * @param userId user id
      */

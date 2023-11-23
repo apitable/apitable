@@ -217,6 +217,7 @@ public class SubscriptionFeatures {
                 super(value);
             }
         }
+
         /**
          * Widget Nums feature.
          */

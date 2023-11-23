@@ -23,7 +23,7 @@ import lombok.Getter;
 
 /**
  * <p>
- * field type
+ * field type.
  * </p>
  *
  * @author Benson Cheung
@@ -91,6 +91,12 @@ public enum FieldType {
 
     private final int fieldType;
 
+    /**
+     * create field type.
+     *
+     * @param fieldType field type
+     * @return field type
+     */
     public static FieldType create(int fieldType) {
         for (FieldType type : FieldType.values()) {
             if (type.getFieldType() == fieldType) {

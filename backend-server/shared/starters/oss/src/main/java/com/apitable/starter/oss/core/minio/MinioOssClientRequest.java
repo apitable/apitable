@@ -50,7 +50,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * minio client realization
+ * minio client realization.
  */
 public class MinioOssClientRequest extends AbstractOssClientRequest {
 
@@ -77,6 +77,13 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
         this.autoCreateBucket = autoCreateBucket;
     }
 
+    /**
+     * constructor.
+     *
+     * @param minioClient      minio client
+     * @param autoCreateBucket auto create bucket
+     * @param bucketPolicyJson bucket policy json
+     */
     public MinioOssClientRequest(MinioClient minioClient, boolean autoCreateBucket,
                                  String bucketPolicyJson) {
         this.minioClient = minioClient;
@@ -86,7 +93,7 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
 
     @Override
     protected void isBucketExist(String bucketName) {
-        boolean found = false;
+        boolean found;
         try {
             found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
             if (!found) {

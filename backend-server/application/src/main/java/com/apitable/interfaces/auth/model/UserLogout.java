@@ -18,6 +18,9 @@
 
 package com.apitable.interfaces.auth.model;
 
+/**
+ * user logout object.
+ */
 public class UserLogout {
 
     private boolean redirect;

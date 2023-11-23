@@ -369,7 +369,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public List<NodeBaseInfoDTO> getParentPathNodes(List<String> nodeIds, boolean includeRootNode) {
         List<NodeBaseInfoDTO> nodes = DBUtil.batchSelectByFieldIn(nodeIds,
-                (ids) -> nodeMapper.selectAllParentNodeIds(ids, includeRootNode));
+            (ids) -> nodeMapper.selectAllParentNodeIds(ids, includeRootNode));
         return CollectionUtil.distinctByProperty(nodes, NodeBaseInfoDTO::getNodeId);
     }
 
@@ -530,13 +530,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     private List<String> sortNodeAtSameLevel(List<NodeTreeDTO> sub, NodeType nodeType) {
         List<NodeTreeDTO> firstNodes = sub.stream()
-                .filter(i -> i.getPreNodeId() == null)
-                .collect(Collectors.toList());
+            .filter(i -> i.getPreNodeId() == null)
+            .collect(Collectors.toList());
         Map<String, List<NodeTreeDTO>> preNodeIdToNodesMap = new LinkedHashMap<>();
         for (NodeTreeDTO node : sub) {
             String preNodeId = node.getPreNodeId();
             List<NodeTreeDTO> sufNodes =
-                    preNodeIdToNodesMap.computeIfAbsent(preNodeId, k -> new ArrayList<>());
+                preNodeIdToNodesMap.computeIfAbsent(preNodeId, k -> new ArrayList<>());
             sufNodes.add(node);
         }
         List<String> nodeIds = new ArrayList<>();
@@ -556,11 +556,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     private void sufNodeRecurrence(List<NodeTreeDTO> nodes, NodeType nodeType,
-            Map<String, List<NodeTreeDTO>> preNodeIdToNodesMap, Consumer<String> action) {
+                                   Map<String, List<NodeTreeDTO>> preNodeIdToNodesMap,
+                                   Consumer<String> action) {
         nodes.stream()
-                .filter(i -> nodeType == null || i.getType() == nodeType.getNodeType())
-                .map(NodeTreeDTO::getNodeId)
-                .forEach(action);
+            .filter(i -> nodeType == null || i.getType() == nodeType.getNodeType())
+            .map(NodeTreeDTO::getNodeId)
+            .forEach(action);
         for (NodeTreeDTO node : nodes) {
             String nodeId = node.getNodeId();
             if (preNodeIdToNodesMap.containsKey(nodeId)) {

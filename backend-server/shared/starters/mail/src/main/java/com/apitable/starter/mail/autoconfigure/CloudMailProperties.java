@@ -23,7 +23,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * <p>
- * Cloud Platform Email Push Configuration Properties
+ * Cloud Platform Email Push Configuration Properties.
  * </p>
  *
  * @author Chambers
@@ -91,6 +91,9 @@ public class CloudMailProperties {
         this.aliyun = aliyun;
     }
 
+    /**
+     * mail type.
+     */
     public enum MailType {
 
         SMTP,
@@ -100,6 +103,9 @@ public class CloudMailProperties {
         ALIYUN
     }
 
+    /**
+     * tencent cloud email push configuration properties.
+     */
     public static class Tencent {
 
         private String secretId;
@@ -123,6 +129,9 @@ public class CloudMailProperties {
         }
     }
 
+    /**
+     * aliyun cloud email push configuration properties.
+     */
     public static class Aliyun {
 
         private String accessKey;

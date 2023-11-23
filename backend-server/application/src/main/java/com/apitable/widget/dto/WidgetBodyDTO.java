@@ -33,6 +33,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+/**
+ * widget body dto.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -62,6 +65,9 @@ public class WidgetBodyDTO {
     @JsonInclude(Include.NON_EMPTY)
     private List<Long> historyReleaseVersion;
 
+    /**
+     * data archive.
+     */
     @Getter
     @Setter
     @NoArgsConstructor
@@ -81,8 +87,15 @@ public class WidgetBodyDTO {
         return new ObjectMapper().writeValueAsString(this);
     }
 
+    /**
+     * transform json to bean.
+     *
+     * @param json json string
+     * @return bean
+     * @throws JsonProcessingException throw exception
+     */
     public static WidgetBodyDTO toBean(String json) throws JsonProcessingException {
-        if(StrUtil.isBlank(json)) {
+        if (StrUtil.isBlank(json)) {
             return new WidgetBodyDTO();
         }
         return new ObjectMapper().readValue(json, WidgetBodyDTO.class);

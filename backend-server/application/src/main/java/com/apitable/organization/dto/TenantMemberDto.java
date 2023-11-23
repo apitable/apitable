@@ -22,7 +22,7 @@ import lombok.Data;
 
 /**
  * <p>
- * Basic information of the third party
+ * Basic information of the third party.
  * </p>
  */
 @Data

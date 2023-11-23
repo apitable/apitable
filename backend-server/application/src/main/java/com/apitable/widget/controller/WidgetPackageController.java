@@ -109,7 +109,7 @@ public class WidgetPackageController {
         @Parameter(name = PAGE_PARAM, in = ParameterIn.QUERY, description = "page",
             schema = @Schema(type = "string"), example = PAGE_SIMPLE_EXAMPLE)
     })
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public ResponseData<List<WidgetReleaseListVo>> releaseListWidget(
         @PathVariable(name = "packageId") String packageId,
         @PageObjectParam(required = false) Page page) {

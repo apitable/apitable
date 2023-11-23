@@ -19,11 +19,15 @@
 package com.apitable.control.infrastructure.role;
 
 /**
- * Role Constants
+ * Role Constants.
+ *
  * @author Shawn Deng
  */
 public interface RoleConstants {
 
+    /**
+     * node role.
+     */
     interface Node {
 
         String READER = "reader";
@@ -41,6 +45,9 @@ public interface RoleConstants {
         String TEMPLATE_VISITOR = "templateVisitor";
     }
 
+    /**
+     * field role.
+     */
     interface Field {
         String READER = "reader";
 

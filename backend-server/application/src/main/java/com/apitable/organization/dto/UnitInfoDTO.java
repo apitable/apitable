@@ -22,6 +22,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * unit info dto.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

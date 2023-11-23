@@ -18,24 +18,24 @@
 
 package com.apitable.core.support.tree.v2;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
-
 /**
  * <p>
  * V2 default recursive tool, used to traverse nodes that have parent-child relationships.
- *     such as menu trees, dictionary trees, and so on.
+ * such as menu trees, dictionary trees, and so on.
  * </p>
  */
 public class DefaultTreeBuildFactory<T extends Tree> extends AbstractTreeBuildFactory<T> {
+
     /**
-     * the root node's id
+     * the root node's id.
      */
     public static final String ROOT_PARENT_ID = "0";
 
@@ -67,7 +67,7 @@ public class DefaultTreeBuildFactory<T extends Tree> extends AbstractTreeBuildFa
     }
 
     /**
-     * build tree
+     * build tree.
      *
      * @param totalNodes the node list
      * @param rootId     the root node id, generally 0

@@ -201,14 +201,14 @@ public class SpaceController {
         ClientOriginInfo clientOriginInfo = InformationUtil
             .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg = AuditSpaceArg.builder()
-                .action(AuditSpaceAction.CREATE_SPACE)
-                .userId(userId)
-                .spaceId(space.getId())
-                .requestIp(clientOriginInfo.getIp())
-                .requestUserAgent(clientOriginInfo.getUserAgent())
-                .info(JSONUtil.createObj()
-                        .set(AuditConstants.SPACE_NAME, spaceOpRo.getName()))
-                .build();
+            .action(AuditSpaceAction.CREATE_SPACE)
+            .userId(userId)
+            .spaceId(space.getId())
+            .requestIp(clientOriginInfo.getIp())
+            .requestUserAgent(clientOriginInfo.getUserAgent())
+            .info(JSONUtil.createObj()
+                .set(AuditConstants.SPACE_NAME, spaceOpRo.getName()))
+            .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         // Cache the space where the user's last action was active
         TaskManager.me().execute(() -> userActiveSpaceCacheService.save(userId, space.getId()));
@@ -269,12 +269,12 @@ public class SpaceController {
         ClientOriginInfo clientOriginInfo = InformationUtil
             .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg = AuditSpaceArg.builder()
-                .action(AuditSpaceAction.DELETE_SPACE)
-                .userId(userId)
-                .requestIp(clientOriginInfo.getIp())
-                .requestUserAgent(clientOriginInfo.getUserAgent())
-                .spaceId(spaceId)
-                .build();
+            .action(AuditSpaceAction.DELETE_SPACE)
+            .userId(userId)
+            .requestIp(clientOriginInfo.getIp())
+            .requestUserAgent(clientOriginInfo.getUserAgent())
+            .spaceId(spaceId)
+            .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
     }
@@ -298,12 +298,12 @@ public class SpaceController {
         ClientOriginInfo clientOriginInfo = InformationUtil
             .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg = AuditSpaceArg.builder()
-                .action(AuditSpaceAction.ACTUAL_DELETE_SPACE)
-                .userId(userId)
-                .requestIp(clientOriginInfo.getIp())
-                .requestUserAgent(clientOriginInfo.getUserAgent())
-                .spaceId(spaceId)
-                .build();
+            .action(AuditSpaceAction.ACTUAL_DELETE_SPACE)
+            .userId(userId)
+            .requestIp(clientOriginInfo.getIp())
+            .requestUserAgent(clientOriginInfo.getUserAgent())
+            .spaceId(spaceId)
+            .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
     }
@@ -330,12 +330,12 @@ public class SpaceController {
         ClientOriginInfo clientOriginInfo = InformationUtil
             .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg = AuditSpaceArg.builder()
-                .action(AuditSpaceAction.CANCEL_DELETE_SPACE)
-                .userId(userId)
-                .requestIp(clientOriginInfo.getIp())
-                .requestUserAgent(clientOriginInfo.getUserAgent())
-                .spaceId(spaceId)
-                .build();
+            .action(AuditSpaceAction.CANCEL_DELETE_SPACE)
+            .userId(userId)
+            .requestIp(clientOriginInfo.getIp())
+            .requestUserAgent(clientOriginInfo.getUserAgent())
+            .spaceId(spaceId)
+            .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
     }

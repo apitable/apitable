@@ -533,9 +533,9 @@ public class NodeRoleServiceImpl implements INodeRoleService {
     }
 
     @Override
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public PageInfo<NodeRoleMemberVo> getNodeRoleMembersPageInfo(Page<NodeRoleMemberVo> page,
-        String nodeId) {
+                                                                 String nodeId) {
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         boolean assignMode = this.getNodeRoleIfEnabled(nodeId);
         if (assignMode) {

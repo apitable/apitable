@@ -20,7 +20,7 @@ package com.apitable.shared.constants;
 
 /**
  * <p>
- * node desc constants
+ * node desc constants.
  * </p>
  *
  * @author zoe zheng

@@ -19,9 +19,11 @@
 package com.apitable.space.dto;
 
 import java.time.LocalDateTime;
-
 import lombok.Data;
 
+/**
+ * space audit dto.
+ */
 @Data
 public class SpaceAuditDTO {
 

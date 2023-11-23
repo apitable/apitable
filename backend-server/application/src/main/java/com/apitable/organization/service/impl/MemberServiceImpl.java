@@ -1015,7 +1015,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             int currentMemberCount =
                 (int) SqlTool.retCount(staticsMapper.countMemberBySpaceId(spaceId));
             SubscriptionInfo subscriptionInfo =
-                    entitlementServiceFacade.getSpaceSubscription(spaceId);
+                entitlementServiceFacade.getSpaceSubscription(spaceId);
             long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
             // long defaultMaxMemberCount = iSubscriptionService.getPlanSeats(spaceId);
             // Use the object to read data row by row,

@@ -52,7 +52,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * aws s3 client realization
+ * aws s3 client realization.
  */
 public class AwsOssClientRequest extends AbstractOssClientRequest {
 
@@ -106,8 +106,7 @@ public class AwsOssClientRequest extends AbstractOssClientRequest {
     }
 
     @Override
-    public void uploadStreamForObject(String bucketName, InputStream in, String keyPath)
-        throws IOException {
+    public void uploadStreamForObject(String bucketName, InputStream in, String keyPath) throws IOException {
         uploadStreamForObject(bucketName, in, keyPath, null, null);
     }
 

@@ -24,7 +24,7 @@ import java.time.temporal.ChronoUnit;
 
 /**
  * <p>
- * Date util
+ * Date util.
  * </p>
  *
  * @author Chambers
@@ -32,15 +32,16 @@ import java.time.temporal.ChronoUnit;
 public class DateHelper {
 
     /**
-     * get the time remaining for today（unit：second）
+     * get the time remaining for today(unit：second).
      */
     public static long todayTimeLeft() {
-        LocalDateTime midnight = LocalDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime midnight =
+            LocalDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
         return ChronoUnit.SECONDS.between(LocalDateTime.now(), midnight);
     }
 
     /**
-     * format the time according to the incoming format
+     * format the time according to the incoming format.
      *
      * @param localDateTime LocalDateTime
      * @param format        formatter

@@ -18,19 +18,17 @@
 
 package com.apitable.shared.support.serializer;
 
-import java.io.IOException;
-
 import cn.hutool.core.util.StrUtil;
+import com.apitable.shared.util.information.InformationUtil;
+import com.apitable.shared.util.information.InformationUtil.InformationType;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-
-import com.apitable.shared.util.information.InformationUtil;
-import com.apitable.shared.util.information.InformationUtil.InformationType;
+import java.io.IOException;
 
 /**
  * <p>
- * Desensitization Serialization
+ * Desensitization Serialization.
  * </p>
  *
  * @author Pengap
@@ -38,7 +36,8 @@ import com.apitable.shared.util.information.InformationUtil.InformationType;
 public class DesensitizedSecretSerializer extends JsonSerializer<String> {
 
     @Override
-    public void serialize(String value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+    public void serialize(String value, JsonGenerator gen, SerializerProvider serializers)
+        throws IOException {
         if (StrUtil.isNotBlank(value)) {
             gen.writeString(InformationUtil.desensitized(value, InformationType.SECRET_KEY));
             return;

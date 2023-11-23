@@ -18,24 +18,21 @@
 
 package com.apitable.shared.util;
 
+import cn.hutool.core.util.ArrayUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.core.util.URLUtil;
+import com.apitable.workspace.enums.UrlRulePrefixEnum;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
-
-import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.core.util.URLUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.apitable.workspace.enums.IdRulePrefixEnum;
-import com.apitable.workspace.enums.UrlRulePrefixEnum;
-
 /**
  * <p>
- * client nginx $request_uri parse util
+ * client nginx $request_uri parse util.
  * </p>
  *
  * @author Pengap
@@ -45,70 +42,7 @@ public class ClientUriUtil {
     private static final Logger logger = LoggerFactory.getLogger(ClientUriUtil.class);
 
     /**
-     * parsing client uri
-     * <p>
-     * before：http://{ip}/share/shrKk0fJy24hZhkJWFmlG sheet description......
-     * <p>
-     * after：https://{ip}/share/shrKk0fJy24hZhkJWFmlG
-     *
-     * @param originalUrl nginx $request_uri
-     * @return uri
-     */
-    public static String parseOriginUrlPath(String originalUrl) {
-        String uri = "";
-        if (StrUtil.isNotBlank(originalUrl)) {
-            uri = URLUtil.toURI(URLUtil.decode(originalUrl), true).getPath();
-        }
-        // Filter data after spaces
-        if (StrUtil.contains(uri, " ")) {
-            uri = StrUtil.subBetween(uri, "", " ");
-        }
-        return URLUtil.getPath(uri);
-    }
-
-    /**
-     * Get meta specific information
-     *
-     * @param uri nginx $request_uri
-     * @return meta
-     */
-    public static boolean isMatchSharePath(String uri) {
-        String uriCase = "/share/" + IdRulePrefixEnum.SHARE.getIdRulePrefixEnum();
-        String tpcCase = "/template/" + IdRulePrefixEnum.TPC.getIdRulePrefixEnum();
-        String spaceCase = "/space/" + IdRulePrefixEnum.SPC.getIdRulePrefixEnum();
-        String tplCase = "/" + IdRulePrefixEnum.TPL.getIdRulePrefixEnum();
-        if (StrUtil.containsIgnoreCase(uri, uriCase)) {
-            return true;
-        }
-        return StrUtil.containsIgnoreCase(uri, tpcCase) &&
-            !StrUtil.containsIgnoreCase(uri, spaceCase) && StrUtil.containsIgnoreCase(uri, tplCase);
-    }
-
-    /**
-     * Get various IDs with prefix from uri, case-insensitive<br>
-     * <p>
-     * getIdFromUri(uri, IdRulePrefixEnum.SHARE.getIdRulePrefixEnum());
-     *
-     * @param uri    uri address
-     * @param prefix prefix
-     * @return null|string
-     */
-    public static String getIdFromUri(String uri, String prefix) {
-        String uriSeparator = "/";
-        String[] path = StrUtil.split(
-            StrUtil.removePrefix(StrUtil.removeSuffix(uri, uriSeparator), uriSeparator),
-            uriSeparator);
-        for (String s : path) {
-            // There is a shr keyword in the route to describe the shared node, find the node description and name
-            if (StrUtil.containsIgnoreCase(s, prefix)) {
-                return s;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * whether the address is the workbench node address
+     * whether the address is the workbench node address.
      *
      * @param uri uri address
      * @return true | false
@@ -119,7 +53,7 @@ public class ClientUriUtil {
     }
 
     /**
-     * Whether the address is a shared node address
+     * Whether the address is a shared node address.
      *
      * @param uri uri address
      * @return true | false
@@ -130,7 +64,7 @@ public class ClientUriUtil {
     }
 
     /**
-     * Get sharing information according to the sharing address
+     * Get sharing information according to the sharing address.
      *
      * @param uri uri
      * @return node id optional
@@ -142,7 +76,7 @@ public class ClientUriUtil {
     }
 
     /**
-     * Get the node id information according to the workbench node address
+     * Get the node id information according to the workbench node address.
      *
      * @param uri uri
      * @return node id optional
@@ -152,7 +86,6 @@ public class ClientUriUtil {
             .substring(UrlRulePrefixEnum.WORKBENCH_URL_PFE_SUFFIX.getValue().length());
         return getIdByPath(pathAboutNodeInfo);
     }
-
 
     private static Optional<String> getIdByPath(String pathAboutNodeInfo) {
         String pathAboutNodeId;
@@ -185,6 +118,12 @@ public class ClientUriUtil {
         return Optional.empty();
     }
 
+    /**
+     * url turn into uri.
+     *
+     * @param url url
+     * @return uri optional
+     */
     public static Optional<URI> urlTurnIntoURI(String url) {
         try {
             // Delete redundant information about the address, such as sharing address.

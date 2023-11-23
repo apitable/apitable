@@ -18,16 +18,14 @@
 
 package com.apitable.shared.context;
 
-import java.util.Locale;
-
-import com.apitable.shared.component.LanguageManager;
 import com.apitable.core.util.SpringContextHolder;
-
+import com.apitable.shared.component.LanguageManager;
+import java.util.Locale;
 import org.springframework.context.MessageSource;
 
 /**
  * <p>
- * i18n context util
+ * i18n context util.
  * </p>
  *
  * @author Pengap
@@ -44,11 +42,18 @@ public class I18nContext {
         return SpringContextHolder.getBean(I18nContext.class);
     }
 
+    /**
+     * transform.
+     *
+     * @param msgKey         message key
+     * @param locale         locale
+     * @param defaultMessage default message
+     * @return message
+     */
     public String transform(String msgKey, Locale locale, String defaultMessage) {
         try {
             return messageSource.getMessage(msgKey, null, defaultMessage, locale);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
     }

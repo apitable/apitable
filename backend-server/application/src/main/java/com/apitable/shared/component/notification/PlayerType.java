@@ -23,7 +23,7 @@ import lombok.Getter;
 
 /**
  * <p>
- * player user type
+ * player user type.
  * </p>
  *
  * @author zoe zheng

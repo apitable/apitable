@@ -54,12 +54,10 @@ import com.apitable.organization.service.IRoleService;
 import com.apitable.player.ro.NotificationCreateRo;
 import com.apitable.player.service.IPlayerNotificationService;
 import com.apitable.shared.cache.service.UserSpaceRemindRecordCacheService;
-import com.apitable.shared.component.LanguageManager;
 import com.apitable.shared.component.notification.NotificationTemplateId;
 import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.context.LoginContext;
-import com.apitable.shared.holder.LoginUserHolder;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.starter.beetl.autoconfigure.BeetlTemplate;
@@ -211,7 +209,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             datasheetObject.getMeta().toJsonString());
         // save records
         iDatasheetRecordService.createRecords(userId, datasheet.getDstId(),
-                datasheetObject.getRecords());
+            datasheetObject.getRecords());
 
     }
 
@@ -257,7 +255,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         // Save Meta information
         iDatasheetMetaService.create(userId, datasheet.getDstId(),
             JSONUtil.parseObj(metaMapRo).toString());
-        if (recordMap.size() > 0) {
+        if (!recordMap.isEmpty()) {
             // Save record information
             iDatasheetRecordService.saveBatch(userId, recordMap, datasheet.getDstId());
         }
@@ -552,7 +550,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 if (!JSONUtil.isNull(filterInfo)) {
                     JSONArray array = JSONUtil.parseArray(filterInfo.get("conditions").toString());
                     JSONArray conditions = delInfoIfExistFieldId(delFieldIdsInFilter, array);
-                    if (conditions.size() > 0) {
+                    if (!conditions.isEmpty()) {
                         filterInfo.set("conditions", conditions);
                         viewMapRo.setFilterInfo(filterInfo);
                     } else {
@@ -645,12 +643,12 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                                           Map<String, String> newWidgetIdMap) {
         // construct a new component panel
         JSONArray newWidgetPanels = JSONUtil.createArray();
-        if (widgetPanels == null || widgetPanels.size() == 0) {
+        if (widgetPanels == null || widgetPanels.isEmpty()) {
             return newWidgetPanels;
         }
         for (JSONObject widgetPanel : widgetPanels.jsonIter()) {
             JSONArray widgets = widgetPanel.getJSONArray("widgets");
-            if (widgets == null || widgets.size() == 0) {
+            if (widgets == null || widgets.isEmpty()) {
                 newWidgetPanels.add(widgetPanel);
                 continue;
             }
@@ -700,7 +698,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 metaMapRo.getFieldMap().values().forEach(field -> {
                     FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
                     if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())
-                    || fieldMapRo.getType().equals(FieldType.ONE_WAY_LINK.getFieldType())) {
+                        || fieldMapRo.getType().equals(FieldType.ONE_WAY_LINK.getFieldType())) {
                         LinkFieldProperty property =
                             fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                         // whether to filter dst id list
@@ -735,10 +733,10 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             // find the field id of the associated datasheet
             metaMapRo.getFieldMap().values().forEach(field -> {
                 FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
-                if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType()) ||
-                        fieldMapRo.getType().equals(FieldType.ONE_WAY_LINK.getFieldType())) {
+                if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())
+                    || fieldMapRo.getType().equals(FieldType.ONE_WAY_LINK.getFieldType())) {
                     LinkFieldProperty property =
-                            fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
+                        fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                     String foreignDstId = property.getForeignDatasheetId();
                     if (linkDstIds.contains(foreignDstId)) {
                         delFieldIds.add(fieldMapRo.getId());
@@ -1077,11 +1075,10 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 for (Object field : metaMapRo.getFieldMap().values()) {
                     FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
                     // determine if there is an associated field
-                    if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType()) ||
-                            fieldMapRo.getType().equals(FieldType.ONE_WAY_LINK.getFieldType())
-                    ) {
+                    if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())
+                        || fieldMapRo.getType().equals(FieldType.ONE_WAY_LINK.getFieldType())) {
                         LinkFieldProperty property =
-                                fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
+                            fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                         // Determine whether the associated field is associated with the appearance.
                         if (!dstIdList.contains(property.getForeignDatasheetId())) {
                             foreignFieldNames.add(fieldMapRo.getName());

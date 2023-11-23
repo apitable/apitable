@@ -18,7 +18,8 @@
 
 package com.apitable.base.service.impl;
 
-import javax.annotation.Resource;
+import static com.apitable.organization.enums.OrganizationException.INVITE_EXPIRE;
+import static com.apitable.organization.enums.OrganizationException.INVITE_URL_ERROR;
 
 import com.apitable.base.service.IActionService;
 import com.apitable.core.util.ExceptionUtil;
@@ -33,14 +34,11 @@ import com.apitable.space.mapper.SpaceInviteRecordMapper;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
-
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import static com.apitable.organization.enums.OrganizationException.INVITE_EXPIRE;
-import static com.apitable.organization.enums.OrganizationException.INVITE_URL_ERROR;
-
 /**
- * ActionServiceImpl
+ * action service implement.
  */
 @Service
 public class ActionServiceImpl implements IActionService {
@@ -90,7 +88,7 @@ public class ActionServiceImpl implements IActionService {
     }
 
     /**
-     * Check if a session exists for the current request
+     * Check if a session exists for the current request.
      *
      * @return true | false
      */
@@ -99,7 +97,7 @@ public class ActionServiceImpl implements IActionService {
     }
 
     /**
-     * Check if the mailbox is bound to another user
+     * Check if the mailbox is bound to another user.
      *
      * @param inviteEmail invitation email
      * @return true | false

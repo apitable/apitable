@@ -34,11 +34,9 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 import java.util.Collections;
 import java.util.List;
 import javax.annotation.Resource;
-
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -95,7 +93,7 @@ public class InternalAssetController {
     @GetResource(path = "/signatures", requiredLogin = false)
     @Operation(summary = "Batch get asset signature url")
     public ResponseData<List<AssetUrlSignatureVo>> getSignatureUrls(
-            @RequestParam("resourceKeys") final List<String> resourceKeys) {
+        @RequestParam("resourceKeys") final List<String> resourceKeys) {
         return ResponseData.success(iAssetUploadTokenService.getAssetUrlSignatureVos(resourceKeys));
     }
 }

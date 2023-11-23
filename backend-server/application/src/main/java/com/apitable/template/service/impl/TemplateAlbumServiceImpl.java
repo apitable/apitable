@@ -18,31 +18,27 @@
 
 package com.apitable.template.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
-import javax.annotation.Resource;
-
-import lombok.extern.slf4j.Slf4j;
-import org.beetl.android.util.ArraySet;
-
 import com.apitable.base.enums.DatabaseException;
+import com.apitable.core.util.ExceptionUtil;
 import com.apitable.template.enums.TemplateAlbumRelType;
-import com.apitable.template.vo.AlbumContentVo;
-import com.apitable.template.vo.AlbumVo;
 import com.apitable.template.mapper.TemplateAlbumMapper;
 import com.apitable.template.mapper.TemplateAlbumRelMapper;
 import com.apitable.template.mapper.TemplatePropertyMapper;
 import com.apitable.template.service.ITemplateAlbumService;
-import com.apitable.core.util.ExceptionUtil;
-
+import com.apitable.template.vo.AlbumContentVo;
+import com.apitable.template.vo.AlbumVo;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
+import org.beetl.android.util.ArraySet;
 import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * Template Center - Template Album Service Implement Class
+ * Template Center - Template Album Service Implement Class.
  * </p>
  */
 @Slf4j
@@ -75,7 +71,7 @@ public class TemplateAlbumServiceImpl implements ITemplateAlbumService {
 
     @Override
     public List<AlbumVo> getRecommendedAlbums(String lang, Integer maxCount,
-        String excludeAlbumId) {
+                                              String excludeAlbumId) {
         List<String> allAlbumIds = templateAlbumMapper.selectAllAlbumIdsByI18nName(lang);
         if (excludeAlbumId != null) {
             allAlbumIds.remove(excludeAlbumId);

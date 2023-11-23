@@ -18,12 +18,11 @@
 
 package com.apitable.workspace.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +32,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Workbench - Node Role Resource Association Table
+ * Workbench - Node Role Resource Association Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -50,23 +49,23 @@ public class NodeRoleResourceRelEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary key
+     * Primary key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Node Role Code
+     * Node Role Code.
      */
     private String roleCode;
 
     /**
-     * Node resource code
+     * Node resource code.
      */
     private String resourceCode;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 

@@ -191,13 +191,14 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @param sendNotify    whether send notify
      * @param isAllMember   whether all member
      */
-    boolean checkSeatOverLimitAndSendNotify(List<Long> userIds, String spaceId, long addedSeatNums, boolean isAllMember, boolean sendNotify);
+    boolean checkSeatOverLimitAndSendNotify(List<Long> userIds, String spaceId, long addedSeatNums,
+                                            boolean isAllMember, boolean sendNotify);
 
-    /**\
+    /**
+     * Get the seat usage status of third-party IM.
      *
-     * Get the seat usage status of third-party IM
-     * @param spaceId
-     * @return
+     * @param spaceId space id
+     * @return SeatUsage
      */
     SeatUsage getSeatUsageForIM(String spaceId);
 

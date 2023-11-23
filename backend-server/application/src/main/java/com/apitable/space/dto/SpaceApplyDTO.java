@@ -20,6 +20,9 @@ package com.apitable.space.dto;
 
 import lombok.Data;
 
+/**
+ * space apply dto.
+ */
 @Data
 public class SpaceApplyDTO {
 

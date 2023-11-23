@@ -58,8 +58,8 @@ public class InternalOrganizationController {
         + "selected units are loaded by default when not keyword. The most recently added member "
         + "of the same group are loaded when not selected. Load max 10")
     @Parameters({
-        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", schema =
-            @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW"),
+        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id",
+            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW"),
         @Parameter(name = "userId", description = "user id", schema = @Schema(type = "string"),
             in = ParameterIn.QUERY, example = "23232"),
         @Parameter(name = "keyword", description = "keyword", schema = @Schema(type = "string"),
@@ -67,7 +67,8 @@ public class InternalOrganizationController {
         @Parameter(name = "unitIds", description = "unitIds", schema = @Schema(type = "string"),
             in = ParameterIn.QUERY, example = "1271,1272"),
         @Parameter(name = "filterIds", description = "specifies the organizational unit to "
-            + "filter", schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "123,124"),
+            +
+            "filter", schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "123,124"),
         @Parameter(name = "all", description = "whether to load all departments and members",
             schema = @Schema(type = "boolean"), in = ParameterIn.QUERY),
         @Parameter(name = "searchEmail", description = "whether to search for emails",

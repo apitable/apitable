@@ -48,7 +48,6 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -115,17 +114,15 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
             count = automationRobotService.getRobotRunsCountBySpaceId(spaceId);
             redisTemplate.boundValueOps(redisKey).setIfAbsent(count, 31, TimeUnit.DAYS);
         }
-        Long maxAutomationRunsNums = subscriptionInfo.getFeature().getMessageAutomationRunNums().getValue();
+        Long maxAutomationRunsNums =
+            subscriptionInfo.getFeature().getMessageAutomationRunNums().getValue();
         vo.setMaxAutomationRunNums(maxAutomationRunsNums);
         vo.setAutomationRunNums(count);
         if (Boolean.TRUE.equals(skipAutomationRunNumValidate)) {
             vo.setAllowRun(true);
-        } else if (maxAutomationRunsNums != -1 && count >= maxAutomationRunsNums) {
-            vo.setAllowRun(false);
         } else {
-            vo.setAllowRun(true);
+            vo.setAllowRun(maxAutomationRunsNums == -1 || count < maxAutomationRunsNums);
         }
-
         return vo;
     }
 

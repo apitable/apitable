@@ -20,7 +20,7 @@ package com.apitable.workspace.observer.remind;
 
 /**
  * <p>
- * remind type
+ * remind type.
  * </p>
  *
  * @author zoe zheng
@@ -41,6 +41,14 @@ public enum RemindType {
         return remindType;
     }
 
+    /**
+     * <p>
+     * get remind type by int value.
+     * </p>
+     *
+     * @param remindType int value
+     * @return remind type
+     */
     public static RemindType of(int remindType) {
         for (RemindType value : RemindType.values()) {
             if (value.getRemindType() == remindType) {

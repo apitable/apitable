@@ -18,13 +18,12 @@
 
 package com.apitable.space.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +33,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Workbench - Attachment Table
+ * Workbench - Attachment Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -51,79 +50,79 @@ public class SpaceAssetEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary key
+     * Primary key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Space ID(link#xxxx_space#space_id)
+     * Space ID(link#xxxx_space#space_id).
      */
     private String spaceId;
 
     /**
-     * Datasheet Node Id(link#xxxx_node#node_id)
+     * Datasheet Node Id(link#xxxx_node#node_id).
      */
     private String nodeId;
 
     /**
-     * Resource ID(link#xxxx_asset#id)
+     * Resource ID(link#xxxx_asset#id).
      */
     private Long assetId;
 
     /**
-     * [Redundancy]md5 Abstract
+     * [Redundancy]md5 Abstract.
      */
     private String assetChecksum;
 
     /**
-     * Number of references
+     * Number of references.
      */
     private Integer cite;
 
     /**
-     * Type (0: user profile 1: space logo2: data table Annex 3: thumbnail 4: node description)
+     * Type (0: user profile 1: space logo2: data table Annex 3: thumbnail 4: node description).
      */
     private Integer type;
 
     /**
-     * Source file name, the file name of this upload
+     * Source file name, the file name of this upload.
      */
     private String sourceName;
 
     /**
-     * [Redundancy]File Size(Unit: byte)
+     * [Redundancy]File Size(Unit: byte).
      */
     private Integer fileSize;
 
     /**
-     * [Redundant] Whether it is a template attachment (0: No, 1: Yes)
+     * [Redundant] Whether it is a template attachment (0: No, 1: Yes).
      */
     private Boolean isTemplate;
 
     /**
-     * Image Height
+     * Image Height.
      */
     private Integer height;
 
     /**
-     * Image Width
+     * Image Width.
      */
     private Integer width;
 
     /**
-     * Delete Tag(0:No,1:Yes)
+     * Delete Tag(0:No,1:Yes).
      */
     @TableLogic
     private Boolean isDeleted;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

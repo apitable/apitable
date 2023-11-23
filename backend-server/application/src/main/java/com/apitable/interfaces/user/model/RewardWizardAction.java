@@ -18,6 +18,9 @@
 
 package com.apitable.interfaces.user.model;
 
+/**
+ * reward wizard action.
+ */
 public class RewardWizardAction {
 
     private Long userId;

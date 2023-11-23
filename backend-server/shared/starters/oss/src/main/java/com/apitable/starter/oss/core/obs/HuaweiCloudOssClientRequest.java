@@ -35,7 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * HuaweiCloud OBS
+ * HuaweiCloud OBS.
  */
 public class HuaweiCloudOssClientRequest extends AbstractOssClientRequest {
 
@@ -131,9 +131,9 @@ public class HuaweiCloudOssClientRequest extends AbstractOssClientRequest {
     }
 
     /**
-     * dealwith obsexception
+     * handle ObsException.
      *
-     * @param e obsexception
+     * @param e ObsException
      */
     private void catchObsError(ObsException e) {
         LOGGER.error("ObsException:", e);
@@ -166,7 +166,7 @@ public class HuaweiCloudOssClientRequest extends AbstractOssClientRequest {
     }
 
     /**
-     * initiate multipart upload
+     * initiate multipart upload.
      *
      * @param bucketName     obs bucket name
      * @param path           file's store path on obs
@@ -192,7 +192,7 @@ public class HuaweiCloudOssClientRequest extends AbstractOssClientRequest {
     }
 
     /**
-     * start multipart upload
+     * start multipart upload.
      *
      * @param bucketName     obs bucket name
      * @param path           file's store path on obs
@@ -205,7 +205,6 @@ public class HuaweiCloudOssClientRequest extends AbstractOssClientRequest {
         long defaultPartSize = 10 * 1024 * 1024L;
         //TODO: limit upload file size
         long topLimit = 5120 * 1024 * 1024L;
-        int remainedLength = in.available();
 
         int partNumber = 1;
         UploadPartRequest request = new UploadPartRequest(bucketName, path);
@@ -216,6 +215,7 @@ public class HuaweiCloudOssClientRequest extends AbstractOssClientRequest {
         request.setPartNumber(partNumber);
         // don't close the inputstream by default
         request.setAutoClose(false);
+        int remainedLength = in.available();
         do {
             long partSize = defaultPartSize < remainedLength ? defaultPartSize : remainedLength;
             request.setPartSize(partSize);
@@ -229,14 +229,13 @@ public class HuaweiCloudOssClientRequest extends AbstractOssClientRequest {
             }
             remainedLength = in.available();
             partNumber++;
-        }
-        while (remainedLength > 0);
+        } while (remainedLength > 0);
         // close stream after upload
         in.close();
     }
 
     /**
-     * complete upload to merge all the multipart
+     * complete upload to merge all the multipart.
      *
      * @param bucketName     obs bucket name
      * @param path           obs storage key
@@ -255,7 +254,7 @@ public class HuaweiCloudOssClientRequest extends AbstractOssClientRequest {
     }
 
     /**
-     * abort the multipart which have been uploaded
+     * abort the multipart which have been uploaded.
      *
      * @param bucketName     obs bucket name
      * @param path           obs storage key
@@ -272,6 +271,9 @@ public class HuaweiCloudOssClientRequest extends AbstractOssClientRequest {
         }
     }
 
+    /**
+     * multipart upload state.
+     */
     public static class MultipartState implements Serializable {
         private String uploadId;
         private Long filePosition;
@@ -281,6 +283,9 @@ public class HuaweiCloudOssClientRequest extends AbstractOssClientRequest {
         private Long contentLength;
         private Long timestamp;
 
+        /**
+         * constructor.
+         */
         public MultipartState() {
             uploadId = "";
             filePosition = 0L;

@@ -26,12 +26,34 @@ import com.apitable.automation.model.UpdateActionRO;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * automation action service.
+ */
 public interface IAutomationActionService {
 
+    /**
+     * create action.
+     *
+     * @param action entity
+     */
     void create(AutomationActionEntity action);
 
+    /**
+     * copy action.
+     *
+     * @param userId      user id
+     * @param newRobotMap new robot map
+     * @param resultDto   result dto
+     */
     void copy(Long userId, Map<String, String> newRobotMap, TriggerCopyResultDto resultDto);
 
+    /**
+     * update action type id and input by robot id.
+     *
+     * @param robotId      robot id
+     * @param actionTypeId action type id
+     * @param input        input
+     */
     void updateActionTypeIdAndInputByRobotId(String robotId, String actionTypeId, String input);
 
     /**

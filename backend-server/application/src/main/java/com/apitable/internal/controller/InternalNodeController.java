@@ -21,7 +21,6 @@ package com.apitable.internal.controller;
 import static com.apitable.workspace.enums.PermissionException.NODE_OPERATION_DENIED;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.control.infrastructure.ControlRoleDict;
 import com.apitable.control.infrastructure.ControlTemplate;
@@ -41,7 +40,6 @@ import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.holder.SpaceHolder;
 import com.apitable.workspace.entity.NodeEntity;
-import com.apitable.workspace.enums.NodePermissionEnum;
 import com.apitable.workspace.ro.CreateDatasheetRo;
 import com.apitable.workspace.service.INodeRoleService;
 import com.apitable.workspace.service.INodeService;
@@ -91,7 +89,7 @@ public class InternalNodeController {
     @Operation(summary = "create a table node", description = "create a table node")
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     public ResponseData<CreateDatasheetVo> createDatasheet(@PathVariable("spaceId") String spaceId,
-        @RequestBody CreateDatasheetRo ro) {
+                                                           @RequestBody CreateDatasheetRo ro) {
         SpaceHolder.set(spaceId);
         Long userId = SessionContext.getUserId();
         // Get the member ID, the method includes judging whether the user is in this space
@@ -128,7 +126,7 @@ public class InternalNodeController {
     @Operation(summary = "delete node", description = "delete node")
     @Notification(templateId = NotificationTemplateId.NODE_DELETE)
     public ResponseData<Void> deleteNode(@PathVariable("spaceId") String spaceId,
-        @PathVariable("nodeId") String nodeId) {
+                                         @PathVariable("nodeId") String nodeId) {
         SpaceHolder.set(spaceId);
         Long userId = SessionContext.getUserId();
         // Get the member ID, the method includes judging whether the user is in this space
@@ -169,11 +167,14 @@ public class InternalNodeController {
         description = "scenario: query an existing read-only dashboard")
     public ResponseData<List<NodeInfo>> filter(@PathVariable("spaceId") String spaceId,
                                                @RequestParam(value = "type") Integer type,
-                                               @RequestParam(value = "nodePermissions", required = false, defaultValue = "0,1,2,3") List<Integer> nodePermissions,
-                                               @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword) {
+                                               @RequestParam(value = "nodePermissions", required = false, defaultValue = "0,1,2,3")
+                                               List<Integer> nodePermissions,
+                                               @RequestParam(value = "keyword", required = false, defaultValue = "")
+                                               String keyword) {
         SpaceHolder.set(spaceId);
         Long memberId = LoginContext.me().getMemberId();
-        List<String> nodeIds = nodeService.getNodeIdBySpaceIdAndTypeAndKeyword(spaceId, type, keyword);
+        List<String> nodeIds =
+            nodeService.getNodeIdBySpaceIdAndTypeAndKeyword(spaceId, type, keyword);
         if (nodeIds.isEmpty()) {
             return ResponseData.success(new ArrayList<>());
         }

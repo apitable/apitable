@@ -18,12 +18,11 @@
 
 package com.apitable.space.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +32,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Workbench - Invitation Record Table
+ * Workbench - Invitation Record Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -50,58 +49,58 @@ public class SpaceInviteRecordEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary key
+     * Primary key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Inviter Member ID
+     * Inviter Member ID.
      */
     private Long inviteMemberId;
 
     /**
-     * Invitation Space ID
+     * Invitation Space ID.
      */
     private String inviteSpaceId;
 
     /**
-     * Invite Space Name
+     * Invite Space Name.
      */
     private String inviteSpaceName;
 
     /**
-     * Invite Email
+     * Invite Email.
      */
     private String inviteEmail;
 
     /**
-     * Unique token ID of invitation link
+     * Unique token ID of invitation link.
      */
     private String inviteToken;
 
     /**
-     * Invite Link
+     * Invite Link.
      */
     private String inviteUrl;
 
     /**
-     * Mail send status(0:Fail,1:Success)
+     * Mail send status(0:Fail,1:Success).
      */
     private Boolean sendStatus;
 
     /**
-     * Status Description
+     * Status Description.
      */
     private String statusDesc;
 
     /**
-     * Is it invalid(0:No,1:Yes)
+     * Is it invalid(0:No,1:Yes).
      */
     private Boolean isExpired;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 

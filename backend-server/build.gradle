@@ -33,7 +33,13 @@ subprojects {
       mavenBom("org.springframework.cloud:spring-cloud-sleuth-otel-dependencies:${spring_cloud_sleuth_otel_version}")
     }
   }
-  
+
+  checkstyle {
+    toolVersion = '8.45.1'
+    ignoreFailures = false
+    maxWarnings = 0
+  }
+
   configurations.configureEach {
     resolutionStrategy {
       cacheChangingModulesFor 0, 'seconds'

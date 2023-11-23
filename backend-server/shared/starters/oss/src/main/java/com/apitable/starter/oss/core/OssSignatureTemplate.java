@@ -22,10 +22,13 @@ import cn.hutool.core.date.DateUtil;
 import com.qiniu.cdn.CdnManager;
 import com.qiniu.common.QiniuException;
 import java.time.Instant;
-import java.util.*;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * oss signature template.
+ */
 public class OssSignatureTemplate {
 
     private String encryptKey;
@@ -44,24 +47,33 @@ public class OssSignatureTemplate {
         return this.getSignatureUrl(host, fileName, Long.valueOf(expireSecond));
     }
 
+    /**
+     * Get the signed URL of the file.
+     *
+     * @param host     domain name
+     * @param fileName file name
+     * @param expires  expiration time
+     * @return signed URL
+     */
     public String getSignatureUrl(String host, String fileName, Long expires) {
-        fileName  = regexSignatureUrl(fileName);
+        fileName = regexSignatureUrl(fileName);
         // timestamp anti leech
         try {
             Date expireDate = Date.from(Instant.now().plusSeconds(expires));
             return CdnManager.createTimestampAntiLeechUrl(host, fileName, null,
                 encryptKey, DateUtil.toInstant(expireDate).getEpochSecond());
         } catch (QiniuException e) {
-            e.printStackTrace();
+            // ignore
             return null;
         }
     }
 
     /**
-     * Regularly signed URL，Adaptation type：https://s1-test.vika.ltd/space/2023/09/14/07c0b82b278b4f7ba305d5704ae6a321?imageView2/0/w/100/h/100
-     * Remove the domain name part and the question mark and its following content in the file name
-     * @param fileName
-     * @return
+     * Regularly signed URL，
+     * Remove the domain name part and the question mark and its following content in the file name.
+     *
+     * @param fileName file name
+     * @return regular signed URL
      */
     public String regexSignatureUrl(String fileName) {
         // Create the first regular expression pattern to match the domain name part

@@ -35,7 +35,7 @@ import org.springframework.security.web.csrf.CsrfFilter;
 
 /**
  * <p>
- * spring Security config
+ * spring Security config.
  * </p>
  *
  * @author Shawn Deng
@@ -53,8 +53,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors(withDefaults());
         http.sessionManagement()
-                .sessionFixation().migrateSession()
-                .maximumSessions(5);
+            .sessionFixation().migrateSession()
+            .maximumSessions(5);
         http.authorizeRequests().anyRequest().permitAll();
         http.httpBasic().disable();
         http.formLogin().disable();

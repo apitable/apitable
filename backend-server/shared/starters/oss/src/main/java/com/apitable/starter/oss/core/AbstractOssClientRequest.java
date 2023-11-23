@@ -25,6 +25,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.function.Consumer;
 
+/**
+ * abstract oss client request.
+ */
 public abstract class AbstractOssClientRequest implements OssClientRequest {
 
     protected abstract void isBucketExist(String bucketName);

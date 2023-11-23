@@ -22,7 +22,7 @@ import org.springframework.core.Ordered;
 
 /**
  * <p>
- * filter order constants
+ * filter order constants.
  * </p>
  *
  * @author Shawn Deng

@@ -18,14 +18,13 @@
 
 package com.apitable.asset.enums;
 
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.support.serializer.IBaseEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.support.serializer.IBaseEnum;
-
 /**
- * developer asset type
+ * developer asset type.
  *
  * @author Pengap
  */
@@ -34,12 +33,18 @@ import com.apitable.core.support.serializer.IBaseEnum;
 public enum DeveloperAssetType implements IBaseEnum {
 
     /**
-     * widget
+     * widget.
      */
     WIDGET(0);
 
     private final Integer value;
 
+    /**
+     * transform value to enum.
+     *
+     * @param value value
+     * @return enum
+     */
     public static DeveloperAssetType of(Integer value) {
         for (DeveloperAssetType type : DeveloperAssetType.values()) {
             if (type.getValue().equals(value)) {

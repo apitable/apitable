@@ -25,13 +25,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * spring cloud sleuth config
+ * spring cloud sleuth config.
+ *
  * @author Shawn Deng
  */
 @Configuration(proxyBeanMethods = false)
 public class SleuthConfig {
 
-    @Bean(name = { HttpClientRequestParser.NAME, HttpServerRequestParser.NAME })
+    @Bean(name = {HttpClientRequestParser.NAME, HttpServerRequestParser.NAME})
     HttpRequestParser sleuthHttpServerRequestParser() {
         return (request, context, span) -> {
             String url = request.url();

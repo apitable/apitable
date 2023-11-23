@@ -19,34 +19,33 @@
 package com.apitable.core.support.tree;
 
 import cn.hutool.core.collection.CollUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * <p>
- *     default recursive tool, used to traverse nodes that have parent-child relationships.
- *     such as menu trees, dictionary trees, and so on.
+ * default recursive tool, used to traverse nodes that have parent-child relationships.
+ * such as menu trees, dictionary trees, and so on.
  * </p>
  */
 public class DefaultTreeBuildFactory<T extends Tree> extends AbstractTreeBuildFactory<T> {
 
     /**
-     * the root node's id
+     * the root node's id.
      */
     public static final String ROOT_PARENT_ID = "0";
 
     private String rootNode = ROOT_PARENT_ID;
 
-	public DefaultTreeBuildFactory() {
-	}
+    public DefaultTreeBuildFactory() {
+    }
 
-	public DefaultTreeBuildFactory(String rootNode) {
-		this.rootNode = rootNode;
-	}
+    public DefaultTreeBuildFactory(String rootNode) {
+        this.rootNode = rootNode;
+    }
 
-	/**
-     * query a collection of child nodes
+    /**
+     * query a collection of child nodes.
      *
      * @param totalNodes     the list of all nodes
      * @param node           node to be queried
@@ -70,10 +69,10 @@ public class DefaultTreeBuildFactory<T extends Tree> extends AbstractTreeBuildFa
     }
 
     /**
-     * gets the node's child nodes
+     * gets the node's child nodes.
      *
-     * @param list  the list of nodes
-     * @param node  the node to be queried
+     * @param list the list of nodes
+     * @param node the node to be queried
      */
     private List<T> getSubChildLevelOne(List<T> list, T node) {
         List<T> nodeList = new ArrayList<>();

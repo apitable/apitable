@@ -18,18 +18,7 @@
 
 package com.apitable.space.controller;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
-
 import cn.hutool.core.util.StrUtil;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.tags.Tag;
-
 import com.apitable.core.support.ResponseData;
 import com.apitable.interfaces.security.facade.HumanVerificationServiceFacade;
 import com.apitable.interfaces.security.model.NonRobotMetadata;
@@ -47,7 +36,14 @@ import com.apitable.space.service.IInvitationService;
 import com.apitable.space.service.ISpaceInviteLinkService;
 import com.apitable.space.vo.SpaceLinkInfoVo;
 import com.apitable.space.vo.SpaceLinkVo;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;

@@ -18,36 +18,36 @@
 
 package com.apitable.core.support.tree.v2;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ReflectUtil;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.bean.copier.CopyOptions;
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ReflectUtil;
-
 /**
  * <p>
- * tree tool
+ * tree tool.
  * </p>
  */
 @SuppressWarnings("unchecked")
 public class TreeUtil {
 
     /**
-     * build the tree by default tree builder factory
+     * build the tree by default tree builder factory.
      *
      * @param totalNodes the tree node list
      * @return List
      */
     public static <T extends Tree> List<T> build(List<T> totalNodes) {
-        return build(totalNodes, DefaultTreeBuildFactory.ROOT_PARENT_ID, new DefaultTreeBuildFactory<>());
+        return build(totalNodes, DefaultTreeBuildFactory.ROOT_PARENT_ID,
+            new DefaultTreeBuildFactory<>());
     }
 
     /**
-     * build the tree by default factory
+     * build the tree by default factory.
      *
      * @param totalNodes the tree node list
      * @param rootId     the root node id, generally 0
@@ -58,19 +58,20 @@ public class TreeUtil {
     }
 
     /**
-     * build tree
+     * build tree.
      *
      * @param totalNodes        the tree node list
      * @param rootId            the root node id, generally 0
      * @param abstractTreeBuild tree builder factory
      * @return List
      */
-    public static <T extends Tree> List<T> build(List<T> totalNodes, String rootId, AbstractTreeBuildFactory<T> abstractTreeBuild) {
+    public static <T extends Tree> List<T> build(List<T> totalNodes, String rootId,
+                                                 AbstractTreeBuildFactory<T> abstractTreeBuild) {
         return abstractTreeBuild.setRootNode(rootId).doTreeBuild(totalNodes);
     }
 
     /**
-     * select node by node id in node list
+     * select node by node id in node list.
      *
      * @param treeList the tree node list
      * @param id       the node id
@@ -81,10 +82,9 @@ public class TreeUtil {
         for (T tree : treeList) {
             if (tree.getId().equals(id)) {
                 return tree;
-            }
-            else {
+            } else {
                 List<T> children = tree.getChildren();
-                if (children != null && children.size() > 0) {
+                if (children != null && !children.isEmpty()) {
                     t = find(children, id);
 
                     if (t != null) {
@@ -97,28 +97,28 @@ public class TreeUtil {
     }
 
     /**
-     * tree to list, but not destroy the original list
+     * tree to list, but not destroy the original list.
      */
     public static <T extends Tree> List<T> treeToList(T node) {
         return treeToList(node, 0, null);
     }
 
     /**
-     * tree to list, but not destroy the original list
+     * tree to list, but not destroy the original list.
      */
     public static <T extends Tree> List<T> treeToList(T node, int deep, Integer maxDeep) {
         return treeToList(Collections.singletonList(node), deep, maxDeep);
     }
 
     /**
-     * tree to list, but not destroy the original list
+     * tree to list, but not destroy the original list.
      */
     public static <T extends Tree> List<T> treeToList(List<T> nodes) {
         return treeToList(nodes, 0, null);
     }
 
     /**
-     * tree to list, but not destroy the original list
+     * tree to list, but not destroy the original list.
      *
      * @param nodes   the tree node list
      * @param deep    the recursion's deep
@@ -135,11 +135,12 @@ public class TreeUtil {
 
         // children node's traversal & recursion
         for (T node : nodes) {
-            T tNode;
-            BeanUtil.copyProperties(node, tNode = (T) ReflectUtil.newInstance(node.getClass()), CopyOptions.create().ignoreError());
+            T t;
+            BeanUtil.copyProperties(node, t = (T) ReflectUtil.newInstance(node.getClass()),
+                CopyOptions.create().ignoreError());
             // clear children
-            tNode.setChildren(null);
-            result.add(tNode);
+            t.setChildren(null);
+            result.add(t);
 
             if (CollUtil.isNotEmpty(node.getChildren())) {
                 result.addAll(treeToList(node.getChildren(), deep + 1, maxDeep));

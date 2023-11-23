@@ -107,7 +107,8 @@ public class AutomationRobotController {
     @Operation(summary = "Get automation robots")
     @Parameters({
         @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "aut****"),
-        @Parameter(name = "shareId", description = "share id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr****"),})
+        @Parameter(name = "shareId", description = "share id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr****")
+    })
     @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
     public ResponseData<List<AutomationSimpleVO>> getResourceRobots(
         @RequestParam(name = "resourceId") String resourceId,

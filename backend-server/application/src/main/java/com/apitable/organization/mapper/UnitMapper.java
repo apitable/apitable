@@ -38,7 +38,8 @@ public interface UnitMapper extends ExpandBaseMapper<UnitEntity> {
      * @param unitIds unit ids
      * @return the amount of unit
      */
-    Integer selectCountBySpaceIdAndIds(@Param("spaceId") String spaceId, @Param("unitIds") List<Long> unitIds);
+    Integer selectCountBySpaceIdAndIds(@Param("spaceId") String spaceId,
+                                       @Param("unitIds") List<Long> unitIds);
 
     /**
      * insert batch.

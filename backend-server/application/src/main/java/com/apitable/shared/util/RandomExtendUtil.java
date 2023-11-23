@@ -21,7 +21,7 @@ package com.apitable.shared.util;
 import cn.hutool.core.util.RandomUtil;
 
 /**
- * random automatic generation extension tool class
+ * random automatic generation extension tool class.
  *
  * @author Benson Cheung
  */
@@ -32,7 +32,7 @@ public class RandomExtendUtil extends RandomUtil {
     public static final String BASE_CHAR_NUMBER = BASE_CHAR + BASE_NUMBER;
 
     /**
-     * Get a random string (only numbers and uppercase and lowercase characters)
+     * Get a random string (only numbers and uppercase and lowercase characters).
      *
      * @param length the length of the string
      * @return random string
@@ -42,7 +42,7 @@ public class RandomExtendUtil extends RandomUtil {
     }
 
     /**
-     * get a random string (only numbers and lowercase characters)
+     * get a random string (only numbers and lowercase characters).
      *
      * @param length the length of the string
      * @return random string

@@ -30,12 +30,15 @@ import java.util.List;
 import java.util.Set;
 import org.apache.ibatis.annotations.Param;
 
+/**
+ * role member mapper.
+ */
 public interface RoleMemberMapper extends ExpandBaseMapper<RoleMemberEntity> {
 
     /**
      * get role members' id by role's id.
      *
-     * @param roleId    the role's id
+     * @param roleId the role's id
      * @return the role members' id
      */
     Set<Long> selectUnitRefIdsByRoleId(@Param("roleId") Long roleId);
@@ -43,16 +46,17 @@ public interface RoleMemberMapper extends ExpandBaseMapper<RoleMemberEntity> {
     /**
      * delete rows by the role's id and the role member's id.
      *
-     * @param roleId    the role's id
+     * @param roleId     the role's id
      * @param unitRefIds the role members' id
      * @return deleted rows number
      */
-    Integer deleteByRoleIdAndUnitRefIds(@Param("roleId") Long roleId, @Param("unitRefIds") List<Long> unitRefIds);
+    Integer deleteByRoleIdAndUnitRefIds(@Param("roleId") Long roleId,
+                                        @Param("unitRefIds") List<Long> unitRefIds);
 
     /**
      * delete rows by the role's id.
      *
-     * @param roleId    the role's id
+     * @param roleId the role's id
      * @return deleted rows number
      */
     Integer deleteByRoleId(@Param("roleId") Long roleId);
@@ -72,7 +76,8 @@ public interface RoleMemberMapper extends ExpandBaseMapper<RoleMemberEntity> {
      * @param page   page parameter
      * @return role members' information
      */
-    IPage<RoleMemberInfoDTO> selectRoleMembersByRoleId(@Param("roleId") Long roleId, Page<Void> page);
+    IPage<RoleMemberInfoDTO> selectRoleMembersByRoleId(@Param("roleId") Long roleId,
+                                                       Page<Void> page);
 
     /**
      * delete rows by the role members' id.

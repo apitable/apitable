@@ -27,17 +27,31 @@ import com.apitable.automation.model.UpdateTriggerRO;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * automation trigger service.
+ */
 public interface IAutomationTriggerService {
 
+    /**
+     * get trigger by robot id.
+     *
+     * @param robotIds robot id list
+     * @return list of trigger dto
+     */
     List<AutomationTriggerDto> getTriggersByRobotIds(List<String> robotIds);
 
+    /**
+     * create trigger.
+     *
+     * @param entity entity
+     */
     void create(AutomationTriggerEntity entity);
 
     /**
      * Create trigger.
      *
-     * @param userId  creator's user id
-     * @param data    data
+     * @param userId creator's user id
+     * @param data   data
      * @return TriggerVO
      */
     List<TriggerVO> createByDatabus(Long userId, CreateTriggerRO data);
@@ -61,8 +75,17 @@ public interface IAutomationTriggerService {
      */
     void deleteByDatabus(String robotId, String triggerId, Long userId);
 
+    /**
+     * copy trigger.
+     *
+     * @param userId      user id
+     * @param sameSpace   same space
+     * @param newRobotMap new robot map
+     * @param newNodeMap  new node map
+     * @return TriggerCopyResultDto
+     */
     TriggerCopyResultDto copy(Long userId, boolean sameSpace,
-        Map<String, String> newRobotMap, Map<String, String> newNodeMap);
+                              Map<String, String> newRobotMap, Map<String, String> newNodeMap);
 
     /**
      * Update trigger by trigger id.
@@ -70,5 +93,4 @@ public interface IAutomationTriggerService {
      * @param trigger trigger
      */
     void updateByTriggerId(AutomationTriggerEntity trigger);
-
 }

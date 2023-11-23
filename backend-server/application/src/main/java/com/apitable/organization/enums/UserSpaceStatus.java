@@ -20,7 +20,7 @@ package com.apitable.organization.enums;
 
 /**
  * <p>
- * user status in space
+ * user status in space.
  * </p>
  *
  * @author Chambers

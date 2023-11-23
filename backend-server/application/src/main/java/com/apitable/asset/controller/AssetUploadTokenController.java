@@ -18,15 +18,6 @@
 
 package com.apitable.asset.controller;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-
 import com.apitable.asset.enums.AssetType;
 import com.apitable.asset.ro.AssetUploadCertificateRO;
 import com.apitable.asset.ro.AssetUrlSignatureRo;
@@ -41,7 +32,12 @@ import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
 import com.apitable.shared.context.SessionContext;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Collections;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,8 +65,9 @@ public class AssetUploadTokenController {
     @PostResource(path = "/signatures", requiredLogin = false)
     @Operation(summary = "Batch get asset signature url")
     public ResponseData<List<AssetUrlSignatureVo>> getSignatureUrls(
-            @RequestBody final AssetUrlSignatureRo data) {
-        return ResponseData.success(iAssetUploadTokenService.getAssetUrlSignatureVos(data.getResourceKeys()));
+        @RequestBody final AssetUrlSignatureRo data) {
+        return ResponseData.success(
+            iAssetUploadTokenService.getAssetUrlSignatureVos(data.getResourceKeys()));
     }
 
     /**

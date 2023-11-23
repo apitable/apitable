@@ -792,7 +792,8 @@ public class WidgetPackageServiceImpl
     }
 
     @SneakyThrows(JsonProcessingException.class)
-    private void sendUnpublishedWidgetNotify(WidgetPackageEntity wpk, String spaceId, Long opUserId) {
+    private void sendUnpublishedWidgetNotify(WidgetPackageEntity wpk, String spaceId,
+                                             Long opUserId) {
         String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
         // notify holder
         String widgetName = I18nField.toBean(wpk.getI18nName()).getString(defaultLang);

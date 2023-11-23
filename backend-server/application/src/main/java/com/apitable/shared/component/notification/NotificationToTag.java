@@ -22,7 +22,7 @@ import lombok.Getter;
 
 /**
  * <p>
- * notification target object
+ * notification target object.
  * </p>
  *
  * @author zoe zheng
@@ -52,14 +52,16 @@ public enum NotificationToTag {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
-
     public void setValue(String value) {
         this.value = value;
     }
 
+    /**
+     * transform string to enum.
+     *
+     * @param value string
+     * @return enum
+     */
     public static NotificationToTag getValue(String value) {
         for (NotificationToTag enums : NotificationToTag.values()) {
             if (enums.value.equals(value)) {
@@ -78,6 +80,7 @@ public enum NotificationToTag {
     }
 
     public static boolean toMemberTag(NotificationToTag tag) {
-        return tag.equals(MEMBERS) || tag.equals(ALL_MEMBERS) || tag.equals(SPACE_ADMINS) || tag.equals(SPACE_MEMBER_ADMINS) || tag.equals(SPACE_MAIN_ADMIN);
+        return tag.equals(MEMBERS) || tag.equals(ALL_MEMBERS) || tag.equals(SPACE_ADMINS)
+            || tag.equals(SPACE_MEMBER_ADMINS) || tag.equals(SPACE_MAIN_ADMIN);
     }
 }

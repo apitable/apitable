@@ -54,18 +54,22 @@ public class NotificationConsumer {
      * @throws IOException exception
      */
     @RabbitListener(queues = NOTIFICATION_QUEUE)
-    public void onMessageReceived(NotificationCreateRo event, Message message, Channel channel) throws IOException {
+    public void onMessageReceived(NotificationCreateRo event, Message message, Channel channel)
+        throws IOException {
         long deliveryTag = message.getMessageProperties().getDeliveryTag();
 
-        log.info("notification received message:{}; deliveryTag:{}", event.getTemplateId(), deliveryTag);
-        if (SINGLE_RECORD_MEMBER_MENTION.equals(NotificationTemplateId.getValue(event.getTemplateId()))) {
+        log.info("notification received message:{}; deliveryTag:{}", event.getTemplateId(),
+            deliveryTag);
+        if (SINGLE_RECORD_MEMBER_MENTION.equals(
+            NotificationTemplateId.getValue(event.getTemplateId()))) {
             event.setNotifyId(IdUtil.simpleUUID());
         }
         try {
             NotificationManager.me().centerNotify(event);
             socialServiceFacade.eventCall(new NotificationEvent(event));
         } catch (Exception e) {
-            log.warn("Failed to send notification: {}:{}", event.getSpaceId(), event.getTemplateId(), e);
+            log.warn("Failed to send notification: {}:{}", event.getSpaceId(),
+                event.getTemplateId(), e);
         }
         channel.basicAck(deliveryTag, false);
     }

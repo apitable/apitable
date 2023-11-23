@@ -85,6 +85,7 @@ import com.apitable.starter.mail.autoconfigure.EmailMessage;
 import com.apitable.starter.mail.autoconfigure.MailTemplate;
 import com.apitable.starter.mail.core.CloudEmailMessage;
 import com.apitable.starter.mail.core.CloudMailSender;
+import com.google.common.base.CaseFormat;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -96,8 +97,6 @@ import java.util.Properties;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
-
-import com.google.common.base.CaseFormat;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -114,38 +113,32 @@ import org.springframework.stereotype.Component;
 @Component
 public class NotifyMailFactory {
 
-    /** */
     @Resource
     private BeetlTemplate beetlTemplate;
 
-    /** */
     @Resource
     private EmailSendProperties emailSendProperties;
 
-    /** */
     @Resource
     private MailFacade mailFacade;
 
-    /** */
     @Autowired(required = false)
     private CloudMailSender cloudMailSender;
 
-    /** */
     @Autowired(required = false)
     private MailTemplate mailTemplate;
 
-    /**
-     * @return NotifyMailFactory
-     */
     public static NotifyMailFactory me() {
         return SpringContextHolder.getBean(NotifyMailFactory.class);
     }
 
     /**
+     * send mail.
+     *
      * @param subjectType subjectType
      * @param subjectDict subjectDict
-     * @param dict dict
-     * @param tos tos
+     * @param dict        dict
+     * @param tos         tos
      */
     public void sendMail(
         final String subjectType,
@@ -173,10 +166,12 @@ public class NotifyMailFactory {
     }
 
     /**
-     * @param lang lang
+     * send mail.
+     *
+     * @param lang        lang
      * @param subjectType subjectType
-     * @param dict dict
-     * @param to to
+     * @param dict        dict
+     * @param to          to
      */
     public void sendMail(
         final String lang,
@@ -188,11 +183,13 @@ public class NotifyMailFactory {
     }
 
     /**
-     * @param language language
+     * send mail.
+     *
+     * @param language    language
      * @param subjectType subjectType
      * @param subjectDict subjectDict
-     * @param dict dict
-     * @param to to
+     * @param dict        dict
+     * @param to          to
      */
     public void sendMail(
         final String language,
@@ -253,6 +250,8 @@ public class NotifyMailFactory {
     }
 
     /**
+     * notify.
+     *
      * @param subject subject
      * @param textBtl textBtl
      */
@@ -267,14 +266,14 @@ public class NotifyMailFactory {
     }
 
     /**
-     * *
+     * notify.
      *
-     * @param personal personal
-     * @param subject subject
+     * @param personal    personal
+     * @param subject     subject
      * @param subjectType subjectType
-     * @param dict dict
-     * @param textBtl textBtl
-     * @param to to
+     * @param dict        dict
+     * @param textBtl     textBtl
+     * @param to          to
      */
     public void notify(
         final String personal,
@@ -367,19 +366,22 @@ public class NotifyMailFactory {
         }
     }
 
+    /**
+     * mail with lang.
+     */
     @Data
     @NoArgsConstructor
     public static class MailWithLang {
-        /** * */
+
         private String locale;
 
-        /** * */
         private String to;
 
         /**
+         * constructor.
          *
          * @param targetLocale targetLocale
-         * @param email email
+         * @param email        email
          */
         public MailWithLang(final String targetLocale, final String email) {
             this.locale = targetLocale;
@@ -387,12 +389,12 @@ public class NotifyMailFactory {
         }
 
         /**
-         * *
+         * convert.
          *
-         * @param data data
+         * @param data   data
          * @param mapper mapper
-         * @param <T> T
-         * @return List<MailWithLang>
+         * @param <T>    T
+         * @return list
          */
         public static <T> List<MailWithLang> convert(
             final List<T> data,
@@ -406,19 +408,15 @@ public class NotifyMailFactory {
 
     static final class MailText {
 
-        /** * */
         @Getter
         private String htmlTemplateName;
 
-        /** * */
         @Getter
         private String textTemplateName;
 
-        /** * */
         @Getter
         private final String subjectType;
 
-        /** * */
         @Getter
         private final Dict subjectDict;
 
@@ -623,8 +621,12 @@ public class NotifyMailFactory {
                     textTemplateName = "automation-fail-text.btl";
                     break;
                 default:
-                    htmlTemplateName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, this.subjectType) + "-html.btl";
-                    textTemplateName = CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, this.subjectType) + "-text.btl";
+                    htmlTemplateName =
+                        CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, this.subjectType)
+                            + "-html.btl";
+                    textTemplateName =
+                        CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, this.subjectType)
+                            + "-text.btl";
                     break;
             }
             return this;
