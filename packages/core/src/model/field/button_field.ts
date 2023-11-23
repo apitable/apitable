@@ -89,17 +89,19 @@ export class ButtonField extends Field {
       },
     };
   }
-
-  get openValueJsonSchema() {
-    return {};
-  }
-
   override get canGroup(): boolean {
     return false;
   }
 
   override get canFilter(): boolean {
     return false;
+  }
+
+  get openValueJsonSchema() {
+    return {
+      type: 'string',
+      title: this.field.name,
+    };
   }
 
   static defaultProperty(): IButtonProperty {
