@@ -103,6 +103,10 @@ public class ControlTemplate {
         return execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.nodeIds(nodeIds));
     }
 
+    public ControlRoleDict fetchNodeRoleByTeamId(Long teamId, List<String> nodeIds) {
+        return execute(PrincipalBuilder.teamId(teamId), ControlIdBuilder.nodeIds(nodeIds));
+    }
+
     public ControlRoleDict fetchNodeTreeNode(Long memberId, List<String> nodeIds) {
         return execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.nodeIds(nodeIds),
             ControlRequestOption.create().setNodeTreeRoleBuilding(true));
