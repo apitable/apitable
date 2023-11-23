@@ -70,6 +70,7 @@ import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
 import { loadRecords } from 'pc/utils/load_records';
 import { getOptionNameColor, inquiryValueByKey } from '../components/cell';
 import {
+  GRID_CEL_ICON_GAP_SIZE,
   GRID_CELL_ABBR_MIN_WIDTH,
   GRID_CELL_ADD_ITEM_BUTTON_SIZE,
   GRID_CELL_ATTACHMENT_ITEM_MARGIN_LEFT,
@@ -310,9 +311,8 @@ export class CellHelper extends KonvaDrawer {
     const isOperating = isActive;
     let currentX = GRID_CELL_VALUE_PADDING;
     let currentY = GRID_CELL_MULTI_PADDING_TOP;
-    const isShortHeight = rowHeightLevel === RowHeightLevel.Short;
     const maxHeight = isActive ? 130 - GRID_CELL_MULTI_PADDING_TOP : rowHeight - GRID_CELL_MULTI_PADDING_TOP;
-    const maxTextWidth = columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING) - GRID_ICON_SMALL_SIZE;
+    const maxTextWidth = columnWidth - 2 * GRID_CELL_VALUE_PADDING - GRID_ICON_SMALL_SIZE - GRID_CEL_ICON_GAP_SIZE;
     const renderDataList: any[] = [];
     const listCount = cellValue.length;
     let isOverflow = false;
@@ -328,7 +328,6 @@ export class CellHelper extends KonvaDrawer {
         const operatingMaxWidth = maxTextWidth - 6;
         // item no space to display, then perform a line feed
         if (operatingMaxWidth <= 10) {
-          currentX = GRID_CELL_VALUE_PADDING;
           currentY += GRID_OPTION_ITEM_HEIGHT + GRID_CELL_MULTI_ITEM_MARGIN_TOP;
         } else {
           realMaxTextWidth = operatingMaxWidth;
@@ -347,19 +346,6 @@ export class CellHelper extends KonvaDrawer {
       if (columnWidth != null) {
         // In the inactive state, subsequent items are not rendered when the line width is exceeded
         if (!isActive && currentX >= columnWidth) break;
-        // If it is not the last line in the inactive state, perform a line feed on the overflow item
-        if (
-          !isActive &&
-          !isShortHeight &&
-          currentY + GRID_OPTION_ITEM_HEIGHT < maxHeight &&
-          currentX + itemWidth > columnWidth - GRID_CELL_VALUE_PADDING
-        ) {
-          currentX = GRID_CELL_VALUE_PADDING;
-          currentY += GRID_OPTION_ITEM_HEIGHT + GRID_CELL_MULTI_ITEM_MARGIN_TOP;
-        }
-        if (isActive && currentX + itemWidth > columnWidth - GRID_CELL_VALUE_PADDING) {
-          currentX = GRID_CELL_VALUE_PADDING;
-        }
         if (isActive && currentY >= maxHeight) isOverflow = true;
       }
 
@@ -374,7 +360,7 @@ export class CellHelper extends KonvaDrawer {
           background,
           color,
           radius: 4,
-          padding: GRID_OPTION_ITEM_PADDING,
+          padding: 6,
           text: renderText,
           fontSize: 12,
           textAlign: 'right',
