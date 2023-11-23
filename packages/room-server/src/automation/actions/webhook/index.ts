@@ -52,7 +52,11 @@ function parserHeader(headers: IHeader[]) {
   if (!headers) return {};
   return headers.reduce((pre, next) => {
     const { key, value } = next;
-    pre[key] = value;
+    if (key.toLowerCase() === 'content-type') {
+      pre['content-type'] = value;
+    } else {
+      pre[key] = value;
+    }
     return pre;
   }, {} as any);
 }
