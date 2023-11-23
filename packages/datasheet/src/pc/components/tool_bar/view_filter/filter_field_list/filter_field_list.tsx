@@ -44,10 +44,9 @@ import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { renderComputeFieldError } from 'pc/components/multi_grid/header';
 import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ExecuteFilterFn } from '../interface';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFilterFieldListProps {
   conditionIndex: number;
@@ -109,9 +108,10 @@ const FilterFieldListBase: React.FC<React.PropsWithChildren<IFilterFieldListProp
     const field = fieldMap[item.fieldId];
     const warnText = warnTextObj && warnTextObj[item.fieldId];
     const hasError = Field.bindModel(field).hasError;
+    const canFiltered = Field.bindModel(field).canFilter;
     return {
       label: field.name,
-      disabled: Boolean(hasError || warnText),
+      disabled: Boolean(hasError || warnText || !canFiltered),
       value: item.fieldId,
       prefixIcon: getFieldTypeIcon(field.type!),
       suffixIcon: getSuffixIcon(item.fieldId, warnText),
