@@ -25,6 +25,7 @@ import cn.hutool.core.util.BooleanUtil;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.organization.dto.LoadSearchDTO;
 import com.apitable.organization.dto.TeamCteInfo;
+import com.apitable.organization.facade.TeamFacade;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.mapper.TeamMapper;
 import com.apitable.organization.mapper.TeamMemberRelMapper;
@@ -79,6 +80,9 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Resource
     private ITeamService iTeamService;
+
+    @Resource
+    private TeamFacade teamFacade;
 
     @Resource
     private UserSpaceCacheService userSpaceCacheService;
@@ -361,8 +365,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public SubUnitResultVo loadMemberFirstTeams(String spaceId, List<Long> teamIds) {
-        log.info("Load the first department of the organization tree to which a member belongs");
-        List<Long> loadTeamIds = this.loadMemberFirstTeamIds(spaceId, teamIds);
+        List<Long> loadTeamIds = this.loadMemberFirstTeamIds(teamIds);
         // get the required load department UnitTeamVo
         List<UnitTeamVo> unitTeamVoList = this.findUnitTeamVo(spaceId, loadTeamIds);
         SubUnitResultVo subUnitResultVo = new SubUnitResultVo();
@@ -371,11 +374,9 @@ public class OrganizationServiceImpl implements IOrganizationService {
     }
 
     @Override
-    public List<Long> loadMemberFirstTeamIds(String spaceId, List<Long> teamIds) {
-        log.info("Load the first department id of the organization tree to which a member belongs");
+    public List<Long> loadMemberFirstTeamIds(List<Long> teamIds) {
         // Member's department's and all sub-departments' id and parentId
-        List<TeamCteInfo> teamsInfo = DBUtil.batchSelectByFieldIn(teamIds,
-            (ids) -> teamMapper.selectChildTreeByTeamIds(spaceId, ids));
+        List<TeamCteInfo> teamsInfo = teamFacade.getAllChildTeam(teamIds);
         // the member's team and all child teams id
         List<Long> teamIdList =
             teamsInfo.stream().map(TeamCteInfo::getId).collect(Collectors.toList());

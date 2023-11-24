@@ -125,9 +125,8 @@ public interface IOrganizationService {
     /**
      * Load the first department id of the organization tree to which a member belongs.
      *
-     * @param spaceId space id
      * @param teamIds team ids
      * @return teamIds
      */
-    List<Long> loadMemberFirstTeamIds(String spaceId, List<Long> teamIds);
+    List<Long> loadMemberFirstTeamIds(List<Long> teamIds);
 }

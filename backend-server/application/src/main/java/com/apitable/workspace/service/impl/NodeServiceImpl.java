@@ -72,7 +72,6 @@ import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.shared.util.CollectionUtil;
-import com.apitable.shared.util.DBUtil;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.shared.util.StringUtil;
 import com.apitable.shared.util.information.ClientOriginInfo;
@@ -104,6 +103,7 @@ import com.apitable.workspace.enums.NodeException;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.enums.ResourceType;
+import com.apitable.workspace.facade.NodeFacade;
 import com.apitable.workspace.listener.CsvReadListener;
 import com.apitable.workspace.listener.MultiSheetReadListener;
 import com.apitable.workspace.mapper.NodeMapper;
@@ -173,6 +173,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Resource
     private NodeMapper nodeMapper;
+
+    @Resource
+    private NodeFacade nodeFacade;
 
     @Resource
     private INodeDescService iNodeDescService;
@@ -368,9 +371,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public List<NodeBaseInfoDTO> getParentPathNodes(List<String> nodeIds, boolean includeRootNode) {
-        List<NodeBaseInfoDTO> nodes = DBUtil.batchSelectByFieldIn(nodeIds,
-            (ids) -> nodeMapper.selectAllParentNodeIds(ids, includeRootNode));
-        return CollectionUtil.distinctByProperty(nodes, NodeBaseInfoDTO::getNodeId);
+        return nodeFacade.getParentPathNodes(nodeIds, includeRootNode);
     }
 
     @Override

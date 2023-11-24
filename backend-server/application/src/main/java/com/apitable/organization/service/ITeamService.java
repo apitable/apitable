@@ -21,7 +21,6 @@ package com.apitable.organization.service;
 import com.apitable.organization.dto.MemberIsolatedInfo;
 import com.apitable.organization.dto.TeamBaseInfoDTO;
 import com.apitable.organization.entity.TeamEntity;
-import com.apitable.organization.vo.MemberInfoVo;
 import com.apitable.organization.vo.MemberPageVo;
 import com.apitable.organization.vo.MemberTeamPathInfo;
 import com.apitable.organization.vo.TeamInfoVo;
@@ -310,34 +309,6 @@ public interface ITeamService extends IService<TeamEntity> {
     List<Long> getTeamIdsBySpaceId(String spaceId);
 
     /**
-     * get team tree of member.
-     *
-     * @param spaceId space id
-     * @param teamIds team ids
-     * @return TeamTreeVos
-     */
-    List<TeamTreeVo> getMemberTeamTree(String spaceId, List<Long> teamIds);
-
-    /**
-     * get team tree of team list.
-     *
-     * @param spaceId space id
-     * @param teamIds team ids
-     * @return TeamTreeVos
-     */
-    List<TeamTreeVo> getMemberAllTeamsVO(String spaceId, List<Long> teamIds);
-
-    /**
-     * load the member's team tree.
-     *
-     * @param spaceId  space id
-     * @param memberId member id
-     * @return TeamTreeVos
-     */
-    List<TeamTreeVo> loadMemberTeamTree(String spaceId, Long memberId);
-
-
-    /**
      * batch query team's unitId、teamId、teamName by team's ids.
      *
      * @param spaceId space id
@@ -353,14 +324,6 @@ public interface ITeamService extends IService<TeamEntity> {
      * @param spaceId space id
      */
     void handlePageMemberTeams(IPage<MemberPageVo> page, String spaceId);
-
-    /**
-     * handle list member team info.
-     *
-     * @param memberInfoVos member info view
-     * @param spaceId       space id
-     */
-    void handleListMemberTeams(List<MemberInfoVo> memberInfoVos, String spaceId);
 
     /**
      * get member's each team's full hierarchy team name.
