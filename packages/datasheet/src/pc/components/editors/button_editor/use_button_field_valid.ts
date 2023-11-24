@@ -1,14 +1,19 @@
 import { isNil } from 'lodash';
 import { useMemo } from 'react';
 import useSWR from 'swr';
-import { ButtonActionType, IButtonField } from '@apitable/core';
+import { ButtonActionType, IButtonField, Selectors } from '@apitable/core';
 import { getFieldId } from 'pc/components/automation/controller/hooks/get_field_id';
 import { getRobotDetail } from 'pc/components/editors/button_editor/api';
 import { useTriggerTypes } from 'pc/components/robot/hooks';
 import { IRobotTrigger } from 'pc/components/robot/interface';
+import { useAppSelector } from 'pc/store/react-redux';
 
-export const useButtonFieldValid = (button: IButtonField): boolean => {
+export const useButtonFieldValid = (button: IButtonField): {
+  fieldId: string;
+  result: boolean
+} => {
 
+  const dst = useAppSelector(Selectors.getActiveDatasheetId);
   const { data: triggerTypes } = useTriggerTypes();
   const buttonFieldTriggerId =triggerTypes.find(item => item.endpoint === 'button_field');
   const automationId = button.property.action.automation?.automationId;
@@ -16,37 +21,58 @@ export const useButtonFieldValid = (button: IButtonField): boolean => {
     ''
   ),
   {
+    focusThrottleInterval: 3000,
     isPaused: () => !Boolean(button.property.action.automation?.automationId)
   }
   );
   return useMemo(() => {
-    if(isNil(button.property.action.type) ) {
-      return false;
+    if (isNil(button.property.action.type)) {
+      return {
+        fieldId: button.id,
+        result: false
+      };
     }
-    if(button.property.action.type === ButtonActionType.OpenLink ) {
-      if(isNil(button.property.action?.openLink?.expression)) {
-        return false;
+    if (button.property.action.type === ButtonActionType.OpenLink) {
+      if (isNil(button.property.action?.openLink?.expression)) {
+        return {
+          fieldId: button.id,
+          result: false
+        };
       }
-      return true;
+      return {
+        fieldId: button.id,
+        result: true
+      };
     }
 
     const automation = data?.data;
-    if(automation) {
-      if(!automation.isActive) {
-        return false;
+    if (automation) {
+      if (!automation.isActive) {
+        return {
+          fieldId: button.id,
+          result: false
+        };
       }
-      const found = automation.triggers?.find(item => item.triggerTypeId=== buttonFieldTriggerId?.triggerTypeId) as IRobotTrigger |undefined;
-      if(!found) {
-        return false;
+      const found = automation.triggers?.find(item => item.triggerTypeId === buttonFieldTriggerId?.triggerTypeId) as IRobotTrigger | undefined;
+      if (!found) {
+        return {
+          fieldId: button.id,
+          result: false
+        };
       }
 
       const fieldId = getFieldId(found);
-      if(!fieldId) {
-        return false;
+      if (!fieldId) {
+        return {
+          fieldId: button.id,
+          result: false
+        };
       }
     }
+    return {
+      fieldId: button.id,
+      result: true
+    };
 
-    return true;
-
-  }, [button.property.action?.openLink?.expression, button.property.action.type, buttonFieldTriggerId?.triggerTypeId, data?.data]);
+  }, [button.id, button.property.action?.openLink?.expression, button.property.action.type, buttonFieldTriggerId?.triggerTypeId, data?.data]);
 };

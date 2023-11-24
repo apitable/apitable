@@ -37,6 +37,7 @@ const [triggerTypesAtom] = atomsWithQuery((get) => ({
     const resp = await nestReq.get(String(url));
     return resp?.data?.data;
   },
+  cacheTime: Infinity,
 }));
 
 const loadableTriggerAtom = loadableWithDefault(triggerTypesAtom, []);
@@ -47,6 +48,7 @@ const [actionTypesAtom] = atomsWithQuery((get) => ({
     const r = await nestReq.get(String(url));
     return r?.data?.data;
   },
+  cacheTime: Infinity,
 }));
 
 const loadableActionTypesAtom = loadableWithDefault(actionTypesAtom, []);

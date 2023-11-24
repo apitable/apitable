@@ -87,7 +87,6 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
   if (!robot) {
     return null;
   }
-  console.log({ robot });
   return (
     <Box display="flex" flexDirection={'row'} height={'100%'} position={'relative'}>
       <AutoSizer style={{ width: '100%', height: '100%' }}>

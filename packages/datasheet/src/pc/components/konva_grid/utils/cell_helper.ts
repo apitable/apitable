@@ -60,6 +60,7 @@ import {
 import { FileOutlined } from '@apitable/icons';
 import { assertSignatureManager } from '@apitable/widget-sdk';
 import { AvatarSize, AvatarType } from 'pc/components/common';
+import { getIsValid } from 'pc/components/editors/button_editor/valid_map';
 import { GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT } from 'pc/components/gantt_view';
 import { isUnitLeave } from 'pc/components/multi_grid/cell/cell_member/member_item';
 import { setColor } from 'pc/components/multi_grid/format';
@@ -325,17 +326,26 @@ export class CellHelper extends KonvaDrawer {
     const renderDataList: any[] = [];
     const listCount = cellValue.length;
     let isOverflow = false;
+    const isValid = getIsValid(buttonField.id);
 
     const defaultColor = buttonField.property.style.color ? setColor(buttonField.property.style.color, renderProps.cacheTheme) : colors.defaultBg;
     let bg = '';
     if(buttonField.property.style.type === ButtonStyleType.Background) {
-      bg = defaultColor;
+      if(isValid) {
+        bg = defaultColor;
+      }else {
+        bg = colors.bgControlsDisabled;
+      }
     }
 
     for (let index = 0; index < listCount; index++) {
-      let color =defaultColor;
+      let color = isValid ? defaultColor: colors.textCommonDisabled;
       if(buttonField.property.style.type === ButtonStyleType.Background) {
-        color = colors.textStaticPrimary;
+        if(isValid) {
+          color = colors.textStaticPrimary;
+        } else {
+          color = colors.textCommonDisabled;
+        }
       }
       const background = bg;
 
