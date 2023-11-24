@@ -14,6 +14,7 @@ import { useAppSelector } from 'pc/store/react-redux';
 
 const StyledBox = styled(Box)`
     cursor: pointer;
+    user-select: none;
 `;
 
 export const ButtonFieldItem: FunctionComponent<{field: IButtonField,
@@ -46,7 +47,6 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
 
       const bg = field.property.style.color ? setColor(field.property.style.color, cacheTheme) : colors.defaultBg;
       const isValid = useButtonFieldValid(field);
-
 
       useEffect(() => {
         setIsValid(isValid.fieldId, isValid.result);
@@ -107,8 +107,8 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
             borderRadius={'4px'}
             paddingX={'8px'}
             maxWidth={'100px'}
-                     marginLeft={'8px'}
-                     marginTop={'4px'}
+            marginLeft={'8px'}
+            marginTop={'4px'}
             cursor={'not-allowed'}
             paddingY={'3px'}
             display={'inline-flex'} alignItems={'center'}>
@@ -134,15 +134,15 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
           paddingX={'8px'}
           maxWidth={'100px'}
           onClick={onStart}
-                   marginLeft={'8px'}
-                   marginTop={'4px'}
+          marginLeft={'8px'}
+          marginTop={'4px'}
           cursor={isValid? 'cursor': 'not-allowed'}
           paddingY={'3px'}
           display={'inline-flex'} alignItems={'center'}>
           {
 
             isLoading ? (
-              <LoadingFilled color={colors.textCommonPrimary} />
+              <LoadingFilled color={colors.textStaticPrimary} />
             ): (
               <EllipsisText>
                 <Typography color={colors.textStaticPrimary} variant={'body4'}>

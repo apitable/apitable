@@ -65,14 +65,6 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
       onUpdate(field);
     }
   }, [activeFieldState.fieldId, onCreate, onUpdate]);
-  // rootId
-  // parentId
-
-  // const { rootId } = useAppSelector((state: IReduxState) => state.catalogTree);
-
-  // const datasheetId = useAppSelector((state: IReduxState) => propDatasheetId || Selectors.getActiveDatasheetId(state))!;
-
-  //  TODO communication
   const rootId = useAppSelector(r => r.catalogTree.rootId);
 
   // const datasheetNode = useAppSelector((state: IReduxState) => Selectors.getAc)!;
@@ -151,14 +143,13 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
     inputformulaRef.current && inputformulaRef.current.focus();
   };
 
-  // const datasheetId = useAppSelector(st = getActiveDatasheetId(st))
   const router = useRouter();
   const colors = useCssColors();
 
   const { data: triggerTypes } = useTriggerTypes();
   const buttonFieldTriggerId =triggerTypes.find(item => item.endpoint === 'button_field');
 
-  const handleAddTrigger = useCallback(async (resourceId: string, datasheetId: string, fieldId: string) => {
+  const handleAddTrigger = useCallback(async (resourceId: string, datasheetId: string, fieldId: string, onUpdate: (resp: string) => void) => {
     const item = await automationApiClient.getResourceRobots({
       resourceId,
       shareId: ''
@@ -188,6 +179,9 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
           }
         }
       });
+    if(triggerRes.data.data[0].triggerId) {
+      onUpdate(triggerRes.data.data[0].triggerId)
+    }
     setTimeout(() => {
       router.push(`/workbench/${resourceId}`);
     }, 50);
@@ -212,24 +206,26 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                 return;
               }
 
-              const item = produce(currentField, (draft) => {
-                draft.property.action.type = ButtonActionType.TriggerAutomation;
-                if (automationId) {
-                  if (draft.property.action?.automation) {
-                    draft.property.action.automation.automationId = automationId;
-                  } else {
-                    // TODO trigger Id
-                    // @ts-ignore
-                    draft.property.action.automation = { automationId };
+
+              await handleAddTrigger(automationId, datasheetId, currentField.id, (triggerId) => {
+                const item = produce(currentField, (draft) => {
+                  draft.property.action.type = ButtonActionType.TriggerAutomation;
+                  if (automationId) {
+                    if (draft.property.action?.automation) {
+                      draft.property.action.automation.automationId = automationId;
+                      draft.property.action.automation.triggerId = triggerId;
+                    } else {
+                      // TODO trigger Id
+                      // @ts-ignore
+                      draft.property.action.automation = { automationId, triggerId };
+                    }
                   }
-                }
+                });
+
+                setVisible(false);
+                setCurrentField(item);
+                handleModify(item);
               });
-
-              setVisible(false);
-              setCurrentField(item);
-              handleModify(item);
-
-              const triggerItem = await handleAddTrigger(automationId, datasheetId, currentField.id);
             }} >
 
               <LinkButton prefixIcon={<AddOutlined color={colors.textBrandDefault}/>} underline={false}>
@@ -268,23 +264,25 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
               return;
             }
 
-            const item = produce(currentField, (draft) => {
-              draft.property.action.type = ButtonActionType.TriggerAutomation;
-              if (automationId) {
-                if (draft.property.action?.automation) {
-                  draft.property.action.automation.automationId = automationId;
-                } else {
-                  // TODO trigger Id
-                  // @ts-ignore
-                  draft.property.action.automation = { automationId };
-                }
-              }
-            });
 
             setVisible(false);
-            setCurrentField(item);
-            handleModify(item);
-            const triggerItem = await handleAddTrigger(automationId, datasheetId, currentField.id);
+
+            await handleAddTrigger(automationId, datasheetId, currentField.id, (triggerId) => {
+              const item = produce(currentField, (draft) => {
+                draft.property.action.type = ButtonActionType.TriggerAutomation;
+                if (automationId) {
+                  if (draft.property.action?.automation) {
+                    draft.property.action.automation.automationId = automationId;
+                    draft.property.action.automation.triggerId = triggerId;
+                  } else {
+                    draft.property.action.automation = { automationId, triggerId };
+                  }
+                }
+              });
+
+              setCurrentField(item);
+              handleModify(item);
+            });
           }}
           nodeTypes={[ConfigConstant.NodeType.AUTOMATION, ConfigConstant.NodeType.FOLDER]}
           defaultNodeIds={{ folderId: rootId, automationId: action?.automation?.automationId }}

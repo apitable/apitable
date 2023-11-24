@@ -147,7 +147,7 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
     <StyledBox border={`1px solid ${theme.color.borderCommonDefault}`} borderRadius="4px" marginTop="16px" style={readonlyStyle}>
       <Box padding="8px 0" margin="0 8px" onClick={onNavigate} display={'flex'} alignItems={'center'}>
         {/*marginTop="8px"*/}
-        <Box display="flex" justifyContent="space-between"  alignItems="center" flex={'1 1 auto'}>
+        <Box display="flex" justifyContent="space-between" alignItems="center" flex={'1 1 auto'}>
           <Box width="100%" display="flex" alignItems="center">
             {nodeSteps.map((item, index) => {
               const isLast = index === nodeSteps.length - 1;
@@ -212,22 +212,21 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
                   width={'132px'}
                   display={'flex'}
                   flexDirection={'column'}
-                  borderColor={' var(--radiusRadiusDefault, 4px);'}
-                  backgroundColor={'var(--bgCommonHighest, #333)'}
+                  borderColor={colors.borderCommonDefault}
+                  borderRadius={'4px'}
+                  backgroundColor={colors.bgCommonHighest}
+                  borderWidth={'1px'}
+                  boxShadow={'0px 12px 24px 0px rgba(0, 0, 0, 0.16), 0px 3px 6px 0px rgba(0, 0, 0, 0.12)'}
                 >
                   <StyledMenu
                     padding={'8px'}
                     display={'inline-flex'}
                     alignItems={'center'}
                     onClick={() => {
-                      // update show history
                       router.push(`/workbench/${robotCardInfo?.resourceId}`);
                     }}
                   >
-                    {/*<IconButton icon={() => <DownloadOutlined color={colors.textCommonTertiary} />} />*/}
                     <Typography variant={'body4'} color={'var(--textCommonPrimary)'}>
-                      {/* TODO 查看历史记录                 */}
-
                       {t(Strings.config)}
                     </Typography>
                   </StyledMenu>
@@ -237,21 +236,15 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
                     display={'inline-flex'}
                     alignItems={'center'}
                     onClick={() => {
-                      // update show history
-
                       router.push(`/workbench/${robotCardInfo?.resourceId}?tab=history`);
                     }}
                   >
-                    {/*<IconButton icon={() => <DownloadOutlined color={colors.textCommonTertiary} />} />*/}
-
                     <Typography variant={'body4'} color={'var(--textCommonPrimary)'}>
                       {t(Strings.check_run_history)}
                     </Typography>
                   </StyledMenu>
 
                   <StyledMenu padding={'8px'} display={'inline-flex'} alignItems={'center'} onClick={handleDelete}>
-                    {/*<IconButton icon={() => <DownloadOutlined color={colors.textCommonTertiary} />} />*/}
-
                     <Typography variant={'body4'} color={'var(--textCommonPrimary)'}>
                       {t(Strings.remove)}
                     </Typography>
