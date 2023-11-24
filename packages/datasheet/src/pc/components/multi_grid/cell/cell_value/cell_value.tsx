@@ -17,9 +17,10 @@
  */
 
 import classNames from 'classnames';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { CollaCommandName, FieldType, ICellValue, IField, Selectors } from '@apitable/core';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import { CellButtonItem } from 'pc/components/konva_grid/components/cell/cell_button';
 import { CellAttachment } from 'pc/components/multi_grid/cell/cell_attachment';
 import { CellCreatedTime } from 'pc/components/multi_grid/cell/cell_created_time';
 import { CellDateTime } from 'pc/components/multi_grid/cell/cell_date_time';
@@ -36,7 +37,6 @@ import { CellLookUp } from '../cell_lookup';
 import { CellMember } from '../cell_member';
 import { CellRating } from '../cell_rating';
 import { CellWorkdoc } from '../cell_work_doc';
-import {CellButtonItem} from "pc/components/konva_grid/components/cell/cell_button";
 
 export interface ICellValueComponent {
   field: IField;

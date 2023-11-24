@@ -155,7 +155,7 @@ export const CellValue: FC<React.PropsWithChildren<ICellValueProps>> = memo((pro
     case FieldType.Attachment:
       return <CellAttachment {...cellProps} />;
     case FieldType.Button:
-      return <CellButtonItem field={cellProps.field} recordId={cellProps.recordId} />;
+      return <CellButton {...cellProps} />;
     case FieldType.WorkDoc:
       return <CellWorkdoc {...cellProps} />;
     default:

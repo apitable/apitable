@@ -3,8 +3,7 @@ import { Input, message } from 'antd';
 import produce from 'immer';
 import { useRouter } from 'next/router';
 import { useRef, Dispatch, SetStateAction, useMemo, useState, useCallback } from 'react';
-// eslint-disable-next-line no-restricted-imports
-import { Box, Button, DropdownSelect, FloatUiTooltip, LinkButton, Typography } from '@apitable/components';
+import { Box, DropdownSelect, FloatUiTooltip, LinkButton, Typography } from '@apitable/components';
 import {
   IButtonField,
   ButtonStyleType,
@@ -180,12 +179,9 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
         }
       });
     if(triggerRes.data.data[0].triggerId) {
-      onUpdate(triggerRes.data.data[0].triggerId)
+      onUpdate(triggerRes.data.data[0].triggerId);
     }
-    setTimeout(() => {
-      router.push(`/workbench/${resourceId}`);
-    }, 50);
-  }, [buttonFieldTriggerId?.triggerTypeId, router]);
+  }, [buttonFieldTriggerId?.triggerTypeId]);
 
   return (
     <>
@@ -206,7 +202,6 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                 return;
               }
 
-
               await handleAddTrigger(automationId, datasheetId, currentField.id, (triggerId) => {
                 const item = produce(currentField, (draft) => {
                   draft.property.action.type = ButtonActionType.TriggerAutomation;
@@ -215,8 +210,6 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                       draft.property.action.automation.automationId = automationId;
                       draft.property.action.automation.triggerId = triggerId;
                     } else {
-                      // TODO trigger Id
-                      // @ts-ignore
                       draft.property.action.automation = { automationId, triggerId };
                     }
                   }
@@ -225,6 +218,9 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                 setVisible(false);
                 setCurrentField(item);
                 handleModify(item);
+                setTimeout(() => {
+                  router.push(`/workbench/${automationId}`);
+                }, 50);
               });
             }} >
 
@@ -263,7 +259,6 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
               message.warn(t(Strings.number_of_trigger_is_full));
               return;
             }
-
 
             setVisible(false);
 
