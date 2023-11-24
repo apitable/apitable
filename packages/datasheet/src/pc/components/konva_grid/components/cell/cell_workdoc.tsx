@@ -69,10 +69,6 @@ export const CellWorkdoc = (props: ICellProps) => {
         x={10}
         y={5}
         listening={isActive}
-        onMouseEnter={() => setHover(true)}
-        onMouseOut={() => setHover(false)}
-        onClick={handleEdit}
-        onTap={handleEdit}
       >
         <Rect
           name={name}
@@ -80,14 +76,23 @@ export const CellWorkdoc = (props: ICellProps) => {
           height={height + 2}
           fill={isHover ? colors.bgBrandLightHover : colors.bgBrandLightDefault}
           cornerRadius={4}
+          onMouseEnter={() => setHover(true)}
+          onMouseOut={() => setHover(false)}
+          onClick={handleEdit}
+          onTap={handleEdit}
         />
         <Icon
+          name={name}
           x={1}
           y={0}
           data={FileOutlinedPath}
           backgroundWidth={22}
           backgroundHeight={22}
           fill={colors.textBrandDefault}
+          onMouseEnter={() => setHover(true)}
+          onMouseOut={() => setHover(false)}
+          onMouseDown={handleEdit}
+          onTap={handleEdit}
         />
         <Text x={x + 13} y={y - 5} height={height} text={text} fill={colors.textBrandDefault} fontSize={13} />
       </Group>
