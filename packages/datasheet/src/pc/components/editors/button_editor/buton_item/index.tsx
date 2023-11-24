@@ -6,7 +6,7 @@ import { ButtonStyleType, IButtonField, Selectors } from '@apitable/core';
 import { LoadingFilled } from '@apitable/icons';
 import { runAutomationButton } from 'pc/components/editors/button_editor';
 import { useButtonFieldValid } from 'pc/components/editors/button_editor/use_button_field_valid';
-import { setIsValid } from 'pc/components/editors/button_editor/valid_map';
+import {getIsValid, setIsValid} from 'pc/components/editors/button_editor/valid_map';
 import EllipsisText from 'pc/components/ellipsis_text';
 import { setColor } from 'pc/components/multi_grid/format';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
@@ -46,14 +46,11 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
       const colors = useCssColors();
 
       const bg = field.property.style.color ? setColor(field.property.style.color, cacheTheme) : colors.defaultBg;
-      const isValid = useButtonFieldValid(field);
-
-      useEffect(() => {
-        setIsValid(isValid.fieldId, isValid.result);
-      }, [isValid]);
+      const isValidResp = useButtonFieldValid(field);
+      const isValid = isValidResp.isLoading ? (getIsValid(isValidResp.fieldId) ?? true) : isValidResp.result;
 
       if(field.property.style.type === ButtonStyleType.OnlyText) {
-        if(!isValid.result){
+        if(!isValid){
           return (
             <StyledBox
               borderRadius={'4px'}
@@ -101,7 +98,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
         );
       }
 
-      if(!isValid.result) {
+      if(!isValid) {
         return (
           <StyledBox backgroundColor={colors.bgControlsDisabled}
             borderRadius={'4px'}
