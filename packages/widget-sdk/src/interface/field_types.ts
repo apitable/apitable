@@ -960,7 +960,8 @@ export enum FieldType {
    */
   Cascader = CoreFieldType.Cascader,
 
-  WorkDoc = CoreFieldType.WorkDoc
+  WorkDoc = CoreFieldType.WorkDoc,
+  Button = CoreFieldType.Button
 }
 
 export interface IAttachmentValue {

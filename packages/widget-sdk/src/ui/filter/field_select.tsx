@@ -54,6 +54,7 @@ const FieldIconMap: { [key in WidgetFieldType]: FC<IIconProps> } = {
   [WidgetFieldType.CreatedBy]: UserAddOutlined,
   [WidgetFieldType.LastModifiedBy]: UserEditOutlined,
   [WidgetFieldType.Cascader]: CascadeOutlined,
+  [WidgetFieldType.Button]: CursorButtonOutlined,
   [WidgetFieldType.WorkDoc]: FileOutlined,
 };
 
