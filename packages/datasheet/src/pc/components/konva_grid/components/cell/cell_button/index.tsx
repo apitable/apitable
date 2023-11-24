@@ -17,13 +17,20 @@
  */
 
 import * as React from 'react';
-import { KONVA_DATASHEET_ID } from '@apitable/core';
+import { IButtonField, KONVA_DATASHEET_ID } from '@apitable/core';
+import { ButtonFieldItem, ButtonItem } from 'pc/components/editors/button_editor/buton_item';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Rect } from 'pc/components/konva_components';
 import { CellScrollContainer } from 'pc/components/konva_grid';
 import { stopPropagation, KeyCode } from 'pc/utils';
 import { ICellProps } from '../cell_value';
 import { IRenderData } from '../interface';
+
+export const CellButtonItem: React.FC<React.PropsWithChildren<Pick<ICellProps, 'field' |'recordId'>>> = (props) => {
+  return (
+    <ButtonFieldItem field={props.field as IButtonField} recordId={props.recordId}/>
+  );
+};
 
 export const CellButton: React.FC<React.PropsWithChildren<ICellProps>> = (props) => {
   const { x, y, isActive, recordId, field, cellValue, columnWidth, rowHeight, onChange } = props;

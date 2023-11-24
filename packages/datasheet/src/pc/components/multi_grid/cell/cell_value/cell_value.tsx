@@ -36,6 +36,7 @@ import { CellLookUp } from '../cell_lookup';
 import { CellMember } from '../cell_member';
 import { CellRating } from '../cell_rating';
 import { CellWorkdoc } from '../cell_work_doc';
+import {CellButtonItem} from "pc/components/konva_grid/components/cell/cell_button";
 
 export interface ICellValueComponent {
   field: IField;
@@ -131,7 +132,7 @@ const CellValueBase: React.FC<React.PropsWithChildren<ICellValueComponent>> = (p
     case FieldType.AutoNumber:
       return <CellAutoNumber {...cellProps} field={field} rowHeightLevel={rowHeightLevel} />;
     case FieldType.Button:
-      return <></>;
+      return <CellButtonItem recordId={recordId} field={field} />;
     case FieldType.WorkDoc:
       return <CellWorkdoc {...cellProps} field={field} />;
     default:
