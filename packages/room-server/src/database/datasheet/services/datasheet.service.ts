@@ -407,7 +407,7 @@ export class DatasheetService {
     return await this.datasheetRepository.selectRevisionByDstId(dstId);
   }
 
-  async triggerAutomation(automationId: string, triggerId: string, datasheetId: string, recordId: string, userId: string) {
+  async triggerAutomation(automationId: string, triggerId: string, datasheetId: string, recordId: string, uuid: string) {
     const hasRobots = await this.automationRobotRepository.isResourcesHasRobots([automationId]);
     if (!hasRobots) {
       throw new ServerException(CommonException.AUTOMATION_NOT_ACTIVE);
@@ -424,7 +424,7 @@ export class DatasheetService {
       datasheetId,
       datasheetName,
       recordId,
-      userId,
+      uuid,
     });
     for (const robot of robots) {
       await this.automationService.handleTask(robot.robotId, robot.trigger).then((_) => {});
