@@ -28,7 +28,7 @@ import {
   automationPanelAtom,
   automationStateAtom,
   PanelName,
-  useAutomationController
+  useAutomationController,
 } from '../../../automation/controller';
 import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
 import { createTrigger } from '../../api';
@@ -40,7 +40,7 @@ import itemStyle from './select_styles.module.less';
 
 interface IRobotTriggerCreateProps {
   robotId: string;
-  preTriggerId: string|undefined;
+  preTriggerId: string | undefined;
   triggerTypes: ITriggerType[];
 }
 
@@ -66,15 +66,14 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
     api: { refresh },
   } = useAutomationController();
   const state = useAtomValue(automationStateAtom);
-  const [, setAutomationPanel] = useAtom(automationPanelAtom );
-  const setAutomationCurrentTriggerId= useSetAtom(automationCurrentTriggerId);
+  const [, setAutomationPanel] = useAtom(automationPanelAtom);
+  const setAutomationCurrentTriggerId = useSetAtom(automationCurrentTriggerId);
 
   const triggerList = state?.robot?.triggers ?? [];
   const triggerTypeOptions = useMemo(() => {
-
     let list = triggerTypes;
-    if(state?.scenario === AutomationScenario.datasheet) {
-      list = triggerTypes.filter(item => item.endpoint !== 'button_field');
+    if (state?.scenario === AutomationScenario.datasheet) {
+      list = triggerTypes.filter((item) => item.endpoint !== 'button_field' && item.endpoint !== 'button_clicked');
     }
     return getNodeTypeOptions(list);
   }, [state?.scenario, triggerTypes]);
@@ -90,7 +89,7 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
       const triggerType = triggerTypes.find((item) => item.triggerTypeId === triggerTypeId);
       // When the trigger is created for a record, the default value needs to be filled in.
       const input = triggerType?.endpoint === 'record_created' ? defaultFormData : undefined;
-      if(!state?.resourceId) {
+      if (!state?.resourceId) {
         console.error('.resourceId unfound ');
         return;
       }
@@ -98,15 +97,14 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
         console.error('currentRobotId unfound ');
         return;
       }
-      const triggerRes = await createTrigger(state?.resourceId,
-        {
-          robotId,
-          prevTriggerId: preTriggerId,
-          triggerTypeId,
-          input
-        });
+      const triggerRes = await createTrigger(state?.resourceId, {
+        robotId,
+        prevTriggerId: preTriggerId,
+        triggerTypeId,
+        input,
+      });
 
-      if(triggerRes?.data?.data?.[0]) {
+      if (triggerRes?.data?.data?.[0]) {
         await refresh({
           resourceId: state.resourceId,
           robotId: state.currentRobotId,
@@ -116,13 +114,24 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
         setAutomationPanel({
           panelName: PanelName.Trigger,
           dataId: triggerRes.data.data?.[0]?.triggerId,
-          data: triggerRes.data.data
+          data: triggerRes.data.data,
         });
 
         return triggerRes.data;
       }
     };
-  }, [triggerTypes, defaultFormData, state?.robot, state?.resourceId, state?.currentRobotId, robotId, preTriggerId, refresh, setAutomationCurrentTriggerId, setAutomationPanel]);
+  }, [
+    triggerTypes,
+    defaultFormData,
+    state?.robot,
+    state?.resourceId,
+    state?.currentRobotId,
+    robotId,
+    preTriggerId,
+    refresh,
+    setAutomationCurrentTriggerId,
+    setAutomationPanel,
+  ]);
 
   if (!triggerTypes) {
     return null;
@@ -151,9 +160,7 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
         handleCreateFormChange(String(item.value));
       }}
     >
-      <NewItem disabled={
-        !permissions.editable
-      }>{t(Strings.add_a_trigger)}</NewItem>
+      <NewItem disabled={!permissions.editable}>{t(Strings.add_a_trigger)}</NewItem>
     </SearchSelect>
   );
 };
