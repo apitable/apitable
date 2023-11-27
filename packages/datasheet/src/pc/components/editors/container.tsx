@@ -863,7 +863,8 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
         );
       case FieldType.Button:
         return <ButtonEditor
-          ref={editorRef} toggleEditing={toggleEditing} recordId={record.id} cellValue={cellValue} {...commonProps}
+          ref={editorRef} toggleEditing={toggleEditing}
+          record={record} recordId={record.id} cellValue={cellValue} {...commonProps}
           field={commonProps.field as IButtonField}
         />;
       case FieldType.WorkDoc:

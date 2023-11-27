@@ -1,7 +1,17 @@
 import { message } from 'antd';
 import * as React from 'react';
 import { forwardRef, memo, useImperativeHandle } from 'react';
-import { ButtonActionType, IButtonField, ICellValue, Strings, t } from '@apitable/core';
+import {
+  ButtonActionType,
+  evaluate,
+  IButtonField,
+  ICellValue,
+  IReduxState,
+  OpenLinkType,
+  Strings,
+  t
+  , IRecord } from '@apitable/core';
+import { getSnapshot } from '@apitable/core/dist/modules/database/store/selectors/resource';
 import { reqDatasheetButtonTrigger } from 'pc/components/robot/api';
 import { IBaseEditorProps, IEditor } from '../interface';
 import { ButtonFieldItem } from './buton_item';
@@ -10,6 +20,7 @@ export interface IButtonEditorProps extends IBaseEditorProps {
   editable: boolean;
   editing?: boolean;
   cellValue?: ICellValue;
+  record?: IRecord,
   datasheetId: string;
   toggleEditing?: (next?: boolean) => void;
   field: IButtonField;
@@ -23,11 +34,22 @@ export interface IRunRespStatus {
  success:boolean, message: string
 }
 
-export const runAutomationButton = async (datasheetId: string, recordId: string, fieldId: string, field: IButtonField,
+export const runAutomationButton = async (datasheetId: string, record: any, state: IReduxState, recordId: string, fieldId: string, field: IButtonField,
   callback: () => void
 ) : Promise<any|undefined>=> {
   if(field.property.action.type === ButtonActionType.OpenLink) {
-    window.open(field.property.action.openLink?.expression, '_blank');
+
+    if(field.property.action.openLink?.type === OpenLinkType.Url ) {
+      window.open(field.property.action.openLink?.expression, '_blank');
+    }else {
+      const expression = field.property.action.openLink?.expression ?? '';
+
+      const url = evaluate(expression, { field, record, state }, false);
+
+      window.open(String(url), '_blank');
+
+    }
+
     callback();
     return;
   }
@@ -64,7 +86,7 @@ export const runAutomationButton = async (datasheetId: string, recordId: string,
 };
 
 const ButtonEditorBase: React.ForwardRefRenderFunction<IEditor, IButtonEditorProps> = (props, ref) => {
-  const { recordId, field, cellValue, editable, editing = false, toggleEditing } = props;
+  const { recordId, record, field, cellValue, editable, editing = false, toggleEditing } = props;
   useImperativeHandle(
     ref,
     (): IEditor => ({
@@ -97,8 +119,8 @@ const ButtonEditorBase: React.ForwardRefRenderFunction<IEditor, IButtonEditorPro
   return (
     <>
       {
-        recordId && (
-          <ButtonFieldItem recordId={recordId} field={field} />
+        recordId && record && (
+          <ButtonFieldItem record={record} recordId={recordId} field={field} />
         )
       }
     </>

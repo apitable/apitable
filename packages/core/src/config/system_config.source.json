@@ -181,6 +181,13 @@
       "description": "URL 地址（字符串）",
       "descriptionId": "api_panel_type_desc_url",
       "valueType": "string"
+    },
+    "Button": {
+      "defaultExample": "",
+      "defaultExampleId": "",
+      "description": "按钮列",
+      "descriptionId": "field_desc_button",
+      "valueType": "string"
     }
   },
   "audit": {

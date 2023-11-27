@@ -304,7 +304,7 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = (
     case FieldType.Button:
 
       return (
-        <ButtonFieldItem recordId={record.id} field={field} />
+        <ButtonFieldItem recordId={record.id} field={field} record={record} />
       );
     case FieldType.WorkDoc:
       return (

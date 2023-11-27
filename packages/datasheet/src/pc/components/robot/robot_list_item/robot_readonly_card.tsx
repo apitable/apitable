@@ -105,6 +105,7 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
 
   const nodeTypeList: IRobotNodeTypeInfo[] = [
     ...getTriggerList(robotCardInfo.triggers)
+      .slice(0, 1)
       .map((trigger) => {
         const triggerType = triggerTypes.find((item) => trigger.triggerTypeId === item.triggerTypeId);
         return {

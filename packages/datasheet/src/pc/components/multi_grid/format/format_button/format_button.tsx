@@ -328,6 +328,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
         <ColorPicker
           options={{
             content: text,
+            style: style.type
           }}
           color={style.color || 51}
           onchange={(value: number) => {
@@ -349,10 +350,19 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
           onSelected={({ value }) => {
 
             if (value === ButtonActionType.OpenLink) {
-              setFieldProperty('action')({
-                ...action,
-                type: value,
+              const item = produce(currentField, (draft) => {
+                draft.property.action = { ...action,
+                  openLink: {
+                    type: OpenLinkType.Url,
+                    expression: ''
+                  },
+                  type: value
+                };
               });
+              setCurrentField(item);
+              setTimeout(() => {
+                urlInputRef.current?.focus();
+              }, 20);
             }
             if (value === ButtonActionType.TriggerAutomation) {
               setVisible(true);
@@ -370,7 +380,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
 
       {action.type === ButtonActionType.OpenLink && (
         <section className={settingStyles.section}>
-          <div className={settingStyles.sectionTitle}>Url</div>
+          <div className={settingStyles.sectionTitle}>URL</div>
           <div className={styles.openLinkInput}>
             {action?.openLink?.type === OpenLinkType.Url ? (
               <Input
@@ -403,8 +413,6 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                     }}
                   >
                     <div className={styles.divider} />
-                    {/*TODO update text i10n */}
-                    {/*"切换为表达式"*/}
                     <FloatUiTooltip content={t(Strings.open_url_tips_switch, {
                       INPUT_MODE: t(Strings.field_title_formula),
                     })} >

@@ -22,7 +22,7 @@ import * as React from 'react';
 import { FC, useState } from 'react';
 import styled from 'styled-components';
 import { Box, FloatUiTooltip, Typography } from '@apitable/components';
-import { ISelectFieldOption, Selectors, Strings, t } from '@apitable/core';
+import { ButtonStyleType, ISelectFieldOption, Selectors, Strings, t } from '@apitable/core';
 import { setColor, useColorColorWheel } from 'pc/components/multi_grid/format';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
@@ -38,6 +38,7 @@ export interface IColorGroupProps {
   disabled?: boolean;
   itemStyle?: React.CSSProperties;
   options?: {
+    style?: ButtonStyleType,
     content?: string;
   };
 }
@@ -47,7 +48,7 @@ const StyledFloatUiTooltip = styled(FloatUiTooltip)`
 `;
 
 export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props) => {
-  const { colorGroup, option, onChange, style, disabled, itemStyle } = props;
+  const { colorGroup, options, option, onChange, style, disabled, itemStyle } = props;
   const [colorIdx, setColorIdx] = useState<number>();
   const colors = useCssColors();
   const cacheTheme = useAppSelector(Selectors.getTheme);
@@ -74,6 +75,21 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props)
                 onMouseDown={stopPropagation}
                 key={colorIndex}
               >
+                {/*{*/}
+
+                {/*  options?.style === ButtonStyleType.OnlyText ? (*/}
+                {/*    <>*/}
+                {/*      <div className={styles.borderWhite}>*/}
+                {/*        <div*/}
+                {/*          className={styles.inner}*/}
+                {/*          style={{*/}
+                {/*            color: colorIndex === -1 ? colors.defaultBg : setColor(colorIndex, cacheTheme),*/}
+                {/*            // border: colorIndex === -1 ? `1px solid ${colors.textCommonTertiary}` : 'none',*/}
+                {/*          }}*/}
+                {/*        />*/}
+                {/*      </div>*/}
+                {/*    </>*/}
+                {/*  ): (*/}
                 <div className={styles.borderWhite}>
                   <div
                     className={styles.inner}
@@ -83,16 +99,32 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props)
                     }}
                   />
                 </div>
+                {/*  )*/}
+                {/*}*/}
               </div>
             ) : (
               <StyledFloatUiTooltip
                 placement={'top'}
                 content={
-                  <Box backgroundColor={colorList[colorIndex]} padding={'6px 12px'} borderRadius={'4px'}>
-                    <Typography variant={'body4'} color={colors.textReverseDefault}>
-                      {props?.options?.content}
-                    </Typography>
-                  </Box>
+                  <>
+                    {
+                      options?.style === ButtonStyleType.Background ? (
+                        <Box backgroundColor={colorList[colorIndex]} padding={'6px 12px'} borderRadius={'4px'}>
+                          <Typography variant={'body4'} color={colors.textReverseDefault}>
+                            {props?.options?.content}
+                          </Typography>
+                        </Box>
+                      ): (
+                        <Box backgroundColor={colors.bgCommonDefault}
+                          boxShadow={'0px 12px 24px 0px rgba(0, 0, 0, 0.16), 0px 3px 6px 0px rgba(0, 0, 0, 0.12)'}
+                          border={`1px solid ${colors.borderCommonDefault}`} padding={'6px 12px'} borderRadius={'4px'}>
+                          <Typography variant={'body4'} color={colorList[colorIndex]}>
+                            {props?.options?.content}
+                          </Typography>
+                        </Box>
+                      )
+                    }
+                  </>
                 }
               >
                 <div

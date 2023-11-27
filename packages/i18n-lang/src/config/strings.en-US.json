@@ -909,7 +909,7 @@
   "button_come_on": "Let's go!",
   "button_execute_error": "Execution failed: ${ERROR_MESSAGE}, please try again or check the run history.",
   "button_field_invalid": "The button field is invalid, please select again",
-  "button_maxium_text": "最多支持${count}个文字",
+  "button_maxium_text": "maximum words ${count} is allowed",
   "button_operation": "Button Operation",
   "button_style": "Button Style",
   "button_sub_team": "Subordinate",

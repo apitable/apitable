@@ -2,13 +2,13 @@ import { FunctionComponent, useEffect, useState } from 'react';
 import * as React from 'react';
 import styled from 'styled-components';
 import { Box, Typography } from '@apitable/components';
-import { ButtonStyleType, IButtonField, Selectors } from '@apitable/core';
+import { ButtonStyleType, IButtonField, IRecord, IReduxState, Selectors } from '@apitable/core';
 import { LoadingFilled } from '@apitable/icons';
 import { runAutomationButton } from 'pc/components/editors/button_editor';
 import { useButtonFieldValid } from 'pc/components/editors/button_editor/use_button_field_valid';
-import {getIsValid, setIsValid} from 'pc/components/editors/button_editor/valid_map';
+import { getIsValid, setIsValid } from 'pc/components/editors/button_editor/valid_map';
 import EllipsisText from 'pc/components/ellipsis_text';
-import { setColor } from 'pc/components/multi_grid/format';
+import {setColor, useColorColorWheel} from 'pc/components/multi_grid/format';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
 
@@ -18,7 +18,13 @@ const StyledBox = styled(Box)`
 `;
 
 export const ButtonFieldItem: FunctionComponent<{field: IButtonField,
-    recordId: string}> = ({ field, recordId }) => {
+    recordId: string, record:IRecord }> = ({ field, recordId, record }) => {
+
+    const cacheTheme = useAppSelector(Selectors.getTheme);
+
+    const colorList = useColorColorWheel(cacheTheme);
+
+      const state = useAppSelector((state) => state);
 
       const datasheetId = useAppSelector(Selectors.getActiveDatasheetId);
 
@@ -32,9 +38,11 @@ export const ButtonFieldItem: FunctionComponent<{field: IButtonField,
             return;
           }
           setIsLoading(true);
-          await runAutomationButton(datasheetId, recordId, field.id, field, () => {
-            setIsLoading(false);
-          });
+
+          await runAutomationButton(datasheetId, record, state, recordId, field.id, field,
+            () => {
+              setIsLoading(false);
+            });
         } } />
       );
     };
@@ -44,6 +52,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
     isLoading: boolean}> = ({ field, onStart, isLoading }) => {
       const cacheTheme = useAppSelector(Selectors.getTheme);
       const colors = useCssColors();
+    const colorList = useColorColorWheel(cacheTheme);
 
       const bg = field.property.style.color ? setColor(field.property.style.color, cacheTheme) : colors.defaultBg;
       const isValidResp = useButtonFieldValid(field);
@@ -88,7 +97,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
                 <LoadingFilled color={colors.textBrandDefault} />
               ): (
                 <EllipsisText>
-                  <Typography color={colors.textBrandDefault} variant={'body4'}>
+                  <Typography color={bg} variant={'body4'}>
                     {field.property.text}
                   </Typography>
                 </EllipsisText>
