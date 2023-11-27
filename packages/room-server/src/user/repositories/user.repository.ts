@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { UserEntity } from '../entities/user.entity';
 import { EntityRepository, getConnection, In, Repository } from 'typeorm';
 import { UserBaseInfoDto } from '../dtos/user.dto';
+import { UserEntity } from '../entities/user.entity';
 
 /**
  * Operations on table `developer`
@@ -59,13 +59,15 @@ export class UserRepository extends Repository<UserEntity> {
     const queryRunner = getConnection().createQueryRunner();
     const tableNamePrefix = this.manager.connection.options.entityPrefix;
     // todo(itou): replace dynamic sql
-    const users: any[] = await queryRunner.query(`
+    const users: any[] = await queryRunner.query(
+      `
           SELECT
             vu.uuid userId,
             vu.uuid uuid,
             vu.color avatarColor,
             vu.nick_name nickName,
             vui.id unitId, 
+            vui.unit_id originalUnitId,
             vui.is_deleted isDeleted,
             vui.unit_type type,
             IFNULL(vum.member_name,vu.nick_name) name,
@@ -78,7 +80,7 @@ export class UserRepository extends Repository<UserEntity> {
           LEFT JOIN ${tableNamePrefix}unit vui ON vui.unit_ref_id = vum.id
           WHERE uuid IN (?)
         `,
-    [spaceId, uuids],
+      [spaceId, uuids],
     );
     await queryRunner.release();
     return users;
