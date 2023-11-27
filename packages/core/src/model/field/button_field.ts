@@ -125,6 +125,13 @@ export class ButtonField extends Field {
     };
   }
 
+  cellValueToArray(cellValue: ICellValue): string[] | null {
+    if (this.validate(cellValue)) {
+      return [this.field.name];
+    }
+    return null;
+  }
+
   override get isComputed() {
     return true;
   }

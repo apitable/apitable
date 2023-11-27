@@ -75,7 +75,7 @@ export const View: React.FC<React.PropsWithChildren<any>> = () => {
   }, shallowEqual);
 
   const { data: triggerTypes } = useTriggerTypes();
-  const buttonFieldTriggerId =triggerTypes.find(item => item.endpoint === 'button_field');
+  const buttonFieldTriggerId =triggerTypes.find(item => item.endpoint === 'button_field' || item.endpoint !== 'button_clicked');
 
   useEffect(() => {
     if(fieldMap && buttonFieldTriggerId) {

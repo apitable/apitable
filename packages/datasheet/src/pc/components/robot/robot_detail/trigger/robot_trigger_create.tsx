@@ -74,7 +74,7 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
 
     let list = triggerTypes;
     if(state?.scenario === AutomationScenario.datasheet) {
-      list = triggerTypes.filter(item => item.endpoint !== 'button_field');
+      list = triggerTypes.filter(item => item.endpoint !== 'button_field' && item.endpoint !== 'button_clicked');
     }
     return getNodeTypeOptions(list);
   }, [state?.scenario, triggerTypes]);

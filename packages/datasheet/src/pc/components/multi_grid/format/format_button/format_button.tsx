@@ -173,7 +173,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
   const colors = useCssColors();
 
   const { data: triggerTypes } = useTriggerTypes();
-  const buttonFieldTriggerId =triggerTypes.find(item => item.endpoint === 'button_field');
+  const buttonFieldTriggerId =triggerTypes.find(item => item.endpoint === 'button_field' || item.endpoint === 'button_clicked');
 
   const handleAddTrigger = useCallback(async (resourceId: string, datasheetId: string, fieldId: string, onUpdate: (resp: string) => void) => {
     const item = await automationApiClient.getResourceRobots({
