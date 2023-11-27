@@ -18,18 +18,17 @@
 
 package com.apitable.shared.captcha;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * <p>
- * abstract captcha information encapsulation class
+ * abstract captcha information encapsulation class.
  * </p>
  *
  * @author Shawn Deng
@@ -42,14 +41,14 @@ public class ValidateCode implements Serializable {
 
     /**
      * Business scope, which means that this verification code is only valid under a certain business, and obtaining the login verification code is only valid under the login business
-     * see {@code CodeValidateScope.name().toLowerCase()}
+     * see {@code CodeValidateScope.name().toLowerCase()}.
      *
      * @see CodeValidateScope
      */
     private String scope;
 
     /**
-     * expire time
+     * expire time.
      */
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -63,12 +62,25 @@ public class ValidateCode implements Serializable {
         this.expireTime = LocalDateTime.now().plusSeconds(expireIn);
     }
 
+    /**
+     * constructor.
+     *
+     * @param code     verification code
+     * @param scope    business scope
+     * @param expireIn expire time
+     */
     public ValidateCode(String code, String scope, int expireIn) {
         this.code = code;
         this.scope = scope;
         this.expireTime = LocalDateTime.now().plusSeconds(expireIn);
     }
 
+    /**
+     * constructor.
+     *
+     * @param code       verification code
+     * @param expireTime expire time
+     */
     public ValidateCode(String code, String scope, LocalDateTime expireTime) {
         this.code = code;
         this.scope = scope;

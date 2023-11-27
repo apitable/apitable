@@ -24,7 +24,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Template Property Rel Dto
+ * Template Property Rel Dto.
  */
 @Data
 @NoArgsConstructor

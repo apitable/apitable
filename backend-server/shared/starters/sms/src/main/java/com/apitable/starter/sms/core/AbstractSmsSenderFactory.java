@@ -20,9 +20,8 @@ package com.apitable.starter.sms.core;
 
 /**
  * <p>
- * SMS sender factory abstract class
+ * SMS sender factory abstract class.
  * </p>
- *
  */
 public abstract class AbstractSmsSenderFactory {
 
@@ -32,6 +31,13 @@ public abstract class AbstractSmsSenderFactory {
 
     private String sign;
 
+    /**
+     * constructor.
+     *
+     * @param appId  app id
+     * @param appKey app key
+     * @param sign   sign
+     */
     public AbstractSmsSenderFactory(Integer appId, String appKey, String sign) {
         this.appId = appId;
         this.appKey = appKey;

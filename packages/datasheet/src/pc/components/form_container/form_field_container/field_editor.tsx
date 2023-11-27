@@ -297,6 +297,8 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
           <ExpandFormula {...commonProps} recordId={recordId} />
         </ComputedFieldWrapper>
       );
+     case FieldType.Button:
+      return (<>/</>);
     case FieldType.WorkDoc:
       if (isMobile) {
         return <ComputedFieldWrapper className={styles.formWorkdoc} title={t(Strings.tooltip_edit_form_workdoc_field)} />;

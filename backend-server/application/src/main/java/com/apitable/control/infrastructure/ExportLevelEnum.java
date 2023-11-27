@@ -19,13 +19,13 @@
 package com.apitable.control.infrastructure;
 
 import cn.hutool.core.util.StrUtil;
+import com.apitable.control.infrastructure.role.RoleConstants.Node;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.control.infrastructure.role.RoleConstants.Node;
-
 /**
- * Export Level
+ * Export Level.
+ *
  * @author tao
  */
 @Getter
@@ -46,6 +46,12 @@ public enum ExportLevelEnum {
 
     private final String roleCode;
 
+    /**
+     * transform value to enum.
+     *
+     * @param value value
+     * @return enum
+     */
     public static ExportLevelEnum toEnum(int value) {
         for (ExportLevelEnum e : ExportLevelEnum.values()) {
             if (e.getValue() == value) {

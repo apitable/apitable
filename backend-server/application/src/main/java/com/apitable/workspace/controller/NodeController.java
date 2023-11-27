@@ -259,7 +259,8 @@ public class NodeController {
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "manager")
     })
     public ResponseData<List<NodeInfo>> list(@RequestParam(value = "type") Integer type,
-        @RequestParam(value = "role", required = false, defaultValue = "manager") String role) {
+                                             @RequestParam(value = "role", required = false, defaultValue = "manager")
+                                             String role) {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
         List<String> nodeIds = iNodeService.getNodeIdBySpaceIdAndType(spaceId, type);
@@ -313,7 +314,8 @@ public class NodeController {
             in = ParameterIn.QUERY, example = "shrRTGSy43DJ9")
     })
     public ResponseData<ShowcaseVo> showcase(@RequestParam("nodeId") String nodeId,
-        @RequestParam(value = "shareId", required = false) String shareId) {
+                                             @RequestParam(value = "shareId", required = false)
+                                             String shareId) {
         // Obtain the node entity. The method includes determining whether the node exists.
         NodeEntity node = iNodeService.getByNodeId(nodeId);
         ControlRole role;
@@ -704,8 +706,9 @@ public class NodeController {
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "qwer1234")
     })
     public void exportBundle(@RequestParam("nodeId") String nodeId,
-        @RequestParam(value = "saveData", required = false, defaultValue = "true") Boolean saveData,
-        @RequestParam(value = "password", required = false) String password) {
+                             @RequestParam(value = "saveData", required = false, defaultValue = "true")
+                             Boolean saveData,
+                             @RequestParam(value = "password", required = false) String password) {
         Long userId = SessionContext.getUserId();
         // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
@@ -753,7 +756,7 @@ public class NodeController {
      * Import excel.
      */
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
-    @PostResource(path = { "/import", "/{parentId}/importExcel" }, requiredPermission = false)
+    @PostResource(path = {"/import", "/{parentId}/importExcel"}, requiredPermission = false)
     @Operation(summary = "Import excel", description = "all parameters must be")
     public ResponseData<NodeInfoVo> importExcel(@Valid ImportExcelOpRo data) throws IOException {
         ExceptionUtil.isTrue(data.getFile().getSize() <= limitProperties.getMaxFileSize(),
@@ -905,8 +908,10 @@ public class NodeController {
             schema = @Schema(type = "integer"), example = "5")
     })
     public ResponseData<List<NodeInfo>> checkRelNode(@RequestParam("nodeId") String nodeId,
-        @RequestParam(value = "viewId", required = false) String viewId,
-        @RequestParam(value = "type", required = false) Integer type) {
+                                                     @RequestParam(value = "viewId", required = false)
+                                                     String viewId,
+                                                     @RequestParam(value = "type", required = false)
+                                                     Integer type) {
         return ResponseData.success(
             iNodeRelService.getRelationNodeInfoByNodeId(nodeId, viewId, null, type));
     }
@@ -928,8 +933,10 @@ public class NodeController {
             schema = @Schema(type = "integer"), example = "5")
     })
     public ResponseData<List<NodeInfo>> getNodeRel(@RequestParam("nodeId") String nodeId,
-        @RequestParam(value = "viewId", required = false) String viewId,
-        @RequestParam(value = "type", required = false) Integer type) {
+                                                   @RequestParam(value = "viewId", required = false)
+                                                   String viewId,
+                                                   @RequestParam(value = "type", required = false)
+                                                   Integer type) {
         Long userId = SessionContext.getUserId();
         // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);

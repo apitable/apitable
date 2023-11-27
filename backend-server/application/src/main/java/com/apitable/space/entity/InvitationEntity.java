@@ -18,13 +18,13 @@
 
 package com.apitable.space.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +34,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * workbench-invitation table
+ * workbench-invitation table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -51,59 +51,59 @@ public class InvitationEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * primary key
+     * primary key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * space id
+     * space id.
      */
     private String spaceId;
 
     /**
-     * team id
+     * team id.
      */
     private Long teamId;
 
     /**
-     * node id
+     * node id.
      */
     private String nodeId;
 
     /**
-     * the creator member id
+     * the creator member id.
      */
     private Long creator;
 
     /**
-     * invite token
+     * invite token.
      */
     private String inviteToken;
 
     /**
-     * number of successful invitees
+     * number of successful invitees.
      */
     private Integer inviteNum;
 
     /**
-     * link status(0:inactivated, 1:activation)
+     * link status(0:inactivated, 1:activation).
      */
     private Boolean status;
 
     /**
-     * delete marker(0:false,1:true)
+     * delete marker(0:false,1:true).
      */
     @TableLogic
     private Integer isDeleted;
 
     /**
-     * creation time
+     * creation time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * update time
+     * update time.
      */
     private LocalDateTime updatedAt;
 

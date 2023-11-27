@@ -1,10 +1,9 @@
 import { useAtomValue } from 'jotai';
 import { INodePermissions, INodesMapItem, IReduxState } from '@apitable/core';
-import { useResponsive } from '../../../hooks';
+import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ScreenSize } from '../../common/component_display';
 import { automationStateAtom } from './atoms';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const useAutomationResourceNode = (): INodesMapItem=> {
 
@@ -15,8 +14,7 @@ export const useAutomationResourceNode = (): INodesMapItem=> {
   });
 };
 
-export const useAutomationResourcePermission = (): INodePermissions=> {
-
+export const useAutomationResourcePermission = (): INodePermissions => {
   const stateValue = useAtomValue(automationStateAtom);
 
   const { screenIsAtMost } = useResponsive();
@@ -28,7 +26,7 @@ export const useAutomationResourcePermission = (): INodePermissions=> {
       readable: true,
       descriptionEditable: false,
     };
-    if(isMobile) {
+    if (isMobile) {
       return {
         ...defaultValue,
         manageable: false,

@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * Template Search Results
+ * Template Search Results.
  * </p>
  */
 @Data
@@ -45,12 +45,12 @@ public class TemplateKeyWordSearchDto {
     private Integer propertyType;
 
     /**
-     * whether the template name contains keywords
+     * whether the template name contains keywords.
      */
     private Integer nameIndex;
 
     /**
-     * whether the attribute name contains keywords
+     * whether the attribute name contains keywords.
      */
     private Integer propertyNameIndex;
 }

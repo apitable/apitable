@@ -152,6 +152,7 @@ let body:.SpaceInviteLinkApiApiJoinRequest = {
   inviteValidRo: {
     token: "b10e5e36cd7249bdaeab3e424308deed",
     nodeId: "dst****",
+    data: "FutureIsComing",
   },
 };
 
@@ -264,6 +265,7 @@ let body:.SpaceInviteLinkApiApiValidRequest = {
   inviteValidRo: {
     token: "b10e5e36cd7249bdaeab3e424308deed",
     nodeId: "dst****",
+    data: "FutureIsComing",
   },
 };
 

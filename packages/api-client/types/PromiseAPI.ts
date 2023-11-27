@@ -271,7 +271,6 @@ import { SpaceLinkInfoVo } from '../models/SpaceLinkInfoVo';
 import { SpaceLinkOpRo } from '../models/SpaceLinkOpRo';
 import { SpaceLinkVo } from '../models/SpaceLinkVo';
 import { SpaceMainAdminChangeOpRo } from '../models/SpaceMainAdminChangeOpRo';
-import { SpaceMemberSettingRo } from '../models/SpaceMemberSettingRo';
 import { SpaceOpRo } from '../models/SpaceOpRo';
 import { SpaceRoleDetailVo } from '../models/SpaceRoleDetailVo';
 import { SpaceRoleVo } from '../models/SpaceRoleVo';
@@ -281,7 +280,6 @@ import { SpaceStatisticsRo } from '../models/SpaceStatisticsRo';
 import { SpaceSubscribeVo } from '../models/SpaceSubscribeVo';
 import { SpaceUpdateOpRo } from '../models/SpaceUpdateOpRo';
 import { SpaceVO } from '../models/SpaceVO';
-import { SpaceWorkbenchSettingRo } from '../models/SpaceWorkbenchSettingRo';
 import { StoreNodeInfoVO } from '../models/StoreNodeInfoVO';
 import { StoreShareNodeRo } from '../models/StoreShareNodeRo';
 import { SubUnitResultVo } from '../models/SubUnitResultVo';
@@ -1304,7 +1302,7 @@ export class PromiseBasicModuleVerifyActionModuleInterfaceApi {
     }
 
     /**
-     * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding, 8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
+     * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding,8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
      * Send SMS verification code
      * @param smsOpRo 
      */
@@ -1314,7 +1312,7 @@ export class PromiseBasicModuleVerifyActionModuleInterfaceApi {
     }
 
     /**
-     * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding, 8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
+     * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding,8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
      * Send SMS verification code
      * @param smsOpRo 
      */
@@ -3895,26 +3893,6 @@ export class PromiseSpaceSpaceApiApi {
     }
 
     /**
-     * Scenario: Remove the red dot in the inactive space
-     * Remove hot point in space
-     * @param spaceId space id
-     */
-    public removeWithHttpInfo(spaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
-        const result = this.api.removeWithHttpInfo(spaceId, _options);
-        return result.toPromise();
-    }
-
-    /**
-     * Scenario: Remove the red dot in the inactive space
-     * Remove hot point in space
-     * @param spaceId space id
-     */
-    public remove(spaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
-        const result = this.api.remove(spaceId, _options);
-        return result.toPromise();
-    }
-
-    /**
      * Gets subscription information for the space
      * @param spaceId space id
      */
@@ -3973,26 +3951,6 @@ export class PromiseSpaceSpaceApiApi {
     }
 
     /**
-     * Update member setting
-     * @param spaceMemberSettingRo 
-     * @param xSpaceId space id
-     */
-    public updateMemberSettingWithHttpInfo(spaceMemberSettingRo: SpaceMemberSettingRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
-        const result = this.api.updateMemberSettingWithHttpInfo(spaceMemberSettingRo, xSpaceId, _options);
-        return result.toPromise();
-    }
-
-    /**
-     * Update member setting
-     * @param spaceMemberSettingRo 
-     * @param xSpaceId space id
-     */
-    public updateMemberSetting(spaceMemberSettingRo: SpaceMemberSettingRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
-        const result = this.api.updateMemberSetting(spaceMemberSettingRo, xSpaceId, _options);
-        return result.toPromise();
-    }
-
-    /**
      * Update security setting
      * @param spaceSecuritySettingRo 
      * @param xSpaceId space id
@@ -4009,26 +3967,6 @@ export class PromiseSpaceSpaceApiApi {
      */
     public updateSecuritySetting(spaceSecuritySettingRo: SpaceSecuritySettingRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
         const result = this.api.updateSecuritySetting(spaceSecuritySettingRo, xSpaceId, _options);
-        return result.toPromise();
-    }
-
-    /**
-     * Update workbench setting
-     * @param spaceWorkbenchSettingRo 
-     * @param xSpaceId space id
-     */
-    public updateWorkbenchSettingWithHttpInfo(spaceWorkbenchSettingRo: SpaceWorkbenchSettingRo, xSpaceId: string, _options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
-        const result = this.api.updateWorkbenchSettingWithHttpInfo(spaceWorkbenchSettingRo, xSpaceId, _options);
-        return result.toPromise();
-    }
-
-    /**
-     * Update workbench setting
-     * @param spaceWorkbenchSettingRo 
-     * @param xSpaceId space id
-     */
-    public updateWorkbenchSetting(spaceWorkbenchSettingRo: SpaceWorkbenchSettingRo, xSpaceId: string, _options?: Configuration): Promise<ResponseDataVoid> {
-        const result = this.api.updateWorkbenchSetting(spaceWorkbenchSettingRo, xSpaceId, _options);
         return result.toPromise();
     }
 

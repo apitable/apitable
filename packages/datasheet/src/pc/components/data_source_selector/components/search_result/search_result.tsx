@@ -22,11 +22,10 @@ import { ConfigConstant, INode, Strings, t, ThemeName } from '@apitable/core';
 import { TComponent } from 'pc/components/common/t_component';
 import { useLoader } from 'pc/components/data_source_selector/hooks/use_loader';
 import { File, Folder } from 'pc/components/datasheet_search_panel/components';
+import { useAppSelector } from 'pc/store/react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ISearchResultProps {
   searchResult:
@@ -37,7 +36,7 @@ interface ISearchResultProps {
     | string;
   onlyShowAvailable: boolean;
 
-  onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string): void;
+  onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form' | 'Automation', id: string): void;
 }
 
 export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>> = (props) => {
@@ -102,6 +101,10 @@ export const SearchResult: React.FC<React.PropsWithChildren<ISearchResultProps>>
                 key={node.nodeId}
                 id={node.nodeId}
                 onClick={(id) => {
+                  if (node.type === ConfigConstant.NodeType.AUTOMATION) {
+                    onNodeClick('Automation', id);
+                    return;
+                  }
                   if (node.type === ConfigConstant.NodeType.FORM) {
                     onNodeClick('Form', id);
                   } else {

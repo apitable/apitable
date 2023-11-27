@@ -261,7 +261,7 @@ public class UserController {
      */
     // Before getting the user information, try to return the Space id first
     private String tryReturnSpaceId(final String nodeId, final String spaceId,
-        final Long userId, final HttpServletRequest request) {
+                                    final Long userId, final HttpServletRequest request) {
         if (StrUtil.isNotBlank(nodeId)) {
             // 1.Use url - NodeId to locate the space and return the bound
             // domain name
@@ -305,7 +305,7 @@ public class UserController {
      */
     // Return the space station domain name
     private String returnSpaceDomain(final String spaceId,
-        final String userSpaceId) {
+                                     final String userSpaceId) {
         // Returns the domain name information, and returns the public domain
         // name if there is no credential acquisition or search
         if (StrUtil.isNotBlank(spaceId)) {
@@ -761,7 +761,7 @@ public class UserController {
      * @return {@link ResponseData}
      */
     @PostResource(path = "/delActiveSpaceCache",
-        method = { RequestMethod.GET}, requiredPermission = false)
+        method = {RequestMethod.GET}, requiredPermission = false)
     @Operation(summary = "Delete Active Space Cache")
     public ResponseData<Void> delActiveSpaceCache() {
         // Fill in the invitation code and reward integral

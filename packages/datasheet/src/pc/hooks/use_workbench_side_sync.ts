@@ -45,10 +45,9 @@ import { WorkbenchSideContext } from 'pc/components/common_side/workbench_side/w
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { NotificationStore } from 'pc/notification_store';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getNodeTypeByNodeId, getResourceTypeByNodeType } from 'pc/utils';
 import { useCatalogTreeRequest } from './use_catalogtree_request';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export enum NodeChangeInfoType {
   Create = 'nodeCreate',
@@ -195,7 +194,7 @@ export const useWorkbenchSideSync = () => {
   const popErrorModal = (nodeId: string, errorType: ErrorType, nodeType: ConfigConstant.NodeType = ConfigConstant.NodeType.DATASHEET) => {
     if (errorType === ErrorType.Delete) {
       Api.keepTabbar({}).then(() => {
-        window.location.reload();
+        // window.location.reload();
       });
       return;
     }

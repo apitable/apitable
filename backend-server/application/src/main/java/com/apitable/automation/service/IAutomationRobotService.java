@@ -27,17 +27,33 @@ import com.apitable.automation.model.UpdateRobotRO;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * automation robot service.
+ */
 public interface IAutomationRobotService {
 
     /**
      * Get the automation robot list by the resource id.
      *
-     * @param resourceId    resource id
+     * @param resourceId resource id
      */
     List<AutomationRobotDto> getRobotListByResourceId(String resourceId);
 
+    /**
+     * create automation robot.
+     *
+     * @param robot robot entity
+     */
     void create(AutomationRobotEntity robot);
 
+    /**
+     * copy automation.
+     *
+     * @param userId      user id
+     * @param resourceIds resource ids
+     * @param options     options
+     * @param newNodeMap  new node map
+     */
     void copy(Long userId, List<String> resourceIds,
               AutomationCopyOptions options, Map<String, String> newNodeMap);
 
@@ -52,16 +68,34 @@ public interface IAutomationRobotService {
     void copyByDatabus(Long userId, List<String> resourceIds,
                        AutomationCopyOptions options, Map<String, String> newNodeMap);
 
+    /**
+     * update automation robot name by resource id.
+     *
+     * @param resourceId resource id
+     * @param name       name
+     */
     void updateNameByResourceId(String resourceId, String name);
 
+    /**
+     * update automation robot by robot id.
+     *
+     * @param robot robot entity
+     */
     void updateByRobotId(AutomationRobotEntity robot);
 
+    /**
+     * update automation robot by robot id.
+     *
+     * @param userId      user id
+     * @param resourceIds resource ids
+     * @param isDeleted   is deleted
+     */
     void updateIsDeletedByResourceIds(Long userId, List<String> resourceIds, Boolean isDeleted);
 
     /**
      * Batch delete robot.
      *
-     * @param robotIds  robot ids
+     * @param robotIds robot ids
      */
     void delete(List<String> robotIds);
 
@@ -100,8 +134,9 @@ public interface IAutomationRobotService {
 
     /**
      * get robot runs count by space id.
-     * @param spaceId
-     * @return
+     *
+     * @param spaceId space id
+     * @return robot runs count
      */
     long getRobotRunsCountBySpaceId(String spaceId);
 }

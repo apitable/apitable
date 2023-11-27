@@ -18,17 +18,14 @@
 
 package com.apitable.starter.oss.autoconfigure;
 
-import java.util.Optional;
-
-import com.apitable.starter.oss.core.OssSignatureTemplate;
-import com.qiniu.storage.UploadManager;
-import com.qiniu.util.Auth;
-
 import com.apitable.starter.oss.autoconfigure.OssProperties.Callback;
 import com.apitable.starter.oss.autoconfigure.OssProperties.Qiniu;
 import com.apitable.starter.oss.core.OssClientRequestFactory;
+import com.apitable.starter.oss.core.OssSignatureTemplate;
 import com.apitable.starter.oss.core.qiniu.QiniuOssClientRequestFactory;
-
+import com.qiniu.storage.UploadManager;
+import com.qiniu.util.Auth;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -37,7 +34,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * autoconfiguration of Qiniu Cloud object storage
+ * autoconfiguration of Qiniu Cloud object storage.
  *
  * @author Shawn Deng
  */

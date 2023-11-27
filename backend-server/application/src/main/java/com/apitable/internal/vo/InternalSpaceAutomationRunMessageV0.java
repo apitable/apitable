@@ -7,10 +7,13 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-
+/**
+ * internal space automation run message view.
+ */
 @Data
 @Schema(description = "space automation run information view")
 public class InternalSpaceAutomationRunMessageV0 {
+
     @Schema(description = "whether to allow over limiting", example = "false")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean allowRun;

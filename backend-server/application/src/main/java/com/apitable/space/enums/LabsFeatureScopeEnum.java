@@ -18,12 +18,14 @@
 
 package com.apitable.space.enums;
 
-import java.util.Objects;
-
 import cn.hutool.core.util.StrUtil;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * lab feature scope.
+ */
 @Getter
 @AllArgsConstructor
 public enum LabsFeatureScopeEnum {
@@ -38,6 +40,12 @@ public enum LabsFeatureScopeEnum {
 
     private final Integer scopeCode;
 
+    /**
+     * transform scope code to scope enum.
+     *
+     * @param scopeCode scope code
+     * @return scope enum
+     */
     public static LabsFeatureScopeEnum ofLabsFeatureScope(Integer scopeCode) {
         for (LabsFeatureScopeEnum scopeEnum : LabsFeatureScopeEnum.values()) {
             if (Objects.equals(scopeCode, scopeEnum.getScopeCode())) {
@@ -47,6 +55,12 @@ public enum LabsFeatureScopeEnum {
         return UNKNOWN_SCOPE;
     }
 
+    /**
+     * transform scope name to scope enum.
+     *
+     * @param scopeName scope name
+     * @return scope enum
+     */
     public static LabsFeatureScopeEnum ofLabsFeatureScope(String scopeName) {
         if (StrUtil.isBlank(scopeName)) {
             return UNKNOWN_SCOPE;

@@ -18,6 +18,9 @@
 
 package com.apitable.interfaces.social.model;
 
+/**
+ * social user bind.
+ */
 public class SocialUserBind {
 
     private Long userId;

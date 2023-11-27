@@ -118,6 +118,10 @@ export const widgetSyncDataMiddleware: Middleware<{}, IReduxState> = (store) => 
         // widget bind datasheet errorCode
         return;
       }
+      case ActionConstants.SET_USER_ME: {
+        syncActionBroadcast(action);
+        return;
+      }
       case ActionConstants.UPDATE_UNIT_MAP:
       case ActionConstants.UPDATE_USER_MAP:
       case ActionConstants.RESET_UNIT_INFO: {

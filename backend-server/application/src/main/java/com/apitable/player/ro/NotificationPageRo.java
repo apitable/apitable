@@ -19,7 +19,6 @@
 package com.apitable.player.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import javax.validation.constraints.Max;
 import lombok.Data;
 
 /**

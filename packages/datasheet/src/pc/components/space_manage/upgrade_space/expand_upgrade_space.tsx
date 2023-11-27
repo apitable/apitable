@@ -1,12 +1,13 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { colorVars, Typography } from '@apitable/components';
-import { Strings, t } from '@apitable/core';
+import { Navigation, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import UpgradeSpace from 'pc/components/space_manage/upgrade_space/upgrade_space';
 import { stopPropagation } from 'pc/utils';
 import styles from './style.module.less';
+import { Router } from 'pc/components/route_manager/router';
 
 export const expandUpgradeSpace = () => {
   const container = document.createElement('div');
@@ -15,7 +16,7 @@ export const expandUpgradeSpace = () => {
   const onModalClose = () => {
     root.unmount();
     container.parentElement!.removeChild(container);
-    location.search = '';
+    Router.push(Navigation.WORKBENCH, { clearQuery:true });
   };
 
   root.render(

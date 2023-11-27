@@ -39,6 +39,7 @@ export enum IDPrefix {
   Dashboard = 'dsb',
   AutomationAction = 'aac',
   Document = 'doc',
+  AutomationTrigger = 'atr',
 }
 
 /**

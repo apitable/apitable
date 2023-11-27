@@ -18,13 +18,12 @@
 
 package com.apitable.base.enums;
 
+import com.apitable.core.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.core.exception.BaseException;
-
 /**
- * Parameter Exception
+ * Parameter Exception.
  * status code range（220-229）
  *
  * @author Chambers

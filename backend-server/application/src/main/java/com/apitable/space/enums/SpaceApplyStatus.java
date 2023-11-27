@@ -23,7 +23,7 @@ import lombok.Getter;
 
 /**
  * <p>
- * Space Join Status
+ * Space Join Status.
  * </p>
  *
  * @author Chambers

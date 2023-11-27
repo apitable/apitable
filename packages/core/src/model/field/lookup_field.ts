@@ -17,22 +17,31 @@
  */
 
 import { getComputeRefManager } from 'compute_manager';
-import { evaluate, parse } from 'formula_parser/evaluate';
-import { ROLLUP_KEY_WORDS } from 'formula_parser/consts';
-import { Functions } from 'formula_parser/functions';
+import { ViewFilterDerivate } from 'compute_manager/view_derivate/slice/view_filter_derivate';
 import { Strings, t } from 'exports/i18n';
+import { _getLookUpTreeValue, getFieldMap, getSnapshot, getUserTimeZone, sortRowsBySortInfo } from 'exports/store/selectors';
+import { ROLLUP_KEY_WORDS } from 'formula_parser/consts';
+import { evaluate, parse } from 'formula_parser/evaluate';
+import { Functions } from 'formula_parser/functions';
 import Joi from 'joi';
 import { isEmpty, uniqWith, zip } from 'lodash';
 import { ValueTypeMap } from 'model/constants';
 import { computedFormattingToFormat, getApiMetaPropertyFormat, getFieldTypeByString, getFieldTypeString, handleNullArray } from 'model/utils';
+import { APIMetaFieldType } from 'types';
 import { IAPIMetaLookupFieldProperty } from 'types/field_api_property_types';
 import { BasicOpenValueType, BasicOpenValueTypeBase } from 'types/field_types_open';
 import { IOpenMagicLookUpFieldProperty } from 'types/open/open_field_read_types';
 import { IEffectOption, IUpdateOpenMagicLookUpFieldProperty } from 'types/open/open_field_write_types';
+import {
+  IOpenFilterValue,
+  IOpenFilterValueBoolean,
+  IOpenFilterValueDataTime,
+  IOpenFilterValueNumber,
+  IOpenFilterValueString,
+} from 'types/open/open_filter_types';
 import { checkTypeSwitch, filterOperatorAcceptsValue, getNewIds, IDPrefix, isTextBaseType } from 'utils';
 import { isClient } from 'utils/env';
 import { IReduxState, IViewRow, Selectors } from '../../exports/store';
-import { _getLookUpTreeValue, getFieldMap, getSnapshot, getUserTimeZone, sortRowsBySortInfo } from 'exports/store/selectors';
 import {
   BasicValueType,
   FieldType,
@@ -44,7 +53,8 @@ import {
   ILookUpField,
   ILookUpProperty,
   ILookUpSortInfo,
-  INumberFormatFieldProperty, IOneWayLinkField,
+  INumberFormatFieldProperty,
+  IOneWayLinkField,
   IStandardValue,
   ITimestamp,
   IUnitIds,
@@ -69,15 +79,6 @@ import { NumberBaseField, numberFormat } from './number_base_field';
 import { StatTranslate, StatType } from './stat';
 import { TextBaseField } from './text_base_field';
 import { computedFormatting, computedFormattingStr, datasheetIdString, enumToArray, joiErrorResult } from './validate_schema';
-import { ViewFilterDerivate } from 'compute_manager/view_derivate/slice/view_filter_derivate';
-import {
-  IOpenFilterValue,
-  IOpenFilterValueBoolean,
-  IOpenFilterValueDataTime,
-  IOpenFilterValueNumber,
-  IOpenFilterValueString,
-} from 'types/open/open_filter_types';
-import { APIMetaFieldType } from 'types';
 
 export interface ILookUpTreeValue {
   datasheetId: string;
@@ -1261,7 +1262,7 @@ export class LookUpField extends ArrayValueField {
                 ? cond.value
                 : [cond.value]
               : undefined) as any,
-          }
+          };
         }),
       };
     }

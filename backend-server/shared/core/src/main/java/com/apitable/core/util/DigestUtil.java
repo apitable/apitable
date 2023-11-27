@@ -18,19 +18,17 @@
 
 package com.apitable.core.util;
 
-import java.io.InputStream;
-
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.crypto.digest.DigestAlgorithm;
 import cn.hutool.crypto.digest.Digester;
+import java.io.InputStream;
 
 /**
  * <p>
- * Abstract Algorithm Tools
+ * Abstract Algorithm Tools.
  * </p>
- *
  */
 public class DigestUtil {
 
@@ -45,7 +43,9 @@ public class DigestUtil {
     }
 
     /**
-     * The first 32 bytes of the created file are encoded in Base64
+     * The first 32 bytes of the created file are encoded in Base64.
+     *
+     * @param is input stream
      */
     public static String createHeadSum(InputStream is) {
         // get the first 32 bytes of the resource file, encoded in Base64

@@ -12,19 +12,13 @@ import {
   Skeleton,
   TextButton,
   useContextMenu,
-  useThemeColors
+  useThemeColors,
 } from '@apitable/components';
 import { ConfigConstant, DATASHEET_ID, IReduxState, StoreActions, Strings, t } from '@apitable/core';
-import {
-  BookOutlined,
-  CloseOutlined,
-  DeleteOutlined,
-  MoreStandOutlined,
-  QuestionCircleOutlined,
-  ShareOutlined
-} from '@apitable/icons';
+import { BookOutlined, CloseOutlined, DeleteOutlined, MoreStandOutlined, QuestionCircleOutlined, ShareOutlined } from '@apitable/icons';
 import { MobileToolBar } from 'pc/components/automation/panel/Toobar';
-import { useResponsive, useSideBarVisible } from '../../../hooks';
+import { useAppSelector } from 'pc/store/react-redux';
+import { useResponsive, useSideBarVisible, useUrlQuery } from '../../../hooks';
 import { useAppDispatch } from '../../../hooks/use_app_dispatch';
 import { flatContextData, getPermission } from '../../../utils';
 import { NodeIcon } from '../../catalog/tree/node_icon';
@@ -32,10 +26,7 @@ import { Message, Modal, Tag, TagColors } from '../../common';
 import { ScreenSize } from '../../common/component_display';
 import { NodeFavoriteStatus } from '../../common/node_favorite_status';
 import { OrEmpty } from '../../common/or_empty';
-import {
-  deleteRobot,
-  getResourceAutomations,
-} from '../../robot/api';
+import { deleteRobot, getResourceAutomations } from '../../robot/api';
 import { useAutomationRobot } from '../../robot/hooks';
 import { AutomationScenario } from '../../robot/interface';
 import { IAutomationRobotDetailItem } from '../../robot/robot_context';
@@ -50,25 +41,25 @@ import {
   automationDrawerVisibleAtom,
   automationHistoryAtom,
   automationPanelAtom,
-  automationStateAtom, getResourceAutomationDetailIntegrated,
-  PanelName, useAutomationController
+  automationStateAtom,
+  getResourceAutomationDetailIntegrated,
+  PanelName,
+  useAutomationController,
 } from '../controller';
 import { useAutomationNavigateController } from '../controller/controller';
 import { useAutomationResourceNode, useAutomationResourcePermission } from '../controller/use_automation_permission';
 import AutomationHistoryPanel from '../run_history/modal/modal';
 import styles from '../style.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
-
 export const MenuID = 'MoreAction';
 
 const StyleIcon = styled(Box)`
-  &:hover{
+  &:hover {
     background-color: var(--shadowColor);
   }
 `;
 
-export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> = memo(({ onClose, resourceId }) => {
+export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> = memo(({ onClose, resourceId }) => {
   const { show } = useContextMenu({ id: MenuID });
 
   const { currentRobotId } = useAutomationRobot();
@@ -87,10 +78,11 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
   const isLg = screenIsAtMost(ScreenSize.lg);
   const isXl = screenIsAtMost(ScreenSize.xl);
 
+  const params = useUrlQuery();
   const [cache, setCache] = useAtom(automationCacheAtom);
   useMount(() => {
     isXl && setSideBarVisible(false);
-    if(cache.id !== resourceId) {
+    if (cache.id !== resourceId) {
       initialize();
     }
   });
@@ -101,47 +93,45 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
     }
     getResourceAutomations(resourceId, {
       shareId: shareInfo?.shareId,
-    }).then(async (res) => {
-      const firstItem = res[0];
-      const itemDetail = await getResourceAutomationDetailIntegrated(
-        resourceId,
-        firstItem.robotId,
-        {
-          shareId: shareInfo?.shareId
-        }
-      );
-      if(cache.id !== resourceId) {
-        setPanel(
-          {
-            panelName: isLg? undefined: PanelName.BasicInfo
+    })
+      .then(async (res) => {
+        const firstItem = res[0];
+        const itemDetail = await getResourceAutomationDetailIntegrated(resourceId, firstItem.robotId, {
+          shareId: shareInfo?.shareId,
+        });
+        if (cache.id !== resourceId) {
+          setPanel({
+            panelName: isLg ? undefined : PanelName.BasicInfo,
           });
-      } else {
-        if(cache.panel) {
+        } else if (cache.panel) {
           setPanel(cache.panel);
         }
-      }
 
-      setCache({});
+        if ((params as { tab: string }).tab === 'history') {
+          setHistoryDialog({
+            dialogVisible: true,
+          });
+        }
+        setCache({});
 
-      if (itemDetail.relatedResources) {
-        itemDetail.relatedResources.forEach(resource => {
-          if(resource.nodeId.startsWith('dst')) {
-            dispatch(
-              StoreActions.fetchDatasheet(resource.nodeId)
-            );
-          }
+        if (itemDetail.relatedResources) {
+          itemDetail.relatedResources.forEach((resource) => {
+            if (resource.nodeId.startsWith('dst')) {
+              dispatch(StoreActions.fetchDatasheet(resource.nodeId));
+            }
+          });
+        }
+
+        setAutomationState({
+          scenario: AutomationScenario.node,
+          currentRobotId: itemDetail.robotId,
+          resourceId: resourceId,
+          robot: itemDetail as IAutomationRobotDetailItem,
         });
-      }
-
-      setAutomationState({
-        scenario: AutomationScenario.node,
-        currentRobotId: itemDetail.robotId,
-        resourceId: resourceId,
-        robot: itemDetail as IAutomationRobotDetailItem,
+      })
+      .catch((e) => {
+        console.log(e);
       });
-    }).catch((e) => {
-      console.log(e);
-    });
   }, [dispatch, isLg, resourceId, setAutomationState, setPanel, shareInfo]);
 
   const handleDeleteRobot = () => {
@@ -176,7 +166,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
     [
       {
         text: t(Strings.robot_delete),
-        icon: <DeleteOutlined/>,
+        icon: <DeleteOutlined />,
         onClick: handleDeleteRobot,
       },
     ],
@@ -185,30 +175,29 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
   const colors = useThemeColors();
   const nodeItem = useAutomationResourceNode();
 
-  const { api: { refreshItem } } = useAutomationController();
+  const {
+    api: { refreshItem },
+  } = useAutomationController();
   const { setSideBarVisible } = useSideBarVisible();
 
   const permission = useAutomationResourcePermission();
 
-  const inheritedRole = useMemo(()=> {
-    if(nodeItem?.role) {
+  const inheritedRole = useMemo(() => {
+    if (nodeItem?.role) {
       return nodeItem.role;
     }
-    if(permission.manageable) {
+    if (permission.manageable) {
       return ConfigConstant.Role.Manager;
     }
 
-    if(permission.editable) {
+    if (permission.editable) {
       return ConfigConstant.Role.Editor;
     }
 
     return ConfigConstant.Role.Reader;
-
   }, [nodeItem?.role, permission.editable, permission.manageable]);
-  if(automationState?.scenario === AutomationScenario.node) {
-    if(!templateId && nodeItem == null) {
-      return null;
-    }
+  if (automationState?.scenario === AutomationScenario.node && !templateId && nodeItem == null) {
+    return null;
   }
   if (currentRobotId == null) {
     return null;
@@ -216,12 +205,11 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
 
   return (
     <Box display={'flex'} flexDirection={'column'} width={'100%'} height={'100%'} overflowY={'hidden'}>
-
-      <OrEmpty visible={isLg && automationState?.scenario === AutomationScenario.node } >
+      <OrEmpty visible={isLg && automationState?.scenario === AutomationScenario.node}>
         <MobileToolBar />
       </OrEmpty>
 
-      <OrEmpty visible={!isLg || automationState?.scenario !== AutomationScenario.node } >
+      <OrEmpty visible={!isLg || automationState?.scenario !== AutomationScenario.node}>
         <Box
           flex={'0 0 72px'}
           backgroundColor={colors.bgCommonDefault}
@@ -231,7 +219,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
         >
           {loading ? (
             <Space style={{ margin: '8px 20px' }}>
-              <Skeleton style={{ height: 24, width: 340, marginTop: 0 }}/>
+              <Skeleton style={{ height: 24, width: 340, marginTop: 0 }} />
             </Space>
           ) : (
             <Box
@@ -244,83 +232,92 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
               justifyContent={'space-between'}
             >
               <Box display={'flex'} flexDirection={'column'}>
-
                 <Box display={'inline-flex'} alignItems={'center'} flexDirection={'row'}>
-                  {
-                    automationState?.scenario === AutomationScenario.node && (
-                      <StyleIcon width={'23px'} height={'23px'} display={'flex'} alignItems={'center'}
-                        borderRadius={'2px'}
-                        marginRight={'2px'}
-                        style={{ cursor: 'pointer' }}>
-                        <NodeIcon nodeId={automationState?.resourceId ?? ''} type={
-                          ConfigConstant.NodeType.AUTOMATION
-                        } icon={nodeItem?.icon} editable={permission.manageable} size={20} hasChildren/>
-                      </StyleIcon>
-                    )
-                  }
-                  <InputTitle/>
-                  {
-                    automationState?.scenario === AutomationScenario.node && (
-                      <>
-                        <OrEmpty visible={shareInfo?.shareId == null}>
-                          <NodeFavoriteStatus nodeId={automationState?.resourceId ?? ''} enabled={
-                            nodeItem?.nodeFavorite
-                          }/>
-                        </OrEmpty>
-                        {
-                          !templateId && (
-                            <Box marginX={'4px'}>
-                              <Tag color={TagColors[inheritedRole]}>
-                                {ConfigConstant.permissionText[getPermission(inheritedRole, { shareInfo: shareInfo })]}
-                              </Tag>
-                            </Box>
-                          )
-                        }
-                      </>
-                    )
-                  }
-
+                  {automationState?.scenario === AutomationScenario.node && (
+                    <StyleIcon
+                      width={'23px'}
+                      height={'23px'}
+                      display={'flex'}
+                      alignItems={'center'}
+                      borderRadius={'2px'}
+                      marginRight={'2px'}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <NodeIcon
+                        nodeId={automationState?.resourceId ?? ''}
+                        type={ConfigConstant.NodeType.AUTOMATION}
+                        icon={nodeItem?.icon}
+                        editable={permission.manageable}
+                        size={20}
+                        hasChildren
+                      />
+                    </StyleIcon>
+                  )}
+                  <InputTitle />
+                  {automationState?.scenario === AutomationScenario.node && (
+                    <>
+                      <OrEmpty visible={shareInfo?.shareId == null}>
+                        <NodeFavoriteStatus nodeId={automationState?.resourceId ?? ''} enabled={nodeItem.nodeFavorite} />
+                      </OrEmpty>
+                      {!templateId && (
+                        <Box marginX={'4px'}>
+                          <Tag
+                            color={TagColors[inheritedRole]}
+                            style={{
+                              wordBreak: 'keep-all',
+                            }}
+                          >
+                            {ConfigConstant.permissionText[getPermission(inheritedRole, { shareInfo: shareInfo })]}aaa
+                          </Tag>
+                        </Box>
+                      )}
+                    </>
+                  )}
                 </Box>
 
                 <OrEmpty visible={!isLg}>
                   <>
-                    {
-                      automationState?.scenario !== AutomationScenario.node ? (
-                        <EditableInputDescription />
-                      ): (
-                        <DescriptionModal
-                          onVisibleChange={refreshItem}
-                          activeNodeId={automationState?.resourceId!} datasheetName={nodeItem?.nodeName ?? automationState?.robot?.name ?? ''} showIntroduction showIcon={false} />
-                      )
-                    }
+                    {automationState?.scenario !== AutomationScenario.node ? (
+                      <EditableInputDescription />
+                    ) : (
+                      <DescriptionModal
+                        onVisibleChange={refreshItem}
+                        activeNodeId={automationState?.resourceId!}
+                        datasheetName={nodeItem?.nodeName ?? automationState?.robot?.name ?? ''}
+                        showIntroduction
+                        showIcon={false}
+                      />
+                    )}
                   </>
                 </OrEmpty>
               </Box>
 
               <Box display="flex" alignItems="center">
+                <OrEmpty visible={permission.sharable && automationState?.scenario === AutomationScenario.node}>
+                  {nodeItem && (
+                    <ToolItem
+                      showLabel
+                      icon={
+                        <ShareOutlined
+                          size={16}
+                          color={nodeItem.nodeShared ? colors.primaryColor : colors.secondLevelText}
+                          className={styles.toolIcon}
+                        />
+                      }
+                      onClick={() => {
+                        if (!automationState?.resourceId || automationState?.scenario !== AutomationScenario.node) {
+                          return;
+                        }
 
-                <OrEmpty
-                  visible={permission.sharable && automationState?.scenario === AutomationScenario.node}>
-                  {
-                    nodeItem && (
-                      <ToolItem
-                        showLabel
-                        icon={<ShareOutlined size={16} color={nodeItem.nodeShared ? colors.primaryColor : colors.secondLevelText} className={styles.toolIcon} />}
-                        onClick={() => {
-                          if (!automationState?.resourceId || automationState?.scenario !== AutomationScenario.node) {
-                            return;
-                          }
-
-                          isLg && setSideBarVisible(false);
-                          dispatch(StoreActions.updateShareModalNodeId(automationState?.resourceId));
-                        }}
-                        text={t(Strings.share)}
-                        disabled={!permission.sharable}
-                        isActive={nodeItem.nodeShared}
-                        className={styles.toolbarItem}
-                      />
-                    )
-                  }
+                        isLg && setSideBarVisible(false);
+                        dispatch(StoreActions.updateShareModalNodeId(automationState?.resourceId));
+                      }}
+                      text={t(Strings.share)}
+                      disabled={!permission.sharable}
+                      isActive={nodeItem.nodeShared}
+                      className={styles.toolbarItem}
+                    />
+                  )}
                 </OrEmpty>
 
                 <OrEmpty visible={automationState?.scenario === AutomationScenario.node}>
@@ -328,7 +325,9 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
                     onClick={() => {
                       window.open(t(Strings.robot_help_url));
                     }}
-                    prefixIcon={<BookOutlined currentColor/>} size="small">
+                    prefixIcon={<BookOutlined currentColor />}
+                    size="small"
+                  >
                     {t(Strings.help)}
                   </TextButton>
                 </OrEmpty>
@@ -339,11 +338,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
                       <IconButton
                         shape="square"
                         size={'small'}
-                        icon={() =>
-                          <QuestionCircleOutlined
-                            size={16} color={colors.textCommonTertiary}
-                          />
-                        }
+                        icon={() => <QuestionCircleOutlined size={16} color={colors.textCommonTertiary} />}
                         onClick={() => {
                           window.open(t(Strings.robot_help_url));
                         }}
@@ -354,7 +349,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
 
                 <OrEmpty visible={automationState?.scenario === AutomationScenario.datasheet}>
                   <Tooltip content={t(Strings.robot_more_operations_tooltip)}>
-                    <IconButton shape="square" onClick={(e) => show(e)} icon={MoreStandOutlined}/>
+                    <IconButton shape="square" onClick={(e) => show(e)} icon={MoreStandOutlined} />
                   </Tooltip>
                 </OrEmpty>
 
@@ -362,7 +357,7 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
                   <IconButton
                     component="button"
                     shape="square"
-                    icon={() => <CloseOutlined size={16} color={colors.textCommonTertiary}/>}
+                    icon={() => <CloseOutlined size={16} color={colors.textCommonTertiary} />}
                     onClick={onClose}
                     style={{ marginLeft: 8 }}
                   />
@@ -373,10 +368,10 @@ export const AutomationPanel: FC<{ onClose?: () => void, resourceId?: string }> 
         </Box>
       </OrEmpty>
 
-      <ContextMenu menuId={MenuID} overlay={flatContextData(menuData, true)}/>
+      <ContextMenu menuId={MenuID} overlay={flatContextData(menuData, true)} />
 
       <Box flex={'1 1 auto'} height={'100%'} overflowY={'hidden'}>
-        <AutomationPanelContent/>
+        <AutomationPanelContent />
       </Box>
 
       {historyDialog.dialogVisible && (

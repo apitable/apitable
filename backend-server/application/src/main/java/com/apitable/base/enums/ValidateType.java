@@ -23,7 +23,7 @@ import lombok.Getter;
 
 /**
  * <p>
- * check type
+ * check type.
  * </p>
  *
  * @author Chambers
@@ -32,12 +32,12 @@ import lombok.Getter;
 public enum ValidateType {
 
     /**
-     * sms verification code
+     * sms verification code.
      */
     SMS_CODE("sms_code"),
 
     /**
-     * email verification code
+     * email verification code.
      */
     EMAIL_CODE("email_code");
 

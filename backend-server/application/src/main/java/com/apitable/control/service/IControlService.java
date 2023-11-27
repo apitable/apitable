@@ -18,16 +18,14 @@
 
 package com.apitable.control.service;
 
+import com.apitable.control.entity.ControlEntity;
+import com.apitable.control.infrastructure.ControlType;
+import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 import java.util.function.Consumer;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-
-import com.apitable.control.entity.ControlEntity;
-import com.apitable.control.infrastructure.ControlType;
-
 /**
- * Control service
+ * Control service.
  */
 public interface IControlService extends IService<ControlEntity> {
 
@@ -41,7 +39,7 @@ public interface IControlService extends IService<ControlEntity> {
     String getSpaceIdByControlId(String controlId);
 
     /**
-     * Query control unit
+     * Query control unit.
      *
      * @param controlId Control unit ID
      * @return ControlEntity
@@ -49,7 +47,7 @@ public interface IControlService extends IService<ControlEntity> {
     ControlEntity getByControlId(String controlId);
 
     /**
-     * Check the status of authority control unit
+     * Check the status of authority control unit.
      *
      * @param controlId Control unit ID
      * @param consumer  Custom consumer
@@ -57,17 +55,17 @@ public interface IControlService extends IService<ControlEntity> {
     void checkControlStatus(String controlId, Consumer<Boolean> consumer);
 
     /**
-     * Create permission control unit
+     * Create permission control unit.
      *
-     * @param userId        User ID
-     * @param spaceId       Space ID
-     * @param controlId     Control unit ID
-     * @param controlType   Control unit type
+     * @param userId      User ID
+     * @param spaceId     Space ID
+     * @param controlId   Control unit ID
+     * @param controlType Control unit type
      */
     void create(Long userId, String spaceId, String controlId, ControlType controlType);
 
     /**
-     * Delete information about the control unit
+     * Delete information about the control unit.
      *
      * @param controlIds Control unit ID set
      * @param delSetting Deleting control unit settings
@@ -75,16 +73,16 @@ public interface IControlService extends IService<ControlEntity> {
     void removeControl(Long userId, List<String> controlIds, boolean delSetting);
 
     /**
-     * Get the permission control unit ID
+     * Get the permission control unit ID.
      *
-     * @param prefix    Control unit ID prefix
-     * @param type      Control unit type
+     * @param prefix Control unit ID prefix
+     * @param type   Control unit type
      * @return Control unit ID
      */
     List<String> getControlIdByControlIdPrefixAndType(String prefix, Integer type);
 
     /**
-     * Get the existing control unit ID
+     * Get the existing control unit ID.
      *
      * @param controlIds Control unit ID set
      * @return Control unit ID
@@ -92,7 +90,7 @@ public interface IControlService extends IService<ControlEntity> {
     List<String> getExistedControlId(List<String> controlIds);
 
     /**
-     * Get the member ID of the authority control unit creator
+     * Get the member ID of the authority control unit creator.
      *
      * @param controlId Control unit ID
      * @return memberId

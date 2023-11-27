@@ -36,6 +36,8 @@ export interface IDataSaver {
    * @return The return value of `saveOps` will be included in the return value of the `doCommand` method of `Database`.
    */
   saveOps(ops: IResourceOpsCollect[], options: ISaveOpsOptions): Promise<any> | any;
+
+  nestRoomChangeFromRust(roomId: string, data: any): any;
 }
 
 /**

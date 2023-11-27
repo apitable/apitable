@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * types of results for image machine review
+ * types of results for image machine review.
  *
  * @author Benson Cheung
  */
@@ -31,18 +31,18 @@ import lombok.Getter;
 public enum AssetAuditType {
 
     /**
-     * The machine does not pass the review, it is a violation type picture
-     * */
+     * The machine does not pass the review, it is a violation type picture.
+     */
     BLOCK("block"),
 
     /**
-     * need manual review type image
-     * */
+     * need manual review type image.
+     */
     REVIEW("review"),
 
     /**
-     * approved by the machine
-     * */
+     * approved by the machine.
+     */
     NORMAL("normal");
 
     private final String value;

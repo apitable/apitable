@@ -22,7 +22,7 @@ import com.apitable.auth.enums.LoginType;
 
 /**
  * <p>
- * verification code type
+ * verification code type.
  * </p>
  *
  * @author Shawn Deng

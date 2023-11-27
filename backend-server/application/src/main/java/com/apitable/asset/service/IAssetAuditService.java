@@ -18,14 +18,13 @@
 
 package com.apitable.asset.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.IService;
-
 import com.apitable.asset.entity.AssetAuditEntity;
 import com.apitable.asset.ro.AssetsAuditRo;
 import com.apitable.asset.ro.AttachAuditCallbackRo;
 import com.apitable.asset.vo.AssetsAuditVo;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * Resource Audit Form Service Class.
@@ -52,7 +51,7 @@ public interface IAssetAuditService extends IService<AssetAuditEntity> {
      * Query the list of pictures to be reviewed manually.
      *
      * @param page pagination parameters
-     * @return List<AssetsAuditVo> callback result
+     * @return List of AssetsAuditVo
      */
     IPage<AssetsAuditVo> readReviews(Page page);
 

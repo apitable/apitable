@@ -20,6 +20,9 @@ package com.apitable.organization.dto;
 
 import lombok.Data;
 
+/**
+ * member dto.
+ */
 @Data
 public class MemberDTO {
 

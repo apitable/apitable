@@ -18,45 +18,45 @@
 
 package com.apitable.space.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.map.MapUtil;
+import com.apitable.asset.entity.AssetEntity;
+import com.apitable.asset.enums.AssetType;
+import com.apitable.asset.mapper.AssetMapper;
+import com.apitable.base.enums.DatabaseException;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.shared.cache.service.SpaceCapacityCacheService;
+import com.apitable.space.dto.NodeAssetDTO;
+import com.apitable.space.dto.SpaceAssetDTO;
+import com.apitable.space.entity.SpaceAssetEntity;
+import com.apitable.space.mapper.SpaceAssetMapper;
+import com.apitable.space.ro.SpaceAssetOpRo;
+import com.apitable.space.service.ISpaceAssetService;
+import com.apitable.workspace.enums.DataSheetException;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import javax.annotation.Resource;
-
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.map.MapUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.asset.entity.AssetEntity;
-import com.apitable.asset.enums.AssetType;
-import com.apitable.asset.mapper.AssetMapper;
-import com.apitable.base.enums.DatabaseException;
-import com.apitable.shared.cache.service.SpaceCapacityCacheService;
-import com.apitable.space.dto.NodeAssetDTO;
-import com.apitable.space.dto.SpaceAssetDTO;
-import com.apitable.space.mapper.SpaceAssetMapper;
-import com.apitable.space.ro.SpaceAssetOpRo;
-import com.apitable.space.service.ISpaceAssetService;
-import com.apitable.workspace.enums.DataSheetException;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.space.entity.SpaceAssetEntity;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * space asset service implement.
+ */
 @Slf4j
 @Service
-public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAssetEntity> implements ISpaceAssetService {
+public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAssetEntity>
+    implements ISpaceAssetService {
 
     @Resource
     private AssetMapper assetMapper;
@@ -74,17 +74,18 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
     }
 
     @Override
-    public void saveAssetInSpace(String spaceId, String nodeId, Long assetId, String assetChecksum, AssetType assetType, String originalFileName, long fileSize) {
+    public void saveAssetInSpace(String spaceId, String nodeId, Long assetId, String assetChecksum,
+                                 AssetType assetType, String originalFileName, long fileSize) {
         log.info("add space asset");
         SpaceAssetEntity entity = SpaceAssetEntity.builder()
-                .spaceId(spaceId)
-                .nodeId(nodeId)
-                .assetId(assetId)
-                .assetChecksum(assetChecksum)
-                .type(assetType.getValue())
-                .sourceName(originalFileName)
-                .fileSize((int) fileSize)
-                .build();
+            .spaceId(spaceId)
+            .nodeId(nodeId)
+            .assetId(assetId)
+            .assetChecksum(assetChecksum)
+            .type(assetType.getValue())
+            .sourceName(originalFileName)
+            .fileSize((int) fileSize)
+            .build();
         this.save(entity);
         // delete the capacity cache
         spaceCapacityCacheService.del(spaceId);
@@ -106,6 +107,7 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void copyBatch(Map<String, String> newNodeMap, String destSpaceId) {
         log.info("Copy space attachment resources referenced by nodes in batches");
         if (MapUtil.isEmpty(newNodeMap)) {
@@ -119,7 +121,7 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void processNodeAssets(Map<String, String> newNodeMap,
-        String destSpaceId, List<NodeAssetDTO> assetDtoList) {
+                                  String destSpaceId, List<NodeAssetDTO> assetDtoList) {
         log.info("handles spatial attachment resources of nodes");
         if (CollUtil.isEmpty(assetDtoList)) {
             return;
@@ -152,7 +154,8 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
         }
         String nodeId = opRo.getNodeId();
         // collecting token counts, To map, which guarantees uniqueness.
-        Map<String, AssetCiteDto> tokenCountMap = calTokenCount(opRo.getAddToken(), opRo.getRemoveToken());
+        Map<String, AssetCiteDto> tokenCountMap =
+            calTokenCount(opRo.getAddToken(), opRo.getRemoveToken());
         // Obtain the attachment that the token already exists in the resource library
         List<AssetEntity> baseAssets = assetMapper.selectByFileUrl(tokenCountMap.keySet());
         // Images that differ in token across environment templates but whose checksum has been written, or images from unknown sources
@@ -162,10 +165,10 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
         }
         // Get the checksum to query for spatial attachment resources
         List<Long> assetIds =
-                baseAssets.stream().map(AssetEntity::getId).collect(Collectors.toList());
+            baseAssets.stream().map(AssetEntity::getId).collect(Collectors.toList());
         // get the spatial datasheet attachment
         Map<String, SpaceAssetDTO> spaceAssetDtoMap =
-                getSpaceAssetMapByAssetIdsAndType(spaceId, nodeId, AssetType.DATASHEET, assetIds);
+            getSpaceAssetMapByAssetIdsAndType(spaceId, nodeId, AssetType.DATASHEET, assetIds);
         List<SpaceAssetEntity> addEntities = new ArrayList<>();
         List<SpaceAssetEntity> updateEntities = new ArrayList<>();
         List<Long> delSpaceAssetId = new ArrayList<>();
@@ -174,23 +177,24 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
             // need to modify
             if (spaceAssetDtoMap.containsKey(item.getChecksum())) {
                 int cite =
-                        spaceAssetDtoMap.get(item.getChecksum()).getCite() + tokenCountMap.get(item.getFileUrl()).getCite();
+                    spaceAssetDtoMap.get(item.getChecksum()).getCite()
+                        + tokenCountMap.get(item.getFileUrl()).getCite();
                 Long id = spaceAssetDtoMap.get(item.getChecksum()).getId();
                 // Collect the id of the record whose cite is less than or equal to zero
                 if (cite <= 0) {
                     delSpaceAssetId.add(id);
-                }
-                else {
+                } else {
                     updateEntities.add(
-                            SpaceAssetEntity.builder().id(id).cite(cite).build());
+                        SpaceAssetEntity.builder().id(id).cite(cite).build());
                 }
-            }
-            else {
+            } else {
                 // need to add
-                addEntities.add(SpaceAssetEntity.builder().id(IdWorker.getId()).spaceId(spaceId).nodeId(nodeId)
+                addEntities.add(
+                    SpaceAssetEntity.builder().id(IdWorker.getId()).spaceId(spaceId).nodeId(nodeId)
                         .assetId(item.getId()).cite(tokenCountMap.get(item.getFileUrl()).getCite())
                         .assetChecksum(item.getChecksum()).type(AssetType.DATASHEET.getValue())
-                        .sourceName(tokenCountMap.get(item.getFileUrl()).getName()).fileSize(item.getFileSize())
+                        .sourceName(tokenCountMap.get(item.getFileUrl()).getName())
+                        .fileSize(item.getFileSize())
                         .isTemplate(item.getIsTemplate()).build());
             }
         });
@@ -203,7 +207,7 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
             ExceptionUtil.isTrue(insertFlag, DataSheetException.ATTACH_CITE_FAIL);
         }
         // delete a reference to a space resource（physically-deleted）
-        if (delSpaceAssetId.size() > 0) {
+        if (!delSpaceAssetId.isEmpty()) {
             boolean flag = SqlHelper.retBool(baseMapper.deleteBatchByIds(delSpaceAssetId));
             ExceptionUtil.isTrue(flag, DataSheetException.ATTACH_CITE_FAIL);
         }
@@ -212,27 +216,34 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
     }
 
     @Override
-    public Map<String, SpaceAssetDTO> getSpaceAssetMapByAssetIdsAndType(String spaceId, String nodeId,
-            AssetType assetType, List<Long> assetIds) {
+    public Map<String, SpaceAssetDTO> getSpaceAssetMapByAssetIdsAndType(String spaceId,
+                                                                        String nodeId,
+                                                                        AssetType assetType,
+                                                                        List<Long> assetIds) {
         List<SpaceAssetDTO> spaceAssetDTOList =
-                baseMapper.selectDtoByAssetIdsAndType(spaceId, nodeId, assetType.getValue(), assetIds);
-        return spaceAssetDTOList.stream().collect(Collectors.toMap(SpaceAssetDTO::getAssetChecksum, c -> c));
+            baseMapper.selectDtoByAssetIdsAndType(spaceId, nodeId, assetType.getValue(), assetIds);
+        return spaceAssetDTOList.stream()
+            .collect(Collectors.toMap(SpaceAssetDTO::getAssetChecksum, c -> c));
     }
 
     /**
-     * get token' count map
+     * get token' count map.
      *
-     * @param addTokens OI token
+     * @param addTokens    OI token
      * @param removeTokens OD token
-     * @return Map<fileUrl, AssetCiteDto>
+     * @return map
      */
     private Map<String, AssetCiteDto> calTokenCount(List<SpaceAssetOpRo.OpAssetRo> addTokens,
-            List<SpaceAssetOpRo.OpAssetRo> removeTokens) {
+                                                    List<SpaceAssetOpRo.OpAssetRo> removeTokens) {
         Map<String, AssetCiteDto> tokenCountMap = CollUtil.newHashMap();
-        addTokens.forEach(item -> tokenCountMap.put(item.getToken(), AssetCiteDto.builder().name(item.getName())
-                .cite(tokenCountMap.getOrDefault(item.getToken(), new AssetCiteDto()).getCite() + 1).build()));
-        removeTokens.forEach(item -> tokenCountMap.put(item.getToken(), AssetCiteDto.builder().name(item.getName())
-                .cite(tokenCountMap.getOrDefault(item.getToken(), new AssetCiteDto()).getCite() - 1).build()));
+        addTokens.forEach(
+            item -> tokenCountMap.put(item.getToken(), AssetCiteDto.builder().name(item.getName())
+                .cite(tokenCountMap.getOrDefault(item.getToken(), new AssetCiteDto()).getCite() + 1)
+                .build()));
+        removeTokens.forEach(
+            item -> tokenCountMap.put(item.getToken(), AssetCiteDto.builder().name(item.getName())
+                .cite(tokenCountMap.getOrDefault(item.getToken(), new AssetCiteDto()).getCite() - 1)
+                .build()));
         return tokenCountMap;
     }
 
@@ -244,12 +255,12 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
     static class AssetCiteDto {
 
         /**
-         * asset name
+         * asset name.
          */
         private String name;
 
         /**
-         * citations
+         * citations.
          */
         private int cite;
     }

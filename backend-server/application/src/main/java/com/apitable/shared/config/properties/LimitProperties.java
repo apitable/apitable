@@ -38,16 +38,6 @@ public class LimitProperties {
     public static final String PREFIX_LIMIT = "limit";
 
     /**
-     * Allow excessive use.
-     */
-    private Boolean isAllowOverLimit = Boolean.FALSE;
-
-    /**
-     * Maximum retention days of recovery cabin（Under excessive use）.
-     */
-    private Integer rubbishMaxRetainDay = 365;
-
-    /**
      * Maximum user space.
      */
     private Integer spaceMaxCount = 10;

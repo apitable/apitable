@@ -552,6 +552,8 @@ api-codegen-test:
        --additional-properties=npmVersion=0.0.1 \
        --additional-properties=useObjectParameters=true  --additional-properties=prependFormOrBodyParameters=true  -o  ./packages/api-client
 	cp -rf /tmp/api-client_package.json.bak  packages/api-client/package.json
+	@echo "api client has been generated from integration"
+	pnpm run build:api-client
 
 
 
@@ -564,3 +566,5 @@ api-codegen-integration:
        --additional-properties=npmVersion=0.0.1 \
        --additional-properties=useObjectParameters=true  --additional-properties=prependFormOrBodyParameters=true  -o  ./packages/api-client
 	cp -rf /tmp/api-client_package.json.bak  packages/api-client/package.json
+	@echo "api client has been generated from integration"
+	pnpm run build:api-client

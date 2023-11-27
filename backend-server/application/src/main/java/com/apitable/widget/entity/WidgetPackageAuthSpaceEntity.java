@@ -18,15 +18,14 @@
 
 package com.apitable.widget.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +35,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Workbench - Widget Package Auth Space Table
+ * Workbench - Widget Package Auth Space Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -53,56 +52,56 @@ public class WidgetPackageAuthSpaceEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Package ID
+     * Package ID.
      */
     private String packageId;
 
     /**
-     * Space ID(link#xxxx_space#space_id)
+     * Space ID(link#xxxx_space#space_id).
      */
     private String spaceId;
 
     /**
-     * Widget package authorization type (0: binding space - cannot be deleted, the same widget package can be jointly managed by the "development permission" administrator of the space; global widgets can also be used for upgrading and other needs; 1: authorized space - only space station widgets can be used for authorizing other spaces)
+     * Widget package authorization type (0: binding space - cannot be deleted, the same widget package can be jointly managed by the "development permission" administrator of the space; global widgets can also be used for upgrading and other needs; 1: authorized space - only space station widgets can be used for authorizing other spaces).
      */
     private Integer type;
 
     /**
-     * Sequence number, space station components start from 10000
+     * Sequence number, space station components start from 10000.
      */
     private Integer widgetSort;
 
     /**
-     * Delete Tag(0: No, 1: Yes)
+     * Delete Tag(0: No, 1: Yes).
      */
     @TableLogic
     private Boolean isDeleted;
 
     /**
-     * Creator
+     * Creator.
      */
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
 
     /**
-     * Last Update By
+     * Last Update By.
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updatedBy;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

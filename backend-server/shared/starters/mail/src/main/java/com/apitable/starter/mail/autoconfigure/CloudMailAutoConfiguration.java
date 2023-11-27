@@ -31,7 +31,7 @@ import org.springframework.context.annotation.Import;
 
 /**
  * <p>
- * Cloud platform email push automation configuration
+ * Cloud platform email push automation configuration.
  * </p>
  *
  * @author Chambers

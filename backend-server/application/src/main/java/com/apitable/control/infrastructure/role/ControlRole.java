@@ -18,20 +18,21 @@
 
 package com.apitable.control.infrastructure.role;
 
+import com.apitable.control.infrastructure.permission.PermissionDefinition;
+import com.apitable.space.vo.SpaceGlobalFeature;
 import java.util.Map;
 import java.util.Set;
 
-import com.apitable.control.infrastructure.permission.PermissionDefinition;
-import com.apitable.space.vo.SpaceGlobalFeature;
-
 /**
- * role attribute interface
+ * role attribute interface.
+ *
  * @author Shawn Deng
  */
 public interface ControlRole extends RoleComparable<ControlRole> {
 
     /**
-     * Whether it is possible to set assignment to organizational unit
+     * Whether it is possible to set assignment to organizational unit.
+     *
      * @return false | true
      */
     default boolean canAssignable() {
@@ -39,7 +40,8 @@ public interface ControlRole extends RoleComparable<ControlRole> {
     }
 
     /**
-     * is it an administrator
+     * is it an administrator.
+     *
      * @return false | true
      */
     default boolean isAdmin() {
@@ -47,51 +49,58 @@ public interface ControlRole extends RoleComparable<ControlRole> {
     }
 
     /**
-     * whether roles are inherited
+     * whether roles are inherited.
+     *
      * @return false | true
      */
     boolean isInherit();
 
     /**
-     * role tag
+     * role tag.
+     *
      * @return role tag name
      */
     String getRoleTag();
 
     /**
-     * permission sets for roles
+     * permission sets for roles.
+     *
      * @return permission sets
      */
     Set<PermissionDefinition> getPermissions();
 
     /**
-     * permission set placeholder grouping
+     * permission set placeholder grouping.
+     *
      * @return group placeholder
      */
     Map<Integer, Long> getGroupPermissionBit();
 
     /**
-     * bitwise operation result of role permissions
+     * bitwise operation result of role permissions.
+     *
      * @return long
      */
     long getBits();
 
     /**
-     * whether it contain a permission
+     * whether it contain a permission.
+     *
      * @param permission permission
      * @return false | true
      */
     boolean hasPermission(PermissionDefinition permission);
 
     /**
-     * assign a permission set to a class instance
+     * assign a permission set to a class instance.
+     *
      * @param beanClass instance class
      * @return new instance object
      */
     <T> T permissionToBean(Class<T> beanClass);
 
     /**
-     * assign a permission set to a class instance
+     * assign a permission set to a class instance.
      *
      * @param beanClass instance class
      * @param feature   spatial global properties

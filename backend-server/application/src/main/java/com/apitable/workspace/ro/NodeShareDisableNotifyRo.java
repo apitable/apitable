@@ -19,14 +19,13 @@
 package com.apitable.workspace.ro;
 
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * Node share close notification request parameters
+ * Node share close notification request parameters.
  * </p>
  */
 @Data

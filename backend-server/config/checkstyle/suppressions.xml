@@ -4,4 +4,7 @@
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 <suppressions>
     <suppress files="src[\\/]main[\\/]java[\\/]com[\\/]apitable[\\/]databusclient[\\/]" checks="[a-zA-Z0-9]*" />
+    <suppress files="src[\\/]main[\\/]java[\\/]com[\\/]apitable[\\/]enterprise[\\/]" checks="[a-zA-Z0-9]*" />
+    <suppress files="src[\\/]test[\\/]" checks="[a-zA-Z0-9]*" />
+    <suppress files="build[\\/]generated[\\/]" checks="[a-zA-Z0-9]*" />
 </suppressions>

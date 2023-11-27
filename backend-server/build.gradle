@@ -1,42 +1,33 @@
 plugins {
-  id("io.spring.dependency-management")
-  id("org.jetbrains.kotlin.jvm") apply false // https://youtrack.jetbrains.com/issue/KT-30276
-  id "checkstyle"
+    id "checkstyle"
 }
-
-apply from: 'lib.gradle'
 
 defaultTasks("build")
 
 allprojects {
-  group = "com.apitable"
-  
-  repositories {
-    mavenCentral()
-    // for ping++ sdk
-    maven { url = uri("https://jcenter.bintray.com") }
-  }
+    group = "com.apitable"
+
+    repositories {
+        mavenCentral()
+        // for pingpp sdk
+        maven { url = uri("https://jcenter.bintray.com") }
+    }
 }
 
-subprojects {
-  apply plugin: 'io.spring.dependency-management'
-  apply plugin: 'checkstyle'
+def checkstyleVersion = libs.versions.checkstyle.get()
 
-  dependencyManagement {
-    imports {
-      mavenBom("org.springframework.boot:spring-boot-dependencies:${spring_boot_version}")
-      mavenBom("org.springframework.cloud:spring-cloud-dependencies:${spring_cloud_version}")
-      mavenBom("de.codecentric:spring-boot-admin-dependencies:${spring_boot_admin_version}")
-      mavenBom("com.amazonaws:aws-java-sdk-bom:${aws_java_sdk_version}")
-      mavenBom("io.grpc:grpc-bom:${io_grpc_version}")
-      mavenBom("com.google.protobuf:protobuf-bom:${protobuf_java_version}")
-      mavenBom("org.springframework.cloud:spring-cloud-sleuth-otel-dependencies:${spring_cloud_sleuth_otel_version}")
+subprojects {
+    apply plugin: 'checkstyle'
+
+    checkstyle {
+        toolVersion = checkstyleVersion
+        ignoreFailures = false
+        maxWarnings = 0
     }
-  }
-  
-  configurations.configureEach {
-    resolutionStrategy {
-      cacheChangingModulesFor 0, 'seconds'
+
+    configurations.configureEach {
+        resolutionStrategy {
+            cacheChangingModulesFor 0, 'seconds'
+        }
     }
-  }
 }

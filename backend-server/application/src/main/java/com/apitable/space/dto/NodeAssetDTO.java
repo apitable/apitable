@@ -20,6 +20,9 @@ package com.apitable.space.dto;
 
 import lombok.Data;
 
+/**
+ * node asset dto.
+ */
 @Data
 public class NodeAssetDTO {
 

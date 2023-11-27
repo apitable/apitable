@@ -23,6 +23,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * create node dto.
+ */
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor

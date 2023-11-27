@@ -81,6 +81,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * unit service implementation.
+ */
 @Slf4j
 @Service
 public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
@@ -157,6 +160,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean createBatch(List<UnitEntity> unitEntities) {
         log.info("Batch create unit.");
         return saveBatch(unitEntities);
@@ -339,6 +343,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
                     List<Long> roleMemberIds =
                         iRoleMemberService.getMemberIdsByRoleIds(entry.getValue());
                     memberIds.addAll(roleMemberIds);
+                    break;
                 default:
                     break;
             }
@@ -618,7 +623,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
                                                          boolean sensitiveData, Page<Long> page) {
         IPage<Long> memberIds =
             teamMemberRelMapper.selectMemberIdsByTeamIdAndPage(page, parentTeamId);
-        if (memberIds.getRecords().size() == 0) {
+        if (memberIds.getRecords().isEmpty()) {
             return PageHelper.build((int) memberIds.getCurrent(), (int) memberIds.getSize(),
                 (int) memberIds.getTotal(), new ArrayList<>());
         }

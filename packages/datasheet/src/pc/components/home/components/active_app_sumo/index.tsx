@@ -28,7 +28,7 @@ export const ActiveAppSumo = () => {
       await signUpReq(state, password!);
       Message.success({ content: 'Activation successful' });
       setTimeout(() => {
-        Router.push(Navigation.WORKBENCH);
+        Router.redirect(Navigation.SPACE_MANAGE, { params: { pathInSpace: 'billing' } });
       }, 2000);
     } catch (e) {
       Message.error({ content: e.message });

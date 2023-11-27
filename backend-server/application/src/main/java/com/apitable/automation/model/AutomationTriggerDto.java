@@ -20,6 +20,9 @@ package com.apitable.automation.model;
 
 import lombok.Data;
 
+/**
+ * automation trigger dto.
+ */
 @Data
 public class AutomationTriggerDto {
 

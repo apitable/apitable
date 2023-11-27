@@ -20,7 +20,7 @@ package com.apitable.shared.constants;
 
 /**
  * <p>
- * asset public constants
+ * asset public constants.
  * </p>
  *
  * @author Benson Cheung
@@ -28,18 +28,18 @@ package com.apitable.shared.constants;
 public class AssetsPublicConstants {
 
     /**
-     * space scope asset prefix
+     * space scope asset prefix.
      */
     public static final String SPACE_PREFIX = "space";
 
     /**
-     * developer asset prefix
+     * developer asset prefix.
      */
     @Deprecated
     public static final String DEVELOP_PREFIX = "develop";
 
     /**
-     * public asset prefix
+     * public asset prefix.
      */
     public static final String PUBLIC_PREFIX = "public";
 

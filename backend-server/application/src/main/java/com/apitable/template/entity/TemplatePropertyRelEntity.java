@@ -18,11 +18,10 @@
 
 package com.apitable.template.entity;
 
-import java.io.Serializable;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +31,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Template Center - Template Property Rel Table
+ * Template Center - Template Property Rel Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -49,28 +48,28 @@ public class TemplatePropertyRelEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Custom Template ID
+     * Custom Template ID.
      */
     private String templateId;
 
     /**
-     * Property ID(link#xxxx_template_property#id)
+     * Property ID(link#xxxx_template_property#id).
      */
     private Long propertyId;
 
     /**
-     * Property Code
+     * Property Code.
      */
     private String propertyCode;
 
     /**
-     * Attribute Order
+     * Attribute Order.
      */
     private Integer propertyOrder;
 

@@ -18,71 +18,70 @@
 
 package com.apitable.core.support.tree.v2;
 
+import cn.hutool.core.util.ArrayUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.hutool.core.util.ArrayUtil;
-
 /**
  * <p>
- * V2 interface: the tree node's behavior
+ * V2 interface: the tree node's behavior.
  * </p>
  */
 @SuppressWarnings("unchecked")
 public interface Tree extends Serializable {
 
     /**
-     * get the node's id
+     * get the node's id.
      *
      * @return node id
      */
     String getId();
 
     /**
-     * get the parent node's id
+     * get the parent node's id.
      *
      * @return the parent node id
      */
     String getParentId();
 
     /**
-     * set the parent node's id
+     * set the parent node's id.
      *
-     * @param parentId  the parent node id
+     * @param parentId the parent node id
      */
     void setParentId(String parentId);
 
     /**
-     * get the child nodes
+     * get the child nodes.
      *
      * @return the list of children nodes
      */
     List getChildren();
 
     /**
-     * set the child nodes
+     * set the child nodes.
      *
      * @param children the list of children nodes
      */
     void setChildren(List children);
 
     /**
-     * set the tree level
+     * set the tree level.
      *
      * @param level the tree level
      */
     void setLevel(int level);
 
     /**
-     * get the tree level
+     * get the tree level.
      *
      * @return the tree level
      */
     int getLevel();
 
     /**
-     * add child node，and set the child node's parent node is this node
+     * add child node，and set the child node's parent node is this node.
      *
      * @param children the list of children nodes
      * @return this

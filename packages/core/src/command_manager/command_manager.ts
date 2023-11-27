@@ -122,7 +122,9 @@ export class CollaCommandManager {
 
     if ('resourceId' in options) {
       resourceId = options.resourceId;
-      resourceType = options.resourceType;
+      if(options.resourceType) {
+        resourceType = options.resourceType;
+      }
     }
 
     if (!resourceId) {

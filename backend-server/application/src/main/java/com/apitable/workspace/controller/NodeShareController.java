@@ -56,7 +56,6 @@ import com.apitable.workspace.vo.ShareBaseInfoVo;
 import com.apitable.workspace.vo.StoreNodeInfoVO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -128,7 +127,8 @@ public class NodeShareController {
     @Parameter(name = "nodeId", description = "node id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9")
     public ResponseData<ShareBaseInfoVo> updateNodeShare(@PathVariable("nodeId") String nodeId,
-        @RequestBody @Valid UpdateNodeShareSettingRo body) {
+                                                         @RequestBody
+                                                         @Valid UpdateNodeShareSettingRo body) {
         // get operator information
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         SpaceHolder.set(spaceId);

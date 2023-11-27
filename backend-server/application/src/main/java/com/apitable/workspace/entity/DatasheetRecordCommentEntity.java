@@ -18,15 +18,14 @@
 
 package com.apitable.workspace.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +35,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Workbench - Datasheet Record Comment Table
+ * Workbench - Datasheet Record Comment Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -53,66 +52,66 @@ public class DatasheetRecordCommentEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Datasheet ID
+     * Datasheet ID.
      */
     private String dstId;
 
     /**
-     * Record ID
+     * Record ID.
      */
     private String recordId;
 
     /**
-     * chengeset generated comment_id
+     * chengeset generated comment_id.
      */
     private String commentId;
 
     /**
-     * Comment rich text content
+     * Comment rich text content.
      */
     private String commentMsg;
 
     /**
-     * Record version number
+     * Record version number.
      */
     private Long revision;
 
     /**
-     * Delete tag (0: No, 1: Yes)
+     * Delete tag (0: No, 1: Yes).
      */
     @TableLogic
     private Boolean isDeleted;
 
     /**
-     * Operation User Unit ID(link#xxxx_unit#id)
+     * Operation User Unit ID(link#xxxx_unit#id).
      */
     private Long unitId;
 
     /**
-     * Creator
+     * Creator.
      */
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
 
     /**
-     * Last Update By
+     * Last Update By.
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updatedBy;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

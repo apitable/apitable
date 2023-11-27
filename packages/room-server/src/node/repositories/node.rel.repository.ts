@@ -16,13 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { NodeRelEntity } from '../entities/node.rel.entity';
-import { NodeRelInfo } from '../../database/interfaces/internal';
 import { EntityRepository, In, Repository } from 'typeorm';
+import { NodeRelInfo } from '../../database/interfaces/internal';
+import { NodeRelEntity } from '../entities/node.rel.entity';
 
 @EntityRepository(NodeRelEntity)
 export class NodeRelRepository extends Repository<NodeRelEntity> {
-
   public async selectMainNodeIdByRelNodeId(relNodeId: string): Promise<{ mainNodeId: string } | undefined> {
     return await this.findOne({
       select: ['mainNodeId'],
@@ -33,8 +32,8 @@ export class NodeRelRepository extends Repository<NodeRelEntity> {
   public async selectRelNodeIdsByMainNodeIds(mainNodeIds: string[]): Promise<string[]> {
     return await this.find({
       select: ['relNodeId'],
-      where: [{ mainNodeId : In(mainNodeIds) }],
-    }).then(res => res.map(res => res.relNodeId));
+      where: [{ mainNodeId: In(mainNodeIds) }],
+    }).then((res) => res.map((res) => res.relNodeId));
   }
 
   public async selectRelNodeIdByMainNodeId(mainNodeId: string): Promise<NodeRelEntity[]> {
@@ -71,5 +70,9 @@ export class NodeRelRepository extends Repository<NodeRelEntity> {
       .leftJoin(`${this.manager.connection.options.entityPrefix}datasheet`, 'vd', 'vn.node_id = vd.dst_id')
       .where('vnr.rel_node_id IN(:...relNodeIds)', { relNodeIds })
       .getRawMany();
+  }
+
+  public async selectRelNodeInfoByMainNodeIds(mainNodeIds: string[]): Promise<NodeRelEntity[]> {
+    return await this.find({ where: { mainNodeId: In(mainNodeIds) }, select: ['relNodeId', 'mainNodeId'] });
   }
 }

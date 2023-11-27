@@ -247,7 +247,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
         log.info("get admin info");
         MemberEntity memberEntity = iMemberService.getById(memberId);
         ExceptionUtil.isTrue(memberEntity != null
-                && spaceId.equals(memberEntity.getSpaceId()), MEMBER_NOT_IN_SPACE);
+            && spaceId.equals(memberEntity.getSpaceId()), MEMBER_NOT_IN_SPACE);
         SpaceRoleDetailVo spaceRoleDetailVo = new SpaceRoleDetailVo();
         spaceRoleDetailVo.setMemberName(memberEntity.getMemberName());
 

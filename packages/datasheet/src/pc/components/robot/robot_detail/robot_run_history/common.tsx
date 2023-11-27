@@ -29,8 +29,6 @@ interface IKeyValueDisplayProps {
 export const KeyValueDisplay = (props: IKeyValueDisplayProps) => {
     const {label, value} = props;
     const theme = useTheme();
-    console.log('KeyValueDisplay value', value)
-    console.log('KeyValueDisplay lable', value)
     if (!value) return null;
     return (
         <Box>

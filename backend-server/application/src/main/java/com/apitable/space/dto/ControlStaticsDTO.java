@@ -23,7 +23,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Permission Statistics Vo
+ * Permission Statistics Vo.
  */
 @Data
 @NoArgsConstructor

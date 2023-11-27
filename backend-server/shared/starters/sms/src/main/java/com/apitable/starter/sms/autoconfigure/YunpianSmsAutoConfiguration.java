@@ -18,14 +18,12 @@
 
 package com.apitable.starter.sms.autoconfigure;
 
-import com.yunpian.sdk.YunpianClient;
-
 import com.apitable.starter.sms.autoconfigure.SmsProperties.SmsServer.Yunpian;
 import com.apitable.starter.sms.core.LocalSmsSenderFactory;
 import com.apitable.starter.sms.core.OutlandSmsSenderFactory;
 import com.apitable.starter.sms.core.YunpianLocalSmsSenderFactory;
 import com.apitable.starter.sms.core.YunpianOutlandSmsSenderFactory;
-
+import com.yunpian.sdk.YunpianClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -34,7 +32,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>
- * autoconfiguration of yunpian sms
+ * autoconfiguration of yunpian sms.
  * </p>
  *
  * @author Chambers

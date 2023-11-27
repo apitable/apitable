@@ -27,13 +27,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Object Storage Auto Configuration
+ * Object Storage Auto Configuration.
  *
  * @author Benson Cheung
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(OssProperties.class)
-@ConditionalOnProperty(value = { "starter.oss.enabled", "starter.oss.signature.enabled" },
+@ConditionalOnProperty(value = {"starter.oss.enabled", "starter.oss.signature.enabled"},
     havingValue = "true")
 public class OssSignatureAutoConfiguration {
 
@@ -43,6 +43,11 @@ public class OssSignatureAutoConfiguration {
         this.properties = properties;
     }
 
+    /**
+     * register oss signature template.
+     *
+     * @return oss signature template
+     */
     @Bean
     @ConditionalOnMissingBean
     public OssSignatureTemplate ossSignatureTemplate() {

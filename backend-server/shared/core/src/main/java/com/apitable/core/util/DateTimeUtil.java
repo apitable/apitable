@@ -30,23 +30,24 @@ import java.util.Objects;
 
 /**
  * <p>
- * date time tool
+ * date time tool.
  * </p>
  */
 public class DateTimeUtil {
 
     /**
-     * HH:mmZ
+     * HH:mmZ.
      */
     public static final DateTimeFormatter HOUR_MINUTE_ZONE = DateTimeFormatter.ofPattern("HH:mmZ");
 
     /**
-     * HH:mm:ssZ
+     * HH:mm:ssZ.
      */
-    public static final DateTimeFormatter HOUR_MINUTE_SECOND_ZONE = DateTimeFormatter.ofPattern("HH:mm:ssZ");
+    public static final DateTimeFormatter HOUR_MINUTE_SECOND_ZONE =
+        DateTimeFormatter.ofPattern("HH:mm:ssZ");
 
     /**
-     * gets the current time's {@link LocalTime}
+     * gets the current time's {@link LocalTime}.
      *
      * @param zoneOffset time zone offset
      * @return the current time
@@ -56,7 +57,7 @@ public class DateTimeUtil {
     }
 
     /**
-     * string to {@link LocalTime}
+     * string to {@link LocalTime}.
      *
      * @param source    the datetime string
      * @param formatter format of the datetime string
@@ -67,7 +68,7 @@ public class DateTimeUtil {
     }
 
     /**
-     * gets the current time's {@link LocalDateTime}
+     * gets the current time's {@link LocalDateTime}.
      *
      * @param zoneOffset time zone offset
      * @return the current time
@@ -77,16 +78,17 @@ public class DateTimeUtil {
     }
 
     /**
-     * Gets the time's {@link LocalDateTime} of the current offset
+     * Gets the time's {@link LocalDateTime} of the current offset.
      *
-     * @param zoneOffset    time zone offset
-     * @param plusDays      offset days
-     * @param plusHours     offset hours
-     * @param plusMinutes   offset minutes
-     * @param plusSeconds   offset seconds
+     * @param zoneOffset  time zone offset
+     * @param plusDays    offset days
+     * @param plusHours   offset hours
+     * @param plusMinutes offset minutes
+     * @param plusSeconds offset seconds
      * @return the offset datetime
      */
-    public static LocalDateTime localDateTimeFromNow(int zoneOffset, int plusDays, int plusHours, int plusMinutes, int plusSeconds) {
+    public static LocalDateTime localDateTimeFromNow(int zoneOffset, int plusDays, int plusHours,
+                                                     int plusMinutes, int plusSeconds) {
         LocalDateTime now = localDateTimeNow(zoneOffset);
         if (plusDays != 0) {
             now = now.plusDays(plusDays);
@@ -105,10 +107,10 @@ public class DateTimeUtil {
     }
 
     /**
-     * the unix timestamp to {@link LocalDateTime}
+     * the unix timestamp to {@link LocalDateTime}.
      *
-     * @param epochSeconds  Unix timestamp. unit：second
-     * @param zoneOffset    the offset time zone
+     * @param epochSeconds Unix timestamp. unit：second
+     * @param zoneOffset   the offset time zone
      * @return the converted time
      */
     public static LocalDateTime localDateTimeFromSeconds(Long epochSeconds, int zoneOffset) {
@@ -116,14 +118,15 @@ public class DateTimeUtil {
     }
 
     /**
-     * the unix timestamp to  {@link LocalDateTime}
+     * the unix timestamp to  {@link LocalDateTime}.
      *
-     * @param epochSeconds  Unix timestamp. unit：second
-     * @param zoneOffset    the offset time zone
-     * @param allowZero     if false, when epochSeconds is 0, return null.
+     * @param epochSeconds Unix timestamp. unit：second
+     * @param zoneOffset   the offset time zone
+     * @param allowZero    if false, when epochSeconds is 0, return null.
      * @return the converted time
      */
-    public static LocalDateTime localDateTimeFromSeconds(Long epochSeconds, int zoneOffset, boolean allowZero) {
+    public static LocalDateTime localDateTimeFromSeconds(Long epochSeconds, int zoneOffset,
+                                                         boolean allowZero) {
         if (Objects.isNull(epochSeconds) || epochSeconds == 0L && !allowZero) {
             return null;
         }
@@ -137,14 +140,15 @@ public class DateTimeUtil {
     }
 
     /**
-     * calculate the difference between two natural times
+     * calculate the difference between two natural times.
      *
      * @param startTime starting time
      * @param endTime   ending time
      * @param field     the unit for calculating the difference
      * @return long     the difference in natural time
      */
-    public static long between(TemporalAccessor startTime, TemporalAccessor endTime, ChronoField field) {
+    public static long between(TemporalAccessor startTime, TemporalAccessor endTime,
+                               ChronoField field) {
         return endTime.getLong(field) - startTime.getLong(field);
     }
 

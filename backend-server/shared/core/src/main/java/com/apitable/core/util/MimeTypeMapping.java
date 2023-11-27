@@ -26,21 +26,20 @@ import java.util.Scanner;
 
 /**
  * <p>
- * MimeType Matching tool
+ * MimeType Matching tool.
  * </p>
- *
  */
 public class MimeTypeMapping {
 
     /**
      * Hashmaps with registered extensions and mime types.
      */
-    private static HashMap<String, String> fileExtensionToMimeType;
+    private static final HashMap<String, String> fileExtensionToMimeType;
 
     /**
      * Hashmaps with registered extensions and mime types.
      */
-    private static HashMap<String, String> mimeTypeToFileExtension;
+    private static final HashMap<String, String> mimeTypeToFileExtension;
 
     static {
         String[] lines = readMimeTypeLines();
@@ -56,12 +55,11 @@ public class MimeTypeMapping {
 
     /**
      * Get mime type that matches filename extension.
-     * <p>
+     * </p>
      * For example, {@code extensionToMimeType("jpeg")} will result in "image/jpeg".
      *
      * @param extension filename extension to find mime type for
-     * @return mime type, if there exists known mime type for specified extension or
-     * {@code null} if no mime type is known
+     * @return mime type, if there exists known mime type for specified extension or {@code null} if no mime type is known
      */
     public static String extensionToMimeType(String extension) {
         return fileExtensionToMimeType.get(extension);
@@ -69,13 +67,12 @@ public class MimeTypeMapping {
 
     /**
      * Get filename extension that matches mime type.
-     * <p>
+     * </p>
      * For example, {@code mimeTypeToExtension("image/jpeg")} will result in "jpeg"
      * without dot symbol before extension.
      *
      * @param mimeType mime type to find filename extension for
-     * @return filename extension, if there exists known extension for specified mime type or
-     * {@code null} if no extension is known
+     * @return filename extension, if there exists known extension for specified mime type or {@code null} if no extension is known
      */
     public static String mimeTypeToExtension(String mimeType) {
         String suffix = mimeTypeToFileExtension.get(mimeType);
@@ -84,7 +81,7 @@ public class MimeTypeMapping {
 
     /**
      * Get text of mime.types file as array of strings.
-     * <p>
+     * </p>
      * mime.types file must packaged as resource. It is not read from filesystem.
      *
      * @return Array of lines from mime.types text file
@@ -106,7 +103,7 @@ public class MimeTypeMapping {
     private static void registerMimeTypeLine(String line) {
         line = line.trim();
 
-        if ("".equals(line)) {
+        if (line.isEmpty()) {
             // Skip empty lines
             return;
         }

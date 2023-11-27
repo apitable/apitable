@@ -18,12 +18,11 @@
 
 package com.apitable.space.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +32,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Invitation Record Audit Table
+ * Invitation Record Audit Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -50,33 +49,33 @@ public class AuditInviteRecordEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * [Redundancy]Space ID(link#xxxx_space#space_id)
+     * [Redundancy]Space ID(link#xxxx_space#space_id).
      */
     private String spaceId;
 
     /**
-     * Inviter Member ID(link#xxxx_unit_member#id)
+     * Inviter Member ID(link#xxxx_unit_member#id).
      */
     private Long inviter;
 
     /**
-     * Invitee Member ID(link#xxxx_unit_member#id)
+     * Invitee Member ID(link#xxxx_unit_member#id).
      */
     private Long accepter;
 
     /**
-     * Invited Type (0: Email Invitation; 1: File Import; 2: Link Invitation)
+     * Invited Type (0: Email Invitation; 1: File Import; 2: Link Invitation).
      */
     private Integer type;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 

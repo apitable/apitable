@@ -19,7 +19,6 @@
 package com.apitable.shared.config;
 
 import javax.annotation.Resource;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.session.FindByIndexNameSessionRepository;
@@ -27,7 +26,8 @@ import org.springframework.session.Session;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
 /**
- * Session Repository config
+ * Session Repository config.
+ *
  * @author Shawn Deng
  */
 @Configuration(proxyBeanMethods = false)

@@ -23,7 +23,7 @@ import lombok.Getter;
 
 /**
  * <p>
- * date formatter enum
+ * date formatter enum.
  * </p>
  *
  * @author Chambers
@@ -38,6 +38,14 @@ public enum TimeFormat {
 
     private final String pattern;
 
+    /**
+     * <p>
+     * get pattern by type.
+     * </p>
+     *
+     * @param type type
+     * @return pattern
+     */
     public static String getPattern(int type) {
         for (TimeFormat format : TimeFormat.values()) {
             if (format.getType() == type) {

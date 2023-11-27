@@ -18,7 +18,6 @@
 
 package com.apitable.organization.vo;
 
-import com.apitable.core.support.serializer.NumberListToStringListSerializer;
 import com.apitable.shared.support.serializer.ImageSerializer;
 import com.apitable.shared.support.serializer.NullArraySerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;

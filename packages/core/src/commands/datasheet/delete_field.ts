@@ -42,7 +42,7 @@ export const deleteField: ICollaCommandDef<IDeleteFieldOptions> = {
   execute: (context, options) => {
     const { state: state } = context;
     const { data, datasheetId: _datasheetId } = options;
-    const datasheetId = Selectors.getActiveDatasheetId(state)!;
+    const datasheetId = options.datasheetId ?? Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, _datasheetId || datasheetId);
     if (!snapshot) {
       return null;
@@ -74,7 +74,9 @@ export const deleteField: ICollaCommandDef<IDeleteFieldOptions> = {
       }
 
       let action = DatasheetActions.deleteField2Action(snapshot, {
-        fieldId, datasheetId, viewId
+        fieldId,
+        datasheetId,
+        viewId,
       });
 
       if (!action) {

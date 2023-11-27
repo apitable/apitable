@@ -37,45 +37,35 @@ import { EditType } from '../trigger/robot_trigger';
 import { getActionList, getTriggerList } from '../utils';
 import { LinkButton } from './link';
 import { RobotAction } from './robot_action';
-import {
-  CreateNewAction,
-  CreateNewActionLineButton,
-} from './robot_action_create';
+import { CreateNewAction, CreateNewActionLineButton } from './robot_action_create';
 
-
-export const RobotActions = ({
-  robotId,
-  triggerTypes,
-}: {
-  robotId: string;
-  triggerTypes: ITriggerType[];
-  onScrollBottom?: () => void;
-}) => {
+export const RobotActions = ({ robotId, triggerTypes }: { robotId: string; triggerTypes: ITriggerType[]; onScrollBottom?: () => void }) => {
   const { data: actionTypes } = useActionTypes();
   const robot = useAtomValue(automationStateAtom);
   const permissions = useAutomationResourcePermission();
-  const actions = (robot?.robot?.actions ?? []).map(action => ({ ...action,
-    typeId: action.actionTypeId,
-    id: action.actionId }));
-  const activeDstId = useSelector(Selectors.getActiveDatasheetId);
+  const actions = (robot?.robot?.actions ?? []).map((action) => ({ ...action, typeId: action.actionTypeId, id: action.actionId }));
 
   const setActions = useSetAtom(automationActionsAtom);
-  useEffect(( ) => {
-    if(actions) {
+  useEffect(() => {
+    if (actions) {
       setActions(actions);
     }
   }, [actions, setActions]);
-  const entryActionId = actions?.find((item: any) => item.prevActionId == '' || item.prevActionId == null )?.actionId;
+  const entryActionId = actions?.find((item: any) => item.prevActionId == '' || item.prevActionId == null)?.actionId;
 
   const actionList = useMemo(() => getActionList(actions), [actions]);
 
   const triggers = getTriggerList(robot?.robot?.triggers ?? []);
-  const { data: dataList1 } = useSWR(['getRobotMagicDatasheet', triggers], () => getTriggerDatasheetId(triggers), {
-  });
+  const { data: dataList1 } = useSWR(['getRobotMagicDatasheet', triggers], () => getTriggerDatasheetId(triggers), {});
+  const activeDstId = useAppSelector(Selectors.getActiveDatasheetId);
 
   const dataSheetMap = useAppSelector((state: IReduxState) => state.datasheetMap);
 
-  const triggerDataSheetIds : IFetchedDatasheet[] = robot?.scenario === AutomationScenario?.datasheet ? Array.from({ length: triggers.length }, () => activeDstId) : (dataList1 ?? []) as IFetchedDatasheet[];
+  const triggerDataSheetIds: IFetchedDatasheet[] =
+    robot?.scenario === AutomationScenario?.datasheet
+      ? Array.from({ length: triggers.length }, () => activeDstId)
+      : ((dataList1 ?? []) as IFetchedDatasheet[]);
+
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
     actionTypes,
@@ -87,10 +77,12 @@ export const RobotActions = ({
 
   if (!entryActionId) {
     return (
-      <CreateNewAction robotId={robotId} actionTypes={actionTypes} disabled={
-        triggers.length==0 ||
-        !permissions?.editable
-      } nodeOutputSchemaList={nodeOutputSchemaList}/>
+      <CreateNewAction
+        robotId={robotId}
+        actionTypes={actionTypes}
+        disabled={triggers.length == 0 || !permissions?.editable}
+        nodeOutputSchemaList={nodeOutputSchemaList}
+      />
     );
   }
 
@@ -117,43 +109,32 @@ export const RobotActions = ({
                   })}
                   placement={'top'}
                 >
-                  <LinkButton disabled={actionList?.length >= CONST_MAX_ACTION_COUNT
-                      || !permissions.editable
-                  } />
+                  <LinkButton disabled={actionList?.length >= CONST_MAX_ACTION_COUNT || !permissions.editable} />
                 </OrTooltip>
               </span>
             </CreateNewActionLineButton>
           )}
-          <RobotAction
-            editType={EditType.entry}
-            index={index + 1}
-            action={action}
-            robotId={robotId}
-          />
+          <RobotAction editType={EditType.entry} index={index + 1} action={action} robotId={robotId} />
         </Box>
       ))}
 
       <OrEmpty visible={permissions?.editable}>
-
         <OrTooltip
-          tooltipEnable={
-            actionList?.length >= CONST_MAX_ACTION_COUNT
-          }
+          tooltipEnable={actionList?.length >= CONST_MAX_ACTION_COUNT}
           tooltip={t(Strings.automation_action_num_warning, {
             value: CONST_MAX_ACTION_COUNT,
-          })} placement={'top'}>
+          })}
+          placement={'top'}
+        >
           <CreateNewAction
             nodeOutputSchemaList={nodeOutputSchemaList}
-            disabled={actionList?.length >= CONST_MAX_ACTION_COUNT ||
-              !permissions?.editable
-            }
+            disabled={actionList?.length >= CONST_MAX_ACTION_COUNT || !permissions?.editable}
             robotId={robotId}
             actionTypes={actionTypes}
             prevActionId={actionList[actionList.length - 1]?.id}
           />
         </OrTooltip>
-
       </OrEmpty>
-    </Box >
+    </Box>
   );
 };

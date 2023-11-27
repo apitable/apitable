@@ -66,17 +66,14 @@ import com.apitable.space.service.ISpaceService;
 import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.user.dto.UserLangDTO;
 import com.apitable.user.service.IUserService;
-
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
@@ -146,14 +143,14 @@ public class SpaceApplyServiceImpl implements ISpaceApplyService {
     public void sendApplyNotify(Long userId, String spaceId, Long applyId) {
         // generate and send notifications
         NotificationRenderFieldHolder.set(NotificationRenderField.builder()
-                .spaceId(spaceId)
-                .bodyExtras(Dict.create()
-                        .set(APPLY_ID, applyId)
-                        .set(APPLY_STATUS, SpaceApplyStatus.PENDING.getStatus()))
-                .fromUserId(userId)
-                .build());
+            .spaceId(spaceId)
+            .bodyExtras(Dict.create()
+                .set(APPLY_ID, applyId)
+                .set(APPLY_STATUS, SpaceApplyStatus.PENDING.getStatus()))
+            .fromUserId(userId)
+            .build());
         List<Long> memberIds =
-                spaceMemberRoleRelService.getMemberIdListByResourceGroupCodes(spaceId,
+            spaceMemberRoleRelService.getMemberIdListByResourceGroupCodes(spaceId,
                 ListUtil.toList(NotificationConstants.TO_MANAGE_MEMBER_RESOURCE_CODE));
         SpaceEntity space = iSpaceService.getBySpaceId(spaceId);
         if (space.getOwner() != null) {
@@ -171,12 +168,12 @@ public class SpaceApplyServiceImpl implements ISpaceApplyService {
         String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
         List<UserLangDTO> emailsWithLang = userService.getLangByEmails(defaultLang, emails);
         List<MailWithLang> tos = emailsWithLang.stream()
-                .map(emailWithLang ->
-                        new MailWithLang(emailWithLang.getLocale(),
-                                emailWithLang.getEmail()))
-                .collect(Collectors.toList());
+            .map(emailWithLang ->
+                new MailWithLang(emailWithLang.getLocale(),
+                    emailWithLang.getEmail()))
+            .collect(Collectors.toList());
         TaskManager.me().execute(() ->
-                NotifyMailFactory.me().sendMail(SUBJECT_SPACE_APPLY, dict, dict, tos));
+            NotifyMailFactory.me().sendMail(SUBJECT_SPACE_APPLY, dict, dict, tos));
     }
 
     @Override
@@ -218,7 +215,7 @@ public class SpaceApplyServiceImpl implements ISpaceApplyService {
                                    String applyStatusKey) {
         // verify whether the applicant is already in space
         Long memberId =
-                iMemberService.getMemberIdByUserIdAndSpaceId(apply.getCreatedBy(), apply.getSpaceId());
+            iMemberService.getMemberIdByUserIdAndSpaceId(apply.getCreatedBy(), apply.getSpaceId());
         if (memberId != null) {
             spaceApplyMapper.invalidateTheApply(Collections.singletonList(apply.getCreatedBy()),
                 apply.getSpaceId(), null);

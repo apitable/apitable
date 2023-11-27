@@ -62,7 +62,8 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Slf4j
 @Service
-public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, InvitationEntity> implements IInvitationService {
+public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, InvitationEntity>
+    implements IInvitationService {
     @Resource
     private InvitationMapper invitationMapper;
 
@@ -97,10 +98,10 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
     public SpaceLinkInfoVo getInvitationInfo(String spaceId, Long creator) {
         MemberEntity member = iMemberService.getById(creator);
         SpaceLinkInfoVo infoVo = SpaceLinkInfoVo.builder()
-                .spaceId(spaceId)
-                .memberName(member.getMemberName())
-                .spaceName(iSpaceService.getNameBySpaceId(spaceId))
-                .build();
+            .spaceId(spaceId)
+            .memberName(member.getMemberName())
+            .spaceName(iSpaceService.getNameBySpaceId(spaceId))
+            .build();
         // determine if the user is logged in
         HttpSession session = HttpContextUtil.getSession(false);
         if (ObjectUtil.isNotNull(session)) {
@@ -112,7 +113,7 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
         }
         // get the link creator's personal invitation code
         InvitationCode invitationCode =
-                userServiceFacade.getUserInvitationCode(member.getUserId());
+            userServiceFacade.getUserInvitationCode(member.getUserId());
         infoVo.setInviteCode(invitationCode.getCode());
         infoVo.setSeatAvailable(iSpaceService.getSpaceSeatAvailableStatus(spaceId));
         return infoVo;
@@ -122,13 +123,18 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
     public void asyncActionsForSuccessJoinSpace(InvitationUserDTO dto) {
         Long userId = iMemberService.getUserIdByMemberId(dto.getCreator());
         // Send invitation notification, asynchronous operation
-        TaskManager.me().execute(() -> iMemberService.sendInviteNotification(userId, ListUtil.toList(dto.getMemberId()), dto.getSpaceId(), true));
+        TaskManager.me().execute(
+            () -> iMemberService.sendInviteNotification(userId, ListUtil.toList(dto.getMemberId()),
+                dto.getSpaceId(), true));
         // To invalidate the application to actively join the space
-        TaskManager.me().execute(() -> spaceApplyMapper.invalidateTheApply(ListUtil.toList(dto.getUserId()), dto.getSpaceId(), InviteType.LINK_INVITE.getType()));
+        TaskManager.me().execute(
+            () -> spaceApplyMapper.invalidateTheApply(ListUtil.toList(dto.getUserId()),
+                dto.getSpaceId(), InviteType.LINK_INVITE.getType()));
         if (StrUtil.isEmpty(dto.getNodeId())) {
             return;
         }
-        Long controlOwnerUnitId = iControlRoleService.getUnitIdByControlIdAndRoleCode(dto.getNodeId(), Node.OWNER);
+        Long controlOwnerUnitId =
+            iControlRoleService.getUnitIdByControlIdAndRoleCode(dto.getNodeId(), Node.OWNER);
         // set owner role
         if (null == controlOwnerUnitId) {
             Long nodeCreator = iNodeService.getCreatedMemberId(dto.getNodeId());
@@ -140,7 +146,8 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
         }
         // add update role
         Long invitedUnitId = iUnitService.getUnitIdByRefId(dto.getMemberId());
-        iNodeRoleService.addNodeRole(userId, dto.getNodeId(), Node.UPDATER, Collections.singletonList(invitedUnitId));
+        iNodeRoleService.addNodeRole(userId, dto.getNodeId(), Node.UPDATER,
+            Collections.singletonList(invitedUnitId));
     }
 
     @Override
@@ -175,16 +182,17 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
     }
 
     @Override
-    public String createMemberInvitationTokenByNodeId(Long memberId, String spaceId, String nodeId) {
+    public String createMemberInvitationTokenByNodeId(Long memberId, String spaceId,
+                                                      String nodeId) {
         String token = IdUtil.fastSimpleUUID();
         Long rootTeamId = iTeamService.getRootTeamId(spaceId);
         InvitationEntity entity = InvitationEntity.builder()
-                .spaceId(spaceId)
-                .teamId(rootTeamId)
-                .creator(memberId)
-                .inviteToken(token)
-                .nodeId(nodeId)
-                .build();
+            .spaceId(spaceId)
+            .teamId(rootTeamId)
+            .creator(memberId)
+            .inviteToken(token)
+            .nodeId(nodeId)
+            .build();
         invitationMapper.insert(entity);
         return token;
     }
@@ -211,12 +219,12 @@ public class InvitationServiceImpl extends ServiceImpl<InvitationMapper, Invitat
         // The link accumulates the number of successful invitees and creates an audit invitation record
         invitationMapper.updateInviteNumByInviteToken(token);
         return InvitationUserDTO.builder()
-                .userId(userId)
-                .memberId(newMemberId)
-                .creator(entity.getCreator())
-                .nodeId(entity.getNodeId())
-                .spaceId(spaceId)
-                .build();
+            .userId(userId)
+            .memberId(newMemberId)
+            .creator(entity.getCreator())
+            .nodeId(entity.getNodeId())
+            .spaceId(spaceId)
+            .build();
     }
 
     @Override

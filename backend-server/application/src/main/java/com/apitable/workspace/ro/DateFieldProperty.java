@@ -22,29 +22,29 @@ import lombok.Data;
 
 /**
  * <p>
- * Date Field Properties
+ * Date Field Properties.
  * </p>
  */
 @Data
 public class DateFieldProperty {
 
     /**
-     * Date Format Type
+     * Date Format Type.
      */
     private int dateFormat;
 
     /**
-     * Time Format Type
+     * Time Format Type.
      */
     private int timeFormat;
 
     /**
-     * Include time or not
+     * Include time or not.
      */
     private boolean includeTime;
 
     /**
-     * Auto Fill
+     * Auto Fill.
      */
     private boolean autoFill;
 

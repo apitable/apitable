@@ -48,6 +48,12 @@ public class DatasheetSnapshot {
 
         private List<View> views;
 
+        /**
+         * extract fields by field ids.
+         *
+         * @param fieldIds field ids
+         * @return fields
+         */
         public List<Field> extractFields(List<String> fieldIds) {
             return getFieldMap().values().stream()
                 .filter(field -> fieldIds.contains(field.getId()))
@@ -89,6 +95,11 @@ public class DatasheetSnapshot {
 
         private List<Row> rows;
 
+        /**
+         * extract field ids.
+         *
+         * @return field ids
+         */
         public List<String> extractFieldIds() {
             return getColumns().stream()
                 .filter(column -> !column.isHidden())

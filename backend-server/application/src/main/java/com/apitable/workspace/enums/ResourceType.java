@@ -18,11 +18,13 @@
 
 package com.apitable.workspace.enums;
 
+import com.apitable.core.support.serializer.IBaseEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.core.support.serializer.IBaseEnum;
-
+/**
+ * resource type.
+ */
 @Getter
 @AllArgsConstructor
 public enum ResourceType implements IBaseEnum {

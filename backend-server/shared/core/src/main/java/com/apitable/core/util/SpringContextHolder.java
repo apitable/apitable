@@ -24,7 +24,7 @@ import org.springframework.context.ApplicationContextAware;
 
 /**
  * <p>
- * spring application context helper
+ * spring application context helper.
  * </p>
  *
  * @author Shawn Deng

@@ -20,7 +20,7 @@ package com.apitable.starter.sms.core;
 
 /**
  * <p>
- * Local SMS transmitter factory
+ * Local SMS transmitter factory.
  * </p>
  *
  */

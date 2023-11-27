@@ -19,7 +19,6 @@
 package com.apitable.shared.util.page;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebArgumentResolver;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -29,7 +28,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 /**
  * <p>
- * string to page object resolver
+ * string to page object resolver.
  * </p>
  *
  * @author Shawn Deng
@@ -38,7 +37,8 @@ public class PageParamHandlerMethodArgumentResolver implements HandlerMethodArgu
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return Page.class.isAssignableFrom(parameter.getParameterType()) && parameter.hasParameterAnnotation(PageObjectParam.class);
+        return Page.class.isAssignableFrom(parameter.getParameterType())
+            && parameter.hasParameterAnnotation(PageObjectParam.class);
     }
 
     @Override
@@ -46,7 +46,8 @@ public class PageParamHandlerMethodArgumentResolver implements HandlerMethodArgu
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         PageObjectParam annotation = parameter.getParameterAnnotation(PageObjectParam.class);
         if (annotation == null) {
-            throw new IllegalArgumentException("unknown parameter name [" + parameter.getParameterType().getName() + "]");
+            throw new IllegalArgumentException(
+                "unknown parameter name [" + parameter.getParameterType().getName() + "]");
         }
 
         if (Page.class.isAssignableFrom(parameter.getParameterType())) {

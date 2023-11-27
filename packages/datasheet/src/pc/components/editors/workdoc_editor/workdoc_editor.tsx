@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { forwardRef, memo, useImperativeHandle } from 'react';
-import { ICellValue } from '@apitable/core';
+import { ICellValue, Navigation, Selectors } from '@apitable/core';
+import { Router } from 'pc/components/route_manager/router';
+import { useAppSelector } from 'pc/store/react-redux';
 import { IBaseEditorProps, IEditor } from '../interface';
 // @ts-ignore
 import { Workdoc } from 'enterprise/editor/workdoc/workdoc';
@@ -17,6 +19,7 @@ export interface IWorkdocEditorProps extends IBaseEditorProps {
 
 const WorkdocEditorBase: React.ForwardRefRenderFunction<IEditor, IWorkdocEditorProps> = (props, ref) => {
   const { onSave, datasheetId, recordId, field, cellValue, editable, editing = false, toggleEditing } = props;
+  const viewId = useAppSelector((state) => Selectors.getActiveViewId(state))!;
 
   useImperativeHandle(
     ref,
@@ -46,7 +49,19 @@ const WorkdocEditorBase: React.ForwardRefRenderFunction<IEditor, IWorkdocEditorP
 
   const saveValue = () => {};
 
-  const onStartEdit = () => {};
+  const onStartEdit = () => {
+    Router.replace(Navigation.WORKBENCH, {
+      params: {
+        nodeId: datasheetId,
+        datasheetId,
+        viewId,
+      },
+      query: {
+        recordId,
+        fieldId: field.id
+      }
+    });
+  };
 
   return (
     <Workdoc

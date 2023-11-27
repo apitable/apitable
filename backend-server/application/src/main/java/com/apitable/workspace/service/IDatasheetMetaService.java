@@ -26,26 +26,37 @@ import com.apitable.workspace.ro.MetaOpRo;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
+/**
+ * datasheet meta service.
+ */
 public interface IDatasheetMetaService {
 
     /**
+     * save batch.
+     *
      * @param metaEntities meta
      */
     void batchSave(List<DatasheetMetaEntity> metaEntities);
 
     /**
+     * get by datasheet id.
+     *
      * @param dstId datasheet id
      * @return DatasheetMetaVo
      */
     SimpleDatasheetMetaDTO findByDstId(String dstId);
 
     /**
+     * get dto by datasheet id list.
+     *
      * @param dstIds datasheet ids
      * @return DatasheetMetaDTO
      */
     List<DatasheetMetaDTO> findMetaDtoByDstIds(@Param("list") List<String> dstIds);
 
     /**
+     * create.
+     *
      * @param userId   user id
      * @param dstId    datasheet id
      * @param metaData meta data
@@ -53,6 +64,8 @@ public interface IDatasheetMetaService {
     void create(Long userId, String dstId, String metaData);
 
     /**
+     * update meta.
+     *
      * @param userId user id
      * @param dstId  datasheet id
      * @param meta   request parameters
@@ -68,7 +81,7 @@ public interface IDatasheetMetaService {
     void checkViewIfExist(String dstId, String viewId);
 
     /**
-     * get data datasheet source information
+     * get data datasheet source information.
      *
      * @param dstId datasheet id
      * @return DatasheetSnapshot

@@ -18,14 +18,13 @@
 
 package com.apitable.space.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,7 +34,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Work Space - Space Apply Table
+ * Work Space - Space Apply Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -52,45 +51,45 @@ public class SpaceApplyEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Space ID(link#xxxx_space#space_id)
+     * Space ID(link#xxxx_space#space_id).
      */
     private String spaceId;
 
     /**
-     * Status (0: To be approved; 1: Agree; 2: Reject; 3: Invalid)
+     * Status (0: To be approved; 1: Agree; 2: Reject; 3: Invalid).
      */
     private Integer status;
 
     /**
-     * Failure reason (0: mailbox invitation; 1: address book import; 2: invitation link)
+     * Failure reason (0: mailbox invitation; 1: address book import; 2: invitation link).
      */
     private Integer failureReason;
 
     /**
-     * Creator
+     * Creator.
      */
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
 
     /**
-     * Last Update By
+     * Last Update By.
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updatedBy;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

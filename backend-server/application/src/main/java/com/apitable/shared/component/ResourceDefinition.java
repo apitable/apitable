@@ -20,12 +20,11 @@ package com.apitable.shared.component;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
 import lombok.Data;
 
 /**
  * <p>
- * api resource definition
+ * api resource definition.
  * </p>
  *
  * @author Shawn Deng

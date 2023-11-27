@@ -24,7 +24,7 @@ import { useResponsive } from 'pc/hooks';
 
 const NotifyRouter = () => {
   const { screenIsAtLeast } = useResponsive();
-  const isPC = screenIsAtLeast(ScreenSize.md);
+  const isPC = screenIsAtLeast(ScreenSize.sm);
 
   return (
     <>

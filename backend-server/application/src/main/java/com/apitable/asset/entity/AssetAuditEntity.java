@@ -18,12 +18,11 @@
 
 package com.apitable.asset.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +32,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Resource Audit Table
+ * Resource Audit Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -50,63 +49,63 @@ public class AssetAuditEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Resource ID(link#xxxx_asset#id)
+     * Resource ID(link#xxxx_asset#id).
      */
     private Long assetId;
 
     /**
-     * Cloud File Storage Path
+     * Cloud File Storage Path.
      */
     private String assetFileUrl;
 
     /**
-     * [Redundancy]md5 Abstract
+     * [Redundancy]md5 Abstract.
      */
     private String assetChecksum;
 
     /**
-     * Audit result score
+     * Audit result score.
      */
     private Float auditResultScore;
 
     /**
-     * Audit Result Suggestion, include:[“block”,”review”,”pass”]
+     * Audit Result Suggestion, include:[“block”,”review”,”pass”].
      */
     private String auditResultSuggestion;
 
     /**
-     * Audit Scenes,Currently supported:pul/terror/politician/ads
+     * Audit Scenes,Currently supported:pul/terror/politician/ads.
      */
     private String auditScenes;
 
     /**
-     * Auditor OpenId
+     * Auditor OpenId.
      */
     private String auditorOpenid;
 
     /**
-     * Auditor Name
+     * Auditor Name.
      */
     private String auditorName;
 
     /**
-     * Is Audited(0:No, 1:Yes)
+     * Is Audited(0:No, 1:Yes).
      */
     private Boolean isAudited;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>
- * base servlet interceptor
+ * base servlet interceptor.
  * </p>
  *
  * @author Shawn Deng

@@ -22,7 +22,7 @@ import lombok.Data;
 
 /**
  * <p>
- * Social App Message Template
+ * Social App Message Template.
  * </p>
  */
 @Data
@@ -34,12 +34,12 @@ public class SocialTemplate {
     private String title;
 
     /**
-     * jump address
+     * jump address.
      */
     private String url;
 
     /**
-     * picture url
+     * picture url.
      */
     private String picUrl;
 
@@ -50,7 +50,7 @@ public class SocialTemplate {
     private String notificationTemplateId;
 
     /**
-     * jump address title
+     * jump address title.
      */
     private String urlTitle;
 

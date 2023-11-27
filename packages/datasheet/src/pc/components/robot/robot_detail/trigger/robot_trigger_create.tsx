@@ -34,7 +34,7 @@ import { useAutomationResourcePermission } from '../../../automation/controller/
 import { createTrigger } from '../../api';
 import { getNodeTypeOptions } from '../../helper';
 import { useDefaultTriggerFormData } from '../../hooks';
-import { ITriggerType } from '../../interface';
+import { AutomationScenario, ITriggerType } from '../../interface';
 import { NewItem } from '../../robot_list/new_item';
 import itemStyle from './select_styles.module.less';
 
@@ -67,17 +67,23 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
   } = useAutomationController();
   const state = useAtomValue(automationStateAtom);
   const [, setAutomationPanel] = useAtom(automationPanelAtom );
-  const setautomationCurrentTriggerId= useSetAtom(automationCurrentTriggerId);
+  const setAutomationCurrentTriggerId= useSetAtom(automationCurrentTriggerId);
 
   const triggerList = state?.robot?.triggers ?? [];
   const triggerTypeOptions = useMemo(() => {
-    return getNodeTypeOptions(triggerTypes);
-  }, [triggerTypes]);
 
-  useEffect(() => {
-    // TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_TRIGGER);
-    setTimeout(() => Player.doTrigger(Events.guide_use_automation_first_time), 1000);
-  }, []);
+    let list = triggerTypes;
+    if(state?.scenario === AutomationScenario.datasheet) {
+      list = triggerTypes.filter(item => item.endpoint !== 'button_field');
+    }
+    return getNodeTypeOptions(list);
+  }, [state?.scenario, triggerTypes]);
+
+  // TODO temporary solution, need to be removed
+  // useEffect(() => {
+  // TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_TRIGGER);
+  // setTimeout(() => Player.doTrigger(Events.guide_use_automation_first_time), 1000);
+  // }, []);
 
   const createRobotTrigger = useMemo(() => {
     return async (triggerTypeId: string) => {
@@ -106,7 +112,7 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
           robotId: state.currentRobotId,
         });
 
-        setautomationCurrentTriggerId(triggerRes.data.data[0].triggerId);
+        setAutomationCurrentTriggerId(triggerRes.data.data[0].triggerId);
         setAutomationPanel({
           panelName: PanelName.Trigger,
           dataId: triggerRes.data.data?.[0]?.triggerId,
@@ -116,7 +122,7 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
         return triggerRes.data;
       }
     };
-  }, [triggerTypes, defaultFormData, state?.robot, state?.resourceId, state?.currentRobotId, robotId, preTriggerId, refresh, setautomationCurrentTriggerId, setAutomationPanel]);
+  }, [triggerTypes, defaultFormData, state?.robot, state?.resourceId, state?.currentRobotId, robotId, preTriggerId, refresh, setAutomationCurrentTriggerId, setAutomationPanel]);
 
   if (!triggerTypes) {
     return null;

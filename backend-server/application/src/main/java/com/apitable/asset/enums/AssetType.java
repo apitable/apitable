@@ -18,14 +18,13 @@
 
 package com.apitable.asset.enums;
 
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.support.serializer.IBaseEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.support.serializer.IBaseEnum;
-
 /**
- * asset type
+ * asset type.
  *
  * @author Chambers
  */
@@ -53,6 +52,12 @@ public enum AssetType implements IBaseEnum {
         return this.value;
     }
 
+    /**
+     * transform value to enum.
+     *
+     * @param value value
+     * @return enum
+     */
     public static AssetType of(Integer value) {
         for (AssetType type : AssetType.values()) {
             if (type.getValue().equals(value)) {

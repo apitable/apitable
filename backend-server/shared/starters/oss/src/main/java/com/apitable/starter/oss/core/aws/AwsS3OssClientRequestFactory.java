@@ -23,18 +23,17 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-
 import com.apitable.starter.oss.core.OssClientRequest;
 import com.apitable.starter.oss.core.OssClientRequestFactory;
 
 /**
- * aws s3 Client Request Construction Factory
+ * aws s3 Client Request Construction Factory.
  */
 public class AwsS3OssClientRequestFactory implements OssClientRequestFactory {
 
-    private AWSCredentials credentials;
+    private final AWSCredentials credentials;
 
-    private EndpointConfiguration configuration;
+    private final EndpointConfiguration configuration;
 
     public AwsS3OssClientRequestFactory(AWSCredentials credentials, EndpointConfiguration configuration) {
         this.credentials = credentials;

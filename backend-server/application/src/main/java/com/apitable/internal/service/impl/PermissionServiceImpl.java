@@ -80,14 +80,18 @@ public class PermissionServiceImpl implements IPermissionService {
     private ControlTemplate controlTemplate;
 
     @Override
-    public List<DatasheetPermissionView> getDatasheetPermissionView(Long userId, List<String> nodeIds, String shareId) {
+    public List<DatasheetPermissionView> getDatasheetPermissionView(Long userId,
+                                                                    List<String> nodeIds,
+                                                                    String shareId) {
         // Determine whether the nodes belong to the template (only part of the template triggers an exception)
         Boolean isTemplate = iNodeService.getIsTemplateByNodeIds(nodeIds);
         List<DatasheetPermissionView> views = new ArrayList<>(nodeIds.size());
         String uuid = iUserService.getUuidByUserId(userId);
         // template permissions are returned directly
         if (BooleanUtil.isTrue(isTemplate)) {
-            DatasheetPermissionView templateView = ControlRoleManager.parseNodeRole(Node.TEMPLATE_VISITOR).permissionToBean(DatasheetPermissionView.class);
+            DatasheetPermissionView templateView =
+                ControlRoleManager.parseNodeRole(Node.TEMPLATE_VISITOR)
+                    .permissionToBean(DatasheetPermissionView.class);
             templateView.setHasRole(true);
             templateView.setUserId(userId);
             templateView.setUuid(uuid);
@@ -103,13 +107,15 @@ public class PermissionServiceImpl implements IPermissionService {
         // Get space ID (multiple spaces trigger exception)
         String spaceId = iNodeService.getSpaceIdByNodeIds(nodeIds);
         // When loading node permissions in sharing, the permissions of the last changer in the sharing settings shall prevail. The method includes judging whether the changer exists.
-        Long owner = StrUtil.isNotBlank(shareId) && !shareId.startsWith(IdRulePrefixEnum.EMB.getIdRulePrefixEnum()) ?
-                iNodeShareSettingService.getUpdatedByByShareId(shareId) : userId;
+        Long owner = StrUtil.isNotBlank(shareId)
+            && !shareId.startsWith(IdRulePrefixEnum.EMB.getIdRulePrefixEnum())
+            ? iNodeShareSettingService.getUpdatedByByShareId(shareId) : userId;
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(owner, spaceId);
         // non space station member
         if (memberId == null) {
             for (String nodeId : nodeIds) {
-                DatasheetPermissionView view = this.getEmptyPermissionView(userId, uuid, memberId, nodeId, shareId);
+                DatasheetPermissionView view =
+                    this.getEmptyPermissionView(userId, uuid, memberId, nodeId, shareId);
                 view.setIsDeleted(true);
                 views.add(view);
             }
@@ -135,14 +141,16 @@ public class PermissionServiceImpl implements IPermissionService {
                 continue;
             }
             NodeRole controlRole = (NodeRole) roleDict.get(nodeId);
-            DatasheetPermissionView permissionView = controlRole.permissionToBean(DatasheetPermissionView.class, feature);
+            DatasheetPermissionView permissionView =
+                controlRole.permissionToBean(DatasheetPermissionView.class, feature);
             permissionView.setHasRole(true);
             permissionView.setUserId(userId);
             permissionView.setUuid(uuid);
             permissionView.setRole(controlRole.getRoleTag());
             permissionView.setIsGhostNode(controlRole.isGhostNode());
             // permission to get all fields of the data table
-            FieldPermissionView fieldPermissionView = iFieldRoleService.getFieldPermissionView(memberId, nodeId, shareId);
+            FieldPermissionView fieldPermissionView =
+                iFieldRoleService.getFieldPermissionView(memberId, nodeId, shareId);
             if (fieldPermissionView != null) {
                 permissionView.setDatasheetId(fieldPermissionView.getDatasheetId());
                 permissionView.setFieldPermissionMap(fieldPermissionView.getFieldPermissionMap());
@@ -172,12 +180,14 @@ public class PermissionServiceImpl implements IPermissionService {
         }
     }
 
-    private DatasheetPermissionView getEmptyPermissionView(Long userId, String uuid, Long memberId, String nodeId, String shareId) {
+    private DatasheetPermissionView getEmptyPermissionView(Long userId, String uuid, Long memberId,
+                                                           String nodeId, String shareId) {
         DatasheetPermissionView emptyPermissionView = new DatasheetPermissionView();
         emptyPermissionView.setUserId(userId);
         emptyPermissionView.setUuid(uuid);
         // permission to get all fields of the data table
-        FieldPermissionView fieldPermissionView = iFieldRoleService.getFieldPermissionView(memberId, nodeId, shareId);
+        FieldPermissionView fieldPermissionView =
+            iFieldRoleService.getFieldPermissionView(memberId, nodeId, shareId);
         if (fieldPermissionView != null) {
             emptyPermissionView.setDatasheetId(fieldPermissionView.getDatasheetId());
             emptyPermissionView.setFieldPermissionMap(fieldPermissionView.getFieldPermissionMap());

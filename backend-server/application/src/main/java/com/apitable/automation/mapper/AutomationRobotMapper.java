@@ -26,27 +26,82 @@ import java.util.Collection;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-
+/**
+ * automation robot mapper.
+ */
 public interface AutomationRobotMapper extends BaseMapper<AutomationRobotEntity> {
 
+    /**
+     * query by resource id list.
+     *
+     * @param resourceIds resource id list
+     * @return robot list
+     */
     List<AutomationRobotDto> selectRobotsByResourceIds(
         @Param("resourceIds") Collection<String> resourceIds);
 
+    /**
+     * query with resource id list.
+     *
+     * @param resourceIds resource id list
+     * @return robot list
+     */
     List<AutomationRobotEntity> selectByResourceIds(
         @Param("resourceIds") Collection<String> resourceIds);
 
+    /**
+     * insert batch entities.
+     *
+     * @param entities entity list
+     * @return insert count
+     */
     int insertList(@Param("entities") Collection<AutomationRobotEntity> entities);
 
+    /**
+     * update name by resource id.
+     *
+     * @param resourceId resource id
+     * @param name       name
+     */
     void updateNameByResourceId(@Param("resourceId") String resourceId, @Param("name") String name);
 
+    /**
+     * update description by resource id.
+     *
+     * @param robotId     robot id
+     * @param name        name
+     * @param description description
+     * @param resourceId  resource id
+     */
     void updateByRobotId(@Param("robotId") String robotId, @Param("name") String name,
-        @Param("description") String description, @Param("resourceId") String resourceId);
+                         @Param("description") String description,
+                         @Param("resourceId") String resourceId);
 
+    /**
+     * update is deleted by resource id.
+     *
+     * @param userId      user id
+     * @param resourceIds resource id list
+     * @param isDeleted   is deleted
+     */
     void updateIsDeletedByResourceIds(@Param("userId") Long userId,
-        @Param("resourceIds") List<String> resourceIds, @Param("isDeleted") Boolean isDeleted);
+                                      @Param("resourceIds") List<String> resourceIds,
+                                      @Param("isDeleted") Boolean isDeleted);
 
+    /**
+     * delete by robot ids.
+     *
+     * @param robotIds robot id list
+     */
     void removeByRobotIds(@Param("robotIds") List<String> robotIds);
 
+    /**
+     * query robot triggers.
+     *
+     * @param seqId      seq id
+     * @param resourceId resource id
+     * @return robot trigger list
+     */
     List<RobotTriggerDto> getRobotTriggers(@Param("seqId") String seqId,
-        @Param("resourceId") String resourceId);
+                                           @Param("resourceId") String resourceId);
 }

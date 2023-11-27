@@ -60,7 +60,13 @@ export const Tooltip: FC<React.PropsWithChildren<ITooltipProps & AntdTooltipProp
 
   if (showTipAnyway || (textEllipsis && showPopover && !isTouchDevice()) || (!showTipAnyway && !textEllipsis && !isTouchDevice())) {
     return (
-      <AntdTooltip align={{ offset }} trigger="hover" overlayClassName={rowsNumber ? styles.controlRowsNum : ''} ref={myrefs} {...props}>
+      <AntdTooltip
+        align={{ offset }}
+        trigger="hover"
+        overlayClassName={rowsNumber ? styles.controlRowsNum : styles.baseStyle}
+        ref={myrefs}
+        {...props}
+      >
         {props.children}
       </AntdTooltip>
     );

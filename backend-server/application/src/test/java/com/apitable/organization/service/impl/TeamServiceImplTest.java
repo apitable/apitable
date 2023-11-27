@@ -59,34 +59,6 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void testGetMemberTeamTree() throws IOException {
-        List<Long> teamIds =
-            CollUtil.newArrayList(1279306279580438529L, 1342304314473648129L, 1236159916641619970L,
-                1283285207447699457L);
-        String resourceName = "sql/orgIsolated-vut-data.sql";
-        InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
-        String sql = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-        execute(sql);
-
-        List<TeamTreeVo> treeVos = iTeamService.getMemberTeamTree("spczdmQDfBAn5", teamIds);
-        assertThat(treeVos.size()).isEqualTo(3);
-    }
-
-    @Test
-    void testGetMemberAllTeamsVO() throws IOException {
-        List<Long> teamIds =
-            CollUtil.newArrayList(1279306279580438529L, 1342304314473648129L, 1236159916641619970L,
-                1283285207447699457L);
-        String resourceName = "sql/orgIsolated-vut-data.sql";
-        InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
-        String sql = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-        execute(sql);
-
-        List<TeamTreeVo> treeVos = iTeamService.getMemberAllTeamsVO("spczdmQDfBAn5", teamIds);
-        assertThat(treeVos.size()).isEqualTo(9);
-    }
-
-    @Test
     void testBuild() throws IOException {
         String resourceName = "sql/orgIsolated-vut-data.sql";
         InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
@@ -264,7 +236,7 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
         assertThat(memberToTeamMap.get(101L).get(2).getTeamId()).isEqualTo(31);
     }
 
-    private void prepareMemberAndTeamInfo() {
+    protected void prepareMemberAndTeamInfo() {
         // prepare root team
         TeamEntity rootTeam =
             TeamEntity.builder().id(1L).spaceId("spc1").parentId(0L).teamName("root team").build();

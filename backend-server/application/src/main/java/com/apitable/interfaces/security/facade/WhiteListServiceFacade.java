@@ -18,6 +18,9 @@
 
 package com.apitable.interfaces.security.facade;
 
+/**
+ * white list service facade.
+ */
 public interface WhiteListServiceFacade {
 
     void checkWidgetPermission(Long userId);

@@ -25,6 +25,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * trigger copy result dto.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

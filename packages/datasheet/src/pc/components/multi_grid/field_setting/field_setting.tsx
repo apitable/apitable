@@ -19,6 +19,7 @@
 import { useKeyPress } from 'ahooks';
 import type { InputRef } from 'antd';
 import { Input } from 'antd';
+import produce from 'immer';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState, FC, PropsWithChildren } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
@@ -60,6 +61,7 @@ import { useResponsive } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ButtonOperateType, getParentNodeByClass, isTouchDevice } from 'pc/utils';
 import { stopPropagation } from '../../../utils/dom';
 import { FieldFormat } from '../format';
@@ -67,8 +69,6 @@ import { useFieldOperate } from '../hooks';
 import { checkFactory, CheckFieldSettingBase } from './check_factory';
 import { FieldTypeSelect } from './field_type_select';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const OPERATE_WIDTH = parseInt(styles.fieldSettingBoxWidth, 10); // The width of the operation box
 // const EXCEPT_SCROLL_HEIGHT = 85; // Height of the non-scrollable part at the bottom, outside the area to be scrolled
@@ -542,6 +542,26 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
           <FieldFormat
             from={activeFieldState.from}
             currentField={currentField}
+            onCreate={(field) => {
+              const checkResult : IField= checkFactory[currentField.type]
+                ? checkFactory[currentField.type](currentField, propDatasheetId)
+                : CheckFieldSettingBase.checkStream(currentField, propDatasheetId);
+              const integractedItem: IField = produce(checkResult, draft => {
+                draft.property.action = field.property.action;
+              });
+              // Passing datasheetId externally means that FieldSetting is mounted in a non-numbered table, using the activeFieldState column index.
+              if (propDatasheetId) {
+                addField(integractedItem, activeFieldState?.fieldIndex);
+              } else {
+                addField(integractedItem);
+              }
+              return;
+            }
+            }
+            onUpdate={(field) => {
+              modifyFieldType(field);
+            }
+            }
             setCurrentField={setCurrentField}
             hideOperateBox={hideOperateBox}
             datasheetId={propDatasheetId}

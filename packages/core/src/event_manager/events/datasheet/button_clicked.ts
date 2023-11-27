@@ -16,7 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { createContext } from 'react';
-import { IApi } from '@apitable/core';
+import { EventRealTypeEnums, IAtomEventType, OPEventNameEnums } from 'event_manager';
+import { AnyObject, IOPBaseContext } from 'event_manager/interface';
+import { ResourceType } from 'types';
 
-export const SpaceContext = createContext<{ adData: IApi.IAdData | null }>({ adData: null });
+interface IButtonClicked {
+  datasheet: {
+    id: string;
+    name: string;
+  };
+  record: {
+    id: string;
+    url: string;
+    fields: AnyObject;
+  };
+}
+
+export class OPEventButtonClicked extends IAtomEventType<IButtonClicked> {
+  eventName = OPEventNameEnums.ButtonClicked;
+  realType = EventRealTypeEnums.REAL;
+  scope = ResourceType.Datasheet;
+
+  // dispatch directly by user
+  test(_opContext: IOPBaseContext) {
+    return {
+      pass: false,
+      context: null
+    };
+  }
+}

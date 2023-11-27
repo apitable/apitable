@@ -23,7 +23,7 @@ import lombok.Getter;
 
 /**
  * <p>
- * node permission definition
+ * node permission definition.
  * </p>
  *
  * @author Shawn Deng
@@ -57,27 +57,27 @@ public enum NodePermission implements PermissionDefinition {
     REMOVE_NODE("removable", 0, 1L << 11),
 
     /**
-     * read node share info
+     * read node share info.
      */
     SHARE_NODE("sharable", 0, 1L << 12),
 
     /**
-     * allow saved shared node
+     * allow saved shared node.
      */
     SET_NODE_SHARE_ALLOW_SAVE("allowSaveConfigurable", 0, 1L << 13),
 
     /**
-     * allow edited share node
+     * allow edited share node.
      */
     SET_NODE_SHARE_ALLOW_EDIT("allowEditConfigurable", 0, 1L << 14),
 
     /**
-     * node configurable
+     * node configurable.
      */
     ASSIGN_NODE_ROLE("nodeAssignable", 0, 1L << 15),
 
     /**
-     * create template
+     * create template.
      */
     CREATE_TEMPLATE("templateCreatable", 0, 1L << 16),
 
@@ -134,37 +134,37 @@ public enum NodePermission implements PermissionDefinition {
     EDIT_VIEW_COLOR_OPTION("viewColorOptionEditable", 1, 1L << 25),
 
     /**
-     * whether to manage view lock
+     * whether to manage view lock.
      */
     MANAGE_VIEW_LOCK("viewLockManageable", 1, 1L << 26),
 
     /**
-     * whether to manage view munual save operation
+     * whether to manage view munual save operation.
      */
     MANAGE_VIEW_MANUAL_SAVE("viewManualSaveManageable", 1, 1L << 27),
 
     /**
-     * whether to edit view option
+     * whether to edit view option.
      */
     EDIT_VIEW_OPTION_SAVE("viewOptionSaveEditable", 1, 1L << 28),
 
     ARCHIVE_ROW("rowArchivable", 1, 1L << 29),
 
-    UNARCHIVE_ROW("rowUnarchivable", 1, 1L<<30),
+    UNARCHIVE_ROW("rowUnarchivable", 1, 1L << 30),
     ;
 
     /**
-     * unique code
+     * unique code.
      */
     private final String code;
 
     /**
-     * permission group
+     * permission group.
      */
     private final int group;
 
     /**
-     * unique memory value
+     * unique memory value.
      */
     private final long value;
 

@@ -41,7 +41,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * node share close event listener
+ * node share close event listener.
  * </p>
  *
  * @author Chambers

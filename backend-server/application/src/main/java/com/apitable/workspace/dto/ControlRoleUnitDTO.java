@@ -20,6 +20,9 @@ package com.apitable.workspace.dto;
 
 import lombok.Data;
 
+/**
+ * control role unit dto.
+ */
 @Data
 public class ControlRoleUnitDTO {
 

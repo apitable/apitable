@@ -66,12 +66,12 @@ export const HomeWrapper: React.FC<React.PropsWithChildren<unknown>> = ({ childr
   }
 
   let logo = getEnvVariables().IS_AITABLE ? getEnvVariables().LOGO : getEnvVariables().LOGIN_LOGO!;
-  let text = getEnvVariables().LOGO_TEXT_LIGHT;
-  if (useTheme().palette.type === ThemeName.Light && getEnvVariables().LOGIN_LOGO_LIGHT && !getEnvVariables().IS_AITABLE) {
+  let text = getEnvVariables().LOGO_TEXT_DARK;
+  if (useTheme().palette.type === ThemeName.Light ) {
     if (!getEnvVariables().IS_AITABLE) {
       logo = getEnvVariables().LOGIN_LOGO_LIGHT!;
     }
-    text = getEnvVariables().LOGO_TEXT_DARK;
+    text = getEnvVariables().LOGO_TEXT_LIGHT;
   }
 
   return (
@@ -81,7 +81,7 @@ export const HomeWrapper: React.FC<React.PropsWithChildren<unknown>> = ({ childr
           {getEnvVariables().IS_AITABLE ? (
             <div>
               <img src={integrateCdnHost(logo)} width={32} alt="logo" />
-              <img src={integrateCdnHost(text)} width={48} alt="text" />
+              <img src={integrateCdnHost(text)} width={96} alt="text" />
             </div>
           ) : (
             <img src={integrateCdnHost(logo)} width={132} alt="logo" />

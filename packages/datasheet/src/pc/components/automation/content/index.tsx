@@ -11,6 +11,7 @@ import { InfoCircleOutlined } from '@apitable/icons';
 // @ts-ignore
 import { goToUpgrade } from 'enterprise/subscribe_system/upgrade_method';
 import { VikaSplitPanel } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
 import { useResponsive, useSideBarVisible } from '../../../hooks';
 import { ScreenSize } from '../../common/component_display';
 import { useAutomationRobot, useToggleRobotActive } from '../../robot/hooks';
@@ -20,8 +21,6 @@ import { automationPanelAtom, PanelName } from '../controller/atoms';
 import { useAutomationResourcePermission } from '../controller/use_automation_permission';
 import { Side } from './side';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const ConstAutomationContentLeft = 'automation-content-left';
 
@@ -88,7 +87,6 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
   if (!robot) {
     return null;
   }
-  console.log({ robot });
   return (
     <Box display="flex" flexDirection={'row'} height={'100%'} position={'relative'}>
       <AutoSizer style={{ width: '100%', height: '100%' }}>

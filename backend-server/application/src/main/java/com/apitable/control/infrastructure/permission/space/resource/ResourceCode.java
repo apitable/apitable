@@ -23,7 +23,7 @@ import lombok.Getter;
 
 /**
  * <p>
- * Space Resource code for widget permission validate
+ * Space Resource code for widget permission validate.
  * </p>
  *
  * @author Pengap

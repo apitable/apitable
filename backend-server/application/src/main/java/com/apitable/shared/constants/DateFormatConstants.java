@@ -20,7 +20,7 @@ package com.apitable.shared.constants;
 
 /**
  * <p>
- * date format constants
+ * date format constants.
  * </p>
  *
  * @author Shawn Deng

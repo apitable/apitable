@@ -18,20 +18,17 @@
 
 package com.apitable.control.service;
 
+import com.apitable.control.entity.ControlSettingEntity;
+import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-
-import com.apitable.control.entity.ControlSettingEntity;
-
-
 /**
- * Control setting service
+ * Control setting service.
  */
 public interface IControlSettingService extends IService<ControlSettingEntity> {
 
     /**
-     * Get control unit settings
+     * Get control unit settings.
      *
      * @param controlId Control unit ID
      * @return ControlSettingEntity
@@ -39,7 +36,7 @@ public interface IControlSettingService extends IService<ControlSettingEntity> {
     ControlSettingEntity getByControlId(String controlId);
 
     /**
-     * Batch Access Permission Control Unit Settings
+     * Batch Access Permission Control Unit Settings.
      *
      * @param controlIds List of control unit IDs
      * @return ControlSettingEntities
@@ -47,7 +44,7 @@ public interface IControlSettingService extends IService<ControlSettingEntity> {
     List<ControlSettingEntity> getBatchByControlIds(List<String> controlIds);
 
     /**
-     * Create permission control unit settings
+     * Create permission control unit settings.
      *
      * @param userId    User ID
      * @param controlId Control unit ID
@@ -55,7 +52,7 @@ public interface IControlSettingService extends IService<ControlSettingEntity> {
     void create(Long userId, String controlId);
 
     /**
-     * Delete the specified control unit settings
+     * Delete the specified control unit settings.
      *
      * @param controlIds Control unit ID set
      */

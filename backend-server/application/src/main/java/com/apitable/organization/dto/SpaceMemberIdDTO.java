@@ -20,6 +20,9 @@ package com.apitable.organization.dto;
 
 import lombok.Data;
 
+/**
+ * space member id dto.
+ */
 @Data
 public class SpaceMemberIdDTO {
 

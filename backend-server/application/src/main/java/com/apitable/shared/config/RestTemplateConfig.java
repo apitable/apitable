@@ -27,7 +27,7 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * <p>
- * RestTemplate config
+ * RestTemplate config.
  * </p>
  *
  * @author Chambers
@@ -35,6 +35,11 @@ import org.springframework.web.client.RestTemplate;
 @Configuration(proxyBeanMethods = false)
 public class RestTemplateConfig {
 
+    /**
+     * rest template customizer.
+     *
+     * @return RestTemplateCustomizer
+     */
     @Bean
     public RestTemplateCustomizer restTemplateCustomizer() {
         OkHttp3ClientHttpRequestFactory requestFactory = new OkHttp3ClientHttpRequestFactory();

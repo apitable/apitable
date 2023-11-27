@@ -21,7 +21,6 @@ package com.apitable.workspace.vo;
 import com.apitable.shared.support.serializer.ImageSerializer;
 import com.apitable.shared.support.serializer.LocalDateTimeToMilliSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
@@ -34,8 +33,8 @@ import lombok.EqualsAndHashCode;
  * </p>
  */
 @Data
-@Schema(description = "Recycle Bin Node Information View")
 @EqualsAndHashCode(callSuper = true)
+@Schema(description = "Recycle Bin Node Information View")
 public class RubbishNodeVo extends BaseNodeInfo {
 
     /**
@@ -107,14 +106,7 @@ public class RubbishNodeVo extends BaseNodeInfo {
      * Remain Day.
      */
     @Schema(description = "Days Remain", example = "1")
-    private Integer remainDay;
-
-    /**
-     * Remain Day.
-     */
-    @JsonIgnore
-    @Schema(description = "Retention days", hidden = true)
-    private Integer retainDay;
+    private Long remainDay;
 
     /**
      * Avatar Color.

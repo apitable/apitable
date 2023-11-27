@@ -12,6 +12,7 @@ export enum OPEventNameEnums {
   FormSubmitted = 'FormSubmitted',
   RecordArchived = 'RecordArchived',
   RecordUnarchived = 'RecordUnarchived',
+  ButtonClicked = 'ButtonClicked',
 }
 
 export enum EventRealTypeEnums {

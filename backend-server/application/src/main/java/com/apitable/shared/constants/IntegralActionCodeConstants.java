@@ -20,7 +20,7 @@ package com.apitable.shared.constants;
 
 /**
  * <p>
- * integral action code
+ * integral action code.
  * </p>
  *
  * @author Pengap

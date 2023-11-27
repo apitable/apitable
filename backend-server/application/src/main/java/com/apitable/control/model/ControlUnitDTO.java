@@ -22,7 +22,7 @@ import lombok.Data;
 
 /**
  * <p>
- * Permission Control Unit Organization Unit DTO
+ * Permission Control Unit Organization Unit DTO.
  * </p>
  */
 @Data

@@ -59,7 +59,7 @@ public interface IMemberService extends IService<MemberEntity> {
     /**
      * Get user id.
      *
-     * @param memberId  member table id
+     * @param memberId member table id
      * @return user id
      * @author Chambers
      */
@@ -259,6 +259,14 @@ public interface IMemberService extends IService<MemberEntity> {
     String getOpenIdByMemberId(Long memberId);
 
     /**
+     * get userId by openId.
+     *
+     * @param openId open id
+     * @return user id
+     */
+    Long getUserIdByOpenId(String spaceId, String openId);
+
+    /**
      * get member id even if he was deleted.
      *
      * @param spaceId space id
@@ -365,7 +373,7 @@ public interface IMemberService extends IService<MemberEntity> {
      * Get node role member with sort.
      *
      * @param memberIds member ids
-     * @return List<NodeRoleMemberVo>
+     * @return List of NodeRoleMemberVo
      * @author Chambers
      */
     List<NodeRoleMemberVo> getNodeRoleMemberWithSort(Collection<Long> memberIds);

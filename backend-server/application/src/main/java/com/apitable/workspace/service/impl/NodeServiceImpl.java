@@ -72,7 +72,6 @@ import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.shared.util.CollectionUtil;
-import com.apitable.shared.util.DBUtil;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.shared.util.StringUtil;
 import com.apitable.shared.util.information.ClientOriginInfo;
@@ -104,6 +103,7 @@ import com.apitable.workspace.enums.NodeException;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.enums.ResourceType;
+import com.apitable.workspace.facade.NodeFacade;
 import com.apitable.workspace.listener.CsvReadListener;
 import com.apitable.workspace.listener.MultiSheetReadListener;
 import com.apitable.workspace.mapper.NodeMapper;
@@ -146,6 +146,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -154,6 +155,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -171,6 +173,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Resource
     private NodeMapper nodeMapper;
+
+    @Resource
+    private NodeFacade nodeFacade;
 
     @Resource
     private INodeDescService iNodeDescService;
@@ -366,9 +371,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public List<NodeBaseInfoDTO> getParentPathNodes(List<String> nodeIds, boolean includeRootNode) {
-        List<NodeBaseInfoDTO> nodes = DBUtil.batchSelectByFieldIn(nodeIds,
-                (ids) -> nodeMapper.selectAllParentNodeIds(ids, includeRootNode));
-        return CollectionUtil.distinctByProperty(nodes, NodeBaseInfoDTO::getNodeId);
+        return nodeFacade.getParentPathNodes(nodeIds, includeRootNode);
     }
 
     @Override
@@ -527,35 +530,46 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     private List<String> sortNodeAtSameLevel(List<NodeTreeDTO> sub, NodeType nodeType) {
-        List<String> subNodeIds =
-            sub.stream().map(NodeTreeDTO::getNodeId).collect(Collectors.toList());
-        List<NodeTreeDTO> nodes = new ArrayList<>();
-        Optional<NodeTreeDTO> first =
-            sub.stream().filter(i -> i.getPreNodeId() == null).findFirst();
-        first.ifPresent(nodes::add);
-        nodes.addAll(sub.stream()
-            .filter(i -> i.getPreNodeId() != null && !subNodeIds.contains(i.getPreNodeId()))
-            .collect(Collectors.toList()));
-        if (nodes.isEmpty()) {
-            return subNodeIds;
+        List<NodeTreeDTO> firstNodes = sub.stream()
+            .filter(i -> i.getPreNodeId() == null)
+            .collect(Collectors.toList());
+        Map<String, List<NodeTreeDTO>> preNodeIdToNodesMap = new LinkedHashMap<>();
+        for (NodeTreeDTO node : sub) {
+            String preNodeId = node.getPreNodeId();
+            List<NodeTreeDTO> sufNodes =
+                preNodeIdToNodesMap.computeIfAbsent(preNodeId, k -> new ArrayList<>());
+            sufNodes.add(node);
         }
         List<String> nodeIds = new ArrayList<>();
-        Map<String, NodeTreeDTO> preNodeIdToNodeMap = sub.stream()
-            .collect(Collectors.toMap(NodeTreeDTO::getPreNodeId, i -> i, (k1, k2) -> k2));
+        this.sufNodeRecurrence(firstNodes, nodeType, preNodeIdToNodesMap, nodeIds::add);
+        if (nodeIds.size() == sub.size()) {
+            return nodeIds;
+        }
+        List<String> subNodeIds =
+            sub.stream().map(NodeTreeDTO::getNodeId).collect(Collectors.toList());
+        sub.stream()
+            .filter(i -> i.getPreNodeId() != null && !subNodeIds.contains(i.getPreNodeId()))
+            .forEach(node -> {
+                List<NodeTreeDTO> suffixNodes = Collections.singletonList(node);
+                this.sufNodeRecurrence(suffixNodes, nodeType, preNodeIdToNodesMap, nodeIds::add);
+            });
+        return nodeIds;
+    }
+
+    private void sufNodeRecurrence(List<NodeTreeDTO> nodes, NodeType nodeType,
+                                   Map<String, List<NodeTreeDTO>> preNodeIdToNodesMap,
+                                   Consumer<String> action) {
+        nodes.stream()
+            .filter(i -> nodeType == null || i.getType() == nodeType.getNodeType())
+            .map(NodeTreeDTO::getNodeId)
+            .forEach(action);
         for (NodeTreeDTO node : nodes) {
-            String preNodeId = node.getNodeId();
-            if (nodeType == null || node.getType() == nodeType.getNodeType()) {
-                nodeIds.add(preNodeId);
-            }
-            while (preNodeIdToNodeMap.containsKey(preNodeId)) {
-                NodeTreeDTO nodeTreeDTO = preNodeIdToNodeMap.get(preNodeId);
-                preNodeId = nodeTreeDTO.getNodeId();
-                if (nodeType == null || nodeTreeDTO.getType() == nodeType.getNodeType()) {
-                    nodeIds.add(preNodeId);
-                }
+            String nodeId = node.getNodeId();
+            if (preNodeIdToNodesMap.containsKey(nodeId)) {
+                List<NodeTreeDTO> sufNodes = preNodeIdToNodesMap.get(nodeId);
+                this.sufNodeRecurrence(sufNodes, nodeType, preNodeIdToNodesMap, action);
             }
         }
-        return nodeIds;
     }
 
     @Override

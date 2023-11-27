@@ -19,6 +19,7 @@ import * as React from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { FieldType, IDateTimeBaseField, IField } from '@apitable/core';
 import { IFieldCascaderErrors } from '../field_setting/check_factory';
+import { FormatButton } from './format_button';
 import { FormatCascader } from './format_cascader';
 import { FormateCheckbox } from './format_checkbox';
 import { FormatCreatedBy } from './format_created_by';
@@ -41,10 +42,12 @@ interface IFieldFormatProps {
   hideOperateBox: () => void;
   datasheetId?: string;
   optionErrMsg?: object;
+  onUpdate: (field: IField) => void
+  onCreate?: (field: IField) => void
 }
 
 export const FieldFormat: React.FC<React.PropsWithChildren<IFieldFormatProps>> = (props) => {
-  const { from, currentField, setCurrentField, hideOperateBox, datasheetId, optionErrMsg } = props;
+  const { from, currentField, onUpdate, onCreate, setCurrentField, hideOperateBox, datasheetId, optionErrMsg } = props;
 
   if (!currentField.property && (currentField.type === FieldType.SingleSelect || currentField.type === FieldType.MultiSelect)) {
     setCurrentField({
@@ -100,6 +103,14 @@ export const FieldFormat: React.FC<React.PropsWithChildren<IFieldFormatProps>> =
       return <FormatURL currentField={currentField} setCurrentField={setCurrentField} />;
     case FieldType.Cascader:
       return <FormatCascader currentField={currentField} setCurrentField={setCurrentField} optionErrMsg={optionErrMsg as IFieldCascaderErrors} />;
+    case FieldType.Button:
+      // @ts-ignore
+      return <FormatButton
+        onCreate={onCreate}
+        // @ts-ignore
+        currentField={currentField} setCurrentField={setCurrentField} datasheetId={datasheetId} onUpdate={(field) => {
+          onUpdate(field);
+        }}/>;
     default:
       return <></>;
   }
