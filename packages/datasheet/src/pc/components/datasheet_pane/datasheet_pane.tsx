@@ -19,7 +19,6 @@
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
 import { get } from 'lodash';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
@@ -39,6 +38,7 @@ import {
   SystemConfig,
   t,
 } from '@apitable/core';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ApiPanel } from 'pc/components/api_panel';
 import { Message, VikaSplitPanel } from 'pc/components/common';
 import { TimeMachine } from 'pc/components/time_machine';
