@@ -252,12 +252,8 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
     return getTriggerInputSchema(triggerType!);
   }, [automationState?.scenario, datasheetId, datasheetName, formList, triggerType]);
 
-  const triggerTypeOptions = useMemo(() => {
-    return getNodeTypeOptions(triggerTypes);
-  }, [triggerTypes]);
-
   const triggerTypeOptionsWithoutButtonIsClicked = useMemo(() => {
-    return getNodeTypeOptions(triggerTypes.filter(item => item.endpoint !== 'button_field'));
+    return getNodeTypeOptions(triggerTypes);
   }, [triggerTypes]);
 
   const getDstIdItem = useMemo(() => {

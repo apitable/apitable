@@ -31,14 +31,13 @@ import {
   CollectType,
   FieldType,
   FOperator,
-  IAPIMetaButtonFieldProperty,
-  IButtonField, IButtonProperty,
-  IField,
+  IAPIMetaButtonFieldProperty, IButtonField, IButtonProperty, IField,
   IFilterCondition,
   IStandardValue,
   OpenLinkType,
 } from 'types';
 import { joiErrorResult, datasheetIdString } from './validate_schema';
+import { pick } from 'lodash';
 
 export const AutomationConstant = {
   DEFAULT_TEXT : t(Strings.click_start),
@@ -113,12 +112,6 @@ export class ButtonField extends Field {
         color: 50,
       },
       action: {
-        // type:
-        // ButtonActionType.OpenLink,
-        // openLink: {
-        //   type: undefined,
-        //   expression: '',
-        // },
       },
     };
   }
@@ -153,7 +146,13 @@ export class ButtonField extends Field {
   }
 
   validateProperty() {
-    return ButtonField.propertySchema.validate(this.field.property);
+    const newProperty = pick(this.field.property,
+      'datasheetId',
+      'text',
+      'style',
+      'action',
+    );
+    return ButtonField.propertySchema.validate(newProperty);
   }
 
   validateCellValue() {

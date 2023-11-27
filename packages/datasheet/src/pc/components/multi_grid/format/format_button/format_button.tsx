@@ -133,7 +133,6 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
             ...currentField.property.action.openLink,
             type: currentField.property.action.openLink?.type! as OpenLinkType,
             expression: value,
-            // TODO check file
           },
         },
       },
@@ -154,8 +153,10 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
       shareId: ''
     });
     const data = item?.data?.[0];
+    const triggerLength = data?.triggers?.length ?? 0;
     const triggerRes = await createTrigger(resourceId,
       {
+        prevTriggerId:  triggerLength > 0 ? data?.triggers?.[triggerLength - 1]?.triggerId : undefined,
         robotId: data?.robotId,
         triggerTypeId: buttonFieldTriggerId?.triggerTypeId!,
         relatedResourceId: datasheetId,
