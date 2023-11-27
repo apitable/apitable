@@ -17,7 +17,8 @@ import {
 import { ConfigConstant, DATASHEET_ID, IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import { BookOutlined, CloseOutlined, DeleteOutlined, MoreStandOutlined, QuestionCircleOutlined, ShareOutlined } from '@apitable/icons';
 import { MobileToolBar } from 'pc/components/automation/panel/Toobar';
-import { usePageParams, useQuery, useResponsive, useSideBarVisible, useUrlQuery } from '../../../hooks';
+import { useAppSelector } from 'pc/store/react-redux';
+import { useResponsive, useSideBarVisible, useUrlQuery } from '../../../hooks';
 import { useAppDispatch } from '../../../hooks/use_app_dispatch';
 import { flatContextData, getPermission } from '../../../utils';
 import { NodeIcon } from '../../catalog/tree/node_icon';
@@ -49,8 +50,6 @@ import { useAutomationNavigateController } from '../controller/controller';
 import { useAutomationResourceNode, useAutomationResourcePermission } from '../controller/use_automation_permission';
 import AutomationHistoryPanel from '../run_history/modal/modal';
 import styles from '../style.module.less';
-
-import { useAppSelector } from 'pc/store/react-redux';
 
 export const MenuID = 'MoreAction';
 
@@ -104,10 +103,8 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
           setPanel({
             panelName: isLg ? undefined : PanelName.BasicInfo,
           });
-        } else {
-          if (cache.panel) {
-            setPanel(cache.panel);
-          }
+        } else if (cache.panel) {
+          setPanel(cache.panel);
         }
 
         if ((params as { tab: string }).tab === 'history') {
@@ -199,10 +196,8 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
 
     return ConfigConstant.Role.Reader;
   }, [nodeItem?.role, permission.editable, permission.manageable]);
-  if (automationState?.scenario === AutomationScenario.node) {
-    if (!templateId && nodeItem == null) {
-      return null;
-    }
+  if (automationState?.scenario === AutomationScenario.node && !templateId && nodeItem == null) {
+    return null;
   }
   if (currentRobotId == null) {
     return null;
@@ -266,8 +261,13 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
                       </OrEmpty>
                       {!templateId && (
                         <Box marginX={'4px'}>
-                          <Tag color={TagColors[inheritedRole]}>
-                            {ConfigConstant.permissionText[getPermission(inheritedRole, { shareInfo: shareInfo })]}
+                          <Tag
+                            color={TagColors[inheritedRole]}
+                            style={{
+                              wordBreak: 'keep-all',
+                            }}
+                          >
+                            {ConfigConstant.permissionText[getPermission(inheritedRole, { shareInfo: shareInfo })]}aaa
                           </Tag>
                         </Box>
                       )}
