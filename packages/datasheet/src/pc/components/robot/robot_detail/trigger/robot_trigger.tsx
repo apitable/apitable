@@ -226,6 +226,7 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
                             properties!.formId.enum = formList.map((f: IFormNodeItem) => f.nodeId);
                             properties!.formId.enumNames = formList.map((f: IFormNodeItem) => f.nodeName);
               break;
+            case 'button_clicked':
             case 'button_field':
             case 'record_matches_conditions':
                             properties!.datasheetId.default = datasheetId;
@@ -254,7 +255,7 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
 
   const triggerTypeOptionsWithoutButtonIsClicked = useMemo(() => {
     if(automationState?.scenario === AutomationScenario.datasheet) {
-      return getNodeTypeOptions(triggerTypes.filter(r => r.endpoint !== 'button_field'));
+      return getNodeTypeOptions(triggerTypes.filter(r => r.endpoint !== 'button_field' && r.endpoint !== 'button_clicked'));
     }
     return getNodeTypeOptions(triggerTypes);
   }, [automationState?.scenario, triggerTypes]);

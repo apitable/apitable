@@ -75,21 +75,6 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props)
                 onMouseDown={stopPropagation}
                 key={colorIndex}
               >
-                {/*{*/}
-
-                {/*  options?.style === ButtonStyleType.OnlyText ? (*/}
-                {/*    <>*/}
-                {/*      <div className={styles.borderWhite}>*/}
-                {/*        <div*/}
-                {/*          className={styles.inner}*/}
-                {/*          style={{*/}
-                {/*            color: colorIndex === -1 ? colors.defaultBg : setColor(colorIndex, cacheTheme),*/}
-                {/*            // border: colorIndex === -1 ? `1px solid ${colors.textCommonTertiary}` : 'none',*/}
-                {/*          }}*/}
-                {/*        />*/}
-                {/*      </div>*/}
-                {/*    </>*/}
-                {/*  ): (*/}
                 <div className={styles.borderWhite}>
                   <div
                     className={styles.inner}
@@ -99,8 +84,6 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props)
                     }}
                   />
                 </div>
-                {/*  )*/}
-                {/*}*/}
               </div>
             ) : (
               <StyledFloatUiTooltip
@@ -110,7 +93,7 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props)
                     {
                       options?.style === ButtonStyleType.Background ? (
                         <Box backgroundColor={colorList[colorIndex]} padding={'6px 12px'} borderRadius={'4px'}>
-                          <Typography variant={'body4'} color={colors.textReverseDefault}>
+                          <Typography variant={'body4'} color={colors.textStaticPrimary}>
                             {props?.options?.content}
                           </Typography>
                         </Box>

@@ -1,28 +1,41 @@
 import { FunctionComponent, useEffect, useState } from 'react';
 import * as React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Box, Typography } from '@apitable/components';
-import { ButtonStyleType, IButtonField, IRecord, IReduxState, Selectors } from '@apitable/core';
+import { ButtonStyleType, getColorValue, IButtonField, IRecord, IReduxState, Selectors } from '@apitable/core';
 import { LoadingFilled } from '@apitable/icons';
 import { runAutomationButton } from 'pc/components/editors/button_editor';
 import { useButtonFieldValid } from 'pc/components/editors/button_editor/use_button_field_valid';
 import { getIsValid, setIsValid } from 'pc/components/editors/button_editor/valid_map';
 import EllipsisText from 'pc/components/ellipsis_text';
-import {setColor, useColorColorWheel} from 'pc/components/multi_grid/format';
+import { setColor, useColorColorWheel } from 'pc/components/multi_grid/format';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
 
-const StyledBox = styled(Box)`
+const StyledBox = styled(Box)<{color?: string}>`
     cursor: pointer;
     user-select: none;
 `;
 
+const StyledBgBox = styled(Box)<{defaultColor: string}>`
+    cursor: pointer;
+    user-select: none;
+  
+   ${props => css`
+     background-color: ${props.defaultColor};
+     
+     &:hover {
+       background-color: ${getColorValue(props.defaultColor, 0.9)};
+     }
+
+     &:active {
+       background-color: ${getColorValue(props.defaultColor, 0.8)};
+     }
+   `}
+`;
+
 export const ButtonFieldItem: FunctionComponent<{field: IButtonField,
     recordId: string, record:IRecord }> = ({ field, recordId, record }) => {
-
-    const cacheTheme = useAppSelector(Selectors.getTheme);
-
-    const colorList = useColorColorWheel(cacheTheme);
 
       const state = useAppSelector((state) => state);
 
@@ -52,7 +65,6 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
     isLoading: boolean}> = ({ field, onStart, isLoading }) => {
       const cacheTheme = useAppSelector(Selectors.getTheme);
       const colors = useCssColors();
-    const colorList = useColorColorWheel(cacheTheme);
 
       const bg = field.property.style.color ? setColor(field.property.style.color, cacheTheme) : colors.defaultBg;
       const isValidResp = useButtonFieldValid(field);
@@ -135,7 +147,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
 
       }
       return (
-        <StyledBox backgroundColor={bg}
+        <StyledBgBox defaultColor={bg}
           borderRadius={'4px'}
           paddingX={'8px'}
           maxWidth={'100px'}
@@ -157,6 +169,6 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
               </EllipsisText>
             )
           }
-        </StyledBox>
+        </StyledBgBox>
       );
     };

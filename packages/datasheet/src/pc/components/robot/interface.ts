@@ -54,7 +54,7 @@ export interface IRobotContext {
   robot?: IAutomationRobotDetailItem;
 }
 
-export type EnumTriggerEndpoint ='button_field' | 'form_submitted' | 'record_matches_conditions' | 'record_created'
+export type EnumTriggerEndpoint ='button_field'|'button_clicked' | 'form_submitted' | 'record_matches_conditions' | 'record_created'
   | 'sendLarkMsg' | 'sendRequest' | 'sendMail';
 
 interface INodeBaseType {

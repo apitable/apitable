@@ -23,7 +23,6 @@ import { useMemo } from 'react';
 import styled from 'styled-components';
 import {
   Box,
-  Button,
   Dropdown,
   IconButton,
   IOverLayProps,
@@ -35,9 +34,7 @@ import {
 } from '@apitable/components';
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 
-import { ArrowRightOutlined, DownloadOutlined, MoreOutlined, MoreStandOutlined } from '@apitable/icons';
-import { handleDownload } from 'pc/components/automation/run_history/list/util';
-import { getAutomationRunHistoryDetail } from 'pc/components/robot/api';
+import { ArrowRightOutlined, MoreOutlined, MoreStandOutlined } from '@apitable/icons';
 import { useActionTypes, useTriggerTypes } from 'pc/components/robot/robot_panel/hook_trigger';
 import { getEnvVariables } from 'pc/utils/env';
 import EllipsisText from '../../ellipsis_text';
@@ -62,13 +59,6 @@ const StyledMenu = styled(Box)`
 `;
 
 const StyledBox = styled(Box)`
-  &:hover {
-    background-color: var(--bgBglessHover);
-  }
-
-  &:active {
-    background-color: var(--bgBglessActive);
-  }
 `;
 
 interface INodeStep {
@@ -146,7 +136,7 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
 
   return (
     <StyledBox border={`1px solid ${theme.color.borderCommonDefault}`} borderRadius="4px" marginTop="16px" style={readonlyStyle}>
-      <Box padding="8px 0" margin="0 8px" onClick={onNavigate} display={'flex'} alignItems={'center'}>
+      <Box padding="8px 0" margin="0 8px" display={'flex'} alignItems={'center'}>
         {/*marginTop="8px"*/}
         <Box display="flex" justifyContent="space-between" alignItems="center" flex={'1 1 auto'}>
           <Box width="100%" display="flex" alignItems="center">

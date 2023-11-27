@@ -104,7 +104,7 @@ export const useButtonFieldValid = (button: IButtonField): {
 } => {
 
   const { data: triggerTypes } = useTriggerTypes();
-  const buttonFieldTriggerId =triggerTypes.find(item => item.endpoint === 'button_field');
+  const buttonFieldTriggerId =triggerTypes.find(item => item.endpoint==='button_clicked' || item.endpoint === 'button_field');
   const automationId = button.property.action.automation?.automationId;
   const { data, isLoading } = useSWR(`automation_item_${automationId ?? ''}`, () => getRobotDetail(automationId ?? '',
     ''
