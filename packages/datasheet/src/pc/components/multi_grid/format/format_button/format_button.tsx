@@ -3,6 +3,7 @@ import { Input, message } from 'antd';
 import produce from 'immer';
 import { useRouter } from 'next/router';
 import { useRef, Dispatch, SetStateAction, useMemo, useState, useCallback } from 'react';
+import styled from 'styled-components';
 import { Box, DropdownSelect, FloatUiTooltip, LinkButton, Typography } from '@apitable/components';
 import {
   IButtonField,
@@ -47,6 +48,33 @@ interface IFormateButtonProps {
   onCreate?: (field: IField) => void
   datasheetId?: string;
 }
+
+const StyledIntput = styled(Input)`
+  
+   .ant-input:focus {
+     border-right-style: none;
+   }
+  .ant-input:hover {
+    border-right-style: none;
+  }
+
+  .ant-input{
+    border-right-style: none;
+  }
+
+  .ant-input:hover + * {
+    border-style: solid;
+    border-left-style: none;
+    border-width: 1px;
+    border-color: var(--primaryColor)!important;;
+  }
+  .ant-input:focus + * {
+    border-style: solid;
+    border-left-style: none;
+    border-width: 1px;
+    border-color: var(--primaryColor)!important;;
+  }
+`;
 
 export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>> = (props) => {
   const { currentField, setCurrentField, onUpdate, onCreate, datasheetId: propDatasheetId } = props;
@@ -244,7 +272,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
             }
             setVisible(false);
           }}
-          permissionRequired={'manageable'}
+          permissionRequired={'editable'}
           onChange={ async ({ automationId }) => {
             if(!automationId) {
               return;
@@ -384,7 +412,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
           <div className={settingStyles.sectionTitle}>URL</div>
           <div className={styles.openLinkInput}>
             {action?.openLink?.type === OpenLinkType.Url ? (
-              <Input
+              <StyledIntput
                 ref={urlInputRef}
                 value={action.openLink.expression}
                 placeholder={t(Strings.open_url_tips_string)}
@@ -436,7 +464,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                 }
               />
             ) : (
-              <Input
+              <StyledIntput
                 ref={inputformulaRef}
                 className="code"
                 placeholder={t(Strings.input_formula)}

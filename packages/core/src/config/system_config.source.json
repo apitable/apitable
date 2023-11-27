@@ -183,8 +183,8 @@
       "valueType": "string"
     },
     "Button": {
-      "defaultExample": "",
-      "defaultExampleId": "",
+      "defaultExample": "Click Start",
+      "defaultExampleId": "click_start",
       "description": "按钮列",
       "descriptionId": "field_desc_button",
       "valueType": "string"
