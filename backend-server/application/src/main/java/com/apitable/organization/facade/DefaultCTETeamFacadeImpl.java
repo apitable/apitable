@@ -23,6 +23,7 @@ import com.apitable.organization.dto.TeamPathInfo;
 import com.apitable.organization.mapper.TeamMapper;
 import com.apitable.shared.util.CollectionUtil;
 import com.apitable.shared.util.DBUtil;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -39,6 +40,9 @@ public class DefaultCTETeamFacadeImpl extends AbstractTeamFacade {
 
     @Override
     public List<TeamPathInfo> getAllParentTeam(Collection<Long> teamIds) {
+        if (teamIds.isEmpty()) {
+            return new ArrayList<>();
+        }
         return teamMapper.selectParentTeamTree(teamIds);
     }
 

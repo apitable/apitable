@@ -297,8 +297,10 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         log.info("Gets all unit ids for the member");
         List<Long> unitRefIds = CollUtil.newArrayList(memberId);
         List<Long> teamIds = iTeamMemberRelService.getTeamByMemberId(memberId);
-        List<Long> allParentTeamIds = teamFacade.getAllParentTeamIds(teamIds);
-        unitRefIds.addAll(allParentTeamIds);
+        if (teamIds.size() > 0) {
+            List<Long> allParentTeamIds = teamFacade.getAllParentTeamIds(teamIds);
+            unitRefIds.addAll(allParentTeamIds);
+        }
         List<Long> roleIds = iRoleMemberService.getRoleIdsByRoleMemberId(memberId);
         unitRefIds.addAll(roleIds);
         return iUnitService.getUnitIdsByRefIds(unitRefIds);
