@@ -31,7 +31,7 @@ public class QueueConfig {
     /**
      * notification queue.
      */
-    @Bean
+    @Bean("notificationQueue")
     public Queue notificationQueue() {
         return new Queue(NOTIFICATION_QUEUE);
     }
@@ -39,7 +39,7 @@ public class QueueConfig {
     /**
      * define notification exchange.
      */
-    @Bean
+    @Bean("notificationExchange")
     TopicExchange notificationExchange() {
         return new TopicExchange(NOTIFICATION_EXCHANGE);
     }

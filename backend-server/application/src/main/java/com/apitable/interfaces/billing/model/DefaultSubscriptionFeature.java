@@ -83,7 +83,7 @@ public class DefaultSubscriptionFeature implements SubscriptionFeature {
 
     @Override
     public ArchivedRowsPerSheet getArchivedRowsPerSheet() {
-        return new ArchivedRowsPerSheet(260L);
+        return new ArchivedRowsPerSheet(250L);
     }
 
     @Override

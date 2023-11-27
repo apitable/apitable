@@ -138,11 +138,11 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         assertThat(spaceSubscribeVo.getOnTrial()).isFalse();
         assertThat(spaceSubscribeVo.getExpireAt()).isNull();
         assertThat(spaceSubscribeVo.getDeadline()).isNull();
-        assertThat(spaceSubscribeVo.getMaxSeats()).isEqualTo(-1L);
-        assertThat(spaceSubscribeVo.getMaxCapacitySizeInBytes()).isEqualTo(-1L);
-        assertThat(spaceSubscribeVo.getMaxSheetNums()).isEqualTo(-1L);
-        assertThat(spaceSubscribeVo.getMaxRowsPerSheet()).isEqualTo(-1L);
-        assertThat(spaceSubscribeVo.getMaxRowsInSpace()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxSeats()).isEqualTo(2L);
+        assertThat(spaceSubscribeVo.getMaxCapacitySizeInBytes()).isEqualTo(1024 * 1024 * 1024L);
+        assertThat(spaceSubscribeVo.getMaxSheetNums()).isEqualTo(5L);
+        assertThat(spaceSubscribeVo.getMaxRowsPerSheet()).isEqualTo(100L);
+        assertThat(spaceSubscribeVo.getMaxRowsInSpace()).isEqualTo(250L);
         assertThat(spaceSubscribeVo.getMaxAdminNums()).isEqualTo(-1L);
         assertThat(spaceSubscribeVo.getMaxMirrorNums()).isEqualTo(-1L);
         assertThat(spaceSubscribeVo.getMaxApiCall()).isEqualTo(-1L);

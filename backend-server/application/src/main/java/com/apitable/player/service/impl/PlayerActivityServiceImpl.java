@@ -24,8 +24,8 @@ import com.apitable.base.enums.DatabaseException;
 import com.apitable.base.enums.ParameterException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
-import com.apitable.interfaces.user.facade.UserServiceFacade;
-import com.apitable.interfaces.user.model.RewardWizardAction;
+import com.apitable.interfaces.eventbus.facade.EventBusFacade;
+import com.apitable.interfaces.eventbus.model.WizardActionEvent;
 import com.apitable.player.entity.PlayerActivityEntity;
 import com.apitable.player.mapper.PlayerActivityMapper;
 import com.apitable.player.service.IPlayerActivityService;
@@ -49,7 +49,7 @@ public class PlayerActivityServiceImpl implements IPlayerActivityService {
     private PlayerActivityMapper playerActivityMapper;
 
     @Resource
-    private UserServiceFacade userServiceFacade;
+    private EventBusFacade eventBusFacade;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -83,7 +83,7 @@ public class PlayerActivityServiceImpl implements IPlayerActivityService {
             boolean flag = SqlHelper.retBool(playerActivityMapper.insert(entity));
             ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
         }
-        userServiceFacade.rewardWizardAction(new RewardWizardAction(userId, wizardId.toString()));
+        eventBusFacade.onEvent(new WizardActionEvent(userId, wizardId.toString()));
     }
 
     @Override
