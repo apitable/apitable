@@ -16,16 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { UnitMemberRepository } from 'unit/repositories/unit.member.repository';
-import { UserRepository } from './repositories/user.repository';
-import { UserService } from './services/user.service';
+import { EventRealTypeEnums, IAtomEventType, OPEventNameEnums } from 'event_manager';
+import { AnyObject, IOPBaseContext } from 'event_manager/interface';
+import { ResourceType } from 'types';
 
-@Module({
-  imports: [TypeOrmModule.forFeature([UserRepository, UnitMemberRepository])],
-  providers: [UserService],
-  controllers: [],
-  exports: [UserService],
-})
-export class UserModule {}
+interface IButtonClicked {
+  datasheet: {
+    id: string;
+    name: string;
+  };
+  record: {
+    id: string;
+    url: string;
+    fields: AnyObject;
+  };
+}
+
+export class OPEventButtonClicked extends IAtomEventType<IButtonClicked> {
+  eventName = OPEventNameEnums.ButtonClicked;
+  realType = EventRealTypeEnums.REAL;
+  scope = ResourceType.Datasheet;
+
+  // dispatch directly by user
+  test(_opContext: IOPBaseContext) {
+    return {
+      pass: false,
+      context: null
+    };
+  }
+}

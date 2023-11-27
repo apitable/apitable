@@ -180,7 +180,7 @@ export class DatasheetController {
   @UseInterceptors(ResourceDataInterceptor)
   async triggerAutomation(@Headers('cookie') cookie: string, @Param('dstId') dstId: string, @Body() data: TriggerAutomationRO) {
     // check if the user belongs to this space
-    const { userId, uuid } = await this.userService.getMe({ cookie });
+    const { userId } = await this.userService.getMe({ cookie });
     await this.nodeService.checkUserForNode(userId, dstId);
     const field: IButtonField = (await this.datasheetMetaService.getFieldByFldIdAndDstId(dstId, data.fieldId)) as IButtonField;
     if (!field) {
@@ -192,8 +192,9 @@ export class DatasheetController {
     if (!field.property.action?.automation?.triggerId) {
       throw new ServerException(DatasheetException.BUTTON_FIELD_AUTOMATION_TRIGGER_NOT_CONFIGURED);
     }
-    await this.datasheetService.triggerAutomation(
-      field.property.action?.automation?.automationId, field.property.action?.automation?.triggerId, dstId, data.recordId, uuid);
+    const automationId = field.property.action?.automation?.automationId;
+    const triggerId = field.property.action?.automation?.triggerId;
+    await this.datasheetService.triggerAutomation(automationId, triggerId, dstId, data.recordId, userId);
     return ApiResponse.success(undefined);
   }
 }

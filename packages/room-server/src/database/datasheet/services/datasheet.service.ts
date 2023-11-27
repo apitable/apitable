@@ -16,14 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, IBaseDatasheetPack, IEventResourceMap, IFieldMap, IReduxState, IResourceRevision, IViewProperty } from '@apitable/core';
+import {
+  EventAtomTypeEnums,
+  EventRealTypeEnums,
+  EventSourceTypeEnums,
+  FieldType,
+  IBaseDatasheetPack,
+  IEventResourceMap,
+  IFieldMap,
+  IReduxState,
+  IResourceRevision,
+  IViewProperty,
+  OPEventNameEnums,
+  ResourceType,
+  Selectors,
+  transformOpFields,
+} from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { EventTypeEnums } from 'automation/events/domains/event.type.enums';
-import { TriggerEventHelper } from 'automation/events/helpers/trigger.event.helper';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AutomationRobotRepository } from 'automation/repositories/automation.robot.repository';
 import { AutomationTriggerRepository } from 'automation/repositories/automation.trigger.repository';
-import { AutomationService } from 'automation/services/automation.service';
 import { CommandService } from 'database/command/services/command.service';
 import { MetaService } from 'database/resource/services/meta.service';
 import { isEmpty } from 'lodash';
@@ -31,6 +44,7 @@ import { NodeService } from 'node/services/node.service';
 import type { Store } from 'redux';
 import { InjectLogger } from 'shared/common';
 import { CommonException, DatasheetException, ServerException } from 'shared/exception';
+import { getRecordUrl } from 'shared/helpers/env';
 import type { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, IFetchDataPackOptions, ILoadBasePackOptions } from 'shared/interfaces';
 import { UserService } from 'user/services/user.service';
 import { Logger } from 'winston';
@@ -57,9 +71,7 @@ export class DatasheetService {
     private readonly resourceMetaService: MetaService,
     private readonly automationRobotRepository: AutomationRobotRepository,
     private readonly automationTriggerRepository: AutomationTriggerRepository,
-    private readonly triggerEventHelper: TriggerEventHelper,
-    @Inject(forwardRef(() => AutomationService))
-    private readonly automationService: AutomationService,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   /**
@@ -407,7 +419,7 @@ export class DatasheetService {
     return await this.datasheetRepository.selectRevisionByDstId(dstId);
   }
 
-  async triggerAutomation(automationId: string, triggerId: string, datasheetId: string, recordId: string, uuid: string) {
+  async triggerAutomation(automationId: string, triggerId: string, datasheetId: string, recordId: string, userId: string) {
     const hasRobots = await this.automationRobotRepository.isResourcesHasRobots([automationId]);
     if (!hasRobots) {
       throw new ServerException(CommonException.AUTOMATION_NOT_ACTIVE);
@@ -420,14 +432,36 @@ export class DatasheetService {
       throw new ServerException(CommonException.AUTOMATION_TRIGGER_INVALID);
     }
     const datasheetName = await this.nodeService.getNameByNodeId(datasheetId);
-    const robots = this.triggerEventHelper.getRenderTriggers(EventTypeEnums.RecordCreated, [trigger], {
+    const spaceId = await this.nodeService.getSpaceIdByNodeId(datasheetId);
+    const clickedBy = await this.userService.getUserMemberName(userId, spaceId);
+    const resourceMap = new Map<string, string[]>();
+    resourceMap.set(datasheetId, [recordId]);
+    const dataPack = await this.getTinyBasePacks(resourceMap);
+    const store = this.commandService.fillTinyStore(dataPack);
+    const thisRecord = Selectors.getRecord(store.getState(), recordId, datasheetId);
+    const { eventFields } = transformOpFields({
+      recordData: thisRecord!.data,
+      state: store.getState(),
+      datasheetId,
+      recordId,
+    });
+    const eventContext = {
+      // Flattened new structure
       datasheetId,
       datasheetName,
       recordId,
-      uuid,
+      clickedBy,
+      recordUrl: getRecordUrl(datasheetId, recordId),
+      ...eventFields,
+    };
+    await this.eventEmitter.emitAsync(OPEventNameEnums.ButtonClicked, {
+      eventName: OPEventNameEnums.FormSubmitted,
+      scope: ResourceType.Form,
+      realType: EventRealTypeEnums.REAL,
+      atomType: EventAtomTypeEnums.ATOM,
+      sourceType: EventSourceTypeEnums.ALL,
+      context: eventContext,
+      beforeApply: false,
     });
-    for (const robot of robots) {
-      await this.automationService.handleTask(robot.robotId, robot.trigger).then((_) => {});
-    }
   }
 }

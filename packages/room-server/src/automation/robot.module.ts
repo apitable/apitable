@@ -19,8 +19,10 @@
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ButtonClickedListener } from 'automation/events/listeners/button.clicked.listener';
 import { NodeModule } from 'node/node.module';
 import { UserModule } from 'user/user.module';
+import { DocumentServiceDynamicModule } from 'workdoc/services/document.service.dynamic.module';
 import { RobotActionController } from './controller/action.controller';
 import { RobotActionTypeController } from './controller/action.type.controller';
 import { RobotController } from './controller/robot.controller';
@@ -44,7 +46,6 @@ import { RobotRobotService } from './services/robot.robot.service';
 import { RobotServiceDynamicModule } from './services/robot.service.dynamic.module';
 import { RobotTriggerService } from './services/robot.trigger.service';
 import { RobotTriggerTypeService } from './services/robot.trigger.type.service';
-import { DocumentServiceDynamicModule } from 'workdoc/services/document.service.dynamic.module';
 
 @Module({
   imports: [
@@ -75,6 +76,7 @@ import { DocumentServiceDynamicModule } from 'workdoc/services/document.service.
     RobotTriggerService,
     RobotTriggerTypeService,
     FormSubmittedListener,
+    ButtonClickedListener,
     TriggerEventHelper,
     RecordCreatedListener,
     RecordUpdatedListener,
