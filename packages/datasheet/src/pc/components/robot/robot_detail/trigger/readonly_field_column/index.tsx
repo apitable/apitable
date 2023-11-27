@@ -1,7 +1,7 @@
-import { FC } from 'react';
 import * as React from 'react';
-import { Box, Button, Typography } from '@apitable/components';
-import { FieldType, Selectors, Strings, t } from '@apitable/core';
+import { FC } from 'react';
+import { Box, Typography } from '@apitable/components';
+import { ButtonActionType, FieldType, IButtonField, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import EllipsisText from 'pc/components/ellipsis_text';
 import { getFieldTypeIcon, getFieldTypeIconOrNull } from 'pc/components/multi_grid/field_setting';
@@ -9,9 +9,7 @@ import {
   handleCreateNewTrigger,
   useColumnInfo
 } from 'pc/components/robot/robot_detail/create_new_trigger/create_new_trigger';
-import { getFields } from 'pc/components/robot/robot_detail/trigger/helper';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
-import { useAllColumns } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
 
 export const ReadonlyFieldColumn: FC<{
@@ -30,8 +28,14 @@ export const ReadonlyFieldColumn: FC<{
 
   const columnInfo= useColumnInfo(datasheetId);
 
-  const fieldItem = fieldMap?.[fieldId];
   const colors = useCssColors();
+  let fieldItem = fieldMap?.[fieldId] as IButtonField|undefined;
+  if(fieldItem?.type !== FieldType.Button) {
+    fieldItem = undefined;
+  }
+  if(fieldItem?.property?.action?.type !== ButtonActionType.TriggerAutomation ) {
+    fieldItem = undefined;
+  }
 
   if(fieldId == null || fieldId ==='') {
     return null;

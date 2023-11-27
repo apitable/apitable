@@ -17,18 +17,22 @@
  */
 
 import * as React from 'react';
-import { IButtonField, KONVA_DATASHEET_ID } from '@apitable/core';
-import { ButtonFieldItem, ButtonItem } from 'pc/components/editors/button_editor/buton_item';
+import { IButtonField, KONVA_DATASHEET_ID, Selectors } from '@apitable/core';
+import { ButtonFieldItem } from 'pc/components/editors/button_editor/buton_item';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Rect } from 'pc/components/konva_components';
 import { CellScrollContainer } from 'pc/components/konva_grid';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation, KeyCode } from 'pc/utils';
 import { ICellProps } from '../cell_value';
 import { IRenderData } from '../interface';
 
 export const CellButtonItem: React.FC<React.PropsWithChildren<Pick<ICellProps, 'field' |'recordId'>>> = (props) => {
+
+  const record = useAppSelector(state => Selectors.getRecord(state, props.recordId));
+  if(!record) return null;
   return (
-    <ButtonFieldItem field={props.field as IButtonField} recordId={props.recordId}/>
+    <ButtonFieldItem field={props.field as IButtonField} recordId={props.recordId} record={record}/>
   );
 };
 
