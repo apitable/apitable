@@ -18,8 +18,8 @@ import {
   BasicValueType,
   parse,
   IReduxState,
-  ConfigConstant, IField,
-
+  ConfigConstant,
+  IField,
 } from '@apitable/core';
 import { AddOutlined, SyncOnOutlined } from '@apitable/icons';
 import { automationApiClient, workbenchClient } from 'pc/common/api-client';
@@ -44,21 +44,20 @@ const Option = DropdownSelect.Option;
 interface IFormateButtonProps {
   currentField: IButtonField;
   setCurrentField: Dispatch<SetStateAction<IButtonField>>;
-  onUpdate: (field: IField) => void
-  onCreate?: (field: IField) => void
+  onUpdate: (field: IField) => void;
+  onCreate?: (field: IField) => void;
   datasheetId?: string;
 }
 
 const StyledIntput = styled(Input)`
-  
-   .ant-input:focus {
-     border-right-style: none;
-   }
+  .ant-input:focus {
+    border-right-style: none;
+  }
   .ant-input:hover {
     border-right-style: none;
   }
 
-  .ant-input{
+  .ant-input {
     border-right-style: none;
   }
 
@@ -66,13 +65,13 @@ const StyledIntput = styled(Input)`
     border-style: solid;
     border-left-style: none;
     border-width: 1px;
-    border-color: var(--primaryColor)!important;;
+    border-color: var(--primaryColor) !important;
   }
   .ant-input:focus + * {
     border-style: solid;
     border-left-style: none;
     border-width: 1px;
-    border-color: var(--primaryColor)!important;;
+    border-color: var(--primaryColor) !important;
   }
 `;
 
@@ -84,15 +83,18 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
 
   const datasheetId = useAppSelector((state: IReduxState) => propDatasheetId || Selectors.getActiveDatasheetId(state))!;
 
-  const activeFieldState = useAppSelector(state => Selectors.gridViewActiveFieldState(state, datasheetId));
-  const handleModify = useCallback((field: IField) => {
-    if(activeFieldState.fieldId === ButtonOperateType.AddField) {
-      onCreate?.(field);
-    }else {
-      onUpdate(field);
-    }
-  }, [activeFieldState.fieldId, onCreate, onUpdate]);
-  const rootId = useAppSelector(r => r.catalogTree.rootId);
+  const activeFieldState = useAppSelector((state) => Selectors.gridViewActiveFieldState(state, datasheetId));
+  const handleModify = useCallback(
+    (field: IField) => {
+      if (activeFieldState.fieldId === ButtonOperateType.AddField) {
+        onCreate?.(field);
+      } else {
+        onUpdate(field);
+      }
+    },
+    [activeFieldState.fieldId, onCreate, onUpdate],
+  );
+  const rootId = useAppSelector((r) => r.catalogTree.rootId);
 
   // const datasheetNode = useAppSelector((state: IReduxState) => Selectors.getAc)!;
   const datasheetParentId = useAppSelector((state) => Selectors.getDatasheet(state, propDatasheetId)!.parentId);
@@ -173,18 +175,18 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
   const colors = useCssColors();
 
   const { data: triggerTypes } = useTriggerTypes();
-  const buttonFieldTriggerId =triggerTypes.find(item => item.endpoint === 'button_field');
+  const buttonFieldTriggerId = triggerTypes.find((item) => item.endpoint === 'button_field' || item.endpoint === 'button_clicked');
 
-  const handleAddTrigger = useCallback(async (resourceId: string, datasheetId: string, fieldId: string, onUpdate: (resp: string) => void) => {
-    const item = await automationApiClient.getResourceRobots({
-      resourceId,
-      shareId: ''
-    });
-    const data = item?.data?.[0];
-    const triggerLength = data?.triggers?.length ?? 0;
-    const triggerRes = await createTrigger(resourceId,
-      {
-        prevTriggerId:  triggerLength > 0 ? data?.triggers?.[triggerLength - 1]?.triggerId : undefined,
+  const handleAddTrigger = useCallback(
+    async (resourceId: string, datasheetId: string, fieldId: string, onUpdate: (resp: string) => void) => {
+      const item = await automationApiClient.getResourceRobots({
+        resourceId,
+        shareId: '',
+      });
+      const data = item?.data?.[0];
+      const triggerLength = data?.triggers?.length ?? 0;
+      const triggerRes = await createTrigger(resourceId, {
+        prevTriggerId: triggerLength > 0 ? data?.triggers?.[triggerLength - 1]?.triggerId : undefined,
         robotId: data?.robotId,
         triggerTypeId: buttonFieldTriggerId?.triggerTypeId!,
         relatedResourceId: datasheetId,
@@ -204,67 +206,70 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                 value: fieldId,
               },
             ],
-          }
-        }
+          },
+        },
       });
-    if(triggerRes.data.data[0].triggerId) {
-      onUpdate(triggerRes.data.data[0].triggerId);
-    }
-  }, [buttonFieldTriggerId?.triggerTypeId]);
+      if (triggerRes?.data?.data?.[0]?.triggerId) {
+        onUpdate(triggerRes.data.data[0].triggerId);
+      }
+    },
+    [buttonFieldTriggerId?.triggerTypeId],
+  );
 
   return (
     <>
       {visible && (
         <DataSourceSelectorForNode
-          footer={<>
-            <Box paddingLeft={'16px'} onClick={async () => {
-              const r = await workbenchClient.create3({
-                nodeOpRo: {
-                  preNodeId: datasheetId,
-                  parentId: datasheetParentId,
-                  type: 10,
-                }
-              });
-              const automationId = r?.data?.nodeId;
+          footer={
+            <>
+              <Box
+                paddingLeft={'16px'}
+                onClick={async () => {
+                  const r = await workbenchClient.create3({
+                    nodeOpRo: {
+                      preNodeId: datasheetId,
+                      parentId: datasheetParentId,
+                      type: 10,
+                    },
+                  });
+                  const automationId = r?.data?.nodeId;
 
-              if(!automationId ) {
-                return;
-              }
-
-              await handleAddTrigger(automationId, datasheetId, currentField.id, (triggerId) => {
-                const item = produce(currentField, (draft) => {
-                  draft.property.action.type = ButtonActionType.TriggerAutomation;
-                  if (automationId) {
-                    if (draft.property.action?.automation) {
-                      draft.property.action.automation.automationId = automationId;
-                      draft.property.action.automation.triggerId = triggerId;
-                    } else {
-                      draft.property.action.automation = { automationId, triggerId };
-                    }
+                  if (!automationId) {
+                    return;
                   }
-                });
 
-                setVisible(false);
-                setCurrentField(item);
-                handleModify(item);
-                setTimeout(() => {
-                  router.push(`/workbench/${automationId}`);
-                }, 50);
-              });
-            }} >
+                  await handleAddTrigger(automationId, datasheetId, currentField.id, (triggerId) => {
+                    const item = produce(currentField, (draft) => {
+                      draft.property.action.type = ButtonActionType.TriggerAutomation;
+                      if (automationId) {
+                        if (draft.property.action?.automation) {
+                          draft.property.action.automation.automationId = automationId;
+                          draft.property.action.automation.triggerId = triggerId;
+                        } else {
+                          draft.property.action.automation = { automationId, triggerId };
+                        }
+                      }
+                    });
 
-              <LinkButton prefixIcon={<AddOutlined color={colors.textBrandDefault}/>} underline={false}>
-                <Typography variant={'body4'} color={colors.textBrandDefault}>
-                  {
-                    t(Strings.add_automation_node)
-                  }
-                </Typography>
-              </LinkButton>
-            </Box>
-          </>}
+                    setVisible(false);
+                    setCurrentField(item);
+                    handleModify(item);
+                    setTimeout(() => {
+                      router.push(`/workbench/${automationId}`);
+                    }, 50);
+                  });
+                }}
+              >
+                <LinkButton prefixIcon={<AddOutlined color={colors.textBrandDefault} />} underline={false}>
+                  <Typography variant={'body4'} color={colors.textBrandDefault}>
+                    {t(Strings.add_automation_node)}
+                  </Typography>
+                </LinkButton>
+              </Box>
+            </>
+          }
           onHide={() => {
-
-            if(!action?.automation?.automationId) {
+            if (!action?.automation?.automationId) {
               setFieldProperty('action')({
                 ...action,
                 type: undefined,
@@ -273,8 +278,8 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
             setVisible(false);
           }}
           permissionRequired={'editable'}
-          onChange={ async ({ automationId }) => {
-            if(!automationId) {
+          onChange={async ({ automationId }) => {
+            if (!automationId) {
               return;
             }
             const robot = await automationApiClient.getResourceRobots({
@@ -282,9 +287,9 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
               shareId: '',
             });
 
-            const data= robot.data?.[0]?.triggers?.length;
+            const data = robot.data?.[0]?.triggers?.length;
 
-            if(data && data >= CONST_MAX_TRIGGER_COUNT) {
+            if (data && data >= CONST_MAX_TRIGGER_COUNT) {
               message.warn(t(Strings.number_of_trigger_is_full));
               return;
             }
@@ -329,7 +334,6 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
         <DropdownSelect
           value={style.type || ButtonStyleType.Background}
           onSelected={({ value }) => {
-
             const newItem = {
               ...currentField,
               // @ts-ignore
@@ -337,9 +341,9 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                 ...currentField.property,
                 style: {
                   ...currentField.property.style,
-                  type:  value as unknown as ButtonStyleType
+                  type: value as unknown as ButtonStyleType,
                 },
-              }
+              },
             };
             setCurrentField(newItem);
           }}
@@ -357,7 +361,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
         <ColorPicker
           options={{
             content: text,
-            style: style.type
+            style: style.type,
           }}
           color={style.color || 51}
           onchange={(value: number) => {
@@ -377,15 +381,15 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
           placeholder={t(Strings.please_select)}
           value={action.type}
           onSelected={({ value }) => {
-
             if (value === ButtonActionType.OpenLink) {
               const item = produce(currentField, (draft) => {
-                draft.property.action = { ...action,
+                draft.property.action = {
+                  ...action,
                   openLink: {
                     type: OpenLinkType.Url,
-                    expression: ''
+                    expression: '',
                   },
-                  type: value
+                  type: value,
                 };
               });
               setCurrentField(item);
@@ -417,7 +421,6 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                 value={action.openLink.expression}
                 placeholder={t(Strings.open_url_tips_string)}
                 onChange={(e) => {
-
                   setFieldProperty('action')({
                     ...action,
                     openLink: {
@@ -425,7 +428,6 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                       expression: e.target.value,
                     },
                   });
-
                 }}
                 addonAfter={
                   <div
@@ -442,11 +444,14 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                     }}
                   >
                     <div className={styles.divider} />
-                    <FloatUiTooltip content={t(Strings.open_url_tips_switch, {
-                      INPUT_MODE: t(Strings.field_title_formula),
-                    })} >
+                    <FloatUiTooltip
+                      content={t(Strings.open_url_tips_switch, {
+                        INPUT_MODE: t(Strings.field_title_formula),
+                      })}
+                    >
                       <span>
-                        <SyncOnOutlined size={16}
+                        <SyncOnOutlined
+                          size={16}
                           onClick={() => {
                             setFieldProperty('action')({
                               ...action,
@@ -476,8 +481,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                     onSave: handleChange,
                     datasheetId,
                   });
-                }
-                }
+                }}
                 addonAfter={
                   <div
                     className={styles.switchUrl}
@@ -493,20 +497,24 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                     }}
                   >
                     <div className={styles.divider} />
-                    <FloatUiTooltip content={t(Strings.open_url_tips_switch, {
-                      INPUT_MODE: 'URL',
-                    })} >
+                    <FloatUiTooltip
+                      content={t(Strings.open_url_tips_switch, {
+                        INPUT_MODE: 'URL',
+                      })}
+                    >
                       <span>
-                        <SyncOnOutlined size={16} onClick={() => {
-                          setFieldProperty('action')({
-                            ...action,
-                            openLink: {
-                              ...action.openLink,
-                              expression: '',
-                              type: OpenLinkType.Url,
-                            },
-                          });
-                        }}
+                        <SyncOnOutlined
+                          size={16}
+                          onClick={() => {
+                            setFieldProperty('action')({
+                              ...action,
+                              openLink: {
+                                ...action.openLink,
+                                expression: '',
+                                type: OpenLinkType.Url,
+                              },
+                            });
+                          }}
                         />
                       </span>
                     </FloatUiTooltip>
@@ -516,8 +524,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
             )}
           </div>
         </section>
-      )
-      }
+      )}
 
       {action.type === ButtonActionType.TriggerAutomation && (
         <>
