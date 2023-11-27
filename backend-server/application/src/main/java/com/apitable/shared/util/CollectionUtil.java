@@ -166,13 +166,4 @@ public class CollectionUtil {
         }
         return new ArrayList<>(map.values());
     }
-
-    public static <T, K> List<T> distinctByProperty(List<T> list, Function<T, K> keyExtractor) {
-        Map<K, T> map = new LinkedHashMap<>();
-        for (T item : list) {
-            K key = keyExtractor.apply(item);
-            map.putIfAbsent(key, item);
-        }
-        return new ArrayList<>(map.values());
-    }
 }

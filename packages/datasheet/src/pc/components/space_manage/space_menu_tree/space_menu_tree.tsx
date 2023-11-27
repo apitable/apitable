@@ -111,7 +111,7 @@ export const getSpaceNavList = (
       title: t(Strings.billing_info_billing),
       key: 'billing',
       icon: <BankOutlined />,
-      valid: getEnvVariables().IS_ENTERPRISE && !getEnvVariables().IS_SELFHOST,
+      valid: getEnvVariables().IS_APITABLE && getEnvVariables().IS_ENTERPRISE && !getEnvVariables().IS_SELFHOST,
       routeAddress: '/billing',
     },
     {
