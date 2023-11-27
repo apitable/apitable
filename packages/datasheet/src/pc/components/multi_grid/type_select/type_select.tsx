@@ -198,8 +198,10 @@ export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = (p
   });
 
   function filterPrimaryType(fieldType: FieldType) {
+    if (fieldType === FieldType.WorkDoc) {
+      return IS_ENTERPRISE && getEnvVariables().ENABLE_WORKDOC_FIELD;
+    }
     if (props.fieldIndex !== 0) return true;
-    if (IS_ENTERPRISE && fieldType === FieldType.WorkDoc && getEnvVariables().ENABLE_WORKDOC_FIELD) return true;
     return FieldTypeDescriptionMap[fieldType] && FieldTypeDescriptionMap[fieldType].canBePrimaryField;
   }
 
