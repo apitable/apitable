@@ -40,7 +40,7 @@ const baseAttachmentFieldSchema = {
   size: Joi.number().required(),
   width: Joi.number(),
   height: Joi.number(),
-  preview: Joi.string()
+  preview: Joi.string().allow(''),
 };
 
 export class AttachmentField extends ArrayValueField {
