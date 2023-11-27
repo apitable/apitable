@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ApiTipConstant, Field, ICollaCommandOptions } from '@apitable/core';
+import { ApiTipConstant, Field, ICollaCommandOptions, IRemoteChangeset } from '@apitable/core';
 import {
   Body,
   CacheTTL,
@@ -503,4 +503,20 @@ export class FusionApiController {
     const token = request.headers.authorization;
     return await this.fusionApiService.executeCommand(datasheetId, commandBody, { token });
   }
+
+  /**
+   * Hidden Interface
+   */
+  @Post('datasheets/:dstId/executeCommandFromRust')
+  @ApiOperation({
+    summary: 'Create the op of the resource',
+    description: 'For flexibility reasons and for internal automation testing, provide an interface to freely create commands',
+    deprecated: false,
+  })
+  @ApiProduces('application/json')
+ public async executeCommandFromRust(@Body() body: IRemoteChangeset[], @Param('dstId') datasheetId: string, @Req() request: FastifyRequest) {
+   const commandBody = body;
+   const token = request.headers.authorization;
+   return await this.fusionApiService.executeCommandFromRust(datasheetId, commandBody, { token });
+ }
 }

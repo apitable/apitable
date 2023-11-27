@@ -75,4 +75,7 @@ export class MockDataStorageProvider implements IDataStorageProvider {
 
     return Promise.resolve(changesets);
   }
+
+  async nestRoomChangeFromRust(_roomId: string, _data: any) {
+  }
 }

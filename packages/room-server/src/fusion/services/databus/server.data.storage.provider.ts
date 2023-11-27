@@ -240,6 +240,10 @@ export class ServerDataStorageProvider implements databus.IDataStorageProvider {
     return changeResult;
   }
 
+  async nestRoomChangeFromRust(roomId: string, data: IRemoteChangeset[]) {
+    await this.otService.nestRoomChange(roomId, data);
+  }
+
   private async applyDashboardChangesets(dsbId: string, changesets: ILocalChangeset[], auth: IAuthHeader) {
     const changeResult = await this.otService.applyChangesets(dsbId, changesets, auth);
     await this.changesetSourceService.batchCreateChangesetSource(changeResult, SourceTypeEnum.OPEN_API);
