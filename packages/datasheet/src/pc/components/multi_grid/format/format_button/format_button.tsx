@@ -207,7 +207,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
           }
         }
       });
-    if(triggerRes.data.data[0].triggerId) {
+    if(triggerRes?.data?.data?.[0]?.triggerId) {
       onUpdate(triggerRes.data.data[0].triggerId);
     }
   }, [buttonFieldTriggerId?.triggerTypeId]);

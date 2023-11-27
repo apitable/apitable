@@ -267,7 +267,7 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
                               wordBreak: 'keep-all',
                             }}
                           >
-                            {ConfigConstant.permissionText[getPermission(inheritedRole, { shareInfo: shareInfo })]}aaa
+                            {ConfigConstant.permissionText[getPermission(inheritedRole, { shareInfo: shareInfo })]}
                           </Tag>
                         </Box>
                       )}

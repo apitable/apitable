@@ -39,15 +39,20 @@ export const runAutomationButton = async (datasheetId: string, record: any, stat
 ) : Promise<any|undefined>=> {
   if(field.property.action.type === ButtonActionType.OpenLink) {
 
-    if(field.property.action.openLink?.type === OpenLinkType.Url ) {
-      window.open(field.property.action.openLink?.expression, '_blank');
-    }else {
-      const expression = field.property.action.openLink?.expression ?? '';
+    try {
+      if(field.property.action.openLink?.type === OpenLinkType.Url ) {
+        window.open(field.property.action.openLink?.expression, '_blank');
+      }else {
+        const expression = field.property.action.openLink?.expression ?? '';
 
-      const url = evaluate(expression, { field, record, state }, false);
+        const url = evaluate(expression, { field, record, state }, false);
 
-      window.open(String(url), '_blank');
+        window.open(String(url), '_blank');
 
+      }
+    } catch (e){
+      console.log('error', e);
+      callback();
     }
 
     callback();

@@ -11,6 +11,7 @@ import EllipsisText from 'pc/components/ellipsis_text';
 import { setColor, useColorColorWheel } from 'pc/components/multi_grid/format';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
+import {AutomationConstant} from "pc/components/automation/config";
 
 const StyledBox = styled(Box)<{color?: string}>`
     cursor: pointer;
@@ -70,6 +71,14 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
       const isValidResp = useButtonFieldValid(field);
       const isValid = isValidResp.isLoading ? (getIsValid(isValidResp.fieldId) ?? true) : isValidResp.result;
 
+      let textColor: string = colors.textStaticPrimary;
+      if(field.property.style.type === ButtonStyleType.Background) {
+        if(cacheTheme === 'dark') {
+          if(field.property.style.color === AutomationConstant.defaultColor) {
+            textColor = colors.textReverseDefault;
+          }
+        }
+      }
       if(field.property.style.type === ButtonStyleType.OnlyText) {
         if(!isValid){
           return (
@@ -160,10 +169,10 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
           {
 
             isLoading ? (
-              <LoadingFilled color={colors.textStaticPrimary} />
+              <LoadingFilled color={textColor} />
             ): (
               <EllipsisText>
-                <Typography color={colors.textStaticPrimary} variant={'body4'}>
+                <Typography color={textColor} variant={'body4'}>
                   {field.property.text}
                 </Typography>
               </EllipsisText>

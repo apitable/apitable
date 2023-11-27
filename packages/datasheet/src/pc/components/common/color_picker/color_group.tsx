@@ -23,6 +23,7 @@ import { FC, useState } from 'react';
 import styled from 'styled-components';
 import { Box, FloatUiTooltip, Typography } from '@apitable/components';
 import { ButtonStyleType, ISelectFieldOption, Selectors, Strings, t } from '@apitable/core';
+import { AutomationConstant } from 'pc/components/automation/config';
 import { setColor, useColorColorWheel } from 'pc/components/multi_grid/format';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
@@ -54,10 +55,21 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props)
   const cacheTheme = useAppSelector(Selectors.getTheme);
 
   const colorList = useColorColorWheel(cacheTheme);
+  const getTextColor=(color: number) => {
+    let textColor : string= colors.textStaticPrimary;
+    if(cacheTheme === 'dark') {
+      if(color === AutomationConstant.defaultColor) {
+        textColor = colors.textReverseDefault;
+      }
+    }
+    return textColor;
+  };
+
   return (
     <ul className={styles.colorGroup} style={style}>
       {colorGroup.map((colorIndex) => {
         const selected = colorIndex === option.color;
+        const textColor = getTextColor(colorIndex);
         const li = (
           <li className={styles.item} style={itemStyle} key={option.id + colorIndex}>
             {!props?.options?.content ? (
@@ -93,7 +105,7 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props)
                     {
                       options?.style === ButtonStyleType.Background ? (
                         <Box backgroundColor={colorList[colorIndex]} padding={'6px 12px'} borderRadius={'4px'}>
-                          <Typography variant={'body4'} color={colors.textStaticPrimary}>
+                          <Typography variant={'body4'} color={textColor}>
                             {props?.options?.content}
                           </Typography>
                         </Box>

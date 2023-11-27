@@ -59,6 +59,7 @@ import {
 } from '@apitable/core';
 import { FileOutlined } from '@apitable/icons';
 import { assertSignatureManager } from '@apitable/widget-sdk';
+import { AutomationConstant } from 'pc/components/automation/config';
 import { AvatarSize, AvatarType } from 'pc/components/common';
 import { getIsValid } from 'pc/components/editors/button_editor/valid_map';
 import { GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT } from 'pc/components/gantt_view';
@@ -343,6 +344,11 @@ export class CellHelper extends KonvaDrawer {
       if(buttonField.property.style.type === ButtonStyleType.Background) {
         if(isValid) {
           color = colors.textStaticPrimary;
+          if(renderProps.cacheTheme === 'dark') {
+            if(buttonField.property.style.color === AutomationConstant.defaultColor) {
+              color = colors.textReverseDefault;
+            }
+          }
         } else {
           color = colors.textCommonDisabled;
         }
