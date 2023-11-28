@@ -175,9 +175,6 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     private NodeFacade nodeFacade;
 
     @Resource
-    private NodeFacade nodeFacade;
-
-    @Resource
     private INodeDescService iNodeDescService;
 
     @Resource
