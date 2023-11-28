@@ -47,18 +47,19 @@ export const ReadonlyFieldColumn: FC<{
   }
   if( fieldItem == null) {
     return (
-      <PointerCursorBox paddingY={'8px'} borderColor={colors.textDangerDefault} cursor={'pointer'}
+      <PointerCursorBox height={'40px'} borderColor={colors.textDangerDefault} cursor={'pointer'}
         paddingLeft={'8px'}
+        paddingRight={'8px'}
         borderWidth={'1px'}
         width={'100%'}
         borderStyle={'solid'}
-        paddingRight={'8px'}
         onClick={()=> handleCreateNewTrigger(resourceId, datasheetId, triggerId, columnInfo, onSubmit)}
         borderRadius={'4px'}
       >
         <Box
           display={'inline-flex'}
           alignItems={'center'}
+          height={'100%'}
           cursor={'pointer'}
           width={'100%'}
           justifyContent={'flex-start'}
@@ -66,7 +67,6 @@ export const ReadonlyFieldColumn: FC<{
           <AddOutlined color={colors.textCommonQuaternary} />
           <Box marginLeft={'8px'} display={'inline-flex'} alignItems={'center'} flex={'1 1 auto'} cursor={'pointer'} >
             <Typography variant="body4" color={colors.textCommonQuaternary} >
-
               {t(Strings.create_new_button_field)}
             </Typography>
           </Box>
@@ -77,13 +77,15 @@ export const ReadonlyFieldColumn: FC<{
 
   const item = getFieldTypeIconOrNull(fieldItem.type) == null ? getFieldTypeIcon(FieldType.Number) : getFieldTypeIcon(fieldItem.type);
   return (
-    <PointerCursorBox paddingY={'8px'} backgroundColor={colors.bgControlsDisabled} cursor={'not-allowed'}
+    <PointerCursorBox backgroundColor={colors.bgControlsDisabled} cursor={'not-allowed'}
       paddingLeft={'8px'}
+      height={'40px'}
       paddingRight={'8px'}
       borderRadius={'4px'}
     >
       <Box
         display={'flex'}
+        height={'100%'}
         alignItems={'center'}
         justifyContent={'space-between'}
       >

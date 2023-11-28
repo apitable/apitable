@@ -139,7 +139,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
       if(!isValid) {
         return (
           <StyledBox backgroundColor={colors.bgControlsDisabled}
-                     disabled
+            disabled
             borderRadius={'4px'}
             paddingX={'8px'}
             maxWidth={'100px'}
@@ -166,7 +166,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
       }
       return (
         <StyledBgBox defaultColor={bg}
-                     disabled={false}
+          disabled={false}
           borderRadius={'4px'}
           paddingX={'8px'}
           maxWidth={'100px'}
