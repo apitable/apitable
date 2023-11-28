@@ -740,6 +740,8 @@ export interface IFieldTypeCollection {
   fieldGroup: FieldGroup;
   help: string;
   hasOptSetting: boolean; // Whether the field has optional configuration, it is used to control whether the split line is displayed in the field configuration menu.
+  isBeta?: boolean;
+  isNew?: boolean;
 }
 
 export enum FieldGroup {
@@ -995,6 +997,7 @@ export const FieldTypeDescriptionMap: {
     fieldGroup: FieldGroup.Advanced,
     help: t(Strings.field_help_button),
     hasOptSetting: true,
+    isNew: true,
   },
   [FieldType.WorkDoc]: {
     title: t(Strings.field_title_workdoc),
@@ -1004,5 +1007,6 @@ export const FieldTypeDescriptionMap: {
     fieldGroup: FieldGroup.Common,
     help: t(Strings.field_help_workdoc),
     hasOptSetting: false,
+    isBeta: true
   },
 };

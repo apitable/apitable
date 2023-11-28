@@ -92,7 +92,7 @@ const TypeSelectItem: React.FC<React.PropsWithChildren<ITypeSelectItemProps>> = 
     clearTipNode();
   });
 
-  const { title, subTitle } = FieldTypeDescriptionMap[fieldType];
+  const { title, subTitle, isBeta, isNew } = FieldTypeDescriptionMap[fieldType];
 
   const onMouseEnter = debounce(() => {
     if (divRef.current) {
@@ -143,6 +143,8 @@ const TypeSelectItem: React.FC<React.PropsWithChildren<ITypeSelectItemProps>> = 
       <div className={styles.desc}>
         <div className={styles.title}>{title}</div>
       </div>
+      {isBeta && <div className={styles.beta}>Beta</div>}
+      {isNew && <div className={styles.new}>New</div>}
     </div>
   );
 };
