@@ -75,17 +75,19 @@ export const View: React.FC<React.PropsWithChildren<any>> = () => {
   }, shallowEqual);
 
   const { data: triggerTypes } = useTriggerTypes();
-  const buttonFieldTriggerId =triggerTypes.find(item => item.endpoint === 'button_field' || item.endpoint !== 'button_clicked');
+  const buttonFieldTriggerId = triggerTypes.find((item) => item.endpoint === 'button_field' || item.endpoint === 'button_clicked');
 
   useEffect(() => {
-    if(fieldMap && buttonFieldTriggerId) {
-      const fieldItem = Object.values(fieldMap).filter(item => item.type === FieldType.Button );
-      const task = fieldItem.map(r => checkButtonField(r as IButtonField, buttonFieldTriggerId));
-      Promise.all(task).then(() => {
-        console.log('button field checked');
-      }).catch(e => {
-        console.error('button field checked', e);
-      });
+    if (fieldMap && buttonFieldTriggerId) {
+      const fieldItem = Object.values(fieldMap).filter((item) => item.type === FieldType.Button);
+      const task = fieldItem.map((r) => checkButtonField(r as IButtonField, buttonFieldTriggerId));
+      Promise.all(task)
+        .then(() => {
+          console.log('button field checked');
+        })
+        .catch((e) => {
+          console.error('button field checked', e);
+        });
     }
   }, [fieldMap, buttonFieldTriggerId]);
 

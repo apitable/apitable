@@ -55,7 +55,7 @@ export const useCards = (props: ILayoutProps) => {
   }, [level, showContextMenu, handleDelSpace]);
 
   const { trailColor, strokeColor, hightLightColor } = useMemo(() => {
-    return SpaceLevelInfo[level];
+    return SpaceLevelInfo[level] || SpaceLevelInfo.bronze;
   }, [level]);
 
   const basicCert = useMemo(() => {

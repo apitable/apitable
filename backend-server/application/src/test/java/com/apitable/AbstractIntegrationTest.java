@@ -67,6 +67,7 @@ import com.apitable.user.task.UserTasks;
 import com.apitable.widget.service.IWidgetPackageService;
 import com.apitable.widget.service.IWidgetUploadService;
 import com.apitable.workspace.dto.CreateNodeDto;
+import com.apitable.workspace.entity.NodeEntity;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.service.IDatasheetMetaService;
 import com.apitable.workspace.service.IFieldRoleService;
@@ -78,6 +79,7 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -356,5 +358,35 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
         iRoleMemberService.addRoleMembers(allPart,
             CollUtil.newArrayList(rootTeamUnit, adminUnit, memberUnit));
         return allPart;
+    }
+
+    protected void initNodeTreeMockData(String spaceId, String rootNodeId) {
+        List<NodeEntity> nodeEntities = Lists.list(
+            NodeEntity.builder()
+                .spaceId(spaceId).parentId(rootNodeId).nodeId("L1")
+                .type(NodeType.FOLDER.getNodeType()).nodeName("L1")
+                .build(),
+            NodeEntity.builder()
+                .spaceId(spaceId).parentId("L1").nodeId("L2-1")
+                .type(NodeType.DATASHEET.getNodeType()).nodeName("L2-1")
+                .build(),
+            NodeEntity.builder()
+                .spaceId(spaceId).parentId("L1").nodeId("L2-2")
+                .type(NodeType.DATASHEET.getNodeType()).nodeName("L2-2")
+                .build(),
+            NodeEntity.builder()
+                .spaceId(spaceId).parentId("L1").nodeId("L2-3")
+                .type(NodeType.DATASHEET.getNodeType()).nodeName("L2-3")
+                .build(),
+            NodeEntity.builder()
+                .spaceId(spaceId).parentId("L1").nodeId("L2-4")
+                .type(NodeType.DATASHEET.getNodeType()).nodeName("L2-4")
+                .build(),
+            NodeEntity.builder()
+                .spaceId(spaceId).parentId("L1").nodeId("L2-5")
+                .type(NodeType.DATASHEET.getNodeType()).nodeName("L2-5")
+                .build()
+        );
+        iNodeService.saveBatch(nodeEntities);
     }
 }
