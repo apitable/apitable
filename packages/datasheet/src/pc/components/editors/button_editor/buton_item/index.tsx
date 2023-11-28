@@ -68,6 +68,7 @@ export const ButtonFieldItem: FunctionComponent<{field: IButtonField,
       );
     };
 
+const marginTop = '5px';
 export const ButtonItem: FunctionComponent<{field: IButtonField,
     onStart: () => void;
     isLoading: boolean}> = ({ field, onStart, isLoading }) => {
@@ -92,12 +93,10 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
             <StyledBox
               disabled
               borderRadius={'4px'}
-              paddingX={'8px'}
-              marginLeft={'8px'}
-              marginTop={'4px'}
+              paddingX={'10px'}
+              heigth={'24px'}
+              marginTop={marginTop}
               cursor={'not-allowed'}
-              paddingY={'3px'}
-              maxWidth={'100px'}
               display={'inline-flex'} alignItems={'center'}>
               <EllipsisText>
                 <Typography color={colors.bgControlsDisabled} variant={'body4'}>
@@ -110,16 +109,13 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
         }
         return (
           <StyledBox
-            disabled
+            disabled={false}
+            heigth={'24px'}
             borderRadius={'4px'}
             onClick={onStart}
-            paddingX={'8px'}
-            marginLeft={'8px'}
-            marginTop={'4px'}
-            paddingY={'3px'}
-            maxWidth={'100px'}
+            paddingX={'10px'}
+            marginTop={marginTop}
             display={'inline-flex'} alignItems={'center'}>
-
             {
 
               isLoading ? (
@@ -141,12 +137,10 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
           <StyledBox backgroundColor={colors.bgControlsDisabled}
             disabled
             borderRadius={'4px'}
-            paddingX={'8px'}
-            maxWidth={'100px'}
-            marginLeft={'8px'}
-            marginTop={'4px'}
+            paddingX={'10px'}
+            heigth={'24px'}
+            marginTop={marginTop}
             cursor={'not-allowed'}
-            paddingY={'3px'}
             display={'inline-flex'} alignItems={'center'}>
             {
 
@@ -168,13 +162,11 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
         <StyledBgBox defaultColor={bg}
           disabled={false}
           borderRadius={'4px'}
-          paddingX={'8px'}
-          maxWidth={'100px'}
+          paddingX={'10px'}
           onClick={onStart}
-          marginLeft={'8px'}
-          marginTop={'4px'}
+          heigth={'24px'}
+          marginTop={marginTop}
           cursor={isValid? 'cursor': 'not-allowed'}
-          paddingY={'3px'}
           display={'inline-flex'} alignItems={'center'}>
           {
 

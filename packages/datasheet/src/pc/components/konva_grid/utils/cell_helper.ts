@@ -415,9 +415,10 @@ export class CellHelper extends KonvaDrawer {
         //   data: FileOutlinedPath,
         //   size: 12,
         //   fill: colors.textBrandDefault,
+        const itemX1 = x + (columnWidth - itemWidth) /2;
         // });
         this.label({
-          x: itemX,
+          x: itemX1,
           y: itemY,
           width: itemWidth,
           height: GRID_OPTION_ITEM_HEIGHT,
