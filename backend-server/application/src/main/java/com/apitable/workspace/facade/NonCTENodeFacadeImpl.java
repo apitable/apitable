@@ -40,10 +40,25 @@ public class NonCTENodeFacadeImpl implements NodeFacade {
     }
 
     @Override
+    public boolean contains(String parentNodeId, String nodeId) {
+        if (nodeId == null) {
+            return false;
+        }
+        while (!parentNodeId.equals(nodeId)) {
+            NodeBaseInfoDTO baseNodeInfo = nodeMapper.selectNodeBaseInfoByNodeId(nodeId);
+            if (baseNodeInfo == null || NodeType.ROOT.getNodeType() == baseNodeInfo.getType()) {
+                return false;
+            }
+            nodeId = baseNodeInfo.getParentId();
+        }
+        return true;
+    }
+
+    @Override
     public List<NodeBaseInfoDTO> getParentPathNodes(List<String> nodeIds, boolean includeRootNode) {
         Map<String, NodeBaseInfoDTO> nodeIdToNodeMap = new HashMap<>();
         Set<String> parentIds = new HashSet<>(nodeIds);
-        while (!parentIds.isEmpty()) {
+        while (parentIds.size() > 0) {
             List<NodeBaseInfoDTO> nodes =
                 nodeMapper.selectNodeBaseInfosByNodeIds(parentIds, false);
             parentIds = new HashSet<>();
