@@ -35,9 +35,11 @@ import com.apitable.space.vo.SpaceSubscribeVo;
 import com.apitable.space.vo.SpaceVO;
 import com.apitable.space.vo.UserSpaceVo;
 import com.apitable.user.entity.UserEntity;
+import com.apitable.workspace.enums.NodeType;
 import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * space service interface.
@@ -142,6 +144,15 @@ public interface ISpaceService extends IService<SpaceEntity> {
     List<SpaceVO> getSpaceListByUserId(Long userId, GetSpaceListFilterCondition condition);
 
     /**
+     * get node count by space id and exclude node type.
+     *
+     * @param spaceId space id
+     * @param exclude exclude node type
+     * @return node count
+     */
+    long getNodeCountBySpaceId(String spaceId, Predicate<NodeType> exclude);
+
+    /**
      * get space credit info.
      *
      * @param spaceId space id
@@ -181,6 +192,21 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @param addedSeatNums added seat nums
      */
     void checkSeatOverLimit(String spaceId, long addedSeatNums);
+
+    /**
+     * check whether file nums of the space is over limit.
+     *
+     * @param spaceId space id
+     */
+    void checkFileNumOverLimit(String spaceId);
+
+    /**
+     * check whether file nums of the space is over limit.
+     *
+     * @param spaceId     space id
+     * @param addFileNums added file nums
+     */
+    void checkFileNumOverLimit(String spaceId, long addFileNums);
 
     /**
      * check whether seat nums of the space is over limit.

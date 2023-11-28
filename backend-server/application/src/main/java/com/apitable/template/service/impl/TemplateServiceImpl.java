@@ -395,7 +395,7 @@ public class TemplateServiceImpl
         }
         String tempId;
         NodeType nodeType = iNodeService.getTypeByNodeId(ro.getNodeId());
-        String nodeId = IdUtil.createNodeId(nodeType.getNodeType());
+        String nodeId = IdUtil.createNodeId(nodeType);
         // Overwrite with the same name, delete the old map node
         if (id != null) {
             TemplateInfo info = baseMapper.selectInfoById(id);

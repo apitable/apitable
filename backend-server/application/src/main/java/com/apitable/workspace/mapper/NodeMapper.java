@@ -605,4 +605,12 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      */
     String selectNodeIdByParentIdAndNodeName(@Param("parentId") String parentId,
                                              @Param("nodeName") String nodeName);
+
+    /**
+     * query by parent node id.
+     *
+     * @param parentId parent node id
+     * @return NodeEntity List
+     */
+    List<NodeEntity> selectByParentId(@Param("parentId") String parentId);
 }

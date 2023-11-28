@@ -172,9 +172,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> implements INodeService {
 
     @Resource
-    private NodeMapper nodeMapper;
-
-    @Resource
     private NodeFacade nodeFacade;
 
     @Resource
@@ -258,13 +255,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public String getRootNodeIdBySpaceId(String spaceId) {
         log.info("The root node ID of the query space [{}]", spaceId);
-        return nodeMapper.selectRootNodeIdBySpaceId(spaceId);
+        return baseMapper.selectRootNodeIdBySpaceId(spaceId);
     }
 
     @Override
     public List<String> getNodeIdBySpaceIdAndType(String spaceId, Integer type) {
         log.info("The ID of the query space [{}] node type [{}]", spaceId, type);
-        return nodeMapper.selectNodeIdBySpaceIdAndType(spaceId, type);
+        return baseMapper.selectNodeIdBySpaceIdAndType(spaceId, type);
     }
 
     @Override
@@ -272,32 +269,36 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                                                             String keyword) {
         log.info("The ID of the query space [{}] node types [{}] keyword [{}]", spaceId, type,
             keyword);
-        return nodeMapper.selectNodeIdsBySpaceIdAndTypeAndKeyword(spaceId, type, keyword);
+        return baseMapper.selectNodeIdsBySpaceIdAndTypeAndKeyword(spaceId, type, keyword);
     }
 
     @Override
     public NodeType getTypeByNodeId(String nodeId) {
-        Integer type = nodeMapper.selectNodeTypeByNodeId(nodeId);
+        Integer type = baseMapper.selectNodeTypeByNodeId(nodeId);
         ExceptionUtil.isNotNull(type, PermissionException.NODE_NOT_EXIST);
         return NodeType.toEnum(type);
     }
 
     @Override
     public NodeEntity getByNodeId(String nodeId) {
-        log.info("Query node: {}", nodeId);
-        NodeEntity nodeEntity = nodeMapper.selectByNodeId(nodeId);
+        NodeEntity nodeEntity = baseMapper.selectByNodeId(nodeId);
         ExceptionUtil.isNotNull(nodeEntity, PermissionException.NODE_NOT_EXIST);
         return nodeEntity;
     }
 
     @Override
+    public List<NodeEntity> getSubNodeList(String parentId) {
+        return baseMapper.selectByParentId(parentId);
+    }
+
+    @Override
     public List<String> getExistNodeIdsBySelf(List<String> nodeIds) {
-        return nodeMapper.selectNodeIdByNodeIdIn(nodeIds);
+        return baseMapper.selectNodeIdByNodeIdIn(nodeIds);
     }
 
     private List<NodeEntity> getByNodeIds(Collection<String> nodeIds) {
         log.info("Batch query node:{}", nodeIds);
-        List<NodeEntity> nodeEntities = nodeMapper.selectByNodeIds(nodeIds);
+        List<NodeEntity> nodeEntities = baseMapper.selectByNodeIds(nodeIds);
         ExceptionUtil.isNotEmpty(nodeEntities, PermissionException.NODE_NOT_EXIST);
         return nodeEntities;
     }
@@ -305,14 +306,14 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public String getSpaceIdByNodeId(String nodeId) {
         log.info("The id of the space where the query node is located.");
-        String spaceId = nodeMapper.selectSpaceIdByNodeId(nodeId);
+        String spaceId = baseMapper.selectSpaceIdByNodeId(nodeId);
         ExceptionUtil.isNotNull(spaceId, PermissionException.NODE_NOT_EXIST);
         return spaceId;
     }
 
     @Override
     public String getSpaceIdByNodeIds(List<String> nodeIds) {
-        List<String> spaceIds = nodeMapper.selectSpaceIdsByNodeIds(nodeIds);
+        List<String> spaceIds = baseMapper.selectSpaceIdsByNodeIds(nodeIds);
         ExceptionUtil.isTrue(spaceIds.size() == 1, ParameterException.INCORRECT_ARG);
         return spaceIds.get(0);
     }
@@ -320,14 +321,14 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public String getSpaceIdByNodeIdIncludeDeleted(String nodeId) {
         log.info("Query the space ID of the node [{}] including deletion", nodeId);
-        return nodeMapper.selectSpaceIdByNodeIdIncludeDeleted(nodeId);
+        return baseMapper.selectSpaceIdByNodeIdIncludeDeleted(nodeId);
     }
 
     @Override
     public Boolean getIsTemplateByNodeIds(List<String> nodeIds) {
         log.info("Query whether all nodes [{}] belong to templates", nodeIds);
-        List<Boolean> result = nodeMapper.selectIsTemplateByNodeId(nodeIds);
-        ExceptionUtil.isTrue(result.size() > 0, PermissionException.NODE_NOT_EXIST);
+        List<Boolean> result = baseMapper.selectIsTemplateByNodeId(nodeIds);
+        ExceptionUtil.isTrue(!result.isEmpty(), PermissionException.NODE_NOT_EXIST);
         ExceptionUtil.isTrue(result.size() == 1, ParameterException.INCORRECT_ARG);
         return result.get(0);
     }
@@ -335,13 +336,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public String getParentIdByNodeId(String nodeId) {
         log.info("The id of the parent node of the query node [{}]", nodeId);
-        return nodeMapper.selectParentIdByNodeId(nodeId);
+        return baseMapper.selectParentIdByNodeId(nodeId);
     }
 
     @Override
     public String getNodeNameByNodeId(String nodeId) {
         log.info("Query the node name of node [{}]", nodeId);
-        return nodeMapper.selectNodeNameByNodeId(nodeId);
+        return baseMapper.selectNodeNameByNodeId(nodeId);
     }
 
     @Override
@@ -377,13 +378,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public List<NodeInfo> getNodeInfo(String spaceId, List<String> nodeIds, Long memberId) {
         log.info("Node information view of batch query [{}]", nodeIds);
-        return nodeMapper.selectNodeInfo(nodeIds, memberId);
+        return baseMapper.selectNodeInfo(nodeIds, memberId);
     }
 
     @Override
     public List<NodeInfo> getNodeInfoByNodeIds(Collection<String> nodeIds) {
         log.info("Node information view of batch query [{}]", nodeIds);
-        return nodeMapper.selectInfoByNodeIds(nodeIds);
+        return baseMapper.selectInfoByNodeIds(nodeIds);
     }
 
     @Override
@@ -398,7 +399,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             return new ArrayList<>();
         }
         // Batch query node information
-        List<NodeInfoVo> infos = nodeMapper.selectNodeInfoByNodeIds(roleDict.keySet(), memberId);
+        List<NodeInfoVo> infos = baseMapper.selectNodeInfoByNodeIds(roleDict.keySet(), memberId);
         // Node switches to memory custom sorting
         CollectionUtil.customSequenceSort(infos, NodeInfoVo::getNodeId,
             new ArrayList<>(roleDict.keySet()));
@@ -410,7 +411,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public String checkNodeIfExist(String spaceId, String nodeId) {
         log.info("Check if the node exists");
-        String nodeSpaceId = nodeMapper.selectSpaceIdByNodeId(nodeId);
+        String nodeSpaceId = baseMapper.selectSpaceIdByNodeId(nodeId);
         ExceptionUtil.isNotNull(nodeSpaceId, PermissionException.NODE_NOT_EXIST);
         // When the space id is not empty, check whether the space is cross-space.
         ExceptionUtil.isTrue(StrUtil.isBlank(spaceId) || nodeSpaceId.equals(spaceId),
@@ -447,7 +448,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public Long getMemberIdByUserIdAndNodeId(Long userId, String nodeId) {
-        String spaceId = nodeMapper.selectSpaceIdByNodeId(nodeId);
+        String spaceId = baseMapper.selectSpaceIdByNodeId(nodeId);
         if (StrUtil.isBlank(spaceId)) {
             return null;
         }
@@ -462,7 +463,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             return new ArrayList<>();
         }
         // fuzzy search results
-        List<String> nodeIds = nodeMapper.selectLikeNodeName(spaceId, StrUtil.trim(keyword));
+        List<String> nodeIds = baseMapper.selectLikeNodeName(spaceId, StrUtil.trim(keyword));
         List<NodeInfoVo> nodeInfos = this.getNodeInfoByNodeIds(spaceId, memberId, nodeIds);
         return formatNodeSearchResults(nodeInfos);
     }
@@ -481,7 +482,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (subNodeIds.isEmpty()) {
             return new ArrayList<>();
         }
-        List<NodeShareTree> shareTrees = nodeMapper.selectShareTree(subNodeIds);
+        List<NodeShareTree> shareTrees = baseMapper.selectShareTree(subNodeIds);
         // node switches to memory custom sort
         CollectionUtil.customSequenceSort(shareTrees, NodeShareTree::getNodeId, subNodeIds);
         return shareTrees;
@@ -505,7 +506,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             .collect(Collectors.toList());
         while (!parentIds.isEmpty() && depth != 0) {
             List<NodeTreeDTO> subNode =
-                nodeMapper.selectNodeTreeDTOByParentIdIn(parentIds, isRubbish);
+                baseMapper.selectNodeTreeDTOByParentIdIn(parentIds, isRubbish);
             if (subNode.isEmpty()) {
                 break;
             }
@@ -578,7 +579,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         log.info("Query the list of child nodes ");
         // Get a direct child node
         List<NodeTreeDTO> subNode =
-            nodeMapper.selectNodeTreeDTOByParentIdIn(Collections.singleton(nodeId), false);
+            baseMapper.selectNodeTreeDTOByParentIdIn(Collections.singleton(nodeId), false);
         if (subNode.isEmpty()) {
             return new ArrayList<>();
         }
@@ -612,7 +613,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         parentNodeIds.remove(nodeId);
         // The parent node supplements the tree node load.
         List<NodeTreeDTO> subNode =
-            nodeMapper.selectNodeTreeDTOByParentIdIn(parentNodeIds, false);
+            baseMapper.selectNodeTreeDTOByParentIdIn(parentNodeIds, false);
         Map<String, List<NodeTreeDTO>> parentIdToSubNodeMap =
             subNode.stream().collect(Collectors.groupingBy(NodeTreeDTO::getParentId));
         List<String> viewNodeIds = new ArrayList<>();
@@ -627,7 +628,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public NodeInfoVo getNodeInfoByNodeId(String spaceId, String nodeId, ControlRole role) {
         log.info("Query node information ");
-        NodeInfoVo nodeInfo = nodeMapper.selectNodeInfoByNodeId(nodeId);
+        NodeInfoVo nodeInfo = baseMapper.selectNodeInfoByNodeId(nodeId);
         SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
         nodeInfo.setRole(role.getRoleTag());
         nodeInfo.setPermissions(role.permissionToBean(NodePermissionView.class, feature));
@@ -647,7 +648,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 .reduce(new ArrayList<>(),
                     (nodes, item) -> {
                         List<NodeInfoTreeVo> childNodes =
-                            nodeMapper.selectNodeInfoTreeByNodeIds(item, memberId);
+                            baseMapper.selectNodeInfoTreeByNodeIds(item, memberId);
                         nodes.addAll(childNodes);
                         return nodes;
                     },
@@ -677,7 +678,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String createDatasheetNode(Long userId, String spaceId, DatasheetCreateObject object) {
-        String nodeId = IdUtil.createNodeId(object.getType().getNodeType());
+        String nodeId = IdUtil.createNodeId(object.getType());
         NodeEntity nodeEntity = NodeEntity.builder()
             .spaceId(spaceId)
             .parentId(object.getParentId())
@@ -711,7 +712,11 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         String name =
             duplicateNameModify(nodeOpRo.getParentId(), nodeOpRo.getType(), nodeOpRo.getNodeName(),
                 null);
-        String nodeId = IdUtil.createNodeId(nodeOpRo.getType());
+        NodeType nodeType = NodeType.toEnum(nodeOpRo.getType());
+        if (!nodeType.isFolder()) {
+            iSpaceService.checkFileNumOverLimit(spaceId);
+        }
+        String nodeId = IdUtil.createNodeId(nodeType);
         // If the new node is a file, it corresponds to the creation of a datasheet form.
         this.createFileMeta(userId, spaceId, nodeId, nodeOpRo.getType(), name, nodeOpRo.getExtra());
         // When an empty string is not passed in,
@@ -726,7 +731,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             .nodeId(nodeId)
             .build();
         // Change the front node ID of the next node to the new node ID(A <- C => B <- C)
-        nodeMapper.updatePreNodeIdBySelf(nodeId, preNodeId, nodeOpRo.getParentId());
+        baseMapper.updatePreNodeIdBySelf(nodeId, preNodeId, nodeOpRo.getParentId());
         boolean flag = save(nodeEntity);
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
         return nodeEntity.getNodeId();
@@ -784,7 +789,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             }
             // Verify that the number of nodes reaches the upper limit
             // iSubscriptionService.checkSheetNums(nodeList.get(0).getSpaceId(), dstCount);
-            boolean flag = SqlHelper.retBool(nodeMapper.insertBatch(nodeList));
+            boolean flag = SqlHelper.retBool(baseMapper.insertBatch(nodeList));
             ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
         }
     }
@@ -812,10 +817,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             String newValue = JSONUtil.toJsonStr(Dict.create()
                 .set(NodeExtraConstants.SHOW_RECORD_HISTORY, opRo.getShowRecordHistory()));
             if (ObjectUtil.isNotNull(nodeEntity.getExtra())) {
-                flag = SqlHelper.retBool(nodeMapper.updateExtraShowRecordHistoryByNodeId(nodeId,
+                flag = SqlHelper.retBool(baseMapper.updateExtraShowRecordHistoryByNodeId(nodeId,
                     opRo.getShowRecordHistory()));
             } else {
-                flag = SqlHelper.retBool(nodeMapper.updateExtraByNodeId(nodeId, newValue));
+                flag = SqlHelper.retBool(baseMapper.updateExtraByNodeId(nodeId, newValue));
             }
             ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
         }
@@ -827,7 +832,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         // Prevent peer directory, duplicate name modification
         String nodeName = duplicateNameModify(entity.getParentId(), entity.getType(), name, nodeId);
-        boolean flag = SqlHelper.retBool(nodeMapper.updateNameByNodeId(nodeId, nodeName));
+        boolean flag = SqlHelper.retBool(baseMapper.updateNameByNodeId(nodeId, nodeName));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
         // Correspondingly modify the name.
         switch (NodeType.toEnum(entity.getType())) {
@@ -865,7 +870,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (icon.trim().equals(StrUtil.EMPTY)) {
             icon = StrUtil.EMPTY;
         }
-        boolean flag = SqlHelper.retBool(nodeMapper.updateIconByNodeId(nodeId, icon));
+        boolean flag = SqlHelper.retBool(baseMapper.updateIconByNodeId(nodeId, icon));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
         // publish space audit events
         JSONObject info = JSONUtil.createObj();
@@ -889,7 +894,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if ("null".equalsIgnoreCase(cover) || "undefined".equalsIgnoreCase(cover)) {
             cover = null;
         }
-        boolean flag = SqlHelper.retBool(nodeMapper.updateCoverByNodeId(nodeId, cover));
+        boolean flag = SqlHelper.retBool(baseMapper.updateCoverByNodeId(nodeId, cover));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
         // the old cover map reduces the number of references
         if (StrUtil.startWith(oldNodeCover, SPACE_PREFIX)) {
@@ -965,7 +970,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         // if the pre-node is deleted or not under the parent id, the move fails.
         String preNodeId = this.verifyPreNodeId(opRo.getPreNodeId(), parentId);
         // The next node that records the old and new locations
-        List<String> suffixNodeIds = nodeMapper.selectNodeIdByPreNodeIdIn(
+        List<String> suffixNodeIds = baseMapper.selectNodeIdByPreNodeIdIn(
             CollUtil.newArrayList(nodeEntity.getNodeId()));
         nodeIds.addAll(suffixNodeIds);
         Lock lock = redisLockRegistry.obtain(parentId);
@@ -973,19 +978,19 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             if (lock.tryLock(2, TimeUnit.MINUTES)) {
                 // Update the front node of the latter node
                 // to the front node of the node (A <- X <- C => A <- C)
-                nodeMapper.updatePreNodeIdBySelf(nodeEntity.getPreNodeId(),
+                baseMapper.updatePreNodeIdBySelf(nodeEntity.getPreNodeId(),
                     nodeEntity.getNodeId(), nodeEntity.getParentId());
                 // Update the sequence relationship of nodes before
                 // and after the move (D <- E => D <- X <- E)
                 String sufNodeId =
-                    nodeMapper.selectNodeIdByParentIdAndPreNodeId(parentId, preNodeId);
+                    baseMapper.selectNodeIdByParentIdAndPreNodeId(parentId, preNodeId);
                 if (sufNodeId != null) {
                     nodeIds.add(sufNodeId);
-                    nodeMapper.updatePreNodeIdByNodeId(nodeEntity.getNodeId(), sufNodeId);
+                    baseMapper.updatePreNodeIdByNodeId(nodeEntity.getNodeId(), sufNodeId);
                 }
                 // Update the information of this node (the ID of the previous
                 // node may be updated to null, so update By id is not used)
-                nodeMapper.updateInfoByNodeId(nodeEntity.getNodeId(), parentId, preNodeId, name);
+                baseMapper.updateInfoByNodeId(nodeEntity.getNodeId(), parentId, preNodeId, name);
             } else {
                 throw new BusinessException("Frequent operations");
             }
@@ -1036,7 +1041,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             Collection<String> subNodeIds = CollUtil.disjunction(nodeIds, idList);
             if (!subNodeIds.isEmpty()) {
                 boolean flag =
-                    SqlHelper.retBool(nodeMapper.updateIsRubbishByNodeIdIn(userId,
+                    SqlHelper.retBool(baseMapper.updateIsRubbishByNodeIdIn(userId,
                         subNodeIds, true));
                 ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
             }
@@ -1058,12 +1063,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     // (Large datasheet processing takes a long time,
                     // node.getPreNodeId() may have changed,
                     // so updatePreNodeIdBySelf is not used directly)
-                    nodeMapper.updatePreNodeIdByJoinSelf(nodeId, node.getParentId());
+                    baseMapper.updatePreNodeIdByJoinSelf(nodeId, node.getParentId());
                     // Save the path of the deletion.
                     // Specify that the deleted node is attached to the parent node -1.
                     String delPath = MapUtil.isNotEmpty(parentIdToPathMap)
                         ? parentIdToPathMap.get(node.getParentId()) : null;
-                    nodeMapper.updateDeletedPathByNodeId(userId, nodeId, delPath);
+                    baseMapper.updateDeletedPathByNodeId(userId, nodeId, delPath);
                     // publish space audit events
                     ClientOriginInfo clientOriginInfo = InformationUtil
                         .getClientOriginInfoInCurrentHttpContext(true, false);
@@ -1098,7 +1103,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
         // delete node and datasheet information
         boolean flag =
-            SqlHelper.retBool(nodeMapper.updateIsRubbishByNodeIdIn(userId, nodeIds, true));
+            SqlHelper.retBool(baseMapper.updateIsRubbishByNodeIdIn(userId, nodeIds, true));
         ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
         iDatasheetService.updateIsDeletedStatus(userId, nodeIds, true);
         // delete the spatial attachment resource of the node
@@ -1131,13 +1136,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             .nodeName(name)
             .type(copyNode.getType())
             .preNodeId(opRo.getNodeId())
-            .newNodeId(IdUtil.createNodeId(copyNode.getType()))
+            .newNodeId(IdUtil.createNodeId(nodeType))
             .icon(copyNode.getIcon())
             .cover(copyNode.getCover())
             .extra(copyNode.getExtra())
             .build();
         // Update the former node of the latter node to the copied node (A <- B => A <- A' <- B)
-        nodeMapper.updatePreNodeIdBySelf(createNodeDto.getNewNodeId(), opRo.getNodeId(),
+        baseMapper.updatePreNodeIdBySelf(createNodeDto.getNewNodeId(), opRo.getNodeId(),
             copyNode.getParentId());
         // save node
         String copyNodeId = createChildNode(userId, createNodeDto);
@@ -1216,7 +1221,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         log.info("Copy node to space ");
         // No parent node is specified, take the root node as the parent node
         if (StrUtil.isBlank(destParentId)) {
-            destParentId = nodeMapper.selectRootNodeIdBySpaceId(spaceId);
+            destParentId = baseMapper.selectRootNodeIdBySpaceId(spaceId);
         }
         Lock lock = redisLockRegistry.obtain(destParentId);
         try {
@@ -1234,23 +1239,23 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     private String saveDumpedNode(Long userId, String spaceId, String destParentId,
                                   String sourceNodeId, NodeCopyOptions options) {
-        NodeEntity shareNode = nodeMapper.selectByNodeId(sourceNodeId);
+        NodeEntity shareNode = baseMapper.selectByNodeId(sourceNodeId);
         String name = StrUtil.isNotBlank(options.getNodeName())
             ? options.getNodeName() : shareNode.getNodeName();
+        NodeType nodeType = NodeType.toEnum(shareNode.getType());
         String toSaveNodeId = StrUtil.isNotBlank(options.getNodeId())
-            ? options.getNodeId() : IdUtil.createNodeId(shareNode.getType());
+            ? options.getNodeId() : IdUtil.createNodeId(nodeType);
         if (!options.isTemplate()) {
             // check for the same name
             name = duplicateNameModify(destParentId, shareNode.getType(), name, null);
             // update the original first node, and move the position one bit later,
             // that is, the pre-node is the shared node that is transferred.
-            nodeMapper.updatePreNodeIdBySelf(toSaveNodeId, null, destParentId);
+            baseMapper.updatePreNodeIdBySelf(toSaveNodeId, null, destParentId);
         }
 
         // component node id map
         Map<String, String> newNodeMap = CollUtil.newHashMap();
         newNodeMap.put(sourceNodeId, toSaveNodeId);
-        NodeType nodeType = NodeType.toEnum(shareNode.getType());
         switch (nodeType) {
             case ROOT:
                 throw new BusinessException(NodeException.NOT_ALLOW);
@@ -1352,7 +1357,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             originNodeToPreNodeMap.put(sub.getNodeId(), sub.getPreNodeId());
             // Supplement the ID mapping relationship between the original node and the new node
             if (!filterNodeIds.contains(sub.getNodeId())) {
-                newNodeMap.put(sub.getNodeId(), IdUtil.createNodeId(sub.getType()));
+                NodeType nodeType = NodeType.toEnum(sub.getType());
+                newNodeMap.put(sub.getNodeId(), IdUtil.createNodeId(nodeType));
             }
         });
         List<NodeEntity> storeEntities = new ArrayList<>();
@@ -1384,10 +1390,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             node.setUpdatedBy(userId);
             storeEntities.add(node);
         }
-        if (storeEntities.size() == 0) {
+        if (storeEntities.isEmpty()) {
             return;
         }
-        boolean flag = SqlHelper.retBool(nodeMapper.insertBatch(storeEntities));
+        boolean flag = SqlHelper.retBool(baseMapper.insertBatch(storeEntities));
         ExceptionUtil.isTrue(flag, NodeException.SHARE_NODE_STORE_FAIL);
         // Copy datasheet processing
         if (nodeTypeToNodeIdsMap.containsKey(NodeType.DATASHEET.getNodeType())) {
@@ -1515,7 +1521,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public void updateNodeBanStatus(String nodeId, Integer status) {
         log.info("Ban or unban nodes ");
-        boolean flag = SqlHelper.retBool(nodeMapper.updateNodeBanStatus(nodeId, status));
+        boolean flag = SqlHelper.retBool(baseMapper.updateNodeBanStatus(nodeId, status));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
     }
 
@@ -1525,7 +1531,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public String duplicateNameModify(String parentId, int nodeType, String nodeName,
                                       String nodeId) {
-        List<String> nameList = nodeMapper.selectNameList(parentId, nodeType, nodeId);
+        List<String> nameList = baseMapper.selectNameList(parentId, nodeType, nodeId);
         int i = 2;
         String name = nodeName;
         while (nameList.contains(name)) {
@@ -1537,7 +1543,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public List<String> checkSubNodePermission(Long memberId, String nodeId, ControlRole role) {
-        boolean hasChildren = nodeMapper.selectHasChildren(nodeId);
+        boolean hasChildren = baseMapper.selectHasChildren(nodeId);
         if (!hasChildren) {
             return null;
         }
@@ -1661,7 +1667,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (StrUtil.isBlank(preNodeId)) {
             return null;
         } else {
-            String id = nodeMapper.selectParentIdByNodeId(preNodeId);
+            String id = baseMapper.selectParentIdByNodeId(preNodeId);
             ExceptionUtil.isTrue(parentId.equals(id), PermissionException.NODE_ACCESS_DENIED);
             return preNodeId;
         }
@@ -1762,9 +1768,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                                      List<DatasheetMetaEntity> metaEntities,
                                      List<DatasheetRecordEntity> recordEntities) {
 
-        nodeMapper.updatePreNodeIdBySelf(data.getNodeId(), null, data.getParentId());
+        baseMapper.updatePreNodeIdBySelf(data.getNodeId(), null, data.getParentId());
 
-        nodeMapper.insertBatch(nodeEntities);
+        baseMapper.insertBatch(nodeEntities);
 
         iDatasheetService.batchSave(datasheetEntities);
 
@@ -1785,7 +1791,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             spaceId = getSpaceIdByNodeId(nodeId);
         }
         if (StrUtil.isBlank(extras)) {
-            extras = nodeMapper.selectExtraByNodeId(nodeId);
+            extras = baseMapper.selectExtraByNodeId(nodeId);
         }
         NodeExtraDTO nodeExtraDTO = JSONUtil.toBean(extras, NodeExtraDTO.class);
         SocialConnectInfo connectInfo = socialServiceFacade.getConnectInfo(spaceId);
@@ -1856,7 +1862,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public Optional<String> getNodeName(String nodeId, Long userId) {
         // 1. query the space id and node name of the node
-        UrlNodeInfoDTO urlNodeInfo = nodeMapper.selectSpaceIdAndNodeNameByNodeId(nodeId);
+        UrlNodeInfoDTO urlNodeInfo = baseMapper.selectSpaceIdAndNodeNameByNodeId(nodeId);
 
         if (ObjectUtil.isNull(urlNodeInfo)) {
             return Optional.empty();
@@ -1878,7 +1884,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public void checkEnableOperateNodeBySpaceFeature(Long memberId, String spaceId, String nodeId) {
-        Integer nodeType = nodeMapper.selectNodeTypeByNodeId(nodeId);
+        Integer nodeType = baseMapper.selectNodeTypeByNodeId(nodeId);
         // 1. whether the node is the root node
         if (NodeType.toEnum(nodeType) != NodeType.ROOT) {
             return;
@@ -1904,8 +1910,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public boolean isNodeBelongRootFolder(String spaceId, String nodeId) {
-        String rootNodeId = nodeMapper.selectRootNodeIdBySpaceId(spaceId);
-        String parentNodeId = nodeMapper.selectParentIdByNodeId(nodeId);
+        String rootNodeId = baseMapper.selectRootNodeIdBySpaceId(spaceId);
+        String parentNodeId = baseMapper.selectParentIdByNodeId(nodeId);
         return ObjectUtil.isNotNull(rootNodeId) && rootNodeId.equals(parentNodeId);
     }
 
@@ -1928,8 +1934,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     }
 
     @Override
-    public String getNodeIdByParentIdAndNodeName(String parentNodeId, String nodeName) {
-        return baseMapper.selectNodeIdByParentIdAndNodeName(parentNodeId, nodeName);
+    public Optional<NodeEntity> findSameNameInSameLevel(String parentNodeId,
+                                                        String nodeName) {
+        List<NodeEntity> nodeEntities = getSubNodeList(parentNodeId);
+        return nodeEntities.stream()
+            .filter(node -> node.getNodeName().equals(nodeName))
+            .findFirst();
     }
 
     private List<NodeSearchResult> formatNodeSearchResults(List<NodeInfoVo> nodeInfoList) {

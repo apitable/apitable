@@ -649,4 +649,9 @@
         AND is_deleted = 0
         LIMIT 1
     </select>
+
+    <select id="selectByParentId" resultType="com.apitable.workspace.entity.NodeEntity">
+        SELECT * FROM ${tablePrefix}node
+        WHERE parent_id = #{parentId} AND is_deleted = 0
+    </select>
 </mapper>
