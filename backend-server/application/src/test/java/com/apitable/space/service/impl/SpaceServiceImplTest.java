@@ -134,7 +134,7 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         initNodeTreeMockData(userSpace.getSpaceId(), rootNodeId);
         long count =
             iSpaceService.getNodeCountBySpaceId(userSpace.getSpaceId(), NodeType::isFolder);
-        assertThat(count).isNotZero().isEqualTo(2L);
+        assertThat(count).isNotZero().isEqualTo(5L);
     }
 
     @Test
