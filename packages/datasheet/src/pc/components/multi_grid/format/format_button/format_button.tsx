@@ -531,6 +531,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
           {action?.automation?.automationId && (
             <AutomationItem
               id={action?.automation?.automationId}
+              fieldId={currentField.id}
               handleDelete={() => {
                 const item = produce(currentField, (draft) => {
                   draft.property.action.type = undefined;
