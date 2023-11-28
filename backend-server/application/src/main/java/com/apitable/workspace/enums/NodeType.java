@@ -120,11 +120,29 @@ public enum NodeType {
     }
 
     /**
+     * whether is root node type.
+     *
+     * @return true if is root
+     */
+    public boolean isRoot() {
+        return this == ROOT;
+    }
+
+    /**
      * whether is folder node type.
      *
      * @return true if is folder
      */
     public boolean isFolder() {
         return this == FOLDER;
+    }
+
+    /**
+     * whether is not folder node type.
+     *
+     * @return true if is not folder
+     */
+    public boolean isNotFolder() {
+        return !isRoot() && !isFolder();
     }
 }

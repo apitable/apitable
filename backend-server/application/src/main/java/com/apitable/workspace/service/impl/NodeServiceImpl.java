@@ -712,8 +712,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         String name =
             duplicateNameModify(nodeOpRo.getParentId(), nodeOpRo.getType(), nodeOpRo.getNodeName(),
                 null);
-        iSpaceService.checkFileNumOverLimit(spaceId);
         NodeType nodeType = NodeType.toEnum(nodeOpRo.getType());
+        if (!nodeType.isFolder()) {
+            iSpaceService.checkFileNumOverLimit(spaceId);
+        }
         String nodeId = IdUtil.createNodeId(nodeType);
         // If the new node is a file, it corresponds to the creation of a datasheet form.
         this.createFileMeta(userId, spaceId, nodeId, nodeOpRo.getType(), name, nodeOpRo.getExtra());

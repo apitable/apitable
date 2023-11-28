@@ -565,11 +565,14 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     }
 
     @Override
-    public long getNodeCountBySpaceId(String spaceId, Predicate<NodeType> exclude) {
+    public long getNodeCountBySpaceId(String spaceId, Predicate<NodeType> excludeType) {
         List<NodeTypeStaticsDTO> nodeTypeStaticsDTOList =
             iStaticsService.getNodeTypeStaticsBySpaceId(spaceId);
         return nodeTypeStaticsDTOList.stream()
-            .filter(statics -> !exclude.test(NodeType.toEnum(statics.getType())))
+            .filter(statics -> {
+                NodeType nodeType = NodeType.toEnum(statics.getType());
+                return !nodeType.isRoot() && !excludeType.test(nodeType);
+            })
             .mapToLong(NodeTypeStaticsDTO::getTotal).sum();
     }
 
@@ -754,8 +757,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         List<NodeTypeStaticsDTO> nodeTypeStaticDtos =
             iStaticsService.getNodeTypeStaticsBySpaceId(spaceId);
         long sheetNums = nodeTypeStaticDtos.stream()
-            .filter(condition -> !NodeType.toEnum(condition.getType())
-                .isFolder()).mapToLong(NodeTypeStaticsDTO::getTotal)
+            .filter(condition -> NodeType.toEnum(condition.getType()).isNotFolder())
+            .mapToLong(NodeTypeStaticsDTO::getTotal)
             .sum();
         spaceInfoVO.setSheetNums(sheetNums);
         long mirrorNums = nodeTypeStaticDtos.stream()

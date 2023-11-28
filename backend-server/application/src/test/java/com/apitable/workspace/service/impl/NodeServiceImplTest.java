@@ -20,6 +20,7 @@ package com.apitable.workspace.service.impl;
 
 import static com.apitable.workspace.enums.PermissionException.ROOT_NODE_OP_DENIED;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.util.Lists.list;
 
@@ -82,6 +83,32 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         String nodeId =
             iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), nodeOpRo);
         assertThat(nodeId).isNotBlank();
+    }
+
+    @Test
+    void testCreateFolderNodeWithoutOverLimit() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        initNodeTreeMockData(userSpace.getSpaceId(), rootNodeId);
+        NodeOpRo nodeOpRo = NodeOpRo.builder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .build();
+        assertThatNoException()
+            .isThrownBy(() -> iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), nodeOpRo));
+    }
+
+    @Test
+    void testCreateNotFolderNodeWithOverLimit() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        initNodeTreeMockData(userSpace.getSpaceId(), rootNodeId);
+        NodeOpRo nodeOpRo = NodeOpRo.builder()
+            .parentId(rootNodeId)
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        assertThatThrownBy(() -> iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), nodeOpRo))
+            .isInstanceOf(BusinessException.class);
     }
 
     @Test

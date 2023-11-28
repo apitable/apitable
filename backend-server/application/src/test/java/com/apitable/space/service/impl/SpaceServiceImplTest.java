@@ -128,6 +128,39 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void testGetNodeCountExcludeFolder() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        initNodeTreeMockData(userSpace.getSpaceId(), rootNodeId);
+        long count =
+            iSpaceService.getNodeCountBySpaceId(userSpace.getSpaceId(), NodeType::isFolder);
+        assertThat(count).isNotZero().isEqualTo(2L);
+    }
+
+    @Test
+    void testGetNodeCountExcludeFolderWhenNone() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        long count =
+            iSpaceService.getNodeCountBySpaceId(userSpace.getSpaceId(), NodeType::isFolder);
+        assertThat(count).isZero();
+    }
+
+    @Test
+    void testCheckFileNumOverLimitWithThrownException() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        initNodeTreeMockData(userSpace.getSpaceId(), rootNodeId);
+        assertThatThrownBy(() -> iSpaceService.checkFileNumOverLimit(userSpace.getSpaceId()))
+            .isInstanceOf(BusinessException.class);
+    }
+
+    @Test
+    void testCheckFileNumOverLimitWithoutException() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        assertThatNoException().isThrownBy(() -> iSpaceService.checkFileNumOverLimit(userSpace.getSpaceId()));
+    }
+
+    @Test
     void testGetSpaceSubscriptionInfo() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         SpaceSubscribeVo spaceSubscribeVo =
@@ -191,4 +224,6 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         assertThat(seatUsage.getMemberCount()).isEqualTo(1L);
         assertThat(seatUsage.getTotal()).isEqualTo(2L);
     }
+
+
 }
