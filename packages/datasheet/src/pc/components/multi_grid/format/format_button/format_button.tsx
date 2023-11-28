@@ -217,41 +217,42 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
       {visible && (
         <DataSourceSelectorForNode
           footer={<>
-            <Box paddingLeft={'16px'} onClick={async () => {
-              const r = await workbenchClient.create3({
-                nodeOpRo: {
-                  preNodeId: datasheetId,
-                  parentId: datasheetParentId,
-                  type: 10,
-                }
-              });
-              const automationId = r?.data?.nodeId;
-
-              if(!automationId ) {
-                return;
-              }
-
-              await handleAddTrigger(automationId, datasheetId, currentField.id, (triggerId) => {
-                const item = produce(currentField, (draft) => {
-                  draft.property.action.type = ButtonActionType.TriggerAutomation;
-                  if (automationId) {
-                    if (draft.property.action?.automation) {
-                      draft.property.action.automation.automationId = automationId;
-                      draft.property.action.automation.triggerId = triggerId;
-                    } else {
-                      draft.property.action.automation = { automationId, triggerId };
-                    }
+            <Box paddingLeft={'16px'} display={'flex'} justifyContent={'align-items'}
+              onClick={async () => {
+                const r = await workbenchClient.create3({
+                  nodeOpRo: {
+                    preNodeId: datasheetId,
+                    parentId: datasheetParentId,
+                    type: 10,
                   }
                 });
+                const automationId = r?.data?.nodeId;
 
-                setVisible(false);
-                setCurrentField(item);
-                handleModify(item);
-                setTimeout(() => {
-                  router.push(`/workbench/${automationId}`);
-                }, 50);
-              });
-            }} >
+                if(!automationId ) {
+                  return;
+                }
+
+                await handleAddTrigger(automationId, datasheetId, currentField.id, (triggerId) => {
+                  const item = produce(currentField, (draft) => {
+                    draft.property.action.type = ButtonActionType.TriggerAutomation;
+                    if (automationId) {
+                      if (draft.property.action?.automation) {
+                        draft.property.action.automation.automationId = automationId;
+                        draft.property.action.automation.triggerId = triggerId;
+                      } else {
+                        draft.property.action.automation = { automationId, triggerId };
+                      }
+                    }
+                  });
+
+                  setVisible(false);
+                  setCurrentField(item);
+                  handleModify(item);
+                  setTimeout(() => {
+                    router.push(`/workbench/${automationId}`);
+                  }, 50);
+                });
+              }} >
 
               <LinkButton prefixIcon={<AddOutlined color={colors.textBrandDefault}/>} underline={false}>
                 <Typography variant={'body4'} color={colors.textBrandDefault}>

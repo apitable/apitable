@@ -142,7 +142,7 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
   const colors = useThemeColors();
 
   return (
-    <StyledBox border={`1px solid ${theme.color.borderCommonDefault}`} borderRadius="4px" marginTop="16px" style={readonlyStyle}>
+    <StyledBox border={`1px solid ${theme.color.borderCommonDefault}`} borderRadius="4px" style={readonlyStyle}>
       <Box padding="8px 0" margin="0 8px" display={'flex'} alignItems={'center'}>
         {/*marginTop="8px"*/}
         <Box display="flex" justifyContent="space-between" alignItems="center" flex={'1 1 auto'}>

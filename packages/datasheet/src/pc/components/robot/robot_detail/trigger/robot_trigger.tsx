@@ -26,7 +26,8 @@ import styled from 'styled-components';
 import useSWR from 'swr';
 import { Box, IDropdownControl, SearchSelect, Typography } from '@apitable/components';
 import {
-  EmptyNullOperand,
+  ButtonActionType,
+  EmptyNullOperand, IButtonAction, IButtonField,
   IExpression,
   integrateCdnHost,
   IReduxState, IServerFormPack,
@@ -587,6 +588,19 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         }
 
         if (fieldId != null && shareInfo?.shareId == null) {
+
+          if(fieldMap?.[fieldId] != null) {
+            const field = fieldMap?.[fieldId] as IButtonField;
+
+            if (field.property.action !== ButtonActionType.TriggerAutomation && !e.some(error => error.dataPath === '.fieldId')) {
+              return {
+                fieldId: {
+                  __errors: [t(Strings.the_current_button_column_has_expired_please_reselect)]
+                }
+              };
+            }
+          }
+
           if(fieldMap?.[fieldId] == null) {
 
             if (!e.some(error => error.dataPath === '.fieldId')) {

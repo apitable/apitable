@@ -1,7 +1,7 @@
 import { useMount } from 'ahooks';
 import { Space } from 'antd';
 import { useAtom, useSetAtom } from 'jotai';
-import React, { FC, memo, useContext, useEffect, useMemo } from 'react';
+import React, { FC, memo, useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import {
   Box,
@@ -17,6 +17,7 @@ import {
 import { ConfigConstant, DATASHEET_ID, IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import { BookOutlined, CloseOutlined, DeleteOutlined, MoreStandOutlined, QuestionCircleOutlined, ShareOutlined } from '@apitable/icons';
 import { MobileToolBar } from 'pc/components/automation/panel/Toobar';
+import { NoPermission } from 'pc/components/no_permission';
 import { useAppSelector } from 'pc/store/react-redux';
 import { useResponsive, useSideBarVisible, useUrlQuery } from '../../../hooks';
 import { useAppDispatch } from '../../../hooks/use_app_dispatch';
@@ -71,7 +72,7 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
   const { shareInfo } = useContext(ShareContext);
   const { initialize } = useAutomationNavigateController();
   const dispatch = useAppDispatch();
-  const loading = false;
+  // const loading = false;
   const { templateId } = useAppSelector((state: IReduxState) => state.pageParams);
 
   const { screenIsAtMost } = useResponsive();
@@ -87,10 +88,12 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
     }
   });
 
+  const [loading, setLoading] =useState(true);
   useEffect(() => {
     if (!resourceId) {
       return;
     }
+    setLoading(true);
     getResourceAutomations(resourceId, {
       shareId: shareInfo?.shareId,
     })
@@ -131,8 +134,10 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
       })
       .catch((e) => {
         console.log(e);
-      });
-  }, [dispatch, isLg, resourceId, setAutomationState, setPanel, shareInfo]);
+      }).finally(()=> {
+        setLoading(false);
+    });
+  }, [cache.id, cache.panel, dispatch, isLg, params, resourceId, setAutomationState, setCache, setHistoryDialog, setPanel, shareInfo]);
 
   const handleDeleteRobot = () => {
     Modal.confirm({
@@ -199,8 +204,10 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
   if (automationState?.scenario === AutomationScenario.node && !templateId && nodeItem == null) {
     return null;
   }
-  if (currentRobotId == null) {
-    return null;
+  if (currentRobotId == null && !loading) {
+    return (
+      <NoPermission />
+    );
   }
 
   return (

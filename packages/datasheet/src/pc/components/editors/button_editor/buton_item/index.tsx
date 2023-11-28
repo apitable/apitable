@@ -1,26 +1,33 @@
-import { FunctionComponent, useEffect, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import * as React from 'react';
 import styled, { css } from 'styled-components';
 import { Box, Typography } from '@apitable/components';
-import { ButtonStyleType, getColorValue, IButtonField, IRecord, IReduxState, Selectors } from '@apitable/core';
+import { ButtonStyleType, getColorValue, IButtonField, IRecord, Selectors } from '@apitable/core';
 import { LoadingFilled } from '@apitable/icons';
+import { AutomationConstant } from 'pc/components/automation/config';
 import { runAutomationButton } from 'pc/components/editors/button_editor';
 import { useButtonFieldValid } from 'pc/components/editors/button_editor/use_button_field_valid';
-import { getIsValid, setIsValid } from 'pc/components/editors/button_editor/valid_map';
+import { getIsValid } from 'pc/components/editors/button_editor/valid_map';
 import EllipsisText from 'pc/components/ellipsis_text';
-import { setColor, useColorColorWheel } from 'pc/components/multi_grid/format';
+import { setColor } from 'pc/components/multi_grid/format';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
-import {AutomationConstant} from "pc/components/automation/config";
 
-const StyledBox = styled(Box)<{color?: string}>`
+const StyledBox = styled(Box)<{color?: string, disabled?: boolean}>`
     cursor: pointer;
     user-select: none;
+  ${props => props.disabled && css`
+    cursor: not-allowed !important;
+  `}
 `;
 
-const StyledBgBox = styled(Box)<{defaultColor: string}>`
+const StyledBgBox = styled(Box)<{defaultColor: string, disabled?: boolean}>`
     cursor: pointer;
     user-select: none;
+  
+  ${props => props.disabled && css`
+    cursor: not-allowed !important;
+  `}
   
    ${props => css`
      background-color: ${props.defaultColor};
@@ -83,6 +90,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
         if(!isValid){
           return (
             <StyledBox
+              disabled
               borderRadius={'4px'}
               paddingX={'8px'}
               marginLeft={'8px'}
@@ -102,7 +110,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
         }
         return (
           <StyledBox
-
+            disabled
             borderRadius={'4px'}
             onClick={onStart}
             paddingX={'8px'}
@@ -131,6 +139,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
       if(!isValid) {
         return (
           <StyledBox backgroundColor={colors.bgControlsDisabled}
+                     disabled
             borderRadius={'4px'}
             paddingX={'8px'}
             maxWidth={'100px'}
@@ -157,6 +166,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
       }
       return (
         <StyledBgBox defaultColor={bg}
+                     disabled={false}
           borderRadius={'4px'}
           paddingX={'8px'}
           maxWidth={'100px'}

@@ -104,7 +104,7 @@ export const DataSourceSelectorForNode: React.FC<IDataSourceSelectorForAIProps> 
                   <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
                     {footer}
 
-                    <div className={styles.chatbotCreateButtonGroup}>
+                    <div className={styles.chatbotCreateButtonGroupFooter}>
                       <Button color={'default'} onClick={onHide}>
                         {t(Strings.cancel)}
                       </Button>

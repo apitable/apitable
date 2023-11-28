@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
+import styled from 'styled-components';
 import { Box, Typography } from '@apitable/components';
 import { ButtonActionType, FieldType, IButtonField, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
@@ -11,6 +12,10 @@ import {
 } from 'pc/components/robot/robot_detail/create_new_trigger/create_new_trigger';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
+
+const PointerCursorBox = styled(Box)`
+ cursor: pointer !important;
+`;
 
 export const ReadonlyFieldColumn: FC<{
     datasheetId: string,
@@ -42,7 +47,7 @@ export const ReadonlyFieldColumn: FC<{
   }
   if( fieldItem == null) {
     return (
-      <Box paddingY={'8px'} borderColor={colors.textDangerDefault} cursor={'pointer'}
+      <PointerCursorBox paddingY={'8px'} borderColor={colors.textDangerDefault} cursor={'pointer'}
         paddingLeft={'8px'}
         borderWidth={'1px'}
         width={'100%'}
@@ -59,20 +64,20 @@ export const ReadonlyFieldColumn: FC<{
           justifyContent={'flex-start'}
         >
           <AddOutlined color={colors.textCommonQuaternary} />
-          <Box marginLeft={'8px'} display={'inline-flex'} alignItems={'center'} flex={'1 1 auto'} cursor={'pointer'}>
+          <Box marginLeft={'8px'} display={'inline-flex'} alignItems={'center'} flex={'1 1 auto'} cursor={'pointer'} >
             <Typography variant="body4" color={colors.textCommonQuaternary} >
 
               {t(Strings.create_new_button_field)}
             </Typography>
           </Box>
         </Box>
-      </Box>
+      </PointerCursorBox>
     );
   }
 
   const item = getFieldTypeIconOrNull(fieldItem.type) == null ? getFieldTypeIcon(FieldType.Number) : getFieldTypeIcon(fieldItem.type);
   return (
-    <Box paddingY={'8px'} backgroundColor={colors.bgControlsDisabled} cursor={'pointer'}
+    <PointerCursorBox paddingY={'8px'} backgroundColor={colors.bgControlsDisabled} cursor={'not-allowed'}
       paddingLeft={'8px'}
       paddingRight={'8px'}
       borderRadius={'4px'}
@@ -102,6 +107,6 @@ export const ReadonlyFieldColumn: FC<{
         </Box>
 
       </Box>
-    </Box>
+    </PointerCursorBox>
   );
 };

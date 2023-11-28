@@ -127,9 +127,13 @@ export class ButtonField extends Field {
 
   cellValueToArray(cellValue: ICellValue): string[] | null {
     if (this.validate(cellValue)) {
-      return [this.field.name];
+      return [this.field.property.text];
     }
     return null;
+  }
+
+  arrayValueToString(): string | null {
+    return this.field.property.text;
   }
 
   override get isComputed() {
@@ -199,7 +203,6 @@ export class ButtonField extends Field {
   }
 
   public cellValueToString(_cellValue: ICellValue, _cellToStringOption?: ICellToStringOption): string | null {
-
     return this.field.property.text;
   }
 
