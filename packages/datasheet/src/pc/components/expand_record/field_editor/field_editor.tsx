@@ -75,6 +75,8 @@ const FieldEditorBase = (props: IFieldEditorProps) => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
 
+  const canWorkDocExpand = field.type === FieldType.WorkDoc && cellValue !== null;
+
   const setFocusFunc = useCallback(
     (status: boolean) => {
       if (!editable) {
@@ -126,7 +128,8 @@ const FieldEditorBase = (props: IFieldEditorProps) => {
   }, []);
 
   function onMouseDown() {
-    if (Field.bindModel(field).isComputed || field.type === FieldType.AutoNumber || (fieldRole && fieldRole !== ConfigConstant.Role.Editor)) {
+    if (Field.bindModel(field).isComputed ||
+      field.type === FieldType.AutoNumber || (fieldRole && fieldRole !== ConfigConstant.Role.Editor)) {
       window.clearTimeout(timeoutRef.current);
       setShowTip(true);
       timeoutRef.current = window.setTimeout(() => {
@@ -178,7 +181,7 @@ const FieldEditorBase = (props: IFieldEditorProps) => {
         <div
           className={classNames('displayItem', {
             [styles.displayItem]: !notNeedBgField.includes(fieldType),
-            [styles.disabled]: !editable,
+            [styles.disabled]: !editable && !canWorkDocExpand,
             [styles.active]: isFocus && editable,
             [styles.checkBox]: fieldType === FieldType.Checkbox,
           })}
