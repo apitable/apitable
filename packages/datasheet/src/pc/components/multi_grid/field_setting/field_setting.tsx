@@ -18,7 +18,7 @@
 
 import { useKeyPress } from 'ahooks';
 import type { InputRef } from 'antd';
-import { Input } from 'antd';
+import {Input, message} from 'antd';
 import produce from 'immer';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState, FC, PropsWithChildren } from 'react';
@@ -451,6 +451,10 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
       setOptionErrMsg(checkResult);
       const _checkResult = checkResult.errors ? (Object.values(checkResult.errors)[0] as string) : checkResult;
       isModal && renderModal(_checkResult);
+
+      if(!isModal && currentField.type === FieldType.Button) {
+        message.error(_checkResult);
+      }
       return;
     }
 
@@ -546,6 +550,16 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
               const checkResult : IField= checkFactory[currentField.type]
                 ? checkFactory[currentField.type](currentField, propDatasheetId)
                 : CheckFieldSettingBase.checkStream(currentField, propDatasheetId);
+
+              // @ts-ignore
+              if (typeof checkResult === 'string' || checkResult.errors) {
+                setOptionErrMsg(checkResult);
+                // @ts-ignore
+                const _checkResult = checkResult.errors ? (Object.values(checkResult.errors)[0] as string) : checkResult;
+                renderModal(_checkResult as string);
+                return;
+              }
+
               const integractedItem: IField = produce(checkResult, draft => {
                 draft.property.action = field.property.action;
               });

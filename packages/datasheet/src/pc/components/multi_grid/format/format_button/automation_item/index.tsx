@@ -18,7 +18,6 @@ export const AutomationItem: FunctionComponent<{ id: string;fieldId: string, han
   // @ts-ignore
   if(!respItem.triggers?.some(r => getFieldId(r)===fieldId)){
     return null;
-
   }
 
   return (

@@ -19,12 +19,14 @@
 import produce from 'immer';
 import keyBy from 'lodash/keyBy';
 import {
+  ButtonActionType,
   ComputeRefManager,
   Field,
   FieldType,
   FieldTypeDescriptionMap,
   getComputeRefManager,
   getUniqName,
+  IButtonField,
   ICascaderField,
   IField,
   IFormulaField,
@@ -96,6 +98,63 @@ export class CheckFieldSettingBase {
   // PageParams can't get datasheetId when adding columns in magic form
   static checkStream(curField: IField, datasheetId?: string) {
     return compose(CheckFieldSettingBase.checkFieldNameLen, CheckFieldSettingBase.checkFieldNameBlank)(curField, datasheetId!);
+  }
+}
+
+class ButtonField {
+  // Check for the presence of option configurations
+  static isExitType(curField: IButtonField) {
+    if (curField.property.action?.type == null) {
+      return {
+        errors: {
+          property: t(Strings.action_should_not_empty),
+        },
+      };
+    }
+
+    if (curField.property?.text ==null || curField.property?.text.length ===0) {
+      return {
+        errors: {
+          property: t(Strings.automation_content_should_not_empty),
+        },
+      };
+    }
+
+    if (curField.property?.text.length > 15) {
+      return {
+        errors: {
+          property: t(Strings.button_maxium_text, {
+            count: 15
+          }),
+        },
+      };
+    }
+
+    if (curField.property.action?.type === ButtonActionType.OpenLink) {
+      if (curField.property.action?.openLink?.expression == null || curField.property.action?.openLink?.expression.length === 0) {
+        return {
+          errors: {
+            property: t(Strings.open_url_emby_warning),
+          },
+        };
+      }
+    }
+
+    if (curField.property.action?.type === ButtonActionType.TriggerAutomation) {
+      if (curField.property.action?.automation?.automationId == null) {
+        return {
+          errors: {
+            property: t(Strings.action_should_not_empty),
+          },
+        };
+      }
+    }
+
+    return curField;
+  }
+
+  static checkStream(curField: IButtonField, datasheetId?: string) {
+    return compose(ButtonField.isExitType)(curField, datasheetId!);
   }
 }
 
@@ -268,4 +327,5 @@ export const checkFactory = {
   [FieldType.OneWayLink]: CheckFieldOneWayLink.checkStream,
   [FieldType.Formula]: CheckFieldFormula.checkStream,
   [FieldType.Cascader]: CheckFieldCascader.checkStream,
+  [FieldType.Button]: ButtonField.checkStream,
 };
