@@ -136,7 +136,7 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
         console.log(e);
       }).finally(()=> {
         setLoading(false);
-    });
+      });
   }, [cache.id, cache.panel, dispatch, isLg, params, resourceId, setAutomationState, setCache, setHistoryDialog, setPanel, shareInfo]);
 
   const handleDeleteRobot = () => {
@@ -263,9 +263,13 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
                   <InputTitle />
                   {automationState?.scenario === AutomationScenario.node && (
                     <>
-                      <OrEmpty visible={shareInfo?.shareId == null}>
-                        <NodeFavoriteStatus nodeId={automationState?.resourceId ?? ''} enabled={nodeItem.nodeFavorite} />
-                      </OrEmpty>
+                      {
+                        nodeItem && (
+                          <OrEmpty visible={shareInfo?.shareId == null}>
+                            <NodeFavoriteStatus nodeId={automationState?.resourceId ?? ''} enabled={nodeItem?.nodeFavorite} />
+                          </OrEmpty>
+                        )
+                      }
                       {!templateId && (
                         <Box marginX={'4px'}>
                           <Tag

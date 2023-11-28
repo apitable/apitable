@@ -18,7 +18,7 @@
 
 import { useKeyPress } from 'ahooks';
 import type { InputRef } from 'antd';
-import {Input, message} from 'antd';
+import { Input, message } from 'antd';
 import produce from 'immer';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState, FC, PropsWithChildren } from 'react';
@@ -443,6 +443,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
       isModal && renderModal(baseErrMsg);
       return;
     }
+
     const checkResult = checkFactory[currentField.type]
       ? checkFactory[currentField.type](currentField, propDatasheetId)
       : CheckFieldSettingBase.checkStream(currentField, propDatasheetId);
@@ -547,9 +548,14 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
             from={activeFieldState.from}
             currentField={currentField}
             onCreate={(field) => {
+              const integractedItem: IField = produce(field, draft => {
+                draft.property.action = field.property.action;
+              });
+
               const checkResult : IField= checkFactory[currentField.type]
-                ? checkFactory[currentField.type](currentField, propDatasheetId)
-                : CheckFieldSettingBase.checkStream(currentField, propDatasheetId);
+                ? checkFactory[currentField.type](integractedItem, propDatasheetId)
+                : CheckFieldSettingBase.checkStream(integractedItem, propDatasheetId);
+
 
               // @ts-ignore
               if (typeof checkResult === 'string' || checkResult.errors) {
@@ -560,9 +566,6 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
                 return;
               }
 
-              const integractedItem: IField = produce(checkResult, draft => {
-                draft.property.action = field.property.action;
-              });
               // Passing datasheetId externally means that FieldSetting is mounted in a non-numbered table, using the activeFieldState column index.
               if (propDatasheetId) {
                 addField(integractedItem, activeFieldState?.fieldIndex);

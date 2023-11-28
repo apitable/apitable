@@ -250,7 +250,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                   handleModify(item);
                   setTimeout(() => {
                     router.push(`/workbench/${automationId}`);
-                  }, 50);
+                  }, 200);
                 });
               }} >
 

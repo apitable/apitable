@@ -2,12 +2,13 @@ import { isNil } from 'lodash';
 import { useMemo } from 'react';
 import useSWR from 'swr';
 import { ResponseDataAutomationVO } from '@apitable/api-client';
-import { ButtonActionType, IButtonField } from '@apitable/core';
+import { ButtonActionType, IButtonField, IReduxState, Selectors } from '@apitable/core';
 import { getFieldId } from 'pc/components/automation/controller/hooks/get_field_id';
 import { getRobotDetail } from 'pc/components/editors/button_editor/api';
 import { setIsValid } from 'pc/components/editors/button_editor/valid_map';
 import { useTriggerTypes } from 'pc/components/robot/hooks';
 import { IRobotTrigger, ITriggerType } from 'pc/components/robot/interface';
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const checkButtonField = async (button: IButtonField, buttonFieldTriggerId: ITriggerType | undefined) => {
   if (isNil(button.property.action.type)) {
@@ -103,6 +104,8 @@ export const useButtonFieldValid = (button: IButtonField): {
   result: boolean
 } => {
 
+  const { editable } = useAppSelector((state: IReduxState) => Selectors.getDatasheet(state)?.permissions) || {};
+
   const { data: triggerTypes } = useTriggerTypes();
   const buttonFieldTriggerId =triggerTypes.find(item => item.endpoint==='button_clicked' || item.endpoint === 'button_field');
   const automationId = button.property.action.automation?.automationId;
@@ -114,7 +117,16 @@ export const useButtonFieldValid = (button: IButtonField): {
     isPaused: () => !Boolean(button.property.action.automation?.automationId)
   }
   );
+
   return useMemo(() => {
+    if(!editable && button.property.action.type !== ButtonActionType.OpenLink) {
+      return {
+        fieldId: button.id,
+        isLoading: false,
+        result: false,
+      };
+    }
+
     const checkResult = check(button, buttonFieldTriggerId, data);
     if(!isLoading) {
       setIsValid(button.id, checkResult.result);
@@ -123,5 +135,5 @@ export const useButtonFieldValid = (button: IButtonField): {
       isLoading: isLoading,
       ...checkResult
     };
-  }, [button, buttonFieldTriggerId, data, isLoading]);
+  }, [button, buttonFieldTriggerId, data, editable, isLoading]);
 };

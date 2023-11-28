@@ -17,6 +17,7 @@
  */
 
 import produce from 'immer';
+import { isNil } from 'lodash';
 import keyBy from 'lodash/keyBy';
 import {
   ButtonActionType,
@@ -104,10 +105,10 @@ export class CheckFieldSettingBase {
 class ButtonField {
   // Check for the presence of option configurations
   static isExitType(curField: IButtonField) {
-    if (curField.property.action?.type == null) {
+    if (isNil(curField.property.action.type)) {
       return {
         errors: {
-          property: t(Strings.action_should_not_empty),
+          property1: t(Strings.action_should_not_empty),
         },
       };
     }
@@ -115,7 +116,7 @@ class ButtonField {
     if (curField.property?.text ==null || curField.property?.text.length ===0) {
       return {
         errors: {
-          property: t(Strings.automation_content_should_not_empty),
+          property2: t(Strings.automation_content_should_not_empty),
         },
       };
     }
@@ -123,7 +124,7 @@ class ButtonField {
     if (curField.property?.text.length > 15) {
       return {
         errors: {
-          property: t(Strings.button_maxium_text, {
+          property3: t(Strings.button_maxium_text, {
             count: 15
           }),
         },
@@ -134,7 +135,7 @@ class ButtonField {
       if (curField.property.action?.openLink?.expression == null || curField.property.action?.openLink?.expression.length === 0) {
         return {
           errors: {
-            property: t(Strings.open_url_emby_warning),
+            property4: t(Strings.open_url_emby_warning),
           },
         };
       }
