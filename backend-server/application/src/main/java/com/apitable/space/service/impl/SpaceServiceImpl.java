@@ -50,6 +50,7 @@ import com.apitable.interfaces.ai.model.CreditTransactionChartData;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.DefaultSubscriptionInfo;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
@@ -144,6 +145,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -563,6 +565,15 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     }
 
     @Override
+    public long getNodeCountBySpaceId(String spaceId, Predicate<NodeType> exclude) {
+        List<NodeTypeStaticsDTO> nodeTypeStaticsDTOList =
+            iStaticsService.getNodeTypeStaticsBySpaceId(spaceId);
+        return nodeTypeStaticsDTOList.stream()
+            .filter(statics -> !exclude.test(NodeType.toEnum(statics.getType())))
+            .mapToLong(NodeTypeStaticsDTO::getTotal).sum();
+    }
+
+    @Override
     public CreditInfo getCredit(String spaceId) {
         SubscriptionInfo subscriptionInfo = new DefaultSubscriptionInfo();
         if (StrUtil.isNotBlank(spaceId)) {
@@ -600,8 +611,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             return;
         }
         SeatUsage seatUsage = getSeatUsage(spaceId);
-        long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
-        if (maxSeatNums != -1 && (seatUsage.getTotal() >= maxSeatNums)) {
+        SubscriptionFeatures.ConsumeFeatures.Seat seat = subscriptionInfo.getFeature().getSeat();
+        if (seat.isUnlimited() && (seatUsage.getTotal() >= seat.getValue())) {
             throw new BusinessException(LimitException.SEATS_OVER_LIMIT);
         }
     }
@@ -618,6 +629,27 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
         if (maxSeatNums != -1 && (seatUsage.getTotal() + addedSeatNums > maxSeatNums)) {
             throw new BusinessException(LimitException.SEATS_OVER_LIMIT);
+        }
+    }
+
+    @Override
+    public void checkFileNumOverLimit(String spaceId) {
+        checkFileNumOverLimit(spaceId, 1);
+    }
+
+    @Override
+    public void checkFileNumOverLimit(String spaceId, long addFileNums) {
+        // get subscription max sheet nums
+        SubscriptionInfo subscriptionInfo =
+            entitlementServiceFacade.getSpaceSubscription(spaceId);
+        if (!subscriptionInfo.isFree()) {
+            return;
+        }
+        SubscriptionFeatures.ConsumeFeatures.SheetNums sheetNums =
+            subscriptionInfo.getFeature().getSheetNums();
+        long currentSheetNums = getNodeCountBySpaceId(spaceId, NodeType::isFolder);
+        if (sheetNums.isUnlimited() && (currentSheetNums + addFileNums > sheetNums.getValue())) {
+            throw new BusinessException(LimitException.FILE_NUMS_OVER_LIMIT);
         }
     }
 
@@ -722,8 +754,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         List<NodeTypeStaticsDTO> nodeTypeStaticDtos =
             iStaticsService.getNodeTypeStaticsBySpaceId(spaceId);
         long sheetNums = nodeTypeStaticDtos.stream()
-            .filter(condition -> NodeType.toEnum(condition.getType())
-                .isFileNode()).mapToLong(NodeTypeStaticsDTO::getTotal)
+            .filter(condition -> !NodeType.toEnum(condition.getType())
+                .isFolder()).mapToLong(NodeTypeStaticsDTO::getTotal)
             .sum();
         spaceInfoVO.setSheetNums(sheetNums);
         long mirrorNums = nodeTypeStaticDtos.stream()

@@ -113,6 +113,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -481,13 +482,14 @@ public class NodeController {
         // specified operation permissions.
         iNodeService.checkSourceDatasheet(spaceId, memberId, nodeOpRo.getType(),
             nodeOpRo.getExtra());
-        if (Boolean.TRUE.equals(nodeOpRo.getCheckDuplicateName())) {
-            String oldNodeId = iNodeService.getNodeIdByParentIdAndNodeName(nodeOpRo.getParentId(),
-                nodeOpRo.getNodeName());
-            if (StrUtil.isNotBlank(oldNodeId)) {
+        if (Boolean.TRUE.equals(nodeOpRo.getCheckDuplicateName())
+            && StrUtil.isNotBlank(nodeOpRo.getNodeName())) {
+            Optional<NodeEntity> nodeOptional = iNodeService.findSameNameInSameLevel(
+                nodeOpRo.getParentId(), nodeOpRo.getNodeName());
+            if (nodeOptional.isPresent()) {
                 return ResponseData.status(false, DUPLICATE_NODE_NAME.getCode(),
                         DUPLICATE_NODE_NAME.getMessage())
-                    .data(iNodeService.getNodeInfoByNodeId(spaceId, oldNodeId, role));
+                    .data(iNodeService.getNodeInfoByNodeId(spaceId, nodeOptional.get().getNodeId(), role));
             }
         }
         String nodeId = iNodeService.createNode(userId, spaceId, nodeOpRo);

@@ -120,9 +120,11 @@ public enum NodeType {
     }
 
     /**
-     * exclude root and folder type.
+     * whether is folder node type.
+     *
+     * @return true if is folder
      */
-    public boolean isFileNode() {
-        return value > 1;
+    public boolean isFolder() {
+        return this == FOLDER;
     }
 }

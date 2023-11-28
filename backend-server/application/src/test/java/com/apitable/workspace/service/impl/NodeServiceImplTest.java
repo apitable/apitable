@@ -41,10 +41,35 @@ import com.apitable.workspace.vo.NodePathVo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 
 public class NodeServiceImplTest extends AbstractIntegrationTest {
+
+    @Test
+    void testGetSubNodeList() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        initNodeTreeMockData(userSpace.getSpaceId(), rootNodeId);
+        List<NodeEntity> subNodeList = iNodeService.getSubNodeList("L1");
+        assertThat(subNodeList).isNotEmpty();
+    }
+
+    @Test
+    void testFindSameNameInSameLevelWhenExist() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        initNodeTreeMockData(userSpace.getSpaceId(), rootNodeId);
+        Optional<NodeEntity> nodeOptional = iNodeService.findSameNameInSameLevel("L1", "L2-1");
+        assertThat(nodeOptional).isPresent();
+    }
+
+    @Test
+    void testFindSameNameInSameLevelWhenNotExist() {
+        Optional<NodeEntity> nodeOptional = iNodeService.findSameNameInSameLevel("L1", "L1-1");
+        assertThat(nodeOptional).isNotPresent();
+    }
 
     @Test
     void testCreateDatasheetNode() {
@@ -120,6 +145,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         assertThat(nodes).isNotEmpty();
         assertThat(nodes.size()).isEqualTo(1);
     }
+
     @Test
     void givenNotRootNodeWhenCheckNodeOpThenPass() {
         // the given node is not the root directory
