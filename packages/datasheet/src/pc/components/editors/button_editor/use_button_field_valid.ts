@@ -50,6 +50,13 @@ export const checkButtonField = async (button: IButtonField, buttonFieldTriggerI
 
 export const check = (button: IButtonField, buttonFieldTriggerId: ITriggerType | undefined, data: ResponseDataAutomationVO | undefined) => {
 
+  if (!data) {
+    return {
+      fieldId: button.id,
+      result: false
+    };
+  }
+
   if (isNil(button.property.action.type)) {
     return {
       fieldId: button.id,

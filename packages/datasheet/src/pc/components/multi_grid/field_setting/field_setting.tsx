@@ -556,7 +556,6 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
                 ? checkFactory[currentField.type](integractedItem, propDatasheetId)
                 : CheckFieldSettingBase.checkStream(integractedItem, propDatasheetId);
 
-              console.log('onCreate x', field);
               // @ts-ignore
               if (typeof checkResult === 'string' || checkResult.errors) {
                 setOptionErrMsg(checkResult);

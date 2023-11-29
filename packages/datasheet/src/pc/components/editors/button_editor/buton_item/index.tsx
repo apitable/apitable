@@ -1,12 +1,12 @@
 import { Spin } from 'antd';
 import produce from 'immer';
 import { useAtom } from 'jotai';
-import { FunctionComponent, useCallback } from 'react';
+import { FunctionComponent, MutableRefObject, useCallback, useRef, useState } from 'react';
 import * as React from 'react';
 import styled, { css } from 'styled-components';
-import {Box, Typography, useThemeColors} from '@apitable/components';
+import { Box, Typography, useThemeColors } from '@apitable/components';
 import { ButtonStyleType, getColorValue, IButtonField, IRecord, Selectors } from '@apitable/core';
-import { LoadingFilled } from '@apitable/icons';
+import { CheckFilled, LoadingFilled } from '@apitable/icons';
 import { AutomationConstant } from 'pc/components/automation/config';
 import { runAutomationButton } from 'pc/components/editors/button_editor';
 import { useButtonFieldValid } from 'pc/components/editors/button_editor/use_button_field_valid';
@@ -15,7 +15,8 @@ import EllipsisText from 'pc/components/ellipsis_text';
 import { setColor } from 'pc/components/multi_grid/format';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
-import { automationTaskMap } from '../automation_task_map';
+import { automationTaskMap, AutomationTaskStatus } from '../automation_task_map';
+type TO = ReturnType<typeof setTimeout>;
 
 const StyledTypography = styled(Typography)<{defaultColor: string}>`
 
@@ -77,31 +78,52 @@ export const ButtonFieldItem: FunctionComponent<{field: IButtonField,
 
       const [automationTaskMapData, setAutomationTaskMap] = useAtom(automationTaskMap);
 
-      const key = `${recordId}-${field.id}`;
-      const loading = automationTaskMapData.get(key) ?? false;
+      const to: MutableRefObject<TO|null> = useRef<TO|null>(null);
 
-      const setIsLoading = useCallback((isLoading: boolean) => {
+      const key = `${recordId}-${field.id}`;
+      const taskStatus: AutomationTaskStatus = automationTaskMapData.get(key) ?? 'initial';
+
+      const setIsLoading = useCallback((status: AutomationTaskStatus) => {
         setAutomationTaskMap(produce(automationTaskMapData, draft => {
-          draft.set(key, isLoading);
+          draft.set(key, status);
         }));
       }, [automationTaskMapData, key, setAutomationTaskMap]);
 
       return (
         <ButtonItem
           height={height}
+          taskStatus={taskStatus}
           maxWidth={maxWidth}
-          key={field.id} field={field} isLoading={loading} onStart={async () => {
+          key={field.id} field={field} isLoading={taskStatus==='running'} onStart={async () => {
             if (!datasheetId) {
               return;
             }
-            if(loading) {
+            if(taskStatus ==='running') {
               return;
             }
-            setIsLoading(true);
+            if(to.current) {
+              clearTimeout(to.current);
+              to.current = null;
+            }
+            setIsLoading('running');
 
             await runAutomationButton(datasheetId, record, state, recordId, field.id, field,
-              () => {
-                setIsLoading(false);
+              (success) => {
+
+                setIsLoading(success ? 'success' : 'initial');
+
+                if(success) {
+                  const returnOfTimeout= setTimeout(() => {
+                    setIsLoading('initial');
+                    if(to.current) {
+                      clearTimeout(to.current);
+                    }
+                    to.current = null;
+                  }, 1000);
+
+                  to.current = returnOfTimeout;
+                }
+
               });
           } } />
       );
@@ -113,9 +135,10 @@ const itemHeight= '22px';
 
 export const ButtonItem: FunctionComponent<{field: IButtonField,
     maxWidth?: string;
+    taskStatus: AutomationTaskStatus;
     height?: string;
     onStart: () => void;
-    isLoading: boolean}> = ({ field, onStart, isLoading, height, maxWidth }) => {
+    isLoading: boolean}> = ({ field, taskStatus, onStart, isLoading, height, maxWidth }) => {
       const cacheTheme = useAppSelector(Selectors.getTheme);
       const colors = useThemeColors();
 
@@ -162,18 +185,29 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
             paddingX={'10px'}
             marginTop={marginTop}
             display={'inline-flex'} alignItems={'center'}>
-            {
+            <>
+              {
+                taskStatus === 'running' && (
+                  <LoadingFilled color={bg} className={'circle-loading'}/>
+                )
+              }
 
-              isLoading ? (
-                <LoadingFilled color={bg} />
-              ): (
-                <EllipsisText>
-                  <StyledTypography defaultColor={bg} color={bg} variant={'body4'}>
-                    {field.property.text}
-                  </StyledTypography>
-                </EllipsisText>
-              )
-            }
+              {
+                taskStatus === 'success' && (
+                  <CheckFilled color={bg} />
+                )
+              }
+
+              {
+                taskStatus === 'initial' && (
+                  <EllipsisText>
+                    <StyledTypography defaultColor={bg} color={bg} variant={'body4'}>
+                      {field.property.text}
+                    </StyledTypography>
+                  </EllipsisText>
+                )
+              }
+            </>
           </StyledBox>
         );
       }
@@ -188,18 +222,33 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
             height={height ?? itemHeight}
             marginTop={marginTop}
             display={'inline-flex'} alignItems={'center'}>
-            {
+            <>
+              {
 
-              isLoading ? (
-                <LoadingFilled color={colors.textCommonPrimary} className={'circle-loading'}/>
-              ): (
-                <EllipsisText>
-                  <Typography color={colors.textCommonDisabled} variant={'body4'}>
-                    {field.property.text}
-                  </Typography>
-                </EllipsisText>
-              )
-            }
+                taskStatus === 'running' && (
+                  <LoadingFilled color={colors.textCommonPrimary} className={'circle-loading'}/>
+                )
+              }
+              {
+
+                taskStatus === 'success' && (
+                  <CheckFilled color={colors.textCommonPrimary} className={'circle-loading'}/>
+                )
+              }
+
+              {
+
+                taskStatus ==='initial' &&
+                    (
+                      <EllipsisText>
+                        <Typography color={colors.textCommonDisabled} variant={'body4'}>
+                          {field.property.text}
+                        </Typography>
+                      </EllipsisText>
+                    )
+              }
+            </>
+
           </StyledBox>
         );
 
@@ -216,18 +265,31 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
           marginTop={marginTop}
           cursor={isValid? 'cursor': 'not-allowed'}
           display={'inline-flex'} alignItems={'center'}>
-          {
 
-            isLoading ? (
-              <LoadingFilled color={textColor} className={'circle-loading'} />
-            ): (
-              <EllipsisText>
-                <StyledTypography defaultColor={textColor} color={textColor} variant={'body4'}>
-                  {field.property.text}
-                </StyledTypography>
-              </EllipsisText>
-            )
-          }
+          <>
+            {
+              taskStatus === 'success' && (
+
+                <CheckFilled color={textColor} />
+              )
+            }
+            {
+              taskStatus === 'running' && (
+
+                <LoadingFilled color={textColor} className={'circle-loading'} />
+              )
+            }
+            {
+              taskStatus ==='initial' && (
+                <EllipsisText>
+                  <StyledTypography defaultColor={textColor} color={textColor} variant={'body4'}>
+                    {field.property.text}
+                  </StyledTypography>
+                </EllipsisText>
+              )
+
+            }
+          </>
         </StyledBgBox>
       );
     };

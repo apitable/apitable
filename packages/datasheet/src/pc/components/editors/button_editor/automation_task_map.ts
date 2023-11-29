@@ -1,7 +1,9 @@
 import { atomWithImmer } from 'jotai-immer';
 
-const automationTaskMap = atomWithImmer<Map<string, boolean>>(
-  new Map<string, boolean>()
+export type AutomationTaskStatus = 'running' | 'success' | 'initial';
+
+const automationTaskMap = atomWithImmer<Map<string, AutomationTaskStatus>>(
+  new Map<string, AutomationTaskStatus>()
 );
 export { automationTaskMap };
 

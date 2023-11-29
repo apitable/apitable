@@ -41,7 +41,7 @@ const timeout = (prom: any, time: number, exception: any) => {
 };
 
 export const runAutomationButton = async (datasheetId: string, record: any, state: IReduxState, recordId: string, fieldId: string, field: IButtonField,
-  callback: () => void
+  callback: (success?: boolean) => void
 ) : Promise<any|undefined>=> {
   if(field.property.action.type === ButtonActionType.OpenLink) {
 
@@ -82,10 +82,11 @@ export const runAutomationButton = async (datasheetId: string, record: any, stat
         })
       );
     }
-    callback();
+    const success = respData?.success ?? false;
+    callback(success);
     return respTrigger;
   } catch (e) {
-    callback();
+    callback(false);
     return undefined;
   }
 };
