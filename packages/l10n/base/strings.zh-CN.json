@@ -5806,7 +5806,7 @@
   "unarchive_record_in_activity": " 取消归档了这条记录",
   "unarchive_notice": "正在取消归档当前记录，取消后将再次显示在表格和搜索结果中，并开始重新纳入计算，是否继续？",
   "field_title_button": "按钮",
-  "field_help_button": "https://help.vika.cn/docs/guide/manual-field-button",
+  "field_help_button": "https://help.aitable.ai/docs/guide/manual-field-button",
   "button_text_click_start": "点击开始",
   "workdoc_ws_connecting": "正在连接...",
   "workdoc_ws_disconnected": "连接已断开",
