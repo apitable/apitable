@@ -79,7 +79,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
   const { currentField, setCurrentField, onUpdate, onCreate, datasheetId: propDatasheetId } = props;
   const { text, style, action } = currentField.property;
 
-  const [visible, setVisible] = useState(false);
+  const [bingAutomationVisible, setBingAutomationVisible] = useState(false);
 
   const datasheetId = useAppSelector((state: IReduxState) => propDatasheetId || Selectors.getActiveDatasheetId(state))!;
 
@@ -218,7 +218,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
 
   return (
     <>
-      {visible && (
+      {bingAutomationVisible && (
         <DataSourceSelectorForNode
           footer={
             <>
@@ -251,7 +251,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                       }
                     });
 
-                    setVisible(false);
+                    setBingAutomationVisible(false);
                     setCurrentField(item);
                     handleModify(item);
                     setTimeout(() => {
@@ -275,7 +275,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                 type: undefined,
               });
             }
-            setVisible(false);
+            setBingAutomationVisible(false);
           }}
           permissionRequired={'editable'}
           onChange={async ({ automationId }) => {
@@ -294,8 +294,6 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
               return;
             }
 
-            setVisible(false);
-
             await handleAddTrigger(automationId, datasheetId, currentField.id, (triggerId) => {
               const item = produce(currentField, (draft) => {
                 draft.property.action.type = ButtonActionType.TriggerAutomation;
@@ -309,8 +307,8 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                 }
               });
 
+              setBingAutomationVisible(false);
               setCurrentField(item);
-              handleModify(item);
             });
           }}
           nodeTypes={[ConfigConstant.NodeType.AUTOMATION, ConfigConstant.NodeType.FOLDER]}
@@ -398,7 +396,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
               }, 20);
             }
             if (value === ButtonActionType.TriggerAutomation) {
-              setVisible(true);
+              setBingAutomationVisible(true);
             }
           }}
         >

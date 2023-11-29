@@ -137,7 +137,7 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
       pointerEvents: 'none',
       opacity: 0.5,
     }
-    : { cursor: 'pointer' };
+    : { cursor: 'default' };
 
   const colors = useThemeColors();
 
