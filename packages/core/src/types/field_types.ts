@@ -997,7 +997,7 @@ export const FieldTypeDescriptionMap: {
     fieldGroup: FieldGroup.Advanced,
     help: t(Strings.field_help_button),
     hasOptSetting: true,
-    isNew: true,
+    isBeta: true,
   },
   [FieldType.WorkDoc]: {
     title: t(Strings.field_title_workdoc),
