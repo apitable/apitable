@@ -760,6 +760,8 @@ public class NodeController {
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     @PostResource(path = {"/import", "/{parentId}/importExcel"}, requiredPermission = false)
     @Operation(summary = "Import excel", description = "all parameters must be")
+    @Parameter(name = "parentId", description = "Parent Node ID", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fodNwmWE5QWPs")
     public ResponseData<NodeInfoVo> importExcel(@Valid ImportExcelOpRo data) throws IOException {
         ExceptionUtil.isTrue(data.getFile().getSize() <= limitProperties.getMaxFileSize(),
             ActionException.FILE_EXCEED_LIMIT);
