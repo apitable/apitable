@@ -105,7 +105,7 @@ export const handleCreateNewTrigger = (resourceId: string, datasheetId: string, 
 };
 
 const StyledBox = styled(Box)`
-  cursor: pointer;
+  cursor: default;
 `;
 
 export const CreateNewTrigger: FC<{resourceId: string, datasheetId: string, triggerId: string, onSubmit: (id: string) => void}> = ({ resourceId, datasheetId, triggerId, onSubmit }) => {

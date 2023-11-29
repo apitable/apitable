@@ -33,7 +33,7 @@ export const CellButtonItem: React.FC<React.PropsWithChildren<Pick<ICellProps, '
   const record = useAppSelector(state => Selectors.getRecord(state, props.recordId));
   if(!record) return null;
   return (
-    <Box flex={'1'} padding={'0 10px'}>
+    <Box flex={'1'} padding={'0 10px'} height={'20px'}>
       <span>
         <ButtonFieldItem field={props.field as IButtonField} recordId={props.recordId} record={record}/>
       </span>

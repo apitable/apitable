@@ -14,7 +14,7 @@ import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_c
 import { useAppSelector } from 'pc/store/react-redux';
 
 const PointerCursorBox = styled(Box)`
- cursor: pointer !important;
+ cursor: default !important;
 `;
 
 export const ReadonlyFieldColumn: FC<{
@@ -47,7 +47,7 @@ export const ReadonlyFieldColumn: FC<{
   }
   if( fieldItem == null) {
     return (
-      <PointerCursorBox height={'40px'} borderColor={colors.textDangerDefault} cursor={'pointer'}
+      <PointerCursorBox height={'40px'} borderColor={colors.textDangerDefault} cursor={'default'}
         paddingLeft={'8px'}
         paddingRight={'8px'}
         borderWidth={'1px'}
@@ -60,12 +60,12 @@ export const ReadonlyFieldColumn: FC<{
           display={'inline-flex'}
           alignItems={'center'}
           height={'100%'}
-          cursor={'pointer'}
+          cursor={'default'}
           width={'100%'}
           justifyContent={'flex-start'}
         >
           <AddOutlined color={colors.textCommonQuaternary} />
-          <Box marginLeft={'8px'} display={'inline-flex'} alignItems={'center'} flex={'1 1 auto'} cursor={'pointer'} >
+          <Box marginLeft={'8px'} display={'inline-flex'} alignItems={'center'} flex={'1 1 auto'} cursor={'default'} >
             <Typography variant="body4" color={colors.textCommonQuaternary} >
               {t(Strings.create_new_button_field)}
             </Typography>

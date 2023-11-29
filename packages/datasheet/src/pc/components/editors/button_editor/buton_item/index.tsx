@@ -13,6 +13,19 @@ import { setColor } from 'pc/components/multi_grid/format';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
 
+const StyledTypography = styled(Typography)<{defaultColor: string}>`
+
+  ${props => css`
+    &:hover {
+      color: ${getColorValue(props.defaultColor, 0.8)};
+    }
+
+    &:active {
+      color: ${getColorValue(props.defaultColor, 0.6)};
+    }
+  `}
+  `;
+
 const StyledBox = styled(Box)<{color?: string, disabled?: boolean}>`
     cursor: pointer;
     user-select: none;
@@ -33,18 +46,19 @@ const StyledBgBox = styled(Box)<{defaultColor: string, disabled?: boolean}>`
      background-color: ${props.defaultColor};
      
      &:hover {
-       background-color: ${getColorValue(props.defaultColor, 0.9)};
+       background-color: ${getColorValue(props.defaultColor, 0.8)};
      }
 
      &:active {
-       background-color: ${getColorValue(props.defaultColor, 0.8)};
+       background-color: ${getColorValue(props.defaultColor, 0.6)};
      }
    `}
 `;
 
 export const ButtonFieldItem: FunctionComponent<{field: IButtonField,
+    height?: string;
     maxWidth?: string;
-    recordId: string, record:IRecord }> = ({ field, recordId, maxWidth, record }) => {
+    recordId: string, record:IRecord }> = ({ field, recordId, maxWidth, record, height }) => {
 
       const state = useAppSelector((state) => state);
 
@@ -53,6 +67,7 @@ export const ButtonFieldItem: FunctionComponent<{field: IButtonField,
       const [loading, setIsLoading] = useState(false);
       return (
         <ButtonItem
+          height={height}
           maxWidth={maxWidth}
           key={field.id} field={field} isLoading={loading} onStart={async () => {
             if (!datasheetId) {
@@ -77,8 +92,9 @@ const itemHeight= '22px';
 
 export const ButtonItem: FunctionComponent<{field: IButtonField,
     maxWidth?: string;
+    height?: string;
     onStart: () => void;
-    isLoading: boolean}> = ({ field, onStart, isLoading, maxWidth }) => {
+    isLoading: boolean}> = ({ field, onStart, isLoading, height, maxWidth }) => {
       const cacheTheme = useAppSelector(Selectors.getTheme);
       const colors = useCssColors();
 
@@ -101,9 +117,8 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
               disabled
               borderRadius={'4px'}
               paddingX={'10px'}
-              height={itemHeight}
+              height={height ?? itemHeight}
               maxWidth={maxWidth?? '100%'}
-              minHeight={itemHeight}
               marginTop={marginTop}
               cursor={'not-allowed'}
               display={'inline-flex'} alignItems={'center'}>
@@ -119,7 +134,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
         return (
           <StyledBox
             disabled={false}
-            height={itemHeight}
+            height={height ?? itemHeight}
             borderRadius={'4px'}
             onClick={onStart}
             maxWidth={maxWidth?? '100%'}
@@ -132,9 +147,9 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
                 <LoadingFilled color={bg} />
               ): (
                 <EllipsisText>
-                  <Typography color={bg} variant={'body4'}>
+                  <StyledTypography defaultColor={bg} color={bg} variant={'body4'}>
                     {field.property.text}
-                  </Typography>
+                  </StyledTypography>
                 </EllipsisText>
               )
             }
@@ -149,7 +164,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
             borderRadius={'4px'}
             paddingX={'10px'}
             maxWidth={maxWidth?? '100%'}
-            height={itemHeight}
+            height={height ?? itemHeight}
             marginTop={marginTop}
             cursor={'not-allowed'}
             display={'inline-flex'} alignItems={'center'}>
@@ -175,7 +190,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
           borderRadius={'4px'}
           paddingX={'10px'}
           onClick={onStart}
-          height={itemHeight}
+          height={height ?? itemHeight}
           maxWidth={maxWidth?? '100%'}
           marginTop={marginTop}
           cursor={isValid? 'cursor': 'not-allowed'}
