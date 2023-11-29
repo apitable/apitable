@@ -79,7 +79,11 @@ export const runAutomationButton = async (datasheetId: string, record: any, stat
       const respData = respTrigger?.data as IRunRespStatus;
       // TODO status run status
       if(!respData?.success) {
-        message.error(respData?.message);
+        message.error(
+          t(Strings.button_execute_error, {
+            ERROR_MESSAGE: respData?.message
+          })
+        );
       }
       callback();
       return respTrigger;

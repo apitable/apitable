@@ -22,14 +22,17 @@ import { colors, ThemeName } from '@apitable/components';
 import {
   Api,
   ArrayValueField,
-  BasicValueType, ButtonActionType, ButtonStyleType,
+  BasicValueType,
+  ButtonActionType,
+  ButtonStyleType,
   ConfigConstant,
   DatasheetApi,
   Field,
   FieldType,
   FormulaBaseError,
   handleNullArray,
-  IAttachmentValue, IButtonField,
+  IAttachmentValue,
+  IButtonField,
   ICellValue,
   IField,
   ILookUpField,
@@ -328,9 +331,11 @@ export class CellHelper extends KonvaDrawer {
     const listCount = cellValue.length;
     let isOverflow = false;
 
-    const isValid: boolean = getIsValid(buttonField.id);
-    if(buttonField.property.action.type === ButtonActionType.TriggerAutomation ) {
+    let isValid: boolean = getIsValid(buttonField.id);
+    if(buttonField.property.action.type === ButtonActionType.TriggerAutomation) {
+      isValid = isValid && (renderProps.permissions?.['editable'] ?? true);
     }
+
 
     const defaultColor = buttonField.property.style.color ? setColor(buttonField.property.style.color, renderProps.cacheTheme) : colors.defaultBg;
     let bg = '';
