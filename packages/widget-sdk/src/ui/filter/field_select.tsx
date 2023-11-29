@@ -58,7 +58,6 @@ const FieldIconMap: { [key in WidgetFieldType]: FC<IIconProps> } = {
   [WidgetFieldType.WorkDoc]: FileOutlined,
 };
 
-export { FieldIconMap };
 
 const FieldIconMapFieldType: { [key in FieldType]: FC<IIconProps> } = {
   [FieldType.NotSupport]: LockFilled,
@@ -140,3 +139,5 @@ export const FieldSelect = ({ fields, value, onChange }: IFieldSelectProps) => {
     />
   </>;
 };
+
+export { FieldIconMap, FieldIconMapFieldType };

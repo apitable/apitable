@@ -265,7 +265,7 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
 
       </Box>
 
-      <Box display="flex" alignItems="center" margin={'0 8px'} onClick={onNavigate}>
+      <Box display="flex" alignItems="center" margin={'0 8px'}>
         <Box display="flex" justifyContent={'space-between'} alignItems="center" marginBottom={'16px'} width={'100%'}>
           <EllipsisText>
             <Typography variant="h8" ellipsis style={{ maxWidth: '78%' }}>

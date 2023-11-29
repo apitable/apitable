@@ -46,8 +46,8 @@ import {
   UserAddOutlined,
   UserEditOutlined,
   UserOutlined,
-} from '@apitable/icons';
-import { CursorButtonOutlined } from '@apitable/icons';
+  CursorButtonOutlined } from '@apitable/icons';
+import { FieldIconMapFieldType } from '@apitable/widget-sdk';
 
 const FieldIconMap = {
   [FieldType.Text]: LongtextOutlined,
@@ -80,11 +80,11 @@ const FieldIconMap = {
 };
 
 export const getFieldTypeIconOrNull = (type: FieldType): ReactElement | null => {
-  return FieldIconMap[type] as unknown as ReactElement;
+  return FieldIconMapFieldType[type] as unknown as ReactElement;
 };
 
 export const getFieldTypeIcon = (type: FieldType, fillColor: string = colorVars.thirdLevelText, width = 16, height = 16): any => {
-  const FieldIcon = FieldIconMap[type];
+  const FieldIcon = FieldIconMapFieldType[type];
   if (!FieldIcon) {
     return <div />;
   }

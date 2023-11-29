@@ -17,7 +17,7 @@ const StyledBox = styled(Box)<{color?: string, disabled?: boolean}>`
     cursor: pointer;
     user-select: none;
   ${props => props.disabled && css`
-    cursor: not-allowed !important;
+    cursor: default !important;
   `}
 `;
 
@@ -26,7 +26,7 @@ const StyledBgBox = styled(Box)<{defaultColor: string, disabled?: boolean}>`
     user-select: none;
   
   ${props => props.disabled && css`
-    cursor: not-allowed !important;
+    cursor: default !important;
   `}
   
    ${props => css`
@@ -129,7 +129,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
             {
 
               isLoading ? (
-                <LoadingFilled color={colors.textBrandDefault} />
+                <LoadingFilled color={bg} />
               ): (
                 <EllipsisText>
                   <Typography color={bg} variant={'body4'}>
