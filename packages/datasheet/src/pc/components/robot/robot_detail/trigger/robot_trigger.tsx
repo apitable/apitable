@@ -26,9 +26,9 @@ import styled from 'styled-components';
 import useSWR from 'swr';
 import { Box, IDropdownControl, SearchSelect, Typography } from '@apitable/components';
 import {
-  ButtonActionType,
-  EmptyNullOperand, IButtonAction, IButtonField,
-  IExpression,
+  ButtonActionType, CollaCommandName,
+  EmptyNullOperand, FieldType, IButtonAction, IButtonField,
+  IExpression, IField,
   integrateCdnHost,
   IReduxState, IServerFormPack,
   OperatorEnums,
@@ -50,6 +50,7 @@ import { CreateNewTrigger } from 'pc/components/robot/robot_detail/create_new_tr
 import { ReadonlyFieldColumn } from 'pc/components/robot/robot_detail/trigger/readonly_field_column';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { getTriggerList } from 'pc/components/robot/robot_detail/utils';
+import { useTriggerTypes } from 'pc/components/robot/robot_panel/hook_trigger';
 import { ShareContext } from 'pc/components/share';
 import { resourceService } from 'pc/resource_service';
 import { useAppSelector } from 'pc/store/react-redux';
@@ -131,6 +132,7 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
 
   const { api: { refreshItem } } = useAutomationController();
 
+  const buttonFieldTrigger =triggerTypes.find(item => item.endpoint === 'button_field' || item.endpoint === 'button_clicked');
   const formData = localStateMap.get(trigger.triggerId!) ?? trigger.input;
 
   if (!formData) {
@@ -179,6 +181,37 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
     api: { refresh },
   } = useAutomationController();
 
+  const dstId = getDatasheetId({ input: formData } as any);
+  const snapshot = useAppSelector((state) => {
+    return Selectors.getSnapshot(state, dstId);
+  });
+
+  const fieldMap = snapshot?.meta?.fieldMap;
+
+  const handleDelete=useCallback(() => {
+    if(buttonFieldTrigger?.triggerTypeId === trigger?.triggerTypeId){
+      const fieldId = getFieldId(trigger);
+      if(fieldMap) {
+        const field = fieldMap[fieldId];
+        if(field.type === FieldType.Button) {
+          const buttonField = field as IButtonField;
+          const newButtonField = produce(buttonField, draft => {
+            if(draft.property.action.type === ButtonActionType.TriggerAutomation) {
+              draft.property.action.type = undefined;
+            }
+          });
+          const result = resourceService.instance!.commandManager.execute({
+            cmd: CollaCommandName.SetFieldAttr,
+            fieldId: fieldId,
+            data: newButtonField,
+            datasheetId,
+          });
+
+        }
+      }
+    }
+  }, [buttonFieldTrigger?.triggerTypeId, datasheetId, fieldMap, trigger]);
+
   const handleTriggerTypeChange = useCallback(
     (triggerTypeId: string) => {
       if (triggerTypeId === trigger?.triggerTypeId) {
@@ -198,7 +231,30 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
             console.error('robotId is empty');
             return;
           }
+
+          if(buttonFieldTrigger?.triggerTypeId === trigger?.triggerTypeId){
+            const fieldId = getFieldId(trigger);
+            if(fieldMap) {
+              const field = fieldMap[fieldId];
+              if(field.type === FieldType.Button) {
+                const buttonField = field as IButtonField;
+                const newButtonField = produce(buttonField, draft => {
+                  if(draft.property.action.type === ButtonActionType.TriggerAutomation) {
+                    draft.property.action.type = undefined;
+                  }
+                });
+                const result = resourceService.instance!.commandManager.execute({
+                  cmd: CollaCommandName.SetFieldAttr,
+                  fieldId: fieldId,
+                  data: newButtonField,
+                  datasheetId,
+                });
+
+              }
+            }
+          }
           changeTriggerTypeId(automationState?.resourceId, trigger?.triggerId!, triggerTypeId, automationState?.robot?.robotId).then(async () => {
+
             clear(trigger.triggerId!);
             await refresh({
               resourceId: automationState?.resourceId!,
@@ -213,7 +269,7 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         type: 'warning',
       });
     },
-    [trigger?.triggerTypeId, trigger.triggerId, automationState?.resourceId, automationState?.robot?.robotId, automationState?.currentRobotId, clear, refresh],
+    [trigger, automationState?.resourceId, automationState?.robot?.robotId, automationState?.currentRobotId, buttonFieldTrigger?.triggerTypeId, datasheetId, clear, refresh],
   );
 
   const { schema, uiSchema = {} } = useMemo(() => {
@@ -520,14 +576,7 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
 
   const formId = getFormId({ input: formData });
 
-  // const columns = useAllColumns(datasheetId ?? '', true);
 
-  const dstId = getDatasheetId({ input: formData } as any);
-  const snapshot = useAppSelector((state) => {
-    return Selectors.getSnapshot(state, dstId);
-  });
-
-  const fieldMap = snapshot?.meta?.fieldMap;
 
   const { data } = useSWR([
     'fetchFormPack', formId
@@ -565,13 +614,13 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       disabled={
         !permissions.editable
       }
-      // TODO multiple trigger
       index={index}
       ref={nodeItemControlRef}
       handleClick={memorisedHandleClick}
       nodeId={trigger.triggerId}
       key={trigger.triggerId}
       schema={schema}
+      handleDelete={handleDelete}
       formData={formData}
       unsaved={modified}
       validateOnMount

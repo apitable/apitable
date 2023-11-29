@@ -39,6 +39,7 @@ import { MagicVariableForm } from './ui';
 
 type INodeFormProps<T> = Omit<IFormProps<T>, 'schema' | 'nodeOutputSchemaList'> & {
   index: number;
+  itemId?: string;
   schema: IJsonSchema;
   description?: string;
   serviceLogo?: string;
@@ -49,6 +50,7 @@ type INodeFormProps<T> = Omit<IFormProps<T>, 'schema' | 'nodeOutputSchemaList'> 
   type?: 'trigger' | 'action';
   children?: ReactElement;
   handleClick?: () => void;
+  handleDelete?: () => void;
   handleSubmit?: () => void;
   unsaved?: boolean;
 };
@@ -106,7 +108,7 @@ export const NodeForm = memo(
 
 export const NodeFormInfo = memo(
   forwardRef<INodeFormControlProps, INodeFormProps<any>>((props: INodeFormProps<any>, ref) => {
-    const { title, serviceLogo, unsaved, type = 'trigger', nodeId, children, handleClick, index = 0, ...restProps } = props;
+    const { title, serviceLogo, itemId,handleDelete, unsaved, type = 'trigger', nodeId, children, handleClick, index = 0, ...restProps } = props;
     const theme = useTheme();
     // @ts-ignore
     const { hasError } = validateMagicFormWithCustom(restProps.schema as JSONSchema7, restProps.formData, restProps?.validate);
@@ -133,6 +135,7 @@ export const NodeFormInfo = memo(
         okText: t(Strings.confirm),
         onOk: async () => {
           let deleteOk;
+          handleDelete?.()
           if (type === 'trigger') {
             deleteOk = await deleteTrigger(automationState?.resourceId!, nodeId, automationState?.robot?.robotId!);
           } else {
@@ -188,7 +191,7 @@ export const NodeFormInfo = memo(
         padding="16px"
         onClick={handleClick}
         backgroundColor={theme.color.fc8}
-        id={`robot_node_${nodeId}`}
+        id={isActive ? 'NODE_FORM_ACTIVE' : `robot_node_${nodeId}`}
       >
         <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
           <Box display="flex" alignItems="center" width="100%" style={{ cursor: props.disabled ? 'not-allowed' : 'pointer' }}>

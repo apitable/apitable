@@ -155,7 +155,7 @@ class ButtonField {
   }
 
   static checkStream(curField: IButtonField, datasheetId?: string) {
-    return compose(ButtonField.isExitType)(curField, datasheetId!);
+    return compose(ButtonField.isExitType, CheckFieldSettingBase.checkFieldNameLen, CheckFieldSettingBase.checkFieldNameBlank)(curField, datasheetId!);
   }
 }
 

@@ -160,7 +160,11 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
         handleCreateFormChange(String(item.value));
       }}
     >
-      <NewItem disabled={!permissions.editable}>{t(Strings.add_a_trigger)}</NewItem>
+      <NewItem
+          itemId={`ROBOT_ITEM_TRIGGER_CREATE`}
+          disabled={
+        !permissions.editable
+      }>{t(Strings.add_a_trigger)}</NewItem>
     </SearchSelect>
   );
 };

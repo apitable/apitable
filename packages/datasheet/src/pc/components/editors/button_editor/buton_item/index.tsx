@@ -43,7 +43,8 @@ const StyledBgBox = styled(Box)<{defaultColor: string, disabled?: boolean}>`
 `;
 
 export const ButtonFieldItem: FunctionComponent<{field: IButtonField,
-    recordId: string, record:IRecord }> = ({ field, recordId, record }) => {
+    maxWidth?: string;
+    recordId: string, record:IRecord }> = ({ field, recordId, maxWidth, record }) => {
 
       const state = useAppSelector((state) => state);
 
@@ -51,27 +52,33 @@ export const ButtonFieldItem: FunctionComponent<{field: IButtonField,
 
       const [loading, setIsLoading] = useState(false);
       return (
-        <ButtonItem key={field.id} field={field} isLoading={loading} onStart={async () => {
-          if (!datasheetId) {
-            return;
-          }
-          if(loading) {
-            return;
-          }
-          setIsLoading(true);
+        <ButtonItem
+          maxWidth={maxWidth}
+          key={field.id} field={field} isLoading={loading} onStart={async () => {
+            if (!datasheetId) {
+              return;
+            }
+            if(loading) {
+              return;
+            }
+            setIsLoading(true);
 
-          await runAutomationButton(datasheetId, record, state, recordId, field.id, field,
-            () => {
-              setIsLoading(false);
-            });
-        } } />
+            await runAutomationButton(datasheetId, record, state, recordId, field.id, field,
+              () => {
+                setIsLoading(false);
+              });
+          } } />
       );
     };
 
-const marginTop = '5px';
+const marginTop = '0';
+
+const itemHeight= '22px';
+
 export const ButtonItem: FunctionComponent<{field: IButtonField,
+    maxWidth?: string;
     onStart: () => void;
-    isLoading: boolean}> = ({ field, onStart, isLoading }) => {
+    isLoading: boolean}> = ({ field, onStart, isLoading, maxWidth }) => {
       const cacheTheme = useAppSelector(Selectors.getTheme);
       const colors = useCssColors();
 
@@ -94,7 +101,9 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
               disabled
               borderRadius={'4px'}
               paddingX={'10px'}
-              heigth={'24px'}
+              height={itemHeight}
+              maxWidth={maxWidth?? '100%'}
+              minHeight={itemHeight}
               marginTop={marginTop}
               cursor={'not-allowed'}
               display={'inline-flex'} alignItems={'center'}>
@@ -110,9 +119,10 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
         return (
           <StyledBox
             disabled={false}
-            heigth={'24px'}
+            height={itemHeight}
             borderRadius={'4px'}
             onClick={onStart}
+            maxWidth={maxWidth?? '100%'}
             paddingX={'10px'}
             marginTop={marginTop}
             display={'inline-flex'} alignItems={'center'}>
@@ -138,7 +148,8 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
             disabled
             borderRadius={'4px'}
             paddingX={'10px'}
-            heigth={'24px'}
+            maxWidth={maxWidth?? '100%'}
+            height={itemHeight}
             marginTop={marginTop}
             cursor={'not-allowed'}
             display={'inline-flex'} alignItems={'center'}>
@@ -164,7 +175,8 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
           borderRadius={'4px'}
           paddingX={'10px'}
           onClick={onStart}
-          heigth={'24px'}
+          height={itemHeight}
+          maxWidth={maxWidth?? '100%'}
           marginTop={marginTop}
           cursor={isValid? 'cursor': 'not-allowed'}
           display={'inline-flex'} alignItems={'center'}>

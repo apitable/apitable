@@ -314,7 +314,7 @@ export class CellHelper extends KonvaDrawer {
   }
 
   private renderCellButton(renderProps: IRenderProps, ctx?: any) {
-    const { x, y, cellValue: cellValue1, rowHeight, rowHeightLevel, columnWidth, isActive, callback } = renderProps;
+    const { x, y, rowHeight, rowHeightLevel, columnWidth, isActive, callback } = renderProps;
 
     const buttonField = renderProps.field as IButtonField;
     const cellValue = [1];
@@ -328,9 +328,8 @@ export class CellHelper extends KonvaDrawer {
     const listCount = cellValue.length;
     let isOverflow = false;
 
-    let isValid: boolean = getIsValid(buttonField.id);
+    const isValid: boolean = getIsValid(buttonField.id);
     if(buttonField.property.action.type === ButtonActionType.TriggerAutomation ) {
-      isValid = isValid && Boolean(renderProps.editable);
     }
 
     const defaultColor = buttonField.property.style.color ? setColor(buttonField.property.style.color, renderProps.cacheTheme) : colors.defaultBg;

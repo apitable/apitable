@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import * as React from 'react';
 import { forwardRef, memo, useImperativeHandle } from 'react';
+import { Box } from '@apitable/components';
 import {
   ButtonActionType,
   evaluate,
@@ -122,13 +123,13 @@ const ButtonEditorBase: React.ForwardRefRenderFunction<IEditor, IButtonEditorPro
   const onStartEdit = () => {};
 
   return (
-    <>
+    <Box width={props.width} display={'flex'} justifyContent={'center'} height={'26px'} paddingTop={'4px'}>
       {
         recordId && record && (
-          <ButtonFieldItem record={record} recordId={recordId} field={field} />
+          <ButtonFieldItem record={record} recordId={recordId} field={field} maxWidth={'calc(100% - 40px)'}/>
         )
       }
-    </>
+    </Box>
   );
 };
 

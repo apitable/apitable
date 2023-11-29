@@ -17,6 +17,7 @@
  */
 
 import * as React from 'react';
+import { Box } from '@apitable/components';
 import { IButtonField, KONVA_DATASHEET_ID, Selectors } from '@apitable/core';
 import { ButtonFieldItem } from 'pc/components/editors/button_editor/buton_item';
 import { generateTargetName } from 'pc/components/gantt_view';
@@ -32,7 +33,11 @@ export const CellButtonItem: React.FC<React.PropsWithChildren<Pick<ICellProps, '
   const record = useAppSelector(state => Selectors.getRecord(state, props.recordId));
   if(!record) return null;
   return (
-    <ButtonFieldItem field={props.field as IButtonField} recordId={props.recordId} record={record}/>
+    <Box flex={'1'} padding={'0 10px'}>
+      <span>
+        <ButtonFieldItem field={props.field as IButtonField} recordId={props.recordId} record={record}/>
+      </span>
+    </Box>
   );
 };
 

@@ -68,6 +68,7 @@ export const ItemRender: React.FC<React.PropsWithChildren<IItemRender>> = (props
       draggable={false}
       className={classnames(styles.nodeItemWrapper, {
         [styles.actived]: actived,
+        ['TREE_NODE_ACTIVE_ONE']: actived,
         [styles.nodeItemHover]: !isMobile,
         [styles.nodeMobile]: isMobileDevice,
         [styles.nodeMobileActive]: actived && isMobileDevice,

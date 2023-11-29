@@ -17,6 +17,7 @@
  */
 
 import * as React from 'react';
+import { Box } from '@apitable/components';
 import {
   CollaCommandName,
   FieldType,
@@ -304,7 +305,9 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = (
     case FieldType.Button:
 
       return (
-        <ButtonFieldItem recordId={record.id} field={field} record={record} />
+        <Box paddingLeft={'16px'}>
+          <ButtonFieldItem recordId={record.id} field={field} record={record} />
+        </Box>
       );
     case FieldType.WorkDoc:
       return (

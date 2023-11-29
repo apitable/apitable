@@ -197,6 +197,7 @@ const FieldEditorBase = (props: IFieldEditorProps) => {
           <div
             className={classNames(styles.fieldBlockWrap, {
               [styles.mobileFieldContainer]: isMobile,
+              [styles.fieldButtonColumn]: field.type === FieldType.Button,
             })}
           >
             <FieldBlock commonProps={commonProps} cellValue={cellValue} isFocus={isFocus} onMouseDown={onMouseDown} showAlarm={showAlarm} />
