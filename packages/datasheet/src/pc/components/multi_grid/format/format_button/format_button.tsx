@@ -87,8 +87,10 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
   const handleModify = useCallback(
     (field: IField) => {
       if (activeFieldState.fieldId === ButtonOperateType.AddField) {
+        console.log('onCreate', field);
         onCreate?.(field);
       } else {
+        console.log('onUpdate', field);
         onUpdate(field);
       }
     },
@@ -96,7 +98,6 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
   );
   const rootId = useAppSelector((r) => r.catalogTree.rootId);
 
-  // const datasheetNode = useAppSelector((state: IReduxState) => Selectors.getAc)!;
   const datasheetParentId = useAppSelector((state) => Selectors.getDatasheet(state, propDatasheetId)!.parentId);
 
   const fieldMap = useAppSelector((state: IReduxState) => Selectors.getFieldMap(state, datasheetId || state.pageParams.datasheetId!))!;
@@ -252,7 +253,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                     });
 
                     setBingAutomationVisible(false);
-                    setCurrentField(item);
+                    // setCurrentField(item);
                     handleModify(item);
                     setTimeout(() => {
                       router.push(`/workbench/${automationId}`);

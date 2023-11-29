@@ -556,7 +556,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
                 ? checkFactory[currentField.type](integractedItem, propDatasheetId)
                 : CheckFieldSettingBase.checkStream(integractedItem, propDatasheetId);
 
-
+              console.log('onCreate x', field);
               // @ts-ignore
               if (typeof checkResult === 'string' || checkResult.errors) {
                 setOptionErrMsg(checkResult);
@@ -568,9 +568,9 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
 
               // Passing datasheetId externally means that FieldSetting is mounted in a non-numbered table, using the activeFieldState column index.
               if (propDatasheetId) {
-                addField(integractedItem, activeFieldState?.fieldIndex);
+                addField(checkResult, activeFieldState?.fieldIndex);
               } else {
-                addField(integractedItem);
+                addField(checkResult);
               }
               return;
             }

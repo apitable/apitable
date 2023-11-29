@@ -1,7 +1,10 @@
-import { FunctionComponent, useState } from 'react';
+import { Spin } from 'antd';
+import produce from 'immer';
+import { useAtom } from 'jotai';
+import { FunctionComponent, useCallback } from 'react';
 import * as React from 'react';
 import styled, { css } from 'styled-components';
-import { Box, Typography } from '@apitable/components';
+import {Box, Typography, useThemeColors} from '@apitable/components';
 import { ButtonStyleType, getColorValue, IButtonField, IRecord, Selectors } from '@apitable/core';
 import { LoadingFilled } from '@apitable/icons';
 import { AutomationConstant } from 'pc/components/automation/config';
@@ -12,34 +15,42 @@ import EllipsisText from 'pc/components/ellipsis_text';
 import { setColor } from 'pc/components/multi_grid/format';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
+import { automationTaskMap } from '../automation_task_map';
 
 const StyledTypography = styled(Typography)<{defaultColor: string}>`
 
   ${props => css`
     &:hover {
-      color: ${getColorValue(props.defaultColor, 0.8)};
+      color: ${getColorValue(props.defaultColor, 0.8)} !important;
     }
 
     &:active {
-      color: ${getColorValue(props.defaultColor, 0.6)};
+      color: ${getColorValue(props.defaultColor, 0.6)} !important;
     }
   `}
   `;
 
-const StyledBox = styled(Box)<{color?: string, disabled?: boolean}>`
+const StyledBox = styled(Box)<{color?: string, disabled?: boolean, loading: boolean}>`
     cursor: pointer;
     user-select: none;
+  ${props => props.loading && css`
+    cursor: not-allowed !important;
+  `}
   ${props => props.disabled && css`
     cursor: default !important;
   `}
 `;
 
-const StyledBgBox = styled(Box)<{defaultColor: string, disabled?: boolean}>`
+const StyledBgBox = styled(Box)<{defaultColor: string, disabled?: boolean, loading: boolean}>`
     cursor: pointer;
     user-select: none;
   
   ${props => props.disabled && css`
     cursor: default !important;
+  `}
+
+  ${props => props.loading && css`
+    cursor: not-allowed !important;
   `}
   
    ${props => css`
@@ -64,7 +75,17 @@ export const ButtonFieldItem: FunctionComponent<{field: IButtonField,
 
       const datasheetId = useAppSelector(Selectors.getActiveDatasheetId);
 
-      const [loading, setIsLoading] = useState(false);
+      const [automationTaskMapData, setAutomationTaskMap] = useAtom(automationTaskMap);
+
+      const key = `${recordId}-${field.id}`;
+      const loading = automationTaskMapData.get(key) ?? false;
+
+      const setIsLoading = useCallback((isLoading: boolean) => {
+        setAutomationTaskMap(produce(automationTaskMapData, draft => {
+          draft.set(key, isLoading);
+        }));
+      }, [automationTaskMapData, key, setAutomationTaskMap]);
+
       return (
         <ButtonItem
           height={height}
@@ -96,7 +117,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
     onStart: () => void;
     isLoading: boolean}> = ({ field, onStart, isLoading, height, maxWidth }) => {
       const cacheTheme = useAppSelector(Selectors.getTheme);
-      const colors = useCssColors();
+      const colors = useThemeColors();
 
       const bg = field.property.style.color ? setColor(field.property.style.color, cacheTheme) : colors.defaultBg;
       const isValidResp = useButtonFieldValid(field);
@@ -114,13 +135,12 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
         if(!isValid){
           return (
             <StyledBox
-              disabled
+              disabled={false}
               borderRadius={'4px'}
               paddingX={'10px'}
               height={height ?? itemHeight}
               maxWidth={maxWidth?? '100%'}
               marginTop={marginTop}
-              cursor={'not-allowed'}
               display={'inline-flex'} alignItems={'center'}>
               <EllipsisText>
                 <Typography color={colors.bgControlsDisabled} variant={'body4'}>
@@ -135,6 +155,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
           <StyledBox
             disabled={false}
             height={height ?? itemHeight}
+            loading={isLoading}
             borderRadius={'4px'}
             onClick={onStart}
             maxWidth={maxWidth?? '100%'}
@@ -166,12 +187,11 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
             maxWidth={maxWidth?? '100%'}
             height={height ?? itemHeight}
             marginTop={marginTop}
-            cursor={'not-allowed'}
             display={'inline-flex'} alignItems={'center'}>
             {
 
               isLoading ? (
-                <LoadingFilled color={colors.textCommonPrimary} />
+                <LoadingFilled color={colors.textCommonPrimary} className={'circle-loading'}/>
               ): (
                 <EllipsisText>
                   <Typography color={colors.textCommonDisabled} variant={'body4'}>
@@ -187,6 +207,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
       return (
         <StyledBgBox defaultColor={bg}
           disabled={false}
+          loading={isLoading}
           borderRadius={'4px'}
           paddingX={'10px'}
           onClick={onStart}
@@ -198,12 +219,12 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
           {
 
             isLoading ? (
-              <LoadingFilled color={textColor} />
+              <LoadingFilled color={textColor} className={'circle-loading'} />
             ): (
               <EllipsisText>
-                <Typography color={textColor} variant={'body4'}>
+                <StyledTypography defaultColor={textColor} color={textColor} variant={'body4'}>
                   {field.property.text}
-                </Typography>
+                </StyledTypography>
               </EllipsisText>
             )
           }

@@ -23,6 +23,7 @@ import styled, { css } from 'styled-components';
 import { applyDefaultTheme, SearchSelect } from '@apitable/components';
 import { ConfigConstant, Events, Player, Strings, t } from '@apitable/core';
 import { CONST_MAX_TRIGGER_COUNT } from 'pc/components/automation/config';
+import { TriggerCommands } from '../../../../../modules/shared/apphook/trigger_commands';
 import {
   automationCurrentTriggerId,
   automationPanelAtom,
@@ -79,10 +80,13 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
   }, [state?.scenario, triggerTypes]);
 
   // TODO temporary solution, need to be removed
-  // useEffect(() => {
-  // TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_TRIGGER);
-  // setTimeout(() => Player.doTrigger(Events.guide_use_automation_first_time), 1000);
-  // }, []);
+  useEffect(() => {
+    // TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_TRIGGER);
+    setTimeout(() => {
+      TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_TRIGGER);
+      Player.doTrigger(Events.guide_use_automation_first_time);
+    }, 3000);
+  }, []);
 
   const createRobotTrigger = useMemo(() => {
     return async (triggerTypeId: string) => {
@@ -161,10 +165,10 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
       }}
     >
       <NewItem
-          itemId={`ROBOT_ITEM_TRIGGER_CREATE`}
-          disabled={
-        !permissions.editable
-      }>{t(Strings.add_a_trigger)}</NewItem>
+        itemId={'ROBOT_ITEM_TRIGGER_CREATE'}
+        disabled={
+          !permissions.editable
+        }>{t(Strings.add_a_trigger)}</NewItem>
     </SearchSelect>
   );
 };

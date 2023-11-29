@@ -3515,6 +3515,7 @@
   "owner": "${node_type}管理员",
   "page_not_found_tip": "抱歉，我们没有找到您查找的网页。",
   "page_timeout": "页面已超时，请刷新",
+  "task_timeout": "任务已超时",
   "page_to_down_edge": "滚动到页面底部",
   "page_to_up_edge": "滚动到页面顶部",
   "pagination_component_jump": "跳至",
