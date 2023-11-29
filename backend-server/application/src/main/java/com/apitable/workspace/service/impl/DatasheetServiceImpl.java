@@ -70,6 +70,7 @@ import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.SnapshotDTO;
 import com.apitable.workspace.entity.DatasheetEntity;
 import com.apitable.workspace.entity.NodeEntity;
+import com.apitable.workspace.enums.ButtonFieldActionType;
 import com.apitable.workspace.enums.DataSheetException;
 import com.apitable.workspace.enums.FieldType;
 import com.apitable.workspace.enums.NodeException;
@@ -81,6 +82,7 @@ import com.apitable.workspace.observer.RemindMemberOpSubject;
 import com.apitable.workspace.observer.remind.MailRemind;
 import com.apitable.workspace.observer.remind.NotifyDataSheetMeta;
 import com.apitable.workspace.observer.remind.RemindType;
+import com.apitable.workspace.ro.ButtonFieldProperty;
 import com.apitable.workspace.ro.FieldMapRo;
 import com.apitable.workspace.ro.LinkFieldProperty;
 import com.apitable.workspace.ro.MetaMapRo;
@@ -387,6 +389,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                                     Map<String, String> newNodeMap) {
         List<String> delFieldIds = new ArrayList<>();
         List<String> autoNumberFieldIds = new ArrayList<>();
+
         // Obtain the information of the original node correspondence datasheet.
         SimpleDatasheetMetaDTO metaVo = iDatasheetMetaService.findByDstId(sourceDstId);
         MetaMapRo metaMapRo = metaVo.getMeta().toBean(MetaMapRo.class);
@@ -510,6 +513,14 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     break;
                 case WORK_DOC:
                     delFieldIds.add(fieldMapRo.getId());
+                    break;
+                case BUTTON:
+                    ButtonFieldProperty buttonProperty =
+                        fieldMapRo.getProperty().toBean(ButtonFieldProperty.class, true);
+                    if (ButtonFieldActionType.TRIGGER_AUTOMATION.getType()
+                        == buttonProperty.getAction().getType()) {
+                        fieldMapRo.getProperty().set("action", JSONUtil.createObj());
+                    }
                     break;
                 default:
                     break;

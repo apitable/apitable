@@ -17,7 +17,7 @@
  */
 
 import type { IButtonField, IMeta } from '@apitable/core';
-import { Body, Controller, Delete, Get, Headers, Param, Post, Query, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Headers, HttpStatus, Param, Post, Query, UseInterceptors } from '@nestjs/common';
 import { TriggerAutomationRO } from 'database/datasheet/ros/trigger.automation';
 import { ResourceDataInterceptor } from 'database/resource/middleware/resource.data.interceptor';
 import { MetaService } from 'database/resource/services/meta.service';
@@ -26,8 +26,8 @@ import { ApiResponse } from 'fusion/vos/api.response';
 import { NodeService } from 'node/services/node.service';
 import { NodeShareSettingService } from 'node/services/node.share.setting.service';
 import { DatasheetException, PermissionException, ServerException } from 'shared/exception';
+import { IApiPaginateRo } from 'shared/interfaces';
 import { UserService } from 'user/services/user.service';
-import { IApiPaginateRo } from '../../../shared/interfaces';
 import type { DatasheetPack, RecordsMapView, UserInfo, ViewPack } from '../../interfaces';
 import type { CommentReplyDto } from '../dtos/comment.reply.dto';
 import { DatasheetPackRo } from '../ros/datasheet.pack.ro';
@@ -194,7 +194,10 @@ export class DatasheetController {
     }
     const automationId = field.property.action?.automation?.automationId;
     const triggerId = field.property.action?.automation?.triggerId;
-    await this.datasheetService.triggerAutomation(automationId, triggerId, dstId, data.recordId, userId);
-    return ApiResponse.success(undefined);
+    const result = await this.datasheetService.triggerAutomation(automationId, triggerId, dstId, data.recordId, userId);
+    if (result.taskId && result.message) {
+      return ApiResponse.error(result.message, HttpStatus.INTERNAL_SERVER_ERROR, result);
+    }
+    return ApiResponse.success({ taskId: result.taskId });
   }
 }

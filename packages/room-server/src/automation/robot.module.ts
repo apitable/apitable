@@ -84,6 +84,6 @@ import { RobotTriggerTypeService } from './services/robot.trigger.type.service';
     RobotRobotService,
     AmqpConnection,
   ],
-  exports: [AutomationService, RobotTriggerService, RobotTriggerTypeService, TriggerEventHelper],
+  exports: [AutomationService, RobotTriggerService, RobotTriggerTypeService, TriggerEventHelper, ButtonClickedListener],
 })
 export class RobotModule {}

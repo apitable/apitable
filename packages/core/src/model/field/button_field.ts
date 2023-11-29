@@ -17,11 +17,12 @@
  */
 
 import { DatasheetActions } from 'commands_actions/datasheet';
-import Joi from 'joi';
-import { Field } from 'model/field/field';
-import { ICellToStringOption, ICellValue } from 'model/record';
 import { Strings, t } from 'exports/i18n';
 import { IReduxState } from 'exports/store';
+import Joi from 'joi';
+import { pick } from 'lodash';
+import { Field } from 'model/field/field';
+import { ICellToStringOption, ICellValue } from 'model/record';
 import {
   APIMetaButtonActionType,
   BasicOpenValueType,
@@ -31,17 +32,19 @@ import {
   CollectType,
   FieldType,
   FOperator,
-  IAPIMetaButtonFieldProperty, IButtonField, IButtonProperty, IField,
+  IAPIMetaButtonFieldProperty,
+  IButtonField,
+  IButtonProperty,
+  IField,
   IFilterCondition,
   IStandardValue,
   OpenLinkType,
 } from 'types';
-import { joiErrorResult, datasheetIdString } from './validate_schema';
-import { pick } from 'lodash';
+import { datasheetIdString, joiErrorResult } from './validate_schema';
 
 export const AutomationConstant = {
-  DEFAULT_TEXT : t(Strings.click_start),
-  defaultColor : 50,
+  DEFAULT_TEXT: t(Strings.click_start),
+  defaultColor: 50,
 };
 
 export class ButtonField extends Field {
@@ -192,7 +195,7 @@ export class ButtonField extends Field {
   }
 
   public cellValueToOpenValue(_cellValue: ICellValue): BasicOpenValueType | null {
-    return null;
+    return this.field.property.text;
   }
 
   public cellValueToStdValue(_ellValue: ICellValue | null): IStandardValue {

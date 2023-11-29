@@ -250,13 +250,13 @@ export class AutomationService {
     }
   }
 
-  async handleTask(robotId: string, trigger: { triggerId: string; input: any; output: any }) {
+  async handleTask(robotId: string, trigger: { triggerId: string; input: any; output: any }): Promise<string> {
     const spaceId = await this.getSpaceIdByRobotId(robotId);
-    const taskId = IdWorker.nextId().toString(); // TODO: use uuid
+    const taskId = IdWorker.nextId().toString();
     const isAutomationRunnableInSpace = await this.isAutomationRunnableInSpace(spaceId);
     if (!isAutomationRunnableInSpace) {
       await this.createRunHistory(robotId, taskId, spaceId, RunHistoryStatusEnum.EXCESS);
-      return;
+      return taskId;
     }
     // 1. create run history
     await this.createRunHistory(robotId, taskId, spaceId);
@@ -277,6 +277,7 @@ export class AutomationService {
       await this.updateTaskRunHistory(taskId, false, null);
       this.logger.error(`RobotRuntimeError[${taskId}]`, (error as Error).message);
     }
+    return taskId;
   }
 
   @RabbitSubscribe({
@@ -380,6 +381,19 @@ export class AutomationService {
       return number > 0;
     }
     return false;
+  }
+
+  async analysisStatus(taskId: string | void): Promise<string | void> {
+    if (!taskId) {
+      return ;
+    }
+    const status = await this.automationRunHistoryRepository.selectStatusByTaskId(taskId);
+    if (RunHistoryStatusEnum.FAILED === status) {
+      return await this.i18n.translate(Strings.robot_run_history_fail);
+    }
+    if (RunHistoryStatusEnum.EXCESS === status) {
+      return await this.i18n.translate(Strings.automation_run_times_over_limit);
+    }
   }
 
   /**
