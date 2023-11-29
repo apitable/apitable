@@ -285,6 +285,9 @@ public class OrganizationServiceImpl implements IOrganizationService {
         if (CharSequenceUtil.isNotBlank(likeWord)) {
             List<Long> refIds =
                 this.getSearchUnitRefIds(spaceId, likeWord, params.getSearchEmail());
+            if (refIds.isEmpty()) {
+                return new ArrayList<>();
+            }
             return unitMapper.selectIdsByRefIds(refIds);
         }
         if (sharer != null) {
