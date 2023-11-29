@@ -5885,6 +5885,8 @@
   "automation_empty_warning": "Automation cannot be empty",
   "the_current_button_column_has_expired_please_reselect": "The current button column has expired, please reselect",
   "open_url_formula_emby_warning": "Formula can not be empty",
+  "should_not_empty": "${name} can not be empty",
+  "automation_not_empty": "Automation node can not be empty",
   "action_should_not_empty": "Operation can not be empty",
   "automation_content_should_not_empty": "Text can not be empty",
   "refresh_and_close_page_when_automation_queue": "There are still automated tasks being queued for execution, and continuing to operate will cause some tasks to be canceled"

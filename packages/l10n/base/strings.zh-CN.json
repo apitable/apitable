@@ -5890,6 +5890,8 @@
   "automation_empty_warning": "Automation cannot be empty",
   "button_maxium_text": "最多支持${count}个文字",
   "action_should_not_empty": "自动化不能为空",
+  "should_not_empty": "${name}不能为空",
+  "automation_not_empty": "自动化节点不能为空",
   "automation_content_should_not_empty": "文本不能为空",
   "refresh_and_close_page_when_automation_queue": "当前仍有自动化任务正在排队待执行，继续操作将会导致部分任务取消执行"
 }

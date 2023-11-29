@@ -108,7 +108,9 @@ class ButtonField {
     if (isNil(curField.property.action.type)) {
       return {
         errors: {
-          property1: t(Strings.action_should_not_empty),
+          property1: t(Strings.should_not_empty, {
+            name: t(Strings.button_operation)
+          }),
         },
       };
     }
@@ -145,7 +147,7 @@ class ButtonField {
       if (curField.property.action?.automation?.automationId == null) {
         return {
           errors: {
-            property: t(Strings.action_should_not_empty),
+            property: t(Strings.automation_not_empty),
           },
         };
       }
