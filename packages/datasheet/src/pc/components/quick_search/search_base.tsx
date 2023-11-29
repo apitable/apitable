@@ -2,13 +2,13 @@ import type { InputRef } from 'antd';
 import { Form } from 'antd';
 import classnames from 'classnames';
 import throttle from 'lodash/throttle';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useEffect, useRef, useState } from 'react';
 import { useThemeColors, ThemeName, TextInput, Typography } from '@apitable/components';
 import { Api, getArrayLoopIndex, Navigation, Strings, t } from '@apitable/core';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
@@ -157,8 +157,8 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
     e.nativeEvent.stopImmediatePropagation();
     setKeyword('');
 
-    sessionStorage.removeItem('searchKeyword');
-    sessionStorage.removeItem('searchData');
+    // sessionStorage.removeItem('searchKeyword');
+    // sessionStorage.removeItem('searchData');
 
     setCurrentIndex(-1);
   };
@@ -191,24 +191,24 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
     </div>
   );
 
-  useEffect(() => {
-    const savedKeyword = sessionStorage.getItem('searchKeyword');
-    const savedData = sessionStorage.getItem('searchData');
-    if (savedKeyword) {
-      setKeyword(savedKeyword);
-      getNodeList(savedKeyword);
-    }
-    if (savedData) {
-      setDataNodeList(JSON.parse(savedData));
-    }
-  }, []);
+  // useEffect(() => {
+  //   const savedKeyword = sessionStorage.getItem('searchKeyword');
+  //   const savedData = sessionStorage.getItem('searchData');
+  //   if (savedKeyword) {
+  //     setKeyword(savedKeyword);
+  //     getNodeList(savedKeyword);
+  //   }
+  //   if (savedData) {
+  //     setDataNodeList(JSON.parse(savedData));
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    sessionStorage.setItem('searchKeyword', keyword);
-    if (dataNodeList.length > 0) {
-      sessionStorage.setItem('searchData', JSON.stringify(dataNodeList));
-    }
-  }, [keyword, dataNodeList]);
+  // useEffect(() => {
+  //   sessionStorage.setItem('searchKeyword', keyword);
+  //   if (dataNodeList.length > 0) {
+  //     sessionStorage.setItem('searchData', JSON.stringify(dataNodeList));
+  //   }
+  // }, [keyword, dataNodeList]);
 
   return (
     <div className={classnames(styles.searchWrapper, className)} ref={ref}>
