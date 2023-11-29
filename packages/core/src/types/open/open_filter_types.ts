@@ -4,6 +4,7 @@ import { FilterConjunction, FilterDuration, FOperator } from 'types/view_types';
 export type IOpenFilterValueString = string | null;
 export type IOpenFilterValueNumber = number | null;
 export type IOpenFilterValueBoolean = boolean | null;
+export type IOpenFilterValueArray = string[] | null;
 export type IOpenFilterValueDataTime = [Exclude<FilterDuration, FilterDuration.ExactDate | FilterDuration.DateRange>] |
 [FilterDuration.ExactDate, ITimestamp | null] |
 [FilterDuration.DateRange, ITimestamp, ITimestamp] |
@@ -20,6 +21,7 @@ export type IOpenFilterValue =
  | IOpenFilterValueNumber
  | IOpenFilterValueBoolean
  | IOpenFilterValueDataTime
+  | IOpenFilterValueArray
  | IOpenFilterValueSelect
  | IOpenFilterValueMultiSelect
  | IOpenFilterValueString[]

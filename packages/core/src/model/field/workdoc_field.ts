@@ -6,7 +6,7 @@ import {
   FOperator,
   IAddOpenWorkDocFieldProperty,
   IAttachmentValue,
-  IField, IFilterCondition, IFilterText, ISegment,
+  IField, IFilterCondition, IFilterText, IFilterWorkDoc, IOpenFilterValueArray, ISegment,
   IStandardValue,
   IWorkDocField,
   IWorkDocValue,
@@ -232,6 +232,20 @@ export class WorkDocField extends ArrayValueField {
 
   defaultValueForCondition(_condition: IFilterCondition): null {
     return null;
+  }
+
+  override filterValueToOpenFilterValue(value: IFilterWorkDoc): IOpenFilterValueArray{
+    if (value === null) {
+      return null;
+    }
+    return value;
+  }
+
+  override openFilterValueToFilterValue(value: IOpenFilterValueArray): IFilterWorkDoc {
+    if (value === null) {
+      return null;
+    }
+    return value;
   }
 
   openWriteValueToCellValue(openWriteValue: IWorkDocValue[] | null): ICellValue | null {

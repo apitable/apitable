@@ -82,6 +82,7 @@ export type IFilterNumber = [IFilterValue] | null;
 // When the radio field is Include/Not Include , you need to provide a multi-select drop-down
 export type IFilterSingleSelect = IFilterValue[] | null;
 export type IFilterMultiSelect = IFilterValue[] | null;
+export type IFilterWorkDoc = IFilterValue[] | null;
 export type IFilterMember = IUnitIds | null;
 
 export type IFilterDateTime =
@@ -213,7 +214,7 @@ export interface IFilterConditionMap {
   };
   [FieldType.WorkDoc]: {
     fieldType: FieldType.WorkDoc;
-    value: any;
+    value: IFilterWorkDoc;
   };
 }
 
