@@ -28,6 +28,7 @@ import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.apitable.automation.entity.AutomationRobotEntity;
+import com.apitable.automation.enums.AutomationTriggerType;
 import com.apitable.automation.mapper.AutomationRobotMapper;
 import com.apitable.automation.model.ActionSimpleVO;
 import com.apitable.automation.model.ActionVO;
@@ -54,6 +55,7 @@ import com.apitable.databusclient.model.AutomationRobotSO;
 import com.apitable.databusclient.model.AutomationRobotUpdateRO;
 import com.apitable.databusclient.model.AutomationSO;
 import com.apitable.databusclient.model.AutomationTriggerIntroductionPO;
+import com.apitable.enterprise.automation.service.IAutomationTriggerTypeService;
 import com.apitable.internal.service.impl.InternalSpaceServiceImpl;
 import com.apitable.internal.vo.InternalSpaceAutomationRunMessageV0;
 import com.apitable.shared.util.IdUtil;
@@ -106,6 +108,9 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
 
     @Resource
     private InternalSpaceServiceImpl internalSpaceService;
+
+    @Resource
+    private IAutomationTriggerTypeService iAutomationTriggerTypeService;
 
     @Override
     public List<AutomationRobotDto> getRobotListByResourceId(String resourceId) {
@@ -190,7 +195,16 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
     @Override
     public void updateIsDeletedByResourceIds(Long userId, List<String> resourceIds,
                                              Boolean isDeleted) {
+        List<String> robotIds = robotMapper.selectRobotsByResourceIds(resourceIds).stream().map(
+            AutomationRobotDto::getRobotId).collect(Collectors.toList());
         robotMapper.updateIsDeletedByResourceIds(userId, resourceIds, isDeleted);
+        if (!robotIds.isEmpty()) {
+            // remove button trigger input
+            String triggerTypeId = iAutomationTriggerTypeService.getTriggerTypeByEndpoint(
+                AutomationTriggerType.BUTTON_CLICKED.getType());
+            iAutomationTriggerService.updateInputByRobotIdsAndTriggerTypeIds(robotIds,
+                triggerTypeId, null);
+        }
     }
 
     @Override

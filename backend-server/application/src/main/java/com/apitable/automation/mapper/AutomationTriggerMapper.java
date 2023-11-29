@@ -67,4 +67,14 @@ public interface AutomationTriggerMapper extends BaseMapper<AutomationTriggerEnt
                            @Param("triggerTypeId") String triggerTypeId,
                            @Param("input") String input);
 
+    /**
+     * update input.
+     *
+     * @param robotIds      robot ids
+     * @param triggerTypeId trigger type id
+     * @param input         input
+     */
+    void updateTriggerInputByRobotIdsAndTriggerType(@Param("robotIds") List<String> robotIds,
+                                                    @Param("triggerTypeId") String triggerTypeId,
+                                                    @Param("input") String input);
 }

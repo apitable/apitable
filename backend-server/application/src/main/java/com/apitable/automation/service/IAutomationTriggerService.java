@@ -93,4 +93,14 @@ public interface IAutomationTriggerService {
      * @param trigger trigger
      */
     void updateByTriggerId(AutomationTriggerEntity trigger);
+
+    /**
+     * update trigger input by robot ids.
+     *
+     * @param robotIds      robot id list
+     * @param triggerTypeId trigger type id
+     * @param input         input
+     */
+    void updateInputByRobotIdsAndTriggerTypeIds(List<String> robotIds, String triggerTypeId,
+                                                String input);
 }

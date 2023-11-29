@@ -517,8 +517,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 case BUTTON:
                     ButtonFieldProperty buttonProperty =
                         fieldMapRo.getProperty().toBean(ButtonFieldProperty.class, true);
-                    if (ButtonFieldActionType.TRIGGER_AUTOMATION.getType()
-                        == buttonProperty.getAction().getType()) {
+                    if (ObjectUtil.equals(buttonProperty.getAction().getType(),
+                        ButtonFieldActionType.TRIGGER_AUTOMATION.getType())) {
                         fieldMapRo.getProperty().set("action", JSONUtil.createObj());
                     }
                     break;
