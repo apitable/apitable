@@ -173,8 +173,4 @@ public class SpaceInfoVO {
     @Schema(description = "Automation Runs Count", example = "5")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long automationRunsNums;
-
-    @Schema(description = "space feature")
-    private SpaceGlobalFeature feature;
-
 }

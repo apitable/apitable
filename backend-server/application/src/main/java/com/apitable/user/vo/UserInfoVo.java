@@ -29,13 +29,11 @@ import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullJsonObjectSerializer;
 import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
-import com.apitable.space.vo.LabsFeatureVo;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -348,16 +346,6 @@ public class UserInfoVo implements Serializable {
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     @Schema(description = "User locale", example = "zh-CN")
     private String locale;
-
-    @Schema(description = "Permission", type = "List",
-            example = "[\"MANAGE_TEAM\",\"MANAGE_MAIN_ADMIN\"]")
-    @JsonSerialize(using = NullArraySerializer.class, nullsUsing = NullArraySerializer.class)
-    private Collection<String> permissions;
-
-    @Schema(description = "List of experimental functions",
-            type = "java.util.List", example = "[\"ROBOT\"]")
-    @JsonSerialize(nullsUsing = NullArraySerializer.class)
-    private List<String> labs;
 
     /**
      * Transfer data from loginUserDto.

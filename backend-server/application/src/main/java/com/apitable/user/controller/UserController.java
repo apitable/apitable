@@ -80,7 +80,6 @@ import com.apitable.space.enums.LabsApplicantTypeEnum;
 import com.apitable.space.service.ILabsApplicantService;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.space.vo.LabsFeatureVo;
-import com.apitable.space.vo.UserSpaceVo;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.ro.CodeValidateRo;
 import com.apitable.user.ro.EmailCodeValidateRo;
@@ -248,18 +247,6 @@ public class UserController {
         String spaceDomain = returnSpaceDomain(trySpaceId,
             userInfo.getSpaceId());
         userInfo.setSpaceDomain(spaceDomain);
-
-        // get permissions
-        UserSpaceVo userSpaceVo = iSpaceService.getUserSpaceResource(userId, trySpaceId);
-        userInfo.setPermissions(userSpaceVo.getPermissions());
-
-        // get the enabled experimental functions
-        List<String> applicants = new ArrayList<>();
-        applicants.add(trySpaceId);
-        applicants.add(Long.toString(userId));
-        LabsFeatureVo labsFeatureVo = iLabsApplicantService.getUserCurrentFeatureApplicants(applicants);
-        userInfo.setLabs(labsFeatureVo.getKeys());
-
         return ResponseData.success(userInfo);
     }
 
