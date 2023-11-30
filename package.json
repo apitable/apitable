@@ -43,7 +43,7 @@
     "test:ut:room:cov": "nx test:ut:cov @apitable/room-server",
     "clear:cache": "rm -rf ./package/datasheet/node_modules/.cache/hard-source",
     "link:widget": "pnpm link @apitable/core && pnpm link @apitable/widget-sdk && pnpm link @apitable/components && pnpm link @apitable/icons",
-    "postinstall": "cd .. && husky install apitable/.husky",
+    "postinstall": "husky install .husky",
     "stylelint:datasheet": "nx stylelint @apitable/datasheet",
     "lint": "NODE_OPTIONS=--max-old-space-size=8192 eslint --config .eslintrc --ext packages/*/src/**/*.{js,ts,tsx} --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif",
     "cy:open": "nx cy:open @apitable/cypress",
