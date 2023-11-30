@@ -58,7 +58,7 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props)
   const getTextColor=(color: number) => {
     let textColor : string= colors.textStaticPrimary;
     if(cacheTheme === 'dark') {
-      if(color === AutomationConstant.defaultColor) {
+      if(color === AutomationConstant.whiteColor) {
         textColor = colors.textReverseDefault;
       }
     }
