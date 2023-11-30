@@ -1,6 +1,7 @@
 import type { InputRef } from 'antd';
 import { Input, message } from 'antd';
 import produce from 'immer';
+import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import { useRef, Dispatch, SetStateAction, useMemo, useState, useCallback } from 'react';
 import styled from 'styled-components';
@@ -23,7 +24,7 @@ import {
 } from '@apitable/core';
 import { AddOutlined, SyncOnOutlined } from '@apitable/icons';
 import { automationApiClient, workbenchClient } from 'pc/common/api-client';
-import {AutomationConstant, CONST_MAX_TRIGGER_COUNT} from 'pc/components/automation/config';
+import { AutomationConstant, CONST_MAX_TRIGGER_COUNT } from 'pc/components/automation/config';
 import { DataSourceSelectorForNode } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/data_source_selector_for_node';
 import { AutomationItem } from 'pc/components/multi_grid/format/format_button/automation_item';
 import { ButtonTitle } from 'pc/components/multi_grid/format/format_button/ButtonTitle';
@@ -38,6 +39,7 @@ import { openFormulaModal } from '../format_formula/open_formula_modal';
 import { assignDefaultFormatting } from '../format_lookup';
 import { ColorPicker } from './color_picker';
 import styles from './styles.module.less';
+import {IOnChangeParams} from "pc/components/data_source_selector/interface";
 
 const Option = DropdownSelect.Option;
 
@@ -215,6 +217,81 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
     [buttonFieldTriggerId?.triggerTypeId],
   );
 
+  const handleClick=useCallback(async () => {
+    const r = await workbenchClient.create3({
+      nodeOpRo: {
+        preNodeId: datasheetId,
+        parentId: datasheetParentId,
+        type: 10,
+      },
+    });
+    if(!r.success) {
+      message.error(r.message);
+    }
+    const automationId = r?.data?.nodeId;
+
+    if (!automationId) {
+      return;
+    }
+
+    await handleAddTrigger(automationId, datasheetId, currentField.id, (triggerId) => {
+      const item = produce(currentField, (draft) => {
+        draft.property.action.type = ButtonActionType.TriggerAutomation;
+        if (automationId) {
+          if (draft.property.action?.automation) {
+            draft.property.action.automation.automationId = automationId;
+            draft.property.action.automation.triggerId = triggerId;
+          } else {
+            draft.property.action.automation = { automationId, triggerId };
+          }
+        }
+      });
+
+      setBingAutomationVisible(false);
+      // setCurrentField(item);
+      handleModify(item);
+      setTimeout(() => {
+        router.push(`/workbench/${automationId}`);
+      }, 50);
+    });
+  }, [currentField, datasheetId, datasheetParentId, handleAddTrigger, handleModify, router]);
+
+  const handleClickDebounce = debounce(handleClick, 300);
+  const handleAutomationChange = useCallback(async ({ automationId }: IOnChangeParams) => {
+    if (!automationId) {
+      return;
+    }
+    const robot = await automationApiClient.getResourceRobots({
+      resourceId: automationId,
+      shareId: '',
+    });
+
+    const data = robot.data?.[0]?.triggers?.length;
+
+    if (data && data >= CONST_MAX_TRIGGER_COUNT) {
+      message.warn(t(Strings.number_of_trigger_is_full));
+      return;
+    }
+
+    await handleAddTrigger(automationId, datasheetId, currentField.id, (triggerId) => {
+      const item = produce(currentField, (draft) => {
+        draft.property.action.type = ButtonActionType.TriggerAutomation;
+        if (automationId) {
+          if (draft.property.action?.automation) {
+            draft.property.action.automation.automationId = automationId;
+            draft.property.action.automation.triggerId = triggerId;
+          } else {
+            draft.property.action.automation = { automationId, triggerId };
+          }
+        }
+      });
+
+      setBingAutomationVisible(false);
+      setCurrentField(item);
+    });
+  }, [currentField, datasheetId, handleAddTrigger, setCurrentField]);
+
+  const handleAutomationChangeDebounced = debounce(handleAutomationChange, 300);
   return (
     <>
       {bingAutomationVisible && (
@@ -223,41 +300,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
             <>
               <Box
                 paddingLeft={'16px'}
-                onClick={async () => {
-                  const r = await workbenchClient.create3({
-                    nodeOpRo: {
-                      preNodeId: datasheetId,
-                      parentId: datasheetParentId,
-                      type: 10,
-                    },
-                  });
-                  const automationId = r?.data?.nodeId;
-
-                  if (!automationId) {
-                    return;
-                  }
-
-                  await handleAddTrigger(automationId, datasheetId, currentField.id, (triggerId) => {
-                    const item = produce(currentField, (draft) => {
-                      draft.property.action.type = ButtonActionType.TriggerAutomation;
-                      if (automationId) {
-                        if (draft.property.action?.automation) {
-                          draft.property.action.automation.automationId = automationId;
-                          draft.property.action.automation.triggerId = triggerId;
-                        } else {
-                          draft.property.action.automation = { automationId, triggerId };
-                        }
-                      }
-                    });
-
-                    setBingAutomationVisible(false);
-                    // setCurrentField(item);
-                    handleModify(item);
-                    setTimeout(() => {
-                      router.push(`/workbench/${automationId}`);
-                    }, 50);
-                  });
-                }}
+                onClick={handleClickDebounce}
               >
                 <LinkButton prefixIcon={<AddOutlined color={colors.textBrandDefault} />} underline={false}>
                   <Typography variant={'body4'} color={colors.textBrandDefault}>
@@ -277,39 +320,9 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
             setBingAutomationVisible(false);
           }}
           permissionRequired={'editable'}
-          onChange={async ({ automationId }) => {
-            if (!automationId) {
-              return;
-            }
-            const robot = await automationApiClient.getResourceRobots({
-              resourceId: automationId,
-              shareId: '',
-            });
-
-            const data = robot.data?.[0]?.triggers?.length;
-
-            if (data && data >= CONST_MAX_TRIGGER_COUNT) {
-              message.warn(t(Strings.number_of_trigger_is_full));
-              return;
-            }
-
-            await handleAddTrigger(automationId, datasheetId, currentField.id, (triggerId) => {
-              const item = produce(currentField, (draft) => {
-                draft.property.action.type = ButtonActionType.TriggerAutomation;
-                if (automationId) {
-                  if (draft.property.action?.automation) {
-                    draft.property.action.automation.automationId = automationId;
-                    draft.property.action.automation.triggerId = triggerId;
-                  } else {
-                    draft.property.action.automation = { automationId, triggerId };
-                  }
-                }
-              });
-
-              setBingAutomationVisible(false);
-              setCurrentField(item);
-            });
-          }}
+          onChange={
+            handleAutomationChangeDebounced
+          }
           nodeTypes={[ConfigConstant.NodeType.AUTOMATION, ConfigConstant.NodeType.FOLDER]}
           defaultNodeIds={{ folderId: rootId, automationId: action?.automation?.automationId }}
           requiredData={['automationId']}

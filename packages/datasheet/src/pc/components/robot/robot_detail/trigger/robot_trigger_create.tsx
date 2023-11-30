@@ -82,10 +82,10 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
   // TODO temporary solution, need to be removed
   useEffect(() => {
     // TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_TRIGGER);
-    setTimeout(() => {
-      TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_TRIGGER);
-      Player.doTrigger(Events.guide_use_automation_first_time);
-    }, 3000);
+    // setTimeout(() => {
+    //   TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_TRIGGER);
+    //   Player.doTrigger(Events.guide_use_automation_first_time);
+    // }, 3000);
   }, []);
 
   const createRobotTrigger = useMemo(() => {

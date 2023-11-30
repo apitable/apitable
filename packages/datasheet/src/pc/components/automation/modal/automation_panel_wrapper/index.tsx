@@ -2,7 +2,7 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ConfigConstant, Events, Player, Strings, t } from '@apitable/core';
 import { AutomationPanel } from 'pc/components/automation';
 import {
@@ -44,13 +44,19 @@ export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
 
   const [panelState, setAutomationPanel] = useAtom(automationPanelAtom);
   const setItem = useSetAtom(automationCurrentTriggerId);
+
+  const [initialzed, setInitailzed] = useState(false);
   useEffect(() => {
-
+    const trigger = automationState?.robot?.triggers?.find(r => getFieldId(r) !== null);
     const to = setTimeout(() => {
-      const trigger = automationState?.robot?.triggers?.find(r => getFieldId(r) !== null);
       if(trigger) {
-        setSideBarVisible(true);
+        if(initialzed) {
+          return;
+        }
 
+        setInitailzed(true);
+
+        setSideBarVisible(true);
         setItem(trigger.triggerId);
         setAutomationPanel({
           panelName: PanelName.Trigger,
@@ -58,14 +64,14 @@ export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
           // @ts-ignore
           data: trigger,
         });
-        TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_BUTTON_TRIGGER);
-        // Player.doTrigger(Events.guide_use_button_column_first_time);
+        // TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_BUTTON_TRIGGER);
+        Player.doTrigger(Events.guide_use_button_column_first_time);
       }
-    }, 1000);
+    }, 30);
     return () => {
       clearTimeout(to);
     };
-  }, [automationState, setSideBarVisible]);
+  }, [automationState, initialzed, setAutomationPanel, setItem, setSideBarVisible]);
 
   const handle = async (url) => {
     if(!CONST_ENABLE_PREVENT) {

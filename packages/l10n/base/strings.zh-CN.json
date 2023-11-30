@@ -5894,7 +5894,7 @@
   "should_not_empty": "${name}不能为空",
   "automation_not_empty": "自动化节点不能为空",
   "player_step_ui_config_button_field_node": "{\n \"element\": \".TREE_NODE_ACTIVE_ONE\", \"title\": \"\", \"description\": \"自动化节点是自动化流程的起点，你可以在这里设置触发条件和相关动作\" \n} ",
-  "player_step_ui_config_button_field_node_form_active": "{\n \"element\": \"#NODE_FORM_ACTIVE\", \"title\": \"\", \"description\": \"\\\"按钮被点击时\\\" 是一个触发条件，当用户点击你新建的按钮列时，它会被触发\" \n} ",
+  "player_step_ui_config_button_field_node_form_active": "{\n \"element\": \"#NODE_FORM_ACTIVE\", \"title\": \"\",\"placement\":\"bottomLeft\", \"description\": \"\\\"按钮被点击时\\\" 是一个触发条件，当用户点击你新建的按钮列时，它会被触发\" \n} ",
   "player_step_ui_config_button_field_bound_datasheet": "{\n \"element\": \"#AUTOMATION_BOUND_DATASHEET\", \"title\": \"\", \"description\": \"“按钮被点击时” 需要绑定表格和字段，以便知道哪里发生的点击行为，这里已经为你设置好\"  \n} ",
   "player_step_ui_config_button_field_action_create": "{\n \"element\": \"#CONST_ROBOT_ACTION_CREATE\", \"placement\": \"topCenter\", \"title\": \"\", \"description\": \"现在你应该添加一个或多个 Action，以定义按钮点击后应执行的具体动作\"  \n} ",
   "automation_content_should_not_empty": "文本不能为空",
