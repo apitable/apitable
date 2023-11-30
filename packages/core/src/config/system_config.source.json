@@ -2408,70 +2408,87 @@
       "178": {
         "description": "ui dialog for use button field first time and active node ",
         "next": "下一步",
+        "nextId": "next_step",
         "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
         ],
+        "onSkip": [
+          "clear_guide_all_ui()"
+        ],
         "onTarget": [
-          "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
         ],
         "onNext": [
-          "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
         ],
-        "uiConfig": "{\n \"element\": \".TREE_NODE_ACTIVE_ONE\"\n} ",
+        "skip": "跳过",
+        "skipId": "skip",
+        "uiConfig": "{\n \"element\": \".TREE_NODE_ACTIVE_ONE\", \"description\": \"description\",  \"title\": \"title\"\n} ",
         "uiConfigId": "player_step_ui_config_button_field_node",
-        "uiType": "notice"
+        "uiType": "popover"
       },
 
       "179": {
         "description": "ui dialog for use button field first time for node actived status ",
         "next": "下一步",
+        "nextId": "next_step",
         "onClose": [
           "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onSkip": [
+          "clear_guide_all_ui()"
         ],
         "onTarget": [
           "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
         ],
         "onNext": [
-          "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
         ],
+        "skip": "跳过",
+        "skipId": "skip",
         "uiConfig": "{\n \"element\": \"#NODE_FORM_ACTIVE\"\n} ",
         "uiConfigId": "player_step_ui_config_button_field_node_form_active",
-        "uiType": "breath"
+        "uiType": "popover"
       },
 
 
       "180": {
         "description": "ui dialog for use button field first time active bind datasheeet ",
+        "nextId": "next_step",
         "next": "下一步",
+        "onSkip": [
+          "clear_guide_all_ui()"
+        ],
         "onClose": [
           "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
         ],
+        "skip": "跳过",
+        "skipId": "skip",
         "onTarget": [
           "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
         ],
         "onNext": [
-          "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
         ],
         "uiConfig": "{\n \"element\": \"#AUTOMATION_BOUND_DATASHEET\"\n} ",
         "uiConfigId": "player_step_ui_config_button_field_bound_datasheet",
-        "uiType": "notice"
+        "uiType": "popover"
       },
 
       "181": {
         "description": "ui dialog for use button field first time active create action ",
-        "next": "下一步",
+        "next": "好的",
+        "nextId": "okay",
         "onClose": [
           "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onSkip": [
+          "clear_guide_all_ui()"
         ],
         "onTarget": [
           "set_wizard_completed({\"curWizard\": true})",
@@ -2483,7 +2500,7 @@
         ],
         "uiConfig": "{\n \"element\": \"#CONST_ROBOT_ACTION_CREATE\"\n} ",
         "uiConfigId": "player_step_ui_config_button_field_action_create",
-        "uiType": "notice"
+        "uiType": "popover"
       },
 
       "124": {
@@ -3542,14 +3559,14 @@
 
       "118": {
         "description": "steps for automation button",
-        "completeIndex": -1,
+        "completeIndex": 0,
         "player": {
           "action": [
             "rec4kT7UZkdww"
           ]
         },
-        "repeat": true,
-        "steps": "[[178, 179, 180, 181]]"
+        "repeat": false,
+        "steps": "[[178], [179], [180], [181]]"
       },
 
       "117": {

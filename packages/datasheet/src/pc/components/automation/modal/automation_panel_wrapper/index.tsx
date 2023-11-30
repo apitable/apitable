@@ -3,18 +3,21 @@ import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
-import { Strings, t } from '@apitable/core';
+import { ConfigConstant, Events, Player, Strings, t } from '@apitable/core';
 import { AutomationPanel } from 'pc/components/automation';
 import {
   automationActionsAtom,
-  automationCacheAtom,
+  automationCacheAtom, automationCurrentTriggerId,
   automationLocalMap,
-  automationPanelAtom,
-  automationTriggersAtom
+  automationPanelAtom, automationStateAtom,
+  automationTriggersAtom, PanelName
 } from 'pc/components/automation/controller';
+import { getFieldId } from 'pc/components/automation/controller/hooks/get_field_id';
 import { checkIfModified } from 'pc/components/automation/modal/step_input_compare';
 import { Modal as ConfirmModal } from 'pc/components/common';
 import { IRobotAction, IRobotTrigger } from 'pc/components/robot/interface';
+import { useSideBarVisible } from 'pc/hooks';
+import { TriggerCommands } from '../../../../../modules/shared/apphook/trigger_commands';
 
 const CONST_ENABLE_PREVENT = true;
 const CONST_KEY_AUTOM_TRAGET_PAGE = 'CONST_KEY_AUTOM_TRAGET_PAGE';
@@ -27,6 +30,8 @@ export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
   const [panel] = useAtom(automationPanelAtom);
 
   const [, setCache] = useAtom(automationCacheAtom);
+
+  const [automationState, setAutomationState] = useAtom(automationStateAtom);
   const isClosedRef = React.useRef(false);
 
   const triggers = useAtomValue(automationTriggersAtom);
@@ -34,7 +39,33 @@ export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
 
   const localMap = useAtomValue(automationLocalMap);
 
+  const { setSideBarVisible } = useSideBarVisible();
   const router = useRouter();
+
+  const [panelState, setAutomationPanel] = useAtom(automationPanelAtom);
+  const setItem = useSetAtom(automationCurrentTriggerId);
+  useEffect(() => {
+
+    const to = setTimeout(() => {
+      const trigger = automationState?.robot?.triggers?.find(r => getFieldId(r) !== null);
+      if(trigger) {
+        setSideBarVisible(true);
+
+        setItem(trigger.triggerId);
+        setAutomationPanel({
+          panelName: PanelName.Trigger,
+          dataId: trigger.triggerId,
+          // @ts-ignore
+          data: trigger,
+        });
+        TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_BUTTON_TRIGGER);
+        // Player.doTrigger(Events.guide_use_button_column_first_time);
+      }
+    }, 1000);
+    return () => {
+      clearTimeout(to);
+    };
+  }, [automationState, setSideBarVisible]);
 
   const handle = async (url) => {
     if(!CONST_ENABLE_PREVENT) {

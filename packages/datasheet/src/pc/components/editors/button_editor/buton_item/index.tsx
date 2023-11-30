@@ -13,9 +13,9 @@ import { useButtonFieldValid } from 'pc/components/editors/button_editor/use_but
 import { getIsValid } from 'pc/components/editors/button_editor/valid_map';
 import EllipsisText from 'pc/components/ellipsis_text';
 import { setColor } from 'pc/components/multi_grid/format';
+import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
 import { automationTaskMap, AutomationTaskStatus } from '../automation_task_map';
-import {useCssColors} from "pc/components/robot/robot_detail/trigger/use_css_colors";
 type TO = ReturnType<typeof setTimeout>;
 
 const StyledTypography = styled(Typography)<{defaultColor: string}>`
@@ -141,7 +141,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
     isLoading: boolean}> = ({ field, taskStatus, onStart, isLoading, height, maxWidth }) => {
       const cacheTheme = useAppSelector(Selectors.getTheme);
       const colors = useThemeColors();
-    const cssColors = useCssColors();
+      const cssColors = useCssColors();
 
       const bg = field.property.style.color ? setColor(field.property.style.color, cacheTheme) : colors.defaultBg;
       const isValidResp = useButtonFieldValid(field);
