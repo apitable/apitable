@@ -5848,6 +5848,7 @@ export type StringKeysMapType = {
   'workbench_side_space_template': 'workbench_side_space_template',
   'workbenck_shortcuts': 'workbenck_shortcuts',
   'workdoc_attach_uploading': 'workdoc_attach_uploading',
+  'workdoc_authentication_failed': 'workdoc_authentication_failed',
   'workdoc_background_title': 'workdoc_background_title',
   'workdoc_code_placeholder': 'workdoc_code_placeholder',
   'workdoc_color_default': 'workdoc_color_default',

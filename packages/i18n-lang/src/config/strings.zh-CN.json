@@ -5851,6 +5851,7 @@
   "workbench_side_space_template": "空间站模版",
   "workbenck_shortcuts": "工作台快捷键",
   "workdoc_attach_uploading": "上传中...",
+  "workdoc_authentication_failed": "文档权限验证失败",
   "workdoc_background_title": "背景颜色",
   "workdoc_code_placeholder": "输入代码片段",
   "workdoc_color_default": "恢复默认",

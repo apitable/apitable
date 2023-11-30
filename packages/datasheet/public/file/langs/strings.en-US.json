@@ -5847,6 +5847,7 @@
   "workbench_side_space_template": "Custom templates",
   "workbenck_shortcuts": "Workbench",
   "workdoc_attach_uploading": "Uploading...",
+  "workdoc_authentication_failed": "Authentication failed",
   "workdoc_background_title": "Text background",
   "workdoc_code_placeholder": "Please enter code block",
   "workdoc_color_default": "Restore default",
