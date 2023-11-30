@@ -19,6 +19,7 @@
 package com.apitable.workspace.dto;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -97,6 +98,11 @@ public class NodeCopyOptions implements Serializable {
      * source templateId.
      */
     private String sourceTemplateId;
+
+    /**
+     * new trigger id map.
+     */
+    private Map<String, String> newTriggerMap = new HashMap<>();
 
     public NodeCopyOptions() {
         this.copyData = true;

@@ -517,10 +517,10 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 case BUTTON:
                     ButtonFieldProperty buttonProperty =
                         fieldMapRo.getProperty().toBean(ButtonFieldProperty.class, true);
-                    if (ObjectUtil.equals(buttonProperty.getAction().getType(),
-                        ButtonFieldActionType.TRIGGER_AUTOMATION.getType())) {
-                        fieldMapRo.getProperty().set("action", JSONUtil.createObj());
-                    }
+                    ButtonFieldProperty.ButtonFieldAction action =
+                        getButtonFieldPropertyAction(buttonProperty.getAction(), newNodeMap,
+                            options.getNewTriggerMap());
+                    fieldMapRo.getProperty().set("action", action);
                     break;
                 default:
                     break;
@@ -1105,4 +1105,29 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         return null;
     }
 
+    private ButtonFieldProperty.ButtonFieldAction getButtonFieldPropertyAction(
+        ButtonFieldProperty.ButtonFieldAction action,
+        Map<String, String> newNodeMap,
+        Map<String, String> newTriggerMap) {
+        if (ObjectUtil.equals(action.getType(),
+            ButtonFieldActionType.TRIGGER_AUTOMATION.getType())) {
+            if (null != action.getAutomation()) {
+                ButtonFieldProperty.ButtonFieldActionAutomation automation = action.getAutomation();
+                if (newTriggerMap.containsKey(automation.getTriggerId())) {
+                    ButtonFieldProperty.ButtonFieldActionAutomation newAutomation =
+                        ButtonFieldProperty.ButtonFieldActionAutomation.builder()
+                            .automationId(newNodeMap.get(automation.getAutomationId()))
+                            .triggerId(newTriggerMap.get(automation.getTriggerId()))
+                            .build();
+                    return ButtonFieldProperty.ButtonFieldAction.builder()
+                        .automation(newAutomation)
+                        .type(ButtonFieldActionType.TRIGGER_AUTOMATION.getType())
+                        .build();
+                }
+                return ButtonFieldProperty.ButtonFieldAction.builder().build();
+            }
+            return ButtonFieldProperty.ButtonFieldAction.builder().build();
+        }
+        return action;
+    }
 }

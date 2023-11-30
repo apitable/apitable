@@ -353,7 +353,7 @@ export class CellHelper extends KonvaDrawer {
         if(isValid) {
           color = colors.textStaticPrimary;
           if(renderProps.cacheTheme === 'dark') {
-            if(buttonField.property.style.color === AutomationConstant.defaultColor) {
+            if(buttonField.property.style.color === AutomationConstant.whiteColor) {
               color = colors.textReverseDefault;
             }
           }

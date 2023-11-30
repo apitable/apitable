@@ -29,6 +29,8 @@ export const FIELD_HEIGHT_MAP = {
   [FieldType.Member]: 26,
   [FieldType.CreatedBy]: 26,
   [FieldType.LastModifiedBy]: 26,
+
+  [FieldType.WorkDoc]: 24,
 };
 
 // The height of the field corresponding to the virtual card is calculated
@@ -50,6 +52,9 @@ export const FIELD_HEIGHT_VIRTUAL_MAP = {
   [FieldType.Member]: 24,
   [FieldType.CreatedBy]: 24,
   [FieldType.LastModifiedBy]: 24,
+
+  [FieldType.WorkDoc]: 24,
+  [FieldType.OneWayLink]: 20,
 };
 
 // Height calculation for fields corresponding to virtual cards on mobile
@@ -71,6 +76,8 @@ export const FIELD_HEIGHT_MAP_MOBILE = {
   [FieldType.Member]: 27,
   [FieldType.CreatedBy]: 27,
   [FieldType.LastModifiedBy]: 27,
+
+  [FieldType.WorkDoc]: 27,
 };
 
 // Fields that are not in FIELD_HEIGHT_MAP are displayed as a single line of text height.

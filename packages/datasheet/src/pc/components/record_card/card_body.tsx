@@ -28,12 +28,12 @@ import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ScreenSize } from '../common/component_display';
 import { getFieldHeight, getShowFieldType, getVietualFieldHeight } from '../gallery_view/utils';
 import { CardText } from './card_text';
 import styles from './style.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
 
 const showTitle = (cellValue: ICellValue, field: IField) => {
   if (isNull(cellValue)) return t(Strings.record_unnamed);

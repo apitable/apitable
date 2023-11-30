@@ -5145,6 +5145,7 @@ export type StringKeysMapType = {
   'task_reminder_notify_who_error_empty': 'task_reminder_notify_who_error_empty',
   'task_reminder_notify_who_error_not_exist': 'task_reminder_notify_who_error_not_exist',
   'task_reminder_tips': 'task_reminder_tips',
+  'task_timeout': 'task_timeout',
   'team': 'team',
   'team_is_exist_err': 'team_is_exist_err',
   'team_length_err': 'team_length_err',

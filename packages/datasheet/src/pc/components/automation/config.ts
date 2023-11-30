@@ -9,5 +9,6 @@ export function orDisabled<T>(arr: T[], enabled: boolean) {
 
 export const AutomationConstant = {
   DEFAULT_TEXT : t(Strings.click_start),
-  defaultColor : 50,
+  defaultColor : 40,
+  whiteColor : 50,
 };

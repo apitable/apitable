@@ -126,7 +126,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
     showUpgradeSpaceModal.current = true;
     expandUpgradeSpace();
   });
-  
+
   useMount(() => {
     if (!query.get('stripePaySuccess') || isMobile) return;
     showOrderModal({

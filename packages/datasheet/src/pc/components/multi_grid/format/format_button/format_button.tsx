@@ -23,7 +23,7 @@ import {
 } from '@apitable/core';
 import { AddOutlined, SyncOnOutlined } from '@apitable/icons';
 import { automationApiClient, workbenchClient } from 'pc/common/api-client';
-import { CONST_MAX_TRIGGER_COUNT } from 'pc/components/automation/config';
+import {AutomationConstant, CONST_MAX_TRIGGER_COUNT} from 'pc/components/automation/config';
 import { DataSourceSelectorForNode } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/data_source_selector_for_node';
 import { AutomationItem } from 'pc/components/multi_grid/format/format_button/automation_item';
 import { ButtonTitle } from 'pc/components/multi_grid/format/format_button/ButtonTitle';
@@ -87,10 +87,8 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
   const handleModify = useCallback(
     (field: IField) => {
       if (activeFieldState.fieldId === ButtonOperateType.AddField) {
-        console.log('onCreate', field);
         onCreate?.(field);
       } else {
-        console.log('onUpdate', field);
         onUpdate(field);
       }
     },
@@ -362,7 +360,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
             content: text,
             style: style.type,
           }}
-          color={style.color || 51}
+          color={style.color || AutomationConstant.defaultColor}
           onchange={(value: number) => {
             setFieldProperty('style')({
               ...style,

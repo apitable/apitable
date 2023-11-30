@@ -44,7 +44,7 @@ import { datasheetIdString, joiErrorResult } from './validate_schema';
 
 export const AutomationConstant = {
   DEFAULT_TEXT: t(Strings.click_start),
-  defaultColor: 50,
+  defaultColor: 40,
 };
 
 export class ButtonField extends Field {

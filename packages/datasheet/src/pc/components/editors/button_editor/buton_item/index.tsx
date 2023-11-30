@@ -141,6 +141,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
     isLoading: boolean}> = ({ field, taskStatus, onStart, isLoading, height, maxWidth }) => {
       const cacheTheme = useAppSelector(Selectors.getTheme);
       const colors = useThemeColors();
+      const cssColors = useCssColors();
 
       const bg = field.property.style.color ? setColor(field.property.style.color, cacheTheme) : colors.defaultBg;
       const isValidResp = useButtonFieldValid(field);
@@ -149,7 +150,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
       let textColor: string = colors.textStaticPrimary;
       if(field.property.style.type === ButtonStyleType.Background) {
         if(cacheTheme === 'dark') {
-          if(field.property.style.color === AutomationConstant.defaultColor) {
+          if(field.property.style.color === AutomationConstant.whiteColor) {
             textColor = colors.textReverseDefault;
           }
         }
@@ -158,7 +159,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
         if(!isValid){
           return (
             <StyledBox
-              disabled={false}
+              disabled
               borderRadius={'4px'}
               paddingX={'10px'}
               height={height ?? itemHeight}
@@ -166,7 +167,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
               marginTop={marginTop}
               display={'inline-flex'} alignItems={'center'}>
               <EllipsisText>
-                <Typography color={colors.bgControlsDisabled} variant={'body4'}>
+                <Typography color={cssColors.textCommonDisabled} variant={'body4'}>
                   {field.property.text}
                 </Typography>
               </EllipsisText>

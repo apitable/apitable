@@ -37,6 +37,7 @@ import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.support.ExcelTypeEnum;
 import com.apitable.automation.entity.AutomationRobotEntity;
 import com.apitable.automation.model.AutomationCopyOptions;
+import com.apitable.automation.model.TriggerCopyResultDto;
 import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.base.enums.ParameterException;
@@ -1173,7 +1174,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 return copyEffect;
             case AUTOMATION:
                 AutomationCopyOptions automationCopyOptions =
-                    AutomationCopyOptions.builder().sameSpace(true).overriddenName(name).build();
+                    AutomationCopyOptions.builder().sameSpace(true).removeButtonClickedInput(true)
+                        .overriddenName(name).build();
                 iAutomationRobotService.copy(userId,
                     Collections.singletonList(opRo.getNodeId()),
                     automationCopyOptions, newNodeMap);
@@ -1284,10 +1286,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 throw new BusinessException(NodeException.SHARE_NODE_STORE_FAIL);
             case AUTOMATION:
                 AutomationCopyOptions automationCopyOptions =
-                    AutomationCopyOptions.builder().overriddenName(name).build();
+                    AutomationCopyOptions.builder().removeButtonClickedInput(true)
+                        .overriddenName(name).build();
                 iAutomationRobotService.copy(userId,
                     Collections.singletonList(sourceNodeId),
                     automationCopyOptions, newNodeMap);
+
                 break;
             default:
                 break;
@@ -1411,6 +1415,23 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     });
                 options.setDstPermissionFieldsMap(dstPermissionFieldsMap);
             }
+
+            // Copy automation processing
+            if (nodeTypeToNodeIdsMap.containsKey(NodeType.AUTOMATION.getNodeType())) {
+                List<String> automationNodeIds =
+                    nodeTypeToNodeIdsMap.get(NodeType.AUTOMATION.getNodeType()).stream()
+                        .map(NodeShareTree::getNodeId)
+                        .filter(nodeId -> !filterNodeIds.contains(nodeId))
+                        .collect(Collectors.toList());
+                if (CollUtil.isNotEmpty(automationNodeIds)) {
+                    TriggerCopyResultDto result =
+                        iAutomationRobotService.copy(userId, automationNodeIds,
+                            new AutomationCopyOptions(), newNodeMap);
+                    // use for rewrite button field property
+                    options.setNewTriggerMap(result.getNewTriggerMap());
+                }
+            }
+
             for (NodeShareTree subNode : nodeTypeToNodeIdsMap.get(
                 NodeType.DATASHEET.getNodeType())) {
                 if (filterNodeIds.contains(subNode.getNodeId())) {
@@ -1455,18 +1476,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     ResourceType.MIRROR);
             }
         }
-        // Copy automation processing
-        if (nodeTypeToNodeIdsMap.containsKey(NodeType.AUTOMATION.getNodeType())) {
-            List<String> automationNodeIds =
-                nodeTypeToNodeIdsMap.get(NodeType.AUTOMATION.getNodeType()).stream()
-                    .map(NodeShareTree::getNodeId)
-                    .filter(nodeId -> !filterNodeIds.contains(nodeId))
-                    .collect(Collectors.toList());
-            if (CollUtil.isNotEmpty(automationNodeIds)) {
-                iAutomationRobotService.copy(userId, automationNodeIds,
-                    new AutomationCopyOptions(), newNodeMap);
-            }
-        }
+
     }
 
     /**

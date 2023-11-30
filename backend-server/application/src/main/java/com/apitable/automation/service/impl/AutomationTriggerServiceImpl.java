@@ -27,13 +27,16 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.apitable.automation.entity.AutomationTriggerEntity;
+import com.apitable.automation.enums.AutomationTriggerType;
 import com.apitable.automation.mapper.AutomationTriggerMapper;
+import com.apitable.automation.model.AutomationCopyOptions;
 import com.apitable.automation.model.AutomationTriggerDto;
 import com.apitable.automation.model.CreateTriggerRO;
 import com.apitable.automation.model.TriggerCopyResultDto;
 import com.apitable.automation.model.TriggerVO;
 import com.apitable.automation.model.UpdateTriggerRO;
 import com.apitable.automation.service.IAutomationTriggerService;
+import com.apitable.automation.service.IAutomationTriggerTypeService;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.databusclient.ApiException;
 import com.apitable.databusclient.api.AutomationDaoApiApi;
@@ -66,6 +69,9 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
 
     @Resource
     private LimitProperties limitProperties;
+
+    @Resource
+    private IAutomationTriggerTypeService iAutomationTriggerTypeService;
 
     @Override
     public List<AutomationTriggerDto> getTriggersByRobotIds(List<String> robotIds) {
@@ -145,7 +151,7 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
     }
 
     @Override
-    public TriggerCopyResultDto copy(Long userId, boolean sameSpace,
+    public TriggerCopyResultDto copy(Long userId, AutomationCopyOptions options,
                                      Map<String, String> newRobotMap,
                                      Map<String, String> newNodeMap) {
         List<AutomationTriggerEntity> triggers =
@@ -153,6 +159,8 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
         if (CollUtil.isEmpty(triggers)) {
             return new TriggerCopyResultDto();
         }
+        String buttonClickedTypeId = iAutomationTriggerTypeService.getTriggerTypeByEndpoint(
+            AutomationTriggerType.BUTTON_CLICKED.getType());
         Map<String, String> newTriggerMap = triggers.stream()
             .collect(Collectors.toMap(AutomationTriggerEntity::getTriggerId,
                 i -> IdUtil.createAutomationTriggerId()));
@@ -171,13 +179,21 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
                 entity.setPrevTriggerId(newTriggerMap.get(trigger.getPrevTriggerId()));
             }
             if (StrUtil.isNotBlank(trigger.getResourceId())) {
-                String newNodeId = sameSpace ? trigger.getResourceId() :
-                    Optional.ofNullable(newNodeMap.get(trigger.getResourceId()))
-                        .orElse(StrUtil.EMPTY);
-                String input = sameSpace ? trigger.getInput() :
-                    trigger.getInput().replace(trigger.getResourceId(), newNodeId);
-                entity.setResourceId(newNodeId);
-                entity.setInput(input);
+                // clear button trigger input
+                if (options.isRemoveButtonClickedInput()
+                    && StrUtil.isNotBlank(buttonClickedTypeId)
+                    && buttonClickedTypeId.equals(trigger.getTriggerTypeId())) {
+                    entity.setResourceId(StrUtil.EMPTY);
+                    entity.setInput(null);
+                } else {
+                    String newNodeId = options.isSameSpace() ? trigger.getResourceId() :
+                        Optional.ofNullable(newNodeMap.get(trigger.getResourceId()))
+                            .orElse(StrUtil.EMPTY);
+                    String input = options.isSameSpace() ? trigger.getInput() :
+                        trigger.getInput().replace(trigger.getResourceId(), newNodeId);
+                    entity.setResourceId(newNodeId);
+                    entity.setInput(input);
+                }
             } else {
                 entity.setResourceId(StrUtil.EMPTY);
             }
