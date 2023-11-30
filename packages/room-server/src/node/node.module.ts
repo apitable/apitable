@@ -36,7 +36,7 @@ import { IsNodeExistConstraint } from './validations/validation.constraint';
 @Module({
   imports: [
     BackendApiModule.forRoot(() => {
-      const baseUrl = process.env.BACKEND_BASE_UR;
+      const baseUrl = process.env.BACKEND_BASE_URL;
       if (baseUrl && baseUrl.endsWith('/')) {
         return new Configuration({ basePath: baseUrl.substring(0, baseUrl.length - 1) });
       }
