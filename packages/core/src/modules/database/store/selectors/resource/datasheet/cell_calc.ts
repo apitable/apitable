@@ -106,7 +106,8 @@ export const calcCellValueAndString = ({
   return {
     cellValue,
     cellStr: field.type === FieldType.URL ? Field.bindContext(field, state).cellValueToTitle(cellValue) : instance.cellValueToString(cellValue),
-    ignoreCache: workerCompute() ? false : !instance.isComputed,
+    // issue: https://github.com/vikadata/vikadata/issues/7757
+    ignoreCache: workerCompute() ? false : (field.type === FieldType.CreatedBy ? true : !instance.isComputed),
   };
 };
 
