@@ -157,8 +157,8 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
     e.nativeEvent.stopImmediatePropagation();
     setKeyword('');
 
-    // sessionStorage.removeItem('searchKeyword');
-    // sessionStorage.removeItem('searchData');
+    sessionStorage.removeItem('searchKeyword');
+    sessionStorage.removeItem('searchData');
 
     setCurrentIndex(-1);
   };
@@ -191,24 +191,24 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
     </div>
   );
 
-  // useEffect(() => {
-  //   const savedKeyword = sessionStorage.getItem('searchKeyword');
-  //   const savedData = sessionStorage.getItem('searchData');
-  //   if (savedKeyword) {
-  //     setKeyword(savedKeyword);
-  //     getNodeList(savedKeyword);
-  //   }
-  //   if (savedData) {
-  //     setDataNodeList(JSON.parse(savedData));
-  //   }
-  // }, []);
+  useEffect(() => {
+    const savedKeyword = sessionStorage.getItem('searchKeyword');
+    const savedData = sessionStorage.getItem('searchData');
+    if (savedKeyword) {
+      setKeyword(savedKeyword);
+      getNodeList(savedKeyword);
+    }
+    if (savedData) {
+      setDataNodeList(JSON.parse(savedData));
+    }
+  }, []);
 
-  // useEffect(() => {
-  //   sessionStorage.setItem('searchKeyword', keyword);
-  //   if (dataNodeList.length > 0) {
-  //     sessionStorage.setItem('searchData', JSON.stringify(dataNodeList));
-  //   }
-  // }, [keyword, dataNodeList]);
+  useEffect(() => {
+    sessionStorage.setItem('searchKeyword', keyword);
+    if (dataNodeList.length > 0) {
+      sessionStorage.setItem('searchData', JSON.stringify(dataNodeList));
+    }
+  }, [keyword, dataNodeList]);
 
   return (
     <div className={classnames(styles.searchWrapper, className)} ref={ref}>
