@@ -177,7 +177,7 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
             OssStatObject statObject =
                 ossTemplate.getStatObject(asset.getBucketName(),
                     asset.getFileUrl());
-            int fileSize = new Long(statObject.getFileSize()).intValue();
+            int fileSize = Long.valueOf(statObject.getFileSize()).intValue();
             AssetEntity updatedAssetEntity = AssetEntity.builder()
                 .id(asset.getId())
                 .fileSize(fileSize)

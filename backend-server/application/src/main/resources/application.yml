@@ -51,14 +51,6 @@ spring:
       mail.smtp.starttls.required: ${MAIL_STARTTLS_REQUIRED:true}
       mail.smtp.ssl.enable: ${MAIL_SSL_ENABLE:true}
       mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
-  sleuth:
-    otel:
-      exporter:
-        jaeger:
-          enabled: ${OTEL_JAEGER_ENABLED:false}
-          endpoint: ${OTEL_JAEGER_ENDPOINT:}
-      config:
-        trace-id-ratio-based: ${OTEL_JAEGER_TRACE_ID_RATIO_BASED:0.1}
   logger:
     max-history-days: ${LOGGER_MAX_HISTORY_DAYS:7}
 

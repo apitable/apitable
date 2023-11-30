@@ -190,7 +190,6 @@ public class TablePrefixHandler {
                     int indexOfNextNewline = script.indexOf('\n', i);
                     if (indexOfNextNewline > i) {
                         i = indexOfNextNewline;
-                        continue;
                     }
                     else {
                         // If there's no EOL, we must be at the end of the script, so stop here.
@@ -202,7 +201,6 @@ public class TablePrefixHandler {
                     int indexOfCommentEnd = script.indexOf(blockCommentEndDelimiter, i);
                     if (indexOfCommentEnd > i) {
                         i = indexOfCommentEnd + blockCommentEndDelimiter.length() - 1;
-                        continue;
                     }
                     else {
                         throw new ScriptParseException(

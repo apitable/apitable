@@ -18,8 +18,10 @@
 
 package com.apitable.template.service;
 
+import com.apitable.template.entity.TemplateAlbumEntity;
 import com.apitable.template.vo.AlbumContentVo;
 import com.apitable.template.vo.AlbumVo;
+import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 
 /**
@@ -27,7 +29,7 @@ import java.util.List;
  * Template Center - Template Album Service.
  * </p>
  */
-public interface ITemplateAlbumService {
+public interface ITemplateAlbumService extends IService<TemplateAlbumEntity> {
 
     /**
      * get template album views by album ids.

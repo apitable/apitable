@@ -17,19 +17,5 @@
  */
 
 plugins {
-  `java-library`
-  `java-gradle-plugin`
-  `groovy-gradle-plugin`
-}
-
-repositories {
-  mavenCentral()
-  gradlePluginPortal()
-}
-
-dependencies {
-}
-
-tasks.test {
-  useJUnitPlatform()
+  id 'groovy-gradle-plugin'
 }
