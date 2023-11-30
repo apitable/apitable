@@ -1,13 +1,13 @@
 import dynamic from 'next/dynamic';
+import Router from 'next/router';
 import { useContext, useEffect, useState } from 'react';
-import { KONVA_DATASHEET_ID, Navigation, Strings, t } from '@apitable/core';
+import { KONVA_DATASHEET_ID, Strings, t } from '@apitable/core';
 import { AddOutlined, FileOutlined } from '@apitable/icons';
-import { Router } from 'pc/components/route_manager/router';
 import { useQuery } from 'pc/hooks';
 import { generateTargetName } from '../../../gantt_view';
 import { Icon, Rect, Text } from '../../../konva_components';
 import { GRID_CELL_ADD_ITEM_BUTTON_SIZE, GRID_CELL_VALUE_PADDING, GRID_OPTION_ITEM_PADDING } from '../../constant';
-import { KonvaGridContext, KonvaGridViewContext } from '../../context';
+import { KonvaGridContext } from '../../context';
 import { CellScrollContainer } from '../cell_scroll_container';
 import { ICellProps } from './cell_value';
 import { IRenderContentBase, IRenderData } from './interface';
@@ -21,7 +21,6 @@ export const CellWorkdoc = (props: ICellProps) => {
   const operatingEnable = isActive;
   const { renderContent, height } = renderData;
   const fieldId = field?.id;
-  const { datasheetId, view: { id: viewId } } = useContext(KonvaGridViewContext);
   const query = useQuery();
 
   useEffect(() => {
@@ -48,17 +47,12 @@ export const CellWorkdoc = (props: ICellProps) => {
 
   const handleEdit = () => {
     toggleEdit && toggleEdit();
-    Router.replace(Navigation.WORKBENCH, {
-      params: {
-        nodeId: datasheetId,
-        datasheetId,
-        viewId,
-      },
-      query: {
-        recordId,
-        fieldId
-      }
-    });
+    // query add recordId and fieldId
+    const url = Router.asPath;
+    const urlObj = new URL(url, window.location.origin);
+    urlObj.searchParams.set('recordId', recordId);
+    urlObj.searchParams.set('fieldId', fieldId);
+    Router.replace(urlObj.toString());
   };
 
   const renderDoc = () => {
