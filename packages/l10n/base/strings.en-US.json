@@ -5875,7 +5875,7 @@
   "button_style": "Button Style",
   "text_button": "Text Button",
   "button_color": "Button Color",
-  "button_operation": "Button Operation",
+  "button_operation": "Button Action",
   "button_execute_error": "Execution failed: ${ERROR_MESSAGE}, please try again or check the run history.",
   "check_run_history": "Check run history",
   "button_field_invalid": "The button field is invalid, please select again",
