@@ -4,12 +4,13 @@ import {
 } from 'exports/store/interfaces';
 import {
   getCurrentView,
-  getFieldRoleByFieldId, getKanbanFieldId,
-} from 'modules/database/store/selectors/resource/datasheet';
+  getKanbanFieldId,
+} from 'modules/database/store/selectors/resource/datasheet/calc';
+import { getFieldRoleByFieldId } from 'modules/database/store/selectors/resource/datasheet/base';
 import { UN_GROUP, ViewType } from 'modules/shared/store/constants';
-import { MemberField } from 'model/field';
 import { FieldType, IField, IMemberField, IUnitIds } from 'types/field_types';
 import { ViewDerivateBase } from './view_derivate_base';
+import { polyfillOldData } from 'model/field/const';
 
 export class ViewDerivateKanban extends ViewDerivateBase {
   constructor(protected override state: IReduxState, public override datasheetId: string) {
@@ -66,7 +67,7 @@ export class ViewDerivateKanban extends ViewDerivateBase {
       try {
 
         if (field.type === FieldType.Member) {
-          const id = MemberField.polyfillOldData(fieldData as IUnitIds)?.[0];
+          const id = polyfillOldData(fieldData as IUnitIds)?.[0];
           id && groupMap[id]!.push(record);
 
           continue;
@@ -101,7 +102,7 @@ export class ViewDerivateKanban extends ViewDerivateBase {
     const fieldPermissionMap = this.state.datasheetMap[this.datasheetId]?.fieldPermissionMap;
 
     if (getFieldRoleByFieldId(fieldPermissionMap, kanbanFieldId) === Role.None) {
-      // kanbanFieldId Permissions have been set and are not visible to the current user, 
+      // kanbanFieldId Permissions have been set and are not visible to the current user,
       // there is no need to handle the following logic.
       return rows;
     }
@@ -124,7 +125,7 @@ export class ViewDerivateKanban extends ViewDerivateBase {
     }).flat();
     return flatRows;
   }
-  
+
   override getViewDerivation(view?: IViewProperty): IViewDerivation {
     view = view || getCurrentView(this.state);
     const { rowsWithoutSearch } = super.getViewDerivation(view);

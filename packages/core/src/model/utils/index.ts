@@ -18,28 +18,24 @@
 
 import { getCustomConfig } from 'config';
 import { EmojisConfig } from 'config/emojis_config';
-import { FormulaField, LookUpField } from 'model';
 import { IOpenComputedFormat } from 'types/open/open_field_read_types';
-import { IUserMap, ViewType } from '../exports/store';
+import { ViewType } from 'modules/shared/store/constants';
+import { IUserMap } from 'modules/org/store/interface/unit_info';
+
 import {
   BasicValueType,
   DateFormat,
   FieldType,
   IAPIMetaCurrencyFormat,
   IAPIMetaDateTimeFormat,
-  IAPIMetaNoneStringValueFormat,
   IAPIMetaNumberFormat,
   IAPIMetaUser,
   IComputedFieldFormattingProperty,
-  IDateTimeFieldPropertyFormat,
-  INumberBaseFieldPropertyFormat,
   IPercentFormat,
   MemberType,
   TimeFormat,
-} from '../types';
-import { APIMetaFieldPropertyFormatEnums, APIMetaFieldType, APIMetaMemberType, APIMetaViewType } from './../types/field_api_enums';
-import { CurrencyField, DateTimeField, NumberField } from './field';
-import { PercentField } from './field/percent_field';
+} from '../../types';
+import { APIMetaFieldPropertyFormatEnums, APIMetaFieldType, APIMetaMemberType, APIMetaViewType } from '../../types/field_api_enums';
 
 /**
  *
@@ -212,6 +208,10 @@ const ReversedFieldTypeStringMap = {
   [APIMetaFieldType.WorkDoc]: FieldType.WorkDoc,
 };
 
+export const getMaxViewCountPerSheet = () => {
+  return getCustomConfig().MAXIMUM_VIEW_COUNT_PER_DATASHEET || 30;
+};
+
 export const getFieldTypeString = (fieldType: FieldType): APIMetaFieldType => {
   return FieldTypeStringMap[fieldType];
 };
@@ -254,70 +254,6 @@ export const getViewTypeByString = (viewType: APIMetaViewType): ViewType => {
   return viewTypeStringMap[viewType];
 };
 
-export const getApiMetaPropertyFormat = (fieldInstance: LookUpField | FormulaField): IAPIMetaNoneStringValueFormat | null => {
-  // format to datetime
-  if (BasicValueType.DateTime === fieldInstance.basicValueType) {
-    if (!fieldInstance.field.property.formatting) {
-      return {
-        type: APIMetaFieldPropertyFormatEnums.DateTime,
-        format: {
-          dateFormat: DateTimeField.defaultDateFormat,
-          timeFormat: DateTimeField.defaultTimeFormat,
-          includeTime: false,
-        },
-      };
-    }
-    const { dateFormat, timeFormat, includeTime, timeZone, includeTimeZone } = (fieldInstance.field.property.formatting ||
-      {}) as IDateTimeFieldPropertyFormat;
-    return {
-      type: APIMetaFieldPropertyFormatEnums.DateTime,
-      format: {
-        dateFormat: DateFormat[dateFormat]!,
-        timeFormat: TimeFormat[timeFormat]!,
-        includeTime,
-        timeZone,
-        includeTimeZone,
-      },
-    };
-  }
-  // format to number
-  if (BasicValueType.Number === fieldInstance.basicValueType) {
-    const formatting = fieldInstance.field.property.formatting as INumberBaseFieldPropertyFormat;
-    switch (formatting?.formatType) {
-      case FieldType.Number:
-        return {
-          type: APIMetaFieldPropertyFormatEnums.Number,
-          format: {
-            precision: formatting?.precision || NumberField.defaultProperty().precision,
-          },
-        };
-      case FieldType.Percent:
-        return {
-          type: APIMetaFieldPropertyFormatEnums.Percent,
-          format: {
-            precision: formatting?.precision || PercentField.defaultProperty().precision,
-          },
-        };
-      case FieldType.Currency:
-        return {
-          type: APIMetaFieldPropertyFormatEnums.Currency,
-          format: {
-            precision: formatting?.precision || CurrencyField.defaultProperty().precision,
-            symbol: formatting?.symbol || CurrencyField.defaultProperty().symbol,
-          },
-        };
-      default:
-        return {
-          type: APIMetaFieldPropertyFormatEnums.Number,
-          format: {
-            precision: formatting?.precision || NumberField.defaultProperty().precision,
-          },
-        };
-    }
-  }
-  return null;
-};
-
 export const getApiMetaUserProperty = (uuids: (string | {} | null)[], userMap?: IUserMap | null) => {
   let options: IAPIMetaUser[] = [];
   if (userMap) {
@@ -336,10 +272,6 @@ export const getApiMetaUserProperty = (uuids: (string | {} | null)[], userMap?: 
   return {
     options,
   };
-};
-
-export const getMaxViewCountPerSheet = () => {
-  return getCustomConfig().MAXIMUM_VIEW_COUNT_PER_DATASHEET || 30;
 };
 
 export const getMaxManageableSpaceCount = () => {

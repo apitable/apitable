@@ -20,6 +20,7 @@ import { useKeyPress } from 'ahooks';
 import type { InputRef } from 'antd';
 import { Input, message } from 'antd';
 import produce from 'immer';
+import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState, FC, PropsWithChildren } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
@@ -46,7 +47,6 @@ import {
   DatasheetApi,
 } from '@apitable/core';
 import { QuestionCircleOutlined, WarnCircleFilled } from '@apitable/icons';
-import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Divider } from 'pc/components/common/divider';
 import { Message } from 'pc/components/common/message';
@@ -57,14 +57,15 @@ import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { EXPAND_RECORD_CLS } from 'pc/components/expand_record/expand_record_modal';
-import { useResponsive } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
+import { useResponsive } from 'pc/hooks/use_responsive';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { useAppSelector } from 'pc/store/react-redux';
-import { ButtonOperateType, getParentNodeByClass, isTouchDevice } from 'pc/utils';
-import { stopPropagation } from '../../../utils/dom';
-import { FieldFormat } from '../format';
+import { ButtonOperateType } from 'pc/utils/constant';
+import { stopPropagation, getParentNodeByClass } from 'pc/utils/dom';
+import { isTouchDevice } from 'pc/utils/mobile';
+import { FieldFormat } from '../format/format';
 import { useFieldOperate } from '../hooks';
 import { checkFactory, CheckFieldSettingBase } from './check_factory';
 import { FieldTypeSelect } from './field_type_select';

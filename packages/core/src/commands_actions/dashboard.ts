@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IDashboardLayout, IDashboardSnapshot } from '../exports/store';
+import { IDashboardLayout, IDashboardSnapshot } from '../exports/store/interfaces';
 import { IJOTAction } from 'engine';
 import { OTActionName } from '../engine/ot';
 

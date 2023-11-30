@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { getResourceWidgetPanels } from '../../exports/store/selectors';
+import { getResourceWidgetPanels } from 'modules/database/store/selectors/resource';
 import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from '../../command_manager';
 import { DatasheetActions } from '../../commands_actions/datasheet';

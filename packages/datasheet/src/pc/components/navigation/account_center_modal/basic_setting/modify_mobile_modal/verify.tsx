@@ -20,7 +20,8 @@ import { Form } from 'antd';
 import { FC } from 'react';
 import { hiddenMobile, ConfigConstant, Strings, t } from '@apitable/core';
 
-import { WithTipWrapper, IdentifyingCodeInput } from 'pc/components/common';
+import { IdentifyingCodeInput } from 'pc/components/common/input/identifying_code_input/identifying_code_input';
+import { WithTipWrapper } from 'pc/components/common/input/with_tip_wrapper/with_tip_wrapper';
 import styles from './style.module.less';
 
 export interface IVerifyProps {

@@ -42,15 +42,14 @@ import {
   t,
   ViewType,
 } from '@apitable/core';
-import { Message } from 'pc/components/common';
 import { fieldChangeConfirm } from 'pc/components/common/field_change_confirm/field_change_confirm';
+import { Message } from 'pc/components/common/message/message';
 import { useCacheScroll } from 'pc/context';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { getFieldHeaderByFieldId } from 'pc/utils';
+import { useAppSelector } from 'pc/store/react-redux';
+import { getFieldHeaderByFieldId } from 'pc/utils/dom';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 function returnCurrentOffsetX(newOffsetX: number, lastOffsetX: number): number {
   if (newOffsetX === lastOffsetX) {

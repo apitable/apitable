@@ -20,8 +20,8 @@ import classNames from 'classnames';
 import React, { FC, PropsWithChildren } from 'react';
 import { Strings, t } from '@apitable/core';
 // eslint-disable-next-line no-restricted-imports
-import { Tooltip } from 'pc/components/common';
 import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
+import { Tooltip } from 'pc/components/common/tooltip/tooltip';
 import { Modal } from '../modal/modal';
 import styles from './style.module.less';
 

@@ -36,7 +36,7 @@ export class DeniedField extends Field {
   get openValueJsonSchema() {
     return {
       title: this.field.name,
-      type: 'string'      
+      type: 'string'
     };
   }
 

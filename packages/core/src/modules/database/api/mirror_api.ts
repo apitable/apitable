@@ -19,7 +19,7 @@
 import axios from 'axios';
 import * as Url from './url.data';
 import Qs from 'qs';
-import { IApiWrapper, IServerMirror } from '../../../exports/store';
+import { IApiWrapper, IServerMirror } from '../../../exports/store/interfaces';
 import urlcat from 'urlcat';
 
 const baseURL = process.env.NEXT_PUBLIC_NEXT_API;

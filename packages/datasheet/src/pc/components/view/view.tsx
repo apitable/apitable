@@ -58,9 +58,10 @@ import { KanbanView } from '../kanban_view';
 import { KonvaGridView } from '../konva_grid';
 import { OrgChartView } from '../org_chart_view';
 import { Toolbar } from '../tool_bar';
+import { DATASHEET_VIEW_CONTAINER_ID } from './id';
 import styles from './style.module.less';
+export { DATASHEET_VIEW_CONTAINER_ID };
 
-export const DATASHEET_VIEW_CONTAINER_ID = 'DATASHEET_VIEW_CONTAINER_ID';
 export const View: React.FC<React.PropsWithChildren<any>> = () => {
   const colors = useThemeColors();
   const { currentView, rows, fieldMap } = useAppSelector((state: IReduxState) => {

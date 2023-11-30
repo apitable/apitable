@@ -17,13 +17,15 @@
  */
 
 import { getComputeRefManager } from 'compute_manager';
-import { getSnapshot, getUserTimeZone } from 'exports/store/selectors';
+import { getSnapshot } from 'modules/database/store/selectors/resource/datasheet/base';
+import { getUserTimeZone } from 'modules/user/store/selectors/user';
 import { ExpCache, FormulaBaseError, parse } from 'formula_parser';
 import Joi from 'joi';
 import { isEmpty } from 'lodash';
 import { ValueTypeMap } from 'model/constants';
 import { ICellToStringOption, ICellValue } from 'model/record';
-import { computedFormattingToFormat, getApiMetaPropertyFormat } from 'model/utils';
+import { computedFormattingToFormat } from 'model/utils';
+import { getApiMetaPropertyFormat } from 'model/field/utils';
 import {
   FOperator,
   FOperatorDescMap,
@@ -54,14 +56,15 @@ import {
   IOpenFilterValueString
 } from 'types/open/open_filter_types';
 import { isClient } from 'utils/env';
-import { IReduxState } from '../../exports/store';
+import { IReduxState } from '../../exports/store/interfaces';
 import { CheckboxField } from './checkbox_field';
 import { DateTimeBaseField, dateTimeFormat } from './date_time_base_field';
-import { ArrayValueField } from './field';
+import { ArrayValueField } from './array_field';
 import { NumberBaseField, numberFormat } from './number_base_field';
 import { StatTranslate, StatType } from './stat';
 import { TextBaseField } from './text_base_field';
 import { computedFormatting, computedFormattingStr, datasheetIdString, joiErrorResult } from './validate_schema';
+import { getFieldDefaultProperty } from './const';
 
 export class FormulaField extends ArrayValueField {
   constructor(public override field: IFormulaField, public override state: IReduxState) {
@@ -223,10 +226,7 @@ export class FormulaField extends ArrayValueField {
   // }
 
   static defaultProperty() {
-    return {
-      expression: '',
-      datasheetId: ''
-    };
+    return getFieldDefaultProperty(FieldType.Formula) as IFormulaProperty;
   }
 
   override compare(cv1: ICellValue, cv2: ICellValue, orderInCellValueSensitive?: boolean) {

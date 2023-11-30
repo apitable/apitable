@@ -37,8 +37,8 @@ import {
 import { TelephoneOutlined, EmailOutlined, LinkOutlined } from '@apitable/icons';
 import { ICellComponentProps } from '../cell_value/interface';
 import { useEnhanceTextClick } from '../hooks/use_enhance_text_click';
-import style from './style.module.less';
 import { UrlDiscern } from './url_discern';
+import style from './style.module.less';
 
 // Simple recognition rules are used to process single line text enhancement fields.
 const isEmail = (text: string | null) => text && /.+@.+/.test(text);

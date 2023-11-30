@@ -26,18 +26,18 @@ import urlcat from 'urlcat';
 import { IconButton, useThemeColors, Switch } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, Selectors, ConfigConstant, Strings, t } from '@apitable/core';
 import { LinkOutlined, DeleteOutlined, MoreOutlined, HistoryOutlined, InfoCircleOutlined, ArchiveOutlined } from '@apitable/icons';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import styles from 'pc/components/expand_record/style.module.less';
-import { useRequest, useCatalogTreeRequest } from 'pc/hooks';
+import { useCatalogTreeRequest } from 'pc/hooks/use_catalogtree_request';
+import { useRequest } from 'pc/hooks/use_request';
 import { resourceService } from 'pc/resource_service';
-import { copy2clipBoard } from 'pc/utils';
+import { useAppSelector } from 'pc/store/react-redux';
+import { copy2clipBoard } from 'pc/utils/dom';
 import { EXPAND_RECORD_OPERATE_BUTTON } from 'pc/utils/test_id_constant';
 import EditorTitleContext from './editor_title_context';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IExpandRecordMoreOptionProps {
   expandRecordId: string;

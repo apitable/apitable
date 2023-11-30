@@ -17,15 +17,15 @@
  */
 
 import Joi from 'joi';
-import { IReduxState } from '../../exports/store';
-import { FieldType, IField, IPercentField } from 'types/field_types';
+import { IReduxState } from '../../exports/store/interfaces';
+import { FieldType, IField, IPercentField, IPercentFieldProperty } from 'types/field_types';
 import { DatasheetActions } from '../../commands_actions/datasheet';
 import { NumberBaseField } from './number_base_field';
 import { ICellValue, ICellToStringOption } from 'model/record';
 import { numberToShow, str2number, times } from 'utils';
 import { IOpenPercentFieldProperty } from 'types/open/open_field_read_types';
 import { IUpdateOpenPercentFieldProperty } from 'types/open/open_field_write_types';
-
+import { getFieldDefaultProperty } from './const';
 export class PercentField extends NumberBaseField {
   constructor(public override field: IPercentField, public override state: IReduxState) {
     super(field, state);
@@ -77,10 +77,8 @@ export class PercentField extends NumberBaseField {
     };
   }
 
-  static defaultProperty() {
-    return {
-      precision: 0,
-    };
+  static defaultProperty(): IPercentFieldProperty {
+    return getFieldDefaultProperty(FieldType.Percent) as IPercentFieldProperty;
   }
 
   override get openFieldProperty(): IOpenPercentFieldProperty {

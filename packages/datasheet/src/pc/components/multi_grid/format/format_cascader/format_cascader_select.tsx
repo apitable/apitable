@@ -7,6 +7,7 @@ import { Button, LinkButton, useThemeColors, Typography, Switch } from '@apitabl
 import { ICascaderField, IField, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { SettingOutlined } from '@apitable/icons';
 
+import { useAppSelector } from 'pc/store/react-redux';
 import { IFieldCascaderErrors } from '../../field_setting/check_factory';
 import commonStyles from '../styles.module.less';
 import { CascaderDatasourceDatasheetSelect } from './cascader_datasource_datasheet_select';
@@ -14,8 +15,6 @@ import { CascaderDatasourceViewSelect } from './cascader_datasource_view_select'
 import { CascaderRulesModal } from './cascader_rules_modal/cascader_rules_modal';
 
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IFormatCascaderProps {
   currentField: ICascaderField;

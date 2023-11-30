@@ -36,6 +36,7 @@ import { InstallPosition } from 'pc/components/widget/widget_center/enum';
 import { WidgetPackageList } from 'pc/components/widget/widget_center/widget_package_list';
 import { useQuery, useRequest } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import WidgetCenterEmptyDark from 'static/icon/datasheet/widget_center_empty_dark.png';
 import WidgetCenterEmptyLight from 'static/icon/datasheet/widget_center_empty_light.png';
@@ -43,10 +44,8 @@ import { ScrollBar } from '../../scroll_bar';
 import { useResourceManageable } from '../hooks';
 import { WrapperTooltip } from '../widget_panel/widget_panel_header';
 import { ContextMenu, IContextMenuMethods } from './context_menu';
-import styles from './style.module.less';
 import { expandWidgetCreate } from './widget_create_modal';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const { TabPane } = Tabs;
 

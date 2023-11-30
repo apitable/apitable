@@ -3,7 +3,7 @@ import { shallowEqual } from 'react-redux';
 import { Api, ConfigConstant, INodeMeta, IReduxState, StoreActions } from '@apitable/core';
 import { useDispatch } from 'pc/hooks/use_dispatch';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const useNotifyNOdeNameChange = () => {
   const dispatch = useDispatch();

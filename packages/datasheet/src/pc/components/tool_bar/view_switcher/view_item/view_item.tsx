@@ -21,11 +21,10 @@ import * as React from 'react';
 import { useThemeColors } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { AutosaveOutlined } from '@apitable/icons';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { ViewIcon } from '../view_icon';
 import { OperateItem } from './operate_item';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IViewItemOwnProps {
   currentViewId: string;

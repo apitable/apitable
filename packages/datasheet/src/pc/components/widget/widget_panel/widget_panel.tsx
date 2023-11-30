@@ -17,24 +17,23 @@
  */
 
 import { useMount } from 'ahooks';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import Image from 'next/image';
 import { shallowEqual } from 'react-redux';
 import { Button, IconButton, Skeleton, ThemeName } from '@apitable/components';
 import { Events, IWidgetPanelStatus, Player, ResourceType, Selectors, Strings, t, PermissionType } from '@apitable/core';
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { InstallPosition } from 'pc/components/widget/widget_center/enum';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import WidgetEmptyDark from 'static/icon/datasheet/widget_empty_dark.png';
 import WidgetEmptyLight from 'static/icon/datasheet/widget_empty_light.png';
 import { useManageWidgetMap } from '../hooks';
 import { expandWidgetCenter } from '../widget_center/widget_center';
-import styles from './style.module.less';
 import { WidgetList } from './widget_list';
 import { WidgetPanelHeader } from './widget_panel_header';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const EmptyPanel = ({ onClosePanel }: { onClosePanel?: () => void | Promise<void> }) => {
   const { screenIsAtMost } = useResponsive();

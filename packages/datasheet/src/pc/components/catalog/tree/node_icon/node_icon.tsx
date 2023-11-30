@@ -19,11 +19,12 @@
 import { FC } from 'react';
 import { colorVars } from '@apitable/components';
 import { ConfigConstant } from '@apitable/core';
-import { makeNodeIconComponent } from 'pc/components/catalog/node_context_menu';
-import { Emoji } from 'pc/components/common';
+import { makeNodeIconComponent } from 'pc/components/catalog/node_context_menu/node_icons';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { useResponsive } from 'pc/hooks';
-import { emojiUrl, nodeConfigData } from 'pc/utils';
+import { Emoji } from 'pc/components/common/emoji/emoji';
+import { useResponsive } from 'pc/hooks/use_responsive';
+import { nodeConfigData } from 'pc/utils/catalog';
+import { emojiUrl } from 'pc/utils/emoji_url';
 import { EmojiPopover } from '../../emoji_popover';
 import styles from './style.module.less';
 

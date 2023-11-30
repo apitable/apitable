@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IReduxState } from '../../exports/store';
+import { IReduxState } from '../../exports/store/interfaces';
 import { isNumber } from 'lodash';
 import { ICellValue } from 'model/record';
 import {
@@ -50,8 +50,6 @@ export const commonNumberFields = new Set([
   FieldType.AutoNumber,
   FieldType.Formula,
 ]);
-// scientific notation threshold
-export const numberThresholdValue = 1e+16;
 
 export const numberFormat = (cv: ICellValue, formatting?: IComputedFieldFormattingProperty) => {
   const { formatType, precision = 0, symbol, commaStyle } = (formatting as any) || {};
@@ -227,8 +225,8 @@ export abstract class NumberBaseField extends Field {
     // TODO: Tidy up the logic here.
     // Field -> NumberBaseField -> [NumberField,RatingField,PercentField,CurrencyField] -> LookupField
     // + getVisibleRows will pre-validate if it is empty or not. Logically speaking, it should not be used, and all filter logic should go here.
-    // + When implementing the field isMeetFilter, the unary operator should be judged in advance, 
-    // and then the polynomial operator should be processed. In this way, 
+    // + When implementing the field isMeetFilter, the unary operator should be judged in advance,
+    // and then the polynomial operator should be processed. In this way,
     // the following processing of the comparison value will not affect the normal judgment logic.
     // + Now the field filter also needs to be provided to the single record of automation, and it is determined in advance if it is empty or not.
     if (operator === FOperator.IsEmpty) {

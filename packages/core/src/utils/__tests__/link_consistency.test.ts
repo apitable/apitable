@@ -1,6 +1,8 @@
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 import { IOperation, OTActionName } from 'engine';
-import { IDatasheetMap, IDatasheetState, IPageParams, IReduxState, ISnapshot, ViewType } from 'exports/store';
+import { IDatasheetMap, IDatasheetState, IPageParams, IReduxState, ISnapshot } from 'exports/store/interfaces';
+import { ViewType } from 'modules/shared/store/constants';
+
 import { FieldType, ResourceType, SegmentType } from 'types';
 import { ILinkConsistencyError, checkLinkConsistency, generateFixLinkConsistencyChangesets } from 'utils/link_consistency';
 

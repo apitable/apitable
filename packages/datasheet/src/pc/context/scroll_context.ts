@@ -18,8 +18,7 @@
 
 import { createContext, RefObject, useContext } from 'react';
 
-
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 // Cache page location object
 export interface IScrollOffset {

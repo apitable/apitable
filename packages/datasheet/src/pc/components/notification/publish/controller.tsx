@@ -27,9 +27,9 @@ import { dispatch } from 'pc/worker/store';
 import { showBannerAlert } from '../banner_alert';
 import { isUserInOldVersionOrLocal, NoticeTemplatesConstant, requestWebNotification, stringToActions } from '../utils';
 // @ts-ignore
-import { showOrderModalAfterPay } from 'enterprise/subscribe_system/order_modal/pay_order_success';
+import { isSocialDingTalk } from 'enterprise/home/social_platform/utils';
 // @ts-ignore
-import { isSocialDingTalk } from 'enterprise/home/social_platform/utils'
+import { showOrderModalAfterPay } from 'enterprise/subscribe_system/order_modal/pay_order_success';
 // @ts-ignore
 import { showVikaby } from 'enterprise/vikaby';
 

@@ -17,9 +17,9 @@
  */
 
 import Joi from 'joi';
-import { IReduxState } from '../../exports/store';
+import { IReduxState } from 'exports/store/interfaces';
 import { ICellValue } from '../record';
-import { ArrayValueField } from './field';
+import { ArrayValueField } from './array_field';
 import { IFilterCondition, FOperator } from 'types/view_types';
 import { isArray, isNumber, isString, isEqual } from 'lodash';
 import { DatasheetActions } from '../../commands_actions/datasheet';
@@ -30,7 +30,7 @@ import { Strings, t } from '../../exports/i18n';
 import { isNullValue } from 'model/utils';
 import { IAddOpenAttachmentFieldProperty } from 'types';
 import { joiErrorResult } from './validate_schema';
-
+import { getFieldDefaultProperty } from './const';
 const baseAttachmentFieldSchema = {
   id: Joi.string().required(),
   name: Joi.string().required(),
@@ -159,7 +159,7 @@ export class AttachmentField extends ArrayValueField {
   }
 
   static defaultProperty() {
-    return null;
+    return getFieldDefaultProperty(FieldType.Attachment) as null;
   }
 
   override eq(cv1: IAttachmentValue[] | null, cv2: IAttachmentValue[] | null): boolean {

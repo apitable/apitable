@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { IReduxState, Selectors, Strings, t } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const useViewNameChecker = () => {
   const [errMsg, setErrMsg] = useState<string | null>(null);

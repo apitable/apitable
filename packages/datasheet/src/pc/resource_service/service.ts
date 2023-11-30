@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { SimpleEmitter } from 'modules/shared/simple_emitter';
 import { Store } from 'redux';
 import { BroadcastTypes, IReduxState, Selectors } from '@apitable/core';
 import { IServiceError, ResourceService } from '@apitable/widget-sdk';
-import { SimpleEmitter } from 'modules/shared/simple_emitter';
+import { UploadManager } from 'pc/utils/upload_manager';
 import { KeybindingService } from '../../modules/shared/shortcut_key/keybinding_service';
 import { Clipboard } from '../common/clipboard';
-import { UploadManager } from '../utils';
 
 export class ResourceServiceEnhanced extends ResourceService {
   simpleEmitter!: SimpleEmitter;

@@ -10,7 +10,7 @@
     "databus_wasm_bg.js",
     "databus_wasm.d.ts"
   ],
-  "main": "./cjs/databus_wasm.js",
+  "main": "./esm/databus_wasm.js",
   "module": "./esm/databus_wasm.js",
   "exports": {
     ".": {

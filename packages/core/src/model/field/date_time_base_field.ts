@@ -24,10 +24,10 @@ import 'dayjs/locale/zh-tw';
 import timezone from 'dayjs/plugin/timezone';
 import weekday from 'dayjs/plugin/weekday';
 import utc from 'dayjs/plugin/utc';
-import { getUserLocale, getUserTimeZone } from 'exports/store/selectors';
+import { getUserLocale, getUserTimeZone } from 'modules/user/store/selectors/user';
 import Joi from 'joi';
 import { isEqual, isNumber } from 'lodash';
-import { DEFAULT_TIME_ZONE } from 'model';
+import { DEFAULT_TIME_ZONE } from 'model/constants';
 import { isNullValue } from 'model/utils';
 import { IAPIMetaDateTimeBaseFieldProperty } from 'types/field_api_property_types';
 import {
@@ -49,7 +49,7 @@ import { assertNever, dateStrReplaceCN, getToday, notInTimestampRange } from 'ut
 import { isServer } from 'utils/env';
 import { covertDayjsFormat2DateFnsFormat, getTimeZone, getTimeZoneAbbrByUtc } from '../../config';
 import { getLanguage, Strings, t } from '../../exports/i18n';
-import { IReduxState } from '../../exports/store';
+import { IReduxState } from '../../exports/store/interfaces';
 import { ICellValue } from '../record';
 import { Field } from './field';
 import { StatTranslate, StatType } from './stat';
@@ -105,7 +105,7 @@ const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
     let defaultTimezone: string | undefined;
     timezone(o, c, d);
     // The following function integrates a performance tuning from https://github.com/iamkun/dayjs/issues/1236#issuecomment-1262907180
-    c.prototype.tz = function(this: dayjs.Dayjs, timezone = defaultTimezone, keepLocalTime = undefined) {
+    c.prototype.tz = function (this: dayjs.Dayjs, timezone = defaultTimezone, keepLocalTime = undefined) {
       const oldOffset = this.utcOffset();
       const date = this.toDate();
       const target = getDateTimeFormat(timezone!).format(date);

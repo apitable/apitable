@@ -36,12 +36,11 @@ import { AddOutlined, GalleryOutlined, ListOutlined } from '@apitable/icons';
 import { Tooltip } from 'pc/components/common';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import ReduceIcon from 'static/icon/common/common_icon_reduce.svg';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const MAX_COLUMN_COUNT = 6;
 const MIN_COLUMN_COUNT = 1;

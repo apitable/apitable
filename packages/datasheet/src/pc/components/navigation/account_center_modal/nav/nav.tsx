@@ -19,7 +19,7 @@
 import classNames from 'classnames';
 import { FC } from 'react';
 import * as React from 'react';
-import { getElementDataset } from 'pc/utils';
+import { getElementDataset } from 'pc/utils/dom';
 import styles from './style.module.less';
 
 interface INavItem {

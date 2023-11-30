@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { MultiSelectField } from '../../../model';
+import { MultiSelectField } from '../../../model/field/select_field/multi_select_field';
 import { FieldType, IField } from '../../../types/field_types';
 import { str2multi } from '..';
-import { IReduxState } from '../../../exports/store';
+import { IReduxState } from '../../../exports/store/interfaces';
 
 function getField(): [MultiSelectField, string[], any[], IField] {
   const table: IField = {

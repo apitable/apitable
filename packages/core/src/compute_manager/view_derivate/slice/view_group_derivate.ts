@@ -4,10 +4,12 @@ import {
   ILinearRow, IReduxState, IViewProperty, IViewRow,
 } from 'exports/store/interfaces';
 import {
-  getActiveRecordId, getActiveRowInfo, getCellValue, getGroupingCollapseIds, getField,
-} from 'modules/database/store/selectors/resource/datasheet';
+  getActiveRecordId, getActiveRowInfo, getGroupingCollapseIds, getField,
+} from 'modules/database/store/selectors/resource/datasheet/base';
+import { getCellValue } from 'modules/database/store/selectors/resource/datasheet/cell_calc';
 import { CellType, RecordMoveType } from 'modules/shared/store/constants';
-import { Group, handleEmptyCellValue } from 'model';
+import { handleEmptyCellValue } from 'model/utils';
+import { Group } from 'model/view/group';
 
 export class ViewGroupDerivate {
 
@@ -79,7 +81,7 @@ export class ViewGroupDerivate {
           !(Field.bindContext(field, state).compare(cv1, cv2) === 0)
         ) {
           shouldGenGroupLinearRows = true;
-          // Because the breakpoint of the upper layer must be the breakpoint of the lower layer, 
+          // Because the breakpoint of the upper layer must be the breakpoint of the lower layer,
           // so here we have to iterate through them and add a line to each one.
           groupInfo.slice(groupItemIndex).forEach((groupItem, subIndex) => {
             groupSketch.addBreakpointAndSetGroupTab(groupItem.fieldId, index, row.recordId, subIndex + groupItemIndex);
@@ -140,8 +142,8 @@ export class ViewGroupDerivate {
    *     recD_2
    *     add_2
    *   blank_1
-   * 
-   * As shown in the above diagram, as long as we find the head of the collapsed group until 
+   *
+   * As shown in the above diagram, as long as we find the head of the collapsed group until
    * we meet a blank with the same depth as it, anything in between can be ignored.
    */
   getLinearRowsAndGroupAfterCollapse(linearRows: ILinearRow[], groupingCollapseIds: string[] | undefined) {
@@ -193,13 +195,13 @@ export class ViewGroupDerivate {
       * groupBreakpoint
       * field1 Grouping Breakpoints 0---------10---------20
       * field2 level Grouping Breakpoints 0--3-5-6--10----15---20
-      * 
+      *
       * field1: [0, 10, 20]
       * field2: [0, 3, 5, 6, 10, 15, 20]
       */
       groupBreakpoint: groupSketch.groupBreakpoint,
       /**
-      * Guide the grid view to draw the structured data of the table, 
+      * Guide the grid view to draw the structured data of the table,
       * with the hierarchical structure reflected by depth.
       * [
       *    Blank 0

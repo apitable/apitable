@@ -21,7 +21,7 @@
         "./modules/enterprise/*"
       ]
     },
-    "module": "esnext",
+    "module": "ESNext",
     "baseUrl": "./src",
     "allowJs": true,
     "strict": true,

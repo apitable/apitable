@@ -1,4 +1,4 @@
-import { IReduxState } from 'exports/store';
+import { IReduxState } from 'exports/store/interfaces';
 import {
   BasicOpenValueTypeBase,
   BasicValueType,
@@ -11,14 +11,15 @@ import {
   IWorkDocField,
   IWorkDocValue,
 } from 'types';
-import { ArrayValueField, zhIntlCollator } from './field';
+import { zhIntlCollator } from './field';
+import { ArrayValueField } from './array_field';
 import { ICellValue } from '../record';
 import { isArray, isEqual, isString } from 'lodash';
 import Joi from 'joi';
 import { DatasheetActions } from '../../commands_actions/datasheet';
 import { isNullValue } from '../utils';
 import { Strings, t } from 'exports/i18n';
-
+import { getFieldDefaultProperty } from './const';
 const baseWorkDocFieldSchema = {
   documentId: Joi.string().required(),
   title: Joi.string().allow('')
@@ -34,7 +35,7 @@ export class WorkDocField extends ArrayValueField {
   static cellValueSchema = Joi.array().items(Joi.object(baseWorkDocFieldSchema).required()).allow(null).required();
 
   static defaultProperty() {
-    return null;
+    return getFieldDefaultProperty(FieldType.WorkDoc) as null;
   }
   get openValueJsonSchema() {
     return {

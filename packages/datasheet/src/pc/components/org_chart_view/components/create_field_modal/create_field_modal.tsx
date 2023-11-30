@@ -23,14 +23,13 @@ import { useContext } from 'react';
 import { Button, Typography, useThemeColors, ThemeName } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
-import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view';
+import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view/id';
+import { useAppSelector } from 'pc/store/react-redux';
 import OrgChartCreationLinkDark from 'static/icon/account/architecture_add_link_dark.png';
 import OrgChartCreationLinkLight from 'static/icon/account/architecture_add_link_light.png';
 import OrgChartCreationNoPermission from 'static/icon/account/org_chart_creation_no_permission.png';
 import { FlowContext } from '../../context/flow_context';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ICreateFieldModalProps {
   onAdd: () => void;

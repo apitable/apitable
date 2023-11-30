@@ -17,7 +17,7 @@
  */
 
 import { IChangeset } from 'engine';
-import { IReduxState } from '../exports/store';
+import { IReduxState } from '../exports/store/interfaces';
 import { EventManager } from './event_manager';
 import { IOPEventManager, IOPEventManagerOptions } from './interface';
 import { ICombEvent, IEventInstance, IRealAtomEvent, IVirtualAtomEvent } from './interface/event.interface';
@@ -30,7 +30,7 @@ export class OPEventManager extends EventManager implements IOPEventManager {
   }
 
   private getAllEvents(realAtomEvents: IEventInstance<IRealAtomEvent>[], virtualAtomEvents: IEventInstance<IVirtualAtomEvent>[]) {
-    const { op2Event, options: { enableCombEvent }} = this.options;
+    const { op2Event, options: { enableCombEvent } } = this.options;
     let combEvents: IEventInstance<ICombEvent>[] = [];
     const atomEvents = [...realAtomEvents, ...virtualAtomEvents];
     if (enableCombEvent) {

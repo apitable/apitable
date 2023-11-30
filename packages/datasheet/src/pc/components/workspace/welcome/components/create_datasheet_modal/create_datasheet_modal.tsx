@@ -25,7 +25,7 @@ import { Router } from 'pc/components/route_manager/router';
 import { useRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export interface ICreateDataSheetModalProps {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;

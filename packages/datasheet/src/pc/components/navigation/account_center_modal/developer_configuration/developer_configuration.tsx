@@ -23,19 +23,21 @@ import { useDispatch } from 'react-redux';
 import { Button, ButtonGroup, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import { AddOutlined, CopyOutlined, ReloadOutlined } from '@apitable/icons';
-import { IdentifyingCodeInput, WithTipWrapper } from 'pc/components/common/input';
+import { IdentifyingCodeInput } from 'pc/components/common/input/identifying_code_input/identifying_code_input';
+import { WithTipWrapper } from 'pc/components/common/input/with_tip_wrapper/with_tip_wrapper';
 import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal';
 import { BaseModal } from 'pc/components/common/modal/base_modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
-import { useRequest, useSetState, useUserRequest } from 'pc/hooks';
-import { copy2clipBoard } from 'pc/utils';
+import { useRequest } from 'pc/hooks/use_request';
+import { useSetState } from 'pc/hooks/use_set_state';
+import { useUserRequest } from 'pc/hooks/use_user_request';
+import { useAppSelector } from 'pc/store/react-redux';
+import { copy2clipBoard } from 'pc/utils/dom';
 import { getEnvVariables } from 'pc/utils/env';
 import { getMaskToken, getVerifyData, IRefreshConfigConfig, VerifyTypes } from '../utils';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IDeveloperConfigProps {
   setActiveItem: React.Dispatch<React.SetStateAction<number>>;

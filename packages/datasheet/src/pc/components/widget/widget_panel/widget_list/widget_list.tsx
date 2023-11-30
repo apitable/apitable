@@ -19,6 +19,8 @@
 import { useLocalStorageState } from 'ahooks';
 import classNames from 'classnames';
 import { keyBy } from 'lodash';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
+import { EmitterEventName } from 'modules/shared/simple_emitter';
 import { useEffect, useState } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
@@ -42,14 +44,13 @@ import {
   QuestionCircleOutlined,
   SettingOutlined,
 } from '@apitable/icons';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { EmitterEventName } from 'modules/shared/simple_emitter';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { simpleEmitter as panelSimpleEmitter } from 'pc/components/common/vika_split_panel';
 import { expandWidgetRoute } from 'pc/components/widget/expand_widget';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData } from 'pc/utils';
 import { WidgetContextProvider } from '../../context';
 import { copyWidget, installToPanel } from '../../widget_center/install_utils';
@@ -59,8 +60,6 @@ import { openSendToDashboard } from '../send_to_dashboard';
 import { simpleEmitter, WidgetItem } from '../widget_item';
 import { installedWidgetHandle } from '../widget_panel_header';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const ResponsiveGridLayout: any = WidthProvider(Responsive);
 

@@ -19,9 +19,10 @@
 import { IOperation } from 'engine';
 import { IFieldMap, IReduxState } from '../exports/store/interfaces';
 import { ILinkedActions } from './command';
-import { LinkedDataConformanceMaintainer, MemberFieldMaintainer } from 'model';
+import { LinkedDataConformanceMaintainer } from 'model/linked_data_conformance_maintainer';
+import { MemberFieldMaintainer } from 'model/member_maintainer';
 import { ResourceType } from 'types';
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 import { IResourceOpsCollect } from './command_manager';
 
 export interface ICollaCommandExecuteContext {

@@ -17,7 +17,7 @@
  */
 
 import { IJOTAction, OTActionName } from 'engine/ot/interface';
-import { IWidgetSnapshot } from '../exports/store';
+import { IWidgetSnapshot } from '../exports/store/interfaces';
 
 export class WidgetActions {
   static setGlobalStorage2Action(
