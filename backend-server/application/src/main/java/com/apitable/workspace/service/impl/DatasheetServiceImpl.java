@@ -1109,6 +1109,9 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         ButtonFieldProperty.ButtonFieldAction action,
         Map<String, String> newNodeMap,
         Map<String, String> newTriggerMap) {
+        if (null == newTriggerMap) {
+            newTriggerMap = new HashMap<>();
+        }
         if (ObjectUtil.equals(action.getType(),
             ButtonFieldActionType.TRIGGER_AUTOMATION.getType())) {
             if (null != action.getAutomation()) {
