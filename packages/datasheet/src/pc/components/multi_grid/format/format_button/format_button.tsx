@@ -3,7 +3,7 @@ import { Input, message } from 'antd';
 import produce from 'immer';
 import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
-import { useRef, Dispatch, SetStateAction, useMemo, useState, useCallback } from 'react';
+import {useRef, Dispatch, SetStateAction, useMemo, useState, useCallback, MutableRefObject} from 'react';
 import styled from 'styled-components';
 import { Box, DropdownSelect, FloatUiTooltip, LinkButton, Typography } from '@apitable/components';
 import {
@@ -25,6 +25,7 @@ import {
 import { AddOutlined, SyncOnOutlined } from '@apitable/icons';
 import { automationApiClient, workbenchClient } from 'pc/common/api-client';
 import { AutomationConstant, CONST_MAX_TRIGGER_COUNT } from 'pc/components/automation/config';
+import { IOnChangeParams } from 'pc/components/data_source_selector/interface';
 import { DataSourceSelectorForNode } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/data_source_selector_for_node';
 import { AutomationItem } from 'pc/components/multi_grid/format/format_button/automation_item';
 import { ButtonTitle } from 'pc/components/multi_grid/format/format_button/ButtonTitle';
@@ -39,7 +40,6 @@ import { openFormulaModal } from '../format_formula/open_formula_modal';
 import { assignDefaultFormatting } from '../format_lookup';
 import { ColorPicker } from './color_picker';
 import styles from './styles.module.less';
-import {IOnChangeParams} from "pc/components/data_source_selector/interface";
 
 const Option = DropdownSelect.Option;
 
@@ -291,6 +291,8 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
     });
   }, [currentField, datasheetId, handleAddTrigger, setCurrentField]);
 
+  const loadingNewRef: MutableRefObject<boolean> = useRef(false)
+  const loadingCreateRef: MutableRefObject<boolean> = useRef(false)
   const handleAutomationChangeDebounced = debounce(handleAutomationChange, 300);
   return (
     <>
@@ -300,7 +302,18 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
             <>
               <Box
                 paddingLeft={'16px'}
-                onClick={handleClickDebounce}
+                onClick={async () => {
+                  try {
+                    if(loadingNewRef.current) {
+                      return;
+                    }
+                    loadingNewRef.current =true;
+                    await handleClickDebounce();
+                  } finally {
+                    loadingNewRef.current =false;
+                  }
+                }
+                }
               >
                 <LinkButton prefixIcon={<AddOutlined color={colors.textBrandDefault} />} underline={false}>
                   <Typography variant={'body4'} color={colors.textBrandDefault}>
@@ -320,9 +333,17 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
             setBingAutomationVisible(false);
           }}
           permissionRequired={'editable'}
-          onChange={
-            handleAutomationChangeDebounced
-          }
+          onChange={async (e) => {
+            try {
+              if(loadingCreateRef.current) {
+                return;
+              }
+              loadingCreateRef.current=true
+              await handleAutomationChangeDebounced(e);
+            } finally {
+              loadingCreateRef.current=false
+            }
+          }}
           nodeTypes={[ConfigConstant.NodeType.AUTOMATION, ConfigConstant.NodeType.FOLDER]}
           defaultNodeIds={{ folderId: rootId, automationId: action?.automation?.automationId }}
           requiredData={['automationId']}
