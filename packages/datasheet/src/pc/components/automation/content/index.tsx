@@ -73,15 +73,6 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
   const invisible = panel.panelName == null || isMobile;
 
-  useEffect(() => {
-    if (isXl) {
-      if (sideBarVisible) {
-        setPanel({
-          panelName: undefined,
-        });
-      }
-    }
-  }, [isXl, setPanel, setSideBarVisible, sideBarVisible]);
   const user = useAppSelector((state: IReduxState) => state.user);
 
   if (!robot) {

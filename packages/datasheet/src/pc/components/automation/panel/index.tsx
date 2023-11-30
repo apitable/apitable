@@ -44,6 +44,7 @@ import {
   automationPanelAtom,
   automationStateAtom,
   getResourceAutomationDetailIntegrated,
+  IAutomationPanel,
   PanelName,
   useAutomationController,
 } from '../controller';
@@ -60,7 +61,7 @@ const StyleIcon = styled(Box)`
   }
 `;
 
-export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> = memo(({ onClose, resourceId }) => {
+export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string, panel?: IAutomationPanel }> = memo(({ onClose, panel, resourceId }) => {
   const { show } = useContextMenu({ id: MenuID });
 
   const { currentRobotId } = useAutomationRobot();
@@ -84,6 +85,7 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
   useMount(() => {
     isXl && setSideBarVisible(false);
     if (cache.id !== resourceId) {
+      console.log('initialize');
       initialize();
     }
   });
@@ -102,12 +104,19 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
         const itemDetail = await getResourceAutomationDetailIntegrated(resourceId, firstItem.robotId, {
           shareId: shareInfo?.shareId,
         });
-        if (cache.id !== resourceId) {
-          setPanel({
-            panelName: isLg ? undefined : PanelName.BasicInfo,
-          });
-        } else if (cache.panel) {
-          setPanel(cache.panel);
+
+        if(panel) {
+          setPanel(panel);
+        }else {
+          if (cache.id !== resourceId) {
+            console.log('set x');
+            setPanel({
+              panelName: isLg ? undefined : PanelName.BasicInfo,
+            });
+          } else if (cache.panel) {
+            console.log('set 2', cache.panel);
+            setPanel(cache.panel);
+          }
         }
 
         if ((params as { tab: string }).tab === 'history') {

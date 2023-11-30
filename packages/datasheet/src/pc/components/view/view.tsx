@@ -76,11 +76,12 @@ export const View: React.FC<React.PropsWithChildren<any>> = () => {
 
   const { data: triggerTypes } = useTriggerTypes();
   const buttonFieldTriggerId = triggerTypes.find((item) => item.endpoint === 'button_field' || item.endpoint === 'button_clicked');
+  const dstId = useAppSelector(Selectors.getActiveDatasheetId)
 
   useEffect(() => {
-    if (fieldMap && buttonFieldTriggerId) {
+    if (fieldMap && buttonFieldTriggerId && dstId) {
       const fieldItem = Object.values(fieldMap).filter((item) => item.type === FieldType.Button);
-      const task = fieldItem.map((r) => checkButtonField(r as IButtonField, buttonFieldTriggerId));
+      const task = fieldItem.map((r) => checkButtonField(dstId ?? '', r as IButtonField, buttonFieldTriggerId));
       Promise.all(task)
         .then(() => {
           console.log('button field checked');
@@ -89,7 +90,7 @@ export const View: React.FC<React.PropsWithChildren<any>> = () => {
           console.error('button field checked', e);
         });
     }
-  }, [fieldMap, buttonFieldTriggerId]);
+  }, [dstId, fieldMap, buttonFieldTriggerId]);
 
   const { screenIsAtMost } = useResponsive();
   const query = useQuery();

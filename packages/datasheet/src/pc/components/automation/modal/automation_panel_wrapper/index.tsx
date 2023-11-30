@@ -10,7 +10,7 @@ import {
   automationCacheAtom, automationCurrentTriggerId,
   automationLocalMap,
   automationPanelAtom, automationStateAtom,
-  automationTriggersAtom, PanelName
+  automationTriggersAtom, IAutomationPanel, PanelName
 } from 'pc/components/automation/controller';
 import { getFieldId } from 'pc/components/automation/controller/hooks/get_field_id';
 import { checkIfModified } from 'pc/components/automation/modal/step_input_compare';
@@ -45,6 +45,8 @@ export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
   const [panelState, setAutomationPanel] = useAtom(automationPanelAtom);
   const setItem = useSetAtom(automationCurrentTriggerId);
 
+  const [lcoalPanel, setPanel] =useState<IAutomationPanel|undefined>(undefined);
+
   const [initialzed, setInitailzed] = useState(false);
   useEffect(() => {
     const trigger = automationState?.robot?.triggers?.find(r => getFieldId(r) !== null);
@@ -56,14 +58,24 @@ export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
 
         setInitailzed(true);
 
-        setSideBarVisible(true);
-        setItem(trigger.triggerId);
-        setAutomationPanel({
+        const newPanel : IAutomationPanel= {
           panelName: PanelName.Trigger,
           dataId: trigger.triggerId,
           // @ts-ignore
-          data: trigger,
+          data: trigger
+        };
+
+        setCache({
+          panel: newPanel,
+          id: automationId,
         });
+        setPanel(newPanel);
+
+        setTimeout(() => {
+          setSideBarVisible(true);
+          setItem(trigger.triggerId);
+          setAutomationPanel(newPanel);
+        }, 2000);
         // TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_BUTTON_TRIGGER);
         Player.doTrigger(Events.guide_use_button_column_first_time);
       }
@@ -146,6 +158,6 @@ export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
   }, [debounced, handle, router.events]);
 
   return (
-    <AutomationPanel resourceId={automationId}/>
+    <AutomationPanel resourceId={automationId} panel={lcoalPanel}/>
   );
 });

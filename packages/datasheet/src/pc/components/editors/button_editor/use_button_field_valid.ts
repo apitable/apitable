@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import useSWR from 'swr';
 import { ResponseDataAutomationVO } from '@apitable/api-client';
 import { ButtonActionType, IButtonField, IReduxState, Selectors } from '@apitable/core';
+import { getDatasheetId } from 'pc/components/automation/controller/hooks/get_datasheet_id';
 import { getFieldId } from 'pc/components/automation/controller/hooks/get_field_id';
 import { getRobotDetail } from 'pc/components/editors/button_editor/api';
 import { setIsValid } from 'pc/components/editors/button_editor/valid_map';
@@ -10,7 +11,7 @@ import { useTriggerTypes } from 'pc/components/robot/hooks';
 import { IRobotTrigger, ITriggerType } from 'pc/components/robot/interface';
 import { useAppSelector } from 'pc/store/react-redux';
 
-export const checkButtonField = async (button: IButtonField, buttonFieldTriggerId: ITriggerType | undefined) => {
+export const checkButtonField = async (dstId: string, button: IButtonField, buttonFieldTriggerId: ITriggerType | undefined) => {
   if (isNil(button.property.action.type)) {
     setIsValid(button.id, false);
     return {
@@ -43,12 +44,12 @@ export const checkButtonField = async (button: IButtonField, buttonFieldTriggerI
   }
 
   const resp = await getRobotDetail(automId);
-  const result = check(button, buttonFieldTriggerId, resp);
+  const result = check(dstId, button, buttonFieldTriggerId, resp);
   setIsValid(button.id, result.result);
   return result;
 };
 
-export const check = (button: IButtonField, buttonFieldTriggerId: ITriggerType | undefined, data: ResponseDataAutomationVO | undefined) => {
+export const check = (dstId: string, button: IButtonField, buttonFieldTriggerId: ITriggerType | undefined, data: ResponseDataAutomationVO | undefined) => {
 
   if (!data && button.property.action.type === ButtonActionType.TriggerAutomation) {
     return {
@@ -84,8 +85,16 @@ export const check = (button: IButtonField, buttonFieldTriggerId: ITriggerType |
         result: false
       };
     }
+    // if(automation)
     const found = automation.triggers?.find(item => item.triggerTypeId === buttonFieldTriggerId?.triggerTypeId) as IRobotTrigger | undefined;
     if (!found) {
+
+      return {
+        fieldId: button.id,
+        result: false
+      };
+    }
+    if(getDatasheetId(found) !== dstId) {
       return {
         fieldId: button.id,
         result: false
@@ -113,6 +122,8 @@ export const useButtonFieldValid = (button: IButtonField): {
 
   const { editable } = useAppSelector((state: IReduxState) => Selectors.getDatasheet(state)?.permissions) || {};
 
+  const dstId = useAppSelector(Selectors.getActiveDatasheetId);
+
   const { data: triggerTypes } = useTriggerTypes();
   const buttonFieldTriggerId =triggerTypes.find(item => item.endpoint==='button_clicked' || item.endpoint === 'button_field');
   const automationId = button.property.action.automation?.automationId;
@@ -121,7 +132,7 @@ export const useButtonFieldValid = (button: IButtonField): {
       ''
     );
 
-    const checkResult = check(button, buttonFieldTriggerId, data1);
+    const checkResult = check(dstId ?? '', button, buttonFieldTriggerId, data1);
     if (!isLoading) {
       setIsValid(button.id, checkResult.result);
     }
@@ -141,7 +152,7 @@ export const useButtonFieldValid = (button: IButtonField): {
         result: false,
       };
     }
-    const checkResult = check(button, buttonFieldTriggerId, data);
+    const checkResult = check(dstId ?? '', button, buttonFieldTriggerId, data);
 
     return {
       isLoading: isLoading,

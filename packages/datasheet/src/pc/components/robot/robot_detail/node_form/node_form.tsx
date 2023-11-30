@@ -150,7 +150,6 @@ export const NodeFormInfo = memo(
               resourceId: automationState?.resourceId!,
               robotId: automationState?.currentRobotId!,
             });
-            // await mutate(`/automation/robots/${currentRobotId}/actions`);
             setAutomationPanel((draft) => {
               draft.panelName = PanelName.BasicInfo;
             });

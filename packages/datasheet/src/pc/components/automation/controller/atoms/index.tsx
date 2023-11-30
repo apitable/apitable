@@ -60,7 +60,7 @@ const automationHistoryAtom = atomWithImmer<{
   dialogVisible: false,
 });
 
-interface IAutomationPanel {
+export interface IAutomationPanel {
 
   panelName?: PanelName;
   dataId?: string;

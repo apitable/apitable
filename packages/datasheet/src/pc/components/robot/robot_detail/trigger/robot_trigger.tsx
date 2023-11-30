@@ -576,8 +576,6 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
 
   const formId = getFormId({ input: formData });
 
-
-
   const { data } = useSWR([
     'fetchFormPack', formId
   ], () => fetchFormPack(String(formId!)).then(res => res?.data?.data ?? {
@@ -641,7 +639,8 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
 
           if(fieldMap?.[fieldId] != null) {
             const field = fieldMap?.[fieldId] as IButtonField;
-            if (field.property.action?.type !== ButtonActionType.TriggerAutomation && !e.some(error => error.dataPath === '.fieldId')) {
+            const automationNotSame = field.property.action.automation?.automationId !== automationState?.resourceId;
+            if ((automationState|| field.property.action?.type !== ButtonActionType.TriggerAutomation) && !e.some(error => error.dataPath === '.fieldId')) {
               return {
                 fieldId: {
                   __errors: [t(Strings.the_current_button_column_has_expired_please_reselect)]

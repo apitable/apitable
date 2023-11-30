@@ -49,7 +49,6 @@ export const useAutomationNavigateController = () => {
 
   const { shareInfo } = useContext(ShareContext);
 
-  const [cache, setCache] = useAtom(automationCacheAtom);
   const navigateDatasheetAutomation = async (resourceId: string, robotId: string) => {
     const itemDetail = await getResourceAutomationDetailIntegrated(resourceId, robotId, {
       shareId: shareInfo?.shareId
