@@ -12,6 +12,7 @@ import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_con
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getElementDataset, KeyCode } from 'pc/utils';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
@@ -19,10 +20,8 @@ import { Loading } from '../common/loading';
 import { DefaultContent } from './default_content';
 import { FooterTips } from './footer_tips';
 import { ISearchNode, Node } from './node';
-import styles from './style.module.less';
 import { nodeTypeList, TabNodeType, TypeTab } from './type_tab';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 let reqToken: () => void;
 
@@ -158,6 +157,9 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
     e.nativeEvent.stopImmediatePropagation();
     setKeyword('');
 
+    // sessionStorage.removeItem('searchKeyword');
+    // sessionStorage.removeItem('searchData');
+
     setCurrentIndex(-1);
   };
 
@@ -188,6 +190,25 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
       <div className={styles.tip}>{t(Strings.quick_search_not_found)}</div>
     </div>
   );
+
+  // useEffect(() => {
+  //   const savedKeyword = sessionStorage.getItem('searchKeyword');
+  //   const savedData = sessionStorage.getItem('searchData');
+  //   if (savedKeyword) {
+  //     setKeyword(savedKeyword);
+  //     getNodeList(savedKeyword);
+  //   }
+  //   if (savedData) {
+  //     setDataNodeList(JSON.parse(savedData));
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   sessionStorage.setItem('searchKeyword', keyword);
+  //   if (dataNodeList.length > 0) {
+  //     sessionStorage.setItem('searchData', JSON.stringify(dataNodeList));
+  //   }
+  // }, [keyword, dataNodeList]);
 
   return (
     <div className={classnames(styles.searchWrapper, className)} ref={ref}>

@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Input, InputRef, message } from 'antd';
+import { Input, InputRef } from 'antd';
 import * as React from 'react';
 import { forwardRef, useEffect, useState, useRef } from 'react';
-import { Button } from '@apitable/components';
+import { Button, colors } from '@apitable/components';
 import { ConfigConstant, IInviteMemberList, IReduxState, isEmail, Strings, t } from '@apitable/core';
 import { CheckOutlined, CloseOutlined, WarnOutlined } from '@apitable/icons';
 import { useEmailInviteInModal } from 'pc/hooks';
@@ -41,6 +41,13 @@ const ResIcon = {
   Warning: <WarnOutlined />,
 };
 
+enum InviteInputStatus {
+  Normal = 'normal',
+  // Success = 'success',
+  Error = 'error',
+  Warning = 'warning',
+}
+
 export const InputEmail = forwardRef(
   ({ cancel, setMemberInvited, shareId, secondVerify, setSecondVerify }: IInputEmailProps, ref: React.Ref<HTMLDivElement>) => {
     const spaceId = useAppSelector((state: IReduxState) => state.space.activeId || '');
@@ -52,6 +59,9 @@ export const InputEmail = forwardRef(
     const [memberArr, setMemberArr] = useState<string[]>([]);
 
     const [isFocused, setIsFocused] = useState<boolean>(false);
+
+    const [errorStatus, setErrorStatus] = useState<InviteInputStatus>(InviteInputStatus.Normal);
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
     useEffect(() => {
       !err && secondVerify && setSecondVerify(null);
@@ -88,27 +98,43 @@ export const InputEmail = forwardRef(
       return memberArr.includes(value);
     };
 
-    const handleKeyDown = (e: any) => {
-      if (e.key === 'Enter' || e.key === ';' || e.key === ' ') {
-        const inputValue = currentInput.trim();
+    const handleInputAction = () => {
+      const inputValue = currentInput.trim();
 
-        if (!inputValue || !isEmail(inputValue)) {
-          message.error(t(Strings.invite_outsider_invite_input_invalid));
-          return;
-        }
-
-        if (checkIfAlreadyExist(inputValue)) {
-          message.warning(t(Strings.invite_outsider_invite_input_already_exist));
-          return;
-        }
-
-        setMemberArr([...memberArr, inputValue]);
-        setCurrentInput('');
-
-        if (e.key === ';' || e.key === ' ') {
-          e.preventDefault();
-        }
+      if (!inputValue || inputValue.length === 0) {
+        return;
       }
+
+      if (inputValue.length > 0 && (!inputValue || !isEmail(inputValue))) {
+        setErrorStatus(InviteInputStatus.Error);
+        setErrorMessage(t(Strings.invite_outsider_invite_input_invalid));
+        return;
+      }
+
+      if (checkIfAlreadyExist(inputValue)) {
+        setErrorStatus(InviteInputStatus.Warning);
+        setErrorMessage(t(Strings.invite_outsider_invite_input_already_exist));
+        return;
+      }
+
+      setMemberArr([...memberArr, inputValue]);
+      setCurrentInput('');
+    };
+
+    const handleKeyDown = (e: any) => {
+      if (e.key === 'Enter') {
+        handleInputAction();
+      }
+    };
+
+    const handleInputFocus = () => {
+      setIsFocused(true);
+      setErrorStatus(InviteInputStatus.Normal);
+    };
+
+    const handleInputBlur = () => {
+      handleInputAction();
+      setIsFocused(false);
     };
 
     const inputRef = useRef<InputRef>(null);
@@ -157,7 +183,17 @@ export const InputEmail = forwardRef(
                 {t(Strings.invite_outsider_invite_btn_tip)}
               </div>
               <div className={styles.inputItem} onClick={focusInput}>
-                <div className={isFocused ? styles.inputItemBoxFocused : styles.inputItemBox}>
+                <div
+                  className={isFocused ? styles.inputItemBoxFocused : styles.inputItemBox}
+                  style={{
+                    borderColor:
+                      errorStatus !== InviteInputStatus.Normal
+                        ? errorStatus === InviteInputStatus.Error
+                          ? colors.textDangerDefault
+                          : colors.textWarnDefault
+                        : colors.borderBrandDefault,
+                  }}
+                >
                   {memberArr.length > 0 && (
                     <div className={styles.emailEnterBox}>
                       {memberArr.map((email) => (
@@ -182,8 +218,8 @@ export const InputEmail = forwardRef(
                       setCurrentInput(e.target.value);
                     }}
                     onKeyDown={handleKeyDown}
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)}
+                    onBlur={handleInputBlur}
+                    onFocus={handleInputFocus}
                     autoComplete="off"
                     style={{
                       border: 'none',
@@ -191,6 +227,15 @@ export const InputEmail = forwardRef(
                     }}
                   />
                 </div>
+                {errorStatus !== InviteInputStatus.Normal && (
+                  <div
+                    style={{
+                      color: errorStatus === InviteInputStatus.Error ? colors.textDangerDefault : colors.textWarnDefault,
+                    }}
+                  >
+                    {errorMessage}
+                  </div>
+                )}
               </div>
             </div>
             <div className={styles.inviteBtn}>

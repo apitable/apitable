@@ -21,12 +21,13 @@ package com.apitable.template.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-/** 
-* <p> 
-* Template Property type
-* </p> 
-* @author zoe zheng 
-*/
+/**
+ * <p>
+ * Template Property type.
+ * </p>
+ *
+ * @author zoe zheng
+ */
 @Getter
 @AllArgsConstructor
 public enum TemplatePropertyType {

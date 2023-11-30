@@ -2,15 +2,15 @@ import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
 
 plugins {
-    id 'org.springframework.boot'
     id 'testing.java-conventions'
-    id 'idea'
-    id 'com.google.protobuf'
+    alias(libs.plugins.spring.dependency.management)
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.protobuf)
 }
 
 dependencies {
+    // shard module dependencies
     implementation project(':shared:core')
-
     implementation project(':shared:starters:sms')
     implementation project(':shared:starters:mail')
     implementation project(':shared:starters:amqp')
@@ -18,100 +18,85 @@ dependencies {
     implementation project(':shared:starters:socketio')
     implementation project(':shared:starters:beetl')
 
-    annotationProcessor rootProject.ext.dependencies['configuration-processor']
+    // spring boot starters dependencies
+    implementation platform(libs.spring.boot.dependencies)
+    annotationProcessor libs.spring.boot.configuration.processor
+    implementation libs.spring.boot.web
+    implementation libs.spring.boot.webflux
+    implementation libs.spring.boot.mail
+    implementation libs.spring.boot.actuator
+    implementation libs.spring.boot.aop
+    implementation libs.spring.boot.validation
+    implementation libs.spring.boot.security
+    implementation libs.spring.boot.integration
+    implementation libs.spring.boot.thymeleaf
+    implementation libs.spring.integration.redis
+    implementation libs.spring.session.redis
+    implementation libs.mysql
+    runtimeOnly libs.mysql
+    implementation libs.spring.security.cas
+    annotationProcessor libs.lombok
+    compileOnly libs.lombok
+    implementation libs.commons.pool2
+    implementation libs.jedis
+    implementation libs.prometheus.pushgateway
+    implementation libs.servlet
+    implementation libs.bundles.okhttp3
 
-    implementation rootProject.ext.dependencies['spring-web-starter']
-    implementation rootProject.ext.dependencies['spring-webflux-starter']
-    implementation rootProject.ext.dependencies['spring-thymeleaf']
-    implementation rootProject.ext.dependencies['spring-mail-starter']
-    implementation rootProject.ext.dependencies['spring-actuator-starter']
-    implementation rootProject.ext.dependencies['spring-aop-starter']
-    implementation rootProject.ext.dependencies['spring-validation-starter']
-    implementation rootProject.ext.dependencies['spring-security-starter']
-    implementation rootProject.ext.dependencies['spring-integration-starter']
-    implementation rootProject.ext.dependencies['spring-integration-redis']
-    implementation rootProject.ext.dependencies['spring-thymeleaf-starter']
-    implementation(rootProject.ext.dependencies['spring-session-redis']) {
-        exclude group: 'io.lettuce', module: 'lettuce-core'
-    }
-    implementation('org.apache.commons:commons-pool2')
-    implementation rootProject.ext.dependencies['jedis']
-    implementation rootProject.ext.dependencies['spring-security-cas']
-    implementation rootProject.ext.dependencies['prometheus']
-    implementation rootProject.ext.dependencies['mybatis-plus-starter']
-    runtimeOnly rootProject.ext.dependencies['mysql']
-    implementation rootProject.ext.dependencies['easyexcel']
-    implementation rootProject.ext.dependencies['p6spy']
-    implementation rootProject.ext.dependencies['servlet-api']
-    implementation rootProject.ext.dependencies['hutool']
-    implementation rootProject.ext.dependencies['swagger2']
-    implementation rootProject.ext.dependencies['java-semver']
-    implementation rootProject.ext.dependencies['grpc-spring-boot']
-    implementation rootProject.ext.dependencies['grpc-server-spring-boot']
-    implementation rootProject.ext.dependencies['pdf']
-    implementation rootProject.ext.dependencies['sentry']
-    implementation(rootProject.ext.dependencies['spring-cloud-starter-sleuth']) {
-        exclude group: 'org.springframework.cloud', module: 'spring-cloud-sleuth-brave'
-    }
-    implementation rootProject.ext.dependencies['spring-cloud-sleuth-otel']
-    implementation rootProject.ext.dependencies['opentelemetry-exporter-jaeger']
-    implementation rootProject.ext.dependencies['okhttp3']
-    implementation rootProject.ext.dependencies['okhttp3-logging-interceptor']
-    implementation rootProject.ext.dependencies['rs-api']
-    implementation rootProject.ext.dependencies['gson-fire']
-    implementation rootProject.ext.dependencies['jackson-databind-nullable']
-    implementation rootProject.ext.dependencies['jsoup']
-    implementation rootProject.ext.dependencies['protobuf-java']
-    implementation rootProject.ext.dependencies['io-grpc']
-    implementation(rootProject.ext.dependencies['shedlock'])
-    implementation(rootProject.ext.dependencies['shedlock-redis'])
-    implementation rootProject.ext.dependencies['springdoc-openapi-ui']
-    implementation rootProject.ext.dependencies['knife4j-openapi3']
+    // other spring boot starter dependencies
+    implementation libs.mybatis.plus
+    implementation libs.bundles.sentry
+    implementation libs.bundles.apidoc
+    implementation libs.bundles.grpc
 
-    runtimeOnly rootProject.ext.dependencies['mysql']
+    // protobuf dependencies
+    implementation(platform(libs.protobuf.dependencies))
+    implementation(libs.protobuf.java)
 
-    annotationProcessor rootProject.ext.dependencies['lombok']
-    compileOnly rootProject.ext.dependencies['lombok']
+    // io-grpc dependencies
+    implementation(platform(libs.iogrpc.dependencies))
+    implementation libs.bundles.iogrpc
 
-    testCompileOnly rootProject.ext.dependencies["lombok"]
-    testAnnotationProcessor rootProject.ext.dependencies["lombok"]
+    // utilities dependencies
+    implementation libs.p6spy
+    implementation libs.semver
+    implementation libs.javax.ws
+    implementation libs.gson.fire
+    implementation libs.jackson.databind.nullable
+    implementation libs.jsoup
+    implementation libs.bundles.easyexcel
+    implementation libs.bundles.hutool
+    implementation libs.bundles.pdfbox
+    implementation libs.bundles.shedlock
 
-    testImplementation rootProject.ext.dependencies['spring-test-starter']
-    testImplementation rootProject.ext.dependencies['mybatis-plus-starter-test']
-    testImplementation rootProject.ext.dependencies['visible-assertions']
-    testImplementation rootProject.ext.dependencies['mockito-inline']
-    testImplementation rootProject.ext.dependencies['okhttp3-mockwebserver']
-    testImplementation rootProject.ext.dependencies['reactor-test']
-
-    // for clock module
-    testImplementation rootProject.ext.dependencies['assertj']
-    testImplementation rootProject.ext.dependencies['awaitility']
-
-    // for enterprise
-    implementation rootProject.ext.dependencies['spring-plugin-core']
-    implementation rootProject.ext.dependencies['spring-plugin-metadata']
-
-    // for v-ee
-    implementation(rootProject.ext.dependencies['social-dingtalk'])
-    implementation(rootProject.ext.dependencies['social-feishu'])
-    implementation(rootProject.ext.dependencies['social-wecom'])
-    implementation(rootProject.ext.dependencies['social-qq'])
-    implementation rootProject.ext.dependencies['pingpp']
-    implementation(rootProject.ext.dependencies['aliyun-core'])
-    implementation(rootProject.ext.dependencies['aliyun-afs'])
-    implementation rootProject.ext.dependencies['nimbus']
-    implementation rootProject.ext.dependencies['jose4j']
+    // for enterprise module
+    implementation libs.bundles.social
+    implementation libs.v.client
+    implementation libs.auth0
+    implementation libs.pingpp
+    implementation libs.stripe
+    implementation libs.aliyun.core
+    implementation libs.aliyun.afs
+    implementation libs.nimbus
+    implementation libs.jose4j
     implementation files('lib/aegis-java-sdk-2.3.3.jar')
-    implementation(rootProject.ext.dependencies['wx-miniapp'])
-    implementation(rootProject.ext.dependencies['wx-mp'])
-    implementation(rootProject.ext.dependencies['wx-open'])
-    implementation(rootProject.ext.dependencies['v-client'])
-    implementation(rootProject.ext.dependencies['sensors'])
-    implementation(rootProject.ext.dependencies['posthog'])
+    implementation libs.wx.miniapp
+    implementation libs.wx.mp
+    implementation libs.wx.open
+    implementation libs.sensors
+    implementation libs.posthog
 
-    // for apitable-ee
-    implementation(rootProject.ext.dependencies['auth0'])
-    implementation(rootProject.ext.dependencies['stripe'])
+    // test framework dependencies
+    testCompileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
+    testImplementation libs.spring.boot.test
+    testImplementation libs.mybatis.plus.test
+    testImplementation libs.visible.assertions
+    testImplementation libs.mockito.inline
+    testImplementation libs.okhttp3.mockwebserver
+    testImplementation libs.reactor
+    testImplementation libs.assertj
+    testImplementation libs.awaitility
 }
 
 jar {
@@ -145,15 +130,6 @@ bootJar {
 // SpringBoot Plugin On Gradle
 springBoot {
     mainClass.set('com.apitable.Application')
-    // build-info.properties in resources/main/META-INF directory
-    buildInfo {
-        properties {
-            artifact = 'Api Server'
-            version = rootProject.version
-            group = rootProject.group
-            name = 'Api Server'
-        }
-    }
 }
 
 test {
@@ -161,17 +137,17 @@ test {
     failFast = true
 }
 
+def protobufVersion = libs.versions.protobuf.asProvider().get()
+def iogrpcVersion = libs.versions.iogrpc.get()
+
 protobuf {
+    // use the specified version of protoc executable same as protobuf version in project
     protoc {
-        artifact = "com.google.protobuf:protoc:${protobuf_java_version}"
-    }
-    generatedFilesBaseDir = "$projectDir/src/generated"
-    clean {
-        delete generatedFilesBaseDir
+        artifact = "com.google.protobuf:protoc:${protobufVersion}"
     }
     plugins {
         grpc {
-            artifact = "io.grpc:protoc-gen-grpc-java:${io_grpc_version}"
+            artifact = "io.grpc:protoc-gen-grpc-java:${iogrpcVersion}"
         }
     }
 
@@ -179,14 +155,5 @@ protobuf {
         all()*.plugins {
             grpc {}
         }
-    }
-}
-
-idea {
-    module {
-        sourceDirs += file('src/generated/main/java')
-        sourceDirs += file('src/generated/main/grpc')
-        generatedSourceDirs += file('src/generated/main/java')
-        generatedSourceDirs += file('src/generated/main/grpc')
     }
 }

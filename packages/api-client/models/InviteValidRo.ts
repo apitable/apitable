@@ -24,6 +24,10 @@ export class InviteValidRo {
     * nodeId
     */
     'nodeId'?: string;
+    /**
+    * Password login for human-machine verification, and the front end obtains the value of get NVC Val function (human-machine verification will be performed when not logged in)
+    */
+    'data'?: string;
 
     static readonly discriminator: string | undefined = undefined;
 
@@ -37,6 +41,12 @@ export class InviteValidRo {
         {
             "name": "nodeId",
             "baseName": "nodeId",
+            "type": "string",
+            "format": ""
+        },
+        {
+            "name": "data",
+            "baseName": "data",
             "type": "string",
             "format": ""
         }    ];

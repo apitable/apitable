@@ -148,6 +148,7 @@ export const getEnvVars = () => {
     HELP_CONFIG: process.env.HELP_CONFIG,
     CUSTOM_WIDGET_VISIBLE: process.env.CUSTOM_WIDGET_VISIBLE === 'true',
     HELP_MENU_CONTACT_US_URL: process.env.HELP_MENU_CONTACT_US_URL,
+    SHARE_LOGO:process.env.SHARE_LOGO,
     LOGO: process.env.LOGO,
     COMMON_IMG_LOGO: process.env.COMMON_IMG_LOGO,
     LONG_DARK_LOGO: process.env.LONG_DARK_LOGO,

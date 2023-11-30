@@ -16,28 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.space.ro;
+package com.apitable.automation.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * <p>
- * Space management - common members set request parameters.
- * </p>
- * The status field is consistent with the serialized object of the read library
+ * Automation Service Edit RO.
  */
 @Data
-@Schema(description = "Space management - common members set request parameters")
-public class SpaceMemberSettingRo {
+@Schema(description = "Automation Service Edit RO")
+public class AutomationServiceEditRO {
 
-    @Schema(description = "Invitable status of all staff", example = "true")
-    private Boolean invitable;
+    @Schema(description = "name")
+    private String name;
 
-    @Schema(description = "Allow others to apply for space status", example = "false")
-    private Boolean joinable;
+    @Schema(description = "description")
+    private String description;
 
-    @Schema(description = "Display member's mobile number", example = "false")
-    private Boolean mobileShowable;
+    @Schema(description = "input JSON format")
+    private String logo;
+
+    @Schema(description = "output JSON format")
+    private String baseUrl;
+
+    @Schema(description = "i18n package")
+    private String i18n;
 
 }

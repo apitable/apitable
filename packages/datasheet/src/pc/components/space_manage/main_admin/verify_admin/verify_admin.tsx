@@ -27,7 +27,7 @@ import { getVerifyData, IChangeMainAdminConfig, VerifyTypes } from 'pc/component
 import { useRequest, useSetState } from 'pc/hooks';
 import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 interface IVerifyAdminProps {

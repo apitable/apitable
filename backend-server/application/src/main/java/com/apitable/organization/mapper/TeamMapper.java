@@ -34,32 +34,50 @@ import java.util.Collection;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
+/**
+ * team mapper.
+ */
 public interface TeamMapper extends BaseMapper<TeamEntity> {
 
     /**
+     * query root team id by space id.
+     *
      * @param spaceId space id
      * @return root team id
      */
     Long selectRootIdBySpaceId(@Param("spaceId") String spaceId);
 
     /**
+     * query parent id by team id.
+     *
      * @param teamId team id
      * @return parent id
      */
     Long selectParentIdByTeamId(@Param("teamId") Long teamId);
 
     /**
-     * Fuzzy query a team based on the team name
+     * Query team id.
      *
-     * @param spaceId space id
+     * @param spaceId   space id
+     * @param teamName  team name
+     * @return TeamPathInfo List
+     * @author Chambers
+     */
+    List<TeamPathInfo> selectInfoByTeamName(@Param("spaceId") String spaceId,
+            @Param("teamName") String teamName);
+
+    /**
+     * Fuzzy query a team based on the team name.
+     *
+     * @param spaceId  space id
      * @param teamName team name
      * @return search result
      */
     List<SearchTeamResultVo> selectByTeamName(@Param("spaceId") String spaceId,
-        @Param("teamName") String teamName);
+                                              @Param("teamName") String teamName);
 
     /**
-     * query whether sub departments exist
+     * query whether sub departments exist.
      *
      * @param parentId parent team id
      * @return row amount
@@ -75,7 +93,7 @@ public interface TeamMapper extends BaseMapper<TeamEntity> {
     Integer selectMaxSequenceByParentId(@Param("parentId") Long parentId);
 
     /**
-     * Query team ids
+     * Query team ids.
      *
      * @param parentIds parentIds
      * @return TeamIds
@@ -84,19 +102,28 @@ public interface TeamMapper extends BaseMapper<TeamEntity> {
     List<Long> selectTeamIdByParentIdIn(@Param("parentIds") Collection<Long> parentIds);
 
     /**
-     * Query team tree view
+     * Query teams.
+     *
+     * @param parentIds parent team ids
+     * @return TeamCteInfo List
+     * @author Chambers
+     */
+    List<TeamCteInfo> selectTeamByParentIdIn(@Param("parentIds") Collection<Long> parentIds);
+
+    /**
+     * Query team tree view.
      *
      * @param teamIds teamIds
-     * @return List<TeamTreeVo>
+     * @return List of TeamTreeVo
      * @author Chambers
      */
     List<TeamTreeVo> selectTeamTreeVoByTeamIdIn(@Param("teamIds") Collection<Long> teamIds);
 
     /**
-     * Query team tree view
+     * Query team tree view.
      *
      * @param parentIds parentIds
-     * @return List<TeamTreeVo>
+     * @return List of TeamTreeVo
      * @author Chambers
      */
     List<TeamTreeVo> selectTeamTreeVoByParentIdIn(@Param("parentIds") Collection<Long> parentIds);
@@ -104,23 +131,15 @@ public interface TeamMapper extends BaseMapper<TeamEntity> {
     /**
      * Query the directly sub team.
      *
-     * @param spaceId space id
+     * @param spaceId  space id
      * @param parentId parent team id
      * @return sub team ids
      */
     List<Long> selectTeamIdsByParentId(@Param("spaceId") String spaceId,
-        @Param("parentId") Long parentId);
+                                       @Param("parentId") Long parentId);
 
     /**
-     * @param teamId team id
-     * @param includeSelf   whether contain its own
-     * @return parent team ids
-     */
-    List<Long> selectAllParentTeamIds(@Param("teamId") Long teamId,
-        @Param("includeSelf") boolean includeSelf);
-
-    /**
-     * query root team's members
+     * query root team's members.
      *
      * @param spaceId space id
      * @return members info
@@ -128,17 +147,20 @@ public interface TeamMapper extends BaseMapper<TeamEntity> {
     List<MemberPageVo> selectMembersByRootTeamId(@Param("spaceId") String spaceId);
 
     /**
-     * Page query root team's members
+     * Page query root team's members.
      *
-     * @param page    page object
-     * @param spaceId space id
+     * @param page     page object
+     * @param spaceId  space id
      * @param isActive filter the added or unadded members. null is all.
      * @return page
      */
     IPage<MemberPageVo> selectMembersByRootTeamId(Page<MemberPageVo> page,
-        @Param("spaceId") String spaceId, @Param("isActive") Integer isActive);
+                                                  @Param("spaceId") String spaceId,
+                                                  @Param("isActive") Integer isActive);
 
     /**
+     * query teams' members.
+     *
      * @param teamIds team ids
      * @return member
      */
@@ -147,45 +169,56 @@ public interface TeamMapper extends BaseMapper<TeamEntity> {
     /**
      * Page query teams' members. filter the added or unadded members. null is all.
      *
-     * @param page    page object
-     * @param teamIds team ids
+     * @param page     page object
+     * @param teamIds  team ids
      * @param isActive filter the added or unadded members. null is all.
      * @return page result
      */
     IPage<MemberPageVo> selectMemberPageByTeamId(Page<MemberPageVo> page,
-        @Param("teamIds") List<Long> teamIds, @Param("isActive") Integer isActive);
+                                                 @Param("teamIds") List<Long> teamIds,
+                                                 @Param("isActive") Integer isActive);
 
     /**
+     * query teams' members in space id.
+     *
      * @param spaceId space id
      * @return teams
      */
     List<TeamMemberDTO> selectTeamsBySpaceId(@Param("spaceId") String spaceId,
-        @Param("parentId") Long parentId);
+                                             @Param("parentId") Long parentId);
 
     /**
+     * query teams' members in space id.
+     *
      * @param spaceId space id
      * @param teamIds team ids
      * @return team members
      */
     List<TeamMemberDTO> selectMemberTeamsBySpaceIdAndTeamIds(@Param("spaceId") String spaceId,
-        @Param("teamIds") List<Long> teamIds);
+                                                             @Param("teamIds") List<Long> teamIds);
 
     /**
-     * @param spaceId space id
+     * query team entity by space id and name.
+     *
+     * @param spaceId  space id
      * @param name     team name
      * @param parentId parent team id
      * @return teams
      */
     TeamEntity selectBySpaceIdAndName(@Param("spaceId") String spaceId, @Param("name") String name,
-        @Param("parentId") Long parentId);
+                                      @Param("parentId") Long parentId);
 
     /**
+     * query team members by team id list.
+     *
      * @param teamIds team ids
      * @return TeamMemberDtos
      */
     List<TeamMemberDTO> selectTeamsByIds(@Param("teamIds") List<Long> teamIds);
 
     /**
+     * query by team id list.
+     *
      * @param teamIds team ids
      * @return TeamEntities
      */
@@ -194,104 +227,106 @@ public interface TeamMapper extends BaseMapper<TeamEntity> {
     /**
      * fuzzy search team ids by keyword.
      *
-     * @param spaceId space id
+     * @param spaceId  space id
      * @param likeName keyword
      * @return team ids
      */
     List<Long> selectTeamIdsLikeName(@Param("spaceId") String spaceId,
-        @Param("likeName") String likeName);
+                                     @Param("likeName") String likeName);
 
     /**
      * fuzzy search team ids by tean=m names.
      *
-     * @param spaceId space id
+     * @param spaceId   space id
      * @param teamNames team names
      * @return team id
      */
     List<Long> selectIdBySpaceIdAndNames(@Param("spaceId") String spaceId,
-        @Param("list") List<String> teamNames);
+                                         @Param("list") List<String> teamNames);
 
     /**
+     * query unit team vo by team id.
+     *
      * @param spaceId space id
-     * @param teamId team id
+     * @param teamId  team id
      * @return UnitTeamVos
      */
     UnitTeamVo selectUnitTeamVoByTeamId(@Param("spaceId") String spaceId,
-        @Param("teamId") Long teamId);
+                                        @Param("teamId") Long teamId);
 
     /**
+     * query unit team vo by team ids.
+     *
      * @param spaceId space id
      * @param teamIds team ids
      * @return UnitTeamVos
      */
     List<UnitTeamVo> selectUnitTeamVoByTeamIds(@Param("spaceId") String spaceId,
-        @Param("teamIds") List<Long> teamIds);
+                                               @Param("teamIds") List<Long> teamIds);
 
     /**
+     * query space id by team id.
+     *
      * @param teamId team id
      * @return space id
      */
     String selectSpaceIdById(@Param("teamId") Long teamId);
 
     /**
+     * query name by team id.
+     *
      * @param teamId team id
      * @return Team Name
      */
     String selectTeamNameById(@Param("teamId") Long teamId);
 
     /**
+     * query team base info by team id.
+     *
      * @param teamIds team ids
      * @return TeamBaseInfoDTO List
      */
     List<TeamBaseInfoDTO> selectBaseInfoDTOByIds(@Param("teamIds") Collection<Long> teamIds);
 
     /**
+     * query member count by team id.
+     *
      * @param teamId team id
      * @return the member count
      */
     Integer selectMemberCountByTeamId(@Param("teamId") Long teamId);
 
     /**
+     * query active member count by team id.
+     *
      * @param teamId team id
      * @return the active member count
-     * */
+     */
     Integer selectActiveMemberCountByTeamId(@Param("teamId") Long teamId);
 
     /**
+     * query all team id by space id.
+     *
      * @param spaceId space id
      * @return team ids
      */
     List<Long> selectTeamAllIdBySpaceId(@Param("spaceId") String spaceId);
 
     /**
-     * query all parent team by teams name
+     * Recursively query teams and sub teams.
      *
-     * @param spaceId space id
-     * @param teamName team name
-     * @return teams
-     */
-    List<TeamEntity> selectTreeByTeamName(@Param("spaceId") String spaceId,
-        @Param("teamName") String teamName);
-
-    /**
-     * Recursively query teams and sub teams
-     *
-     * @param spaceId space id
      * @param teamIds team ids
      * @return team id
      */
-    List<TeamCteInfo> selectChildTreeByTeamIds(@Param("spaceId") String spaceId,
-                                               @Param("teamIds") List<Long> teamIds);
+    List<TeamCteInfo> selectChildTeamTree(@Param("teamIds") List<Long> teamIds);
 
     /**
-     * query team's all parent teams by team's id
+     * query team's all parent teams by team's id.
      *
-     * @param spaceId space id
      * @param teamIds team ids
      * @return team path information
      */
-    List<TeamPathInfo> selectParentTreeByTeamIds(@Param("spaceId") String spaceId,
-                                                 @Param("teamIds") List<Long> teamIds);
+    List<TeamPathInfo> selectParentTeamTree(@Param("teamIds") Collection<Long> teamIds);
 
     /**
      * Query page of the directly sub team Id.

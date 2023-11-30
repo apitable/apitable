@@ -21,7 +21,9 @@ import {
   ACTION_INPUT_PARSER_BASE_FUNCTIONS,
   ACTION_INPUT_PARSER_PASS_THROUGH_FUNCTIONS,
   ConfigConstant,
-  Field, FieldType, IDatasheetMap,
+  Field,
+  FieldType,
+  IDatasheetMap,
   IField,
   IFieldPermissionMap,
   InputParser,
@@ -37,7 +39,7 @@ import { getEnvVariables } from 'pc/utils/env';
 import { getFieldTypeIcon, getFieldTypeIconOrNull } from '../multi_grid/field_setting';
 import { IActionType, IJsonSchema, INodeOutputSchema, INodeType, IRobotAction, IRobotTrigger, ITriggerType } from './interface';
 // @ts-ignore
-import { isWecomFunc } from 'enterprise';
+import { isWecomFunc } from 'enterprise/home/social_platform/utils';
 
 /**
  * The client parses the expression without context, skipping dynamic parameters.
@@ -70,11 +72,8 @@ export const getNodeTypeOptions = (nodeTypes: INodeType[]) => {
   });
 };
 
-export const checkIfDatasheetResourceValid = (
-  dataSheetMap: IDatasheetMap,
-  dstId: string |undefined
-) => {
-  if(!dstId) {
+export const checkIfDatasheetResourceValid = (dataSheetMap: IDatasheetMap, dstId: string | undefined) => {
+  if (!dstId) {
     return false;
   }
   try {
@@ -85,11 +84,11 @@ export const checkIfDatasheetResourceValid = (
 };
 export const getNodeOutputSchemaList = (props: {
   actionList: IRobotAction[];
-  triggers:IRobotTrigger[];
+  triggers: IRobotTrigger[];
   triggerTypes: ITriggerType[];
   actionTypes: IActionType[];
-  triggerDataSheetIds: IFetchedDatasheet[]
-  dataSheetMap: IDatasheetMap,
+  triggerDataSheetIds: IFetchedDatasheet[];
+  dataSheetMap: IDatasheetMap;
 }) => {
   const { actionList, triggerTypes, actionTypes, triggers, dataSheetMap, triggerDataSheetIds } = props;
   const schemaList: INodeOutputSchema[] = [];
@@ -98,35 +97,41 @@ export const getNodeOutputSchemaList = (props: {
 
   triggers.forEach((trigger, index) => {
     const resourceId = triggerDataSheetIds[index] as unknown as string;
-    if(resourceId && checkIfDatasheetResourceValid(dataSheetMap, resourceId)){
+    if (resourceId && checkIfDatasheetResourceValid(dataSheetMap, resourceId)) {
       const itemMap = map.get(resourceId) ?? [];
       map.set(resourceId, [...itemMap, index]);
     }
   });
 
   triggers.forEach((trigger, index) => {
-
     const resourceId = triggerDataSheetIds[index] as unknown as string;
     const triggerType = trigger && triggerTypes.find((triggerType) => triggerType.triggerTypeId === trigger?.triggerTypeId);
     if (triggerType) {
-      if(checkIfDatasheetResourceValid(dataSheetMap, resourceId)){
-        if(map.has(resourceId)) {
+      if (checkIfDatasheetResourceValid(dataSheetMap, resourceId)) {
+        if (map.has(resourceId)) {
           const itemMap = map.get(resourceId) ?? [];
 
-          const arrayName = itemMap.map(item => triggerTypes.find((triggerType) => triggerType.triggerTypeId === triggers[item]?.triggerTypeId)!);
+          const arrayName = itemMap.map((item) => triggerTypes.find((triggerType) => triggerType.triggerTypeId === triggers[item]?.triggerTypeId)!);
 
           map.delete(resourceId);
           schemaList.push({
             id: trigger?.triggerId!,
             title: t(Strings.automation_variable_datasheet, {
-              NODE_NAME: dataSheetMap[resourceId]?.datasheet?.name
+              NODE_NAME: dataSheetMap[resourceId]?.datasheet?.name,
             }),
-            description: itemMap.length === 1 ? t(Strings.automation_variable_trigger_one, {
-              Trigger_Name: triggerType?.name ?? '',
-            }): t(Strings.automation_variable_trigger_many, {
-              Trigger_Multiple: arrayName.slice(0, arrayName.length -1).map(item => item?.name).filter(Boolean).join(','),
-              Trigger_Last: arrayName[arrayName.length -1]?.name ?? '',
-            }),
+            description:
+              itemMap.length === 1
+                ? t(Strings.automation_variable_trigger_one, {
+                    Trigger_Name: triggerType?.name ?? '',
+                  })
+                : t(Strings.automation_variable_trigger_many, {
+                    Trigger_Multiple: arrayName
+                      .slice(0, arrayName.length - 1)
+                      .map((item) => item?.name)
+                      .filter(Boolean)
+                      .join(','),
+                    Trigger_Last: arrayName[arrayName.length - 1]?.name ?? '',
+                  }),
             // @ts-ignore
             icon: integrateCdnHost(
               getEnvVariables().ROBOT_TRIGGER_ICON ? getEnvVariables().ROBOT_TRIGGER_ICON! : triggerType?.service?.logo,
@@ -170,7 +175,7 @@ export const fields2Schema = (fields: IField[], fieldPermissionMap: IFieldPermis
     const isCryptoField = Selectors.getFieldRoleByFieldId(fieldPermissionMap, field.id) === ConfigConstant.Role.None;
     return {
       title: isCryptoField ? t(Strings.robot_variables_cant_view_field) : field.name,
-      icon: getFieldTypeIconOrNull(field.type) == null ? getFieldTypeIcon(FieldType.Number): getFieldTypeIcon(field.type),
+      icon: getFieldTypeIconOrNull(field.type) == null ? getFieldTypeIcon(FieldType.Number) : getFieldTypeIcon(field.type),
       disabled: isCryptoField,
     };
   };

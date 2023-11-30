@@ -33,7 +33,9 @@ import { MembersDetail } from '../permission_settings_plus/permission/members_de
 import { IShareContentProps } from './interface';
 import styles from './style.module.less';
 // @ts-ignore
-import { isSocialPlatformEnabled, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
+// @ts-ignore
+import { isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

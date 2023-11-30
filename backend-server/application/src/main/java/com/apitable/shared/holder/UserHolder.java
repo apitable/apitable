@@ -20,7 +20,7 @@ package com.apitable.shared.holder;
 
 /**
  * <p>
- * Temporary save container for the currently operating user
+ * Temporary save container for the currently operating user.
  * </p>
  *
  * @author Shawn Deng
@@ -35,6 +35,11 @@ public class UserHolder {
         OPEN_UP_FLAG.set(true);
     }
 
+    /**
+     * setter.
+     *
+     * @param userId user id
+     */
     public static void set(Long userId) {
         Boolean openUpFlag = OPEN_UP_FLAG.get();
         if (openUpFlag != null && openUpFlag.equals(true)) {
@@ -42,12 +47,16 @@ public class UserHolder {
         }
     }
 
+    /**
+     * getter.
+     *
+     * @return user id
+     */
     public static Long get() {
         Boolean openUpFlag = OPEN_UP_FLAG.get();
         if (openUpFlag == null || openUpFlag.equals(false)) {
             return null;
-        }
-        else {
+        } else {
             return HOLDER.get();
         }
     }

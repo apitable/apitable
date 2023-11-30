@@ -20,7 +20,7 @@ import { useEffect } from 'react';
 import { Strings, t } from '@apitable/core';
 import { showBannerAlert } from 'pc/components/notification/banner_alert';
 // @ts-ignore
-import { goToUpgrade } from 'enterprise';
+import { goToUpgrade } from 'enterprise/subscribe_system/upgrade_method';
 
 import {useAppSelector} from "pc/store/react-redux";
 

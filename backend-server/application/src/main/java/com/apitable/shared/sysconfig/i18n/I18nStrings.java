@@ -23,7 +23,7 @@ import lombok.Data;
 
 /**
  * <p>
- * I18n Strings
+ * I18n Strings.
  * </p>
  */
 @Data

@@ -86,4 +86,8 @@ export class AutomationRunHistoryRepository extends Repository<AutomationRunHist
     const result = await this.findOne({ select: ['robotId'], where: { taskId } });
     return result?.robotId;
   }
+
+  async selectStatusByTaskId(taskId: string): Promise<number | undefined> {
+    return await this.findOne({ select: ['status'], where: { taskId } }).then((result) => result?.status);
+  }
 }

@@ -40,12 +40,11 @@ import { AddOutlined } from '@apitable/icons';
 import { OptionSetting } from 'pc/components/common/color_picker';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { FilterGeneralSelect } from 'pc/components/tool_bar/view_filter/filter_value/filter_general_select';
+import { useAppSelector } from 'pc/store/react-redux';
 import { createRainbowColorsArr } from 'pc/utils/color_utils';
 import styles from '../styles.module.less';
 import { FormatSelectItem } from './format_select_item';
 import { FormatSelectMobile } from './mobile/format_select_mobile';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFormatSelect {
   currentField: ISelectField;
@@ -54,12 +53,20 @@ interface IFormatSelect {
   datasheetId?: string;
 }
 
-const COLOR_COUNT = 50;
+const COLOR_COUNT = 51;
+
+export function useColorColorWheel(theme: ThemeName) {
+  const [baseColor, vipColor, whiteBgColor] = createRainbowColorsArr(theme);
+
+  const ColorWheel: string[] = [...baseColor, ...vipColor, whiteBgColor];
+
+  return ColorWheel;
+}
 
 export function setColor(index: number, theme: ThemeName) {
-  const [baseColor, vipColor] = createRainbowColorsArr(theme);
+  const [baseColor, vipColor, whiteBgColor] = createRainbowColorsArr(theme);
 
-  const ColorWheel: string[] = [...baseColor, ...vipColor];
+  const ColorWheel: string[] = [...baseColor, ...vipColor, whiteBgColor];
 
   if (index < COLOR_COUNT) {
     return ColorWheel[index];
@@ -187,9 +194,9 @@ const FormatSelectBase = (props: IFormatSelect) => {
             onChange={(val) => {
               const property: ISelectFieldProperty = val
                 ? {
-                  ...currentField.property,
-                  defaultValue: val,
-                }
+                    ...currentField.property,
+                    defaultValue: val,
+                  }
                 : omit(currentField.property, 'defaultValue');
               setCurrentField({
                 ...currentField,

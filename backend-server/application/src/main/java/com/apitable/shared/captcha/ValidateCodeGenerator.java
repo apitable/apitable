@@ -29,7 +29,7 @@ package com.apitable.shared.captcha;
 public interface ValidateCodeGenerator {
 
     /**
-     * generate verification code
+     * generate verification code.
      *
      * @return ValidateCode
      */

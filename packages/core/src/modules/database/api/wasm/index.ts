@@ -22,7 +22,6 @@ import { isClient } from '../../../../utils/env';
 import { IAxiosResponse } from '../../../../types';
 import { IApiWrapper } from '../../store/interfaces/resource';
 import { AxiosResponse } from 'axios';
-
 declare let window: {
   __global_handle_response: any;
   location: any;

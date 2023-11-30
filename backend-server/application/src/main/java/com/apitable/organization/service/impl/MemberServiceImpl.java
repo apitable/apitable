@@ -22,6 +22,7 @@ import static com.apitable.organization.enums.OrganizationException.NOT_EXIST_ME
 import static com.apitable.shared.constants.NotificationConstants.INVOLVE_MEMBER_ID;
 import static com.apitable.shared.constants.NotificationConstants.TEAM_ID;
 import static com.apitable.shared.constants.NotificationConstants.TEAM_NAME;
+import static com.apitable.workspace.enums.PermissionException.MEMBER_NOT_IN_SPACE;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
@@ -57,6 +58,7 @@ import com.apitable.organization.enums.OrganizationException;
 import com.apitable.organization.enums.UnitType;
 import com.apitable.organization.enums.UserSpaceStatus;
 import com.apitable.organization.excel.handler.UploadDataListener;
+import com.apitable.organization.facade.TeamFacade;
 import com.apitable.organization.mapper.AuditUploadParseRecordMapper;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.mapper.TeamMapper;
@@ -160,6 +162,9 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     private ITeamService iTeamService;
 
     @Resource
+    private TeamFacade teamFacade;
+
+    @Resource
     private UserActiveSpaceCacheService userActiveSpaceCacheService;
 
     @Resource
@@ -209,12 +214,22 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public Long getMemberIdByUserIdAndSpaceId(Long userId, String spaceId) {
-        return baseMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
+        return memberMapper.selectIdByUserIdAndSpaceId(userId, spaceId);
+    }
+
+    @Override
+    public Long getUserIdByMemberId(Long memberId) {
+        return memberMapper.selectUserIdByMemberId(memberId);
     }
 
     @Override
     public List<Long> getUserIdsByMemberIds(List<Long> memberIds) {
         return baseMapper.selectUserIdsByMemberIds(memberIds);
+    }
+
+    @Override
+    public List<String> getEmailsByMemberIds(List<Long> memberIds) {
+        return memberMapper.selectEmailByBatchMemberId(memberIds);
     }
 
     @Override
@@ -245,6 +260,20 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     @Override
+    public void checkMemberInSpace(final String spaceId, final Long memberId) {
+        String memberSpaceId = this.getSpaceIdByMemberId(memberId);
+        ExceptionUtil.isTrue(spaceId.equals(memberSpaceId), MEMBER_NOT_IN_SPACE);
+    }
+
+    @Override
+    public void checkMembersInSpace(final String spaceId, final List<Long> memberIds) {
+        List<String> spaceIds = memberMapper.selectSpaceIdByMemberIds(memberIds);
+        ExceptionUtil.isTrue(spaceIds.size() == memberIds.size(), MEMBER_NOT_IN_SPACE);
+        Optional<String> first = spaceIds.stream().filter(id -> !spaceId.equals(id)).findFirst();
+        ExceptionUtil.isFalse(first.isPresent(), MEMBER_NOT_IN_SPACE);
+    }
+
+    @Override
     public void setMemberMainAdmin(Long memberId) {
         MemberEntity member = MemberEntity.builder().id(memberId).isAdmin(true).build();
         boolean flag = updateById(member);
@@ -267,8 +296,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     public List<Long> getUnitsByMember(Long memberId) {
         log.info("Gets all unit ids for the member");
         List<Long> unitRefIds = CollUtil.newArrayList(memberId);
-        List<Long> teamIds = teamMemberRelMapper.selectAllTeamIdByMemberId(memberId);
-        unitRefIds.addAll(teamIds);
+        List<Long> teamIds = iTeamMemberRelService.getTeamByMemberId(memberId);
+        if (teamIds.size() > 0) {
+            List<Long> allParentTeamIds = teamFacade.getAllParentTeamIds(teamIds);
+            unitRefIds.addAll(allParentTeamIds);
+        }
         List<Long> roleIds = iRoleMemberService.getRoleIdsByRoleMemberId(memberId);
         unitRefIds.addAll(roleIds);
         return iUnitService.getUnitIdsByRefIds(unitRefIds);
@@ -331,8 +363,13 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     }
 
     @Override
+    public Long getUserIdByOpenId(String spaceId, String openId) {
+        return baseMapper.selectUserIdByOpenId(spaceId, openId);
+    }
+
+    @Override
     public Long getMemberIdByOpenIdIgnoreDelete(String spaceId, String openId) {
-        return baseMapper.selectByOpenIdIgnoreDelete(spaceId, openId);
+        return memberMapper.selectIdByOpenIdIgnoreDelete(spaceId, openId);
     }
 
     @Override
@@ -743,7 +780,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             Optional<Long> first = addTeamList.stream().findFirst();
             if (first.isPresent()) {
                 Long operatorMemberId =
-                    memberMapper.selectIdByUserIdAndSpaceId(userId, member.getSpaceId());
+                    this.getMemberIdByUserIdAndSpaceId(userId, member.getSpaceId());
                 if (operatorMemberId == null || operatorMemberId.equals(memberId)) {
                     return;
                 }
@@ -926,7 +963,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             return;
         }
         String spaceName = iSpaceService.getNameBySpaceId(spaceId);
-        final List<String> emails = baseMapper.selectEmailByBatchMemberId(memberIds);
+        final List<String> emails = this.getEmailsByMemberIds(memberIds);
         Dict dict = Dict.create();
         dict.set("SPACE_NAME", spaceName);
         Dict mapDict = Dict.create();
@@ -985,7 +1022,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             int currentMemberCount =
                 (int) SqlTool.retCount(staticsMapper.countMemberBySpaceId(spaceId));
             SubscriptionInfo subscriptionInfo =
-                    entitlementServiceFacade.getSpaceSubscription(spaceId);
+                entitlementServiceFacade.getSpaceSubscription(spaceId);
             long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
             // long defaultMaxMemberCount = iSubscriptionService.getPlanSeats(spaceId);
             // Use the object to read data row by row,
@@ -1398,7 +1435,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     public void handleMemberTeamInfo(MemberInfoVo memberInfoVo) {
-        String spaceId = memberMapper.selectSpaceIdByMemberId(memberInfoVo.getMemberId());
+        String spaceId = this.getSpaceIdByMemberId(memberInfoVo.getMemberId());
         List<Long> memberIds = CollUtil.newArrayList(memberInfoVo.getMemberId());
         // handle member's team name, get full hierarchy team path name
         Map<Long, List<MemberTeamPathInfo>> memberTeamPathInfosMap =

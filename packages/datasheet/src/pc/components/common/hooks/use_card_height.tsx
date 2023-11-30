@@ -20,13 +20,12 @@ import { sum } from 'lodash';
 import { IViewColumn, Selectors } from '@apitable/core';
 import { getFieldHeight, getVietualFieldHeight, hasCover } from 'pc/components/gallery_view/utils';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 
-import {useAppSelector} from "pc/store/react-redux";
-
-const FIRST_FIELD_HEIGHT = 16;
-const FIELD_PADDING_TOP = 4;
+const FIRST_FIELD_HEIGHT = 14;
 const FIELD_PADDING_BOTTOM = 12;
-const FIELD_TITLE_HEIGHT = 17;
+const FIELD_TITLE_HEIGHT = 18;
+const FIELD_PADDING = 8;
 
 // Field heights in virtual lists
 // Field title height, content top margin, overall content spacing, default field content height
@@ -131,7 +130,7 @@ export const useCardHeight = (props: IUseCardHeightProps) => {
 
       const fieldsHeight = visibleColumns.map((item: IViewColumn, index: number) => {
         if (index === 0) {
-          return FIRST_FIELD_HEIGHT + FIELD_PADDING_TOP + FIELD_PADDING_BOTTOM;
+          return FIRST_FIELD_HEIGHT + FIELD_PADDING_BOTTOM;
         }
         const field = fieldMap![item.fieldId];
         const fieldHeight = field ? getFieldHeight(field, maxLine, isMobile) : 0;
@@ -142,15 +141,15 @@ export const useCardHeight = (props: IUseCardHeightProps) => {
             return 0;
           }
         }
-        return (isColNameVisible ? FIELD_TITLE_HEIGHT : 0) + fieldHeight + FIELD_PADDING_TOP + FIELD_PADDING_BOTTOM;
+        return (isColNameVisible ? FIELD_TITLE_HEIGHT : 0) + fieldHeight + FIELD_PADDING_BOTTOM;
       });
-      return sum(fieldsHeight);
+      return sum(fieldsHeight) + FIELD_PADDING;
     }
-    return 8 * 2;
+    return FIELD_PADDING * 2;
   }
 
   const getCardHeight = (recordId: string | null, isMobile?: boolean) => {
-    const padding = isGallery ? 0 : 8;
+    const padding = isGallery ? 0 : FIELD_PADDING;
     const cardCoverHeight = getCoverHeight(recordId);
     const cardBodyHeight = padding + getCardBodyHeight(multiTextMaxLine, recordId, isMobile);
     if (isVirtual) {

@@ -180,7 +180,7 @@ const handleAction = (store: MiddlewareAPI<Dispatch<AnyAction>, IReduxState>, ac
           },
         }),
       );
-      console.log('DERIVATE: refreshDerivationByGroupCollapse %s %s cost: %s ms', datasheetId, viewId, Date.now() - timeStart);
+      // console.log('DERIVATE: refreshDerivationByGroupCollapse %s %s cost: %s ms', datasheetId, viewId, Date.now() - timeStart);
       return;
     }
     case ActionConstants.CLEAR_ACTIVE_ROW_INFO:
@@ -218,7 +218,7 @@ const handleAction = (store: MiddlewareAPI<Dispatch<AnyAction>, IReduxState>, ac
           viewDerivation: viewDerivate.getViewDerivationPatchByLazySort(view, viewDerivation, datasheetClientState.activeRowInfo),
         }),
       );
-      console.log('DERIVATE: refreshDerivationByActiveRow %s %s cost: %s ms', datasheetId, view.id, Date.now() - timeStart);
+      // console.log('DERIVATE: refreshDerivationByActiveRow %s %s cost: %s ms', datasheetId, view.id, Date.now() - timeStart);
       return;
     }
     case ActionConstants.SET_SEARCH_KEYWORD: {
@@ -235,7 +235,7 @@ const handleAction = (store: MiddlewareAPI<Dispatch<AnyAction>, IReduxState>, ac
           viewDerivation: viewDerivate.getViewDerivationWithSearch(view, visibleRowsWithoutSearch),
         }),
       );
-      console.log('DERIVATE: refreshDerivationBySearchKeyword %s %s cost: %sms', datasheetId, view.id, Date.now() - timeStart);
+      // console.log('DERIVATE: refreshDerivationBySearchKeyword %s %s cost: %sms', datasheetId, view.id, Date.now() - timeStart);
       return;
     }
     // Mirror view condition change

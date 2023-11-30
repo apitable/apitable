@@ -22,7 +22,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * Field Permission Definition
+ * Field Permission Definition.
+ *
  * @author Shawn Deng
  */
 @Getter
@@ -34,7 +35,7 @@ public enum FieldPermission implements PermissionDefinition {
     EDIT_FIELD_DATA(2, "editable", 1L << 1);
 
     /**
-     * permission group
+     * permission group.
      */
     private final int group;
 

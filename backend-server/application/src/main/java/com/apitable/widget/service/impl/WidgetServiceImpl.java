@@ -18,20 +18,7 @@
 
 package com.apitable.widget.service.impl;
 
-import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
-import com.apitable.interfaces.billing.model.SubscriptionInfo;
-import com.apitable.shared.exception.LimitException;
-import com.apitable.workspace.enums.IdRulePrefixEnum;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
+import static com.apitable.workspace.enums.NodeException.UNKNOWN_NODE_TYPE;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
@@ -42,10 +29,13 @@ import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
+import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
+import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.widget.facade.WidgetServiceAuditFacade;
 import com.apitable.shared.component.TaskManager;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.context.LoginContext;
+import com.apitable.shared.exception.LimitException;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.template.enums.TemplateException;
 import com.apitable.widget.dto.NodeWidgetDto;
@@ -71,6 +61,7 @@ import com.apitable.widget.vo.WidgetStoreListInfo;
 import com.apitable.workspace.dto.DatasheetWidgetDTO;
 import com.apitable.workspace.entity.DatasheetWidgetEntity;
 import com.apitable.workspace.entity.NodeRelEntity;
+import com.apitable.workspace.enums.IdRulePrefixEnum;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.mapper.DatasheetWidgetMapper;
@@ -83,13 +74,22 @@ import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.apitable.workspace.enums.NodeException.UNKNOWN_NODE_TYPE;
-
+/**
+ * widget service implementation.
+ */
 @Slf4j
 @Service
 public class WidgetServiceImpl implements IWidgetService {
@@ -131,18 +131,27 @@ public class WidgetServiceImpl implements IWidgetService {
     private EntitlementServiceFacade entitlementServiceFacade;
 
     @Override
-    public List<WidgetStoreListInfo> widgetStoreList(Long userId, String spaceId, WidgetStoreListRo storeListRo) {
-        if (null != storeListRo && WidgetReleaseType.WAIT_REVIEW.getValue().equals(storeListRo.getType())) {
+    public Long getSpaceWidgetCount(String spaceId) {
+        return widgetMapper.selectCountBySpaceId(spaceId);
+    }
+
+    @Override
+    public List<WidgetStoreListInfo> widgetStoreList(Long userId, String spaceId,
+                                                     WidgetStoreListRo storeListRo) {
+        if (null != storeListRo
+            && WidgetReleaseType.WAIT_REVIEW.getValue().equals(storeListRo.getType())) {
             // show a list of global widgets to be reviewed
             return widgetServiceAuditFacade.getWaitReviewWidgetList(storeListRo);
         }
-        List<WidgetStoreListInfo> datas = widgetPackageMapper.selectWidgetStoreList(userId, spaceId, storeListRo);
+        List<WidgetStoreListInfo> datas =
+            widgetPackageMapper.selectWidgetStoreList(userId, spaceId, storeListRo);
         for (WidgetStoreListInfo widgetInfo : datas) {
             widgetInfo.setInstallEnv(InstallEnvType.toValueList(widgetInfo.getInstallEnvCode()));
             widgetInfo.setRuntimeEnv(RuntimeEnvType.toValueList(widgetInfo.getRuntimeEnvCode()));
             // replace space station widget author name
             if (WidgetReleaseType.SPACE.getValue().equals(widgetInfo.getReleaseType())) {
-                WidgetSpaceByDTO byDTO = widgetPackageMapper.selectWidgetSpaceBy(widgetInfo.getWidgetPackageId());
+                WidgetSpaceByDTO byDTO =
+                    widgetPackageMapper.selectWidgetSpaceBy(widgetInfo.getWidgetPackageId());
                 if (null != byDTO) {
                     widgetInfo.setAuthorName(byDTO.getAuthorName());
                     widgetInfo.setAuthorIcon(byDTO.getAuthorIcon());
@@ -159,12 +168,13 @@ public class WidgetServiceImpl implements IWidgetService {
         log.info("Gets the component information in the specified space.");
         // load only the components in the datasheet
         List<WidgetInfo> widgetInfos = widgetMapper.selectInfoBySpaceIdAndNodeType(spaceId,
-                NodeType.DATASHEET.getNodeType(), count);
+            NodeType.DATASHEET.getNodeType(), count);
         if (CollUtil.isEmpty(widgetInfos)) {
             return new ArrayList<>();
         }
         // filter source datasheet permissions
-        List<String> datasheetIds = widgetInfos.stream().map(WidgetInfo::getDatasheetId).collect(Collectors.toList());
+        List<String> datasheetIds =
+            widgetInfos.stream().map(WidgetInfo::getDatasheetId).collect(Collectors.toList());
         ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberId, datasheetIds);
         if (CollUtil.isEmpty(roleDict)) {
             return new ArrayList<>();
@@ -186,7 +196,8 @@ public class WidgetServiceImpl implements IWidgetService {
     public String create(Long userId, String spaceId, WidgetCreateRo widget) {
         log.info("Create Widget");
         // to determine whether the component package exists, only under development, pending release, and released status can be added
-        List<Integer> checkStatus = CollUtil.newArrayList(WidgetPackageStatus.DEVELOP.getValue(), WidgetPackageStatus.UNPUBLISHED.getValue(), WidgetPackageStatus.ONLINE.getValue());
+        List<Integer> checkStatus = CollUtil.newArrayList(WidgetPackageStatus.DEVELOP.getValue(),
+            WidgetPackageStatus.UNPUBLISHED.getValue(), WidgetPackageStatus.ONLINE.getValue());
         this.checkWidgetPackIfExist(widget.getWidgetPackageId(), checkStatus);
         String widgetId = IdUtil.createWidgetId();
         // if it is a widget in the data datasheet, create a widget in the data datasheet. if it is a widget in the dashboard, check the maximum number
@@ -194,52 +205,61 @@ public class WidgetServiceImpl implements IWidgetService {
         switch (nodeType) {
             case DATASHEET:
                 // create associations between tables and components
-                iDatasheetWidgetService.create(spaceId, widget.getNodeId(), widgetId, widget.getNodeId());
+                iDatasheetWidgetService.create(spaceId, widget.getNodeId(), widgetId,
+                    widget.getNodeId());
                 break;
             case DASHBOARD:
                 // Note: The number of statistics uses the number of Dashboard layout to ensure the accuracy, and the widget instance may have dirty data
-                int count = SqlTool.retCount(resourceMetaMapper.countDashboardWidgetNumber(widget.getNodeId()));
-                ExceptionUtil.isTrue(count < limitProperties.getDsbWidgetMaxCount(), WidgetException.WIDGET_NUMBER_LIMIT);
+                int count = SqlTool.retCount(
+                    resourceMetaMapper.countDashboardWidgetNumber(widget.getNodeId()));
+                ExceptionUtil.isTrue(count < limitProperties.getDsbWidgetMaxCount(),
+                    WidgetException.WIDGET_NUMBER_LIMIT);
                 break;
             case MIRROR:
                 // create an association between a mirror source table and a component
                 NodeRelEntity nodeRel = iNodeRelService.getByRelNodeId(widget.getNodeId());
                 ExceptionUtil.isNotNull(nodeRel, PermissionException.NODE_NOT_EXIST);
-                iDatasheetWidgetService.create(spaceId, nodeRel.getMainNodeId(), widgetId, widget.getNodeId());
+                iDatasheetWidgetService.create(spaceId, nodeRel.getMainNodeId(), widgetId,
+                    widget.getNodeId());
                 break;
             default:
                 throw new BusinessException(UNKNOWN_NODE_TYPE);
         }
         // new components
         WidgetEntity widgetEntity = WidgetEntity.builder()
-                .id(IdWorker.getId())
-                .spaceId(spaceId)
-                .nodeId(widget.getNodeId())
-                .packageId(widget.getWidgetPackageId())
-                .widgetId(widgetId)
-                .name(widget.getName())
-                .storage(JSONUtil.createObj().toString())
-                .createdBy(userId)
-                .updatedBy(userId)
-                .build();
-        boolean flag = SqlHelper.retBool(widgetMapper.insertBatch(Collections.singletonList(widgetEntity)));
+            .id(IdWorker.getId())
+            .spaceId(spaceId)
+            .nodeId(widget.getNodeId())
+            .packageId(widget.getWidgetPackageId())
+            .widgetId(widgetId)
+            .name(widget.getName())
+            .storage(JSONUtil.createObj().toString())
+            .createdBy(userId)
+            .updatedBy(userId)
+            .build();
+        boolean flag =
+            SqlHelper.retBool(widgetMapper.insertBatch(Collections.singletonList(widgetEntity)));
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
         // the cumulative number of installations of the component package
-        TaskManager.me().execute(() -> widgetPackageMapper.updateInstalledNumByPackageId(widget.getWidgetPackageId(), 1));
+        TaskManager.me().execute(
+            () -> widgetPackageMapper.updateInstalledNumByPackageId(widget.getWidgetPackageId(),
+                1));
         return widgetId;
     }
 
     private void checkWidgetPackIfExist(String widgetPackageId, List<Integer> status) {
-        log.info("check if the component installation package exists, widgetPackageId:{}，status:{}", widgetPackageId, status);
+        log.info("check if the component installation package exists, widgetPackageId:{}，status:{}",
+            widgetPackageId, status);
         // determine if a component package exists
         Integer packageStatus = widgetPackageMapper.selectStatusByPackageId(widgetPackageId);
         ExceptionUtil.isTrue(packageStatus != null && status.contains(packageStatus),
-                WidgetException.WIDGET_PACKAGE_NOT_EXIST);
+            WidgetException.WIDGET_PACKAGE_NOT_EXIST);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Collection<String> copyWidget(Long userId, String spaceId,
-        String nodeId, List<String> widgetIds) {
+                                         String nodeId, List<String> widgetIds) {
         log.info("copy widgets");
         if (nodeId.startsWith(IdRulePrefixEnum.DASHBOARD.getIdRulePrefixEnum())) {
             // verify the maximum number of components for a dashboard
@@ -248,11 +268,14 @@ public class WidgetServiceImpl implements IWidgetService {
                 <= limitProperties.getDsbWidgetMaxCount(), WidgetException.WIDGET_NUMBER_LIMIT);
         }
         // check if components exist
-        int widgetCount = SqlTool.retCount(widgetMapper.selectCountBySpaceIdAndWidgetIds(spaceId, widgetIds));
+        int widgetCount =
+            SqlTool.retCount(widgetMapper.selectCountBySpaceIdAndWidgetIds(spaceId, widgetIds));
         ExceptionUtil.isTrue(widgetCount == widgetIds.size(), WidgetException.WIDGET_NOT_EXIST);
         // verify that component data sources all exist
         List<WidgetDTO> widgetDTOList = widgetMapper.selectWidgetDtoByWidgetIds(widgetIds);
-        ExceptionUtil.isTrue(CollUtil.isNotEmpty(widgetDTOList) && widgetDTOList.size() == widgetIds.size(), WidgetException.WIDGET_DATASHEET_NOT_EXIST);
+        ExceptionUtil.isTrue(
+            CollUtil.isNotEmpty(widgetDTOList) && widgetDTOList.size() == widgetIds.size(),
+            WidgetException.WIDGET_DATASHEET_NOT_EXIST);
         // Build: Old widgetId and new widgetId mapping, new widgetId and data source datasheetId mapping
         Map<String, String> newNodeMap = new HashMap<>(widgetIds.size());
         Map<String, String> newWidgetIdMap = new HashMap<>(widgetIds.size());
@@ -272,9 +295,12 @@ public class WidgetServiceImpl implements IWidgetService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void copyBatch(Long userId, String destSpaceId, Map<String, String> newNodeMap, Map<String, String> newWidgetIdMap, Map<String, DatasheetWidgetDTO> newWidgetIdToDstMap) {
+    public void copyBatch(Long userId, String destSpaceId, Map<String, String> newNodeMap,
+                          Map<String, String> newWidgetIdMap,
+                          Map<String, DatasheetWidgetDTO> newWidgetIdToDstMap) {
         // batch generation of new widgets
-        List<WidgetBaseInfo> widgetBaseInfos = widgetMapper.selectWidgetBaseInfoByWidgetIds(newWidgetIdMap.keySet());
+        List<WidgetBaseInfo> widgetBaseInfos =
+            widgetMapper.selectWidgetBaseInfoByWidgetIds(newWidgetIdMap.keySet());
         if (widgetBaseInfos.isEmpty()) {
             return;
         }
@@ -284,19 +310,20 @@ public class WidgetServiceImpl implements IWidgetService {
             String widgetId = newWidgetIdMap.get(widgetInfo.getWidgetId());
             // Reset the widget storage configuration when there is no data source.
             boolean hasDataSource = newWidgetIdToDstMap.containsKey(widgetId);
-            String storage = hasDataSource ? widgetInfo.getStorage() : JSONUtil.createObj().toString();
+            String storage =
+                hasDataSource ? widgetInfo.getStorage() : JSONUtil.createObj().toString();
             // build widget entity
             WidgetEntity widgetEntity = WidgetEntity.builder()
-                    .id(IdWorker.getId())
-                    .spaceId(destSpaceId)
-                    .nodeId(newNodeMap.get(widgetInfo.getNodeId()))
-                    .packageId(widgetInfo.getWidgetPackageId())
-                    .widgetId(widgetId)
-                    .name(widgetInfo.getName())
-                    .storage(storage)
-                    .createdBy(userId)
-                    .updatedBy(userId)
-                    .build();
+                .id(IdWorker.getId())
+                .spaceId(destSpaceId)
+                .nodeId(newNodeMap.get(widgetInfo.getNodeId()))
+                .packageId(widgetInfo.getWidgetPackageId())
+                .widgetId(widgetId)
+                .name(widgetInfo.getName())
+                .storage(storage)
+                .createdBy(userId)
+                .updatedBy(userId)
+                .build();
             entities.add(widgetEntity);
             if (!hasDataSource) {
                 continue;
@@ -304,12 +331,12 @@ public class WidgetServiceImpl implements IWidgetService {
             DatasheetWidgetDTO datasheetWidgetDTO = newWidgetIdToDstMap.get(widgetId);
             // Build the associated entity of the datasheet and the widget.
             DatasheetWidgetEntity datasheetWidget = DatasheetWidgetEntity.builder()
-                    .id(IdWorker.getId())
-                    .spaceId(destSpaceId)
-                    .dstId(datasheetWidgetDTO.getDstId())
-                    .sourceId(datasheetWidgetDTO.getSourceId())
-                    .widgetId(widgetId)
-                    .build();
+                .id(IdWorker.getId())
+                .spaceId(destSpaceId)
+                .dstId(datasheetWidgetDTO.getDstId())
+                .sourceId(datasheetWidgetDTO.getSourceId())
+                .widgetId(widgetId)
+                .build();
             datasheetWidgets.add(datasheetWidget);
         }
         boolean flag = SqlHelper.retBool(widgetMapper.insertBatch(entities));
@@ -322,9 +349,9 @@ public class WidgetServiceImpl implements IWidgetService {
         // cumulative installation times of widget package
         TaskManager.me().execute(() -> {
             Map<String, List<WidgetBaseInfo>> packageIdToInfosMap = widgetBaseInfos.stream()
-                    .collect(Collectors.groupingBy(WidgetBaseInfo::getWidgetPackageId));
+                .collect(Collectors.groupingBy(WidgetBaseInfo::getWidgetPackageId));
             packageIdToInfosMap.forEach((widgetPackageId, infos) ->
-                    widgetPackageMapper.updateInstalledNumByPackageId(widgetPackageId, infos.size()));
+                widgetPackageMapper.updateInstalledNumByPackageId(widgetPackageId, infos.size()));
         });
     }
 
@@ -332,14 +359,16 @@ public class WidgetServiceImpl implements IWidgetService {
     public String checkByWidgetIds(List<String> widgetIds) {
         // widget space verification, all must be in the same space
         List<String> spaceIds = widgetMapper.selectSpaceIdByWidgetIds(widgetIds);
-        ExceptionUtil.isTrue(CollUtil.isNotEmpty(spaceIds) && spaceIds.size() == 1, WidgetException.WIDGET_SPACE_ERROR);
+        ExceptionUtil.isTrue(CollUtil.isNotEmpty(spaceIds) && spaceIds.size() == 1,
+            WidgetException.WIDGET_SPACE_ERROR);
         return spaceIds.get(0);
     }
 
     @Override
     public WidgetPack getWidgetPack(String widgetId) {
         log.info("get widget package information，widgetId:{}", widgetId);
-        List<WidgetPack> widgetPackList = this.getWidgetPackList(Collections.singletonList(widgetId));
+        List<WidgetPack> widgetPackList =
+            this.getWidgetPackList(Collections.singletonList(widgetId));
         if (CollUtil.isEmpty(widgetPackList)) {
             return new WidgetPack();
         }
@@ -352,20 +381,26 @@ public class WidgetServiceImpl implements IWidgetService {
         if (CollUtil.isEmpty(widgetIds)) {
             return new ArrayList<>();
         }
-        List<WidgetBaseInfo> widgetBaseInfos = widgetMapper.selectWidgetBaseInfoByWidgetIds(widgetIds);
+        List<WidgetBaseInfo> widgetBaseInfos =
+            widgetMapper.selectWidgetBaseInfoByWidgetIds(widgetIds);
         if (CollUtil.isEmpty(widgetBaseInfos)) {
             return new ArrayList<>();
         }
         // unified query data source datasheet
-        List<DatasheetWidgetDTO> datasheetWidgetDTOList = datasheetWidgetMapper.selectDtoByWidgetIds(widgetIds);
+        List<DatasheetWidgetDTO> datasheetWidgetDTOList =
+            datasheetWidgetMapper.selectDtoByWidgetIds(widgetIds);
         Map<String, DatasheetWidgetDTO> widgetIdToDstMap = datasheetWidgetDTOList.stream()
-                .collect(Collectors.toMap(DatasheetWidgetDTO::getWidgetId, dto -> dto));
+            .collect(Collectors.toMap(DatasheetWidgetDTO::getWidgetId, dto -> dto));
 
         // Unified query widget installation package information content
-        Set<String> packageIds = widgetBaseInfos.stream().map(WidgetBaseInfo::getWidgetPackageId).collect(Collectors.toSet());
-        List<WidgetPackageDTO> packageEntities = widgetPackageMapper.selectByPackageIdsIncludeDelete(packageIds, LoginContext.me().getLocaleStr());
+        Set<String> packageIds = widgetBaseInfos.stream().map(WidgetBaseInfo::getWidgetPackageId)
+            .collect(Collectors.toSet());
+        List<WidgetPackageDTO> packageEntities =
+            widgetPackageMapper.selectByPackageIdsIncludeDelete(packageIds,
+                LoginContext.me().getLocaleStr());
         Map<String, WidgetPackageDTO> widgetPackageMap = packageEntities.stream()
-                .collect(Collectors.toMap(WidgetPackageDTO::getPackageId, widgetPackage -> widgetPackage));
+            .collect(
+                Collectors.toMap(WidgetPackageDTO::getPackageId, widgetPackage -> widgetPackage));
 
         // build widget package information
         List<WidgetPack> widgetPacks = new ArrayList<>(widgetBaseInfos.size());
@@ -373,15 +408,17 @@ public class WidgetServiceImpl implements IWidgetService {
         widgetBaseInfos.forEach(widget -> {
             HashMap<Object, Object> snapshotStorage = new HashMap<>();
             try {
-                snapshotStorage = objectMapper.readValue(widget.getStorage(), new TypeReference<HashMap<Object, Object>>() {});
-            }
-            catch (JsonProcessingException ignored) {
+                snapshotStorage = objectMapper.readValue(widget.getStorage(),
+                    new TypeReference<HashMap<Object, Object>>() {
+                    });
+            } catch (JsonProcessingException ignored) {
+                // ignored
             }
             // assembly widget snapshot information
             WidgetSnapshot snapshot = WidgetSnapshot.builder()
-                    .widgetName(widget.getName())
-                    .storage(snapshotStorage)
-                    .build();
+                .widgetName(widget.getName())
+                .storage(snapshotStorage)
+                .build();
             if (widgetIdToDstMap.containsKey(widget.getWidgetId())) {
                 DatasheetWidgetDTO datasheetWidgetDTO = widgetIdToDstMap.get(widget.getWidgetId());
                 snapshot.setDatasheetId(datasheetWidgetDTO.getDstId());
@@ -389,32 +426,32 @@ public class WidgetServiceImpl implements IWidgetService {
             }
             WidgetPackageDTO widgetPackage = widgetPackageMap.get(widget.getWidgetPackageId());
             WidgetPack widgetPack = WidgetPack.builder()
-                    .id(widget.getWidgetId())
-                    .revision(widget.getRevision())
-                    .widgetPackageId(widgetPackage.getPackageId())
-                    .widgetPackageName(widgetPackage.getName())
-                    .widgetPackageIcon(widgetPackage.getIcon())
-                    .widgetPackageVersion(widgetPackage.getVersion())
-                    .snapshot(snapshot)
-                    .status(widgetPackage.getStatus())
-                    .authorEmail(widgetPackage.getAuthorEmail())
-                    .authorLink(widgetPackage.getAuthorLink())
-                    .packageType(widgetPackage.getPackageType())
-                    .releaseType(widgetPackage.getReleaseType())
-                    .releaseCodeBundle(widgetPackage.getReleaseCodeBundle())
-                    .sandbox(widgetPackage.getSandbox())
-                    .installEnv(InstallEnvType.toValueList(widgetPackage.getInstallEnvCode()))
-                    .runtimeEnv(RuntimeEnvType.toValueList(widgetPackage.getRuntimeEnvCode()))
-                    .build();
+                .id(widget.getWidgetId())
+                .revision(widget.getRevision())
+                .widgetPackageId(widgetPackage.getPackageId())
+                .widgetPackageName(widgetPackage.getName())
+                .widgetPackageIcon(widgetPackage.getIcon())
+                .widgetPackageVersion(widgetPackage.getVersion())
+                .snapshot(snapshot)
+                .status(widgetPackage.getStatus())
+                .authorEmail(widgetPackage.getAuthorEmail())
+                .authorLink(widgetPackage.getAuthorLink())
+                .packageType(widgetPackage.getPackageType())
+                .releaseType(widgetPackage.getReleaseType())
+                .releaseCodeBundle(widgetPackage.getReleaseCodeBundle())
+                .sandbox(widgetPackage.getSandbox())
+                .installEnv(InstallEnvType.toValueList(widgetPackage.getInstallEnvCode()))
+                .runtimeEnv(RuntimeEnvType.toValueList(widgetPackage.getRuntimeEnvCode()))
+                .build();
             // Replace the name of the author of the small widget of the space station.
             if (WidgetReleaseType.SPACE.getValue().equals(widgetPack.getReleaseType())) {
-                WidgetSpaceByDTO byDTO = widgetPackageMapper.selectWidgetSpaceBy(widgetPack.getWidgetPackageId());
+                WidgetSpaceByDTO byDTO =
+                    widgetPackageMapper.selectWidgetSpaceBy(widgetPack.getWidgetPackageId());
                 if (null != byDTO) {
                     widgetPack.setAuthorName(byDTO.getAuthorName());
                     widgetPack.setAuthorIcon(byDTO.getAuthorIcon());
                 }
-            }
-            else {
+            } else {
                 widgetPack.setAuthorName(widgetPackage.getAuthorName());
                 widgetPack.setAuthorIcon(widgetPackage.getAuthorIcon());
                 // to be audited widget rendering parent widget id
@@ -437,7 +474,8 @@ public class WidgetServiceImpl implements IWidgetService {
         // If there is a dashboard, verify whether the data source of the component references an external data table
         List<NodeWidgetDto> widgetInfos = widgetMapper.selectNodeWidgetDtoByNodeIds(widgetIds);
         // Group by dashboard nodeId
-        Map<String, List<NodeWidgetDto>> dashboardNodeMap = widgetInfos.stream().collect(Collectors.groupingBy(NodeWidgetDto::getNodeId));
+        Map<String, List<NodeWidgetDto>> dashboardNodeMap =
+            widgetInfos.stream().collect(Collectors.groupingBy(NodeWidgetDto::getNodeId));
         for (String dashboardNodeId : dashboardNodeMap.keySet()) {
             for (NodeWidgetDto widgetInfo : dashboardNodeMap.get(dashboardNodeId)) {
                 // Throws an exception if the widget is associated with an external table
@@ -445,7 +483,8 @@ public class WidgetServiceImpl implements IWidgetService {
                     Map<String, Object> foreignMap = new HashMap<>();
                     foreignMap.put("NODE_NAME", iNodeService.getNodeNameByNodeId(dashboardNodeId));
                     foreignMap.put("FOREIGN_WIDGET_NAME", widgetInfo.getWidgetName());
-                    throw new BusinessException(TemplateException.FOLDER_DASHBOARD_LINK_FOREIGN_NODE, foreignMap);
+                    throw new BusinessException(
+                        TemplateException.FOLDER_DASHBOARD_LINK_FOREIGN_NODE, foreignMap);
                 }
             }
         }
@@ -455,14 +494,14 @@ public class WidgetServiceImpl implements IWidgetService {
     public void checkWidgetOverLimit(String spaceId) {
         // get subscription max widget nums
         SubscriptionInfo subscriptionInfo =
-                entitlementServiceFacade.getSpaceSubscription(spaceId);
+            entitlementServiceFacade.getSpaceSubscription(spaceId);
         // Only the free version requires verification
         if (!subscriptionInfo.isFree()) {
             return;
         }
         Long maxWidgerNums = subscriptionInfo.getFeature().getMessageWidgetNums().getValue();
         // check the number of components in the space
-        Long count = widgetMapper.selectCountBySpaceId(spaceId);
+        Long count = this.getSpaceWidgetCount(spaceId);
         if (maxWidgerNums != -1 && count >= maxWidgerNums) {
             throw new BusinessException(LimitException.WIDGET_OVER_LIMIT);
         }

@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * status code range（460-）
+ * status code range（460-）.
  *
  * @author Chambers
  */
@@ -37,33 +37,45 @@ public enum WidgetException implements BaseException {
 
     WIDGET_SPACE_ERROR(462, "The space where the widget is located is inconsistent"),
 
-    WIDGET_DATASHEET_NOT_EXIST(462, "The dimensional table referenced by the widget does not exist, the copy failed"),
+    WIDGET_DATASHEET_NOT_EXIST(462,
+        "The dimensional table referenced by the widget does not exist, the copy failed"),
 
-    WIDGET_NUMBER_LIMIT(462, "The number of widget has reached the upper limit, and the creation failed"),
+    WIDGET_NUMBER_LIMIT(462,
+        "The number of widget has reached the upper limit, and the creation failed"),
 
-    CREATE_FAIL_CUSTOM_PACKAGEID_REPEAT(466, "The applet creation failed, the package Id is duplicated"),
+    CREATE_FAIL_CUSTOM_PACKAGEID_REPEAT(466,
+        "The applet creation failed, the package Id is duplicated"),
 
     WIDGET_BANNED(467, "Operation failed, widget banned"),
 
-    RELEASES_FAIL_WIDGET_DISABLED(468, "Failed to publish the applet, the widget has been disabled, please contact GM"),
+    RELEASES_FAIL_WIDGET_DISABLED(468,
+        "Failed to publish the applet, the widget has been disabled, please contact GM"),
 
-    RELEASES_FAIL_VERSION_NUM_ERROR(469, "Failed to publish the applet, the version number does not conform to the specification"),
+    RELEASES_FAIL_VERSION_NUM_ERROR(469,
+        "Failed to publish the applet, the version number does not conform to the specification"),
 
-    RELEASES_FAIL_VERSION_NUM_REPEAT(470, "Failed to publish the applet, the version number is duplicated"),
+    RELEASES_FAIL_VERSION_NUM_REPEAT(470,
+        "Failed to publish the applet, the version number is duplicated"),
 
-    ROLLBACK_FAIL_VERSION_NUM_ERROR(471, "The applet fails to roll back, and the version number does not conform to the specification"),
+    ROLLBACK_FAIL_VERSION_NUM_ERROR(471,
+        "The applet fails to roll back, and the version number does not conform to the specification"),
 
-    ROLLBACK_FAIL_SELECT_VERSION_ERROR(472, "The applet fails to roll back, the rollback version number is wrong or fails to pass the audit"),
+    ROLLBACK_FAIL_SELECT_VERSION_ERROR(472,
+        "The applet fails to roll back, the rollback version number is wrong or fails to pass the audit"),
 
-    RELEASES_FAIL_INCOMPLETE_PARAME(473, "Failed to publish the applet, the publishing parameters are incomplete"),
+    RELEASES_FAIL_INCOMPLETE_PARAME(473,
+        "Failed to publish the applet, the publishing parameters are incomplete"),
 
     EN_US_REQUIRED(474, "en-US is required"),
 
-    SUBMIT_FAIL_INCOMPLETE_PARAME(475, "The applet submission failed, the submission parameters are incomplete"),
+    SUBMIT_FAIL_INCOMPLETE_PARAME(475,
+        "The applet submission failed, the submission parameters are incomplete"),
 
-    SUBMIT_FAIL_VERSION_NUM_ERROR(476, "The applet submission failed, the version number does not meet the specification"),
+    SUBMIT_FAIL_VERSION_NUM_ERROR(476,
+        "The applet submission failed, the version number does not meet the specification"),
 
-    SUBMIT_FAIL_VERSION_NUM_REPEAT(477, "The applet submission failed, the version number is duplicated"),
+    SUBMIT_FAIL_VERSION_NUM_REPEAT(477,
+        "The applet submission failed, the version number is duplicated"),
 
     SUBMIT_FAIL_NO_SUBMIT_METHOD(478, "Space applet, unable to execute submit"),
 

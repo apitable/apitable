@@ -29,8 +29,8 @@ public interface IAuthService {
     /**
      * Register.
      *
-     * @param username  username
-     * @param password  password
+     * @param username username
+     * @param password password
      * @return user id
      */
     Long register(String username, String password);

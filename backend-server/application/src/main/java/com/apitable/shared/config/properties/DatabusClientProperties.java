@@ -20,9 +20,9 @@ import static com.apitable.shared.config.properties.DatabusClientProperties.PREF
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-/** 
-* Databus client properties.
-*/
+/**
+ * Databus client properties.
+ */
 @Data
 @ConfigurationProperties(prefix = PREFIX_CONST)
 public class DatabusClientProperties {

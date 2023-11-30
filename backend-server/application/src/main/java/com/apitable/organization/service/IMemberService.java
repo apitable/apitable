@@ -57,12 +57,30 @@ public interface IMemberService extends IService<MemberEntity> {
     Long getMemberIdByUserIdAndSpaceId(Long userId, String spaceId);
 
     /**
+     * Get user id.
+     *
+     * @param memberId member table id
+     * @return user id
+     * @author Chambers
+     */
+    Long getUserIdByMemberId(Long memberId);
+
+    /**
      * get user id list.
      *
      * @param memberIds member id list
      * @return user id list
      */
     List<Long> getUserIdsByMemberIds(List<Long> memberIds);
+
+    /**
+     * Get emails.
+     *
+     * @param memberIds member table ids
+     * @return email list
+     * @author Chambers
+     */
+    List<String> getEmailsByMemberIds(List<Long> memberIds);
 
     /**
      * get user info.
@@ -98,6 +116,22 @@ public interface IMemberService extends IService<MemberEntity> {
      * @param spaceId space id
      */
     void checkUserIfInSpace(Long userId, String spaceId);
+
+    /**
+     * queries whether a member is in a space.
+     *
+     * @param spaceId  space id
+     * @param memberId memberId
+     */
+    void checkMemberInSpace(String spaceId, Long memberId);
+
+    /**
+     * batch queries whether a member is in a space.
+     *
+     * @param spaceId   space id
+     * @param memberIds memberIds
+     */
+    void checkMembersInSpace(String spaceId, List<Long> memberIds);
 
     /**
      * set the main admin.
@@ -225,6 +259,14 @@ public interface IMemberService extends IService<MemberEntity> {
     String getOpenIdByMemberId(Long memberId);
 
     /**
+     * get userId by openId.
+     *
+     * @param openId open id
+     * @return user id
+     */
+    Long getUserIdByOpenId(String spaceId, String openId);
+
+    /**
      * get member id even if he was deleted.
      *
      * @param spaceId space id
@@ -331,7 +373,7 @@ public interface IMemberService extends IService<MemberEntity> {
      * Get node role member with sort.
      *
      * @param memberIds member ids
-     * @return List<NodeRoleMemberVo>
+     * @return List of NodeRoleMemberVo
      * @author Chambers
      */
     List<NodeRoleMemberVo> getNodeRoleMemberWithSort(Collection<Long> memberIds);

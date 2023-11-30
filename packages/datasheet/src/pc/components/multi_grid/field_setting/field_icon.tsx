@@ -19,69 +19,14 @@
 import { ReactElement } from 'react';
 import { colorVars } from '@apitable/components';
 import { FieldType } from '@apitable/core';
-import {
-  AttachmentOutlined,
-  AutonumberOutlined,
-  CalendarOutlined,
-  CheckboxOutlined,
-  CurrencyUsdOutlined,
-  EmailOutlined,
-  FormulaOutlined,
-  HistoryFilled,
-  LinkOutlined,
-  LongtextOutlined,
-  LookupOutlined,
-  StarOutlined,
-  CascadeOutlined, FileOutlined,
-  NumberOutlined,
-  OneWayLinkOutlined,
-  PercentOutlined,
-  SelectMultipleOutlined,
-  SelectSingleOutlined,
-  TelephoneOutlined,
-  TextOutlined,
-  TimeOutlined,
-  TwoWayLinkOutlined,
-  UserAddOutlined,
-  UserEditOutlined,
-  UserOutlined
-} from '@apitable/icons';
+import { FieldIconMapFieldType } from '@apitable/widget-sdk';
 
-const FieldIconMap = {
-  [FieldType.Text]: LongtextOutlined,
-  [FieldType.Number]: NumberOutlined,
-  [FieldType.SingleSelect]: SelectSingleOutlined,
-  [FieldType.MultiSelect]: SelectMultipleOutlined,
-  [FieldType.DateTime]: CalendarOutlined,
-  [FieldType.Attachment]: AttachmentOutlined,
-  [FieldType.OneWayLink]: OneWayLinkOutlined,
-  [FieldType.Link]: TwoWayLinkOutlined,
-  [FieldType.URL]: LinkOutlined,
-  [FieldType.Email]: EmailOutlined,
-  [FieldType.Phone]: TelephoneOutlined,
-  [FieldType.Checkbox]: CheckboxOutlined,
-  [FieldType.Rating]: StarOutlined,
-  [FieldType.Member]: UserOutlined,
-  [FieldType.LookUp]: LookupOutlined,
-  [FieldType.Formula]: FormulaOutlined,
-  [FieldType.Currency]: CurrencyUsdOutlined,
-  [FieldType.Percent]: PercentOutlined,
-  [FieldType.SingleText]: TextOutlined,
-  [FieldType.AutoNumber]: AutonumberOutlined,
-  [FieldType.CreatedTime]: TimeOutlined,
-  [FieldType.LastModifiedTime]: HistoryFilled,
-  [FieldType.CreatedBy]: UserAddOutlined,
-  [FieldType.LastModifiedBy]: UserEditOutlined,
-  [FieldType.Cascader]: CascadeOutlined,
-  [FieldType.WorkDoc]: FileOutlined,
-};
-
-export const getFieldTypeIconOrNull = (type: FieldType): ReactElement|null => {
-  return FieldIconMap[type];
+export const getFieldTypeIconOrNull = (type: FieldType): ReactElement | null => {
+  return FieldIconMapFieldType[type] as unknown as ReactElement;
 };
 
 export const getFieldTypeIcon = (type: FieldType, fillColor: string = colorVars.thirdLevelText, width = 16, height = 16): any => {
-  const FieldIcon = FieldIconMap[type];
+  const FieldIcon = FieldIconMapFieldType[type];
   if (!FieldIcon) {
     return <div />;
   }

@@ -18,11 +18,13 @@
 
 package com.apitable.space.enums;
 
+import com.apitable.core.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.core.exception.BaseException;
-
+/**
+ * labs feature exception.
+ */
 @Getter
 @AllArgsConstructor
 public enum LabsFeatureException implements BaseException {
@@ -35,7 +37,7 @@ public enum LabsFeatureException implements BaseException {
 
     FEATURE_TYPE_IS_NOT_EXIST(955, "feature type does not exist"),
 
-    FEATURE_ATTRIBUTE_AT_LEAST_ONE(956,"feature attribute at least one");
+    FEATURE_ATTRIBUTE_AT_LEAST_ONE(956, "feature attribute at least one");
 
     private final Integer code;
 

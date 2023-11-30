@@ -95,7 +95,7 @@ public class NodeRubbishController {
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW"),
         @Parameter(name = "size", in = ParameterIn.QUERY,
             description = "expected load quantity（May be because the total"
-            + " number or permissions are not enough）",
+                + " number or permissions are not enough）",
             schema = @Schema(type = "integer"), example = "15"),
         @Parameter(name = "lastNodeId", description = "id of the last node in the loaded list",
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "dstM5qG7")

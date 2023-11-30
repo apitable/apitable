@@ -18,24 +18,22 @@
 
 package com.apitable.starter.mail.autoconfigure;
 
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.StrUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Objects;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 import javax.mail.util.ByteArrayDataSource;
-
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.ArrayUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.MailException;
@@ -47,7 +45,7 @@ import org.springframework.util.StringUtils;
 
 /**
  * <p>
- * Mail send api
+ * Mail send api.
  * </p>
  *
  * @author Benson Cheung
@@ -67,7 +65,7 @@ public class MailSendService implements MailTemplate {
 
     @Override
     public void send(EmailMessage emailMessage) {
-        this.send(new EmailMessage[] { emailMessage });
+        this.send(new EmailMessage[] {emailMessage});
     }
 
     @Override
@@ -79,17 +77,16 @@ public class MailSendService implements MailTemplate {
                 messages[i] = message;
             }
             sender.send(messages);
-        }
-        catch (MessagingException | IOException | MailException exception) {
-            exception.printStackTrace();
+        } catch (MessagingException | IOException | MailException exception) {
             String ignoreInfo = "Invalid Addresses";
-            if (!exception.getMessage().contains(ignoreInfo)) {
+            if (!Objects.requireNonNull(exception.getMessage()).contains(ignoreInfo)) {
                 LOGGER.error("send email fail", exception);
             }
         }
     }
 
-    private MimeMessage createMimeMessage(EmailMessage emailMessage) throws MessagingException, IOException {
+    private MimeMessage createMimeMessage(EmailMessage emailMessage)
+        throws MessagingException, IOException {
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         String address = StrUtil.isNotBlank(emailMessage.getFrom())
@@ -106,15 +103,15 @@ public class MailSendService implements MailTemplate {
         // email content
         if (StringUtils.hasText(emailMessage.getPlainText())) {
             helper.setText(emailMessage.getPlainText(), emailMessage.getHtmlText());
-        }
-        else {
+        } else {
             helper.setText(emailMessage.getHtmlText(), true);
         }
         // inline resource
         if (emailMessage.getInlines() != null && !emailMessage.getInlines().isEmpty()) {
             Map<String, InputStream> inlines = emailMessage.getInlines();
             for (Map.Entry<String, InputStream> entry : inlines.entrySet()) {
-                ByteArrayResource resource = new ByteArrayResource(IoUtil.readBytes(entry.getValue()));
+                ByteArrayResource resource =
+                    new ByteArrayResource(IoUtil.readBytes(entry.getValue()));
                 helper.addInline(entry.getKey(), resource);
             }
         }
@@ -129,7 +126,9 @@ public class MailSendService implements MailTemplate {
                 // Read Attachment Resources
                 ByteArrayDataSource source = new ByteArrayDataSource(attach.getSource(), mimeType);
                 // Solve the problem of garbled code
-                String fileName = MimeUtility.encodeText(attach.getAttachName(), StandardCharsets.UTF_8.name(), "B");
+                String fileName =
+                    MimeUtility.encodeText(attach.getAttachName(), StandardCharsets.UTF_8.name(),
+                        "B");
                 helper.addAttachment(fileName, source);
             }
         }

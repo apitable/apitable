@@ -116,7 +116,7 @@ export const subscribeDatasheetMap = (store: Store<IReduxState>, datasheetServic
     const collaEngineKeys = datasheetService.instance.getCollaEngineKeys();
     const entityDatasheetIds = [...collaEngineKeys];
     const diff = without(currentDatasheetIds, ...entityDatasheetIds);
-    console.log('create datasheetService', diff);
+    // console.log('create datasheetService', diff);
     diff.forEach(id => {
       datasheetService.instance!.createCollaEngine(id, ResourceType.Datasheet);
     });
@@ -128,7 +128,7 @@ export const subscribeDatasheetMap = (store: Store<IReduxState>, datasheetServic
       );
     }, []);
     const uniqueList = Array.from(new Set(newList).values());
-    // Why should I clear the cache of formula parsing? See also: 
+    // Why should I clear the cache of formula parsing? See also:
     // https://www.notion.so/Debug-2021-03-29-a5a756dc2c9640e2957103c9bb5eeebd#bd1ef9866f504b8c85be4c27088f9ada.
     ExpCache.clearAll();
     uniqueList.forEach(id => {
@@ -136,8 +136,8 @@ export const subscribeDatasheetMap = (store: Store<IReduxState>, datasheetServic
       const fieldMap = datasheetMap[id]!.datasheet!.snapshot.meta.fieldMap;
       datasheetService.instance!.computeRefManager.computeRefMap(fieldMap, id, state);
     });
-    
-    diff.forEach(item => 
+
+    diff.forEach(item =>
       computeRefManager.setDstComputed(item)
     );
   });

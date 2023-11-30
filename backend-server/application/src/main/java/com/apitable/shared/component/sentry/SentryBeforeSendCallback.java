@@ -18,24 +18,24 @@
 
 package com.apitable.shared.component.sentry;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import cn.hutool.core.map.MapUtil;
+import com.apitable.shared.cache.bean.LoginUserDto;
+import com.apitable.shared.cache.bean.UserSpaceDto;
+import com.apitable.shared.context.LoginContext;
 import io.sentry.SentryEvent;
 import io.sentry.SentryOptions;
 import io.sentry.protocol.User;
 import io.sentry.spring.SentryUserProvider;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
-
-import com.apitable.shared.cache.bean.LoginUserDto;
-import com.apitable.shared.cache.bean.UserSpaceDto;
-import com.apitable.shared.context.LoginContext;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+/**
+ * sentry before send callback.
+ */
 @Component
 @Slf4j
 public class SentryBeforeSendCallback implements SentryOptions.BeforeSendCallback {
@@ -46,30 +46,4 @@ public class SentryBeforeSendCallback implements SentryOptions.BeforeSendCallbac
         event.setTag("zipkin.trace.id", MDC.get("traceId"));
         return event;
     }
-
-    @Bean
-    public SentryUserProvider sentryUserProvider() {
-        return () -> {
-            User user = new User();
-            try {
-                LoginUserDto loginUserDto = LoginContext.me().getLoginUser();
-                UserSpaceDto userSpaceDto = LoginContext.me().getUserSpaceDto(LoginContext.me().getSpaceId());
-                if (null != loginUserDto && null != userSpaceDto) {
-                    user.setUsername(loginUserDto.getNickName());
-                    Map<String, String> userOthers = new HashMap<>(3);
-                    userOthers.put("memberName", userSpaceDto.getMemberName());
-                    userOthers.put("spaceName", userSpaceDto.getSpaceName());
-                    userOthers.put("uuid", loginUserDto.getUuid());
-
-                    MapUtil.removeNullValue(userOthers);
-                    user.setOthers(userOthers);
-                }
-            }
-            catch (Exception ignored) {
-                // don't bother if not log in
-            }
-            return user;
-        };
-    }
-
 }

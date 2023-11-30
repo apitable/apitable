@@ -23,7 +23,7 @@ import lombok.Getter;
 
 /**
  * <p>
- * audit category in space
+ * audit category in space.
  * </p>
  *
  * @author Chambers
@@ -33,32 +33,38 @@ import lombok.Getter;
 public enum AuditSpaceCategory {
 
     /**
-     * space change event
+     * space change event.
      */
     SPACE_CHANGE_EVENT,
 
     /**
-     * work catalog change event
+     * work catalog change event.
      */
     WORK_CATALOG_CHANGE_EVENT,
 
     /**
-     * work catalog share event
+     * work catalog share event.
      */
     WORK_CATALOG_SHARE_EVENT,
 
     /**
-     * work catalog permission change event
+     * work catalog permission change event.
      */
     WORK_CATALOG_PERMISSION_CHANGE_EVENT,
 
     /**
-     * space template event
+     * space template event.
      */
     SPACE_TEMPLATE_EVENT,
 
     ;
 
+    /**
+     * to enum.
+     *
+     * @param name name
+     * @return enum
+     */
     public static AuditSpaceCategory toEnum(String name) {
         for (AuditSpaceCategory value : AuditSpaceCategory.values()) {
             if (value.name().toLowerCase().equals(name)) {

@@ -18,10 +18,9 @@
 
 package com.apitable.asset.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-
 import com.apitable.asset.entity.DeveloperAssetEntity;
 import com.apitable.asset.enums.DeveloperAssetType;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * Workbench-Developer Attachment Table Service Class.
@@ -39,6 +38,7 @@ public interface IDeveloperAssetService extends IService<DeveloperAssetEntity> {
      * @param fileSize           resource size
      */
     void saveAssetInDeveloper(Long assetId, Long createdBy, String assetChecksum,
-        DeveloperAssetType developerAssetType, String originalFileName, long fileSize);
+                              DeveloperAssetType developerAssetType, String originalFileName,
+                              long fileSize);
 
 }

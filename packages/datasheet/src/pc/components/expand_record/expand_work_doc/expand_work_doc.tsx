@@ -42,7 +42,7 @@ const ExpandWorkdocBase: ForwardRefRenderFunction<IEditor, IWorkdocProps> = (pro
   };
 
   const toggleEditing = () => {
-    editable && setOpen(!open);
+    setOpen(!open);
   };
 
   return (
@@ -53,7 +53,7 @@ const ExpandWorkdocBase: ForwardRefRenderFunction<IEditor, IWorkdocProps> = (pro
           <div>{t(Strings.workdoc_create)}</div>
         </div>
       ) : null : (
-        <div className={classNames('expandWorkdoc', styles.expandWorkdoc, !editable && styles.disabled)}>
+        <div className={classNames('expandWorkdoc', styles.expandWorkdoc)}>
           <div className={classNames('workdocBtn', styles.workdocBtn)} onClick={toggleEditing}>
             <FileOutlined />
             <div className={styles.workdocTitle}>{title}</div>

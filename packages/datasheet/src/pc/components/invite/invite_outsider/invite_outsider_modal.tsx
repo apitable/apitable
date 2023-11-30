@@ -36,7 +36,7 @@ import { InputEmail } from './input_email';
 import { LinkInvite } from './link_invite';
 import styles from './style.module.less';
 // @ts-ignore
-import { checkSocialInvite } from 'enterprise';
+import { checkSocialInvite } from 'enterprise/home/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

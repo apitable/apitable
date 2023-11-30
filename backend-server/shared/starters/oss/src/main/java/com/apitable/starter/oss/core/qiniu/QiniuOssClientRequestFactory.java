@@ -24,6 +24,9 @@ import com.apitable.starter.oss.core.OssClientRequestFactory;
 import com.apitable.starter.oss.core.OssSignatureTemplate;
 import com.qiniu.util.Auth;
 
+/**
+ * qiniu oss client request factory.
+ */
 public class QiniuOssClientRequestFactory implements OssClientRequestFactory {
 
     private final Auth auth;
@@ -38,6 +41,16 @@ public class QiniuOssClientRequestFactory implements OssClientRequestFactory {
 
     private final OssSignatureTemplate ossSignatureTemplate;
 
+    /**
+     * constructor.
+     *
+     * @param auth auth
+     * @param regionId region id
+     * @param downloadDomain download domain
+     * @param callback callback
+     * @param uploadUrl upload url
+     * @param ossSignatureTemplate oss signature template
+     */
     public QiniuOssClientRequestFactory(Auth auth, String regionId,
         String downloadDomain, Callback callback, String uploadUrl, OssSignatureTemplate ossSignatureTemplate) {
         this.auth = auth;

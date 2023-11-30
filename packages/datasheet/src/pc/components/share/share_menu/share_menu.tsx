@@ -26,6 +26,7 @@ import { TriangleDownFilled } from '@apitable/icons';
 import { getNodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { Avatar, AvatarSize, Logo, Modal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import SavePng from 'static/icon/datasheet/share/datasheet_img_share_save.png';
 import EditPngDark from 'static/icon/datasheet/share/share_space_edit_dark.png';
@@ -34,8 +35,6 @@ import { INodeTree, IShareSpaceInfo } from '../interface';
 import { ShareSave } from '../share_save';
 import { OperationCard } from './operation_card';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const { TreeNode, DirectoryTree } = Tree;
 
@@ -157,7 +156,7 @@ export const ShareMenu: React.FC<React.PropsWithChildren<IShareMenu>> = ({ share
   return (
     <div className={styles.shareMenu}>
       <div className={styles.logo} onClick={enterSpace}>
-        <Logo theme={ThemeName.Dark} size="large" />
+        <Logo theme={ThemeName.Dark} size="large" type='SHARE_LOGO' />
       </div>
       <div className={styles.shareInfo}>
         <div className={styles.avatar}>

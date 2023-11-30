@@ -39,7 +39,7 @@ import { PreviewMain } from './preview_main';
 import { isFocusingInput } from './preview_main/util';
 import styles from './style.module.less';
 // @ts-ignore
-import { OFFICE_APP_ID } from 'enterprise';
+import { OFFICE_APP_ID } from 'enterprise/marketing/marketing';
 
 import {useAppSelector} from "pc/store/react-redux";
 

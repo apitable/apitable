@@ -27,7 +27,7 @@ import { MobileHome } from './mobile_home';
 import { PcHome } from './pc_home';
 import styles from './style.module.less';
 //@ts-ignore
-import { Home as EnterpriseHome } from 'enterprise';
+import { Home as EnterpriseHome } from 'enterprise/home/home';
 
 import {useAppSelector} from "pc/store/react-redux";
 

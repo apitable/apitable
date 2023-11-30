@@ -17,6 +17,7 @@
  */
 
 import * as React from 'react';
+import { Box } from '@apitable/components';
 import {
   CollaCommandName,
   FieldType,
@@ -37,6 +38,7 @@ import {
   ViewType,
 } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
+import { ButtonFieldItem } from 'pc/components/editors/button_editor/buton_item';
 import { CheckboxEditor } from 'pc/components/editors/checkbox_editor';
 import { FocusHolder } from 'pc/components/editors/focus_holder';
 import { IEditor } from 'pc/components/editors/interface';
@@ -65,7 +67,7 @@ import { ExpandNumber } from '../expand_number';
 import { ExpandSelect } from '../expand_select';
 import { ExpandWorkdoc } from '../expand_work_doc';
 // @ts-ignore
-import { convertAlarmStructure } from 'enterprise';
+import { convertAlarmStructure } from 'enterprise/alarm/date_time_alarm/utils';
 
 export interface ICommonProps {
   style: React.CSSProperties;
@@ -299,6 +301,13 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = (
     case FieldType.Cascader:
       return (
         <ExpandCascader {...commonProps} isFocus={isFocus} cellValue={cellValue} field={commonProps.field as ILinkField} style={mobileEditorWidth} />
+      );
+    case FieldType.Button:
+
+      return (
+        <Box paddingLeft={'16px'}>
+          <ButtonFieldItem recordId={record.id} field={field} record={record} />
+        </Box>
       );
     case FieldType.WorkDoc:
       return (

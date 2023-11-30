@@ -23,7 +23,7 @@ import lombok.Getter;
 
 /**
  * <p>
- * enumeration of space audit events
+ * enumeration of space audit events.
  * </p>
  *
  * @author Chambers
@@ -76,7 +76,8 @@ public enum AuditSpaceAction {
 
     ENABLE_NODE_SHARE("enable_node_share", AuditSpaceCategory.WORK_CATALOG_SHARE_EVENT),
 
-    UPDATE_NODE_SHARE_SETTING("update_node_share_setting", AuditSpaceCategory.WORK_CATALOG_SHARE_EVENT),
+    UPDATE_NODE_SHARE_SETTING("update_node_share_setting",
+        AuditSpaceCategory.WORK_CATALOG_SHARE_EVENT),
 
     DISABLE_NODE_SHARE("disable_node_share", AuditSpaceCategory.WORK_CATALOG_SHARE_EVENT),
 

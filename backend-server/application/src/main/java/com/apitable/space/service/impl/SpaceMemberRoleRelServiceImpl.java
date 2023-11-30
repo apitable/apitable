@@ -88,7 +88,8 @@ public class SpaceMemberRoleRelServiceImpl
     }
 
     @Override
-    public List<Long> getMemberIdListByResourceGroupCodes(String spaceId, List<String> resourceGroupCodes) {
+    public List<Long> getMemberIdListByResourceGroupCodes(String spaceId,
+                                                          List<String> resourceGroupCodes) {
         List<String> resourceCodes =
             spaceResourceMapper.selectResourceCodesByGroupCode(resourceGroupCodes);
         if (resourceCodes.isEmpty()) {

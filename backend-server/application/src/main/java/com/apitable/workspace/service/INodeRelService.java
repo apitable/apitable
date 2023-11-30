@@ -18,17 +18,21 @@
 
 package com.apitable.workspace.service;
 
+import com.apitable.workspace.entity.NodeRelEntity;
+import com.apitable.workspace.vo.NodeInfo;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.apitable.workspace.vo.NodeInfo;
-import com.apitable.workspace.entity.NodeRelEntity;
-
+/**
+ * node relationship service.
+ */
 public interface INodeRelService {
 
     /**
-     * @param userId user id
+     * create node association.
+     *
+     * @param userId     user id
      * @param mainNodeId mainNodeId
      * @param relNodeId  relNodeId
      * @param extra      extra
@@ -36,18 +40,18 @@ public interface INodeRelService {
     void create(Long userId, String mainNodeId, String relNodeId, String extra);
 
     /**
-     * copy node association
+     * copy node association.
      *
-     * @param userId user id
+     * @param userId          user id
      * @param sourceRelNodeId sourceRelNodeId
      * @param destRelNodeId   destRelNodeId
      */
     void copy(Long userId, String sourceRelNodeId, String destRelNodeId);
 
     /**
-     * batch replication node association relationship
+     * batch replication node association relationship.
      *
-     * @param userId user id
+     * @param userId     user id
      * @param relNodeIds list of original associated node id
      * @param newNodeMap original node id - new created node id map
      */
@@ -62,17 +66,20 @@ public interface INodeRelService {
     Map<String, String> getRelNodeToMainNodeMap(Collection<String> relNodeIds);
 
     /**
-     * query the information of the associated node
+     * query the information of the associated node.
      *
-     * @param nodeId node id
-     * @param viewId viewId（not necessary）
+     * @param nodeId   node id
+     * @param viewId   viewId（not necessary）
      * @param memberId member id
      * @param nodeType nodeType（not necessary）
      * @return BaseNodeInfo List
      */
-    List<NodeInfo> getRelationNodeInfoByNodeId(String nodeId, String viewId, Long memberId, Integer nodeType);
+    List<NodeInfo> getRelationNodeInfoByNodeId(String nodeId, String viewId, Long memberId,
+                                               Integer nodeType);
 
     /**
+     * get entity by node id.
+     *
      * @param relNodeId v
      * @return NodeRelEntity
      */

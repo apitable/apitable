@@ -18,15 +18,14 @@
 
 package com.apitable.shared.config.properties;
 
-import lombok.Data;
-
-import org.springframework.boot.context.properties.ConfigurationProperties;
-
 import static com.apitable.shared.config.properties.SocketProperties.PREFIX;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * <p>
- * Socket properties
+ * Socket properties.
  * </p>
  *
  * @author Chambers

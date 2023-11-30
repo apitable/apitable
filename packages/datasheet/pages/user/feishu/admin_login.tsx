@@ -23,8 +23,8 @@ import React from 'react';
 const FeiShuAdminLoginWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
-      return components.FeiShuAdminLogin;
+    import('enterprise/lark/feishu/feishu_admin_login').then((components) => {
+      return components.default;
     }),
   { ssr: false },
 );

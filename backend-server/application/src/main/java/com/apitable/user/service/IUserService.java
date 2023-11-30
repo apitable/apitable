@@ -161,7 +161,7 @@ public interface IUserService extends IService<UserEntity> {
     /**
      * Create an account by email.
      *
-     * @param email email
+     * @param email    email
      * @param password password
      * @return UserEntity
      */

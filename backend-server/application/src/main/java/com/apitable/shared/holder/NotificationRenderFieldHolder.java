@@ -22,7 +22,7 @@ import com.apitable.shared.component.notification.NotificationRenderField;
 
 /**
  * <p>
- * Notify temporary field
+ * Notify temporary field.
  * </p>
  *
  * @author zoe zheng
@@ -37,6 +37,11 @@ public class NotificationRenderFieldHolder {
         OPEN_UP_FLAG.set(true);
     }
 
+    /**
+     * setter.
+     *
+     * @param val val
+     */
     public static void set(NotificationRenderField val) {
         Boolean openUpFlag = OPEN_UP_FLAG.get();
         if (openUpFlag != null && openUpFlag.equals(true)) {
@@ -44,12 +49,16 @@ public class NotificationRenderFieldHolder {
         }
     }
 
+    /**
+     * getter.
+     *
+     * @return NotificationRenderField
+     */
     public static NotificationRenderField get() {
         Boolean openUpFlag = OPEN_UP_FLAG.get();
         if (openUpFlag == null || openUpFlag.equals(false)) {
             return null;
-        }
-        else {
+        } else {
             return HOLDER.get();
         }
     }

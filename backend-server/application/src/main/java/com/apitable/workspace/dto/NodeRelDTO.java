@@ -20,6 +20,9 @@ package com.apitable.workspace.dto;
 
 import lombok.Data;
 
+/**
+ * node relation dto.
+ */
 @Data
 public class NodeRelDTO {
 

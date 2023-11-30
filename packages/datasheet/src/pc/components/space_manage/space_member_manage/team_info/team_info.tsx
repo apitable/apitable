@@ -29,7 +29,7 @@ import { EditMemberModal, ChangeMemberTeam, AddMember } from '../modal';
 import { isPrimaryOrOwnFunc, socialPlatPreOperateCheck } from '../utils';
 import styles from './style.module.less';
 // @ts-ignore
-import { isSocialPlatformEnabled, isSocialDingTalk, isSocialWecom, isContactSyncing } from 'enterprise';
+import { isSocialPlatformEnabled, isSocialDingTalk, isSocialWecom, isContactSyncing } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 interface ITeamInfo {

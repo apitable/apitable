@@ -434,19 +434,20 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     Long selectUserIdByMemberId(@Param("memberId") Long memberId);
 
     /**
+     * query user id by open id.
+     *
+     * @param openId open id
+     * @return user id
+     */
+    Long selectUserIdByOpenId(@Param("spaceId") String spaceId, @Param("openId") String openId);
+
+    /**
      * get user id by member id.
      *
      * @param memberIds member id
      * @return user ids
      */
     List<Long> selectUserIdsByMemberIds(@Param("memberIds") List<Long> memberIds);
-
-    /**
-     * remove space's red point.
-     *
-     * @param memberId member id
-     */
-    int updateIsPointById(@Param("memberId") Long memberId);
 
     /**
      * query member by space id and member id.
@@ -547,6 +548,15 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @return space id
      */
     String selectSpaceIdByMemberId(@Param("memberId") Long memberId);
+
+    /**
+     * Query space ids.
+     *
+     * @param memberIds member table ids
+     * @return space id list
+     * @author Chambers
+     */
+    List<String> selectSpaceIdByMemberIds(@Param("memberIds") List<Long> memberIds);
 
     /**
      * query admin's user id by space id.
@@ -725,8 +735,8 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @param openId  the third platform user's open id
      * @return member id
      */
-    Long selectByOpenIdIgnoreDelete(@Param("spaceId") String spaceId,
-                                    @Param("openId") String openId);
+    Long selectIdByOpenIdIgnoreDelete(@Param("spaceId") String spaceId,
+                                      @Param("openId") String openId);
 
     /**
      * !!! even if the member is deleted logically.
@@ -898,7 +908,8 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @param userIds user id
      * @return MemberEntity
      */
-    List<MemberEntity> selectByUserIds(@Param("spaceId") String spaceId, @Param("userIds") List<Long> userIds);
+    List<MemberEntity> selectByUserIds(@Param("spaceId") String spaceId,
+                                       @Param("userIds") List<Long> userIds);
 
     /**
      * query member name by user id and space id.

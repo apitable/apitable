@@ -18,14 +18,10 @@
 
 package com.apitable.shared.grpc;
 
-import javax.annotation.Resource;
+import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_SUCCESS_CODE;
+import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_SUCCESS_MESSAGE;
 
 import cn.hutool.core.util.NumberUtil;
-import io.grpc.stub.StreamObserver;
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
-import net.devh.boot.grpc.server.service.GrpcService;
-
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.integration.grpc.ApiServingServiceGrpc;
 import com.apitable.integration.grpc.BasicResult;
@@ -39,16 +35,19 @@ import com.apitable.workspace.enums.IdRulePrefixEnum;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.service.INodeService;
-
-import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_SUCCESS_CODE;
-import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_SUCCESS_MESSAGE;
+import io.grpc.stub.StreamObserver;
+import javax.annotation.Resource;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import net.devh.boot.grpc.server.service.GrpcService;
 
 /**
- * backend grp serving service
+ * backend grp serving service.
  */
 @GrpcService
 @Slf4j
 public class BackendServingServiceImpl extends ApiServingServiceGrpc.ApiServingServiceImplBase {
+
     @Resource
     private MultiDatasourceAdapterTemplate multiDatasourceAdapterTemplate;
 
@@ -66,32 +65,35 @@ public class BackendServingServiceImpl extends ApiServingServiceGrpc.ApiServingS
 
     @SneakyThrows
     @Override
-    public void recordNodeBrowsing(NodeBrowsingRo req, StreamObserver<BasicResult> responseObserver) {
+    public void recordNodeBrowsing(NodeBrowsingRo req,
+                                   StreamObserver<BasicResult> responseObserver) {
         String spaceId = iNodeService.getSpaceIdByNodeId(req.getNodeId());
         // only for folder
         if (req.getNodeId().startsWith(IdRulePrefixEnum.FOD.getIdRulePrefixEnum())) {
             Long userId = iUserService.getUserIdByUuidWithCheck(req.getUuid());
             Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
             ExceptionUtil.isNotNull(memberId, PermissionException.MEMBER_NOT_IN_SPACE);
-            multiDatasourceAdapterTemplate.saveOrUpdateNodeVisitRecord(spaceId, memberId, req.getNodeId(), NodeType.FOLDER);
+            multiDatasourceAdapterTemplate.saveOrUpdateNodeVisitRecord(spaceId, memberId,
+                req.getNodeId(), NodeType.FOLDER);
         }
         BasicResult result = BasicResult.newBuilder()
-                .setCode(DEFAULT_SUCCESS_CODE)
-                .setMessage(DEFAULT_SUCCESS_MESSAGE)
-                .setSuccess(true).build();
+            .setCode(DEFAULT_SUCCESS_CODE)
+            .setMessage(DEFAULT_SUCCESS_MESSAGE)
+            .setSuccess(true).build();
         responseObserver.onNext(result);
         responseObserver.onCompleted();
     }
 
     @SneakyThrows
     @Override
-    public void documentOperate(DocumentOperateRo req, StreamObserver<BasicResult> responseObserver) {
+    public void documentOperate(DocumentOperateRo req,
+                                StreamObserver<BasicResult> responseObserver) {
         documentServiceFacade.cellValueOperate(NumberUtil.parseLong(req.getUserId()),
-                req.getRecoverDocumentNamesList(), req.getRemoveDocumentNamesList());
+            req.getRecoverDocumentNamesList(), req.getRemoveDocumentNamesList());
         BasicResult result = BasicResult.newBuilder()
-                .setCode(DEFAULT_SUCCESS_CODE)
-                .setMessage(DEFAULT_SUCCESS_MESSAGE)
-                .setSuccess(true).build();
+            .setCode(DEFAULT_SUCCESS_CODE)
+            .setMessage(DEFAULT_SUCCESS_MESSAGE)
+            .setSuccess(true).build();
         responseObserver.onNext(result);
         responseObserver.onCompleted();
     }

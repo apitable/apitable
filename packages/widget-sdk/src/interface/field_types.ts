@@ -959,8 +959,48 @@ export enum FieldType {
    * ```
    */
   Cascader = CoreFieldType.Cascader,
-
-  WorkDoc = CoreFieldType.WorkDoc
+  /**
+   * A rich text editor.
+   *
+   * ** Cell read format **
+   *
+   * `string`
+   *
+   * ** Cell write format **
+   *
+   * `string`
+   *
+   * ** Field property read format **
+   *
+   * n/a
+   *
+   * ** Field property write format **
+   *
+   * n/a
+   *
+   */
+  WorkDoc = CoreFieldType.WorkDoc,
+    /**
+     * Button click trigger automation.
+     *
+     * ** Cell read format **
+     *
+     * n/a
+     *
+     * ** Cell write format **
+     *
+     * n/a
+     *
+     * ** Field property read format **
+     *
+     * n/a
+     *
+     * ** Field property write format **
+     *
+     * n/a
+     *
+     */
+  Button = CoreFieldType.Button
 }
 
 export interface IAttachmentValue {
@@ -1041,5 +1081,6 @@ export enum NumFieldType {
   Cascader = 25,
   OneWayLink = 26,
   WorkDoc = 27,
+  Button = 28,
   DeniedField = 999, // no permission column
 }

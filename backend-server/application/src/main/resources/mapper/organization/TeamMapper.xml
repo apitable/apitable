@@ -33,6 +33,15 @@
         WHERE id = #{teamId} AND is_deleted = 0
     </select>
 
+    <select id="selectInfoByTeamName"
+            resultType="com.apitable.organization.dto.TeamPathInfo">
+        SELECT id, parent_id, team_name
+        FROM ${tablePrefix}unit_team
+        WHERE space_id = #{spaceId}
+          AND team_name = #{teamName}
+          AND is_deleted = 0
+    </select>
+
     <select id="selectMaxSequenceByParentId" resultType="java.lang.Integer">
         SELECT MAX(sequence)
         FROM ${tablePrefix}unit_team
@@ -42,6 +51,18 @@
 
     <select id="selectTeamIdByParentIdIn" resultType="java.lang.Long">
         SELECT id
+        FROM ${tablePrefix}unit_team
+        WHERE parent_id IN
+        <foreach item="item" index="index" collection="parentIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectTeamByParentIdIn"
+            resultType="com.apitable.organization.dto.TeamCteInfo">
+        SELECT id, parent_id
         FROM ${tablePrefix}unit_team
         WHERE parent_id IN
         <foreach item="item" index="index" collection="parentIds" open="("
@@ -91,24 +112,6 @@
         WHERE vout.space_id = #{spaceId} AND vout.parent_id = #{parentId} AND
         vout.is_deleted = 0
         ORDER BY vout.sequence
-    </select>
-
-    <select id="selectAllParentTeamIds" resultType="java.lang.Long">
-        WITH RECURSIVE parent (id, parent_id) AS
-        (
-        SELECT id, parent_id
-        FROM ${tablePrefix}unit_team
-        WHERE id = #{teamId} AND is_deleted = 0
-        UNION ALL
-        SELECT c.id, c.parent_id
-        FROM parent AS cp
-        JOIN ${tablePrefix}unit_team AS c ON cp.parent_id = c.id AND c.is_deleted = 0
-        )
-        SELECT DISTINCT id
-        FROM parent
-        <if test="!includeSelf">
-            WHERE id != #{teamId}
-        </if>
     </select>
 
     <select id="selectByTeamName" resultType="com.apitable.organization.vo.SearchTeamResultVo">
@@ -411,50 +414,34 @@
         ORDER BY parent_id
     </select>
 
-    <select id="selectTreeByTeamName" resultType="com.apitable.organization.entity.TeamEntity">
-        WITH RECURSIVE tree_view ( id, team_name, parent_id, space_id ) AS (
-                SELECT id, team_name, parent_id, space_id
-                FROM ${tablePrefix}unit_team
-                WHERE space_id = #{spaceId}
-                  AND team_name = #{teamName}
-                  AND is_deleted = 0 UNION ALL
-                SELECT c.id, c.team_name, c.parent_id, c.space_id
-                FROM tree_view AS cp
-                JOIN ${tablePrefix}unit_team AS c ON c.space_id = #{spaceId} AND cp.parent_id = c.id AND c.is_deleted = 0
-                )
-        SELECT DISTINCT * FROM tree_view
-    </select>
-
-    <select id="selectChildTreeByTeamIds" resultType="com.apitable.organization.dto.TeamCteInfo">
+    <select id="selectChildTeamTree" resultType="com.apitable.organization.dto.TeamCteInfo">
         WITH RECURSIVE tree_view ( id, parent_id ) AS (
         SELECT id, parent_id
         FROM ${tablePrefix}unit_team
-        WHERE space_id = #{spaceId}
-        AND id IN
+        WHERE id IN
         <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
             #{item}
         </foreach>
         AND is_deleted = 0 UNION ALL
         SELECT c.id, c.parent_id
         FROM tree_view AS cp
-        JOIN ${tablePrefix}unit_team AS c ON c.space_id = #{spaceId} AND cp.id = c.parent_id AND c.is_deleted = 0
+        JOIN ${tablePrefix}unit_team AS c ON cp.id = c.parent_id AND c.is_deleted = 0
         )
         SELECT DISTINCT * FROM tree_view
     </select>
 
-    <select id="selectParentTreeByTeamIds" resultType="com.apitable.organization.dto.TeamPathInfo">
+    <select id="selectParentTeamTree" resultType="com.apitable.organization.dto.TeamPathInfo">
         WITH RECURSIVE tree_view ( id, team_name, parent_id ) AS (
         SELECT id, team_name, parent_id
         FROM ${tablePrefix}unit_team
-        WHERE space_id = #{spaceId}
-        AND id IN
+        WHERE id IN
         <foreach item="item" index="index" collection="teamIds" open="(" separator="," close=")">
             #{item}
         </foreach>
         AND is_deleted = 0 UNION ALL
         SELECT c.id, c.team_name, c.parent_id
         FROM tree_view AS cp
-        JOIN ${tablePrefix}unit_team AS c ON c.space_id = #{spaceId} AND cp.parent_id = c.id AND c.is_deleted = 0
+        JOIN ${tablePrefix}unit_team AS c ON cp.parent_id = c.id AND c.is_deleted = 0
         )
         SELECT DISTINCT * FROM tree_view
     </select>

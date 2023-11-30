@@ -18,20 +18,18 @@
 
 package com.apitable.shared.component;
 
-import java.util.Map;
-
 import cn.hutool.core.util.StrUtil;
+import java.util.Map;
 import org.beetl.core.Configuration;
 import org.beetl.core.GroupTemplate;
 import org.beetl.core.Template;
 import org.beetl.core.resource.StringTemplateResourceLoader;
-
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * Client Entry template config
+ * Client Entry template config.
  * </p>
  *
  * @author zoe zheng
@@ -45,6 +43,13 @@ public class ClientEntryTemplateConfig implements InitializingBean {
 
     private GroupTemplate groupTemplate;
 
+    /**
+     * render template.
+     *
+     * @param templateStr template string
+     * @param map         template params
+     * @return render result
+     */
     public String render(String templateStr, Map<String, Object> map) {
         if (StrUtil.isNotBlank(templateStr)) {
             Template template = this.groupTemplate.getTemplate(templateStr);

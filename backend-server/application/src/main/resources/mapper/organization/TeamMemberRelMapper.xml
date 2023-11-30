@@ -138,24 +138,6 @@
         </foreach>
     </select>
 
-    <select id="selectAllTeamIdByMemberId" resultType="java.lang.Long">
-        WITH RECURSIVE team_view (id,  parent_id, lvl) AS
-        (
-            SELECT vut.id,  vut.parent_id,0 lvl
-            FROM ${tablePrefix}unit_team vut
-            WHERE vut.is_deleted = 0 AND vut.id IN (
-                SELECT vutmr.team_id
-                FROM ${tablePrefix}unit_team_member_rel vutmr
-                WHERE vutmr.member_id = #{memberId}
-            )
-            UNION ALL
-            SELECT t.id, t.parent_id, tv.lvl + 1
-            FROM team_view tv
-            JOIN ${tablePrefix}unit_team t ON tv.parent_id = t.id AND t.is_deleted = 0
-        )
-        SELECT DISTINCT id FROM team_view ORDER BY lvl DESC;
-    </select>
-
     <select id="selectTeamIdAndMemberIds" resultType="java.lang.Long">
         SELECT voutmr.id
         FROM ${tablePrefix}unit_team_member_rel voutmr

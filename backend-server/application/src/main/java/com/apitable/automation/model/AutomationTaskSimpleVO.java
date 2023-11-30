@@ -49,7 +49,7 @@ public class AutomationTaskSimpleVO {
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Integer status;
 
-    @Schema(description = "Robot run actions",  example = "[]")
+    @Schema(description = "Robot run actions", example = "[]")
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<ActionExecutionVO> executedActions;
 

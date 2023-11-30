@@ -127,6 +127,13 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
     return results as ResourceRobotDto[];
   }
 
+  async selectTriggerByTriggerId(triggerId: string): Promise<AutomationTriggerEntity | undefined> {
+    return await this.findOne({
+      select: ['robotId', 'triggerId', 'triggerTypeId', 'input', 'resourceId'],
+      where: { triggerId, isDeleted: 0 },
+    });
+  }
+
   async selectResourceIdCountByRobotId(robotId: string): Promise<number> {
     return await this.count({
       where: { robotId, isDeleted: 0, resourceId: Not('') },

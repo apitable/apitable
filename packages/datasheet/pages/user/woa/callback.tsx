@@ -22,7 +22,7 @@ import React from 'react';
 const WoaCallbackWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/woa/woa_callback/woa_callback').then((components) => {
       return components.WoaCallback;
     }),
   { ssr: false },

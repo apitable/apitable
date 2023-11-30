@@ -278,7 +278,7 @@ public class PlayerNotificationServiceImpl
 
     @Override
     public void createNotifyWithoutVerify(List<Long> userIds,
-        NotificationTemplate template, NotificationCreateRo ro) {
+                                          NotificationTemplate template, NotificationCreateRo ro) {
         // todo message middle key
         List<PlayerNotificationEntity> creatEntities = new ArrayList<>();
         List<PlayerNotificationEntity> notifyEntities = new ArrayList<>();

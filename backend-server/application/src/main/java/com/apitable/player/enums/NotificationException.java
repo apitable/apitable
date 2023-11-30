@@ -18,15 +18,14 @@
 
 package com.apitable.player.enums;
 
+import com.apitable.core.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.core.exception.BaseException;
-
 /**
-* <p>
- *  notification exception
- *  status code range（1201-1299）
+ * <p>
+ * notification exception.
+ * status code range（1201-1299）
  * </p>
  *
  * @author zoe zheng

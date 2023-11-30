@@ -42,7 +42,7 @@ import { FlowContext } from './context/flow_context';
 import { IDragItem, NodeHandleState, ScrollBarType } from './interfaces';
 import styles from './styles.module.less';
 // @ts-ignore
-import { getWizardRunCount } from 'enterprise';
+import { getWizardRunCount } from 'enterprise/guide/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

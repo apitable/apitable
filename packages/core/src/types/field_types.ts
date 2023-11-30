@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { t, Strings } from 'exports/i18n';
+import { Strings, t } from 'exports/i18n';
 import type { IFilterInfo } from './view_types';
 
 /* eslint-disable */
@@ -81,7 +81,7 @@ export enum RollUpFuncType {
   AND = 'AND',
   OR = 'OR',
   XOR = 'XOR',
-  
+
   // Currently processed in lookup
   // // will be converted to string
   CONCATENATE = 'CONCATENATE',
@@ -477,6 +477,7 @@ export interface ISelectFieldOption {
   color: number;
 }
 
+
 export interface ISelectFieldProperty {
   options: ISelectFieldOption[];
   defaultValue?: string | IMultiSelectedIds;
@@ -603,6 +604,57 @@ interface ICascaderProperty {
   fullLinkedFields: ILinkedFields[],
 }
 
+export enum ButtonStyleType {
+  Background= 0,
+  OnlyText=1
+}
+
+export enum ButtonActionType {
+  OpenLink = 0,
+  TriggerAutomation = 1,
+}
+
+export interface IButtonStyle {
+  type: ButtonStyleType,
+  color: number
+}
+
+export enum OpenLinkType {
+  Url = 0,
+  Expression = 1,
+}
+
+export interface IButtonAction {
+  type?: ButtonActionType;
+  openLink?: {
+    type: OpenLinkType;
+    expression: string;
+  };
+  automation?: {
+    automationId: string;
+    triggerId: string;
+  };
+}
+
+export interface IButtonActionMeta {
+  type?: ButtonActionType;
+    expression?: string;
+    automationId?: string;
+    triggerId?: string;
+}
+
+export interface IButtonProperty {
+  datasheetId?: string;
+  text: string,
+  style: IButtonStyle
+  action: IButtonAction,
+}
+
+export interface IButtonField extends IBaseField {
+  type: FieldType.Button;
+  property: IButtonProperty;
+}
+
 type IWorkDocProperty = null;
 
 export type IField =
@@ -633,6 +685,7 @@ export type IField =
   | ICreatedByField
   | ILastModifiedByField
   | ICascaderField
+  | IButtonField
   | IWorkDocField;
 
 export enum FieldType {
@@ -664,6 +717,7 @@ export enum FieldType {
   Cascader = 25,
   OneWayLink = 26,
   WorkDoc = 27,
+  Button = 28,
   DeniedField = 999, // no permission column
 }
 
@@ -675,6 +729,7 @@ export const readonlyFields = new Set([
   FieldType.LastModifiedTime,
   FieldType.CreatedBy,
   FieldType.LastModifiedBy,
+  FieldType.Button
 ]);
 
 export interface IFieldTypeCollection {
@@ -685,6 +740,8 @@ export interface IFieldTypeCollection {
   fieldGroup: FieldGroup;
   help: string;
   hasOptSetting: boolean; // Whether the field has optional configuration, it is used to control whether the split line is displayed in the field configuration menu.
+  isBeta?: boolean;
+  isNew?: boolean;
 }
 
 export enum FieldGroup {
@@ -929,8 +986,18 @@ export const FieldTypeDescriptionMap: {
     type: FieldType.Cascader,
     canBePrimaryField: false,
     fieldGroup: FieldGroup.Advanced,
-    help:  t(Strings.field_help_cascader),
+    help: t(Strings.field_help_cascader),
     hasOptSetting: true,
+  },
+  [FieldType.Button]: {
+    title: t(Strings.field_title_button),
+    subTitle: t(Strings.field_desc_button),
+    type: FieldType.Button,
+    canBePrimaryField: false,
+    fieldGroup: FieldGroup.Advanced,
+    help: t(Strings.field_help_button),
+    hasOptSetting: true,
+    isBeta: true,
   },
   [FieldType.WorkDoc]: {
     title: t(Strings.field_title_workdoc),
@@ -938,7 +1005,8 @@ export const FieldTypeDescriptionMap: {
     type: FieldType.WorkDoc,
     canBePrimaryField: false,
     fieldGroup: FieldGroup.Common,
-    help:  t(Strings.field_help_workdoc),
+    help: t(Strings.field_help_workdoc),
     hasOptSetting: false,
+    isBeta: true
   },
 };

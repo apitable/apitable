@@ -21,12 +21,12 @@ package com.apitable.base.service;
 import com.apitable.organization.vo.InviteInfoVo;
 
 /**
- * ActionService
+ * action service.
  */
 public interface IActionService {
 
     /**
-     * Activate invited users
+     * Activate invited users.
      *
      * @param inviteToken invitation token
      * @return Invitation related information view

@@ -28,9 +28,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * node share setting service implement.
+ */
 @Service
 @Slf4j
-public class NodeShareSettingServiceImpl extends ServiceImpl<NodeShareSettingMapper, NodeShareSettingEntity> implements INodeShareSettingService {
+public class NodeShareSettingServiceImpl
+    extends ServiceImpl<NodeShareSettingMapper, NodeShareSettingEntity>
+    implements INodeShareSettingService {
 
     @Override
     public String getSpaceId(String shareId) {

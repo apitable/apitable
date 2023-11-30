@@ -32,6 +32,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * datasheet service.
+ */
 public interface IDatasheetService extends IService<DatasheetEntity> {
 
     /**
@@ -51,6 +54,8 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
     Long getRevisionByDstId(String dstId);
 
     /**
+     * save batch.
+     *
      * @param entities datasheet
      */
     void batchSave(List<DatasheetEntity> entities);
@@ -65,6 +70,8 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
     void create(Long userId, NodeEntity nodeEntity, DatasheetObject datasheetObject);
 
     /**
+     * create datasheet.
+     *
      * @param creator  creator
      * @param spaceId  space id
      * @param dstId    datasheet id
@@ -75,7 +82,7 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
                 String viewName);
 
     /**
-     * create datasheet
+     * create datasheet.
      *
      * @param userId    user id
      * @param spaceId   space id
@@ -88,7 +95,7 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
                 JSONObject recordMap);
 
     /**
-     * update the datasheet name according to node id
+     * update the datasheet name according to node id.
      *
      * @param userId  user id
      * @param dstId   datasheet id
@@ -97,6 +104,8 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
     void updateDstName(Long userId, String dstId, String dstName);
 
     /**
+     * delete datasheet.
+     *
      * @param userId  user id
      * @param nodeIds node ids
      * @param isDel   false is recovery
@@ -104,7 +113,7 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
     void updateIsDeletedStatus(Long userId, List<String> nodeIds, Boolean isDel);
 
     /**
-     * copy table
+     * copy datasheet.
      *
      * @param userId      user id
      * @param spaceId     space id
@@ -113,13 +122,15 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
      * @param destDstName new datasheet name
      * @param options     copy attribute
      * @param newNodeMap  source node ID - new node ID MAP（all nodes transferred）
-     * @return List<String>
+     * @return string list
      */
     List<String> copy(Long userId, String spaceId, String sourceDstId, String destDstId,
                       String destDstName,
                       NodeCopyOptions options, Map<String, String> newNodeMap);
 
     /**
+     * generate widget panels.
+     *
      * @param widgetPanels   source widget panel
      * @param newWidgetIdMap widget ID MAP
      * @return WidgetPanels
@@ -127,8 +138,10 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
     JSONArray generateWidgetPanels(JSONArray widgetPanels, Map<String, String> newWidgetIdMap);
 
     /**
+     * get foreign datasheet list by node id.
+     *
      * @param dstIds datasheet ids
-     * @return List<BaseNodeInfo>
+     * @return List of BaseNodeInfo
      * @author Chambers
      */
     List<BaseNodeInfo> getForeignDstIdsFilterSelf(List<String> dstIds);
@@ -143,7 +156,7 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
     Map<String, List<String>> getForeignDstIds(List<String> dstIdList, boolean filter);
 
     /**
-     * Deletes the field of the specified association table
+     * Deletes the field of the specified association table.
      *
      * @param userId     user id
      * @param dstId      datasheet id
@@ -155,7 +168,7 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
                                       boolean saveDb);
 
     /**
-     * get multiple tables and corresponding snapshot
+     * get multiple tables and corresponding snapshot.
      *
      * @param dstIds       datasheet ids
      * @param hasRecordMap whether record map is included
@@ -176,7 +189,7 @@ public interface IDatasheetService extends IService<DatasheetEntity> {
                                    Map<String, String> newNodeIdMap);
 
     /**
-     * Member field mentions other people's record operation
+     * Member field mentions other people's record operation.
      *
      * @param userId  user id
      * @param spaceId space id

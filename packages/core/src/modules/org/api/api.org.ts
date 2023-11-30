@@ -19,7 +19,6 @@
 import axios from 'axios';
 import * as Url from '../../shared/api/url';
 import { IAddIsActivedMemberInfo, IApiWrapper, IInviteMemberList, IMemberInfoInAddressList, IUpdateMemberInfo } from '../../../exports/store';
-import { IAxiosResponse } from 'types';
 import urlcat from 'urlcat';
 
 const CancelToken = axios.CancelToken;
@@ -34,19 +33,6 @@ export function getUnitsByMember() {
 
 export function getTeamListLayered() {
   return axios.get(Url.TEAM_LIST_LAYERED);
-}
-
-/**
- * Contact list, get members
- *
- * @param teamId team ID, if empty, return root team, default 0
- */
-export function getMemberList(teamId?: string): Promise<IAxiosResponse<IMemberInfoInAddressList[]>> {
-  return axios.get(Url.MEMBER_LIST, {
-    params: {
-      teamId,
-    },
-  });
 }
 
 /**

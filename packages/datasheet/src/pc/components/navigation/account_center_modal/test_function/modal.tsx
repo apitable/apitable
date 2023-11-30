@@ -31,7 +31,7 @@ import { useApplyOpenFunction } from './hooks';
 import { FunctionType } from './interface';
 import style from './style.module.less';
 // @ts-ignore
-import { isWecomFunc } from 'enterprise';
+import { isWecomFunc } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

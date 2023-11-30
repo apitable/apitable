@@ -5,7 +5,7 @@ import React from 'react';
 const BillingWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/management_billing/billing').then((components) => {
       return components.ManagementBilling;
     }),
   { ssr: false },

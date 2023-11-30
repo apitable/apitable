@@ -18,24 +18,12 @@
 
 package com.apitable.space.controller;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Resource;
-import javax.validation.Valid;
-
 import cn.hutool.core.util.StrUtil;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.tags.Tag;
-
 import com.apitable.core.support.ResponseData;
 import com.apitable.interfaces.security.facade.HumanVerificationServiceFacade;
 import com.apitable.interfaces.security.model.NonRobotMetadata;
-import com.apitable.organization.mapper.TeamMapper;
 import com.apitable.organization.ro.InviteValidRo;
+import com.apitable.organization.service.ITeamService;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
@@ -43,13 +31,19 @@ import com.apitable.shared.constants.ParamsConstants;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.space.entity.InvitationEntity;
-import com.apitable.space.mapper.SpaceInviteLinkMapper;
 import com.apitable.space.ro.SpaceLinkOpRo;
 import com.apitable.space.service.IInvitationService;
 import com.apitable.space.service.ISpaceInviteLinkService;
 import com.apitable.space.vo.SpaceLinkInfoVo;
 import com.apitable.space.vo.SpaceLinkVo;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,10 +60,7 @@ public class SpaceLinkController {
     private ISpaceInviteLinkService iSpaceInviteLinkService;
 
     @Resource
-    private SpaceInviteLinkMapper spaceInviteLinkMapper;
-
-    @Resource
-    private TeamMapper teamMapper;
+    private ITeamService iTeamService;
 
     @Resource
     private IInvitationService iInvitationService;
@@ -86,8 +77,7 @@ public class SpaceLinkController {
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW")
     public ResponseData<List<SpaceLinkVo>> list() {
         Long memberId = LoginContext.me().getMemberId();
-        List<SpaceLinkVo> vo = spaceInviteLinkMapper.selectLinkVo(memberId);
-        return ResponseData.success(vo);
+        return ResponseData.success(iSpaceInviteLinkService.getSpaceLinkVos(memberId));
     }
 
     /**
@@ -108,7 +98,7 @@ public class SpaceLinkController {
         }
         Long teamId = opRo.getTeamId();
         if (teamId == 0) {
-            teamId = teamMapper.selectRootIdBySpaceId(spaceId);
+            teamId = iTeamService.getRootTeamId(spaceId);
         }
         String token = iSpaceInviteLinkService.saveOrUpdate(spaceId, teamId, memberId);
         return ResponseData.success(token);
@@ -122,13 +112,13 @@ public class SpaceLinkController {
     @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl")
     public ResponseData<Void> delete(@RequestBody @Valid SpaceLinkOpRo opRo) {
+        String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
         Long teamId = opRo.getTeamId();
         if (teamId == 0) {
-            String spaceId = LoginContext.me().getSpaceId();
-            teamId = teamMapper.selectRootIdBySpaceId(spaceId);
+            teamId = iTeamService.getRootTeamId(spaceId);
         }
-        spaceInviteLinkMapper.delByTeamIdAndMemberId(teamId, Collections.singletonList(memberId));
+        iSpaceInviteLinkService.deleteByTeamIdAndMemberId(teamId, memberId);
         return ResponseData.success();
     }
 
@@ -139,14 +129,13 @@ public class SpaceLinkController {
     @Operation(summary = "Valid invite link token", description = "After the verification is "
         + "successful, it can obtain related invitation information")
     public ResponseData<SpaceLinkInfoVo> valid(@RequestBody @Valid InviteValidRo data) {
-        SpaceLinkInfoVo vo;
-        if (StrUtil.isNotBlank(data.getNodeId())) {
-            InvitationEntity entity =
-                iInvitationService.validInvitationToken(data.getToken(), data.getNodeId());
-            vo = iInvitationService.getInvitationInfo(entity.getSpaceId(), entity.getCreator());
-        } else {
-            vo = iSpaceInviteLinkService.valid(data.getToken());
+        if (StrUtil.isBlank(data.getNodeId())) {
+            return ResponseData.success(iSpaceInviteLinkService.valid(data.getToken()));
         }
+        InvitationEntity entity =
+            iInvitationService.validInvitationToken(data.getToken(), data.getNodeId());
+        SpaceLinkInfoVo vo =
+            iInvitationService.getInvitationInfo(entity.getSpaceId(), entity.getCreator());
         return ResponseData.success(vo);
     }
 

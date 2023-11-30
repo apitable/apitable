@@ -25,7 +25,6 @@ import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,8 +42,7 @@ public class MemberInfoVo {
     @JsonIgnore
     private String spaceId;
 
-    @ApiModelProperty(value = "Member ID", dataType = "java.lang.String",
-        example = "1", position = 1)
+    @Schema(description = "Member ID", example = "1")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long memberId;
 

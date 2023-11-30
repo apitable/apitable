@@ -21,7 +21,6 @@ package com.apitable.widget.vo;
 import com.apitable.shared.support.serializer.ImageSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -54,7 +53,7 @@ public class WidgetReleaseListVo {
     @Schema(description = "Current release version")
     private Boolean currentVersion;
 
-    @ApiModelProperty(hidden = true)
+    @Schema(hidden = true)
     @JsonIgnore
     private Long releaseId;
 

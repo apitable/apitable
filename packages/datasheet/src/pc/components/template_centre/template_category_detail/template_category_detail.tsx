@@ -50,7 +50,7 @@ import { imgUrl } from '../template_choice';
 import { TemplateItem } from '../template_item';
 import styles from './style.module.less';
 // @ts-ignore
-import { isDingtalkFunc, isWecomFunc } from 'enterprise';
+import { isDingtalkFunc, isWecomFunc } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

@@ -16,24 +16,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.space.ro;
+package com.apitable.automation.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
- * <p>
- * Space Management - Workbench Set Request Parameters.
- * </p>
- * The status field is consistent with the serialized object of the read library
+ * TriggerTypeCreateRO.
  */
 @Data
-@Schema(description = "Space Management - Workbench Set Request Parameters")
-public class SpaceWorkbenchSettingRo {
+@Schema(description = "TriggerTypeCreateRO")
+public class TriggerTypeCreateRO {
 
-    @Schema(description = "All members of the node can be exported", example = "true")
-    private Boolean nodeExportable;
+    @Schema(description = "service id")
+    @NotBlank
+    private String serviceId;
 
-    @Schema(description = "Global Watermark On Status", example = "true")
-    private Boolean watermarkEnable;
+    @Schema(description = "trigger type id")
+    private String triggerTypeId;
+
+    @Schema(description = "name")
+    @NotBlank
+    private String name;
+
+    @Schema(description = "description")
+    private String description;
+
+    @Schema(description = "input JSON format")
+    private String inputJsonSchema;
+
+    @Schema(description = "output JSON format")
+    private String outputJsonSchema;
+
+    @Schema(description = "trigger prototype endpoint")
+    @NotBlank
+    private String endpoint;
+
+    @Schema(description = "i18n package")
+    private String i18n;
+
 }

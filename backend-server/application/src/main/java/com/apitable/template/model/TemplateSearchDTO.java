@@ -18,17 +18,15 @@
 
 package com.apitable.template.model;
 
-import java.util.List;
-import java.util.Set;
-
-import lombok.Data;
-
 import com.apitable.template.vo.AlbumVo;
 import com.apitable.template.vo.TemplateSearchResult;
+import java.util.List;
+import java.util.Set;
+import lombok.Data;
 
 /**
  * <p>
- * Template Search DTO
+ * Template Search DTO.
  * </p>
  */
 @Data

@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { getEnvVariables } from 'pc/utils/env';
 import { Block } from '../components';
 import { ILayoutProps } from '../interface';
 import { useCards } from './cards';
@@ -85,11 +86,13 @@ export const Md = (props: ILayoutProps) => {
         </Block>
         <Block flex={16} isWrap>
           <Block flex={1}>
-            <OthersCard minHeight={372}/>
+            <OthersCard minHeight={372} />
           </Block>
-          <Block flex={1}>
-            <AdCard minHeight={372}/>
-          </Block>
+          {!getEnvVariables().IS_APITABLE && (
+            <Block flex={1}>
+              <AdCard minHeight={372} />
+            </Block>
+          )}
         </Block>
       </Block>
     </div>

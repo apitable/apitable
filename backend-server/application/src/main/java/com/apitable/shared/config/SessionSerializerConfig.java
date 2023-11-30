@@ -19,7 +19,7 @@
 package com.apitable.shared.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,17 +30,21 @@ import org.springframework.session.data.redis.config.ConfigureRedisAction;
 
 /**
  * <p>
- * Http Session Config
+ * Http Session Config.
  * </p>
  *
  * @author Shawn Deng
- * @date 2019/10/26 14:39
  */
 @Configuration(proxyBeanMethods = false)
 public class SessionSerializerConfig implements BeanClassLoaderAware {
 
     private ClassLoader classLoader;
 
+    /**
+     * config spring session redis serializer.
+     *
+     * @return redis serializer
+     */
     @Bean("springSessionDefaultRedisSerializer")
     public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
         return new GenericJackson2JsonRedisSerializer(
@@ -54,7 +58,7 @@ public class SessionSerializerConfig implements BeanClassLoaderAware {
     }
 
     @Override
-    public void setBeanClassLoader(ClassLoader classLoader) {
+    public void setBeanClassLoader(@NotNull ClassLoader classLoader) {
         this.classLoader = classLoader;
     }
 }

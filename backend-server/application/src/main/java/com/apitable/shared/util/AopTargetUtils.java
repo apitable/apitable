@@ -19,17 +19,15 @@
 package com.apitable.shared.util;
 
 import java.lang.reflect.Field;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.aop.framework.AdvisedSupport;
 import org.springframework.aop.framework.AopProxy;
 import org.springframework.aop.support.AopUtils;
 
 /**
  * <p>
- * A tool to get a proxy primitive object
+ * A tool to get a proxy primitive object.
  * </p>
  *
  * @author Shawn Deng
@@ -38,6 +36,12 @@ public class AopTargetUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(AopTargetUtils.class);
 
+    /**
+     * get proxy primitive object.
+     *
+     * @param proxy proxy object
+     * @return primitive object
+     */
     public static Object getTarget(Object proxy) {
         if (!AopUtils.isAopProxy(proxy)) {
             return proxy;
@@ -61,7 +65,8 @@ public class AopTargetUtils {
         Object dynamicAdvisedInterceptor = h.get(proxy);
         Field advised = dynamicAdvisedInterceptor.getClass().getDeclaredField("advised");
         advised.setAccessible(true);
-        return ((AdvisedSupport) advised.get(dynamicAdvisedInterceptor)).getTargetSource().getTarget();
+        return ((AdvisedSupport) advised.get(dynamicAdvisedInterceptor)).getTargetSource()
+            .getTarget();
     }
 
     private static Object getJdkDynamicProxyTargetObject(Object proxy) throws Exception {

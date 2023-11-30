@@ -6,6 +6,7 @@ export interface ISearchPanelState {
   currentDatasheetId: string;
   currentViewId: string;
   currentFormId: string;
+  currentAutomationId: string;
   showSearch: boolean;
   parents: IParent[];
   searchValue: string;

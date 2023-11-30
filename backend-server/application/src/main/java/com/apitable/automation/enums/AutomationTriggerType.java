@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,7 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { createContext } from 'react';
-import { IApi } from '@apitable/core';
+package com.apitable.automation.enums;
 
-export const SpaceContext = createContext<{ adData: IApi.IAdData | null }>({ adData: null });
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+/**
+ * automation trigger type.
+ */
+@Getter
+@AllArgsConstructor
+public enum AutomationTriggerType {
+
+    FORM_SUBMITTED("form_submitted"),
+
+    RECORD_MATCHES_CONDITIONS("record_matches_conditions"),
+
+    RECORD_CREATED("record_created"),
+
+    BUTTON_CLICKED("button_clicked"),
+
+    ;
+
+
+    private final String type;
+}

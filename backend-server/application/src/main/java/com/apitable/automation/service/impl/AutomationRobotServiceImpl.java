@@ -28,6 +28,7 @@ import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.apitable.automation.entity.AutomationRobotEntity;
+import com.apitable.automation.enums.AutomationTriggerType;
 import com.apitable.automation.mapper.AutomationRobotMapper;
 import com.apitable.automation.model.ActionSimpleVO;
 import com.apitable.automation.model.ActionVO;
@@ -43,6 +44,7 @@ import com.apitable.automation.model.UpdateRobotRO;
 import com.apitable.automation.service.IAutomationActionService;
 import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.automation.service.IAutomationTriggerService;
+import com.apitable.automation.service.IAutomationTriggerTypeService;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.databusclient.ApiException;
 import com.apitable.databusclient.api.AutomationDaoApiApi;
@@ -61,7 +63,6 @@ import com.apitable.template.enums.TemplateException;
 import com.apitable.user.service.IUserService;
 import com.apitable.user.vo.UserSimpleVO;
 import com.apitable.workspace.enums.NodeException;
-import com.apitable.workspace.mapper.DatasheetMapper;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.NodeInfo;
 import com.apitable.workspace.vo.NodeSimpleVO;
@@ -80,6 +81,9 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * automation robot service impl.
+ */
 @Slf4j
 @Service
 public class AutomationRobotServiceImpl implements IAutomationRobotService {
@@ -103,10 +107,10 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
     private IUserService iUserService;
 
     @Resource
-    private DatasheetMapper datasheetMapper;
+    private InternalSpaceServiceImpl internalSpaceService;
 
     @Resource
-    private InternalSpaceServiceImpl internalSpaceService;
+    private IAutomationTriggerTypeService iAutomationTriggerTypeService;
 
     @Override
     public List<AutomationRobotDto> getRobotListByResourceId(String resourceId) {
@@ -191,7 +195,16 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
     @Override
     public void updateIsDeletedByResourceIds(Long userId, List<String> resourceIds,
                                              Boolean isDeleted) {
+        List<String> robotIds = robotMapper.selectRobotsByResourceIds(resourceIds).stream().map(
+            AutomationRobotDto::getRobotId).collect(Collectors.toList());
         robotMapper.updateIsDeletedByResourceIds(userId, resourceIds, isDeleted);
+        if (!robotIds.isEmpty()) {
+            // remove button trigger input
+            String triggerTypeId = iAutomationTriggerTypeService.getTriggerTypeByEndpoint(
+                AutomationTriggerType.BUTTON_CLICKED.getType());
+            iAutomationTriggerService.updateInputByRobotIdsAndTriggerTypeIds(robotIds,
+                triggerTypeId, null);
+        }
     }
 
     @Override
@@ -278,17 +291,16 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
             .recentlyRunCount(robot.getRecentlyRunCount())
             .build();
         String spaceId = iNodeService.getSpaceIdByNodeId(robot.getResourceId());
-        InternalSpaceAutomationRunMessageV0 automationRunMessageV0 = internalSpaceService.getAutomationRunMessageV0(spaceId);
+        InternalSpaceAutomationRunMessageV0 automationRunMessageV0 =
+            internalSpaceService.getAutomationRunMessageV0(spaceId);
         Long maxAutomationRunNums = automationRunMessageV0.getMaxAutomationRunNums();
         Long automationRunNums = automationRunMessageV0.getAutomationRunNums();
-        boolean isOverLimit = false;
-        if(maxAutomationRunNums != -1 && automationRunNums > maxAutomationRunNums){
-            isOverLimit = true;
-        }
+        boolean isOverLimit =
+            maxAutomationRunNums != -1 && automationRunNums > maxAutomationRunNums;
         vo.setIsOverLimit(isOverLimit);
         UserSimpleVO user =
             iUserService.getUserSimpleInfoMap(spaceId, ListUtil.toList(robot.getUpdatedBy()))
-            .get(robot.getUpdatedBy());
+                .get(robot.getUpdatedBy());
         vo.setUpdatedBy(user);
         List<NodeSimpleVO> relatedResources =
             Optional.ofNullable(automation.getRelatedResources()).orElse(new ArrayList<>()).stream()

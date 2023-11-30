@@ -18,7 +18,8 @@
 
 import { useKeyPress } from 'ahooks';
 import type { InputRef } from 'antd';
-import { Input } from 'antd';
+import { Input, message } from 'antd';
+import produce from 'immer';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState, FC, PropsWithChildren } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
@@ -60,6 +61,7 @@ import { useResponsive } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ButtonOperateType, getParentNodeByClass, isTouchDevice } from 'pc/utils';
 import { stopPropagation } from '../../../utils/dom';
 import { FieldFormat } from '../format';
@@ -67,8 +69,6 @@ import { useFieldOperate } from '../hooks';
 import { checkFactory, CheckFieldSettingBase } from './check_factory';
 import { FieldTypeSelect } from './field_type_select';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const OPERATE_WIDTH = parseInt(styles.fieldSettingBoxWidth, 10); // The width of the operation box
 // const EXCEPT_SCROLL_HEIGHT = 85; // Height of the non-scrollable part at the bottom, outside the area to be scrolled
@@ -443,6 +443,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
       isModal && renderModal(baseErrMsg);
       return;
     }
+
     const checkResult = checkFactory[currentField.type]
       ? checkFactory[currentField.type](currentField, propDatasheetId)
       : CheckFieldSettingBase.checkStream(currentField, propDatasheetId);
@@ -451,6 +452,10 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
       setOptionErrMsg(checkResult);
       const _checkResult = checkResult.errors ? (Object.values(checkResult.errors)[0] as string) : checkResult;
       isModal && renderModal(_checkResult);
+
+      if(!isModal && currentField.type === FieldType.Button) {
+        message.error(_checkResult);
+      }
       return;
     }
 
@@ -542,6 +547,37 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
           <FieldFormat
             from={activeFieldState.from}
             currentField={currentField}
+            onCreate={(field) => {
+              const integractedItem: IField = produce(field, draft => {
+                draft.property.action = field.property.action;
+              });
+
+              const checkResult : IField= checkFactory[currentField.type]
+                ? checkFactory[currentField.type](integractedItem, propDatasheetId)
+                : CheckFieldSettingBase.checkStream(integractedItem, propDatasheetId);
+
+              // @ts-ignore
+              if (typeof checkResult === 'string' || checkResult.errors) {
+                setOptionErrMsg(checkResult);
+                // @ts-ignore
+                const _checkResult = checkResult.errors ? (Object.values(checkResult.errors)[0] as string) : checkResult;
+                renderModal(_checkResult as string);
+                return;
+              }
+
+              // Passing datasheetId externally means that FieldSetting is mounted in a non-numbered table, using the activeFieldState column index.
+              if (propDatasheetId) {
+                addField(checkResult, activeFieldState?.fieldIndex);
+              } else {
+                addField(checkResult);
+              }
+              return;
+            }
+            }
+            onUpdate={(field) => {
+              modifyFieldType(field);
+            }
+            }
             setCurrentField={setCurrentField}
             hideOperateBox={hideOperateBox}
             datasheetId={propDatasheetId}

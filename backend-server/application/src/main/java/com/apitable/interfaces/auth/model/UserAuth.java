@@ -18,6 +18,9 @@
 
 package com.apitable.interfaces.auth.model;
 
+/**
+ * user auth object.
+ */
 public class UserAuth {
 
     private Long userId;

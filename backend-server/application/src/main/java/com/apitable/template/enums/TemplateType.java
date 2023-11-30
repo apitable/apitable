@@ -23,7 +23,7 @@ import lombok.Getter;
 
 /**
  * <p>
- * Template Type
+ * Template Type.
  * </p>
  *
  * @author Chambers

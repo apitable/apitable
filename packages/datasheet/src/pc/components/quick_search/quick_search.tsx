@@ -22,11 +22,10 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from '@apitable/components';
 import { Api, Selectors } from '@apitable/core';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { EXPAND_SEARCH } from './const';
 import { ModalWrapper } from './modal_wrapper';
 import { SearchBase } from './search_base';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export function clearExpandModal() {
   const container = document.querySelectorAll(`.${EXPAND_SEARCH}`);

@@ -18,15 +18,14 @@
 
 package com.apitable.workspace.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +35,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Workbench - Datasheet Record Table
+ * Workbench - Datasheet Record Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -53,76 +52,76 @@ public class DatasheetRecordEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary key
+     * Primary key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Operation ID
+     * Operation ID.
      */
     private String recordId;
 
     /**
-     * Datasheet ID(link#xxxx_datasheet#dst_id)
+     * Datasheet ID(link#xxxx_datasheet#dst_id).
      */
     private String dstId;
 
     /**
-     * Data recorded in one row (corresponding to each field)
+     * Data recorded in one row (corresponding to each field).
      */
     private String data;
 
     /**
-     * The historical version number sorted is the revision of the original operation, and the array subscript is the revision of the current record
+     * The historical version number sorted is the revision of the original operation, and the array subscript is the revision of the current record.
      */
     private String revisionHistory;
 
     /**
-     * Version No
+     * Version No.
      */
     private Long revision;
 
     /**
-     * Field Update Information
+     * Field Update Information.
      */
     private String fieldUpdatedInfo;
 
     /**
-     * Delete tag(0:No,1:Yes)
+     * Delete tag(0:No,1:Yes).
      */
     @TableLogic
     private Boolean isDeleted;
 
     /**
-     * Create User
+     * Create User.
      */
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
 
     /**
-     * Last Update User
+     * Last Update User.
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updatedBy;
 
     /**
-     * Create time
+     * Create time.
      */
     private LocalDateTime createTime;
 
     /**
-     * Update time
+     * Update time.
      */
     private LocalDateTime updateTime;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

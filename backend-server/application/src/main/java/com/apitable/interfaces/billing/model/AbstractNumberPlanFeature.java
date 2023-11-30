@@ -33,6 +33,15 @@ public abstract class AbstractNumberPlanFeature implements PlanFeature<Long> {
         value = value + other;
     }
 
+    /**
+     * unlimited if value is -1.
+     *
+     * @return true or false
+     */
+    public boolean isUnlimited() {
+        return value != -1;
+    }
+
     @Override
     public Long getValue() {
         return value;

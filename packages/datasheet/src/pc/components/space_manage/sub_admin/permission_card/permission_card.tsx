@@ -24,7 +24,7 @@ import { QuestionCircleOutlined } from '@apitable/icons';
 import { Tooltip } from 'pc/components/common';
 import styles from './style.module.less';
 // @ts-ignore
-import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
+import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise/home/social_platform/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

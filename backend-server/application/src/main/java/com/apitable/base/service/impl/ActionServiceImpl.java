@@ -18,48 +18,30 @@
 
 package com.apitable.base.service.impl;
 
-import java.util.Objects;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
-
-import lombok.extern.slf4j.Slf4j;
+import static com.apitable.organization.enums.OrganizationException.INVITE_EXPIRE;
+import static com.apitable.organization.enums.OrganizationException.INVITE_URL_ERROR;
 
 import com.apitable.base.service.IActionService;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.HttpContextUtil;
 import com.apitable.interfaces.user.facade.UserServiceFacade;
-import com.apitable.organization.dto.MemberDTO;
-import com.apitable.organization.mapper.MemberMapper;
+import com.apitable.organization.entity.MemberEntity;
+import com.apitable.organization.service.IMemberService;
 import com.apitable.organization.vo.InviteInfoVo;
 import com.apitable.space.entity.SpaceEntity;
 import com.apitable.space.entity.SpaceInviteRecordEntity;
 import com.apitable.space.mapper.SpaceInviteRecordMapper;
-import com.apitable.space.mapper.SpaceMapper;
+import com.apitable.space.service.ISpaceService;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.HttpContextUtil;
-
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
-import static com.apitable.organization.enums.OrganizationException.INVITE_EXPIRE;
-import static com.apitable.organization.enums.OrganizationException.INVITE_URL_ERROR;
-import static com.apitable.space.enums.SpaceException.SPACE_NOT_EXIST;
-
 /**
- * ActionServiceImpl
+ * action service implement.
  */
 @Service
-@Slf4j
 public class ActionServiceImpl implements IActionService {
-
-    @Resource
-    private SpaceInviteRecordMapper spaceInviteRecordMapper;
-
-    @Resource
-    private MemberMapper memberMapper;
-
-    @Resource
-    private SpaceMapper spaceMapper;
 
     @Resource
     private IUserService iUserService;
@@ -67,9 +49,17 @@ public class ActionServiceImpl implements IActionService {
     @Resource
     private UserServiceFacade userServiceFacade;
 
+    @Resource
+    private ISpaceService iSpaceService;
+
+    @Resource
+    private SpaceInviteRecordMapper spaceInviteRecordMapper;
+
+    @Resource
+    private IMemberService iMemberService;
+
     @Override
     public InviteInfoVo inviteValidate(String inviteToken) {
-        log.info("Invitation check");
         // is it a illegal link
         SpaceInviteRecordEntity record = spaceInviteRecordMapper.selectByInviteToken(inviteToken);
         // determine whether it is illegal
@@ -77,13 +67,10 @@ public class ActionServiceImpl implements IActionService {
         // determine whether it expired
         ExceptionUtil.isFalse(record.getIsExpired(), INVITE_EXPIRE);
         String inviteSpaceId = record.getInviteSpaceId();
-        SpaceEntity spaceEntity = spaceMapper.selectBySpaceId(inviteSpaceId);
-        // Determine whether the space does not exist or is in the deletion state
-        ExceptionUtil.isFalse(Objects.isNull(spaceEntity)
-            || !Objects.isNull(spaceEntity.getPreDeletionTime()), SPACE_NOT_EXIST);
+        SpaceEntity spaceEntity = iSpaceService.isSpaceAvailable(inviteSpaceId);
         String inviteSpaceName = spaceEntity.getName();
         String inviteEmail = record.getInviteEmail();
-        MemberDTO member = memberMapper.selectDtoByMemberId(record.getInviteMemberId());
+        MemberEntity member = iMemberService.getByIdIgnoreDelete(record.getInviteMemberId());
         InviteInfoVo inviteInfoVo = new InviteInfoVo();
         inviteInfoVo.setSpaceId(inviteSpaceId);
         inviteInfoVo.setSpaceName(inviteSpaceName);
@@ -101,17 +88,16 @@ public class ActionServiceImpl implements IActionService {
     }
 
     /**
-     * Check if a session exists for the current request
+     * Check if a session exists for the current request.
      *
      * @return true | false
      */
     private boolean checkUserInSession() {
-        HttpSession session = HttpContextUtil.getSession(false);
-        return session != null;
+        return HttpContextUtil.getSession(false) != null;
     }
 
     /**
-     * Check if the mailbox is bound to another user
+     * Check if the mailbox is bound to another user.
      *
      * @param inviteEmail invitation email
      * @return true | false

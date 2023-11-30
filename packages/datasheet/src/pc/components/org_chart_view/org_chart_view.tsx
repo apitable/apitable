@@ -64,7 +64,7 @@ import { IGhostNodesRef, INodeStateMap, IViewNodeStateMap } from './interfaces';
 import { OrgChart } from './org_chart';
 import styles from './styles.module.less';
 // @ts-ignore
-import { getWizardRunCount } from 'enterprise';
+import { getWizardRunCount } from 'enterprise/guide/utils';
 
 import {useAppSelector} from "pc/store/react-redux";
 

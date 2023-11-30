@@ -1,0 +1,511 @@
+{
+  "billing": {
+    "notify": {
+      "field_permission_nums": {
+        "id": "field_permission_nums",
+        "link_notification_id": [
+          "space_field_permission_limit"
+        ],
+        "link_string_id": [
+          "field_permission_nums"
+        ],
+        "引用名称": "空间站的列权限使用数上限为 ${specification} 个，目前已开启 ${usage} 个，升级可获得更高用量。",
+        "模板名称": "列权限已达上限通知"
+      },
+      "integration_dingtalk": {
+        "id": "integration_dingtalk",
+        "link_notification_id": [
+          "space_dingtalk_notify"
+        ],
+        "link_string_id": [
+          "integration_dingtalk"
+        ],
+        "引用名称": "你正在体验高级功能：钉钉集成，升级可解锁该功能。",
+        "模板名称": "钉钉集成使用通知"
+      },
+      "integration_feishu": {
+        "id": "integration_feishu",
+        "link_notification_id": [
+          "space_lark_notify"
+        ],
+        "link_string_id": [
+          "integration_feishu"
+        ],
+        "引用名称": "你正在体验高级功能：飞书集成，升级可解锁该功能。",
+        "模板名称": "飞书集成使用通知"
+      },
+      "integration_we_com": {
+        "id": "integration_we_com",
+        "link_notification_id": [
+          "space_wecom_notify"
+        ],
+        "link_string_id": [
+          "integration_we_com"
+        ],
+        "引用名称": "你正在体验高级功能：企业微信集成，升级可解锁该功能。",
+        "模板名称": "企业微信集成使用通知"
+      },
+      "integration_yozo_office": {
+        "id": "integration_yozo_office",
+        "link_notification_id": [
+          "space_yozooffice_notify"
+        ],
+        "link_string_id": [
+          "integration_yozo_office"
+        ],
+        "引用名称": "你正在体验高级功能：office 文件预览，升级可解锁该功能。",
+        "模板名称": "永中 Office使用通知"
+      },
+      "max_admin_nums": {
+        "id": "max_admin_nums",
+        "link_notification_id": [
+          "space_admin_limit"
+        ],
+        "link_string_id": [
+          "max_admin_nums"
+        ],
+        "引用名称": "空间站的子管理数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+        "模板名称": "管理员已达上限通知"
+      },
+      "max_api_call": {
+        "id": "max_api_call",
+        "link_notification_id": [
+          "space_api_limit"
+        ],
+        "link_string_id": [
+          "max_api_call"
+        ],
+        "引用名称": "空间站的API用量已超出上限（ ${usage}/${specification} ），升级可获得更高用量。",
+        "模板名称": "API用量已达上限通知"
+      },
+      "max_calendar_views_in_space": {
+        "id": "max_calendar_views_in_space",
+        "link_notification_id": [
+          "space_calendar_limit"
+        ],
+        "link_string_id": [
+          "max_calendar_views_in_space"
+        ],
+        "引用名称": "空间站的日历视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+        "模板名称": "日历视图已达上限通知"
+      },
+      "max_capacity_size_in_bytes": {
+        "id": "max_capacity_size_in_bytes",
+        "link_notification_id": [
+          "capacity_limit"
+        ],
+        "link_string_id": [
+          "max_capacity_size_in_bytes"
+        ],
+        "引用名称": "空间站的附件容量上限为 ${specification} ，当前已上传 ${usage} ，升级可获得更高用量。",
+        "模板名称": "空间站容量包已达上限"
+      },
+      "max_form_views_in_space": {
+        "id": "max_form_views_in_space",
+        "link_notification_id": [
+          "space_form_limit"
+        ],
+        "link_string_id": [
+          "max_form_views_in_space"
+        ],
+        "引用名称": "空间站的神奇表单数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+        "模板名称": "神奇表单已达上限通知"
+      },
+      "max_gallery_views_in_space": {
+        "id": "max_gallery_views_in_space",
+        "link_string_id": [
+          "max_gallery_views_in_space"
+        ],
+        "引用名称": "空间站的相册视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+        "模板名称": "相册视图已达上限通知"
+      },
+      "max_gantt_views_in_space": {
+        "id": "max_gantt_views_in_space",
+        "link_notification_id": [
+          "space_gantt_limit"
+        ],
+        "link_string_id": [
+          "max_gantt_views_in_space"
+        ],
+        "引用名称": "空间站的甘特视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+        "模板名称": "甘特视图已达上限通知"
+      },
+      "max_kanban_views_in_space": {
+        "id": "max_kanban_views_in_space",
+        "link_string_id": [
+          "max_kanban_views_in_space"
+        ],
+        "引用名称": "空间站的看板视图数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+        "模板名称": "看板视图已达上限通知"
+      },
+      "max_mirror_nums": {
+        "id": "max_mirror_nums",
+        "link_notification_id": [
+          "space_mirror_limit"
+        ],
+        "link_string_id": [
+          "max_mirror_nums"
+        ],
+        "引用名称": "空间站的镜像数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+        "模板名称": "最大镜像数"
+      },
+      "max_remain_timemachine_days": {
+        "id": "max_remain_timemachine_days",
+        "link_notification_id": [
+          "space_time_machine_limit"
+        ],
+        "link_string_id": [
+          "max_remain_timemachine_days"
+        ],
+        "引用名称": "空间站仅显示 ${specification}  天内的记录动态，升级后可查看更久的动态。",
+        "模板名称": "历史记录超限使用通知"
+      },
+      "max_remain_trash_days": {
+        "id": "max_remain_trash_days",
+        "link_notification_id": [
+          "space_trash_limit"
+        ],
+        "link_string_id": [
+          "max_remain_trash_days"
+        ],
+        "引用名称": "本空间站支持查看 ${specification}  天内的历史文件，升级后可查看更久的历史文件。",
+        "模板名称": "历史文件超限使用通知"
+      },
+      "max_rows_in_space": {
+        "id": "max_rows_in_space",
+        "link_notification_id": [
+          "space_record_limit"
+        ],
+        "link_string_id": [
+          "max_rows_in_space"
+        ],
+        "引用名称": "空间站总记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
+        "模板名称": "空间站记录总数"
+      },
+      "max_rows_per_sheet": {
+        "id": "max_rows_per_sheet",
+        "link_notification_id": [
+          "datasheet_record_limit"
+        ],
+        "link_string_id": [
+          "max_rows_per_sheet"
+        ],
+        "引用名称": "单张维格表记录数上限为 ${specification} 行，当前已创建 ${usage} 行，升级可获得更高用量。",
+        "模板名称": "单个维格表行数已达上限"
+      },
+      "max_seats": {
+        "id": "max_seats",
+        "link_notification_id": [
+          "space_seats_limit"
+        ],
+        "link_string_id": [
+          "max_seats"
+        ],
+        "引用名称": "空间站的席位数上限为 ${specification} 个，当前已邀请 ${usage} 个，升级可获得更高用量。",
+        "模板名称": "付费席位数量上限"
+      },
+      "max_sheet_nums": {
+        "id": "max_sheet_nums",
+        "link_notification_id": [
+          "datasheet_limit"
+        ],
+        "link_string_id": [
+          "max_sheet_nums"
+        ],
+        "引用名称": "文件节点数上限为 ${specification} 个，当前已创建 ${usage} 个，升级可获得更高用量。",
+        "模板名称": "文件数量已达上限"
+      },
+      "node_permission_nums": {
+        "id": "node_permission_nums",
+        "link_notification_id": [
+          "space_file_permission_limit"
+        ],
+        "link_string_id": [
+          "node_permission_nums"
+        ],
+        "引用名称": "空间站的文件权限使用数上限为 ${specification} 个，目前已开启 ${usage} 个，升级可获得更高用量。",
+        "模板名称": "文件权限已达上限通知"
+      },
+      "rainbow_label": {
+        "id": "rainbow_label",
+        "link_notification_id": [
+          "space_rainbow_label_limit"
+        ],
+        "link_string_id": [
+          "rainbow_label"
+        ],
+        "引用名称": "你正在体验高级功能：彩虹标签，升级可解锁该功能。",
+        "模板名称": "彩虹标签彩色色系使用通知"
+      },
+      "watermark": {
+        "id": "watermark",
+        "link_notification_id": [
+          "space_watermark_notify"
+        ],
+        "link_string_id": [
+          "watermark"
+        ],
+        "引用名称": "你正在体验${grade}空间站专属功能，升级后可以解锁该功能",
+        "模板名称": "全局水印使用通知"
+      }
+    },
+    "products": {
+      "ApiUsage": {
+        "category": "ADD_ON",
+        "ch_name": "API 用量",
+        "channel": "vika",
+        "en_name": "API Usage",
+        "i18nName": "api_usage",
+        "id": "ApiUsage",
+        "plans": [],
+        "related_features": []
+      },
+      "Atlas": {
+        "category": "BASE",
+        "ch_name": "云版本",
+        "channel": "aliyun",
+        "en_name": "Atlas",
+        "free": true,
+        "i18nName": "atlas",
+        "id": "Atlas",
+        "plans": [],
+        "related_features": []
+      },
+      "Bronze": {
+        "category": "BASE",
+        "ch_name": "青铜级",
+        "channel": "vika",
+        "en_name": "Bronze",
+        "free": true,
+        "i18nName": "bronze_grade",
+        "id": "Bronze",
+        "plans": [],
+        "related_features": []
+      },
+      "Capacity": {
+        "category": "ADD_ON",
+        "ch_name": "附件容量",
+        "channel": "vika",
+        "en_name": "Attachments Storage",
+        "i18nName": "space_capacity",
+        "id": "Capacity",
+        "plans": [],
+        "related_features": []
+      },
+      "Community_Edition": {
+        "category": "BASE",
+        "ch_name": "开源社区版",
+        "channel": "community",
+        "en_name": "Community",
+        "free": true,
+        "i18nName": "community_edition",
+        "id": "Community_Edition"
+      },
+      "Dingtalk_Base": {
+        "category": "BASE",
+        "ch_name": "钉钉基础版",
+        "channel": "dingtalk",
+        "en_name": "Basic Plan with DingTalk",
+        "free": true,
+        "i18nName": "dingtalk_base",
+        "id": "Dingtalk_Base",
+        "plans": [],
+        "related_features": []
+      },
+      "Dingtalk_Enterprise": {
+        "category": "BASE",
+        "ch_name": "钉钉旗舰版",
+        "channel": "dingtalk",
+        "en_name": "Ultimate Plan with DingTalk",
+        "i18nName": "dingtalk_enterprise",
+        "id": "Dingtalk_Enterprise",
+        "plans": [],
+        "prices": [],
+        "related_features": []
+      },
+      "Dingtalk_Profession": {
+        "category": "BASE",
+        "ch_name": "钉钉专业版",
+        "channel": "dingtalk",
+        "en_name": "Pro Plan with DingTalk",
+        "i18nName": "dingtalk_profession",
+        "id": "Dingtalk_Profession",
+        "plans": [],
+        "prices": [],
+        "related_features": []
+      },
+      "Dingtalk_Standard": {
+        "category": "BASE",
+        "ch_name": "钉钉标准版",
+        "channel": "dingtalk",
+        "en_name": "Standard Plan with DingTalk",
+        "i18nName": "dingtalk_standard",
+        "id": "Dingtalk_Standard",
+        "plans": [],
+        "prices": [],
+        "related_features": []
+      },
+      "Enterprise": {
+        "category": "BASE",
+        "ch_name": "企业级",
+        "channel": "vika",
+        "en_name": "Enterprise",
+        "i18nName": "enterprise",
+        "id": "Enterprise",
+        "plans": [],
+        "related_features": []
+      },
+      "Feishu_Base": {
+        "category": "BASE",
+        "ch_name": "飞书基础版",
+        "channel": "lark",
+        "en_name": "Basic Plan with Lark",
+        "free": true,
+        "i18nName": "feishu_base",
+        "id": "Feishu_Base",
+        "plans": [],
+        "related_features": []
+      },
+      "Feishu_Enterprise": {
+        "category": "BASE",
+        "ch_name": "飞书旗舰版",
+        "channel": "lark",
+        "en_name": "Ultimate Plan with Lark",
+        "i18nName": "feishu_enterprise",
+        "id": "Feishu_Enterprise",
+        "plans": [],
+        "prices": [],
+        "related_features": []
+      },
+      "Feishu_Profession": {
+        "category": "BASE",
+        "ch_name": "飞书专业版",
+        "channel": "lark",
+        "en_name": "Pro Plan with Lark",
+        "i18nName": "feishu_profession",
+        "id": "Feishu_Profession",
+        "plans": [],
+        "prices": [],
+        "related_features": []
+      },
+      "Feishu_Standard": {
+        "category": "BASE",
+        "ch_name": "飞书标准版",
+        "channel": "lark",
+        "en_name": "Standard Plan with Lark",
+        "i18nName": "feishu_standard",
+        "id": "Feishu_Standard",
+        "plans": [],
+        "prices": [],
+        "related_features": []
+      },
+      "Free": {
+        "category": "BASE",
+        "ch_name": "免费版",
+        "channel": "apitable",
+        "en_name": "Free",
+        "i18nName": "free_edition",
+        "id": "Free",
+        "plans": [],
+        "related_features": []
+      },
+      "Gold": {
+        "category": "BASE",
+        "ch_name": "黄金级",
+        "channel": "vika",
+        "en_name": "Gold",
+        "i18nName": "golden_grade",
+        "id": "Gold",
+        "plans": [],
+        "prices": [],
+        "related_features": []
+      },
+      "Plus": {
+        "category": "BASE",
+        "ch_name": "Plus",
+        "channel": "apitable",
+        "en_name": "Plus",
+        "i18nName": "plus_edition",
+        "id": "Plus",
+        "plans": [],
+        "related_features": []
+      },
+      "Private_Cloud": {
+        "category": "BASE",
+        "ch_name": "专有云旗舰版",
+        "channel": "private",
+        "en_name": "Private Cloud",
+        "free": true,
+        "i18nName": "private_cloud",
+        "id": "Private_Cloud",
+        "plans": [],
+        "related_features": []
+      },
+      "Pro": {
+        "category": "BASE",
+        "ch_name": "Pro",
+        "channel": "apitable",
+        "en_name": "Pro",
+        "i18nName": "pro_edition",
+        "id": "Pro",
+        "plans": [],
+        "related_features": []
+      },
+      "Silver": {
+        "category": "BASE",
+        "ch_name": "白银级",
+        "channel": "vika",
+        "en_name": "Silver",
+        "i18nName": "silver_grade",
+        "id": "Silver",
+        "plans": [],
+        "prices": [],
+        "related_features": []
+      },
+      "Wecom_Base": {
+        "category": "BASE",
+        "ch_name": "企业微信基础版",
+        "channel": "wecom",
+        "en_name": "Basic Plan with WeCom",
+        "free": true,
+        "i18nName": "wecom_base",
+        "id": "Wecom_Base",
+        "plans": [],
+        "related_features": []
+      },
+      "Wecom_Enterprise": {
+        "category": "BASE",
+        "ch_name": "企业微信旗舰版",
+        "channel": "wecom",
+        "en_name": "Ultimate Plan with WeCom",
+        "i18nName": "wecom_enterprise",
+        "id": "Wecom_Enterprise",
+        "plans": [],
+        "prices": [],
+        "related_features": []
+      },
+      "Wecom_Profession": {
+        "category": "BASE",
+        "ch_name": "企业微信专业版",
+        "channel": "wecom",
+        "en_name": "Pro Plan with WeCom",
+        "i18nName": "wecom_profession",
+        "id": "Wecom_Profession",
+        "plans": [],
+        "prices": [],
+        "related_features": []
+      },
+      "Wecom_Standard": {
+        "category": "BASE",
+        "ch_name": "企业微信标准版",
+        "channel": "wecom",
+        "en_name": "Standard Plan with WeCom",
+        "i18nName": "wecom_standard",
+        "id": "Wecom_Standard",
+        "plans": [],
+        "prices": [],
+        "related_features": []
+      }
+    }
+  }
+}

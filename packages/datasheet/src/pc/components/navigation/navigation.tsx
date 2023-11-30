@@ -20,6 +20,7 @@ import { useToggle } from 'ahooks';
 import { Badge } from 'antd';
 import classNames from 'classnames';
 import { AnimationItem } from 'lottie-web/index';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -37,7 +38,6 @@ import {
   WorkbenchOutlined,
   LivechatFilled,
 } from '@apitable/icons';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 // eslint-disable-next-line no-restricted-imports
 import { Avatar, AvatarSize, AvatarType, Message, Tooltip } from 'pc/components/common';
 import {
@@ -53,6 +53,7 @@ import { Notification } from 'pc/components/notification';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
 import { useContactUs } from 'pc/hooks/use_contact_us';
+import { useAppSelector } from 'pc/store/react-redux';
 import { isMobileApp, getEnvVariables, isHiddenLivechat } from 'pc/utils/env';
 import AnimationJson from 'static/json/notification_new.json';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
@@ -63,13 +64,11 @@ import { CreateSpaceModal } from './create_space_modal';
 import { Help } from './help';
 import { NavigationContext } from './navigation_context';
 import { SpaceListDrawer } from './space_list_drawer';
-import styles from './style.module.less';
 import { UpgradeBtn } from './upgrade_btn';
 import { User } from './user';
 // @ts-ignore
-import { inSocialApp, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise';
-
-import {useAppSelector} from "pc/store/react-redux";
+import { inSocialApp, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 enum NavKey {
   SpaceManagement = 'management',
@@ -97,7 +96,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
     }),
     shallowEqual,
   );
-  const { notificationStatistics, getNotificationList } = useNotificationRequest();
+  const { notificationStatistics } = useNotificationRequest();
   // const location = useLocation();
   const router = useRouter();
   const search = location.search;
@@ -110,8 +109,6 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   const contactUs = useContactUs();
   const env = getEnvVariables();
   useRequest(notificationStatistics);
-  // Check if there is a system banner notification to be displayed
-  useRequest(getNotificationList);
 
   useEffect(() => {
     const eventBundle = new Map([

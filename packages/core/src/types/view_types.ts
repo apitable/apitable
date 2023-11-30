@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Strings, t } from 'exports/i18n';
 import type { IUnitIds } from 'types/field_types';
 import type { FieldType, ITimestamp } from './field_types';
-import { t, Strings } from 'exports/i18n';
 
 export interface ISortedField {
   fieldId: string;
@@ -82,6 +82,7 @@ export type IFilterNumber = [IFilterValue] | null;
 // When the radio field is Include/Not Include , you need to provide a multi-select drop-down
 export type IFilterSingleSelect = IFilterValue[] | null;
 export type IFilterMultiSelect = IFilterValue[] | null;
+export type IFilterWorkDoc = IFilterValue[] | null;
 export type IFilterMember = IUnitIds | null;
 
 export type IFilterDateTime =
@@ -102,8 +103,8 @@ export interface IFilterConditionMap {
     value: IFilterText;
   };
   [FieldType.SingleText]: {
-    fieldType: FieldType.SingleText,
-    value: IFilterText,
+    fieldType: FieldType.SingleText;
+    value: IFilterText;
   };
   [FieldType.Number]: {
     fieldType: FieldType.Number;
@@ -150,66 +151,70 @@ export interface IFilterConditionMap {
     value: any;
   };
   [FieldType.Attachment]: {
-    fieldType: FieldType.Attachment,
+    fieldType: FieldType.Attachment;
     // TODO: undefined
-    value: any,
+    value: any;
   };
   [FieldType.Link]: {
-    fieldType: FieldType.Link,
-    value: any,
+    fieldType: FieldType.Link;
+    value: any;
   };
   [FieldType.OneWayLink]: {
-    fieldType: FieldType.OneWayLink,
-    value: any,
+    fieldType: FieldType.OneWayLink;
+    value: any;
   };
   // TODO: The following fields support filter operations
   [FieldType.URL]: {
-    fieldType: FieldType.URL,
-    value: any,
+    fieldType: FieldType.URL;
+    value: any;
   };
   [FieldType.Email]: {
-    fieldType: FieldType.Email,
-    value: any,
+    fieldType: FieldType.Email;
+    value: any;
   };
   [FieldType.Phone]: {
-    fieldType: FieldType.Phone,
-    value: any,
+    fieldType: FieldType.Phone;
+    value: any;
   };
   [FieldType.Checkbox]: {
-    fieldType: FieldType.Checkbox,
-    value: IFilterCheckbox,
+    fieldType: FieldType.Checkbox;
+    value: IFilterCheckbox;
   };
   [FieldType.Rating]: {
-    fieldType: FieldType.Rating,
-    value: IFilterNumber,
+    fieldType: FieldType.Rating;
+    value: IFilterNumber;
   };
   [FieldType.Member]: {
-    fieldType: FieldType.Member,
-    value: IFilterMember,
+    fieldType: FieldType.Member;
+    value: IFilterMember;
   };
   [FieldType.CreatedBy]: {
-    fieldType: FieldType.CreatedBy,
-    value: IFilterMember,
+    fieldType: FieldType.CreatedBy;
+    value: IFilterMember;
   };
   [FieldType.LastModifiedBy]: {
-    fieldType: FieldType.LastModifiedBy,
-    value: IFilterMember,
+    fieldType: FieldType.LastModifiedBy;
+    value: IFilterMember;
   };
   [FieldType.LookUp]: {
-    fieldType: FieldType.LookUp,
-    value: any,
+    fieldType: FieldType.LookUp;
+    value: any;
   };
   [FieldType.Formula]: {
-    fieldType: FieldType.Formula,
-    value: IFilterText,
+    fieldType: FieldType.Formula;
+    value: IFilterText;
   };
   [FieldType.Cascader]: {
-    fieldType: FieldType.Cascader,
-    value: any,
+    fieldType: FieldType.Cascader;
+    value: any;
+  };
+  [FieldType.Button]: {
+    fieldType: FieldType.Button;
+    value: any;
   };
   [FieldType.WorkDoc]: {
-    fieldType: FieldType.WorkDoc,
-    value: any,
+    fieldType: FieldType.WorkDoc;
+    value: IFilterWorkDoc;
   };
 }
 

@@ -23,7 +23,7 @@ import React from 'react';
 const DingtalkCallbackWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/dingtalk/dingtalk_callback').then((components) => {
       return components.DingtalkCallback;
     }),
   { ssr: false },

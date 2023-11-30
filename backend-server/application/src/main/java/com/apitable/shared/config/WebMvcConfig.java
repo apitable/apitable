@@ -58,7 +58,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     public WebMvcConfig(ResourceInterceptor resourceInterceptor,
-        I18nInterceptor i18nInterceptor) {
+                        I18nInterceptor i18nInterceptor) {
         this.resourceInterceptor = resourceInterceptor;
         this.i18nInterceptor = i18nInterceptor;
     }

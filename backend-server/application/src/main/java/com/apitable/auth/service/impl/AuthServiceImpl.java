@@ -227,8 +227,8 @@ public class AuthServiceImpl implements IAuthService {
         return result;
     }
 
-    public Long registerUserUsingMobilePhone(String areaCode, String mobile,
-        String nickName, String avatar, String spaceId) {
+    private Long registerUserUsingMobilePhone(String areaCode, String mobile,
+                                              String nickName, String avatar, String spaceId) {
         // Create a new user based on the mobile phone number and activate the corresponding member
         UserEntity user = iUserService.createUserByMobilePhone(areaCode, mobile, nickName, avatar);
         // Query whether there is a space member corresponding to a mobile phone number

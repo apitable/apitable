@@ -35,10 +35,16 @@ import java.util.List;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * team member relationship service implementation.
+ */
 @Service
 @Slf4j
-public class TeamMemberRelServiceImpl extends ExpandServiceImpl<TeamMemberRelMapper, TeamMemberRelEntity> implements ITeamMemberRelService {
+public class TeamMemberRelServiceImpl
+    extends ExpandServiceImpl<TeamMemberRelMapper, TeamMemberRelEntity>
+    implements ITeamMemberRelService {
     @Resource
     private ITeamService iTeamService;
 
@@ -65,6 +71,7 @@ public class TeamMemberRelServiceImpl extends ExpandServiceImpl<TeamMemberRelMap
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void createBatch(List<TeamMemberRelEntity> entities) {
         if (CollUtil.isEmpty(entities)) {
             return;

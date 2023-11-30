@@ -112,27 +112,29 @@ public interface SpaceMapper extends BaseMapper<SpaceEntity> {
     /**
      * change the spatial property state.
      *
-     * @param userId user id
-     * @param spaceId space id
-     * @param features  features
+     * @param userId   user id
+     * @param spaceId  space id
+     * @param features features
      * @return affected rows
      */
-    Integer updateProps(@Param("userId") Long userId, @Param("spaceId") String spaceId, @Param("list") List<MapDTO> features);
+    Integer updateProps(@Param("userId") Long userId, @Param("spaceId") String spaceId,
+                        @Param("list") List<MapDTO> features);
 
     /**
      * change the primary administrator id of the space.
      *
-     * @param spaceId space id
+     * @param spaceId   space id
      * @param memberId  the new main admin id
      * @param updatedBy updater
      * @return affected rows
      */
-    Integer updateSpaceOwnerId(@Param("spaceId") String spaceId, @Param("memberId") Long memberId, @Param("updatedBy") Long updatedBy);
+    Integer updateSpaceOwnerId(@Param("spaceId") String spaceId, @Param("memberId") Long memberId,
+                               @Param("updatedBy") Long updatedBy);
 
     /**
      * remove the space main admin id.
      *
-     * @param spaceId space id
+     * @param spaceId   space id
      * @param updatedBy updater
      * @return affected rows
      */
@@ -142,11 +144,13 @@ public interface SpaceMapper extends BaseMapper<SpaceEntity> {
      * update .
      *
      * @param time      pre delete time
-     * @param spaceId space id
+     * @param spaceId   space id
      * @param updatedBy updater
      * @return affected rows
      */
-    int updatePreDeletionTimeBySpaceId(@Param("time") LocalDateTime time, @Param("spaceId") String spaceId, @Param("updatedBy") Long updatedBy);
+    int updatePreDeletionTimeBySpaceId(@Param("time") LocalDateTime time,
+                                       @Param("spaceId") String spaceId,
+                                       @Param("updatedBy") Long updatedBy);
 
     /**
      * logically delete space.

@@ -17,7 +17,7 @@ import { useFetchFolderData } from './hooks/use_fetch_folder_data';
 import { searchPanelReducer } from './store/reducer/search_panel';
 import styles from './style.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
   defaultNodeIds,
@@ -31,6 +31,7 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
     currentDatasheetId: defaultNodeIds.datasheetId || '',
     currentFolderId: defaultNodeIds.folderId,
     currentMirrorId: '',
+    currentAutomationId: defaultNodeIds.automationId || '',
     currentViewId: '',
     currentFormId: defaultNodeIds.formId || '',
     showSearch: false,
@@ -44,8 +45,9 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
   const { embedId } = useAppSelector((state) => state.pageParams);
   const editorRef = useRef<{
     focus: () => void;
-      } | null>(null);
+  } | null>(null);
 
+  // detail
   const needNodeMetaData = requiredData.includes('viewId') || requiredData.includes('meta');
 
   const onCancelClick = () => {
@@ -71,10 +73,12 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
     const baseData = {
       viewId: localState.currentViewId,
       datasheetId: localState.currentDatasheetId,
+      automation: localState.currentAutomationId,
       meta: datasheetMetaData,
       nodeName: localState.nodes.find((node) => node.nodeId === localState.currentDatasheetId)?.nodeName,
       mirrorId: localState.currentMirrorId,
       formId: localState.currentFormId,
+      automationId: localState.currentAutomationId,
     };
 
     const result = {};
@@ -83,10 +87,15 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
       if (!baseData[v]) continue;
       result[v] = baseData[v];
     }
-
     onChange(result);
-    // eslint-disable-next-line
-  }, [localState.currentDatasheetId, localState.currentMirrorId, localState.currentViewId, localState.nodes, localState.currentFormId]);
+  }, [
+    localState.currentDatasheetId,
+    localState.currentMirrorId,
+    localState.currentViewId,
+    localState.nodes,
+    localState.currentFormId,
+    localState.currentAutomationId,
+  ]);
 
   const { onNodeClick } = useNodeClick({ localDispatch, localState, needFetchDatasheetMeta: !!needNodeMetaData });
 
@@ -131,6 +140,7 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
         <FolderContent
           nodes={localState.nodes}
           currentViewId={localState.currentViewId}
+          currentAutomationId={localState.currentAutomationId}
           currentMirrorId={localState.currentMirrorId}
           currentDatasheetId={localState.currentDatasheetId}
           currentFormId={localState.currentFormId}

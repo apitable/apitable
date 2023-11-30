@@ -22,7 +22,7 @@ import lombok.Data;
 
 /**
  * <p>
- * Wizard
+ * Wizard.
  * </p>
  */
 @Data

@@ -22,6 +22,9 @@ import com.apitable.core.support.serializer.IBaseEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * widget package auth type.
+ */
 @Getter
 @AllArgsConstructor
 public enum WidgetPackageAuthType implements IBaseEnum {

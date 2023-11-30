@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { APIMetaButtonActionType } from './field_api_enums';
 /**
  * API Meta open interface definition
  */
@@ -98,6 +99,15 @@ export interface IAPIMetaCreateByFieldProperty {
 
 export interface IAPIMetaLastModifiedByFieldProperty {
   options?: IAPIMetaUser[];
+}
+
+export interface IAPIMetaButtonFieldProperty {
+  action: {
+    type: APIMetaButtonActionType,
+    expression?: string,
+    automationId?: string,
+    triggerId?: string
+  }
 }
 
 export type IAPIMetaMemberBaseFieldProperty =
@@ -218,4 +228,5 @@ export type IAPIMetaFieldProperty =
   | IAPIMetaOneWayLinkFieldProperty
   | IAPIMetaLinkFieldProperty
   | IAPIMetaLookupFieldProperty
-  | IAPIMetaFormulaFieldProperty;
+  | IAPIMetaFormulaFieldProperty
+  | IAPIMetaButtonFieldProperty;

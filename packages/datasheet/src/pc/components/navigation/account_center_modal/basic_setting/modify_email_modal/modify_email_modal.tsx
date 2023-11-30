@@ -28,7 +28,7 @@ import { usePlatform } from 'pc/hooks/use_platform';
 import { Verify } from '../modify_mobile_modal/verify';
 import styles from './style.module.less';
 // @ts-ignore
-import { addWizardNumberAndApiRun } from 'enterprise';
+import { addWizardNumberAndApiRun } from 'enterprise/guide/utils';
 
 export interface IModifyEmailModalProps {
   setEmailModal: React.Dispatch<React.SetStateAction<boolean>>;

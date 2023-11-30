@@ -1,16 +1,18 @@
-import { ITheme, DropdownSelect as Select, useTheme } from '@apitable/components';
+import { DropdownSelect as Select, ITheme, useTheme } from '@apitable/components';
 import { Field, FieldType, IField, Strings, t } from '@apitable/core';
 import {
-  UserOutlined, AttachmentOutlined,
+  AttachmentOutlined,
   AutonumberOutlined,
-  CalendarOutlined, CheckboxOutlined,
-  UserAddOutlined,
-  TimeFilled,
-  CurrencyUsdOutlined,
+  CalendarOutlined,
+  CheckboxOutlined,
   CurrencyCnyOutlined,
+  CurrencyUsdOutlined,
   EmailOutlined,
+  TimeFilled,
+  UserAddOutlined,
+  UserOutlined,
   NumberOutlined, FormulaOutlined,
-  UserEditOutlined, HistoryFilled,
+  HistoryFilled,
   TwoWayLinkOutlined,
   OneWayLinkOutlined,
   LongtextOutlined,
@@ -18,14 +20,14 @@ import {
   TelephoneOutlined,
   StarOutlined, SelectSingleOutlined, TextOutlined,
   LinkOutlined,
-  LockFilled, CascadeOutlined, FileOutlined, IIconProps,
+  LockFilled, CascadeOutlined, FileOutlined, IIconProps, UserEditOutlined, CursorButtonOutlined,
 } from '@apitable/icons';
-
-import { FieldType as WidgetFieldType } from '../../interface/field_types';
 
 import React, { FC } from 'react';
 
-const FieldIconMap : {[key in WidgetFieldType]: FC<IIconProps> }= {
+import { FieldType as WidgetFieldType } from '../../interface/field_types';
+
+const FieldIconMap: { [key in WidgetFieldType]: FC<IIconProps> } = {
   [WidgetFieldType.Text]: LongtextOutlined,
   [WidgetFieldType.Number]: NumberOutlined,
   [WidgetFieldType.SingleSelect]: SelectSingleOutlined,
@@ -52,14 +54,15 @@ const FieldIconMap : {[key in WidgetFieldType]: FC<IIconProps> }= {
   [WidgetFieldType.CreatedBy]: UserAddOutlined,
   [WidgetFieldType.LastModifiedBy]: UserEditOutlined,
   [WidgetFieldType.Cascader]: CascadeOutlined,
+  [WidgetFieldType.Button]: CursorButtonOutlined,
   [WidgetFieldType.WorkDoc]: FileOutlined,
 };
 
-export { FieldIconMap };
 
-const FieldIconMapFieldType: {[key in FieldType]: FC<IIconProps> }= {
+const FieldIconMapFieldType: { [key in FieldType]: FC<IIconProps> } = {
   [FieldType.NotSupport]: LockFilled,
   [FieldType.DeniedField]: LockFilled,
+  [FieldType.NotSupport]: LockFilled,
   [FieldType.Text]: LongtextOutlined,
   [FieldType.Number]: NumberOutlined,
   [FieldType.SingleSelect]: SelectSingleOutlined,
@@ -87,6 +90,7 @@ const FieldIconMapFieldType: {[key in FieldType]: FC<IIconProps> }= {
   [FieldType.LastModifiedBy]: UserEditOutlined,
   [FieldType.Cascader]: CascadeOutlined,
   [FieldType.WorkDoc]: FileOutlined,
+  [FieldType.Button]: CursorButtonOutlined
 };
 
 const transformOptions = (fields: IField[], theme: ITheme) => {
@@ -135,3 +139,5 @@ export const FieldSelect = ({ fields, value, onChange }: IFieldSelectProps) => {
     />
   </>;
 };
+
+export { FieldIconMap, FieldIconMapFieldType };

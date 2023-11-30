@@ -1,9 +1,10 @@
- plugins {
-  id 'java-library'
+plugins {
+    id 'java-library'
 }
 dependencies {
-  implementation(rootProject.ext.dependencies['boot-starter'])
-  implementation(rootProject.ext.dependencies['socket-io'])
-  implementation(rootProject.ext.dependencies['slf4j'])
-  implementation(rootProject.ext.dependencies['hutool'])
+    implementation platform(libs.spring.boot.dependencies)
+    implementation(libs.spring.boot.starter)
+    implementation(libs.socketio)
+    implementation(libs.slf4j)
+    implementation(libs.bundles.hutool)
 }

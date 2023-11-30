@@ -19,12 +19,11 @@
 package com.apitable.organization.dto;
 
 import java.util.List;
-
 import lombok.Data;
 
 /**
  * <p>
- * parameter for searching member or department
+ * parameter for searching member or department.
  * </p>
  */
 @Data
@@ -41,7 +40,7 @@ public class LoadSearchDTO {
     private Boolean all;
 
     /**
-     * whether to search for emails
+     * whether to search for emails.
      */
     private Boolean searchEmail;
 

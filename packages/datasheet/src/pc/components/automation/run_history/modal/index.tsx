@@ -194,7 +194,7 @@ export const HistoryModalContent = () => {
   return (
     <Box height={'calc(80vh - 58px)'}
       display={'flex'} flexDirection={'row'} ref={rootRef}>
-      <Box overflowY={'auto'} padding={'8px'} width={'256px'} flex={'0 0 256px'} backgroundColor={colors.bgCommonDefault}>
+      <Box overflowY={'auto'} padding={'8px'} width={'256px'} flex={'0 0 256px'} backgroundColor={colors.bgCommonDefault} alignSelf={isEmpty ? 'center': undefined}>
 
         <TaskList list={items} isSummary activeId={currentHistoryState.taskId}/>
 

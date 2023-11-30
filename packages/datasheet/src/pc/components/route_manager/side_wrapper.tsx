@@ -30,12 +30,17 @@ import { useQuery } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useWxTitleMap } from '../konva_grid';
 // @ts-ignore
-import { WatermarkWrapper, WecomContactWrapper, isDingtalkSkuPage, isEnterprise } from 'enterprise';
-
+import { isDingtalkSkuPage } from 'enterprise/home/social_platform/utils';
+// @ts-ignore
+import { WecomContactWrapper, } from 'enterprise/wecom/wecom_contact_wrapper/wecom_contact_wrapper';
+// @ts-ignore
+import { WatermarkWrapper } from 'enterprise/watermark/watermark_wrapper';
+import { getEnvVariables } from 'pc/utils/env';
 import {useAppSelector} from "pc/store/react-redux";
 
 export const SideWrapper = (props: { children: any }) => {
   const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
+  const { IS_ENTERPRISE } = getEnvVariables();
   const dispatch = useAppDispatch();
   const shortcutKeyPanelVisible = useAppSelector((state: IReduxState) => state.space.shortcutKeyPanelVisible);
   const query = useQuery();
@@ -57,7 +62,7 @@ export const SideWrapper = (props: { children: any }) => {
   useEffect(() => {
     dispatch(StoreActions.spaceResource());
     if (!spaceId) return;
-    isEnterprise && dispatch(StoreActions.fetchMarketplaceApps(spaceId));
+    IS_ENTERPRISE && dispatch(StoreActions.fetchMarketplaceApps(spaceId));
     dispatch(StoreActions.getSpaceInfo(spaceId));
     dispatch(StoreActions.getSpaceFeatures());
   }, [dispatch, spaceId]);

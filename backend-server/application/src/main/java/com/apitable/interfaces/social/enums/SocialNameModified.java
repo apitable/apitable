@@ -20,7 +20,7 @@ package com.apitable.interfaces.social.enums;
 
 /**
  * <p>
- * Whether the nickname has been modified as a third-party IM user
+ * Whether the nickname has been modified as a third-party IM user.
  * </p>
  */
 public enum SocialNameModified {
@@ -29,7 +29,7 @@ public enum SocialNameModified {
     YES(1),
 
     /**
-     * Not an IM third-party user
+     * Not an IM third-party user.
      */
     NO_SOCIAL(2),
 

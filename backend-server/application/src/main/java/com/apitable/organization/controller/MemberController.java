@@ -207,45 +207,6 @@ public class MemberController {
     }
 
     /**
-     * Query the team's members.
-     */
-    @GetResource(path = "/list")
-    @Operation(summary = "Query the team's members",
-        description = "Query all the members of the department,"
-            + " including the members of the sub department."
-            + "if root team can lack teamId, teamId default 0.")
-    @Parameters({
-        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
-        @Parameter(name = "teamId", in = ParameterIn.QUERY,
-            description = "team id. if root team can lack teamId, teamId default 0.",
-            schema = @Schema(type = "string"), example = "0")
-    })
-    public ResponseData<List<MemberInfoVo>> getMemberList(
-        @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId) {
-        String spaceId = LoginContext.me().getSpaceId();
-        SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
-        SpaceHolder.setGlobalFeature(feature);
-        if (teamId == 0) {
-            // query the members of the root department
-            List<MemberInfoVo> resultList = memberMapper.selectMembersByRootTeamId(spaceId);
-            if (CollUtil.isNotEmpty(resultList)) {
-                // handle member's team name, get full hierarchy team names
-                iTeamService.handleListMemberTeams(resultList, spaceId);
-            }
-            return ResponseData.success(resultList);
-        }
-        // query the ids of all sub departments
-        List<Long> teamIds = iTeamService.getAllTeamIdsInTeamTree(teamId);
-        List<MemberInfoVo> resultList = memberMapper.selectMembersByTeamId(teamIds);
-        if (CollUtil.isNotEmpty(resultList)) {
-            // handle member's team name, get full hierarchy team names
-            iTeamService.handleListMemberTeams(resultList, spaceId);
-        }
-        return ResponseData.success(resultList);
-    }
-
-    /**
      * Page query the team's member.
      */
     @GetResource(path = "/page")

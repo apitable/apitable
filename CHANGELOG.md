@@ -1,5 +1,34 @@
 # APITable CHANGELOG
 
+## [v1.5.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.5.0-beta.1) (2023-11-27)
+
+
+### What's more
+
+* sync: hosted cloud ([#1481](https://github.com/apitable/apitable/pull/1481)) @shawndenggh 
+
+## [v1.5.0-beta](https://github.com/apitable/apitable/releases/tag/v1.5.0-beta) (2023-11-20)
+
+
+### What's more
+
+* sync: hosted cloud ([#1469](https://github.com/apitable/apitable/pull/1469)) @robot518 
+
+## [v1.4.0-beta.3](https://github.com/apitable/apitable/releases/tag/v1.4.0-beta.3) (2023-11-13)
+
+
+### Features and enhancements
+
+* feat: gen ce api client module ([#1445](https://github.com/apitable/apitable/pull/1445)) @ranglang 
+* feat: change contactus url ([#1454](https://github.com/apitable/apitable/pull/1454)) @yo-ooiii 
+
+### Bug fixes
+
+* fix: workdoc with env ([#1463](https://github.com/apitable/apitable/pull/1463)) @wangkailang 
+
+### What's more
+
+* sync: hosted cloud ([#1460](https://github.com/apitable/apitable/pull/1460)) @ziqiangai 
 ## [v1.4.0-beta.2](https://github.com/apitable/apitable/releases/tag/v1.4.0-beta.2) (2023-11-06)
 
 

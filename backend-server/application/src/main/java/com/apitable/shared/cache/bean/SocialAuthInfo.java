@@ -22,7 +22,7 @@ import lombok.Data;
 
 /**
  * <p>
- * social auth info
+ * social auth info.
  * </p>
  *
  * @author Chambers
@@ -45,12 +45,12 @@ public class SocialAuthInfo {
     private String avatar;
 
     /**
-     * social type
+     * social type.
      */
     private Integer type;
 
     /**
-     * social tenant name
+     * social tenant name.
      */
     private String tenantName;
 }

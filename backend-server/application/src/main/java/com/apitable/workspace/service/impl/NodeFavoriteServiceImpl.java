@@ -46,6 +46,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * node favorite service implementation.
+ */
 @Slf4j
 @Service
 public class NodeFavoriteServiceImpl implements INodeFavoriteService {
@@ -67,11 +70,11 @@ public class NodeFavoriteServiceImpl implements INodeFavoriteService {
     @Override
     public List<FavoriteNodeInfo> getFavoriteNodeList(String spaceId, Long memberId) {
         log.info("get favorite node list");
-        List<NodeTreeDTO> nodeTreeDTOS = nodeFavoriteMapper.selectNodeTreeDTOByMemberId(memberId);
-        if (CollUtil.isEmpty(nodeTreeDTOS)) {
+        List<NodeTreeDTO> treeList = nodeFavoriteMapper.selectNodeTreeDTOByMemberId(memberId);
+        if (CollUtil.isEmpty(treeList)) {
             return new ArrayList<>();
         }
-        List<String> nodeIds = iNodeService.sortNodeAtSameLevel(nodeTreeDTOS);
+        List<String> nodeIds = iNodeService.sortNodeAtSameLevel(treeList);
         // query node view information
         List<NodeInfoVo> nodeInfoVos =
             iNodeService.getNodeInfoByNodeIds(spaceId, memberId, nodeIds);

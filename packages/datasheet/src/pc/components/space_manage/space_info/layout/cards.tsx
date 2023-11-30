@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 // @ts-ignore
-import { inSocialApp, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise';
+import { inSocialApp, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 import { useMemo } from 'react';
 import { Strings, t } from '@apitable/core';
 import { CreditCostCard } from 'pc/components/space_manage/space_info/components/credit_cost_card/credit_cost_card';
@@ -55,7 +55,7 @@ export const useCards = (props: ILayoutProps) => {
   }, [level, showContextMenu, handleDelSpace]);
 
   const { trailColor, strokeColor, hightLightColor } = useMemo(() => {
-    return SpaceLevelInfo[level];
+    return SpaceLevelInfo[level] || SpaceLevelInfo.bronze;
   }, [level]);
 
   const basicCert = useMemo(() => {
