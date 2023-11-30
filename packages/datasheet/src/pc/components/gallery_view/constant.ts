@@ -22,13 +22,16 @@ import { FieldType } from '@apitable/core';
 export const FIELD_HEIGHT_MAP = {
   [FieldType.Attachment]: 24,
   [FieldType.Checkbox]: 16,
+  [FieldType.Rating]: 16,
   [FieldType.Link]: 25,
   [FieldType.SingleSelect]: 25,
   [FieldType.MultiSelect]: 25,
   // Member
-  [FieldType.Member]: 26,
-  [FieldType.CreatedBy]: 26,
-  [FieldType.LastModifiedBy]: 26,
+  [FieldType.Member]: 24,
+  [FieldType.CreatedBy]: 24,
+  [FieldType.LastModifiedBy]: 24,
+  [FieldType.OneWayLink]: 20,
+  [FieldType.Link]: 20,
 
   [FieldType.WorkDoc]: 24,
 };
@@ -37,7 +40,7 @@ export const FIELD_HEIGHT_MAP = {
 export const FIELD_HEIGHT_VIRTUAL_MAP = {
   [FieldType.Rating]: 16,
   [FieldType.Checkbox]: 16,
-  [FieldType.SingleSelect]: 20,
+  [FieldType.SingleSelect]: 25,
   [FieldType.MultiSelect]: 21,
   [FieldType.SingleText]: 21,
   [FieldType.Attachment]: 24,

@@ -143,7 +143,7 @@ export const useCardHeight = (props: IUseCardHeightProps) => {
         }
         return (isColNameVisible ? FIELD_TITLE_HEIGHT : 0) + fieldHeight + FIELD_PADDING_BOTTOM;
       });
-      return sum(fieldsHeight) + FIELD_PADDING;
+      return sum(fieldsHeight) + FIELD_PADDING + 2;
     }
     return FIELD_PADDING * 2;
   }
