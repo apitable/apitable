@@ -47,44 +47,6 @@ export const AutomationPanelWrapper: React.FC<React.PropsWithChildren<{
 
   const [lcoalPanel, setPanel] =useState<IAutomationPanel|undefined>(undefined);
 
-  const [initialzed, setInitailzed] = useState(false);
-  useEffect(() => {
-    const trigger = automationState?.robot?.triggers?.find(r => getFieldId(r) !== null);
-    const to = setTimeout(() => {
-      if(trigger) {
-        if(initialzed) {
-          return;
-        }
-
-        setInitailzed(true);
-
-        const newPanel : IAutomationPanel= {
-          panelName: PanelName.Trigger,
-          dataId: trigger.triggerId,
-          // @ts-ignore
-          data: trigger
-        };
-
-        setCache({
-          panel: newPanel,
-          id: automationId,
-        });
-        setPanel(newPanel);
-
-        setTimeout(() => {
-          setSideBarVisible(true);
-          setItem(trigger.triggerId);
-          setAutomationPanel(newPanel);
-        }, 2000);
-        // TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.AUTOMATION_BUTTON_TRIGGER);
-        Player.doTrigger(Events.guide_use_button_column_first_time);
-      }
-    }, 30);
-    return () => {
-      clearTimeout(to);
-    };
-  }, [automationState, initialzed, setAutomationPanel, setItem, setSideBarVisible]);
-
   const handle = async (url) => {
     if(!CONST_ENABLE_PREVENT) {
       return ;

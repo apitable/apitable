@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Box, Typography } from '@apitable/components';
 import { ButtonActionType, FieldType, IButtonField, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
@@ -13,8 +13,11 @@ import {
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
 
-const PointerCursorBox = styled(Box)`
+const PointerCursorBox = styled(Box)<{enabled:boolean}>`
  cursor: default !important;
+  ${props => props.enabled && css`
+    cursor: pointer !important;
+  `}
 `;
 
 export const ReadonlyFieldColumn: FC<{
@@ -39,6 +42,10 @@ export const ReadonlyFieldColumn: FC<{
     fieldItem = undefined;
   }
   if(fieldItem?.property?.action?.type !== ButtonActionType.TriggerAutomation ) {
+    fieldItem = undefined;
+  }
+
+  if(fieldItem?.property?.action?.automation?.automationId !== resourceId ) {
     fieldItem = undefined;
   }
 

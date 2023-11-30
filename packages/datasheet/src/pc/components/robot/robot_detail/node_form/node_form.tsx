@@ -108,7 +108,7 @@ export const NodeForm = memo(
 
 export const NodeFormInfo = memo(
   forwardRef<INodeFormControlProps, INodeFormProps<any>>((props: INodeFormProps<any>, ref) => {
-    const { title, serviceLogo, itemId,handleDelete, unsaved, type = 'trigger', nodeId, children, handleClick, index = 0, ...restProps } = props;
+    const { title, serviceLogo, itemId, handleDelete, unsaved, type = 'trigger', nodeId, children, handleClick, index = 0, ...restProps } = props;
     const theme = useTheme();
     // @ts-ignore
     const { hasError } = validateMagicFormWithCustom(restProps.schema as JSONSchema7, restProps.formData, restProps?.validate);
@@ -135,7 +135,7 @@ export const NodeFormInfo = memo(
         okText: t(Strings.confirm),
         onOk: async () => {
           let deleteOk;
-          handleDelete?.()
+          handleDelete?.();
           if (type === 'trigger') {
             deleteOk = await deleteTrigger(automationState?.resourceId!, nodeId, automationState?.robot?.robotId!);
           } else {
@@ -190,7 +190,7 @@ export const NodeFormInfo = memo(
         padding="16px"
         onClick={handleClick}
         backgroundColor={theme.color.fc8}
-        id={isActive ? 'NODE_FORM_ACTIVE' : `robot_node_${nodeId}`}
+        id={itemId ?? `robot_node_${nodeId}`}
       >
         <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
           <Box display="flex" alignItems="center" width="100%" style={{ cursor: props.disabled ? 'not-allowed' : 'pointer' }}>

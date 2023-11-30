@@ -340,7 +340,6 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
   }, [getDstIdItem, setTriggerDatasheetValue]);
 
   const mergedUiSchema = useMemo(() => {
-    // const isFilterForm = triggerType?.endpoint === 'record_matches_conditions';
     if (automationState?.scenario === AutomationScenario.datasheet) {
       switch (triggerType?.endpoint) {
         case 'record_matches_conditions': {
@@ -606,7 +605,6 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
 
   const { shareInfo } = useContext(ShareContext);
 
-  // @ts-ignore
   return (
     <NodeItem
       disabled={
@@ -615,6 +613,7 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       index={index}
       ref={nodeItemControlRef}
       handleClick={memorisedHandleClick}
+      itemId={buttonFieldTrigger?.triggerTypeId === trigger?.triggerTypeId ? "NODE_FORM_ACTIVE": undefined}
       nodeId={trigger.triggerId}
       key={trigger.triggerId}
       schema={schema}
@@ -640,7 +639,7 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
           if(fieldMap?.[fieldId] != null) {
             const field = fieldMap?.[fieldId] as IButtonField;
             const automationNotSame = field.property.action.automation?.automationId !== automationState?.resourceId;
-            if ((automationState|| field.property.action?.type !== ButtonActionType.TriggerAutomation) && !e.some(error => error.dataPath === '.fieldId')) {
+            if ((automationNotSame|| field.property.action?.type !== ButtonActionType.TriggerAutomation) && !e.some(error => error.dataPath === '.fieldId')) {
               return {
                 fieldId: {
                   __errors: [t(Strings.the_current_button_column_has_expired_please_reselect)]

@@ -73,7 +73,6 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string, pa
   const { shareInfo } = useContext(ShareContext);
   const { initialize } = useAutomationNavigateController();
   const dispatch = useAppDispatch();
-  // const loading = false;
   const { templateId } = useAppSelector((state: IReduxState) => state.pageParams);
 
   const { screenIsAtMost } = useResponsive();
