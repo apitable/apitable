@@ -123,14 +123,14 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
     }
 
     @Override
-    public void copy(Long userId, List<String> resourceIds,
+    public TriggerCopyResultDto copy(Long userId, List<String> resourceIds,
                      AutomationCopyOptions options, Map<String, String> newNodeMap) {
         if (CollUtil.isEmpty(resourceIds)) {
-            return;
+            return new TriggerCopyResultDto();
         }
         List<AutomationRobotEntity> robots = robotMapper.selectByResourceIds(resourceIds);
         if (CollUtil.isEmpty(robots)) {
-            return;
+            return new TriggerCopyResultDto();
         }
         Map<String, String> newRobotMap = new HashMap<>(robots.size());
         List<AutomationRobotEntity> entities = new ArrayList<>(robots.size());
@@ -154,8 +154,9 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
         robotMapper.insertList(entities);
 
         TriggerCopyResultDto resultDto =
-            iAutomationTriggerService.copy(userId, options.isSameSpace(), newRobotMap, newNodeMap);
+            iAutomationTriggerService.copy(userId, options, newRobotMap, newNodeMap);
         iAutomationActionService.copy(userId, newRobotMap, resultDto);
+        return resultDto;
     }
 
     @Override

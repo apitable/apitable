@@ -81,7 +81,7 @@ public class ButtonFieldProperty {
         /**
          * link.
          */
-        private ButtonFieldActionLink link;
+        private ButtonFieldActionLink openLink;
 
         /**
          * automation.
