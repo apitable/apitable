@@ -233,7 +233,7 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
               {
 
                 taskStatus === 'success' && (
-                  <CheckFilled color={colors.textCommonPrimary} className={'circle-loading'}/>
+                  <CheckFilled color={colors.textCommonPrimary} />
                 )
               }
 
