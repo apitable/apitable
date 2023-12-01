@@ -97,6 +97,7 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string, pa
 
   useEffect(() => {
     if (!resourceId) {
+      setLoading(false);
       return;
     }
     if(!loading){
@@ -151,7 +152,8 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string, pa
       }).finally(()=> {
         setLoading(false);
       });
-  }, [cache.id, cache.panel, dispatch, isLg, params, resourceId, setAutomationState, setCache, setHistoryDialog, setPanel, shareInfo]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, loading, params, resourceId, setAutomationState, setCache, setHistoryDialog, setPanel, shareInfo]);
 
   const handleDeleteRobot = () => {
     Modal.confirm({
@@ -238,7 +240,7 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string, pa
           className={styles.tabBarWrapper1}
           id={DATASHEET_ID.VIEW_TAB_BAR}
         >
-          {loading ? (
+          {automationState?.robot == null ? (
             <Space style={{ margin: '8px 20px' }}>
               <Skeleton style={{ height: 24, width: 340, marginTop: 0 }} />
             </Space>
