@@ -85,6 +85,8 @@ public class SocketioAutoConfiguration {
             options.path = client.getPath();
             // Unified connection parameters for connection authentication
             options.query = "userId=java_" + InetAddress.getLocalHost();
+            //Add transports for remote connections(non localhost)
+            options.transports= client.getTransports().toArray(new String[0]);
             socket = IO.socket(client.getUrl(), options);
             socket.on(Socket.EVENT_CONNECTING,
                 objects -> LOGGER.info("connecting {}", client.getUrl()));
