@@ -18,7 +18,7 @@
 
 import * as React from 'react';
 import { Box } from '@apitable/components';
-import { IButtonField, KONVA_DATASHEET_ID, Selectors } from '@apitable/core';
+import { IButtonField, IRecord, KONVA_DATASHEET_ID, Selectors } from '@apitable/core';
 import { ButtonFieldItem } from 'pc/components/editors/button_editor/buton_item';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Rect } from 'pc/components/konva_components';
@@ -28,9 +28,13 @@ import { stopPropagation, KeyCode } from 'pc/utils';
 import { ICellProps } from '../cell_value';
 import { IRenderData } from '../interface';
 
-export const CellButtonItem: React.FC<React.PropsWithChildren<Pick<ICellProps, 'field' |'recordId'>>> = (props) => {
+type ACellProps = Pick<ICellProps, 'field' |'recordId'> & {
+  datasheetId: string
+};
 
-  const record = useAppSelector(state => Selectors.getRecord(state, props.recordId));
+export const CellButtonItem: React.FC<React.PropsWithChildren<ACellProps>> = (props) => {
+
+  const record = useAppSelector(state => Selectors.getRecord(state, props.recordId, props.datasheetId));
   if(!record) return null;
   return (
     <Box flex={'1'} padding={'0 10px'} height={'20px'}>
