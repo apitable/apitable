@@ -2400,7 +2400,7 @@
           "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
         ],
-        "uiConfig": "{\n \"element\": \"#AUTOMATION_ADD_TRIGGER_BTN\"\n} ",
+        "uiConfig": "{\n \"element\": \"#NODE_FORM_ACTIVE\"\n} ",
         "uiConfigId": "player_step_ui_config_automation_1",
         "uiType": "breath"
       },

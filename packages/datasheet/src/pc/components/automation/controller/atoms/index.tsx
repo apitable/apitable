@@ -1,4 +1,5 @@
 import { Atom, atom } from 'jotai';
+import { selectAtom } from 'jotai/utils';
 import { atomWithImmer } from 'jotai-immer';
 import { atomsWithQuery } from 'jotai-tanstack-query';
 import { Api, ConfigConstant, FormApi, IServerFormPack } from '@apitable/core';
@@ -6,7 +7,6 @@ import { Api, ConfigConstant, FormApi, IServerFormPack } from '@apitable/core';
 import { getFormId } from 'pc/components/automation/controller/hooks/get_form_id';
 import { INodeSchema, IRobotAction, IRobotContext, IRobotTrigger } from '../../../robot/interface';
 import { loadableWithDefault } from '../../../robot/robot_detail/api';
-import {selectAtom} from "jotai/utils";
 
 export enum PanelName {
   BasicInfo = 'basic_info',
@@ -37,18 +37,20 @@ export const automationCacheAtom = atomWithImmer< {
 });
 export const automationCurrentTriggerId = atomWithImmer<string | undefined>(undefined);
 
+export const automationSourceAtom = atomWithImmer<'datasheet' | undefined>(undefined);
+
 export interface ILocalAutomation {
   trigger: Map<string, IRobotTrigger>,
   action: Map<string, IRobotAction>,
 }
 const automationLocalMap = atomWithImmer<Map<string, IRobotTrigger | IRobotAction>>(
-    new Map<string, IRobotTrigger | IRobotAction>()
+  new Map<string, IRobotTrigger | IRobotAction>()
 );
 
 const automationTriggerAtom: Atom<IRobotTrigger|undefined> = atom((get) => get(automationStateAtom)?.robot?.triggers?.find(item=> item.triggerId ===get(automationCurrentTriggerId)));
 
 export const automationTriggersAtom = atom((get) =>
-    (get(automationStateAtom)?.robot?.triggers ?? []).map(item => ({ ...item, id: item.triggerId })));
+  (get(automationStateAtom)?.robot?.triggers ?? []).map(item => ({ ...item, id: item.triggerId })));
 export const formIdAtom = atom((get) => getFormId(get(automationTriggerAtom)));
 
 export const automationActionsAtom = atomWithImmer<IRobotAction[]>([]);

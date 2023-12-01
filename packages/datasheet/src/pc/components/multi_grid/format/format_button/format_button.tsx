@@ -1,9 +1,10 @@
 import type { InputRef } from 'antd';
 import { Input, message } from 'antd';
 import produce from 'immer';
+import { useSetAtom } from 'jotai';
 import { debounce } from 'lodash';
 import { useRouter } from 'next/router';
-import {useRef, Dispatch, SetStateAction, useMemo, useState, useCallback, MutableRefObject} from 'react';
+import { useRef, Dispatch, SetStateAction, useMemo, useState, useCallback, MutableRefObject } from 'react';
 import styled from 'styled-components';
 import { Box, DropdownSelect, FloatUiTooltip, LinkButton, Typography } from '@apitable/components';
 import {
@@ -25,6 +26,7 @@ import {
 import { AddOutlined, SyncOnOutlined } from '@apitable/icons';
 import { automationApiClient, workbenchClient } from 'pc/common/api-client';
 import { AutomationConstant, CONST_MAX_TRIGGER_COUNT } from 'pc/components/automation/config';
+import { automationSourceAtom } from 'pc/components/automation/controller';
 import { IOnChangeParams } from 'pc/components/data_source_selector/interface';
 import { DataSourceSelectorForNode } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/data_source_selector_for_node';
 import { AutomationItem } from 'pc/components/multi_grid/format/format_button/automation_item';
@@ -217,6 +219,8 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
     [buttonFieldTriggerId?.triggerTypeId],
   );
 
+  const setAutomationSource = useSetAtom(automationSourceAtom);
+
   const handleClick=useCallback(async () => {
     const r = await workbenchClient.create3({
       nodeOpRo: {
@@ -248,8 +252,10 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
       });
 
       setBingAutomationVisible(false);
-      // setCurrentField(item);
+      setAutomationSource('datasheet');
+
       handleModify(item);
+
       setTimeout(() => {
         router.push(`/workbench/${automationId}`);
       }, 50);
@@ -291,8 +297,8 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
     });
   }, [currentField, datasheetId, handleAddTrigger, setCurrentField]);
 
-  const loadingNewRef: MutableRefObject<boolean> = useRef(false)
-  const loadingCreateRef: MutableRefObject<boolean> = useRef(false)
+  const loadingNewRef: MutableRefObject<boolean> = useRef(false);
+  const loadingCreateRef: MutableRefObject<boolean> = useRef(false);
   const handleAutomationChangeDebounced = debounce(handleAutomationChange, 300);
   return (
     <>
@@ -338,10 +344,10 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
               if(loadingCreateRef.current) {
                 return;
               }
-              loadingCreateRef.current=true
+              loadingCreateRef.current=true;
               await handleAutomationChangeDebounced(e);
             } finally {
-              loadingCreateRef.current=false
+              loadingCreateRef.current=false;
             }
           }}
           nodeTypes={[ConfigConstant.NodeType.AUTOMATION, ConfigConstant.NodeType.FOLDER]}

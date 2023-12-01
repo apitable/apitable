@@ -21,7 +21,7 @@ import produce from 'immer';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { identity, isEqual, isEqualWith, isNil, pickBy } from 'lodash';
 import * as React from 'react';
-import { memo, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { memo, MutableRefObject, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import useSWR from 'swr';
@@ -60,7 +60,7 @@ import { useResponsive, useSideBarVisible } from '../../../../hooks';
 import {
   automationCurrentTriggerId,
   automationLocalMap,
-  automationPanelAtom,
+  automationPanelAtom, automationSourceAtom,
   automationStateAtom,
   automationTriggerDatasheetAtom, IAutomationPanel, loadableFormItemAtom, loadableFormList,
   PanelName, useAutomationController
@@ -748,6 +748,18 @@ export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTri
   const [checked, setChecked] =useState(false);
   let list = triggerList;
 
+  const [atomValue, setAutomationSource]= useAtom(automationSourceAtom);
+
+  const checkGuideRef: MutableRefObject<boolean> = useRef(false);
+
+  useMount(() => {
+    if (editType === EditType.detail) {
+      return;
+    }
+    checkGuideRef.current = atomValue === 'datasheet';
+    setAutomationSource(undefined);
+  });
+
   useEffect(() => {
     if(checked) {
       return;
@@ -766,22 +778,24 @@ export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTri
     if(robot?.scenario === AutomationScenario.datasheet){
       return;
     }
-
-    setSideBarVisible(true);
-
-    setChecked(true);
-    setTimeout(() => {
-      setItem(item.triggerId);
-      const newPanel: IAutomationPanel = {
-        panelName: PanelName.Trigger,
-        dataId: item.triggerId,
-        // @ts-ignore
-        data: item
-      };
-      setAutomationPanel(newPanel);
-      Player.doTrigger(Events.guide_use_button_column_first_time);
-    }, 200);
-  }, [buttonFieldTrigger?.triggerTypeId, checked, editType, list, permissions.editable, robot?.scenario, setAutomationPanel, setItem, setSideBarVisible]);
+    if(checkGuideRef.current) {
+      setSideBarVisible(true);
+      setChecked(true);
+      setTimeout(() => {
+        setItem(item.triggerId);
+        const newPanel: IAutomationPanel = {
+          panelName: PanelName.Trigger,
+          dataId: item.triggerId,
+          // @ts-ignore
+          data: item
+        };
+        setAutomationPanel(newPanel);
+        Player.doTrigger(Events.guide_use_button_column_first_time);
+      }, 200);
+    }
+    checkGuideRef.current = false;
+    setAutomationSource(undefined);
+  }, [atomValue, buttonFieldTrigger?.triggerTypeId, checked, editType, list, permissions.editable, robot?.scenario, setAutomationPanel, setAutomationSource, setItem, setSideBarVisible]);
 
   if (!triggerTypes) {
     return null;
