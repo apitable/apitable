@@ -17,7 +17,7 @@
  */
 
 import { IResourceOpsCollect } from 'command_manager';
-import { IReduxState } from 'exports/store';
+import { IReduxState } from 'exports/store/interfaces';
 import { Store } from 'redux';
 import { IResource } from '../logic';
 

@@ -57,7 +57,7 @@ import { getBrowserDatabusApiEnabled } from '@apitable/core/dist/modules/databas
 import { init as initPlayer } from 'modules/shared/player/init';
 import 'normalize.css';
 import { initializer } from 'pc/common/initializer';
-import { Modal } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Router } from 'pc/components/route_manager/router';
 import { initEventListen } from 'pc/events';
 import { getPageParams, getRegResult, LOGIN_SUCCESS, shareIdReg, spaceIdReg } from 'pc/hooks';

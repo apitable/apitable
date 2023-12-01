@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { getCustomConfig } from 'config/env';
+import { getCustomConfig } from './env';
 import { Strings, t } from '../exports/i18n';
 
 export const MAX_ROBOT_COUNT_PER_DST = 30; // The maximum number of robots in a single table

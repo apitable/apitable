@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ISnapshot } from '../../exports/store';
+import { ISnapshot } from '../../exports/store/interfaces';
 import { IViewProperty } from '../../exports/store/interfaces';
-import { getViewById } from '../../exports/store/selectors';
+import { getViewById } from 'modules/database/store/selectors/resource/datasheet/base';
 import { Strings, t } from '../../exports/i18n';
 import { IBindViewModal } from '.';
 
@@ -47,7 +47,7 @@ export abstract class View {
     return [];
   }
 
-  /** 
+  /**
    *  `record` has different name in different view, such as `row`, `record`, `task`, etc.
    * every view need to define their own name of record.
    */

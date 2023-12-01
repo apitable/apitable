@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import databusWasmServer from '@apitable/databus-wasm-nodejs';
+// import * as databusWasmServer from '@apitable/databus-wasm-nodejs';
 import { DataBusBridge } from '@apitable/databus-wasm-web';
 import { isClient } from '../../../../utils/env';
 import { IAxiosResponse } from '../../../../types';
@@ -63,7 +63,7 @@ const handler = {
     if (promiseProperties.includes(prop)) {
       const originalMethod = Reflect.get(target, prop, receiver);
       // @ts-ignore
-      return async function(...args) {
+      return async function (...args) {
         // @ts-ignore
         return await fetchInterceptor(() => originalMethod.apply(this, args));
       };
@@ -103,10 +103,10 @@ async function fetchInterceptor<T>(fetch: () => Promise<any>): Promise<AxiosResp
   } as unknown as AxiosResponse<IApiWrapper & { data: T }>;
 }
 
-const initializeDatabusWasm = async() => {
+const initializeDatabusWasm = async () => {
   if (!isClient()) {
     // @ts-ignore
-    databus = databusWasmServer;
+    // databus = databusWasmServer;
     return;
   }
   if (!isInitialized()) {
@@ -123,7 +123,7 @@ const initializeDatabusWasm = async() => {
 const getInstance = () => {
   if (!isClient()) {
     // @ts-ignore
-    databus = databusWasmServer;
+    // databus = databusWasmServer;
     return databus;
   }
   if (!isInitialized()) {

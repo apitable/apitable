@@ -5806,6 +5806,8 @@
   "archive_record_in_activity": " 归档了这条记录",
   "unarchive_record_in_activity": " 取消归档了这条记录",
   "unarchive_notice": "正在取消归档当前记录，取消后将再次显示在表格和搜索结果中，并开始重新纳入计算，是否继续？",
+  "subscribed_record_archived":"<a class=\"memberName\"></a>归档了「<a class=\"nodeName\"></a>」维格表「<a class=\"recordTitle\"></a>」的记录",
+  "subscribed_record_unarchived": "<a class=\"memberName\"></a>取消归档了「<a class=\"nodeName\"></a>」维格表「<a class=\"recordTitle\"></a>」的记录",
   "field_title_button": "按钮",
   "field_help_button": "https://help.aitable.ai/docs/guide/manual-field-button",
   "button_text_click_start": "点击开始",

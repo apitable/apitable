@@ -39,14 +39,14 @@ import {
   t,
   ViewType,
 } from '@apitable/core';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { store } from 'pc/store';
-import { UploadManager } from 'pc/utils';
+import { UploadManager } from 'pc/utils/upload_manager';
 import { browser } from '../../../modules/shared/browser';
-import { ShortcutContext } from '../../../modules/shared/shortcut_key';
+import { ShortcutContext } from '../../../modules/shared/shortcut_key/shortcut_key';
 import { recogClipboardURLData } from './clip_data_url_recog';
 import { ISerializer, Serializer } from './serializer';
 

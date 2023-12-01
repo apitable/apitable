@@ -18,15 +18,23 @@
 
 import axios from 'axios';
 import { NextPageContext } from 'next';
+import dynamic from 'next/dynamic';
 import React from 'react';
 import { Api, IShareInfo } from '@apitable/core';
 import { getRegResult, shareIdReg } from 'pc/hooks';
 import { getBaseUrl } from '../../../utils/get_base_url';
-// @ts-ignore
-import { PublishPage } from 'enterprise/embed/ai';
+
+const PublishPage = dynamic(
+  () =>
+    // @ts-ignore
+    import('enterprise/embed/ai').then((components) => {
+      return components.PublishPage;
+    }),
+  { ssr: false },
+);
 
 const App = (props: { shareInfo: Required<IShareInfo> | undefined }) => {
-  /* @ts-ignore */
+  // @ts-ignore
   return <PublishPage {...props} />;
 };
 

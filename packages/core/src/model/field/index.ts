@@ -1,22 +1,3 @@
-/**
- * APITable <https://github.com/apitable/apitable>
- * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-import { ButtonField } from 'model/field/button_field';
 import { Store } from 'redux';
 import {
   FieldType,
@@ -51,7 +32,8 @@ import {
   IURLField,
   IWorkDocField,
 } from 'types/field_types';
-import { IReduxState } from '../../exports/store';
+import { Field } from './field';
+import { IReduxState } from '../../exports/store/interfaces';
 import { AttachmentField } from './attachment_field';
 import { AutoNumberField } from './auto_number_field';
 import { CascaderField } from './cascader_field';
@@ -61,7 +43,6 @@ import { CreatedTimeField } from './created_time_field';
 import { CurrencyField } from './currency_field';
 import { DateTimeField } from './date_time_field';
 import { EmailField } from './email_field';
-import { Field } from './field';
 import { FormulaField } from './formula_field';
 import { LastModifiedByField } from './last_modified_by_field';
 import { LastModifiedTimeField } from './last_modified_time_field';
@@ -79,8 +60,10 @@ import { TextField } from './text_field';
 import { URLField } from './url_field';
 import { DeniedField, NotSupportField } from './virtual_field';
 import { WorkDocField } from './workdoc_field';
+import { ButtonField } from 'model/field/button_field';
 
 export * from './field';
+export * from './array_field';
 export * from './stat';
 export * from './text_field';
 export * from './number_field';
@@ -104,8 +87,8 @@ export * from './created_by_field';
 export * from './last_modified_by_field';
 export * from './text_base_field';
 export * from './workdoc_field';
-export { numberThresholdValue } from './number_base_field';
-export { OtherTypeUnitId } from './member_base_field';
+export * from './utils';
+export { numberThresholdValue, OtherTypeUnitId } from './const';
 
 export interface IBindFieldModel {
   (field: ISingleSelectField, state?: IReduxState, newInstance?: boolean): SingleSelectField;
@@ -306,12 +289,42 @@ export const bindModel = (() => {
   };
 })();
 
-export const bindContext = (field: IField, state: IReduxState) => {
+function bindContext(field: ISingleSelectField, state: IReduxState): SingleSelectField;
+function bindContext(field: IMultiSelectField, state: IReduxState): MultiSelectField;
+function bindContext(field: INumberField, state: IReduxState): NumberField;
+function bindContext(field: ICurrencyField, state: IReduxState): CurrencyField;
+function bindContext(field: IPercentField, state: IReduxState): PercentField;
+function bindContext(field: ITextField, state: IReduxState): TextField;
+function bindContext(field: IDateTimeField, state: IReduxState): DateTimeField;
+function bindContext(field: IAttacheField, state: IReduxState): AttachmentField;
+function bindContext(field: ILinkField, state: IReduxState): LinkField;
+function bindContext(field: IURLField, state: IReduxState): URLField;
+function bindContext(field: IEmailField, state: IReduxState): EmailField;
+function bindContext(field: IRatingField, state: IReduxState): RatingField;
+function bindContext(field: ICheckboxField, state: IReduxState): CheckboxField;
+function bindContext(field: IPhoneField, state: IReduxState): PhoneField;
+function bindContext(field: IFormulaField, state: IReduxState): FormulaField;
+function bindContext(field: ILookUpField, state: IReduxState): LookUpField;
+function bindContext(field: IMemberField, state: IReduxState): MemberField;
+function bindContext(field: ISingleTextField, state: IReduxState): SingleTextField;
+function bindContext(field: IAutoNumberField, state: IReduxState): AutoNumberField;
+function bindContext(field: ICreatedTimeField, state: IReduxState): CreatedTimeField;
+function bindContext(field: ILastModifiedTimeField, state: IReduxState): LastModifiedTimeField;
+function bindContext(field: ICreatedByField, state: IReduxState): CreatedByField;
+function bindContext(field: ILastModifiedByField, state: IReduxState): LastModifiedByField;
+function bindContext(field: ICascaderField, state: IReduxState): CascaderField;
+function bindContext(field: IButtonField, state: IReduxState): ButtonField;
+function bindContext(field: IWorkDocField, state: IReduxState): WorkDocField;
+function bindContext(field: IDeniedField, state: IReduxState): DeniedField;
+function bindContext(field: INotSupportField, state: IReduxState): NotSupportField;
+function bindContext(field: IField, state: IReduxState): Field {
   const FieldClass = getFieldClass(field.type);
+  // @ts-ignore
   return new FieldClass(field as any, state);
-};
+}
 
 Field.bindModel = bindModel as IBindFieldModel;
-// The difference between bindContext and bindModel is that 
+// The difference between bindContext and bindModel is that
 // bindContext creates a new Field object every time, and it is mandatory to pass in the store.
 Field.bindContext = bindContext as IBindFieldContext;
+

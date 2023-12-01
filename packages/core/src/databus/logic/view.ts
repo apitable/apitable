@@ -17,9 +17,15 @@
  */
 
 import { CollaCommandName, IModifySelfView, IMoveSelfView } from 'commands';
-import { IFieldMap, IRecordCellValue, IReduxState, IViewColumn, IViewLockInfo, IViewProperty, IViewRow, Selectors, ViewType } from 'exports/store';
+import { IFieldMap, IRecordCellValue, IReduxState, IViewColumn, IViewLockInfo, IViewProperty, IViewRow } from 'exports/store/interfaces';
+import { ViewType } from 'modules/shared/store/constants';
+import {
+  getSnapshot,
+} from 'modules/database/store/selectors/resource/datasheet/base';
+import { getViewIndex } from 'modules/database/store/selectors/resource/datasheet/calc';
 import { keyBy } from 'lodash';
-import { getViewClass, ICellValue } from 'model';
+import { ICellValue } from 'model/record';
+import { getViewClass } from 'model/views';
 import { Store } from 'redux';
 import type { Datasheet, ICommandExecutionResult, ISaveOptions } from './datasheet';
 import { Field } from './field';
@@ -68,7 +74,7 @@ export class View {
    * @return index of view
    */
   public get index(): number {
-    return Selectors.getViewIndex(this.datasheet.snapshot, this.id);
+    return getViewIndex(this.datasheet.snapshot, this.id);
   }
 
   /**
@@ -93,7 +99,7 @@ export class View {
    */
   public getRecords(options: IRecordsOptions): Promise<Record[]> {
     const { store, fieldMap } = this;
-    const snapshot = Selectors.getSnapshot(store.getState());
+    const snapshot = getSnapshot(store.getState());
     if (!snapshot) {
       return Promise.resolve([]);
     }

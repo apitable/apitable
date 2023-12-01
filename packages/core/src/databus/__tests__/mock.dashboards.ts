@@ -2,11 +2,14 @@ import {
   IDashboardWidgetMap,
   IPermissions,
   IServerDashboardPack,
-  Role,
+
+} from 'exports/store/interfaces';
+import { Role } from 'config/constant';
+import {
   WidgetPackageStatus,
   WidgetPackageType,
   WidgetReleaseType
-} from 'exports/store';
+} from 'modules/database/store/interfaces/resource/widget';
 
 export const mockWidgetMap: IDashboardWidgetMap = {
   wdt1: {

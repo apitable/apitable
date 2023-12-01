@@ -5842,7 +5842,6 @@
   "automation_editor_label": "Can edit steps in automation and viewing the run history of the automation",
   "automation_updater_label": "Can view the run history of the automation",
   "automation_reader_label": "Can view the run history of the automation",
-  "delete_archive_record_success": "Successfully deleted archived record",
   "automation_run_failure": "Over limit",
   "automation_run_failure_tip": "The current usage of automation run has been used up",
   "billing_over_limit_tip_common": "The usage of the space has exceeded the limit, and you can enjoy a higher amount after upgrading.",
@@ -5895,5 +5894,8 @@
   "automation_not_empty": "Automation node can not be empty",
   "action_should_not_empty": "Operation can not be empty",
   "automation_content_should_not_empty": "Text can not be empty",
-  "refresh_and_close_page_when_automation_queue": "There are still automated tasks being queued for execution, and continuing to operate will cause some tasks to be canceled"
+  "refresh_and_close_page_when_automation_queue": "There are still automated tasks being queued for execution, and continuing to operate will cause some tasks to be canceled",
+  "delete_archive_record_success": "Successfully deleted archived record",
+  "subscribed_record_archived":"<a class=\"memberName\"></a> archived <a class=\"recordTitle\"></a> in <a class=\"nodeName\"></a>",
+  "subscribed_record_unarchived": "<a class=\"memberName\"></a> unarchived <a class=\"recordTitle\"></a> in <a class=\"nodeName\"></a>"
 }

@@ -1,9 +1,9 @@
-import { IReduxState } from 'exports/store';
+import { IReduxState } from 'exports/store/interfaces';
 import { IOpenFilterInfo } from 'types/open';
 
 const singleTextFieldId = 'fldatcBb73HmF';
 const dateFieldId = 'fldx3xuCoKZWp';
-export const openFilterInfoMock: IOpenFilterInfo = { 
+export const openFilterInfoMock: IOpenFilterInfo = {
   or: [
     {
       fieldKey: singleTextFieldId, // field name or ID

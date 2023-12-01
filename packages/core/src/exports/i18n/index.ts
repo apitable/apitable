@@ -20,12 +20,12 @@
  * read strings.auto.json,  go translation
  */
 import { I18N } from '@apitable/i18n';
-import type { StringKeysMapType, StringKeysType } from 'config/stringkeys.interface';
+import type { StringKeysMapType, StringKeysType } from '../../config/stringkeys.interface';
 
-export * from 'config/stringkeys.interface';
+export * from '../../config/stringkeys.interface';
 
 export const Strings = new Proxy({} as Record<keyof StringKeysMapType, string>, {
-  get: function(_target, key: string) {
+  get: function (_target, key: string) {
     return key;
   },
 }) as StringKeysType;

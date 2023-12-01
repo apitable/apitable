@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DEFAULT_PERMISSION } from '../../../../../exports/store';
+import { DEFAULT_PERMISSION } from 'modules/shared/store/constants';
 import { IDashboard, IDashboardPack, IReduxState } from '../../../../../exports/store/interfaces';
 
 export const getDashboardPack = (state: IReduxState, id?: string): null | undefined | IDashboardPack => {

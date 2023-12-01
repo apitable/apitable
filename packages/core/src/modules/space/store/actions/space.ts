@@ -19,7 +19,7 @@
 import { Api } from 'exports/api';
 import axios from 'axios';
 import { getCustomConfig } from 'config';
-import { ActionConstants } from 'exports/store';
+import * as ActionConstants from 'modules/shared/store/action_constants';
 import { IApp, IEnvs, IReduxState, ISpaceBasicInfo, ISpaceErr, ISpaceFeatures, ISpaceInfo } from 'exports/store/interfaces';
 import { initCatalogTree } from './catalog_tree';
 import { getUserMe } from '../../../user/store/actions/user';

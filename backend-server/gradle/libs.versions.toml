@@ -45,7 +45,7 @@ iogrpc = "1.49.0"
 # plugin version
 spring-dependency-management-plugin = "1.0.15.RELEASE"
 protobuf-plugin = "0.9.4"
-checkstyle = "8.45.1"
+checkstyle = "10.12.5"
 
 [libraries]
 # spring dependencies

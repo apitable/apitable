@@ -22,15 +22,18 @@ import { useDispatch } from 'react-redux';
 import { Typography, useThemeColors } from '@apitable/components';
 import { Api, ConfigConstant, IShareSettings, Selectors, StoreActions, Strings, t, IMemberInfoInAddressList } from '@apitable/core';
 import { SettingOutlined, InfoCircleOutlined } from '@apitable/icons';
-import { Avatar, Loading, Tag, IAvatarProps } from 'pc/components/common';
-import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
+import { Avatar } from 'pc/components/common/avatar';
+import { IAvatarProps } from 'pc/components/common/avatar/avatar';
+import { Loading } from 'pc/components/common/loading';
+import { Tag } from 'pc/components/common/tag';
+import { useCatalogTreeRequest } from 'pc/hooks/use_catalogtree_request';
+import { useRequest } from 'pc/hooks/use_request';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { TagColors } from '../tag';
-import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export interface IUserCard {
   memberId?: string;

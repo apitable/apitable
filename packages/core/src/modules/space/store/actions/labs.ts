@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ActionConstants } from '../../../../exports/store';
+import * as ActionConstants from 'modules/shared/store/action_constants';
 import { ILabs } from '../../../../exports/store/interfaces';
 
 /**

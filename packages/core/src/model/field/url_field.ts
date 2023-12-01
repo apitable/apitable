@@ -18,22 +18,21 @@
 
 import Joi from 'joi';
 import { first } from 'lodash';
-import { IReduxState } from 'exports/store';
+import { IReduxState } from 'exports/store/interfaces';
 import { FieldType, IField, IHyperlinkSegment, ISegment, IURLField } from 'types/field_types';
 
 import { DatasheetActions } from '../../commands_actions/datasheet';
 import { ICellValue } from '../record';
 import { TextBaseField } from './text_base_field';
-
+import { getFieldDefaultProperty } from './const';
+import { IURLProperty } from 'types/field_types';
 export class URLField extends TextBaseField {
   constructor(public override field: IURLField, public override state: IReduxState) {
     super(field, state);
   }
 
   static defaultProperty() {
-    return {
-      isRecogURLFlag: false,
-    };
+    return getFieldDefaultProperty(FieldType.URL) as IURLProperty;
   }
 
   static override cellValueSchema = Joi.array().items(Joi.object({

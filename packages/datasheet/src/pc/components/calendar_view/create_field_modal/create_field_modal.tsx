@@ -36,14 +36,13 @@ import {
 import { AddOutlined } from '@apitable/icons';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
-import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view';
+import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view/id';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import OrgChartCreationNoPermission from 'static/icon/account/org_chart_creation_no_permission.png';
 import GanttCreationDateDark from 'static/icon/account/view_add_date_dark.png';
 import GanttCreationDateLight from 'static/icon/account/view_add_date_light.png';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const CreateFieldModal = memo(() => {
   const { viewId, columnCount, exitFieldNames, permissions } = useAppSelector((state) => {

@@ -18,13 +18,19 @@
 
 import { isEmpty } from 'lodash';
 import { IJOTAction, jot } from 'engine/ot';
-import { DatasheetActions } from 'model';
-import { Selectors, DropDirectionType } from '../../exports/store';
+import { DatasheetActions } from 'commands_actions/datasheet';
+import { DropDirectionType } from 'modules/shared/store/constants';
+import {
+  getActiveDatasheetId,
+  getSnapshot,
+} from 'modules/database/store/selectors/resource/datasheet/base';
+import { getRowsIndexMap } from 'modules/database/store/selectors/resource/datasheet/rows_calc';
+
 import { ISetRecordOptions, setRecords } from './set_records';
 import { t, Strings } from '../../exports/i18n';
 import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef, ILinkedActions } from 'command_manager';
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 import { Events, Player } from '../../modules/shared/player';
 
 export interface IMoveRow {
@@ -46,9 +52,9 @@ export const moveRow: ICollaCommandDef<IMoveRowOptions> = {
   execute: (context, options) => {
     const { state: state } = context;
     const { data, recordData, viewId } = options;
-    const datasheetId = Selectors.getActiveDatasheetId(state)!;
-    const snapshot = Selectors.getSnapshot(state, datasheetId);
-    const recordMap = Selectors.getRowsIndexMap(state, datasheetId)!;
+    const datasheetId = getActiveDatasheetId(state)!;
+    const snapshot = getSnapshot(state, datasheetId);
+    const recordMap = getRowsIndexMap(state, datasheetId)!;
 
     if (!snapshot) {
       return null;
@@ -84,7 +90,7 @@ export const moveRow: ICollaCommandDef<IMoveRowOptions> = {
         });
         return collected;
       }
-      
+
       let targetIndex = originRowIndex > targetRowIndex ? targetRowIndex + 1 : targetRowIndex;
       if (direction === DropDirectionType.BEFORE) {
         targetIndex--;

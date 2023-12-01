@@ -19,11 +19,11 @@
 import Trigger, { TriggerProps } from 'rc-trigger';
 import { FC, isValidElement, useRef, useEffect, useState } from 'react';
 import { IReduxState } from '@apitable/core';
-import { IAvatarProps } from 'pc/components/common';
-import styles from './style.module.less';
+import { IAvatarProps } from 'pc/components/common/avatar/avatar';
+import { useAppSelector } from 'pc/store/react-redux';
 import { UserCard, IUserCard } from './user_card';
+import styles from './style.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
 interface IUserCardTrigger extends IUserCard, Partial<TriggerProps> {
   scrollTarget?: string;
   isDeleted?: boolean;

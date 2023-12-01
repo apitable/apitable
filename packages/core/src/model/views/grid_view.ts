@@ -19,7 +19,7 @@
 import { Strings, t } from '../../exports/i18n';
 import { ViewType } from '../../modules/shared/store/constants';
 import { IGridViewProperty, ISnapshot, IViewColumn, IViewProperty } from '../../exports/store/interfaces';
-import { getViewById } from '../../exports/store/selectors';
+import { getViewById } from 'modules/database/store/selectors/resource/datasheet/base';
 import { DatasheetActions } from '../../commands_actions/datasheet';
 import { View } from './views';
 import { Settings } from 'config';

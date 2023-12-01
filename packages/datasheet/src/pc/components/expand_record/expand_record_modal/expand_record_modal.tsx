@@ -23,11 +23,10 @@ import React, { FC, useRef } from 'react';
 import { DATASHEET_ID, RecordVision, Selectors } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { endEditCell } from 'pc/components/editors/end_edit_cell';
-import { useResponsive } from 'pc/hooks';
+import { useResponsive } from 'pc/hooks/use_responsive';
+import { useAppSelector } from 'pc/store/react-redux';
 import { Portal } from './portal';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const Z_INDEX = 999;
 

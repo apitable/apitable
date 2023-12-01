@@ -23,13 +23,17 @@ import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import { TextInput, Button } from '@apitable/components';
 import { t, Strings, IReduxState, StoreActions, ConfigConstant, StatusCode, Api } from '@apitable/core';
-import { Message, PasswordInput, IdentifyingCodeInput, WithTipWrapper } from 'pc/components/common';
-import { useRequest, useSetState, useUserRequest } from 'pc/hooks';
+import { IdentifyingCodeInput } from 'pc/components/common/input/identifying_code_input/identifying_code_input';
+import { PasswordInput } from 'pc/components/common/input/password_input/password_input';
+import { WithTipWrapper } from 'pc/components/common/input/with_tip_wrapper/with_tip_wrapper';
+import { Message } from 'pc/components/common/message/message';
+import { useRequest } from 'pc/hooks/use_request';
+import { useSetState } from 'pc/hooks/use_set_state';
+import { useUserRequest } from 'pc/hooks/use_user_request';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { getVerifyData, VerifyTypes, IChangePasswordConfig } from '../utils';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IModifyPasswordProps {
   setActiveItem: React.Dispatch<React.SetStateAction<number>>;

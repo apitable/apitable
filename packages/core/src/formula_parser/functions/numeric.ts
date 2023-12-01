@@ -280,7 +280,7 @@ export class Max extends NumericFunc {
       return v == null ? null : Number(v);
     }
 
-    // If the return value is DateTime, the node of DateTime type should be filtered out, 
+    // If the return value is DateTime, the node of DateTime type should be filtered out,
     // otherwise the timestamp will be introduced to disturb the calculation result
     if (this.getReturnType(params.map(p => p.node)) !== BasicValueType.DateTime) {
       params = params.filter(p => p.node.valueType !== BasicValueType.DateTime);

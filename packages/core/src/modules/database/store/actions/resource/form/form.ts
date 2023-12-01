@@ -22,7 +22,7 @@ import { AxiosResponse } from 'axios';
 import { ConfigConstant, StatusCode } from 'config';
 import { Dispatch } from 'redux';
 import { batchActions } from 'redux-batched-actions';
-import { getFormLoading } from 'exports/store/selectors';
+import { getFormLoading } from 'modules/database/store/selectors/resource/form';
 import { receiveDataPack } from 'modules/database/store/actions/resource/datasheet';
 import * as actions from 'modules/shared/store/action_constants';
 import { deleteNode } from 'modules/space/store/actions/catalog_tree';
@@ -64,7 +64,7 @@ export function fetchForm(formId: string, successFn?: (props?: any) => void) {
     if (templateId) {
       requestMethod = () => fetchTemplateFormPack(templateId, formId);
     }
-    
+
     if(embedId) {
       requestMethod = () => fetchEmbedDatasheetPack(embedId, formId);
     }

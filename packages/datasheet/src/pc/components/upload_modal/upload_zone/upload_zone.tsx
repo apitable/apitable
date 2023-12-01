@@ -96,8 +96,11 @@ export const UploadZoneBase: React.ForwardRefRenderFunction<ICommonTabRef, IUplo
     setDragOver(false);
   }, [isFileDialogActive]);
 
-  const isMiniProgram = browser?.is('wechat');
-  const shouldAllowMultiple = !isMiniProgram;
+  const isWechat = browser?.is('wechat');
+  const isAndroid = browser?.is('android');
+  const isIOS = browser?.is('ios');
+
+  const isMiniProgram = isWechat || isAndroid || isIOS;
 
   const renderUploadText = () => {
     if (isMobile) {
@@ -121,7 +124,7 @@ export const UploadZoneBase: React.ForwardRefRenderFunction<ICommonTabRef, IUplo
       }}
       defaultValue=""
     >
-      <input {...getInputProps()} defaultValue="" multiple={shouldAllowMultiple} />
+      <input {...getInputProps()} defaultValue="" multiple />
       {!layoutOpacity && (
         <>
           <span onMouseDown={stopPropagation} style={{ display: 'flex', alignItems: 'center' }} ref={uploadRef}>

@@ -6,11 +6,10 @@ import { IReduxState, Selectors, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined } from '@apitable/icons';
 import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { ISearchChangeProps, SearchPanel } from 'pc/components/datasheet_search_panel';
+import { useAppSelector } from 'pc/store/react-redux';
 import settingStyles from '../../../field_setting/styles.module.less';
 import { IFormatCascaderProps } from '../format_cascader_select';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const CascaderDatasourceDatasheetSelect = ({ currentField, setCurrentField }: IFormatCascaderProps): JSX.Element => {
   const propLinkedDatasheetId = currentField.property.linkedDatasheetId || undefined;

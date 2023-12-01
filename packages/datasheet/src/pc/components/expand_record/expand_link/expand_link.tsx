@@ -35,12 +35,11 @@ import { expandRecordInCenter } from 'pc/components/expand_record/expand_record.
 import { expandPreviewModalClose } from 'pc/components/preview_file';
 import { useDispatch, useGetViewByIdWithDefault, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { DEFAULT_LINK_RECORD_COUNT, KeyCode, stopPropagation } from 'pc/utils';
 import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
 import { IExpandFieldEditRef } from '../field_editor';
 import style from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IExpandLinkProps extends IBaseEditorProps {
   field: ILinkField;

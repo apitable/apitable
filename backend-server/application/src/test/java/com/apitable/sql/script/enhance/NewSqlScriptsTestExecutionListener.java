@@ -18,16 +18,14 @@
 
 package com.apitable.sql.script.enhance;
 
+import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
-
 import javax.sql.DataSource;
-
-import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.io.ByteArrayResource;
@@ -80,7 +78,7 @@ public class NewSqlScriptsTestExecutionListener extends AbstractTestExecutionLis
      * {@link TestContext} <em>before</em> the current test method.
      */
     @Override
-    public void beforeTestMethod(TestContext testContext) {
+    public void beforeTestMethod(@NotNull TestContext testContext) {
         executeSqlScripts(testContext, ExecutionPhase.BEFORE_TEST_METHOD);
     }
 
@@ -89,7 +87,7 @@ public class NewSqlScriptsTestExecutionListener extends AbstractTestExecutionLis
      * {@link TestContext} <em>after</em> the current test method.
      */
     @Override
-    public void afterTestMethod(TestContext testContext) {
+    public void afterTestMethod(@NotNull TestContext testContext) {
         executeSqlScripts(testContext, ExecutionPhase.AFTER_TEST_METHOD);
     }
 
@@ -104,14 +102,13 @@ public class NewSqlScriptsTestExecutionListener extends AbstractTestExecutionLis
         if (mergeSqlAnnotations(testContext)) {
             executeSqlScripts(getSqlAnnotationsFor(testClass), testContext, executionPhase, true);
             executeSqlScripts(getSqlAnnotationsFor(testMethod), testContext, executionPhase, false);
-        }
-        else {
+        } else {
             Set<Sql> methodLevelSqlAnnotations = getSqlAnnotationsFor(testMethod);
             if (!methodLevelSqlAnnotations.isEmpty()) {
                 executeSqlScripts(methodLevelSqlAnnotations, testContext, executionPhase, false);
-            }
-            else {
-                executeSqlScripts(getSqlAnnotationsFor(testClass), testContext, executionPhase, true);
+            } else {
+                executeSqlScripts(getSqlAnnotationsFor(testClass), testContext, executionPhase,
+                    true);
             }
         }
     }
@@ -155,16 +152,19 @@ public class NewSqlScriptsTestExecutionListener extends AbstractTestExecutionLis
      * Get the {@code @Sql} annotations declared on the supplied method.
      */
     private Set<Sql> getSqlAnnotationsFor(Method method) {
-        return AnnotatedElementUtils.getMergedRepeatableAnnotations(method, Sql.class, SqlGroup.class);
+        return AnnotatedElementUtils.getMergedRepeatableAnnotations(method, Sql.class,
+            SqlGroup.class);
     }
 
     /**
      * Execute SQL scripts for the supplied {@link Sql @Sql} annotations.
      */
     private void executeSqlScripts(
-            Set<Sql> sqlAnnotations, TestContext testContext, ExecutionPhase executionPhase, boolean classLevel) {
+        Set<Sql> sqlAnnotations, TestContext testContext, ExecutionPhase executionPhase,
+        boolean classLevel) {
 
-        sqlAnnotations.forEach(sql -> executeSqlScripts(sql, executionPhase, testContext, classLevel));
+        sqlAnnotations.forEach(
+            sql -> executeSqlScripts(sql, executionPhase, testContext, classLevel));
     }
 
     /**
@@ -172,32 +172,38 @@ public class NewSqlScriptsTestExecutionListener extends AbstractTestExecutionLis
      * annotation for the given {@link ExecutionPhase} and {@link TestContext}.
      * <p>Special care must be taken in order to properly support the configured
      * {@link SqlConfig#transactionMode}.
-     * @param sql the {@code @Sql} annotation to parse
+     *
+     * @param sql            the {@code @Sql} annotation to parse
      * @param executionPhase the current execution phase
-     * @param testContext the current {@code TestContext}
-     * @param classLevel {@code true} if {@link Sql @Sql} was declared at the class level
+     * @param testContext    the current {@code TestContext}
+     * @param classLevel     {@code true} if {@link Sql @Sql} was declared at the class level
      */
     private void executeSqlScripts(
-            Sql sql, ExecutionPhase executionPhase, TestContext testContext, boolean classLevel) {
+        Sql sql, ExecutionPhase executionPhase, TestContext testContext, boolean classLevel) {
 
         if (executionPhase != sql.executionPhase()) {
             return;
         }
 
-        MergedSqlConfig mergedSqlConfig = new MergedSqlConfig(sql.config(), testContext.getTestClass());
+        MergedSqlConfig mergedSqlConfig =
+            new MergedSqlConfig(sql.config(), testContext.getTestClass());
         if (logger.isDebugEnabled()) {
-            logger.debug(String.format("Processing %s for execution phase [%s] and test context %s.",
+            logger.debug(
+                String.format("Processing %s for execution phase [%s] and test context %s.",
                     mergedSqlConfig, executionPhase, testContext));
         }
 
         String[] scripts = getScripts(sql, testContext, classLevel);
-        scripts = TestContextResourceUtils.convertToClasspathResourcePaths(testContext.getTestClass(), scripts);
+        scripts =
+            TestContextResourceUtils.convertToClasspathResourcePaths(testContext.getTestClass(),
+                scripts);
         List<Resource> scriptResources = TestContextResourceUtils.convertToResourceList(
-                testContext.getApplicationContext(), scripts);
+            testContext.getApplicationContext(), scripts);
         for (String stmt : sql.statements()) {
             if (StringUtils.hasText(stmt)) {
                 stmt = stmt.trim();
-                scriptResources.add(new ByteArrayResource(stmt.getBytes(), "from inlined SQL statement: " + stmt));
+                scriptResources.add(
+                    new ByteArrayResource(stmt.getBytes(), "from inlined SQL statement: " + stmt));
             }
         }
 
@@ -210,78 +216,92 @@ public class NewSqlScriptsTestExecutionListener extends AbstractTestExecutionLis
         String dsName = mergedSqlConfig.getDataSource();
         String tmName = mergedSqlConfig.getTransactionManager();
         DataSource dataSource = TestContextTransactionUtils.retrieveDataSource(testContext, dsName);
-        PlatformTransactionManager txMgr = TestContextTransactionUtils.retrieveTransactionManager(testContext, tmName);
+        PlatformTransactionManager txMgr =
+            TestContextTransactionUtils.retrieveTransactionManager(testContext, tmName);
         boolean newTxRequired = (mergedSqlConfig.getTransactionMode() == TransactionMode.ISOLATED);
 
         if (txMgr == null) {
-            Assert.state(!newTxRequired, () -> String.format("Failed to execute SQL scripts for test context %s: " +
-                    "cannot execute SQL scripts using Transaction Mode " +
-                    "[%s] without a PlatformTransactionManager.", testContext, TransactionMode.ISOLATED));
-            Assert.state(dataSource != null, () -> String.format("Failed to execute SQL scripts for test context %s: " +
+            Assert.state(!newTxRequired,
+                () -> String.format("Failed to execute SQL scripts for test context %s: " +
+                        "cannot execute SQL scripts using Transaction Mode " +
+                        "[%s] without a PlatformTransactionManager.", testContext,
+                    TransactionMode.ISOLATED));
+            Assert.state(dataSource != null,
+                () -> String.format("Failed to execute SQL scripts for test context %s: " +
                     "supply at least a DataSource or PlatformTransactionManager.", testContext));
             // Execute scripts directly against the DataSource
             populator.execute(dataSource);
-        }
-        else {
+        } else {
             DataSource dataSourceFromTxMgr = getDataSourceFromTransactionManager(txMgr);
             // Ensure user configured an appropriate DataSource/TransactionManager pair.
-            if (dataSource != null && dataSourceFromTxMgr != null && !sameDataSource(dataSource, dataSourceFromTxMgr)) {
-                throw new IllegalStateException(String.format("Failed to execute SQL scripts for test context %s: " +
-                                "the configured DataSource [%s] (named '%s') is not the one associated with " +
-                                "transaction manager [%s] (named '%s').", testContext, dataSource.getClass().getName(),
+            if (dataSource != null && dataSourceFromTxMgr != null &&
+                !sameDataSource(dataSource, dataSourceFromTxMgr)) {
+                throw new IllegalStateException(
+                    String.format("Failed to execute SQL scripts for test context %s: " +
+                            "the configured DataSource [%s] (named '%s') is not the one associated with " +
+                            "transaction manager [%s] (named '%s').", testContext,
+                        dataSource.getClass().getName(),
                         dsName, txMgr.getClass().getName(), tmName));
             }
             if (dataSource == null) {
                 dataSource = dataSourceFromTxMgr;
-                Assert.state(dataSource != null, () -> String.format("Failed to execute SQL scripts for " +
-                                "test context %s: could not obtain DataSource from transaction manager [%s] (named '%s').",
+                Assert.state(dataSource != null,
+                    () -> String.format("Failed to execute SQL scripts for " +
+                            "test context %s: could not obtain DataSource from transaction manager [%s] (named '%s').",
                         testContext, txMgr.getClass().getName(), tmName));
             }
             final DataSource finalDataSource = dataSource;
             int propagation = (newTxRequired ? TransactionDefinition.PROPAGATION_REQUIRES_NEW :
-                    TransactionDefinition.PROPAGATION_REQUIRED);
-            TransactionAttribute txAttr = TestContextTransactionUtils.createDelegatingTransactionAttribute(
+                TransactionDefinition.PROPAGATION_REQUIRED);
+            TransactionAttribute txAttr =
+                TestContextTransactionUtils.createDelegatingTransactionAttribute(
                     testContext, new DefaultTransactionAttribute(propagation));
-            new TransactionTemplate(txMgr, txAttr).executeWithoutResult(s -> populator.execute(finalDataSource));
+            new TransactionTemplate(txMgr, txAttr).executeWithoutResult(
+                s -> populator.execute(finalDataSource));
         }
     }
 
     @NonNull
-    private ResourceDatabasePopulator createDatabasePopulator(MergedSqlConfig mergedSqlConfig, TestContext testContext) {
+    private ResourceDatabasePopulator createDatabasePopulator(MergedSqlConfig mergedSqlConfig,
+                                                              TestContext testContext) {
         ApplicationContext applicationContext = testContext.getApplicationContext();
-        MybatisPlusProperties mybatisPlusProperties = applicationContext.getBean(MybatisPlusProperties.class);
-        ResourceDatabasePopulator populator = new ResourceDatabasePopulatorEnhance(mybatisPlusProperties.getGlobalConfig().getDbConfig().getTablePrefix());
+        MybatisPlusProperties mybatisPlusProperties =
+            applicationContext.getBean(MybatisPlusProperties.class);
+        ResourceDatabasePopulator populator = new ResourceDatabasePopulatorEnhance(
+            mybatisPlusProperties.getGlobalConfig().getDbConfig().getTablePrefix());
         populator.setSqlScriptEncoding(mergedSqlConfig.getEncoding());
         populator.setSeparator(mergedSqlConfig.getSeparator());
         populator.setCommentPrefixes(mergedSqlConfig.getCommentPrefixes());
         populator.setBlockCommentStartDelimiter(mergedSqlConfig.getBlockCommentStartDelimiter());
         populator.setBlockCommentEndDelimiter(mergedSqlConfig.getBlockCommentEndDelimiter());
         populator.setContinueOnError(mergedSqlConfig.getErrorMode() == ErrorMode.CONTINUE_ON_ERROR);
-        populator.setIgnoreFailedDrops(mergedSqlConfig.getErrorMode() == ErrorMode.IGNORE_FAILED_DROPS);
+        populator.setIgnoreFailedDrops(
+            mergedSqlConfig.getErrorMode() == ErrorMode.IGNORE_FAILED_DROPS);
         return populator;
     }
 
     /**
      * Determine if the two data sources are effectively the same, unwrapping
      * proxies as necessary to compare the target instances.
-     * @since 5.3.4
+     *
      * @see TransactionSynchronizationUtils#unwrapResourceIfNecessary(Object)
+     * @since 5.3.4
      */
     private static boolean sameDataSource(DataSource ds1, DataSource ds2) {
         return TransactionSynchronizationUtils.unwrapResourceIfNecessary(ds1)
-                .equals(TransactionSynchronizationUtils.unwrapResourceIfNecessary(ds2));
+            .equals(TransactionSynchronizationUtils.unwrapResourceIfNecessary(ds2));
     }
 
     @Nullable
-    private DataSource getDataSourceFromTransactionManager(PlatformTransactionManager transactionManager) {
+    private DataSource getDataSourceFromTransactionManager(
+        PlatformTransactionManager transactionManager) {
         try {
             Method getDataSourceMethod = transactionManager.getClass().getMethod("getDataSource");
             Object obj = ReflectionUtils.invokeMethod(getDataSourceMethod, transactionManager);
             if (obj instanceof DataSource) {
                 return (DataSource) obj;
             }
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             // ignore
         }
         return null;
@@ -290,7 +310,7 @@ public class NewSqlScriptsTestExecutionListener extends AbstractTestExecutionLis
     private String[] getScripts(Sql sql, TestContext testContext, boolean classLevel) {
         String[] scripts = sql.scripts();
         if (ObjectUtils.isEmpty(scripts) && ObjectUtils.isEmpty(sql.statements())) {
-            scripts = new String[] { detectDefaultScript(testContext, classLevel) };
+            scripts = new String[] {detectDefaultScript(testContext, classLevel)};
         }
         return scripts;
     }
@@ -317,14 +337,13 @@ public class NewSqlScriptsTestExecutionListener extends AbstractTestExecutionLis
         if (classPathResource.exists()) {
             if (logger.isInfoEnabled()) {
                 logger.info(String.format("Detected default SQL script \"%s\" for test %s [%s]",
-                        prefixedResourcePath, elementType, elementName));
+                    prefixedResourcePath, elementType, elementName));
             }
             return prefixedResourcePath;
-        }
-        else {
+        } else {
             String msg = String.format("Could not detect default SQL script for test %s [%s]: " +
-                    "%s does not exist. Either declare statements or scripts via @Sql or make the " +
-                    "default SQL script available.", elementType, elementName, classPathResource);
+                "%s does not exist. Either declare statements or scripts via @Sql or make the " +
+                "default SQL script available.", elementType, elementName, classPathResource);
             logger.error(msg);
             throw new IllegalStateException(msg);
         }

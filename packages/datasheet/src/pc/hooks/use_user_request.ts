@@ -29,12 +29,11 @@ import { useDispatch } from 'pc/hooks/use_dispatch';
 import { secondStepVerify } from 'pc/hooks/utils';
 import { NotificationStore } from 'pc/notification_store';
 import { store } from 'pc/store';
-import { getSearchParams } from 'pc/utils';
+import { useAppSelector } from 'pc/store/react-redux';
 import { isLocalSite } from 'pc/utils/catalog';
+import { getSearchParams } from 'pc/utils/dom';
 import { getEnvVariables } from 'pc/utils/env';
 import { deleteStorageByKey, StorageName } from '../utils/storage';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 

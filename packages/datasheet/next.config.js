@@ -71,7 +71,7 @@ module.exports = withPlugins(plugins, {
       },
     ],
   },
-  // swcMinify: true,
+  swcMinify: true,
   poweredByHeader: false,
   publicRuntimeConfig: {
     // use local public folder for editions, e.g. apitable
@@ -89,4 +89,10 @@ module.exports = withPlugins(plugins, {
     // this includes files from the monorepo base two directories up
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
+  // eslint: {
+  //   ignoreDuringBuilds: true,
+  // },
+  // typescript: {
+  //   ignoreBuildErrors: true,
+  // }
 });

@@ -21,10 +21,9 @@ import { getImageThumbSrc, Strings, t } from '@apitable/core';
 import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
 import { Message } from 'pc/components/common';
 import { joinPath } from 'pc/components/route_manager/helper';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { UploadManager } from '../utils/upload_manager';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const useImageUpload = () => {
   const { folderId, datasheetId } = useAppSelector((state) => {

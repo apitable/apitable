@@ -19,12 +19,12 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Api, IInviteEmailInfo, IInviteLinkInfo, IInviteMemberList, IReduxState, Navigation, StatusCode, StoreActions } from '@apitable/core';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { IParams } from 'pc/components/route_manager/interface';
 import { Router } from 'pc/components/route_manager/router';
 import { secondStepVerify } from 'pc/hooks/utils';
 import { useAppSelector } from 'pc/store/react-redux';
-import { getSearchParams } from 'pc/utils';
+import { getSearchParams } from 'pc/utils/dom';
 import { execNoTraceVerification } from 'pc/utils/no_trace_verification';
 
 // @ts-ignore

@@ -27,12 +27,11 @@ import { DragOutlined, ExpandOutlined, MoreOutlined, NarrowOutlined } from '@api
 import { Tooltip } from 'pc/components/common';
 import { useCheckInput } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { closeWidgetRoute, expandWidgetRoute } from '../../expand_widget';
 import { WIDGET_MENU } from '../widget_list';
 import { IWidgetPropsBase } from './interface';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IWidgetHeaderProps extends IWidgetPropsBase {
   widgetId: string;

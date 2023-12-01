@@ -40,7 +40,6 @@ import { IRightPane } from '../../modules/database/store/interfaces/right_pane';
 import { IPreviewFile } from '../../modules/database/store/interfaces/preview_file';
 import { IEmbedInfo } from '../../modules/embed/store/interfaces/embed';
 
-export * from '../../modules/database/store/interfaces/resource';
 export * from '../../modules/space/store/interfaces/catalog_tree';
 export * from '../../modules/user/store/interfaces/user';
 export * from '../../modules/org/store/interface/address_list';

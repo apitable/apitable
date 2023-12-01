@@ -26,10 +26,9 @@ import { IEditor } from 'pc/components/editors/interface';
 import { NumberEditor } from 'pc/components/editors/number_editor';
 import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { IFilterNumberProps } from '../interface';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const FilterNumber: React.FC<React.PropsWithChildren<Omit<IFilterNumberProps, 'execute'>>> = (props) => {
   const { condition, onChange, field, disabled } = props;

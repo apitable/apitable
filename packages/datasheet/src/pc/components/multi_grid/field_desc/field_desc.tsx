@@ -25,11 +25,10 @@ import { createRoot } from 'react-dom/client';
 import { Provider, useDispatch } from 'react-redux';
 import { CollaCommandName, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { resourceService } from '../../../resource_service';
 import { useFieldOperate } from '../hooks';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const { TextArea } = Input;
 

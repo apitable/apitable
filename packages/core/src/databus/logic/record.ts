@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IComments, IFieldMap, IRecord, IReduxState, IViewColumn } from 'exports/store';
+import { IComments, IFieldMap, IRecord, IReduxState, IViewColumn } from 'exports/store/interfaces';
 import { Store } from 'redux';
 
 export class Record {
@@ -24,7 +24,7 @@ export class Record {
 
   /**
    * Create a `Record` instance from an `IRecord` object.
-   * 
+   *
    * @deprecated This constructor is not intended for public use.
    */
   constructor(private readonly record: IRecord, options: IRecordOptions) {

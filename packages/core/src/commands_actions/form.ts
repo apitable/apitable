@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IFormProps } from '../exports/store';
+import { IFormProps } from '../exports/store/interfaces';
 import { IJOTAction } from 'engine';
 import { OTActionName } from '../engine/ot';
 import { isEqual } from 'lodash';

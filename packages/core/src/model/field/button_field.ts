@@ -17,12 +17,12 @@
  */
 
 import { DatasheetActions } from 'commands_actions/datasheet';
-import { Strings, t } from 'exports/i18n';
-import { IReduxState } from 'exports/store';
 import Joi from 'joi';
-import { pick } from 'lodash';
-import { Field } from 'model/field/field';
+import { t, Strings } from 'exports/i18n';
+import { Field } from './field';
 import { ICellToStringOption, ICellValue } from 'model/record';
+import { IReduxState } from 'exports/store/interfaces';
+import { pick } from 'lodash';
 import {
   APIMetaButtonActionType,
   BasicOpenValueType,
@@ -32,15 +32,16 @@ import {
   CollectType,
   FieldType,
   FOperator,
-  IAPIMetaButtonFieldProperty,
   IButtonField,
-  IButtonProperty,
   IField,
+  IAPIMetaButtonFieldProperty,
+  IButtonProperty,
   IFilterCondition,
   IStandardValue,
   OpenLinkType,
 } from 'types';
-import { datasheetIdString, joiErrorResult } from './validate_schema';
+import { getFieldDefaultProperty } from './const';
+import { joiErrorResult, datasheetIdString } from './validate_schema';
 
 export const AutomationConstant = {
   DEFAULT_TEXT: t(Strings.click_start),
@@ -106,17 +107,8 @@ export class ButtonField extends Field {
     };
   }
 
-  static defaultProperty(): IButtonProperty {
-    return {
-      datasheetId: '',
-      text: t(Strings.button_text_click_start),
-      style: {
-        type: ButtonStyleType.Background,
-        color: 50,
-      },
-      action: {
-      },
-    };
+  static defaultProperty() {
+    return getFieldDefaultProperty(FieldType.Button) as IButtonProperty;
   }
 
   static createDefault(fieldMap: { [fieldId: string]: IField }): IButtonField {

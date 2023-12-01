@@ -23,10 +23,9 @@ import { Message } from 'pc/components/common';
 import { PublishControllers } from 'pc/components/notification/publish';
 import { Router } from 'pc/components/route_manager/router';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 // @ts-ignore
 import { triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const useNotificationRequest = () => {
   const dispatch = useDispatch();

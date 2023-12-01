@@ -43,16 +43,15 @@ import { Router } from 'pc/components/route_manager/router';
 import { useRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useTemplateRequest } from 'pc/hooks/use_template_request';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { imgUrl } from '../template_choice';
 import { TemplateItem } from '../template_item';
-import styles from './style.module.less';
 // @ts-ignore
 import { isDingtalkFunc, isWecomFunc } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const defaultBanner = integrateCdnHost(Settings.workbench_folder_default_cover_list.value.split(',')[0]);
 

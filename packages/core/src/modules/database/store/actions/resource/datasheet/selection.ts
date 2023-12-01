@@ -16,8 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ICell, IFieldRanges, IRange, IRecordRanges, Range } from 'model';
-import { IReduxState, Selectors } from 'exports/store';
+import { ICell, IFieldRanges, IRange, IRecordRanges } from 'model/view/range';
+import { Range } from 'model/view/range';
+import { IReduxState } from 'exports/store/interfaces';
+import { getDatasheetClient } from 'modules/database/store/selectors/resource/datasheet/base';
+import { getFillHandleStatus, getSelection } from 'modules/database/store/selectors/resource/datasheet/cell_range_calc';
 import {
   CLEAR_SELECTION,
   CLEAR_SELECTION_BUT_KEEP_CHECKED_RECORD,
@@ -26,6 +29,7 @@ import {
   SET_FILL_HANDLE_STATUS,
   SET_RECORD_SELECTION,
   SET_SELECTION,
+
 } from 'modules/shared/store/action_constants';
 import { IFillHandleStatus } from 'exports/store/interfaces';
 
@@ -37,7 +41,7 @@ import { IFillHandleStatus } from 'exports/store/interfaces';
 export const setSelection = (ranges: IRange | IRange[]): any => (dispatch: any, getState: () => IReduxState) => {
   const state = getState();
   const datasheetId = state.pageParams.datasheetId;
-  const selectionState = Selectors.getDatasheetClient(state)!.selection;
+  const selectionState = getDatasheetClient(state)!.selection;
   const payload = Array.isArray(ranges) ? ranges : [ranges];
   const range = payload[0]!;
 
@@ -146,8 +150,8 @@ type ISetFillHandleStatus = Omit<IFillHandleStatus, 'fillRange'> & { hoverCell?:
 export const setFillHandleStatus = (payload: ISetFillHandleStatus): any => (dispatch: any, getState: () => IReduxState) => {
   const state = getState();
   const datasheetId = state.pageParams.datasheetId;
-  const selection = Selectors.getSelection(state);
-  const fillHandleStatus = Selectors.getFillHandleStatus(state);
+  const selection = getSelection(state);
+  const fillHandleStatus = getFillHandleStatus(state);
   if (!selection) return;
   if (!selection.ranges) return;
   const selectionRange = selection.ranges[0];

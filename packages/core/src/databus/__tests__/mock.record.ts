@@ -17,7 +17,7 @@
  */
 
 import { IJOTAction, IOperation, OTActionName } from 'engine';
-import { IRecord, IRecordCellValue } from 'exports/store';
+import { IRecord, IRecordCellValue } from 'exports/store/interfaces';
 import { SegmentType } from 'types';
 
 export const mockRecordVoTransformer = (() => {

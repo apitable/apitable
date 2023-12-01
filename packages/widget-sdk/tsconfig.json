@@ -14,7 +14,7 @@
     "noUnusedParameters": true,
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
-    "module": "commonjs",
+    "module": "ESNext",
     "jsx": "react",
     "rootDir": "src",
     "outDir": "dist",

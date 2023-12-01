@@ -172,7 +172,7 @@ module.exports = (config, options) => {
   config.experiments = {
     ...config.experiments,
     asyncWebAssembly: true,
-    layers: true,
+    // layers: true,
   };
 
   if (isProd && options.isServer) {

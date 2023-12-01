@@ -31,13 +31,12 @@ import { CheckOutlined } from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Message } from 'pc/components/common/message/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { useResponsive } from 'pc/hooks';
+import { useResponsive } from 'pc/hooks/use_responsive';
+import { useAppSelector } from 'pc/store/react-redux';
 import { createAvatarRainbowColorsArr } from 'pc/utils/color_utils';
 import { Avatar, AvatarSize } from '../avatar';
 import { ICropShape, IImageUploadProps, IUploadType, IPreviewShape, TabKeys } from './interface';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const { TabPane } = Tabs;
 const horizontalGutter = { xs: 16, sm: 16, md: 24, lg: 24, xl: 24 };

@@ -22,7 +22,7 @@ import { find, isArray, isString, uniq, uniqBy } from 'lodash';
 import { getFieldOptionColor } from 'model/color';
 import { ICellValue } from 'model/record';
 import { handleEmptyCellValue, isNullValue } from 'model/utils';
-import { IReduxState } from '../../../exports/store';
+import { IReduxState } from '../../../exports/store/interfaces';
 import { BasicValueType, FieldType, IField, IMultiSelectField, ISelectFieldProperty, IStandardValue } from 'types/field_types';
 import { ISelectFieldBaseOpenValue } from 'types/field_types_open';
 import { IEffectOption, IWriteOpenSelectBaseFieldProperty } from 'types/open';
@@ -70,11 +70,11 @@ export class MultiSelectField extends SelectField {
   }).allow(null).required();
 
   validateCellValue(cv: ICellValue): Joi.ValidationResult {
-    return MultiSelectField.cellValueSchema.validate(cv, { context: { field: this.field }});
+    return MultiSelectField.cellValueSchema.validate(cv, { context: { field: this.field } });
   }
 
   validateOpenWriteValue(owv: string[] | ISelectFieldBaseOpenValue[] | null): Joi.ValidationResult {
-    return MultiSelectField.openWriteValueSchema.validate(owv, { context: { field: this.field }});
+    return MultiSelectField.openWriteValueSchema.validate(owv, { context: { field: this.field } });
   }
 
   override defaultValue(): string[] | null {

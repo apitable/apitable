@@ -25,8 +25,9 @@ import { getCustomConfig, IReduxState, isPrivateDeployment, Strings, t } from '@
 import { CloseOutlined, ListOutlined } from '@apitable/icons';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { useResponsive } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
+import { useResponsive } from 'pc/hooks/use_responsive';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { AccountManager } from './account_manager';
 import { BasicSetting } from './basic_setting';
@@ -34,13 +35,11 @@ import { DeveloperConfiguration } from './developer_configuration';
 import { ModifyPassword } from './modify_password';
 import { Nav } from './nav';
 import { PersonalizedSetting } from './personalized_setting';
-import styles from './style.module.less';
 // @ts-ignore
 import { AccountWallet } from 'enterprise/account_wallet/account_wallet';
 // @ts-ignore
 import { isSocialWecom } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export enum AccountCenterModules {
   BasicSetting = 'BasicSetting',

@@ -7,6 +7,7 @@ import { SearchResult } from 'pc/components/data_source_selector/components/sear
 import { useNodeClick } from 'pc/components/data_source_selector/hooks/use_node_click';
 import { useSearch } from 'pc/components/data_source_selector/hooks/use_search';
 import { ISearchPanelProps } from 'pc/components/data_source_selector/interface';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ButtonPlus, Loading, Tooltip } from '../common';
 import { SearchControl } from '../common/search_control';
 import { useFocusEffect } from '../editors/hooks/use_focus_effect';
@@ -16,8 +17,6 @@ import { useFetchDatasheetMeta } from './hooks/use_fetch_datasheet_meta';
 import { useFetchFolderData } from './hooks/use_fetch_folder_data';
 import { searchPanelReducer } from './store/reducer/search_panel';
 import styles from './style.module.less';
-
-import { useAppSelector } from 'pc/store/react-redux';
 
 export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
   defaultNodeIds,
@@ -45,7 +44,7 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
   const { embedId } = useAppSelector((state) => state.pageParams);
   const editorRef = useRef<{
     focus: () => void;
-  } | null>(null);
+      } | null>(null);
 
   // detail
   const needNodeMetaData = requiredData.includes('viewId') || requiredData.includes('meta');

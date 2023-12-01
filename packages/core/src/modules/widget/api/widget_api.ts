@@ -20,8 +20,9 @@ import axios from 'axios';
 import * as Url from './url.widget';
 import Qs from 'qs';
 import urlcat from 'urlcat';
-import {IApiWrapper, IWidget, WidgetReleaseType} from '../../../exports/store';
-import {IWidgetTemplateItem} from './widget_api.interface';
+import { WidgetReleaseType } from 'modules/database/store/interfaces/resource/widget';
+import { IApiWrapper, IWidget } from '../../../exports/store/interfaces';
+import { IWidgetTemplateItem } from './widget_api.interface';
 
 // const baseURL = '/nest/v1';
 
@@ -56,7 +57,6 @@ export const installWidget = (nodeId: string, packageId: string, name?: string) 
     name
   });
 };
-
 
 export const getRecentInstalledWidgets = (spaceId: string) => {
   return axios.get(urlcat(Url.RECENT_INSTALL_WIDGET, { spaceId }));

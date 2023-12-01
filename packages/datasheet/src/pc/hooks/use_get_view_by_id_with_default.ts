@@ -19,7 +19,7 @@
 import { useMemo } from 'react';
 import { Selectors } from '@apitable/core';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const useGetViewByIdWithDefault = (datasheetId: string, viewId?: string) => {
   const snapshot = useAppSelector((state) => {

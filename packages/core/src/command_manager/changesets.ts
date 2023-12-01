@@ -18,7 +18,10 @@
 
 import { IResourceOpsCollect } from 'command_manager';
 import { ILocalChangeset } from 'engine';
-import { IReduxState, Selectors } from 'exports/store';
+import { IReduxState } from 'exports/store/interfaces';
+import { getDashboard } from 'modules/database/store/selectors/resource/dashboard';
+import { getDatasheet } from 'modules/database/store/selectors/resource/datasheet/base';
+
 import { ResourceType } from 'types';
 import { generateRandomString } from 'utils';
 
@@ -31,9 +34,9 @@ export function resourceOpsToChangesets(resourceOpsCollects: IResourceOpsCollect
     if (!changeset) {
       let revision;
       if (resourceType == ResourceType.Dashboard) {
-        revision = Selectors.getDashboard(state, resourceId)?.revision;
+        revision = getDashboard(state, resourceId)?.revision;
       } else {
-        revision = Selectors.getDatasheet(state, resourceId)?.revision;
+        revision = getDatasheet(state, resourceId)?.revision;
       }
       changesetMap.set(
         resourceId,

@@ -22,15 +22,17 @@ import { BasicValueType } from 'types';
 import { integrateCdnHost } from 'utils';
 import { Strings, t } from '../../exports/i18n';
 import {
-  GanttColorType,
   IFieldMap,
   IGanttViewColumn,
   IGanttViewProperty,
   IReduxState,
   ISnapshot,
   IViewProperty,
+} from '../../exports/store/interfaces';
+import { GanttColorType,
   ViewType
-} from '../../exports/store';
+} from 'modules/shared/store/constants';
+
 import { DatasheetActions } from '../../commands_actions/datasheet';
 import { View } from './views';
 

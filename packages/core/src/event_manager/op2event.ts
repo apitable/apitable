@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IReduxState } from '../exports/store';
+import { IReduxState } from '../exports/store/interfaces';
 import { ResourceType } from 'types';
 import { IChangeset, IOperation } from '../engine/ot/interface';
 import { EventNameClsMap, REMOTE_NEW_CHANGES } from './const';

@@ -596,7 +596,7 @@ interface ILinkedFields {
   type: number;
 }
 
-interface ICascaderProperty {
+export interface ICascaderProperty {
   showAll: boolean,
   linkedDatasheetId: string,
   linkedViewId: string,

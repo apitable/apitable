@@ -23,7 +23,7 @@ import { ResourceType, Selectors, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { Network } from 'pc/components/network_status';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const useNetwork = (automatic = true, resourceId: string, resourceType: ResourceType) => {
   const [status, setStatus] = useState<Network>(Network.Online);

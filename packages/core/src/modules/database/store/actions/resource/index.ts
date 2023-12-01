@@ -297,7 +297,7 @@ export const updateResourceName = (newName: string, resourceId: string, resource
     }
     case ResourceType.Datasheet:
       return updateDatasheetName(resourceId, newName);
-    case ResourceType.Mirror: 
+    case ResourceType.Mirror:
       return updateMirrorName(newName, resourceId);
     default:
       return;

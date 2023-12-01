@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { ContextName, ShortcutActionName } from 'modules/shared/shortcut_key/enum';
 import {
   CollaCommandName,
   ConfigConstant,
@@ -28,11 +29,11 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-import { ContextName, ShortcutActionName } from 'modules/shared/shortcut_key/enum';
 import { Message } from 'pc/components/common/message/message';
 import { notify } from 'pc/components/common/notify/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
-import { EXPAND_RECORD, expandRecordIdNavigate } from 'pc/components/expand_record';
+import { EXPAND_RECORD } from 'pc/components/expand_record/expand_record.enum';
+import { expandRecordIdNavigate } from 'pc/components/expand_record/utils';
 import { EXPAND_SEARCH } from 'pc/components/quick_search/const';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';

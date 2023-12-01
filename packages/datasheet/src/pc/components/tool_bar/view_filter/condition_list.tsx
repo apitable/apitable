@@ -37,14 +37,13 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { checkComputeRef } from 'pc/components/multi_grid/field_setting';
 import { InvalidValue } from 'pc/components/tool_bar/view_filter/invalid_value';
 import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
+import { useAppSelector } from 'pc/store/react-redux';
 import { FilterConjunction } from './filter_conjunction/filter_conjunction';
 import { FilterFieldList } from './filter_field_list';
 import { FilterOperate } from './filter_operate';
 import { FilterValue } from './filter_value';
 import { ExecuteFilterFn } from './interface';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IConditionList {
   filterInfo?: IFilterInfo;

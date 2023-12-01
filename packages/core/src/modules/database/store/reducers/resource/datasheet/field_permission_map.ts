@@ -18,7 +18,8 @@
 
 import {
   ILoadFieldPermissionMapAction, IResetFieldPermissionMapAction, IUpdateFieldPermissionMapAction, IUpdateFieldPermissionSettingAction
-} from '../../../../../../exports/store/actions';
+} from 'modules/database/store/actions/resource';
+
 import {
   LOAD_FIELD_PERMISSION_MAP, RESET_FIELD_PERMISSION_MAP, UPDATE_FIELD_PERMISSION_MAP, UPDATE_FIELD_PERMISSION_SETTING
 } from '../../../../../shared/store/action_constants';
