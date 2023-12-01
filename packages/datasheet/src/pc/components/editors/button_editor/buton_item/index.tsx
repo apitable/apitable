@@ -18,8 +18,14 @@ import { useAppSelector } from 'pc/store/react-redux';
 import { automationTaskMap, AutomationTaskStatus } from '../automation_task_map';
 type TO = ReturnType<typeof setTimeout>;
 
+const StyledTypographyNoMargin = styled(Typography)`
+  margin-bottom: 0 !important;
+  `;
+
 const StyledTypography = styled(Typography)<{defaultColor: string}>`
 
+  margin-bottom: 0 !important;
+  
   ${props => css`
     &:hover {
       color: ${getColorValue(props.defaultColor, 0.8)} !important;
@@ -167,9 +173,9 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
               marginTop={marginTop}
               display={'inline-flex'} alignItems={'center'}>
               <EllipsisText>
-                <Typography color={cssColors.textCommonDisabled} variant={'body4'}>
+                <StyledTypographyNoMargin color={cssColors.textCommonDisabled} variant={'body4'}>
                   {field.property.text}
-                </Typography>
+                </StyledTypographyNoMargin>
               </EllipsisText>
             </StyledBox>
           );
@@ -242,9 +248,9 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
                 taskStatus ==='initial' &&
                     (
                       <EllipsisText>
-                        <Typography color={colors.textCommonDisabled} variant={'body4'}>
+                        <StyledTypographyNoMargin color={colors.textCommonDisabled} variant={'body4'}>
                           {field.property.text}
-                        </Typography>
+                        </StyledTypographyNoMargin>
                       </EllipsisText>
                     )
               }

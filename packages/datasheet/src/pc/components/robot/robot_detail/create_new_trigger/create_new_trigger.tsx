@@ -88,6 +88,7 @@ export const handleCreateNewTrigger = (resourceId: string, datasheetId: string, 
       {
         data: generateField(startFieldId, t(Strings.button)),
         viewId,
+        hiddenColumn: false,
         index: columnCount,
       },
     ],
