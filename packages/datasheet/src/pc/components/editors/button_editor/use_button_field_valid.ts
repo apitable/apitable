@@ -78,41 +78,51 @@ export const check = (dstId: string, button: IButtonField, buttonFieldTriggerId:
   }
 
   const automation = data?.data;
-  if (automation) {
-    if (!automation.isActive) {
-      return {
-        fieldId: button.id,
-        result: false
-      };
-    }
-    // if(automation)
-    const found = automation.triggers?.find(item => item.triggerTypeId === buttonFieldTriggerId?.triggerTypeId) as IRobotTrigger | undefined;
-    if (!found) {
-
-      return {
-        fieldId: button.id,
-        result: false
-      };
-    }
-    if(getDatasheetId(found) !== dstId) {
-      return {
-        fieldId: button.id,
-        result: false
-      };
-    }
-
-    const fieldId = getFieldId(found);
-    if (!fieldId) {
-      return {
-        fieldId: button.id,
-        result: false
-      };
-    }
+  if (!automation) {
+    return {
+      fieldId: button.id,
+      result: false
+    };
   }
+  if (!automation.isActive) {
+    return {
+      fieldId: button.id,
+      result: false
+    };
+  }
+  const list = automation.triggers?.filter(item => item.triggerTypeId === buttonFieldTriggerId?.triggerTypeId);
+
+  if (list == null || list.length === 0) {
+    return {
+      fieldId: button.id,
+      result: false
+    };
+  }
+
+  // @ts-ignore
+  const found = list?.find(item => getFieldId(item) === button.id);
+
+  if(!found) {
+    return {
+      fieldId: button.id,
+      result: false
+    };
+  }
+
+  // @ts-ignore
+  const dstIdValue = getDatasheetId(found);
+  if(dstIdValue !== dstId) {
+    return {
+      fieldId: button.id,
+      result: false
+    };
+  }
+
   return {
     fieldId: button.id,
     result: true
   };
+
 };
 export const useButtonFieldValid = (button: IButtonField): {
   fieldId: string;
@@ -129,7 +139,6 @@ export const useButtonFieldValid = (button: IButtonField): {
   const automationId = button.property.action.automation?.automationId;
 
   const { data, isLoading } = useSWR(`automation_item_${automationId ?? ''}`, async () => {
-
 
     const data1 = await getRobotDetail(automationId ?? '',
       ''
