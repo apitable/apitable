@@ -19,7 +19,7 @@
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
@@ -76,10 +76,15 @@ export const View: React.FC<React.PropsWithChildren<any>> = () => {
 
   const { data: triggerTypes } = useTriggerTypes();
   const buttonFieldTriggerId = triggerTypes.find((item) => item.endpoint === 'button_field' || item.endpoint === 'button_clicked');
-  const dstId = useAppSelector(Selectors.getActiveDatasheetId)
+  const dstId = useAppSelector(Selectors.getActiveDatasheetId);
 
+  const initilzedRef = React.useRef(false);
   useEffect(() => {
+    if(initilzedRef.current) {
+      return;
+    }
     if (fieldMap && buttonFieldTriggerId && dstId) {
+      initilzedRef.current = true;
       const fieldItem = Object.values(fieldMap).filter((item) => item.type === FieldType.Button);
       const task = fieldItem.map((r) => checkButtonField(dstId ?? '', r as IButtonField, buttonFieldTriggerId));
       Promise.all(task)
@@ -87,7 +92,7 @@ export const View: React.FC<React.PropsWithChildren<any>> = () => {
           console.log('button field checked');
         })
         .catch((e) => {
-          console.error('button field checked', e);
+          console.error('button field checked error', e);
         });
     }
   }, [dstId, fieldMap, buttonFieldTriggerId]);

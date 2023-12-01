@@ -127,7 +127,10 @@ export const useButtonFieldValid = (button: IButtonField): {
   const { data: triggerTypes } = useTriggerTypes();
   const buttonFieldTriggerId =triggerTypes.find(item => item.endpoint==='button_clicked' || item.endpoint === 'button_field');
   const automationId = button.property.action.automation?.automationId;
+
   const { data, isLoading } = useSWR(`automation_item_${automationId ?? ''}`, async () => {
+
+
     const data1 = await getRobotDetail(automationId ?? '',
       ''
     );
@@ -139,6 +142,7 @@ export const useButtonFieldValid = (button: IButtonField): {
     return data1;
   },
   {
+    keepPreviousData: true,
     focusThrottleInterval: 3000,
     isPaused: () => !Boolean(button.property.action.automation?.automationId)
   }
