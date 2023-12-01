@@ -90,8 +90,16 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string, pa
   });
 
   const [loading, setLoading] =useState(true);
+
+  useEffect(()=> {
+    setLoading(true);
+  }, [resourceId]);
+
   useEffect(() => {
     if (!resourceId) {
+      return;
+    }
+    if(!loading){
       return;
     }
     setLoading(true);
@@ -108,12 +116,10 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string, pa
           setPanel(panel);
         }else {
           if (cache.id !== resourceId) {
-            console.log('set x');
             setPanel({
               panelName: isLg ? undefined : PanelName.BasicInfo,
             });
           } else if (cache.panel) {
-            console.log('set 2', cache.panel);
             setPanel(cache.panel);
           }
         }

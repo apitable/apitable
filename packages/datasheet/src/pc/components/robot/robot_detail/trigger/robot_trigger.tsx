@@ -16,22 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useMount } from 'ahooks';
 import produce from 'immer';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { identity, isEqual, isEqualWith, isNil, pickBy } from 'lodash';
 import * as React from 'react';
-import { memo, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import { memo, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import { Box, IDropdownControl, SearchSelect, Typography } from '@apitable/components';
 import {
   ButtonActionType, CollaCommandName,
-  EmptyNullOperand, FieldType, IButtonAction, IButtonField,
+  EmptyNullOperand, Events, FieldType, IButtonAction, IButtonField,
   IExpression, IField,
   integrateCdnHost,
   IReduxState, IServerFormPack,
   OperatorEnums,
+  Player,
   ResourceType,
   Selectors,
   Strings,
@@ -60,7 +62,7 @@ import {
   automationLocalMap,
   automationPanelAtom,
   automationStateAtom,
-  automationTriggerDatasheetAtom, loadableFormItemAtom, loadableFormList,
+  automationTriggerDatasheetAtom, IAutomationPanel, loadableFormItemAtom, loadableFormList,
   PanelName, useAutomationController
 } from '../../../automation/controller';
 import { getRelativedId } from '../../../automation/controller/hooks/use_robot_fields';
@@ -193,6 +195,9 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       const fieldId = getFieldId(trigger);
       if(fieldMap) {
         const field = fieldMap[fieldId];
+        if(!field) {
+          return;
+        }
         if(field.type === FieldType.Button) {
           const buttonField = field as IButtonField;
           const newButtonField = produce(buttonField, draft => {
@@ -236,20 +241,22 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
             const fieldId = getFieldId(trigger);
             if(fieldMap) {
               const field = fieldMap[fieldId];
-              if(field.type === FieldType.Button) {
-                const buttonField = field as IButtonField;
-                const newButtonField = produce(buttonField, draft => {
-                  if(draft.property.action.type === ButtonActionType.TriggerAutomation) {
-                    draft.property.action.type = undefined;
-                  }
-                });
-                const result = resourceService.instance!.commandManager.execute({
-                  cmd: CollaCommandName.SetFieldAttr,
-                  fieldId: fieldId,
-                  data: newButtonField,
-                  datasheetId,
-                });
+              if(field != null) {
+                if(field.type === FieldType.Button) {
+                  const buttonField = field as IButtonField;
+                  const newButtonField = produce(buttonField, draft => {
+                    if(draft.property.action.type === ButtonActionType.TriggerAutomation) {
+                      draft.property.action.type = undefined;
+                    }
+                  });
+                  const result = resourceService.instance!.commandManager.execute({
+                    cmd: CollaCommandName.SetFieldAttr,
+                    fieldId: fieldId,
+                    data: newButtonField,
+                    datasheetId,
+                  });
 
+                }
               }
             }
           }
@@ -613,7 +620,7 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       index={index}
       ref={nodeItemControlRef}
       handleClick={memorisedHandleClick}
-      itemId={buttonFieldTrigger?.triggerTypeId === trigger?.triggerTypeId ? "NODE_FORM_ACTIVE": undefined}
+      itemId={buttonFieldTrigger?.triggerTypeId === trigger?.triggerTypeId ? 'NODE_FORM_ACTIVE': undefined}
       nodeId={trigger.triggerId}
       key={trigger.triggerId}
       schema={schema}
@@ -728,19 +735,62 @@ const UpperTypography = styled(Typography)`
 
 export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTriggerProps) => {
   const robot = useAtomValue(automationStateAtom);
+  const setItem = useSetAtom(automationCurrentTriggerId);
   const triggerList = getTriggerList((robot?.robot?.triggers ?? readOnlyArray) as IRobotTrigger[]);
 
   const currentTriggerId = useAtomValue(automationCurrentTriggerId);
   const permissions = useAutomationResourcePermission();
   const colors = useCssColors();
+
+  const { setSideBarVisible } = useSideBarVisible();
+  const setAutomationPanel = useSetAtom(automationPanelAtom);
+  const buttonFieldTrigger =triggerTypes.find(item => item.endpoint === 'button_field' || item.endpoint === 'button_clicked');
+  const [checked, setChecked] =useState(false);
+  let list = triggerList;
+
+  useEffect(() => {
+    if(checked) {
+      return;
+    }
+    const item = list.find(trigger => trigger.triggerTypeId === buttonFieldTrigger?.triggerTypeId);
+    if(item == null) {
+      return;
+    }
+    if(!permissions.editable) {
+      return;
+    }
+
+    if (editType === EditType.detail) {
+      return;
+    }
+    if(robot?.scenario === AutomationScenario.datasheet){
+      return;
+    }
+
+    setSideBarVisible(true);
+
+    setChecked(true);
+    setTimeout(() => {
+      setItem(item.triggerId);
+      const newPanel: IAutomationPanel = {
+        panelName: PanelName.Trigger,
+        dataId: item.triggerId,
+        // @ts-ignore
+        data: item
+      };
+      setAutomationPanel(newPanel);
+      Player.doTrigger(Events.guide_use_button_column_first_time);
+    }, 200);
+  }, [buttonFieldTrigger?.triggerTypeId, checked, editType, list, permissions.editable, robot?.scenario, setAutomationPanel, setItem, setSideBarVisible]);
+
   if (!triggerTypes) {
     return null;
   }
 
-  let list = triggerList;
   if (editType === EditType.detail) {
     list = triggerList.filter(trigger => trigger.triggerId === currentTriggerId);
   }
+
   if (triggerList.length === 0) {
     return (<OrEmpty visible={permissions?.editable}>
       <RobotTriggerCreateForm robotId={robotId} triggerTypes={triggerTypes} preTriggerId={undefined}/>
