@@ -259,10 +259,12 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity>
                                 uploadAndSavePdfImg(streamCache.getInputStream());
                             result.setPreview(pdfImgUploadPath);
                             // Basic resource records, supplementary preview data
-                            AssetEntity update = new AssetEntity();
-                            update.setId(assetEntity.getId());
-                            update.setPreview(result.getPreview());
-                            updateById(update);
+                            if (pdfImgUploadPath != null) {
+                                AssetEntity update = new AssetEntity();
+                                update.setId(assetEntity.getId());
+                                update.setPreview(result.getPreview());
+                                updateById(update);
+                            }
                         }
                         // Determine whether the file has been referenced on the number table,
                         // if so, add the number of references once,
