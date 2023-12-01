@@ -303,7 +303,7 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
           })}
         </div>
         {noRequiredField && <span className={styles.errorText}>{t(Strings.must_one_date)}</span>}
-        {startFieldId && endFieldId && fieldMap[startFieldId]?.property.timeZone !== fieldMap[endFieldId]?.property.timeZone && (
+        {startFieldId && endFieldId && fieldMap[startFieldId]?.property?.timeZone !== fieldMap[endFieldId]?.property?.timeZone && (
           <div className={styles.timeZoneTip}>
             <WarnCircleOutlined color={colors.textCommonTertiary} />
             <span>{t(Strings.time_zone_inconsistent_tips)}</span>
