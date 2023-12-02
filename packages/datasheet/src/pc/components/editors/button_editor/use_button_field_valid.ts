@@ -100,7 +100,7 @@ export const check = (dstId: string, button: IButtonField, buttonFieldTriggerId:
   }
 
   // @ts-ignore
-  const found = list?.find(item => getFieldId(item) === button.id);
+  const found = list?.find(item => getFieldId(item) === button.id && getDatasheetId(item) === dstId)
 
   if(!found) {
     return {
@@ -109,14 +109,6 @@ export const check = (dstId: string, button: IButtonField, buttonFieldTriggerId:
     };
   }
 
-  // @ts-ignore
-  const dstIdValue = getDatasheetId(found);
-  if(dstIdValue !== dstId) {
-    return {
-      fieldId: button.id,
-      result: false
-    };
-  }
 
   return {
     fieldId: button.id,
