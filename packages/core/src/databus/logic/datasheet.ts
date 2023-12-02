@@ -132,6 +132,10 @@ export class Datasheet implements IResource {
     return result as ICommandExecutionResult<R>;
   }
 
+  public async nestRoomChangeFromRust(roomId: string, data: any) {
+    await this.saver.nestRoomChangeFromRust(roomId, data);
+  }
+
   /**
    * Add records to the datasheet.
    *

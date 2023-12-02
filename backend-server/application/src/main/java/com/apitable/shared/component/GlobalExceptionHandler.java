@@ -46,7 +46,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 /**
  * <p>
- * Global Exception Capture in webmvc
+ * Global Exception Capture in webmvc.
  * </p>
  *
  * @author Benson Cheung
@@ -78,6 +78,12 @@ public class GlobalExceptionHandler {
         }
     }
 
+    /**
+     * handle business exception.
+     *
+     * @param ex business exception
+     * @return response data
+     */
     @ExceptionHandler(BusinessException.class)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<Void> businessException(BusinessException ex) {
@@ -92,6 +98,12 @@ public class GlobalExceptionHandler {
             i18nErrorMessage);
     }
 
+    /**
+     * handle validation exception.
+     *
+     * @param exception exception
+     * @return response data
+     */
     @ExceptionHandler({MethodArgumentNotValidException.class, MaxUploadSizeExceededException.class,
         ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.OK)
@@ -113,6 +125,12 @@ public class GlobalExceptionHandler {
         return ResponseData.error();
     }
 
+    /**
+     * handle internal server exception.
+     *
+     * @param ex exception
+     * @return response data
+     */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseData<Void> exception(Exception ex) {

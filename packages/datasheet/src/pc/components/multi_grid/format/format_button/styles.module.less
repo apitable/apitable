@@ -1,0 +1,31 @@
+.openLinkInput {
+  position: relative;
+}
+
+.switchUrl {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  cursor: pointer;
+  .divider {
+    width: 1px;
+    height: 16px;
+    margin-right: 10px;
+    background-color: var(--borderCommonDefault);
+  }
+  span {
+    line-height: 13px;
+    padding: 4px 4px;
+    border-radius: 4px;
+    &:hover {
+      background-color: var(--bgBglessHover);
+    }
+  }
+}
+
+:global {
+  .ant-input-group-addon {
+    padding-left: 0 !important;
+    background-color: var(--lowestBg) !important;
+  }
+}

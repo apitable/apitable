@@ -18,6 +18,9 @@
 
 package com.apitable.control.infrastructure.role;
 
+import cn.hutool.core.lang.Assert;
+import com.apitable.control.infrastructure.role.RoleConstants.Field;
+import com.apitable.control.infrastructure.role.RoleConstants.Node;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -25,13 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.hutool.core.lang.Assert;
-
-import com.apitable.control.infrastructure.role.RoleConstants.Field;
-import com.apitable.control.infrastructure.role.RoleConstants.Node;
-
 /**
- * role manager tool
+ * role manager tool.
+ *
  * @author Shawn Deng
  */
 public class ControlRoleManager {
@@ -79,6 +78,12 @@ public class ControlRoleManager {
         return FIELD_CONTROL_ROLE_MAP.get(roleCode);
     }
 
+    /**
+     * parse and sort node role.
+     *
+     * @param roleCodes role codes
+     * @return sorted list
+     */
     public static List<ControlRole> parseAndSortNodeRole(Collection<String> roleCodes) {
         List<ControlRole> sortedList = roleCodes.stream().reduce(new ArrayList<>(),
             (controlRoles, item) -> {
@@ -98,6 +103,12 @@ public class ControlRoleManager {
         return roles.get(roles.size() - 1);
     }
 
+    /**
+     * parse and sort field role.
+     *
+     * @param roleCodes role codes
+     * @return sorted list
+     */
     public static List<ControlRole> parseAndSortFieldRole(Collection<String> roleCodes) {
         List<ControlRole> sortedList = roleCodes.stream().reduce(new ArrayList<>(),
             (controlRoles, item) -> {

@@ -26,7 +26,6 @@ import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.apitable.space.ro.SpaceSecuritySettingRo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -86,11 +85,9 @@ public class SpaceGlobalFeature {
     private Boolean watermarkEnable;
 
     @JsonIgnore
-    @ApiModelProperty(hidden = true)
     private Boolean blackSpace;
 
     @JsonIgnore
-    @ApiModelProperty(hidden = true)
     private Boolean ban;
 
     @Schema(description = "certification level name", example = "basic/senior", hidden = true)

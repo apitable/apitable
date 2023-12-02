@@ -27,8 +27,8 @@ import { INotification } from '../../modules/user/store/interfaces/notification'
 // @ts-ignore
 import { IHooks, IBilling } from '../../modules/enterprise';
 import { IToolBar } from '../../modules/org/store/interface/tool_bar';
-import { 
-  IDashboardMap, IDatasheetMap, IPageParams, IWidgetMap, IFormMap, IMirrorMap, ThemeName 
+import {
+  IDashboardMap, IDatasheetMap, IPageParams, IWidgetMap, IFormMap, IMirrorMap, ThemeName
 } from '../../modules/database/store/interfaces/resource';
 import { ITemplateCentre } from '../../modules/space/store/interfaces/template_centre';
 import { IShareInfo } from '../../modules/space/store/interfaces/share';
@@ -64,14 +64,15 @@ export * from '../../modules/database/store/interfaces/subscriptions';
 export * from '../../modules/database/store/interfaces/record_vision_mode';
 export * from '../../modules/database/store/interfaces/preview_file';
 export * from '../../modules/embed/store/interfaces/embed';
+export * from '../../modules/billing/store/interfaces';
 
 export interface IReduxState {
 
-  // a mark that indicates `state` is root 
-  isStateRoot: true; 
+  // a mark that indicates `state` is root
+  isStateRoot: true;
 
   theme: ThemeName;
-  
+
   pageParams: IPageParams;
   datasheetMap: IDatasheetMap;
   mirrorMap: IMirrorMap;

@@ -18,14 +18,13 @@
 
 package com.apitable.asset.enums;
 
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.support.serializer.IBaseEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.support.serializer.IBaseEnum;
-
 /**
- * asset upload source
+ * asset upload source.
  * using: CallBack Body
  *
  * @author Pengap
@@ -35,17 +34,17 @@ import com.apitable.core.support.serializer.IBaseEnum;
 public enum AssetUploadSource implements IBaseEnum {
 
     /**
-     * widget static resource
+     * widget static resource.
      */
     WIDGET_STATIC(0),
 
     /**
-     * space asset
+     * space asset.
      */
     SPACE_ASSET(1),
 
     /**
-     * public asset
+     * public asset.
      */
     PUBLISH_ASSET(2),
 
@@ -53,6 +52,12 @@ public enum AssetUploadSource implements IBaseEnum {
 
     private final Integer value;
 
+    /**
+     * transform value to enum.
+     *
+     * @param value value
+     * @return enum
+     */
     public static AssetUploadSource of(Integer value) {
         for (AssetUploadSource type : AssetUploadSource.values()) {
             if (type.getValue().equals(value)) {

@@ -190,6 +190,7 @@ export class TriggerEventHelper {
       recordId,
       recordUrl: getRecordUrl(datasheetId, recordId),
       ...eventContext.eventFields,
+      clickedBy: eventContext.uuid,
     };
   }
 

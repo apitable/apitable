@@ -53,6 +53,9 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * automation trigger service impl.
+ */
 @Slf4j
 @Service
 public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
@@ -143,7 +146,8 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
 
     @Override
     public TriggerCopyResultDto copy(Long userId, boolean sameSpace,
-        Map<String, String> newRobotMap, Map<String, String> newNodeMap) {
+                                     Map<String, String> newRobotMap,
+                                     Map<String, String> newNodeMap) {
         List<AutomationTriggerEntity> triggers =
             triggerMapper.selectByRobotIds(newRobotMap.keySet());
         if (CollUtil.isEmpty(triggers)) {

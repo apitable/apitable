@@ -78,4 +78,7 @@ export class CascaderDataStorageProvider implements databus.IDataStorageProvider
   public saveOps(_ops: IResourceOpsCollect[], _options: databus.ISaveOpsOptions) {
     throw new Error('Method not implemented.');
   }
+
+  async nestRoomChangeFromRust(_roomId: string, _data: any) {
+  }
 }

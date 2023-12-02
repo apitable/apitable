@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * Bundle Manifest
+ * Bundle Manifest.
  * </p>
  */
 @Data
@@ -44,7 +44,7 @@ public class Manifest {
     private String password;
 
     /**
-     * the root node of the file tree
+     * the root node of the file tree.
      */
     private NodeFileTree root;
 }

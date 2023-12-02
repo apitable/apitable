@@ -58,6 +58,7 @@ import com.apitable.organization.enums.OrganizationException;
 import com.apitable.organization.enums.UnitType;
 import com.apitable.organization.enums.UserSpaceStatus;
 import com.apitable.organization.excel.handler.UploadDataListener;
+import com.apitable.organization.facade.TeamFacade;
 import com.apitable.organization.mapper.AuditUploadParseRecordMapper;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.mapper.TeamMapper;
@@ -159,6 +160,9 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Resource
     private ITeamService iTeamService;
+
+    @Resource
+    private TeamFacade teamFacade;
 
     @Resource
     private UserActiveSpaceCacheService userActiveSpaceCacheService;
@@ -292,8 +296,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     public List<Long> getUnitsByMember(Long memberId) {
         log.info("Gets all unit ids for the member");
         List<Long> unitRefIds = CollUtil.newArrayList(memberId);
-        List<Long> teamIds = teamMemberRelMapper.selectAllTeamIdByMemberId(memberId);
-        unitRefIds.addAll(teamIds);
+        List<Long> teamIds = iTeamMemberRelService.getTeamByMemberId(memberId);
+        if (teamIds.size() > 0) {
+            List<Long> allParentTeamIds = teamFacade.getAllParentTeamIds(teamIds);
+            unitRefIds.addAll(allParentTeamIds);
+        }
         List<Long> roleIds = iRoleMemberService.getRoleIdsByRoleMemberId(memberId);
         unitRefIds.addAll(roleIds);
         return iUnitService.getUnitIdsByRefIds(unitRefIds);
@@ -353,6 +360,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     public String getOpenIdByMemberId(Long memberId) {
         return baseMapper.selectOpenIdById(memberId);
+    }
+
+    @Override
+    public Long getUserIdByOpenId(String spaceId, String openId) {
+        return baseMapper.selectUserIdByOpenId(spaceId, openId);
     }
 
     @Override
@@ -1010,7 +1022,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             int currentMemberCount =
                 (int) SqlTool.retCount(staticsMapper.countMemberBySpaceId(spaceId));
             SubscriptionInfo subscriptionInfo =
-                    entitlementServiceFacade.getSpaceSubscription(spaceId);
+                entitlementServiceFacade.getSpaceSubscription(spaceId);
             long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
             // long defaultMaxMemberCount = iSubscriptionService.getPlanSeats(spaceId);
             // Use the object to read data row by row,

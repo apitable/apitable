@@ -20,7 +20,7 @@ package com.apitable.starter.sms.core;
 
 /**
  * <p>
- * Tencent SMS transmitter factory
+ * Tencent SMS transmitter factory.
  * </p>
  *
  */

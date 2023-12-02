@@ -18,6 +18,9 @@
 
 package com.apitable.core.util;
 
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.util.ObjectUtil;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -25,46 +28,41 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.ObjectUtil;
-
 /**
  * <p>
- * Input stream cache
- * Consider whether the memory is full when processing a large number of images
+ * Input stream cache.
+ * Consider whether the memory is full when processing a large number of images.
  * </p>
- *
  */
 public class InputStreamCache implements AutoCloseable {
 
     /**
-     * save the bytes in the InputStream to the ByteArrayOutputStream
+     * save the bytes in the InputStream to the ByteArrayOutputStream.
      */
     private ByteArrayOutputStream byteArrayOutputStream = null;
 
     /**
-     * automatic transfer of temporary files
+     * automatic transfer of temporary files.
      */
     private File location = null;
 
     /**
-     * default cache size 8192
+     * default cache size 8192.
      */
     public static final int DEFAULT_BUFFER_SIZE = 2 << 12;
 
     /**
-     * Auto-dump file size
+     * Auto-dump file size.
      */
-    private final long AUTO_TRANSFER_TO_TEMP_SIZE = 50 * 1024 * 1024;
+    private static final long AUTO_TRANSFER_TO_TEMP_SIZE = 50 * 1024 * 1024;
 
     /**
-     * file size
+     * file size.
      */
-    private long fileSize;
+    private final long fileSize;
 
     /**
-     * Whether to automatically transfer
+     * Whether to automatically transfer.
      */
     private boolean autoTransfer;
 
@@ -72,6 +70,12 @@ public class InputStreamCache implements AutoCloseable {
         this(inputStream, -1);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param inputStream input stream
+     * @param fileSize    file size
+     */
     public InputStreamCache(InputStream inputStream, long fileSize) {
         this.fileSize = fileSize;
 
@@ -82,12 +86,10 @@ public class InputStreamCache implements AutoCloseable {
             if (fileSize >= AUTO_TRANSFER_TO_TEMP_SIZE) {
                 location = this.saveToTemp(inputStream);
                 this.autoTransfer = true;
-            }
-            else {
+            } else {
                 if (fileSize <= 0) {
                     byteArrayOutputStream = new ByteArrayOutputStream();
-                }
-                else {
+                } else {
                     byteArrayOutputStream = new ByteArrayOutputStream((int) fileSize);
                 }
                 byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
@@ -98,14 +100,13 @@ public class InputStreamCache implements AutoCloseable {
                 }
                 byteArrayOutputStream.flush();
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Cache Stream Read Exception");
         }
     }
 
     /**
-     * Get reusable stream
+     * Get reusable stream.
      *
      * @return reusable stream
      */
@@ -115,8 +116,7 @@ public class InputStreamCache implements AutoCloseable {
                 return null;
             }
             return IoUtil.toStream(location);
-        }
-        else {
+        } else {
             if (ObjectUtil.isNull(byteArrayOutputStream)) {
                 return null;
             }
@@ -126,7 +126,7 @@ public class InputStreamCache implements AutoCloseable {
     }
 
     /**
-     * Get the file size, which may be: 0
+     * Get the file size, which may be: 0.
      *
      * @return long file size
      */
@@ -135,7 +135,7 @@ public class InputStreamCache implements AutoCloseable {
     }
 
     /**
-     * Get the file size, compute=true, possibly: 0
+     * Get the file size, compute=true, possibly: 0.
      *
      * @param compute calculate or not
      * @return long file size
@@ -148,7 +148,7 @@ public class InputStreamCache implements AutoCloseable {
     }
 
     /**
-     * Get automatic deposit status
+     * Get automatic deposit status.
      *
      * @return Auto save as temporary file
      */
@@ -157,7 +157,7 @@ public class InputStreamCache implements AutoCloseable {
     }
 
     /**
-     * Save temporary file
+     * Save temporary file.
      *
      * @param inputStream input stream
      * @return temporary file
@@ -168,8 +168,7 @@ public class InputStreamCache implements AutoCloseable {
         try {
             tempFile = FileTool.createUploadTempFile().toFile();
             return FileUtil.writeFromStream(inputStream, tempFile);
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Cache Stream Read Exception");
         }
     }

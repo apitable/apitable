@@ -16,23 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { TextField } from './text_field';
-import { AttachmentField } from './attachment_field';
-import { DateTimeField } from './date_time_field';
-import { CreatedTimeField } from './created_time_field';
-import { LastModifiedTimeField } from './last_modified_time_field';
-import { NumberField } from './number_field';
-import { CurrencyField } from './currency_field';
-import { PercentField } from './percent_field';
-import { AutoNumberField } from './auto_number_field';
-import { MultiSelectField, SingleSelectField } from './select_field';
-import { LinkField } from './link_field';
-import { URLField } from './url_field';
-import { DeniedField, NotSupportField } from './virtual_field';
+import { ButtonField } from 'model/field/button_field';
+import { Store } from 'redux';
 import {
   FieldType,
   IAttacheField,
   IAutoNumberField,
+  IButtonField,
   ICascaderField,
   ICheckboxField,
   ICreatedByField,
@@ -51,6 +41,7 @@ import {
   IMultiSelectField,
   INotSupportField,
   INumberField,
+  IOneWayLinkField,
   IPercentField,
   IPhoneField,
   IRatingField,
@@ -59,24 +50,35 @@ import {
   ITextField,
   IURLField,
   IWorkDocField,
-  IOneWayLinkField,
 } from 'types/field_types';
-import { Field } from './field';
-import { EmailField } from './email_field';
-import { PhoneField } from './phone_field';
-import { RatingField } from './rating_field';
+import { IReduxState } from '../../exports/store';
+import { AttachmentField } from './attachment_field';
+import { AutoNumberField } from './auto_number_field';
+import { CascaderField } from './cascader_field';
 import { CheckboxField } from './checkbox_field';
+import { CreatedByField } from './created_by_field';
+import { CreatedTimeField } from './created_time_field';
+import { CurrencyField } from './currency_field';
+import { DateTimeField } from './date_time_field';
+import { EmailField } from './email_field';
+import { Field } from './field';
 import { FormulaField } from './formula_field';
+import { LastModifiedByField } from './last_modified_by_field';
+import { LastModifiedTimeField } from './last_modified_time_field';
+import { LinkField } from './link_field';
 import { LookUpField } from './lookup_field';
 import { MemberField } from './member_field';
-import { CreatedByField } from './created_by_field';
-import { LastModifiedByField } from './last_modified_by_field';
-import { SingleTextField } from './single_text_field';
-import { CascaderField } from './cascader_field';
-import { WorkDocField } from './workdoc_field';
-import { IReduxState } from '../../exports/store';
-import { Store } from 'redux';
+import { NumberField } from './number_field';
 import { OneWayLinkField } from './one_way_link_field';
+import { PercentField } from './percent_field';
+import { PhoneField } from './phone_field';
+import { RatingField } from './rating_field';
+import { MultiSelectField, SingleSelectField } from './select_field';
+import { SingleTextField } from './single_text_field';
+import { TextField } from './text_field';
+import { URLField } from './url_field';
+import { DeniedField, NotSupportField } from './virtual_field';
+import { WorkDocField } from './workdoc_field';
 
 export * from './field';
 export * from './stat';
@@ -131,6 +133,7 @@ export interface IBindFieldModel {
   (field: ICreatedByField, state?: IReduxState, newInstance?: boolean): CreatedByField;
   (field: ILastModifiedByField, state?: IReduxState, newInstance?: boolean): LastModifiedByField;
   (field: ICascaderField, state?: IReduxState, newInstance?: boolean): CascaderField;
+  (field: IButtonField, state?: IReduxState, newInstance?: boolean): ButtonField;
   (field: IWorkDocField, state?: IReduxState, newInstance?: boolean): WorkDocField;
   (field: IDeniedField, state?: IReduxState, newInstance?: boolean): DeniedField;
   (field: INotSupportField, state?: IReduxState, newInstance?: boolean): NotSupportField;
@@ -162,6 +165,7 @@ export interface IBindFieldContext {
   (field: ICreatedByField, state: IReduxState): CreatedByField;
   (field: ILastModifiedByField, state: IReduxState): LastModifiedByField;
   (field: ICascaderField, state: IReduxState): CascaderField;
+  (field: IButtonField, state?: IReduxState): ButtonField;
   (field: IWorkDocField, state: IReduxState): WorkDocField;
   (field: IDeniedField, state: IReduxState): DeniedField;
   (field: INotSupportField, state: IReduxState): NotSupportField;
@@ -247,6 +251,9 @@ export const getFieldClass = (type: FieldType) => {
     }
     case FieldType.Cascader: {
       return CascaderField;
+    }
+    case FieldType.Button: {
+      return ButtonField;
     }
     case FieldType.WorkDoc: {
       return WorkDocField;

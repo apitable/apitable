@@ -17,7 +17,7 @@
  */
 
 import * as React from 'react';
-import { Box, IconButton, Tooltip, Typography, useTheme } from '@apitable/components';
+import { Box, FloatUiTooltip, IconButton, Typography, useTheme } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
@@ -25,7 +25,7 @@ import { useAutomationNavigateController } from '../../automation/controller/con
 import { OrTooltip } from '../../common/or_tooltip';
 import { useAddNewRobot } from '../hooks';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const Beta = () => {
   const theme = useTheme();
@@ -46,7 +46,12 @@ export const AddRobotButton = () => {
 
   return (
     <OrTooltip tooltip={disableTip} tooltipEnable={!canAddNewRobot}>
-      <IconButton shape={'square'} disabled={!canAddNewRobot} onClick={canAddNewRobot ? () => createNewRobot(datasheetId) : undefined} icon={AddOutlined} />
+      <IconButton
+        shape={'square'}
+        disabled={!canAddNewRobot}
+        onClick={canAddNewRobot ? () => createNewRobot(datasheetId) : undefined}
+        icon={AddOutlined}
+      />
     </OrTooltip>
   );
 };
@@ -58,7 +63,7 @@ export const RobotListHead = () => {
 
       <Box display="flex" alignItems="center">
         <Typography variant="h6">{t(Strings.robot_panel_title)}</Typography>
-        <Tooltip content={t(Strings.robot_panel_help_tooltip)} placement="top-center">
+        <FloatUiTooltip content={t(Strings.robot_panel_help_tooltip)} placement="left" arrow>
           <Box display="flex" alignItems="center">
             <IconButton
               shape="square"
@@ -68,7 +73,7 @@ export const RobotListHead = () => {
               }}
             />
           </Box>
-        </Tooltip>
+        </FloatUiTooltip>
       </Box>
       <IconButton shape="square" onClick={() => ShortcutActionManager.trigger(ShortcutActionName.ToggleRobotPanel)} icon={CloseOutlined} />
     </>

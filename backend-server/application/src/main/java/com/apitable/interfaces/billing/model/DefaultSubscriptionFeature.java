@@ -20,8 +20,6 @@ package com.apitable.interfaces.billing.model;
 
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AdminNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiCallNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MessageWidgetNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MessageAutomationRunNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiQps;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ArchivedRowsPerSheet;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CalendarViews;
@@ -31,6 +29,8 @@ import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeature
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.GalleryViews;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.GanttViews;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.KanbanViews;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MessageAutomationRunNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MessageWidgetNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MirrorNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.NodePermissionNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.RowNums;
@@ -63,32 +63,32 @@ public class DefaultSubscriptionFeature implements SubscriptionFeature {
 
     @Override
     public Seat getSeat() {
-        return new Seat(-1L);
+        return new Seat(2L);
     }
 
     @Override
     public CapacitySize getCapacitySize() {
-        return new CapacitySize(-1L);
+        return new CapacitySize(1024 * 1024 * 1024L);
     }
 
     @Override
     public SheetNums getSheetNums() {
-        return new SheetNums(-1L);
+        return new SheetNums(5L);
     }
 
     @Override
     public RowsPerSheet getRowsPerSheet() {
-        return new RowsPerSheet(-1L);
+        return new RowsPerSheet(100L);
     }
 
     @Override
     public ArchivedRowsPerSheet getArchivedRowsPerSheet() {
-        return new ArchivedRowsPerSheet(-1L);
+        return new ArchivedRowsPerSheet(250L);
     }
 
     @Override
     public RowNums getRowNums() {
-        return new RowNums(-1L);
+        return new RowNums(250L);
     }
 
     @Override

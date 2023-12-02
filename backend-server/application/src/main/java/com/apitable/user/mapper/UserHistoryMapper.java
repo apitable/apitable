@@ -38,7 +38,8 @@ public interface UserHistoryMapper extends BaseMapper<UserHistoryEntity> {
      * @param userId User ID
      * @return UserHistoryEntity
      */
-    UserHistoryEntity selectLatest(@Param("userId") Long userId, @Param("userStatus") Integer userStatus);
+    UserHistoryEntity selectLatest(@Param("userId") Long userId,
+                                   @Param("userStatus") Integer userStatus);
 
     /**
      * Update user history according to user ID.

@@ -80,13 +80,13 @@ public class TemplatePropertyServiceImpl
 
     @Override
     public List<String> getTemplateIdsByPropertyCodeAndType(String code,
-        TemplatePropertyType type) {
+                                                            TemplatePropertyType type) {
         return propertyRelMapper.selectTemplateIdsByPropertyCode(code);
     }
 
     @Override
     public List<TemplatePropertyRelDto> getPropertyByTemplateIds(List<String> templateIds,
-        TemplatePropertyType type) {
+                                                                 TemplatePropertyType type) {
         return baseMapper.selectPropertiesByTemplateIdsAndType(templateIds, type.getType());
     }
 

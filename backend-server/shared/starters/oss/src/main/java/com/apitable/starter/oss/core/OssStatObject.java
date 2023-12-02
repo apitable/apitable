@@ -19,30 +19,38 @@
 package com.apitable.starter.oss.core;
 
 /**
- * oss file property object
+ * oss file property object.
  */
 public class OssStatObject {
 
     /**
-     * resource key (file relative path)
+     * resource key (file relative path).
      */
     private String key;
 
     /**
-     * hash
+     * hash.
      */
     private String hash;
 
     /**
-     * file size
+     * file size.
      */
     private long fileSize;
 
     /**
-     * file mimeType
+     * file mimeType.
      */
     private String mimeType;
 
+    /**
+     * constructor.
+     *
+     * @param key      resource key (file relative path).
+     * @param hash     hash.
+     * @param fileSize file size.
+     * @param mimeType file mimeType.
+     */
     public OssStatObject(String key, String hash, long fileSize, String mimeType) {
         this.key = key;
         this.hash = hash;

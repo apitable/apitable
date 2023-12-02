@@ -52,7 +52,6 @@ import com.apitable.space.service.ISpaceInviteLinkService;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.space.vo.SpaceLinkInfoVo;
 import com.apitable.space.vo.SpaceLinkVo;
-
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.util.ArrayList;
@@ -296,7 +295,7 @@ public class SpaceInviteLinkServiceImpl
         List<SpaceMemberResourceDto> dtoList =
             spaceResourceMapper.selectMemberResource(memberIds);
         Map<Long, List<String>> map = dtoList.stream()
-                .collect(Collectors.toMap(SpaceMemberResourceDto::getMemberId,
+            .collect(Collectors.toMap(SpaceMemberResourceDto::getMemberId,
                 SpaceMemberResourceDto::getResources));
         // records members without permission
         List<Long> list = new ArrayList<>();

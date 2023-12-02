@@ -18,12 +18,12 @@
 
 package com.apitable.control.infrastructure;
 
+import com.apitable.control.infrastructure.role.ControlRole;
 import java.util.LinkedHashMap;
 
-import com.apitable.control.infrastructure.role.ControlRole;
-
 /**
- * Control role Dict
+ * Control role Dict.
+ *
  * @author Shawn Deng
  */
 public class ControlRoleDict extends LinkedHashMap<String, ControlRole> {
@@ -45,7 +45,7 @@ public class ControlRoleDict extends LinkedHashMap<String, ControlRole> {
     public ControlRoleDict(int initialCapacity) {
         this(initialCapacity, DEFAULT_LOAD_FACTOR);
     }
-    
+
     public ControlRoleDict(int initialCapacity, float loadFactor) {
         super(initialCapacity, loadFactor);
     }

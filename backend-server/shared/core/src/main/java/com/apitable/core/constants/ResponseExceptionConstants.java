@@ -20,7 +20,7 @@ package com.apitable.core.constants;
 
 /**
  * <p>
- * Core Response Exceptions
+ * Core Response Exceptions.
  * </p>
  */
 public class ResponseExceptionConstants {

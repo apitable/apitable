@@ -23,7 +23,7 @@ import lombok.Data;
 
 /**
  * <p>
- * space resource DTO
+ * space resource DTO.
  * </p>
  *
  * @author Chambers

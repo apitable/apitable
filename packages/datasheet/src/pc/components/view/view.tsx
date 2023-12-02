@@ -35,14 +35,19 @@ import {
   OPEventNameEnums,
   FieldType,
   EventSourceTypeEnums,
+  IButtonField,
 } from '@apitable/core';
 import { ArrowDownOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditOutlined, EyeOpenOutlined, InfoCircleOutlined } from '@apitable/icons';
+import { getRobotDetail } from 'pc/components/editors/button_editor/api';
+import { checkButtonField } from 'pc/components/editors/button_editor/use_button_field_valid';
 import { MobileGrid } from 'pc/components/mobile_grid';
+import { useTriggerTypes } from 'pc/components/robot/robot_panel/hook_trigger';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { useQuery, useResponsive } from 'pc/hooks';
 import { useExpandWidget } from 'pc/hooks/use_expand_widget';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData } from 'pc/utils';
 import { CalendarView } from '../calendar_view';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
@@ -54,8 +59,6 @@ import { KonvaGridView } from '../konva_grid';
 import { OrgChartView } from '../org_chart_view';
 import { Toolbar } from '../tool_bar';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const DATASHEET_VIEW_CONTAINER_ID = 'DATASHEET_VIEW_CONTAINER_ID';
 export const View: React.FC<React.PropsWithChildren<any>> = () => {
@@ -70,6 +73,24 @@ export const View: React.FC<React.PropsWithChildren<any>> = () => {
       fieldMap,
     };
   }, shallowEqual);
+
+  const { data: triggerTypes } = useTriggerTypes();
+  const buttonFieldTriggerId = triggerTypes.find((item) => item.endpoint === 'button_field' || item.endpoint === 'button_clicked');
+
+  useEffect(() => {
+    if (fieldMap && buttonFieldTriggerId) {
+      const fieldItem = Object.values(fieldMap).filter((item) => item.type === FieldType.Button);
+      const task = fieldItem.map((r) => checkButtonField(r as IButtonField, buttonFieldTriggerId));
+      Promise.all(task)
+        .then(() => {
+          console.log('button field checked');
+        })
+        .catch((e) => {
+          console.error('button field checked', e);
+        });
+    }
+  }, [fieldMap, buttonFieldTriggerId]);
+
   const { screenIsAtMost } = useResponsive();
   const query = useQuery();
   const activeRecordId = query.get('activeRecordId');

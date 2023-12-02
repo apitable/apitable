@@ -43,7 +43,17 @@ export const BottomMsgAvatarBase = (props: IAvatarProps & { notifyType: string }
       );
     }
     default: {
-      return <Avatar size={AvatarSize.Size20} className={styles.avatar} type={AvatarType.Space} {...rest} />;
+      return (
+        <Avatar
+          size={AvatarSize.Size20}
+          className={styles.avatar}
+          type={AvatarType.Space}
+          style={{
+            backgroundColor: 'transparent',
+          }}
+          {...rest}
+        />
+      );
     }
   }
 };

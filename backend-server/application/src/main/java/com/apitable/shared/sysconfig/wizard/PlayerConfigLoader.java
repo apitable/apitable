@@ -18,14 +18,13 @@
 
 package com.apitable.shared.sysconfig.wizard;
 
+import com.apitable.shared.sysconfig.Converter;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.apitable.shared.sysconfig.Converter;
-
 /**
  * <p>
- * System Config Manager
+ * System Config Manager.
  * </p>
  */
 public class PlayerConfigLoader {
@@ -41,13 +40,14 @@ public class PlayerConfigLoader {
 
         Singleton() {
             try {
-                InputStream resourceAsStream = PlayerConfigLoader.class.getResourceAsStream("/sysconfig/player_wizard.json");
+                InputStream resourceAsStream =
+                    PlayerConfigLoader.class.getResourceAsStream("/sysconfig/player_wizard.json");
                 if (resourceAsStream == null) {
                     throw new IOException("System config file not found!");
                 }
-                singleton = Converter.getObjectMapper().readValue(resourceAsStream, PlayerConfig.class);
-            }
-            catch (IOException e) {
+                singleton =
+                    Converter.getObjectMapper().readValue(resourceAsStream, PlayerConfig.class);
+            } catch (IOException e) {
                 throw new RuntimeException("Failed to load system configuration!", e);
             }
         }

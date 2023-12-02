@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- *  DatabusClientConfig.
+ * DatabusClientConfig.
  */
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(DatabusClientProperties.class)

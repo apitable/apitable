@@ -25,14 +25,22 @@ import java.util.Map;
 
 /**
  * <p>
- * multi value map util
+ * multi value map util.
  * </p>
  *
  * @author Chambers
  */
 public class MultiValueMapUtils {
 
-    public static void accumulatedValueIfAbsent(Map<String, List<String>> map, String key, String value) {
+    /**
+     * accumulated value if absent.
+     *
+     * @param map   multi value map
+     * @param key   key
+     * @param value value
+     */
+    public static void accumulatedValueIfAbsent(Map<String, List<String>> map, String key,
+                                                String value) {
         if (!map.containsKey(key)) {
             List<String> values = new ArrayList<>();
             values.add(value);

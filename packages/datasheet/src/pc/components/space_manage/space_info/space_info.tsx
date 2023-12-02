@@ -20,24 +20,22 @@ import { useMount } from 'ahooks';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import { useContextMenu } from '@apitable/components';
-import { Api, Events, getLanguage, IApi, IReduxState, Player, ScreenWidth, StoreActions, Strings, t } from '@apitable/core';
-// @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
-// @ts-ignore
-import { subscribeUsageCheck } from 'enterprise/billing/subscribe_usage_check';
-// @ts-ignore
-import { isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
+import { Events, IReduxState, Player, ScreenWidth, StoreActions, Strings, t } from '@apitable/core';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display/enum';
 import { ScrollBar } from 'pc/components/scroll_bar';
 import { useDispatch, useResponsive, useSideBarVisible } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { DelConfirmModal, DelSpaceModal, DelSuccess, RecoverSpace } from './components';
-import { SpaceContext } from './context';
 import { ISpaceLevelType, LevelType } from './interface';
 import { Lg, Md, Sm, Xs } from './layout';
 import { DELETE_SPACE_CONTEXT_MENU_ID } from './utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+// @ts-ignore
+import { subscribeUsageCheck } from 'enterprise/billing/subscribe_usage_check';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
+// @ts-ignore
+import { isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 
 export const SpaceInfo = () => {
   const { spaceInfo, spaceFeatures, subscription, spaceId } = useAppSelector(
@@ -99,21 +97,21 @@ export const SpaceInfo = () => {
   });
 
   const { clientWidth, screenIsAtMost } = useResponsive();
-  const [adData, setAd] = useState<IApi.IAdData | null>(null);
+  // const [adData, setAd] = useState<IApi.IAdData | null>(null);
   const isMobile = screenIsAtMost(ScreenSize.md);
 
-  useEffect(() => {
-    Api.getSpaceAdList().then((res: any) => {
-      const data = res;
-      const lang = getLanguage();
-      const isZh = /^zh/i.test(lang);
-      if (!isZh) {
-        data.desc = data.descEn || data.desc;
-        data.linkText = data.linkTextEn || data.linkText;
-      }
-      setAd(data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   Api.getSpaceAdList().then((res: any) => {
+  //     const data = res;
+  //     const lang = getLanguage();
+  //     const isZh = /^zh/i.test(lang);
+  //     if (!isZh) {
+  //       data.desc = data.descEn || data.desc;
+  //       data.linkText = data.linkTextEn || data.linkText;
+  //     }
+  //     setAd(data);
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (isMobile) {
@@ -121,9 +119,9 @@ export const SpaceInfo = () => {
     }
   }, [isMobile, setSideBarVisible]);
 
-  const contextValue = useMemo(() => {
-    return { adData };
-  }, [adData]);
+  // const contextValue = useMemo(() => {
+  //   return { adData };
+  // }, [adData]);
 
   const Layout = useMemo(() => {
     if (clientWidth < ScreenWidth.sm) {
@@ -168,15 +166,15 @@ export const SpaceInfo = () => {
   };
 
   return (
-    <SpaceContext.Provider value={contextValue}>
-      <ScrollBar style={{ width: '100%', height: '100%' }}>
-        <Layout {...layoutProps} />
-        {isDelConfirmModal && (
-          <DelConfirmModal setIsDelSpaceModal={setIsDelSpaceModal} setIsDelConfirmModal={setIsDelConfirmModal} isMobile={isMobile} />
-        )}
-        {isDelSpaceModal && <DelSpaceModal setIsDelSpaceModal={setIsDelSpaceModal} setIsDelSuccessModal={setIsDelSuccessModal} />}
-        {isDelSuccessModal && <DelSuccess tip={t(Strings.tip_del_success)} />}
-      </ScrollBar>
-    </SpaceContext.Provider>
+    // <SpaceContext.Provider value={contextValue}>
+    <ScrollBar style={{ width: '100%', height: '100%' }}>
+      <Layout {...layoutProps} />
+      {isDelConfirmModal && (
+        <DelConfirmModal setIsDelSpaceModal={setIsDelSpaceModal} setIsDelConfirmModal={setIsDelConfirmModal} isMobile={isMobile} />
+      )}
+      {isDelSpaceModal && <DelSpaceModal setIsDelSpaceModal={setIsDelSpaceModal} setIsDelSuccessModal={setIsDelSuccessModal} />}
+      {isDelSuccessModal && <DelSuccess tip={t(Strings.tip_del_success)} />}
+    </ScrollBar>
+    // </SpaceContext.Provider>
   );
 };

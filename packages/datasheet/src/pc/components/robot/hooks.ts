@@ -16,37 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useLocalStorageState } from 'ahooks';
 import axios from 'axios';
-import { atom, useAtom, useAtomValue } from 'jotai';
-import { atomsWithQuery } from 'jotai-tanstack-query';
+import { useAtom, useAtomValue } from 'jotai';
 import { isNil } from 'lodash';
 import { useCallback, useMemo, useState } from 'react';
-import {
-  ConfigConstant,
-  getLanguage,
-  IReduxState,
-  isPrivateDeployment,
-  Selectors,
-  Strings,
-  SystemConfig,
-  t
-} from '@apitable/core';
+import { ConfigConstant, IReduxState, isPrivateDeployment, Selectors, Strings, SystemConfig, t } from '@apitable/core';
+import { getFieldId } from 'pc/components/automation/controller/hooks/get_field_id';
 import { Message } from 'pc/components/common';
+import { useActionTypes, useTriggerTypes } from 'pc/components/robot/robot_panel/hook_trigger';
 import { getAllColumnsFp, useAllColumns } from 'pc/hooks';
-import { useAutomationController, automationStateAtom } from '../automation/controller';
+import { useAppSelector } from 'pc/store/react-redux';
+import { automationStateAtom, useAutomationController } from '../automation/controller';
 import { useAutomationList } from '../automation/controller/use_robot_list';
 import { activeRobot, deActiveRobot, deleteRobotAction } from './api';
-import { getFilterActionTypes } from './helper';
-import { IActionType, INodeType, ITriggerType } from './interface';
+import { INodeType, ITriggerType } from './interface';
 import { IAutomationRobotDetailItem } from './robot_context';
-import { loadableWithDefault } from './robot_detail/api';
 import { getFields } from './robot_detail/trigger/helper';
 import { getActionList, getTriggerList } from './robot_detail/utils';
-import { covertThemeIcon } from './utils';
 
-import {useAppSelector} from "pc/store/react-redux";
-
-const nestReq = axios.create({
+export const nestReq = axios.create({
   baseURL: '/nest/v1/',
 });
 
@@ -77,7 +66,6 @@ export const useAllFieldsByDstId = (datasheetId: string) => {
 };
 
 export const useAllFields = () => {
-
   const value = useAtomValue(automationStateAtom);
   const datasheetId = value?.resourceId ?? '';
   const columns = useAllColumns(datasheetId, true);
@@ -122,34 +110,50 @@ export const useDeleteRobotAction = () => {
 
 export const useToggleRobotActive = (resourceId: string, robotId: string) => {
   const [loading, setLoading] = useState(false);
+  const automationState = useAtomValue(automationStateAtom);
 
-  const { api: { refreshItem } } = useAutomationController();
-  const toggleRobotActive = useCallback(async (isActive: boolean) => {
-    if (isActive) {
-      setLoading(true);
-      const ok = await deActiveRobot(robotId);
+  const [isNotifed, setIsNotified] = useLocalStorageState<string>('AutomationButtonTip');
 
-      setLoading(false);
-      if (ok) {
-        await refreshItem();
-      }
-    } else {
-      setLoading(true);
-      const ok = await activeRobot(robotId);
-      setLoading(false);
-      if (ok) {
-        await refreshItem();
+  const {
+    api: { refreshItem },
+  } = useAutomationController();
+  const toggleRobotActive = useCallback(
+    async (isActive: boolean) => {
+      if (isActive) {
+        setLoading(true);
+        const ok = await deActiveRobot(robotId);
 
-        Message.success({
-          content: t(Strings.automation_enabled),
-        });
+        setLoading(false);
+        if (ok) {
+          await refreshItem();
+        }
       } else {
-        Message.error({
-          content: t(Strings.robot_enable_config_incomplete_error),
-        });
+        setLoading(true);
+        const ok = await activeRobot(robotId);
+        setLoading(false);
+        if (ok) {
+          await refreshItem();
+          const item = automationState?.robot?.triggers?.find(item => getFieldId(item) != null);
+          if( item != null && isNotifed==null && !isActive){
+            Message.success({
+              content: t(Strings.automation_enabled_return_via_related_files),
+            });
+            setIsNotified(String(true))
+            return;
+          }
+
+          Message.success({
+            content: t(Strings.automation_enabled),
+          });
+        } else {
+          Message.error({
+            content: t(Strings.robot_enable_config_incomplete_error),
+          });
+        }
       }
-    }
-  }, [robotId, refreshItem]);
+    },
+    [robotId, refreshItem],
+  );
 
   return {
     toggleRobotActive,
@@ -172,7 +176,9 @@ export const useRobotTriggerTypes = (): ITriggerType[] => {
         return [];
       }
       // eslint-disable-next-line max-len
-      return getTriggerList(data.triggers).map((action) => triggerTypes?.find((trigger) => trigger.triggerTypeId === action.triggerTypeId)).filter(Boolean);
+      return getTriggerList(data.triggers)
+        .map((action) => triggerTypes?.find((trigger) => trigger.triggerTypeId === action.triggerTypeId))
+        .filter(Boolean);
     }
 
     return [];
@@ -185,19 +191,18 @@ export const useRobotActionTypes = () => {
   const { data: actionTypes } = useActionTypes();
 
   return useMemo(() => {
-
     if (!state?.robot) {
       return null;
     }
     const robot = state?.robot;
     // @ts-ignore
-    return getActionList(robot.actions.map(item => ({
-      ...item,
-      id: item.actionId
-    }))).map((action) => actionTypes?.find((actionType) => actionType.actionTypeId === action.actionTypeId));
-  },
-  [actionTypes, state]
-  );
+    return getActionList(
+      robot.actions.map((item) => ({
+        ...item,
+        id: item.actionId,
+      })),
+    ).map((action) => actionTypes?.find((actionType) => actionType.actionTypeId === action.actionTypeId));
+  }, [actionTypes, state]);
 };
 
 export const useAutomationRobot = () => {
@@ -224,68 +229,13 @@ export const useAutomationRobot = () => {
   };
 };
 
-const fetchTriggerTypesAtom = atom(`/automation/trigger-types?lang=${getLanguage()}`);
-
-const [triggerTypesAtom] = atomsWithQuery((get) => ({
-  queryKey: [`/automation/trigger-types?lang=${getLanguage()}`],
-  queryFn: async ({ queryKey: [url] }) => {
-    const resp = await nestReq.get(String(url));
-    return resp?.data?.data;
-  },
-}));
-
-const loadableTriggerAtom = loadableWithDefault(triggerTypesAtom, []);
-
-const [actionTypesAtom] = atomsWithQuery((get) => ({
-  queryKey: [`/automation/action-types?lang=${getLanguage()}`],
-  queryFn: async ({ queryKey: [url] }) => {
-    const r = await nestReq.get(String(url));
-    return r?.data?.data;
-  },
-}));
-
-const loadableActionTypesAtom = loadableWithDefault(actionTypesAtom, []);
-
-export const useTriggerTypes = (): { loading: boolean; data: ITriggerType[] } => {
-  const themeName = useAppSelector((state) => state.theme);
-  const value = useAtomValue(loadableTriggerAtom);
-  if (value.loading) {
-    return {
-      loading: true,
-      data: []
-    };
-  }
-  return {
-    loading: false,
-    data: covertThemeIcon(value.data, themeName),
-  };
-};
-
-export const useActionTypes = (): { loading: boolean; originData: IActionType[]; data: IActionType[] } => {
-  const themeName = useAppSelector((state) => state.theme);
-  const actionTypeData = useAtomValue(loadableActionTypesAtom);
-  const themedList = covertThemeIcon(actionTypeData?.data, themeName);
-  if (actionTypeData.loading) {
-    return {
-      loading: true,
-      data: [],
-      originData: [],
-    };
-  }
-  return {
-    loading: false,
-    originData: themedList,
-    data: getFilterActionTypes(themedList),
-  };
-};
-
 export const useNodeTypeByIds = () => {
   const { data: actionTypes } = useActionTypes();
   const { data: triggerTypes } = useTriggerTypes();
   return useMemo(() => {
     const nodeTypeByIds: {
-            [nodeTypeId: string]: INodeType;
-        } = {};
+      [nodeTypeId: string]: INodeType;
+    } = {};
     triggerTypes.forEach((triggerType) => {
       nodeTypeByIds[triggerType.triggerTypeId] = triggerType;
     });
@@ -329,7 +279,6 @@ export const useDefaultRobotDesc = () => {
     .join(t(Strings.robot_trigger_or));
 
   return useMemo(() => {
-
     if (robotTriggerType != null && (isNil(robotActionTypes) || robotActionTypes?.length === 0)) {
       return t(Strings.automation_description_trigger, {
         triggerName: triggerResult,
@@ -337,7 +286,6 @@ export const useDefaultRobotDesc = () => {
     }
 
     if (robotActionTypes?.length === 1) {
-
       const lastActionResult = robotActionTypes[robotActionTypes.length - 1]?.name;
       return t(Strings.automation_description_one, {
         triggerName: triggerResult,
@@ -367,3 +315,4 @@ export const useShowRobot = () => {
   return isRobotFeatureOn || isPrivateDeployment(); // Privatization unconditionally opens the robot portal
 };
 
+export { useTriggerTypes, useActionTypes };

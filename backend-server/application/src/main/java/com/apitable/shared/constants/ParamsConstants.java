@@ -20,7 +20,7 @@ package com.apitable.shared.constants;
 
 /**
  * <p>
- * request param constants
+ * request param constants.
  * </p>
  *
  * @author Shawn Deng

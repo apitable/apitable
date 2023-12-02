@@ -18,13 +18,16 @@
 
 package com.apitable.workspace.enums;
 
+import lombok.Getter;
+
 /**
  * <p>
- * cell type
+ * cell type.
  * </p>
  *
  * @author Benson Cheung
  */
+@Getter
 public enum CellType {
 
     NOT_SUPPORT(0),
@@ -37,7 +40,4 @@ public enum CellType {
         this.type = type;
     }
 
-    public int getType() {
-        return type;
-    }
 }

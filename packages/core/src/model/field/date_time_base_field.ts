@@ -195,7 +195,9 @@ export const dateTimeFormat = (
 const withTimeZone = (timestamp: number | undefined | string, timeZone?: string, locale?: string) => {
   if (timeZone) {
     // https://stackoverflow.com/questions/66029964/timezone-conversion-using-date-fns
-    const zonedDate = utcToZonedTime(Number(timestamp), timeZone);
+    const unixTime = Number(timestamp);
+    const ts = !isNaN(Number(timestamp)) ? unixTime : dayjs(timestamp).valueOf();
+    const zonedDate = utcToZonedTime(ts, timeZone);
     const utcDate = zonedTimeToUtc(zonedDate, timeZone);
     if (locale) {
       return dayjs(utcDate.getTime()).locale(locale);

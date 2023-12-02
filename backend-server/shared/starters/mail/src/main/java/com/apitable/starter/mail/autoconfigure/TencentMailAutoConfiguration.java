@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>
- * Tencent cloud mail configuration
+ * Tencent cloud mail configuration.
  * </p>
  *
  * @author Chambers
@@ -46,6 +46,11 @@ public class TencentMailAutoConfiguration {
         this.properties = properties;
     }
 
+    /**
+     * register mail sender factory.
+     *
+     * @return mail sender factory
+     */
     @Bean
     @ConditionalOnMissingBean
     public MailSenderFactory mailSenderFactory() {

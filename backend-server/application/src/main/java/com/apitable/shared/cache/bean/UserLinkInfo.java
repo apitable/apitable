@@ -19,12 +19,11 @@
 package com.apitable.shared.cache.bean;
 
 import java.util.List;
-
 import lombok.Data;
 
 /**
  * <p>
- * user link info
+ * user link info.
  * </p>
  *
  * @author Chambers

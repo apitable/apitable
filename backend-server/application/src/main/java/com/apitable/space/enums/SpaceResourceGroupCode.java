@@ -18,17 +18,17 @@
 
 package com.apitable.space.enums;
 
+import cn.hutool.core.collection.ListUtil;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import cn.hutool.core.collection.ListUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
  * <p>
- * space resource group code
+ * space resource group code.
  * </p>
+ *
  * @author zoe zheng
  */
 @Getter
@@ -62,6 +62,7 @@ public enum SpaceResourceGroupCode {
     private final String code;
 
     public static List<String> codes() {
-        return ListUtil.toList(SpaceResourceGroupCode.values()).stream().map(SpaceResourceGroupCode::getCode).collect(Collectors.toList());
+        return ListUtil.toList(SpaceResourceGroupCode.values()).stream()
+            .map(SpaceResourceGroupCode::getCode).collect(Collectors.toList());
     }
 }

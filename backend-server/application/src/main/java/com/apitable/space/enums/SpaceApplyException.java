@@ -18,13 +18,12 @@
 
 package com.apitable.space.enums;
 
+import com.apitable.core.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.core.exception.BaseException;
-
 /**
- * status code range（450-）
+ * status code range（450-）.
  *
  * @author Chambers
  */
@@ -38,9 +37,11 @@ public enum SpaceApplyException implements BaseException {
 
     EXIST_MEMBER(452, "You are already in this space, the request is invalid"),
 
-    APPLY_SWITCH_CLOSE(453, "This space is not allowed to join the application, the application failed"),
+    APPLY_SWITCH_CLOSE(453,
+        "This space is not allowed to join the application, the application failed"),
 
-    APPLY_DUPLICATE(454, "You have submitted an application, pending approval by the administrator"),
+    APPLY_DUPLICATE(454,
+        "You have submitted an application, pending approval by the administrator"),
 
     APPLY_NOTIFICATION_ERROR(455, "application message is incorrect");
 

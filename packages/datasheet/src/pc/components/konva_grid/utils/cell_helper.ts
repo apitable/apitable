@@ -22,14 +22,14 @@ import { colors, ThemeName } from '@apitable/components';
 import {
   Api,
   ArrayValueField,
-  BasicValueType,
+  BasicValueType, ButtonStyleType,
   ConfigConstant,
   DatasheetApi,
   Field,
   FieldType,
   FormulaBaseError,
   handleNullArray,
-  IAttachmentValue,
+  IAttachmentValue, IButtonField,
   ICellValue,
   IField,
   ILookUpField,
@@ -60,8 +60,10 @@ import {
 import { FileOutlined } from '@apitable/icons';
 import { assertSignatureManager } from '@apitable/widget-sdk';
 import { AvatarSize, AvatarType } from 'pc/components/common';
+import { getIsValid } from 'pc/components/editors/button_editor/valid_map';
 import { GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT } from 'pc/components/gantt_view';
 import { isUnitLeave } from 'pc/components/multi_grid/cell/cell_member/member_item';
+import { setColor } from 'pc/components/multi_grid/format';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { emojiUrl, getCellValueThumbSrc, renderFileIconUrl, showOriginImageThumbnail, UploadManager } from 'pc/utils';
@@ -70,6 +72,7 @@ import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
 import { loadRecords } from 'pc/utils/load_records';
 import { getOptionNameColor, inquiryValueByKey } from '../components/cell';
 import {
+  GRID_CEL_ICON_GAP_SIZE,
   GRID_CELL_ABBR_MIN_WIDTH,
   GRID_CELL_ADD_ITEM_BUTTON_SIZE,
   GRID_CELL_ATTACHMENT_ITEM_MARGIN_LEFT,
@@ -84,7 +87,8 @@ import {
   GRID_CELL_MULTI_ITEM_MARGIN_TOP,
   GRID_CELL_MULTI_ITEM_MIN_WIDTH,
   GRID_CELL_MULTI_PADDING_TOP,
-  GRID_CELL_VALUE_PADDING, GRID_ICON_SMALL_SIZE,
+  GRID_CELL_VALUE_PADDING,
+  GRID_ICON_SMALL_SIZE,
   GRID_MEMBER_ITEM_AVATAR_MARGIN_RIGHT,
   GRID_MEMBER_ITEM_PADDING_RIGHT,
   GRID_OPTION_ITEM_HEIGHT,
@@ -166,6 +170,7 @@ export class CellHelper extends KonvaDrawer {
       case FieldType.CreatedBy:
       case FieldType.LastModifiedBy:
       case FieldType.Cascader:
+      case FieldType.Button:
       case FieldType.WorkDoc: {
         return this.setStyle({ fontSize: 13, fontWeight });
       }
@@ -204,6 +209,9 @@ export class CellHelper extends KonvaDrawer {
       case FieldType.SingleText:
       case FieldType.Cascader: {
         return this.renderCellText(renderProps, ctx);
+      }
+      case FieldType.Button: {
+        return this.renderCellButton(renderProps, ctx);
       }
       case FieldType.WorkDoc: {
         return this.renderCellWorkdoc(renderProps, ctx);
@@ -304,9 +312,11 @@ export class CellHelper extends KonvaDrawer {
     };
   }
 
-  private renderCellWorkdoc(renderProps: IRenderProps, ctx?: any) {
-    const { x, y, cellValue, rowHeight, rowHeightLevel, columnWidth, isActive, callback } = renderProps;
-    if (!(cellValue as IWorkDocValue[])?.length || !Array.isArray(cellValue)) return DEFAULT_RENDER_DATA;
+  private renderCellButton(renderProps: IRenderProps, ctx?: any) {
+    const { x, y, cellValue: cellValue1, rowHeight, rowHeightLevel, columnWidth, isActive, callback } = renderProps;
+
+    const buttonField = renderProps.field as IButtonField;
+    const cellValue = [1];
     const isOperating = isActive;
     let currentX = GRID_CELL_VALUE_PADDING;
     let currentY = GRID_CELL_MULTI_PADDING_TOP;
@@ -316,12 +326,30 @@ export class CellHelper extends KonvaDrawer {
     const renderDataList: any[] = [];
     const listCount = cellValue.length;
     let isOverflow = false;
+    const isValid = getIsValid(buttonField.id);
+
+    const defaultColor = buttonField.property.style.color ? setColor(buttonField.property.style.color, renderProps.cacheTheme) : colors.defaultBg;
+    let bg = '';
+    if(buttonField.property.style.type === ButtonStyleType.Background) {
+      if(isValid) {
+        bg = defaultColor;
+      }else {
+        bg = colors.bgControlsDisabled;
+      }
+    }
 
     for (let index = 0; index < listCount; index++) {
-      const docItem = cellValue[index] as IWorkDocValue;
-      const color = colors.textBrandDefault;
-      const background = colors.bgBrandLightDefault;
-      const itemName = docItem.title || t(Strings.workdoc_unnamed);
+      let color = isValid ? defaultColor: colors.textCommonDisabled;
+      if(buttonField.property.style.type === ButtonStyleType.Background) {
+        if(isValid) {
+          color = colors.textStaticPrimary;
+        } else {
+          color = colors.textCommonDisabled;
+        }
+      }
+      const background = bg;
+
+      const itemName = buttonField.property.text;
       let realMaxTextWidth = maxTextWidth;
 
       if (index === 0 && isOperating) {
@@ -334,13 +362,18 @@ export class CellHelper extends KonvaDrawer {
           realMaxTextWidth = operatingMaxWidth;
         }
       }
-      const { text: renderText, textWidth, isEllipsis } = this.textEllipsis({
+      const {
+        text: renderText,
+        textWidth,
+        isEllipsis,
+      } = this.textEllipsis({
         text: itemName,
         maxWidth: columnWidth && realMaxTextWidth,
         fontSize: 12,
       });
+      // GRID_ICON_SMALL_SIZE
       const itemWidth = Math.max(
-        textWidth + 2 * GRID_OPTION_ITEM_PADDING + GRID_ICON_SMALL_SIZE - (isEllipsis ? 8 : 0),
+        textWidth + 2 * GRID_OPTION_ITEM_PADDING - (isEllipsis ? 8 : 0),
         GRID_CELL_MULTI_ITEM_MIN_WIDTH,
       );
 
@@ -366,6 +399,13 @@ export class CellHelper extends KonvaDrawer {
       const itemX = x + currentX;
       const itemY = y + currentY;
       if (ctx && !isActive) {
+        // this.path({
+        //   x: itemX + 4,
+        //   y: itemY + 2,
+        //   data: FileOutlinedPath,
+        //   size: 12,
+        //   fill: colors.textBrandDefault,
+        // });
         this.label({
           x: itemX,
           y: itemY,
@@ -375,6 +415,95 @@ export class CellHelper extends KonvaDrawer {
           color,
           radius: 4,
           padding: GRID_OPTION_ITEM_PADDING,
+          text: renderText,
+          fontSize: 12,
+          // textAlign: 'right',
+        });
+      }
+
+      renderDataList.push({
+        x: currentX,
+        y: currentY,
+        width: itemWidth,
+        height: GRID_OPTION_ITEM_HEIGHT,
+        text: renderText,
+        style: {
+          background,
+          color,
+        },
+      });
+      currentX += itemWidth + GRID_CELL_MULTI_ITEM_MARGIN_LEFT;
+    }
+
+    callback?.({ width: currentX - GRID_CELL_MULTI_ITEM_MARGIN_LEFT });
+    return {
+      width: columnWidth,
+      height: currentY + GRID_OPTION_ITEM_HEIGHT + GRID_CELL_MULTI_ITEM_MARGIN_TOP,
+      renderContent: renderDataList,
+      isOverflow,
+    };
+  }
+
+  private renderCellWorkdoc(renderProps: IRenderProps, ctx?: any) {
+    const { x, y, cellValue, rowHeight, rowHeightLevel, columnWidth, isActive, callback } = renderProps;
+    if (!(cellValue as IWorkDocValue[])?.length || !Array.isArray(cellValue)) return DEFAULT_RENDER_DATA;
+    const isOperating = isActive;
+    let currentX = GRID_CELL_VALUE_PADDING;
+    let currentY = GRID_CELL_MULTI_PADDING_TOP;
+    const maxHeight = isActive ? 130 - GRID_CELL_MULTI_PADDING_TOP : rowHeight - GRID_CELL_MULTI_PADDING_TOP;
+    const maxTextWidth = columnWidth - 2 * GRID_CELL_VALUE_PADDING - GRID_ICON_SMALL_SIZE - GRID_CEL_ICON_GAP_SIZE;
+    const renderDataList: any[] = [];
+    const listCount = cellValue.length;
+    let isOverflow = false;
+
+    for (let index = 0; index < listCount; index++) {
+      const docItem = cellValue[index] as IWorkDocValue;
+      const color = colors.textBrandDefault;
+      const background = colors.bgBrandLightDefault;
+      const itemName = docItem.title || t(Strings.workdoc_unnamed);
+      let realMaxTextWidth = maxTextWidth;
+
+      if (index === 0 && isOperating) {
+        const operatingMaxWidth = maxTextWidth - 6;
+        // item no space to display, then perform a line feed
+        if (operatingMaxWidth <= 10) {
+          currentY += GRID_OPTION_ITEM_HEIGHT + GRID_CELL_MULTI_ITEM_MARGIN_TOP;
+        } else {
+          realMaxTextWidth = operatingMaxWidth;
+        }
+      }
+      const {
+        text: renderText,
+        textWidth,
+        isEllipsis,
+      } = this.textEllipsis({
+        text: itemName,
+        maxWidth: columnWidth && realMaxTextWidth,
+        fontSize: 12,
+      });
+      const itemWidth = Math.max(
+        textWidth + 2 * GRID_OPTION_ITEM_PADDING + GRID_ICON_SMALL_SIZE - (isEllipsis ? 8 : 0),
+        GRID_CELL_MULTI_ITEM_MIN_WIDTH,
+      );
+
+      if (columnWidth != null) {
+        // In the inactive state, subsequent items are not rendered when the line width is exceeded
+        if (!isActive && currentX >= columnWidth) break;
+        if (isActive && currentY >= maxHeight) isOverflow = true;
+      }
+
+      const itemX = x + currentX;
+      const itemY = y + currentY;
+      if (ctx && !isActive) {
+        this.label({
+          x: itemX,
+          y: itemY,
+          width: itemWidth,
+          height: GRID_OPTION_ITEM_HEIGHT,
+          background,
+          color,
+          radius: 4,
+          padding: 6,
           text: renderText,
           fontSize: 12,
           textAlign: 'right',
@@ -1352,6 +1481,7 @@ export class CellHelper extends KonvaDrawer {
         case FieldType.Text:
         case FieldType.SingleText:
         case FieldType.Cascader:
+        case FieldType.Button:
         case FieldType.WorkDoc:
           realRenderProps.realField = realField;
           return this.renderCellText(realRenderProps, ctx);

@@ -38,6 +38,9 @@ export class DatasheetException implements IBaseException {
   static readonly VIEW_ADD_LIMIT = new DatasheetException(304, 'the usage of this function exceed the 30 views limit of beta version');
   static readonly FIELD_ADD_LIMIT = new DatasheetException(304, 'the usage of this function exceed the 200 fields limit of beta version');
   static readonly RECORD_ADD_LIMIT = new DatasheetException(304, 'the usage of this function exceed the 50000 records limit of beta version');
+  static readonly FIELD_NOT_EXIST = new DatasheetException(440, 'field does not exist');
+  static readonly BUTTON_FIELD_AUTOMATION_NOT_CONFIGURED = new DatasheetException(444, 'button field automation not configured');
+  static readonly BUTTON_FIELD_AUTOMATION_TRIGGER_NOT_CONFIGURED = new DatasheetException(445, 'button field automation trigger not configured');
   static readonly RECORD_ADD_LIMIT_PER_DATASHEET = new DatasheetException(
     305,
     'the usage of this function exceed the 50000 records limit of beta version',
@@ -84,7 +87,10 @@ export class DatasheetException implements IBaseException {
 
   // Exception Type --------------------------------
 
-  private constructor(public readonly code: number, public readonly message: string) {
+  private constructor(
+    public readonly code: number,
+    public readonly message: string,
+  ) {
     DatasheetException.AllValues[message] = this;
   }
 

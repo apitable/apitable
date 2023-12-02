@@ -50,6 +50,9 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * automation action service impl.
+ */
 @Slf4j
 @Service
 public class AutomationActionServiceImpl implements IAutomationActionService {
@@ -109,7 +112,7 @@ public class AutomationActionServiceImpl implements IAutomationActionService {
 
     @Override
     public void updateActionTypeIdAndInputByRobotId(String robotId,
-        String actionTypeId, String input) {
+                                                    String actionTypeId, String input) {
         actionMapper.updateActionTypeIdAndInputByRobotId(robotId, actionTypeId, input);
     }
 

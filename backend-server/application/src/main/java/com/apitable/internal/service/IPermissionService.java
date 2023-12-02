@@ -29,14 +29,15 @@ import java.util.function.Consumer;
 public interface IPermissionService {
 
     /**
-     * Get data table permission view information
+     * Get data table permission view information.
      *
-     * @param userId    user id
-     * @param nodeIds   node id list
-     * @param shareId   share id
+     * @param userId  user id
+     * @param nodeIds node id list
+     * @param shareId share id
      * @return DatasheetPermissionViews
      */
-    List<DatasheetPermissionView> getDatasheetPermissionView(Long userId, List<String> nodeIds, String shareId);
+    List<DatasheetPermissionView> getDatasheetPermissionView(Long userId, List<String> nodeIds,
+                                                             String shareId);
 
     /**
      * check member permission.

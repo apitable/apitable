@@ -26,7 +26,6 @@ import static com.apitable.space.enums.SpaceException.NO_ALLOW_OPERATE;
 import static com.apitable.space.enums.SpaceException.SPACE_NOT_EXIST;
 import static com.apitable.space.enums.SpaceException.SPACE_QUIT_FAILURE;
 import static com.apitable.workspace.enums.PermissionException.CAN_OP_MAIN_ADMIN;
-import static com.apitable.workspace.enums.PermissionException.MEMBER_NOT_IN_SPACE;
 import static com.apitable.workspace.enums.PermissionException.SET_MAIN_ADMIN_FAIL;
 import static com.apitable.workspace.enums.PermissionException.TRANSFER_SELF;
 
@@ -51,6 +50,7 @@ import com.apitable.interfaces.ai.model.CreditTransactionChartData;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.DefaultSubscriptionInfo;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
@@ -138,9 +138,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -295,16 +300,16 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         // create unit
         iUnitService.create(spaceId, UnitType.MEMBER, member.getId());
         String props = JSONUtil.parseObj(SpaceGlobalFeature.builder()
-                .fileSharable(true).invitable(true)
-                .joinable(false).nodeExportable(true)
-                .allowCopyDataToExternal(true)
-                .allowDownloadAttachment(true).mobileShowable(false)
-                .watermarkEnable(false).build()).toString();
+            .fileSharable(true).invitable(true)
+            .joinable(false).nodeExportable(true)
+            .allowCopyDataToExternal(true)
+            .allowDownloadAttachment(true).mobileShowable(false)
+            .watermarkEnable(false).build()).toString();
         SpaceEntity space = SpaceEntity.builder()
-                .spaceId(spaceId).name(spaceName)
-                .owner(member.getId()).creator(member.getId())
-                .props(props).createdBy(userId).updatedBy(userId)
-                .build();
+            .spaceId(spaceId).name(spaceName)
+            .owner(member.getId()).creator(member.getId())
+            .props(props).createdBy(userId).updatedBy(userId)
+            .build();
         boolean addSpace = save(space);
         ExceptionUtil.isTrue(addSpace, SpaceException.CREATE_SPACE_ERROR);
         // add root node
@@ -384,13 +389,13 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         ClientOriginInfo clientOriginInfo = InformationUtil
             .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg = AuditSpaceArg.builder()
-                .action(AuditSpaceAction.RENAME_SPACE)
-                .requestIp(clientOriginInfo.getIp())
-                .requestUserAgent(clientOriginInfo.getUserAgent())
-                .userId(userId)
-                .spaceId(spaceId)
-                .info(info)
-                .build();
+            .action(AuditSpaceAction.RENAME_SPACE)
+            .requestIp(clientOriginInfo.getIp())
+            .requestUserAgent(clientOriginInfo.getUserAgent())
+            .userId(userId)
+            .spaceId(spaceId)
+            .info(info)
+            .build();
         SpringContextHolder.getApplicationContext()
             .publishEvent(new AuditSpaceEvent(this, arg));
     }
@@ -425,13 +430,13 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         ClientOriginInfo clientOriginInfo = InformationUtil
             .getClientOriginInfoInCurrentHttpContext(true, false);
         AuditSpaceArg arg = AuditSpaceArg.builder()
-                .action(AuditSpaceAction.UPDATE_SPACE_LOGO)
-                .userId(userId)
-                .requestIp(clientOriginInfo.getIp())
-                .requestUserAgent(clientOriginInfo.getUserAgent())
-                .spaceId(spaceId)
-                .info(info)
-                .build();
+            .action(AuditSpaceAction.UPDATE_SPACE_LOGO)
+            .userId(userId)
+            .requestIp(clientOriginInfo.getIp())
+            .requestUserAgent(clientOriginInfo.getUserAgent())
+            .spaceId(spaceId)
+            .info(info)
+            .build();
         SpringContextHolder.getApplicationContext()
             .publishEvent(new AuditSpaceEvent(this, arg));
     }
@@ -560,6 +565,18 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     }
 
     @Override
+    public long getNodeCountBySpaceId(String spaceId, Predicate<NodeType> excludeType) {
+        List<NodeTypeStaticsDTO> nodeTypeStaticsDTOList =
+            iStaticsService.getNodeTypeStaticsBySpaceId(spaceId);
+        return nodeTypeStaticsDTOList.stream()
+            .filter(statics -> {
+                NodeType nodeType = NodeType.toEnum(statics.getType());
+                return !nodeType.isRoot() && !excludeType.test(nodeType);
+            })
+            .mapToLong(NodeTypeStaticsDTO::getTotal).sum();
+    }
+
+    @Override
     public CreditInfo getCredit(String spaceId) {
         SubscriptionInfo subscriptionInfo = new DefaultSubscriptionInfo();
         if (StrUtil.isNotBlank(spaceId)) {
@@ -597,8 +614,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             return;
         }
         SeatUsage seatUsage = getSeatUsage(spaceId);
-        long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
-        if (maxSeatNums != -1 && (seatUsage.getTotal() >= maxSeatNums)) {
+        SubscriptionFeatures.ConsumeFeatures.Seat seat = subscriptionInfo.getFeature().getSeat();
+        if (seat.isUnlimited() && (seatUsage.getTotal() >= seat.getValue())) {
             throw new BusinessException(LimitException.SEATS_OVER_LIMIT);
         }
     }
@@ -619,10 +636,33 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     }
 
     @Override
-    public boolean checkSeatOverLimitAndSendNotify(Long userId, String spaceId, long addedSeatNums, boolean isAllMember, boolean sendNotify) {
+    public void checkFileNumOverLimit(String spaceId) {
+        checkFileNumOverLimit(spaceId, 1);
+    }
+
+    @Override
+    public void checkFileNumOverLimit(String spaceId, long addFileNums) {
+        // get subscription max sheet nums
+        SubscriptionInfo subscriptionInfo =
+            entitlementServiceFacade.getSpaceSubscription(spaceId);
+        if (!subscriptionInfo.isFree()) {
+            return;
+        }
+        SubscriptionFeatures.ConsumeFeatures.SheetNums sheetNums =
+            subscriptionInfo.getFeature().getSheetNums();
+        long currentSheetNums = getNodeCountBySpaceId(spaceId, NodeType::isFolder);
+        if (sheetNums.isUnlimited() && (currentSheetNums + addFileNums > sheetNums.getValue())) {
+            throw new BusinessException(LimitException.FILE_NUMS_OVER_LIMIT);
+        }
+    }
+
+    @Override
+    public boolean checkSeatOverLimitAndSendNotify(List<Long> userIds, String spaceId,
+                                                   long addedSeatNums, boolean isAllMember,
+                                                   boolean sendNotify) {
         // get subscription max seat nums
         SubscriptionInfo subscriptionInfo =
-                entitlementServiceFacade.getSpaceSubscription(spaceId);
+            entitlementServiceFacade.getSpaceSubscription(spaceId);
         if (!subscriptionInfo.isFree() && billingApitableEnabled) {
             // apitable billing mode, paid space，skip validation
             return true;
@@ -630,19 +670,21 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
         SeatUsage seatUsage = getSeatUsageForIM(spaceId);
         long totalSeatNums = seatUsage.getTotal() + addedSeatNums;
-        if (isAllMember){
+        if (isAllMember) {
             totalSeatNums = addedSeatNums;
         }
         if (maxSeatNums != -1 && (totalSeatNums > maxSeatNums)) {
-            if (sendNotify){
+            if (sendNotify) {
                 // Send space station notifications
                 try {
                     String spaceName = getNameBySpaceId(spaceId);
                     long finalTotalSeatNums = totalSeatNums;
                     TaskManager.me().execute(() -> NotificationManager.me()
-                            .playerNotify(NotificationTemplateId.SPACE_REFRESH_CONTACT_SEATS_LIMIT,
-                                    ListUtil.toList(userId), 0L, spaceId,
-                                    Dict.create().set("spaceName", spaceName).set("specification", maxSeatNums).set("usage", finalTotalSeatNums)));
+                        .playerNotify(NotificationTemplateId.SPACE_REFRESH_CONTACT_SEATS_LIMIT,
+                            userIds, 0L, spaceId,
+                            Dict.create().set("spaceName", spaceName)
+                                .set("specification", maxSeatNums)
+                                .set("usage", finalTotalSeatNums)));
                 } catch (Exception e) {
                     log.error("send space station notifications error", e);
                 }
@@ -657,7 +699,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     @Override
     public SeatUsage getSeatUsageForIM(String spaceId) {
         long memberCount =
-                iMemberService.getTotalMemberCountBySpaceId(spaceId);
+            iMemberService.getTotalMemberCountBySpaceId(spaceId);
         long chatBotCount = iStaticsService.getTotalChatbotNodesfromCache(spaceId);
         return new SeatUsage(chatBotCount, memberCount);
     }
@@ -685,7 +727,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         spaceInfoVO.setWidgetNums(widgetCount);
         // robot runs statistics
         InternalSpaceAutomationRunMessageV0 automationRunMessageV0 =
-                internalSpaceService.getAutomationRunMessageV0(spaceId);
+            internalSpaceService.getAutomationRunMessageV0(spaceId);
         spaceInfoVO.setAutomationRunsNums(automationRunMessageV0.getAutomationRunNums());
         // teams statistics
         long teamCount = iStaticsService.getTeamTotalCountBySpaceId(spaceId);
@@ -715,8 +757,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         List<NodeTypeStaticsDTO> nodeTypeStaticDtos =
             iStaticsService.getNodeTypeStaticsBySpaceId(spaceId);
         long sheetNums = nodeTypeStaticDtos.stream()
-            .filter(condition -> NodeType.toEnum(condition.getType())
-                .isFileNode()).mapToLong(NodeTypeStaticsDTO::getTotal)
+            .filter(condition -> NodeType.toEnum(condition.getType()).isNotFolder())
+            .mapToLong(NodeTypeStaticsDTO::getTotal)
             .sum();
         spaceInfoVO.setSheetNums(sheetNums);
         long mirrorNums = nodeTypeStaticDtos.stream()
@@ -948,8 +990,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         if (count > 0) {
             iSpaceRoleService.deleteRole(spaceId, memberId);
         }
-        ArrayList<Long> mIds = ListUtil.toList(memberId);
-        List<String> emails = iMemberService.getEmailsByMemberIds(mIds);
+        ArrayList<Long> memberIdList = ListUtil.toList(memberId);
+        List<String> emails = iMemberService.getEmailsByMemberIds(memberIdList);
         // Send email notification to the new main administrator
         if (CollUtil.isNotEmpty(emails)) {
             Dict dict = Dict.create();
@@ -970,7 +1012,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
                     subjectDict, dict, emails);
         }
         NotificationRenderFieldHolder.set(NotificationRenderField.builder()
-            .playerIds(mIds).build());
+            .playerIds(memberIdList).build());
         return userId;
     }
 
@@ -1065,9 +1107,9 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         // the original main administrator become invalid.
         if (Boolean.FALSE.equals(feature.getInvitable())) {
             TaskManager.me().execute(() ->
-                    iSpaceInviteLinkService.delNoPermitMemberLink(spaceId));
+                iSpaceInviteLinkService.delNoPermitMemberLink(spaceId));
             TaskManager.me().execute(() ->
-                    iInvitationService.closeMemberInvitationBySpaceId(spaceId));
+                iInvitationService.closeMemberInvitationBySpaceId(spaceId));
         }
     }
 
@@ -1124,7 +1166,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     public SpaceEntity isSpaceAvailable(final String spaceId) {
         SpaceEntity entity = baseMapper.selectBySpaceId(spaceId);
         ExceptionUtil.isTrue(null != entity
-                && null == entity.getPreDeletionTime(), SPACE_NOT_EXIST);
+            && null == entity.getPreDeletionTime(), SPACE_NOT_EXIST);
         return entity;
     }
 
@@ -1155,6 +1197,15 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             Boolean.FALSE) : Boolean.FALSE;
         result.setBlackSpace(blackSpace);
         return result;
+    }
+
+    @Override
+    public String getSpaceOwnerOpenId(String spaceId) {
+        Long adminMemberId = baseMapper.selectSpaceMainAdmin(spaceId);
+        if (adminMemberId == null) {
+            return null;
+        }
+        return memberMapper.selectOpenIdByMemberId(adminMemberId);
     }
 
     @Override

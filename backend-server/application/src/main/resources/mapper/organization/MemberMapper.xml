@@ -844,6 +844,12 @@
         WHERE id = #{memberId} AND is_deleted = 0
     </select>
 
+    <select id="selectUserIdByOpenId" resultType="java.lang.Long">
+        SELECT user_id
+        FROM ${tablePrefix}unit_member
+        WHERE space_id = #{spaceId} AND open_id = #{openId} AND is_deleted = 0 LIMIT 0,1
+    </select>
+
     <select id="selectOpenIdByMemberIds" resultType="java.lang.String">
         SELECT open_id
         FROM ${tablePrefix}unit_member

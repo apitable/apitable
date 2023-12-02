@@ -20,6 +20,9 @@ package com.apitable.player.dto;
 
 import lombok.Data;
 
+/**
+ * player base dto.
+ */
 @Data
 public class PlayerBaseDTO {
     private String uuid;

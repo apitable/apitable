@@ -18,12 +18,6 @@
 
 package com.apitable.space.controller;
 
-import javax.annotation.Resource;
-import javax.validation.Valid;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-
 import com.apitable.core.support.ResponseData;
 import com.apitable.shared.component.TaskManager;
 import com.apitable.shared.component.notification.NotificationTemplateId;
@@ -34,7 +28,10 @@ import com.apitable.shared.context.SessionContext;
 import com.apitable.space.ro.SpaceJoinApplyRo;
 import com.apitable.space.ro.SpaceJoinProcessRo;
 import com.apitable.space.service.ISpaceApplyService;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.annotation.Resource;
+import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -62,7 +59,7 @@ public class SpaceApplyController {
         Long applyId = iSpaceApplyService.create(userId, ro.getSpaceId());
         // send apply notifications
         TaskManager.me().execute(() ->
-                iSpaceApplyService.sendApplyNotify(userId, ro.getSpaceId(), applyId));
+            iSpaceApplyService.sendApplyNotify(userId, ro.getSpaceId(), applyId));
         return ResponseData.success();
     }
 

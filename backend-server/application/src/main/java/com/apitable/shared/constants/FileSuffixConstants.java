@@ -19,7 +19,7 @@
 package com.apitable.shared.constants;
 
 /**
- * file constants
+ * file constants.
  *
  * @author Chambers
  */

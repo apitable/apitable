@@ -98,6 +98,9 @@ email:
   personal: ${EMAIL_PERSONAL:APITable}
   from: ${MAIL_FROM:}
 
+cte-sql:
+  enabled: ${CTE_SQL_ENABLED:true}
+
 starter:
   socketio:
     client:

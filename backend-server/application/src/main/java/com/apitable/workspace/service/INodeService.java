@@ -94,6 +94,14 @@ public interface INodeService extends IService<NodeEntity> {
     NodeEntity getByNodeId(String nodeId);
 
     /**
+     * get sub node list.
+     *
+     * @param parentId parent id
+     * @return NodeEntity List
+     */
+    List<NodeEntity> getSubNodeList(String parentId);
+
+    /**
      * gets the id of the existing node.
      *
      * @param nodeIds nodeIds
@@ -628,12 +636,12 @@ public interface INodeService extends IService<NodeEntity> {
     Long getCreatedMemberId(String nodeId);
 
     /**
-     * whether the node name exists on the same directory.
+     * whether the node name exists on the same level.
      *
      * @param parentNodeId parent node id
      * @param nodeName     node name
-     * @return boolean
+     * @return optional
      */
-    String getNodeIdByParentIdAndNodeName(String parentNodeId, String nodeName);
+    Optional<NodeEntity> findSameNameInSameLevel(String parentNodeId, String nodeName);
 
 }

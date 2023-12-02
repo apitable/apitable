@@ -40,6 +40,7 @@ import {
   IViewRow,
   NoticeTemplatesConstant,
   Selectors,
+  IRemoteChangeset,
 } from '@apitable/core';
 import { Inject, Injectable } from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
@@ -838,6 +839,25 @@ export class FusionApiService {
     }
     return result.saveResult as string;
   }
+
+  /**
+   * Customize rust command
+   */
+  public async executeCommandFromRust(datasheetId: string, commandBody: IRemoteChangeset[], auth: IAuthHeader): Promise<string> {
+      const linkedRecordMap = undefined;
+      const datasheet = await this.databusService.getDatasheet(datasheetId, {
+        loadOptions: {
+          auth,
+          linkedRecordMap,
+          includeCommentCount: false
+        },
+      });
+      if (datasheet === null) {
+        throw ApiException.tipError(ApiTipConstant.api_datasheet_not_exist);
+      }
+      await datasheet.nestRoomChangeFromRust(datasheetId, commandBody);
+      return 'executeCommandFromRoomServer';
+    }
 
   private async addDatasheetField(dst: databus.Datasheet, fieldOptions: IAddFieldOptions, auth: IAuthHeader): Promise<string> {
     const result = await dst.addFields([fieldOptions], { auth });

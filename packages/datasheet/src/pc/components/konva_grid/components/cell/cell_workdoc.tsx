@@ -1,11 +1,13 @@
 import dynamic from 'next/dynamic';
-import { useContext, useState } from 'react';
-import { KONVA_DATASHEET_ID, Strings, t } from '@apitable/core';
+import { useContext, useEffect, useState } from 'react';
+import { KONVA_DATASHEET_ID, Navigation, Strings, t } from '@apitable/core';
 import { AddOutlined, FileOutlined } from '@apitable/icons';
+import { Router } from 'pc/components/route_manager/router';
+import { useQuery } from 'pc/hooks';
 import { generateTargetName } from '../../../gantt_view';
 import { Icon, Rect, Text } from '../../../konva_components';
 import { GRID_CELL_ADD_ITEM_BUTTON_SIZE, GRID_CELL_VALUE_PADDING, GRID_OPTION_ITEM_PADDING } from '../../constant';
-import { KonvaGridContext } from '../../context';
+import { KonvaGridContext, KonvaGridViewContext } from '../../context';
 import { CellScrollContainer } from '../cell_scroll_container';
 import { ICellProps } from './cell_value';
 import { IRenderContentBase, IRenderData } from './interface';
@@ -19,6 +21,18 @@ export const CellWorkdoc = (props: ICellProps) => {
   const operatingEnable = isActive;
   const { renderContent, height } = renderData;
   const fieldId = field?.id;
+  const { datasheetId, view: { id: viewId } } = useContext(KonvaGridViewContext);
+  const query = useQuery();
+
+  useEffect(() => {
+    // first render try to open workdoc
+    if (query.get('recordId') === recordId && query.get('fieldId') === fieldId) {
+      setTimeout(() => {
+        toggleEdit && toggleEdit();
+      }, 200);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
@@ -32,6 +46,21 @@ export const CellWorkdoc = (props: ICellProps) => {
     mouseStyle: 'pointer',
   });
 
+  const handleEdit = () => {
+    toggleEdit && toggleEdit();
+    Router.replace(Navigation.WORKBENCH, {
+      params: {
+        nodeId: datasheetId,
+        datasheetId,
+        viewId,
+      },
+      query: {
+        recordId,
+        fieldId
+      }
+    });
+  };
+
   const renderDoc = () => {
     if (renderContent == null) return null;
     const { x, y, width, height, text } = renderContent[0] as IRenderContentBase;
@@ -40,10 +69,6 @@ export const CellWorkdoc = (props: ICellProps) => {
         x={10}
         y={5}
         listening={isActive}
-        onMouseEnter={() => setHover(true)}
-        onMouseOut={() => setHover(false)}
-        onClick={toggleEdit}
-        onTap={toggleEdit}
       >
         <Rect
           name={name}
@@ -51,14 +76,23 @@ export const CellWorkdoc = (props: ICellProps) => {
           height={height + 2}
           fill={isHover ? colors.bgBrandLightHover : colors.bgBrandLightDefault}
           cornerRadius={4}
+          onMouseEnter={() => setHover(true)}
+          onMouseOut={() => setHover(false)}
+          onClick={handleEdit}
+          onTap={handleEdit}
         />
         <Icon
+          name={name}
           x={1}
           y={0}
           data={FileOutlinedPath}
           backgroundWidth={22}
           backgroundHeight={22}
           fill={colors.textBrandDefault}
+          onMouseEnter={() => setHover(true)}
+          onMouseOut={() => setHover(false)}
+          onMouseDown={handleEdit}
+          onTap={handleEdit}
         />
         <Text x={x + 13} y={y - 5} height={height} text={text} fill={colors.textBrandDefault} fontSize={13} />
       </Group>

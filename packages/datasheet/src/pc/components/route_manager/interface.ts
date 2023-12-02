@@ -80,6 +80,8 @@ export interface IQuery {
   comment?: number;
   improveType?: ConfigConstant.ImproveType;
   via?: string;
+  recordId?: string;
+  fieldId?: string;
 }
 
 export interface IOptions {

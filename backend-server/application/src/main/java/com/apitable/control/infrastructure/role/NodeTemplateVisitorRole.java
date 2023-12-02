@@ -22,7 +22,7 @@ import com.apitable.control.infrastructure.role.RoleConstants.Node;
 
 /**
  * <p>
- * template visitor role of node
+ * template visitor role of node.
  * </p>
  *
  * @author Chambers

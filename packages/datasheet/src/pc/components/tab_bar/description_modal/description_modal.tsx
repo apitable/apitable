@@ -68,7 +68,7 @@ const RenderModalBase: React.FC<React.PropsWithChildren<IRenderModalBase>> = (pr
   const { visible, onClose, activeNodeId, onChange, datasheetName, modalStyle, isMobile } = props;
   const dispatch = useDispatch();
   const descDst = useAppSelector((state) => Selectors.getNodeDesc(state), shallowEqual);
-  const [automationState, setAutomationState] = useAtom(automationStateAtom);
+  const [automationState] = useAtom(automationStateAtom);
   const nodeDesc= checkIfAutomationNode(props.activeNodeId) ? getJsonValue(automationState?.robot?.description): descDst;
 
   const [value, setValue] = useState(getDefaultValue(nodeDesc));
@@ -266,8 +266,8 @@ const checkIfAutomationNode=(node: string) => {
 export const DescriptionModal: React.FC<React.PropsWithChildren<IDescriptionModal>> = (props) => {
   const { activeNodeId, datasheetName, showIntroduction = true, onVisibleChange, className, ...rest } = props;
   const [visible, setVisible] = useState(false);
-  const [automationState, setAutomationState] = useAtom(automationStateAtom);
-  const descDst= useAppSelector((state) => {
+  const [automationState] = useAtom(automationStateAtom);
+  const descDst = useAppSelector((state) => {
     return Selectors.getNodeDesc(state);
   }, shallowEqual);
 

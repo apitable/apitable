@@ -31,6 +31,7 @@ let body:.BasicModuleVerifyActionModuleInterfaceApiInviteTokenValidRequest = {
   inviteValidRo: {
     token: "b10e5e36cd7249bdaeab3e424308deed",
     nodeId: "dst****",
+    data: "FutureIsComing",
   },
 };
 
@@ -130,7 +131,7 @@ No authorization required
 # **send**
 > ResponseDataVoid send(smsOpRo)
 
-SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding, 8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
+SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding,8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
 
 ### Example
 

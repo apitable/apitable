@@ -49,11 +49,10 @@ public class IdUtil {
     /**
      * create node id.
      *
-     * @param type node type
+     * @param nodeType node type
      * @return String
      */
-    public static String createNodeId(Integer type) {
-        NodeType nodeType = NodeType.toEnum(type);
+    public static String createNodeId(NodeType nodeType) {
         switch (nodeType) {
             case DATASHEET:
                 return IdRulePrefixEnum.DST.getIdRulePrefixEnum()

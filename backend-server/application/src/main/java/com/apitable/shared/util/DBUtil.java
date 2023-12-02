@@ -26,18 +26,31 @@ import java.util.function.Function;
 
 /**
  * <p>
- * DB Util
+ * DB Util.
  * </p>
  *
  * @author Chambers
  */
 public class DBUtil {
 
-    public static <T, R> List<R> batchSelectByFieldIn(Collection<T> fieldValues, Function<List<T>, List<R>> queryFunction) {
+    public static <T, R> List<R> batchSelectByFieldIn(Collection<T> fieldValues,
+                                                      Function<List<T>, List<R>> queryFunction) {
         return DBUtil.batchSelectByFieldIn(fieldValues, queryFunction, 1000);
     }
 
-    public static <T, R> List<R> batchSelectByFieldIn(Collection<T> fieldValues, Function<List<T>, List<R>> queryFunction, int batchSize) {
+    /**
+     * batch select by field in.
+     *
+     * @param fieldValues   field values
+     * @param queryFunction query function
+     * @param batchSize     batch size
+     * @param <T>           T
+     * @param <R>           R
+     * @return result list
+     */
+    public static <T, R> List<R> batchSelectByFieldIn(Collection<T> fieldValues,
+                                                      Function<List<T>, List<R>> queryFunction,
+                                                      int batchSize) {
         List<R> resultList = new ArrayList<>();
         int totalItems = fieldValues.size();
         int startIndex = 0;

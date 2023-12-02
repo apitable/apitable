@@ -48,13 +48,13 @@ const rgba2hex = (foregroundColor: string, backgroundColor = '#FFFFFF') => {
   return adjustedColor.hex();
 };
 
-const getColorValue = (color: string, alpha: number) => {
+export const getColorValue = (color: string, alpha: number) => {
   return rgba2hex(Color(color).alpha(alpha).string());
 };
 
 /**
  * get single or multiple color object, transformed by color number
- * 
+ *
  * 0 => deepPurple_1
  * 10 => deepPurple_2
  * 11 => indigo_2

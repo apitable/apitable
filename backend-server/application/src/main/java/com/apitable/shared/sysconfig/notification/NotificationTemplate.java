@@ -28,37 +28,65 @@ import lombok.Data;
  */
 @Data
 public class NotificationTemplate {
-    /** id. */
+    /**
+     * id.
+     */
     private String id;
-    /** canJump. */
+    /**
+     * canJump.
+     */
     private boolean canJump;
-    /** to user tag. */
+    /**
+     * to user tag.
+     */
     private String toTag;
-    /** format string. */
+    /**
+     * format string.
+     */
     private String formatString;
-    /** whether to show in notification center. */
+    /**
+     * whether to show in notification center.
+     */
     @JsonProperty("is_notification")
     private boolean isNotification;
-    /** whether to send mobile notification. */
+    /**
+     * whether to send mobile notification.
+     */
     @JsonProperty("is_mobile")
     private boolean isMobile;
-    /** whether to send browser notification. */
+    /**
+     * whether to send browser notification.
+     */
     @JsonProperty("is_browser")
     private boolean isBrowser;
-    /** is component. */
+    /**
+     * is component.
+     */
     @JsonProperty("is_component")
     private boolean isComponent;
-    /** whether to send email notification. */
+    /**
+     * whether to send email notification.
+     */
     @JsonProperty("is_mail")
     private boolean isMail;
-    /** jump url. */
+    /**
+     * jump url.
+     */
     private String url;
-    /** notification type. */
+    /**
+     * notification type.
+     */
     private String notificationsType;
-    /** mail subject. */
+    /**
+     * mail subject.
+     */
     private String mailTemplateSubject;
-    /** frequency limit. */
+    /**
+     * frequency limit.
+     */
     private Integer frequency;
-    /** redirect url. */
+    /**
+     * redirect url.
+     */
     private String redirectUrl;
 }

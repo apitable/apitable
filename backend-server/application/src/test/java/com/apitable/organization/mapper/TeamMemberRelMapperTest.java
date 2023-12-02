@@ -87,11 +87,4 @@ public class TeamMemberRelMapperTest extends AbstractMyBatisMapperTest {
         assertThat(ids).isNotEmpty();
     }
 
-    @Test
-    @Sql({"/sql/unit-team-member-rel-data.sql", "/sql/unit-team-data.sql"})
-    void testSelectAllTeamIdByMemberId() {
-        List<Long> ids = teamMemberRelMapper.selectAllTeamIdByMemberId(41L);
-        assertThat(ids).isNotEmpty();
-    }
-
 }

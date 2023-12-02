@@ -19,7 +19,9 @@ public enum LimitException implements BaseException {
 
     SEATS_OVER_LIMIT(1503, "seat nums over limit"),
 
-    CREDIT_OVER_LIMIT(1504, "credit over limit");
+    CREDIT_OVER_LIMIT(1504, "credit over limit"),
+
+    FILE_NUMS_OVER_LIMIT(1505, "file nums over limit");
 
     private final Integer code;
 

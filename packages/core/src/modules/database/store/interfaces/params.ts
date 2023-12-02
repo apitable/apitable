@@ -38,8 +38,4 @@ export interface IRubbishListParams {
    * number of items per page
    */
   size?: number;
-  /**
-   * whether or not request the over-limit nodes (default FALSE)
-   */
-  isOverLimit?: boolean;
 }

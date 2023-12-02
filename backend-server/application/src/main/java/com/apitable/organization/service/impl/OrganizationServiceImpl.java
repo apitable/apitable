@@ -18,25 +18,14 @@
 
 package com.apitable.organization.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Editor;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.BooleanUtil;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.organization.dto.LoadSearchDTO;
 import com.apitable.organization.dto.TeamCteInfo;
+import com.apitable.organization.facade.TeamFacade;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.mapper.TeamMapper;
 import com.apitable.organization.mapper.TeamMemberRelMapper;
@@ -57,7 +46,15 @@ import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.util.DBUtil;
 import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.workspace.service.impl.NodeRoleServiceImpl;
-
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
@@ -85,6 +82,9 @@ public class OrganizationServiceImpl implements IOrganizationService {
     private ITeamService iTeamService;
 
     @Resource
+    private TeamFacade teamFacade;
+
+    @Resource
     private UserSpaceCacheService userSpaceCacheService;
 
     @Resource
@@ -107,7 +107,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public UnitSearchResultVo findLikeUnitName(String spaceId, String likeWord,
-        String highlightClassName) {
+                                               String highlightClassName) {
         log.info("search organizational unit");
         UnitSearchResultVo unitSearchResultVo = new UnitSearchResultVo();
         String all = "*";
@@ -203,7 +203,8 @@ public class OrganizationServiceImpl implements IOrganizationService {
         log.info("query the team's unit info.");
         UnitTeamVo unitTeam = teamMapper.selectUnitTeamVoByTeamId(spaceId, teamId);
         // the number of statistics
-        unitTeam.setMemberCount(SqlHelper.retCount(iTeamService.countMemberCountByParentId(teamId)));
+        unitTeam.setMemberCount(
+            SqlHelper.retCount(iTeamService.countMemberCountByParentId(teamId)));
         // query whether there are sub-organizational units（team or member）
         unitTeam.setHasChildren(iTeamService.checkHasSubUnitByTeamId(spaceId, teamId));
         return unitTeam;
@@ -259,7 +260,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public List<UnitInfoVo> loadOrSearchInfo(Long userId, String spaceId, LoadSearchDTO params,
-        Long sharer) {
+                                             Long sharer) {
         log.info("load or search unit");
         List<Long> unitIds = this.getLoadedUnitIds(userId, spaceId, params, sharer);
         if (CollUtil.isEmpty(unitIds)) {
@@ -273,7 +274,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
     }
 
     private List<Long> getLoadedUnitIds(Long userId, String spaceId, LoadSearchDTO params,
-        Long sharer) {
+                                        Long sharer) {
         if (CollUtil.isNotEmpty(params.getUnitIds())) {
             return params.getUnitIds();
         }
@@ -282,7 +283,8 @@ public class OrganizationServiceImpl implements IOrganizationService {
         }
         String likeWord = CharSequenceUtil.trim(params.getKeyword());
         if (CharSequenceUtil.isNotBlank(likeWord)) {
-            List<Long> refIds = this.getSearchUnitRefIds(spaceId, likeWord, params.getSearchEmail());
+            List<Long> refIds =
+                this.getSearchUnitRefIds(spaceId, likeWord, params.getSearchEmail());
             return unitMapper.selectIdsByRefIds(refIds);
         }
         if (sharer != null) {
@@ -305,14 +307,14 @@ public class OrganizationServiceImpl implements IOrganizationService {
             return new ArrayList<>();
         }
         Long lastTeamId = teamIds.get(teamIds.size() - 1);
-        List<Long> mIds = teamMemberRelMapper.selectMemberIdsByTeamId(lastTeamId);
-        if (CollUtil.isEmpty(mIds)) {
+        List<Long> memberIds = teamMemberRelMapper.selectMemberIdsByTeamId(lastTeamId);
+        if (CollUtil.isEmpty(memberIds)) {
             return new ArrayList<>();
         }
-        List<Long> refIds = CollUtil.sub(CollUtil.reverse(mIds), 0, loadCount);
-        List<Long> uIds = unitMapper.selectIdsByRefIds(refIds);
-        userSpaceRemindRecordCacheService.refresh(userId, spaceId, uIds);
-        return uIds;
+        List<Long> refIds = CollUtil.sub(CollUtil.reverse(memberIds), 0, loadCount);
+        List<Long> unitPrimaryIds = unitMapper.selectIdsByRefIds(refIds);
+        userSpaceRemindRecordCacheService.refresh(userId, spaceId, unitPrimaryIds);
+        return unitPrimaryIds;
     }
 
     private List<Long> getSearchUnitRefIds(String spaceId, String likeWord, Boolean searchEmail) {
@@ -363,8 +365,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
 
     @Override
     public SubUnitResultVo loadMemberFirstTeams(String spaceId, List<Long> teamIds) {
-        log.info("Load the first department of the organization tree to which a member belongs");
-        List<Long> loadTeamIds = this.loadMemberFirstTeamIds(spaceId, teamIds);
+        List<Long> loadTeamIds = this.loadMemberFirstTeamIds(teamIds);
         // get the required load department UnitTeamVo
         List<UnitTeamVo> unitTeamVoList = this.findUnitTeamVo(spaceId, loadTeamIds);
         SubUnitResultVo subUnitResultVo = new SubUnitResultVo();
@@ -373,10 +374,9 @@ public class OrganizationServiceImpl implements IOrganizationService {
     }
 
     @Override
-    public List<Long> loadMemberFirstTeamIds(String spaceId, List<Long> teamIds) {
-        log.info("Load the first department id of the organization tree to which a member belongs");
+    public List<Long> loadMemberFirstTeamIds(List<Long> teamIds) {
         // Member's department's and all sub-departments' id and parentId
-        List<TeamCteInfo> teamsInfo = DBUtil.batchSelectByFieldIn(teamIds, (ids) -> teamMapper.selectChildTreeByTeamIds(spaceId, ids));
+        List<TeamCteInfo> teamsInfo = teamFacade.getAllChildTeam(teamIds);
         // the member's team and all child teams id
         List<Long> teamIdList =
             teamsInfo.stream().map(TeamCteInfo::getId).collect(Collectors.toList());

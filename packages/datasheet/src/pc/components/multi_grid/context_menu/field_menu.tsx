@@ -137,7 +137,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
       wrapperRef.current && wrapperRef.current.focus();
     });
 
-    const { fieldError, fieldCanGroup, showFieldName, linkedFieldError } = useMemo(() => {
+    const { fieldError, fieldCanGroup, showFieldName, canFilter, linkedFieldError } = useMemo(() => {
       if (!field) {
         return {
           fieldError: true,
@@ -147,8 +147,10 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
         };
       }
       const fieldError = Boolean(Field.bindModel(field).validateProperty().error);
+      const fieldModel = Field.bindModel(field);
       return {
         fieldError,
+        canFilter: fieldModel.canFilter,
         fieldCanGroup: Field.bindModel(field).canGroup && canGroup,
         showFieldName: getShowFieldName(field.name),
         linkedFieldError: field.type === FieldType.Link && fieldError,
@@ -457,7 +459,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
         {
           icon: <FilterOutlined color={colors.thirdLevelText} />,
           text: t(Strings.filter_fields, { field_name: showFieldName }),
-          hidden: !editable || hasChosenMulti || Boolean(mirrorId),
+          hidden: !editable || hasChosenMulti || Boolean(mirrorId) || !canFilter,
           onClick: filterField,
           disabled: () => isViewLock,
           id: 'filter_fields',

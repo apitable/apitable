@@ -20,6 +20,9 @@ package com.apitable.space.dto;
 
 import lombok.Data;
 
+/**
+ * space asset dto.
+ */
 @Data
 public class SpaceAssetDTO {
 

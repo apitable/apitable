@@ -20,24 +20,24 @@ package com.apitable.starter.oss.core;
 
 /**
  * <p>
- * oss upload credentials
+ * oss upload credentials.
  * </p>
  *
  */
 public class OssUploadAuth {
 
     /**
-     * upload certificate token
+     * upload certificate token.
      */
     private String uploadToken;
 
     /**
-     * upload URL
+     * upload URL.
      */
     private String uploadUrl;
 
     /**
-     * upload request method
+     * upload request method.
      */
     private String uploadRequestMethod;
 

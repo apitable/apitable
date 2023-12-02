@@ -68,7 +68,7 @@ export const FilterBase = (props: IFilterProps) => {
   const isRoot = !hasParent;
   const updateFilter = useCallback((filter: any) => {
     setFilter(filter);
-    // The updated value of the child component is passed to the parent component. 
+    // The updated value of the child component is passed to the parent component.
     // The parent component knows the specific path of the child component and only needs to pass the value.
     if (onChange) {
       // root update, you need to serialize the values a bit.
@@ -129,7 +129,8 @@ export const FilterBase = (props: IFilterProps) => {
   // Here are all the fields, with or without permissions.
   const fieldMap = snapshot.meta.fieldMap;
 
-  const fields = getFields(snapshot.meta.views[0]?.columns!, fieldMap);
+  const filters = getFields(snapshot.meta.views[0]?.columns!, fieldMap);
+  const fields = filters.filter(r => Field.bindModel(r).canFilter );
   const primaryField = fields[0];
   const addNewFilter = useCallback((type: FilterTypeEnums) => {
     const newFilter = _addNewFilter(filter, type, primaryField);
@@ -217,7 +218,7 @@ export const FilterBase = (props: IFilterProps) => {
                 />
                 <IconButton
                   icon={() => <DeleteOutlined size={16} color={theme.color.textCommonTertiary} />}
-                  onClick={() => deleteOperandByIndex(index)} 
+                  onClick={() => deleteOperandByIndex(index)}
                 />
               </React.Fragment>;
             })

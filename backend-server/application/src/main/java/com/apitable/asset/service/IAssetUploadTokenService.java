@@ -18,10 +18,9 @@
 
 package com.apitable.asset.service;
 
-import java.util.List;
-
 import com.apitable.asset.vo.AssetUploadCertificateVO;
 import com.apitable.asset.vo.AssetUrlSignatureVo;
+import java.util.List;
 
 
 /**
@@ -42,7 +41,7 @@ public interface IAssetUploadTokenService {
      * Get asset url signature vos.
      *
      * @param fileNames file names
-     * @return List<AssetUrlSignatureVo>
+     * @return List of AssetUrlSignatureVo
      * @author Chambers
      */
     List<AssetUrlSignatureVo> getAssetUrlSignatureVos(List<String> fileNames);
@@ -57,12 +56,13 @@ public interface IAssetUploadTokenService {
     /**
      * batch create space asset pre-signed url.
      *
-     * @param userId            user id
-     * @param nodeId            node id
-     * @param assetType         asset type
-     * @param count             created count
+     * @param userId    user id
+     * @param nodeId    node id
+     * @param assetType asset type
+     * @param count     created count
      * @return AssetUploadCertificateVO
      */
     List<AssetUploadCertificateVO> createSpaceAssetPreSignedUrl(Long userId,
-        String nodeId, int assetType, int count);
+                                                                String nodeId, int assetType,
+                                                                int count);
 }

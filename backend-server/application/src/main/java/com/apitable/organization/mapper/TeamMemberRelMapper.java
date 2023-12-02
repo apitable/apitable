@@ -160,14 +160,6 @@ public interface TeamMemberRelMapper extends ExpandBaseMapper<TeamMemberRelEntit
     List<Long> selectMemberIdsByRootTeamId(@Param("rootTeamId") Long rootTeamId);
 
     /**
-     * Query the teams which the member belongs, including all parent departments of the teams, unit the root department.
-     *
-     * @param memberId member id
-     * @return the team ids
-     */
-    List<Long> selectAllTeamIdByMemberId(@Param("memberId") Long memberId);
-
-    /**
      * delete bulk with team ids.
      *
      * @param teamIds team ids

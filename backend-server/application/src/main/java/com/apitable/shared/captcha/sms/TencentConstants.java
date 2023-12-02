@@ -18,21 +18,17 @@
 
 package com.apitable.shared.captcha.sms;
 
+import cn.hutool.core.util.StrUtil;
+import com.apitable.core.exception.BusinessException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import cn.hutool.core.util.StrUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.core.exception.BusinessException;
-
-import org.springframework.util.StringUtils;
-
 /**
  * <p>
- * Tencent Cloud Constants
+ * Tencent Cloud Constants.
  * </p>
  *
  * @author Shawn Deng
@@ -40,81 +36,82 @@ import org.springframework.util.StringUtils;
 public class TencentConstants {
 
     /**
-     * Sms Template
+     * Sms Template.
      */
     @AllArgsConstructor
     @Getter
     public enum SmsTemplate {
 
         /**
-         * Register
+         * Register.
          */
         REGISTER("430107"),
 
         /**
-         * Login
+         * Login.
          */
         LOGIN("525692"),
 
         /**
-         * Update Login Password
+         * Update Login Password.
          */
         UPDATE_PASSWORD("525694"),
 
         /**
-         * Update Password success
+         * Update Password success.
          */
-        UPDATE_PASSWORD_SUCCESS_NOTICE( "525695"),
+        UPDATE_PASSWORD_SUCCESS_NOTICE("525695"),
 
         /**
-         * Bind Mobile
+         * Bind Mobile.
          */
         BIND_MOBILE_PHONE("525698"),
 
         /**
-         * unbind mobile
+         * unbind mobile.
          */
-        REMOVE_MOBILE_PHONE_BINDING( "525699"),
+        REMOVE_MOBILE_PHONE_BINDING("525699"),
 
         /**
-         * update bind mail
+         * update bind mail.
          */
-        UPDATE_EMAIL_BINDING( "525700"),
+        UPDATE_EMAIL_BINDING("525700"),
 
         /**
-         * delete space
+         * delete space.
          */
-        DELETE_SPACE( "525701"),
+        DELETE_SPACE("525701"),
 
         /**
-         * change space main admin
+         * change space main admin.
          */
-        UPDATE_MAIN_ADMIN( "525704"),
+        UPDATE_MAIN_ADMIN("525704"),
 
         /**
-         * bind dingtalk
+         * bind dingtalk.
          */
-        DING_TALK_BINDING( "525705"),
+        DING_TALK_BINDING("525705"),
 
         /**
-         * normal verification
+         * normal verification.
          */
         GENERAL_VERIFICATION("533747"),
 
         /**
-         * reset api key
+         * reset api key.
          */
-        RESET_API_KEY( "617895"),
+        RESET_API_KEY("617895"),
 
         /**
-         * bind user
+         * bind user.
          */
-        SOCIAL_USER_BIND("800128"),;
+        SOCIAL_USER_BIND("800128"),
+        ;
 
         private final String templateCode;
 
         /**
-         * is sms template
+         * is sms template.
          */
         public static boolean isSmsTemplate(String templateCode) {
             if (StrUtil.isEmpty(templateCode)) {
@@ -125,20 +122,20 @@ public class TencentConstants {
         }
 
         /**
-         * get sms template list
+         * get sms template list.
          */
         public static List<SmsTemplate> getList() {
             return Arrays.asList(SmsTemplate.values());
         }
 
         /**
-         * get sms template code list
+         * get sms template code list.
          */
         public static List<String> getTemplateCodeList() {
             List<String> templateCodeList = new ArrayList<>();
             List<SmsTemplate> list = getList();
             for (SmsTemplate template : list) {
-                if (StringUtils.isEmpty(template.getTemplateCode())) {
+                if (StrUtil.isEmpty(template.getTemplateCode())) {
                     continue;
                 }
                 templateCodeList.add(template.getTemplateCode());

@@ -29,6 +29,9 @@ export const SearchSelectField = (props: ISearchSelectFieldProps) => {
   const filter = (item: IViewColumn) => {
     if (fieldType) {
       const field = fieldMap[item.fieldId];
+      if(field.type == FieldType.Button) {
+        return false;
+      }
       return fieldType.includes(field.type);
     }
     return true;

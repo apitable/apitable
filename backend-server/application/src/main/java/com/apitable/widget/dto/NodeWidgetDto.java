@@ -20,21 +20,24 @@ package com.apitable.widget.dto;
 
 import lombok.Data;
 
+/**
+ * node widget dto.
+ */
 @Data
 public class NodeWidgetDto {
 
     /**
-     * widget name
+     * widget name.
      */
     private String widgetName;
 
     /**
-     * widget reference datasheet
+     * widget reference datasheet.
      */
     private String dstId;
 
     /**
-     * node id
+     * node id.
      */
     private String nodeId;
 }

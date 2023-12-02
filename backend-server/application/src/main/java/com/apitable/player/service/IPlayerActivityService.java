@@ -20,18 +20,18 @@ package com.apitable.player.service;
 
 /**
  * <p>
- * Player Activity Service
+ * Player Activity Service.
  * </p>
  */
 public interface IPlayerActivityService {
 
     /**
-     * Change status
+     * Change status.
      */
     void changeStatus(Long userId, Integer wizardId);
 
     /**
-     * Create user activity record
+     * Create user activity record.
      */
     void createUserActivityRecord(Long userId);
 }

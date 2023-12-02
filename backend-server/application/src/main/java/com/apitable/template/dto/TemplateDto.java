@@ -21,6 +21,9 @@ package com.apitable.template.dto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * template dto.
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class TemplateDto extends TemplateInfo {

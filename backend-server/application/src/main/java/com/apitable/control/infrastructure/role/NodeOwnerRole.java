@@ -21,7 +21,8 @@ package com.apitable.control.infrastructure.role;
 import com.apitable.control.infrastructure.role.RoleConstants.Node;
 
 /**
- * Owner role of node
+ * Owner role of node.
+ *
  * @author Shawn Deng
  */
 public class NodeOwnerRole extends NodeManagerRole {

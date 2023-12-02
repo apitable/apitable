@@ -23,7 +23,7 @@ import com.apitable.shared.captcha.ValidateTarget;
 
 /**
  * <p>
- * sms service interface
+ * sms service interface.
  * </p>
  *
  * @author Shawn Deng
@@ -31,7 +31,7 @@ import com.apitable.shared.captcha.ValidateTarget;
 public interface ISmsService {
 
     /**
-     * send sms verification code
+     * send sms verification code.
      *
      * @param target verification target
      * @param code   verification code
@@ -41,7 +41,7 @@ public interface ISmsService {
     void sendValidateCode(ValidateTarget target, String code, SmsCodeType type);
 
     /**
-     * send notification sms
+     * send notification sms.
      *
      * @param target verification target
      * @param type   sms service type

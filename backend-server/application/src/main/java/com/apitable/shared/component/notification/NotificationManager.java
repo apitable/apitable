@@ -97,10 +97,10 @@ public class NotificationManager {
      * space notification.
      *
      * @param requestStorage request parameter map
-     * @param templateId          notification template id
-     * @param userId              user id
-     * @param spaceId             space id
-     * @param result              response
+     * @param templateId     notification template id
+     * @param userId         user id
+     * @param spaceId        space id
+     * @param result         response
      */
     public void spaceNotify(RequestStorage requestStorage,
                             NotificationTemplateId templateId, Long userId, String spaceId,

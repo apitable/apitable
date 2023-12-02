@@ -159,6 +159,10 @@ export const calcCellValue = (
     return null;
   }
 
+  if(field.type === FieldType.Button ) {
+    return field.property.text;
+  }
+
   const instance = Field.bindContext(field, state);
 
   if (instance.isComputed) {

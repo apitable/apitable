@@ -272,7 +272,6 @@ import { SpaceLinkInfoVo } from '../models/SpaceLinkInfoVo';
 import { SpaceLinkOpRo } from '../models/SpaceLinkOpRo';
 import { SpaceLinkVo } from '../models/SpaceLinkVo';
 import { SpaceMainAdminChangeOpRo } from '../models/SpaceMainAdminChangeOpRo';
-import { SpaceMemberSettingRo } from '../models/SpaceMemberSettingRo';
 import { SpaceOpRo } from '../models/SpaceOpRo';
 import { SpaceRoleDetailVo } from '../models/SpaceRoleDetailVo';
 import { SpaceRoleVo } from '../models/SpaceRoleVo';
@@ -282,7 +281,6 @@ import { SpaceStatisticsRo } from '../models/SpaceStatisticsRo';
 import { SpaceSubscribeVo } from '../models/SpaceSubscribeVo';
 import { SpaceUpdateOpRo } from '../models/SpaceUpdateOpRo';
 import { SpaceVO } from '../models/SpaceVO';
-import { SpaceWorkbenchSettingRo } from '../models/SpaceWorkbenchSettingRo';
 import { StoreNodeInfoVO } from '../models/StoreNodeInfoVO';
 import { StoreShareNodeRo } from '../models/StoreShareNodeRo';
 import { SubUnitResultVo } from '../models/SubUnitResultVo';
@@ -1849,7 +1847,7 @@ export class ObservableBasicModuleVerifyActionModuleInterfaceApi {
     }
 
     /**
-     * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding, 8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
+     * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding,8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
      * Send SMS verification code
      * @param smsOpRo 
      */
@@ -1873,7 +1871,7 @@ export class ObservableBasicModuleVerifyActionModuleInterfaceApi {
     }
 
     /**
-     * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding, 8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
+     * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding,8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
      * Send SMS verification code
      * @param smsOpRo 
      */
@@ -5769,39 +5767,6 @@ export class ObservableSpaceSpaceApiApi {
     }
 
     /**
-     * Scenario: Remove the red dot in the inactive space
-     * Remove hot point in space
-     * @param spaceId space id
-     */
-    public removeWithHttpInfo(spaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
-        const requestContextPromise = this.requestFactory.remove(spaceId, _options);
-
-        // build promise chain
-        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
-            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-        }
-
-        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-            pipe(mergeMap((response: ResponseContext) => {
-                let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
-                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-                }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.removeWithHttpInfo(rsp)));
-            }));
-    }
-
-    /**
-     * Scenario: Remove the red dot in the inactive space
-     * Remove hot point in space
-     * @param spaceId space id
-     */
-    public remove(spaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
-        return this.removeWithHttpInfo(spaceId, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
-    }
-
-    /**
      * Gets subscription information for the space
      * @param spaceId space id
      */
@@ -5899,39 +5864,6 @@ export class ObservableSpaceSpaceApiApi {
     }
 
     /**
-     * Update member setting
-     * @param spaceMemberSettingRo 
-     * @param xSpaceId space id
-     */
-    public updateMemberSettingWithHttpInfo(spaceMemberSettingRo: SpaceMemberSettingRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
-        const requestContextPromise = this.requestFactory.updateMemberSetting(spaceMemberSettingRo, xSpaceId, _options);
-
-        // build promise chain
-        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
-            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-        }
-
-        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-            pipe(mergeMap((response: ResponseContext) => {
-                let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
-                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-                }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.updateMemberSettingWithHttpInfo(rsp)));
-            }));
-    }
-
-    /**
-     * Update member setting
-     * @param spaceMemberSettingRo 
-     * @param xSpaceId space id
-     */
-    public updateMemberSetting(spaceMemberSettingRo: SpaceMemberSettingRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
-        return this.updateMemberSettingWithHttpInfo(spaceMemberSettingRo, xSpaceId, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
-    }
-
-    /**
      * Update security setting
      * @param spaceSecuritySettingRo 
      * @param xSpaceId space id
@@ -5962,39 +5894,6 @@ export class ObservableSpaceSpaceApiApi {
      */
     public updateSecuritySetting(spaceSecuritySettingRo: SpaceSecuritySettingRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
         return this.updateSecuritySettingWithHttpInfo(spaceSecuritySettingRo, xSpaceId, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
-    }
-
-    /**
-     * Update workbench setting
-     * @param spaceWorkbenchSettingRo 
-     * @param xSpaceId space id
-     */
-    public updateWorkbenchSettingWithHttpInfo(spaceWorkbenchSettingRo: SpaceWorkbenchSettingRo, xSpaceId: string, _options?: Configuration): Observable<HttpInfo<ResponseDataVoid>> {
-        const requestContextPromise = this.requestFactory.updateWorkbenchSetting(spaceWorkbenchSettingRo, xSpaceId, _options);
-
-        // build promise chain
-        let middlewarePreObservable = from<RequestContext>(requestContextPromise);
-        for (let middleware of this.configuration.middleware) {
-            middlewarePreObservable = middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => middleware.pre(ctx)));
-        }
-
-        return middlewarePreObservable.pipe(mergeMap((ctx: RequestContext) => this.configuration.httpApi.send(ctx))).
-            pipe(mergeMap((response: ResponseContext) => {
-                let middlewarePostObservable = of(response);
-                for (let middleware of this.configuration.middleware) {
-                    middlewarePostObservable = middlewarePostObservable.pipe(mergeMap((rsp: ResponseContext) => middleware.post(rsp)));
-                }
-                return middlewarePostObservable.pipe(map((rsp: ResponseContext) => this.responseProcessor.updateWorkbenchSettingWithHttpInfo(rsp)));
-            }));
-    }
-
-    /**
-     * Update workbench setting
-     * @param spaceWorkbenchSettingRo 
-     * @param xSpaceId space id
-     */
-    public updateWorkbenchSetting(spaceWorkbenchSettingRo: SpaceWorkbenchSettingRo, xSpaceId: string, _options?: Configuration): Observable<ResponseDataVoid> {
-        return this.updateWorkbenchSettingWithHttpInfo(spaceWorkbenchSettingRo, xSpaceId, _options).pipe(map((apiResponse: HttpInfo<ResponseDataVoid>) => apiResponse.data));
     }
 
 }

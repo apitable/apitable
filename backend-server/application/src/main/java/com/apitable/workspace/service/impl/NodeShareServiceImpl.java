@@ -39,6 +39,7 @@ import com.apitable.core.util.HttpContextUtil;
 import com.apitable.core.util.SpringContextHolder;
 import com.apitable.organization.dto.MemberDTO;
 import com.apitable.organization.mapper.MemberMapper;
+import com.apitable.organization.service.ITeamService;
 import com.apitable.shared.constants.AuditConstants;
 import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
@@ -127,6 +128,9 @@ public class NodeShareServiceImpl implements INodeShareService {
 
     @Resource
     private ControlTemplate controlTemplate;
+
+    @Resource
+    private ITeamService iTeamService;
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
@@ -332,6 +336,10 @@ public class NodeShareServiceImpl implements INodeShareService {
         }
 
         ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberInfo.getId(), nodeIds);
+        if (roleDict.isEmpty() && memberInfo.getIsDeleted()) {
+            Long rootTeamId = iTeamService.getRootTeamId(node.getSpaceId());
+            roleDict = controlTemplate.fetchNodeRoleByTeamId(rootTeamId, nodeIds);
+        }
         ExceptionUtil.isFalse(roleDict.isEmpty(), NodeException.SHARE_EXPIRE);
         // Filter nodes. If you allow others to edit the nodes, you need to edit the above permissions before you can display the nodes. Otherwise, you only need to view the permissions.
         ControlRole requireRole = ControlRoleManager.parseNodeRole(

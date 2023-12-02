@@ -18,25 +18,31 @@
 
 package com.apitable.shared.util;
 
+import static com.apitable.shared.constants.DateFormatConstants.SLAVE_DATE_PATTERN;
+import static com.apitable.shared.constants.PatternConstants.PURE_NUMBER;
+
+import cn.hutool.core.util.StrUtil;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import cn.hutool.core.util.StrUtil;
-
-import static com.apitable.shared.constants.DateFormatConstants.SLAVE_DATE_PATTERN;
-import static com.apitable.shared.constants.PatternConstants.PURE_NUMBER;
-
 /**
- * String util
+ * String util.
+ *
  * @author Shawn Deng
  */
 public class StringUtil {
 
     private static final Pattern pattern = Pattern.compile("\\$\\{(.*?)\\}");
 
+    /**
+     * trim slash.
+     *
+     * @param url url
+     * @return String
+     */
     public static String trimSlash(String url) {
         if (StrUtil.isNotBlank(url)) {
             if (!url.startsWith("http")) {
@@ -70,10 +76,10 @@ public class StringUtil {
     }
 
     /**
-     * Format string Use {key} in the string to represent placeholders
+     * Format string Use {key} in the string to represent placeholders.
      *
-     * @param template   string to match
-     * @param param     parameter
+     * @param template string to match
+     * @param param    parameter
      * @return String
      */
     public static String format(String template, Map<String, Object> param) {
@@ -91,15 +97,14 @@ public class StringUtil {
                     targetStr = targetStr.replace(key, value.toString());
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return null;
         }
         return targetStr;
     }
 
     /**
-     * build path
+     * build path.
      */
     public static String buildPath(String prefix) {
         String date = DateTimeFormatter.ofPattern(SLAVE_DATE_PATTERN).format(LocalDate.now());

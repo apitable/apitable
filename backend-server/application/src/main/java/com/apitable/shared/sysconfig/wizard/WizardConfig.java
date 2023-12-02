@@ -22,7 +22,7 @@ import java.util.HashMap;
 
 /**
  * <p>
- * Wizard Config
+ * Wizard Config.
  * </p>
  */
 public class WizardConfig extends HashMap<String, Wizard> {

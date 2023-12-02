@@ -25,17 +25,11 @@ import { withHistory } from 'slate-history';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import useSWR from 'swr';
 import { Dropdown, IDropdownControl, IOverLayProps, Box } from '@apitable/components';
-
 import { Selectors } from '@apitable/core';
-import {
-  automationStateAtom
-} from 'pc/components/automation/controller';
+import { automationStateAtom } from 'pc/components/automation/controller';
 import { map2Text } from 'pc/components/robot/robot_detail/magic_variable_container/config';
 import { fixImeInputBug } from 'pc/components/slate_editor/slate_editor';
-import {
-  getTriggerDatasheetId, IFetchedDatasheet,
-  useAutomationFieldInfo
-} from '../../../automation/controller/hooks/use_robot_fields';
+import { getTriggerDatasheetId, IFetchedDatasheet, useAutomationFieldInfo } from '../../../automation/controller/hooks/use_robot_fields';
 import { AutomationScenario, INodeOutputSchema, ITriggerType } from '../../interface';
 import { IWidgetProps } from '../node_form/core/interface';
 import { enrichDatasheetTriggerOutputSchema, formData2SlateValue, insertMagicVariable, transformSlateValue, withMagicVariable } from './helper';
@@ -44,7 +38,11 @@ import { MagicVariableElement } from '.';
 import styles from './styles.module.less';
 
 const DefaultElement = (props: any) => {
-  return <p {...props.attributes}>{props.children}</p>;
+  return (
+    <p style={{ wordWrap: 'break-word', maxWidth: '100%' }} {...props.attributes}>
+      {props.children}
+    </p>
+  );
 };
 
 type IMagicTextFieldProps = IWidgetProps & {
@@ -61,18 +59,19 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
   const [isOpen, setOpenState] = useState(false);
   const ref = useRef(null);
 
-  const triggerControllRef = useRef<IDropdownControl|null>(null);
+  const triggerControlRef = useRef<IDropdownControl | null>(null);
 
-  const setOpen = useCallback((isOpen: boolean) => {
-
-    setOpenState(isOpen);
-    if(isOpen) {
-      triggerControllRef?.current?.open();
-    }else {
-      triggerControllRef?.current?.close();
-    }
-
-  }, [setOpenState]);
+  const setOpen = useCallback(
+    (isOpen: boolean) => {
+      setOpenState(isOpen);
+      if (isOpen) {
+        triggerControlRef?.current?.open();
+      } else {
+        triggerControlRef?.current?.close();
+      }
+    },
+    [setOpenState],
+  );
 
   const editor = useMemo(() => withHistory(withMagicVariable(withReact(createEditor() as ReactEditor))), []);
 
@@ -95,7 +94,7 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
 
   const updateFormValue = useCallback(
     (value: any) => {
-      if(isOpen) {
+      if (isOpen) {
         return;
       }
       const { value: transformedValue } = transformSlateValue(value);
@@ -125,11 +124,13 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
   // const activeDatasheetId = useAppSelector(Selectors.getActiveDatasheetId);
 
   const triggers = state?.robot?.triggers ?? [];
-  const { data: dataList } = useSWR(['getTriggersRelatedDatasheetId', triggers], () => getTriggerDatasheetId(triggers), {
-  });
+  const { data: dataList } = useSWR(['getTriggersRelatedDatasheetId', triggers], () => getTriggerDatasheetId(triggers), {});
 
   const activeDstId = useSelector(Selectors.getActiveDatasheetId);
-  const dataLis : IFetchedDatasheet[] = state?.scenario === AutomationScenario?.datasheet ? Array.from({ length: triggers.length }, () => activeDstId) : (dataList ?? []) as IFetchedDatasheet[];
+  const dataLis: IFetchedDatasheet[] =
+    state?.scenario === AutomationScenario?.datasheet
+      ? Array.from({ length: triggers.length }, () => activeDstId)
+      : ((dataList ?? []) as IFetchedDatasheet[]);
 
   const l = useAutomationFieldInfo(triggers, dataLis);
 
@@ -171,12 +172,11 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
           }
         }}
       >
-
         <Dropdown
           clazz={{
             overlay: styles.overlayStyle,
           }}
-          ref={triggerControllRef}
+          ref={triggerControlRef}
           options={{
             offset: 12,
             arrow: false,
@@ -187,13 +187,13 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
           }}
           onVisibleChange={(visible) => {
             setOpenState(visible);
-            if(visible) {
+            if (visible) {
               insertCheckRef.current = true;
             }
-            if(!visible && !insertCheckRef.current ) {
+            if (!visible && !insertCheckRef.current) {
               const { value: transformedValue } = transformSlateValue(refV.current);
               onChange && onChange(transformedValue);
-              insertCheckRef.current =true;
+              insertCheckRef.current = true;
             }
           }}
           trigger={
@@ -218,7 +218,7 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
               <MagicVariableContainer
                 isJSONField={isJSONField}
                 insertMagicVariable={(data) => {
-                  insertCheckRef.current =true;
+                  insertCheckRef.current = true;
                   setOpen(false);
                   insertMagicVariable(data, editor, () => {
                     setTimeout(() => {

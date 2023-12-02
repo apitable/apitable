@@ -36,7 +36,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Automation - Trigger Table
+ * Automation - Trigger Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -53,68 +53,66 @@ public class AutomationTriggerEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private BigInteger id;
 
     /**
-     * Robot ID (link#xxxx_automation_robot#robot_id)
+     * Robot ID (link#xxxx_automation_robot#robot_id).
      */
     private String robotId;
 
     /**
-     * Trigger Type ID (link#xxxx_automation_trigger_type#trigger_type_id)
+     * Trigger Type ID (link#xxxx_automation_trigger_type#trigger_type_id).
      */
     private String triggerTypeId;
 
     /**
-     * Custom Trigger ID
+     * Custom Trigger ID.
      */
     private String triggerId;
 
     /**
-     * Previous Trigger ID
+     * Previous Trigger ID.
      */
     private String prevTriggerId;
 
     /**
-     * Resource ID(link#xxxx_node#node_id)
+     * Resource ID(link#xxxx_node#node_id).
      */
     private String resourceId;
 
     /**
-     * Trigger Input data of the instance
+     * Trigger Input data of the instance.
      */
     private String input;
 
     /**
-     * Delete Tag(0: No, 1: Yes)
+     * Delete Tag(0: No, 1: Yes).
      */
     @TableLogic
     private Integer isDeleted;
 
     /**
-     * Creator
+     * Creator.
      */
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
 
     /**
-     * Last Update By
+     * Last Update By.
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updatedBy;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
-
-
 }

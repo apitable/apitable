@@ -27,7 +27,7 @@ import {
   IRobotTaskExtraTrigger,
   NoticeTemplatesConstant,
   Strings,
-  validateMagicForm,
+  validateMagicForm
 } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
 import { Nack, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
@@ -47,7 +47,7 @@ import {
   automationExchangeName,
   automationRunning,
   automationRunningQueueName,
-  notificationQueueExchangeName,
+  notificationQueueExchangeName
 } from 'shared/services/queue/queue.module';
 import { QueueSenderBaseService } from 'shared/services/queue/queue.sender.base.service';
 import { RestService } from 'shared/services/rest/rest.service';
@@ -82,6 +82,7 @@ export class AutomationService {
     private readonly automationActionRepository: AutomationActionRepository,
     private readonly automationTriggerRepository: AutomationTriggerRepository,
     private readonly robotService: RobotRobotService,
+    @Inject(forwardRef(() => NodeService))
     private readonly nodeService: NodeService,
     private readonly restService: RestService,
     private readonly queueSenderService: QueueSenderBaseService,
@@ -406,16 +407,17 @@ export class AutomationService {
       }
     }
     const resourceIds = extraTriggers.map<string>((i) => i.resourceId!);
-    const resources = await this.nodeService.getNodeNameMapByNodeIds(resourceIds);
+    const resources = await this.nodeService.getNodeInfoMapByNodeIds(resourceIds);
     return extraTriggers.map<IRobotTaskExtraTrigger>((item) => {
+      const nodeInfo = resources.get(item.resourceId!);
       return {
         triggerId: item.triggerId,
         triggerTypeId: item.triggerTypeId!,
-        triggerInput: item.resourceId == currentTriggerResourceId ? trigger.input : item.input,
+        triggerInput: item.input,
         triggerOutput:
-          item.resourceId == currentTriggerResourceId
+          item.resourceId === currentTriggerResourceId || nodeInfo?.relNodeId === currentTriggerResourceId
             ? trigger.output
-            : this.triggerEventHelper.getDefaultTriggerOutput(item.resourceId!, resources.get(item.resourceId!)!),
+            : this.triggerEventHelper.getDefaultTriggerOutput(item.resourceId!, nodeInfo?.nodeName!),
       };
     });
   }

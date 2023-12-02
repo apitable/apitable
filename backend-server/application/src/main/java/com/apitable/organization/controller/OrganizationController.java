@@ -123,8 +123,8 @@ public class OrganizationController {
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight")
     })
     public ResponseData<SearchResultVo> searchTeamInfo(@RequestParam("keyword") String keyword,
-        @RequestParam(value = "className", required = false, defaultValue = "highLight")
-        String className) {
+                                                       @RequestParam(value = "className", required = false, defaultValue = "highLight")
+                                                       String className) {
         String spaceId = LoginContext.me().getSpaceId();
         SearchResultVo result = new SearchResultVo();
         // fuzzy search department
@@ -219,9 +219,10 @@ public class OrganizationController {
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "design")
     })
     public ResponseData<UnitSearchResultVo> search(@RequestParam(name = "keyword") String keyword,
-        @RequestParam(value = "linkId", required = false) String linkId,
-        @RequestParam(value = "className", required = false, defaultValue = "highLight")
-        String className) {
+                                                   @RequestParam(value = "linkId", required = false)
+                                                   String linkId,
+                                                   @RequestParam(value = "className", required = false, defaultValue = "highLight")
+                                                   String className) {
 
         String spaceId = this.getSpaceId(linkId);
         UnitSearchResultVo vo = iOrganizationService.findLikeUnitName(spaceId, keyword, className);

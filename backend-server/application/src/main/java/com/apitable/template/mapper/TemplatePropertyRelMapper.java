@@ -27,7 +27,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
- * Template Property Rel Mapper
+ * Template Property Rel Mapper.
  * </p>
  */
 public interface TemplatePropertyRelMapper extends BaseMapper<TemplatePropertyRelEntity> {
@@ -53,7 +53,8 @@ public interface TemplatePropertyRelMapper extends BaseMapper<TemplatePropertyRe
      * Update id by property code and template id.
      */
     int updateIdByPropertyCodeAndTemplateId(@Param("updatedId") Long updatedId,
-        @Param("propertyCode") String propertyCode, @Param("templateId") String templateId);
+                                            @Param("propertyCode") String propertyCode,
+                                            @Param("templateId") String templateId);
 
     /**
      * Delete by template id.
@@ -64,7 +65,7 @@ public interface TemplatePropertyRelMapper extends BaseMapper<TemplatePropertyRe
      * Delete by property code and template id.
      */
     int deleteByPropertyCodeAndTemplateId(@Param("propertyCode") String propertyCode,
-        @Param("templateId") String templateId);
+                                          @Param("templateId") String templateId);
 
     /**
      * Delete by property code.
@@ -72,22 +73,23 @@ public interface TemplatePropertyRelMapper extends BaseMapper<TemplatePropertyRe
     int deleteByPropertyCode(@Param("propertyCode") String propertyCode);
 
     /**
-     * Batch delete
+     * Batch delete.
      */
     int deleteBatch();
 
     /**
-     * Batch insert
+     * Batch insert.
      */
     int insertBatch(@Param("entities") List<TemplatePropertyRelEntity> entities);
 
     /**
-     * Query template id list by property code
+     * Query template id list by property code.
      */
     List<String> selectTemplateIdsByPropertyCode(@Param("propertyCode") String propertyCode);
 
     /**
-     * Query template ids by property id list
+     * Query template ids by property id list.
      */
-    List<TemplatePropertyRelDto> selectTemplateIdsByPropertyIds(@Param("propertyCodes") List<String> propertyCodes);
+    List<TemplatePropertyRelDto> selectTemplateIdsByPropertyIds(
+        @Param("propertyCodes") List<String> propertyCodes);
 }

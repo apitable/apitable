@@ -18,6 +18,7 @@
 
 package com.apitable.core.util;
 
+import cn.hutool.core.util.IdUtil;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,13 +26,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import cn.hutool.core.util.IdUtil;
-
 /**
  * <p>
- * Document related tools
+ * Document related tools.
  * </p>
- *
  */
 public class FileTool {
 
@@ -44,6 +42,12 @@ public class FileTool {
     // default suffix for temporary files
     private static final String TMP_SUFFIX = ".tmp";
 
+    /**
+     * identify coding.
+     *
+     * @param in input stream
+     * @return coding string
+     */
     public static String identifyCoding(InputStream in) {
         String charset = "GBK";
         byte[] first3Bytes = new byte[3];
@@ -60,15 +64,13 @@ public class FileTool {
                 if (first3Bytes[0] == byte0xff && first3Bytes[1] == byte0xfe) {
                     // UTF-16LE
                     charset = "Unicode";
-                }
-                else if (first3Bytes[0] == byte0xfe && first3Bytes[1] == byte0xff) {
+                } else if (first3Bytes[0] == byte0xfe && first3Bytes[1] == byte0xff) {
                     // UTF-16BE
                     charset = "Unicode";
-                }
-                else if (first3Bytes[0] == byte0xef && first3Bytes[1] == byte0xbb && first3Bytes[midIndex] == byte0xbf) {
+                } else if (first3Bytes[0] == byte0xef && first3Bytes[1] == byte0xbb
+                    && first3Bytes[midIndex] == byte0xbf) {
                     charset = "UTF8";
-                }
-                else {
+                } else {
                     bis.reset();
                     while ((read = bis.read()) != -1) {
                         if (read >= 0xF0) {
@@ -84,8 +86,7 @@ public class FileTool {
                                 break;
                             }
                             // Double byte (0xC0-0xDF) (0x80-0xBF), which may also be in GB encoding
-                        }
-                        else if (0xE0 <= read) {
+                        } else if (0xE0 <= read) {
                             read = bis.read();
                             if (0x80 <= read && read <= 0xBF) {
                                 read = bis.read();
@@ -98,15 +99,14 @@ public class FileTool {
                     }
                 }
             }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            // ignore
         }
         return charset;
     }
 
     /**
-     * Get temporary file path (absolute path)
+     * Get temporary file path (absolute path).
      *
      * @return Temporary file path
      */
@@ -115,7 +115,7 @@ public class FileTool {
     }
 
     /**
-     * Create and upload temporary files
+     * Create and upload temporary files.
      *
      * @return temporary files
      * @throws IOException io exception
@@ -125,7 +125,7 @@ public class FileTool {
     }
 
     /**
-     * Create and upload temporary files
+     * Create and upload temporary files.
      *
      * @param prefix – Prefix string used to generate file names; May be null
      * @param suffix – The suffix string used to generate the file name; May be null, use ". tmp" in this case
@@ -137,7 +137,7 @@ public class FileTool {
     }
 
     /**
-     * Create temporary file
+     * Create temporary file.
      *
      * @param prefix Prefix string used to generate file names; May be null
      * @param suffix The suffix string used to generate the file name; May be null, use ". tmp" in this case
@@ -145,16 +145,18 @@ public class FileTool {
      * @return temporary file
      * @throws IOException io exception
      */
-    public static Path createTempFile(String prefix, String suffix, String... more) throws IOException {
+    public static Path createTempFile(String prefix, String suffix, String... more)
+        throws IOException {
         Path tempPath = Files.createDirectories(Paths.get(getTmpDirPath(), more));
         return Files.createTempFile(tempPath, prefix, suffix);
     }
 
     /**
-     * Calculate file size
+     * Calculate file size.
      * <p>
-     *     Note: the flow will be destroyed after calculation
+     * Note: the flow will be destroyed after calculation
      * </p>
+     *
      * @param in input stream
      * @return size
      */
@@ -166,8 +168,7 @@ public class FileTool {
             while ((chunk = in.read(buffer)) != -1) {
                 size += chunk;
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException("Calculate Stream Size Exception");
         }
         return size;

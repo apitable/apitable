@@ -28,15 +28,15 @@ import org.slf4j.LoggerFactory;
 
 /**
  * <p>
- * Tencent cloud email push
+ * Tencent cloud email push.
  * </p>
- *
  */
 public class TencentMailSender extends TencentSesClientAccessor implements CloudMailSender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TencentMailSender.class);
 
-    public TencentMailSender(String region, String secretId, String secretKey, String from, String reply) {
+    public TencentMailSender(String region, String secretId, String secretKey, String from,
+                             String reply) {
         super(region, secretId, secretKey, from, reply);
     }
 
@@ -57,8 +57,7 @@ public class TencentMailSender extends TencentSesClientAccessor implements Cloud
 
             // send email
             this.getClient().SendEmail(req);
-        }
-        catch (TencentCloudSDKException e) {
+        } catch (TencentCloudSDKException e) {
             String ignoreInfo = "EmailAddressIsNULL";
             if (e.getErrorCode().contains(ignoreInfo)) {
                 return;

@@ -20,7 +20,7 @@ package com.apitable.shared.constants;
 
 /**
  * <p>
- * Session attribute constants
+ * Session attribute constants.
  * </p>
  *
  * @author Shawn Deng

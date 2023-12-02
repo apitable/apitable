@@ -18,10 +18,12 @@
 
 package com.apitable.control.infrastructure.request;
 
+import com.apitable.control.infrastructure.ControlType;
 import java.util.List;
 
-import com.apitable.control.infrastructure.ControlType;
-
+/**
+ * node control request factory.
+ */
 public class NodeControlRequestFactory implements ControlRequestFactory {
 
     @Override

@@ -92,6 +92,12 @@ public class ConstProperties {
             .getOrDefault(BucketKey.ASSETS, new OssBucketInfo());
     }
 
+    /**
+     * splice asset url.
+     *
+     * @param token token
+     * @return concat url
+     */
     public String spliceAssetUrl(String token) {
         if (token == null || token.equals(StrUtil.EMPTY)
             || token.startsWith("http")) {

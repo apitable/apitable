@@ -35,11 +35,10 @@ import com.apitable.shared.constants.ParamsConstants;
 import com.apitable.shared.holder.LoginUserHolder;
 import com.apitable.shared.holder.MemberHolder;
 import com.apitable.shared.holder.SpaceHolder;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -91,9 +90,9 @@ public class LoginContext {
         String spaceId = SpaceHolder.get();
         if (spaceId == null) {
             spaceId = HttpContextUtil.getRequest().getParameter(ParamsConstants.SPACE_ID_PARAMETER);
-            spaceId = StringUtils.isEmpty(spaceId) ?
-                    HttpContextUtil.getRequest().getHeader(ParamsConstants.SPACE_ID) :
-                    spaceId;
+            spaceId = StringUtils.isEmpty(spaceId)
+                ? HttpContextUtil.getRequest().getHeader(ParamsConstants.SPACE_ID) :
+                spaceId;
             if (spaceId == null) {
                 throw new BusinessException("workspace does not exist");
             }

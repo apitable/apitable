@@ -271,7 +271,6 @@ import { SpaceLinkInfoVo } from '../models/SpaceLinkInfoVo';
 import { SpaceLinkOpRo } from '../models/SpaceLinkOpRo';
 import { SpaceLinkVo } from '../models/SpaceLinkVo';
 import { SpaceMainAdminChangeOpRo } from '../models/SpaceMainAdminChangeOpRo';
-import { SpaceMemberSettingRo } from '../models/SpaceMemberSettingRo';
 import { SpaceOpRo } from '../models/SpaceOpRo';
 import { SpaceRoleDetailVo } from '../models/SpaceRoleDetailVo';
 import { SpaceRoleVo } from '../models/SpaceRoleVo';
@@ -281,7 +280,6 @@ import { SpaceStatisticsRo } from '../models/SpaceStatisticsRo';
 import { SpaceSubscribeVo } from '../models/SpaceSubscribeVo';
 import { SpaceUpdateOpRo } from '../models/SpaceUpdateOpRo';
 import { SpaceVO } from '../models/SpaceVO';
-import { SpaceWorkbenchSettingRo } from '../models/SpaceWorkbenchSettingRo';
 import { StoreNodeInfoVO } from '../models/StoreNodeInfoVO';
 import { StoreShareNodeRo } from '../models/StoreShareNodeRo';
 import { SubUnitResultVo } from '../models/SubUnitResultVo';
@@ -1667,7 +1665,7 @@ export class ObjectBasicModuleVerifyActionModuleInterfaceApi {
     }
 
     /**
-     * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding, 8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
+     * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding,8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
      * Send SMS verification code
      * @param param the request object
      */
@@ -1676,7 +1674,7 @@ export class ObjectBasicModuleVerifyActionModuleInterfaceApi {
     }
 
     /**
-     * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding, 8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
+     * SMS type; 1: Registration, 2:Login, 3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, 6: (Remove replacement) mobile phone binding 7: Modify mailbox binding,8: Delete space, 9: Replace main administrator 10: General verification, 11: Change developer configuration, 12: Bind third-party platform account
      * Send SMS verification code
      * @param param the request object
      */
@@ -4918,15 +4916,6 @@ export interface SpaceSpaceApiApiQuitRequest {
     spaceId: string
 }
 
-export interface SpaceSpaceApiApiRemoveRequest {
-    /**
-     * space id
-     * @type string
-     * @memberof SpaceSpaceApiApiremove
-     */
-    spaceId: string
-}
-
 export interface SpaceSpaceApiApiSubscribeRequest {
     /**
      * space id
@@ -4960,21 +4949,6 @@ export interface SpaceSpaceApiApiUpdate1Request {
     xSpaceId: string
 }
 
-export interface SpaceSpaceApiApiUpdateMemberSettingRequest {
-    /**
-     * 
-     * @type SpaceMemberSettingRo
-     * @memberof SpaceSpaceApiApiupdateMemberSetting
-     */
-    spaceMemberSettingRo: SpaceMemberSettingRo
-    /**
-     * space id
-     * @type string
-     * @memberof SpaceSpaceApiApiupdateMemberSetting
-     */
-    xSpaceId: string
-}
-
 export interface SpaceSpaceApiApiUpdateSecuritySettingRequest {
     /**
      * 
@@ -4986,21 +4960,6 @@ export interface SpaceSpaceApiApiUpdateSecuritySettingRequest {
      * space id
      * @type string
      * @memberof SpaceSpaceApiApiupdateSecuritySetting
-     */
-    xSpaceId: string
-}
-
-export interface SpaceSpaceApiApiUpdateWorkbenchSettingRequest {
-    /**
-     * 
-     * @type SpaceWorkbenchSettingRo
-     * @memberof SpaceSpaceApiApiupdateWorkbenchSetting
-     */
-    spaceWorkbenchSettingRo: SpaceWorkbenchSettingRo
-    /**
-     * space id
-     * @type string
-     * @memberof SpaceSpaceApiApiupdateWorkbenchSetting
      */
     xSpaceId: string
 }
@@ -5189,24 +5148,6 @@ export class ObjectSpaceSpaceApiApi {
     }
 
     /**
-     * Scenario: Remove the red dot in the inactive space
-     * Remove hot point in space
-     * @param param the request object
-     */
-    public removeWithHttpInfo(param: SpaceSpaceApiApiRemoveRequest, options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
-        return this.api.removeWithHttpInfo(param.spaceId,  options).toPromise();
-    }
-
-    /**
-     * Scenario: Remove the red dot in the inactive space
-     * Remove hot point in space
-     * @param param the request object
-     */
-    public remove(param: SpaceSpaceApiApiRemoveRequest, options?: Configuration): Promise<ResponseDataVoid> {
-        return this.api.remove(param.spaceId,  options).toPromise();
-    }
-
-    /**
      * Gets subscription information for the space
      * @param param the request object
      */
@@ -5257,22 +5198,6 @@ export class ObjectSpaceSpaceApiApi {
     }
 
     /**
-     * Update member setting
-     * @param param the request object
-     */
-    public updateMemberSettingWithHttpInfo(param: SpaceSpaceApiApiUpdateMemberSettingRequest, options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
-        return this.api.updateMemberSettingWithHttpInfo(param.spaceMemberSettingRo, param.xSpaceId,  options).toPromise();
-    }
-
-    /**
-     * Update member setting
-     * @param param the request object
-     */
-    public updateMemberSetting(param: SpaceSpaceApiApiUpdateMemberSettingRequest, options?: Configuration): Promise<ResponseDataVoid> {
-        return this.api.updateMemberSetting(param.spaceMemberSettingRo, param.xSpaceId,  options).toPromise();
-    }
-
-    /**
      * Update security setting
      * @param param the request object
      */
@@ -5286,22 +5211,6 @@ export class ObjectSpaceSpaceApiApi {
      */
     public updateSecuritySetting(param: SpaceSpaceApiApiUpdateSecuritySettingRequest, options?: Configuration): Promise<ResponseDataVoid> {
         return this.api.updateSecuritySetting(param.spaceSecuritySettingRo, param.xSpaceId,  options).toPromise();
-    }
-
-    /**
-     * Update workbench setting
-     * @param param the request object
-     */
-    public updateWorkbenchSettingWithHttpInfo(param: SpaceSpaceApiApiUpdateWorkbenchSettingRequest, options?: Configuration): Promise<HttpInfo<ResponseDataVoid>> {
-        return this.api.updateWorkbenchSettingWithHttpInfo(param.spaceWorkbenchSettingRo, param.xSpaceId,  options).toPromise();
-    }
-
-    /**
-     * Update workbench setting
-     * @param param the request object
-     */
-    public updateWorkbenchSetting(param: SpaceSpaceApiApiUpdateWorkbenchSettingRequest, options?: Configuration): Promise<ResponseDataVoid> {
-        return this.api.updateWorkbenchSetting(param.spaceWorkbenchSettingRo, param.xSpaceId,  options).toPromise();
     }
 
 }

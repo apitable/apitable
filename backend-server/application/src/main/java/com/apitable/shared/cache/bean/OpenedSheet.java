@@ -24,7 +24,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * datasheet opened by the user in the current space
+ * datasheet opened by the user in the current space.
  *
  * @author Chambers
  */

@@ -66,6 +66,13 @@ public class NodeCollaboratorController {
     @Resource
     private ControlTemplate controlTemplate;
 
+    /**
+     * get collaborator info.
+     *
+     * @param uuid   user uuid
+     * @param nodeId node id
+     * @return collaborator info
+     */
     @GetResource(path = "/collaborator/info")
     @Operation(summary = "Get Collaborator Info",
         description = "Scene: Collaborator Card Information")

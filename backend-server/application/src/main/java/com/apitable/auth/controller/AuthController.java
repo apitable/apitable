@@ -116,7 +116,7 @@ public class AuthController {
     @PostResource(path = "/signIn", requiredLogin = false)
     @Operation(summary = "login", description = AUTH_DESC)
     public ResponseData<LoginResultVO> login(@RequestBody @Valid final LoginRo data,
-                                    final HttpServletRequest request) {
+                                             final HttpServletRequest request) {
         ClientOriginInfo origin = InformationUtil.getClientOriginInfo(request,
             false, true);
         // Login Type Routing
@@ -196,7 +196,7 @@ public class AuthController {
      * @return {@link LogoutVO}
      */
     @PostResource(path = "/signOut", requiredLogin = false,
-            method = { RequestMethod.GET, RequestMethod.POST})
+        method = {RequestMethod.GET, RequestMethod.POST})
     @Operation(summary = "sign out", description = "log out of current user")
     public ResponseData<LogoutVO> logout(final HttpServletRequest request,
                                          final HttpServletResponse response) {

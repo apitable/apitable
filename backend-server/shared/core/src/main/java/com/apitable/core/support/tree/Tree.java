@@ -22,34 +22,34 @@ import java.util.List;
 
 /**
  * <p>
- * interface: the tree node's behavior
+ * interface: the tree node's behavior.
  * </p>
  */
 public interface Tree {
 
     /**
-     * get the node's id
+     * get the node's id.
      *
-     * @return  node id
+     * @return node id
      */
     String getNodeId();
 
     /**
-     * get the parent node's id
+     * get the parent node's id.
      *
-     * @return  the parent node id
+     * @return the parent node id
      */
     String getNodeParentId();
 
     /**
-     * get the child nodes
+     * get the child nodes.
      *
-     * @return  the list of children nodes
+     * @return the list of children nodes
      */
-     List getChildrenNodes();
+    List getChildrenNodes();
 
     /**
-     * set children node
+     * set children node.
      *
      * @param childrenNodes the list of children nodes
      */

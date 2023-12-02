@@ -18,14 +18,13 @@
 
 package com.apitable.organization.enums;
 
+import com.apitable.core.exception.BusinessException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.core.exception.BusinessException;
-
 /**
  * <p>
- * Organization unit type
+ * Organization unit type.
  * </p>
  *
  * @author Shawn Deng
@@ -38,18 +37,24 @@ public enum UnitType {
 
     ROLE(2),
 
-	MEMBER(3);
+    MEMBER(3);
 
     private final Integer type;
 
-	public static UnitType toEnum(Integer type) {
-		if (null != type) {
-			for (UnitType e : UnitType.values()) {
-				if (e.getType().equals(type)) {
-					return e;
-				}
-			}
-		}
-		throw new BusinessException("unknown unit type");
-	}
+    /**
+     * Convert to enum.
+     *
+     * @param type type
+     * @return enum
+     */
+    public static UnitType toEnum(Integer type) {
+        if (null != type) {
+            for (UnitType e : UnitType.values()) {
+                if (e.getType().equals(type)) {
+                    return e;
+                }
+            }
+        }
+        throw new BusinessException("unknown unit type");
+    }
 }

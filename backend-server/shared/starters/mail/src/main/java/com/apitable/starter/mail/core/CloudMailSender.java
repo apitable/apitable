@@ -20,7 +20,7 @@ package com.apitable.starter.mail.core;
 
 /**
  * <p>
- * Cloud platform email push interface
+ * Cloud platform email push interface.
  * </p>
  *
  */

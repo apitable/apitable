@@ -82,14 +82,14 @@ public class InternalFieldPermissionController {
     @Operation(summary = "turn off multiple field permissions", description = "room layer ot "
         + "delete field operation call")
     @Parameters({
-        @Parameter(name = "dstId", description = "table id", required = true, schema =
-            @Schema(type = "string"), in = ParameterIn.PATH, example = "dstGxznHFXf9pvF1LZ"),
+        @Parameter(name = "dstId", description = "table id", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstGxznHFXf9pvF1LZ"),
         @Parameter(name = "fieldIds", description = "list of field ids", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "fldB7uWmwYrQf,"
             + "fldB7uWmwYrQf")
     })
     public ResponseData<Void> disableRoles(@PathVariable("dstId") @NodeMatch String dstId,
-        @RequestParam("fieldIds") List<String> fieldIds) {
+                                           @RequestParam("fieldIds") List<String> fieldIds) {
         ControlId controlId = ControlIdBuilder.fieldIds(dstId, fieldIds);
         // get the existing control unit id
         List<String> existedControlIds =
