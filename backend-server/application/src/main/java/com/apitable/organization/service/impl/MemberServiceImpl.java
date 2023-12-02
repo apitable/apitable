@@ -875,7 +875,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         List<TeamMemberRelEntity> tmrEntities = teamMemberRelMapper.selectByMemberIds(memberIds);
         List<Long> needRelateRoots = new ArrayList<>();
         for (Long memberId : memberIds) {
-            List<TeamMemberRelEntity> memTeamList =
+            Collection<TeamMemberRelEntity> memTeamList =
                 CollUtil.filterNew(tmrEntities, (entity) -> entity.getMemberId().equals(memberId));
             Set<Long> belongTeamIds =
                 memTeamList.stream().collect(Collectors.groupingBy(TeamMemberRelEntity::getTeamId))

@@ -69,6 +69,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -130,7 +131,7 @@ public class NodeBundleServiceImpl implements NodeBundleService {
         List<File> files = new ArrayList<>();
         // traverse all nodes down
         List<String> nodeIds = CollUtil.newArrayList(nodeId);
-        Map<String, String> nodeIdToFileNameMap = CollUtil.newHashMap();
+        Map<String, String> nodeIdToFileNameMap = new HashMap<>();
         List<NodeShareTree> childrenList = new ArrayList<>();
         if (node.getType() < NodeType.DATASHEET.getNodeType()) {
             childrenList = iNodeService.getSubNodes(nodeId);

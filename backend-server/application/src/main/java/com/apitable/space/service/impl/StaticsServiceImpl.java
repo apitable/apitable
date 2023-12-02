@@ -24,7 +24,6 @@ import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.text.StrSpliter;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -301,7 +300,7 @@ public class StaticsServiceImpl implements IStaticsService {
         // Get the table of column permissions
         List<String> dstIds = controlIds.stream()
             .map(controlId -> {
-                List<String> ids = StrSpliter.split(controlId, ControlIdBuilder.SYMBOL,
+                List<String> ids = StrUtil.split(controlId, ControlIdBuilder.SYMBOL,
                     0, true, true);
                 if (CollUtil.isNotEmpty(ids)) {
                     String dstId = ids.get(0);

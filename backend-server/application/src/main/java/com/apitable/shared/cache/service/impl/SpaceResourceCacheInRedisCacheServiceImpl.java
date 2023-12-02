@@ -30,6 +30,8 @@ import com.apitable.space.mapper.SpaceMenuMapper;
 import com.apitable.space.mapper.SpaceResourceMapper;
 import com.apitable.space.service.ISpaceMenuService;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -71,7 +73,7 @@ public class SpaceResourceCacheInRedisCacheServiceImpl implements SpaceResourceC
             List<SpaceMenuResourceDto> menuResources = spaceResourceMapper.selectMenuResource();
             List<SpaceGroupResourceDto> groupResources = spaceResourceMapper.selectGroupResource();
 
-            Map<String, List<String>> menuMap = CollUtil.newHashMap();
+            Map<String, List<String>> menuMap = new HashMap<>();
 
             List<SpaceMenuEntity> allMenus = spaceMenuMapper.selectList(null);
 
@@ -94,7 +96,7 @@ public class SpaceResourceCacheInRedisCacheServiceImpl implements SpaceResourceC
                 dto.setMenuCode(menu.getMenuCode());
                 dto.setMenuName(menu.getMenuName());
 
-                List<SpaceGroupResourceDto> filterList = CollUtil.filterNew(groupResources,
+                Collection<SpaceGroupResourceDto> filterList = CollUtil.filterNew(groupResources,
                     groupResource -> CollUtil.containsAny(entry.getValue(),
                         groupResource.getResources()));
 

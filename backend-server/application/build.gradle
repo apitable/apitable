@@ -135,6 +135,7 @@ springBoot {
 test {
     // Stops test execution after the first failed test.
     failFast = true
+    jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED'
 }
 
 def protobufVersion = libs.versions.protobuf.asProvider().get()

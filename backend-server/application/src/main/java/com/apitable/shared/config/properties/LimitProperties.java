@@ -71,7 +71,6 @@ public class LimitProperties {
     /**
      * Maximum rows.
      */
-    @Deprecated
     private Integer maxRowCount = 50000;
 
     /**

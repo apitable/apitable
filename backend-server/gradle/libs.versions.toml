@@ -2,7 +2,7 @@
 spring-boot = "2.7.18"
 aws = "1.12.595"
 p6spy = "3.9.1"
-hutool = "5.5.9"
+hutool = "5.8.23"
 jackson-nullable = "0.2.6"
 gson-fire = "1.8.5"
 javax-ws = "2.1.1"
@@ -179,7 +179,6 @@ p6spy = { module = "p6spy:p6spy", version.ref = "p6spy" }
 hutool-core = { module = "cn.hutool:hutool-core", version.ref = "hutool" }
 hutool-json = { module = "cn.hutool:hutool-json", version.ref = "hutool" }
 hutool-crypto = { module = "cn.hutool:hutool-crypto", version.ref = "hutool" }
-hutool-cache = { module = "cn.hutool:hutool-cache", version.ref = "hutool" }
 hutool-http = { module = "cn.hutool:hutool-http", version.ref = "hutool" }
 pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox" }
 pdfbox-tools = { module = "org.apache.pdfbox:pdfbox-tools", version.ref = "pdfbox" }
@@ -194,7 +193,7 @@ shedlock-redis = { module = "net.javacrumbs.shedlock:shedlock-provider-redis-spr
 
 [bundles]
 # group libraries
-hutool = ["hutool-core", "hutool-json", "hutool-crypto", "hutool-cache", "hutool-http"]
+hutool = ["hutool-core", "hutool-json", "hutool-crypto", "hutool-http"]
 easyexcel = ["easyexcel", "xerces-impl"]
 slf4j-logback = ["slf4j", "logback"]
 pdfbox = ["pdfbox", "pdfbox-tools", "pdfbox-jbig2", "imageio-core", "imageio-jpeg2000"]

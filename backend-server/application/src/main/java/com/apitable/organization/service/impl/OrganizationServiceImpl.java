@@ -19,7 +19,6 @@
 package com.apitable.organization.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Editor;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.BooleanUtil;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
@@ -214,7 +213,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
     public List<UnitTeamVo> findUnitTeamVo(String spaceId, List<Long> teamIds) {
         log.info("query the teams' unit info.");
         List<UnitTeamVo> unitTeamList = iTeamService.getUnitTeamVo(spaceId, teamIds);
-        CollUtil.filter(unitTeamList, (Editor<UnitTeamVo>) unitTeamVo -> {
+        CollUtil.edit(unitTeamList, unitTeamVo -> {
             // the number of statistics
             long memberCount = iTeamService.countMemberCountByParentId(unitTeamVo.getTeamId());
             unitTeamVo.setMemberCount(memberCount);
@@ -382,7 +381,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
         List<TeamCteInfo> teamsInfo = teamFacade.getAllChildTeam(teamIds);
         // the member's team and all child teams id
         List<Long> teamIdList =
-            teamsInfo.stream().map(TeamCteInfo::getId).collect(Collectors.toList());
+            teamsInfo.stream().map(TeamCteInfo::getId).toList();
         // Filter out the departments that do not need to be loaded
         return teamsInfo.stream()
             .filter(teamInfo -> !teamIdList.contains(teamInfo.getParentId()))

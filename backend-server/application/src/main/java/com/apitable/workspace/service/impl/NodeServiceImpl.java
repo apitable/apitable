@@ -547,8 +547,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (nodeIds.size() == sub.size()) {
             return nodeIds;
         }
-        List<String> subNodeIds =
-            sub.stream().map(NodeTreeDTO::getNodeId).collect(Collectors.toList());
+        List<String> subNodeIds = sub.stream().map(NodeTreeDTO::getNodeId).toList();
         sub.stream()
             .filter(i -> i.getPreNodeId() != null && !subNodeIds.contains(i.getPreNodeId()))
             .forEach(node -> {
@@ -1256,7 +1255,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         }
 
         // component node id map
-        Map<String, String> newNodeMap = CollUtil.newHashMap();
+        Map<String, String> newNodeMap = new HashMap<>();
         newNodeMap.put(sourceNodeId, toSaveNodeId);
         switch (nodeType) {
             case ROOT:
@@ -1566,7 +1565,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             TemplateException.SUB_NODE_PERMISSION_INSUFFICIENT);
         List<String> filterNodeIds = roleDict.entrySet().stream()
             .filter(entry -> entry.getValue().isGreaterThanOrEqualTo(role))
-            .map(Map.Entry::getKey).collect(Collectors.toList());
+            .map(Map.Entry::getKey).toList();
         ExceptionUtil.isTrue(subNodeIds.size() == filterNodeIds.size(),
             TemplateException.SUB_NODE_PERMISSION_INSUFFICIENT);
         return subNodeIds;
@@ -1722,27 +1721,18 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     public String parseExcel(Long userId, String uuid, String spaceId,
                              Long memberId, String parentNodeId, String viewName, String fileName,
                              String fileSuffix, InputStream inputStream) {
-        ExcelReader excelReader = null;
         MultiSheetReadListener readListener =
             new MultiSheetReadListener(this, userId, uuid, spaceId, memberId,
                 parentNodeId, viewName, fileName);
-        ExcelReaderBuilder readerBuilder;
         ExcelTypeEnum excelType = FileSuffixConstants.XLS.equals(fileSuffix)
             ? ExcelTypeEnum.XLS : ExcelTypeEnum.XLSX;
-        try {
-            readerBuilder = EasyExcel.read(inputStream)
-                .excelType(excelType)
-                .ignoreEmptyRow(false).autoTrim(false);
-            excelReader = readerBuilder.registerReadListener(readListener).build();
+        ExcelReaderBuilder readerBuilder = EasyExcel.read(inputStream)
+            .excelType(excelType)
+            .ignoreEmptyRow(false).autoTrim(false);
+        try (ExcelReader excelReader = readerBuilder.registerReadListener(readListener).build()) {
             List<ReadSheet> readSheets = excelReader.excelExecutor().sheetList();
             excelReader.read(readSheets);
             return readListener.getRetNodeData().getNodeId();
-        } finally {
-            if (excelReader != null) {
-                // Don't forget to close it here.
-                // Temporary files will be created when reading, and the disk will collapse.
-                excelReader.finish();
-            }
         }
     }
 
@@ -1751,23 +1741,13 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     public String parseCsv(Long userId, String uuid, String spaceId, Long memberId,
                            String parentNodeId, String viewName, String fileName,
                            InputStream inputStream) {
-        ExcelReader excelReader = null;
         CsvReadListener readListener =
             new CsvReadListener(this, userId, uuid, spaceId, memberId,
                 parentNodeId, viewName, fileName);
-        try {
-            excelReader = EasyExcel.read(inputStream)
-                .excelType(ExcelTypeEnum.CSV)
-                .registerReadListener(readListener)
-                .build();
+        try (ExcelReader excelReader = EasyExcel.read(inputStream).excelType(ExcelTypeEnum.CSV)
+            .registerReadListener(readListener).build()) {
             excelReader.readAll();
             return readListener.getRetNodeId();
-        } finally {
-            if (excelReader != null) {
-                // Don't forget to close it here.
-                // Temporary files will be created when reading, and the disk will collapse.
-                excelReader.finish();
-            }
         }
     }
 

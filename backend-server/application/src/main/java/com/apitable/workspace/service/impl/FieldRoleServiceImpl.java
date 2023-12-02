@@ -607,7 +607,7 @@ public class FieldRoleServiceImpl implements IFieldRoleService {
     @Override
     public Map<String, List<Long>> deleteFieldRoles(String controlId, List<Long> unitIds) {
         if (CollUtil.isEmpty(unitIds)) {
-            return CollUtil.newHashMap();
+            return new HashMap<>();
         }
         log.info("delete field [{}] permission role [{}]", controlId, unitIds);
         List<ControlRoleInfo> controlRole =

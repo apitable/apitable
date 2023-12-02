@@ -21,7 +21,6 @@ package com.apitable.organization.controller;
 import static java.util.stream.Collectors.toList;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Editor;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.core.support.ResponseData;
@@ -130,7 +129,7 @@ public class OrganizationController {
         // fuzzy search department
         List<SearchTeamResultVo> teams = teamMapper.selectByTeamName(spaceId, keyword);
         if (CollUtil.isNotEmpty(teams)) {
-            CollUtil.filter(teams, (Editor<SearchTeamResultVo>) vo -> {
+            CollUtil.edit(teams, vo -> {
                 vo.setOriginName(vo.getTeamName());
                 vo.setTeamName(
                     InformationUtil.keywordHighlight(vo.getTeamName(), keyword, className));

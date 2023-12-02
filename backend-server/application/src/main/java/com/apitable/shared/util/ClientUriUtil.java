@@ -94,7 +94,7 @@ public class ClientUriUtil {
         } else {
             pathAboutNodeId = pathAboutNodeInfo;
         }
-        String[] split = StrUtil.split(pathAboutNodeId, StrUtil.SLASH);
+        String[] split = StrUtil.splitToArray(pathAboutNodeId, StrUtil.SLASH);
         if (ArrayUtil.isNotEmpty(split)
             && StrUtil.isNotBlank(split[0])) {
             return Optional.of(split[0]);
