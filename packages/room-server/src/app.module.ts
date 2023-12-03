@@ -22,7 +22,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ActuatorModule } from 'actuator/actuator.module';
-import { AiDynamicModule } from 'ai/ai.dynamic.module';
 import { defaultLanguage, enableOtelJaeger, enableScheduler, enableSocket } from 'app.environment';
 import { RobotModule } from 'automation/robot.module';
 import { DatabaseModule } from 'database/database.module';
@@ -40,8 +39,7 @@ import { SocketModule } from 'socket/socket.module';
 import { UnitModule } from 'unit/unit.module';
 import { UserModule } from 'user/user.module';
 import { DeveloperModule } from './developer/developer.module';
-import { BullModule } from '@nestjs/bull';
-import { DatabaseConfigService, EnvConfigModule, redisModuleOptions, bullModuleOptions } from 'shared/services/config';
+import { DatabaseConfigService, EnvConfigModule, redisModuleOptions } from 'shared/services/config';
 import { JaegerDynamicModule } from 'shared/services/jaeger/jaeger.dynamic.module';
 import { WorkDocDynamicModule } from 'workdoc/workdoc.dynamic.module';
 
@@ -64,11 +62,6 @@ import { WorkDocDynamicModule } from 'workdoc/workdoc.dynamic.module';
       inject: [ConfigService],
       useFactory: () => redisModuleOptions(),
     }),
-    // bull configuration
-    BullModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: () => bullModuleOptions()
-    }),
     EnvConfigModule,
     I18nModule.forRoot({
       fallbackLanguage: defaultLanguage,
@@ -81,7 +74,6 @@ import { WorkDocDynamicModule } from 'workdoc/workdoc.dynamic.module';
     ScheduleModule.forRoot(),
     SchedTaskDynamicModule.register(enableScheduler),
     EmbedDynamicModule.forRoot(),
-    AiDynamicModule.forRoot(),
     FusionApiDynamicModule.forRoot(),
     SocketModule.register(enableSocket),
     WorkDocDynamicModule.forRoot(),

@@ -1,4 +1,3 @@
-export * from './bull.config.service';
 export * from './config.store';
 export * from './database.config.service';
 export * from './env.config.module';
