@@ -5,7 +5,6 @@
       "jest",
       "node"
     ],
-    // "sourceMap": true,
     "strict": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
