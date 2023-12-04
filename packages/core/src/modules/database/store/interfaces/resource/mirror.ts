@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ICollaborator, IDashboard, INodeMeta, ISourceDatasheetInfo, ITemporaryView, IWidgetPanel, IWidgetPanelStatus } from '../../../../../exports/store';
+import { ICollaborator, IDashboard, INodeMeta, ISourceDatasheetInfo, ITemporaryView, IWidgetPanel, IWidgetPanelStatus } from 'exports/store/interfaces';
 import * as ActionConstants from '../../../../shared/store/action_constants';
 import * as actions from '../../../../shared/store/action_constants';
 
@@ -36,16 +36,16 @@ export interface IMirrorPack {
   /**
    * whether the data is under collaboration
    */
-  syncing: boolean; 
+  syncing: boolean;
   /**
    * whether or not the data is loading
    */
-  loading: boolean; 
+  loading: boolean;
 
   /**
    * a mark to indicate collaboration status
    */
-  connected: boolean; 
+  connected: boolean;
 
   mirror?: IMirror | null;
   errorCode?: number | null;

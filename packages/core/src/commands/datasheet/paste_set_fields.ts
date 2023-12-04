@@ -18,10 +18,13 @@
 
 import { ExecuteResult, ICollaCommandDef, ILinkedActions } from 'command_manager';
 import { IJOTAction } from 'engine';
-import { Field, TextField } from 'model';
-import { Selectors, ViewType } from '../../exports/store';
+import { Field } from 'model/field';
+import { TextField } from 'model/field/text_field';
+import { ViewType } from 'modules/shared/store/constants';
+import { getViewById,getActiveDatasheetId,getSnapshot } from 'modules/database/store/selectors/resource/datasheet/base';
+import { getVisibleColumns,getPermissions,getRangeFields } from 'modules/database/store/selectors/resource/datasheet/calc';
+import { getSelectRanges } from 'modules/database/store/selectors/resource/datasheet/cell_range_calc';
 import { IViewColumn } from '../../exports/store/interfaces';
-import { getSelectRanges, getViewById, getVisibleColumns } from '../../exports/store/selectors';
 import { FieldType, ResourceType } from 'types';
 import { IField, IStandardValue } from 'types/field_types';
 import { fastCloneDeep, NamePrefix } from '../../utils';
@@ -43,9 +46,9 @@ export const pasteSetFields: ICollaCommandDef<IPasteSetFieldsOptions> = {
     const { state: state } = context;
     const { viewId, column, stdValues } = options;
     const { fields } = options;
-    const datasheetId = Selectors.getActiveDatasheetId(state)!;
+    const datasheetId = getActiveDatasheetId(state)!;
 
-    const snapshot = Selectors.getSnapshot(state, datasheetId);
+    const snapshot = getSnapshot(state, datasheetId);
     if (!snapshot) {
       return null;
     }
@@ -70,7 +73,7 @@ export const pasteSetFields: ICollaCommandDef<IPasteSetFieldsOptions> = {
     }
 
     const fieldMap = snapshot.meta.fieldMap;
-    const { fieldPropertyEditable, fieldCreatable } = Selectors.getPermissions(state);
+    const { fieldPropertyEditable, fieldCreatable } = getPermissions(state);
 
     function enrichColumnProperty(column: IViewColumn, stdValues: IStandardValue[]) {
       const oldField = fieldMap[column.fieldId]!;
@@ -104,7 +107,7 @@ export const pasteSetFields: ICollaCommandDef<IPasteSetFieldsOptions> = {
     if (singleCellPaste) {
       const ranges = getSelectRanges(state)!;
       const range = ranges[0]!;
-      const fields = Selectors.getRangeFields(state, range, datasheetId)!;
+      const fields = getRangeFields(state, range, datasheetId)!;
       let stdValue = stdValues[0]![0]!;
       const data = stdValue.data.filter(d => d.text);
       stdValue = { ...stdValue, data };
@@ -136,7 +139,7 @@ export const pasteSetFields: ICollaCommandDef<IPasteSetFieldsOptions> = {
       }
       newFields = newFields.map(field => {
         const originName = field.name;
-        // The incoming fields may have fieldId. In order to ensure that it does not conflict with the id of the newly created field, 
+        // The incoming fields may have fieldId. In order to ensure that it does not conflict with the id of the newly created field,
         // we force it to be deleted in this category.
         delete (field as any).id;
         let name = originName;

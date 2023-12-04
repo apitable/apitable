@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useAtom } from 'jotai/index';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -35,10 +36,13 @@ import {
 import { integrateCdnHost, Strings, t } from '@apitable/core';
 
 import { ArrowRightOutlined, MoreOutlined, MoreStandOutlined } from '@apitable/icons';
+import { automationHistoryAtom, automationStateAtom } from 'pc/components/automation/controller';
+import AutomationHistoryPanel from 'pc/components/automation/run_history/modal/modal';
+import { IAutomationRobotDetailItem } from 'pc/components/robot/robot_context';
 import { useActionTypes, useTriggerTypes } from 'pc/components/robot/robot_panel/hook_trigger';
 import { getEnvVariables } from 'pc/utils/env';
 import EllipsisText from '../../ellipsis_text';
-import { IAutomationDatum, IRobotNodeType, IRobotNodeTypeInfo } from '../interface';
+import { AutomationScenario, IAutomationDatum, IRobotNodeType, IRobotNodeTypeInfo } from '../interface';
 import { getActionList, getTriggerList } from '../robot_detail/utils';
 import styles from './styles.module.less';
 
@@ -76,6 +80,9 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
   const { data: triggerTypes } = useTriggerTypes();
   const router = useRouter();
   const { originData: actionTypes } = useActionTypes();
+
+  const [historyDialog, setHistoryDialog] = useAtom(automationHistoryAtom);
+  const [automationState, setAutomationStateAtom] = useAtom(automationStateAtom);
 
   // @ts-ignore
   const list = getActionList(
@@ -130,12 +137,12 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
       pointerEvents: 'none',
       opacity: 0.5,
     }
-    : { cursor: 'pointer' };
+    : { cursor: 'default' };
 
   const colors = useThemeColors();
 
   return (
-    <StyledBox border={`1px solid ${theme.color.borderCommonDefault}`} borderRadius="4px" marginTop="16px" style={readonlyStyle}>
+    <StyledBox border={`1px solid ${theme.color.borderCommonDefault}`} borderRadius="4px" style={readonlyStyle}>
       <Box padding="8px 0" margin="0 8px" display={'flex'} alignItems={'center'}>
         {/*marginTop="8px"*/}
         <Box display="flex" justifyContent="space-between" alignItems="center" flex={'1 1 auto'}>
@@ -227,7 +234,17 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
                     display={'inline-flex'}
                     alignItems={'center'}
                     onClick={() => {
-                      router.push(`/workbench/${robotCardInfo?.resourceId}?tab=history`);
+                      toggle();
+                      setHistoryDialog({
+                        dialogVisible: true,
+                      });
+                      setAutomationStateAtom({
+                        currentRobotId: robotCardInfo.robotId,
+                        resourceId: robotCardInfo.resourceId,
+                        scenario: AutomationScenario.node,
+                        // @ts-ignore
+                        robot: robotCardInfo
+                      });
                     }}
                   >
                     <Typography variant={'body4'} color={'var(--textCommonPrimary)'}>
@@ -248,7 +265,7 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
 
       </Box>
 
-      <Box display="flex" alignItems="center" margin={'0 8px'} onClick={onNavigate}>
+      <Box display="flex" alignItems="center" margin={'0 8px'}>
         <Box display="flex" justifyContent={'space-between'} alignItems="center" marginBottom={'16px'} width={'100%'}>
           <EllipsisText>
             <Typography variant="h8" ellipsis style={{ maxWidth: '78%' }}>
@@ -267,6 +284,17 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
         </Box>
 
       </Box>
+
+      {historyDialog.dialogVisible && (
+        <AutomationHistoryPanel
+          onClose={() => {
+            setHistoryDialog((draft) => ({
+              ...draft,
+              dialogVisible: false,
+            }));
+          }}
+        />
+      )}
     </StyledBox>
   );
 };

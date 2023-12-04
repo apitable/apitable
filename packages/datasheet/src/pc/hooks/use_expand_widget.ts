@@ -23,9 +23,8 @@ import { AnyAction } from 'redux';
 import { batchActions } from 'redux-batched-actions';
 import { IWidgetPanelStatus, ResourceType, Selectors, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { EXPAND_WIDGET } from '../components/widget/expand_widget';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const useExpandWidget = () => {
   const { widgetId, datasheetId, mirrorId } = useAppSelector((state) => state.pageParams);

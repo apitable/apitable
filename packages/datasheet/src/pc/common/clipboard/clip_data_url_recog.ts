@@ -34,9 +34,9 @@ import {
   IHyperlinkSegment,
 } from '@apitable/core';
 
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { resourceService } from 'pc/resource_service';
-import { IURLMeta } from 'pc/utils';
+import { IURLMeta } from 'pc/utils/url_recognition';
 
 interface IRecogClipboardURLDataProps {
   state: IReduxState;

@@ -17,12 +17,15 @@
  */
 
 import { ExecuteResult, ICollaCommandDef, ILinkedActions } from 'command_manager';
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 import { clearOldBrotherField, setAffectFieldAttr2Action } from 'commands/common/field';
 import { IJOTAction, jot } from 'engine';
 import { Strings, t } from '../../exports/i18n';
-import { DatasheetActions } from 'model';
-import { Selectors } from '../../exports/store';
+import { DatasheetActions } from 'commands_actions/datasheet';
+import {
+  getActiveDatasheetId,
+  getSnapshot,
+} from 'modules/database/store/selectors/resource/datasheet/base';
 import { FieldType, ResourceType } from 'types';
 
 export interface IDeleteFieldOptions {
@@ -42,8 +45,8 @@ export const deleteField: ICollaCommandDef<IDeleteFieldOptions> = {
   execute: (context, options) => {
     const { state: state } = context;
     const { data, datasheetId: _datasheetId } = options;
-    const datasheetId = options.datasheetId ?? Selectors.getActiveDatasheetId(state)!;
-    const snapshot = Selectors.getSnapshot(state, _datasheetId || datasheetId);
+    const datasheetId = options.datasheetId ?? getActiveDatasheetId(state)!;
+    const snapshot = getSnapshot(state, _datasheetId || datasheetId);
     if (!snapshot) {
       return null;
     }

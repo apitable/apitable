@@ -18,8 +18,7 @@
 
 import { createContext, useContext } from 'react';
 
-
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export enum SideBarType {
   User,

@@ -19,11 +19,14 @@
 import { CollaCommandManager, ExecuteResult } from 'command_manager';
 import { CollaCommandName, ICollaCommandOptions } from 'commands';
 import { IDataSaver, ILoadDashboardPackOptions, IStoreOptions } from 'databus/providers';
-import { IDashboardLayout, IDashboardSnapshot, IReduxState, IServerDashboardPack, IWidget, Selectors, StoreActions } from 'exports/store';
+import { IDashboardLayout, IDashboardSnapshot, IReduxState, IServerDashboardPack, IWidget } from 'exports/store/interfaces';
+import { getResourceRevision } from 'modules/database/store/selectors/resource';
+import { getDashboardSnapshot, getDashboard } from 'modules/database/store/selectors/resource/dashboard';
 import { Store } from 'redux';
 import { ResourceType } from 'types';
 import { ICommandExecutionResult, ISaveOptions } from './datasheet';
 import { IResource } from './resource.interface';
+import { updateRevision,receiveInstallationWidget } from 'modules/database/store/actions/resource';
 
 type IDashboardWidgetMap = { [widgetId: string]: IWidget };
 
@@ -60,23 +63,23 @@ export class Dashboard implements IResource {
    * The name of this dashboard.
    */
   public get name(): string {
-    return Selectors.getDashboard(this.store.getState(), this.id)!.name;
+    return getDashboard(this.store.getState(), this.id)!.name;
   }
 
   public get revision(): number {
-    return Selectors.getResourceRevision(this.store.getState(), this.id, ResourceType.Dashboard)!;
+    return getResourceRevision(this.store.getState(), this.id, ResourceType.Dashboard)!;
   }
 
   public setRevision(revision: number) {
-    this.store.dispatch(StoreActions.updateRevision(revision, this.id, ResourceType.Dashboard));
+    this.store.dispatch(updateRevision(revision, this.id, ResourceType.Dashboard));
   }
 
   public get snapshot(): IDashboardSnapshot {
-    return <IDashboardSnapshot>Selectors.getDashboardSnapshot(this.store.getState(), this.id);
+    return <IDashboardSnapshot>getDashboardSnapshot(this.store.getState(), this.id);
   }
 
   public setWidgetInstalled(widget: IWidget) {
-    this.store.dispatch(StoreActions.receiveInstallationWidget(widget.id, widget));
+    this.store.dispatch(receiveInstallationWidget(widget.id, widget));
   }
 
   /**

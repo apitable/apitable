@@ -26,7 +26,7 @@ import com.apitable.interfaces.security.model.CaptchaReceiver;
 import com.apitable.shared.captcha.ValidateTarget;
 import com.apitable.starter.sms.core.SmsMessage;
 import com.apitable.starter.sms.core.SmsSenderTemplate;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

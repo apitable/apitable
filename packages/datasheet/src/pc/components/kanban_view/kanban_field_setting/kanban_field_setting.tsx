@@ -30,17 +30,16 @@ import { AddOutlined, ChevronLeftOutlined } from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
-import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view';
+import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view/id';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { useCommand } from '../hooks/use_command';
 import { KanbanMember } from './kanban_member';
 import { KanbanOption } from './kanban_option/kanban_option';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 enum KanbanRoute {
   Init,

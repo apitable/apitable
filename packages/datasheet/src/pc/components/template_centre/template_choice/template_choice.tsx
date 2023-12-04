@@ -42,14 +42,13 @@ import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
 import { useTemplateRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import categoryStyles from '../template_category_detail/style.module.less';
 import { TemplateItem } from '../template_item';
-import styles from './style.module.less';
 // @ts-ignore
 import { isDingtalkFunc } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const defaultBanner = integrateCdnHost(Settings.workbench_folder_default_cover_list.value.split(',')[0]);
 

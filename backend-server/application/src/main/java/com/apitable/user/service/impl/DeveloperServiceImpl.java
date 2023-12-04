@@ -28,7 +28,7 @@ import com.apitable.user.mapper.DeveloperMapper;
 import com.apitable.user.mapper.UserMapper;
 import com.apitable.user.service.IDeveloperService;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

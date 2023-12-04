@@ -16,9 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { computeCache } from 'compute_manager';
-import { IReduxState, ILinearRow, CellType } from '../../exports/store';
-import { getVisibleRows, getVisibleRowsIndexMap } from '../../exports/store/selectors';
+import { computeCache } from 'compute_manager/compute_cache_manager';
+import { IReduxState, ILinearRow } from '../../exports/store/interfaces';
+import { CellType } from 'modules/shared/store/constants';
+import { getVisibleRows, getVisibleRowsIndexMap }from 'modules/database/store/selectors/resource/datasheet/rows_calc';
 import { IGroupInfo } from 'types';
 
 type GroupTabIds = Map<string, boolean>; // recordId_depth[]
@@ -109,7 +110,7 @@ export class Group {
 
   /**
    * According to the breakpoint, generate the Row of the grouping structure between the breakpoint Records
-   * @param breakIndex 
+   * @param breakIndex
    */
   genGroupLinearRows(
     breakIndex: number,

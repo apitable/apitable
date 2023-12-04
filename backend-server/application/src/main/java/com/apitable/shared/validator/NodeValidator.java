@@ -22,8 +22,8 @@ import com.apitable.core.util.SpringContextHolder;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.holder.MemberHolder;
 import com.apitable.workspace.service.INodeService;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
 
 /**

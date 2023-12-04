@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { copyWidgetsToNode } from 'api/widget/api';
 import classNames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
@@ -31,12 +32,10 @@ import { Router } from 'pc/components/route_manager/router';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
-import {copyWidgetsToNode} from "api/widget/api";
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ISentToDashboardProps {
   widgetId: string;

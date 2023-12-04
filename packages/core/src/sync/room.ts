@@ -29,10 +29,9 @@ import { keyBy, throttle } from 'lodash';
 import { Events, Player } from '../modules/shared/player';
 import { AnyAction, Store } from 'redux';
 import 'socket.io-client';
-import { DEFAULT_FIELD_PERMISSION, IResourceRevision, Selectors, StoreActions } from '../exports/store';
-import {
-  changeResourceSyncingStatus, resetFieldPermissionMap, roomInfoSync, setResourceConnect, updateFieldPermissionMap, updateFieldPermissionSetting,
-} from '../exports/store/actions';
+import { DEFAULT_FIELD_PERMISSION } from 'modules/shared/store/constants';
+import { IResourceRevision } from '../exports/store/interfaces';
+import { getDatasheet } from 'modules/database/store/selectors/resource/datasheet/base';
 import { ICollaborator, IReduxState } from '../exports/store/interfaces';
 import { EnhanceError } from 'sync/enhance_error';
 import { ErrorCode, IError, ModalType, OnOkType, ResourceType } from 'types';
@@ -42,7 +41,11 @@ import {
   BroadcastTypes, IClientRoomMessage, IEngagementCursorData, IFieldPermissionMessage, INewChangesData, INodeShareDisabledData, ISocketResponseData,
   IWatchResponse, OtErrorCode, SyncRequestTypes,
 } from './types';
-
+import {
+  fetchFieldPermission,cursorMove,
+  deactivateCollaborator,
+  resetResource, activeCollaborator, changeResourceSyncingStatus, resetFieldPermissionMap, roomInfoSync, setResourceConnect, updateFieldPermissionMap, updateFieldPermissionSetting,
+} from 'modules/database/store/actions/resource';
 // The maximum number of data retransmission actions is online, beyond this value, no timeout retry operation will be performed
 const MAX_RETRY_LENGTH = 5000;
 const VIKA_OP_BACKUP = 'VIKA_OP_BACKUP';
@@ -267,7 +270,7 @@ export class RoomService {
         void collaEngine.handleNewChanges(cs);
       } else if (
         resourceId.startsWith(NodeTypeReg.DATASHEET) &&
-        !Selectors.getDatasheet(this.store.getState(), resourceId)
+        !getDatasheet(this.store.getState(), resourceId)
       ) {
         // The data obtained at this time is the latest version, no need to apply cs anymore
         void this.fetchResource(resourceId, ResourceType.Datasheet);
@@ -325,7 +328,7 @@ export class RoomService {
       }
       dstIds.push(collaEngine.resourceId);
     });
-    dstIds.length && this.store.dispatch(StoreActions.fetchFieldPermission(dstIds) as any);
+    dstIds.length && this.store.dispatch(fetchFieldPermission(dstIds) as any);
   }
 
   @errorCapture<RoomService>()
@@ -412,7 +415,7 @@ export class RoomService {
     if (collaEngine.isStorageClear()) {
       this.collaEngineMap.delete(resourceId);
       collaEngine.cancelQuit?.();
-      this.store.dispatch(StoreActions.resetResource(resourceId, collaEngine.resourceType));
+      this.store.dispatch(resetResource(resourceId, collaEngine.resourceType));
       return;
     }
 
@@ -703,7 +706,7 @@ export class RoomService {
       return;
     }
     data.collaborators.forEach(item => {
-      this.store.dispatch(StoreActions.activeCollaborator(item, this.roomId, collaEngine.resourceType));
+      this.store.dispatch(activeCollaborator(item, this.roomId, collaEngine.resourceType));
     });
   }
 
@@ -717,13 +720,13 @@ export class RoomService {
     if (!collaEngine) {
       return;
     }
-    this.store.dispatch(StoreActions.deactivateCollaborator(data, this.roomId, collaEngine.resourceType));
+    this.store.dispatch(deactivateCollaborator(data, this.roomId, collaEngine.resourceType));
   }
 
   handleCursor(data: IEngagementCursorData) {
     // console.log('RECEIVED IEngagementCursorData: ', { data });
     const { cursorInfo } = data;
-    this.store.dispatch(StoreActions.cursorMove({
+    this.store.dispatch(cursorMove({
       fieldId: cursorInfo.fieldId,
       recordId: cursorInfo.recordId,
       time: cursorInfo.time,

@@ -22,9 +22,9 @@ import static net.javacrumbs.shedlock.core.LockAssert.assertLocked;
 
 import cn.hutool.core.util.StrUtil;
 import com.apitable.shared.config.properties.ConstProperties;
+import jakarta.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.beans.factory.annotation.Value;

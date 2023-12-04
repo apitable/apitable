@@ -17,7 +17,7 @@
  */
 
 import Joi from 'joi';
-import { IReduxState } from '../../exports/store';
+import { IReduxState, IRecord } from '../../exports/store/interfaces';
 import {
   ILastModifiedTimeField, ILastModifiedTimeFieldProperty, FieldType, IField,
   DateFormat, TimeFormat, CollectType,
@@ -25,10 +25,10 @@ import {
 import { DatasheetActions } from '../../commands_actions/datasheet';
 import { DateTimeBaseField } from './date_time_base_field';
 import { ICellValue } from 'model/record';
-import { IRecord } from '../../exports/store';
 import { datasheetIdString, enumKeyToArray, enumToArray, joiErrorResult } from './validate_schema';
 import { IOpenLastModifiedTimeFieldProperty } from 'types/open/open_field_read_types';
 import { IUpdateOpenLastModifiedTimeFieldProperty } from 'types/open/open_field_write_types';
+import { getFieldDefaultProperty } from './const';
 
 export class LastModifiedTimeField extends DateTimeBaseField {
   constructor(public override field: ILastModifiedTimeField, state: IReduxState) {
@@ -59,14 +59,7 @@ export class LastModifiedTimeField extends DateTimeBaseField {
   }
 
   static defaultProperty(): ILastModifiedTimeFieldProperty {
-    return {
-      dateFormat: DateFormat['YYYY/MM/DD'],
-      timeFormat: TimeFormat['hh:mm'],
-      includeTime: false,
-      collectType: CollectType.AllFields,
-      fieldIdCollection: [],
-      datasheetId: '',
-    };
+    return getFieldDefaultProperty(FieldType.LastModifiedTime) as ILastModifiedTimeFieldProperty;
   }
 
   override get isComputed() {

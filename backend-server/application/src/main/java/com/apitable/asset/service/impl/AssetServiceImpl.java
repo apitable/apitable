@@ -72,6 +72,7 @@ import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.mapper.NodeMapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.ImmutableList;
+import jakarta.annotation.Resource;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -84,7 +85,6 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -259,10 +259,12 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity>
                                 uploadAndSavePdfImg(streamCache.getInputStream());
                             result.setPreview(pdfImgUploadPath);
                             // Basic resource records, supplementary preview data
-                            AssetEntity update = new AssetEntity();
-                            update.setId(assetEntity.getId());
-                            update.setPreview(result.getPreview());
-                            updateById(update);
+                            if (pdfImgUploadPath != null) {
+                                AssetEntity update = new AssetEntity();
+                                update.setId(assetEntity.getId());
+                                update.setPreview(result.getPreview());
+                                updateById(update);
+                            }
                         }
                         // Determine whether the file has been referenced on the number table,
                         // if so, add the number of references once,

@@ -18,16 +18,13 @@
 
 package com.apitable;
 
-import java.util.List;
-import java.util.Objects;
-
+import com.apitable.shared.config.MybatisPlusConfig;
+import com.apitable.sql.script.enhance.ModifyBeforeSqlScriptsTestExecutionListener;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.test.autoconfigure.MybatisPlusTest;
+import java.util.List;
+import java.util.Objects;
 import org.junit.jupiter.api.BeforeAll;
-
-import com.apitable.shared.config.MybatisPlusConfig;
-import com.apitable.sql.script.enhance.NewSqlScriptsTestExecutionListener;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -48,26 +45,29 @@ import org.springframework.test.context.web.ServletTestExecutionListener;
  * Quickly test Mapper and use Mybatis-Plus's illegal sql plug-in to achieve reasonable sql
  */
 @MybatisPlusTest
-@ContextConfiguration(classes = { MybatisPlusConfig.class, TestMybatisPlusConfig.class })
+@ContextConfiguration(classes = {MybatisPlusConfig.class, TestMybatisPlusConfig.class})
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @TestPropertySource(value = {
-        "classpath:test.properties",
+    "classpath:test.properties",
 })
-@TestExecutionListeners(value = { ServletTestExecutionListener.class,
-        DirtiesContextBeforeModesTestExecutionListener.class,
-        ApplicationEventsTestExecutionListener.class,
-        DependencyInjectionTestExecutionListener.class,
-        DirtiesContextTestExecutionListener.class,
-        TransactionalTestExecutionListener.class,
-        NewSqlScriptsTestExecutionListener.class,
-        EventPublishingTestExecutionListener.class })
+@TestExecutionListeners(value = {
+    ServletTestExecutionListener.class,
+    DirtiesContextBeforeModesTestExecutionListener.class,
+    ApplicationEventsTestExecutionListener.class,
+    DependencyInjectionTestExecutionListener.class,
+    DirtiesContextTestExecutionListener.class,
+    TransactionalTestExecutionListener.class,
+    ModifyBeforeSqlScriptsTestExecutionListener.class,
+    EventPublishingTestExecutionListener.class
+})
 public abstract class AbstractMyBatisMapperTest {
 
     @BeforeAll
     static void setUp(@Autowired JdbcTemplate jdbcTemplate,
-            @Value("#{'${exclude}'.split(',')}") List<String> excludeTables,
-            @Autowired MybatisPlusProperties mybatisPlusProperties) {
-        Object tablePrefixObj = mybatisPlusProperties.getConfigurationProperties().get("tablePrefix");
+                      @Value("#{'${exclude}'.split(',')}") List<String> excludeTables,
+                      @Autowired MybatisPlusProperties mybatisPlusProperties) {
+        Object tablePrefixObj =
+            mybatisPlusProperties.getConfigurationProperties().get("tablePrefix");
         String tablePrefix = Objects.isNull(tablePrefixObj) ? "" : tablePrefixObj.toString();
         UnitTestUtil.clearDB(jdbcTemplate, excludeTables, tablePrefix);
     }

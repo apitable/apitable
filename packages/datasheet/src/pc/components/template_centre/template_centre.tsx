@@ -23,14 +23,14 @@ import { FC } from 'react';
 import { Events, IReduxState, Player, TrackEvents } from '@apitable/core';
 import { SideWrapper } from 'pc/components/route_manager/side_wrapper';
 import { usePageParams, useQuery, useRequest, useUserRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { MobileSideBar } from '../mobile_side_bar';
-import styles from './style.module.less';
 // @ts-ignore
 import { isDingtalkSkuPage } from 'enterprise/home/social_platform/utils';
 //  @ts-ignore
 import { WecomContactWrapper } from 'enterprise/wecom/wecom_contact_wrapper/wecom_contact_wrapper.tsx';
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const TemplateCentre: FC<React.PropsWithChildren<unknown>> = (props) => {
   const { getLoginStatusReq } = useUserRequest();

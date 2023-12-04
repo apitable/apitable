@@ -19,7 +19,9 @@
 import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from '../../command_manager';
 import { DashboardAction } from '../../commands_actions/dashboard';
-import { IDashboardLayout, Selectors } from '../../exports/store';
+import { IDashboardLayout } from '../../exports/store/interfaces';
+import { getInstalledWidgetInDashboard,getDashboardSnapshot } from 'modules/database/store/selectors/resource/dashboard';
+
 import { CollaCommandName } from '..';
 
 export interface IChangeDashboardLayout {
@@ -34,7 +36,7 @@ export const changeDashboardLayout: ICollaCommandDef<IChangeDashboardLayout> = {
   execute(context: ICollaCommandExecuteContext, options) {
     const { state: state } = context;
     const { dashboardId, layout } = options;
-    const installedWidgetIds = Selectors.getInstalledWidgetInDashboard(state);
+    const installedWidgetIds = getInstalledWidgetInDashboard(state);
     if (!installedWidgetIds) { return null; }
 
     const ids = layout.map(item => { return item.id; });
@@ -45,7 +47,7 @@ export const changeDashboardLayout: ICollaCommandDef<IChangeDashboardLayout> = {
       return null;
     }
 
-    const dashboardSnapshot = Selectors.getDashboardSnapshot(state);
+    const dashboardSnapshot = getDashboardSnapshot(state);
 
     if (!dashboardSnapshot) { return null;}
 

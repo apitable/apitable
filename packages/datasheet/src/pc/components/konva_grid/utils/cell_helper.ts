@@ -22,14 +22,17 @@ import { colors, ThemeName } from '@apitable/components';
 import {
   Api,
   ArrayValueField,
-  BasicValueType, ButtonStyleType,
+  BasicValueType,
+  ButtonActionType,
+  ButtonStyleType,
   ConfigConstant,
   DatasheetApi,
   Field,
   FieldType,
   FormulaBaseError,
   handleNullArray,
-  IAttachmentValue, IButtonField,
+  IAttachmentValue,
+  IButtonField,
   ICellValue,
   IField,
   ILookUpField,
@@ -59,6 +62,7 @@ import {
 } from '@apitable/core';
 import { FileOutlined } from '@apitable/icons';
 import { assertSignatureManager } from '@apitable/widget-sdk';
+import { AutomationConstant } from 'pc/components/automation/config';
 import { AvatarSize, AvatarType } from 'pc/components/common';
 import { getIsValid } from 'pc/components/editors/button_editor/valid_map';
 import { GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT } from 'pc/components/gantt_view';
@@ -313,7 +317,7 @@ export class CellHelper extends KonvaDrawer {
   }
 
   private renderCellButton(renderProps: IRenderProps, ctx?: any) {
-    const { x, y, cellValue: cellValue1, rowHeight, rowHeightLevel, columnWidth, isActive, callback } = renderProps;
+    const { x, y, rowHeight, rowHeightLevel, columnWidth, isActive, callback } = renderProps;
 
     const buttonField = renderProps.field as IButtonField;
     const cellValue = [1];
@@ -326,7 +330,12 @@ export class CellHelper extends KonvaDrawer {
     const renderDataList: any[] = [];
     const listCount = cellValue.length;
     let isOverflow = false;
-    const isValid = getIsValid(buttonField.id);
+
+    let isValid: boolean = getIsValid(buttonField.id);
+    if(buttonField.property.action.type === ButtonActionType.TriggerAutomation) {
+      isValid = isValid && (renderProps.permissions?.['editable'] ?? true);
+    }
+
 
     const defaultColor = buttonField.property.style.color ? setColor(buttonField.property.style.color, renderProps.cacheTheme) : colors.defaultBg;
     let bg = '';
@@ -343,6 +352,11 @@ export class CellHelper extends KonvaDrawer {
       if(buttonField.property.style.type === ButtonStyleType.Background) {
         if(isValid) {
           color = colors.textStaticPrimary;
+          if(renderProps.cacheTheme === 'dark') {
+            if(buttonField.property.style.color === AutomationConstant.whiteColor) {
+              color = colors.textReverseDefault;
+            }
+          }
         } else {
           color = colors.textCommonDisabled;
         }
@@ -405,9 +419,10 @@ export class CellHelper extends KonvaDrawer {
         //   data: FileOutlinedPath,
         //   size: 12,
         //   fill: colors.textBrandDefault,
+        const itemX1 = x + (columnWidth - itemWidth) /2;
         // });
         this.label({
-          x: itemX,
+          x: itemX1,
           y: itemY,
           width: itemWidth,
           height: GRID_OPTION_ITEM_HEIGHT,

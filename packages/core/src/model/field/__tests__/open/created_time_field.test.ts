@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CreatedTimeField } from 'model';
+import { CreatedTimeField } from 'model/field/created_time_field';
 import { APIMetaFieldType, DateFormat, FieldType, ICreatedTimeField, TimeFormat } from 'types';
 import { IOpenField } from 'types/open/open_field_read_types';
 import { IUpdateOpenCreatedTimeFieldProperty } from 'types/open/open_field_write_types';
@@ -60,7 +60,7 @@ const propertyOptionalNotFill: IUpdateOpenCreatedTimeFieldProperty = {
 
 describe('Create time field read property format check', () => {
   const valid = getOpenFieldProperty(createdTimeField);
-  it('correct property', function() {
+  it('correct property', function () {
     const [expectValue, receiveValue] = valid(openCreatedTimeField.property);
     expect(expectValue).toEqual(receiveValue);
   });

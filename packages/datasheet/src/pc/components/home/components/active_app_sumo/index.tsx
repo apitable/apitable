@@ -1,14 +1,14 @@
 import path from 'path';
+import { bindAppSumo, convertState2mail } from 'api/user/api';
+import { GET_APP_SUMO_EMAIL } from 'api/user/const';
 import { useEffect } from 'react';
 import useSWR from 'swr';
 import { Navigation, Strings, t } from '@apitable/core';
-import { bindAppSumo, convertState2mail } from 'api/user/api';
-import { GET_APP_SUMO_EMAIL } from 'api/user/const';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { SignUpBase } from 'pc/components/home/components/sign_up/sign_up_base';
 import { Router } from 'pc/components/route_manager/router';
-import { useRequest } from 'pc/hooks';
-import { getSearchParams } from 'pc/utils';
+import { useRequest } from 'pc/hooks/use_request';
+import { getSearchParams } from 'pc/utils/dom';
 
 export const ActiveAppSumo = () => {
   const { run: signUpReq, loading } = useRequest(bindAppSumo, { manual: true });

@@ -22,9 +22,8 @@ import { useDispatch } from 'react-redux';
 import { StoreActions } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const useSideBarVisible = () => {
   const sideBarVisible = useAppSelector((state) => state.space.sideBarVisible);

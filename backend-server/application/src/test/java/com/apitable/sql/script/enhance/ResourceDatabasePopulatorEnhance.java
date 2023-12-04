@@ -22,7 +22,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -51,38 +51,40 @@ public class ResourceDatabasePopulatorEnhance extends ResourceDatabasePopulator 
 
     private boolean ignoreFailedDrops = false;
 
-    private TablePrefixHandler tablePrefixHandler;
+    private final TablePrefixHandler tablePrefixHandler;
 
     public ResourceDatabasePopulatorEnhance(String tablePrefix) {
         this.tablePrefixHandler = new TablePrefixHandler(tablePrefix);
     }
 
     @Override
-    public void populate(Connection connection) throws ScriptException {
+    public void populate(@NotNull Connection connection) throws ScriptException {
         Assert.notNull(connection, "'connection' must not be null");
         for (Resource script : this.scripts) {
             EncodedResource encodedScript = new EncodedResource(script, this.sqlScriptEncoding);
-            tablePrefixHandler.executeSqlScript(connection, encodedScript, this.continueOnError, this.ignoreFailedDrops,
-                    this.commentPrefixes, this.separator, this.blockCommentStartDelimiter, this.blockCommentEndDelimiter);
+            tablePrefixHandler.executeSqlScript(connection, encodedScript, this.continueOnError,
+                this.ignoreFailedDrops,
+                this.commentPrefixes, this.separator, this.blockCommentStartDelimiter,
+                this.blockCommentEndDelimiter);
         }
     }
 
     @Override
-    public void addScript(Resource script) {
+    public void addScript(@NotNull Resource script) {
         super.addScript(script);
         this.scripts.add(script);
     }
 
     @Override
-    public void addScripts(Resource... scripts) {
+    public void addScripts(@NotNull Resource... scripts) {
         super.addScripts(scripts);
         this.scripts.addAll(Arrays.asList(scripts));
     }
 
     @Override
-    public void setScripts(Resource... scripts) {
+    public void setScripts(@NotNull Resource... scripts) {
         super.setScripts(scripts);
-        this.scripts =  new ArrayList<>(Arrays.asList(scripts));
+        this.scripts = new ArrayList<>(Arrays.asList(scripts));
     }
 
     @Override
@@ -98,25 +100,25 @@ public class ResourceDatabasePopulatorEnhance extends ResourceDatabasePopulator 
     }
 
     @Override
-    public void setCommentPrefix(String commentPrefix) {
+    public void setCommentPrefix(@NotNull String commentPrefix) {
         super.setCommentPrefix(commentPrefix);
-        this.commentPrefixes = new String[] { commentPrefix };
+        this.commentPrefixes = new String[] {commentPrefix};
     }
 
     @Override
-    public void setSeparator(String separator) {
+    public void setSeparator(@NotNull String separator) {
         super.setSeparator(separator);
         this.separator = separator;
     }
 
     @Override
-    public void setBlockCommentStartDelimiter(String blockCommentStartDelimiter) {
+    public void setBlockCommentStartDelimiter(@NotNull String blockCommentStartDelimiter) {
         super.setBlockCommentStartDelimiter(blockCommentStartDelimiter);
         this.blockCommentStartDelimiter = blockCommentStartDelimiter;
     }
 
     @Override
-    public void setBlockCommentEndDelimiter(String blockCommentEndDelimiter) {
+    public void setBlockCommentEndDelimiter(@NotNull String blockCommentEndDelimiter) {
         super.setBlockCommentEndDelimiter(blockCommentEndDelimiter);
         this.blockCommentEndDelimiter = blockCommentEndDelimiter;
     }
@@ -124,6 +126,7 @@ public class ResourceDatabasePopulatorEnhance extends ResourceDatabasePopulator 
     @Override
     public void setSqlScriptEncoding(@Nullable String sqlScriptEncoding) {
         super.setSqlScriptEncoding(sqlScriptEncoding);
-        this.sqlScriptEncoding = (StringUtils.hasText(sqlScriptEncoding) ? sqlScriptEncoding : null);
+        this.sqlScriptEncoding =
+            (StringUtils.hasText(sqlScriptEncoding) ? sqlScriptEncoding : null);
     }
 }

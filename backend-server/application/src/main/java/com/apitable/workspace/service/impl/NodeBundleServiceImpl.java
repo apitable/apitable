@@ -60,6 +60,7 @@ import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.service.NodeBundleService;
 import com.apitable.workspace.vo.NodeShareTree;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import jakarta.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -69,13 +70,13 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -130,7 +131,7 @@ public class NodeBundleServiceImpl implements NodeBundleService {
         List<File> files = new ArrayList<>();
         // traverse all nodes down
         List<String> nodeIds = CollUtil.newArrayList(nodeId);
-        Map<String, String> nodeIdToFileNameMap = CollUtil.newHashMap();
+        Map<String, String> nodeIdToFileNameMap = new HashMap<>();
         List<NodeShareTree> childrenList = new ArrayList<>();
         if (node.getType() < NodeType.DATASHEET.getNodeType()) {
             childrenList = iNodeService.getSubNodes(nodeId);

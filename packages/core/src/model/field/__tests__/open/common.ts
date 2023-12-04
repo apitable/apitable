@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Field } from 'model';
+import { Field } from 'model/field';
 import { IField, IFieldProperty } from 'types/field_types';
 import { IAddOpenFieldProperty, IEffectOption, IUpdateOpenFieldProperty } from 'types/open/open_field_write_types';
 import { mockState } from '../../../../formula_parser/__tests__/mock_state';

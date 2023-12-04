@@ -20,13 +20,12 @@ package com.apitable.template.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import cn.hutool.core.io.IoUtil;
 import com.apitable.AbstractIntegrationTest;
-import com.apitable.FileHelper;
+import com.apitable.template.entity.TemplateAlbumEntity;
+import com.apitable.template.entity.TemplateAlbumRelEntity;
 import com.apitable.template.vo.AlbumContentVo;
 import com.apitable.template.vo.AlbumVo;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -74,15 +73,114 @@ public class TemplateAlbumServiceImplTest extends AbstractIntegrationTest {
     }
 
     private void initAlbumData() {
-        InputStream inputStream = FileHelper.getInputStreamFromResource("sql/template/album.sql");
-        String sql = IoUtil.read(inputStream, StandardCharsets.UTF_8);
-        execute(sql);
+        List<TemplateAlbumEntity> albumEntities = new ArrayList<>();
+        albumEntities.add(TemplateAlbumEntity.builder()
+            .albumId("alb4uFzSy2vbg")
+            .i18nName("en_US")
+            .name("this is an album2")
+            .description("")
+            .content("{}")
+            .isDeleted(1)
+            .build());
+        albumEntities.add(TemplateAlbumEntity.builder()
+            .albumId("albNXV6wY6mME")
+            .i18nName("zh_CN")
+            .name("so and so topic")
+            .description("")
+            .content("{}")
+            .build());
+        albumEntities.add(TemplateAlbumEntity.builder()
+            .albumId("albn5UgHThZj2")
+            .i18nName("en_US")
+            .name("this is an album")
+            .description("")
+            .content("{}")
+            .build());
+        albumEntities.add(TemplateAlbumEntity.builder()
+            .albumId("albSr5vHPgzGG")
+            .i18nName("en_US")
+            .name("New Game")
+            .description("")
+            .content("{}")
+            .build());
+        albumEntities.add(TemplateAlbumEntity.builder()
+            .albumId("alb671STQDHvt")
+            .i18nName("zh_CN")
+            .name("New templates for September")
+            .description("")
+            .content("{}")
+            .build());
+        iTemplateAlbumService.saveBatch(albumEntities);
     }
 
     private void initAlbumRelData() {
-        InputStream inputStream =
-            FileHelper.getInputStreamFromResource("sql/template/album-rel.sql");
-        String sql = IoUtil.read(inputStream, StandardCharsets.UTF_8);
-        execute(sql);
+        List<TemplateAlbumRelEntity> albumRelEntities = new ArrayList<>();
+        albumRelEntities.add(TemplateAlbumRelEntity.builder()
+            .albumId("albn5UgHThZj2")
+            .type(0)
+            .relateId("tpcE7fyADP99W")
+            .build());
+
+        albumRelEntities.add(TemplateAlbumRelEntity.builder()
+            .albumId("albSr5vHPgzGG")
+            .type(0)
+            .relateId("tpccZzzJ9TvS8")
+            .build());
+
+        albumRelEntities.add(TemplateAlbumRelEntity.builder()
+            .albumId("alb671STQDHvt")
+            .type(1)
+            .relateId("tplHRx6j4Ewbv")
+            .build());
+
+        albumRelEntities.add(TemplateAlbumRelEntity.builder()
+            .albumId("alb671STQDHvt")
+            .type(1)
+            .relateId("tplBf5yarhmpb")
+            .build());
+
+        albumRelEntities.add(TemplateAlbumRelEntity.builder()
+            .albumId("alb671STQDHvt")
+            .type(1)
+            .relateId("tplGUNxZVFLS0")
+            .build());
+
+        albumRelEntities.add(TemplateAlbumRelEntity.builder()
+            .albumId("alb671STQDHvt")
+            .type(2)
+            .relateId("tptzhZHBhSYmL")
+            .build());
+
+        albumRelEntities.add(TemplateAlbumRelEntity.builder()
+            .albumId("albNXV6wY6mME")
+            .type(1)
+            .relateId("tpln1adcyXXr1")
+            .build());
+
+        albumRelEntities.add(TemplateAlbumRelEntity.builder()
+            .albumId("albNXV6wY6mME")
+            .type(1)
+            .relateId("tplqrYjGhxLh3")
+            .build());
+
+        albumRelEntities.add(TemplateAlbumRelEntity.builder()
+            .albumId("albNXV6wY6mME")
+            .type(2)
+            .relateId("tptbiDZtMSE3K")
+            .build());
+
+        albumRelEntities.add(TemplateAlbumRelEntity.builder()
+            .albumId("alb671STQDHvt")
+            .type(0)
+            .relateId("tpcuvjd72Skap")
+            .build());
+
+        albumRelEntities.add(TemplateAlbumRelEntity.builder()
+            .albumId("albNXV6wY6mME")
+            .type(0)
+            .relateId("tpcKGmpP3oxEc")
+            .build());
+
+        iTemplateAlbumRelService.saveBatch(albumRelEntities);
     }
 }

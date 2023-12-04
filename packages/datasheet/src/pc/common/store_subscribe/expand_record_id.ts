@@ -17,7 +17,9 @@
  */
 
 import { RecordVision, StoreActions } from '@apitable/core';
-import { expandRecordRoute, clearExpandModal } from 'pc/components/expand_record';
+import { expandRecordRoute } from 'pc/components/expand_record/expand_record.utils';
+import { clearExpandModal } from 'pc/components/expand_record/utils';
+
 import { store } from 'pc/store';
 
 let preRecordId: string | null;

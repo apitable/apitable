@@ -19,6 +19,7 @@
 package com.apitable.automation.service;
 
 import com.apitable.automation.entity.AutomationTriggerEntity;
+import com.apitable.automation.model.AutomationCopyOptions;
 import com.apitable.automation.model.AutomationTriggerDto;
 import com.apitable.automation.model.CreateTriggerRO;
 import com.apitable.automation.model.TriggerCopyResultDto;
@@ -79,12 +80,12 @@ public interface IAutomationTriggerService {
      * copy trigger.
      *
      * @param userId      user id
-     * @param sameSpace   same space
+     * @param options   copy options
      * @param newRobotMap new robot map
      * @param newNodeMap  new node map
      * @return TriggerCopyResultDto
      */
-    TriggerCopyResultDto copy(Long userId, boolean sameSpace,
+    TriggerCopyResultDto copy(Long userId, AutomationCopyOptions options,
                               Map<String, String> newRobotMap, Map<String, String> newNodeMap);
 
     /**
@@ -93,4 +94,14 @@ public interface IAutomationTriggerService {
      * @param trigger trigger
      */
     void updateByTriggerId(AutomationTriggerEntity trigger);
+
+    /**
+     * update trigger input by robot ids.
+     *
+     * @param robotIds      robot id list
+     * @param triggerTypeId trigger type id
+     * @param input         input
+     */
+    void updateInputByRobotIdsAndTriggerTypeIds(List<String> robotIds, String triggerTypeId,
+                                                String input);
 }

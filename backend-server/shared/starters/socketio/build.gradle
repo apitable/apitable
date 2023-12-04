@@ -1,6 +1,8 @@
 plugins {
     id 'java-library'
+    id 'testing.java-conventions'
 }
+
 dependencies {
     implementation platform(libs.spring.boot.dependencies)
     implementation(libs.spring.boot.starter)

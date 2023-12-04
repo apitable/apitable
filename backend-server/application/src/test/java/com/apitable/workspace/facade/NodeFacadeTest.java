@@ -52,6 +52,44 @@ public class NodeFacadeTest extends AbstractIntegrationTest {
     }
 
     @Test
+    public void testContains() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        Long userId = userSpace.getUserId();
+        String spaceId = userSpace.getSpaceId();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
+        NodeOpRo op = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .nodeName("folder")
+            .build();
+        String firstLevelFolderId = iNodeService.createNode(userId, spaceId, op);
+        // second level folder id
+        op.setParentId(firstLevelFolderId);
+        String secondLevelFolderId = iNodeService.createNode(userId, spaceId, op);
+        String secondLevelFolderId2 = iNodeService.createNode(userId, spaceId, op);
+
+        // default cte node facade implement class
+        boolean status101 = defaultCTENodeFacade.contains(rootNodeId, secondLevelFolderId);
+        assertThat(status101).isTrue();
+        boolean status102 = defaultCTENodeFacade.contains(firstLevelFolderId, secondLevelFolderId);
+        assertThat(status102).isTrue();
+        boolean status103 = defaultCTENodeFacade.contains(secondLevelFolderId, secondLevelFolderId2);
+        assertThat(status103).isFalse();
+        boolean status104 = defaultCTENodeFacade.contains(firstLevelFolderId, "xxx");
+        assertThat(status104).isFalse();
+
+        // non cte node facade implement class
+        boolean status201 = nonCTENodeFacade.contains(rootNodeId, secondLevelFolderId);
+        assertThat(status201).isTrue();
+        boolean status202 = nonCTENodeFacade.contains(firstLevelFolderId, secondLevelFolderId);
+        assertThat(status202).isTrue();
+        boolean status203 = nonCTENodeFacade.contains(secondLevelFolderId, secondLevelFolderId2);
+        assertThat(status203).isFalse();
+        boolean status204 = nonCTENodeFacade.contains(firstLevelFolderId, "xxx");
+        assertThat(status204).isFalse();
+    }
+
+    @Test
     public void testGetParentPathNodes() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         Long userId = userSpace.getUserId();

@@ -18,9 +18,9 @@
 
 import { ExecuteFailReason, ExecuteResult, ICollaCommandExecuteContext, ICollaCommandExecuteResultBase } from './types';
 import { IJOTAction } from 'engine/ot/interface';
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 import { ResourceType } from 'types';
-import { IFieldMap } from '../exports/store';
+import { IFieldMap } from '../exports/store/interfaces';
 
 export interface ILinkedActions {
   datasheetId: string;

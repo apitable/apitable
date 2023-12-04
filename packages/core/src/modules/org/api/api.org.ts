@@ -18,7 +18,7 @@
 
 import axios from 'axios';
 import * as Url from '../../shared/api/url';
-import { IAddIsActivedMemberInfo, IApiWrapper, IInviteMemberList, IMemberInfoInAddressList, IUpdateMemberInfo } from '../../../exports/store';
+import { IAddIsActivedMemberInfo, IApiWrapper, IInviteMemberList, IMemberInfoInAddressList, IUpdateMemberInfo } from '../../../exports/store/interfaces';
 import urlcat from 'urlcat';
 
 const CancelToken = axios.CancelToken;

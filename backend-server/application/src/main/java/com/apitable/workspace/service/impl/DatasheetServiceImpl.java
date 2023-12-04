@@ -70,6 +70,7 @@ import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.SnapshotDTO;
 import com.apitable.workspace.entity.DatasheetEntity;
 import com.apitable.workspace.entity.NodeEntity;
+import com.apitable.workspace.enums.ButtonFieldActionType;
 import com.apitable.workspace.enums.DataSheetException;
 import com.apitable.workspace.enums.FieldType;
 import com.apitable.workspace.enums.NodeException;
@@ -81,6 +82,7 @@ import com.apitable.workspace.observer.RemindMemberOpSubject;
 import com.apitable.workspace.observer.remind.MailRemind;
 import com.apitable.workspace.observer.remind.NotifyDataSheetMeta;
 import com.apitable.workspace.observer.remind.RemindType;
+import com.apitable.workspace.ro.ButtonFieldProperty;
 import com.apitable.workspace.ro.FieldMapRo;
 import com.apitable.workspace.ro.LinkFieldProperty;
 import com.apitable.workspace.ro.MetaMapRo;
@@ -97,6 +99,7 @@ import com.apitable.workspace.vo.BaseNodeInfo;
 import com.apitable.workspace.vo.DatasheetRecordMapVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -111,7 +114,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -387,6 +389,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                                     Map<String, String> newNodeMap) {
         List<String> delFieldIds = new ArrayList<>();
         List<String> autoNumberFieldIds = new ArrayList<>();
+
         // Obtain the information of the original node correspondence datasheet.
         SimpleDatasheetMetaDTO metaVo = iDatasheetMetaService.findByDstId(sourceDstId);
         MetaMapRo metaMapRo = metaVo.getMeta().toBean(MetaMapRo.class);
@@ -510,6 +513,14 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                     break;
                 case WORK_DOC:
                     delFieldIds.add(fieldMapRo.getId());
+                    break;
+                case BUTTON:
+                    ButtonFieldProperty buttonProperty =
+                        fieldMapRo.getProperty().toBean(ButtonFieldProperty.class, true);
+                    ButtonFieldProperty.ButtonFieldAction action =
+                        getButtonFieldPropertyAction(buttonProperty.getAction(), newNodeMap,
+                            options.getNewTriggerMap());
+                    fieldMapRo.getProperty().set("action", action);
                     break;
                 default:
                     break;
@@ -1094,4 +1105,32 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         return null;
     }
 
+    private ButtonFieldProperty.ButtonFieldAction getButtonFieldPropertyAction(
+        ButtonFieldProperty.ButtonFieldAction action,
+        Map<String, String> newNodeMap,
+        Map<String, String> newTriggerMap) {
+        if (null == newTriggerMap) {
+            newTriggerMap = new HashMap<>();
+        }
+        if (ObjectUtil.equals(action.getType(),
+            ButtonFieldActionType.TRIGGER_AUTOMATION.getType())) {
+            if (null != action.getAutomation()) {
+                ButtonFieldProperty.ButtonFieldActionAutomation automation = action.getAutomation();
+                if (newTriggerMap.containsKey(automation.getTriggerId())) {
+                    ButtonFieldProperty.ButtonFieldActionAutomation newAutomation =
+                        ButtonFieldProperty.ButtonFieldActionAutomation.builder()
+                            .automationId(newNodeMap.get(automation.getAutomationId()))
+                            .triggerId(newTriggerMap.get(automation.getTriggerId()))
+                            .build();
+                    return ButtonFieldProperty.ButtonFieldAction.builder()
+                        .automation(newAutomation)
+                        .type(ButtonFieldActionType.TRIGGER_AUTOMATION.getType())
+                        .build();
+                }
+                return ButtonFieldProperty.ButtonFieldAction.builder().build();
+            }
+            return ButtonFieldProperty.ButtonFieldAction.builder().build();
+        }
+        return action;
+    }
 }

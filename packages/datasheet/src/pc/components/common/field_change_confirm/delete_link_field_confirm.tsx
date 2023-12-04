@@ -18,6 +18,7 @@
 
 import { useLocalStorageState } from 'ahooks';
 import { Modal, Radio } from 'antd';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import Image from 'next/image';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -25,16 +26,15 @@ import { Provider } from 'react-redux';
 import { Button, TextButton, ThemeProvider } from '@apitable/components';
 import { CollaCommandName, ILinkField, Selectors, Strings, t, ThemeName } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import { LinkJump, Modal as CustomModal } from 'pc/components/common';
+import { LinkJump } from 'pc/components/common/link_jump/link_jump';
+import { Modal as CustomModal } from 'pc/components/common/modal/modal/modal';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import DisconnectedDark from 'static/icon/common/disconnected_file_dark.png';
 import DisconnectedLight from 'static/icon/common/disconnected_file_light.png';
 import { TComponent } from '../t_component';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const DeleteLinkField: React.FC<React.PropsWithChildren<{ fieldId: string; datasheetId?: string; onClose: (confirm?: boolean) => void }>> = (
   props,

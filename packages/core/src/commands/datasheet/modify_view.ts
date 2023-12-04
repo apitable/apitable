@@ -17,14 +17,19 @@
  */
 
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 import { getCustomConfig } from 'config';
 import { IJOTAction } from 'engine/ot';
 import { find, isEmpty } from 'lodash';
-import { DatasheetActions } from 'model';
+import { DatasheetActions } from 'commands_actions/datasheet';
 import { ResourceType } from 'types';
 import { Strings, t } from '../../exports/i18n';
-import { IViewColumn, Selectors } from '../../exports/store';
+import { IViewColumn } from '../../exports/store/interfaces';
+
+import {
+  getActiveDatasheetId,
+  getSnapshot,
+} from 'modules/database/store/selectors/resource/datasheet/base';
 
 export interface IModifyViewBase {
   viewId: string;
@@ -61,9 +66,9 @@ export const modifyViews: ICollaCommandDef<IModifyViewsOptions> = {
   execute: (context, options) => {
     const { state: state } = context;
     const { data, datasheetId: _datasheetId } = options;
-    const activeDatasheetId = Selectors.getActiveDatasheetId(state)!;
+    const activeDatasheetId = getActiveDatasheetId(state)!;
     const datasheetId = _datasheetId || activeDatasheetId;
-    const snapshot = Selectors.getSnapshot(state, datasheetId);
+    const snapshot = getSnapshot(state, datasheetId);
     if (!snapshot) {
       return null;
     }

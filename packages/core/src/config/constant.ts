@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { getCustomConfig } from 'config/env';
+import { getCustomConfig } from './env';
 import { Strings, t } from '../exports/i18n';
 
 export const MAX_ROBOT_COUNT_PER_DST = 30; // The maximum number of robots in a single table
@@ -490,6 +490,7 @@ export enum WizardIdConstant {
   AGREE_TERMS_OF_SERVICE = Number(getCustomConfig().LOGIN_AGREE_TERMS_OF_SERVICE_WIZARD_ID),
 
   AUTOMATION_TRIGGER = 117,
+  AUTOMATION_BUTTON_TRIGGER = 118,
 
   // org chart view
   ORG_VIEW_CREATE = 78, // Click the "Create Schema View button" -> show the video "How to use Schema View"

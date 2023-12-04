@@ -39,7 +39,7 @@ import styles from './styles.module.less';
 
 const DefaultElement = (props: any) => {
   return (
-    <p style={{ wordWrap: 'break-word', maxWidth: '100%' }} {...props.attributes}>
+    <p style={{ wordBreak: 'break-word', maxWidth: '100%' }} {...props.attributes}>
       {props.children}
     </p>
   );

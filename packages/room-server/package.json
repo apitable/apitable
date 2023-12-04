@@ -1,6 +1,6 @@
 {
   "name": "@apitable/room-server",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "nodejs room server",
   "author": "APITable Ltd. <support@apitable.com>",
   "license": "AGPL-3.0",
@@ -128,7 +128,6 @@
     "redux": "4.2.0",
     "redux-batched-actions": "0.5.0",
     "redux-thunk": "2.4.1",
-    "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "7.5.7",
     "sha1": "^1.1.1",

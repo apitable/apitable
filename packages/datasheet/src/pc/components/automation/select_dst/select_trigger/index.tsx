@@ -16,6 +16,7 @@ export const SelectTrigger: FC<React.PropsWithChildren< {
   const colors = useCssColors();
   return (
     <StyledSelectTrigger
+      id={'AUTOMATION_BOUND_DATASHEET'}
       disabled={false}
       onClick={onClick}
       focus={false}

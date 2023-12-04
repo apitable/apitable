@@ -61,7 +61,7 @@ public class PageHelper {
      * @return page
      */
     public static <T> Page<T> convert(String stringObjectParams) {
-        ExceptionUtil.isTrue(JSONUtil.isJsonObj(stringObjectParams),
+        ExceptionUtil.isTrue(JSONUtil.isTypeJSONObject(stringObjectParams),
             ParameterException.INCORRECT_ARG);
         JSONObject json = JSONUtil.parseObj(stringObjectParams);
 

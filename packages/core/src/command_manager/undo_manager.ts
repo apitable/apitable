@@ -20,7 +20,7 @@ import { ExecuteType, ICollaCommandExecuteResult } from './types';
 import { CollaCommandManager } from './command_manager';
 import { IJOTAction, jot } from 'engine/ot';
 import { ICollaCommandDefExecuteSuccessResult } from './command';
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 
 export interface IUndoCommand {
   cmd: CollaCommandName;

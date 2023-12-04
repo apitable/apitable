@@ -29,11 +29,10 @@ import {
   getTimeZoneOffsetByUtc,
   getClientTimeZone, getTimeZone,
 } from '@apitable/core';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const updateUserTimeZone = (timeZone: string, cb?: () => void) => {
   Api.updateUser({ timeZone }).then((res: any) => {

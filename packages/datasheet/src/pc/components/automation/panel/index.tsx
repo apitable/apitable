@@ -1,7 +1,7 @@
 import { useMount } from 'ahooks';
 import { Space } from 'antd';
 import { useAtom, useSetAtom } from 'jotai';
-import React, { FC, memo, useContext, useEffect, useMemo } from 'react';
+import React, { FC, memo, useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import {
   Box,
@@ -17,6 +17,7 @@ import {
 import { ConfigConstant, DATASHEET_ID, IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import { BookOutlined, CloseOutlined, DeleteOutlined, MoreStandOutlined, QuestionCircleOutlined, ShareOutlined } from '@apitable/icons';
 import { MobileToolBar } from 'pc/components/automation/panel/Toobar';
+import { NoPermission } from 'pc/components/no_permission';
 import { useAppSelector } from 'pc/store/react-redux';
 import { useResponsive, useSideBarVisible, useUrlQuery } from '../../../hooks';
 import { useAppDispatch } from '../../../hooks/use_app_dispatch';
@@ -43,6 +44,7 @@ import {
   automationPanelAtom,
   automationStateAtom,
   getResourceAutomationDetailIntegrated,
+  IAutomationPanel,
   PanelName,
   useAutomationController,
 } from '../controller';
@@ -59,7 +61,7 @@ const StyleIcon = styled(Box)`
   }
 `;
 
-export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> = memo(({ onClose, resourceId }) => {
+export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string, panel?: IAutomationPanel }> = memo(({ onClose, panel, resourceId }) => {
   const { show } = useContextMenu({ id: MenuID });
 
   const { currentRobotId } = useAutomationRobot();
@@ -71,7 +73,6 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
   const { shareInfo } = useContext(ShareContext);
   const { initialize } = useAutomationNavigateController();
   const dispatch = useAppDispatch();
-  const loading = false;
   const { templateId } = useAppSelector((state: IReduxState) => state.pageParams);
 
   const { screenIsAtMost } = useResponsive();
@@ -83,14 +84,26 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
   useMount(() => {
     isXl && setSideBarVisible(false);
     if (cache.id !== resourceId) {
+      console.log('initialize');
       initialize();
     }
   });
 
+  const [loading, setLoading] =useState(true);
+
+  useEffect(()=> {
+    setLoading(true);
+  }, [resourceId]);
+
   useEffect(() => {
     if (!resourceId) {
+      setLoading(false);
       return;
     }
+    if(!loading){
+      return;
+    }
+    setLoading(true);
     getResourceAutomations(resourceId, {
       shareId: shareInfo?.shareId,
     })
@@ -99,12 +112,17 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
         const itemDetail = await getResourceAutomationDetailIntegrated(resourceId, firstItem.robotId, {
           shareId: shareInfo?.shareId,
         });
-        if (cache.id !== resourceId) {
-          setPanel({
-            panelName: isLg ? undefined : PanelName.BasicInfo,
-          });
-        } else if (cache.panel) {
-          setPanel(cache.panel);
+
+        if(panel) {
+          setPanel(panel);
+        }else {
+          if (cache.id !== resourceId) {
+            setPanel({
+              panelName: isLg ? undefined : PanelName.BasicInfo,
+            });
+          } else if (cache.panel) {
+            setPanel(cache.panel);
+          }
         }
 
         if ((params as { tab: string }).tab === 'history') {
@@ -131,8 +149,11 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
       })
       .catch((e) => {
         console.log(e);
+      }).finally(()=> {
+        setLoading(false);
       });
-  }, [dispatch, isLg, resourceId, setAutomationState, setPanel, shareInfo]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, loading, params, resourceId, setAutomationState, setCache, setHistoryDialog, setPanel, shareInfo]);
 
   const handleDeleteRobot = () => {
     Modal.confirm({
@@ -199,8 +220,10 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
   if (automationState?.scenario === AutomationScenario.node && !templateId && nodeItem == null) {
     return null;
   }
-  if (currentRobotId == null) {
-    return null;
+  if (currentRobotId == null && !loading) {
+    return (
+      <NoPermission />
+    );
   }
 
   return (
@@ -217,7 +240,7 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
           className={styles.tabBarWrapper1}
           id={DATASHEET_ID.VIEW_TAB_BAR}
         >
-          {loading ? (
+          {automationState?.robot == null ? (
             <Space style={{ margin: '8px 20px' }}>
               <Skeleton style={{ height: 24, width: 340, marginTop: 0 }} />
             </Space>
@@ -256,9 +279,13 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
                   <InputTitle />
                   {automationState?.scenario === AutomationScenario.node && (
                     <>
-                      <OrEmpty visible={shareInfo?.shareId == null}>
-                        <NodeFavoriteStatus nodeId={automationState?.resourceId ?? ''} enabled={nodeItem.nodeFavorite} />
-                      </OrEmpty>
+                      {
+                        nodeItem && (
+                          <OrEmpty visible={shareInfo?.shareId == null}>
+                            <NodeFavoriteStatus nodeId={automationState?.resourceId ?? ''} enabled={nodeItem?.nodeFavorite} />
+                          </OrEmpty>
+                        )
+                      }
                       {!templateId && (
                         <Box marginX={'4px'}>
                           <Tag
@@ -267,7 +294,7 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string }> 
                               wordBreak: 'keep-all',
                             }}
                           >
-                            {ConfigConstant.permissionText[getPermission(inheritedRole, { shareInfo: shareInfo })]}aaa
+                            {ConfigConstant.permissionText[getPermission(inheritedRole, { shareInfo: shareInfo })]}
                           </Tag>
                         </Box>
                       )}

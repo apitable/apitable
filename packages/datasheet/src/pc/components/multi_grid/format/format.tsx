@@ -108,9 +108,8 @@ export const FieldFormat: React.FC<React.PropsWithChildren<IFieldFormatProps>> =
       return <FormatButton
         onCreate={onCreate}
         // @ts-ignore
-        currentField={currentField} setCurrentField={setCurrentField} datasheetId={datasheetId} onUpdate={(field) => {
-          onUpdate(field);
-        }}/>;
+        currentField={currentField} setCurrentField={setCurrentField} datasheetId={datasheetId} onUpdate={onUpdate
+        }/>;
     default:
       return <></>;
   }

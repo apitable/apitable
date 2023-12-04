@@ -22,7 +22,7 @@ import { find, isString } from 'lodash';
 import { isNullValue } from 'model/utils';
 import { getFieldOptionColor } from 'model/color';
 import { ICellValue } from 'model/record';
-import { IReduxState } from '../../../exports/store';
+import { IReduxState } from '../../../exports/store/interfaces';
 import { BasicValueType, FieldType, IField, ISelectFieldProperty, ISingleSelectField, IStandardValue } from 'types/field_types';
 import { ISelectFieldBaseOpenValue } from 'types/field_types_open';
 import { FOperator, IFilterCondition, IFilterSingleSelect } from 'types/view_types';
@@ -71,11 +71,11 @@ export class SingleSelectField extends SelectField {
   }).allow(null).required();
 
   validateCellValue(cv: ICellValue): Joi.ValidationResult {
-    return SingleSelectField.cellValueSchema.validate(cv, { context: { field: this.field }});
+    return SingleSelectField.cellValueSchema.validate(cv, { context: { field: this.field } });
   }
 
   validateOpenWriteValue(owv: string | ISelectFieldBaseOpenValue | null): Joi.ValidationResult {
-    return SingleSelectField.openWriteValueSchema.validate(owv, { context: { field: this.field }});
+    return SingleSelectField.openWriteValueSchema.validate(owv, { context: { field: this.field } });
   }
 
   override defaultValue(): string | null {

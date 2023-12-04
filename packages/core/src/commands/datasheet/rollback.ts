@@ -19,16 +19,16 @@
 import { IJOTAction, IOperation, jot, IAnyAction } from 'engine/ot';
 import { xor, cloneDeep } from 'lodash';
 import { FieldType, IField, ILinkField, ResourceType } from 'types';
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 import { ExecuteResult, ICollaCommandDef, ILinkedActions } from 'command_manager';
-import { IRecordMap, IReduxState, ISnapshot } from '../../exports/store';
+import { IRecordMap, IReduxState, ISnapshot } from '../../exports/store/interfaces';
 import { fastCloneDeep, getNewId, getUniqName, IDPrefix, ActionType, parseAction } from 'utils';
-import { getField, getSnapshot, getDatasheet } from '../../exports/store/selectors';
+import { getField, getSnapshot, getDatasheet } from 'modules/database/store/selectors/resource/datasheet/base';
 import { DatasheetActions } from 'commands_actions/datasheet';
 import { createNewField, setField } from 'commands/common/field';
 import { TextField } from 'model/field/text_field';
 import { Events, Player } from '../../modules/shared/player';
-import { Field } from 'model';
+import { Field } from 'model/field';
 
 export interface IRollback {
   // Note that the order of operations This operation is in reverse order, the new one is in the front, the old one is in the back
@@ -43,8 +43,8 @@ export interface IRollbackOptions {
 
 export const getRollbackActions = (operations: IOperation[], state: IReduxState, snapshot: ISnapshot) => {
   return operations.reduce((collect, op) => {
-    const needIgnoreActionFlag = { field: {}, record: {}};
-    // First restore the column-related operations to ensure that the subsequent 
+    const needIgnoreActionFlag = { field: {}, record: {} };
+    // First restore the column-related operations to ensure that the subsequent
     // action of checking the set cell value can get the correct verification result
     const updateFieldActions: IAnyAction[] = [];
     const addFieldActions: IAnyAction[] = [];
@@ -66,7 +66,7 @@ export const getRollbackActions = (operations: IOperation[], state: IReduxState,
         return;
       }
       const res = parseAction(action);
-      // The original field is link, and the link field will be inserted during recovery. 
+      // The original field is link, and the link field will be inserted during recovery.
       // If the corresponding association table cannot be found, the recovery of this data will be ignored.
       if ([ActionType.UpdateField, ActionType.DelField].includes(res.type)) {
         const oldField = action.od;
@@ -161,7 +161,7 @@ export const rollback: ICollaCommandDef<IRollbackOptions> = {
       }
     }
 
-    /* 2. [diff], compare the snapshot after apply with the previous snapshot, 
+    /* 2. [diff], compare the snapshot after apply with the previous snapshot,
     take out the changed link field, and generate field changes to the associated table */
     const { deletedLinkFields, newLinkFields, normalLinkFields } = getLinkFieldChange(preSnapshot.meta.fieldMap, postSnapshot.meta.fieldMap);
 
@@ -193,14 +193,14 @@ export const rollback: ICollaCommandDef<IRollbackOptions> = {
       const foreignFieldIds = Object.keys(foreignSnapshot.meta.fieldMap);
 
       /**
-       * The brotherFieldId corresponding to newLinkFields still exists in the association table, 
+       * The brotherFieldId corresponding to newLinkFields still exists in the association table,
        * and the association field is not plain text, you need to modify brotherFieldId to create a new association field
        * Otherwise set the field type of the association table to the magic association type.
        */
       if (foreignField && foreignField.type !== FieldType.Text) {
         brotherFieldId = getNewId(IDPrefix.Field, foreignFieldIds);
         /** A deep clone avoids the following DatasheetActions.setFieldAttr2Action method to get the same value for ac oi and od.
-         * In order to avoid the occurrence of od when the middle layer does OT conversion, 
+         * In order to avoid the occurrence of od when the middle layer does OT conversion,
          * the value corresponding to the associated table fieldMap cannot be found
          */
         sourceField = cloneDeep(sourceField);
@@ -286,7 +286,7 @@ function getLinkFieldChange(preFieldMap: Record<string, IField>, postFieldMap: R
     * The three cases are regarded as deletedLinkFields. After preFieldMap gets a field, it is matched with fieldId in postFieldMap
     * pre is linkField, this field cannot be matched in post
     * pre is a linkField, and it is not a link field that is converted in post
-    * pre is a linkField, the post is converted into another link field, or the sibling fields are inconsistent, 
+    * pre is a linkField, the post is converted into another link field, or the sibling fields are inconsistent,
     * (the link field in the post is considered new at this time)
     *
     * Three cases are treated as newLinkFields

@@ -52,12 +52,13 @@ public @interface ApiResource {
     /**
      * resource name.
      */
+    @AliasFor(annotation = RequestMapping.class, attribute = "name")
     String name() default "";
 
     /**
      * alias requestMapping path.
      */
-    @AliasFor(annotation = RequestMapping.class)
+    @AliasFor(annotation = RequestMapping.class, attribute = "path")
     String[] path() default {};
 
     /**

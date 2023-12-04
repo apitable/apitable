@@ -41,10 +41,10 @@ import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.service.INodeShareSettingService;
 import com.apitable.workspace.vo.DatasheetPermissionView;
 import com.apitable.workspace.vo.FieldPermissionView;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

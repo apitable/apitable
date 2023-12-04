@@ -230,7 +230,7 @@ public class NotificationHelper {
      * @return true | false
      */
     public static boolean isNodeOperate(String servletPath) {
-        String[] pathNames = StrUtil.split(servletPath, "/");
+        String[] pathNames = StrUtil.splitToArray(servletPath, "/");
         for (String pathName : pathNames) {
             if ("node".equals(pathName)) {
                 return true;
@@ -313,7 +313,7 @@ public class NotificationHelper {
         }
 
         if (paramLocation == ParamLocation.PATH) {
-            String[] pathNames = StrUtil.split(requestWrapper.getServletPath(), "/");
+            String[] pathNames = StrUtil.splitToArray(requestWrapper.getServletPath(), "/");
             if (pathNames.length > 0) {
                 String pathName = pathNames[pathNames.length - 1];
                 if (isNodeId(pathName)) {

@@ -40,6 +40,7 @@ import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.holder.SpaceHolder;
 import com.apitable.workspace.entity.NodeEntity;
+import com.apitable.workspace.facade.NodeFacade;
 import com.apitable.workspace.ro.CreateDatasheetRo;
 import com.apitable.workspace.service.INodeRoleService;
 import com.apitable.workspace.service.INodeService;
@@ -47,14 +48,18 @@ import com.apitable.workspace.vo.CreateDatasheetVo;
 import com.apitable.workspace.vo.NodeFromSpaceVo;
 import com.apitable.workspace.vo.NodeInfo;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -71,6 +76,9 @@ public class InternalNodeController {
 
     @Resource
     private INodeService nodeService;
+
+    @Resource
+    private NodeFacade nodeFacade;
 
     @Resource
     private ControlTemplate controlTemplate;
@@ -199,5 +207,18 @@ public class InternalNodeController {
         List<NodeInfo> nodeInfos = nodeService.getNodeInfo(spaceId, filterNodeIds, memberId);
         nodeInfos.forEach(nodeInfo -> nodeInfo.setRole(nodeIdToNodeRole.get(nodeInfo.getNodeId())));
         return ResponseData.success(nodeInfos);
+    }
+
+    @GetResource(path = "/folders/{folderId}/nodes/{nodeId}/exists", requiredLogin = false)
+    @Operation(summary = "Check if the folder contains nodes")
+    @Parameters({
+        @Parameter(name = "folderId", description = "Folder Node ID", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fodNwmWE5QWPs"),
+        @Parameter(name = "nodeId", description = "Node ID", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNsaP")
+    })
+    public ResponseData<Boolean> getContainsStatus(@PathVariable("folderId") String folderId,
+                                                   @PathVariable("nodeId") String nodeId) {
+        return ResponseData.success(nodeFacade.contains(folderId, nodeId));
     }
 }

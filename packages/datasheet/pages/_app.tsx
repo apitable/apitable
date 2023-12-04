@@ -23,6 +23,7 @@ import * as Sentry from '@sentry/nextjs';
 import axios from 'axios';
 import classNames from 'classnames';
 import elementClosest from 'element-closest';
+import ErrorPage from 'error_page';
 import * as immer from 'immer';
 import { enableMapSet } from 'immer';
 import { merge } from 'lodash';
@@ -53,11 +54,10 @@ import {
 } from '@apitable/core';
 import 'antd/es/date-picker/style/index';
 import { getBrowserDatabusApiEnabled } from '@apitable/core/dist/modules/database/api/wasm';
-import ErrorPage from 'error_page';
 import { init as initPlayer } from 'modules/shared/player/init';
 import 'normalize.css';
 import { initializer } from 'pc/common/initializer';
-import { Modal } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Router } from 'pc/components/route_manager/router';
 import { initEventListen } from 'pc/events';
 import { getPageParams, getRegResult, LOGIN_SUCCESS, shareIdReg, spaceIdReg } from 'pc/hooks';
@@ -92,19 +92,6 @@ const RouterProvider = dynamic(() => import('pc/components/route_manager/router_
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
 
 declare const window: any;
-
-if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
-  posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
-    api_host: getEnvVariables().NEXT_PUBLIC_POSTHOG_HOST,
-    autocapture: false,
-    capture_pageview: false,
-    capture_pageleave: false,
-    // Disable in development
-    loaded: (posthog) => {
-      if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
-    },
-  });
-}
 
 export interface IUserInfoError {
   code: number;
@@ -564,3 +551,18 @@ MyApp.getInitialProps = getInitialProps;
 const beforeCapture = (scope: Scope) => {
   scope.setTag('PageCrash', true);
 };
+
+if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
+  window.onload = () => {
+    posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
+      api_host: getEnvVariables().NEXT_PUBLIC_POSTHOG_HOST,
+      autocapture: false,
+      capture_pageview: false,
+      capture_pageleave: false,
+      // Disable in development
+      loaded: (posthog) => {
+        if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
+      },
+    });
+  };
+}

@@ -26,10 +26,9 @@ import { GotoOutlined } from '@apitable/icons';
 import { Method } from 'pc/components/route_manager/const';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
-import { stopPropagation } from 'pc/utils';
+import { useAppSelector } from 'pc/store/react-redux';
+import { stopPropagation } from 'pc/utils/dom';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export enum JumpIconMode {
   Badge,

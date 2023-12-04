@@ -25,8 +25,10 @@ import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
-import { useRequest, useUserRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useRequest } from 'pc/hooks/use_request';
+import { useUserRequest } from 'pc/hooks/use_user_request';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { isDesktop } from 'pc/utils/os';
 import BindingFeiShuPng from 'static/icon/account/feishu.png';
@@ -34,15 +36,13 @@ import DingDingPng from 'static/icon/signin/signin_img_dingding.png';
 import QQPng from 'static/icon/signin/signin_img_qq.png';
 import WeChatPng from 'static/icon/signin/signin_img_wechat.png';
 import { ModeItem } from './mode_item';
-import styles from './style.module.less';
-// @ts-ignore
-import { getDingdingConfig, getQQConfig } from 'enterprise/login/utils/get_config'
 // @ts-ignore
 import { QrCode } from 'enterprise/home/qr_code/qr_code';
 // @ts-ignore
 import { Trial } from 'enterprise/log/trial';
-
-import {useAppSelector} from "pc/store/react-redux";
+// @ts-ignore
+import { getDingdingConfig, getQQConfig } from 'enterprise/login/utils/get_config';
+import styles from './style.module.less';
 
 export const AccountManager: FC<React.PropsWithChildren<unknown>> = () => {
   // Control the display of the Wechat QR code modal box

@@ -56,9 +56,9 @@ import com.apitable.space.service.ISpaceRoleResourceRelService;
 import com.apitable.space.service.ISpaceRoleService;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.space.service.IStaticsService;
-import com.apitable.sql.script.enhance.TablePrefixUtil;
 import com.apitable.starter.mail.autoconfigure.MailTemplate;
 import com.apitable.starter.oss.core.OssClientTemplate;
+import com.apitable.template.service.ITemplateAlbumRelService;
 import com.apitable.template.service.ITemplateAlbumService;
 import com.apitable.template.service.ITemplateService;
 import com.apitable.user.entity.UserEntity;
@@ -197,6 +197,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     protected ITemplateAlbumService iTemplateAlbumService;
 
     @Autowired
+    protected ITemplateAlbumRelService iTemplateAlbumRelService;
+
+    @Autowired
     protected IWidgetUploadService iWidgetUploadService;
 
     @Autowired
@@ -260,10 +263,6 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
         return tablePrefix.toString();
     }
 
-    protected void execute(String sql) {
-        jdbcTemplate.execute(TablePrefixUtil.changeTablePrefix(sql, tablePrefix()));
-    }
-
     @Override
     protected JdbcTemplate configureJdbcTemplate() {
         return this.jdbcTemplate;
@@ -310,7 +309,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     protected void initCallContext(Long userId) {
         UserHolder.init();
-        UserHolder.set(userId);
+        refreshCallContext(userId);
     }
 
     protected void refreshCallContext(Long userId) {

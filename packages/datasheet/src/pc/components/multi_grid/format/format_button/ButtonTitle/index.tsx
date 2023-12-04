@@ -4,7 +4,6 @@ import { forwardRef, useState } from 'react';
 import * as React from 'react';
 import { Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import style from 'pc/components/automation/content/basic_info/styles.module.less';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import styles from './style.module.less';
 
@@ -28,16 +27,15 @@ export const ButtonTitle =forwardRef<InputRef, IButtonTitleProps >(({ value, onC
       <Input value={text} className={hasError ? 'error': undefined} {...rest} ref={ref}
         onChange={(e) => {
           setText(e.target.value);
-          onChange(e.target.value.slice(0, CONST_MAXMIUM_COUNT));
+          onChange(e.target.value);
         }}
       />
 
       {
 
         hasError && (
-
           <Typography variant="body4" color={colors.textDangerDefault} className={styles.errorMsg}>
-                {t(Strings.button_maxium_text, {
+            {t(Strings.button_maxium_text, {
               count: CONST_MAXMIUM_COUNT
             })}
           </Typography>

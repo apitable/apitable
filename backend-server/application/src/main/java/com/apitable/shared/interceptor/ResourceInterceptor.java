@@ -39,10 +39,10 @@ import com.apitable.shared.holder.UserHolder;
 import com.apitable.shared.util.ApiHelper;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.user.mapper.DeveloperMapper;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Arrays;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -129,7 +129,7 @@ public class ResourceInterceptor extends AbstractServletSupport implements Handl
             }
             if (ArrayUtil.isNotEmpty(resourceDef.getTags())
                 && !CollUtil.containsAny(userSpace.getResourceCodes(),
-                    Arrays.asList(resourceDef.getTags()))) {
+                Arrays.asList(resourceDef.getTags()))) {
                 throw new BusinessException(AuthException.FORBIDDEN);
             }
         }

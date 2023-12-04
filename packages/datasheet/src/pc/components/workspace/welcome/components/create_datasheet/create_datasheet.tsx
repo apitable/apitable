@@ -1,13 +1,12 @@
-import styles from 'pc/components/workspace/welcome/style.module.less';
-import { IReduxState, shallowEqual, Strings, t } from '@apitable/core';
-import { Button, ThemeName } from '@apitable/components';
-import { CreateDataSheetModal } from 'pc/components/workspace/welcome/components/create_datasheet_modal';
 import Image from 'next/image';
+import { useState } from 'react';
+import { Button, ThemeName } from '@apitable/components';
+import { IReduxState, shallowEqual, Strings, t } from '@apitable/core';
+import { CreateDataSheetModal } from 'pc/components/workspace/welcome/components/create_datasheet_modal';
+import styles from 'pc/components/workspace/welcome/style.module.less';
+import { useAppSelector } from 'pc/store/react-redux';
 import WelcomeIconDark from 'static/icon/datasheet/workbench_empty_dark.png';
 import WelcomeIconLight from 'static/icon/datasheet/workbench_empty_light.png';
-import { useState } from 'react';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const CreateDatasheet = () => {
   const [show, setShow] = useState(false);

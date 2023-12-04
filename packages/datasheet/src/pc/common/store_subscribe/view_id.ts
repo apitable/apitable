@@ -17,7 +17,7 @@
  */
 
 import { StoreActions, Selectors, compensator } from '@apitable/core';
-import { changeView } from 'pc/hooks';
+import { changeView } from 'pc/hooks/use_change_view';
 import { store } from 'pc/store';
 import { StorageName, getStorage, setStorage } from 'pc/utils/storage/storage';
 import { dispatch } from 'pc/worker/store';

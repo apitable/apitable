@@ -17,7 +17,7 @@
  */
 
 import Joi from 'joi';
-import { IReduxState } from '../../exports/store';
+import { IReduxState } from '../../exports/store/interfaces';
 import { FieldType, IField, INumberField, SymbolAlign } from 'types/field_types';
 import { DatasheetActions } from '../../commands_actions/datasheet';
 import { NumberBaseField } from './number_base_field';
@@ -26,7 +26,8 @@ import { numberToShow, str2number, str2Currency } from 'utils';
 import { enumToArray } from './validate_schema';
 import { IOpenNumberFieldProperty } from 'types/open/open_field_read_types';
 import { IUpdateOpenNumberFieldProperty } from 'types/open/open_field_write_types';
-
+import { getFieldDefaultProperty } from './const';
+import { INumberFieldProperty } from 'types/field_types';
 export class NumberField extends NumberBaseField {
   constructor(public override field: INumberField, public override state: IReduxState) {
     super(field, state);
@@ -63,15 +64,12 @@ export class NumberField extends NumberBaseField {
       id: DatasheetActions.getNewFieldId(fieldMap),
       type: FieldType.Number,
       name: DatasheetActions.getDefaultFieldName(fieldMap),
-      property: this.defaultProperty(),
+      property: this.defaultProperty()
     };
   }
 
   static defaultProperty() {
-    return {
-      precision: 0,
-      symbolAlign: SymbolAlign.right
-    };
+    return getFieldDefaultProperty(FieldType.Number) as INumberFieldProperty;
   }
 
   compareCellValue(cellValue: ICellValue): number | null {

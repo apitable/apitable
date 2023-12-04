@@ -19,7 +19,7 @@
 import produce from 'immer';
 import { omit } from 'lodash';
 import { combineReducers } from 'redux';
-import { ISetCloseSyncViewIdAction, ISetGridViewHoverFieldIdAction } from '../../../../../../exports/store/actions';
+import { ISetCloseSyncViewIdAction, ISetGridViewHoverFieldIdAction } from 'modules/database/store/actions/resource';
 import {
   IActiveRowInfo, ICalendarViewStatus, IDatasheetClientState, IGanttViewStatus, IKanbanViewStatus, ILoadingRecord, ILoadingRecordAction,
   IOrgChartViewStatus, IPatchViewDerivation, ISetViewDerivation, IWidgetPanelStatus, IDeleteViewDerivation
@@ -48,7 +48,7 @@ const defaultActiveRowInfo: IActiveRowInfo = {
     visibleRowIndex: 0,
     isInit: true,
   },
-  recordSnapshot: { meta: { fieldMap: {}}, recordMap: {}},
+  recordSnapshot: { meta: { fieldMap: {} }, recordMap: {} },
 };
 
 const MIN_WIDGET_PANEL_WIDTH = 320;

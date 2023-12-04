@@ -19,7 +19,7 @@
 import axios from 'axios';
 import SocketIO from 'socket.io-client';
 import { INodeChangeSocketData, INoticeDetail, Navigation, StoreActions, Strings, t, Url } from '@apitable/core';
-import { Modal } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { canJumpWhenClickCard, getNoticeUrlParams, NotifyType, renderNoticeBody } from 'pc/components/notification/card/utils';
 import { navigationToConfigUrl, PublishController } from 'pc/components/notification/publish/controller';
 import { NoticeTemplatesConstant, requestWebNotification } from 'pc/components/notification/utils';

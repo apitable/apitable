@@ -27,9 +27,9 @@ import com.apitable.shared.cache.bean.LoginUserDto;
 import com.apitable.shared.cache.service.LoginUserCacheService;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.mapper.UserMapper;
+import jakarta.annotation.Resource;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.Resource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 

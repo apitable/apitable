@@ -5,17 +5,12 @@ import { TextBaseField } from './text_base_field';
 import { ICellValue } from '../record';
 import { Strings, t } from '../../exports/i18n';
 import { FOperator, IFilterText } from '../../types';
-
+import { getFieldDefaultProperty } from './const';
+import { ICascaderProperty } from '../../types/field_types';
 export class CascaderField extends TextBaseField {
 
   static defaultProperty() {
-    return {
-      showAll: false, // only show last level data
-      linkedDatasheetId: '', // linked datasheet ID
-      linkedViewId: '', // linked datasheet view ID
-      linkedFields: [], // linked datasheet fields，arrange levels in array order
-      fullLinkedFields: [],
-    };
+    return getFieldDefaultProperty(FieldType.Cascader) as ICascaderProperty;
   }
 
   static override propertySchema = Joi.object({

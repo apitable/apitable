@@ -16,16 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ICollaCommandDef, ExecuteResult, ILinkedActions } from 'command_manager';
+import { ICollaCommandDef, ILinkedActions } from 'command_manager/command';
+import { ExecuteResult } from 'command_manager/types';
 import { IJOTAction } from 'engine';
-import { IGridViewProperty, Selectors } from '../../exports/store';
+import { IGridViewProperty } from '../../exports/store/interfaces';
+import { getActiveDatasheetId, getSnapshot, getDatasheet } from 'modules/database/store/selectors/resource/datasheet/base';
+
 import { FieldType, IField } from 'types/field_types';
 import { getNewIds, IDPrefix } from 'utils';
 import { createNewBrotherField, createNewField, IInternalFix } from '../common/field';
-import { CollaCommandName, fixOneWayLinkDstId } from '..';
-import { Field, CreatedByField, getMaxFieldCountPerSheet, DatasheetActions } from 'model';
+import { fixOneWayLinkDstId } from '..';
+import { CollaCommandName } from '../enum';
+import { Field } from 'model/field';
+import { CreatedByField } from 'model/field/created_by_field';
+import { getMaxFieldCountPerSheet } from 'model/utils';
+import { DatasheetActions } from 'commands_actions/datasheet';
 import { Strings, t } from '../../exports/i18n';
-import { getDatasheet } from '../../exports/store/selectors';
 import { ResourceType } from 'types';
 import { ISetRecordOptions, setRecords } from './set_records';
 
@@ -58,10 +64,10 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
 
   execute: (context, options) => {
     const { state: state } = context;
-    const activeDatasheetId = options.datasheetId ?? Selectors.getActiveDatasheetId(state)!;
+    const activeDatasheetId = options.datasheetId ?? getActiveDatasheetId(state)!;
     const datasheetId = activeDatasheetId;
     const { data, copyCell, internalFix, fieldId } = options;
-    const snapshot = Selectors.getSnapshot(state, activeDatasheetId);
+    const snapshot = getSnapshot(state, activeDatasheetId);
     const recordMap = snapshot!.recordMap;
 
     const maxFieldCountPerSheet = getMaxFieldCountPerSheet();
@@ -92,7 +98,7 @@ export const addFields: ICollaCommandDef<IAddFieldsOptions, IAddFieldResult> = {
       // When the table associated with the newly added associated field cannot be queried in the state,
       // an association cannot be established at this time.
       // Here we convert this field directly to a text field.
-      if (fieldOption.data.type === FieldType.Link && !Selectors.getDatasheet(state, fieldOption.data.property.foreignDatasheetId)) {
+      if (fieldOption.data.type === FieldType.Link && !getDatasheet(state, fieldOption.data.property.foreignDatasheetId)) {
         fieldOption = {
           ...fieldOption,
           data: {

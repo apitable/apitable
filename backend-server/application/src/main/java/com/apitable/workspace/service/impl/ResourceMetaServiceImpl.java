@@ -46,6 +46,7 @@ import com.apitable.workspace.service.IDatasheetService;
 import com.apitable.workspace.service.IResourceMetaService;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -53,7 +54,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -263,7 +263,7 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
                 meta = this.parseDashboardMeta(metaData, newWidgetIdMap);
                 break;
             case MIRROR:
-                JSONArray panels = JSONUtil.isJsonObj(metaData)
+                JSONArray panels = JSONUtil.isTypeJSONObject(metaData)
                     ? JSONUtil.parseObj(metaData).getJSONArray("widgetPanels") : null;
                 JSONArray widgetPanels =
                     iDatasheetService.generateWidgetPanels(panels, newWidgetIdMap);

@@ -1,11 +1,14 @@
 {
   "name": "@apitable/core",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "datasheet core",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "build": "rm -rf ./dist && tsc && tsc-alias",
+    "build-cjs": "rm -rf ./dist && tsc --module commonjs && tsc-alias",
+    "build-rollup": "rm -rf ./dist && rollup -c --bundleConfigAsCjs && tsc-alias",
     "build:publish": "rm -rf ./dist && tsc -p tsconfig.publish.json && tsc-alias -p tsconfig.publish.json && mv ./dist/index-publish.d.ts ./dist/index.d.ts",
     "start": "concurrently \"tsc -w\" \"tsc-alias -w\"",
     "test": "TZ=Asia/Shanghai jest",
@@ -21,10 +24,10 @@
     "node": ">=8.x"
   },
   "dependencies": {
-    "@apitable/i18n-lang": "*",
     "@apitable/databus-wasm-nodejs": "*",
     "@apitable/databus-wasm-web": "*",
     "@apitable/i18n": "^1.0.4",
+    "@apitable/i18n-lang": "*",
     "@types/lodash": "^4.14.197",
     "@types/socket.io-client": "^1.4.36",
     "apphook": "1.0.6",
@@ -44,6 +47,7 @@
     "moment-timezone": "^0.5.42",
     "ot-json0": "^1.1.0",
     "phone": "^3.1.10",
+    "qs": "^6.11.2",
     "re-reselect": "^4.0.0",
     "redux": "4.2.0",
     "redux-batched-actions": "0.5.0",
@@ -52,13 +56,15 @@
     "semver": "^7.5.2",
     "socket.io-client": "2.2.0",
     "string.prototype.matchall": "^4.0.2",
-    "urlcat": "^2.0.4",
-    "qs": "^6.11.2"
+    "urlcat": "^2.0.4"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.0.1",
+    "@rollup/plugin-typescript": "^11.1.5",
     "@types/color": "^3.0.1",
     "@types/jest": "^29.2.1",
     "@types/json-schema": "^7.0.12",
@@ -73,10 +79,12 @@
     "jest-environment-jsdom": "^29.2.2",
     "mockjs": "1.1.0",
     "ot-fuzzer": "^1.3.0",
+    "rollup": "^4.1.4",
     "ts-jest": "28.0.3",
     "ts-node": "^10.9.1",
     "ts-toolbelt": "^9.6.0",
     "tsc-alias": "^1.6.11",
+    "tslib": "^2.6.2",
     "typescript": "4.8.2"
   },
   "jest": {

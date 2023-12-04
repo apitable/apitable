@@ -29,10 +29,10 @@ import com.apitable.databusclient.api.AutomationDaoApiApi;
 import com.apitable.databusclient.model.AutomationRunHistoryPO;
 import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.workspace.enums.IdRulePrefixEnum;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

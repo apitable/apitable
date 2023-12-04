@@ -26,10 +26,11 @@ import { Field, ILinkField, IOneWayLinkField, LinkField, RowHeightLevel, Selecto
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { ButtonPlus, Message, Tooltip } from 'pc/components/common';
-import { expandRecord } from 'pc/components/expand_record';
 import { ExpandLinkContext } from 'pc/components/expand_record/expand_link/expand_link_context';
+import { expandRecord } from 'pc/components/expand_record/expand_record.utils';
 import { useGetViewByIdWithDefault } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
 import { loadRecords } from 'pc/utils/load_records';
@@ -37,8 +38,6 @@ import styles from '../cell_options/style.module.less';
 import { ICellComponentProps } from '../cell_value/interface';
 import { OptionalCellContainer } from '../optional_cell_container/optional_cell_container';
 import optionalStyle from '../optional_cell_container/style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const NO_DATA = Symbol('NO_DATA');
 const ERROR_DATA = Symbol('ERROR_DATA');

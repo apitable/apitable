@@ -20,12 +20,12 @@ import { FC } from 'react';
 import { Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { useResponsive } from 'pc/hooks';
+import { useResponsive } from 'pc/hooks/use_responsive';
 import { LanguageSetting } from './language_setting';
 import { RecordVisionSetting } from './record_vision_setting';
-import styles from './style.module.less';
 import { ThemeSetting } from './theme_setting';
 import { TimezoneSetting } from './timezone_setting';
+import styles from './style.module.less';
 
 export const PersonalizedSetting: FC<React.PropsWithChildren<unknown>> = () => {
   const { screenIsAtMost } = useResponsive();

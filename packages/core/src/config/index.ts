@@ -23,7 +23,7 @@ import { ApiTipConfig, ApiTipConstant, NoticeTemplatesConstant, Settings, System
 import { TrackEvents } from './track_events';
 
 export { SystemConfigInterfacePlayer, SystemConfigInterfaceGuide } from './system_config.interface';
-import * as BillingConfig from './billing.auto.json'
+import BillingConfig from './billing.auto.json';
 
 export {
   ConfigConstant,

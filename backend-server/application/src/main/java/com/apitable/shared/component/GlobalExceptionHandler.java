@@ -24,7 +24,7 @@ import cn.hutool.core.map.MapUtil;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.support.ResponseData;
 import com.apitable.shared.context.I18nContext;
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -58,8 +58,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Object> handleResponseStatusException(ResponseStatusException exception) {
-        return ResponseEntity.status(exception.getStatus())
-            .body(new ErrorResponse(exception.getStatus().value(), exception.getReason()));
+        return ResponseEntity.status(exception.getStatusCode())
+            .body(new ErrorResponse(exception.getStatusCode().value(), exception.getReason()));
     }
 
     /**
@@ -135,8 +135,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseData<Void> exception(Exception ex) {
         log.error("internal service exception:", ex);
-        if (ex instanceof BindException) {
-            BindException e = (BindException) ex;
+        if (ex instanceof BindException e) {
             BindingResult result = e.getBindingResult();
             if (result.hasErrors()) {
                 return ResponseData.error(result.getAllErrors().get(0).getDefaultMessage());

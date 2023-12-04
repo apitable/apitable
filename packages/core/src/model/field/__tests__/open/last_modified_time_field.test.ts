@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { LastModifiedTimeField } from 'model';
+import { LastModifiedTimeField } from 'model/field/last_modified_time_field';
 import { APIMetaFieldType, CollectType, DateFormat, FieldType, ILastModifiedTimeField, TimeFormat } from 'types';
 import { IOpenField } from 'types/open/open_field_read_types';
 import { IUpdateOpenLastModifiedTimeFieldProperty } from 'types/open/open_field_write_types';
@@ -64,7 +64,7 @@ const propertyOptionalNotFill: IUpdateOpenLastModifiedTimeFieldProperty = {
 
 describe('Modify time field read property format check', () => {
   const valid = getOpenFieldProperty(lastModifiedTimeField);
-  it('correct property', function() {
+  it('correct property', function () {
     const [expectValue, receiveValue] = valid(openLastModifiedTimeField.property);
     expect(expectValue).toEqual(receiveValue);
   });

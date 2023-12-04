@@ -7,4 +7,5 @@
     <suppress files="src[\\/]main[\\/]java[\\/]com[\\/]apitable[\\/]enterprise[\\/]" checks="[a-zA-Z0-9]*" />
     <suppress files="src[\\/]test[\\/]" checks="[a-zA-Z0-9]*" />
     <suppress files="build[\\/]generated[\\/]" checks="[a-zA-Z0-9]*" />
+    <suppress files="buildSrc[\\/]" checks="[a-zA-Z0-9]*" />
 </suppressions>

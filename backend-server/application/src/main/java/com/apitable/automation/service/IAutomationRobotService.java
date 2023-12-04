@@ -23,6 +23,7 @@ import com.apitable.automation.model.AutomationCopyOptions;
 import com.apitable.automation.model.AutomationRobotDto;
 import com.apitable.automation.model.AutomationSimpleVO;
 import com.apitable.automation.model.AutomationVO;
+import com.apitable.automation.model.TriggerCopyResultDto;
 import com.apitable.automation.model.UpdateRobotRO;
 import java.util.List;
 import java.util.Map;
@@ -54,8 +55,8 @@ public interface IAutomationRobotService {
      * @param options     options
      * @param newNodeMap  new node map
      */
-    void copy(Long userId, List<String> resourceIds,
-              AutomationCopyOptions options, Map<String, String> newNodeMap);
+    TriggerCopyResultDto copy(Long userId, List<String> resourceIds,
+                              AutomationCopyOptions options, Map<String, String> newNodeMap);
 
     /**
      * copy automation.

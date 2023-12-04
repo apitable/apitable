@@ -21,7 +21,7 @@ import { Method } from 'pc/components/route_manager/const';
 import { getNodeId, joinPath } from 'pc/components/route_manager/helper';
 import { IParams, IQuery } from 'pc/components/route_manager/interface';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
-import { dashboardReg, mirrorIdReg } from 'pc/hooks';
+import { dashboardReg, mirrorIdReg } from 'pc/hooks/use_page_params';
 import { getEnvVariables } from 'pc/utils/env';
 
 interface IFunctionParams {

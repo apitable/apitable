@@ -18,10 +18,11 @@
 
 import { DatasheetActions } from 'commands_actions/datasheet';
 import Joi from 'joi';
-import { Field } from 'model/field/field';
+import { t, Strings } from 'exports/i18n';
+import { Field } from './field';
 import { ICellToStringOption, ICellValue } from 'model/record';
-import { Strings, t } from 'exports/i18n';
-import { IReduxState } from 'exports/store';
+import { IReduxState } from 'exports/store/interfaces';
+import { pick } from 'lodash';
 import {
   APIMetaButtonActionType,
   BasicOpenValueType,
@@ -31,17 +32,20 @@ import {
   CollectType,
   FieldType,
   FOperator,
-  IAPIMetaButtonFieldProperty, IButtonField, IButtonProperty, IField,
+  IButtonField,
+  IField,
+  IAPIMetaButtonFieldProperty,
+  IButtonProperty,
   IFilterCondition,
   IStandardValue,
   OpenLinkType,
 } from 'types';
+import { getFieldDefaultProperty } from './const';
 import { joiErrorResult, datasheetIdString } from './validate_schema';
-import { pick } from 'lodash';
 
 export const AutomationConstant = {
-  DEFAULT_TEXT : t(Strings.click_start),
-  defaultColor : 50,
+  DEFAULT_TEXT: t(Strings.click_start),
+  defaultColor: 40,
 };
 
 export class ButtonField extends Field {
@@ -103,17 +107,8 @@ export class ButtonField extends Field {
     };
   }
 
-  static defaultProperty(): IButtonProperty {
-    return {
-      datasheetId: '',
-      text: t(Strings.button_text_click_start),
-      style: {
-        type: ButtonStyleType.Background,
-        color: 50,
-      },
-      action: {
-      },
-    };
+  static defaultProperty() {
+    return getFieldDefaultProperty(FieldType.Button) as IButtonProperty;
   }
 
   static createDefault(fieldMap: { [fieldId: string]: IField }): IButtonField {
@@ -123,6 +118,17 @@ export class ButtonField extends Field {
       name: DatasheetActions.getDefaultFieldName(fieldMap),
       property: this.defaultProperty(),
     };
+  }
+
+  cellValueToArray(cellValue: ICellValue): string[] | null {
+    if (this.validate(cellValue)) {
+      return [this.field.property.text];
+    }
+    return null;
+  }
+
+  arrayValueToString(): string | null {
+    return this.field.property.text;
   }
 
   override get isComputed() {
@@ -181,7 +187,7 @@ export class ButtonField extends Field {
   }
 
   public cellValueToOpenValue(_cellValue: ICellValue): BasicOpenValueType | null {
-    return null;
+    return this.field.property.text;
   }
 
   public cellValueToStdValue(_ellValue: ICellValue | null): IStandardValue {
@@ -192,7 +198,6 @@ export class ButtonField extends Field {
   }
 
   public cellValueToString(_cellValue: ICellValue, _cellToStringOption?: ICellToStringOption): string | null {
-
     return this.field.property.text;
   }
 

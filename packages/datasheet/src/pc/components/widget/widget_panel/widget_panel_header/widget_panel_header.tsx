@@ -25,14 +25,13 @@ import { AddOutlined, ChevronDownOutlined, ChevronLeftOutlined, CloseOutlined } 
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { InstallPosition } from 'pc/components/widget/widget_center/enum';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage/storage';
 import { expandWidgetCenter } from '../../widget_center/widget_center';
 import { useJudgeReachInstalledCount } from '../hooks/use_judge_reach_installed_count';
-import styles from './style.module.less';
 import { WidgetPanelList } from './widget_panel_list';
 import { WrapperTooltip } from './wrapper_tooltip';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const ReactIconAdd = () => {
   const colors = useThemeColors();

@@ -59,8 +59,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import javax.annotation.Resource;
-import javax.validation.Valid;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -137,7 +137,8 @@ public class NodeShareController {
         // check permission
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.SHARE_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
-        ExceptionUtil.isTrue(JSONUtil.isJson(body.getProps()), ParameterException.INCORRECT_ARG);
+        ExceptionUtil.isTrue(JSONUtil.isTypeJSON(body.getProps()),
+            ParameterException.INCORRECT_ARG);
         NodeSharePropsDTO propsDTO;
         try {
             propsDTO = JSONUtil.toBean(body.getProps(), NodeSharePropsDTO.class);

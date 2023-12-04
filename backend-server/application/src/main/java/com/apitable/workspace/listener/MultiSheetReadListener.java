@@ -76,15 +76,15 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
     /**
      * sheet[index] -> index head.
      */
-    private Map<String, Map<Integer, String>> sheetHeadMap = new LinkedHashMap<>();
+    private final Map<String, Map<Integer, String>> sheetHeadMap = new LinkedHashMap<>();
 
-    private Map<String, NodeData> nodeMap = new LinkedHashMap<>();
+    private final Map<String, NodeData> nodeMap = new LinkedHashMap<>();
 
-    private Map<String, Meta> metaMap = new LinkedHashMap<>();
+    private final Map<String, Meta> metaMap = new LinkedHashMap<>();
 
-    private JSONObject fieldUpdatedInfo = new JSONObject();
+    private final JSONObject fieldUpdatedInfo = new JSONObject();
 
-    private INodeService iNodeService;
+    private final INodeService iNodeService;
 
     private final Long userId;
 

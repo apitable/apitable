@@ -18,7 +18,7 @@
 
 import { Strings, t } from 'exports/i18n';
 import { FieldType, IField } from 'types';
-import { IPermissions } from 'exports/store';
+import { IPermissions } from 'exports/store/interfaces';
 
 export const DEFAULT_PERMISSION: IPermissions = {
   allowEditConfigurable: false,
@@ -248,7 +248,7 @@ export enum ToolBarMenuCardOpenState {
   OrgChartSetting = 'OrgChartSetting',
 
   // special: this is a component in the toolbar, just clean for "display" component, so place it here to control.by @mayne
-  ViewSwitcher = 'ViewSwitcher', 
+  ViewSwitcher = 'ViewSwitcher',
   KanbanFieldHidden = 'KanbanFieldHidden',
   Share = 'Share',
 }

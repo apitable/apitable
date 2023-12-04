@@ -17,12 +17,12 @@
  */
 
 import { Strings, t } from '../../exports/i18n';
-import { ISetKanbanStyleValue } from '../../exports/store';
-import { getActiveDatasheetId, getActualRowCount } from '../../exports/store/selectors';
+import { ISetKanbanStyleValue } from '../../exports/store/interfaces';
+import { getActiveDatasheetId,getDatasheet } from 'modules/database/store/selectors/resource/datasheet/base';
+import { getActualRowCount } from 'modules/database/store/selectors/resource/datasheet/calc';
 import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef } from '../../command_manager';
 import { IJOTAction } from '../../engine/ot';
-import { getDatasheet } from '../../exports/store/selectors';
 import { CollaCommandName } from '..';
 import { addRecords } from './add_records';
 import { ViewAction } from 'commands_actions/view';

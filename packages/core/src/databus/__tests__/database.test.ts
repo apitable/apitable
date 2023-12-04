@@ -18,21 +18,21 @@
 
 import { fulfillDatasheetStore } from './mock.store.provider';
 import { MockDataBus, resetDataLoader } from './mock.databus';
-import { StoreActions } from 'exports/store';
 import { ResourceType } from 'types';
 import { CommandExecutionResultType, ResourceEventType, IResourceEvent, IResourceEventHandler } from 'databus/common/event';
 import { ExecuteResult, ICollaCommandExecuteSuccessResult } from 'command_manager';
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 import { mockOpsCollectOfAddOneDefaultRecord } from './mock.datasheets';
+import { updateRevision } from 'modules/database/store/actions/resource';
 
 const db = MockDataBus.getDatabase();
 
 describe('store provider', () => {
-  it('should use custom store if createStore is given', async() => {
+  it('should use custom store if createStore is given', async () => {
     const dst = await db.getDatasheet('dst1', {
       createStore(datasheetPack) {
         const store = fulfillDatasheetStore(datasheetPack);
-        store.dispatch(StoreActions.updateRevision(12408, 'dst1', ResourceType.Datasheet));
+        store.dispatch(updateRevision(12408, 'dst1', ResourceType.Datasheet));
         return Promise.resolve(store);
       },
       loadOptions: {},
@@ -44,25 +44,25 @@ describe('store provider', () => {
 });
 
 describe('getDatasheet', () => {
-  it('should return non-null if datasheet exists', async() => {
-    const dst = await db.getDatasheet('dst1', { loadOptions: {}, storeOptions: {}});
+  it('should return non-null if datasheet exists', async () => {
+    const dst = await db.getDatasheet('dst1', { loadOptions: {}, storeOptions: {} });
     expect(dst).toBeTruthy();
   });
 
-  it('should return null if datasheet does not exist', async() => {
-    const dst = await db.getDatasheet('dst7', { loadOptions: {}, storeOptions: {}});
+  it('should return null if datasheet does not exist', async () => {
+    const dst = await db.getDatasheet('dst7', { loadOptions: {}, storeOptions: {} });
     expect(dst).toBeNull();
   });
 });
 
 describe('getDashboard', () => {
-  it('should return non-null if dashboard exists', async() => {
-    const dst = await db.getDashboard('dsb1', { loadOptions: {}, storeOptions: {}});
+  it('should return non-null if dashboard exists', async () => {
+    const dst = await db.getDashboard('dsb1', { loadOptions: {}, storeOptions: {} });
     expect(dst).toBeTruthy();
   });
 
-  it('should return null if dashboard does not exist', async() => {
-    const dst = await db.getDashboard('dsb7', { loadOptions: {}, storeOptions: {}});
+  it('should return null if dashboard does not exist', async () => {
+    const dst = await db.getDashboard('dsb7', { loadOptions: {}, storeOptions: {} });
     expect(dst).toBeNull();
   });
 });
@@ -130,7 +130,7 @@ describe('event handlers', () => {
   });
 
   describe('fire event', () => {
-    test('fire an event with one event listeners', async() => {
+    test('fire an event with one event listeners', async () => {
       let result: any;
       db.addEventHandler({
         type: ResourceEventType.CommandExecuted,
@@ -151,7 +151,7 @@ describe('event handlers', () => {
       expect(result).toStrictEqual(event);
     });
 
-    test('fire an event with two event listeners', async() => {
+    test('fire an event with two event listeners', async () => {
       let result1: any;
       let result2: any;
       db.addEventHandler({
@@ -181,7 +181,7 @@ describe('event handlers', () => {
       expect(result2).toStrictEqual(event);
     });
 
-    it('should not be invoked after being removed', async() => {
+    it('should not be invoked after being removed', async () => {
       let result: any = undefined;
       const handler: IResourceEventHandler & { type: ResourceEventType } = {
         type: ResourceEventType.CommandExecuted,
@@ -205,7 +205,7 @@ describe('event handlers', () => {
       expect(result).toBeUndefined();
     });
 
-    it('should not be invoked after the kind of handlers is removed', async() => {
+    it('should not be invoked after the kind of handlers is removed', async () => {
       let result: any = undefined;
       db.addEventHandler({
         type: ResourceEventType.CommandExecuted,
@@ -229,7 +229,7 @@ describe('event handlers', () => {
     });
   });
 
-  it('should receive success event if doCommand succeeded', async() => {
+  it('should receive success event if doCommand succeeded', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -267,7 +267,7 @@ describe('event handlers', () => {
     });
   });
 
-  it('should not receive event if doCommand returns none', async() => {
+  it('should not receive event if doCommand returns none', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},

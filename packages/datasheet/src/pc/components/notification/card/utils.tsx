@@ -20,8 +20,6 @@ import classNames from 'classnames';
 import dayjs from 'dayjs';
 import Calendar from 'dayjs/plugin/calendar';
 import relativeTime from 'dayjs/plugin/relativeTime';
-// @ts-ignore
-import { getSocialWecomUnitName, isSocialWecom } from 'enterprise/home/social_platform/utils';
 import parser, { HTMLReactParserOptions } from 'html-react-parser';
 import { isArray } from 'lodash';
 import { FC } from 'react';
@@ -41,13 +39,15 @@ import {
   SystemConfig,
   t,
 } from '@apitable/core';
-import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
-import { UserCardTrigger } from 'pc/components/common';
-import { NoticeTemplatesConstant, NotificationTemplates } from 'pc/components/notification/utils';
-import { getEnvVariables } from 'pc/utils/env';
-import styles from './style.module.less';
-import { store } from 'pc/store';
 import { getUserTimeZone } from '@apitable/core/dist/modules/user/store/selectors/user';
+import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
+import { UserCardTrigger } from 'pc/components/common/user_card/user_card_trigger';
+import { NoticeTemplatesConstant, NotificationTemplates } from 'pc/components/notification/utils';
+import { store } from 'pc/store';
+import { getEnvVariables } from 'pc/utils/env';
+// @ts-ignore
+import { getSocialWecomUnitName, isSocialWecom } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 const ERROR_STR = '[ERROR STR]';
 dayjs.extend(relativeTime);
@@ -268,7 +268,6 @@ export const getMsgText = (data: INoticeDetail) => {
     }
   }
 };
-
 
 // spaceName is the space to which the current notification belongs
 export const renderNoticeBody = (data: INoticeDetail, options?: IRenderNoticeBodyOptions) => {

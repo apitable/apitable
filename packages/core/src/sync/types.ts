@@ -17,7 +17,8 @@
  */
 
 import { ILocalChangeset, IRemoteChangeset } from 'engine/ot';
-import { IApiWrapper, IFieldPermission, IFieldRoleSetting, IWatchResult, Role } from '../exports/store';
+import { IApiWrapper, IFieldPermission, IFieldRoleSetting, IWatchResult } from '../exports/store/interfaces';
+import { Role } from 'config/constant';
 import { ModalType, OnOkType } from 'types';
 /**
  * The type of request message that is sent out actively

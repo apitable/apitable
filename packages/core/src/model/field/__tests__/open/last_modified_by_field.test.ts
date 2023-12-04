@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { LastModifiedByField } from 'model';
+import { LastModifiedByField } from 'model/field/last_modified_by_field';
 import { APIMetaFieldType, CollectType, FieldType, ILastModifiedByField } from 'types';
 import { IOpenField } from 'types/open/open_field_read_types';
 import { IUpdateOpenLastModifiedByFieldProperty } from 'types/open/open_field_write_types';
@@ -55,7 +55,7 @@ const propertyOptionalNotFill: IUpdateOpenLastModifiedByFieldProperty = {
 
 describe('Modifier field read property format check', () => {
   const valid = getOpenFieldProperty(lastModifiedByField);
-  it('correct property', function() {
+  it('correct property', function () {
     const [expectValue, receiveValue] = valid(openLastModifiedByField.property);
     expect(expectValue).toEqual(receiveValue);
   });

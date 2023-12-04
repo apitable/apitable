@@ -1,7 +1,7 @@
 import { assertNever } from 'utils';
-import { setViewDerivation } from 'exports/store/actions';
+import { setViewDerivation } from 'modules/database/store/actions/resource';
 import { IReduxState } from 'exports/store/interfaces';
-import { getActiveViewId, getViewInNode } from 'exports/store/selectors';
+import { getActiveViewId, getViewInNode } from 'modules/database/store/selectors/resource/datasheet/base';
 import { ViewDerivateBase } from './view_derivate_base';
 import { ViewDerivateCalendar } from './view_derivate_calendar';
 import { ViewDerivateGallery } from './view_derivate_gallery';
@@ -12,7 +12,7 @@ import { ViewDerivateOrgChart } from './view_derivate_org_chart';
 import { MiddlewareAPI, AnyAction, Dispatch } from 'redux';
 import { ViewType } from 'modules/shared/store/constants';
 
-export class ViewDerivateFactory {
+class ViewDerivateFactory {
   static createViewDerivate(state: IReduxState, datasheetId: string, viewType: ViewType): ViewDerivateBase {
     switch(viewType) {
       case ViewType.Calendar:
@@ -37,6 +37,8 @@ export class ViewDerivateFactory {
   }
 }
 
+export { ViewDerivateFactory };
+
 export const dispatchNewViewDerivation = (
   store: MiddlewareAPI<Dispatch<AnyAction>, IReduxState>,
   datasheetId: string,
@@ -51,6 +53,7 @@ export const dispatchNewViewDerivation = (
 
   const timeStart = Date.now();
   const viewDerivate = ViewDerivateFactory.createViewDerivate(state, datasheetId, view.type);
+  console.log(viewDerivate);
   const viewDerivation = viewDerivate.getViewDerivation(view);
   console.log('DERIVATE: calcViewDerivation %s  %s cost: %s ms', datasheetId, view.id, Date.now() - timeStart);
   store.dispatch(setViewDerivation(datasheetId, {

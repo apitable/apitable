@@ -22,6 +22,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.shared.component.ResourceDefinition;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -77,7 +78,7 @@ public class DefaultApiResourceFactory implements ApiResourceFactory {
                 Map<String, ResourceDefinition> modularResources = modularResourceDefinitions.get(
                     StrUtil.toUnderlineCase(resourceDefinition.getModularCode()));
                 if (modularResources == null) {
-                    modularResources = CollUtil.newHashMap();
+                    modularResources = new HashMap<>();
                     modularResources.put(resourceDefinition.getResourceCode(), resourceDefinition);
                     modularResourceDefinitions.put(
                         StrUtil.toUnderlineCase(resourceDefinition.getModularCode()),

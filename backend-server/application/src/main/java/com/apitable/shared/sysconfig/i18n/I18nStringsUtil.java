@@ -21,7 +21,7 @@ package com.apitable.shared.sysconfig.i18n;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.shared.constants.LanguageConstants;
 import java.util.Locale;
-import javax.validation.constraints.NotNull;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 /**

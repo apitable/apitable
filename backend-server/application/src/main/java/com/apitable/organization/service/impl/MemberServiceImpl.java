@@ -112,6 +112,7 @@ import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.vo.NodeRoleMemberVo;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -125,7 +126,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -297,7 +297,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         log.info("Gets all unit ids for the member");
         List<Long> unitRefIds = CollUtil.newArrayList(memberId);
         List<Long> teamIds = iTeamMemberRelService.getTeamByMemberId(memberId);
-        if (teamIds.size() > 0) {
+        if (!teamIds.isEmpty()) {
             List<Long> allParentTeamIds = teamFacade.getAllParentTeamIds(teamIds);
             unitRefIds.addAll(allParentTeamIds);
         }
@@ -875,7 +875,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         List<TeamMemberRelEntity> tmrEntities = teamMemberRelMapper.selectByMemberIds(memberIds);
         List<Long> needRelateRoots = new ArrayList<>();
         for (Long memberId : memberIds) {
-            List<TeamMemberRelEntity> memTeamList =
+            Collection<TeamMemberRelEntity> memTeamList =
                 CollUtil.filterNew(tmrEntities, (entity) -> entity.getMemberId().equals(memberId));
             Set<Long> belongTeamIds =
                 memTeamList.stream().collect(Collectors.groupingBy(TeamMemberRelEntity::getTeamId))

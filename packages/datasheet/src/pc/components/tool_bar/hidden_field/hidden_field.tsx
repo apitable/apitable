@@ -66,13 +66,12 @@ import { HideFieldType } from 'pc/components/tool_bar/interface';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { useDispatch, useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { getIsColNameVisible, getMoveColumnsResult } from 'pc/utils/datasheet';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { SyncViewTip } from '../sync_view_tip';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IHiddenFieldProps {
   type?: HideFieldType;

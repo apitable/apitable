@@ -63,7 +63,7 @@ public class OssProperties {
     /**
      * oss type.
      */
-    public enum OssType {
+    public static enum OssType {
 
         /**
          * AWS S3.
@@ -79,6 +79,7 @@ public class OssProperties {
          * Aliyun Oss.
          */
         ALIYUN,
+
         /**
          * Huawei Cloud.
          */
@@ -302,12 +303,12 @@ public class OssProperties {
         private String secretKey;
         private String bucketName;
 
-        public void setEndpoint(String endpoint) {
-            this.endpoint = endpoint;
-        }
-
         public String getEndpoint() {
             return endpoint;
+        }
+
+        public void setEndpoint(String endpoint) {
+            this.endpoint = endpoint;
         }
 
         public String getAccessKey() {

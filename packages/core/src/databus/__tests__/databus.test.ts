@@ -18,10 +18,10 @@
 
 import { mockRecordValues, mockRecords, mockDefaultRecord, mockRecordVoTransformer } from './mock.record';
 import { MockDataBus, resetDataLoader } from './mock.databus';
-import { IRecord } from 'exports/store';
+import { IRecord } from 'exports/store/interfaces';
 import { SegmentType } from 'types';
 import { ExecuteResult } from 'command_manager';
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 
 const assertRecordId = (record: IRecord, newId: string): IRecord => {
   expect(record.id).toBeTruthy();
@@ -40,7 +40,7 @@ describe('record operations', () => {
   describe('get records', () => {
     beforeAll(resetDataLoader);
 
-    it('should return correct numbers of records', async() => {
+    it('should return correct numbers of records', async () => {
       const dst1 = await db.getDatasheet('dst1', {
         loadOptions: {},
         storeOptions: {},
@@ -54,7 +54,7 @@ describe('record operations', () => {
       expect(records.length).toBe(5);
     });
 
-    it('should return correct records', async() => {
+    it('should return correct records', async () => {
       const dst1 = await db.getDatasheet('dst1', {
         loadOptions: {},
         storeOptions: {},
@@ -129,7 +129,7 @@ describe('record operations', () => {
   describe('add records', () => {
     beforeEach(resetDataLoader);
 
-    it('should increment number of records after adding a record', async() => {
+    it('should increment number of records after adding a record', async () => {
       let dst1 = await db.getDatasheet('dst1', {
         loadOptions: {},
         storeOptions: {},
@@ -166,7 +166,7 @@ describe('record operations', () => {
       expect(records.length).toBe(6);
     });
 
-    test('add a record before first record', async() => {
+    test('add a record before first record', async () => {
       let dst1 = await db.getDatasheet('dst1', {
         loadOptions: {},
         storeOptions: {},
@@ -203,7 +203,7 @@ describe('record operations', () => {
       expect(firstRecordVo).toStrictEqual(mockRecords[0]);
     });
 
-    test('add a record in middle', async() => {
+    test('add a record in middle', async () => {
       let dst1 = await db.getDatasheet('dst1', {
         loadOptions: {},
         storeOptions: {},
@@ -240,7 +240,7 @@ describe('record operations', () => {
       expect(recordVo).toStrictEqual(mockRecords[0]);
     });
 
-    test('add multiple records', async() => {
+    test('add multiple records', async () => {
       let dst1 = await db.getDatasheet('dst1', {
         loadOptions: {},
         storeOptions: {},
@@ -277,7 +277,7 @@ describe('record operations', () => {
       expect(recordVos).toStrictEqual(mockRecords);
     });
 
-    test('add multiple records by count', async() => {
+    test('add multiple records by count', async () => {
       let dst1 = await db.getDatasheet('dst1', {
         loadOptions: {},
         storeOptions: {},
@@ -319,7 +319,7 @@ describe('record operations', () => {
       expect(recordVo).toStrictEqual(mockDefaultRecord);
     });
 
-    it('should be identical to addRecords via doCommand', async() => {
+    it('should be identical to addRecords via doCommand', async () => {
       let dst1 = await db.getDatasheet('dst1', {
         loadOptions: {},
         storeOptions: {},

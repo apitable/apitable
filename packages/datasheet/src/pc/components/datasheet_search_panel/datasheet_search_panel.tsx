@@ -21,8 +21,8 @@ import * as React from 'react';
 import { useEffect, useMemo, useReducer } from 'react';
 import { Button } from '@apitable/components';
 import { Events, IMeta, Player, Strings, t } from '@apitable/core';
-import { useResponsive } from 'pc/hooks';
-import { stopPropagation } from 'pc/utils';
+import { useResponsive } from 'pc/hooks/use_responsive';
+import { stopPropagation } from 'pc/utils/dom';
 import { ScreenSize } from '../common/component_display/enum';
 import { Popup } from '../common/mobile/popup';
 import { SecondConfirmType } from './interface';
@@ -30,8 +30,8 @@ import { PcWrapper } from './pc_wrapper';
 import { PreviewColumn } from './preview_column';
 import { SearchPanelMain } from './search_panel_main';
 import { searchPanelReducer } from './store/reducer/search_panel';
-import styles from './style.module.less';
 import { getModalTitle } from './utils';
+import styles from './style.module.less';
 
 export interface ISearchShowOption {
   showForm: boolean

@@ -22,7 +22,7 @@ import com.apitable.workspace.entity.DatasheetWidgetEntity;
 import com.apitable.workspace.mapper.DatasheetWidgetMapper;
 import com.apitable.workspace.service.IDatasheetWidgetService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 /**

@@ -1,6 +1,6 @@
 server:
-  max-http-header-size: ${MAX_HTTP_HEADER_SIZE:32KB}
   port: ${SERVER_PORT:8081}
+  max-http-request-header-size: ${MAX_HTTP_HEADER_SIZE:32KB}
 spring:
   main:
     allow-circular-references: true
@@ -13,20 +13,23 @@ spring:
   session:
     redis:
       namespace: ${SESSION_NAMESPACE:apitable:session}
+      repository-type: indexed
     timeout: ${SESSION_TIMEOUT:30d}
   datasource:
     url: jdbc:mysql://${MYSQL_HOST:127.0.0.1}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:apitable}?characterEncoding=utf8&autoReconnect=true&useSSL=${MYSQL_SSL_ENABLED:false}
     username: ${MYSQL_USERNAME:root}
     password: ${MYSQL_PASSWORD:apitable@com}
   # Redis
-  redis:
-    host: ${REDIS_HOST:127.0.0.1}
-    username: ${REDIS_USERNAME:}
-    password: ${REDIS_PASSWORD:apitable@com}
-    port: ${REDIS_PORT:6379}
-    database: ${REDIS_DB:0}
-    timeout: ${REDIS_TIMEOUT:30000}
-    ssl: ${REDIS_SSL_ENABLED:false}
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      username: ${REDIS_USERNAME:}
+      password: ${REDIS_PASSWORD:apitable@com}
+      port: ${REDIS_PORT:6379}
+      database: ${REDIS_DB:0}
+      timeout: ${REDIS_TIMEOUT:30000}
+      ssl:
+        enabled: ${REDIS_SSL_ENABLED:false}
   rabbitmq:
     addresses: amqp://${RABBITMQ_HOST:127.0.0.1}:${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_USERNAME:apitable}
@@ -51,14 +54,6 @@ spring:
       mail.smtp.starttls.required: ${MAIL_STARTTLS_REQUIRED:true}
       mail.smtp.ssl.enable: ${MAIL_SSL_ENABLE:true}
       mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
-  sleuth:
-    otel:
-      exporter:
-        jaeger:
-          enabled: ${OTEL_JAEGER_ENABLED:false}
-          endpoint: ${OTEL_JAEGER_ENDPOINT:}
-      config:
-        trace-id-ratio-based: ${OTEL_JAEGER_TRACE_ID_RATIO_BASED:0.1}
   logger:
     max-history-days: ${LOGGER_MAX_HISTORY_DAYS:7}
 
@@ -138,7 +133,7 @@ starter:
       bucket-policy: ${MINIO_BUCKET_POLICY:'{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetBucketLocation"],"Resource":["arn:aws:s3:::vk-assets-ltd"]},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:ListBucket"],"Resource":["arn:aws:s3:::vk-assets-ltd"],"Condition":{"StringEquals":{"s3:prefix":["*.*"]}}},{"Effect":"Allow","Principal":{"AWS":["*"]},"Action":["s3:GetObject"],"Resource":["arn:aws:s3:::vk-assets-ltd/*.**"]}]}'}
     signature:
       enabled: ${OSS_SIGNATURE_ENABLED:false}
-      mode: ${OSS_SIGNATURE_MODE:CDN_TIMESTAMP_ANTI_LEECH}
+      model: ${OSS_SIGNATURE_MODE:CDN_TIMESTAMP_ANTI_LEECH}
       expire-second: ${OSS_SIGNATURE_EXPIRE_SECOND:7200}
       encrypt-key: ${OSS_SIGNATURE_CDN_ENCRYPT_KEY:}
   sms:

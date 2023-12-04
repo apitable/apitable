@@ -20,7 +20,7 @@ import { FC } from 'react';
 import * as React from 'react';
 import { colorVars } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
-import { WithTipTextInput } from 'pc/components/common';
+import { WithTipTextInput } from 'pc/components/common/input/with_tip_input/with_tip_text_input';
 import { TComponent } from 'pc/components/common/t_component';
 import styles from './style.module.less';
 interface IConfirmAgainModalProps {

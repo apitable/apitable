@@ -18,7 +18,7 @@
 
 import axios from 'axios';
 import { produce } from 'immer';
-import { ActionConstants } from '../../../../exports/store';
+import * as ActionConstants from 'modules/shared/store/action_constants';
 import {
   IAddWizardNumberAction, ISetActiveRecordId, ISetHttpErrInfoAction, ISetIsLoginActions, ISetLoadingAction, ISetLoginErrAction, ISetNicknameAction,
   ISetRegisterAction, ISetReqStatusAction, ISetUsedInviteReward, ISetUserAvatarAction, ISetUserAvatarColorAction, ISetUserMeActions, ISignOutAction,
