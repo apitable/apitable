@@ -30,10 +30,10 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 8.7.5
-      - name: Set up JDK 8
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '8'
+          java-version: '17'
           distribution: 'corretto'
           cache: 'gradle'
       - name: Install build-essential
