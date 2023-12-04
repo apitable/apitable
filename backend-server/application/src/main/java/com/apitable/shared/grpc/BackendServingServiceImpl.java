@@ -36,7 +36,7 @@ import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.service.INodeService;
 import io.grpc.stub.StreamObserver;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;

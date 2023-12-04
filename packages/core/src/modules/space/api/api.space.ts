@@ -20,7 +20,7 @@ import axios from 'axios';
 import { ConfigConstant } from 'config';
 import urlcat from 'urlcat';
 import { NodeType, ShowRecordHistory } from '../../../config/constant';
-import { IApiWrapper, INode, INodesMapItem, IParent, IUpdateRoleData } from '../../../exports/store';
+import { IApiWrapper, INode, INodesMapItem, IParent, IUpdateRoleData } from '../../../exports/store/interfaces';
 import * as Url from '../../shared/api/url';
 import { IAddNodeParams } from './api.space.interface';
 import { getBrowserDatabusApiEnabled } from '../../database/api/wasm';

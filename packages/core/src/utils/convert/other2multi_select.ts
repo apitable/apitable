@@ -18,19 +18,19 @@
 
 import type {
   MultiSelectField,
-} from 'model';
+} from 'model/field/select_field/multi_select_field';
 import { IField, FieldType } from 'types/field_types';
 
 /**
- * 1. When converting from single selection to multiple selection, 
+ * 1. When converting from single selection to multiple selection,
  * the incoming value is a string, here it is judged whether the string exists in newField
- * 
- * 2. When converting multiple selections to multiple selections, 
+ *
+ * 2. When converting multiple selections to multiple selections,
  * the incoming value is a string[], here it is judged whether the id in string[] exists in newField
- * 
- * 3. For other types to radio selection, a text (name) is passed in. 
+ *
+ * 3. For other types to radio selection, a text (name) is passed in.
  * Here it is judged whether the text already exists in the newField option
- * 
+ *
  * @export
  * @param {(string[] | string | null)} value
  * @param {MultiSelectField} newField
@@ -59,11 +59,11 @@ export function str2multi(value: string[] | string | null,
       }
     });
     return result.length > 0 ? result : null;
-  } 
+  }
   const option = newField.findOptionByName(value as string);
   if (option) {
     return [option.id];
-  } 
+  }
   return null;
 
 }

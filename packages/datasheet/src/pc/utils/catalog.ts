@@ -17,6 +17,7 @@
  */
 
 import { Workbook } from 'exceljs';
+import { browser } from 'modules/shared/browser';
 import React from 'react';
 import {
   ConfigConstant,
@@ -36,10 +37,9 @@ import {
   UnitItem,
   ViewDerivateBase,
 } from '@apitable/core';
-import { browser } from 'modules/shared/browser';
 import { NodeIcon } from 'pc/components/catalog/node_context_menu/node_icons';
 import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { IShareSpaceInfo } from 'pc/components/share/interface';
 import { store } from 'pc/store';
 import { runInTimeSlicing } from './utils';

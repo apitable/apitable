@@ -1,5 +1,5 @@
+import { ButtonStyleType } from '@apitable/core';
 import { ColorGroup, OptionSetting } from 'pc/components/common/color_picker';
-import {ButtonStyleType} from "@apitable/core";
 
 interface IColorPickProps {
   color: number;
@@ -10,6 +10,7 @@ interface IColorPickProps {
   };
 }
 
+const arr = Array.from({ length: 9 }, (_item, index) => index + 1+ 40);
 export const ColorPicker: React.FC<IColorPickProps> = (props) => {
   const { color, onchange } = props;
 
@@ -26,7 +27,7 @@ export const ColorPicker: React.FC<IColorPickProps> = (props) => {
         color: color,
       }}
       onChange={colorChange}
-      colorGroup={[50].concat(Array.from({ length: 10 }, (_item, index) => index + 40))}
+      colorGroup={ [40, 50].concat(arr)}
       itemStyle={{
         flex: '0 0 9%',
       }}

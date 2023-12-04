@@ -16,11 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { computeCache, COMPUTE_REF_MAP_CACHE_KEY, parse, TokenType } from 'index';
-import { Field, LookUpField } from 'model';
-import { IFieldMap, IReduxState, Selectors } from '../exports/store';
+import { computeCache } from 'compute_manager/compute_cache_manager';
+import { COMPUTE_REF_MAP_CACHE_KEY } from 'compute_manager/helper';
+import { parse, TokenType } from 'formula_parser';
+import { Field } from 'model/field';
+import { LookUpField } from 'model/field/lookup_field';
+import { IFieldMap, IReduxState } from '../exports/store/interfaces';
 import { FieldType, IField } from 'types';
 
+import {
+  getSnapshot,
+  getDatasheetPrimaryField,
+} from 'modules/database/store/selectors/resource/datasheet/base';
 type IRefMap = Map<string, Set<string>>;
 // Reference management for computed fields
 export class ComputeRefManager {
@@ -57,9 +64,9 @@ export class ComputeRefManager {
 
   /**
    * Calculate the datasheetId collection of the forward or reverse dependence of the dimensional table dependence
-   * @param dstId 
-   * @param fieldMap 
-   * @param refMap 
+   * @param dstId
+   * @param fieldMap
+   * @param refMap
    */
   private getRefDstIds(dstId: string, fieldMap: IFieldMap, refMap: IRefMap): string[] {
     const fieldIds = Object.keys(fieldMap);
@@ -103,12 +110,12 @@ export class ComputeRefManager {
 
   /**
    * TODO: Precisely clean up references.
-   * 1. When a calculated field becomes a non-calculated field (deleted or field converted), 
+   * 1. When a calculated field becomes a non-calculated field (deleted or field converted),
    * it is necessary to clean up the side of reRefMap as the key and the side of refMap as the value.
-   * 2. Calculated fields are converted into other calculated fields, and formula lookup is converted to each other. 
+   * 2. Calculated fields are converted into other calculated fields, and formula lookup is converted to each other.
    * Cross-table non-cross-table dependent transformation
-   * 3. The calculated field is not converted, but a dependency change has occurred. 
-   * For example, the formula originally depended on two fields A and B, 
+   * 3. The calculated field is not converted, but a dependency change has occurred.
+   * For example, the formula originally depended on two fields A and B,
    * and later only depended on the A field, then the dependence on B should be removed.
    */
   public cleanFieldRef(fieldId: string, datasheetId: string) {
@@ -137,7 +144,7 @@ export class ComputeRefManager {
   }
 
   /*
-   * Take the datasheet fieldMap as the entry to calculate the reference relationship of the datasheet, 
+   * Take the datasheet fieldMap as the entry to calculate the reference relationship of the datasheet,
    * and only calculate the reference relationship of one datasheet at a time
    * a - b - c three-table association,
    * When accessing table a, the server will also return meta and partial data of table b and c. In this case, computeRefMap is called three times.
@@ -190,9 +197,9 @@ export class ComputeRefManager {
           case FieldType.Link:
           case FieldType.OneWayLink:
             const linkDstId = field.property.foreignDatasheetId;
-            const linkSnapshot = Selectors.getSnapshot(state, linkDstId);
+            const linkSnapshot = getSnapshot(state, linkDstId);
             if (linkSnapshot) {
-              const linkPrimaryField = Selectors.getDatasheetPrimaryField(linkSnapshot);
+              const linkPrimaryField = getDatasheetPrimaryField(linkSnapshot);
               const key = `${linkDstId}-${linkPrimaryField!.id}`;
               this.addReRef(`${datasheetId}-${field.id}`, new Set([key]));
               this.addRef(key, `${datasheetId}-${field.id}`);
@@ -248,8 +255,8 @@ export class ComputeRefManager {
 
   /**
    * Check which table datasheetId collection a table depends on
-   * @param dstId 
-   * @param fieldMap 
+   * @param dstId
+   * @param fieldMap
    */
   public getDependenceByDstIds(dstId: string, fieldMap: IFieldMap): string[] {
     return this.getRefDstIds(dstId, fieldMap, this.reRefMap);
@@ -257,8 +264,8 @@ export class ComputeRefManager {
 
   /**
    * Check which tables a table depends on
-   * @param dstId 
-   * @param fieldMap 
+   * @param dstId
+   * @param fieldMap
    */
   public getDependenceDstIds(dstId: string, fieldMap: IFieldMap): string[] {
     return this.getRefDstIds(dstId, fieldMap, this.refMap);

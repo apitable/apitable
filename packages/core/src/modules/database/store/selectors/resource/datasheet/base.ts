@@ -30,8 +30,9 @@ import {
   IViewProperty,
   Role,
 } from '../../../../../../exports/store/interfaces';
-import { gridViewActiveFieldStateDefault, gridViewDragStateDefault } from '../../../reducers/resource';
-import { getMirror } from '../mirror';
+import { gridViewDragStateDefault } from 'modules/database/store/reducers/resource/datasheet/grid_view_drag';
+import { gridViewActiveFieldStateDefault } from 'modules/database/store/reducers/resource/datasheet/grid_view_active_field';
+import { getMirror } from 'modules/database/store/selectors/resource/mirror';
 
 const defaultKeySelector = (state: IReduxState, datasheetId: string | undefined | void) => datasheetId || getNodeId(state);
 

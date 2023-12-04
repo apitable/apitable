@@ -20,7 +20,7 @@ import { useSize } from 'ahooks';
 import { useEffect, useState } from 'react';
 import { ScreenWidth } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display/enum';
-import { isRenderServer } from 'pc/utils';
+import { isRenderServer } from 'pc/utils/dom';
 
 export type Orientation = 'landscape' | 'portrait';
 

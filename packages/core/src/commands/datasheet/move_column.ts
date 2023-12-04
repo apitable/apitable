@@ -18,12 +18,18 @@
 
 import { isEmpty } from 'lodash';
 import { IJOTAction, jot } from 'engine/ot';
-import { DatasheetActions } from 'model';
-import { DropDirectionType, IGridViewProperty, Selectors } from '../../exports/store';
+import { DatasheetActions } from 'commands_actions/datasheet';
+import { IGridViewProperty } from '../../exports/store/interfaces';
+import { DropDirectionType } from 'modules/shared/store/constants';
 import { Strings, t } from '../../exports/i18n';
 import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
+
+import {
+  getActiveDatasheetId,
+  getSnapshot,
+} from 'modules/database/store/selectors/resource/datasheet/base';
 
 export interface IMoveColumn {
   fieldId: string; // the id of the column that needs to be dragged
@@ -43,8 +49,8 @@ export const moveColumn: ICollaCommandDef<IMoveColumnOptions> = {
   execute: (context, options) => {
     const { state: state } = context;
     const { data, viewId } = options;
-    const datasheetId = Selectors.getActiveDatasheetId(state)!;
-    const snapshot = Selectors.getSnapshot(state, datasheetId);
+    const datasheetId = getActiveDatasheetId(state)!;
+    const snapshot = getSnapshot(state, datasheetId);
 
     if (!snapshot) {
       return null;

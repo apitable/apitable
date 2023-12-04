@@ -18,9 +18,11 @@
 
 import { cloneDeep, findIndex, max, min } from 'lodash';
 import { groupArray } from 'model/utils';
-import { IReduxState, Selectors } from '../../exports/store';
-import { getCellIndex, getVisibleColumns, getVisibleRows, getCellUIIndex } from '../../exports/store/selectors';
-
+import { IReduxState } from 'exports/store/interfaces';
+import { getVisibleRows, getPureVisibleRows, getPureVisibleRowsIndexMap } from 'modules/database/store/selectors/resource/datasheet/rows_calc';
+import { getVisibleColumns } from 'modules/database/store/selectors/resource/datasheet/calc';
+import { getCellUIIndex,getCellIndex, getCellByIndex } from 'modules/database/store/selectors/resource/datasheet/cell_range_calc';
+import { getActiveCell } from 'modules/database/store/selectors/resource/datasheet/base';
 /**
  * cell row / column UUID
  */
@@ -112,7 +114,7 @@ export class Range {
   }
   /**
    * data coordinate system vector => numeric coordinate system range
-   * @param state 
+   * @param state
    */
   getIndexRange(state: IReduxState, range?: IRange): IIndexRange | null {
     const { start, end } = range || Range.instance;
@@ -134,8 +136,8 @@ export class Range {
 
   /**
    * UI data coordinate system vector => UI digital coordinate system range
-   * @param state 
-   * @param range 
+   * @param state
+   * @param range
    */
   getUIIndexRange(state: IReduxState, range?: IRange): IIndexRange | null {
     const { start, end } = range || Range.instance;
@@ -156,8 +158,8 @@ export class Range {
   }
 
   getCellRange(state: IReduxState, indexRange: IIndexRange): IRange {
-    const visibleRows = Selectors.getVisibleRows(state);
-    const visibleColumns = Selectors.getVisibleColumns(state);
+    const visibleRows = getVisibleRows(state);
+    const visibleColumns = getVisibleColumns(state);
     return {
       start: {
         recordId: visibleRows[indexRange.record.min]!.recordId,
@@ -193,8 +195,8 @@ export class Range {
 
   /**
    * Calculate the filling direction according to the hoverCell, and give priority to the vertical direction.
-   * @param state 
-   * @param hoverCell 
+   * @param state
+   * @param hoverCell
    */
   getDirection(state: IReduxState, hoverCell: ICell): FillDirection | null {
     const hoverCellIndex = getCellIndex(state, hoverCell)!;
@@ -220,8 +222,8 @@ export class Range {
 
   /**
    * Calculate the area to be filled according to the filling direction
-   * @param state 
-   * @param direction 
+   * @param state
+   * @param direction
    */
   getFillRange(state: IReduxState, hoverCell: ICell, direction: FillDirection): IRange | null {
     const indexRange = this.getIndexRange(state);
@@ -262,13 +264,13 @@ export class Range {
   }
 
   /**
-   * Merge continuous selection 
-   * 
-   * FIXME: Determine whether it is continuous, currently only used in selection and fill area. 
+   * Merge continuous selection
+   *
+   * FIXME: Determine whether it is continuous, currently only used in selection and fill area.
    *   It is known that the two are continuous, so there is no check here.
-   * 
-   * @param state 
-   * @param ranges 
+   *
+   * @param state
+   * @param ranges
    */
   combine(state: IReduxState, range: IRange) {
     const selfIndexRange = this.getIndexRange(state);
@@ -294,29 +296,29 @@ export class Range {
 
   /**
    * Get the diagonal cells of a cell in the selection area, symmetrical about the center of the selection area.
-   * @param state 
-   * @param cell 
+   * @param state
+   * @param cell
    */
   getDiagonalCell(state: IReduxState, cell: ICell): ICell | null {
     const indexRange = this.getIndexRange(state);
     if (!indexRange) return null;
-    const cellIndex = Selectors.getCellIndex(state, cell);
+    const cellIndex = getCellIndex(state, cell);
     if (!cellIndex) return null;
     const diagonalCellIndex = {
       recordIndex: indexRange.record.max - (cellIndex.recordIndex - indexRange.record.min),
       fieldIndex: indexRange.field.max - (cellIndex.fieldIndex - indexRange.field.min),
     };
-    return Selectors.getCellByIndex(state, diagonalCellIndex);
+    return getCellByIndex(state, diagonalCellIndex);
   }
   /**
    * Selection movement.
-   * @param state 
-   * @param direction 
+   * @param state
+   * @param direction
    */
   move(state: IReduxState, direction: RangeDirection, breakpoints: number[] = []): IRange | null {
-    const activeCell = Selectors.getActiveCell(state);
+    const activeCell = getActiveCell(state);
     if (!activeCell) return Range.instance;
-    const activeCellIndex = Selectors.getCellIndex(state, activeCell)!;
+    const activeCellIndex = getCellIndex(state, activeCell)!;
     const indexRange = this.getIndexRange(state);
     if (!indexRange) return Range.instance;
     const newIndexRange = cloneDeep(indexRange);
@@ -330,8 +332,8 @@ export class Range {
     const isUpExpand = minRangeRowIndex === maxRangeRowIndex || !isActiveCellAtRangeUpEdge;
     const isDownExpand = minRangeRowIndex === maxRangeRowIndex || !isActiveCellAtRangeDownEdge;
 
-    const visibleRows = Selectors.getVisibleRows(state);
-    const visibleColumns = Selectors.getVisibleColumns(state);
+    const visibleRows = getVisibleRows(state);
+    const visibleColumns = getVisibleColumns(state);
     const visibleRowsCount = visibleRows.length;
     const maxFieldIndex = visibleColumns.length - 1;
 
@@ -364,7 +366,7 @@ export class Range {
         const isGroupRangeUpEdge = currentBreakpoint === minRangeRowIndex; // Whether the selection has covered the top edge of a group
         const isGroupRangeDownEdge = nextBreakpoint === maxRangeRowIndex + 1; // Whether the selection has covered the bottom edge of a group
         // Whether the selection range is smaller than the group where the active cell is located
-        const isActiveCellInCurrentGroup = currentBreakpoint <= recordIndex && recordIndex < nextBreakpoint; 
+        const isActiveCellInCurrentGroup = currentBreakpoint <= recordIndex && recordIndex < nextBreakpoint;
         /**
          * Expand the selection area up and drop directly to the starting position of the group
          * Narrow the selection up to the end of the group
@@ -454,14 +456,14 @@ export class Range {
 
   /**
    * selected records is non-sequence area, convert it to sequence area with multi IRange format
-   * 
-   * @param state 
-   * @param recordIds 
+   *
+   * @param state
+   * @param recordIds
    */
   static selectRecord2Ranges(state: IReduxState, recordIds: string[]): IRange[] {
-    const rowIndexMap = Selectors.getPureVisibleRowsIndexMap(state);
-    const rows = Selectors.getPureVisibleRows(state);
-    const columns = Selectors.getVisibleColumns(state);
+    const rowIndexMap = getPureVisibleRowsIndexMap(state);
+    const rows = getPureVisibleRows(state);
+    const columns = getVisibleColumns(state);
     const firstFieldId = columns[0]!.fieldId;
     const lastFieldId = columns[columns.length - 1]!.fieldId;
     const sortedRowIndexList = recordIds

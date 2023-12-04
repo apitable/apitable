@@ -74,25 +74,24 @@ import { SideBarClickType, SideBarType, useSideBar } from 'pc/context';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables, isIframe } from 'pc/utils/env';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
-import { getRowHeightIcon } from './change_row_height';
-import { Display } from './display/display';
-import { Find } from './find';
-import { ForeignForm } from './foreign_form';
-import { useDisabledOperateWithMirror } from './hooks';
-import { ToolHandleType } from './interface';
-import styles from './style.module.less';
-import { ToolItem } from './tool_item';
-import { Undo } from './undo';
 import { createdBySubscritionMessage } from '../../utils/created_by_subscrition_message';
 import { Share } from '../catalog/share';
 import { Collapse, ICollapseFunc } from '../common/collapse';
 import { ScreenSize } from '../common/component_display';
 import { expandRecordIdNavigate } from '../expand_record';
 import { showKanbanSetting } from '../kanban_view';
-
-import {useAppSelector} from "pc/store/react-redux";
+import { getRowHeightIcon } from './change_row_height';
+import { Display } from './display/display';
+import { Find } from './find';
+import { ForeignForm } from './foreign_form';
+import { useDisabledOperateWithMirror } from './hooks';
+import { ToolHandleType } from './interface';
+import { ToolItem } from './tool_item';
+import { Undo } from './undo';
+import styles from './style.module.less';
 
 // Toolbar label and icon adaptation rules when in-table lookup is activated.
 // width:[1180,+infinity) -> Show all.
@@ -673,8 +672,8 @@ const ToolbarBase = () => {
               text={
                 isExitGroup
                   ? t(Strings.group_amount, {
-                      amount: (activeView as IGridViewProperty).groupInfo!.length,
-                    })
+                    amount: (activeView as IGridViewProperty).groupInfo!.length,
+                  })
                   : t(Strings.group)
               }
             />
@@ -825,8 +824,8 @@ function FilterNode(props: { showLabel: boolean; disabled: boolean }) {
         isMobile
           ? t(Strings.filter)
           : t(Strings.filters_amount, {
-              amount: actualFilterCont,
-            })
+            amount: actualFilterCont,
+          })
       }
     />
   );

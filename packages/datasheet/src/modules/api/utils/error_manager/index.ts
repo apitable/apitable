@@ -1,8 +1,8 @@
 import { Strings, t } from '@apitable/core';
-// @ts-ignore
-import { triggerUsageAlertUniversal } from 'enterprise/billing';
 import { BillingErrorCode } from './const';
 import { ApiErrorManager } from './error_manager';
+// @ts-ignore
+import { triggerUsageAlertUniversal } from 'enterprise/billing/trigger_usage_alert';
 
 export * from './const';
 export const apiErrorManager = new ApiErrorManager();

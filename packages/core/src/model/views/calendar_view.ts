@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { integrateCdnHost, Settings } from 'index';
-import { Field } from 'model';
+import { Settings } from 'config/system_config';
+import { integrateCdnHost } from 'utils';
+import { Field } from 'model/field';
 import { BasicValueType } from 'types';
 import { Strings, t } from '../../exports/i18n';
 import {
-  GanttColorType,
   ICalendarViewColumn,
   ICalendarViewProperty,
   ICalendarViewStyle,
@@ -29,8 +29,8 @@ import {
   IReduxState,
   ISnapshot,
   IViewProperty,
-  ViewType
-} from '../../exports/store';
+} from '../../exports/store/interfaces';
+import { GanttColorType,ViewType } from 'modules/shared/store/constants';
 import { DatasheetActions } from '../../commands_actions/datasheet';
 import { View } from './views';
 

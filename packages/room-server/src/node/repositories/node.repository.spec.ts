@@ -100,16 +100,6 @@ describe('Test NodeRepository', () => {
     expect(count).toEqual(0);
   });
 
-  it('should be return the children node list of a given node', async() => {
-    const children = await repository.selectAllSubNodeIds('folderId');
-    expect(children.length).toEqual(2);
-  });
-
-  it('should be return the parent node list of a given node', async() => {
-    const parent = await repository.selectParentPathByNodeId('datasheetId');
-    expect(parent.length).toEqual(1);
-  });
-
   it('should be return node', async() => {
     const node = await repository.getNodeInfo('datasheetId');
     expect(node?.nodeId).toEqual('datasheetId');

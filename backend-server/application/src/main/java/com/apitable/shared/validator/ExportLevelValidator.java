@@ -20,9 +20,9 @@ package com.apitable.shared.validator;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.apitable.control.infrastructure.ExportLevelEnum;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.Arrays;
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import lombok.extern.slf4j.Slf4j;
 
 /**

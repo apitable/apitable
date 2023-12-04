@@ -16,24 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { getSnapshot } from '../exports/store/selectors';
+import { getSnapshot } from 'modules/database/store/selectors/resource/datasheet/base';
 import { IJOTAction } from 'engine';
 import { DatasheetActions } from 'commands_actions/datasheet';
 import { FieldType, IMemberField } from 'types';
-import { IReduxState } from '../exports/store';
+import { IReduxState } from '../exports/store/interfaces';
 
 /**
- * 
- * In order to solve the problem that the current class uses setRecord and addRecord at the same time 
- * to change the member information in pasteSetRecord, 
+ *
+ * In order to solve the problem that the current class uses setRecord and addRecord at the same time
+ * to change the member information in pasteSetRecord,
  * multiple changes to the column header data are generated and overlap each other.
- * Referring to the idea of linkDataMaintainer, 
- * the changes to the column header data are no longer directly generated in setRecord and addRecord, 
+ * Referring to the idea of linkDataMaintainer,
+ * the changes to the column header data are no longer directly generated in setRecord and addRecord,
  * but the data management is handed over to the failure of this class. Before the final data submission, unified generation
  * A changeset for headhunting data modification
- * 
  *
- * TODO: At present, first solve the online problems, keep the old logic, and change the data of the entire column. 
+ *
+ * TODO: At present, first solve the online problems, keep the old logic, and change the data of the entire column.
  * The subsequent iteration is the same number of checks as linkContainer. This step requires enough testing.
  */
 export class MemberFieldMaintainer {
@@ -52,7 +52,7 @@ export class MemberFieldMaintainer {
    * insert current action modifications of member data
    * currently, use fieldId as key only
    * aggregate the data
-   * 
+   *
    * @param {string} fieldId
    * @param {string} datasheetId
    * @param {string[]} insertUnitIds
@@ -66,9 +66,9 @@ export class MemberFieldMaintainer {
   }
 
   /**
-   * check whether the cache data exists, 
+   * check whether the cache data exists,
    * and at the end of other action, do a modification action to member field
-   * 
+   *
    * @param {IReduxState} state
    * @returns {any[] | IJOTAction[]}
    */

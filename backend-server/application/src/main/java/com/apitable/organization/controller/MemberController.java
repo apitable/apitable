@@ -99,6 +99,9 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
@@ -107,9 +110,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -563,7 +563,8 @@ public class MemberController {
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             // fileName is the name of the file that displays the download dialog box
             String name = "员工信息模板";
-            String fileName = URLEncoder.encode(name, "UTF-8").replaceAll("\\+", "%20");
+            String fileName =
+                URLEncoder.encode(name, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
             response.setHeader("Content-disposition",
                 "attachment;filename*=utf-8''" + fileName + ".xlsx");
             InputStream inputStream =

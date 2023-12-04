@@ -19,8 +19,9 @@
 import { ResourceType } from 'types';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from '../../command_manager';
 import { FormAction } from '../../commands_actions/form';
-import { IFormProps, Selectors } from '../../exports/store';
+import { IFormProps } from '../../exports/store/interfaces';
 import { CollaCommandName } from '..';
+import { getFormSnapshot } from 'modules/database/store/selectors/resource/form';
 
 export interface IUpdateFormProps {
   cmd: CollaCommandName.UpdateFormProps;
@@ -34,11 +35,11 @@ export const updateFormProps: ICollaCommandDef<IUpdateFormProps> = {
   execute(context: ICollaCommandExecuteContext, options) {
     const { state: state } = context;
     const { formId, partialProps } = options;
-    const snapshot = Selectors.getFormSnapshot(state, formId);
+    const snapshot = getFormSnapshot(state, formId);
     if (!snapshot) {
       return null;
     }
-    
+
     const updateFormPropsAction = FormAction.updatePropsAction(snapshot.formProps, { partialProps });
     if (updateFormPropsAction.length === 0) {
       return null;

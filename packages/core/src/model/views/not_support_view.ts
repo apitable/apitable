@@ -17,7 +17,7 @@
  */
 
 import { View } from './views';
-import { ISnapshot } from '../../exports/store';
+import { ISnapshot } from '../../exports/store/interfaces';
 
 export class NotSupportView extends View {
   static generateDefaultProperty(_snapshot: ISnapshot, _activeViewId: string | null | undefined) {

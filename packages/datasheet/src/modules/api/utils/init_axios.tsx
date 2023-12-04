@@ -1,12 +1,12 @@
+import { apiErrorManager } from 'api/utils/error_manager';
 import axios from 'axios';
 import { Store } from 'redux';
 import { IReduxState, Navigation } from '@apitable/core';
-import { apiErrorManager } from 'api/utils/error_manager';
-// @ts-ignore
-// import { isSocialUrlIgnored } from 'enterprise/dingtalk/utils';
 import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
 import { getInitializationData, getReleaseVersion, getSpaceIdFormTemplate } from 'pc/utils/env';
+// @ts-ignore
+import { isSocialUrlIgnored } from 'enterprise/dingtalk/utils';
 
 declare let window: any;
 

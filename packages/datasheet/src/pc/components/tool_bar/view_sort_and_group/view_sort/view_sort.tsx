@@ -37,14 +37,13 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { SyncViewTip } from '../../sync_view_tip';
 import { CommonViewSet } from '../common_view_set';
 import styles from '../style.module.less';
 import { ViewFieldOptions } from '../view_field_options';
 import { ViewFieldOptionsMobile } from '../view_field_options/view_field_options_mobile';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IViewSetting {
   close(e: React.MouseEvent): void;

@@ -16,10 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {
-  OPEventNameEnums, EventRealTypeEnums, EventAtomTypeEnums,
-  IOPBaseContext, EventSourceTypeEnums, IEventTestResult, IEventInstance, IAtomEvent, IOPEvent
-} from 'index';
+import { OPEventNameEnums, EventRealTypeEnums, EventAtomTypeEnums,EventSourceTypeEnums } from 'event_manager/enum';
+import { IOPBaseContext, IEventTestResult, IEventInstance, IAtomEvent, IOPEvent } from 'event_manager/interface/event.interface';
 import { ResourceType } from 'types';
 
 export abstract class IAtomEventType<T> {

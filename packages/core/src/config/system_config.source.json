@@ -2400,10 +2400,109 @@
           "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
         ],
-        "uiConfig": "{\n \"element\": \"#AUTOMATION_ADD_TRIGGER_BTN\"\n} ",
+        "uiConfig": "{\n \"element\": \"#NODE_FORM_ACTIVE\"\n} ",
         "uiConfigId": "player_step_ui_config_automation_1",
         "uiType": "breath"
       },
+
+      "178": {
+        "description": "ui dialog for use button field first time and active node ",
+        "next": "下一步",
+        "nextId": "next_step",
+        "onClose": [
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onSkip": [
+          "clear_guide_all_ui()"
+        ],
+        "onTarget": [
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onNext": [
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "skip": "跳过",
+        "skipId": "skip",
+        "uiConfig": "{\n \"element\": \".TREE_NODE_ACTIVE_ONE\", \"description\": \"description\",  \"title\": \"title\"\n} ",
+        "uiConfigId": "player_step_ui_config_button_field_node",
+        "uiType": "popover"
+      },
+
+      "179": {
+        "description": "ui dialog for use button field first time for node actived status ",
+        "next": "下一步",
+        "nextId": "next_step",
+        "onClose": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onSkip": [
+          "clear_guide_all_ui()"
+        ],
+        "onTarget": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onNext": [
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "skip": "跳过",
+        "skipId": "skip",
+        "uiConfig": "{\n \"element\": \"#NODE_FORM_ACTIVE\"\n} ",
+        "uiConfigId": "player_step_ui_config_button_field_node_form_active",
+        "uiType": "popover"
+      },
+
+
+      "180": {
+        "description": "ui dialog for use button field first time active bind datasheeet ",
+        "nextId": "next_step",
+        "next": "下一步",
+        "onSkip": [
+          "clear_guide_all_ui()"
+        ],
+        "onClose": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "skip": "跳过",
+        "skipId": "skip",
+        "onTarget": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onNext": [
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "uiConfig": "{\n \"element\": \"#AUTOMATION_BOUND_DATASHEET\"\n} ",
+        "uiConfigId": "player_step_ui_config_button_field_bound_datasheet",
+        "uiType": "popover"
+      },
+
+      "181": {
+        "description": "ui dialog for use button field first time active create action ",
+        "next": "好的",
+        "nextId": "okay",
+        "onClose": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onSkip": [
+          "clear_guide_all_ui()"
+        ],
+        "onTarget": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onNext": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "uiConfig": "{\n \"element\": \"#CONST_ROBOT_ACTION_CREATE\"\n} ",
+        "uiConfigId": "player_step_ui_config_button_field_action_create",
+        "uiType": "popover"
+      },
+
       "124": {
         "next": "下一步",
         "nextId": "next_step",
@@ -3456,6 +3555,18 @@
           ]
         },
         "steps": "[[170]]"
+      },
+
+      "118": {
+        "description": "steps for automation button",
+        "completeIndex": 0,
+        "player": {
+          "action": [
+            "rec4kT7UZkdww"
+          ]
+        },
+        "repeat": false,
+        "steps": "[[178], [179], [180], [181]]"
       },
 
       "117": {
@@ -4823,6 +4934,12 @@
         "commandArgs": "{\"clearAllPrevUi\":true}"
       },
       {
+        "id": "open_guide_wizard(118)",
+        "description": "打开引导向导 首次Button列",
+        "command": "open_guide_wizard",
+        "commandArgs": "118"
+      },
+      {
         "id": "open_guide_wizard(117)",
         "command": "open_guide_wizard",
         "commandArgs": "117"
@@ -5063,6 +5180,11 @@
       "guide_use_automation_first_time": {
         "module": "guide",
         "name": "use_automation_first_time"
+      },
+
+      "guide_use_button_column_first_time": {
+        "module": "guide",
+        "name": "guide_use_button_column_first_time"
       },
 
       "app_modal_confirm": {
@@ -5627,6 +5749,20 @@
       },
       {
         "actions": [
+          "open_guide_wizard(118)"
+        ],
+        "rules": [
+          "device_IS_pc",
+          "url_EXCLUDES_templateId",
+          "url_EXCLUDES_shareId"
+        ],
+        "id": "guide_use_button_column_first_time,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(118)]",
+        "event": [
+          "guide_use_button_column_first_time"
+        ]
+      },
+      {
+        "actions": [
           "open_guide_wizard(117)"
         ],
         "rules": [
@@ -5634,7 +5770,7 @@
           "url_EXCLUDES_templateId",
           "url_EXCLUDES_shareId"
         ],
-        "id": "guide_use_automation_first_time,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(88)]",
+        "id": "guide_use_automation_first_time,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(117)]",
         "event": [
           "guide_use_automation_first_time"
         ]

@@ -22,9 +22,8 @@ import * as React from 'react';
 import { FC } from 'react';
 import { Strings, t } from '@apitable/core';
 import { LoadingOutlined } from '@apitable/icons';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface ILoadingProps {
   showText?: boolean;

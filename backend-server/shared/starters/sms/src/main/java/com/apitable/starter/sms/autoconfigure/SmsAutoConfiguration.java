@@ -22,12 +22,12 @@ import com.apitable.starter.sms.core.LocalSmsSenderFactory;
 import com.apitable.starter.sms.core.OutlandSmsSenderFactory;
 import com.apitable.starter.sms.core.SmsSenderTemplate;
 import java.util.Optional;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
@@ -37,7 +37,7 @@ import org.springframework.context.annotation.Import;
  *
  * @author Shawn Deng
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @ConditionalOnClass(SmsSenderTemplate.class)
 @EnableConfigurationProperties(SmsProperties.class)
 @ConditionalOnProperty(value = "starter.sms.enabled", havingValue = "true")

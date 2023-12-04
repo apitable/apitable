@@ -18,6 +18,7 @@
 
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
+import { SimpleEmitter } from 'modules/shared/simple_emitter';
 import Image from 'next/image';
 import * as React from 'react';
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
@@ -25,8 +26,8 @@ import { ThemeName } from '@apitable/components';
 import { CollaCommandName, ConfigConstant, ExecuteResult, ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { RuntimeEnv } from '@apitable/widget-sdk';
 import { WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
-import { SimpleEmitter } from 'modules/shared/simple_emitter';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { DataSourceSelectorForNode } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/data_source_selector_for_node';
 import { SearchPanel, SecondConfirmType } from 'pc/components/datasheet_search_panel';
 import { expandRecordInCenter } from 'pc/components/expand_record';
 import { expandRecordPicker } from 'pc/components/record_picker';
@@ -36,6 +37,7 @@ import { useResponsive } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import PngLinkdatasheetDark from 'static/icon/datasheet/chart/dashboard_widget_empty_dark.png';
 import PngLinkdatasheetLight from 'static/icon/datasheet/chart/dashboard_widget_empty_light.png';
 import { ErrorWidget } from '../../error_widget';
@@ -43,15 +45,12 @@ import { closeWidgetRoute, expandWidgetRoute } from '../../expand_widget';
 import { useDevLoadCheck, useFullScreen } from '../../hooks';
 import { usePreLoadError } from '../../hooks/use_pre_load_error';
 import { IWidgetPropsBase } from './interface';
-import styles from './style.module.less';
 import { IWidgetBlockRefs, WidgetBlock } from './widget_block';
 import { WidgetBlockMain } from './widget_block_main';
 import { WidgetLoading } from './widget_loading';
 // @ts-ignore
 import { EmbedContext } from 'enterprise/embed/embed_context';
-import { DataSourceSelectorForNode } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/data_source_selector_for_node';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export const simpleEmitter = new SimpleEmitter();
 

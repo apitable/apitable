@@ -20,11 +20,10 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { shallowEqual } from 'react-redux';
 import { getCustomConfig, Strings, t } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 // @ts-ignore
 import { isDingtalkSkuPage } from 'enterprise/home/social_platform/utils';
 import { useQuery } from './';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const contacts = /(\/)?org(\/)?/; // Directory
 const template = /(\/)?template(\/)?/; // Template Centre

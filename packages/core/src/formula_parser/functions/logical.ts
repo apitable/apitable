@@ -234,7 +234,7 @@ export class Switch extends LogicalFunc {
       return BasicValueType.String;
     }
 
-    // Only when the return type of the value of all matched expressions is Number/Boolean/DateTime/String, 
+    // Only when the return type of the value of all matched expressions is Number/Boolean/DateTime/String,
     // it is inferred as the return value of the corresponding type
     const argsLength = params.length - 1;
     let resultType: BasicValueType | null = argsLength & 1 ? params[argsLength]!.valueType : null;
@@ -260,7 +260,7 @@ export class Switch extends LogicalFunc {
     const isDateTimeType = params[0]!.node.innerValueType === BasicValueType.DateTime; // Do special handling for DateTime types
 
     // Specially handle the matching of Array type fields to BLANK
-    const isEmptyArray = (param: IFormulaParam) => param.node.valueType === BasicValueType.Array && !param.value?.length; 
+    const isEmptyArray = (param: IFormulaParam) => param.node.valueType === BasicValueType.Array && !param.value?.length;
 
     if (isDateTimeType) {
       targetValue = dayjs(targetValue).valueOf();

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Button, LinkButton, TextInput, Typography, useThemeColors } from '@apitable/components';
 import { isEmail, Strings, t } from '@apitable/core';
 import { EmailFilled, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
-import { WithTipWrapper } from 'pc/components/common';
+import { WithTipWrapper } from 'pc/components/common/input/with_tip_wrapper/with_tip_wrapper';
 import { ActionType } from '../../pc_home';
 import styles from './style.module.less';
 

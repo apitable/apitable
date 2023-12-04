@@ -29,10 +29,10 @@ import com.apitable.organization.vo.MemberTeamPathInfo;
 import com.apitable.organization.vo.SearchMemberResultVo;
 import com.apitable.organization.vo.SearchMemberVo;
 import com.apitable.shared.util.information.InformationUtil;
+import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 /**
@@ -97,7 +97,7 @@ public class MemberSearchServiceImpl implements IMemberSearchService {
                     }
 
                     return result;
-                }).collect(Collectors.toList());
+                }).toList();
 
             results.addAll(socialResults);
         }

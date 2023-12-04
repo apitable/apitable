@@ -16,28 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.shared.config;
+package com.apitable.automation.model;
 
-import javax.annotation.Resource;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.session.FindByIndexNameSessionRepository;
-import org.springframework.session.Session;
-import org.springframework.session.security.SpringSessionBackedSessionRegistry;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
 /**
- * Session Repository config.
- *
- * @author Shawn Deng
+ * Automation Service Edit RO.
  */
-@Configuration(proxyBeanMethods = false)
-public class SessionRepositoryConfig<S extends Session> {
+@Data
+@Schema(description = "Automation Service Edit RO")
+public class AutomationServiceEditRO {
 
-    @Resource
-    private FindByIndexNameSessionRepository<S> sessionRepository;
+    @Schema(description = "name")
+    private String name;
 
-    @Bean
-    public SpringSessionBackedSessionRegistry<S> sessionRegistry() {
-        return new SpringSessionBackedSessionRegistry<>(this.sessionRepository);
-    }
+    @Schema(description = "description")
+    private String description;
+
+    @Schema(description = "input JSON format")
+    private String logo;
+
+    @Schema(description = "output JSON format")
+    private String baseUrl;
+
+    @Schema(description = "i18n package")
+    private String i18n;
+
 }

@@ -87,6 +87,9 @@ public enum FieldType {
     ONE_WAY_LINK(26),
 
     WORK_DOC(27),
+
+    BUTTON(28),
+
     ;
 
     private final int fieldType;

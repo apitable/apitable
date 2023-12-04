@@ -20,8 +20,8 @@ package com.apitable.shared.captcha;
 
 import cn.hutool.json.JSONUtil;
 import com.apitable.core.constants.RedisConstants;
+import jakarta.annotation.Resource;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;

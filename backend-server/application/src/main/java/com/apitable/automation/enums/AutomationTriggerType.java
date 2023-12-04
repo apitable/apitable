@@ -16,20 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-plugins {
-  `java-library`
-  `java-gradle-plugin`
-  `groovy-gradle-plugin`
-}
+package com.apitable.automation.enums;
 
-repositories {
-  mavenCentral()
-  gradlePluginPortal()
-}
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-dependencies {
-}
+/**
+ * automation trigger type.
+ */
+@Getter
+@AllArgsConstructor
+public enum AutomationTriggerType {
 
-tasks.test {
-  useJUnitPlatform()
+    FORM_SUBMITTED("form_submitted"),
+
+    RECORD_MATCHES_CONDITIONS("record_matches_conditions"),
+
+    RECORD_CREATED("record_created"),
+
+    BUTTON_CLICKED("button_clicked"),
+
+    ;
+
+
+    private final String type;
 }

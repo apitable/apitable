@@ -18,7 +18,7 @@
 
 import { FormulaBaseError, IFormulaField, ILookUpField, Selectors } from '@apitable/core';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export interface IComputeCVProps {
   recordId: string;

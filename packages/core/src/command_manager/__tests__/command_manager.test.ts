@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 import { ExecuteFailReason, ExecuteResult, ExecuteType, ICollaCommandExecuteSuccessResult } from 'command_manager/types';
 import { ErrorCode, ErrorType, FieldType, IError, ResourceType } from 'types';
 import { CollaCommandManager, ICollaCommandManagerListener, IResourceOpsCollect } from '../command_manager';

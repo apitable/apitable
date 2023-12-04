@@ -18,7 +18,7 @@
 
 import { str2timestamp } from '../other2timestamp';
 import assert from 'assert';
-import cases from './other2timestamp.test.json';
+import * as cases from './other2timestamp.test.json';
 
 // function getField(): DateTimeField {
 //   const table: IDateTimeField = {

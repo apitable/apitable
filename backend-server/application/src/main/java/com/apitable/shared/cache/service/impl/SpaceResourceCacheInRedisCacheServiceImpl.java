@@ -29,13 +29,15 @@ import com.apitable.space.entity.SpaceMenuEntity;
 import com.apitable.space.mapper.SpaceMenuMapper;
 import com.apitable.space.mapper.SpaceResourceMapper;
 import com.apitable.space.service.ISpaceMenuService;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -71,7 +73,7 @@ public class SpaceResourceCacheInRedisCacheServiceImpl implements SpaceResourceC
             List<SpaceMenuResourceDto> menuResources = spaceResourceMapper.selectMenuResource();
             List<SpaceGroupResourceDto> groupResources = spaceResourceMapper.selectGroupResource();
 
-            Map<String, List<String>> menuMap = CollUtil.newHashMap();
+            Map<String, List<String>> menuMap = new HashMap<>();
 
             List<SpaceMenuEntity> allMenus = spaceMenuMapper.selectList(null);
 
@@ -94,7 +96,7 @@ public class SpaceResourceCacheInRedisCacheServiceImpl implements SpaceResourceC
                 dto.setMenuCode(menu.getMenuCode());
                 dto.setMenuName(menu.getMenuName());
 
-                List<SpaceGroupResourceDto> filterList = CollUtil.filterNew(groupResources,
+                Collection<SpaceGroupResourceDto> filterList = CollUtil.filterNew(groupResources,
                     groupResource -> CollUtil.containsAny(entry.getValue(),
                         groupResource.getResources()));
 

@@ -51,7 +51,6 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nullable;
 
 /**
  * node service.
@@ -563,7 +562,7 @@ public interface INodeService extends IService<NodeEntity> {
      * @param extras  node additional information
      * @return ShowcaseVo.NodeExtra
      */
-    NodeExtra getNodeExtras(String nodeId, @Nullable String spaceId, @Nullable String extras);
+    NodeExtra getNodeExtras(String nodeId, String spaceId, String extras);
 
     /**
      * get node window info.

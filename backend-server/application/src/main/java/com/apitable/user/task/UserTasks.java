@@ -5,7 +5,7 @@ import static net.javacrumbs.shedlock.core.LockAssert.assertLocked;
 import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.user.service.IUserService;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

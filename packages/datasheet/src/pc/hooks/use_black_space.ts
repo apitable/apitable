@@ -19,10 +19,9 @@
 import { useEffect } from 'react';
 import { Strings, t } from '@apitable/core';
 import { showBannerAlert } from 'pc/components/notification/banner_alert';
+import { useAppSelector } from 'pc/store/react-redux';
 // @ts-ignore
 import { goToUpgrade } from 'enterprise/subscribe_system/upgrade_method';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const BLACK_SPACE_BANNER_ALERT = 'BLACK_SPACE_BANNER_ALERT';
 

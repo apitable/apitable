@@ -34,14 +34,13 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-// @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { Router } from 'pc/components/route_manager/router';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
-
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
 
 export const useCatalogTreeRequest = () => {
   const dispatch = useAppDispatch();

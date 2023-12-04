@@ -35,7 +35,7 @@ import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.mapper.NodeMapper;
 import com.apitable.workspace.mapper.NodeRelMapper;
 import com.apitable.workspace.observer.DatasheetRemindObserver;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 

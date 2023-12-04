@@ -19,14 +19,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { Skeleton } from '@apitable/components';
 import { Strings, t, Api } from '@apitable/core';
-import { Modal } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal/modal';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
-import styles from './style.module.less';
 // @ts-ignore
 import { Trial } from 'enterprise/log/trial';
 // @ts-ignore
 import { showUpgradeContactUs } from 'enterprise/subscribe_system/order_modal/pay_order_success';
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const upperCaseFirstWord = (str: string) => {
   if (str.length < 2) {

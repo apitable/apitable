@@ -20,6 +20,8 @@ import { ErrorBoundary } from '@sentry/nextjs';
 import { useLocalStorageState, useMount, useToggle, useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
 import { last } from 'lodash';
+import { expandRecordManager } from 'modules/database/expand_record_manager';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -42,11 +44,11 @@ import {
   t,
 } from '@apitable/core';
 import { AttentionOutlined, CommentOutlined, NarrowOutlined } from '@apitable/icons';
-import { expandRecordManager } from 'modules/database/expand_record_manager';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 
 // eslint-disable-next-line no-restricted-imports
-import { Message, Modal as CustomModal, Tooltip } from 'pc/components/common';
+import { Message } from 'pc/components/common/message';
+import { Modal as CustomModal } from 'pc/components/common/modal/modal/modal';
+import { Tooltip } from 'pc/components/common/tooltip';
 import { EXPAND_RECORD, RecordType } from 'pc/components/expand_record/expand_record.enum';
 import {
   IExpandRecordComponentProp,
@@ -58,11 +60,13 @@ import { ExpandRecordMoreOption } from 'pc/components/expand_record/expand_recor
 import { RecordPageTurn } from 'pc/components/expand_record/record_page_turn';
 import { clearExpandModal, expandRecordIdNavigate, getRecordName, recordModalCloseFns } from 'pc/components/expand_record/utils';
 import { FieldDesc } from 'pc/components/multi_grid/field_desc';
-import { FieldSetting } from 'pc/components/multi_grid/field_setting';
+import { FieldSetting } from 'pc/components/multi_grid/field_setting/field_setting';
+
 import { Router } from 'pc/components/route_manager/router';
 import { useGetViewByIdWithDefault, useQuery, useRequest, useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ActivitySelectType, KeyCode } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, StorageName } from 'pc/utils/storage';
@@ -79,8 +83,6 @@ import { IFieldDescCollapseStatus } from './field_editor';
 import { MoreTool } from './more_tool';
 import { RecordOperationArea } from './record_opeation_area';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const CommentButton = ({ active, onClick }: IPaneIconProps): JSX.Element => {
   const colors = useThemeColors();

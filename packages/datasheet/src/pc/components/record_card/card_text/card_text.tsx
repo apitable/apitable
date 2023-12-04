@@ -32,7 +32,7 @@ interface ICardTextProps {
   isVirtual?: boolean;
 }
 
-export const EACH_TEXT_LINE_HEIGHT = 22;
+export const EACH_TEXT_LINE_HEIGHT = 21;
 
 export const CardText: React.FC<React.PropsWithChildren<ICardTextProps>> = ({
   cellValue,

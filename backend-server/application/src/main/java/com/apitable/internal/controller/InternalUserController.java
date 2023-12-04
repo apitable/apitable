@@ -42,11 +42,11 @@ import com.apitable.user.vo.UserBaseInfoVo;
 import com.google.common.collect.Lists;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -133,7 +133,7 @@ public class InternalUserController {
             return ResponseData.success(Lists.newArrayList());
         }
         List<Long> pausedUserIds =
-            userDtos.stream().map(UserInPausedDto::getUserId).collect(Collectors.toList());
+            userDtos.stream().map(UserInPausedDto::getUserId).toList();
         // Filter out non-cooling-off accounts (cancelled and cancelled).
         List<PausedUserHistoryDto> pausedUserHistoryDtos = userHistoryDtos
             .stream().filter(historyDto -> pausedUserIds.contains(historyDto.getUserId()))

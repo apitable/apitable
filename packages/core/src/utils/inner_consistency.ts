@@ -16,10 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 import { IResourceOpsCollect } from 'command_manager';
-import { IJOTAction, OTActionName } from 'engine';
-import { IReduxState, Selectors } from 'exports/store';
+import { IJOTAction, OTActionName } from 'engine/ot';
+import { IReduxState } from 'exports/store/interfaces';
+import { getDatasheet } from 'modules/database/store/selectors/resource/datasheet/base';
 import xor from 'lodash/xor';
 import { FieldType, ILinkFieldProperty, ILinkIds, ResourceType } from 'types';
 import type { ISnapshot } from '../modules/database/store/interfaces/resource';
@@ -62,7 +63,7 @@ function getDuplicates<T = any>(array: T[], key: 'recordId' | 'fieldId' | 'id'):
   return result.length ? result.sort() : null;
 }
 
-// Consistency check requires that all views in the snapshot are not duplicated, 
+// Consistency check requires that all views in the snapshot are not duplicated,
 // and that rows/columns correspond to recordMap/fieldMap one-to-one without duplication
 export function checkInnerConsistency(snapshot: ISnapshot) {
   const dstId = snapshot.datasheetId;
@@ -120,7 +121,7 @@ export function checkInnerConsistency(snapshot: ISnapshot) {
       err.notExistInFieldMap = notExistInFieldMap; // exists in view.columns, but not in fieldMap, indicating that columns have added ghost rows
 
       // exists in fieldMap, but does not exist in view.columns, indicating that rows are missing in columns
-      err.notExistInViewColumn = notExistInViewColumn; 
+      err.notExistInViewColumn = notExistInViewColumn;
     }
 
     consistencyErrors.push(err);
@@ -171,7 +172,7 @@ export function generateFixInnerConsistencyChangesets(
 ): IResourceOpsCollect[] {
   const deleteViewActions: IJOTAction[] = [];
   const viewLocalActions: IJOTAction[] = [];
-  const datasheet = Selectors.getDatasheet(state, datasheetId);
+  const datasheet = getDatasheet(state, datasheetId);
   if (!datasheet) {
     return [];
   }
@@ -189,7 +190,7 @@ export function generateFixInnerConsistencyChangesets(
       return;
     }
 
-    // Remove invalid self-linking record IDs 
+    // Remove invalid self-linking record IDs
     if ('updatedSelfLinkRecordIds' in data) {
       const { recordMap } = datasheet.snapshot;
       for (const[cellId, newRecordIds] of data.updatedSelfLinkRecordIds) {

@@ -31,9 +31,9 @@ import com.apitable.shared.component.notification.observer.MessagingCenterNotify
 import com.apitable.shared.component.notification.subject.CenterNotifySubject;
 import com.apitable.shared.constants.NotificationConstants;
 import com.apitable.starter.socketio.core.SocketClientTemplate;
+import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

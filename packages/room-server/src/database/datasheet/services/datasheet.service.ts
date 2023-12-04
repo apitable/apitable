@@ -34,9 +34,11 @@ import {
 } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
+import { ButtonClickedEventContext } from 'automation/events/domains/button.clicked.event';
+import { ButtonClickedListener } from 'automation/events/listeners/button.clicked.listener';
 import { AutomationRobotRepository } from 'automation/repositories/automation.robot.repository';
 import { AutomationTriggerRepository } from 'automation/repositories/automation.trigger.repository';
+import { AutomationService } from 'automation/services/automation.service';
 import { CommandService } from 'database/command/services/command.service';
 import { MetaService } from 'database/resource/services/meta.service';
 import { isEmpty } from 'lodash';
@@ -71,7 +73,10 @@ export class DatasheetService {
     private readonly resourceMetaService: MetaService,
     private readonly automationRobotRepository: AutomationRobotRepository,
     private readonly automationTriggerRepository: AutomationTriggerRepository,
-    private readonly eventEmitter: EventEmitter2,
+    @Inject(forwardRef(() => ButtonClickedListener))
+    private readonly buttonClickedListener: ButtonClickedListener,
+    @Inject(forwardRef(() => AutomationService))
+    private readonly automationService: AutomationService,
   ) {}
 
   /**
@@ -447,14 +452,15 @@ export class DatasheetService {
     });
     const eventContext = {
       // Flattened new structure
+      triggerId: triggerId,
       datasheetId,
       datasheetName,
       recordId,
       clickedBy,
       recordUrl: getRecordUrl(datasheetId, recordId),
       ...eventFields,
-    };
-    await this.eventEmitter.emitAsync(OPEventNameEnums.ButtonClicked, {
+    } as ButtonClickedEventContext;
+    const taskId = await this.buttonClickedListener.handleButtonClickedEvent({
       eventName: OPEventNameEnums.FormSubmitted,
       scope: ResourceType.Form,
       realType: EventRealTypeEnums.REAL,
@@ -463,5 +469,9 @@ export class DatasheetService {
       context: eventContext,
       beforeApply: false,
     });
+    return {
+      taskId,
+      message: await this.automationService.analysisStatus(taskId),
+    };
   }
 }

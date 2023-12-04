@@ -22,9 +22,8 @@ import { useDispatch } from 'react-redux';
 import { ThemeName, ThemeProvider } from '@apitable/components';
 import { Selectors, StoreActions } from '@apitable/core';
 import { SystemTheme } from 'pc/common/theme';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const ThemeWrapper: React.FC<React.PropsWithChildren<unknown>> = (props) => {
   const [theme, setTheme] = useLocalStorageState<ThemeName>('theme', {

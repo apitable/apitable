@@ -23,10 +23,9 @@ import { Selectors, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
 import { DisabledViewLock } from 'pc/components/view_lock/disabled_view_lock';
 import { EnabledViewLock } from 'pc/components/view_lock/enabled_view_lock';
+import { useAppSelector } from 'pc/store/react-redux';
 import { IViewLockProps } from './interface';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const ViewLock: React.FC<React.PropsWithChildren<IViewLockProps>> = (props) => {
   const colors = useThemeColors();

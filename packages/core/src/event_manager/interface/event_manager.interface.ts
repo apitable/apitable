@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { EventRealTypeEnums, EventSourceTypeEnums } from 'index';
+import { EventRealTypeEnums, EventSourceTypeEnums } from 'event_manager/enum';
 import { AnyObject, IEventInstance, IOPEvent } from './event.interface';
 
 export interface IEventListenerMap {
@@ -31,7 +31,7 @@ export interface IEventListenerOptions {
   sourceType?: EventSourceTypeEnums,
   // the authenticity of the event
   realType?: EventRealTypeEnums;
-  // The change of each event will be applied to the corresponding state tree, 
+  // The change of each event will be applied to the corresponding state tree,
   // whether the event callback is triggered before the application or after the application.
   beforeApply?: boolean;
 }

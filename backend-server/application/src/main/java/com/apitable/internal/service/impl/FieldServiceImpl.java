@@ -31,6 +31,7 @@ import com.apitable.shared.util.ClientUriUtil;
 import com.apitable.shared.util.UrlRequestUtil;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.service.INodeShareService;
+import jakarta.annotation.Resource;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -43,8 +44,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Call;
 import org.springframework.stereotype.Service;
@@ -82,7 +81,7 @@ public class FieldServiceImpl implements IFieldService {
     @Override
     public UrlAwareContentsVo getUrlAwareContents(List<String> urls, Long userId) {
         // distinct urls
-        List<String> distinctUrls = urls.stream().distinct().collect(Collectors.toList());
+        List<String> distinctUrls = urls.stream().distinct().toList();
         UrlAwareContentsVo contents = new UrlAwareContentsVo();
         Map<String, UrlAwareContentVo> urlToUrlAwareContents = new HashMap<>(distinctUrls.size());
         contents.setContents(urlToUrlAwareContents);
@@ -98,7 +97,7 @@ public class FieldServiceImpl implements IFieldService {
         for (String url : distinctUrls) {
             // Check the validity of the URL, if successful, convert the URL to a JAVA object
             Optional<URL> checkUrl = ClientUriUtil.checkUrl(url);
-            if (!checkUrl.isPresent()) {
+            if (checkUrl.isEmpty()) {
                 urlToUrlAwareContents.put(url, new UrlAwareContentVo(false));
                 continue;
             }
@@ -133,7 +132,7 @@ public class FieldServiceImpl implements IFieldService {
 
     private UrlAwareContentVo buildSingleUrlAwareContent(String url, Long userId) {
         Optional<URL> checkUrl = ClientUriUtil.checkUrl(url);
-        if (!checkUrl.isPresent()) {
+        if (checkUrl.isEmpty()) {
             // invalid url
             return new UrlAwareContentVo(false);
         }
@@ -177,7 +176,7 @@ public class FieldServiceImpl implements IFieldService {
     private UrlAwareContentVo getInternalSiteUrlContent(URL url, String siteUrlHost, Long userId) {
         UrlAwareContentVo vo = defaultIntranetSiteUrlContent(siteUrlHost);
         Optional<URI> turnIntoUri = ClientUriUtil.urlTurnIntoURI(url.toString());
-        if (!turnIntoUri.isPresent()) {
+        if (turnIntoUri.isEmpty()) {
             return urlAwareFailureWithFavicon(url);
         }
         URI uri = turnIntoUri.get();

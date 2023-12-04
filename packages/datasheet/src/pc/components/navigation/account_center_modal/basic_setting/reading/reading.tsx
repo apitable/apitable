@@ -21,11 +21,10 @@ import Image from 'next/image';
 import { FC } from 'react';
 import { Typography, useThemeColors } from '@apitable/components';
 import { Strings, t, ThemeName } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import InfoStateDark from 'static/icon/common/info_state_dark.png';
 import InfoStateLight from 'static/icon/common/info_state_light.png';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IReadingProps {
   [key: string]: any;

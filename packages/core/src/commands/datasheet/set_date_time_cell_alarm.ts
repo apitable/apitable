@@ -17,9 +17,13 @@
  */
 
 import { ExecuteResult, ICollaCommandDef } from 'command_manager';
-import { CollaCommandName } from 'commands';
-import { DatasheetActions } from 'model';
-import { IRecordAlarm, Selectors } from '../../exports/store';
+import { CollaCommandName } from 'commands/enum';
+import { DatasheetActions } from 'commands_actions/datasheet';
+import { IRecordAlarm } from '../../exports/store/interfaces';
+import {
+  getActiveDatasheetId,
+  getSnapshot,
+} from 'modules/database/store/selectors/resource/datasheet/base';
 import { ResourceType, WithOptional } from 'types';
 import { getNewId, IDPrefix } from 'utils';
 
@@ -42,8 +46,8 @@ export const setDateTimeCellAlarm: ICollaCommandDef<ISetDateTimeCellAlarmOptions
     const { state: state } = context;
     const { fieldId, recordId, alarm } = options;
     const newAlarmId = getNewId(IDPrefix.DateTimeAlarm);
-    const datasheetId = options.datasheetId || Selectors.getActiveDatasheetId(state)!;
-    const snapshot = Selectors.getSnapshot(state, datasheetId);
+    const datasheetId = options.datasheetId || getActiveDatasheetId(state)!;
+    const snapshot = getSnapshot(state, datasheetId);
     if (!snapshot) {
       return null;
     }

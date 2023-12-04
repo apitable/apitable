@@ -29,6 +29,7 @@ import com.apitable.space.service.ILabsFeatureService;
 import com.apitable.space.vo.FeatureVo;
 import com.apitable.space.vo.UserSpaceLabsFeatureVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -36,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

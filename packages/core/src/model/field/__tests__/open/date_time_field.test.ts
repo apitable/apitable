@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DateTimeField } from 'model';
+import { DateTimeField } from 'model/field/date_time_field';
 import { APIMetaFieldType, DateFormat, FieldType, IDateTimeField, TimeFormat } from 'types';
 import { IOpenField } from 'types/open/open_field_read_types';
 import { IUpdateOpenDateTimeFieldProperty } from 'types/open/open_field_write_types';
@@ -63,7 +63,7 @@ const propertyOptionalNotFill: IUpdateOpenDateTimeFieldProperty = {
 
 describe('Date field read property format check', () => {
   const valid = getOpenFieldProperty(dateTimeField);
-  it('correct property', function() {
+  it('correct property', function () {
     const [expectValue, receiveValue] = valid(openDateTimeField.property);
     expect(expectValue).toEqual(receiveValue);
   });

@@ -21,14 +21,12 @@ import { shallowEqual } from 'react-redux';
 import { IReduxState } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileBar } from 'pc/components/mobile_bar';
-// @ts-ignore
-import { ChatWelcome } from 'enterprise/chat_welcome/chat_welcome';
 import { CreateDatasheet } from 'pc/components/workspace/welcome/components/create_datasheet/create_datasheet';
 import { Guide } from 'pc/components/workspace/welcome/components/guide/guide';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
-
-import {useAppSelector} from "pc/store/react-redux";
-
+// @ts-ignore
+import { ChatWelcome } from 'enterprise/chat_welcome/chat_welcome';
 
 export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
   const { treeNodesMap, rootId } = useAppSelector(

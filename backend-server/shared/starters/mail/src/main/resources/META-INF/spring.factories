@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.apitable.starter.mail.autoconfigure.MailAutoConfiguration,\
-com.apitable.starter.mail.autoconfigure.CloudMailAutoConfiguration

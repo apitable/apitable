@@ -19,11 +19,9 @@
 import { useDispatch } from 'react-redux';
 import { IReduxState, StoreActions, Selectors, ConfigConstant, t, Strings, ResourceIdPrefix } from '@apitable/core';
 import { useRequest } from 'pc/hooks';
-
+import { useAppSelector } from 'pc/store/react-redux';
 import { getPropertyByTree } from 'pc/utils';
 import { useCatalogTreeRequest } from './use_catalogtree_request';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export enum NodeChangeInfoType {
   Create = 'nodeCreate',

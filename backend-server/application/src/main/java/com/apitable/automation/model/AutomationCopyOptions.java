@@ -35,4 +35,6 @@ public class AutomationCopyOptions {
     private boolean sameSpace;
 
     private String overriddenName;
+
+    private boolean removeButtonClickedInput;
 }

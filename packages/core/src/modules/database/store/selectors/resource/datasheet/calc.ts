@@ -16,29 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ViewPropertyFilter } from 'engine';
+import { getReaderRolePermission } from 'engine/get_reader_role_permission';
 
-import { Strings, t } from '../../../../../../exports/i18n';
+import { Strings, t } from 'exports/i18n';
 import isEqual from 'lodash/isEqual';
 import isNumber from 'lodash/isNumber';
 
-import {
-  IRange,
-  Range,
-} from 'model';
+import { IRange, Range } from 'model/view/range';
 import createCachedSelector from 're-reselect';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
-
-import {
-  DEFAULT_COLUMN_WIDTH,
-  DEFAULT_PERMISSION,
-  PREVIEW_DATASHEET_ID,
-  RowHeight,
-  RowHeightLevel,
-  ScreenWidth,
-  ViewType,
-} from '../../../../../shared/store/constants';
-
 import {
   AlarmUsersType,
   ICalendarViewColumn,
@@ -63,7 +49,17 @@ import {
   IViewColumn,
   IViewProperty,
   Role,
-} from '../../../../../../exports/store/interfaces';
+} from 'exports/store/interfaces';
+import {
+  DEFAULT_COLUMN_WIDTH,
+  DEFAULT_PERMISSION,
+  PREVIEW_DATASHEET_ID,
+  RowHeight,
+  RowHeightLevel,
+  ScreenWidth,
+  ViewType,
+} from 'modules/shared/store/constants';
+
 import { getMirror, getMirrorNetworking } from 'modules/database/store/selectors/resource/mirror';
 
 import {
@@ -550,7 +546,7 @@ export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId
     // TODO: mobile will support edit in the future
     const permission = datasheet
       ? getIntegratePermissionWithField(state, {
-        permission: ViewPropertyFilter.getReaderRolePermission(state, datasheet.id, nodePermission)!,
+        permission: getReaderRolePermission(state, datasheet.id, nodePermission)!,
         datasheetId,
         fieldPermissionMap,
         fieldId: fieldId,
@@ -572,7 +568,7 @@ export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId
   // share / templates page, return permission directly
   if (state.pageParams.shareId || state.pageParams.templateId || state.pageParams.embedId) {
     return getIntegratePermissionWithField(state, {
-      permission: ViewPropertyFilter.getReaderRolePermission(state, datasheet.id, nodePermission)!,
+      permission: getReaderRolePermission(state, datasheet.id, nodePermission)!,
       datasheetId,
       fieldPermissionMap,
       fieldId: fieldId,
@@ -595,7 +591,7 @@ export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId
   }
 
   return getIntegratePermissionWithField(state, {
-    permission: ViewPropertyFilter.getReaderRolePermission(state, datasheet.id, nodePermission)!,
+    permission: getReaderRolePermission(state, datasheet.id, nodePermission)!,
     datasheetId,
     fieldPermissionMap,
     fieldId: fieldId,

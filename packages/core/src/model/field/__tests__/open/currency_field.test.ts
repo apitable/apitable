@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CurrencyField } from 'model';
+import { CurrencyField } from 'model/field/currency_field';
 import { APIMetaFieldType, FieldType, ICurrencyField, SymbolAlign, TSymbolAlign } from 'types';
 import { IOpenField } from 'types/open/open_field_read_types';
 import { IUpdateOpenCurrencyFieldProperty } from 'types/open/open_field_write_types';
@@ -60,7 +60,7 @@ const propertyOptionalNotFill: IUpdateOpenCurrencyFieldProperty = {
 
 describe('The currency field reads property format check', () => {
   const valid = getOpenFieldProperty(currencyField);
-  it('correct property', function() {
+  it('correct property', function () {
     const [expectValue, receiveValue] = valid(openCurrencyField.property);
     expect(receiveValue).toEqual(expectValue);
   });

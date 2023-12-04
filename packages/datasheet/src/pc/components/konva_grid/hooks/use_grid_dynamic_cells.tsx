@@ -198,9 +198,11 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
             }
             const editable = getCellEditable(activeField, _editable);
             const fontWeight = isFirstColumn ? 'bold' : 'normal';
+            const permissions = Selectors.getDatasheet(state)?.permissions || {};
             const renderProps = {
               x: x + offset,
               y,
+              permissions,
               columnWidth: width,
               rowHeight,
               recordId,

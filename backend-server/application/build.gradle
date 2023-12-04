@@ -40,14 +40,16 @@ dependencies {
     implementation libs.commons.pool2
     implementation libs.jedis
     implementation libs.prometheus.pushgateway
-    implementation libs.servlet
     implementation libs.bundles.okhttp3
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
     // other spring boot starter dependencies
-    implementation libs.mybatis.plus
+    implementation(libs.mybatis.plus) {
+        exclude(group: 'org.mybatis', module: 'mybatis-spring')
+    }
+    implementation libs.mybatis.spring
     implementation libs.bundles.sentry
     implementation libs.bundles.apidoc
-    implementation libs.bundles.grpc
 
     // protobuf dependencies
     implementation(platform(libs.protobuf.dependencies))
@@ -56,6 +58,9 @@ dependencies {
     // io-grpc dependencies
     implementation(platform(libs.iogrpc.dependencies))
     implementation libs.bundles.iogrpc
+    implementation(libs.grpc) {
+        exclude(group: 'io.grpc', module: 'grpc-netty-shaded')
+    }
 
     // utilities dependencies
     implementation libs.p6spy
@@ -66,7 +71,9 @@ dependencies {
     implementation libs.jsoup
     implementation libs.bundles.easyexcel
     implementation libs.bundles.hutool
-    implementation libs.bundles.pdfbox
+    implementation(libs.bundles.pdfbox) {
+        exclude(group: 'commons-logging', module: 'commons-logging')
+    }
     implementation libs.bundles.shedlock
 
     // for enterprise module
@@ -75,13 +82,13 @@ dependencies {
     implementation libs.auth0
     implementation libs.pingpp
     implementation libs.stripe
-    implementation libs.aliyun.core
+    implementation(libs.aliyun.core) {
+        exclude(group: 'commons-logging', module: 'commons-logging')
+    }
     implementation libs.aliyun.afs
     implementation libs.nimbus
     implementation libs.jose4j
     implementation files('lib/aegis-java-sdk-2.3.3.jar')
-    implementation libs.wx.miniapp
-    implementation libs.wx.mp
     implementation libs.wx.open
     implementation libs.sensors
     implementation libs.posthog
@@ -92,11 +99,11 @@ dependencies {
     testImplementation libs.spring.boot.test
     testImplementation libs.mybatis.plus.test
     testImplementation libs.visible.assertions
-    testImplementation libs.mockito.inline
     testImplementation libs.okhttp3.mockwebserver
     testImplementation libs.reactor
     testImplementation libs.assertj
     testImplementation libs.awaitility
+    testImplementation libs.iogrpc.testing
 }
 
 jar {
@@ -129,12 +136,13 @@ bootJar {
 
 // SpringBoot Plugin On Gradle
 springBoot {
-    mainClass.set('com.apitable.Application')
+    mainClass = 'com.apitable.Application'
 }
 
 test {
     // Stops test execution after the first failed test.
     failFast = true
+    jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED'
 }
 
 def protobufVersion = libs.versions.protobuf.asProvider().get()

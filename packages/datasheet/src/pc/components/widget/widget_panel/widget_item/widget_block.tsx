@@ -32,6 +32,7 @@ import { ConnectStatus, IExpandRecordProps, initRootWidgetState, mainMessage, Me
 import { IRecordPickerProps } from 'pc/components/record_picker';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getDependenceByDstIds } from 'pc/utils/dependence_dst';
 // import { getDependenceByDstIds } from 'pc/utils/dependence_dst';
 import { getEnvVariables } from 'pc/utils/env';
@@ -39,13 +40,11 @@ import { useManageWidgetRenderTask, useWidgetCanRender } from '../../context';
 import { widgetRenderTask } from '../../context/widget_render_task';
 import { useCloudStorage } from '../../hooks/use_cloud_storage';
 import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
-import styles from './style.module.less';
 import { patchDatasheet } from './utils';
 import { WidgetLoading } from './widget_loading';
 // @ts-ignore
 import { isSocialWecom } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 (() => {
   if (!process.env.SSR) {

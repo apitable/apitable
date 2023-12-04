@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,26 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { DynamicModule, Module } from '@nestjs/common';
-import path from 'path';
-import * as fs from 'fs';
+package com.apitable.automation.model;
 
-@Module({
-})
-export class AiDynamicModule {
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 
-  static forRoot(): DynamicModule {
-    const aiEnterpriseModulePath = path.join(__dirname, '../enterprise/ai');
-    const isEnterpriseLevel: boolean = fs.existsSync(aiEnterpriseModulePath);
-    if (isEnterpriseLevel) {
-      const { AiEnterpriseModule } = require(`${aiEnterpriseModulePath}/ai.enterprise.module`);
-      return {
-        module: AiEnterpriseModule,
-      };
-    }
-    return { 
-      module: AiDynamicModule,
-    }; 
-  }
+/**
+ * TriggerTypeEditRO.
+ */
+@Data
+@Schema(description = "TriggerTypeEditRO")
+public class TriggerTypeEditRO {
+
+    @Schema(description = "name")
+    private String name;
+
+    @Schema(description = "description")
+    private String description;
+
+    @Schema(description = "input JSON format")
+    private String inputJsonSchema;
+
+    @Schema(description = "output JSON format")
+    private String outputJsonSchema;
+
+    @Schema(description = "trigger prototype endpoint")
+    private String endpoint;
+
+    @Schema(description = "i18n package")
+    private String i18n;
 
 }

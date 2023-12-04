@@ -18,7 +18,10 @@
 
 import { EventAtomTypeEnums, EventRealTypeEnums, testPath, transformOpFields } from 'event_manager';
 import { groupBy } from 'lodash';
-import { IReduxState, Selectors } from '../../../exports/store';
+import { IReduxState } from '../../../exports/store/interfaces';
+import {
+  getDatasheet,
+} from 'modules/database/store/selectors/resource/datasheet/base';
 import { ResourceType } from 'types';
 import { IAtomEventType, ICombEventType } from '../interface';
 import { EventSourceTypeEnums, OPEventNameEnums } from './../../enum';
@@ -32,27 +35,27 @@ interface IRecordMetaUpdated {
   action: any;
 }
 export class OPEventRecordMetaUpdated extends IAtomEventType<IRecordMetaUpdated> {
-    eventName = OPEventNameEnums.RecordMetaUpdated;
-    realType = EventRealTypeEnums.REAL;
-    scope = ResourceType.Datasheet;
+  eventName = OPEventNameEnums.RecordMetaUpdated;
+  realType = EventRealTypeEnums.REAL;
+  scope = ResourceType.Datasheet;
 
-    test({ action, resourceId }: IOPBaseContext) {
-      let pass,
-          recordId;
-      if (action.p.length === 3) {
-        ({ pass, recordId } = testPath(action.p, ['recordMap', ':recordId', 'recordMeta']));
-      } else {
-        ({ pass, recordId } = testPath(action.p, ['recordMap', ':recordId', 'recordMeta', 'fieldUpdatedMap']));
-      }
-      return {
-        pass,
-        context: {
-          datasheetId: resourceId,
-          recordId,
-          action,
-        }
-      };
+  test({ action, resourceId }: IOPBaseContext) {
+    let pass,
+        recordId;
+    if (action.p.length === 3) {
+      ({ pass, recordId } = testPath(action.p, ['recordMap', ':recordId', 'recordMeta']));
+    } else {
+      ({ pass, recordId } = testPath(action.p, ['recordMap', ':recordId', 'recordMeta', 'fieldUpdatedMap']));
     }
+    return {
+      pass,
+      context: {
+        datasheetId: resourceId,
+        recordId,
+        action,
+      }
+    };
+  }
 }
 export class OPEventRecordCommentUpdated implements IAtomEventType<any> {
   eventName = OPEventNameEnums.RecordCommentUpdated;
@@ -121,7 +124,7 @@ export class OPEventRecordUpdated extends ICombEventType {
     return events.map(event => {
       if (event.eventName === OPEventNameEnums.RecordUpdated) {
         const { datasheetId, recordId } = event.context;
-        event.context.datasheetName = Selectors.getDatasheet(state, datasheetId)?.name;
+        event.context.datasheetName = getDatasheet(state, datasheetId)?.name;
         event.context.state = state;
         const { fields, eventFields } = transformOpFields({
           recordData: event.context.fields,

@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
@@ -27,7 +27,7 @@
     "build:dst": "nx run --verbose @apitable/datasheet:build",
     "build:air-agent:pre": "nx run-many -t build -p @apitable/i18n-lang @apitable/icons @apitable/core @apitable/components @apitable/ai --parallel=5",
     "build:air-agent": "nx run --verbose @apitable/air-agent:build",
-    "build:sr": "nx run-many -t build -p @apitable/i18n-lang @apitable/core @apitable/room-server --parallel=3",
+    "build:sr": "nx run-many -t build -p @apitable/i18n-lang @apitable/room-server --parallel=2 && nx run-many -t build-cjs -p @apitable/core",
     "build:components:doc": "nx build-storybook @apitable/components",
     "build:dst:private": "REACT_APP_DEPLOYMENT_MODELS=PRIVATE PUBLIC_URL=/build nx run @apitable/datasheet:build && rm packages/datasheet/build/static/**/*.map",
     "build:i18n": "pnpm --filter @apitable/i18n-lang run build",
@@ -105,7 +105,6 @@
     "ts-pnp": "1.2.0"
   },
   "resolutions": {
-    "webpack": "4.44.2",
     "node-gyp": "9.3.1",
     "@nestjs/microservices@^8.1.1": "8.1.2"
   },

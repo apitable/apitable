@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import * as React from 'react';
 import { forwardRef, memo, useImperativeHandle } from 'react';
+import { Box } from '@apitable/components';
 import {
   ButtonActionType,
   evaluate,
@@ -11,7 +12,6 @@ import {
   Strings,
   t
   , IRecord } from '@apitable/core';
-import { getSnapshot } from '@apitable/core/dist/modules/database/store/selectors/resource';
 import { reqDatasheetButtonTrigger } from 'pc/components/robot/api';
 import { IBaseEditorProps, IEditor } from '../interface';
 import { ButtonFieldItem } from './buton_item';
@@ -28,26 +28,37 @@ export interface IButtonEditorProps extends IBaseEditorProps {
   onSave?: (val: any) => void;
 }
 
-let isRunning = false;
-
 export interface IRunRespStatus {
  success:boolean, message: string
 }
 
+const timeout = (prom: any, time: number, exception: any) => {
+  let timer;
+  return Promise.race([
+    prom,
+    new Promise((_r, rej) => timer = setTimeout(rej, time, exception))
+  ]).finally(() => clearTimeout(timer));
+};
+
 export const runAutomationButton = async (datasheetId: string, record: any, state: IReduxState, recordId: string, fieldId: string, field: IButtonField,
-  callback: () => void
+  callback: (success?: boolean) => void
 ) : Promise<any|undefined>=> {
   if(field.property.action.type === ButtonActionType.OpenLink) {
 
-    if(field.property.action.openLink?.type === OpenLinkType.Url ) {
-      window.open(field.property.action.openLink?.expression, '_blank');
-    }else {
-      const expression = field.property.action.openLink?.expression ?? '';
+    try {
+      if(field.property.action.openLink?.type === OpenLinkType.Url ) {
+        window.open(field.property.action.openLink?.expression, '_blank');
+      }else {
+        const expression = field.property.action.openLink?.expression ?? '';
 
-      const url = evaluate(expression, { field, record, state }, false);
+        const url = evaluate(expression, { field, record, state }, false);
 
-      window.open(String(url), '_blank');
+        window.open(String(url), '_blank');
 
+      }
+    } catch (e){
+      console.log('error', e);
+      callback();
     }
 
     callback();
@@ -55,33 +66,28 @@ export const runAutomationButton = async (datasheetId: string, record: any, stat
   }
 
   // TODO width poll call function
-  if(field.property.action.type === ButtonActionType.TriggerAutomation) {
-    if(isRunning) {
-      callback();
-      message.warn(t(Strings.refresh_and_close_page_when_automation_queue));
-      return;
-    }
 
-    try {
-      isRunning= true;
-      const respTrigger = await reqDatasheetButtonTrigger({
-        dstId: datasheetId,
-        recordId,
-        fieldId,
-      });
-      isRunning= false;
-      const respData = respTrigger?.data as IRunRespStatus;
-      // TODO status run status
-      if(!respData?.success) {
-        message.error(respData?.message);
-      }
-      callback();
-      return respTrigger;
-    } catch (e) {
-      isRunning= false;
-      callback();
-      return undefined;
+  try {
+    const respTrigger = await timeout(reqDatasheetButtonTrigger({
+      dstId: datasheetId,
+      recordId,
+      fieldId,
+    }), 60 * 1000, { data : { success: false, message: t(Strings.task_timeout) } });
+    const respData = respTrigger?.data as IRunRespStatus;
+    // TODO status run status
+    if(!respData?.success) {
+      message.error(
+        t(Strings.button_execute_error, {
+          ERROR_MESSAGE: respData?.message
+        })
+      );
     }
+    const success = respData?.success ?? false;
+    callback(success);
+    return respTrigger;
+  } catch (e) {
+    callback(false);
+    return undefined;
   }
 };
 
@@ -117,13 +123,13 @@ const ButtonEditorBase: React.ForwardRefRenderFunction<IEditor, IButtonEditorPro
   const onStartEdit = () => {};
 
   return (
-    <>
+    <Box width={props.width} display={'flex'} justifyContent={'center'} height={'26px'} paddingTop={'4px'}>
       {
         recordId && record && (
-          <ButtonFieldItem record={record} recordId={recordId} field={field} />
+          <ButtonFieldItem record={record} recordId={recordId} field={field} maxWidth={'calc(100% - 40px)'}/>
         )
       }
-    </>
+    </Box>
   );
 };
 

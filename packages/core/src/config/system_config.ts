@@ -17,8 +17,8 @@
  */
 
 import { APITipConfigInterface, Tips } from 'config/api_tip_config.interface';
-import apiTipConfigJson from './api_tip_config.source.json';
-import systemConfigJson from './system_config.source.json';
+import * as apiTipConfigJson from './api_tip_config.source.json';
+import * as systemConfigJson from './system_config.source.json';
 import { SystemConfigInterface, Notifications, Templates, Types } from './system_config.interface';
 
 /**

@@ -36,12 +36,13 @@ import com.apitable.workspace.enums.DataSheetException;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -235,7 +236,7 @@ public class SpaceAssetServiceImpl extends ServiceImpl<SpaceAssetMapper, SpaceAs
      */
     private Map<String, AssetCiteDto> calTokenCount(List<SpaceAssetOpRo.OpAssetRo> addTokens,
                                                     List<SpaceAssetOpRo.OpAssetRo> removeTokens) {
-        Map<String, AssetCiteDto> tokenCountMap = CollUtil.newHashMap();
+        Map<String, AssetCiteDto> tokenCountMap = new HashMap<>();
         addTokens.forEach(
             item -> tokenCountMap.put(item.getToken(), AssetCiteDto.builder().name(item.getName())
                 .cite(tokenCountMap.getOrDefault(item.getToken(), new AssetCiteDto()).getCite() + 1)

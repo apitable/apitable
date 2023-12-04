@@ -22,12 +22,12 @@ import cn.hutool.core.util.StrUtil;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.workspace.enums.NodeType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.List;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -75,20 +75,13 @@ public class NodeOpRo {
             return nodeName;
         }
         NodeType nodeType = NodeType.toEnum(type);
-        switch (nodeType) {
-            case FOLDER:
-            case DATASHEET:
-            case FORM: // The name of the magic form is transmitted from the front end
-            case DASHBOARD:
-            case MIRROR:
-            case AI_CHAT_BOT:
-            case AUTOMATION:
+        return switch (nodeType) { // The name of the magic form is transmitted from the front end
+            case FOLDER, DATASHEET, FORM, DASHBOARD, MIRROR, AI_CHAT_BOT, AUTOMATION ->
                 // The image name is transmitted from the front end
                 // default_create_'key' Configure in the strings table
-                return I18nStringsUtil.t("default_create_" + nodeType.name().toLowerCase());
-            default:
-                return I18nStringsUtil.t("default_create_file");
-        }
+                I18nStringsUtil.t("default_create_" + nodeType.name().toLowerCase());
+            default -> I18nStringsUtil.t("default_create_file");
+        };
     }
 
     /**

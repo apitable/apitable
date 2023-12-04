@@ -107,6 +107,10 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -115,10 +119,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.validation.annotation.Validated;
@@ -489,7 +489,8 @@ public class NodeController {
             if (nodeOptional.isPresent()) {
                 return ResponseData.status(false, DUPLICATE_NODE_NAME.getCode(),
                         DUPLICATE_NODE_NAME.getMessage())
-                    .data(iNodeService.getNodeInfoByNodeId(spaceId, nodeOptional.get().getNodeId(), role));
+                    .data(iNodeService.getNodeInfoByNodeId(spaceId, nodeOptional.get().getNodeId(),
+                        role));
             }
         }
         String nodeId = iNodeService.createNode(userId, spaceId, nodeOpRo);
@@ -760,6 +761,8 @@ public class NodeController {
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     @PostResource(path = {"/import", "/{parentId}/importExcel"}, requiredPermission = false)
     @Operation(summary = "Import excel", description = "all parameters must be")
+    @Parameter(name = "parentId", description = "Parent Node ID", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fodNwmWE5QWPs")
     public ResponseData<NodeInfoVo> importExcel(@Valid ImportExcelOpRo data) throws IOException {
         ExceptionUtil.isTrue(data.getFile().getSize() <= limitProperties.getMaxFileSize(),
             ActionException.FILE_EXCEED_LIMIT);

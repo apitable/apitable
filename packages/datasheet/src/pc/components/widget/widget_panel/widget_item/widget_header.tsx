@@ -10,15 +10,14 @@ import { CloseOutlined, DragOutlined, MoreOutlined, ReloadOutlined, SettingOutli
 import { Tooltip } from 'pc/components/common';
 import { useCheckInput } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { closeWidgetRoute, expandWidgetRoute } from '../../expand_widget';
 import { useCloudStorage } from '../../hooks/use_cloud_storage';
 import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
 import { WIDGET_MENU } from '../widget_list';
 import { IWidgetPropsBase } from './interface';
-import styles from './style.module.less';
 import { IWidgetBlockRefs } from './widget_block';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 interface IWidgetHeaderProps extends IWidgetPropsBase {
   widgetId: string;

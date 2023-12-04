@@ -17,7 +17,10 @@
  */
 
 import { AnyAction, Store } from 'redux';
-import { IReduxState, Selectors } from '../exports/store';
+import { IReduxState } from '../exports/store/interfaces';
+import {
+  getField,
+} from 'modules/database/store/selectors/resource/datasheet/base';
 import { IJOTAction } from 'engine';
 import { FieldType, IField } from 'types';
 
@@ -36,7 +39,7 @@ export class LinkIntegrityChecker {
       }
 
       const data = (action['oi'] || action['od']) as IField;
-      const currentField = Selectors.getField(state, data.id, datasheetId);
+      const currentField = getField(state, data.id, datasheetId);
 
       if (currentField.type !== FieldType.Link) {
         continue;

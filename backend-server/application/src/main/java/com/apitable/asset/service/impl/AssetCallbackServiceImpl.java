@@ -50,6 +50,7 @@ import com.apitable.space.service.ISpaceAssetService;
 import com.apitable.starter.oss.core.OssClientTemplate;
 import com.apitable.starter.oss.core.OssStatObject;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,7 +61,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.Lock;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -177,7 +177,7 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
             OssStatObject statObject =
                 ossTemplate.getStatObject(asset.getBucketName(),
                     asset.getFileUrl());
-            int fileSize = new Long(statObject.getFileSize()).intValue();
+            int fileSize = Long.valueOf(statObject.getFileSize()).intValue();
             AssetEntity updatedAssetEntity = AssetEntity.builder()
                 .id(asset.getId())
                 .fileSize(fileSize)

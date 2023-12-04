@@ -30,12 +30,12 @@ import com.apitable.user.enums.UserOperationType;
 import com.apitable.user.mapper.UserHistoryMapper;
 import com.apitable.user.service.IUserHistoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import org.apache.commons.compress.utils.Lists;
 import org.springframework.stereotype.Service;
 

@@ -7,6 +7,7 @@ export type ButtonClickedEvent = Omit<IEventInstance<IOPEvent>, 'context'> & {
 };
 
 export type ButtonClickedEventContext = {
+  triggerId: string,
   datasheetId: string,
   recordId: string,
   datasheetName: string,

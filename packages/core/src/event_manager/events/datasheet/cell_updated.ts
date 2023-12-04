@@ -18,8 +18,14 @@
 
 import { getComputeRefManager } from 'compute_manager';
 import { testPath } from 'event_manager/helper';
-import { Field } from 'model';
-import { IReduxState, Selectors } from '../../../exports/store';
+import { Field } from 'model/field';
+import { IReduxState } from '../../../exports/store/interfaces';
+import {
+  getSnapshot,
+  getField,
+} from 'modules/database/store/selectors/resource/datasheet/base';
+import { getFieldMap } from 'modules/database/store/selectors/resource/datasheet/calc';
+import { getCellValue } from 'modules/database/store/selectors/resource/datasheet/cell_calc';
 import { FieldType, ILinkField } from 'types';
 import { ResourceType } from 'types/resource_types';
 import { IAtomEventType, ICellUpdatedContext } from '../interface';
@@ -75,7 +81,7 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
     const addComputeEventContext = (context: string, state: IReduxState) => {
       const [datasheetId, recordId, fieldId] = context.split('-') as [string, string, string];
       // 1. A cell is updated, this cell corresponds to the field
-      const updateCellField = Selectors.getField(state, fieldId, datasheetId);
+      const updateCellField = getField(state, fieldId, datasheetId);
       if (!updateCellField) {
         return;
       }
@@ -86,15 +92,15 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
       }
       fieldRefs.forEach(refId => {
         const [_datasheetId, _fieldId] = refId.split('-') as [string, string];
-        const fieldMap = Selectors.getFieldMap(state, _datasheetId)!;
+        const fieldMap = getFieldMap(state, _datasheetId)!;
         // 3. Depends on one of the fields of this field
         const field = fieldMap[_fieldId];
-        // FIXME: There is a fieldId that does not exist in fieldMap, 
+        // FIXME: There is a fieldId that does not exist in fieldMap,
         // the field has been deleted, and the reference relationship of refMap has not been updated in time.
         if (!field) return;
         const isEventInSameDatasheet = _datasheetId === datasheetId;
-        const snapshot = Selectors.getSnapshot(state, datasheetId)!;
-        // 4. The table that triggers the event and the table that depends on this event are different tables, 
+        const snapshot = getSnapshot(state, datasheetId)!;
+        // 4. The table that triggers the event and the table that depends on this event are different tables,
         // which can generate cross-table dependencies, which must be the lookup or link fields.
         switch (field.type) {
           case FieldType.LookUp:
@@ -104,17 +110,17 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
               return;
             }
             let triggerRecIds: string[] = [];
-            // 2. The same table triggers a lookup update, which must be associated with the table. 
+            // 2. The same table triggers a lookup update, which must be associated with the table.
             // The sibling field of the associated link field is itself
             if (isEventInSameDatasheet) {
               // Cause the lookup field to change, either the link field or the entity field being looked.
               if (updateCellField.id === relatedLinkField.id) {
                 enqueueChecker(`${_datasheetId}-${recordId}-${_fieldId}`);
               } else {
-                // Since the entity field of the table association look changes. 
+                // Since the entity field of the table association look changes.
                 // The lookup fields of all records that reference this record are updated.
                 triggerRecIds = Object.keys(snapshot.recordMap).reduce((prev, _recordId) => {
-                  const linkCellValue = Selectors.getCellValue(state, snapshot, _recordId, relatedLinkField.id);
+                  const linkCellValue = getCellValue(state, snapshot, _recordId, relatedLinkField.id);
                   if (linkCellValue && (linkCellValue as string[]).includes(recordId)) {
                     prev.push(_recordId);
                   }
@@ -124,9 +130,9 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
             } else {
               const brotherFieldId = (relatedLinkField as ILinkField).property?.brotherFieldId!;
               // 3. The recordIds affected by this cell update
-              triggerRecIds = Selectors.getCellValue(state, snapshot, recordId, brotherFieldId);
+              triggerRecIds = getCellValue(state, snapshot, recordId, brotherFieldId);
             }
-            // TODO: The value of the link field cell must be null or an array. 
+            // TODO: The value of the link field cell must be null or an array.
             // Due to the existence of dirty data, we first judge whether it is an array type before processing it. Delete data after cleaning?
             if (triggerRecIds && Array.isArray(triggerRecIds)) {
               (triggerRecIds as string[]).forEach(recId => {
@@ -138,13 +144,13 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
             enqueueChecker(`${_datasheetId}-${recordId}-${_fieldId}`);
             break;
           case FieldType.Link:
-            // The LINK field is not a strictly calculated field, 
+            // The LINK field is not a strictly calculated field,
             // and the title of the link field needs to be updated here. Temporarily treated as a calculated field
             // The link field in the update table this time
             const thisLinkFieldId = field.property.brotherFieldId;
             if (!thisLinkFieldId) return;
             // Which records of the foreign key table depend on this record
-            const linkRecIds = Selectors.getCellValue(state, snapshot, recordId, thisLinkFieldId);
+            const linkRecIds = getCellValue(state, snapshot, recordId, thisLinkFieldId);
             // FIXME: There may be a non-empty cv that is not an array here. Causes the following code to have problems, first compatible.
             if (linkRecIds && Array.isArray(linkRecIds)) {
               linkRecIds.forEach(recId => {
@@ -153,7 +159,7 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
             }
             break;
           default:
-            // TODO: Include creation time, creator, update time, update person, 
+            // TODO: Include creation time, creator, update time, update person,
             // and auto-increment numbers into event management. 10.13 Modifications after launch
             console.warn('! ' + `Unknown computed field type: ${field.type}`);
           // throw new Error(`unsupported field type: ${field.type}`);
@@ -173,7 +179,7 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
       computeEventContextQueue.shift();
       addComputeEventContext(context, state);
     }
-    
+
     // After set deduplication. Inside the computeRef is the update of the calculation cell that will be triggered by the update of the entity cell.
     /**
      * !!! The collection continues to push new elements into the collection during the loop. New elements also appear in this cycle.
@@ -185,7 +191,7 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
      *   }
      * })
      * output: 1 2 3 4
-     * Here, when the signal is calculated in a loop, the event will be triggered recursively, 
+     * Here, when the signal is calculated in a loop, the event will be triggered recursively,
      * and the event will push the signal into the collection. until the signal is empty.
      * In theory, in the absence of circular references, there will be no infinite loop.
      */

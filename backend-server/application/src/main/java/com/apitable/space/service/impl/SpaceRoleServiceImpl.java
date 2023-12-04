@@ -26,7 +26,6 @@ import static com.apitable.workspace.enums.PermissionException.MEMBER_NOT_IN_SPA
 import static com.apitable.workspace.enums.PermissionException.OP_MEMBER_IS_SUB_ADMIN;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Editor;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
@@ -65,14 +64,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -143,12 +143,12 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     @Override
     public PageInfo<SpaceRoleVo> roleList(String spaceId, IPage<SpaceRoleVo> page) {
         IPage<SpaceRoleVo> pageResult = baseMapper.selectSpaceRolePage(page, spaceId);
-        CollUtil.filter(pageResult.getRecords(), (Editor<SpaceRoleVo>) spaceRoleVo -> {
+        CollUtil.edit(pageResult.getRecords(), spaceRoleVo -> {
             List<String> resourceGroupCodes =
                 StrUtil.split(spaceRoleVo.getTempResourceGroupCodes(), ',');
             List<SpaceMenuResourceGroupDto> menuResourceGroupDtos =
                 spaceResourceFactory.getMenuResourceGroup();
-            Map<String, List<String>> groups = CollUtil.newHashMap();
+            Map<String, List<String>> groups = new HashMap<>();
             for (SpaceMenuResourceGroupDto menuResourceGroupDto : menuResourceGroupDtos) {
                 for (SpaceResourceGroupDto groupResource : menuResourceGroupDto.getGroupResources()) {
                     if (CollUtil.contains(resourceGroupCodes, groupResource.getGroupCode())) {
@@ -348,8 +348,8 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
             if (roleCodes.size() == existRoleCodes.size()) {
                 return;
             }
-            List<String> delRoleCodes = existRoleCodes.size() == 0 ? roleCodes :
-                CollUtil.subtractToList(roleCodes, existRoleCodes);
+            List<String> delRoleCodes = existRoleCodes.isEmpty()
+                ? roleCodes : CollUtil.subtractToList(roleCodes, existRoleCodes);
             if (CollUtil.isNotEmpty(delRoleCodes)) {
                 baseMapper.batchDeleteByRoleCode(delRoleCodes);
                 spaceRoleResourceRelMapper.batchDeleteByRoleCodes(delRoleCodes);

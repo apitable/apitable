@@ -10,7 +10,7 @@ export const FORM_FIELD_TYPE = {
   number: [FieldType.Rating, FieldType.Percent, FieldType.Currency, FieldType.Number, FieldType.Phone],
   bool: [FieldType.Checkbox],
   datetime: [FieldType.DateTime],
-  filter: [FieldType.Attachment, FieldType.Cascader],
+  filter: [FieldType.Attachment, FieldType.Cascader, FieldType.WorkDoc],
 };
 
 export const string2Query = () => {

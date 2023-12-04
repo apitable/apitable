@@ -18,7 +18,7 @@
 
 package com.apitable.shared.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * <p>

@@ -116,7 +116,7 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
         });
       }}>
 
-      <NewItem disabled={disabled} >
+      <NewItem disabled={disabled} itemId={'CONST_ROBOT_ACTION_CREATE'}>
         {t(Strings.robot_new_action)}
       </NewItem>
     </SearchSelect>);

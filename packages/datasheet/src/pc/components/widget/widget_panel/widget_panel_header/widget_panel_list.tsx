@@ -30,12 +30,11 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { OperateItem } from 'pc/components/tool_bar/view_switcher/view_item/operate_item';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from '../../../../utils/dom';
 import { useVerifyOperateItemTitle } from '../../../tool_bar/view_switcher/view_switcher';
-import styles from './style.module.less';
 import { WrapperTooltip } from './wrapper_tooltip';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export const WidgetPanelList: FC<React.PropsWithChildren<{ onClickItem?: (panelIndex: number) => void }>> = ({ onClickItem }) => {
   const { screenIsAtMost } = useResponsive();
