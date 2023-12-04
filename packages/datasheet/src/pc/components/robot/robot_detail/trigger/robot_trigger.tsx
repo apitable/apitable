@@ -745,7 +745,6 @@ export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTri
   const { setSideBarVisible } = useSideBarVisible();
   const setAutomationPanel = useSetAtom(automationPanelAtom);
   const buttonFieldTrigger =triggerTypes.find(item => item.endpoint === 'button_field' || item.endpoint === 'button_clicked');
-  const [checked, setChecked] =useState(false);
   let list = triggerList;
 
   const [atomValue, setAutomationSource]= useAtom(automationSourceAtom);
@@ -761,9 +760,6 @@ export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTri
   });
 
   useEffect(() => {
-    if(checked) {
-      return;
-    }
     const item = list.find(trigger => trigger.triggerTypeId === buttonFieldTrigger?.triggerTypeId);
     if(item == null) {
       return;
@@ -780,7 +776,6 @@ export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTri
     }
     if(checkGuideRef.current) {
       setSideBarVisible(true);
-      setChecked(true);
       setTimeout(() => {
         setItem(item.triggerId);
         const newPanel: IAutomationPanel = {
@@ -791,11 +786,11 @@ export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTri
         };
         setAutomationPanel(newPanel);
         Player.doTrigger(Events.guide_use_button_column_first_time);
-      }, 200);
+      }, 2000);
     }
     checkGuideRef.current = false;
     setAutomationSource(undefined);
-  }, [atomValue, buttonFieldTrigger?.triggerTypeId, checked, editType, list, permissions.editable, robot?.scenario, setAutomationPanel, setAutomationSource, setItem, setSideBarVisible]);
+  }, [atomValue, buttonFieldTrigger?.triggerTypeId, editType, list, permissions.editable, robot?.scenario, setAutomationPanel, setAutomationSource, setItem, setSideBarVisible]);
 
   if (!triggerTypes) {
     return null;
