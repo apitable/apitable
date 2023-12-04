@@ -15,12 +15,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 import classNames from 'classnames';
 import { get } from 'lodash';
 import * as React from 'react';
-import {
-  ICellValue, Strings, t,
-} from '@apitable/core';
+import { ICellValue, Strings, t } from '@apitable/core';
 import { FileOutlined } from '@apitable/icons';
 import styles from '../../../expand_record/expand_work_doc/styles.module.less';
 import { ICellComponentProps } from '../cell_value/interface';
