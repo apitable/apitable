@@ -1,5 +1,5 @@
 [versions]
-spring-boot = "2.7.18"
+spring-boot = "3.2.0"
 aws = "1.12.595"
 p6spy = "3.9.1"
 hutool = "5.8.23"
@@ -18,7 +18,7 @@ huweicloud-obs = "3.22.12"
 qcloud-sms = "1.0.6"
 qcloud-ses = "3.1.444"
 yunpian = "1.2.7"
-ibeetl = "3.7.0.RELEASE"
+ibeetl = "3.15.10.RELEASE"
 poi = "4.1.2"
 xerces-impl = "2.12.2"
 easyexcel = "3.3.2"
@@ -31,7 +31,7 @@ pdfbox = "2.0.24"
 semver = "0.9.0"
 auth0 = "1.9.2"
 stripe = "22.22.0"
-shedlock = "4.44.0"
+shedlock = "5.10.0"
 nimbus = "9.22"
 jose4j = "0.9.3"
 sentry = "5.7.4"
@@ -39,11 +39,11 @@ minio = "8.2.2"
 social = "1.0.4"
 imageio = "1.4.0"
 imageio-jbig2 = "3.0.3"
-grpc = "2.13.1.RELEASE"
-protobuf = "3.21.5"
-iogrpc = "1.49.0"
+grpc = "2.15.0.RELEASE"
+protobuf = "3.25.0"
+iogrpc = "1.59.1"
 # plugin version
-spring-dependency-management-plugin = "1.0.15.RELEASE"
+spring-dependency-management-plugin = "1.1.4"
 protobuf-plugin = "0.9.4"
 checkstyle = "10.12.5"
 
@@ -104,6 +104,7 @@ mybatis-plus = { module = "com.baomidou:mybatis-plus-boot-starter", version.ref 
 mybatis-plus-test = { module = "com.baomidou:mybatis-plus-boot-starter-test", version.ref = "mybatis-plus" }
 mybatis-plus-annotation = { module = "com.baomidou:mybatis-plus-annotation", version.ref = "mybatis-plus" }
 mybatis-plus-extension = { module = "com.baomidou:mybatis-plus-extension", version.ref = "mybatis-plus" }
+mybatis-spring = { module = "org.mybatis:mybatis-spring", version = "3.0.3" }
 
 # plateform integration dependencies
 aliyun-core = { module = "com.aliyun:aliyun-java-sdk-core", version.ref = "aliyun-core" }
@@ -140,7 +141,7 @@ mysql = { module = "com.mysql:mysql-connector-j" }
 lombok = { module = "org.projectlombok:lombok" }
 jackson = { module = "com.fasterxml.jackson.core:jackson-databind" }
 gson = { module = "com.google.code.gson:gson" }
-servlet = { module = "javax.servlet:javax.servlet-api" }
+servlet = { module = "jakarta.servlet:jakarta.servlet-api" }
 jedis = { module = "redis.clients:jedis" }
 okhttp3 = { module = "com.squareup.okhttp3:okhttp" }
 okhttp3-logging = { module = "com.squareup.okhttp3:logging-interceptor" }
@@ -155,14 +156,14 @@ iogrpc-dependencies = { module = "io.grpc:grpc-bom", version.ref = "iogrpc" }
 iogrpc-netty-shaded = { module = "io.grpc:grpc-netty-shaded" }
 iogrpc-protobuf = { module = "io.grpc:grpc-protobuf" }
 iogrpc-stub = { module = "io.grpc:grpc-stub" }
+iogrpc-testing = { module = "io.grpc:grpc-testing" }
 
 # protobuf bundle dependencies
 protobuf-dependencies = { module = "com.google.protobuf:protobuf-bom", version.ref = "protobuf" }
 protobuf-java = { module = "com.google.protobuf:protobuf-java" }
 
 # grpc starter dependencies
-grpc-server = { module = "net.devh:grpc-server-spring-boot-starter", version.ref = "grpc" }
-grpc-client = { module = "net.devh:grpc-client-spring-boot-starter", version.ref = "grpc" }
+grpc = { module = "net.devh:grpc-spring-boot-starter", version.ref = "grpc" }
 
 #### grpc dependencies end ####
 
@@ -183,7 +184,6 @@ hutool-http = { module = "cn.hutool:hutool-http", version.ref = "hutool" }
 pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox" }
 pdfbox-tools = { module = "org.apache.pdfbox:pdfbox-tools", version.ref = "pdfbox" }
 pdfbox-jbig2 = { module = "org.apache.pdfbox:jbig2-imageio", version.ref = "imageio-jbig2" }
-imageio-core = { module = "com.github.jai-imageio:jai-imageio-core", version.ref = "imageio" }
 imageio-jpeg2000 = { module = "com.github.jai-imageio:jai-imageio-jpeg2000", version.ref = "imageio" }
 nimbus = { module = "com.nimbusds:nimbus-jose-jwt", version.ref = "nimbus" }
 jose4j = { module = "org.bitbucket.b_c:jose4j", version.ref = "jose4j" }
@@ -196,12 +196,11 @@ shedlock-redis = { module = "net.javacrumbs.shedlock:shedlock-provider-redis-spr
 hutool = ["hutool-core", "hutool-json", "hutool-crypto", "hutool-http"]
 easyexcel = ["easyexcel", "xerces-impl"]
 slf4j-logback = ["slf4j", "logback"]
-pdfbox = ["pdfbox", "pdfbox-tools", "pdfbox-jbig2", "imageio-core", "imageio-jpeg2000"]
+pdfbox = ["pdfbox", "pdfbox-tools", "pdfbox-jbig2", "imageio-jpeg2000"]
 shedlock = ["shedlock", "shedlock-redis"]
 sentry = ["sentry-spring", "sentry-logback", "sentry-client"]
 social = ["social-feishu", "social-dingtalk", "social-wecom", "social-qq"]
 iogrpc = ["iogrpc-netty-shaded", "iogrpc-protobuf", "iogrpc-stub"]
-grpc = ["grpc-server", "grpc-client"]
 apidoc = ["springdoc-openapi-ui", "knife4j-openapi3"]
 okhttp3 = ["okhttp3", "okhttp3-logging"]
 

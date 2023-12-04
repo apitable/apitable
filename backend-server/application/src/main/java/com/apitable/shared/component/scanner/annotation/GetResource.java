@@ -51,6 +51,7 @@ public @interface GetResource {
     /**
      * resource name.
      */
+    @AliasFor(annotation = RequestMapping.class, attribute = "name")
     String name() default "";
 
     /**
@@ -69,9 +70,15 @@ public @interface GetResource {
     boolean requiredPermission() default true;
 
     /**
+     * alias requestMapping path.
+     */
+    @AliasFor(annotation = RequestMapping.class, attribute = "value")
+    String[] value() default {};
+
+    /**
      * request path.
      */
-    @AliasFor(annotation = RequestMapping.class)
+    @AliasFor(annotation = RequestMapping.class, attribute = "path")
     String[] path() default {};
 
     /**

@@ -30,8 +30,8 @@ import com.apitable.shared.cache.bean.CategoryDto;
 import com.apitable.shared.cache.service.TemplateConfigCacheService;
 import com.apitable.shared.component.LanguageManager;
 import com.apitable.template.service.ITemplatePropertyService;
+import jakarta.annotation.Resource;
 import java.util.List;
-import javax.annotation.Resource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 

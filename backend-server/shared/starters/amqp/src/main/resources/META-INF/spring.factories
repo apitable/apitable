@@ -1,3 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.apitable.starter.amqp.autoconfigure.RabbitTemplateAutoConfiguration
 org.springframework.boot.autoconfigure.AutoConfigurationImportFilter=com.apitable.starter.amqp.autoconfigure.AutoConfigurationFilter

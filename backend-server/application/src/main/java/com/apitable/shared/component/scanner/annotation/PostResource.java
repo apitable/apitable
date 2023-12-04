@@ -51,6 +51,7 @@ public @interface PostResource {
     /**
      * resource name.
      */
+    @AliasFor(annotation = RequestMapping.class, attribute = "name")
     String name() default "";
 
     /**
@@ -67,6 +68,12 @@ public @interface PostResource {
      * whether to validate permission.
      */
     boolean requiredPermission() default true;
+
+    /**
+     * alias requestMapping path.
+     */
+    @AliasFor(annotation = RequestMapping.class, attribute = "value")
+    String[] value() default {};
 
     /**
      * request path.

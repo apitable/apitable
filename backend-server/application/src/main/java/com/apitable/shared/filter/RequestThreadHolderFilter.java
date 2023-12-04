@@ -26,12 +26,13 @@ import com.apitable.shared.holder.MemberHolder;
 import com.apitable.shared.holder.NotificationRenderFieldHolder;
 import com.apitable.shared.holder.SpaceHolder;
 import com.apitable.shared.holder.UserHolder;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -49,8 +50,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class RequestThreadHolderFilter extends OncePerRequestFilter implements Ordered {
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest,
-                                    HttpServletResponse httpServletResponse,
+    protected void doFilterInternal(@NotNull HttpServletRequest httpServletRequest,
+                                    @NotNull HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
         UserHolder.init();
         LoginUserHolder.init();

@@ -22,8 +22,8 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.apitable.shared.cache.bean.SpaceAssetDTO;
 import com.apitable.shared.cache.service.AssetCacheService;
+import jakarta.annotation.Resource;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.Resource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 

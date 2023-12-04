@@ -154,7 +154,7 @@ public class UploadDataListener extends AnalysisEventListener<Map<Integer, Strin
             (key, value, index) -> fieldData.put(value, MapUtil.getStr(data, key)));
         log.info("convert object：{}", JSONUtil.toJsonStr(fieldData));
         UploadDataDTO rowData = BeanUtil.toBean(fieldData, UploadDataDTO.class);
-        this.validLimit(currentRowIndex, rowData);
+        this.validLimit();
         // validate fields
         boolean memberExist = validField(currentRowIndex, rowData);
         try {
@@ -177,7 +177,7 @@ public class UploadDataListener extends AnalysisEventListener<Map<Integer, Strin
         }
     }
 
-    private void validLimit(int rowIndex, UploadDataDTO rowData) {
+    private void validLimit() {
         log.info(
             "the space original member number：{}, the number of successful processes: {}，max member number：{}",
             currentMemberCount, successCount, defaultMaxMemberCount);
@@ -267,18 +267,15 @@ public class UploadDataListener extends AnalysisEventListener<Map<Integer, Strin
     @Override
     public void onException(Exception exception, AnalysisContext context) {
         log.warn("parsing or validation failed，continue next row：{}", exception.getMessage());
-        if (exception instanceof ExcelDataConvertException) {
+        if (exception instanceof ExcelDataConvertException excelDataConvertException) {
             // If one of the cell conversion exception, get the row number。
             // If get header information, please use invokeHeadMap
             // Data conversion exception, which cannot happen.
-            ExcelDataConvertException excelDataConvertException =
-                (ExcelDataConvertException) exception;
             log.warn("the number {} row，the number {} col parsing exceptions",
                 excelDataConvertException.getRowIndex(),
                 excelDataConvertException.getColumnIndex());
-        } else if (exception instanceof ExcelDataValidateException) {
+        } else if (exception instanceof ExcelDataValidateException validateException) {
             // construct failure list
-            ExcelDataValidateException validateException = (ExcelDataValidateException) exception;
             String errorMessage = exception.getMessage();
             log.warn("the {} row data illegal，data: [{}], reason:{}",
                 validateException.getRowIndex(),

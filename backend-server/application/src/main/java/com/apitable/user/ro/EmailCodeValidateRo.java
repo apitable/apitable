@@ -21,9 +21,8 @@ package com.apitable.user.ro;
 import com.apitable.shared.constants.PatternConstants;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Pattern.Flag;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 /**
@@ -38,7 +37,7 @@ public class EmailCodeValidateRo {
     @Schema(description = "e-mail address",
         requiredMode = RequiredMode.REQUIRED, example = "xxxx@apitable.com")
     @NotBlank(message = "Email address cannot be empty")
-    @Pattern(regexp = PatternConstants.EMAIL, flags = Flag.CASE_INSENSITIVE,
+    @Pattern(regexp = PatternConstants.EMAIL, flags = Pattern.Flag.CASE_INSENSITIVE,
         message = "Incorrect mailbox format")
     private String email;
 

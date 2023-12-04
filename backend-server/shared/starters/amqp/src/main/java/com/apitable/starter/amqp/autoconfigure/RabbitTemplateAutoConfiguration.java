@@ -35,12 +35,12 @@ import org.springframework.amqp.rabbit.connection.ConnectionListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 
@@ -64,7 +64,7 @@ import org.springframework.messaging.converter.MappingJackson2MessageConverter;
  *
  * @author zoe zheng
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @ConditionalOnClass(RabbitSenderService.class)
 @ConditionalOnProperty(prefix = "spring.rabbitmq", name = "addresses")
 public class RabbitTemplateAutoConfiguration extends RabbitAutoConfiguration {

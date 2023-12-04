@@ -112,13 +112,11 @@ public class LimitProperties {
     /**
      * Maximum dashboard numbers of space.
      */
-    @Deprecated
     private Integer dsbWidgetMaxCount = 15;
 
     /**
      * Maximum robot number of space.
      */
-    @Deprecated
     private Integer dstRobotMaxCount = 30;
 
     /**

@@ -33,6 +33,7 @@ import com.apitable.shared.component.notification.NotificationHelper;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.workspace.service.INodeService;
+import jakarta.annotation.Resource;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -40,7 +41,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.annotation.Resource;
 
 /**
  * <p>

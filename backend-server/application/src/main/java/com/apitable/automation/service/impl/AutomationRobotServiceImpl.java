@@ -67,6 +67,7 @@ import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.NodeInfo;
 import com.apitable.workspace.vo.NodeSimpleVO;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import jakarta.annotation.Resource;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -77,7 +78,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -124,7 +124,8 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
 
     @Override
     public TriggerCopyResultDto copy(Long userId, List<String> resourceIds,
-                     AutomationCopyOptions options, Map<String, String> newNodeMap) {
+                                     AutomationCopyOptions options,
+                                     Map<String, String> newNodeMap) {
         if (CollUtil.isEmpty(resourceIds)) {
             return new TriggerCopyResultDto();
         }

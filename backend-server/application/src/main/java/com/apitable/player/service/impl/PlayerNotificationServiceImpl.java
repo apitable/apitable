@@ -93,6 +93,7 @@ import com.apitable.workspace.service.INodeService;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -105,7 +106,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.cursor.Cursor;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -183,6 +183,10 @@ public class PlayerNotificationServiceImpl
             return;
         }
         NotificationToTag toTag = NotificationToTag.getValue(template.getToTag());
+        if (toTag == null) {
+            log.error("fail to get tag:{}", template.getToTag());
+            return;
+        }
         ExceptionUtil.isNotNull(toTag, NotificationException.TMPL_TO_TAG_ERROR);
         if (NotificationToTag.toUserTag(toTag)) {
             createUserNotify(template, ro);
@@ -218,7 +222,7 @@ public class PlayerNotificationServiceImpl
             if (CollUtil.isNotEmpty(ro.getToMemberId())) {
                 toMemberIds.addAll(
                     CollUtil.removeBlank(CollUtil.distinct(ro.getToMemberId())).stream()
-                        .map(Long::valueOf).collect(Collectors.toList()));
+                        .map(Long::valueOf).toList());
             }
             if (CollUtil.isNotEmpty(ro.getToUnitId())) {
                 List<Long> unitIds =
@@ -462,8 +466,7 @@ public class PlayerNotificationServiceImpl
         List<UserLangDTO> users = iUserService.getLangAndEmailByIds(userIds,
             LocaleContextHolder.getLocale().toLanguageTag());
         // timestamp transform
-        List<String> dateKeys = dict.keySet().stream().filter(i -> i.endsWith("AT")).collect(
-            Collectors.toList());
+        List<String> dateKeys = dict.keySet().stream().filter(i -> i.endsWith("AT")).toList();
         if (dateKeys.isEmpty()) {
             List<MailWithLang> tos = users.stream()
                 .filter(i -> StrUtil.isNotBlank(i.getEmail()))

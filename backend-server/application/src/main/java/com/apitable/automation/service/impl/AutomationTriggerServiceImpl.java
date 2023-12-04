@@ -46,13 +46,13 @@ import com.apitable.databusclient.model.AutomationTriggerPO;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.util.IdUtil;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import jakarta.annotation.Resource;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +62,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
+    
     @Resource
     private AutomationDaoApiApi automationDaoApiApi;
     @Resource

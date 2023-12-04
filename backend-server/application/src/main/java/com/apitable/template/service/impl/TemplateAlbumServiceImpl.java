@@ -29,12 +29,12 @@ import com.apitable.template.service.ITemplateAlbumService;
 import com.apitable.template.vo.AlbumContentVo;
 import com.apitable.template.vo.AlbumVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

@@ -71,27 +71,27 @@ public class SmsProperties {
     }
 
     /**
+     * sms type.
+     */
+    public enum SmsType {
+
+        /**
+         * Tencent Cloud.
+         */
+        TENCENT,
+
+        /**
+         * Aliyun Cloud.
+         */
+        ALIYUN,
+
+        YUNPIAN
+    }
+
+    /**
      * sms server properties.
      */
     public static class SmsServer {
-
-        /**
-         * sms type.
-         */
-        public enum SmsType {
-
-            /**
-             * Tencent Cloud.
-             */
-            TENCENT,
-
-            /**
-             * Aliyun Cloud.
-             */
-            ALIYUN,
-
-            YUNPIAN
-        }
 
         private SmsType type;
 

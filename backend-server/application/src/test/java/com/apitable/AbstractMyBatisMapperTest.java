@@ -19,7 +19,7 @@
 package com.apitable;
 
 import com.apitable.shared.config.MybatisPlusConfig;
-import com.apitable.sql.script.enhance.NewSqlScriptsTestExecutionListener;
+import com.apitable.sql.script.enhance.ModifyBeforeSqlScriptsTestExecutionListener;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.test.autoconfigure.MybatisPlusTest;
 import java.util.List;
@@ -50,14 +50,16 @@ import org.springframework.test.context.web.ServletTestExecutionListener;
 @TestPropertySource(value = {
     "classpath:test.properties",
 })
-@TestExecutionListeners(value = {ServletTestExecutionListener.class,
+@TestExecutionListeners(value = {
+    ServletTestExecutionListener.class,
     DirtiesContextBeforeModesTestExecutionListener.class,
     ApplicationEventsTestExecutionListener.class,
     DependencyInjectionTestExecutionListener.class,
     DirtiesContextTestExecutionListener.class,
     TransactionalTestExecutionListener.class,
-    NewSqlScriptsTestExecutionListener.class,
-    EventPublishingTestExecutionListener.class})
+    ModifyBeforeSqlScriptsTestExecutionListener.class,
+    EventPublishingTestExecutionListener.class
+})
 public abstract class AbstractMyBatisMapperTest {
 
     @BeforeAll

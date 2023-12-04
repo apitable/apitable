@@ -65,6 +65,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -81,7 +82,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -147,7 +147,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
             List<Long> teamIds = memberIsolatedInfo.getTeamIds();
             List<TeamTreeVo> teamTreeVos = this.getTeamViewInTeamTree(teamIds, depth);
             List<Long> teamIdList =
-                teamTreeVos.stream().map(TeamTreeVo::getTeamId).collect(Collectors.toList());
+                teamTreeVos.stream().map(TeamTreeVo::getTeamId).toList();
             // Setting the id of the parent department to 0 is equivalent to raising
             // the level of the directly affiliated department to the first-level department
             for (TeamTreeVo teamVO : teamTreeVos) {
@@ -439,15 +439,15 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
             return null;
         }
         Map<Long, Long> teamIdToParentIdMap = teams.stream()
-                .filter(i -> !i.getParentId().equals(0L))
-                .collect(Collectors.toMap(TeamPathInfo::getId, TeamPathInfo::getParentId));
-        if (teamIdToParentIdMap.size() > 0) {
+            .filter(i -> !i.getParentId().equals(0L))
+            .collect(Collectors.toMap(TeamPathInfo::getId, TeamPathInfo::getParentId));
+        if (!teamIdToParentIdMap.isEmpty()) {
             List<TeamPathInfo> parentTeams =
-                    teamFacade.getAllParentTeam(teamIdToParentIdMap.values());
-            if (parentTeams.size() > 0) {
+                teamFacade.getAllParentTeam(teamIdToParentIdMap.values());
+            if (!parentTeams.isEmpty()) {
                 Set<Long> teamIds = teamIdToParentIdMap.keySet();
                 parentTeams.stream().filter(i -> !teamIds.contains(i.getId()))
-                        .forEach(teams::add);
+                    .forEach(teams::add);
             }
         }
         // The department name service is repeated, split into a tree, and searched using the tree
@@ -462,7 +462,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         Map<String, Long> teamPathMap = new HashMap<>();
         List<Long> teamIds = teamEntities.stream()
             .filter(e -> e.getTeamName().equals(teamName))
-            .map(TeamPathInfo::getId).collect(Collectors.toList());
+            .map(TeamPathInfo::getId).toList();
         teamIds.forEach(teamId -> {
             List<String> teamPath = new ArrayList<>();
             findParentTeam(teamEntities, teamId, teamPath::add);
@@ -476,7 +476,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
                                 Consumer<String> teamPath) {
         for (TeamPathInfo teamEntity : teamEntities) {
             if (teamEntity.getId().equals(teamId)
-                    && !teamEntity.getParentId().equals(0L)) {
+                && !teamEntity.getParentId().equals(0L)) {
                 teamPath.accept(teamEntity.getTeamName());
                 findParentTeam(teamEntities, teamEntity.getParentId(), teamPath);
                 break;

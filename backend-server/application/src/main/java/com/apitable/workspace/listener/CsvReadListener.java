@@ -69,7 +69,7 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
 
     private Meta meta;
 
-    private JSONObject fieldUpdatedInfo = new JSONObject();
+    private final JSONObject fieldUpdatedInfo = new JSONObject();
 
     private final String retNodeId;
 
@@ -120,10 +120,10 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
         log.info("parse to header information");
-        initHead(headMap, context);
+        initHead(headMap);
     }
 
-    private void initHead(Map<Integer, String> headMap, AnalysisContext context) {
+    private void initHead(Map<Integer, String> headMap) {
         // Column length, possibly 0
         int headSize = headMap.size();
         meta = new Meta(headSize);
@@ -253,7 +253,7 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
         log.info("======================analysis completed==============================");
 
         if (meta == null) {
-            initHead(MapUtil.of(0, "标题"), context);
+            initHead(MapUtil.of(0, "标题"));
         }
 
         List<NodeEntity> nodeEntities = new ArrayList<>();

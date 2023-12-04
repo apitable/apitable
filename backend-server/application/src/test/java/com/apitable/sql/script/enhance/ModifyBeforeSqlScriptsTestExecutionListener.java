@@ -60,10 +60,10 @@ import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 
+public class ModifyBeforeSqlScriptsTestExecutionListener extends AbstractTestExecutionListener {
 
-public class NewSqlScriptsTestExecutionListener extends AbstractTestExecutionListener {
-
-    private static final Log logger = LogFactory.getLog(NewSqlScriptsTestExecutionListener.class);
+    private static final Log logger =
+        LogFactory.getLog(ModifyBeforeSqlScriptsTestExecutionListener.class);
 
     /**
      * Returns {@code 5000}.

@@ -56,7 +56,6 @@ import com.apitable.space.service.ISpaceRoleResourceRelService;
 import com.apitable.space.service.ISpaceRoleService;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.space.service.IStaticsService;
-import com.apitable.sql.script.enhance.TablePrefixUtil;
 import com.apitable.starter.mail.autoconfigure.MailTemplate;
 import com.apitable.starter.oss.core.OssClientTemplate;
 import com.apitable.template.service.ITemplateAlbumRelService;

@@ -34,7 +34,7 @@ import com.apitable.space.mapper.SpaceInviteRecordMapper;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 /**

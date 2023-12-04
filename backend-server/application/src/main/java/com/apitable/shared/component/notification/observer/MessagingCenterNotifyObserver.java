@@ -18,13 +18,12 @@
 
 package com.apitable.shared.component.notification.observer;
 
-
 import com.apitable.player.ro.NotificationCreateRo;
 import com.apitable.player.service.IPlayerNotificationService;
 import com.apitable.shared.sysconfig.notification.NotificationConfigLoader;
 import com.apitable.shared.sysconfig.notification.NotificationTemplate;
+import jakarta.annotation.Resource;
 import java.util.List;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 /**

@@ -19,7 +19,7 @@
 package com.apitable.space.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

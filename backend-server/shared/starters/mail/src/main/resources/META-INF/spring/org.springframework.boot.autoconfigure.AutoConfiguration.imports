@@ -1,0 +1,2 @@
+com.apitable.starter.mail.autoconfigure.MailAutoConfiguration
+com.apitable.starter.mail.autoconfigure.CloudMailAutoConfiguration

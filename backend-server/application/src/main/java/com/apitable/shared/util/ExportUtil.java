@@ -19,9 +19,9 @@
 package com.apitable.shared.util;
 
 import com.apitable.core.util.HttpContextUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * <p>

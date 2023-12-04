@@ -19,9 +19,9 @@
 package com.apitable.workspace.observer.remind;
 
 import com.apitable.workspace.ro.RemindExtraRo;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.util.List;
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;

@@ -46,13 +46,13 @@ import com.apitable.shared.util.DBUtil;
 import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.workspace.service.impl.NodeRoleServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
