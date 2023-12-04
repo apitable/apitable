@@ -35,6 +35,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.Session;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
@@ -90,6 +91,7 @@ public class WebSecurityConfig<S extends Session> {
                 (headers) -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
             .csrf((csrf) ->
                 csrf.csrfTokenRepository(cookieCsrfTokenRepository)
+                    .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
                     .ignoringRequestMatchers(
                         (request) -> IgnorePathHelper.getInstant().stream()
                             .anyMatch((path) -> request.getServletPath().startsWith(path))
