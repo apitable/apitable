@@ -85,7 +85,7 @@
     "@tiptap/core": "^2.1.8",
     "@tiptap/pm": "^2.1.8",
     "@tiptap/starter-kit": "^2.1.8",
-    "axios": "^1.4.0",
+    "axios": "^1.6.0",
     "bull": "^4.11.3",
     "cache-manager": "^3.6.0",
     "class-transformer": "^0.3.1",
