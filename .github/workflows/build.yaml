@@ -65,6 +65,12 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 8.7.5
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+          cache: 'gradle'
       - name: Running Test
         shell: bash
         run: |
