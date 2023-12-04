@@ -3,7 +3,6 @@ package com.apitable.shared.config;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
-import org.springdoc.core.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,8 +11,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class SpringDocConfig {
-
-    private static final String DEFAULT_GROUP_NAME = " ";
 
     /**
      * OpenAPI config.
@@ -28,16 +25,5 @@ public class SpringDocConfig {
             .version("v1")
             .termsOfService("/api/v1/doc.htm")
             .contact(contact));
-    }
-
-    /**
-     * Group config.
-     */
-    @Bean
-    public GroupedOpenApi groupedOpenApi() {
-        return GroupedOpenApi.builder()
-            .group(DEFAULT_GROUP_NAME)
-            .pathsToMatch("/**")
-            .build();
     }
 }

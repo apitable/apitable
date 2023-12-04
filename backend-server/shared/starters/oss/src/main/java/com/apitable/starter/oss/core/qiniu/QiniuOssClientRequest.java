@@ -18,6 +18,8 @@
 
 package com.apitable.starter.oss.core.qiniu;
 
+import static com.qiniu.util.Auth.HTTP_HEADER_KEY_CONTENT_TYPE;
+
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.StopWatch;
 import cn.hutool.core.map.MapUtil;
@@ -37,6 +39,7 @@ import com.google.gson.Gson;
 import com.qiniu.cdn.CdnManager;
 import com.qiniu.cdn.CdnResult;
 import com.qiniu.common.QiniuException;
+import com.qiniu.http.Headers;
 import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
@@ -49,6 +52,7 @@ import com.qiniu.storage.model.FetchRet;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
+import com.qiniu.util.StringUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -247,7 +251,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
             String urlString = downloadUrl.buildURL();
             if (ossSignatureTemplate != null) {
                 // If signature is turned on, you need to call the signature method
-                String host = getUrlPrefix(true, downloadDomain);
+                String host = getUrlPrefix(downloadDomain);
                 urlString = ossSignatureTemplate.getSignatureUrl(host, key);
             }
             InputStream in = URLUtil.getStream(URLUtil.url(urlString));
@@ -313,7 +317,14 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
     @Override
     public boolean isValidCallback(String originAuthorization, String url, byte[] body,
                                    String contentType) {
-        return auth.isValidCallback(originAuthorization, url, body, contentType);
+        Headers header = null;
+        if (!StringUtils.isNullOrEmpty(contentType)) {
+            header = new Headers.Builder()
+                .add(HTTP_HEADER_KEY_CONTENT_TYPE, contentType)
+                .build();
+        }
+        return auth.isValidCallback(originAuthorization,
+            new Auth.Request(url, "GET", header, body));
     }
 
     @Override
@@ -367,11 +378,7 @@ public class QiniuOssClientRequest extends AbstractOssClientRequest {
         return callBackBody.toString();
     }
 
-    private String getUrlPrefix(boolean useHttps, String domain) {
-        if (useHttps) {
-            return "https://" + domain;
-        } else {
-            return "http://" + domain;
-        }
+    private String getUrlPrefix(String domain) {
+        return "https://" + domain;
     }
 }
