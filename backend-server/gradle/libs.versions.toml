@@ -7,7 +7,7 @@ jackson-nullable = "0.2.6"
 gson-fire = "1.8.5"
 javax-ws = "2.1.1"
 jsoup = "1.15.1"
-springdoc = "1.7.0"
+springdoc = "2.3.0"
 knife4j-openapi3 = "4.3.0"
 mybatis-plus = "3.5.4.1"
 aliyun-core = "4.5.10"
@@ -96,7 +96,7 @@ aws = { module = "com.amazonaws:aws-java-sdk-bom", version.ref = "aws" }
 aws-s3 = { module = "com.amazonaws:aws-java-sdk-s3" }
 
 # openapi document dependencies
-springdoc-openapi-ui = { module = "org.springdoc:springdoc-openapi-ui", version.ref = "springdoc" }
+springdoc-openapi-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
 knife4j-openapi3 = { module = "com.github.xiaoymin:knife4j-openapi3-spring-boot-starter", version.ref = "knife4j-openapi3" }
 
 # ORM dependencies
