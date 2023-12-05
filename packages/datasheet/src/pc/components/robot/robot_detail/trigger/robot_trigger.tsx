@@ -156,8 +156,7 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
   let datasheetId = triggerDatasheetValue.id;
 
   useEffect(() => {
-    if(datasheetId) {
-      resourceService.instance?.initialized &&
+    if(datasheetId && resourceService.instance?.initialized && datasheetId.startsWith('dst')) {
       resourceService.instance?.switchResource({
         to: datasheetId as string,
         resourceType: ResourceType.Datasheet,
