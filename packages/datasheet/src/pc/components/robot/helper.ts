@@ -40,6 +40,7 @@ import { getFieldTypeIcon, getFieldTypeIconOrNull } from '../multi_grid/field_se
 import { IActionType, IJsonSchema, INodeOutputSchema, INodeType, IRobotAction, IRobotTrigger, ITriggerType } from './interface';
 // @ts-ignore
 import { isWecomFunc } from 'enterprise/home/social_platform/utils';
+import {TriggerDataSheetMap} from "pc/components/robot/robot_detail/magic_variable_container";
 
 /**
  * The client parses the expression without context, skipping dynamic parameters.
@@ -87,16 +88,16 @@ export const getNodeOutputSchemaList = (props: {
   triggers: IRobotTrigger[];
   triggerTypes: ITriggerType[];
   actionTypes: IActionType[];
-  triggerDataSheetIds: IFetchedDatasheet[];
+  triggerDataSheetMap: TriggerDataSheetMap;
   dataSheetMap: IDatasheetMap;
 }) => {
-  const { actionList, triggerTypes, actionTypes, triggers, dataSheetMap, triggerDataSheetIds } = props;
+  const { actionList, triggerTypes, actionTypes, triggers, dataSheetMap, triggerDataSheetMap } = props;
   const schemaList: INodeOutputSchema[] = [];
 
   const map = new Map<string, number[]>();
 
   triggers.forEach((trigger, index) => {
-    const resourceId = triggerDataSheetIds[index] as unknown as string;
+    const resourceId = triggerDataSheetMap[trigger.triggerId] as unknown as string;
     if (resourceId && checkIfDatasheetResourceValid(dataSheetMap, resourceId)) {
       const itemMap = map.get(resourceId) ?? [];
       map.set(resourceId, [...itemMap, index]);
@@ -104,7 +105,7 @@ export const getNodeOutputSchemaList = (props: {
   });
 
   triggers.forEach((trigger, index) => {
-    const resourceId = triggerDataSheetIds[index] as unknown as string;
+    const resourceId = triggerDataSheetMap[trigger.triggerId] as unknown as string;
     const triggerType = trigger && triggerTypes.find((triggerType) => triggerType.triggerTypeId === trigger?.triggerTypeId);
     if (triggerType) {
       if (checkIfDatasheetResourceValid(dataSheetMap, resourceId)) {
@@ -115,7 +116,7 @@ export const getNodeOutputSchemaList = (props: {
 
           map.delete(resourceId);
           schemaList.push({
-            id: trigger?.triggerId!,
+            id: resourceId,
             title: t(Strings.automation_variable_datasheet, {
               NODE_NAME: dataSheetMap[resourceId]?.datasheet?.name,
             }),

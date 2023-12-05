@@ -513,28 +513,6 @@ export const transformSlateValue = (
   };
 };
 
-export const modifyTriggerId = (triggerId: string, nodeItem: Node) => {
-  return produce(nodeItem, (draft) => {
-    // @ts-ignore
-    if (nodeItem.type === 'magicVariable') {
-      // @ts-ignore
-      nodeItem.children = [
-        {
-          text: '',
-        },
-      ];
-      // @ts-ignore
-      const firstOperand = nodeItem.data.operands[0];
-      // @ts-ignore
-      const firstOperandType = nodeItem.data.operands[0]?.type;
-      if (firstOperandType === 'Expression') {
-        const firstInnerOperand = firstOperand['value']?.operands[0];
-        firstInnerOperand.value = triggerId;
-      }
-    }
-  });
-};
-
 export const withMagicVariable = (editor: any) => {
   const { isInline, isVoid, onChange } = editor;
 
