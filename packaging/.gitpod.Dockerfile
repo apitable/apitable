@@ -4,7 +4,7 @@ FROM gitpod/workspace-full:latest
 # hadolint ignore=DL3045
 COPY ../.sdkmanrc ./
 
-RUN bash -c ". /home/gitpod/.sdkman/bin/sdkman-init.sh && sdk env install"
+RUN bash -c ". /home/gitpod/.sdkman/bin/sdkman-init.sh && sdk env install && sdk default java 17.0.9-graal"
 
 # hadolint ignore=DL3059
 RUN bash -c 'VERSION="16.15.0" && source $HOME/.nvm/nvm.sh && nvm install $VERSION && nvm use $VERSION && nvm alias default $VERSION'
