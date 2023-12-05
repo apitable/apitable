@@ -444,10 +444,10 @@ export const FormContainer: React.FC<
     if (code === StatusCode.SPACE_CAPACITY_OVER_LIMIT) str = t(Strings.form_space_capacity_over_limit);
     if ([OVER_LIMIT_PER_SHEET_RECORDS, OVER_LIMIT_SPACE_RECORDS].includes(String(code))) {
       const { usage } = JSON.parse(errMsg);
-      triggerUsageAlert(
+      triggerUsageAlert?.(
         OVER_LIMIT_PER_SHEET_RECORDS === String(code) ? 'maxRowsPerSheet' : 'maxRowsInSpace',
         { usage: usage, alwaysAlert: true },
-        SubscribeUsageTipType.Alert,
+        SubscribeUsageTipType?.Alert,
       );
       return;
     }

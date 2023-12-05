@@ -109,7 +109,7 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
     if (enabledFieldPermission) {
       return true;
     }
-    const result = triggerUsageAlert('fieldPermissionNums', { usage: spaceInfo.fieldRoleNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+    const result = triggerUsageAlert?.('fieldPermissionNums', { usage: spaceInfo.fieldRoleNums + 1, alwaysAlert: true }, SubscribeUsageTipType?.Alert);
     if (result) {
       return false;
     }

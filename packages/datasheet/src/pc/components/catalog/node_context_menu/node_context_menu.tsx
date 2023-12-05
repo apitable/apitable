@@ -321,7 +321,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
                 const result = triggerUsageAlert?.(
                   'maxFormViewsInSpace',
                   { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true },
-                  SubscribeUsageTipType.Alert,
+                  SubscribeUsageTipType?.Alert,
                 );
                 if (result) {
                   return;
@@ -348,7 +348,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
                   const result = triggerUsageAlert?.(
                     'maxFormViewsInSpace',
                     { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true },
-                    SubscribeUsageTipType.Alert,
+                    SubscribeUsageTipType?.Alert,
                   );
                   if (result) {
                     return;
@@ -376,7 +376,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
                     usage: spaceInfo!.sheetNums + 1,
                     alwaysAlert: true,
                   },
-                  SubscribeUsageTipType.Alert,
+                  SubscribeUsageTipType?.Alert,
                 );
                 if (result1) {
                   return;

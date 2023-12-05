@@ -161,7 +161,7 @@ export function handleResponse<T>(response, headers: any | undefined, url: strin
   //   // }
   //   case billingErrorCode.OVER_LIMIT:
   //   case billingErrorCode.OVER_LIMIT_2: {
-  //     triggerUsageAlertUniversal('亲爱的用户，您当前的操作已经触发了您的订阅级别的用量限制。为了继续享受无限制的操作，我们建议您升级您的订阅。');
+  //     triggerUsageAlertUniversal?.('亲爱的用户，您当前的操作已经触发了您的订阅级别的用量限制。为了继续享受无限制的操作，我们建议您升级您的订阅。');
   //     return Promise.reject();
   //   }
   //   default:

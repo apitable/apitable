@@ -90,10 +90,10 @@ export const AddAdminModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancel
   const modalConfirm = () => {
     if (source === ModalType.Add) {
       const memberIds = selectedMembers.map((item) => (item as IMember).memberId);
-      const result = triggerUsageAlert(
+      const result = triggerUsageAlert?.(
         'maxAdminNums',
         { usage: memberIds.length + existSubAdminNum, alwaysAlert: true },
-        SubscribeUsageTipType.Alert,
+        SubscribeUsageTipType?.Alert,
       );
       if (result) return;
       setSubmitBtnLoading(true);

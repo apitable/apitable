@@ -79,7 +79,7 @@ export const ColorPickerPane: React.FC<React.PropsWithChildren<IColorPickerPane>
         option={option}
         onChange={(type: OptionSetting, id: string, value: string | number) => {
           if (title === t(Strings.option_configuration_advance_palette)) {
-            const result = triggerUsageAlert?.('rainbowLabel', { alwaysAlert: true }, SubscribeUsageTipType.Alert);
+            const result = triggerUsageAlert?.('rainbowLabel', { alwaysAlert: true }, SubscribeUsageTipType?.Alert);
             if (result) return;
           }
           onChange?.(type, id, value);

@@ -724,7 +724,7 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
           cmd: CollaCommandName.SetDateTimeCellAlarm,
           recordId: record.id,
           fieldId: field.id,
-          alarm: convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) || null,
+          alarm: convertAlarmStructure ? convertAlarmStructure(formatCurAlarm as IRecordAlarmClient) : null,
         });
       } else {
         resourceService.instance!.commandManager.execute({

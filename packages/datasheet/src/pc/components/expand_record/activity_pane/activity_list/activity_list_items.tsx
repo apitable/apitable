@@ -139,7 +139,7 @@ export const ActivityListItems: FC<
   const [end, setEnd] = useState(false);
 
   const loadOverLimitData = () => {
-    const result = triggerUsageAlert('maxRemainRecordActivityDays', { usage: MAX_LIMIT_DAY, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+    const result = triggerUsageAlert?.('maxRemainRecordActivityDays', { usage: MAX_LIMIT_DAY, alwaysAlert: true }, SubscribeUsageTipType?.Alert);
     if (result) {
       return;
     }

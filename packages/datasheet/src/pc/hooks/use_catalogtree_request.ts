@@ -72,7 +72,7 @@ export const useCatalogTreeRequest = () => {
           usage: spaceInfo!.sheetNums + 1,
           alwaysAlert: true,
         },
-        SubscribeUsageTipType.Alert,
+        SubscribeUsageTipType?.Alert,
       );
       if (result1) {
         return true;
@@ -83,7 +83,7 @@ export const useCatalogTreeRequest = () => {
       const result1 = triggerUsageAlert?.(
         'maxFormViewsInSpace',
         { usage: spaceInfo!.formViewNums + 1, alwaysAlert: true },
-        SubscribeUsageTipType.Alert,
+        SubscribeUsageTipType?.Alert,
       );
       if (result1) {
         return true;
@@ -91,7 +91,7 @@ export const useCatalogTreeRequest = () => {
     }
     if (nodeType === ConfigConstant.NodeType.MIRROR) {
       // Next, check that the number of forms or mirrors meets the requirements according to the node type
-      const result1 = triggerUsageAlert?.('maxMirrorNums', { usage: spaceInfo!.mirrorNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+      const result1 = triggerUsageAlert?.('maxMirrorNums', { usage: spaceInfo!.mirrorNums + 1, alwaysAlert: true }, SubscribeUsageTipType?.Alert);
       if (result1) {
         return true;
       }
@@ -99,7 +99,7 @@ export const useCatalogTreeRequest = () => {
     // if (nodeType === ConfigConstant.NodeType.AI) {
     //   // Next, check that the number of forms or mirrors meets the requirements according to the node type
     //   const result1 = triggerUsageAlert?.('maxSeats',
-    //     { usage: spaceInfo!.seats + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+    //     { usage: spaceInfo!.seats + 1, alwaysAlert: true }, SubscribeUsageTipType?.Alert);
     //   if (result1) {
     //     return true;
     //   }

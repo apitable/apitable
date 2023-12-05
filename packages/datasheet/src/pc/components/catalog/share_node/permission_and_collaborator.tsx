@@ -93,7 +93,7 @@ export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }
       return;
     }
 
-    const result = triggerUsageAlert('nodePermissionNums', { usage: spaceInfo!.nodeRoleNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+    const result = triggerUsageAlert?.('nodePermissionNums', { usage: spaceInfo!.nodeRoleNums + 1, alwaysAlert: true }, SubscribeUsageTipType?.Alert);
     if (result) {
       return;
     }

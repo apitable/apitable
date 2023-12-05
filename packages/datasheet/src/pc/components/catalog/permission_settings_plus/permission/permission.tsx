@@ -122,7 +122,7 @@ export const Permission: FC<React.PropsWithChildren<IPermissionSettingProps>> = 
       return true;
     }
 
-    const result = triggerUsageAlert('nodePermissionNums', { usage: spaceInfo!.nodeRoleNums + 1, alwaysAlert: true }, SubscribeUsageTipType.Alert);
+    const result = triggerUsageAlert?.('nodePermissionNums', { usage: spaceInfo!.nodeRoleNums + 1, alwaysAlert: true }, SubscribeUsageTipType?.Alert);
     if (result) {
       return false;
     }
