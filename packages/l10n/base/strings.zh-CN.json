@@ -5832,6 +5832,8 @@
   "workdoc_image_max_10mb": "图片大小不能超过10MB",
   "workdoc_upload_failed": "上传失败",
   "workdoc_authentication_failed": "文档权限验证失败",
+  "workdoc_expanded": "展开目录",
+  "workdoc_collapsed": "折叠目录",
   "automation_run_usage": "自动化用量",
   "automation_run_usage_info": "自动化的运行次数",
   "widget_per_space": "小程序",

@@ -5837,6 +5837,8 @@
   "workdoc_image_max_10mb": "The image size cannot exceed 10MB",
   "workdoc_upload_failed": "Upload failed",
   "workdoc_authentication_failed": "Authentication failed",
+  "workdoc_expanded": "Expand directory",
+  "workdoc_collapsed": "Collapse directory",
   "widget_per_space": "Widget",
   "automation_manager_label": "Can perform all actions on the automation",
   "automation_editor_label": "Can edit steps in automation and viewing the run history of the automation",

@@ -101,6 +101,7 @@ const FormWorkdocEditorBase: React.ForwardRefRenderFunction<IEditor, IFormWorkdo
           setTitle={setTitle}
           onSave={onSave}
           isMobile={isMobile}
+          expandable={false}
         />
       )}
     </div>
