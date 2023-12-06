@@ -35,11 +35,8 @@ import {
   OPEventNameEnums,
   FieldType,
   EventSourceTypeEnums,
-  IButtonField,
 } from '@apitable/core';
 import { ArrowDownOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditOutlined, EyeOpenOutlined, InfoCircleOutlined } from '@apitable/icons';
-import { getRobotDetail } from 'pc/components/editors/button_editor/api';
-import { checkButtonField } from 'pc/components/editors/button_editor/use_button_field_valid';
 import { MobileGrid } from 'pc/components/mobile_grid';
 import { useTriggerTypes } from 'pc/components/robot/robot_panel/hook_trigger';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
@@ -77,25 +74,6 @@ export const View: React.FC<React.PropsWithChildren<any>> = () => {
   const { data: triggerTypes } = useTriggerTypes();
   const buttonFieldTriggerId = triggerTypes.find((item) => item.endpoint === 'button_field' || item.endpoint === 'button_clicked');
   const dstId = useAppSelector(Selectors.getActiveDatasheetId);
-
-  const initilzedRef = React.useRef(false);
-  useEffect(() => {
-    if(initilzedRef.current) {
-      return;
-    }
-    if (fieldMap && buttonFieldTriggerId && dstId) {
-      initilzedRef.current = true;
-      const fieldItem = Object.values(fieldMap).filter((item) => item.type === FieldType.Button);
-      const task = fieldItem.map((r) => checkButtonField(dstId ?? '', r as IButtonField, buttonFieldTriggerId));
-      Promise.all(task)
-        .then(() => {
-          console.log('button field checked');
-        })
-        .catch((e) => {
-          console.error('button field checked error', e);
-        });
-    }
-  }, [dstId, fieldMap, buttonFieldTriggerId]);
 
   const { screenIsAtMost } = useResponsive();
   const query = useQuery();

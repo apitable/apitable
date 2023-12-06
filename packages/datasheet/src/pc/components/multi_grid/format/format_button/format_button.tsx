@@ -260,7 +260,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
         router.push(`/workbench/${automationId}`);
       }, 50);
     });
-  }, [currentField, datasheetId, datasheetParentId, handleAddTrigger, handleModify, router]);
+  }, [currentField, datasheetId, datasheetParentId, handleAddTrigger, handleModify, router, setAutomationSource]);
 
   const handleClickDebounce = debounce(handleClick, 300);
   const handleAutomationChange = useCallback(async ({ automationId }: IOnChangeParams) => {
