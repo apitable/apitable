@@ -75,6 +75,8 @@ public enum IdRulePrefixEnum {
 
     EMB("emb"),
 
+    DOCUMENT_NAME("doc"),
+
     AI("ai_"),
 
     AIRAGENT("ag_"),
