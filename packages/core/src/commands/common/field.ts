@@ -275,7 +275,7 @@ function clearViewAttribute(snapshot: ISnapshot, oldField: IField, newField: IFi
       action && actions.push(action);
     }
 
-    // The grouping field of the kanban board, if the type is converted, 
+    // The grouping field of the kanban board, if the type is converted,
     // or the multi-selection of the member field is turned on, the grouping field should be clear
     if (
       view.type === ViewType.Kanban &&
@@ -292,7 +292,7 @@ function clearViewAttribute(snapshot: ISnapshot, oldField: IField, newField: IFi
       action && actions.push(action);
     }
 
-    // The Grid view needs to consider the attachment field. 
+    // The Grid view needs to consider the attachment field.
     // The field that has been set as a grouping item should be deleted after being converted into an attachment field.
     if (
       view.type === ViewType.Grid &&
@@ -345,7 +345,7 @@ export function setField(
     });
     const property = Field.bindContext(newField, state).enrichProperty(stdVals);
     newField.property = property;
-    // Calculated fields need to determine their own datasheet through the field property, 
+    // Calculated fields need to determine their own datasheet through the field property,
     // here we force him to specify the datasheetId of the current command
     if (Field.bindContext(newField, state).isComputed) {
       newField.property = {
@@ -378,7 +378,7 @@ export function setField(
   actions.push(...converted.actions);
 
   /**
-   * After the field is converted/deleted, the corresponding functions on the view, 
+   * After the field is converted/deleted, the corresponding functions on the view,
    * such as filtering/grouping, need to be deleted or adjusted synchronously
    */
   actions.push(...clearViewAttribute(snapshot, oldField, newField));
@@ -392,7 +392,7 @@ export function setField(
 export function createNewField(
   snapshot: ISnapshot,
   field: IField,
-  options?: { viewId?: string; index?: number; fieldId?: string, offset?: number, hiddenColumn?: boolean }
+  options?: { viewId?: string; index?: number; fieldId?: string, offset?: number, hiddenColumn?: boolean, forceColumnVisible?: boolean }
 ) {
   if (!field.property) {
     // @ts-ignore
@@ -405,6 +405,7 @@ export function createNewField(
     fieldId: options && options.fieldId,
     offset: options && options.offset,
     hiddenColumn: options && options.hiddenColumn,
+    forceColumnVisible: options?.forceColumnVisible,
     field,
   });
 

@@ -342,7 +342,7 @@ export class DatasheetActions {
    */
   static addField2Action(
     snapshot: ISnapshot,
-    payload: { field: IField; viewId?: string; index?: number; fieldId?: string; offset?: number; hiddenColumn?: boolean },
+    payload: { field: IField; viewId?: string; index?: number; fieldId?: string; offset?: number; hiddenColumn?: boolean, forceColumnVisible?:boolean },
   ): IJOTAction[] | null {
     const fieldMap = snapshot.meta.fieldMap;
     const views = snapshot.meta.views;
@@ -373,6 +373,10 @@ export class DatasheetActions {
 
       // handler of new column in view
       function viewColumnHandler() {
+        if(payload.forceColumnVisible != null) {
+          newColumn.hidden = payload.forceColumnVisible===true;
+          return;
+        }
         let hiddenKey = 'hidden';
         switch (cur.type) {
           case ViewType.Gantt:
@@ -1922,7 +1926,7 @@ export class DatasheetActions {
       oi: newField,
     };
   }
- 
+
   /**
    * Undo archieve recordIds
    * @Parmas snapshot
@@ -1931,14 +1935,14 @@ export class DatasheetActions {
 
   static unarchivedRecords2Action(snapshot: ISnapshot, payload: { recordsData: any, linkFields: string[] }): IJOTAction[] | null {
     const { recordsData, linkFields } = payload;
-    
+
     if (!recordsData || !recordsData.length || !snapshot) return null;
     const rows = snapshot.meta.views[0]!.rows;
-    const views = snapshot.meta.views;    
+    const views = snapshot.meta.views;
     const rlt: IJOTAction[] = [];
 
     for (let i = 0; i < recordsData.length; i++) {
-        
+
       for(let j = 0; j < views.length; j++) {
         rlt.push({
           n: OTActionName.ListInsert,
@@ -1960,20 +1964,20 @@ export class DatasheetActions {
         p: ['recordMap', recordsData[i].id],
         oi: newRecord,
       });
-      
+
     }
-    
+
     return rlt;
   }
 
   /**
    * Delete archieve recordIds
    */
-  static deleteArchivedRecords2Action(snapshot: ISnapshot, payload: { recordsData: any }): IJOTAction[] | null { 
+  static deleteArchivedRecords2Action(snapshot: ISnapshot, payload: { recordsData: any }): IJOTAction[] | null {
     const { recordsData } = payload;
-   
+
     if (!recordsData || !snapshot) return null;
-    
+
     const rlt: IJOTAction[] = [];
     for (let i = 0; i < recordsData.length; i++) {
       rlt.push({
