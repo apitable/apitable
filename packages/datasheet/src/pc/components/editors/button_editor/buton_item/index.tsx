@@ -132,7 +132,7 @@ export const ButtonFieldItem: FunctionComponent<{field: IButtonField,
               (success) => {
                 if(!success) {
                   Message.error({ content: <>
-                    <Box display={'inline-flex'} alignItems={'center'}>
+                    <Box display={'inline-flex'} alignItems={'center'} color={colors.textStaticPrimary}>
                       {t(Strings.button_execute_error)}
                       <StyledLinkButton underline
                         color={colors.textStaticPrimary}
