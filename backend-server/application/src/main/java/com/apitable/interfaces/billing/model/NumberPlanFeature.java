@@ -19,18 +19,31 @@
 package com.apitable.interfaces.billing.model;
 
 /**
- * boolean type of plan feature.
+ * number type of plan feature.
  */
-public abstract class AbstractBooleanPlanFeature implements PlanFeature<Boolean> {
+public class NumberPlanFeature implements PlanFeature<Long> {
 
-    private final boolean value;
+    private Long value;
 
-    public AbstractBooleanPlanFeature(boolean value) {
+    public NumberPlanFeature(Long value) {
         this.value = value;
     }
 
+    public void plus(long other) {
+        value = value + other;
+    }
+
+    /**
+     * unlimited if value is -1.
+     *
+     * @return true or false
+     */
+    public boolean isUnlimited() {
+        return value != -1;
+    }
+
     @Override
-    public Boolean getValue() {
+    public Long getValue() {
         return value;
     }
 }

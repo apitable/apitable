@@ -18,6 +18,8 @@
 
 package com.apitable.interfaces.billing.model;
 
+import org.springframework.util.unit.DataSize;
+
 /**
  * subscription features object collections.
  */
@@ -31,7 +33,7 @@ public class SubscriptionFeatures {
         /**
          * Seat feature.
          */
-        public static class Seat extends AbstractNumberPlanFeature {
+        public static class Seat extends NumberPlanFeature {
 
             public Seat(Long value) {
                 super(value);
@@ -41,9 +43,9 @@ public class SubscriptionFeatures {
         /**
          * ApiQps feature.
          */
-        public static class ApiQps extends AbstractNumberPlanFeature {
+        public static class ApiQpsNums extends NumberPlanFeature {
 
-            public ApiQps(Long value) {
+            public ApiQpsNums(Long value) {
                 super(value);
             }
         }
@@ -51,19 +53,29 @@ public class SubscriptionFeatures {
         /**
          * CapacitySize feature.
          */
-        public static class CapacitySize extends AbstractNumberPlanFeature {
+        public static class CapacitySize extends DataSizePlanFeature {
 
             public CapacitySize(Long value) {
-                super(value);
+                super(DataSize.ofBytes(value));
             }
         }
 
         /**
          * SheetNums feature.
          */
-        public static class SheetNums extends AbstractNumberPlanFeature {
+        public static class FileNodeNums extends NumberPlanFeature {
 
-            public SheetNums(Long value) {
+            public FileNodeNums(Long value) {
+                super(value);
+            }
+        }
+
+        /**
+         * ColumnsPerSheet feature.
+         */
+        public static class ColumnsPerSheet extends NumberPlanFeature {
+
+            public ColumnsPerSheet(Long value) {
                 super(value);
             }
         }
@@ -71,7 +83,7 @@ public class SubscriptionFeatures {
         /**
          * RowsPerSheet feature.
          */
-        public static class RowsPerSheet extends AbstractNumberPlanFeature {
+        public static class RowsPerSheet extends NumberPlanFeature {
 
             public RowsPerSheet(Long value) {
                 super(value);
@@ -81,7 +93,7 @@ public class SubscriptionFeatures {
         /**
          * ArchiveRowsPerSheet feature.
          */
-        public static class ArchivedRowsPerSheet extends AbstractNumberPlanFeature {
+        public static class ArchivedRowsPerSheet extends NumberPlanFeature {
 
             public ArchivedRowsPerSheet(Long value) {
                 super(value);
@@ -91,9 +103,9 @@ public class SubscriptionFeatures {
         /**
          * RowNums feature.
          */
-        public static class RowNums extends AbstractNumberPlanFeature {
+        public static class TotalRows extends NumberPlanFeature {
 
-            public RowNums(Long value) {
+            public TotalRows(Long value) {
                 super(value);
             }
         }
@@ -101,7 +113,7 @@ public class SubscriptionFeatures {
         /**
          * MirrorNums feature.
          */
-        public static class MirrorNums extends AbstractNumberPlanFeature {
+        public static class MirrorNums extends NumberPlanFeature {
 
             public MirrorNums(Long value) {
                 super(value);
@@ -111,7 +123,7 @@ public class SubscriptionFeatures {
         /**
          * AdminNums feature.
          */
-        public static class AdminNums extends AbstractNumberPlanFeature {
+        public static class AdminNums extends NumberPlanFeature {
 
             public AdminNums(Long value) {
                 super(value);
@@ -121,7 +133,7 @@ public class SubscriptionFeatures {
         /**
          * ApiCallNums feature.
          */
-        public static class ApiCallNums extends AbstractNumberPlanFeature {
+        public static class ApiCallNums extends NumberPlanFeature {
 
             public ApiCallNums(Long value) {
                 super(value);
@@ -131,9 +143,19 @@ public class SubscriptionFeatures {
         /**
          * GalleryViews feature.
          */
-        public static class GalleryViews extends AbstractNumberPlanFeature {
+        public static class GalleryViewNums extends NumberPlanFeature {
 
-            public GalleryViews(Long value) {
+            public GalleryViewNums(Long value) {
+                super(value);
+            }
+        }
+
+        /**
+         * ArchitectureViews feature.
+         */
+        public static class ArchitectureViewNums extends NumberPlanFeature {
+
+            public ArchitectureViewNums(Long value) {
                 super(value);
             }
         }
@@ -141,9 +163,9 @@ public class SubscriptionFeatures {
         /**
          * KanbanViews feature.
          */
-        public static class KanbanViews extends AbstractNumberPlanFeature {
+        public static class KanbanViewNums extends NumberPlanFeature {
 
-            public KanbanViews(Long value) {
+            public KanbanViewNums(Long value) {
                 super(value);
             }
         }
@@ -151,9 +173,9 @@ public class SubscriptionFeatures {
         /**
          * FormViews feature.
          */
-        public static class FormViews extends AbstractNumberPlanFeature {
+        public static class FormViewNums extends NumberPlanFeature {
 
-            public FormViews(Long value) {
+            public FormViewNums(Long value) {
                 super(value);
             }
         }
@@ -161,9 +183,9 @@ public class SubscriptionFeatures {
         /**
          * GanttViews feature.
          */
-        public static class GanttViews extends AbstractNumberPlanFeature {
+        public static class GanttViewNums extends NumberPlanFeature {
 
-            public GanttViews(Long value) {
+            public GanttViewNums(Long value) {
                 super(value);
             }
         }
@@ -171,9 +193,9 @@ public class SubscriptionFeatures {
         /**
          * CalendarViews feature.
          */
-        public static class CalendarViews extends AbstractNumberPlanFeature {
+        public static class CalendarViewNums extends NumberPlanFeature {
 
-            public CalendarViews(Long value) {
+            public CalendarViewNums(Long value) {
                 super(value);
             }
         }
@@ -181,7 +203,7 @@ public class SubscriptionFeatures {
         /**
          * FieldPermissionNums feature.
          */
-        public static class FieldPermissionNums extends AbstractNumberPlanFeature {
+        public static class FieldPermissionNums extends NumberPlanFeature {
 
             public FieldPermissionNums(Long value) {
                 super(value);
@@ -191,7 +213,7 @@ public class SubscriptionFeatures {
         /**
          * NodePermissionNums feature.
          */
-        public static class NodePermissionNums extends AbstractNumberPlanFeature {
+        public static class NodePermissionNums extends NumberPlanFeature {
 
             public NodePermissionNums(Long value) {
                 super(value);
@@ -201,7 +223,7 @@ public class SubscriptionFeatures {
         /**
          * Credit Nums feature.
          */
-        public static class MessageCreditNums extends AbstractNumberPlanFeature {
+        public static class MessageCreditNums extends NumberPlanFeature {
 
             public MessageCreditNums(Long value) {
                 super(value);
@@ -211,9 +233,9 @@ public class SubscriptionFeatures {
         /**
          * Automation Nums feature.
          */
-        public static class MessageAutomationRunNums extends AbstractNumberPlanFeature {
+        public static class AutomationRunNums extends NumberPlanFeature {
 
-            public MessageAutomationRunNums(Long value) {
+            public AutomationRunNums(Long value) {
                 super(value);
             }
         }
@@ -221,9 +243,9 @@ public class SubscriptionFeatures {
         /**
          * Widget Nums feature.
          */
-        public static class MessageWidgetNums extends AbstractNumberPlanFeature {
+        public static class WidgetNums extends NumberPlanFeature {
 
-            public MessageWidgetNums(Long value) {
+            public WidgetNums(Long value) {
                 super(value);
             }
         }
@@ -237,9 +259,9 @@ public class SubscriptionFeatures {
         /**
          * SocialConnect feature.
          */
-        public static class SocialConnect extends AbstractBooleanPlanFeature {
+        public static class SocialConnect extends BooleanPlanFeature {
 
-            public SocialConnect(boolean value) {
+            public SocialConnect(Boolean value) {
                 super(value);
             }
         }
@@ -247,9 +269,9 @@ public class SubscriptionFeatures {
         /**
          * RainbowLabel feature.
          */
-        public static class RainbowLabel extends AbstractBooleanPlanFeature {
+        public static class RainbowLabel extends BooleanPlanFeature {
 
-            public RainbowLabel(boolean value) {
+            public RainbowLabel(Boolean value) {
                 super(value);
             }
         }
@@ -257,9 +279,9 @@ public class SubscriptionFeatures {
         /**
          * Watermark feature.
          */
-        public static class Watermark extends AbstractBooleanPlanFeature {
+        public static class Watermark extends BooleanPlanFeature {
 
-            public Watermark(boolean value) {
+            public Watermark(Boolean value) {
                 super(value);
             }
         }
@@ -267,9 +289,9 @@ public class SubscriptionFeatures {
         /**
          * AllowInvitation feature.
          */
-        public static class AllowInvitation extends AbstractBooleanPlanFeature {
+        public static class AllowInvitation extends BooleanPlanFeature {
 
-            public AllowInvitation(boolean value) {
+            public AllowInvitation(Boolean value) {
                 super(value);
             }
         }
@@ -277,9 +299,9 @@ public class SubscriptionFeatures {
         /**
          * AllowApplyJoin feature.
          */
-        public static class AllowApplyJoin extends AbstractBooleanPlanFeature {
+        public static class AllowApplyJoin extends BooleanPlanFeature {
 
-            public AllowApplyJoin(boolean value) {
+            public AllowApplyJoin(Boolean value) {
                 super(value);
             }
         }
@@ -287,9 +309,9 @@ public class SubscriptionFeatures {
         /**
          * AllowShare feature.
          */
-        public static class AllowShare extends AbstractBooleanPlanFeature {
+        public static class AllowShare extends BooleanPlanFeature {
 
-            public AllowShare(boolean value) {
+            public AllowShare(Boolean value) {
                 super(value);
             }
         }
@@ -297,9 +319,9 @@ public class SubscriptionFeatures {
         /**
          * AllowExport feature.
          */
-        public static class AllowExport extends AbstractBooleanPlanFeature {
+        public static class AllowExport extends BooleanPlanFeature {
 
-            public AllowExport(boolean value) {
+            public AllowExport(Boolean value) {
                 super(value);
             }
         }
@@ -307,9 +329,9 @@ public class SubscriptionFeatures {
         /**
          * AllowDownload feature.
          */
-        public static class AllowDownload extends AbstractBooleanPlanFeature {
+        public static class AllowDownload extends BooleanPlanFeature {
 
-            public AllowDownload(boolean value) {
+            public AllowDownload(Boolean value) {
                 super(value);
             }
         }
@@ -317,9 +339,9 @@ public class SubscriptionFeatures {
         /**
          * AllowCopyData feature.
          */
-        public static class AllowCopyData extends AbstractBooleanPlanFeature {
+        public static class AllowCopyData extends BooleanPlanFeature {
 
-            public AllowCopyData(boolean value) {
+            public AllowCopyData(Boolean value) {
                 super(value);
             }
         }
@@ -327,9 +349,9 @@ public class SubscriptionFeatures {
         /**
          * ShowMobileNumber feature.
          */
-        public static class ShowMobileNumber extends AbstractBooleanPlanFeature {
+        public static class ShowMobileNumber extends BooleanPlanFeature {
 
-            public ShowMobileNumber(boolean value) {
+            public ShowMobileNumber(Boolean value) {
                 super(value);
             }
         }
@@ -337,9 +359,9 @@ public class SubscriptionFeatures {
         /**
          * ContactIsolation feature.
          */
-        public static class ContactIsolation extends AbstractBooleanPlanFeature {
+        public static class ContactIsolation extends BooleanPlanFeature {
 
-            public ContactIsolation(boolean value) {
+            public ContactIsolation(Boolean value) {
                 super(value);
             }
         }
@@ -347,9 +369,9 @@ public class SubscriptionFeatures {
         /**
          * ForbidCreateOnCatalog feature.
          */
-        public static class ForbidCreateOnCatalog extends AbstractBooleanPlanFeature {
+        public static class ForbidCreateOnCatalog extends BooleanPlanFeature {
 
-            public ForbidCreateOnCatalog(boolean value) {
+            public ForbidCreateOnCatalog(Boolean value) {
                 super(value);
             }
         }
@@ -357,9 +379,9 @@ public class SubscriptionFeatures {
         /**
          * AllowEmbed feature.
          */
-        public static class AllowEmbed extends AbstractBooleanPlanFeature {
+        public static class AllowEmbed extends BooleanPlanFeature {
 
-            public AllowEmbed(boolean value) {
+            public AllowEmbed(Boolean value) {
                 super(value);
             }
         }
@@ -367,8 +389,8 @@ public class SubscriptionFeatures {
         /**
          * Billing OrgApi feature.
          */
-        public static class AllowOrgApi extends AbstractBooleanPlanFeature {
-            public AllowOrgApi(boolean value) {
+        public static class AllowOrgApi extends BooleanPlanFeature {
+            public AllowOrgApi(Boolean value) {
                 super(value);
             }
         }
@@ -382,7 +404,7 @@ public class SubscriptionFeatures {
         /**
          * RemainTrashDays feature.
          */
-        public static class RemainTrashDays extends AbstractNumberPlanFeature {
+        public static class RemainTrashDays extends NumberPlanFeature {
 
             public RemainTrashDays(Long value) {
                 super(value);
@@ -392,7 +414,7 @@ public class SubscriptionFeatures {
         /**
          * RemainTimeMachineDays feature.
          */
-        public static class RemainTimeMachineDays extends AbstractNumberPlanFeature {
+        public static class RemainTimeMachineDays extends NumberPlanFeature {
 
             public RemainTimeMachineDays(Long value) {
                 super(value);
@@ -402,7 +424,7 @@ public class SubscriptionFeatures {
         /**
          * RemainRecordActivityDays feature.
          */
-        public static class RemainRecordActivityDays extends AbstractNumberPlanFeature {
+        public static class RemainRecordActivityDays extends NumberPlanFeature {
 
             public RemainRecordActivityDays(Long value) {
                 super(value);
@@ -412,7 +434,7 @@ public class SubscriptionFeatures {
         /**
          * AuditQueryDays feature.
          */
-        public static class AuditQueryDays extends AbstractNumberPlanFeature {
+        public static class AuditQueryDays extends NumberPlanFeature {
 
             public AuditQueryDays(Long value) {
                 super(value);

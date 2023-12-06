@@ -61,6 +61,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
@@ -255,9 +256,10 @@ public class NotificationFactory implements INotificationFactory {
 
     @Override
     public NotificationToTag getToUserTagByTemplateId(BaseTemplateId templateId) {
-        String toUserTag = getTemplateById(templateId.getValue()).getToTag();
-        if (StrUtil.isNotBlank(toUserTag)) {
-            return NotificationToTag.getValue(toUserTag);
+        Optional<NotificationTemplate> template =
+            Optional.ofNullable(getTemplateById(templateId.getValue()));
+        if (template.isPresent() && StrUtil.isNotBlank(template.get().getToTag())) {
+            return NotificationToTag.getValue(template.get().getToTag());
         }
         return NotificationToTag.MEMBERS;
     }
