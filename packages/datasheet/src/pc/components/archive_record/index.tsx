@@ -41,6 +41,17 @@ const handleRecordsData = (recordsData) => {
     .filter((item) => item !== null);
 };
 
+const copyToClipboard = (text) => {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      Message.success({ content: t(Strings.copy_success) });
+    })
+    .catch((err) => {
+      Message.error({ content: t(Strings.copy_failed) });
+    });
+};
+
 export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsProps>> = (props) => {
   const { className, showLabel = true, isHide } = props;
   const [open, setOpen] = useState(false);
@@ -96,7 +107,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     setTotal(total - records.length);
   };
 
-  const cancelArchied = (record) => {
+  const cancelArchived = (record) => {
     const data: any[] = [];
 
     data.push(recordsDataMap.get(record.key));
@@ -112,7 +123,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
     }
   };
 
-  const batchCancelArchied = () => {
+  const batchCancelArchived = () => {
     const data: any[] = [];
 
     selectedRowKeys.forEach((key) => {
@@ -214,7 +225,16 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
           dataIndex: id,
           width: 200,
           ellipsis: true,
-          render: (cellValue) => <div className={styles.cellValue}>{showArchivedCellValue(cellValue, key)}</div>,
+          render: (cellValue) => (
+            <div
+              className={styles.cellValue}
+              onClick={() => {
+                copyToClipboard(showArchivedCellValue(cellValue, key));
+              }}
+            >
+              {showArchivedCellValue(cellValue, key)}
+            </div>
+          ),
         };
         if (key === visibleColumns[0].fieldId) {
           fieldSetting.fixed = 'left';
@@ -262,7 +282,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
                   Modal.warning({
                     title: t(Strings.archived_undo),
                     content: t(Strings.unarchive_notice),
-                    onOk: () => cancelArchied(record),
+                    onOk: () => cancelArchived(record),
                     closable: true,
                     hiddenCancelBtn: false,
                   });
@@ -362,7 +382,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
               Modal.warning({
                 title: t(Strings.archived_undo),
                 content: t(Strings.unarchive_notice),
-                onOk: () => batchCancelArchied(),
+                onOk: () => batchCancelArchived(),
                 closable: true,
                 hiddenCancelBtn: false,
               });
