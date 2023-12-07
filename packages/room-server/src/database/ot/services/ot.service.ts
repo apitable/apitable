@@ -358,6 +358,7 @@ export class OtService {
 
     const { resourceType } = changeset;
 
+    const revisionBeginTime = +new Date();
     // If no revision exists, default to latest revision of the datasheet
     if (changeset.baseRevision == null) {
       changeset.baseRevision = (await this.changesetService.getMaxRevision(resourceId, resourceType))!;
@@ -386,7 +387,10 @@ export class OtService {
     const effectMap = new Map<string, any>();
 
     // Transform operations submitted by client into correct changeset
+    const transformBeginTime = +new Date();
     const remoteChangeset = await this.transform(changeset, resourceRevision, effectMap);
+    this.logger.info(`[${resourceId}] ====> Get remote changeset......duration: ${+new Date() - transformBeginTime}ms`);
+
     effectMap.set(EffectConstantName.RemoteChangeset, remoteChangeset);
     // Map that needs notification
     effectMap.set(EffectConstantName.MentionedMessages, []);
@@ -407,11 +411,15 @@ export class OtService {
     if (!isEqual) {
       throw new ServerException(OtException.MATCH_VERSION_ERROR);
     }
+    this.logger.info(`[${resourceId}] ====> Get Revision......duration: ${+new Date() - revisionBeginTime}ms`);
+
     // Obtain permission, if editable is enabled, don't query node/permission, set permission to editor direcly,
     // and obtain userId
+    const permissionBeginTime = +new Date();
     const permission = internalAuth
       ? { ...this.permissionServices.getDefaultManagerPermission(), userId: internalAuth.userId, uuid: internalAuth.uuid }
       : await this.getNodeRole(nodeId, auth, shareId, roomId, sourceDatasheetId, sourceType, allowAllEntrance);
+    this.logger.info(`[${resourceId}] ====> Get Permission......duration: ${+new Date() - permissionBeginTime}ms`);
 
     // Traverse operations from client, there may be multiple operations, but applied on the same resource.
     const beginTime = +new Date();
