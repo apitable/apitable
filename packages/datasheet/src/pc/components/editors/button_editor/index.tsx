@@ -85,14 +85,12 @@ export const runAutomationButton = async (datasheetId: string, record: any, stat
     return;
   }
   try {
-    const respTrigger = await timeout(reqDatasheetButtonTrigger({
+    const respTrigger = await reqDatasheetButtonTrigger({
       dstId: datasheetId,
       recordId,
       fieldId,
-    }), 10 * 1000, { data : { success: false, message: t(Strings.task_timeout) } });
-    const respData = respTrigger?.data as IRunRespStatus;
-    const success = respData?.success ?? false;
-    console.log(`runAutomationButton  recordId ${recordId}`);
+    }) as unknown as {success: boolean};
+    const success = respTrigger?.success ?? false;
     callback(success);
     return respTrigger;
   } catch (e) {
