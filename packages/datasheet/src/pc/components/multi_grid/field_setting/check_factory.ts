@@ -123,16 +123,6 @@ class ButtonField {
       };
     }
 
-    if (curField.property?.text.length > 15) {
-      return {
-        errors: {
-          property3: t(Strings.button_maxium_text, {
-            count: 15
-          }),
-        },
-      };
-    }
-
     if (curField.property.action?.type === ButtonActionType.OpenLink) {
       if (curField.property.action?.openLink?.expression == null || curField.property.action?.openLink?.expression.length === 0) {
         return {

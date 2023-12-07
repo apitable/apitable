@@ -112,7 +112,7 @@ export class ButtonField extends Field {
       text: t(Strings.button_text_click_start),
       style: {
         type: ButtonStyleType.Background,
-        color: 50,
+        color: AutomationConstant.defaultColor,
       },
       action: {
       },
