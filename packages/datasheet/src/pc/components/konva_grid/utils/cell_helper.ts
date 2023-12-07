@@ -331,11 +331,11 @@ export class CellHelper extends KonvaDrawer {
     const listCount = cellValue.length;
     let isOverflow = false;
 
-    let isValid: boolean = getIsValid(buttonField.id);
-    if(buttonField.property.action.type === ButtonActionType.TriggerAutomation) {
-      isValid = isValid && (renderProps.permissions?.['editable'] ?? true);
-    }
-
+    const isValid = true
+    // let isValid: boolean = getIsValid(buttonField.id);
+    // if(buttonField.property.action.type === ButtonActionType.TriggerAutomation) {
+    //   isValid = isValid && (renderProps.permissions?.['editable'] ?? true);
+    // }
 
     const defaultColor = buttonField.property.style.color ? setColor(buttonField.property.style.color, renderProps.cacheTheme) : colors.defaultBg;
     let bg = '';

@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import { FunctionComponent } from 'react';
 import useSWR from 'swr';
+import { ResponseDataAutomationVO } from '@apitable/api-client';
 import { getFieldId } from 'pc/components/automation/controller/hooks/get_field_id';
 import { getRobotDetail } from 'pc/components/editors/button_editor/api';
 import { IAutomationDatum } from 'pc/components/robot/interface';
@@ -10,6 +11,10 @@ export const AutomationItem: FunctionComponent<{ id: string;fieldId: string, han
   const { data } = useSWR(['automation_item'], () => getRobotDetail(id ?? ''));
 
   const router = useRouter();
+  if(!(data instanceof ResponseDataAutomationVO)) {
+    return null;
+  }
+
   const respItem = data?.data;
   if (respItem ==null) {
     return null;
