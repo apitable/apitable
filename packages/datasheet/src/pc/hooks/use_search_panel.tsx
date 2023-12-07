@@ -18,7 +18,7 @@
 
 import { useState } from 'react';
 import { ConfigConstant } from '@apitable/core';
-import { SecondConfirmType } from '../components/datasheet_search_panel';
+import { SecondConfirmType } from '../components/datasheet_search_panel/interface';
 import { useCatalog } from './use_catalog';
 
 export interface IPanelInfo {

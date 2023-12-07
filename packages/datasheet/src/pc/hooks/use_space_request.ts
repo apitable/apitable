@@ -19,7 +19,7 @@
 import { message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { Api, ApiInterface, Navigation, StoreActions, Strings, t } from '@apitable/core';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { Method } from '../components/route_manager/const';
 import { navigationToUrl } from '../components/route_manager/navigation_to_url';
 import { Router } from '../components/route_manager/router';

@@ -19,7 +19,8 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { IMeta, WidgetApi } from '@apitable/core';
-import { FormPreviewer, WidgetPreview } from 'pc/components/datasheet_search_panel/components';
+import { FormPreviewer } from 'pc/components/datasheet_search_panel/components/form_previewer';
+import { WidgetPreview } from 'pc/components/datasheet_search_panel/components/widget_preview';
 import { INodeInstalledWidget, SecondConfirmType } from './interface';
 
 interface IPriviewColumnProps {

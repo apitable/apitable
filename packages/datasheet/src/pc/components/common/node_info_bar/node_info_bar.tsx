@@ -22,18 +22,17 @@ import { FC, useContext, useEffect, useRef, useState } from 'react';
 import { Typography } from '@apitable/components';
 import { ConfigConstant, FOLDER_SHOWCASE_ID, Strings, t } from '@apitable/core';
 import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
-import { ShareContext } from 'pc/components/share';
+import { ShareContext } from 'pc/components/share/share';
 import { DescriptionModal } from 'pc/components/tab_bar/description_modal';
 import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getPermission, KeyCode } from 'pc/utils';
 import { isIframe } from 'pc/utils/env';
 import { NodeFavoriteStatus } from '../node_favorite_status';
 import { Tag, TagColors } from '../tag';
 import { Tooltip } from '../tooltip';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const NODE_NAME_MIN_LEN = 1;
 export const NODE_NAME_MAX_LEN = 100;
