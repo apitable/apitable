@@ -198,7 +198,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
       case FieldType.Checkbox:
         return Field.bindModel(fieldMap[key]).cellValueToString(cellValue);
       case FieldType.Attachment:
-        return cellValue?.map((item) => `${item.name} (${window?.location.origin + '/' + item.token})`).join(', ');
+        return cellValue?.map((item) => `${item.name} (${getEnvVariables()[item.bucket] + item.token})`).join(', ');
       case FieldType.Link:
         return null;
       case FieldType.OneWayLink:
