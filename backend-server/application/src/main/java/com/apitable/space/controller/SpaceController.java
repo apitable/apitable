@@ -372,7 +372,17 @@ public class SpaceController {
     @Parameter(name = "spaceId", description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
     public ResponseData<SpaceInfoVO> info(@PathVariable("spaceId") String spaceId) {
-        return ResponseData.success(iSpaceService.getSpaceInfo(spaceId));
+        SpaceInfoVO spaceInfo = iSpaceService.getSpaceInfo(spaceId);
+        SpaceGlobalFeature spaceGlobalFeature = iSpaceService.getSpaceGlobalFeature(spaceId);
+        spaceInfo.setFeature(spaceGlobalFeature);
+
+
+        // User's resource information
+        Long userId = SessionContext.getUserId();
+        UserSpaceVo userSpaceVo = iSpaceService.getUserSpaceResource(userId, spaceId);
+        spaceInfo.setUserResource(userSpaceVo);
+
+        return ResponseData.success(spaceInfo);
     }
 
     /**
