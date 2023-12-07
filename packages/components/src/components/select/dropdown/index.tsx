@@ -23,7 +23,7 @@ import { SelectItem } from 'components/select/select_item';
 import { convertChildrenToData } from 'components/select/utils';
 import { WrapperTooltip } from 'components/tooltip';
 import { IUseListenTriggerInfo, stopPropagation } from 'helper';
-import {useProviderTheme, useThemeColors} from 'hooks';
+import { useThemeColors } from 'hooks';
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { ListDeprecate } from '../../list_deprecate';
 import { IListItemProps } from '../../list_deprecate/interface';
