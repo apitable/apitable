@@ -64,8 +64,6 @@ export const getCellValue = (
   return res.cellValue;
 };
 
-const IGNORE_CACHE_FIELDS = [FieldType.CreatedBy, FieldType.LookUp];
-
 export const calcCellValueAndString = ({
   state,
   snapshot,
@@ -105,12 +103,11 @@ export const calcCellValueAndString = ({
     };
   }
   const instance = Field.bindContext(field, state);
-
   return {
     cellValue,
     cellStr: field.type === FieldType.URL ? Field.bindContext(field, state).cellValueToTitle(cellValue) : instance.cellValueToString(cellValue),
     // issue: https://github.com/vikadata/vikadata/issues/7757
-    ignoreCache: workerCompute() ? false : (IGNORE_CACHE_FIELDS.some(fieldType => field.type === fieldType) ? true : !instance.isComputed),
+    ignoreCache: workerCompute() ? false : (field.type === FieldType.CreatedBy ? true : !instance.isComputed),
   };
 };
 
