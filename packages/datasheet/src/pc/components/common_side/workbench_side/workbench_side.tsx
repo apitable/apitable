@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { usePostHog } from 'posthog-js/react';
 import * as React from 'react';
 import { FC, useEffect, useMemo, useState } from 'react';
@@ -35,7 +36,6 @@ import {
   WORKBENCH_SIDE_ID,
 } from '@apitable/core';
 import { AddOutlined, DeleteOutlined, FolderAddOutlined, ImportOutlined, PlanetOutlined, SearchOutlined, UserAddOutlined } from '@apitable/icons';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { GenerateTemplate } from 'pc/components/catalog/generate_template';
 import { ImportFile } from 'pc/components/catalog/import_file';
 import { MoveTo } from 'pc/components/catalog/move_to';
@@ -56,14 +56,13 @@ import { sendRemind } from 'pc/events/notification_verification';
 import { IPanelInfo, useCatalogTreeRequest, useRequest, useResponsive, useSearchPanel, useUserRequest, useWorkbenchSideSync } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useCatalog } from 'pc/hooks/use_catalog';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { Catalog } from '../../catalog';
 import { Favorite } from './favorite';
 import { SpaceInfo } from './space-info';
-import styles from './style.module.less';
 import { WorkbenchSideContext } from './workbench_side_context';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
@@ -108,8 +107,6 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const { run: getPositionNode } = useRequest(getPositionNodeReq, {
     manual: true,
   });
-  const { getInviteStatus } = useUserRequest();
-  const { data: inviteStatus } = useRequest(getInviteStatus);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const dispatch = useAppDispatch();
@@ -120,6 +117,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const spacePermissions = useAppSelector((state) => state.spacePermissionManage.spaceResource?.permissions);
   const isSpaceAdmin = spacePermissions && spacePermissions.includes('MANAGE_WORKBENCH');
   const rootManageable = userInfo?.isMainAdmin || isSpaceAdmin || spaceFeatures?.rootManageable;
+  const inviteStatus = spaceFeatures?.invitable;
 
   useWorkbenchSideSync();
 

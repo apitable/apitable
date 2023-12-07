@@ -17,10 +17,10 @@
  */
 
 import { values } from 'lodash';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { IReduxState, StoreActions } from '@apitable/core';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSideBar } from 'pc/components/mobile_side_bar';
 import { Navigation } from 'pc/components/navigation';
@@ -28,15 +28,15 @@ import styles from 'pc/components/route_manager/style.module.less';
 import { ShortcutsPanel } from 'pc/components/shortcuts_panel';
 import { useQuery } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
+import { getEnvVariables } from 'pc/utils/env';
 import { useWxTitleMap } from '../konva_grid';
 // @ts-ignore
 import { isDingtalkSkuPage } from 'enterprise/home/social_platform/utils';
 // @ts-ignore
-import { WecomContactWrapper, } from 'enterprise/wecom/wecom_contact_wrapper/wecom_contact_wrapper';
-// @ts-ignore
 import { WatermarkWrapper } from 'enterprise/watermark/watermark_wrapper';
-import { getEnvVariables } from 'pc/utils/env';
-import {useAppSelector} from "pc/store/react-redux";
+// @ts-ignore
+import { WecomContactWrapper } from 'enterprise/wecom/wecom_contact_wrapper/wecom_contact_wrapper';
 
 export const SideWrapper = (props: { children: any }) => {
   const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
@@ -60,11 +60,9 @@ export const SideWrapper = (props: { children: any }) => {
   const unitTitle = values(unitTitleMap)[0];
 
   useEffect(() => {
-    dispatch(StoreActions.spaceResource());
     if (!spaceId) return;
     IS_ENTERPRISE && dispatch(StoreActions.fetchMarketplaceApps(spaceId));
     dispatch(StoreActions.getSpaceInfo(spaceId));
-    dispatch(StoreActions.getSpaceFeatures());
   }, [dispatch, spaceId]);
 
   useEffect(() => {
