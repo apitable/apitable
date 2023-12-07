@@ -413,7 +413,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
             }
             return false;
           },
-          hidden: !fieldCreatable || fieldError || !fieldPropertyEditable || hasChosenMulti,
+          hidden: !fieldCreatable || fieldError || !fieldPropertyEditable || hasChosenMulti || field.type === FieldType.WorkDoc,
           onClick: () => {
             copyField(fieldIndex + 1, fieldId, 1);
           },
