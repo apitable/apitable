@@ -64,7 +64,6 @@ export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps & {
     children, maxListWidth = 240
   } = props;
   const [isInit, setIsInit] = useState(true);
-  const theme = useProviderTheme();
   const listContainer = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [visible, { toggle: toggleVisible, set: setVisible }] = useToggle(false);
