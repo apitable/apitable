@@ -53,7 +53,7 @@ public class BillingAssembler {
         subscriptionVo.setMaxMessageCredits(billingPlanFeature.getMessageCreditNums().getValue());
         subscriptionVo.setMaxWidgetNums(billingPlanFeature.getWidgetNums().getValue());
         subscriptionVo.setMaxAutomationRunsNums(
-            billingPlanFeature.getAutomationRunNums().getValue());
+            billingPlanFeature.getAutomationRunNumsPerMonth().getValue());
         subscriptionVo.setAllowEmbed(billingPlanFeature.getAllowEmbed().getValue());
         subscriptionVo.setAllowOrgApi(billingPlanFeature.getAllowOrgApi().getValue());
         return subscriptionVo;

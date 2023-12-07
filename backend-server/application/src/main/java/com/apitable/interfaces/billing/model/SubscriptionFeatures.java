@@ -133,9 +133,9 @@ public class SubscriptionFeatures {
         /**
          * ApiCallNums feature.
          */
-        public static class ApiCallNums extends NumberPlanFeature {
+        public static class ApiCallNumsPerMonth extends NumberPlanFeature {
 
-            public ApiCallNums(Long value) {
+            public ApiCallNumsPerMonth(Long value) {
                 super(value);
             }
         }
@@ -173,9 +173,9 @@ public class SubscriptionFeatures {
         /**
          * FormViews feature.
          */
-        public static class FormViewNums extends NumberPlanFeature {
+        public static class FormNums extends NumberPlanFeature {
 
-            public FormViewNums(Long value) {
+            public FormNums(Long value) {
                 super(value);
             }
         }
@@ -201,6 +201,16 @@ public class SubscriptionFeatures {
         }
 
         /**
+         * Dashboard Nums feature.
+         */
+        public static class DashboardNums extends NumberPlanFeature {
+
+            public DashboardNums(Long value) {
+                super(value);
+            }
+        }
+
+        /**
          * FieldPermissionNums feature.
          */
         public static class FieldPermissionNums extends NumberPlanFeature {
@@ -221,6 +231,16 @@ public class SubscriptionFeatures {
         }
 
         /**
+         * ai agent Nums feature.
+         */
+        public static class AiAgentNums extends NumberPlanFeature {
+
+            public AiAgentNums(Long value) {
+                super(value);
+            }
+        }
+
+        /**
          * Credit Nums feature.
          */
         public static class MessageCreditNums extends NumberPlanFeature {
@@ -233,9 +253,9 @@ public class SubscriptionFeatures {
         /**
          * Automation Nums feature.
          */
-        public static class AutomationRunNums extends NumberPlanFeature {
+        public static class AutomationRunNumsPerMonth extends NumberPlanFeature {
 
-            public AutomationRunNums(Long value) {
+            public AutomationRunNumsPerMonth(Long value) {
                 super(value);
             }
         }
@@ -246,6 +266,16 @@ public class SubscriptionFeatures {
         public static class WidgetNums extends NumberPlanFeature {
 
             public WidgetNums(Long value) {
+                super(value);
+            }
+        }
+
+        /**
+         * Snapshot Nums Per Sheet feature.
+         */
+        public static class SnapshotNumsPerSheet extends NumberPlanFeature {
+
+            public SnapshotNumsPerSheet(Long value) {
                 super(value);
             }
         }
@@ -440,5 +470,182 @@ public class SubscriptionFeatures {
                 super(value);
             }
         }
+    }
+
+    public static ConsumeFeatures.CapacitySize buildCapacitySize(DataSize value) {
+        return new ConsumeFeatures.CapacitySize(value.toBytes());
+    }
+
+    public static ConsumeFeatures.CapacitySize buildCapacitySize(Long value) {
+        return new ConsumeFeatures.CapacitySize(value);
+    }
+
+    public static ConsumeFeatures.Seat buildSeat(Long value) {
+        return new ConsumeFeatures.Seat(value);
+    }
+
+    public static ConsumeFeatures.FileNodeNums buildFileNodeNums(Long value) {
+        return new ConsumeFeatures.FileNodeNums(value);
+    }
+
+    public static ConsumeFeatures.AdminNums buildAdminNums(Long value) {
+        return new ConsumeFeatures.AdminNums(value);
+    }
+
+    public static ConsumeFeatures.NodePermissionNums buildNodePermissionNums(Long value) {
+        return new ConsumeFeatures.NodePermissionNums(value);
+    }
+
+    public static ConsumeFeatures.FieldPermissionNums buildFieldPermissionNums(Long value) {
+        return new ConsumeFeatures.FieldPermissionNums(value);
+    }
+
+    public static ConsumeFeatures.ColumnsPerSheet buildColumnsPerSheet(Long value) {
+        return new ConsumeFeatures.ColumnsPerSheet(value);
+    }
+
+    public static ConsumeFeatures.RowsPerSheet buildRowsPerSheet(Long value) {
+        return new ConsumeFeatures.RowsPerSheet(value);
+    }
+
+    public static ConsumeFeatures.ArchivedRowsPerSheet buildArchivedRowsPerSheet(Long value) {
+        return new ConsumeFeatures.ArchivedRowsPerSheet(value);
+    }
+
+    public static ConsumeFeatures.TotalRows buildTotalRows(Long value) {
+        return new ConsumeFeatures.TotalRows(value);
+    }
+
+    public static SubscribeFeatures.AllowOrgApi buildAllowOrgApi(Boolean value) {
+        return new SubscribeFeatures.AllowOrgApi(value);
+    }
+
+    public static ConsumeFeatures.ApiQpsNums buildApiQpsNums(Long value) {
+        return new ConsumeFeatures.ApiQpsNums(value);
+    }
+
+    public static ConsumeFeatures.ApiCallNumsPerMonth buildApiCallNumsPerMonth(Long value) {
+        return new ConsumeFeatures.ApiCallNumsPerMonth(value);
+    }
+
+    public static ConsumeFeatures.MirrorNums buildMirrorNums(Long value) {
+        return new ConsumeFeatures.MirrorNums(value);
+    }
+
+    public static ConsumeFeatures.GanttViewNums buildGanttViewNums(Long value) {
+        return new ConsumeFeatures.GanttViewNums(value);
+    }
+
+    public static ConsumeFeatures.CalendarViewNums buildCalendarViewNums(Long value) {
+        return new ConsumeFeatures.CalendarViewNums(value);
+    }
+
+    public static ConsumeFeatures.FormNums buildFormNums(Long value) {
+        return new ConsumeFeatures.FormNums(value);
+    }
+
+    public static ConsumeFeatures.KanbanViewNums buildKanbanViewNums(Long value) {
+        return new ConsumeFeatures.KanbanViewNums(value);
+    }
+
+    public static ConsumeFeatures.GalleryViewNums buildGalleryViewNums(Long value) {
+        return new ConsumeFeatures.GalleryViewNums(value);
+    }
+
+    public static ConsumeFeatures.ArchitectureViewNums buildArchitectureViewNums(Long value) {
+        return new ConsumeFeatures.ArchitectureViewNums(value);
+    }
+
+    public static ConsumeFeatures.DashboardNums buildDashboardNums(Long value) {
+        return new ConsumeFeatures.DashboardNums(value);
+    }
+
+    public static ConsumeFeatures.WidgetNums buildWidgetNums(Long value) {
+        return new ConsumeFeatures.WidgetNums(value);
+    }
+
+    public static ConsumeFeatures.AiAgentNums buildAiAgentNums(Long value) {
+        return new ConsumeFeatures.AiAgentNums(value);
+    }
+
+    public static ConsumeFeatures.MessageCreditNums buildMessageCreditNums(Long value) {
+        return new ConsumeFeatures.MessageCreditNums(value);
+    }
+
+    public static ConsumeFeatures.AutomationRunNumsPerMonth buildAutomationRunNums(Long value) {
+        return new ConsumeFeatures.AutomationRunNumsPerMonth(value);
+    }
+
+    public static SolidFeatures.RemainTrashDays buildRemainTrashDays(Long value) {
+        return new SolidFeatures.RemainTrashDays(value);
+    }
+
+    public static SolidFeatures.RemainTimeMachineDays buildRemainTimeMachineDays(Long value) {
+        return new SolidFeatures.RemainTimeMachineDays(value);
+    }
+
+    public static SolidFeatures.RemainRecordActivityDays buildRemainRecordActivityDays(Long value) {
+        return new SolidFeatures.RemainRecordActivityDays(value);
+    }
+
+    public static SolidFeatures.AuditQueryDays buildAuditQueryDays(Long value) {
+        return new SolidFeatures.AuditQueryDays(value);
+    }
+
+    public static ConsumeFeatures.SnapshotNumsPerSheet buildSnapshotNumsPerSheet(Long value) {
+        return new ConsumeFeatures.SnapshotNumsPerSheet(value);
+    }
+
+    public static SubscribeFeatures.SocialConnect buildSocialConnect(Boolean value) {
+        return new SubscribeFeatures.SocialConnect(value);
+    }
+
+    public static SubscribeFeatures.RainbowLabel buildRainbowLabel(Boolean value) {
+        return new SubscribeFeatures.RainbowLabel(value);
+    }
+
+    public static SubscribeFeatures.Watermark buildWatermark(Boolean value) {
+        return new SubscribeFeatures.Watermark(value);
+    }
+
+    public static SubscribeFeatures.AllowInvitation buildAllowInvitation(Boolean value) {
+        return new SubscribeFeatures.AllowInvitation(value);
+    }
+
+    public static SubscribeFeatures.AllowApplyJoin buildAllowApplyJoin(Boolean value) {
+        return new SubscribeFeatures.AllowApplyJoin(value);
+    }
+
+    public static SubscribeFeatures.AllowShare buildAllowShare(Boolean value) {
+        return new SubscribeFeatures.AllowShare(value);
+    }
+
+    public static SubscribeFeatures.AllowExport buildAllowExport(Boolean value) {
+        return new SubscribeFeatures.AllowExport(value);
+    }
+
+    public static SubscribeFeatures.AllowDownload buildAllowDownload(Boolean value) {
+        return new SubscribeFeatures.AllowDownload(value);
+    }
+
+    public static SubscribeFeatures.AllowCopyData buildAllowCopyData(Boolean value) {
+        return new SubscribeFeatures.AllowCopyData(value);
+    }
+
+    public static SubscribeFeatures.ShowMobileNumber buildShowMobileNumber(Boolean value) {
+        return new SubscribeFeatures.ShowMobileNumber(value);
+    }
+
+    public static SubscribeFeatures.ContactIsolation buildContactIsolation(Boolean value) {
+        return new SubscribeFeatures.ContactIsolation(value);
+    }
+
+    public static SubscribeFeatures.ForbidCreateOnCatalog buildForbidCreateOnCatalog(
+        Boolean value) {
+        return new SubscribeFeatures.ForbidCreateOnCatalog(value);
+    }
+
+    public static SubscribeFeatures.AllowEmbed buildAllowEmbed(Boolean value) {
+        return new SubscribeFeatures.AllowEmbed(value);
     }
 }

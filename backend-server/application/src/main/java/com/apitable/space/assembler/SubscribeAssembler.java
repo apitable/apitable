@@ -61,13 +61,13 @@ public class SubscribeAssembler {
         result.setMaxApiCall(feature.getApiCallNumsPerMonth().getValue());
         result.setMaxGalleryViewsInSpace(feature.getGalleryViewNums().getValue());
         result.setMaxKanbanViewsInSpace(feature.getKanbanViewNums().getValue());
-        result.setMaxFormViewsInSpace(feature.getFormViewNums().getValue());
+        result.setMaxFormViewsInSpace(feature.getFormNums().getValue());
         result.setMaxGanttViewsInSpace(feature.getGanttViewNums().getValue());
         result.setMaxCalendarViewsInSpace(feature.getCalendarViewNums().getValue());
         result.setFieldPermissionNums(feature.getFieldPermissionNums().getValue());
         result.setNodePermissionNums(feature.getNodePermissionNums().getValue());
         result.setMaxMessageCredits(feature.getMessageCreditNums().getValue());
-        result.setMaxAutomationRunNums(feature.getAutomationRunNums().getValue());
+        result.setMaxAutomationRunNums(feature.getAutomationRunNumsPerMonth().getValue());
         result.setMaxWidgetNums(feature.getWidgetNums().getValue());
 
         result.setIntegrationFeishu(feature.getSocialConnect().getValue());

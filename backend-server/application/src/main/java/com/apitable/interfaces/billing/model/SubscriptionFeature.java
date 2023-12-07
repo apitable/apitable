@@ -19,17 +19,19 @@
 package com.apitable.interfaces.billing.model;
 
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AdminNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiCallNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AiAgentNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiCallNumsPerMonth;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiQpsNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ArchitectureViewNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ArchivedRowsPerSheet;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AutomationRunNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AutomationRunNumsPerMonth;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CalendarViewNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CapacitySize;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ColumnsPerSheet;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.DashboardNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FieldPermissionNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FileNodeNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FormViewNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FormNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.GalleryViewNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.GanttViewNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.KanbanViewNums;
@@ -38,6 +40,7 @@ import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeature
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.NodePermissionNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.RowsPerSheet;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.Seat;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.SnapshotNumsPerSheet;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.TotalRows;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.WidgetNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SolidFeatures.AuditQueryDays;
@@ -76,15 +79,17 @@ public interface SubscriptionFeature {
 
     RowsPerSheet getRowsPerSheet();
 
+    default SnapshotNumsPerSheet getSnapshotNumsPerSheet() {
+        return new SnapshotNumsPerSheet(0L);
+    }
+
     ArchivedRowsPerSheet getArchivedRowsPerSheet();
 
     TotalRows getTotalRows();
 
-    MirrorNums getMirrorNums();
-
     AdminNums getAdminNums();
 
-    ApiCallNums getApiCallNumsPerMonth();
+    ApiCallNumsPerMonth getApiCallNumsPerMonth();
 
     default GalleryViewNums getGalleryViewNums() {
         return new GalleryViewNums(-1L);
@@ -98,11 +103,21 @@ public interface SubscriptionFeature {
         return new ArchitectureViewNums(-1L);
     }
 
-    FormViewNums getFormViewNums();
-
     GanttViewNums getGanttViewNums();
 
     CalendarViewNums getCalendarViewNums();
+
+    FormNums getFormNums();
+
+    MirrorNums getMirrorNums();
+
+    default DashboardNums getDashboardNums() {
+        return new DashboardNums(0L);
+    }
+
+    default WidgetNums getWidgetNums() {
+        return new WidgetNums(0L);
+    }
 
     FieldPermissionNums getFieldPermissionNums();
 
@@ -146,15 +161,15 @@ public interface SubscriptionFeature {
 
     AllowOrgApi getAllowOrgApi();
 
+    default AiAgentNums getAiAgentNums() {
+        return new AiAgentNums(0L);
+    }
+
     default MessageCreditNums getMessageCreditNums() {
         return new MessageCreditNums(0L);
     }
 
-    default AutomationRunNums getAutomationRunNums() {
-        return new AutomationRunNums(0L);
-    }
-
-    default WidgetNums getWidgetNums() {
-        return new WidgetNums(0L);
+    default AutomationRunNumsPerMonth getAutomationRunNumsPerMonth() {
+        return new AutomationRunNumsPerMonth(0L);
     }
 }

@@ -115,14 +115,16 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
             count = automationRobotService.getRobotRunsCountBySpaceId(spaceId);
             redisTemplate.boundValueOps(redisKey).setIfAbsent(count, 31, TimeUnit.DAYS);
         }
-        SubscriptionFeatures.ConsumeFeatures.AutomationRunNums automationRunNums =
-            subscriptionInfo.getFeature().getAutomationRunNums();
-        vo.setMaxAutomationRunNums(automationRunNums.getValue());
+        SubscriptionFeatures.ConsumeFeatures.AutomationRunNumsPerMonth automationRunNumsPerMonth =
+            subscriptionInfo.getFeature().getAutomationRunNumsPerMonth();
+        vo.setMaxAutomationRunNums(automationRunNumsPerMonth.getValue());
         vo.setAutomationRunNums(count);
         if (Boolean.TRUE.equals(skipAutomationRunNumValidate)) {
             vo.setAllowRun(true);
         } else {
-            vo.setAllowRun(automationRunNums.isUnlimited() || count < automationRunNums.getValue());
+            vo.setAllowRun(
+                automationRunNumsPerMonth.isUnlimited()
+                    || count < automationRunNumsPerMonth.getValue());
         }
         return vo;
     }

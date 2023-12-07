@@ -19,15 +19,15 @@
 package com.apitable.interfaces.billing.model;
 
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AdminNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiCallNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiCallNumsPerMonth;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiQpsNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ArchivedRowsPerSheet;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AutomationRunNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AutomationRunNumsPerMonth;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CalendarViewNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CapacitySize;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FieldPermissionNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FileNodeNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FormViewNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FormNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.GanttViewNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MirrorNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.NodePermissionNums;
@@ -100,8 +100,8 @@ public class DefaultSubscriptionFeature implements SubscriptionFeature {
     }
 
     @Override
-    public ApiCallNums getApiCallNumsPerMonth() {
-        return new ApiCallNums(-1L);
+    public ApiCallNumsPerMonth getApiCallNumsPerMonth() {
+        return new ApiCallNumsPerMonth(-1L);
     }
 
 
@@ -111,13 +111,13 @@ public class DefaultSubscriptionFeature implements SubscriptionFeature {
     }
 
     @Override
-    public AutomationRunNums getAutomationRunNums() {
-        return new AutomationRunNums(-1L);
+    public AutomationRunNumsPerMonth getAutomationRunNumsPerMonth() {
+        return new AutomationRunNumsPerMonth(-1L);
     }
 
     @Override
-    public FormViewNums getFormViewNums() {
-        return new FormViewNums(-1L);
+    public FormNums getFormNums() {
+        return new FormNums(-1L);
     }
 
     @Override
