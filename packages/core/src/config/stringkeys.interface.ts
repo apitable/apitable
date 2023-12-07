@@ -908,6 +908,8 @@ export type StringKeysMapType = {
   'button_bind_confirmed': 'button_bind_confirmed',
   'button_bind_now': 'button_bind_now',
   'button_change_phone': 'button_change_phone',
+  'button_check_history': 'button_check_history',
+  'button_check_history_end': 'button_check_history_end',
   'button_click_trigger_explanation': 'button_click_trigger_explanation',
   'button_color': 'button_color',
   'button_combine': 'button_combine',

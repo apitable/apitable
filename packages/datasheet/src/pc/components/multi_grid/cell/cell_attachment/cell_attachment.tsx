@@ -79,7 +79,11 @@ export const CellAttachment: React.FC<React.PropsWithChildren<ICellAttachmentPro
   const [isDragEnter, setDragEnter] = useState(false);
   const [uploadList, setUploadList] = useState<IUploadFileList>(uploadManager ? uploadManager.get(UploadManager.getCellId(recordId, field.id)) : []);
 
-  const fileList: IAttachmentValue[] = useGetSignatureAssertByToken(cellValue as IAttachmentValue[]);
+  let fileList: IAttachmentValue[] = useGetSignatureAssertByToken(cellValue as IAttachmentValue[]);
+  // other field toggle to attachment field clear dirty data
+  if (!Array.isArray(cellValue)) {
+    fileList = [];
+  }
 
   const { datasheetId, permissions } = useAppSelector(
     (state: IReduxState) => ({

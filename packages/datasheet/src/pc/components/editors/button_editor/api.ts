@@ -1,7 +1,7 @@
-import { ResponseDataAutomationVO } from '@apitable/api-client';
+import { ResponseDataAutomationVO, ResponseDataListAutomationSimpleVO } from '@apitable/api-client';
 import { automationApiClient } from 'pc/common/api-client';
 
-export const getRobotDetail = async (automationId: string, shareId?: string): Promise<ResponseDataAutomationVO | undefined> => {
+export const getRobotDetail = async (automationId: string, shareId?: string): Promise<ResponseDataAutomationVO | ResponseDataListAutomationSimpleVO> => {
 
   const res = await automationApiClient.getResourceRobots({
     resourceId: automationId ?? '',
@@ -10,7 +10,7 @@ export const getRobotDetail = async (automationId: string, shareId?: string): Pr
 
   const data = res.data?.[0];
   if (!Boolean(data)) {
-    return undefined;
+    return res;
   }
 
   const automationDetail = await automationApiClient.getNodeRobot({
