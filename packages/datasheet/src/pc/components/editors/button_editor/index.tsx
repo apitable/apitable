@@ -89,8 +89,8 @@ export const runAutomationButton = async (datasheetId: string, record: any, stat
       dstId: datasheetId,
       recordId,
       fieldId,
-    }) as unknown as {success: boolean};
-    const success = respTrigger?.success ?? false;
+    }) as unknown as {data : {success: boolean}};
+    const success = respTrigger?.data?.success ?? false;
     callback(success);
     return respTrigger;
   } catch (e) {
