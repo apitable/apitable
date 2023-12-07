@@ -17,9 +17,17 @@
  */
 
 import {
-  IDatasheetTablebundles, IRecoverDatasheetTablebundles,
-  IFieldPermissionResponse, IFieldPermissionRoleListData, IGetCommentsByIdsResponse, IGetTreeSelectDataReq,
-  IGetTreeSelectDataRes, IGetTreeSelectSnapshotReq, IGetTreeSelectSnapshotRes, ISubOrUnsubByRecordIdsReq, IUpdateTreeSelectSnapshotReq,
+  IDatasheetTablebundles,
+  IRecoverDatasheetTablebundles,
+  IFieldPermissionResponse,
+  IFieldPermissionRoleListData,
+  IGetCommentsByIdsResponse,
+  IGetTreeSelectDataReq,
+  IGetTreeSelectDataRes,
+  IGetTreeSelectSnapshotReq,
+  IGetTreeSelectSnapshotRes,
+  ISubOrUnsubByRecordIdsReq,
+  IUpdateTreeSelectSnapshotReq,
 } from 'modules/database/api/datasheet_api.interface';
 import axios, { AxiosRequestConfig, AxiosResponse, CancelTokenSource } from 'axios';
 import * as Url from './url.data';
@@ -40,8 +48,10 @@ const baseURL = process.env.NEXT_PUBLIC_NEXT_API;
  *
  * @deprecated This function is deprecated and should not be used. Use databus-wasm instead
  */
-export function fetchDatasheetPack(dstId: string, recordIds?: string | string[]): Promise<AxiosResponse<IApiWrapper & { data: IServerDatasheetPack }>> {
-
+export function fetchDatasheetPack(
+  dstId: string,
+  recordIds?: string | string[],
+): Promise<AxiosResponse<IApiWrapper & { data: IServerDatasheetPack }>> {
   if (getBrowserDatabusApiEnabled()) {
     if (recordIds == null || (Array.isArray(recordIds) && recordIds.length === 0)) {
       // return WasmApi.getInstance().get_datasheet_pack(dstId);
@@ -51,11 +61,11 @@ export function fetchDatasheetPack(dstId: string, recordIds?: string | string[])
   return axios.get<IApiWrapper & { data: IServerDatasheetPack }>(urlcat(Url.DATAPACK, { dstId }), {
     baseURL,
     params: {
-      recordIds
+      recordIds,
     },
-    paramsSerializer: params => {
+    paramsSerializer: (params) => {
       return Qs.stringify(params, { arrayFormat: 'repeat' });
-    }
+    },
   });
 }
 
@@ -95,8 +105,9 @@ export function fetchEmbedDatasheetPack(embedId: string, dstId: string) {
  * @returns
  */
 export function fetchForeignDatasheetPack(resourceId: string, foreignDatasheetId: string) {
-  return axios.get<IApiWrapper & { data: IServerDatasheetPack }>(urlcat(Url.READ_FOREIGN_DATASHEET_PACK,
-    { resourceId, foreignDatasheetId }), { baseURL });
+  return axios.get<IApiWrapper & { data: IServerDatasheetPack }>(urlcat(Url.READ_FOREIGN_DATASHEET_PACK, { resourceId, foreignDatasheetId }), {
+    baseURL,
+  });
 }
 
 /**
@@ -129,7 +140,7 @@ export function fetchChangesets<T>(
   startRevision: number,
   endRevision: number,
   sourceId?: string,
-  shareId?: string
+  shareId?: string,
 ) {
   const url = shareId ? urlcat(Url.READ_SHARE_CHANGESET, { shareId, resourceId }) : urlcat(Url.READ_CHANGESET, { resourceId });
   return axios.get<T>(url, {
@@ -141,7 +152,7 @@ export function fetchChangesets<T>(
       sourceId,
     },
     // serialize params revisions: [1,2,3] to normal GET params revisions=1&revisions=2&revisions=3
-    paramsSerializer: params => {
+    paramsSerializer: (params) => {
       return Qs.stringify(params, { arrayFormat: 'repeat' });
     },
   });
@@ -183,7 +194,7 @@ export function fetchUserList<T>(nodeId: string, uuids: string[]) {
     },
 
     // serialize params revisions: [1,2,3] to normal GET params revisons=1&revisions=2&revisions=3
-    paramsSerializer: params => {
+    paramsSerializer: (params) => {
       return Qs.stringify(params, { arrayFormat: 'repeat' });
     },
   });
@@ -321,9 +332,7 @@ export function batchEditFieldPermissionRole(dstId: string, fieldId: string, opt
  * @returns
  */
 export function getDstViewDataPack(dstId: string, viewId: string) {
-  return axios.get<IApiWrapper & { data: IFieldPermissionResponse[] }>(
-    urlcat(Url.GET_DST_VIEW_DATA_PACK, { dstId, viewId }), { baseURL },
-  );
+  return axios.get<IApiWrapper & { data: IFieldPermissionResponse[] }>(urlcat(Url.GET_DST_VIEW_DATA_PACK, { dstId, viewId }), { baseURL });
 }
 
 /**
@@ -335,22 +344,19 @@ export function getDstViewDataPack(dstId: string, viewId: string) {
  * @returns
  */
 export function getShareDstViewDataPack(dstId: string, viewId: string, shareId: string) {
-  return axios.get<IApiWrapper & { data: IFieldPermissionResponse[] }>(
-    urlcat(Url.GET_SHARE_DST_VIEW_DATA_PACK, { dstId, viewId, shareId }), { baseURL },
-  );
+  return axios.get<IApiWrapper & { data: IFieldPermissionResponse[] }>(urlcat(Url.GET_SHARE_DST_VIEW_DATA_PACK, { dstId, viewId, shareId }), {
+    baseURL,
+  });
 }
 
 export function getContentDisposition(url: string) {
-  return axios.post<IApiWrapper & { data: string }>(
-    Url.GET_CONTENT_DISPOSITION,
-    { url },
-    { baseURL },
-  );
+  return axios.post<IApiWrapper & { data: string }>(Url.GET_CONTENT_DISPOSITION, { url }, { baseURL });
 }
 
 export function getCommentsByIds(dstId: string, recordId: string, commentIds: string) {
   return axios.get<IApiWrapper & { data: IGetCommentsByIdsResponse }>(
-    urlcat(Url.GET_COMMENTS_BY_IDS, { dstId, recordId }) + `?commentIds=${commentIds}`, {
+    urlcat(Url.GET_COMMENTS_BY_IDS, { dstId, recordId }) + `?commentIds=${commentIds}`,
+    {
       baseURL,
     },
   );
@@ -363,9 +369,10 @@ export function getCommentsByIds(dstId: string, recordId: string, commentIds: st
  * @param mirrorId
  * @returns
  */
-export const getSubscriptions = (dstId: string, mirrorId?: string) => mirrorId
-  ? axios.get<IApiWrapper & { data: string[] }>(urlcat(Url.GET_MIRROR_SUBSCRIPTIONS, { mirrorId }), { baseURL })
-  : axios.get<IApiWrapper & { data: string[] }>(urlcat(Url.GET_DATASHEET_SUBSCRIPTIONS, { dstId }), { baseURL });
+export const getSubscriptions = (dstId: string, mirrorId?: string) =>
+  mirrorId
+    ? axios.get<IApiWrapper & { data: string[] }>(urlcat(Url.GET_MIRROR_SUBSCRIPTIONS, { mirrorId }), { baseURL })
+    : axios.get<IApiWrapper & { data: string[] }>(urlcat(Url.GET_DATASHEET_SUBSCRIPTIONS, { dstId }), { baseURL });
 
 /**
  *
@@ -374,18 +381,20 @@ export const getSubscriptions = (dstId: string, mirrorId?: string) => mirrorId
  * @param param0
  * @returns
  */
-export const subscribeRecordByIds = ({ datasheetId, mirrorId, recordIds }: ISubOrUnsubByRecordIdsReq) => mirrorId
-  ? axios.post<IApiWrapper>(urlcat(Url.SUBSCRIBE_MIRROR_RECORDS, { mirrorNodeId: mirrorId }), { recordIds }, { baseURL })
-  : axios.post<IApiWrapper>(urlcat(Url.SUBSCRIBE_DATASHEET_RECORDS, { dstId: datasheetId }), { recordIds }, { baseURL });
+export const subscribeRecordByIds = ({ datasheetId, mirrorId, recordIds }: ISubOrUnsubByRecordIdsReq) =>
+  mirrorId
+    ? axios.post<IApiWrapper>(urlcat(Url.SUBSCRIBE_MIRROR_RECORDS, { mirrorNodeId: mirrorId }), { recordIds }, { baseURL })
+    : axios.post<IApiWrapper>(urlcat(Url.SUBSCRIBE_DATASHEET_RECORDS, { dstId: datasheetId }), { recordIds }, { baseURL });
 
 /**
  * unsubscribe(cancel follow) datasheet/mirror's record
  * @param param0
  * @returns
  */
-export const unsubscribeRecordByIds = ({ datasheetId, mirrorId, recordIds }: ISubOrUnsubByRecordIdsReq) => mirrorId
-  ? axios.delete<IApiWrapper>(urlcat(Url.UNSUBSCRIBE_MIRROR_RECORDS, { mirrorNodeId: mirrorId }), { data: { recordIds }, baseURL })
-  : axios.delete<IApiWrapper>(urlcat(Url.UNSUBSCRIBE_DATASHEET_RECORDS, { dstId: datasheetId }), { data: { recordIds }, baseURL });
+export const unsubscribeRecordByIds = ({ datasheetId, mirrorId, recordIds }: ISubOrUnsubByRecordIdsReq) =>
+  mirrorId
+    ? axios.delete<IApiWrapper>(urlcat(Url.UNSUBSCRIBE_MIRROR_RECORDS, { mirrorNodeId: mirrorId }), { data: { recordIds }, baseURL })
+    : axios.delete<IApiWrapper>(urlcat(Url.UNSUBSCRIBE_DATASHEET_RECORDS, { dstId: datasheetId }), { data: { recordIds }, baseURL });
 
 /**
  * batch delete field permissions
@@ -399,36 +408,35 @@ export const batchDeletePermissionRole = (dstId: string, fieldId: string, option
 };
 
 // Get cascader data
-export const getCascaderData = ({
-  spaceId,
-  datasheetId,
-  linkedViewId,
-  linkedFieldIds,
-}: IGetTreeSelectDataReq) => axios.get<IApiWrapper & IGetTreeSelectDataRes>(urlcat(Url.CASCADER_DATA, {
-  spaceId,
-  datasheetId,
-}), {
-  baseURL,
-  params: {
-    linkedViewId,
-    linkedFieldIds,
-  },
-});
+export const getCascaderData = ({ spaceId, datasheetId, linkedViewId, linkedFieldIds }: IGetTreeSelectDataReq) =>
+  axios.get<IApiWrapper & IGetTreeSelectDataRes>(
+    urlcat(Url.CASCADER_DATA, {
+      spaceId,
+      datasheetId,
+    }),
+    {
+      baseURL,
+      params: {
+        linkedViewId,
+        linkedFieldIds,
+      },
+    },
+  );
 
 // get cascader snapshot data
-export const getCascaderSnapshot = ({
-  datasheetId,
-  fieldId,
-  linkedFieldIds,
-}: IGetTreeSelectSnapshotReq) => axios.get<IApiWrapper & { data: IGetTreeSelectSnapshotRes }>(urlcat(Url.CASCADER_SNAPSHOT, {
-  datasheetId,
-  fieldId,
-}), {
-  baseURL,
-  params: {
-    linkedFieldIds,
-  },
-});
+export const getCascaderSnapshot = ({ datasheetId, fieldId, linkedFieldIds }: IGetTreeSelectSnapshotReq) =>
+  axios.get<IApiWrapper & { data: IGetTreeSelectSnapshotRes }>(
+    urlcat(Url.CASCADER_SNAPSHOT, {
+      datasheetId,
+      fieldId,
+    }),
+    {
+      baseURL,
+      params: {
+        linkedFieldIds,
+      },
+    },
+  );
 
 // update cascader snapshot data
 export const updateCascaderSnapshot = ({
@@ -437,17 +445,22 @@ export const updateCascaderSnapshot = ({
   fieldId, // snapshot field ID
   linkedDatasheetId,
   linkedViewId,
-}: IUpdateTreeSelectSnapshotReq) => axios.put<IApiWrapper & { data: boolean }>(urlcat(Url.UPDATE_CASCADER_SNAPSHOT, {
-  spaceId,
-  datasheetId,
-  fieldId,
-}), undefined, {
-  baseURL,
-  params: {
-    linkedDatasheetId,
-    linkedViewId,
-  },
-});
+}: IUpdateTreeSelectSnapshotReq) =>
+  axios.put<IApiWrapper & { data: boolean }>(
+    urlcat(Url.UPDATE_CASCADER_SNAPSHOT, {
+      spaceId,
+      datasheetId,
+      fieldId,
+    }),
+    undefined,
+    {
+      baseURL,
+      params: {
+        linkedDatasheetId,
+        linkedViewId,
+      },
+    },
+  );
 
 // create datasheet snapshot
 export const createDatasheetTablebundle = (nodeId: string) => {
@@ -472,14 +485,17 @@ export const deleteDatasheetTablebundle = (nodeId: string, tablebundleId: string
 // recover datasheet snapshot
 export const recoverDatasheetTablebundle = (nodeId: string, tablebundleId: string, folderId: string, recoverNameSuffix: string) => {
   return axios.post<IApiWrapper & { data: IRecoverDatasheetTablebundles }>(
-    urlcat(Url.RECOVER_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId, folderId, name: recoverNameSuffix }), undefined, { baseURL }
+    urlcat(Url.RECOVER_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId, folderId, name: recoverNameSuffix }),
+    undefined,
+    { baseURL },
   );
 };
 
 // preview datasheet snapshot
 export const previewDatasheetTablebundle = (nodeId: string, tablebundleId: string) => {
-  return axios.get<IApiWrapper & { data: { snapshot: ISnapshot } }>(
-    urlcat(Url.PREVIEW_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId }), { baseURL });
+  return axios.get<IApiWrapper & { data: { snapshot: ISnapshot } }>(urlcat(Url.PREVIEW_DATASHEET_TABLEBUNDLE, { nodeId, tablebundleId }), {
+    baseURL,
+  });
 };
 
 // get archived records data
