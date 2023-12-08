@@ -85,6 +85,7 @@ spring-boot-integration = { module = "org.springframework.boot:spring-boot-start
 
 # test framework dependencies
 spring-boot-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-security-test = { module = "org.springframework.security:spring-security-test" }
 assertj = { module = "org.assertj:assertj-core" }
 hamcrest = { module = "org.hamcrest:hamcrest" }
 mockito-inline = { module = "org.mockito:mockito-inline" }
