@@ -1,5 +1,6 @@
 import produce from 'immer';
 import { useAtomValue, useSetAtom } from 'jotai';
+import { isNil } from 'lodash';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import styled, { css } from 'styled-components';
@@ -26,9 +27,17 @@ import { setColor } from 'pc/components/multi_grid/format';
 import { AutomationScenario } from 'pc/components/robot/interface';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
+import { stopPropagation } from 'pc/utils';
 import { automationTaskMap, AutomationTaskStatus } from '../automation_task_map';
 
 type TO = ReturnType<typeof setTimeout>;
+
+// (444, 'button field automation not configured');
+// (445, 'button field automation trigger not configured');
+// (1106, 'The automation not activated');
+// (1107, 'The automation trigger not exits');
+// (1108, 'The automation trigger invalid');
+const CONST_AUTOMATION_ERROR =[444, 445, 1106, 1107, 1108];
 
 const StyledTypographyNoMargin = styled(Typography)`
   margin-bottom: 0 !important;
@@ -123,13 +132,23 @@ export const ButtonFieldItem: FunctionComponent<{field: IButtonField,
             if(taskStatus ==='success') {
               return;
             }
+
+            if(isNil(field.property.action?.type)) {
+              Message.error({ content: t(Strings.automation_tips) });
+              return;
+            }
+
             if(field.property.action.type === ButtonActionType.OpenLink) {
               runAutomationUrl(datasheetId, record, state, recordId, field.id, field);
               return;
             }
 
             const task =( ) => runAutomationButton(datasheetId, record, state, recordId, field.id, field,
-              (success) => {
+              (success, code, message) => {
+                if(!success && code && CONST_AUTOMATION_ERROR.includes(code) && message) {
+                  Message.error({ content: message });
+                  return;
+                }
                 if(!success) {
                   Message.error({ content: <>
                     <Box display={'inline-flex'} alignItems={'center'} color={colors.textStaticPrimary}>
@@ -234,7 +253,10 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
             height={height ?? itemHeight}
             loading={isLoading}
             borderRadius={'4px'}
-            onClick={onStart}
+            onClick={(e) => {
+              stopPropagation(e);
+              onStart();
+            }}
             maxWidth={maxWidth?? '100%'}
             paddingX={'10px'}
             marginTop={marginTop}
@@ -313,7 +335,10 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
           loading={isLoading}
           borderRadius={'4px'}
           paddingX={'10px'}
-          onClick={onStart}
+          onClick={(e) => {
+            stopPropagation(e);
+            onStart();
+          }}
           height={height ?? itemHeight}
           maxWidth={maxWidth?? '100%'}
           marginTop={marginTop}

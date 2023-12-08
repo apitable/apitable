@@ -79,21 +79,19 @@ export const runAutomationUrl = (datasheetId: string, record: any, state: IRedux
 };
 
 export const runAutomationButton = async (datasheetId: string, record: any, state: IReduxState, recordId: string, fieldId: string, field: IButtonField,
-  callback: (success?: boolean) => void
+  callback: (success?: boolean, code?: number, message?: string) => void
 ) : Promise<any|undefined>=> {
   if(field.property.action.type === ButtonActionType.OpenLink) {
     return;
   }
   try {
-    const respTrigger = await timeout(reqDatasheetButtonTrigger({
+    const respTrigger = await reqDatasheetButtonTrigger({
       dstId: datasheetId,
       recordId,
       fieldId,
-    }), 10 * 1000, { data : { success: false, message: t(Strings.task_timeout) } });
-    const respData = respTrigger?.data as IRunRespStatus;
-    const success = respData?.success ?? false;
-    console.log(`runAutomationButton  recordId ${recordId}`);
-    callback(success);
+    }) as unknown as {data : {success: boolean, code: number, message: string}};
+    const success = respTrigger?.data?.success ?? false;
+    callback(success, respTrigger?.data?.code, respTrigger?.data?.message );
     return respTrigger;
   } catch (e) {
     callback(false);

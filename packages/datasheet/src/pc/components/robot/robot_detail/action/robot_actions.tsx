@@ -66,19 +66,12 @@ export const RobotActions = ({ robotId, triggerTypes }: { robotId: string; trigg
       ? Array.from({ length: triggers.length }, () => activeDstId)
       : ((dataList1 ?? []) as IFetchedDatasheet[]);
 
-  const triggerDataSheetMap : Record<string, string> = triggers.map((trigger, index) => ({ trigger, index })).reduce((p, c) => {
-    return {
-      ...p,
-      [c.trigger.triggerId]: triggerDataSheetIds[c.index]
-    };
-  }, {});
-
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
     actionTypes,
     triggerTypes,
     triggers,
-    triggerDataSheetMap,
+    triggerDataSheetIds,
     dataSheetMap,
   });
 

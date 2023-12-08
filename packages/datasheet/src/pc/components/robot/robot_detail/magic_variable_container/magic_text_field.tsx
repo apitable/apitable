@@ -29,11 +29,7 @@ import { Selectors } from '@apitable/core';
 import { automationStateAtom } from 'pc/components/automation/controller';
 import { map2Text } from 'pc/components/robot/robot_detail/magic_variable_container/config';
 import { fixImeInputBug } from 'pc/components/slate_editor/slate_editor';
-import {
-  getTriggerDatasheetId2,
-  IFetchedDatasheet,
-  useAutomationFieldInfo
-} from '../../../automation/controller/hooks/use_robot_fields';
+import { getTriggerDatasheetId, IFetchedDatasheet, useAutomationFieldInfo } from '../../../automation/controller/hooks/use_robot_fields';
 import { AutomationScenario, INodeOutputSchema, ITriggerType } from '../../interface';
 import { IWidgetProps } from '../node_form/core/interface';
 import { enrichDatasheetTriggerOutputSchema, formData2SlateValue, insertMagicVariable, transformSlateValue, withMagicVariable } from './helper';
@@ -55,13 +51,10 @@ type IMagicTextFieldProps = IWidgetProps & {
   onChange?: (value: any) => void;
   isOneLine?: boolean;
   triggerType: ITriggerType | null;
-  triggerDataSheetMap: TriggerDataSheetMap
 };
 
-export type TriggerDataSheetMap = Record<string, string>
-
 export const MagicTextField = memo((props: IMagicTextFieldProps) => {
-  const { onChange, schema, triggerDataSheetMap } = props;
+  const { onChange, schema } = props;
   const isJSONField = (schema as any)?.format === 'json';
   const [isOpen, setOpenState] = useState(false);
   const ref = useRef(null);
@@ -128,23 +121,23 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
     setValue(value);
   };
 
-  const triggers = state?.robot?.triggers ?? [];
+  // const activeDatasheetId = useAppSelector(Selectors.getActiveDatasheetId);
 
-  const { data: dataList2 } = useSWR(['getTriggersRelatedDatasheetId2', triggers], () => getTriggerDatasheetId2(props.nodeOutputSchemaList.map(r => r.id)), {});
+  const triggers = state?.robot?.triggers ?? [];
+  const { data: dataList } = useSWR(['getTriggersRelatedDatasheetId', triggers], () => getTriggerDatasheetId(triggers), {});
 
   const activeDstId = useSelector(Selectors.getActiveDatasheetId);
   const dataLis: IFetchedDatasheet[] =
     state?.scenario === AutomationScenario?.datasheet
-      ? Array.from({ length: props.nodeOutputSchemaList.length }, () => activeDstId)
-      : ((dataList2 ?? []) as IFetchedDatasheet[]);
+      ? Array.from({ length: triggers.length }, () => activeDstId)
+      : ((dataList ?? []) as IFetchedDatasheet[]);
 
-  // @ts-ignore
-  const fieldInfoList = useAutomationFieldInfo(dataLis);
+  const l = useAutomationFieldInfo(triggers, dataLis);
 
   const nodeOutputSchemaList = props.nodeOutputSchemaList.map((nodeOutputSchema, index) => {
-    const item = fieldInfoList[index];
+    const item = l[index];
 
-    if (nodeOutputSchema?.id.startsWith('dst') && item && item?.fields?.length && item.fieldPermissionMap) {
+    if (nodeOutputSchema?.id.startsWith('atr') && item && item?.fields?.length && item.fieldPermissionMap) {
       return enrichDatasheetTriggerOutputSchema(nodeOutputSchema, item.fields, item.fieldPermissionMap!);
     }
     return nodeOutputSchema;
@@ -153,7 +146,7 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
   const renderElement = (props: any) => {
     switch (props.element.type) {
       case 'magicVariable':
-        return <MagicVariableElement {...props} nodeOutputSchemaList={nodeOutputSchemaList} triggerDataSheetMap={triggerDataSheetMap}/>;
+        return <MagicVariableElement {...props} nodeOutputSchemaList={nodeOutputSchemaList} />;
       default:
         return <DefaultElement {...props} />;
     }

@@ -832,6 +832,7 @@
   "automation_runs_this_month": "本月运行次数",
   "automation_stay_tuned": "敬请期待",
   "automation_success": "成功",
+  "automation_tips": "按钮列配置错误，请检查后再试",
   "automation_updater_label": "可以查看该自动化的运行历史",
   "automation_variabel_empty": "前置步骤中没有可以引用的数据，请调整后重试",
   "automation_variable_datasheet": "从 ${NODE_NAME} 获取数据",

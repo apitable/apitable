@@ -488,6 +488,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                     >
                       <span>
                         <SyncOnOutlined
+                          color={colors.textCommonTertiary}
                           size={16}
                           onClick={() => {
                             setFieldProperty('action')({
@@ -541,6 +542,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                     >
                       <span>
                         <SyncOnOutlined
+                            color={colors.textCommonTertiary}
                           size={16}
                           onClick={() => {
                             setFieldProperty('action')({

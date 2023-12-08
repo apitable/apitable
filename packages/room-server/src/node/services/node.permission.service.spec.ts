@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 import { NodePermissionService } from './node.permission.service';
+import { MetaService } from 'database/resource/services/meta.service';
 import { RestService } from 'shared/services/rest/rest.service';
 import { UserService } from 'user/services/user.service';
 import { NodeShareSettingService } from './node.share.setting.service';
@@ -31,6 +32,7 @@ describe('Test NodePermissionService', () => {
   let restService: RestService;
   let userService: UserService;
   let nodeShareSettingService: NodeShareSettingService;
+  let metaService: MetaService;
 
   beforeEach(async() => {
     moduleFixture = await Test.createTestingModule({
@@ -40,6 +42,12 @@ describe('Test NodePermissionService', () => {
         }),
       ],
       providers: [
+        {
+          provide: MetaService,
+          useValue: {
+            selectMetaByResourceId: jest.fn(),
+          },
+        },
         {
           provide: RestService,
           useValue: {
@@ -69,6 +77,7 @@ describe('Test NodePermissionService', () => {
     restService = moduleFixture.get<RestService>(RestService);
     userService = moduleFixture.get<UserService>(UserService);
     nodeShareSettingService = moduleFixture.get<NodeShareSettingService>(NodeShareSettingService);
+    metaService = moduleFixture.get<MetaService>(MetaService);
     nodePermissionService = moduleFixture.get<NodePermissionService>(NodePermissionService);
     jest.spyOn(restService, 'getNodePermission').mockImplementation((_auth: any, nodeId: string, shareId?: string): any => {
       if (nodeId === '1') {
@@ -117,6 +126,9 @@ describe('Test NodePermissionService', () => {
         };
       }
     });
+    jest.spyOn(metaService, 'selectMetaByResourceId').mockImplementation((_nodeId: string): any => {
+      return { fillAnonymous: true } ;
+    });
   });
 
   afterEach(async() => {
@@ -157,6 +169,12 @@ describe('Test NodePermissionService', () => {
   it('should be return node permission off-space share datasheet not login in', async() => {
     const nodePermission = await nodePermissionService.getNodePermission('1', { cookie: 'false' }, { internal: false, shareId: '1' });
     expect(nodePermission.hasRole).toEqual(true);
+  });
+
+  it('should be return node permission off-space share anonymous form not login in', async() => {
+    const nodePermission = await nodePermissionService.getNodePermission('1', { cookie: 'false' }, { internal: false, shareId: '1', form: true });
+    expect(nodePermission.hasRole).toEqual(true);
+    expect(nodePermission.editable).toEqual(true);
   });
 
   it('should be return node permission off-space share datasheet login in', async() => {

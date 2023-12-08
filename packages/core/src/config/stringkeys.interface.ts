@@ -831,6 +831,7 @@ export type StringKeysMapType = {
   'automation_runs_this_month': 'automation_runs_this_month',
   'automation_stay_tuned': 'automation_stay_tuned',
   'automation_success': 'automation_success',
+  'automation_tips': 'automation_tips',
   'automation_updater_label': 'automation_updater_label',
   'automation_variabel_empty': 'automation_variabel_empty',
   'automation_variable_datasheet': 'automation_variable_datasheet',

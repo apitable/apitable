@@ -1,10 +1,14 @@
+import { useAtomValue } from 'jotai';
+import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { IReduxState, IServerFormPack, Selectors } from '@apitable/core';
+import { IReduxState, IServerFormPack, Selectors, StoreActions } from '@apitable/core';
 import { fetchFormPack } from '@apitable/core/dist/modules/database/api/form_api';
 import { getDatasheetId } from 'pc/components/automation/controller/hooks/get_datasheet_id';
 import { getFormId } from 'pc/components/automation/controller/hooks/get_form_id';
-import { getAllFieldsByDstIdFp } from '../../../robot/hooks';
-import { IRobotTrigger } from '../../../robot/interface';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { getAllFieldsByDstIdFp, useAllFieldsByDstId } from '../../../robot/hooks';
+import { AutomationScenario, IRobotTrigger } from '../../../robot/interface';
+import { automationStateAtom, automationTriggerAtom, loadableFormMeta } from '../index';
 
 export const getRelativedId = (automationTrigger?: Pick<IRobotTrigger, 'input'>) => {
   if (!automationTrigger) {
@@ -36,17 +40,51 @@ export const getTriggerDatasheetId: (triggers: IRobotTrigger[]) => Promise<IFetc
   return list;
 };
 
-export const getTriggerDatasheetId2: (triggers: string[]) => Promise<IFetchedDatasheet[]> = async (triggers: string[]) => {
-  const arr = triggers.map(item=> getTriggerDstId(item ?? ''));
-  const list = await Promise.all(arr);
-  return list;
+export const useTriggerDatasheetId = (activeDatasheetId?: string): string | undefined => {
+
+  const automationTrigger = useAtomValue(automationTriggerAtom);
+  const automationState = useAtomValue(automationStateAtom);
+  const data = useMemo(() => ({
+    formId: getFormId(automationTrigger),
+    datasheetId: getDatasheetId(automationTrigger)
+  }), [automationTrigger]);
+
+  const formMeta = useAtomValue(loadableFormMeta);
+
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    // @ts-ignore
+    const dId = formMeta?.data?.sourceInfo?.datasheetId;
+    if (dId) {
+      dispatch(StoreActions.fetchDatasheet(dId));
+    }
+
+  }, [dispatch, formMeta]);
+
+  if (data.datasheetId) {
+    return data.datasheetId;
+  }
+
+  if (automationState?.scenario === AutomationScenario.datasheet) {
+    return activeDatasheetId;
+  }
+  // @ts-ignore
+  return formMeta?.data?.sourceInfo?.datasheetId;
 };
 
-export const useAutomationFieldInfo = (triggers: string[]) => {
+export const useAutomationRobotFields = (dstId: string) => {
   const fieldPermissionMap = useSelector((state: IReduxState) => {
-    return triggers.map((trigger) => ({
-      fields: getAllFieldsByDstIdFp(state, trigger),
-      fieldPermissionMap: Selectors.getFieldPermissionMap(state, trigger)
+    return Selectors.getFieldPermissionMap(state, dstId);
+  });
+  const fields = useAllFieldsByDstId(dstId);
+  return { fields, fieldPermissionMap };
+};
+
+export const useAutomationFieldInfo = (triggers: IRobotTrigger[], dstIds: IFetchedDatasheet[]) => {
+  const fieldPermissionMap = useSelector((state: IReduxState) => {
+    return triggers.map((trigger, index) => ({
+      fields: getAllFieldsByDstIdFp(state, dstIds[index]),
+      fieldPermissionMap: Selectors.getFieldPermissionMap(state, dstIds[index])
     }));
   });
 
