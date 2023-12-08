@@ -27,6 +27,7 @@ import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,6 +35,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.Session;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
@@ -46,6 +48,7 @@ import org.springframework.session.security.SpringSessionBackedSessionRegistry;
  * @author Shawn Deng
  */
 @Configuration
+@EnableWebSecurity
 public class WebSecurityConfig<S extends Session> {
 
     @Resource
@@ -70,8 +73,8 @@ public class WebSecurityConfig<S extends Session> {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        CookieCsrfTokenRepository cookieCsrfTokenRepository =
-            CookieCsrfTokenRepository.withHttpOnlyFalse();
+        CookieCsrfTokenRepository cookieCsrfTokenRepository = new CookieCsrfTokenRepository();
+        cookieCsrfTokenRepository.setCookieCustomizer((cookie) -> cookie.httpOnly(false));
         cookieCsrfTokenRepository.setCookiePath("/");
         http
             .cors(withDefaults())
@@ -88,6 +91,7 @@ public class WebSecurityConfig<S extends Session> {
                 (headers) -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
             .csrf((csrf) ->
                 csrf.csrfTokenRepository(cookieCsrfTokenRepository)
+                    .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
                     .ignoringRequestMatchers(
                         ArrayUtil.toArray(IgnorePathHelper.getInstant().iterator(), String.class)
                     )

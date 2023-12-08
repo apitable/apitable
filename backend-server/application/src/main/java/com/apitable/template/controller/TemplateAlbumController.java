@@ -42,7 +42,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "Template Center - Template Album API")
-@ApiResource(path = "/")
+@ApiResource
 public class TemplateAlbumController {
 
     @Resource

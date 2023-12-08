@@ -97,7 +97,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "Space - Space Api")
-@ApiResource(path = "/")
+@ApiResource
 @Slf4j
 public class SpaceController {
 

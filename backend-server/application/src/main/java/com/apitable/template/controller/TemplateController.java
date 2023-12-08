@@ -90,7 +90,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "Template Center - Template API")
-@ApiResource(path = "/")
+@ApiResource
 public class TemplateController {
 
     @Resource
