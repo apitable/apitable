@@ -6,7 +6,9 @@ import { triggerUsageAlertUniversal } from 'enterprise/billing/trigger_usage_ale
 
 export * from './const';
 export const apiErrorManager = new ApiErrorManager();
-
+apiErrorManager.registerErrorHandler(BillingErrorCode.Forbidden, () => {
+  triggerUsageAlertUniversal(t(Strings.billing_over_limit_tip_forbidden));
+});
 apiErrorManager.registerErrorHandler(BillingErrorCode.Common, () => {
   triggerUsageAlertUniversal(t(Strings.billing_over_limit_tip_common));
 });

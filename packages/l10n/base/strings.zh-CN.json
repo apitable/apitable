@@ -5853,6 +5853,7 @@
   "delete_archive_record_success": "已删除归档记录",
   "automation_run_failure": "已超限",
   "automation_run_failure_tip": "当前空间站自动化流程运行次数已用完",
+  "billing_over_limit_tip_forbidden": "您的试用时长或订阅期限已过期，请联系销售顾问续期。",
   "billing_over_limit_tip_common": "亲爱的用户，您当前的操作已经触发了您的订阅级别的用量限制。为了继续享受无限制的操作，我们建议您升级您的订阅。",
   "billing_over_limit_tip_widget": "空间站的小程序安装数量已达到上限，请升级订阅。",
   "automation_run_times_over_limit": "自动化运行次数已达上限",

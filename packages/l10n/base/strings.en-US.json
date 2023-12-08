@@ -5851,6 +5851,7 @@
   "automation_reader_label": "Can view the run history of the automation",
   "automation_run_failure": "Over limit",
   "automation_run_failure_tip": "The current usage of automation run has been used up",
+  "billing_over_limit_tip_forbidden": "Your trial duration or subscription period has expired. Please contact the sales consultant to renew.",
   "billing_over_limit_tip_common": "The usage of the space has exceeded the limit, and you can enjoy a higher amount after upgrading.",
   "billing_over_limit_tip_widget": "The number of widget installations has exceeded the limit, and you can upgrade to get higher usage.",
   "automation_run_times_over_limit": "The number of automation runs has exceeded the limit.",
