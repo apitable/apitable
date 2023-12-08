@@ -27,6 +27,7 @@ import { setColor } from 'pc/components/multi_grid/format';
 import { AutomationScenario } from 'pc/components/robot/interface';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
+import { stopPropagation } from 'pc/utils';
 import { automationTaskMap, AutomationTaskStatus } from '../automation_task_map';
 
 type TO = ReturnType<typeof setTimeout>;
@@ -252,7 +253,10 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
             height={height ?? itemHeight}
             loading={isLoading}
             borderRadius={'4px'}
-            onClick={onStart}
+            onClick={(e) => {
+              stopPropagation(e);
+              onStart();
+            }}
             maxWidth={maxWidth?? '100%'}
             paddingX={'10px'}
             marginTop={marginTop}
@@ -331,7 +335,10 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
           loading={isLoading}
           borderRadius={'4px'}
           paddingX={'10px'}
-          onClick={onStart}
+          onClick={(e) => {
+            stopPropagation(e);
+            onStart();
+          }}
           height={height ?? itemHeight}
           maxWidth={maxWidth?? '100%'}
           marginTop={marginTop}
