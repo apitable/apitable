@@ -512,7 +512,7 @@
   "api_params_invalid_order_sort": "Valore di ordinamento non valido (supporta solo \"desc\" o \"asc\")",
   "api_params_invalid_primary_field_type_error": "Il tipo di campo primario non può essere {value}",
   "api_params_invalid_sort": "",
-  "api_params_invalid_value": "Valore non valido per ${property}",
+  "api_params_invalid_value": "Valore non valido per {property}",
   "api_params_link_field_recordids_empty_error": "campo:{campo} recordId value can't be empty array or null",
   "api_params_link_field_recordids_not_exists": "Il campo collegato specifica un record ({recordId}) che non esiste",
   "api_params_link_field_records_max_count_error": "Campo: {campo} Il campo Link è stato impostato per ricevere un solo record",

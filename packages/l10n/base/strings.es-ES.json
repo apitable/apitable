@@ -511,7 +511,7 @@
   "api_params_invalid_order_sort": "El valor de clasificación no es válido (solo se admiten \"desc\" o \"asc\")",
   "api_params_invalid_primary_field_type_error": "El tipo de campo principal no puede ser {value}",
   "api_params_invalid_sort": "",
-  "api_params_invalid_value": "Valor no válido para ${property}",
+  "api_params_invalid_value": "Valor no válido para {property}",
   "api_params_link_field_recordids_empty_error": "field:{field} recordId value no puede ser una matriz vacía o nula",
   "api_params_link_field_recordids_not_exists": "El campo vinculado especifica un registro ({recordId}) que no existe",
   "api_params_link_field_records_max_count_error": "Campo: {FIELD} El campo Link fue establecido para recibir sólo un registro",

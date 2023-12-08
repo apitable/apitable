@@ -512,7 +512,7 @@
   "api_params_invalid_order_sort": "ソート値が無効です（descまたはascのみサポート）",
   "api_params_invalid_primary_field_type_error": "プライマリ・フィールド・タイプは、{value}",
   "api_params_invalid_sort": "",
-  "api_params_invalid_value": "${property} の値が無効です",
+  "api_params_invalid_value": "{property} の値が無効です",
   "api_params_link_field_recordids_empty_error": "フィールド：{field} recordId値は空の配列またはnullではありません",
   "api_params_link_field_recordids_not_exists": "リンクフィールドには発生しないレコードが指定されています（{recordId}）",
   "api_params_link_field_records_max_count_error": "フィールド：{field}リンクフィールドは、1つのレコードIDのみを受信するように設定される",

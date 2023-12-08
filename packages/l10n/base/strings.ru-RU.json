@@ -511,7 +511,7 @@
   "api_params_invalid_order_sort": "Значение сортировки неверно (поддерживается только \"desc\" или \"asc\")",
   "api_params_invalid_primary_field_type_error": "Тип основного поля не может быть офицером {value}.",
   "api_params_invalid_sort": "",
-  "api_params_invalid_value": "Недопустимое значение для ${property}",
+  "api_params_invalid_value": "Недопустимое значение для {property}",
   "api_params_link_field_recordids_empty_error": "Поле: Значение recordId не может быть пустым массивом или null",
   "api_params_link_field_recordids_not_exists": "Ссылка на поле указывает несуществующую запись (recordid)",
   "api_params_link_field_records_max_count_error": "поле: {field} поле ссылки было установлено для получения только одной записи",

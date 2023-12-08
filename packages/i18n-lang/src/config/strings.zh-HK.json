@@ -512,7 +512,7 @@
   "api_params_invalid_order_sort": "傳入的 sort 參數值無效（只支持 desc 或 asc）",
   "api_params_invalid_primary_field_type_error": "首列類型不允許為{value}",
   "api_params_invalid_sort": "",
-  "api_params_invalid_value": "[${property}]的值不正確",
+  "api_params_invalid_value": "[{property}]的值不正確",
   "api_params_link_field_recordids_empty_error": "field:{field} recordId 參數值不能為空數組",
   "api_params_link_field_recordids_not_exists": "關聯字段指定的記錄 ({recordId}) 不存在",
   "api_params_link_field_records_max_count_error": "欄位：{field}鏈接欄位設置為僅接收一個記錄ID",

@@ -511,7 +511,7 @@
   "api_params_invalid_order_sort": "Valeur de tri invalide (ne supporte que \"desc\" ou \"asc\")",
   "api_params_invalid_primary_field_type_error": "Le type de champ principal ne peut pas être {value}",
   "api_params_invalid_sort": "",
-  "api_params_invalid_value": "Valeur invalide pour ${property}",
+  "api_params_invalid_value": "Valeur invalide pour {property}",
   "api_params_link_field_recordids_empty_error": "champ: la valeur de l'identifiant de l'enregistrement{field} ne peut pas être un tableau vide ou null",
   "api_params_link_field_recordids_not_exists": "Le champ lié spécifie un enregistrement ({recordId}) qui n'existe pas",
   "api_params_link_field_records_max_count_error": "Champ: {field} le champ lien a été défini pour recevoir un seul enregistrement",

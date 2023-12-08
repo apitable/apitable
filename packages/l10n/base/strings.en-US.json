@@ -343,7 +343,7 @@
   "api_params_invalid_order_sort": "Sort value invalid (only supports \"desc\" or \"asc\")",
   "api_params_invalid_primary_field_type_error": "The primary field type can't be {value}",
   "api_params_invalid_sort": "",
-  "api_params_invalid_value": "Invalid value for ${property}",
+  "api_params_invalid_value": "Invalid value for {property}",
   "api_params_link_field_recordids_empty_error": "field:{field} recordId value can't be empty array or null",
   "api_params_link_field_recordids_not_exists": "The linked field specifies a record ({recordId}) that does not exist",
   "api_params_link_field_records_max_count_error": "field:{field} The Link field was set to receive one recordId only",

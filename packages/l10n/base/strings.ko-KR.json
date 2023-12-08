@@ -511,7 +511,7 @@
   "api_params_invalid_order_sort": "잘못된 정렬 값 (\"desc\" 또는 \"asc\"만 지원)",
   "api_params_invalid_primary_field_type_error": "기본 필드 유형은 \"{value}\" 가 될 수 없습니다.",
   "api_params_invalid_sort": "",
-  "api_params_invalid_value": "${property}에 대한 잘못된 값",
+  "api_params_invalid_value": "{property}에 대한 잘못된 값",
   "api_params_link_field_recordids_empty_error": "field:{field} recordId 값은 빈 배열 또는 null일 수 없습니다.\"",
   "api_params_link_field_recordids_not_exists": "링크 필드에는 발생하지 않는 레코드가 지정됩니다 (}recordId}).",
   "api_params_link_field_records_max_count_error": "필드: {field}링크 필드는 하나의 레코드 ID만 수신하도록 설정됩니다.",

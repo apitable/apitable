@@ -511,7 +511,7 @@
   "api_params_invalid_order_sort": "Sortierwert ungültig (unterstützt nur \"desc\" oder \"asc\")",
   "api_params_invalid_primary_field_type_error": "Der primäre Feldtyp kann nicht {value} sein.",
   "api_params_invalid_sort": "",
-  "api_params_invalid_value": "Ungültiger Wert für ${property}",
+  "api_params_invalid_value": "Ungültiger Wert für {property}",
   "api_params_link_field_recordids_empty_error": "field:{field} recordId-Wert kann kein leeres Array oder Null sein",
   "api_params_link_field_recordids_not_exists": "Das verknüpfte Feld gibt einen Datensatz ({recordId}) an, der nicht existiert",
   "api_params_link_field_records_max_count_error": "Feld: (Feld) das Linkfeld wurde so eingestellt, dass nur eine Registrierungsnummer empfangen wurde",

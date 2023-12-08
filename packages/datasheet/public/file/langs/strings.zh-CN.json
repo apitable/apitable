@@ -511,7 +511,7 @@
   "api_params_invalid_order_sort": "传入的 sort 参数值无效（只支持 desc 或 asc）",
   "api_params_invalid_primary_field_type_error": "首列类型不允许为{value}",
   "api_params_invalid_sort": "",
-  "api_params_invalid_value": "[${property}]的值不正确",
+  "api_params_invalid_value": "[{property}]的值不正确",
   "api_params_link_field_recordids_empty_error": "field:{field} recordId 参数值不能为空数组",
   "api_params_link_field_recordids_not_exists": "关联字段指定的记录 ({recordId}) 不存在",
   "api_params_link_field_records_max_count_error": "field:{field} 只能传入一个 recordId，因为关联列已设置不允许多选",
