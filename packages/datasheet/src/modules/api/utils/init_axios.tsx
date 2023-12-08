@@ -1,12 +1,11 @@
+import { IReduxState, Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
+import { Modal } from 'antd';
 import { apiErrorManager } from 'api/utils/error_manager';
 import axios from 'axios';
-import { Store } from 'redux';
-import { IReduxState, Navigation } from '@apitable/core';
 import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
 import { getInitializationData, getReleaseVersion, getSpaceIdFormTemplate } from 'pc/utils/env';
-// @ts-ignore
-import { isSocialUrlIgnored } from 'enterprise/dingtalk/utils';
+import { Store } from 'redux';
 
 declare let window: any;
 
@@ -77,96 +76,95 @@ export function handleResponse<T>(response, headers: any | undefined, url: strin
     throw new Error(message);
   }
 
-  return {
-    data: response,
-  };
-  // switch (code) {
-  //   // case StatusCode.UN_AUTHORIZED: {
-  //   //   if (window.location.pathname !== '/login') {
-  //   //     Modal.error({
-  //   //       title: t(Strings.login_status_expired_title),
-  //   //       content: t(Strings.login_status_expired_content),
-  //   //       okText: t(Strings.login_status_expired_button),
-  //   //       onOk: () => {
-  //   //         const IS_EMBED_LINK_REG = /^\/embed/;
-  //   //         const reference = !IS_EMBED_LINK_REG.test(location.pathname)
-  //   //           ? new URLSearchParams(window.location.search).get('reference')?.toString()
-  //   //           : window.location.href;
-  //   //         store.dispatch(StoreActions.setUserMe(null));
-  //   //         store.dispatch(StoreActions.setIsLogin(false));
-  //   //         Router.redirect(Navigation.LOGIN, { query: { reference } });
-  //   //       },
-  //   //     });
-  //   //   }
-  //   //   return Promise.reject();
-  //   // }
-  //   // case StatusCode.OPERATION_FREQUENT: {
-  //   //   Modal.error({
-  //   //     title: t(Strings.get_verification_code_err_title),
-  //   //     content: t(Strings.get_verification_code_err_content),
-  //   //     okText: t(Strings.get_verification_code_err_button),
-  //   //   });
-  //   //   return Promise.reject();
-  //   // }
-  //   // case StatusCode.LOGIN_OUT_NUMBER: {
-  //   //   Modal.error({
-  //   //     title: t(Strings.login_frequent_operation_reminder_title),
-  //   //     content: t(Strings.login_frequent_operation_reminder_content),
-  //   //     okText: t(Strings.login_frequent_operation_reminder_button),
-  //   //     onOk: () => {
-  //   //       Router.redirect(Navigation.LOGIN);
-  //   //     },
-  //   //   });
-  //   //   return Promise.reject();
-  //   // }
-  //   // case StatusCode.NODE_NUMBER_ERR: {
-  //   //   Modal.error({
-  //   //     title: t(Strings.node_not_exist_title),
-  //   //     content: t(Strings.node_number_err_content),
-  //   //     onOk: () => {
-  //   //       Router.redirect(Navigation.HOME);
-  //   //     },
-  //   //   });
-  //   //   return Promise.reject();
-  //   // }
-  //   //
-  //   // case StatusCode.NODE_NOT_EXIST: {
-  //   //   Api.keepTabbar({});
-  //   //   return Promise.resolve(response);
-  //   // }
-  //   // case StatusCode.NOT_PERMISSION: {
-  //   //   Api.keepTabbar({});
-  //   //   return Promise.resolve(response);
-  //   // }
-  //   // case StatusCode.PAYMENT_PLAN: {
-  //   //   BillingModal();
-  //   //   return Promise.reject();
-  //   // }
-  //   // case StatusCode.SPACE_NOT_EXIST: {
-  //   //   if (window.location.pathname.search('/invite') === -1) {
-  //   //     Modal.error({
-  //   //       title: t(Strings.no_access_space_title),
-  //   //       content: t(Strings.no_access_space_descirption),
-  //   //       okText: t(Strings.refresh),
-  //   //       onOk: () => {
-  //   //         Router.push(Navigation.HOME);
-  //   //       },
-  //   //     });
-  //   //   }
-  //   //   return Promise.reject();
-  //   // }
-  //   // case StatusCode.FRONT_VERSION_ERROR: {
-  //   //   window.dispatchEvent(new CustomEvent('newVersionRequired'));
-  //   //   return Promise.reject();
-  //   // }
-  //   case billingErrorCode.OVER_LIMIT:
-  //   case billingErrorCode.OVER_LIMIT_2: {
-  //     triggerUsageAlertUniversal('亲爱的用户，您当前的操作已经触发了您的订阅级别的用量限制。为了继续享受无限制的操作，我们建议您升级您的订阅。');
-  //     return Promise.reject();
-  //   }
-  //   default:
-  //     return Promise.resolve(response);
-  // }
+  switch (code) {
+    case StatusCode.UN_AUTHORIZED: {
+      if (window.location.pathname !== '/login') {
+        Modal.error({
+          title: t(Strings.login_status_expired_title),
+          content: t(Strings.login_status_expired_content),
+          okText: t(Strings.login_status_expired_button),
+          onOk: () => {
+            const IS_EMBED_LINK_REG = /^\/embed/;
+            const reference = !IS_EMBED_LINK_REG.test(location.pathname)
+              ? new URLSearchParams(window.location.search).get('reference')?.toString()
+              : window.location.href;
+            store.dispatch(StoreActions.setUserMe(null));
+            store.dispatch(StoreActions.setIsLogin(false));
+            Router.redirect(Navigation.LOGIN, { query: { reference } });
+          },
+        });
+      }
+      return Promise.reject();
+    }
+    // case StatusCode.OPERATION_FREQUENT: {
+    //   Modal.error({
+    //     title: t(Strings.get_verification_code_err_title),
+    //     content: t(Strings.get_verification_code_err_content),
+    //     okText: t(Strings.get_verification_code_err_button),
+    //   });
+    //   return Promise.reject();
+    // }
+    // case StatusCode.LOGIN_OUT_NUMBER: {
+    //   Modal.error({
+    //     title: t(Strings.login_frequent_operation_reminder_title),
+    //     content: t(Strings.login_frequent_operation_reminder_content),
+    //     okText: t(Strings.login_frequent_operation_reminder_button),
+    //     onOk: () => {
+    //       Router.redirect(Navigation.LOGIN);
+    //     },
+    //   });
+    //   return Promise.reject();
+    // }
+    // case StatusCode.NODE_NUMBER_ERR: {
+    //   Modal.error({
+    //     title: t(Strings.node_not_exist_title),
+    //     content: t(Strings.node_number_err_content),
+    //     onOk: () => {
+    //       Router.redirect(Navigation.HOME);
+    //     },
+    //   });
+    //   return Promise.reject();
+    // }
+
+    // case StatusCode.NODE_NOT_EXIST: {
+    //   Api.keepTabbar({});
+    //   return Promise.resolve(response);
+    // }
+    // case StatusCode.NOT_PERMISSION: {
+    //   Api.keepTabbar({});
+    //   return Promise.resolve(response);
+    // }
+    // case StatusCode.PAYMENT_PLAN: {
+    //   BillingModal();
+    //   return Promise.reject();
+    // }
+    // case StatusCode.SPACE_NOT_EXIST: {
+    //   if (window.location.pathname.search('/invite') === -1) {
+    //     Modal.error({
+    //       title: t(Strings.no_access_space_title),
+    //       content: t(Strings.no_access_space_descirption),
+    //       okText: t(Strings.refresh),
+    //       onOk: () => {
+    //         Router.push(Navigation.HOME);
+    //       },
+    //     });
+    //   }
+    //   return Promise.reject();
+    // }
+    // case StatusCode.FRONT_VERSION_ERROR: {
+    //   window.dispatchEvent(new CustomEvent('newVersionRequired'));
+    //   return Promise.reject();
+    // }
+    // case billingErrorCode.OVER_LIMIT:
+    // case billingErrorCode.OVER_LIMIT_2: {
+    //   triggerUsageAlertUniversal('亲爱的用户，您当前的操作已经触发了您的订阅级别的用量限制。为了继续享受无限制的操作，我们建议您升级您的订阅。');
+    //   return Promise.reject();
+    // }
+    default:
+      return {
+        data: response,
+      };
+  }
 }
 
 export function initAxios(store: Store<IReduxState>) {
