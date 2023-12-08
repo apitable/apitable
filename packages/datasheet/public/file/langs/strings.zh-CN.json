@@ -482,6 +482,7 @@
   "api_param_unit_name_type_not_exists": "unit Name 指定的组织单元不存在",
   "api_param_unit_not_exists": "unit ID 指定的组织单元不存在",
   "api_param_url_field_type_error": "field:{field} 网址字段必须是字符串",
+  "api_param_validate_error": "{message}",
   "api_param_view_not_exists": "找不到参数 viewID 对应的视图",
   "api_param_viewid_empty_error": "参数 viewId 的值不能为空",
   "api_param_viewid_type_error": "参数 viewId 只接受 string 类型的值",

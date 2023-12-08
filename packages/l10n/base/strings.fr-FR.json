@@ -5909,5 +5909,6 @@
   "zambia": "Zambie",
   "zimbabwe": "Zimbabwe",
   "zoom_in": "zoom avant",
-  "zoom_out": "zoom arrière"
+  "zoom_out": "zoom arrière",
+  "api_param_validate_error": "{message}"
 }

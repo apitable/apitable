@@ -483,6 +483,7 @@
   "api_param_unit_name_type_not_exists": "単位名で指定された単位は存在しません",
   "api_param_unit_not_exists": "ユニットIDで指定されたユニットは存在しません",
   "api_param_url_field_type_error": "field:{field}URLフィールドの値は文字列でなければなりません",
+  "api_param_validate_error": "{message}",
   "api_param_view_not_exists": "指定されたビューは存在しません",
   "api_param_viewid_empty_error": "パラメータviewIdは空ではありません",
   "api_param_viewid_type_error": "パラメータツールバーは文字列タイプでなければなりません",

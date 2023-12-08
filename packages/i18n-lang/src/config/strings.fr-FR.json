@@ -483,6 +483,7 @@
   "api_param_unit_name_type_not_exists": "L'unité spécifiée par le nom de l'unité n'existe pas",
   "api_param_unit_not_exists": "L'unité spécifiée par l'ID d'unité n'existe pas",
   "api_param_url_field_type_error": "champ: la valeur du champ URL{field} doit être une chaîne de caractères",
+  "api_param_validate_error": "{message}",
   "api_param_view_not_exists": "La vue spécifiée n'existe pas",
   "api_param_viewid_empty_error": "le paramètre viewId ne doit pas être vide",
   "api_param_viewid_type_error": "la barre d'outils de paramètre doit être un type de chaîne de caractères",

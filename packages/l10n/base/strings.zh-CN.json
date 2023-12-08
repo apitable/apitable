@@ -5912,5 +5912,6 @@
   "player_step_ui_config_button_field_action_create": "{\n \"element\": \"#CONST_ROBOT_ACTION_CREATE\", \"placement\": \"topCenter\", \"title\": \"\", \"description\": \"现在你应该添加一个或多个 Action，以定义按钮点击后应执行的具体动作\"  \n} ",
   "automation_content_should_not_empty": "文本不能为空",
   "automation_tips": "按钮列配置错误，请检查后再试",
-  "refresh_and_close_page_when_automation_queue": "当前仍有自动化任务正在排队待执行，继续操作将会导致部分任务取消执行"
+  "refresh_and_close_page_when_automation_queue": "当前仍有自动化任务正在排队待执行，继续操作将会导致部分任务取消执行",
+  "api_param_validate_error": "{message}"
 }

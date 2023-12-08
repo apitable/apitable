@@ -483,6 +483,7 @@
   "api_param_unit_name_type_not_exists": "L'unità specificata dall'unità Name non esiste",
   "api_param_unit_not_exists": "L'unità specificata dall'ID dell'unità non esiste",
   "api_param_url_field_type_error": "campo:{campo} Il valore del campo URL deve essere stringa",
+  "api_param_validate_error": "{message}",
   "api_param_view_not_exists": "La vista specificata non esiste",
   "api_param_viewid_empty_error": "il parametro viewId non dovrebbe essere vuoto",
   "api_param_viewid_type_error": "il parametro toolbar deve essere un tipo di stringa",

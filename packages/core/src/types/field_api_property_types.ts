@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { APIMetaButtonActionType } from './field_api_enums';
 /**
  * API Meta open interface definition
  */
@@ -24,6 +23,8 @@ import type { APIMetaFieldPropertyFormatEnums, APIMetaMemberType, TSymbolAlign }
 import type { IAPIMetaField } from './field_api_types';
 import type { BasicValueType, ILookUpSortInfo, LookUpLimitType, RollUpFuncType } from './field_types';
 import type { IOpenLookUpFilterInfo } from './open';
+import { ButtonFieldActionNameEnum, ButtonFieldActionOpenLinkNameEnum, ButtonFieldStyleNameEnum } from './open';
+
 /**
  * Field properties
  */
@@ -72,6 +73,25 @@ export interface IAPIMetaSingleSelectFieldProperty {
   options?: IAPIMetaSelectOption[];
 }
 
+export interface IAPIMetaButtonFieldProperty {
+  text: string;
+  style: {
+    type: ButtonFieldStyleNameEnum,
+    color: object
+  },
+  action: {
+    type?: ButtonFieldActionNameEnum,
+    openLink?: {
+      type: ButtonFieldActionOpenLinkNameEnum,
+      expression: string
+    },
+    automation?: {
+      automationId: string,
+      triggerId: string
+    }
+  }
+}
+
 export type IAPIMetaMultiSelectFieldProperty = IAPIMetaSingleSelectFieldProperty;
 
 export interface IAPIMetaMember {
@@ -99,15 +119,6 @@ export interface IAPIMetaCreateByFieldProperty {
 
 export interface IAPIMetaLastModifiedByFieldProperty {
   options?: IAPIMetaUser[];
-}
-
-export interface IAPIMetaButtonFieldProperty {
-  action: {
-    type: APIMetaButtonActionType,
-    expression?: string,
-    automationId?: string,
-    triggerId?: string
-  }
 }
 
 export type IAPIMetaMemberBaseFieldProperty =

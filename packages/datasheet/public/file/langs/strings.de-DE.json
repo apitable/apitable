@@ -483,6 +483,7 @@
   "api_param_unit_name_type_not_exists": "Die von der Einheit angegebene Einheit Name existiert nicht",
   "api_param_unit_not_exists": "Die durch die Unit ID angegebene Einheit existiert nicht",
   "api_param_url_field_type_error": "field:{field} URL Feldwert muss string sein",
+  "api_param_validate_error": "{message}",
   "api_param_view_not_exists": "Die angegebene Ansicht existiert nicht",
   "api_param_viewid_empty_error": "der Parameter viewId sollte nicht leer sein",
   "api_param_viewid_type_error": "Der Parameter toolBar muss ein String-Typ sein",

@@ -193,6 +193,7 @@ export interface Tips {
     api_param_widget_id_not_exists:                       APIAddRowFailedWrongLengthOfValueClass;
     api_params_widget_package_id_error:                   APIAddRowFailedWrongLengthOfValueClass;
     api_widget_number_limit:                              APIAddRowFailedWrongLengthOfValueClass;
+    api_param_validate_error:                             APIAddRowFailedWrongLengthOfValueClass;
 }
 
 export interface APIAddRowFailedWrongLengthOfValueClass {

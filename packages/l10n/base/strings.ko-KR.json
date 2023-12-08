@@ -5909,5 +5909,6 @@
   "zambia": "잠비아",
   "zimbabwe": "짐바브웨",
   "zoom_in": "확대",
-  "zoom_out": "축소"
+  "zoom_out": "축소",
+  "api_param_validate_error": "{message}"
 }

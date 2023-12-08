@@ -15,27 +15,27 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { IReduxState } from 'exports/store';
 import Joi from 'joi';
 import { isEqual } from 'lodash';
+import { getColorNames } from 'model/color';
+import type { IBindFieldContext, IBindFieldModel } from 'model/field';
+import { getFieldTypeString } from 'model/utils';
+import { getViewsList } from 'modules/database/store/selectors/resource/datasheet/base';
 // import { IReduxState } from 'exports/store/interfaces';
 import { getPermissions } from 'modules/database/store/selectors/resource/datasheet/calc';
-import { getViewsList } from 'modules/database/store/selectors/resource/datasheet/base';
 import type { IAPIMetaFieldProperty } from 'types/field_api_property_types';
 import type { IAPIMetaField } from 'types/field_api_types';
-import type { IOpenField, IOpenFieldProperty } from 'types/open/open_field_read_types';
 import { BasicValueType, FieldType, IField, IFieldProperty, IStandardValue } from 'types/field_types';
 import { BasicOpenValueType } from 'types/field_types_open';
+import type { IOpenField, IOpenFieldProperty } from 'types/open/open_field_read_types';
 import type { IAddOpenFieldProperty, IEffectOption, IUpdateOpenFieldProperty } from 'types/open/open_field_write_types';
+import type { IOpenFilterValue } from 'types/open/open_filter_types';
 import type { IJsonSchema } from 'types/utils';
 import { FOperator, FOperatorDescMap, IFilterCondition } from 'types/view_types';
-import { getFieldTypeString } from 'model/utils';
-import type { IBindFieldContext, IBindFieldModel } from 'model/field';
 import type { ICellToStringOption, ICellValue } from '../record';
 import { StatTranslate, StatType } from './stat';
 import { joiErrorResult } from './validate_schema';
-import type { IOpenFilterValue } from 'types/open/open_filter_types';
-
-import { IReduxState } from '../../exports/store/interfaces';
 
 // China sensitive string comparison `collators` constructor.
 export const zhIntlCollator = typeof Intl !== 'undefined' ? new Intl.Collator('zh-CN') : undefined;
@@ -501,6 +501,16 @@ export abstract class Field {
    */
   validateOpenFilterValue(_value: IOpenFilterValue): Joi.ValidationResult {
     return joiErrorResult(`${getFieldTypeString(this.field.type)} not support validateOpenFilterValue`);
+  }
+
+  /**
+   * Convert the obtained color name to color number
+   * @param name color name
+   */
+  getOptionColorNumberByName(name: string) {
+    const colorNames = getColorNames();
+    const colorNum = colorNames.findIndex(colorName => colorName === name);
+    return colorNum > -1 ? colorNum : undefined;
   }
 }
 
