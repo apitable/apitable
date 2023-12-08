@@ -79,7 +79,7 @@ export const runAutomationUrl = (datasheetId: string, record: any, state: IRedux
 };
 
 export const runAutomationButton = async (datasheetId: string, record: any, state: IReduxState, recordId: string, fieldId: string, field: IButtonField,
-  callback: (success?: boolean) => void
+  callback: (success?: boolean, code?: number, message?: string) => void
 ) : Promise<any|undefined>=> {
   if(field.property.action.type === ButtonActionType.OpenLink) {
     return;
@@ -89,9 +89,9 @@ export const runAutomationButton = async (datasheetId: string, record: any, stat
       dstId: datasheetId,
       recordId,
       fieldId,
-    }) as unknown as {data : {success: boolean}};
+    }) as unknown as {data : {success: boolean, code: number, message: string}};
     const success = respTrigger?.data?.success ?? false;
-    callback(success);
+    callback(success, respTrigger?.data?.code, respTrigger?.data?.message );
     return respTrigger;
   } catch (e) {
     callback(false);

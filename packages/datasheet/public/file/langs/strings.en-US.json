@@ -830,6 +830,7 @@
   "automation_runs_this_month": "Runs this month",
   "automation_stay_tuned": "Stay tuned",
   "automation_success": "Success",
+  "automation_tips": "The button field is misconfigured, please check and try again",
   "automation_updater_label": "Can view the run history of the automation",
   "automation_variabel_empty": "There is no data that can be used in the pre-step, please adjust and try again.",
   "automation_variable_datasheet": "Get data from ${NODE_NAME}",
