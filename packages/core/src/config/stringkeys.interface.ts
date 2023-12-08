@@ -481,6 +481,7 @@ export type StringKeysMapType = {
   'api_param_unit_name_type_not_exists': 'api_param_unit_name_type_not_exists',
   'api_param_unit_not_exists': 'api_param_unit_not_exists',
   'api_param_url_field_type_error': 'api_param_url_field_type_error',
+  'api_param_validate_error': 'api_param_validate_error',
   'api_param_view_not_exists': 'api_param_view_not_exists',
   'api_param_viewid_empty_error': 'api_param_viewid_empty_error',
   'api_param_viewid_type_error': 'api_param_viewid_type_error',

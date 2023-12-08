@@ -483,6 +483,7 @@
   "api_param_unit_name_type_not_exists": "Название единицы не существует",
   "api_param_unit_not_exists": "Идентификатор ячейки не существует",
   "api_param_url_field_type_error": "Значение поля field: field 's URL должно быть строкой",
+  "api_param_validate_error": "{message}",
   "api_param_view_not_exists": "Указанный вид не существует",
   "api_param_viewid_empty_error": "Параметры viewId не должны быть пустыми",
   "api_param_viewid_type_error": "Панель параметров должна быть строкой",

@@ -483,6 +483,7 @@
   "api_param_unit_name_type_not_exists": "La unidad especificada por el nombre de la unidad no existe",
   "api_param_unit_not_exists": "La unidad especificada por el ID de la unidad no existe",
   "api_param_url_field_type_error": "field:{field} El valor del campo URL debe ser una cadena",
+  "api_param_validate_error": "{message}",
   "api_param_view_not_exists": "La vista especificada no existe",
   "api_param_viewid_empty_error": "El parámetro viewid no debe estar vacío",
   "api_param_viewid_type_error": "La barra de herramientas de parámetros debe ser de tipo cadena",

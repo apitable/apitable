@@ -483,6 +483,7 @@
   "api_param_unit_name_type_not_exists": "unit Name 指定的組織單元不存在",
   "api_param_unit_not_exists": "unit ID 指定的組織單元不存在",
   "api_param_url_field_type_error": "field:{field} 網址字段必須是字符串",
+  "api_param_validate_error": "{message}",
   "api_param_view_not_exists": "viewId 參數指定的視圖不存在",
   "api_param_viewid_empty_error": "參數 viewId 不能為空",
   "api_param_viewid_type_error": "參數toolBar必須是字符串類型",

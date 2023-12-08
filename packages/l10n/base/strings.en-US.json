@@ -5908,5 +5908,6 @@
   "refresh_and_close_page_when_automation_queue": "There are still automated tasks being queued for execution, and continuing to operate will cause some tasks to be canceled",
   "delete_archive_record_success": "Successfully deleted archived record",
   "subscribed_record_archived":"<a class=\"memberName\"></a> archived <a class=\"recordTitle\"></a> in <a class=\"nodeName\"></a>",
-  "subscribed_record_unarchived": "<a class=\"memberName\"></a> unarchived <a class=\"recordTitle\"></a> in <a class=\"nodeName\"></a>"
+  "subscribed_record_unarchived": "<a class=\"memberName\"></a> unarchived <a class=\"recordTitle\"></a> in <a class=\"nodeName\"></a>",
+  "api_param_validate_error": "{message}"
 }

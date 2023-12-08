@@ -5909,5 +5909,6 @@
   "zambia": "Zambia",
   "zimbabwe": "Zimbabwe",
   "zoom_in": "ingrandire",
-  "zoom_out": "rimpicciolire"
+  "zoom_out": "rimpicciolire",
+  "api_param_validate_error": "{message}"
 }

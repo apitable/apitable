@@ -483,6 +483,7 @@
   "api_param_unit_name_type_not_exists": "단위 이름 지정된 단위가 없습니다.",
   "api_param_unit_not_exists": "셀 ID 지정된 셀이 없습니다.",
   "api_param_url_field_type_error": "field: {field} URL 필드 값은 문자열이어야 합니다.",
+  "api_param_validate_error": "{message}",
   "api_param_view_not_exists": "지정된 뷰가 없습니다.",
   "api_param_viewid_empty_error": "viewId 매개 변수는 비워둘 수 없습니다.",
   "api_param_viewid_type_error": "매개변수 도구 모음은 문자열 유형이어야 합니다.",
