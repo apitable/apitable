@@ -44,6 +44,14 @@ export class NodePermissionService {
     private readonly restService: RestService,
   ) {}
 
+  async getEmbedNodePermission(nodeId: string, auth: IAuthHeader, embedId: string): Promise<NodePermission> {
+    const fieldPermissionMap = await this.restService.getFieldPermission(auth, nodeId, embedId);
+    if (!auth.userId) {
+      return { hasRole: true, role: ConfigConstant.permission.anonymous, fieldPermissionMap, ...DEFAULT_READ_ONLY_PERMISSION };
+    }
+    return { hasRole: true, role: ConfigConstant.permission.editor, fieldPermissionMap, ...DEFAULT_EDITOR_PERMISSION };
+  }
+
   /**
    * Obtain node permissions.
    *
