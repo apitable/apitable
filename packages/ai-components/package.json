@@ -11,9 +11,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@apitable/components": "*",
-    "@apitable/core": "*",
-    "@apitable/icons": "*"
+    "@apitable/components": "workspace:*",
+    "@apitable/core": "workspace:*",
+    "@apitable/icons": "workspace:*"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^5.0.1",

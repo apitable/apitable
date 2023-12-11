@@ -139,13 +139,13 @@ importers:
   packages/ai-components:
     dependencies:
       '@apitable/components':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../components
       '@apitable/core':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../core
       '@apitable/icons':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../icons
       '@microsoft/fetch-event-source':
         specifier: ^2.0.1
@@ -296,16 +296,16 @@ importers:
         specifier: ../ai-components
         version: link:../ai-components
       '@apitable/components':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../components
       '@apitable/core':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../core
       '@apitable/i18n-lang':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../i18n-lang
       '@apitable/icons':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../icons
       '@microsoft/fetch-event-source':
         specifier: ^2.0.1
@@ -845,7 +845,7 @@ importers:
         specifier: ^0.1.5
         version: 0.1.7
       '@types/styled-components':
-        specifier: ^5.1.26
+        specifier: 5.1.26
         version: 5.1.26
       '@types/styled-system':
         specifier: ^5.1.11
@@ -890,16 +890,16 @@ importers:
   packages/core:
     dependencies:
       '@apitable/databus-wasm-nodejs':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../databus-wasm-nodejs
       '@apitable/databus-wasm-web':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../databus-wasm-web
       '@apitable/i18n':
         specifier: ^1.0.4
         version: 1.0.4
       '@apitable/i18n-lang':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../i18n-lang
       '@types/lodash':
         specifier: ^4.14.197
@@ -1122,22 +1122,22 @@ importers:
   packages/datasheet:
     dependencies:
       '@apitable/ai':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../ai-components
       '@apitable/api-client':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../api-client
       '@apitable/components':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../components
       '@apitable/core':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../core
       '@apitable/i18n-lang':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../i18n-lang
       '@apitable/icons':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../icons
       '@apitable/react-flow':
         specifier: ^9.6.12
@@ -1272,7 +1272,7 @@ importers:
         specifier: ^1.8.1
         version: 1.8.5
       '@types/styled-components':
-        specifier: ^5.1.26
+        specifier: 5.1.26
         version: 5.1.26
       ahooks:
         specifier: ^3.5.0
@@ -1946,7 +1946,7 @@ importers:
         specifier: ^0.16.1
         version: 0.16.4
       '@types/styled-components':
-        specifier: ^5.1.26
+        specifier: 5.1.26
         version: 5.1.26
       eslint:
         specifier: 8.49.0
@@ -1961,10 +1961,10 @@ importers:
   packages/room-server:
     dependencies:
       '@apitable/core':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../core
       '@apitable/i18n-lang':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../i18n-lang
       '@apitable/nestjs-redis':
         specifier: 1.3.4
@@ -2530,7 +2530,7 @@ importers:
         specifier: ^1.4.36
         version: 1.4.36
       '@types/styled-components':
-        specifier: ^5.1.26
+        specifier: 5.1.26
         version: 5.1.26
       babel-jest:
         specifier: ^26.6.0
@@ -8036,7 +8036,7 @@ packages:
       '@nestjs/common': ^8.1.1
       '@nestjs/core': ^8.1.1
       '@nestjs/event-emitter': ^1.0.0
-      '@nestjs/microservices': ^8.1.1
+      '@nestjs/microservices': 8.1.2
       '@nestjs/schedule': ^1.0.2
       reflect-metadata: ^0.1.13
     dependencies:
@@ -8334,7 +8334,7 @@ packages:
     requiresBuild: true
     peerDependencies:
       '@nestjs/common': ^8.0.0
-      '@nestjs/microservices': ^8.0.0
+      '@nestjs/microservices': 8.1.2
       '@nestjs/platform-express': ^8.0.0
       '@nestjs/websockets': ^8.0.0
       reflect-metadata: ^0.1.12
@@ -8563,7 +8563,7 @@ packages:
     peerDependencies:
       '@nestjs/common': ^8.0.0
       '@nestjs/core': ^8.0.0
-      '@nestjs/microservices': ^8.0.0
+      '@nestjs/microservices': 8.1.2
       '@nestjs/platform-express': ^8.0.0
     peerDependenciesMeta:
       '@nestjs/microservices':
@@ -36822,9 +36822,9 @@ packages:
       yjs: ^13.3.2
     dependencies:
       lib0: 0.2.85
-      prosemirror-model: 1.19.3
-      prosemirror-state: 1.4.3
-      prosemirror-view: 1.31.8
+      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
+      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
+      prosemirror-view: registry.npmmirror.com/prosemirror-view@1.31.8
       y-protocols: 1.0.6(yjs@13.6.8)
       yjs: registry.npmmirror.com/yjs@13.6.8
     dev: false
