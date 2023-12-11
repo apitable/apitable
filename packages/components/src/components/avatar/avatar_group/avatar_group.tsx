@@ -22,7 +22,7 @@ import { AvatarGroupStyled } from './styled';
 import { Avatar } from '../index';
 
 export const AvatarGroup: FC<React.PropsWithChildren<IAvatarGroup>> = ({
-  max = 5, children, maxStyle, size
+  max = 5, children, maxStyle, size, moreClick
 }) => {
   const childrenArr = (Array.isArray(children) ? children : [children]).map((child, index) =>
     cloneElement((child as ReactElement), {
@@ -36,7 +36,7 @@ export const AvatarGroup: FC<React.PropsWithChildren<IAvatarGroup>> = ({
   return (
     <AvatarGroupStyled size={size}>
       {childrenShow}
-      {isHidden && <Avatar style={maxStyle} size={size}>+{numOfChildren - max}</Avatar>}
+      {isHidden && <Avatar onClick={moreClick} style={maxStyle} size={size}>+{numOfChildren - max}</Avatar>}
     </AvatarGroupStyled>
   );
 };
