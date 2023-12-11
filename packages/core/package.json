@@ -24,10 +24,10 @@
     "node": ">=8.x"
   },
   "dependencies": {
-    "@apitable/databus-wasm-nodejs": "*",
-    "@apitable/databus-wasm-web": "*",
+    "@apitable/databus-wasm-nodejs": "workspace:*",
+    "@apitable/databus-wasm-web": "workspace:*",
     "@apitable/i18n": "^1.0.4",
-    "@apitable/i18n-lang": "*",
+    "@apitable/i18n-lang": "workspace:*",
     "@types/lodash": "^4.14.197",
     "@types/socket.io-client": "^1.4.36",
     "apphook": "1.0.6",

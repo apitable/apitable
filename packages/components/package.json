@@ -66,7 +66,7 @@
     "@types/react-is": "^17.0.0",
     "@types/react-window": "^1.8.1",
     "@types/resize-observer-browser": "^0.1.5",
-    "@types/styled-components": "^5.1.26",
+    "@types/styled-components": "5.1.26",
     "@types/styled-system": "^5.1.11",
     "babel-jest": "^26.6.0",
     "chromatic": "^5.10.1",

@@ -23,7 +23,7 @@
   "devDependencies": {
     "@types/react": "18.0.2",
     "@types/react-highlight-words": "^0.16.1",
-    "@types/styled-components": "^5.1.26",
+    "@types/styled-components": "5.1.26",
     "eslint": "^7.21.0",
     "styled-components": "5.3.6",
     "typescript": "4.8.2"
