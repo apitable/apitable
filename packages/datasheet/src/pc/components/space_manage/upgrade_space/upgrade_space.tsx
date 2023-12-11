@@ -18,8 +18,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { Skeleton } from '@apitable/components';
-import { Strings, t, Api } from '@apitable/core';
-import { Modal } from 'pc/components/common/modal/modal/modal';
+import { Api, Strings, t } from '@apitable/core';
+import { useQuery } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 // @ts-ignore
@@ -28,12 +28,12 @@ import { Trial } from 'enterprise/log/trial';
 import { showUpgradeContactUs } from 'enterprise/subscribe_system/order_modal/pay_order_success';
 import styles from './style.module.less';
 
-const upperCaseFirstWord = (str: string) => {
-  if (str.length < 2) {
-    return str;
-  }
-  return str.charAt(0).toUpperCase() + str.slice(1);
-};
+// const upperCaseFirstWord = (str: string) => {
+//   if (str.length < 2) {
+//     return str;
+//   }
+//   return str.charAt(0).toUpperCase() + str.slice(1);
+// };
 
 function getClientReferenceId() {
   return (window['Rewardful'] && window['Rewardful'].referral) || '';
@@ -47,9 +47,9 @@ const UpgradeSpace = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const spaceId = useAppSelector((state) => state.space.activeId);
   const { product, recurringInterval, onTrial } = useAppSelector((state) => state.billing?.subscription) || {};
-  const [loading, setLoading] = useState(true);
   const vars = getEnvVariables();
-
+  const [loading, setLoading] = useState(!vars.IS_AITABLE);
+  const query = useQuery();
   const [showTrialModal, setShowTrialModal] = useState<boolean>(vars.CLOUD_DISABLE_BILLING_UPGRADE);
 
   useEffect(() => {
@@ -57,12 +57,12 @@ const UpgradeSpace = () => {
       return;
     }
 
-    const receiveMes = (event: any) => {
+    const receiveMes = async (event: any) => {
       if (!event) {
         return;
       }
       const {
-        data: { msg, pageType, grade, priceId },
+        data: { msg, pageType, grade, priceId, productInterval },
       } = event;
 
       if (msg === 'pageLoaded') {
@@ -77,93 +77,38 @@ const UpgradeSpace = () => {
         );
         setLoading(false);
       }
-      console.log('msg', msg, grade);
-      if (msg === 'toDowngrade' && grade) {
-        if (grade === 'free') {
-          Modal.warning({
-            title: onTrial ? t(Strings.billing_cancel_trial_title) : t(Strings.billing_cancel_title),
-            content: onTrial ? t(Strings.billing_cancel_trial_content) : t(Strings.billing_cancel_content),
-            hiddenCancelBtn: false,
-            okText: t(Strings.confirm),
-            cancelText: t(Strings.cancel),
-            zIndex: 1100,
-            onOk: async () => {
-              if (!vars.IS_ENTERPRISE && !vars.IS_APITABLE) return;
-              //@ts-ignore
-              const planInfoRes = await Api.getSubscript(spaceId);
-              const { subscriptionId } = planInfoRes.data.data;
-              //@ts-ignore
-              const res = await Api?.cancelSubscription(spaceId!, subscriptionId);
-              const { success, data } = res.data;
-              if (success) {
-                location.href = data.url;
-              }
-            },
-          });
-          return;
+
+      if (msg === 'choosePlan') {
+        const currentRecurringIntervalIsMonth = recurringInterval?.toLowerCase().includes('month');
+        const newRecurringIntervalIsMonth = productInterval?.toLowerCase().includes('month');
+
+        const _product = product.toLowerCase();
+        const _grade = grade.toLowerCase();
+
+        if ((_product === _grade && currentRecurringIntervalIsMonth !== newRecurringIntervalIsMonth) || (_product !== _grade && _grade === 'free')) {
+          // 修改订阅周期
+          if (!vars.IS_ENTERPRISE && !vars.IS_APITABLE) return;
+          //@ts-ignore
+          const planInfoRes = await Api.getSubscript(spaceId);
+          const { subscriptionId } = planInfoRes.data.data;
+          //@ts-ignore
+          const res = await Api?.updateBillingSubscription(spaceId, subscriptionId);
+          const { success, data } = res.data;
+          if (success) {
+            location.href = data.url;
+          }
         }
-        Modal.warning({
-          title: t(Strings.downgrade),
-          content: t(Strings.downgrade_content),
-          hiddenCancelBtn: false,
-          okText: t(Strings.modal_downgrade_btn_txt, {
-            grade: upperCaseFirstWord(grade),
-          }),
-          cancelText: t(Strings.cancel),
-          zIndex: 1100,
-          onOk: async () => {
-            const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon()?.id);
-            const { url } = res.data;
-            location.href = url;
-          },
-        });
-        return;
+
+        if (_product !== _grade) {
+          // 修改订阅产品呢
+          const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon()?.id);
+          const { url } = res.data;
+          location.href = url;
+        }
       }
 
       if (msg === 'toUpgrade') {
-        if (grade) {
-          Modal.info({
-            title: t(Strings.upgrade),
-            content: t(Strings.upgrade_content),
-            hiddenCancelBtn: false,
-            okText: t(Strings.modal_upgrade_btn_txt, {
-              grade: upperCaseFirstWord(grade),
-            }),
-            cancelText: t(Strings.cancel),
-            zIndex: 1100,
-            onOk: async () => {
-              const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon()?.id);
-              const { url } = res.data;
-              location.href = url;
-              // window.open(url, '_blank', 'noopener=yes,noreferrer=yes');
-            },
-          });
-          return;
-        }
         window.open(`/space/${spaceId}/upgrade`, '_blank', 'noopener,noreferrer');
-        return;
-      }
-
-      if (msg === 'changePeriod') {
-        Modal.warning({
-          title: t(Strings.billing_interval),
-          content: t(Strings.change_period_content),
-          hiddenCancelBtn: false,
-          cancelText: t(Strings.cancel),
-          zIndex: 1100,
-          onOk: async () => {
-            if (!vars.IS_ENTERPRISE && !vars.IS_APITABLE) return;
-            //@ts-ignore
-            const planInfoRes = await Api.getSubscript(spaceId);
-            const { subscriptionId } = planInfoRes.data.data;
-            //@ts-ignore
-            const res = await Api?.updateBillingSubscription(spaceId, subscriptionId);
-            const { success, data } = res.data;
-            if (success) {
-              location.href = data.url;
-            }
-          },
-        });
         return;
       }
 
@@ -188,8 +133,8 @@ const UpgradeSpace = () => {
     return Trial && <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.upgrade_space)} />;
   }
 
-  const iframeSrc = location.origin + '/pricing/';
-  // const iframeSrc = 'http://localhost:3002' + '/pricing/';
+  const iframeSrc = location.origin + `/pricing/?upgradeSpace=true&currentProduct=${product}&hideDetail=${Boolean(query.get('choosePlan'))}`;
+  // const iframeSrc = 'http://localhost:3002' + `/pricing/?upgradeSpace=true&currentProduct=${product}&hideDetail=${Boolean(query.get('choosePlan'))}`;
 
   return (
     <div className={styles.container}>

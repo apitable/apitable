@@ -4,10 +4,10 @@ import { colorVars, Typography } from '@apitable/components';
 import { Navigation, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
 import { Modal } from 'pc/components/common/modal/modal/modal';
+import { Router } from 'pc/components/route_manager/router';
 import UpgradeSpace from 'pc/components/space_manage/upgrade_space/upgrade_space';
 import { stopPropagation } from 'pc/utils/dom';
 import styles from './style.module.less';
-import { Router } from 'pc/components/route_manager/router';
 
 export const expandUpgradeSpace = () => {
   const container = document.createElement('div');
@@ -28,7 +28,7 @@ export const expandUpgradeSpace = () => {
         closeIcon={null}
         onCancel={onModalClose}
         destroyOnClose
-        width={'1200px'}
+        width={'90%'}
         footer={null}
         centered
         zIndex={1100}
