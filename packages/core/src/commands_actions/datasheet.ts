@@ -349,7 +349,7 @@ export class DatasheetActions {
    */
   static addField2Action(
     snapshot: ISnapshot,
-    payload: { field: IField; viewId?: string; index?: number; fieldId?: string; offset?: number; hiddenColumn?: boolean },
+    payload: { field: IField; viewId?: string; index?: number; fieldId?: string; offset?: number; hiddenColumn?: boolean, forceColumnVisible?:boolean },
   ): IJOTAction[] | null {
     const fieldMap = snapshot.meta.fieldMap;
     const views = snapshot.meta.views;
@@ -380,6 +380,10 @@ export class DatasheetActions {
 
       // handler of new column in view
       function viewColumnHandler() {
+        if(payload.forceColumnVisible != null) {
+          newColumn.hidden = payload.forceColumnVisible===true;
+          return;
+        }
         let hiddenKey = 'hidden';
         switch (cur.type) {
           case ViewType.Gantt:

@@ -27,6 +27,7 @@ import com.apitable.core.constants.RedisConstants;
 import com.apitable.interfaces.ai.facade.AiServiceFacade;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.internal.assembler.BillingAssembler;
 import com.apitable.internal.ro.SpaceStatisticsRo;
@@ -114,14 +115,16 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
             count = automationRobotService.getRobotRunsCountBySpaceId(spaceId);
             redisTemplate.boundValueOps(redisKey).setIfAbsent(count, 31, TimeUnit.DAYS);
         }
-        Long maxAutomationRunsNums =
-            subscriptionInfo.getFeature().getMessageAutomationRunNums().getValue();
-        vo.setMaxAutomationRunNums(maxAutomationRunsNums);
+        SubscriptionFeatures.ConsumeFeatures.AutomationRunNumsPerMonth automationRunNumsPerMonth =
+            subscriptionInfo.getFeature().getAutomationRunNumsPerMonth();
+        vo.setMaxAutomationRunNums(automationRunNumsPerMonth.getValue());
         vo.setAutomationRunNums(count);
         if (Boolean.TRUE.equals(skipAutomationRunNumValidate)) {
             vo.setAllowRun(true);
         } else {
-            vo.setAllowRun(maxAutomationRunsNums == -1 || count < maxAutomationRunsNums);
+            vo.setAllowRun(
+                automationRunNumsPerMonth.isUnlimited()
+                    || count < automationRunNumsPerMonth.getValue());
         }
         return vo;
     }

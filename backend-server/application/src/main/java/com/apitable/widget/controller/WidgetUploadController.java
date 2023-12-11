@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "Widget Upload API")
-@ApiResource(path = "/")
+@ApiResource
 public class WidgetUploadController {
 
     @Resource

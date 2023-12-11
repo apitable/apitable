@@ -30,13 +30,12 @@ import { Message } from 'pc/components/common/message';
 import { Modal as CustomModal } from 'pc/components/common/modal/modal/modal';
 import CreateSpace from 'pc/components/create_space/create_space';
 import { Router } from 'pc/components/route_manager/router';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import IconNoSpaceDark from 'static/icon/datasheet/space_img_empty_dark.png';
 import IconNoSpaceLight from 'static/icon/datasheet/space_img_empty_light.png';
 import { IShareSpaceInfo } from '../interface';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 enum ModalType {
   Login = 'Login',

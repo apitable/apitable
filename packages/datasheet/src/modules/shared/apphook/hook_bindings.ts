@@ -31,7 +31,7 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-import { Modal } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { IModalReturn } from 'pc/components/common/modal/modal/modal.interface';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';

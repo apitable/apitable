@@ -19,7 +19,7 @@
 import classnames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
-import { FC, useContext, useMemo, useRef } from 'react';
+import { FC, useContext, useEffect, useMemo, useRef } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
 import { Skeleton } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation, NodeErrorType, Selectors, StoreActions, Strings, t } from '@apitable/core';
@@ -28,12 +28,11 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { ITreeViewRef, TreeItem, TreeView } from 'pc/components/common/tree_view';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getContextTypeByNodeType, shouldOpenInNewTab } from 'pc/utils';
 import EmptyFavoritePng from 'static/icon/workbench/catalogue/favorite.png';
 import { WorkbenchSideContext } from '../workbench_side_context';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
@@ -69,6 +68,15 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
   const expandHandler = (nodeIds: string[]) => {
     dispatch(StoreActions.setExpandedKeys(nodeIds, ConfigConstant.Modules.FAVORITE));
   };
+
+  const { getFavoriteNodeListReq } = useCatalogTreeRequest();
+  const { run: getFavoriteNodeList } = useRequest(getFavoriteNodeListReq, { manual: true });
+  useEffect(() => {
+    if (spaceId) {
+      getFavoriteNodeList();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [spaceId]);
 
   const onContextMenu = (e: React.SyntheticEvent) => {
     e.stopPropagation();

@@ -52,23 +52,23 @@ public class SubscribeAssembler {
         }
         SubscriptionFeature feature = subscriptionInfo.getFeature();
         result.setMaxSeats(feature.getSeat().getValue());
-        result.setMaxCapacitySizeInBytes(feature.getCapacitySize().getValue());
-        result.setMaxSheetNums(feature.getSheetNums().getValue());
+        result.setMaxCapacitySizeInBytes(feature.getCapacitySize().getValue().toBytes());
+        result.setMaxSheetNums(feature.getFileNodeNums().getValue());
         result.setMaxRowsPerSheet(feature.getRowsPerSheet().getValue());
-        result.setMaxRowsInSpace(feature.getRowNums().getValue());
+        result.setMaxRowsInSpace(feature.getTotalRows().getValue());
         result.setMaxAdminNums(feature.getAdminNums().getValue());
         result.setMaxMirrorNums(feature.getMirrorNums().getValue());
-        result.setMaxApiCall(feature.getApiCallNums().getValue());
-        result.setMaxGalleryViewsInSpace(feature.getGalleryViews().getValue());
-        result.setMaxKanbanViewsInSpace(feature.getKanbanViews().getValue());
-        result.setMaxFormViewsInSpace(feature.getFormViews().getValue());
-        result.setMaxGanttViewsInSpace(feature.getGanttViews().getValue());
-        result.setMaxCalendarViewsInSpace(feature.getCalendarViews().getValue());
+        result.setMaxApiCall(feature.getApiCallNumsPerMonth().getValue());
+        result.setMaxGalleryViewsInSpace(feature.getGalleryViewNums().getValue());
+        result.setMaxKanbanViewsInSpace(feature.getKanbanViewNums().getValue());
+        result.setMaxFormViewsInSpace(feature.getFormNums().getValue());
+        result.setMaxGanttViewsInSpace(feature.getGanttViewNums().getValue());
+        result.setMaxCalendarViewsInSpace(feature.getCalendarViewNums().getValue());
         result.setFieldPermissionNums(feature.getFieldPermissionNums().getValue());
         result.setNodePermissionNums(feature.getNodePermissionNums().getValue());
         result.setMaxMessageCredits(feature.getMessageCreditNums().getValue());
-        result.setMaxAutomationRunNums(feature.getMessageAutomationRunNums().getValue());
-        result.setMaxWidgetNums(feature.getMessageWidgetNums().getValue());
+        result.setMaxAutomationRunNums(feature.getAutomationRunNumsPerMonth().getValue());
+        result.setMaxWidgetNums(feature.getWidgetNums().getValue());
 
         result.setIntegrationFeishu(feature.getSocialConnect().getValue());
         result.setIntegrationDingtalk(feature.getSocialConnect().getValue());
@@ -91,9 +91,9 @@ public class SubscribeAssembler {
         result.setMaxRemainRecordActivityDays(feature.getRemainRecordActivityDays().getValue());
         result.setMaxAuditQueryDays(feature.getAuditQueryDays().getValue());
 
-        result.setUnExpireGiftCapacity(subscriptionInfo.getGiftCapacity().getValue());
-        result.setSubscriptionCapacity(subscriptionInfo.getTotalCapacity().getValue()
-            - subscriptionInfo.getGiftCapacity().getValue());
+        result.setUnExpireGiftCapacity(subscriptionInfo.getGiftCapacity().getValue().toBytes());
+        result.setSubscriptionCapacity(subscriptionInfo.getTotalCapacity().getValue().toBytes()
+            - subscriptionInfo.getGiftCapacity().getValue().toBytes());
         return result;
     }
 }

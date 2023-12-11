@@ -813,7 +813,7 @@ export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo((pro
 
     // set gantt default timeZone to start field timeZone
     const startField = fieldMap[startFieldId];
-    const timeZone = startField?.property.timeZone;
+    const timeZone = startField?.property?.timeZone;
     if (timeZone) {
       dayjs.tz.setDefault(timeZone);
     }

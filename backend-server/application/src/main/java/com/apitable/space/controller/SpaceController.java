@@ -29,7 +29,6 @@ import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SpringContextHolder;
 import com.apitable.interfaces.ai.model.ChartTimeDimension;
-import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
 import com.apitable.shared.cache.bean.LoginUserDto;
@@ -54,7 +53,6 @@ import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.holder.NotificationRenderFieldHolder;
 import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
-import com.apitable.shared.util.HttpServletUtil;
 import com.apitable.shared.util.information.ClientOriginInfo;
 import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.dto.GetSpaceListFilterCondition;
@@ -84,11 +82,9 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -101,7 +97,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "Space - Space Api")
-@ApiResource(path = "/")
+@ApiResource
 @Slf4j
 public class SpaceController {
 
@@ -122,9 +118,6 @@ public class SpaceController {
 
     @Resource
     private SocialServiceFacade socialServiceFacade;
-
-    @Resource
-    private EntitlementServiceFacade entitlementServiceFacade;
 
     /**
      * Get space capacity info.
@@ -190,13 +183,10 @@ public class SpaceController {
      */
     @PostResource(path = "/space/create", requiredPermission = false)
     @Operation(summary = "Create Space")
-    public ResponseData<CreateSpaceResultVo> create(@RequestBody @Valid SpaceOpRo spaceOpRo,
-                                                    HttpServletRequest request) {
+    public ResponseData<CreateSpaceResultVo> create(@RequestBody @Valid SpaceOpRo spaceOpRo) {
         Long userId = SessionContext.getUserId();
         UserEntity user = iUserService.getById(userId);
         Space space = iSpaceService.createSpace(user, spaceOpRo.getName());
-        Map<String, String> externalProperty = HttpServletUtil.getParameterAsMap(request, true);
-        entitlementServiceFacade.createSubscription(space.getId(), userId, externalProperty);
         // release space audit events
         ClientOriginInfo clientOriginInfo = InformationUtil
             .getClientOriginInfoInCurrentHttpContext(true, false);
@@ -372,7 +362,17 @@ public class SpaceController {
     @Parameter(name = "spaceId", description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
     public ResponseData<SpaceInfoVO> info(@PathVariable("spaceId") String spaceId) {
-        return ResponseData.success(iSpaceService.getSpaceInfo(spaceId));
+        SpaceInfoVO spaceInfo = iSpaceService.getSpaceInfo(spaceId);
+        SpaceGlobalFeature spaceGlobalFeature = iSpaceService.getSpaceGlobalFeature(spaceId);
+        spaceInfo.setFeature(spaceGlobalFeature);
+
+
+        // User's resource information
+        Long userId = SessionContext.getUserId();
+        UserSpaceVo userSpaceVo = iSpaceService.getUserSpaceResource(userId, spaceId);
+        spaceInfo.setUserResource(userSpaceVo);
+
+        return ResponseData.success(spaceInfo);
     }
 
     /**

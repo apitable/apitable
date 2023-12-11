@@ -96,8 +96,7 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
   const editNodeId = useAppSelector((state: IReduxState) => state.catalogTree.editNodeId);
   const favoriteEditNodeId = useAppSelector((state: IReduxState) => state.catalogTree.favoriteEditNodeId);
   const userSpaceId = useAppSelector((state: IReduxState) => state.user.info!.spaceId);
-  const { getFavoriteNodeListReq, getTreeDataReq } = useCatalogTreeRequest();
-  const { run: getFavoriteNodeList } = useRequest(getFavoriteNodeListReq, { manual: true });
+  const { getTreeDataReq } = useCatalogTreeRequest();
   const { run: getTreeData } = useRequest(getTreeDataReq, { manual: true });
   const { screenIsAtMost } = useResponsive();
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -247,7 +246,6 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
     if (userSpaceId) {
       dispatch(StoreActions.initCatalogTree());
       getTreeData();
-      getFavoriteNodeList();
     }
     // eslint-disable-next-line
   }, [userSpaceId, dispatch]);

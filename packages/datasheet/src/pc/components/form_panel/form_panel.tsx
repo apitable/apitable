@@ -20,15 +20,14 @@ import classNames from 'classnames';
 import { memo, FC, useContext, useEffect, useState } from 'react';
 import { Selectors, StatusCode, Strings, t } from '@apitable/core';
 import { ShareContext } from 'pc/components/share/share';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ServerError } from '../invalid_page/server_error';
 import { NoPermission } from '../no_permission';
-import { TabBar } from './form_tab';
-import styles from './style.module.less';
+import { TabBar } from './form_tab/tab_bar';
 import { ViewContainer } from './view_container';
 // @ts-ignore
 import { WeixinShareWrapper } from 'enterprise/wechat/weixin_share_wrapper/weixin_share_wrapper';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const FormPanelBase: FC<React.PropsWithChildren<{ loading?: boolean }>> = (props) => {
   const { shareId, templateId, embedId } = useAppSelector((state) => state.pageParams);

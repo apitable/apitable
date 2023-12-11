@@ -1,10 +1,10 @@
 import produce from 'immer';
 import { useAtom, useAtomValue } from 'jotai/index';
 import { useContext, useMemo } from 'react';
-import { IAutomationRobotDetailItem} from 'pc/components/robot/robot_context';
+import { IAutomationRobotDetailItem } from 'pc/components/robot/robot_context';
 import { getActionList, getTriggerList } from 'pc/components/robot/robot_detail/utils';
 import { getResourceAutomationDetail } from '../../robot/api';
-import { ShareContext } from '../../share';
+import { ShareContext } from '../../share/share';
 import { automationStateAtom, loadableFormList } from './atoms';
 
 export * from './atoms';

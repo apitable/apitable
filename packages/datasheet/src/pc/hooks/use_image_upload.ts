@@ -19,7 +19,7 @@
 import { shallowEqual } from 'react-redux';
 import { getImageThumbSrc, Strings, t } from '@apitable/core';
 import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { joinPath } from 'pc/components/route_manager/helper';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';

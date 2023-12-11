@@ -71,7 +71,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "Widget SDK - Widget Api")
-@ApiResource(path = "/")
+@ApiResource
 public class WidgetController {
 
     @Resource

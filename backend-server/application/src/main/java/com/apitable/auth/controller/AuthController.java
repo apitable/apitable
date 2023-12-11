@@ -61,7 +61,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "Authorization related interface")
-@ApiResource(path = "/")
+@ApiResource
 public class AuthController {
 
     private static final String AUTH_DESC =

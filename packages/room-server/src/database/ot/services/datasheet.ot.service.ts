@@ -220,9 +220,14 @@ export class DatasheetOtService {
     resultSet.auth = auth;
     resultSet.sourceType = sourceType;
     resultSet.attachCiteCollector = { nodeId: datasheetId, addToken: [], removeToken: [] };
+
+    const prepareBeginTime = +new Date();
     // Obtain capacity state
     resultSet.spaceCapacityOverLimit = await this.restService.capacityOverLimit(auth, spaceId);
     const meta = await this.getMetaDataByCache(datasheetId, effectMap);
+
+    this.logger.info(`[${datasheetId}] ====> Prepare analyseOperates......duration: ${+new Date() - prepareBeginTime}ms`);
+
     const fieldMap = meta.fieldMap;
     resultSet.temporaryFieldMap = fieldMap;
     resultSet.temporaryViews = meta.views;
@@ -252,6 +257,8 @@ export class DatasheetOtService {
       }
     }
     resultSet.metaActions = metaActions;
+
+    const postBeginTime = +new Date();
 
     if (resultSet.addViews.length) {
       const spaceUsages = await this.restService.getSpaceUsage(spaceId);
@@ -541,6 +548,7 @@ export class DatasheetOtService {
     // If create record -> recordMeta in one op, and then modify this record,
     // prevRecordMeta is necessary in terms of recordMeta
     effectMap.set(EffectConstantName.RecordMetaMap, {});
+    this.logger.info(`[${datasheetId}] ====> Post analyseOperates......duration: ${+new Date() - postBeginTime}ms`);
 
     return this.transaction;
   }
@@ -2527,7 +2535,7 @@ export class DatasheetOtService {
       this.logger.debug(`[${remoteChangeset.resourceId}] Insert new changeset`);
     }
     const beginTime = +new Date();
-    this.logger.info(`[${remoteChangeset.resourceId}] ====> Starting storing changeset......`);
+    this.logger.info(`[${remoteChangeset.resourceId}] - [${remoteChangeset.messageId}] ====> Starting storing changeset......`);
     const { userId } = commonData;
     await manager
       .createQueryBuilder()

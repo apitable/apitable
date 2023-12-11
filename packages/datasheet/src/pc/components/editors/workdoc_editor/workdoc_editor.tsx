@@ -4,7 +4,7 @@ import { forwardRef, memo, useImperativeHandle } from 'react';
 import { ICellValue } from '@apitable/core';
 import { IBaseEditorProps, IEditor } from '../interface';
 // @ts-ignore
-import { Workdoc } from 'enterprise/editor/workdoc/workdoc';
+import { Workdoc } from 'enterprise/editor/workdoc';
 
 export interface IWorkdocEditorProps extends IBaseEditorProps {
   editable: boolean;
@@ -40,8 +40,7 @@ const WorkdocEditorBase: React.ForwardRefRenderFunction<IEditor, IWorkdocEditorP
     }),
   );
 
-  const focus = () => {
-  };
+  const focus = () => {};
 
   const onEndEdit = () => {};
 
@@ -63,7 +62,7 @@ const WorkdocEditorBase: React.ForwardRefRenderFunction<IEditor, IWorkdocEditorP
       editing={editing}
       toggleEditing={toggleEditing}
       fieldId={field!.id}
-      recordId={recordId ? recordId.endsWith('_temp') ? undefined : recordId : undefined}
+      recordId={recordId ? (recordId.endsWith('_temp') ? undefined : recordId) : undefined}
       onSave={onSave}
       editable={editable}
     />

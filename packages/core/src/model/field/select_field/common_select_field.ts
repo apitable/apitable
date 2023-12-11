@@ -16,18 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { IReduxState } from 'exports/store';
 import Joi from 'joi';
-import { IReduxState } from '../../../exports/store/interfaces';
 import { difference, isString, keyBy, memoize, range } from 'lodash';
-import { getNewId, IDPrefix, isSelectType } from 'utils';
-import { Field } from '../field';
-import { FieldType, IMultiSelectedIds, ISelectField, ISelectFieldOption, ISelectFieldProperty, IStandardValue } from 'types/field_types';
+import { getFieldOptionColor } from 'model/color';
 import { IAPIMetaSingleSelectFieldProperty } from 'types/field_api_property_types';
-import { getColorNames, getFieldOptionColor } from 'model/color';
-import { IWriteOpenSelectBaseFieldProperty, IEffectOption } from 'types/open/open_field_write_types';
+import { FieldType, IMultiSelectedIds, ISelectField, ISelectFieldOption, ISelectFieldProperty, IStandardValue } from 'types/field_types';
 import { IOpenSelectBaseFieldProperty } from 'types/open/open_field_read_types';
-import { joiErrorResult } from '../validate_schema';
+import { IEffectOption, IWriteOpenSelectBaseFieldProperty } from 'types/open/open_field_write_types';
+import { getNewId, IDPrefix, isSelectType } from 'utils';
 import { getFieldDefaultProperty } from '../const';
+import { Field } from '../field';
+import { joiErrorResult } from '../validate_schema';
+
 const EFFECTIVE_OPTION_ID_LENGTH = 13;
 export const isOptionId = (optionId: string) => {
   return optionId && optionId.startsWith('opt') && optionId.length === EFFECTIVE_OPTION_ID_LENGTH;
@@ -327,16 +328,6 @@ export abstract class SelectField extends Field {
   private matchSingleSelectName(name: string, defaultValue: any): boolean{
     return typeof defaultValue === 'string'
       && name === defaultValue;
-  }
-
-  /**
-   * Convert the obtained color name to color number
-   * @param name color name
-   */
-  getOptionColorNumberByName(name: string) {
-    const colorNames = getColorNames();
-    const colorNum = colorNames.findIndex(colorName => colorName === name);
-    return colorNum > -1 ? colorNum : undefined;
   }
 }
 

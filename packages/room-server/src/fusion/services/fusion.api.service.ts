@@ -640,7 +640,7 @@ export class FusionApiService {
       throw ApiException.tipError(ApiTipConstant.api_insert_error);
     }
 
-    const userId = result.saveResult as string;
+    const userId = this.request[USER_HTTP_DECORATE].id;
     const recordIds = result.data as string[];
 
     // API submission requires a record source for tracking the source of the record

@@ -45,6 +45,8 @@ export interface IAddFieldOptions {
   offset?: number;
   // whether to hide this newly created field
   hiddenColumn?: boolean;
+  // force hidden
+  forceColumnVisible?: boolean;
 }
 
 export interface IAddFieldsOptions {

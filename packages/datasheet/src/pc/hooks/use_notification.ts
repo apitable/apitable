@@ -19,7 +19,7 @@
 import { useDispatch } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { Api, INoticeDetail, Navigation, StoreActions, Strings, t } from '@apitable/core';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { PublishControllers } from 'pc/components/notification/publish';
 import { Router } from 'pc/components/route_manager/router';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';

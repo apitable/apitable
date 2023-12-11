@@ -36,7 +36,7 @@ import {
   WhyRecordMoveType,
 } from '@apitable/core';
 import { ResourceService } from '@apitable/widget-sdk';
-import { expandRecordIdNavigate } from 'pc/components/expand_record';
+import { expandRecordIdNavigate } from 'pc/components/expand_record/utils';
 import { store } from 'pc/store';
 import { comlinkStore } from 'pc/worker';
 import { dispatch } from 'pc/worker/store';

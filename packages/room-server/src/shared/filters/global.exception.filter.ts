@@ -17,15 +17,7 @@
  */
 
 import { ApiTipConstant, ConfigConstant } from '@apitable/core';
-import {
-  ArgumentsHost,
-  BadRequestException,
-  Catch,
-  ExceptionFilter,
-  HttpStatus,
-  Logger,
-  NotFoundException
-} from '@nestjs/common';
+import { ArgumentsHost, BadRequestException, Catch, ExceptionFilter, HttpStatus, Logger, NotFoundException } from '@nestjs/common';
 import * as Sentry from '@sentry/node';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { ServerResponse } from 'http';
@@ -95,8 +87,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       });
     }
     if (exception instanceof BadRequestException) {
-      const errorMessages = exception.getResponse()['message'][0].split('.');
-      errMsg = errorMessages[errorMessages.length - 1];
+      errMsg = exception.getResponse()['message'];
       if (ApiTipConstant[errMsg]) {
         errMsg = await this.i18n.translate(errMsg, {
           lang: request[USER_HTTP_DECORATE]?.locale,

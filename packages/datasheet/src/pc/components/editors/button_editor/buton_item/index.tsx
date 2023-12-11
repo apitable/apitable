@@ -1,22 +1,43 @@
-import { Spin } from 'antd';
 import produce from 'immer';
-import { useAtom } from 'jotai';
-import { FunctionComponent, MutableRefObject, useCallback, useRef, useState } from 'react';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { isNil } from 'lodash';
 import * as React from 'react';
+import { FunctionComponent } from 'react';
 import styled, { css } from 'styled-components';
-import { Box, Typography, useThemeColors } from '@apitable/components';
-import { ButtonStyleType, getColorValue, IButtonField, IRecord, Selectors } from '@apitable/core';
+import { ResponseDataAutomationVO } from '@apitable/api-client';
+import { Box, LinkButton, Message, Typography, useThemeColors } from '@apitable/components';
+import {
+  ButtonActionType,
+  ButtonStyleType,
+  getColorValue,
+  IButtonField,
+  IRecord,
+  Selectors,
+  Strings,
+  t
+} from '@apitable/core';
 import { CheckFilled, LoadingFilled } from '@apitable/icons';
 import { AutomationConstant } from 'pc/components/automation/config';
-import { runAutomationButton } from 'pc/components/editors/button_editor';
-import { useButtonFieldValid } from 'pc/components/editors/button_editor/use_button_field_valid';
-import { getIsValid } from 'pc/components/editors/button_editor/valid_map';
+import { automationHistoryAtom, automationStateAtom } from 'pc/components/automation/controller';
+import { runAutomationButton, runAutomationUrl } from 'pc/components/editors/button_editor';
+import { getRobotDetail } from 'pc/components/editors/button_editor/api';
+import { useJobTaskContext } from 'pc/components/editors/button_editor/job_task';
 import EllipsisText from 'pc/components/ellipsis_text';
 import { setColor } from 'pc/components/multi_grid/format';
+import { AutomationScenario } from 'pc/components/robot/interface';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
+import { stopPropagation } from 'pc/utils';
 import { automationTaskMap, AutomationTaskStatus } from '../automation_task_map';
+
 type TO = ReturnType<typeof setTimeout>;
+
+// (444, 'button field automation not configured');
+// (445, 'button field automation trigger not configured');
+// (1106, 'The automation not activated');
+// (1107, 'The automation trigger not exits');
+// (1108, 'The automation trigger invalid');
+const CONST_AUTOMATION_ERROR =[444, 445, 1106, 1107, 1108];
 
 const StyledTypographyNoMargin = styled(Typography)`
   margin-bottom: 0 !important;
@@ -73,64 +94,103 @@ const StyledBgBox = styled(Box)<{defaultColor: string, disabled?: boolean, loadi
    `}
 `;
 
+export const StyledLinkButton = styled(LinkButton)`
+    margin-left: 4px;
+  font-size: 12px !important;
+   margin-right: 4px;
+`;
 export const ButtonFieldItem: FunctionComponent<{field: IButtonField,
     height?: string;
     maxWidth?: string;
     recordId: string, record:IRecord }> = ({ field, recordId, maxWidth, record, height }) => {
 
+      const setAutomationStateAtom = useSetAtom(automationStateAtom);
+
       const state = useAppSelector((state) => state);
 
       const datasheetId = useAppSelector(Selectors.getActiveDatasheetId);
 
-      const [automationTaskMapData, setAutomationTaskMap] = useAtom(automationTaskMap);
+      const automationTaskMapData = useAtomValue(automationTaskMap);
 
-      const to: MutableRefObject<TO|null> = useRef<TO|null>(null);
+      const colors = useCssColors();
 
+      const setAutomationHistoryPanel = useSetAtom(automationHistoryAtom);
       const key = `${recordId}-${field.id}`;
       const taskStatus: AutomationTaskStatus = automationTaskMapData.get(key) ?? 'initial';
 
-      const setIsLoading = useCallback((status: AutomationTaskStatus) => {
-        setAutomationTaskMap(produce(automationTaskMapData, draft => {
-          draft.set(key, status);
-        }));
-      }, [automationTaskMapData, key, setAutomationTaskMap]);
+      const { handleTaskStart } = useJobTaskContext();
 
       return (
         <ButtonItem
           height={height}
           taskStatus={taskStatus}
           maxWidth={maxWidth}
-          key={field.id} field={field} isLoading={taskStatus==='running'} onStart={async () => {
+          key={field.id} field={field} isLoading={taskStatus==='running'} onStart={ () => {
             if (!datasheetId) {
               return;
             }
-            if(taskStatus ==='running') {
+            if(taskStatus ==='success') {
               return;
             }
-            if(to.current) {
-              clearTimeout(to.current);
-              to.current = null;
+
+            if(isNil(field.property.action?.type)) {
+              Message.error({ content: t(Strings.automation_tips) });
+              return;
             }
-            setIsLoading('running');
 
-            await runAutomationButton(datasheetId, record, state, recordId, field.id, field,
-              (success) => {
+            if(field.property.action.type === ButtonActionType.OpenLink) {
+              runAutomationUrl(datasheetId, record, state, recordId, field.id, field);
+              return;
+            }
 
-                setIsLoading(success ? 'success' : 'initial');
-
-                if(success) {
-                  const returnOfTimeout= setTimeout(() => {
-                    setIsLoading('initial');
-                    if(to.current) {
-                      clearTimeout(to.current);
-                    }
-                    to.current = null;
-                  }, 1000);
-
-                  to.current = returnOfTimeout;
+            const task =( ) => runAutomationButton(datasheetId, record, state, recordId, field.id, field,
+              (success, code, message) => {
+                if(!success && code && CONST_AUTOMATION_ERROR.includes(code) && message) {
+                  Message.error({ content: message });
+                  return;
                 }
+                if(!success) {
+                  Message.error({ content: <>
+                    <Box display={'inline-flex'} alignItems={'center'} color={colors.textStaticPrimary}>
+                      {t(Strings.button_execute_error)}
+                      <StyledLinkButton underline
+                        color={colors.textStaticPrimary}
+                        onClick={async () => {
 
+                          const automationId = field.property.action.automation?.automationId;
+
+                          const data1 = await getRobotDetail(automationId ?? '',
+                            ''
+                          );
+
+                          if(data1 instanceof ResponseDataAutomationVO) {
+                            if(data1?.success) {
+                              setAutomationStateAtom({
+                                currentRobotId: data1?.data?.robotId,
+                                resourceId: automationId,
+                                scenario: AutomationScenario.node,
+                                // @ts-ignore
+                                robot: data1.data
+                              });
+                              setAutomationHistoryPanel({
+                                dialogVisible: true,
+                              });
+                            }else {
+                              Message.error({ content: data1?.message ?? '' });
+                            }
+                          }else {
+                            Message.error({ content: data1?.message ?? '' });
+                          }
+                        }}>{t(Strings.button_check_history)}</StyledLinkButton>
+                      {t(Strings.button_check_history_end)}
+                    </Box>
+                  </>
+                  });
+                }
               });
+
+            handleTaskStart(recordId, field.id, task);
+
           } } />
       );
     };
@@ -150,8 +210,14 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
       const cssColors = useCssColors();
 
       const bg = field.property.style.color ? setColor(field.property.style.color, cacheTheme) : colors.defaultBg;
-      const isValidResp = useButtonFieldValid(field);
-      const isValid = isValidResp.isLoading ? (getIsValid(isValidResp.fieldId) ?? true) : isValidResp.result;
+      // const isValidResp = {
+      //   fieldId: field.id,
+      //   isLoading: false,
+      //   result: true,
+      // };
+      // useButtonFieldValid(field);
+      const isValid = true;
+      // isValidResp.isLoading ? (getIsValid(isValidResp.fieldId) ?? true) : isValidResp.result;
 
       let textColor: string = colors.textStaticPrimary;
       if(field.property.style.type === ButtonStyleType.Background) {
@@ -187,7 +253,10 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
             height={height ?? itemHeight}
             loading={isLoading}
             borderRadius={'4px'}
-            onClick={onStart}
+            onClick={(e) => {
+              stopPropagation(e);
+              onStart();
+            }}
             maxWidth={maxWidth?? '100%'}
             paddingX={'10px'}
             marginTop={marginTop}
@@ -266,7 +335,10 @@ export const ButtonItem: FunctionComponent<{field: IButtonField,
           loading={isLoading}
           borderRadius={'4px'}
           paddingX={'10px'}
-          onClick={onStart}
+          onClick={(e) => {
+            stopPropagation(e);
+            onStart();
+          }}
           height={height ?? itemHeight}
           maxWidth={maxWidth?? '100%'}
           marginTop={marginTop}

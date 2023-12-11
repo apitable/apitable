@@ -59,7 +59,7 @@ import 'normalize.css';
 import { initializer } from 'pc/common/initializer';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Router } from 'pc/components/route_manager/router';
-import { initEventListen } from 'pc/events';
+import { initEventListen } from 'pc/events/init_events_listener';
 import { getPageParams, getRegResult, LOGIN_SUCCESS, shareIdReg, spaceIdReg } from 'pc/hooks';
 import { initResourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -110,7 +110,6 @@ const initWorker = async () => {
     console.log('web assembly is not supported');
   }
 };
-
 immer.setAutoFreeze(false);
 (() => {
   if (!process.env.SSR) {

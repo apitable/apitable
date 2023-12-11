@@ -22,16 +22,17 @@ import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_SUC
 import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_SUCCESS_MESSAGE;
 
 import com.apitable.core.constants.ResponseExceptionConstants;
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * <p>
- *  response result wrapper.
+ * response result wrapper.
  * </p>
- *
  */
 public class ResponseData<T> implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 6941456238190558441L;
 
     /**
@@ -94,7 +95,8 @@ public class ResponseData<T> implements Serializable {
     }
 
     public static ResponseData<Void> error() {
-        return status(false, ResponseExceptionConstants.DEFAULT_ERROR_CODE, ResponseExceptionConstants.DEFAULT_ERROR_MESSAGE).build();
+        return status(false, ResponseExceptionConstants.DEFAULT_ERROR_CODE,
+            ResponseExceptionConstants.DEFAULT_ERROR_MESSAGE).build();
     }
 
     public static ResponseData<Void> error(String message) {

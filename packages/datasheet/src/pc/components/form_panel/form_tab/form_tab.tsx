@@ -44,10 +44,10 @@ import { Router } from 'pc/components/route_manager/router';
 import { CollaboratorStatus } from 'pc/components/tab_bar/collaboration_status';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { useResponsive, useSideBarVisible } from 'pc/hooks';
-import styles from './style.module.less';
-import { ToolBar } from './tool_bar';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
-import {useAppSelector} from "pc/store/react-redux";
+import { ToolBar } from './tool_bar';
+import styles from './style.module.less';
 
 const HIDDEN_TOOLBAR_RIGHT_LABEL_WIDTH = 816;
 
