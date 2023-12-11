@@ -18,19 +18,21 @@
 
 package com.apitable.interfaces.billing.model;
 
+import org.springframework.util.unit.DataSize;
+
 /**
- * boolean type of plan feature.
+ * data size type of plan feature.
  */
-public abstract class AbstractNumberPlanFeature implements PlanFeature<Long> {
+public class DataSizePlanFeature implements PlanFeature<DataSize> {
 
-    private Long value;
+    private DataSize value;
 
-    public AbstractNumberPlanFeature(Long value) {
+    public DataSizePlanFeature(DataSize value) {
         this.value = value;
     }
 
-    public void plus(long other) {
-        value = value + other;
+    public void plus(DataSize other) {
+        value = DataSize.ofBytes(value.toBytes() + other.toBytes());
     }
 
     /**
@@ -39,11 +41,11 @@ public abstract class AbstractNumberPlanFeature implements PlanFeature<Long> {
      * @return true or false
      */
     public boolean isUnlimited() {
-        return value != -1;
+        return value.isNegative();
     }
 
     @Override
-    public Long getValue() {
+    public DataSize getValue() {
         return value;
     }
 }

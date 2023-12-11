@@ -18,6 +18,7 @@
 
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
+import { useAtom } from 'jotai';
 import { get } from 'lodash';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
@@ -40,7 +41,10 @@ import {
 } from '@apitable/core';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ApiPanel } from 'pc/components/api_panel';
+import { automationHistoryAtom } from 'pc/components/automation/controller';
+import AutomationHistoryPanel from 'pc/components/automation/run_history/modal/modal';
 import { Message, VikaSplitPanel } from 'pc/components/common';
+import { JobTaskProvider } from 'pc/components/editors/button_editor/job_task';
 import { TimeMachine } from 'pc/components/time_machine';
 import { useMountWidgetPanelShortKeys } from 'pc/components/widget/hooks';
 import { SideBarClickType, SideBarContext, SideBarType, useSideBar } from 'pc/context';
@@ -138,13 +142,13 @@ const DatasheetMain = (props: IDatasheetMain) => {
         )}
       </div>
       <SuspensionPanel shareId={shareId} datasheetId={datasheetId} />
-      {(preview || testFunctions) && previewDstType !== PREVIEW_DATASHEET_BACKUP && 
+      {(preview || testFunctions) && previewDstType !== PREVIEW_DATASHEET_BACKUP &&
           <Alert
             className={styles.previewing}
             type="default"
             content={(
               <div className={styles.previewTip}>
-                <span>{preview ? t(Strings.preview_time_machine, { version: preview }) : 
+                <span>{preview ? t(Strings.preview_time_machine, { version: preview }) :
                   t(Strings.experience_test_function, { testFunctions })}</span>
                 <Button
                   size="small"
@@ -218,6 +222,7 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
 
   useMountWidgetPanelShortKeys();
 
+  const [historyDialog, setHistoryDialog] = useAtom(automationHistoryAtom);
   const [isDevToolsOpen, { toggle: toggleDevToolsOpen, set: setDevToolsOpen }] = useToggle();
   const [isRobotPanelOpen, { toggle: toggleRobotPanelOpen, set: setRobotPanelOpen }] = useToggle();
   const toggleTimeMachineOpen = useCallback(
@@ -433,18 +438,20 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
   }, [panelSize, sideBarVisible, rightPanelWidth, onSetSideBarVisibleByOhter, onSetPanelVisible, toggleType, clickType]);
 
   const datasheetMain = props.panelLeft || (
-    <DatasheetMain
-      loading={loading}
-      datasheetErrorCode={datasheetErrorCode}
-      isNoPermission={isNoPermission}
-      shareId={shareId}
-      datasheetId={datasheetId}
-      mirrorId={mirrorId}
-      preview={preview}
-      testFunctions={testFunctions}
-      handleExitTest={handleExitTest}
-      embedId={embedId}
-    />
+    <JobTaskProvider>
+      <DatasheetMain
+        loading={loading}
+        datasheetErrorCode={datasheetErrorCode}
+        isNoPermission={isNoPermission}
+        shareId={shareId}
+        datasheetId={datasheetId}
+        mirrorId={mirrorId}
+        preview={preview}
+        testFunctions={testFunctions}
+        handleExitTest={handleExitTest}
+        embedId={embedId}
+      />
+    </JobTaskProvider>
   );
 
   const childComponent = (
@@ -452,7 +459,9 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
       {({ width }) =>
         panelSize ? (
           <VikaSplitPanel
-            panelLeft={datasheetMain}
+            panelLeft={
+                datasheetMain
+            }
             panelRight={
               <div style={{ width: '100%', height: '100%' }}>
                 {isSideRecordOpen && <ExpandRecordPanel />}
@@ -481,7 +490,18 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
     </AutoSizer>
   );
 
-  return <>{WeixinShareWrapper ? <WeixinShareWrapper>{childComponent}</WeixinShareWrapper> : childComponent}</>;
+  return <>
+    {historyDialog.dialogVisible && (
+      <AutomationHistoryPanel
+        onClose={() => {
+          setHistoryDialog((draft) => ({
+            ...draft,
+            dialogVisible: false,
+          }));
+        }}
+      />
+    )}
+    {WeixinShareWrapper ? <WeixinShareWrapper>{childComponent}</WeixinShareWrapper> : childComponent}</>;
 };
 
 export const DataSheetPane = React.memo(DataSheetPaneBase);

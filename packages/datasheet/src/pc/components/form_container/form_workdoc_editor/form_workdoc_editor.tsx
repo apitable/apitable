@@ -8,7 +8,7 @@ import { AddOutlined } from '@apitable/icons';
 import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
 import { useAppSelector } from 'pc/store/react-redux';
 // @ts-ignore
-import { Status } from 'enterprise/editor/workdoc/workdoc';
+import { Status } from 'enterprise/editor/workdoc';
 import styles from './style.module.less';
 
 // @ts-ignore
@@ -35,10 +35,12 @@ const FormWorkdocEditorBase: React.ForwardRefRenderFunction<IEditor, IFormWorkdo
     const cellValueTitle = get(cellValue, '0.title');
     const documentId = get(cellValue, '0.documentId') || '';
     if (documentId && title && cellValueTitle !== title) {
-      onSave?.([{
-        documentId,
-        title
-      }]);
+      onSave?.([
+        {
+          documentId,
+          title,
+        },
+      ]);
     }
   }, [cellValue, onSave, title]);
 
@@ -51,8 +53,7 @@ const FormWorkdocEditorBase: React.ForwardRefRenderFunction<IEditor, IFormWorkdo
       onEndEdit: () => {
         console.log('onEndEdit');
       },
-      onStartEdit: () => {
-      },
+      onStartEdit: () => {},
       setValue: () => {
         console.log('setValue');
       },
@@ -62,19 +63,25 @@ const FormWorkdocEditorBase: React.ForwardRefRenderFunction<IEditor, IFormWorkdo
     }),
   );
 
-  if(cellValue == null) {
+  if (cellValue == null) {
     return (
       <div className={styles.createWorkdoc}>
-        <IconButton disabled={!editable || isMobile} icon={AddOutlined} onClick={() => {
-          if (!editable || isMobile) {
-            return;
-          }
-          const documentId = getNewId(IDPrefix.Document);
-          onSave?.([{
-            documentId,
-            title: ''
-          }]);
-        }} />
+        <IconButton
+          disabled={!editable || isMobile}
+          icon={AddOutlined}
+          onClick={() => {
+            if (!editable || isMobile) {
+              return;
+            }
+            const documentId = getNewId(IDPrefix.Document);
+            onSave?.([
+              {
+                documentId,
+                title: '',
+              },
+            ]);
+          }}
+        />
         <div>{t(Strings.workdoc_create)}</div>
       </div>
     );
@@ -101,6 +108,7 @@ const FormWorkdocEditorBase: React.ForwardRefRenderFunction<IEditor, IFormWorkdo
           setTitle={setTitle}
           onSave={onSave}
           isMobile={isMobile}
+          expandable={false}
         />
       )}
     </div>

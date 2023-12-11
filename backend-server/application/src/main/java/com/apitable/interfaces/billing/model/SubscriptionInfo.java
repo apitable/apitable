@@ -133,7 +133,7 @@ public interface SubscriptionInfo {
      * @return total capacity
      */
     default CapacitySize getTotalCapacity() {
-        return new CapacitySize(getFeature().getCapacitySize().getValue());
+        return new CapacitySize(getFeature().getCapacitySize().getValue().toBytes());
     }
 
     /**

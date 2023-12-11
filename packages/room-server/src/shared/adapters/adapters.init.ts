@@ -32,6 +32,7 @@ import { FastifyInstance } from 'fastify';
 import helmet from 'fastify-helmet';
 import fastifyMultipart from 'fastify-multipart';
 import {
+  ButtonFieldPropertyDto,
   CheckboxFieldPropertyDto,
   CurrencyFieldPropertyDto,
   DateTimeFieldPropertyDto,
@@ -100,13 +101,14 @@ export const initSwagger = (app: INestApplication) => {
         LinkFieldPropertyDto,
         LookupFieldPropertyDto,
         FormulaFieldPropertyDto,
+        ButtonFieldPropertyDto,
       ],
     });
     SwaggerModule.setup('nest/v1/docs', app, document);
   }
 };
 
-export const initFastify = async(): Promise<FastifyAdapter> => {
+export const initFastify = async (): Promise<FastifyAdapter> => {
   const fastifyAdapter = new FastifyAdapter({ logger: isDevMode, bodyLimit: GRPC_MAX_PACKAGE_SIZE });
   await fastifyAdapter.register(fastifyMultipart as any);
   // register helmet in fastify to avoid conflict with swagger
@@ -148,7 +150,7 @@ export const initHttpHook = (app: INestApplication) => {
   fastify.decorateRequest(REQUEST_ID, null);
   fastify.decorateRequest(REQUEST_AT, null);
 
-  fastify.addHook('preHandler', async(request) => {
+  fastify.addHook('preHandler', async (request) => {
     request[REQUEST_AT] = Date.now();
     request[REQUEST_ID] = generateRandomString();
     if (request.headers.authorization && request.headers.authorization.startsWith(AUTHORIZATION_PREFIX)) {

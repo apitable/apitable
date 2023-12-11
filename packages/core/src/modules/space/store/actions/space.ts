@@ -23,6 +23,7 @@ import * as ActionConstants from 'modules/shared/store/action_constants';
 import { IApp, IEnvs, IReduxState, ISpaceBasicInfo, ISpaceErr, ISpaceFeatures, ISpaceInfo } from 'exports/store/interfaces';
 import { initCatalogTree } from './catalog_tree';
 import { getUserMe } from '../../../user/store/actions/user';
+import { updateSpaceResource } from 'exports/store/actions';
 
 /**
  * Get Space List
@@ -207,6 +208,8 @@ export const getSpaceInfo = (spaceId: string, ignoreTimeLimit: boolean = false) 
       const { data, success } = res.data;
       if (success) {
         dispatch(setSpaceInfo({ ...data, lastUpdateTime: Date.now() }));
+        dispatch(setSpaceFeatures(data.feature));
+        dispatch(updateSpaceResource(data.userResource));
       }
     }, err => {
       console.log('API.spaceInfo error', err);

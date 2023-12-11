@@ -20,14 +20,14 @@ package com.apitable.shared.config;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+import cn.hutool.core.util.ArrayUtil;
 import com.apitable.shared.config.security.CsrfBeforeFilter;
 import com.apitable.shared.util.IgnorePathHelper;
 import jakarta.annotation.Resource;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,6 +35,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.Session;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
@@ -47,7 +48,7 @@ import org.springframework.session.security.SpringSessionBackedSessionRegistry;
  * @author Shawn Deng
  */
 @Configuration
-@EnableAutoConfiguration(exclude = UserDetailsServiceAutoConfiguration.class)
+@EnableWebSecurity
 public class WebSecurityConfig<S extends Session> {
 
     @Resource
@@ -73,16 +74,16 @@ public class WebSecurityConfig<S extends Session> {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         CookieCsrfTokenRepository cookieCsrfTokenRepository = new CookieCsrfTokenRepository();
-        cookieCsrfTokenRepository.setCookiePath("/");
         cookieCsrfTokenRepository.setCookieCustomizer((cookie) -> cookie.httpOnly(false));
-        http.cors(withDefaults())
+        cookieCsrfTokenRepository.setCookiePath("/");
+        http
+            .cors(withDefaults())
             .sessionManagement((sessionManagement) -> sessionManagement
                 .sessionFixation().migrateSession()
                 .maximumSessions(5)
                 .sessionRegistry(sessionRegistry())
             )
-            .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                .anyRequest().permitAll())
+            .authorizeHttpRequests((auth) -> auth.anyRequest().permitAll())
             .httpBasic(AbstractHttpConfigurer::disable)
             .formLogin(AbstractHttpConfigurer::disable)
             .logout(AbstractHttpConfigurer::disable)
@@ -90,9 +91,9 @@ public class WebSecurityConfig<S extends Session> {
                 (headers) -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
             .csrf((csrf) ->
                 csrf.csrfTokenRepository(cookieCsrfTokenRepository)
+                    .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
                     .ignoringRequestMatchers(
-                        (request) -> IgnorePathHelper.getInstant().stream()
-                            .anyMatch((path) -> request.getServletPath().startsWith(path))
+                        ArrayUtil.toArray(IgnorePathHelper.getInstant().iterator(), String.class)
                     )
                     .ignoringRequestMatchers(
                         "/internal/**",

@@ -7,7 +7,7 @@ jackson-nullable = "0.2.6"
 gson-fire = "1.8.5"
 javax-ws = "2.1.1"
 jsoup = "1.15.1"
-springdoc = "1.7.0"
+springdoc = "2.3.0"
 knife4j-openapi3 = "4.3.0"
 mybatis-plus = "3.5.4.1"
 aliyun-core = "4.5.10"
@@ -36,7 +36,8 @@ nimbus = "9.22"
 jose4j = "0.9.3"
 sentry = "5.7.4"
 minio = "8.2.2"
-social = "1.0.4"
+vi = "1.0.4"
+social = "1.0.6"
 imageio = "1.4.0"
 imageio-jbig2 = "3.0.3"
 grpc = "2.15.0.RELEASE"
@@ -84,6 +85,7 @@ spring-boot-integration = { module = "org.springframework.boot:spring-boot-start
 
 # test framework dependencies
 spring-boot-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-security-test = { module = "org.springframework.security:spring-security-test" }
 assertj = { module = "org.assertj:assertj-core" }
 hamcrest = { module = "org.hamcrest:hamcrest" }
 mockito-inline = { module = "org.mockito:mockito-inline" }
@@ -96,8 +98,8 @@ aws = { module = "com.amazonaws:aws-java-sdk-bom", version.ref = "aws" }
 aws-s3 = { module = "com.amazonaws:aws-java-sdk-s3" }
 
 # openapi document dependencies
-springdoc-openapi-ui = { module = "org.springdoc:springdoc-openapi-ui", version.ref = "springdoc" }
-knife4j-openapi3 = { module = "com.github.xiaoymin:knife4j-openapi3-spring-boot-starter", version.ref = "knife4j-openapi3" }
+springdoc-openapi-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }
+knife4j-openapi3 = { module = "com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter", version.ref = "knife4j-openapi3" }
 
 # ORM dependencies
 mybatis-plus = { module = "com.baomidou:mybatis-plus-boot-starter", version.ref = "mybatis-plus" }
@@ -125,7 +127,7 @@ wx-mp = { module = "com.github.binarywang:weixin-java-mp", version.ref = "wx" }
 wx-miniapp = { module = "com.github.binarywang:weixin-java-miniapp", version.ref = "wx" }
 wx-cp = { module = "com.github.binarywang:weixin-java-cp", version.ref = "wx" }
 auth0 = { module = "com.auth0:mvc-auth-commons", version.ref = "auth0" }
-v-client = { module = "cn.vika:vika-client", version.ref = "social" }
+v-client = { module = "cn.vika:vika-client", version.ref = "vi" }
 social-feishu = { module = "cn.vika:vika-social-feishu", version.ref = "social" }
 social-dingtalk = { module = "cn.vika:vika-social-dingtalk", version.ref = "social" }
 social-wecom = { module = "cn.vika:vika-social-wecom", version.ref = "social" }
@@ -201,7 +203,7 @@ shedlock = ["shedlock", "shedlock-redis"]
 sentry = ["sentry-spring", "sentry-logback", "sentry-client"]
 social = ["social-feishu", "social-dingtalk", "social-wecom", "social-qq"]
 iogrpc = ["iogrpc-netty-shaded", "iogrpc-protobuf", "iogrpc-stub"]
-apidoc = ["springdoc-openapi-ui", "knife4j-openapi3"]
+apidoc = ["knife4j-openapi3"]
 okhttp3 = ["okhttp3", "okhttp3-logging"]
 
 [plugins]

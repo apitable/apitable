@@ -13,6 +13,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum LimitException implements BaseException {
 
+    FORBIDDEN_ACCESS(1500, "forbidden access"),
+
     OVER_LIMIT(1501, "exceed over limit"),
 
     WIDGET_OVER_LIMIT(1502, "widget nums over limit"),

@@ -6,7 +6,7 @@ import { ICellValue, IField, Strings, t } from '@apitable/core';
 import { AddOutlined, FileOutlined } from '@apitable/icons';
 import { IEditor } from 'pc/components/editors/interface';
 // @ts-ignore
-import { Workdoc } from 'enterprise/editor/workdoc/workdoc';
+import { Workdoc } from 'enterprise/editor/workdoc';
 import styles from './styles.module.less';
 
 interface IWorkdocProps {
@@ -38,8 +38,7 @@ const ExpandWorkdocBase: ForwardRefRenderFunction<IEditor, IWorkdocProps> = (pro
     }),
   );
 
-  const onStartEdit = () => {
-  };
+  const onStartEdit = () => {};
 
   const toggleEditing = () => {
     setOpen(!open);
@@ -47,12 +46,14 @@ const ExpandWorkdocBase: ForwardRefRenderFunction<IEditor, IWorkdocProps> = (pro
 
   return (
     <>
-      {cellValue == null ? editable ? (
-        <div className={classNames('createWorkdoc', styles.createWorkdoc)}>
-          <IconButton icon={AddOutlined} onClick={toggleEditing} />
-          <div>{t(Strings.workdoc_create)}</div>
-        </div>
-      ) : null : (
+      {cellValue == null ? (
+        editable ? (
+          <div className={classNames('createWorkdoc', styles.createWorkdoc)}>
+            <IconButton icon={AddOutlined} onClick={toggleEditing} />
+            <div>{t(Strings.workdoc_create)}</div>
+          </div>
+        ) : null
+      ) : (
         <div className={classNames('expandWorkdoc', styles.expandWorkdoc)}>
           <div className={classNames('workdocBtn', styles.workdocBtn)} onClick={toggleEditing}>
             <FileOutlined />

@@ -48,10 +48,11 @@ public class I18nConfigLoader {
                 if (resourceAsStream == null) {
                     throw new IOException("I18n file not found!");
                 }
+                TypeReference<Map<String, Map<String, String>>> typeReference =
+                    new TypeReference<>() {
+                    };
                 Map<String, Map<String, String>> strings = Converter.getObjectMapper()
-                    .readValue(resourceAsStream,
-                        new TypeReference<Map<String, Map<String, String>>>() {
-                        });
+                    .readValue(resourceAsStream, typeReference);
                 singleton = new I18nConfig();
                 singleton.setStrings(strings);
             } catch (IOException e) {

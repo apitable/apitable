@@ -38,7 +38,7 @@ import {
   t,
 } from '@apitable/core';
 import { WarnCircleFilled, WarnFilled } from '@apitable/icons';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
 import { WorkbenchSideContext } from 'pc/components/common_side/workbench_side/workbench_side_context';

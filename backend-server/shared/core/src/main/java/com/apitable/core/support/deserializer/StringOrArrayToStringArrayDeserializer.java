@@ -13,8 +13,10 @@ import java.util.List;
  * string or array to string array deserializer.
  */
 public class StringOrArrayToStringArrayDeserializer extends JsonDeserializer<List<String>> {
+    
     @Override
-    public List<String> deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws
+    public List<String> deserialize(JsonParser jsonParser,
+                                    DeserializationContext deserializationContext) throws
         IOException {
         if (jsonParser.currentToken() == JsonToken.VALUE_STRING) {
             // If it's a string value, process it

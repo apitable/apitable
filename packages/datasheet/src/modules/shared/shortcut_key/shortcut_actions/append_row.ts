@@ -31,7 +31,7 @@ import {
   StoreActions,
   ViewType,
 } from '@apitable/core';
-import { expandRecordIdNavigate } from 'pc/components/expand_record';
+import { expandRecordIdNavigate } from 'pc/components/expand_record/utils';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { dispatch } from 'pc/worker/store';

@@ -393,7 +393,7 @@ export function setField(
 export function createNewField(
   snapshot: ISnapshot,
   field: IField,
-  options?: { viewId?: string; index?: number; fieldId?: string, offset?: number, hiddenColumn?: boolean }
+  options?: { viewId?: string; index?: number; fieldId?: string, offset?: number, hiddenColumn?: boolean, forceColumnVisible?: boolean }
 ) {
   if (!field.property) {
     // @ts-ignore
@@ -406,6 +406,7 @@ export function createNewField(
     fieldId: options && options.fieldId,
     offset: options && options.offset,
     hiddenColumn: options && options.hiddenColumn,
+    forceColumnVisible: options?.forceColumnVisible,
     field,
   });
 

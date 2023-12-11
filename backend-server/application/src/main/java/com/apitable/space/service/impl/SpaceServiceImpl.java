@@ -629,8 +629,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             return;
         }
         SeatUsage seatUsage = getSeatUsage(spaceId);
-        long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
-        if (maxSeatNums != -1 && (seatUsage.getTotal() + addedSeatNums > maxSeatNums)) {
+        SubscriptionFeatures.ConsumeFeatures.Seat seat = subscriptionInfo.getFeature().getSeat();
+        if (!seat.isUnlimited() && (seatUsage.getTotal() + addedSeatNums > seat.getValue())) {
             throw new BusinessException(LimitException.SEATS_OVER_LIMIT);
         }
     }
@@ -648,10 +648,11 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         if (!subscriptionInfo.isFree()) {
             return;
         }
-        SubscriptionFeatures.ConsumeFeatures.SheetNums sheetNums =
-            subscriptionInfo.getFeature().getSheetNums();
+        SubscriptionFeatures.ConsumeFeatures.FileNodeNums fileNodeNums =
+            subscriptionInfo.getFeature().getFileNodeNums();
         long currentSheetNums = getNodeCountBySpaceId(spaceId, NodeType::isFolder);
-        if (sheetNums.isUnlimited() && (currentSheetNums + addFileNums > sheetNums.getValue())) {
+        if (fileNodeNums.isUnlimited()
+            && (currentSheetNums + addFileNums > fileNodeNums.getValue())) {
             throw new BusinessException(LimitException.FILE_NUMS_OVER_LIMIT);
         }
     }
@@ -667,13 +668,13 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             // apitable billing mode, paid space，skip validation
             return true;
         }
-        long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
+        SubscriptionFeatures.ConsumeFeatures.Seat seat = subscriptionInfo.getFeature().getSeat();
         SeatUsage seatUsage = getSeatUsageForIM(spaceId);
         long totalSeatNums = seatUsage.getTotal() + addedSeatNums;
         if (isAllMember) {
             totalSeatNums = addedSeatNums;
         }
-        if (maxSeatNums != -1 && (totalSeatNums > maxSeatNums)) {
+        if (!seat.isUnlimited() && (totalSeatNums > seat.getValue())) {
             if (sendNotify) {
                 // Send space station notifications
                 try {
@@ -683,7 +684,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
                         .playerNotify(NotificationTemplateId.SPACE_REFRESH_CONTACT_SEATS_LIMIT,
                             userIds, 0L, spaceId,
                             Dict.create().set("spaceName", spaceName)
-                                .set("specification", maxSeatNums)
+                                .set("specification", seat.getValue())
                                 .set("usage", finalTotalSeatNums)));
                 } catch (Exception e) {
                     log.error("send space station notifications error", e);
@@ -870,8 +871,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         SubscriptionInfo subscriptionInfo =
             entitlementServiceFacade.getSpaceSubscription(spaceId);
         // Plan total capacity except gift capacity
-        Long planCapacity = subscriptionInfo.getTotalCapacity().getValue()
-            - subscriptionInfo.getGiftCapacity().getValue();
+        Long planCapacity = subscriptionInfo.getTotalCapacity().getValue().toBytes()
+            - subscriptionInfo.getGiftCapacity().getValue().toBytes();
         // If the used attachment capacity is less than
         // the space subscription plan capacity,
         // the current used attachment capacity
@@ -886,12 +887,12 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             spaceCapacityUsedInfo
                 .setCurrentBundleCapacityUsedSizes(planCapacity);
             // complimentary attachment capacity
-            Long giftCapacity = subscriptionInfo.getGiftCapacity().getValue();
+            Long giftCapacity = subscriptionInfo.getGiftCapacity().getValue().toBytes();
             // If the attachment capacity is used in excess,
             // the used complimentary attachment capacity is equal to
             // the size of the complimentary assert capacity.
             if (capacityUsedSize
-                > subscriptionInfo.getTotalCapacity().getValue()) {
+                > subscriptionInfo.getTotalCapacity().getValue().toBytes()) {
                 spaceCapacityUsedInfo.setGiftCapacityUsedSizes(giftCapacity);
             } else {
                 // gift capacity used left
@@ -936,10 +937,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         // space subscription plan attachment capacity
         SubscriptionInfo subscriptionInfo =
             entitlementServiceFacade.getSpaceSubscription(spaceId);
-        Long totalCapacity = subscriptionInfo.getTotalCapacity().getValue();
+        Long totalCapacity = subscriptionInfo.getTotalCapacity().getValue().toBytes();
         // complimentary attachment capacity
         Long unExpireGiftCapacity =
-            subscriptionInfo.getGiftCapacity().getValue();
+            subscriptionInfo.getGiftCapacity().getValue().toBytes();
         return InternalSpaceCapacityVo.builder().usedCapacity(usedCapacity)
             .currentBundleCapacity(totalCapacity)
             .unExpireGiftCapacity(unExpireGiftCapacity)

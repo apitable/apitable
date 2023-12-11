@@ -1,4 +1,21 @@
-import { message } from 'antd';
+/**
+ * APITable <https://github.com/apitable/apitable>
+ * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 import * as React from 'react';
 import { forwardRef, memo, useImperativeHandle } from 'react';
 import { Box } from '@apitable/components';
@@ -40,15 +57,14 @@ const timeout = (prom: any, time: number, exception: any) => {
   ]).finally(() => clearTimeout(timer));
 };
 
-export const runAutomationButton = async (datasheetId: string, record: any, state: IReduxState, recordId: string, fieldId: string, field: IButtonField,
-  callback: (success?: boolean) => void
-) : Promise<any|undefined>=> {
-  if(field.property.action.type === ButtonActionType.OpenLink) {
+export const runAutomationUrl = (datasheetId: string, record: any, state: IReduxState, recordId: string, fieldId: string, field: IButtonField,
+) => {
+  if (field.property.action.type === ButtonActionType.OpenLink) {
 
     try {
-      if(field.property.action.openLink?.type === OpenLinkType.Url ) {
+      if (field.property.action.openLink?.type === OpenLinkType.Url) {
         window.open(field.property.action.openLink?.expression, '_blank');
-      }else {
+      } else {
         const expression = field.property.action.openLink?.expression ?? '';
 
         const url = evaluate(expression, { field, record, state }, false);
@@ -56,34 +72,26 @@ export const runAutomationButton = async (datasheetId: string, record: any, stat
         window.open(String(url), '_blank');
 
       }
-    } catch (e){
+    } catch (e) {
       console.log('error', e);
-      callback();
     }
+  }
+};
 
-    callback();
+export const runAutomationButton = async (datasheetId: string, record: any, state: IReduxState, recordId: string, fieldId: string, field: IButtonField,
+  callback: (success?: boolean, code?: number, message?: string) => void
+) : Promise<any|undefined>=> {
+  if(field.property.action.type === ButtonActionType.OpenLink) {
     return;
   }
-
-  // TODO width poll call function
-
   try {
-    const respTrigger = await timeout(reqDatasheetButtonTrigger({
+    const respTrigger = await reqDatasheetButtonTrigger({
       dstId: datasheetId,
       recordId,
       fieldId,
-    }), 60 * 1000, { data : { success: false, message: t(Strings.task_timeout) } });
-    const respData = respTrigger?.data as IRunRespStatus;
-    // TODO status run status
-    if(!respData?.success) {
-      message.error(
-        t(Strings.button_execute_error, {
-          ERROR_MESSAGE: respData?.message
-        })
-      );
-    }
-    const success = respData?.success ?? false;
-    callback(success);
+    }) as unknown as {data : {success: boolean, code: number, message: string}};
+    const success = respTrigger?.data?.success ?? false;
+    callback(success, respTrigger?.data?.code, respTrigger?.data?.message );
     return respTrigger;
   } catch (e) {
     callback(false);

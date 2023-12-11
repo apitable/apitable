@@ -31,9 +31,8 @@ import java.util.List;
 
 /**
  * <p>
- *  String array to Long array.
+ * String array to Long array.
  * </p>
- *
  */
 public class StringArrayToLongArrayDeserializer extends JsonDeserializer<List<Long>> {
 
@@ -44,8 +43,7 @@ public class StringArrayToLongArrayDeserializer extends JsonDeserializer<List<Lo
         JsonNode node = mapper.readTree(parser);
         List<Long> result = new ArrayList<>();
         if (node != null) {
-            if (node instanceof ArrayNode) {
-                ArrayNode arrayNode = (ArrayNode) node;
+            if (node instanceof ArrayNode arrayNode) {
                 for (JsonNode elementNode : arrayNode) {
                     result.add(mapper.readValue(elementNode.traverse(mapper), Long.class));
                 }

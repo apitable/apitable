@@ -26,7 +26,7 @@ import {
 import { AddOutlined, SyncOnOutlined } from '@apitable/icons';
 import { automationApiClient, workbenchClient } from 'pc/common/api-client';
 import { AutomationConstant, CONST_MAX_TRIGGER_COUNT } from 'pc/components/automation/config';
-import { automationSourceAtom } from 'pc/components/automation/controller';
+import { automationSourceAtom } from 'pc/components/automation/controller'; // trace
 import { IOnChangeParams } from 'pc/components/data_source_selector/interface';
 import { DataSourceSelectorForNode } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/data_source_selector_for_node';
 import { AutomationItem } from 'pc/components/multi_grid/format/format_button/automation_item';
@@ -260,7 +260,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
         router.push(`/workbench/${automationId}`);
       }, 50);
     });
-  }, [currentField, datasheetId, datasheetParentId, handleAddTrigger, handleModify, router]);
+  }, [currentField, datasheetId, datasheetParentId, handleAddTrigger, handleModify, router, setAutomationSource]);
 
   const handleClickDebounce = debounce(handleClick, 300);
   const handleAutomationChange = useCallback(async ({ automationId }: IOnChangeParams) => {
@@ -488,6 +488,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                     >
                       <span>
                         <SyncOnOutlined
+                          color={colors.textCommonTertiary}
                           size={16}
                           onClick={() => {
                             setFieldProperty('action')({
@@ -541,6 +542,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                     >
                       <span>
                         <SyncOnOutlined
+                            color={colors.textCommonTertiary}
                           size={16}
                           onClick={() => {
                             setFieldProperty('action')({

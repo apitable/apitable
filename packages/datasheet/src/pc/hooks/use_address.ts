@@ -18,7 +18,7 @@
 
 import { useState } from 'react';
 import { StoreActions, Api, ConfigConstant, IMemberInfoInSpace, IUpdateMemberInfo, Strings, t, ISelectedTeamInfoInSpace } from '@apitable/core';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { useDispatch } from './use_dispatch';
 
 // Get Member List

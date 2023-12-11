@@ -97,6 +97,7 @@ dependencies {
     testCompileOnly libs.lombok
     testAnnotationProcessor libs.lombok
     testImplementation libs.spring.boot.test
+    testImplementation libs.spring.security.test
     testImplementation libs.mybatis.plus.test
     testImplementation libs.visible.assertions
     testImplementation libs.okhttp3.mockwebserver

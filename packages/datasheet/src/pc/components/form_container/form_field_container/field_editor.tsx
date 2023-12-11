@@ -297,7 +297,7 @@ export const FieldEditorBase: React.ForwardRefRenderFunction<IEditor, IFormField
           <ExpandFormula {...commonProps} recordId={recordId} />
         </ComputedFieldWrapper>
       );
-     case FieldType.Button:
+    case FieldType.Button:
       return (<>/</>);
     case FieldType.WorkDoc:
       if (isMobile) {

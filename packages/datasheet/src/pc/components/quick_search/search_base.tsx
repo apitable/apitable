@@ -2,13 +2,13 @@ import type { InputRef } from 'antd';
 import { Form } from 'antd';
 import classnames from 'classnames';
 import throttle from 'lodash/throttle';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useEffect, useRef, useState } from 'react';
 import { useThemeColors, ThemeName, TextInput, Typography } from '@apitable/components';
 import { Api, getArrayLoopIndex, Navigation, Strings, t } from '@apitable/core';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
@@ -99,6 +99,13 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      inputRef.current?.select();
+    }, 0);
+  }, []);
+
   const themeName = useAppSelector((state) => state.theme);
   const EmptyResultIcon = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
@@ -239,12 +246,12 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
             }
           />
         </Form>
-        {!keyword && <DefaultContent />}
-        {/** content */}
-        {keyword && (
+        {!keyword ? (
+          <DefaultContent />
+        ) : (
           <>
             <TypeTab nodeType={tabType} onChange={setTabType} />
-            {!loading && (
+            {!loading ? (
               <>
                 {!totalSearchResultItemsCount ? (
                   <Empty />
@@ -257,8 +264,7 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
                   </div>
                 )}
               </>
-            )}
-            {loading && (
+            ) : (
               <div className={styles.loadingWrap}>
                 <Loading className={styles.loading} showText={false} />
                 <Typography color={colors.textCommonTertiary} variant={'body2'}>

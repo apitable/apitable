@@ -19,21 +19,10 @@
 import Color from 'color';
 import { COLOR_MAP } from './_colors';
 
-const COLOR_INDEX_NAME = [
-  'deepPurple',
-  'indigo',
-  'blue',
-  'teal',
-  'green',
-  'yellow',
-  'orange',
-  'tangerine',
-  'pink',
-  'red',
-];
+const COLOR_INDEX_NAME = ['deepPurple', 'indigo', 'blue', 'teal', 'green', 'yellow', 'orange', 'tangerine', 'pink', 'red'];
 
 // five level alpha transparency
-const COLOR_LEVEL_ALPHA = [0.2, 0.4, 0.6, 0.8, 1];
+const COLOR_LEVEL_ALPHA = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 1];
 
 const rgba2hex = (foregroundColor: string, backgroundColor = '#FFFFFF') => {
   const getAdjustedChannel = (fValue: number, bValue: number, opacity: number) => opacity * fValue + (1 - opacity) * bValue;

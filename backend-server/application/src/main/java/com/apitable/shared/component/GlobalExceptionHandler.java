@@ -18,6 +18,7 @@
 
 package com.apitable.shared.component;
 
+import static com.apitable.base.enums.ParameterException.INCORRECT_ARG;
 import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_ERROR_CODE;
 
 import cn.hutool.core.map.MapUtil;
@@ -115,8 +116,7 @@ public class GlobalExceptionHandler {
             if (result.hasErrors()) {
                 return ResponseData.error(result.getAllErrors().get(0).getDefaultMessage());
             }
-        } else if (exception instanceof ConstraintViolationException) {
-            ConstraintViolationException e = (ConstraintViolationException) exception;
+        } else if (exception instanceof ConstraintViolationException e) {
             return ResponseData.error(e.getLocalizedMessage());
         } else if (exception instanceof MaxUploadSizeExceededException) {
             // Upload exceeds the maximum limit exception
@@ -145,7 +145,7 @@ public class GlobalExceptionHandler {
         } else if (ex instanceof HttpRequestMethodNotSupportedException) {
             return ResponseData.error(ex.getLocalizedMessage());
         } else if (ex instanceof HttpMessageNotReadableException) {
-            return ResponseData.error(ex.getLocalizedMessage());
+            return ResponseData.error(INCORRECT_ARG.getMessage());
         }
         return ResponseData.error();
     }

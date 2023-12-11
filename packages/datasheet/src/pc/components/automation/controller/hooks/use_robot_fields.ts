@@ -1,14 +1,14 @@
-import {useAtomValue} from 'jotai';
-import {useEffect, useMemo} from 'react';
-import {useSelector} from 'react-redux';
-import {IReduxState, IServerFormPack, Selectors, StoreActions} from '@apitable/core';
-import {fetchFormPack} from '@apitable/core/dist/modules/database/api/form_api';
-import {useAppDispatch} from 'pc/hooks/use_app_dispatch';
-import {getAllFieldsByDstIdFp, useAllFieldsByDstId} from '../../../robot/hooks';
-import {AutomationScenario, IRobotTrigger} from '../../../robot/interface';
-import {automationStateAtom, automationTriggerAtom, loadableFormMeta} from '../index';
-import {getDatasheetId} from "pc/components/automation/controller/hooks/get_datasheet_id";
-import {getFormId} from "pc/components/automation/controller/hooks/get_form_id";
+import { useAtomValue } from 'jotai';
+import { useEffect, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { IReduxState, IServerFormPack, Selectors, StoreActions } from '@apitable/core';
+import { fetchFormPack } from '@apitable/core/dist/modules/database/api/form_api';
+import { getDatasheetId } from 'pc/components/automation/controller/hooks/get_datasheet_id';
+import { getFormId } from 'pc/components/automation/controller/hooks/get_form_id';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { getAllFieldsByDstIdFp, useAllFieldsByDstId } from '../../../robot/hooks';
+import { AutomationScenario, IRobotTrigger } from '../../../robot/interface';
+import { automationStateAtom, automationTriggerAtom, loadableFormMeta } from '../index';
 
 export const getRelativedId = (automationTrigger?: Pick<IRobotTrigger, 'input'>) => {
   if (!automationTrigger) {
@@ -27,7 +27,7 @@ export const getTriggerDstId = (relatedResourceId: string): Promise<IFetchedData
   }
 
   const formId = relatedResourceId;
-  if (formId) {
+  if (formId && formId.startsWith('fom')) {
     return fetchFormPack(String(formId)).then(res => res?.data?.data ?? {} as IServerFormPack).then(res => res?.sourceInfo?.datasheetId);
   }
 

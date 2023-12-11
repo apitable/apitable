@@ -4,10 +4,13 @@ import { useState } from 'react';
 import { Typography, useThemeColors, Button, TextInput, LinkButton } from '@apitable/components';
 import { Strings, t, ConfigConstant } from '@apitable/core';
 import { EmailFilled, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
-import { WithTipWrapper, Message } from 'pc/components/common';
 import { IdentifyingCodeInput } from 'pc/components/common/input';
-import { useRequest, useSetState, useUserRequest } from 'pc/hooks';
-import { execNoTraceVerification } from 'pc/utils';
+import { WithTipWrapper } from 'pc/components/common/input/with_tip_wrapper/with_tip_wrapper';
+import { Message } from 'pc/components/common/message';
+import { useRequest } from 'pc/hooks/use_request';
+import { useSetState } from 'pc/hooks/use_set_state';
+import { useUserRequest } from 'pc/hooks/use_user_request';
+import { execNoTraceVerification } from 'pc/utils/no_trace_verification';
 import { ActionType } from '../../pc_home';
 import styles from './style.module.less';
 interface IForgetPasswordErrorMsg {

@@ -23,7 +23,7 @@ import { SelectItem } from 'components/select/select_item';
 import { convertChildrenToData } from 'components/select/utils';
 import { WrapperTooltip } from 'components/tooltip';
 import { IUseListenTriggerInfo, stopPropagation } from 'helper';
-import { useProviderTheme } from 'hooks';
+import { useThemeColors } from 'hooks';
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { ListDeprecate } from '../../list_deprecate';
 import { IListItemProps } from '../../list_deprecate/interface';
@@ -64,7 +64,6 @@ export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps & {
     children, maxListWidth = 240
   } = props;
   const [isInit, setIsInit] = useState(true);
-  const theme = useProviderTheme();
   const listContainer = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [visible, { toggle: toggleVisible, set: setVisible }] = useToggle(false);
@@ -126,6 +125,8 @@ export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps & {
     // eslint-disable-next-line
   }, [triggerRef.current]);
 
+  const colors = useThemeColors();
+
   const renderOptionList = ({ toggle }: IOverLayProps) => {
     return (
       <StyledListContainer
@@ -172,6 +173,7 @@ export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps & {
       </StyledListContainer>
     );
   };
+
 
   const checked2View = () => {
     setTimeout(() => {
@@ -249,7 +251,7 @@ export const DropdownSelect: FC<React.PropsWithChildren<ISelectProps & {
               </StyledSelectedContainer>
               {
                 !hiddenArrow && <StyledArrowIcon rotated={visible}>
-                  <ChevronDownOutlined color={disabled ? Color(theme.color.black[500]).alpha(0.5).hsl().string() : theme.color.black[500]} />
+                  <ChevronDownOutlined color={disabled ? Color(colors.textCommonTertiary).alpha(0.5).hsl().string() : colors.textCommonTertiary} />
                 </StyledArrowIcon>
               }
             </StyledSelectTrigger>

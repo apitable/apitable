@@ -82,7 +82,7 @@ public class FilterConfig {
         // X-XSRF-TOKEN, X-Original-URI
         config.setAllowedHeaders(Arrays.asList(HttpHeaders.CONTENT_TYPE, HttpHeaders.AUTHORIZATION,
             HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, ParamsConstants.SPACE_ID,
-            FilterConfig.DEFAULT_CSRF_HEADER_NAME, FilterConfig.X_ORIGINAL_URI));
+            DEFAULT_CSRF_HEADER_NAME, X_ORIGINAL_URI));
         config.setAllowedMethods(
             Arrays.asList(HttpMethod.GET.name(), HttpMethod.OPTIONS.name(), HttpMethod.POST.name(),
                 HttpMethod.PUT.name(), HttpMethod.PATCH.name(), HttpMethod.DELETE.name()));

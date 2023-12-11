@@ -27,7 +27,7 @@ export const ColorPicker: React.FC<IColorPickProps> = (props) => {
         color: color,
       }}
       onChange={colorChange}
-      colorGroup={ [40, 50].concat(arr)}
+      colorGroup={ [40].concat(arr).concat([50])}
       itemStyle={{
         flex: '0 0 9%',
       }}

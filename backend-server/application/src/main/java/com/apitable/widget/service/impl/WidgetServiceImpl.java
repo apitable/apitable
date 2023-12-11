@@ -30,6 +30,7 @@ import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.widget.facade.WidgetServiceAuditFacade;
 import com.apitable.shared.component.TaskManager;
@@ -408,9 +409,10 @@ public class WidgetServiceImpl implements IWidgetService {
         widgetBaseInfos.forEach(widget -> {
             HashMap<Object, Object> snapshotStorage = new HashMap<>();
             try {
-                snapshotStorage = objectMapper.readValue(widget.getStorage(),
-                    new TypeReference<HashMap<Object, Object>>() {
-                    });
+                TypeReference<HashMap<Object, Object>> typeReference =
+                    new TypeReference<>() {
+                    };
+                snapshotStorage = objectMapper.readValue(widget.getStorage(), typeReference);
             } catch (JsonProcessingException ignored) {
                 // ignored
             }
@@ -499,10 +501,11 @@ public class WidgetServiceImpl implements IWidgetService {
         if (!subscriptionInfo.isFree()) {
             return;
         }
-        Long maxWidgerNums = subscriptionInfo.getFeature().getMessageWidgetNums().getValue();
+        SubscriptionFeatures.ConsumeFeatures.WidgetNums widgetNums =
+            subscriptionInfo.getFeature().getWidgetNums();
         // check the number of components in the space
         Long count = this.getSpaceWidgetCount(spaceId);
-        if (maxWidgerNums != -1 && count >= maxWidgerNums) {
+        if (!widgetNums.isUnlimited() && count >= widgetNums.getValue()) {
             throw new BusinessException(LimitException.WIDGET_OVER_LIMIT);
         }
     }

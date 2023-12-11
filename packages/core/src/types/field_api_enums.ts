@@ -85,8 +85,3 @@ export enum TSymbolAlign {
   Left = 'Left',
   Right = 'Right'
 }
-
-export enum APIMetaButtonActionType {
-  OpenLink = 'OpenLink',
-  TriggerAutomation = 'TriggerAutomation',
-}

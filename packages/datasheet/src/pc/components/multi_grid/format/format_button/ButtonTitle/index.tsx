@@ -18,10 +18,7 @@ export const ButtonTitle =forwardRef<InputRef, IButtonTitleProps >(({ value, onC
 
   const colors = useCssColors();
 
-  let hasError = false;
-  if(text) {
-    hasError = String(text)?.length > CONST_MAXMIUM_COUNT ;
-  }
+  const hasError = false;
   return (
     <>
       <Input value={text} className={hasError ? 'error': undefined} {...rest} ref={ref}

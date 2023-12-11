@@ -1,5 +1,27 @@
 # APITable CHANGELOG
 
+## [v1.6.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.6.0-beta.1) (2023-12-11)
+
+
+### Bug fixes
+
+* fix: env IS_SELFHOST default true ([#1515](https://github.com/apitable/apitable/pull/1515)) @wangkailang 
+
+### What's more
+
+* chore: tune gitpod dockerfile ([#1509](https://github.com/apitable/apitable/pull/1509)) @ChambersChan 
+* sync: hosted cloud ([#1519](https://github.com/apitable/apitable/pull/1519)) @JoverZhang 
+## [v1.6.0-beta](https://github.com/apitable/apitable/releases/tag/v1.6.0-beta) (2023-12-04)
+
+
+### Bug fixes
+
+* fix: room-server start error ([#1505](https://github.com/apitable/apitable/pull/1505)) @chalme 
+* fix: csrf filter ([#1506](https://github.com/apitable/apitable/pull/1506)) @ChambersChan 
+
+### What's more
+
+* sync: hosted cloud ([#1503](https://github.com/apitable/apitable/pull/1503)) @chalme 
 ## [v1.5.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.5.0-beta.1) (2023-11-27)
 
 
