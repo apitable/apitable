@@ -1,5 +1,16 @@
 # APITable CHANGELOG
 
+## [v1.6.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.6.0-beta.1) (2023-12-11)
+
+
+### Bug fixes
+
+* fix: env IS_SELFHOST default true ([#1515](https://github.com/apitable/apitable/pull/1515)) @wangkailang 
+
+### What's more
+
+* chore: tune gitpod dockerfile ([#1509](https://github.com/apitable/apitable/pull/1509)) @ChambersChan 
+* sync: hosted cloud ([#1519](https://github.com/apitable/apitable/pull/1519)) @JoverZhang 
 ## [v1.6.0-beta](https://github.com/apitable/apitable/releases/tag/v1.6.0-beta) (2023-12-04)
 
 
