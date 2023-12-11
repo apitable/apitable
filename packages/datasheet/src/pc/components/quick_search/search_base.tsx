@@ -58,7 +58,7 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
       [
         ShortcutActionName.QuickSearchEnter,
         () => {
-          jumpNode(nodeList[currentIndex].nodeId);
+          jumpNode(nodeList[currentIndex + 1].nodeId);
         },
       ],
       [
