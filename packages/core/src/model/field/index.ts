@@ -104,6 +104,7 @@ export * from './created_by_field';
 export * from './last_modified_by_field';
 export * from './text_base_field';
 export * from './workdoc_field';
+export * from './button_field';
 export { numberThresholdValue } from './number_base_field';
 export { OtherTypeUnitId } from './member_base_field';
 
@@ -312,6 +313,6 @@ export const bindContext = (field: IField, state: IReduxState) => {
 };
 
 Field.bindModel = bindModel as IBindFieldModel;
-// The difference between bindContext and bindModel is that 
+// The difference between bindContext and bindModel is that
 // bindContext creates a new Field object every time, and it is mandatory to pass in the store.
 Field.bindContext = bindContext as IBindFieldContext;
