@@ -20,11 +20,14 @@
 import { Box, useTheme, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { FormOutlined } from '@apitable/icons';
+import { TriggerDataSheetMap } from 'pc/components/robot/robot_detail/magic_variable_container/magic_text_field';
 import { IJsonSchema, INodeOutputSchema } from '../../interface';
 import { getExpressionChainList, IExpressionChainNode } from './helper';
 
-export const MagicVariableElement = (props: { nodeOutputSchemaList?: INodeOutputSchema[]; element?: any; children?: any }) => {
-  const { element, children } = props;
+export const MagicVariableElement = (props: { nodeOutputSchemaList?: INodeOutputSchema[]; element?: any; children?: any,
+  triggerDataSheetMap: TriggerDataSheetMap
+}) => {
+  const { element, children, triggerDataSheetMap } = props;
   const stringfyElement = btoa(JSON.stringify(element));
 
   const theme = useTheme();
@@ -32,14 +35,20 @@ export const MagicVariableElement = (props: { nodeOutputSchemaList?: INodeOutput
 
   const chainList = getExpressionChainList(element.data).reverse();
 
-  const nodeSchemaIndex = nodeOutputSchemaList.findIndex((item) => item.id === chainList[0].value);
+  const nodeSchemaIndex = nodeOutputSchemaList.findIndex((item) => {
+    if(chainList[0].value.startsWith('dst')) {
+      const dst = triggerDataSheetMap[chainList?.[0]?.value];
+      return item.id === dst;
+    }
+    return item.id === chainList[0].value;
+  });
+
   const nodeSchema = nodeOutputSchemaList[nodeSchemaIndex];
 
   const stepIndexOriginal = nodeSchemaIndex + 1;
   let stepIndex = nodeSchemaIndex + 1;
 
-
-  if(nodeSchema?.id?.startsWith('atr')) {
+  if(nodeSchema?.id?.startsWith('dst')) {
     stepIndex=1;
   }
 
