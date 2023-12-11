@@ -8036,7 +8036,7 @@ packages:
       '@nestjs/common': ^8.1.1
       '@nestjs/core': ^8.1.1
       '@nestjs/event-emitter': ^1.0.0
-      '@nestjs/microservices': 8.1.2
+      '@nestjs/microservices': ^8.1.1
       '@nestjs/schedule': ^1.0.2
       reflect-metadata: ^0.1.13
     dependencies:
@@ -8334,7 +8334,7 @@ packages:
     requiresBuild: true
     peerDependencies:
       '@nestjs/common': ^8.0.0
-      '@nestjs/microservices': 8.1.2
+      '@nestjs/microservices': ^8.0.0
       '@nestjs/platform-express': ^8.0.0
       '@nestjs/websockets': ^8.0.0
       reflect-metadata: ^0.1.12
@@ -8563,7 +8563,7 @@ packages:
     peerDependencies:
       '@nestjs/common': ^8.0.0
       '@nestjs/core': ^8.0.0
-      '@nestjs/microservices': 8.1.2
+      '@nestjs/microservices': ^8.0.0
       '@nestjs/platform-express': ^8.0.0
     peerDependenciesMeta:
       '@nestjs/microservices':
@@ -36822,9 +36822,9 @@ packages:
       yjs: ^13.3.2
     dependencies:
       lib0: 0.2.85
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-view: registry.npmmirror.com/prosemirror-view@1.31.8
+      prosemirror-model: 1.19.3
+      prosemirror-state: 1.4.3
+      prosemirror-view: 1.31.8
       y-protocols: 1.0.6(yjs@13.6.8)
       yjs: registry.npmmirror.com/yjs@13.6.8
     dev: false
