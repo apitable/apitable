@@ -19,6 +19,7 @@
 import { useKeyPress, useMount, useToggle, useUnmount } from 'ahooks';
 import classNames from 'classnames';
 
+import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -26,10 +27,10 @@ import { Provider, shallowEqual } from 'react-redux';
 import { stopPropagation, ThemeProvider } from '@apitable/components';
 import { FieldType, handleNullArray, IAttachmentValue, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
-import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { useResponsive } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { KeyCode } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { dispatch } from 'pc/worker/store';
@@ -37,11 +38,9 @@ import { ScreenSize } from '../common/component_display';
 import { IExpandPreviewModalFuncProps } from './preview_file.interface';
 import { PreviewMain } from './preview_main';
 import { isFocusingInput } from './preview_main/util';
-import styles from './style.module.less';
 // @ts-ignore
 import { OFFICE_APP_ID } from 'enterprise/marketing/marketing';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 interface IPreviewFileModal {
   onClose: () => void;
@@ -87,8 +86,12 @@ const PreviewFileModal: React.FC<React.PropsWithChildren<IPreviewFileModal>> = (
   const dispatch = useAppDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
+  const { IS_ENTERPRISE } =getEnvVariables();
 
   const _spaceId = spaceId || shareInfo?.spaceId || getEnvVariables().TEMPLATE_SPACE_ID!;
+  useEffect(() => {
+    IS_ENTERPRISE && spaceId && dispatch(StoreActions.fetchMarketplaceApps(spaceId));
+  }, [dispatch, spaceId]);
 
   const officePreviewEnable = marketplaceApps.find((app) => app.appId === OFFICE_APP_ID)?.status ? true : false;
 
