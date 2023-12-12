@@ -113,7 +113,7 @@ importers:
         version: 4.17.21
       nx:
         specifier: latest
-        version: 16.10.0(@swc/core@1.3.86)
+        version: 17.1.3(@swc/core@1.3.86)
       prettier:
         specifier: ^3.0.3
         version: 3.0.3
@@ -289,376 +289,6 @@ importers:
       typescript:
         specifier: 4.8.2
         version: 4.8.2
-
-  packages/air-agent:
-    dependencies:
-      '@apitable/ai':
-        specifier: ../ai-components
-        version: link:../ai-components
-      '@apitable/components':
-        specifier: '*'
-        version: link:../components
-      '@apitable/core':
-        specifier: '*'
-        version: link:../core
-      '@apitable/i18n-lang':
-        specifier: '*'
-        version: link:../i18n-lang
-      '@apitable/icons':
-        specifier: '*'
-        version: link:../icons
-      '@microsoft/fetch-event-source':
-        specifier: ^2.0.1
-        version: 2.0.1
-      '@popperjs/core':
-        specifier: ^2.11.8
-        version: 2.11.8
-      '@sentry/integrations':
-        specifier: ^7.18.0
-        version: 7.68.0
-      '@sentry/nextjs':
-        specifier: ^7.18.0
-        version: 7.68.0(next@12.3.4)(react@18.2.0)(webpack@5.89.0)
-      '@sentry/tracing':
-        specifier: ^7.18.0
-        version: 7.68.0
-      ahooks:
-        specifier: ^3.5.0
-        version: 3.7.8(react@18.2.0)
-      ajv-i18n:
-        specifier: 4.2.0
-        version: 4.2.0(ajv@8.12.0)
-      antd:
-        specifier: 4.23.5
-        version: 4.23.5(react-dom@18.2.0)(react@18.2.0)
-      axios:
-        specifier: 0.21.2
-        version: 0.21.2
-      bowser:
-        specifier: ^2.11.0
-        version: 2.11.0
-      classnames:
-        specifier: 2.2.6
-        version: 2.2.6
-      clipboard:
-        specifier: ^2.0.11
-        version: 2.0.11
-      color:
-        specifier: ^3.1.3
-        version: 3.2.1
-      cookies-next:
-        specifier: ^2.1.1
-        version: 2.1.2
-      dayjs:
-        specifier: ^1.11.7
-        version: 1.11.10
-      decimal.js:
-        specifier: ^10.4.3
-        version: 10.4.3
-      dom-to-image:
-        specifier: ^2.6.0
-        version: 2.6.0
-      emoji-mart:
-        specifier: ^3.0.0
-        version: 3.0.1(react@18.2.0)
-      hoist-non-react-statics:
-        specifier: ^3.3.2
-        version: 3.3.2
-      immer:
-        specifier: 9.0.16
-        version: 9.0.16
-      lodash:
-        specifier: 4.17.21
-        version: 4.17.21
-      lru-cache:
-        specifier: ^6.0.0
-        version: 6.0.0
-      markdown-it:
-        specifier: ^12.3.2
-        version: 12.3.2
-      next-transpile-modules:
-        specifier: ^9.0.0
-        version: 9.1.0
-      next-with-less:
-        specifier: ^2.0.5
-        version: 2.0.5(less-loader@11.0.0)(less@4.1.3)(next@12.3.4)
-      normalize.css:
-        specifier: 8.0.1
-        version: 8.0.1
-      path-browserify:
-        specifier: ^1.0.1
-        version: 1.0.1
-      prettier:
-        specifier: ^3.0.3
-        version: 3.0.3
-      prettier-plugin-tailwindcss:
-        specifier: ^0.4.1
-        version: 0.4.1(prettier@3.0.3)
-      prismjs:
-        specifier: ^1.29.0
-        version: 1.29.0
-      qrcode:
-        specifier: ^1.4.4
-        version: 1.5.3
-      rc-textarea:
-        specifier: ^0.4.5
-        version: 0.4.7(react-dom@18.2.0)(react@18.2.0)
-      react:
-        specifier: 18.2.0
-        version: 18.2.0
-      react-dom:
-        specifier: 18.2.0
-        version: 18.2.0(react@18.2.0)
-      react-icons:
-        specifier: ^4.11.0
-        version: 4.12.0(react@18.2.0)
-      react-popper:
-        specifier: ^2.3.0
-        version: 2.3.0(@popperjs/core@2.11.8)(react-dom@18.2.0)(react@18.2.0)
-      react-redux:
-        specifier: 8.0.4
-        version: 8.0.4(@types/react-dom@18.2.7)(@types/react@18.0.2)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.0)
-      sass:
-        specifier: ^1.68.0
-        version: 1.69.5
-      store2:
-        specifier: ^2.12.0
-        version: 2.14.2
-      swr:
-        specifier: ^2.2.0
-        version: 2.2.0(react@18.2.0)
-      urlcat:
-        specifier: ^3.1.0
-        version: 3.1.0
-    devDependencies:
-      '@next/bundle-analyzer':
-        specifier: ^12.2.2
-        version: 12.3.4
-      '@svgr/webpack':
-        specifier: ^6.2.1
-        version: 6.5.1
-      '@tailwindcss/typography':
-        specifier: ^0.5.9
-        version: 0.5.10(tailwindcss@3.3.3)
-      '@types/classnames':
-        specifier: 2.2.10
-        version: 2.2.10
-      '@types/color':
-        specifier: ^3.0.1
-        version: 3.0.4
-      '@types/dagre':
-        specifier: ^0
-        version: 0.7.49
-      '@types/dom-to-image':
-        specifier: ^2.6.2
-        version: 2.6.4
-      '@types/dot-object':
-        specifier: ^2.1.2
-        version: 2.1.2
-      '@types/element-closest':
-        specifier: ^3
-        version: 3.0.0
-      '@types/exceljs':
-        specifier: ^1.3.0
-        version: 1.3.0
-      '@types/express':
-        specifier: ^4
-        version: 4.17.17
-      '@types/file-saver':
-        specifier: ^2.0.3
-        version: 2.0.5
-      '@types/hbs':
-        specifier: ^4
-        version: 4.0.1
-      '@types/is-url':
-        specifier: ^1.2.30
-        version: 1.2.30
-      '@types/jest':
-        specifier: 24.0.18
-        version: 24.0.18
-      '@types/lodash':
-        specifier: 4.14.161
-        version: 4.14.161
-      '@types/markdown-it':
-        specifier: 12.2.3
-        version: 12.2.3
-      '@types/mime-types':
-        specifier: ^2.1.1
-        version: 2.1.1
-      '@types/node':
-        specifier: 12.7.3
-        version: 12.7.3
-      '@types/numeral':
-        specifier: ^0.0.28
-        version: 0.0.28
-      '@types/path-browserify':
-        specifier: ^1.0.0
-        version: 1.0.0
-      '@types/prismjs':
-        specifier: ^1.16.1
-        version: 1.26.0
-      '@types/qr-image':
-        specifier: ^3
-        version: 3.2.7
-      '@types/qrcode':
-        specifier: ^1.3.5
-        version: 1.5.2
-      '@types/quill':
-        specifier: 1.3.6
-        version: 1.3.6
-      '@types/react':
-        specifier: ^18.0.2
-        version: 18.0.2
-      '@types/react-beautiful-dnd':
-        specifier: ^13.1.2
-        version: 13.1.4
-      '@types/react-custom-scrollbars':
-        specifier: ^4.0.10
-        version: 4.0.10
-      '@types/react-dom':
-        specifier: ^18.0.2
-        version: 18.2.7
-      '@types/react-dropzone':
-        specifier: ^5.1.0
-        version: 5.1.0(react@18.2.0)
-      '@types/react-grid-layout':
-        specifier: ^1.1.1
-        version: 1.3.2
-      '@types/react-pdf':
-        specifier: ^5
-        version: 5.7.4(worker-loader@3.0.8)
-      '@types/react-redux':
-        specifier: ^7.1.24
-        version: 7.1.26
-      '@types/react-transition-group':
-        specifier: ^4.4.4
-        version: 4.4.6
-      '@types/react-virtualized-auto-sizer':
-        specifier: 1.0.0
-        version: 1.0.0
-      '@types/semver':
-        specifier: ^7
-        version: 7.5.1
-      '@types/socket.io-client':
-        specifier: ^1.4.36
-        version: 1.4.36
-      '@types/uuid':
-        specifier: ^9.0.6
-        version: 9.0.6
-      '@types/worker-plugin':
-        specifier: ^5
-        version: 5.0.1
-      '@webcomponents/shadydom':
-        specifier: ^1.9.0
-        version: 1.11.0
-      autoprefixer:
-        specifier: ^10.4.14
-        version: 10.4.15(postcss@8.4.29)
-      babel-jest:
-        specifier: ^26.6.0
-        version: 26.6.3(@babel/core@7.22.20)
-      babel-loader:
-        specifier: 8.1.0
-        version: 8.1.0(@babel/core@7.22.20)(webpack@5.89.0)
-      babel-plugin-import:
-        specifier: 1.13.5
-        version: 1.13.5
-      babel-preset-react-app:
-        specifier: ^10.0.1
-        version: 10.0.1
-      case-sensitive-paths-webpack-plugin:
-        specifier: 2.2.0
-        version: 2.2.0
-      customize-cra:
-        specifier: ^1.0.0
-        version: 1.0.0
-      eslint:
-        specifier: 8.49.0
-        version: 8.49.0
-      eslint-config-next:
-        specifier: ^12.2.2
-        version: 12.3.4(eslint@8.49.0)(typescript@4.8.2)
-      eslint-webpack-plugin:
-        specifier: ^3.2.0
-        version: 3.2.0(eslint@8.49.0)(webpack@5.89.0)
-      express:
-        specifier: ^4.18.1
-        version: 4.18.1
-      filenamify:
-        specifier: ^5.0.2
-        version: 5.1.1
-      fork-ts-checker-webpack-plugin:
-        specifier: ^7.2.13
-        version: 7.3.0(typescript@4.8.2)(webpack@5.89.0)
-      http-proxy-middleware:
-        specifier: ^2.0.6
-        version: 2.0.6(@types/express@4.17.17)
-      is-wsl:
-        specifier: 1.1.0
-        version: 1.1.0
-      less:
-        specifier: 4.1.3
-        version: 4.1.3
-      less-loader:
-        specifier: 11.0.0
-        version: 11.0.0(less@4.1.3)(webpack@5.89.0)
-      naming-style:
-        specifier: ^1.0.1
-        version: 1.0.1
-      next:
-        specifier: ^12.3.1
-        version: 12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)(sass@1.69.5)
-      next-compose-plugins:
-        specifier: ^2.2.1
-        version: 2.2.1
-      next-global-css:
-        specifier: ^1.3.1
-        version: 1.3.1
-      next-http-proxy-middleware:
-        specifier: ^1.2.4
-        version: 1.2.5
-      postcss:
-        specifier: ^8.4.27
-        version: 8.4.29
-      raw-loader:
-        specifier: ^4.0.2
-        version: 4.0.2(webpack@5.89.0)
-      react-app-rewire-postcss:
-        specifier: ^3.0.2
-        version: 3.0.2
-      react-dev-utils:
-        specifier: ^11.0.3
-        version: 11.0.4(eslint@8.49.0)(typescript@4.8.2)(webpack@5.89.0)
-      slate-serializers:
-        specifier: ^0.4.1
-        version: 0.4.1(@types/react@18.0.2)(react-dom@18.2.0)(react@18.2.0)
-      svgo-loader:
-        specifier: 3.0.0
-        version: 3.0.0
-      tailwindcss:
-        specifier: ^3.3.3
-        version: 3.3.3(ts-node@10.9.1)
-      typescript:
-        specifier: 4.8.2
-        version: 4.8.2
-      web-vitals:
-        specifier: ^1.0.1
-        version: 1.1.2
-      webpack-bundle-analyzer:
-        specifier: ^3.9.0
-        version: 3.9.0
-      webpack-node-externals:
-        specifier: ^3.0.0
-        version: 3.0.0
-      webpack-sources:
-        specifier: ^3.2.3
-        version: 3.2.3
-      webpackbar:
-        specifier: ^5.0.2
-        version: 5.0.2(webpack@5.89.0)
-      worker-plugin:
-        specifier: ^5.0.1
-        version: 5.0.1(webpack@5.89.0)
 
   packages/api-client:
     dependencies:
@@ -914,8 +544,8 @@ importers:
         specifier: ^2.1.0
         version: 2.2.2
       axios:
-        specifier: 0.21.4
-        version: 0.21.4
+        specifier: 1.6.0
+        version: 1.6.0(debug@4.3.4)
       color:
         specifier: ^3.1.3
         version: 3.2.1
@@ -1105,8 +735,8 @@ importers:
   packages/databus-client:
     dependencies:
       axios:
-        specifier: ^0.27.2
-        version: 0.27.2
+        specifier: ^1.6.0
+        version: 1.6.0(debug@4.3.4)
     devDependencies:
       '@types/node':
         specifier: ^12.11.5
@@ -1293,8 +923,8 @@ importers:
         specifier: ^2.1.0
         version: 2.2.2
       axios:
-        specifier: 0.21.4
-        version: 0.21.4
+        specifier: 1.6.0
+        version: 1.6.0(debug@4.3.4)
       bowser:
         specifier: ^2.11.0
         version: 2.11.0
@@ -1862,7 +1492,7 @@ importers:
         version: 4.1.3
       next:
         specifier: ^12.3.1
-        version: 12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)(sass@1.69.5)
+        version: 12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)
       next-compose-plugins:
         specifier: ^2.2.1
         version: 2.2.1
@@ -2108,8 +1738,8 @@ importers:
         specifier: ^2.1.8
         version: 2.1.11(@tiptap/pm@2.1.11)
       axios:
-        specifier: ^1.4.0
-        version: 1.5.0(debug@4.3.4)
+        specifier: ^1.6.0
+        version: 1.6.0(debug@4.3.4)
       bull:
         specifier: ^4.11.3
         version: 4.11.3
@@ -2421,8 +2051,8 @@ importers:
         specifier: ^2.1.0
         version: 2.2.2
       axios:
-        specifier: 0.21.4
-        version: 0.21.4
+        specifier: 1.6.0
+        version: 1.6.0(debug@4.3.4)
       bowser:
         specifier: ^2.11.0
         version: 2.11.0
@@ -8782,11 +8412,11 @@ packages:
       rimraf: 3.0.2
     dev: true
 
-  /@nrwl/tao@16.10.0(@swc/core@1.3.86):
-    resolution: {integrity: sha512-QNAanpINbr+Pod6e1xNgFbzK1x5wmZl+jMocgiEFXZ67KHvmbD6MAQQr0MMz+GPhIu7EE4QCTLTyCEMlAG+K5Q==}
+  /@nrwl/tao@17.1.3(@swc/core@1.3.86):
+    resolution: {integrity: sha512-9YpfEkUpVqOweqgQvMDcWApNx4jhCqBNH5IByZj302Enp3TLnQSvhuX5Dfr8hNQRQokIpEn6tW8SGTctTM5LXw==}
     hasBin: true
     dependencies:
-      nx: 16.10.0(@swc/core@1.3.86)
+      nx: 17.1.3(@swc/core@1.3.86)
       tslib: 2.6.2
     transitivePeerDependencies:
       - '@swc-node/register'
@@ -8805,8 +8435,8 @@ packages:
     transitivePeerDependencies:
       - encoding
 
-  /@nx/nx-darwin-arm64@16.10.0:
-    resolution: {integrity: sha512-YF+MIpeuwFkyvM5OwgY/rTNRpgVAI/YiR0yTYCZR+X3AAvP775IVlusNgQ3oedTBRUzyRnI4Tknj1WniENFsvQ==}
+  /@nx/nx-darwin-arm64@17.1.3:
+    resolution: {integrity: sha512-f4qLa0y3C4uuhYKgq+MU892WaQvtvmHqrEhHINUOxYXNiLy2sgyJPW0mOZvzXtC4dPaUmiVaFP5RMVzc8Lxhtg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
@@ -8814,8 +8444,8 @@ packages:
     dev: true
     optional: true
 
-  /@nx/nx-darwin-x64@16.10.0:
-    resolution: {integrity: sha512-ypi6YxwXgb0kg2ixKXE3pwf5myVNUgWf1CsV5OzVccCM8NzheMO51KDXTDmEpXdzUsfT0AkO1sk5GZeCjhVONg==}
+  /@nx/nx-darwin-x64@17.1.3:
+    resolution: {integrity: sha512-kh76ZjqkLeQUIAfTa9G/DFFf+e1sZ5ipDzk7zFGhZ2k68PoQoFdsFOO3C513JmuEdavspts6Hkifsqh61TaE+A==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
@@ -8823,8 +8453,8 @@ packages:
     dev: true
     optional: true
 
-  /@nx/nx-freebsd-x64@16.10.0:
-    resolution: {integrity: sha512-UeEYFDmdbbDkTQamqvtU8ibgu5jQLgFF1ruNb/U4Ywvwutw2d4ruOMl2e0u9hiNja9NFFAnDbvzrDcMo7jYqYw==}
+  /@nx/nx-freebsd-x64@17.1.3:
+    resolution: {integrity: sha512-CRuVL5ZSLb+Gc8vwMUUe9Pl/1Z26YtXMKTahBMQh2dac63vzLgzqIV4c66aduUl1x2M0kGYBSIIRG9z0/BgWeg==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [freebsd]
@@ -8832,8 +8462,8 @@ packages:
     dev: true
     optional: true
 
-  /@nx/nx-linux-arm-gnueabihf@16.10.0:
-    resolution: {integrity: sha512-WV3XUC2DB6/+bz1sx+d1Ai9q2Cdr+kTZRN50SOkfmZUQyEBaF6DRYpx/a4ahhxH3ktpNfyY8Maa9OEYxGCBkQA==}
+  /@nx/nx-linux-arm-gnueabihf@17.1.3:
+    resolution: {integrity: sha512-KDBmd5tSrg93g/oij/eGW4yeVNVK3DBIM4VYAS2vtkIgVOGoqcQ+SEIeMK3nMUJP9jGyblt3QNj5ZsJBtScwQw==}
     engines: {node: '>= 10'}
     cpu: [arm]
     os: [linux]
@@ -8841,8 +8471,8 @@ packages:
     dev: true
     optional: true
 
-  /@nx/nx-linux-arm64-gnu@16.10.0:
-    resolution: {integrity: sha512-aWIkOUw995V3ItfpAi5FuxQ+1e9EWLS1cjWM1jmeuo+5WtaKToJn5itgQOkvSlPz+HSLgM3VfXMvOFALNk125g==}
+  /@nx/nx-linux-arm64-gnu@17.1.3:
+    resolution: {integrity: sha512-W2tNL/7sIwoQKLmuy68Usd6TZzIZvxZt4UE30kDwGc2RSap6RCHAvDbzSxtW+L4+deC9UxX0Tty0VuW+J8FjSg==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
@@ -8850,8 +8480,8 @@ packages:
     dev: true
     optional: true
 
-  /@nx/nx-linux-arm64-musl@16.10.0:
-    resolution: {integrity: sha512-uO6Gg+irqpVcCKMcEPIQcTFZ+tDI02AZkqkP7koQAjniLEappd8DnUBSQdcn53T086pHpdc264X/ZEpXFfrKWQ==}
+  /@nx/nx-linux-arm64-musl@17.1.3:
+    resolution: {integrity: sha512-Oto3gkLd7yweuVUCsSHwm4JkAIbcxpPJP0ycRHI/PRHPMIOPiMX8r651QM1amMyKAbJtAe047nyb9Sh1X0FA4A==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
@@ -8859,8 +8489,8 @@ packages:
     dev: true
     optional: true
 
-  /@nx/nx-linux-x64-gnu@16.10.0:
-    resolution: {integrity: sha512-134PW/u/arNFAQKpqMJniC7irbChMPz+W+qtyKPAUXE0XFKPa7c1GtlI/wK2dvP9qJDZ6bKf0KtA0U/m2HMUOA==}
+  /@nx/nx-linux-x64-gnu@17.1.3:
+    resolution: {integrity: sha512-pJS994sa5PBPFak93RydTB9KdEmiVb3rgiSB7PDBegphERbzHEB77B7G8M5TZ62dGlMdplIEKmdhY5XNqeAf9A==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -8868,8 +8498,8 @@ packages:
     dev: true
     optional: true
 
-  /@nx/nx-linux-x64-musl@16.10.0:
-    resolution: {integrity: sha512-q8sINYLdIJxK/iUx9vRk5jWAWb/2O0PAbOJFwv4qkxBv4rLoN7y+otgCZ5v0xfx/zztFgk/oNY4lg5xYjIso2Q==}
+  /@nx/nx-linux-x64-musl@17.1.3:
+    resolution: {integrity: sha512-4Hcx5Fg/88jV+bcTr6P0dM4unXNvKgrGJe3oK9/sgEhiW6pD2UAFjv16CCSRcWhDUAzUDqcwnD2fgg+vnAJG6g==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
@@ -8877,8 +8507,8 @@ packages:
     dev: true
     optional: true
 
-  /@nx/nx-win32-arm64-msvc@16.10.0:
-    resolution: {integrity: sha512-moJkL9kcqxUdJSRpG7dET3UeLIciwrfP08mzBQ12ewo8K8FzxU8ZUsTIVVdNrwt01CXOdXoweGfdQLjJ4qTURA==}
+  /@nx/nx-win32-arm64-msvc@17.1.3:
+    resolution: {integrity: sha512-dUasEuskmDxUL36XA0GZqSb9233suE4wKhxrMobyFBzHUZ2tq/unzOpPjYfqDBie4QIvF8tEpAjQsLds8LWgbw==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
@@ -8886,8 +8516,8 @@ packages:
     dev: true
     optional: true
 
-  /@nx/nx-win32-x64-msvc@16.10.0:
-    resolution: {integrity: sha512-5iV2NKZnzxJwZZ4DM5JVbRG/nkhAbzEskKaLBB82PmYGKzaDHuMHP1lcPoD/rtYMlowZgNA/RQndfKvPBPwmXA==}
+  /@nx/nx-win32-x64-msvc@17.1.3:
+    resolution: {integrity: sha512-eTuTpBHFvA5NFJh/iosmqCL4JOAjDrwXLSMgfKrZKjiApHMG1T/5Hb+PrsNpt+WnGp94ur7c4Dtx4xD5vlpAEw==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -9442,15 +9072,6 @@ packages:
     resolution: {integrity: sha512-oPQdbFDmZvjXk5ZDoBGXG8B4tSB/qW5vQunJWQMFUBp7Xe8O1ByPANueJ+Jzg58esEBegyyxZ7LRmfJr7kFcFg==}
     engines: {node: '>=14'}
     dev: false
-
-  /@parcel/watcher@2.0.4:
-    resolution: {integrity: sha512-cTDi+FUDBIUOBKEtj+nhiJ71AZVlkAsQFuGQTun5tV9mwQBQgZvhCzG+URPQc8myeN32yRVZEfVAPCs1RW+Jvg==}
-    engines: {node: '>= 10.0.0'}
-    requiresBuild: true
-    dependencies:
-      node-addon-api: 3.2.1
-      node-gyp-build: 4.6.1
-    dev: true
 
   /@pmmmwh/react-refresh-webpack-plugin@0.5.11(react-refresh@0.11.0)(webpack@5.89.0):
     resolution: {integrity: sha512-7j/6vdTym0+qZ6u4XbSAxrWBGYSdCfTzySkj7WAFgDLmSyWlOrWvpyzxlFh5jtw9dn0oL/jtW+06XfFiisN3JQ==}
@@ -10145,7 +9766,7 @@ packages:
       '@sentry/utils': 7.68.0
       '@sentry/webpack-plugin': 1.20.0
       chalk: 3.0.0
-      next: 12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)(sass@1.69.5)
+      next: 12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
       rollup: 2.78.0
       stacktrace-parser: 0.1.10
@@ -13116,19 +12737,6 @@ packages:
     dependencies:
       '@types/istanbul-lib-report': 3.0.0
 
-  /@types/jest-diff@24.3.0:
-    resolution: {integrity: sha512-vx1CRDeDUwQ0Pc7v+hS61O1ETA81kD04IMEC0hS1kPyVtHDdZrokAvpF7MT9VI/fVSzicelUZNCepDvhRV1PeA==}
-    deprecated: This is a stub types definition. jest-diff provides its own type definitions, so you do not need this installed.
-    dependencies:
-      jest-diff: 29.6.4
-    dev: true
-
-  /@types/jest@24.0.18:
-    resolution: {integrity: sha512-jcDDXdjTcrQzdN06+TSVsPPqxvsZA/5QkYfIZlq1JMw7FdP5AZylbOc+6B/cuDurctRe+MziUMtQ3xQdrbjqyQ==}
-    dependencies:
-      '@types/jest-diff': 24.3.0
-    dev: true
-
   /@types/jest@25.2.3:
     resolution: {integrity: sha512-JXc1nK/tXHiDhV55dvfzqtmP4S3sy3T3ouV2tkViZgxY/zeUkcpQcQPGRlgF4KmWzWW5oiWYSZwtCB+2RsE4Fw==}
     dependencies:
@@ -13229,10 +12837,6 @@ packages:
     deprecated: This is a stub types definition for localforage (https://github.com/localForage/localForage). localforage provides its own type definitions, so you don't need @types/localforage installed!
     dependencies:
       localforage: 1.10.0
-    dev: true
-
-  /@types/lodash@4.14.161:
-    resolution: {integrity: sha512-EP6O3Jkr7bXvZZSZYlsgt5DIjiGr0dXP1/jVEwVLTFgg0d+3lWVQkRavYVQszV7dYUwvg0B8R0MBDpcmXg7XIA==}
     dev: true
 
   /@types/lodash@4.14.198:
@@ -13339,10 +12943,6 @@ packages:
 
   /@types/node@12.20.55:
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
-    dev: true
-
-  /@types/node@12.7.3:
-    resolution: {integrity: sha512-3SiLAIBkDWDg6vFo0+5YJyHPWU9uwu40Qe+v+0MH8wRKYBimHvvAOyk3EzMrD/TrIlLYfXrqDqrg913PynrMJQ==}
     dev: true
 
   /@types/node@14.18.58:
@@ -13767,6 +13367,7 @@ packages:
 
   /@types/uuid@9.0.6:
     resolution: {integrity: sha512-BT2Krtx4xaO6iwzwMFUYvWBWkV2pr37zD68Vmp1CDV196MzczBRxuEpD6Pr395HAgebC/co7hOphs53r8V7jew==}
+    dev: false
 
   /@types/validator@13.11.1:
     resolution: {integrity: sha512-d/MUkJYdOeKycmm75Arql4M5+UuXmf4cHdHKsyw1GcvnNgL6s77UkgSgJ8TE/rI5PYsnwYq5jkcWBLuN/MpQ1A==}
@@ -15621,34 +15222,14 @@ packages:
       - debug
     dev: false
 
-  /axios@0.27.2:
-    resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
-    dependencies:
-      follow-redirects: 1.15.2(debug@4.3.4)
-      form-data: 4.0.0
-    transitivePeerDependencies:
-      - debug
-    dev: false
-
-  /axios@1.5.0(debug@4.3.4):
-    resolution: {integrity: sha512-D4DdjDo5CY50Qms0qGQTTw6Q44jl7zRwY7bthds06pUGfChBCTcQs+N743eFWGEd6pRTMd6A+I87aWyFV5wiZQ==}
+  /axios@1.6.0(debug@4.3.4):
+    resolution: {integrity: sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==}
     dependencies:
       follow-redirects: 1.15.2(debug@4.3.4)
       form-data: 4.0.0
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
-    dev: false
-
-  /axios@1.5.1:
-    resolution: {integrity: sha512-Q28iYCWzNHjAm+yEAot5QaAMxhMghWLFVf7rRdwhUI+c2jix2DUXjAHXVi+s1ibs3mjPO/cCgbA++3BjD0vP/A==}
-    dependencies:
-      follow-redirects: 1.15.2(debug@4.3.4)
-      form-data: 4.0.0
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
-    dev: true
 
   /axobject-query@3.2.1:
     resolution: {integrity: sha512-jsyHu61e6N4Vbz/v18DHwWYKK0bSWLqn47eeDSKPB7m8tqMHF9YJ+mhIk2lVteyZrY8tnSj/jHOv4YiTCuCJgg==}
@@ -23045,6 +22626,7 @@ packages:
 
   /immutable@4.3.4:
     resolution: {integrity: sha512-fsXeu4J4i6WNWSikpI88v/PcVflZz+6kMhUfIwc5SY+poQRPnaf5V7qds6SUyUN3cVxEzuCab7QIoLOQ+DQ1wA==}
+    dev: false
 
   /import-cwd@2.1.0:
     resolution: {integrity: sha512-Ew5AZzJQFqrOV5BTW3EIoHAnoie1LojZLXKcCQ/yTRyVZosBhK1x1ViYjHGf5pAFOq8ZyChZp6m/fSN7pJyZtg==}
@@ -25610,6 +25192,7 @@ packages:
       klona: 2.0.6
       less: 4.1.3
       webpack: 5.89.0(@swc/core@1.3.86)
+    dev: false
 
   /less@4.1.3:
     resolution: {integrity: sha512-w16Xk/Ta9Hhyei0Gpz9m7VS8F28nieJaL/VyShID7cYvP6IL5oHeL6p4TXSDJqZE/lNv0oJ2pGVjJsRkfwm5FA==}
@@ -27108,6 +26691,7 @@ packages:
 
   /naming-style@1.0.1:
     resolution: {integrity: sha512-0TReXPuxU6ebUmDQmfDjkCwvhhJ86Gg02/Pliti1+ClkLKFOYBL6CJn+MEPT3nX35tGpyaUl+IwFGmh562TvKA==}
+    dev: false
 
   /nan@2.17.0:
     resolution: {integrity: sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==}
@@ -27340,10 +26924,10 @@ packages:
       clone-deep: 4.0.1
       less: 4.1.3
       less-loader: 11.0.0(less@4.1.3)(webpack@5.89.0)
-      next: 12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)(sass@1.69.5)
+      next: 12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)
     dev: false
 
-  /next@12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)(sass@1.69.5):
+  /next@12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-VcyMJUtLZBGzLKo3oMxrEF0stxh8HwuW976pAzlHhI3t8qJ4SROjCrSh1T24bhrbjw55wfZXAbXPGwPt5FLRfQ==}
     engines: {node: '>=12.22.0'}
     hasBin: true
@@ -27367,7 +26951,6 @@ packages:
       postcss: 8.4.14
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      sass: 1.69.5
       styled-jsx: 5.0.7(@babel/core@7.22.20)(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
     optionalDependencies:
@@ -27430,6 +27013,8 @@ packages:
   /node-addon-api@3.2.1:
     resolution: {integrity: sha512-mmcei9JghVNDYydghQmeDX8KoAm0FAiYyIcUt/N4nhyAipB17pllZQDOJD2fotxABnt4Mdz+dKTO7eftLg4d0A==}
     requiresBuild: true
+    dev: false
+    optional: true
 
   /node-ask@1.0.1:
     resolution: {integrity: sha512-+0eqgEdgPiixrNysGDTPo3T2qyEHGVgs4ONlc5tTfcluvC/Rgq1x2ELdANUMwhR2CYLwaQnMS32O/h7adasnFQ==}
@@ -27491,6 +27076,8 @@ packages:
     resolution: {integrity: sha512-24vnklJmyRS8ViBNI8KbtK/r/DmXQMRiOMXTNz2nrTnAYUwjmEEbnnpB/+kt+yWRv73bPsSPRFddrcIbAxSiMQ==}
     hasBin: true
     requiresBuild: true
+    dev: false
+    optional: true
 
   /node-int64@0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
@@ -27817,8 +27404,8 @@ packages:
   /nwsapi@2.2.7:
     resolution: {integrity: sha512-ub5E4+FBPKwAZx0UwIQOjYWGHTEq5sPqHQNRN8Z9e4A7u3Tj1weLJsL59yH9vmvqEtBHaOmT6cYQKIZOxp35FQ==}
 
-  /nx@16.10.0(@swc/core@1.3.86):
-    resolution: {integrity: sha512-gZl4iCC0Hx0Qe1VWmO4Bkeul2nttuXdPpfnlcDKSACGu3ZIo+uySqwOF8yBAxSTIf8xe2JRhgzJN1aFkuezEBg==}
+  /nx@17.1.3(@swc/core@1.3.86):
+    resolution: {integrity: sha512-6LYoTt01nS1d/dvvYtRs+pEAMQmUVsd2fr/a8+X1cDjWrb8wsf1O3DwlBTqKOXOazpS3eOr0Ukc9N1svbu7uXA==}
     hasBin: true
     requiresBuild: true
     peerDependencies:
@@ -27830,13 +27417,12 @@ packages:
       '@swc/core':
         optional: true
     dependencies:
-      '@nrwl/tao': 16.10.0(@swc/core@1.3.86)
-      '@parcel/watcher': 2.0.4
+      '@nrwl/tao': 17.1.3(@swc/core@1.3.86)
       '@swc/core': 1.3.86
       '@yarnpkg/lockfile': 1.1.0
       '@yarnpkg/parsers': 3.0.0-rc.46
       '@zkochan/js-yaml': 0.0.6
-      axios: 1.5.1
+      axios: 1.6.0(debug@4.3.4)
       chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.6.1
@@ -27868,16 +27454,16 @@ packages:
       yargs: 17.7.2
       yargs-parser: 21.1.1
     optionalDependencies:
-      '@nx/nx-darwin-arm64': 16.10.0
-      '@nx/nx-darwin-x64': 16.10.0
-      '@nx/nx-freebsd-x64': 16.10.0
-      '@nx/nx-linux-arm-gnueabihf': 16.10.0
-      '@nx/nx-linux-arm64-gnu': 16.10.0
-      '@nx/nx-linux-arm64-musl': 16.10.0
-      '@nx/nx-linux-x64-gnu': 16.10.0
-      '@nx/nx-linux-x64-musl': 16.10.0
-      '@nx/nx-win32-arm64-msvc': 16.10.0
-      '@nx/nx-win32-x64-msvc': 16.10.0
+      '@nx/nx-darwin-arm64': 17.1.3
+      '@nx/nx-darwin-x64': 17.1.3
+      '@nx/nx-freebsd-x64': 17.1.3
+      '@nx/nx-linux-arm-gnueabihf': 17.1.3
+      '@nx/nx-linux-arm64-gnu': 17.1.3
+      '@nx/nx-linux-arm64-musl': 17.1.3
+      '@nx/nx-linux-x64-gnu': 17.1.3
+      '@nx/nx-linux-x64-musl': 17.1.3
+      '@nx/nx-win32-arm64-msvc': 17.1.3
+      '@nx/nx-win32-x64-msvc': 17.1.3
     transitivePeerDependencies:
       - debug
     dev: true
@@ -31298,14 +30884,6 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-icons@4.12.0(react@18.2.0):
-    resolution: {integrity: sha512-IBaDuHiShdZqmfc/TwHu6+d6k2ltNCf3AszxNmjJc1KUfXdEeRJOKyNvLmAHaarhzGmTSVygNdyu8/opXv2gaw==}
-    peerDependencies:
-      react: '*'
-    dependencies:
-      react: 18.2.0
-    dev: false
-
   /react-image-crop@8.6.12(react@18.2.0):
     resolution: {integrity: sha512-3CNz1xfsRRSH/iH023IDMXxzsb1M6RTHHUVsVcb8uFPcjGiA9WisvQ24G1eRDf2j4NlybupOEEdfK2vT0etN6A==}
     peerDependencies:
@@ -32556,15 +32134,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /sass@1.69.5:
-    resolution: {integrity: sha512-qg2+UCJibLr2LCVOt3OlPhr/dqVHWOa9XtZf2OjbLs/T4VPSJ00udtgJxH3neXZm+QqX8B+3cU7RaLqp1iVfcQ==}
-    engines: {node: '>=14.0.0'}
-    hasBin: true
-    dependencies:
-      chokidar: 3.5.3
-      immutable: 4.3.4
-      source-map-js: 1.0.2
 
   /sax@1.2.4:
     resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
@@ -34092,7 +33661,7 @@ packages:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
     dependencies:
-      has-flag: registry.npmmirror.com/has-flag@4.0.0
+      has-flag: 4.0.0
 
   /supports-color@8.1.1:
     resolution: {integrity: sha512-MpUEN2OodtUzxvKQl72cUF7RQ5EiHsGvSsVG0ia9c5RbWGL2CI4C7EpPS8UTBIplnlzZiNuV56w+FuNxy3ty2Q==}
@@ -37619,12 +37188,6 @@ packages:
     name: fast-json-stable-stringify
     version: 2.1.0
     dev: true
-
-  registry.npmmirror.com/has-flag@4.0.0:
-    resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/has-flag/-/has-flag-4.0.0.tgz}
-    name: has-flag
-    version: 4.0.0
-    engines: {node: '>=8'}
 
   registry.npmmirror.com/is-extendable@1.0.1:
     resolution: {integrity: sha512-arnXMxT1hhoKo9k1LZdmlNyJdDDfy2v0fXjFlmok4+i8ul/6WlbVge9bhM74OpNPQPMGUToDtz+KXa1PneJxOA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/is-extendable/-/is-extendable-1.0.1.tgz}
