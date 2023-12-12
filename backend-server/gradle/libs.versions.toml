@@ -34,7 +34,7 @@ stripe = "22.22.0"
 shedlock = "5.10.0"
 nimbus = "9.22"
 jose4j = "0.9.3"
-sentry = "5.7.4"
+sentry = "7.0.0"
 minio = "8.2.2"
 vi = "1.0.4"
 social = "1.0.6"
@@ -47,6 +47,7 @@ iogrpc = "1.59.1"
 spring-dependency-management-plugin = "1.1.4"
 protobuf-plugin = "0.9.4"
 checkstyle = "10.12.5"
+sentry-plugin = "4.0.0"
 
 [libraries]
 # spring dependencies
@@ -132,9 +133,10 @@ social-feishu = { module = "cn.vika:vika-social-feishu", version.ref = "social" 
 social-dingtalk = { module = "cn.vika:vika-social-dingtalk", version.ref = "social" }
 social-wecom = { module = "cn.vika:vika-social-wecom", version.ref = "social" }
 social-qq = { module = "cn.vika:vika-social-qq", version.ref = "social" }
-sentry-spring = { module = "io.sentry:sentry-spring-boot-starter", version.ref = "sentry" }
-sentry-logback = { module = "io.sentry:sentry-logback", version.ref = "sentry" }
-sentry-client = { module = "io.sentry:sentry-apache-http-client-5", version.ref = "sentry" }
+sentry-dependencies = { module = "io.sentry:sentry-bom", version.ref = "sentry" }
+sentry-spring = { module = "io.sentry:sentry-spring-boot-starter-jakarta" }
+sentry-logback = { module = "io.sentry:sentry-logback" }
+sentry-client = { module = "io.sentry:sentry-apache-http-client-5" }
 
 # spring bundle constraints dependencies
 commons-pool2 = { module = "org.apache.commons:commons-pool2" }
@@ -210,4 +212,5 @@ okhttp3 = ["okhttp3", "okhttp3-logging"]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management-plugin" }
 protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }
+sentry = { id = "io.sentry.jvm.gradle", version.ref = "sentry-plugin" }
 

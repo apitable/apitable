@@ -48,6 +48,9 @@ dependencies {
         exclude(group: 'org.mybatis', module: 'mybatis-spring')
     }
     implementation libs.mybatis.spring
+
+    // sentry dependencies
+    implementation(platform(libs.sentry.dependencies))
     implementation libs.bundles.sentry
     implementation libs.bundles.apidoc
 

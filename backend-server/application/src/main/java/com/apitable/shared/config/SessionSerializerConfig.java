@@ -18,6 +18,7 @@
 
 package com.apitable.shared.config;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.BeanClassLoaderAware;
@@ -41,15 +42,27 @@ public class SessionSerializerConfig implements BeanClassLoaderAware {
     private ClassLoader classLoader;
 
     /**
+     * Long Mixin.
+     */
+    public abstract static class LongMixin {
+
+        @SuppressWarnings("unused")
+        @JsonProperty("long")
+        Long value;
+    }
+
+
+    /**
      * config spring session redis serializer.
      *
      * @return redis serializer
      */
     @Bean("springSessionDefaultRedisSerializer")
     public RedisSerializer<Object> springSessionDefaultRedisSerializer() {
-        return new GenericJackson2JsonRedisSerializer(
-            new ObjectMapper().registerModules(SecurityJackson2Modules.getModules(this.classLoader))
-        );
+        var mapper = new ObjectMapper();
+        mapper.addMixIn(Long.class, LongMixin.class);
+        mapper.registerModules(SecurityJackson2Modules.getModules(this.classLoader));
+        return new GenericJackson2JsonRedisSerializer(mapper);
     }
 
     @Bean
