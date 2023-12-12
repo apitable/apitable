@@ -45,10 +45,10 @@ const getBrowserLanguage = (): string | undefined => {
   // @ts-ignore
   const languageMap = _global.languageManifest;
 
-  if (!window.navigator || !languageMap) {
+  if (!_global.navigator || !languageMap) {
     return undefined;
   }
-  const userLanguage = window.navigator.language as string;
+  const userLanguage = _global.navigator.language as string;
 
   if (languageMap[userLanguage]) {
     return userLanguage;
