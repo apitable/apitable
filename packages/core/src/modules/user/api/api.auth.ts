@@ -89,10 +89,11 @@ export function signUp(token?: string, inviteCode?: string) {
  *
  */
 
-export function register(username: string, credential: string) {
+export function register(username: string, credential: string, lang = 'en-US') {
   return axios.post(Url.REGISTER, {
     username,
-    credential
+    credential,
+    lang
   });
 }
 

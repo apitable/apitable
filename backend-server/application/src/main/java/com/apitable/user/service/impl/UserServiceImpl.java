@@ -486,11 +486,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserEntity createUserByEmail(final String email, final String password) {
+        return createUserByEmail(email, password, languageManager.getDefaultLanguageTag());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public UserEntity createUserByEmail(final String email, final String password, String lang) {
         UserEntity entity = UserEntity.builder()
             .uuid(IdUtil.fastSimpleUUID())
             .email(email)
             .nickName(StringUtils.substringBefore(email, "@"))
-            .locale(languageManager.getDefaultLanguageTag())
+            .locale(lang)
             .color(RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE))
             .lastLoginTime(LocalDateTime.now())
             .build();

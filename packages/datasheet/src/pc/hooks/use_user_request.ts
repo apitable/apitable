@@ -337,7 +337,25 @@ export const useUserRequest = () => {
   };
 
   const registerReq = (username: string, credential: string) => {
-    return Api.register(username, credential).then((res) => {
+    const defaultLang = (): string => {
+      // @ts-ignore
+      const languageMap = (global || window).languageManifest;
+
+      const userLanguage = navigator.language;
+
+      if (languageMap[userLanguage]) {
+        return userLanguage;
+      } else {
+        const langArr = Object.keys(languageMap);
+        for (let i = 0; i < langArr.length; i++) {
+          if (langArr[i].indexOf(userLanguage) > -1) {
+            return langArr[i];
+          }
+        }
+      }
+      return 'en-US';
+    };
+    return Api.register(username, credential, defaultLang()).then((res) => {
       const { success } = res.data;
       if (success) {
         localStorage.removeItem('client-lang');
