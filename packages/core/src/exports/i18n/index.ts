@@ -41,6 +41,31 @@ declare const window: any;
 declare const global: any;
 
 const _global = global || window;
+const getBrowserLanguage = (): string | undefined => {
+  // @ts-ignore
+  const languageMap = _global.languageManifest;
+
+  if (!window.navigator || !languageMap) {
+    return undefined;
+  }
+  const userLanguage = window.navigator.language as string;
+
+  if (languageMap[userLanguage]) {
+    return userLanguage;
+  } else {
+    const langArr = Object.keys(languageMap);
+    if (!langArr) {
+      return undefined;
+    }
+    for (let i = 0; i < langArr.length; i++) {
+      // @ts-ignore
+      if (langArr[i] !== undefined && langArr[i].indexOf(userLanguage) > -1) {
+        return langArr[i];
+      }
+    }
+  }
+  return undefined;
+};
 
 export function getLanguage() {
   let clientLang = null;
@@ -50,10 +75,11 @@ export function getLanguage() {
       clientLang = localStorage.getItem('client-lang');
     } catch (e) {}
   }
+  const browserLang = getBrowserLanguage();
   const language = typeof _global == 'object' && _global.__initialization_data__ &&
     _global.__initialization_data__.locale != 'und' && _global.__initialization_data__.locale;
   const defaultLang = (typeof _global == 'object' && _global.__initialization_data__?.envVars?.SYSTEM_CONFIGURATION_DEFAULT_LANGUAGE) || 'zh-CN';
-  return clientLang || language || defaultLang;
+  return clientLang || browserLang || language || defaultLang;
 }
 
 const fetchLanguagePack = (lang: string, data: any) => {
