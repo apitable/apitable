@@ -157,7 +157,8 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
     @Test
     void testCheckFileNumOverLimitWithoutException() {
         MockUserSpace userSpace = createSingleUserAndSpace();
-        assertThatNoException().isThrownBy(() -> iSpaceService.checkFileNumOverLimit(userSpace.getSpaceId()));
+        assertThatNoException().isThrownBy(
+            () -> iSpaceService.checkFileNumOverLimit(userSpace.getSpaceId()));
     }
 
     @Test
@@ -189,7 +190,8 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         assertThat(spaceSubscribeVo.getMaxMessageCredits()).isEqualTo(0L);
         assertThat(spaceSubscribeVo.getMaxRemainTimeMachineDays()).isEqualTo(-1L);
         assertThat(spaceSubscribeVo.getMaxRemainRecordActivityDays()).isEqualTo(-1L);
-        assertThat(spaceSubscribeVo.getMaxAuditQueryDays()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxAuditQueryDays()).isEqualTo(0);
+        assertThat(spaceSubscribeVo.getAuditQuery()).isFalse();
         assertThat(spaceSubscribeVo.getRainbowLabel()).isEqualTo(false);
         assertThat(spaceSubscribeVo.getWatermark()).isEqualTo(false);
         assertThat(spaceSubscribeVo.getIntegrationFeishu()).isEqualTo(false);

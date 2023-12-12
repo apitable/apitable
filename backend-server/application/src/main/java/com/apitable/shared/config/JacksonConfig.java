@@ -18,7 +18,8 @@
 
 package com.apitable.shared.config;
 
-import com.fasterxml.jackson.core.JsonParser;
+import static com.fasterxml.jackson.core.json.JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS;
+
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,7 +44,7 @@ public class JacksonConfig {
         return builder -> {
             builder.failOnEmptyBeans(false);
             builder.failOnUnknownProperties(false);
-            builder.featuresToEnable(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS);
+            builder.featuresToEnable(ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature());
         };
     }
 }

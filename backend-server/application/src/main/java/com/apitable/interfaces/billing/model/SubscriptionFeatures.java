@@ -424,6 +424,15 @@ public class SubscriptionFeatures {
                 super(value);
             }
         }
+
+        /**
+         * Billing OrgApi feature.
+         */
+        public static class AuditQuery extends BooleanPlanFeature {
+            public AuditQuery(Boolean value) {
+                super(value);
+            }
+        }
     }
 
     /**
@@ -647,5 +656,9 @@ public class SubscriptionFeatures {
 
     public static SubscribeFeatures.AllowEmbed buildAllowEmbed(Boolean value) {
         return new SubscribeFeatures.AllowEmbed(value);
+    }
+
+    public static SubscribeFeatures.AuditQuery buildAuditQuery(Boolean value) {
+        return new SubscribeFeatures.AuditQuery(value);
     }
 }
