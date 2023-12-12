@@ -37,6 +37,9 @@ export const MagicVariableElement = (props: { nodeOutputSchemaList?: INodeOutput
 
   const nodeSchemaIndex = nodeOutputSchemaList.findIndex((item) => {
     if(chainList[0].value.startsWith('dst')) {
+      return item.id === chainList[0].value;
+    }
+    if(chainList[0].value.startsWith('atr')) {
       const dst = triggerDataSheetMap[chainList?.[0]?.value];
       return item.id === dst;
     }
