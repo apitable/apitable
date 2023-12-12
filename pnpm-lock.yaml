@@ -296,16 +296,16 @@ importers:
         specifier: ../ai-components
         version: link:../ai-components
       '@apitable/components':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../components
       '@apitable/core':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../core
       '@apitable/i18n-lang':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../i18n-lang
       '@apitable/icons':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../icons
       '@microsoft/fetch-event-source':
         specifier: ^2.0.1
