@@ -123,19 +123,21 @@ const rewriteI18nForEdition = () => {
     }
   }
 
+};
+
+// browser only
+if (isBrowser) {
+  require('@apitable/i18n-lang');
+
   if (_global.apitable_language_list && Object.keys(_global.apitable_language_list).length > 0) {
     _global.languageManifest = _global.apitable_language_list;
   }
-};
+}
 
 const currentLang = getLanguage().replace('_', '-');
 _global.currentLang = currentLang;
 _global.apitable_i18n = isBrowser ? loadClientLanguage(currentLang) : LANGUAGE_DATA;
 
-// browser only
-if (isBrowser) {
-  require('@apitable/i18n-lang');
-}
 rewriteI18nForEdition();
 const i18n = I18N.createByLanguagePacks(_global.apitable_i18n, currentLang);
 
