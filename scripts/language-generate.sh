@@ -7,7 +7,7 @@ COPY_PATH="$4"
 APITABLE_BASE_DIR="$5"
 L10N_EDITION_DIR="$6"
 
-npx ts-node "${L10N_SCRIPT_DIR}/mergeLanguageFile.ts" "strings" "json" "${L10N_GEN_DIR}" "${L10N_BASE_DIR}" "$L10N_EDITION_DIR"
+node "${L10N_SCRIPT_DIR}/mergeLanguageFile.js" "strings" "json" "${L10N_GEN_DIR}" "${L10N_BASE_DIR}" "$L10N_EDITION_DIR"
 cp "${L10N_GEN_DIR}"/strings.*-*.json "${COPY_PATH}/config/"
 cp "${L10N_GEN_DIR}"/strings.json "${COPY_PATH}/config/"
 cp "${L10N_BASE_DIR}"/language.manifest.json "${COPY_PATH}/config/"

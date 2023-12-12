@@ -7,7 +7,7 @@ L10N_EDITION_DIR="$4"
 APITABLE_BASE_DIR="$5"
 
 # properties file
-npx ts-node "${L10N_SCRIPT_DIR}/mergeLanguageFile.ts" "backend" "properties" "${L10N_GEN_DIR}" "${L10N_BASE_DIR}" "$L10N_EDITION_DIR"
+node "${L10N_SCRIPT_DIR}/mergeLanguageFile.js" "backend" "properties" "${L10N_GEN_DIR}" "${L10N_BASE_DIR}" "$L10N_EDITION_DIR"
 SRC_DIR="${L10N_GEN_DIR}"
 DEST_DIR="${APITABLE_BASE_DIR}backend-server/application/src/main/resources/sysconfig/i18n/exception/"
 cp "${SRC_DIR}"/*.properties "${DEST_DIR}"
