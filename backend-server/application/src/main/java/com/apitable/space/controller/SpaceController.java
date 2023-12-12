@@ -66,8 +66,10 @@ import com.apitable.space.ro.SpaceDeleteRo;
 import com.apitable.space.ro.SpaceOpRo;
 import com.apitable.space.ro.SpaceSecuritySettingRo;
 import com.apitable.space.ro.SpaceUpdateOpRo;
+import com.apitable.space.service.ILabsApplicantService;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.space.vo.CreateSpaceResultVo;
+import com.apitable.space.vo.LabsFeatureVo;
 import com.apitable.space.vo.SpaceCapacityVO;
 import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.space.vo.SpaceInfoVO;
@@ -83,6 +85,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -118,6 +121,9 @@ public class SpaceController {
 
     @Resource
     private SocialServiceFacade socialServiceFacade;
+
+    @Resource
+    private ILabsApplicantService iLabsApplicantService;
 
     /**
      * Get space capacity info.
@@ -371,6 +377,13 @@ public class SpaceController {
         Long userId = SessionContext.getUserId();
         UserSpaceVo userSpaceVo = iSpaceService.getUserSpaceResource(userId, spaceId);
         spaceInfo.setUserResource(userSpaceVo);
+
+        // get the enabled experimental functions
+        List<String> applicants = new ArrayList<>();
+        applicants.add(spaceId);
+        applicants.add(Long.toString(userId));
+        LabsFeatureVo labsFeatureVo = iLabsApplicantService.getUserCurrentFeatureApplicants(applicants);
+        spaceInfo.setLabsKeys(labsFeatureVo.getKeys());
 
         return ResponseData.success(spaceInfo);
     }
