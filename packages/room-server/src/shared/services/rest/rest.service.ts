@@ -122,6 +122,7 @@ export class RestService {
     this.httpService.axiosRef.interceptors.request.use(
       (config) => {
         config.headers!['X-Internal-Request'] = 'yes';
+        config.headers!['X-Request-Start-Time'] = new Date().toISOString();
         return config;
       },
       (error) => {
@@ -131,6 +132,13 @@ export class RestService {
     );
     this.httpService.axiosRef.interceptors.response.use(
       (res) => {
+        const startTimeHeader = res.config.headers!['X-Request-Start-Time'];
+        if (startTimeHeader) {
+          const startTime = new Date(startTimeHeader);
+          const duration = new Date().getTime() - startTime.getTime();
+          // 在这里你可以记录或处理请求的耗时信息
+          this.logger.log(`RPC Request uri:${res.config.url}, took duration: ${duration}ms`);
+        }
         const restResponse = res.data as IHttpSuccessResponse<any>;
         if(containSkipHeader(res.config.headers)) {
           return res;
