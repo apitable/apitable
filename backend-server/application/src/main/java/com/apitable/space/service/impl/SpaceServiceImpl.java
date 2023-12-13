@@ -675,7 +675,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             totalSeatNums = addedSeatNums;
         }
         if (!seat.isUnlimited() && (totalSeatNums > seat.getValue())) {
-            log.info("spaceId:{}, num of sync:{}, num of seats:{}", spaceId, totalSeatNums, seat.getValue());
+            log.info("spaceId:{}, num of sync:{}, num of seats:{}", spaceId, totalSeatNums,
+                seat.getValue());
             if (sendNotify) {
                 // Send space station notifications
                 try {
