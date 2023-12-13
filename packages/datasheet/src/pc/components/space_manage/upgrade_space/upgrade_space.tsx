@@ -42,7 +42,11 @@ function getStripeCoupon() {
   return (window['Rewardful'] && window['Rewardful'].coupon) || '';
 }
 
-const UpgradeSpace = ({ hideDetail }) => {
+interface IUpgradeSpaceProps {
+  hideDetail?: boolean;
+}
+
+const UpgradeSpace:React.FC<IUpgradeSpaceProps> = ({ hideDetail }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const spaceId = useAppSelector((state) => state.space.activeId);
   const { product, recurringInterval, onTrial } = useAppSelector((state) => state.billing?.subscription) || {};
@@ -83,7 +87,7 @@ const UpgradeSpace = ({ hideDetail }) => {
         const _product = product.toLowerCase();
         const _grade = grade.toLowerCase();
 
-        if ((_product === _grade && currentRecurringIntervalIsMonth !== newRecurringIntervalIsMonth) || (_product !== _grade && _grade === 'free')) {
+        if ((_product === _grade && currentRecurringIntervalIsMonth !== newRecurringIntervalIsMonth) || (_product !== _grade && !priceId)) {
           // 修改订阅周期
           if (!vars.IS_ENTERPRISE && !vars.IS_APITABLE) return;
           //@ts-ignore
@@ -132,7 +136,7 @@ const UpgradeSpace = ({ hideDetail }) => {
   }
 
   const iframeSrc = location.origin + `/pricing/?upgradeSpace=true&currentProduct=${product}&hideDetail=${hideDetail}`;
-  // const iframeSrc = 'http://localhost:3002' + `/pricing/?upgradeSpace=true&currentProduct=${product}&hideDetail=${Boolean(query.get('choosePlan'))}`;
+  // const iframeSrc = 'http://localhost:3002' + `/pricing/?upgradeSpace=true&currentProduct=${product}&hideDetail=${hideDetail}`;
 
   return (
     <div className={styles.container}>
