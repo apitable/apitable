@@ -39,7 +39,7 @@ export function redirectIfUserApplyLogout() {
 }
 
 export function handleResponse<T>(response, headers: any | undefined, url: string | undefined) {
-  const { success, code, data, message = 'Error' } = response;
+  const { success, code, message = 'Error' } = response;
 
   // const IGNORE_PATH_REG = /^\/(share|template|notify|embed)/;
   // if (success && data && url?.startsWith('/nest/v1/') && !IGNORE_PATH_REG.test(location.pathname)) {
@@ -194,7 +194,9 @@ export function initAxios(store: Store<IReduxState>) {
 
   axios.interceptors.response.use((response) => {
     if (!response) return response;
-    if (response.config && response.config.url && response.config.url?.includes('/client/info')) {
+    if (response.config && response.config.url &&
+      (response.config.url?.includes('/client/info') || response.config.url?.includes('/user/me'))
+    ) {
       return response;
     }
     return handleResponse(response.data, response, response?.config?.url);
