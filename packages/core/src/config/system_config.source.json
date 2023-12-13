@@ -1295,7 +1295,7 @@
         "onPlay": [
           "set_wizard_completed({\"curWizard\": true})"
         ],
-        "uiConfig": "{\n\"title\":\"一分钟快速入门\",\n\"video\":\"space/2021/03/10/a68dbf1e2e7943b09b1550175253fdab\",\n\"videoId\":\"VIKA_GUIDE_VIDEO_2\",\n\"autoPlay\":true\n}\n",
+        "uiConfig": "{\n\"title\":\"一分钟快速入门\",\n\"video\":\"space/2023/12/12/8e870a50d98646f0a4cc2f76e3cd6d46\",\n\"videoId\":\"VIKA_GUIDE_VIDEO_2\",\n\"autoPlay\":true\n}\n",
         "uiConfigId": "player_step_ui_config_5",
         "uiType": "modal"
       },
@@ -1747,7 +1747,7 @@
         "onPlay": [
           "set_wizard_completed({\"wizardId\": 14})"
         ],
-        "uiConfig": "{\n\"title\":\"一分钟快速入门\",\n\"video\":\"space/2021/03/10/a68dbf1e2e7943b09b1550175253fdab\",\n\"videoId\":\"VIKA_GUIDE_VIDEO_NEW_USER\",\n\"autoPlay\":true\n}\n",
+        "uiConfig": "{\n\"title\":\"一分钟快速入门\",\n\"video\":\"space/2023/12/12/8e870a50d98646f0a4cc2f76e3cd6d46\",\n\"videoId\":\"VIKA_GUIDE_VIDEO_NEW_USER\",\n\"autoPlay\":true\n}\n",
         "uiConfigId": "player_step_ui_config_44",
         "uiType": "modal"
       },
@@ -2928,7 +2928,7 @@
           "set_wizard_completed({\"curWizard\": true})",
           "clear_guide_all_ui()"
         ],
-        "uiConfig": "{\n\"\"title\"\":\"\"AI 功能介绍\"\",\n\"\"video\"\":\"\"space/2021/03/10/a68dbf1e2e7943b09b1550175253fdab\"\",\n\"\"videoId\"\":\"\"VIKA_GUIDE_VIDEO_FOR_AI\"\",\n\"\"autoPlay\"\":true\n}",
+        "uiConfig": "{\n\"\"title\"\":\"\"AI 功能介绍\"\",\n\"\"video\"\":\"\"space/2023/12/12/8e870a50d98646f0a4cc2f76e3cd6d46\"\",\n\"\"videoId\"\":\"\"VIKA_GUIDE_VIDEO_FOR_AI\"\",\n\"\"autoPlay\"\":true\n}",
         "uiConfigId": "player_step_ui_config_176",
         "uiType": "modal"
       }
@@ -6496,7 +6496,7 @@
       "value": "{ \"title\":\"玩转一张维格表\", \"video\":\"space/2020/12/21/cb7bdf6fe22146068111d46915587fb2\", \"autoPlay\":true }"
     },
     "user_guide_welcome_quick_start_video": {
-      "value": "{\"title\":\"一分钟快速入门\", \"video\":\"space/2021/03/10/a68dbf1e2e7943b09b1550175253fdab\", \"autoPlay\":true}"
+      "value": "{\"title\":\"一分钟快速入门\", \"video\":\"space/2023/12/12/8e870a50d98646f0a4cc2f76e3cd6d46\", \"autoPlay\":true}"
     },
     "user_guide_welcome_template1_icon": {
       "value": "现有的 icon 链接"
