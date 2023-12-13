@@ -5192,7 +5192,7 @@
   "template_name_repetition_title": "\"${templateName}\" already exists. Do you want to replace it?",
   "template_no_template": "No templates",
   "template_not_found": "Can't find templates you want? Tell us",
-  "template_recommend_title": "Hot",
+  "template_recommend_title": "🌟 Hot",
   "template_type": "Template",
   "terms_of_service": "<Terms of Service>",
   "terms_of_service_pure_string": "Terms of service",
