@@ -675,6 +675,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             totalSeatNums = addedSeatNums;
         }
         if (!seat.isUnlimited() && (totalSeatNums > seat.getValue())) {
+            log.info("spaceId:{}, num of sync:{}, num of seats:{}", spaceId, totalSeatNums, seat.getValue());
             if (sendNotify) {
                 // Send space station notifications
                 try {
@@ -690,8 +691,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
                     log.error("send space station notifications error", e);
                 }
             }
-            log.warn("seats over limit");
-            return false;
+            log.warn("{} seats over limit", spaceId);
+            return true;
         }
         return true;
     }
