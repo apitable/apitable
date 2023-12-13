@@ -48,8 +48,10 @@ const getBrowserLanguage = (): string | undefined => {
   if (!_global.navigator || !languageMap) {
     return undefined;
   }
-  const userLanguage = _global.navigator.language as string;
-
+  let userLanguage = _global.navigator.language as string;
+  if (userLanguage == 'zh-TW') {
+    userLanguage = 'zh-HK';
+  }
   if (languageMap[userLanguage]) {
     return userLanguage;
   } else {

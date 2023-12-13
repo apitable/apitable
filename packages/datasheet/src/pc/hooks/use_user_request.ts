@@ -341,8 +341,11 @@ export const useUserRequest = () => {
       // @ts-ignore
       const languageMap = (global || window).languageManifest;
 
-      const userLanguage = navigator.language;
+      let userLanguage = navigator.language;
 
+      if (userLanguage == 'zh-TW') {
+        userLanguage = 'zh-HK';
+      }
       if (languageMap[userLanguage]) {
         return userLanguage;
       } else {
