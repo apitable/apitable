@@ -19,7 +19,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Skeleton } from '@apitable/components';
 import { Api, Strings, t } from '@apitable/core';
-import { useQuery } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 // @ts-ignore
@@ -43,13 +42,12 @@ function getStripeCoupon() {
   return (window['Rewardful'] && window['Rewardful'].coupon) || '';
 }
 
-const UpgradeSpace = () => {
+const UpgradeSpace = ({ hideDetail }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const spaceId = useAppSelector((state) => state.space.activeId);
   const { product, recurringInterval, onTrial } = useAppSelector((state) => state.billing?.subscription) || {};
   const vars = getEnvVariables();
   const [loading, setLoading] = useState(!vars.IS_AITABLE);
-  const query = useQuery();
   const [showTrialModal, setShowTrialModal] = useState<boolean>(vars.CLOUD_DISABLE_BILLING_UPGRADE);
 
   useEffect(() => {
@@ -133,7 +131,7 @@ const UpgradeSpace = () => {
     return Trial && <Trial setShowTrialModal={setShowTrialModal} title={t(Strings.upgrade_space)} />;
   }
 
-  const iframeSrc = location.origin + `/pricing/?upgradeSpace=true&currentProduct=${product}&hideDetail=${Boolean(query.get('choosePlan'))}`;
+  const iframeSrc = location.origin + `/pricing/?upgradeSpace=true&currentProduct=${product}&hideDetail=${hideDetail}`;
   // const iframeSrc = 'http://localhost:3002' + `/pricing/?upgradeSpace=true&currentProduct=${product}&hideDetail=${Boolean(query.get('choosePlan'))}`;
 
   return (
