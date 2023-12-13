@@ -5910,5 +5910,13 @@
   "subscribed_record_unarchived": "<a class=\"memberName\"></a> unarchived <a class=\"recordTitle\"></a> in <a class=\"nodeName\"></a>",
   "automation_tips": "The button field is misconfigured, please check and try again",
   "refresh_and_close_page_when_automation_queue": "There are still automated tasks being queued for execution, and continuing to operate will cause some tasks to be canceled",
+  "schedule_type": "Schedule Type",
+  "timing_rules": "Timing",
+  "preview_next_automation_execution_time": "Preview next 5 execution times",
+  "last_day": "Last day",
+  "by_hours": "Hours",
+  "by_days": "Days",
+  "by_weeks": "Weeks",
+  "by_months": "Months",
   "api_param_validate_error": "{message}"
 }

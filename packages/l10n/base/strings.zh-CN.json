@@ -5913,5 +5913,13 @@
   "automation_content_should_not_empty": "文本不能为空",
   "automation_tips": "按钮列配置错误，请检查后再试",
   "refresh_and_close_page_when_automation_queue": "当前仍有自动化任务正在排队待执行，继续操作将会导致部分任务取消执行",
+  "schedule_type": "定时类型",
+  "timing_rules": "定时规则",
+  "preview_next_automation_execution_time": "预览最近5次执行时间",
+  "last_day": "最后一天",
+  "by_hours": "按小时",
+  "by_days": "按天",
+  "by_weeks": "按周",
+  "by_months": "按月",
   "api_param_validate_error": "{message}"
 }
