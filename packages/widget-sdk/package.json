@@ -38,9 +38,9 @@
     "react-dom": "18.2.0"
   },
   "dependencies": {
-    "@apitable/components": "*",
-    "@apitable/core": "*",
-    "@apitable/icons": "*",
+    "@apitable/components": "workspace:*",
+    "@apitable/core": "workspace:*",
+    "@apitable/icons": "workspace:*",
     "@testing-library/react-hooks": "^7.0.1",
     "ahooks": "^3.5.0",
     "antd": "4.23.5",
