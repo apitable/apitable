@@ -166,6 +166,7 @@ sentry:
   environment: ${ENV}
   use-git-commit-id-as-release: false
   max-breadcrumbs: 150
+  enable-tracing: true
   traces-sample-rate: 1.0
   logging:
     minimum-breadcrumb-level: debug

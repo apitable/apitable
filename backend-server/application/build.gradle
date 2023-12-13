@@ -41,6 +41,7 @@ dependencies {
     implementation libs.jedis
     implementation libs.prometheus.pushgateway
     implementation libs.bundles.okhttp3
+    implementation libs.httpclient5
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
 
     // other spring boot starter dependencies

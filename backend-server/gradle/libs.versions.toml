@@ -152,6 +152,7 @@ okhttp3-logging = { module = "com.squareup.okhttp3:logging-interceptor" }
 okhttp3-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver" }
 slf4j = { module = "org.slf4j:slf4j-api" }
 logback = { module = "ch.qos.logback:logback-classic" }
+httpclient5 = { module = "org.apache.httpcomponents.client5:httpclient5" }
 
 #### grpc dependencies begin ####
 
@@ -202,7 +203,7 @@ easyexcel = ["easyexcel", "xerces-impl"]
 slf4j-logback = ["slf4j", "logback"]
 pdfbox = ["pdfbox", "pdfbox-tools", "pdfbox-jbig2", "imageio-jpeg2000"]
 shedlock = ["shedlock", "shedlock-redis"]
-sentry = ["sentry-spring", "sentry-logback", "sentry-client"]
+sentry = ["sentry-spring", "sentry-logback"]
 social = ["social-feishu", "social-dingtalk", "social-wecom", "social-qq"]
 iogrpc = ["iogrpc-netty-shaded", "iogrpc-protobuf", "iogrpc-stub"]
 apidoc = ["knife4j-openapi3"]
