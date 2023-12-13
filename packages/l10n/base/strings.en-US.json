@@ -5889,7 +5889,6 @@
   "button_execute_error": "Execution failed, please try again or check the run history.",
   "button_check_history": "check the run history.",
   "button_check_history_end": ".",
-
   "check_run_history": "Check run history",
   "button_field_invalid": "The button field is invalid, please select again",
   "select_automation_node": "Select Automation Node",
@@ -5908,7 +5907,7 @@
   "action_should_not_empty": "Operation can not be empty",
   "automation_content_should_not_empty": "Text can not be empty",
   "delete_archive_record_success": "Successfully deleted archived record",
-  "subscribed_record_archived":"<a class=\"memberName\"></a> archived <a class=\"recordTitle\"></a> in <a class=\"nodeName\"></a>",
+  "subscribed_record_archived": "<a class=\"memberName\"></a> archived <a class=\"recordTitle\"></a> in <a class=\"nodeName\"></a>",
   "subscribed_record_unarchived": "<a class=\"memberName\"></a> unarchived <a class=\"recordTitle\"></a> in <a class=\"nodeName\"></a>",
   "automation_tips": "The button field is misconfigured, please check and try again",
   "refresh_and_close_page_when_automation_queue": "There are still automated tasks being queued for execution, and continuing to operate will cause some tasks to be canceled",
@@ -5920,5 +5919,7 @@
   "by_days": "Days",
   "by_weeks": "Weeks",
   "by_months": "Months",
-  "api_param_validate_error": "{message}"
+  "api_param_validate_error": "{message}",
+  "subscribe_grade_starter": "Starter",
+  "subscribe_grade_business": "Business"
 }

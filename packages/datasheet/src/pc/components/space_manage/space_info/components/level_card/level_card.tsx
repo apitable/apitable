@@ -36,7 +36,6 @@ import { SubscribePageType } from 'enterprise/subscribe_system/config';
 import { showUpgradeContactUs } from 'enterprise/subscribe_system/order_modal/pay_order_success';
 import styles from './style.module.less';
 
-
 interface ILevelCard {
   type: ISpaceLevelType;
   onUpgrade: () => void;
@@ -124,7 +123,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
         </Button>
       );
     }
-    if (type === LevelType.Free || type === LevelType.Plus || type === LevelType.Pro) {
+    if (type === LevelType.Free || type === LevelType.Plus || type === LevelType.Pro || type === LevelType.Starter || type === LevelType.Business) {
       return (
         <Button
           onClick={() => {
