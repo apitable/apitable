@@ -506,9 +506,8 @@ settings: ## settings and l10n init
 
 .PHONY: _l10n
 _l10n: ## l10n apitable-ce
-	pnpm build:i18n
-	bash ./scripts/language-generate.sh ./packages/i18n-lang/dist ./packages/l10n/gen ./packages/l10n/base ./packages/i18n-lang/src ./
-	bash ./scripts/l10n.sh ./packages/i18n-lang/dist ./packages/l10n/gen ./packages/l10n/base ./packages/l10n/base ./
+	bash ./scripts/language-generate.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base ./packages/i18n-lang/src ./
+	bash ./scripts/l10n.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base ./packages/l10n/base ./
 	pnpm run build
 
 ### help
