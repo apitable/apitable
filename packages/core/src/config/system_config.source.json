@@ -2863,7 +2863,7 @@
           "open_guide_next_step({\"clearAllPrevUi\":true})"
         ],
         "skipId": "maybe_later",
-        "uiConfig": "{\n  \"title\": \"恭喜你！获得试用权益\",\n  \"description\": \"你获得了14天Pro版本的试用权益，你可以点击按钮查看详情\",\n  \"listHeader\": \"试用权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/management/upgrade\n}",
+        "uiConfig": "{\n  \"title\": \"恭喜你！获得试用权益\",\n  \"description\": \"你获得了14天Pro版本的试用权益，你可以点击按钮查看详情\",\n  \"listHeader\": \"试用权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/management/upgrade\"\n}",
         "uiConfigId": "player_step_ui_config_166",
         "uiType": "billingStrip"
       },
