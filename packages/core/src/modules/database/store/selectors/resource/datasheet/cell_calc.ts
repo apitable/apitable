@@ -4,6 +4,7 @@ import { CacheManager } from 'cache_manager';
 import { dataSelfHelper } from 'compute_manager/compute_cache_manager';
 import { IRecord, IRecordSnapshot, IReduxState, ISnapshot, Role } from 'exports/store/interfaces';
 import { evaluate } from 'formula_parser/evaluate';
+import { ButtonField } from 'model/field/button_field';
 import { handleEmptyCellValue } from 'model/utils';
 import { ICellValue } from 'model/record';
 import { BasicValueType, FieldType, IAttachmentValue, IFormulaField } from 'types/field_types';
@@ -196,6 +197,9 @@ export const getComputeCellValue = (state: IReduxState, snapshot: IRecordSnapsho
     }
     case FieldType.LookUp: {
       return Field.bindContext(field, state).getCellValue(recordId, withError);
+    }
+    case FieldType.Button: {
+      return (Field.bindContext(field, state) as ButtonField).cellValueToArray(null);
     }
     case FieldType.CreatedBy:
     case FieldType.LastModifiedBy:
