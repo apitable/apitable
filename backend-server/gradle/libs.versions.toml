@@ -43,6 +43,7 @@ imageio-jbig2 = "3.0.3"
 grpc = "2.15.0.RELEASE"
 protobuf = "3.25.0"
 iogrpc = "1.59.1"
+annotation-api = "1.3.2"
 # plugin version
 spring-dependency-management-plugin = "1.1.4"
 protobuf-plugin = "0.9.4"
@@ -195,6 +196,7 @@ jose4j = { module = "org.bitbucket.b_c:jose4j", version.ref = "jose4j" }
 semver = { module = "com.github.zafarkhaja:java-semver", version.ref = "semver" }
 shedlock = { module = "net.javacrumbs.shedlock:shedlock-spring", version.ref = "shedlock" }
 shedlock-redis = { module = "net.javacrumbs.shedlock:shedlock-provider-redis-spring", version.ref = "shedlock" }
+annotation-api = { module = "javax.annotation:javax.annotation-api", version.ref = "annotation-api" }
 
 [bundles]
 # group libraries

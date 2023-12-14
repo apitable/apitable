@@ -46,19 +46,18 @@ import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.automation.service.IAutomationTriggerService;
 import com.apitable.automation.service.IAutomationTriggerTypeService;
 import com.apitable.core.exception.BusinessException;
-import com.apitable.databusclient.ApiException;
-import com.apitable.databusclient.api.AutomationDaoApiApi;
-import com.apitable.databusclient.model.AutomationActionIntroductionPO;
-import com.apitable.databusclient.model.AutomationRobotCopyRO;
-import com.apitable.databusclient.model.AutomationRobotIntroductionPO;
-import com.apitable.databusclient.model.AutomationRobotIntroductionSO;
-import com.apitable.databusclient.model.AutomationRobotSO;
-import com.apitable.databusclient.model.AutomationRobotUpdateRO;
-import com.apitable.databusclient.model.AutomationSO;
-import com.apitable.databusclient.model.AutomationTriggerIntroductionPO;
 import com.apitable.internal.service.impl.InternalSpaceServiceImpl;
 import com.apitable.internal.vo.InternalSpaceAutomationRunMessageV0;
 import com.apitable.shared.util.IdUtil;
+import com.apitable.starter.databus.client.api.AutomationDaoApiApi;
+import com.apitable.starter.databus.client.model.AutomationActionIntroductionPO;
+import com.apitable.starter.databus.client.model.AutomationRobotCopyRO;
+import com.apitable.starter.databus.client.model.AutomationRobotIntroductionPO;
+import com.apitable.starter.databus.client.model.AutomationRobotIntroductionSO;
+import com.apitable.starter.databus.client.model.AutomationRobotSO;
+import com.apitable.starter.databus.client.model.AutomationRobotUpdateRO;
+import com.apitable.starter.databus.client.model.AutomationSO;
+import com.apitable.starter.databus.client.model.AutomationTriggerIntroductionPO;
 import com.apitable.template.enums.TemplateException;
 import com.apitable.user.service.IUserService;
 import com.apitable.user.vo.UserSimpleVO;
@@ -80,6 +79,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 
 /**
  * automation robot service impl.
@@ -177,7 +177,7 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
         }
         try {
             automationDaoApiApi.daoCopyAutomationRobot(robots);
-        } catch (ApiException e) {
+        } catch (RestClientException e) {
             log.error("Copy automation error:{}", resourceIds, e);
             throw new BusinessException(NodeException.NODE_COPY_FOLDER_ERROR);
         }
@@ -411,7 +411,7 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
         try {
             automationDaoApiApi.daoUpdateAutomationRobot(robotId, ro);
             return true;
-        } catch (ApiException e) {
+        } catch (RestClientException e) {
             log.error("Update automation error", e);
             return false;
         }
@@ -424,7 +424,7 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
         ro.setIsDeleted(true);
         try {
             automationDaoApiApi.daoUpdateAutomationRobot(robotId, ro);
-        } catch (ApiException e) {
+        } catch (RestClientException e) {
             log.error("Delete automation error", e);
         }
     }
@@ -453,7 +453,7 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
                 return null;
             }
             return result;
-        } catch (ApiException e) {
+        } catch (RestClientException e) {
             log.error("Get automation error", e);
             return null;
         }
@@ -462,7 +462,7 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
     private AutomationSO getRobotByRobotIdFromDatabus(String robotId) {
         try {
             return automationDaoApiApi.daoGetRobotByRobotId(robotId).getData();
-        } catch (ApiException e) {
+        } catch (RestClientException e) {
             log.error("Get automation detail error", e);
             return null;
         }
