@@ -23,10 +23,10 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { OrganizationHead } from 'pc/components/organization_head';
 import { ISpaceLevelType, LevelType } from 'pc/components/space_manage/space_info/interface';
 import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
+import { useAppSelector } from 'pc/store/react-redux';
 import { SpaceInfoPopover } from './space-info-popover';
 import styles from './style.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
 
 const Content: FC<React.PropsWithChildren<unknown>> = () => {
   const subscription = useAppSelector((state) => state.billing?.subscription, shallowEqual);
@@ -56,13 +56,13 @@ export const SpaceInfo: FC<React.PropsWithChildren<unknown>> = () => {
           content={<SpaceInfoPopover />}
           overlayClassName={styles.popover}
         >
-          <div className={styles.left}>
+          <div className={styles.spaceInfo}>
             <Content />
           </div>
         </Popover>
       </ComponentDisplay>
       <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
-        <div className={styles.left}>
+        <div className={styles.spaceInfo}>
           <Content />
         </div>
       </ComponentDisplay>

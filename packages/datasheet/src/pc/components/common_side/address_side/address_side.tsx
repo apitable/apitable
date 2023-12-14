@@ -42,21 +42,20 @@ import { expandMemberInfo } from 'pc/components/address_list/expand_member_info'
 import { expandUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { SearchTeamAndMember } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { SpaceInfo } from 'pc/components/common_side/workbench_side/space-info';
 import { expandInviteModal } from 'pc/components/invite';
-import { OrganizationHead } from 'pc/components/organization_head';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useResponsive, useSideBarVisible, useUserRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { AddressTreeMenu } from '../../address_list/address_tree_menu';
 // @ts-ignore
-import { syncOrgMember } from 'enterprise/organization/utils/index';
-// @ts-ignore
 import { isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
+// @ts-ignore
+import { syncOrgMember } from 'enterprise/organization/utils/index';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { teamList, spaceId, userInfo } = useAppSelector(
@@ -185,7 +184,9 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
 
   return (
     <div className={styles.leftContent}>
-      <OrganizationHead />
+      <div className={styles.header}>
+        <SpaceInfo />
+      </div>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <div className={styles.searchItem}>
           {t(Strings.contacts)}
