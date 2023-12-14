@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { ListDropdown } from '../../select/dropdown/list_dropdown';
 import { stopPropagation } from '../../../helper';
 import { OptionItem, StyledListContainer } from '../../select';
