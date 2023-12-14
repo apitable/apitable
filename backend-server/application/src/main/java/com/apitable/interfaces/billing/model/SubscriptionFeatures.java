@@ -38,6 +38,14 @@ public class SubscriptionFeatures {
             public Seat(Long value) {
                 super(value);
             }
+
+            public Seat(Long value, boolean unlimited) {
+                super(value, unlimited);
+            }
+
+            public static Seat unlimited(Long value) {
+                return new Seat(value, true);
+            }
         }
 
         /**
