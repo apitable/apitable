@@ -26,7 +26,7 @@ import { automationTaskMap } from 'pc/components/editors/button_editor/automatio
 
 type Job = {
   jobId: string;
-  task: () => Promise<void>
+  task: () => Promise<{success:boolean}>
 };
 export const useButtonJobTask = () => {
 
@@ -52,17 +52,23 @@ export const useButtonJobTask = () => {
     if (taskQueue.length > 0) {
       const { jobId, task } = taskQueue[0];
       runningRef.current = true;
-      task().then(() => {
+      task().then((resp) => {
         setTaskQueue((prevQueue) => prevQueue.slice(1));
         setAutomationTaskMap(d => produce(d, draft => {
-          draft.set(jobId, 'success');
+          if(resp.success) {
+            draft.set(jobId, 'success');
+          }else {
+            draft.set(jobId, 'initial');
+          }
         }));
         runningRef.current = false;
-        setTimeout(() => {
-          setAutomationTaskMap(d => produce(d, draft => {
-            draft.set(jobId, 'initial');
-          }));
-        }, 1200);
+        if(resp.success) {
+          setTimeout(() => {
+            setAutomationTaskMap(d => produce(d, draft => {
+              draft.set(jobId, 'initial');
+            }));
+          }, 1200);
+        }
         refreshTick();
       }).catch(() => {
         setTaskQueue((prevQueue) => prevQueue.slice(1));
@@ -75,7 +81,7 @@ export const useButtonJobTask = () => {
     }
   }, [setAutomationTaskMap, taskQueue, refreshTick]);
 
-  const handleTaskStart = useCallback((recordId: string, fieldId: string, task: () => Promise<void>) => {
+  const handleTaskStart = useCallback((recordId: string, fieldId: string, task: () => Promise<{success: boolean}>) => {
     const key = `${recordId}-${fieldId}`;
 
     setAutomationTaskMap(d => produce(d, draft => {

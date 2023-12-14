@@ -143,7 +143,7 @@ export const ButtonFieldItem: FunctionComponent<{field: IButtonField,
               return;
             }
 
-            const task =( ) => runAutomationButton(datasheetId, record, state, recordId, field.id, field,
+            const task: () => Promise<{success: boolean}> =( ) => runAutomationButton(datasheetId, record, state, recordId, field.id, field,
               (success, code, message) => {
                 if(!success && code && CONST_AUTOMATION_ERROR.includes(code) && message) {
                   Message.error({ content: message });
