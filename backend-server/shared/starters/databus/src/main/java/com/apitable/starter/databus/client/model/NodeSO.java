@@ -21,10 +21,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -51,13 +47,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class NodeSO {
   public static final String JSON_PROPERTY_ACTIVE_VIEW = "activeView";
-  private JsonNullable<String> activeView = JsonNullable.<String>undefined();
+  private String activeView;
 
   public static final String JSON_PROPERTY_DESCRIPTION = "description";
   private String description;
 
   public static final String JSON_PROPERTY_EXTRA = "extra";
-  private JsonNullable<Object> extra = JsonNullable.<Object>of(null);
+  private Object extra = null;
 
   public static final String JSON_PROPERTY_ICON = "icon";
   private String icon;
@@ -66,13 +62,13 @@ public class NodeSO {
   private String id;
 
   public static final String JSON_PROPERTY_IS_GHOST_NODE = "isGhostNode";
-  private JsonNullable<Boolean> isGhostNode = JsonNullable.<Boolean>undefined();
+  private Boolean isGhostNode;
 
   public static final String JSON_PROPERTY_NAME = "name";
   private String name;
 
   public static final String JSON_PROPERTY_NODE_FAVORITE = "nodeFavorite";
-  private JsonNullable<Boolean> nodeFavorite = JsonNullable.<Boolean>undefined();
+  private Boolean nodeFavorite;
 
   public static final String JSON_PROPERTY_NODE_PERMIT_SET = "nodePermitSet";
   private Boolean nodePermitSet;
@@ -99,8 +95,8 @@ public class NodeSO {
   }
 
   public NodeSO activeView(String activeView) {
-    this.activeView = JsonNullable.<String>of(activeView);
     
+    this.activeView = activeView;
     return this;
   }
 
@@ -109,26 +105,18 @@ public class NodeSO {
    * @return activeView
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getActiveView() {
-        return activeView.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ACTIVE_VIEW)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getActiveView_JsonNullable() {
+  public String getActiveView() {
     return activeView;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ACTIVE_VIEW)
-  public void setActiveView_JsonNullable(JsonNullable<String> activeView) {
-    this.activeView = activeView;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ACTIVE_VIEW)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setActiveView(String activeView) {
-    this.activeView = JsonNullable.<String>of(activeView);
+    this.activeView = activeView;
   }
 
 
@@ -159,8 +147,8 @@ public class NodeSO {
 
 
   public NodeSO extra(Object extra) {
-    this.extra = JsonNullable.<Object>of(extra);
     
+    this.extra = extra;
     return this;
   }
 
@@ -169,26 +157,18 @@ public class NodeSO {
    * @return extra
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Object getExtra() {
-        return extra.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_EXTRA)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Object> getExtra_JsonNullable() {
+  public Object getExtra() {
     return extra;
   }
-  
-  @JsonProperty(JSON_PROPERTY_EXTRA)
-  public void setExtra_JsonNullable(JsonNullable<Object> extra) {
-    this.extra = extra;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_EXTRA)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setExtra(Object extra) {
-    this.extra = JsonNullable.<Object>of(extra);
+    this.extra = extra;
   }
 
 
@@ -245,8 +225,8 @@ public class NodeSO {
 
 
   public NodeSO isGhostNode(Boolean isGhostNode) {
-    this.isGhostNode = JsonNullable.<Boolean>of(isGhostNode);
     
+    this.isGhostNode = isGhostNode;
     return this;
   }
 
@@ -255,26 +235,18 @@ public class NodeSO {
    * @return isGhostNode
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getIsGhostNode() {
-        return isGhostNode.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_IS_GHOST_NODE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getIsGhostNode_JsonNullable() {
+  public Boolean getIsGhostNode() {
     return isGhostNode;
   }
-  
-  @JsonProperty(JSON_PROPERTY_IS_GHOST_NODE)
-  public void setIsGhostNode_JsonNullable(JsonNullable<Boolean> isGhostNode) {
-    this.isGhostNode = isGhostNode;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_IS_GHOST_NODE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIsGhostNode(Boolean isGhostNode) {
-    this.isGhostNode = JsonNullable.<Boolean>of(isGhostNode);
+    this.isGhostNode = isGhostNode;
   }
 
 
@@ -305,8 +277,8 @@ public class NodeSO {
 
 
   public NodeSO nodeFavorite(Boolean nodeFavorite) {
-    this.nodeFavorite = JsonNullable.<Boolean>of(nodeFavorite);
     
+    this.nodeFavorite = nodeFavorite;
     return this;
   }
 
@@ -315,26 +287,18 @@ public class NodeSO {
    * @return nodeFavorite
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getNodeFavorite() {
-        return nodeFavorite.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_NODE_FAVORITE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getNodeFavorite_JsonNullable() {
+  public Boolean getNodeFavorite() {
     return nodeFavorite;
   }
-  
-  @JsonProperty(JSON_PROPERTY_NODE_FAVORITE)
-  public void setNodeFavorite_JsonNullable(JsonNullable<Boolean> nodeFavorite) {
-    this.nodeFavorite = nodeFavorite;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_NODE_FAVORITE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setNodeFavorite(Boolean nodeFavorite) {
-    this.nodeFavorite = JsonNullable.<Boolean>of(nodeFavorite);
+    this.nodeFavorite = nodeFavorite;
   }
 
 
@@ -529,14 +493,14 @@ public class NodeSO {
       return false;
     }
     NodeSO nodeSO = (NodeSO) o;
-    return equalsNullable(this.activeView, nodeSO.activeView) &&
+    return Objects.equals(this.activeView, nodeSO.activeView) &&
         Objects.equals(this.description, nodeSO.description) &&
-        equalsNullable(this.extra, nodeSO.extra) &&
+        Objects.equals(this.extra, nodeSO.extra) &&
         Objects.equals(this.icon, nodeSO.icon) &&
         Objects.equals(this.id, nodeSO.id) &&
-        equalsNullable(this.isGhostNode, nodeSO.isGhostNode) &&
+        Objects.equals(this.isGhostNode, nodeSO.isGhostNode) &&
         Objects.equals(this.name, nodeSO.name) &&
-        equalsNullable(this.nodeFavorite, nodeSO.nodeFavorite) &&
+        Objects.equals(this.nodeFavorite, nodeSO.nodeFavorite) &&
         Objects.equals(this.nodePermitSet, nodeSO.nodePermitSet) &&
         Objects.equals(this.nodeShared, nodeSO.nodeShared) &&
         Objects.equals(this.parentId, nodeSO.parentId) &&
@@ -546,20 +510,9 @@ public class NodeSO {
         Objects.equals(this.spaceId, nodeSO.spaceId);
   }
 
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(activeView), description, hashCodeNullable(extra), icon, id, hashCodeNullable(isGhostNode), name, hashCodeNullable(nodeFavorite), nodePermitSet, nodeShared, parentId, permissions, revision, role, spaceId);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(activeView, description, extra, icon, id, isGhostNode, name, nodeFavorite, nodePermitSet, nodeShared, parentId, permissions, revision, role, spaceId);
   }
 
   @Override

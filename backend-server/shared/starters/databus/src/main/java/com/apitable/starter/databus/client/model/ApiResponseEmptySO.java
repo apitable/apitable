@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -42,7 +38,7 @@ public class ApiResponseEmptySO {
   private Integer code;
 
   public static final String JSON_PROPERTY_DATA = "data";
-  private JsonNullable<Boolean> data = JsonNullable.<Boolean>undefined();
+  private Boolean data;
 
   public static final String JSON_PROPERTY_MESSAGE = "message";
   private String message;
@@ -81,8 +77,8 @@ public class ApiResponseEmptySO {
 
 
   public ApiResponseEmptySO data(Boolean data) {
-    this.data = JsonNullable.<Boolean>of(data);
     
+    this.data = data;
     return this;
   }
 
@@ -91,26 +87,18 @@ public class ApiResponseEmptySO {
    * @return data
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getData() {
-        return data.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_DATA)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getData_JsonNullable() {
+  public Boolean getData() {
     return data;
   }
-  
-  @JsonProperty(JSON_PROPERTY_DATA)
-  public void setData_JsonNullable(JsonNullable<Boolean> data) {
-    this.data = data;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_DATA)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setData(Boolean data) {
-    this.data = JsonNullable.<Boolean>of(data);
+    this.data = data;
   }
 
 
@@ -175,25 +163,14 @@ public class ApiResponseEmptySO {
     }
     ApiResponseEmptySO apiResponseEmptySO = (ApiResponseEmptySO) o;
     return Objects.equals(this.code, apiResponseEmptySO.code) &&
-        equalsNullable(this.data, apiResponseEmptySO.data) &&
+        Objects.equals(this.data, apiResponseEmptySO.data) &&
         Objects.equals(this.message, apiResponseEmptySO.message) &&
         Objects.equals(this.success, apiResponseEmptySO.success);
   }
 
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hash(code, hashCodeNullable(data), message, success);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(code, data, message, success);
   }
 
   @Override

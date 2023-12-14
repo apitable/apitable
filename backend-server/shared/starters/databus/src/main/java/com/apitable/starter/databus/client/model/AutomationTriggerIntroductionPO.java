@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -39,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class AutomationTriggerIntroductionPO {
   public static final String JSON_PROPERTY_PREV_TRIGGER_ID = "prevTriggerId";
-  private JsonNullable<String> prevTriggerId = JsonNullable.<String>undefined();
+  private String prevTriggerId;
 
   public static final String JSON_PROPERTY_ROBOT_ID = "robotId";
   private String robotId;
@@ -54,8 +50,8 @@ public class AutomationTriggerIntroductionPO {
   }
 
   public AutomationTriggerIntroductionPO prevTriggerId(String prevTriggerId) {
-    this.prevTriggerId = JsonNullable.<String>of(prevTriggerId);
     
+    this.prevTriggerId = prevTriggerId;
     return this;
   }
 
@@ -64,26 +60,18 @@ public class AutomationTriggerIntroductionPO {
    * @return prevTriggerId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getPrevTriggerId() {
-        return prevTriggerId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_PREV_TRIGGER_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getPrevTriggerId_JsonNullable() {
+  public String getPrevTriggerId() {
     return prevTriggerId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_PREV_TRIGGER_ID)
-  public void setPrevTriggerId_JsonNullable(JsonNullable<String> prevTriggerId) {
-    this.prevTriggerId = prevTriggerId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_PREV_TRIGGER_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setPrevTriggerId(String prevTriggerId) {
-    this.prevTriggerId = JsonNullable.<String>of(prevTriggerId);
+    this.prevTriggerId = prevTriggerId;
   }
 
 
@@ -173,26 +161,15 @@ public class AutomationTriggerIntroductionPO {
       return false;
     }
     AutomationTriggerIntroductionPO automationTriggerIntroductionPO = (AutomationTriggerIntroductionPO) o;
-    return equalsNullable(this.prevTriggerId, automationTriggerIntroductionPO.prevTriggerId) &&
+    return Objects.equals(this.prevTriggerId, automationTriggerIntroductionPO.prevTriggerId) &&
         Objects.equals(this.robotId, automationTriggerIntroductionPO.robotId) &&
         Objects.equals(this.triggerId, automationTriggerIntroductionPO.triggerId) &&
         Objects.equals(this.triggerTypeId, automationTriggerIntroductionPO.triggerTypeId);
   }
 
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(prevTriggerId), robotId, triggerId, triggerTypeId);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(prevTriggerId, robotId, triggerId, triggerTypeId);
   }
 
   @Override

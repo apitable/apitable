@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -39,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class AutomationHistoryRO {
   public static final String JSON_PROPERTY_DATA = "data";
-  private JsonNullable<Object> data = JsonNullable.<Object>of(null);
+  private Object data = null;
 
   public static final String JSON_PROPERTY_SPACE_ID = "space_id";
   private String spaceId;
@@ -54,8 +50,8 @@ public class AutomationHistoryRO {
   }
 
   public AutomationHistoryRO data(Object data) {
-    this.data = JsonNullable.<Object>of(data);
     
+    this.data = data;
     return this;
   }
 
@@ -64,26 +60,18 @@ public class AutomationHistoryRO {
    * @return data
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Object getData() {
-        return data.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_DATA)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Object> getData_JsonNullable() {
+  public Object getData() {
     return data;
   }
-  
-  @JsonProperty(JSON_PROPERTY_DATA)
-  public void setData_JsonNullable(JsonNullable<Object> data) {
-    this.data = data;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_DATA)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setData(Object data) {
-    this.data = JsonNullable.<Object>of(data);
+    this.data = data;
   }
 
 
@@ -174,26 +162,15 @@ public class AutomationHistoryRO {
       return false;
     }
     AutomationHistoryRO automationHistoryRO = (AutomationHistoryRO) o;
-    return equalsNullable(this.data, automationHistoryRO.data) &&
+    return Objects.equals(this.data, automationHistoryRO.data) &&
         Objects.equals(this.spaceId, automationHistoryRO.spaceId) &&
         Objects.equals(this.status, automationHistoryRO.status) &&
         Objects.equals(this.taskId, automationHistoryRO.taskId);
   }
 
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(data), spaceId, status, taskId);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(data, spaceId, status, taskId);
   }
 
   @Override

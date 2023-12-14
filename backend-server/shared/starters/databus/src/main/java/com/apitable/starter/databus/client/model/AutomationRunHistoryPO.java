@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -42,16 +38,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class AutomationRunHistoryPO {
   public static final String JSON_PROPERTY_ACTION_IDS = "actionIds";
-  private JsonNullable<String> actionIds = JsonNullable.<String>undefined();
+  private String actionIds;
 
   public static final String JSON_PROPERTY_ACTION_TYPE_IDS = "actionTypeIds";
-  private JsonNullable<String> actionTypeIds = JsonNullable.<String>undefined();
+  private String actionTypeIds;
 
   public static final String JSON_PROPERTY_CREATED_AT = "createdAt";
   private String createdAt;
 
   public static final String JSON_PROPERTY_ERROR_STACKS = "errorStacks";
-  private JsonNullable<String> errorStacks = JsonNullable.<String>undefined();
+  private String errorStacks;
 
   public static final String JSON_PROPERTY_ROBOT_ID = "robotId";
   private String robotId;
@@ -66,8 +62,8 @@ public class AutomationRunHistoryPO {
   }
 
   public AutomationRunHistoryPO actionIds(String actionIds) {
-    this.actionIds = JsonNullable.<String>of(actionIds);
     
+    this.actionIds = actionIds;
     return this;
   }
 
@@ -76,32 +72,24 @@ public class AutomationRunHistoryPO {
    * @return actionIds
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getActionIds() {
-        return actionIds.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ACTION_IDS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getActionIds_JsonNullable() {
+  public String getActionIds() {
     return actionIds;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ACTION_IDS)
-  public void setActionIds_JsonNullable(JsonNullable<String> actionIds) {
-    this.actionIds = actionIds;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ACTION_IDS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setActionIds(String actionIds) {
-    this.actionIds = JsonNullable.<String>of(actionIds);
+    this.actionIds = actionIds;
   }
 
 
   public AutomationRunHistoryPO actionTypeIds(String actionTypeIds) {
-    this.actionTypeIds = JsonNullable.<String>of(actionTypeIds);
     
+    this.actionTypeIds = actionTypeIds;
     return this;
   }
 
@@ -110,26 +98,18 @@ public class AutomationRunHistoryPO {
    * @return actionTypeIds
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getActionTypeIds() {
-        return actionTypeIds.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ACTION_TYPE_IDS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getActionTypeIds_JsonNullable() {
+  public String getActionTypeIds() {
     return actionTypeIds;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ACTION_TYPE_IDS)
-  public void setActionTypeIds_JsonNullable(JsonNullable<String> actionTypeIds) {
-    this.actionTypeIds = actionTypeIds;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ACTION_TYPE_IDS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setActionTypeIds(String actionTypeIds) {
-    this.actionTypeIds = JsonNullable.<String>of(actionTypeIds);
+    this.actionTypeIds = actionTypeIds;
   }
 
 
@@ -160,8 +140,8 @@ public class AutomationRunHistoryPO {
 
 
   public AutomationRunHistoryPO errorStacks(String errorStacks) {
-    this.errorStacks = JsonNullable.<String>of(errorStacks);
     
+    this.errorStacks = errorStacks;
     return this;
   }
 
@@ -170,26 +150,18 @@ public class AutomationRunHistoryPO {
    * @return errorStacks
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getErrorStacks() {
-        return errorStacks.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ERROR_STACKS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getErrorStacks_JsonNullable() {
+  public String getErrorStacks() {
     return errorStacks;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ERROR_STACKS)
-  public void setErrorStacks_JsonNullable(JsonNullable<String> errorStacks) {
-    this.errorStacks = errorStacks;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ERROR_STACKS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setErrorStacks(String errorStacks) {
-    this.errorStacks = JsonNullable.<String>of(errorStacks);
+    this.errorStacks = errorStacks;
   }
 
 
@@ -280,29 +252,18 @@ public class AutomationRunHistoryPO {
       return false;
     }
     AutomationRunHistoryPO automationRunHistoryPO = (AutomationRunHistoryPO) o;
-    return equalsNullable(this.actionIds, automationRunHistoryPO.actionIds) &&
-        equalsNullable(this.actionTypeIds, automationRunHistoryPO.actionTypeIds) &&
+    return Objects.equals(this.actionIds, automationRunHistoryPO.actionIds) &&
+        Objects.equals(this.actionTypeIds, automationRunHistoryPO.actionTypeIds) &&
         Objects.equals(this.createdAt, automationRunHistoryPO.createdAt) &&
-        equalsNullable(this.errorStacks, automationRunHistoryPO.errorStacks) &&
+        Objects.equals(this.errorStacks, automationRunHistoryPO.errorStacks) &&
         Objects.equals(this.robotId, automationRunHistoryPO.robotId) &&
         Objects.equals(this.status, automationRunHistoryPO.status) &&
         Objects.equals(this.taskId, automationRunHistoryPO.taskId);
   }
 
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(actionIds), hashCodeNullable(actionTypeIds), createdAt, hashCodeNullable(errorStacks), robotId, status, taskId);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(actionIds, actionTypeIds, createdAt, errorStacks, robotId, status, taskId);
   }
 
   @Override

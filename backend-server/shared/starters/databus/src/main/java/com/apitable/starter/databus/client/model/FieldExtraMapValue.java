@@ -21,10 +21,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -37,14 +33,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class FieldExtraMapValue {
   public static final String JSON_PROPERTY_ALARM = "alarm";
-  private JsonNullable<RecordAlarm> alarm = JsonNullable.<RecordAlarm>undefined();
+  private RecordAlarm alarm;
 
   public FieldExtraMapValue() {
   }
 
   public FieldExtraMapValue alarm(RecordAlarm alarm) {
-    this.alarm = JsonNullable.<RecordAlarm>of(alarm);
     
+    this.alarm = alarm;
     return this;
   }
 
@@ -53,26 +49,18 @@ public class FieldExtraMapValue {
    * @return alarm
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public RecordAlarm getAlarm() {
-        return alarm.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ALARM)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<RecordAlarm> getAlarm_JsonNullable() {
+  public RecordAlarm getAlarm() {
     return alarm;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ALARM)
-  public void setAlarm_JsonNullable(JsonNullable<RecordAlarm> alarm) {
-    this.alarm = alarm;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ALARM)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setAlarm(RecordAlarm alarm) {
-    this.alarm = JsonNullable.<RecordAlarm>of(alarm);
+    this.alarm = alarm;
   }
 
   @Override
@@ -84,23 +72,12 @@ public class FieldExtraMapValue {
       return false;
     }
     FieldExtraMapValue fieldExtraMapValue = (FieldExtraMapValue) o;
-    return equalsNullable(this.alarm, fieldExtraMapValue.alarm);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+    return Objects.equals(this.alarm, fieldExtraMapValue.alarm);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(alarm));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(alarm);
   }
 
   @Override

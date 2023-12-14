@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -37,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class IViewLockInfo {
   public static final String JSON_PROPERTY_DESCRIPTION = "description";
-  private JsonNullable<String> description = JsonNullable.<String>undefined();
+  private String description;
 
   public static final String JSON_PROPERTY_UNIT_ID = "unitId";
   private String unitId;
@@ -46,8 +42,8 @@ public class IViewLockInfo {
   }
 
   public IViewLockInfo description(String description) {
-    this.description = JsonNullable.<String>of(description);
     
+    this.description = description;
     return this;
   }
 
@@ -56,26 +52,18 @@ public class IViewLockInfo {
    * @return description
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getDescription() {
-        return description.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_DESCRIPTION)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getDescription_JsonNullable() {
+  public String getDescription() {
     return description;
   }
-  
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
-  public void setDescription_JsonNullable(JsonNullable<String> description) {
-    this.description = description;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDescription(String description) {
-    this.description = JsonNullable.<String>of(description);
+    this.description = description;
   }
 
 
@@ -113,24 +101,13 @@ public class IViewLockInfo {
       return false;
     }
     IViewLockInfo iviewLockInfo = (IViewLockInfo) o;
-    return equalsNullable(this.description, iviewLockInfo.description) &&
+    return Objects.equals(this.description, iviewLockInfo.description) &&
         Objects.equals(this.unitId, iviewLockInfo.unitId);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(description), unitId);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(description, unitId);
   }
 
   @Override

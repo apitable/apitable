@@ -25,10 +25,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -51,10 +47,10 @@ public class RecordSO {
   private Integer commentCount;
 
   public static final String JSON_PROPERTY_COMMENTS = "comments";
-  private JsonNullable<List<Comments>> comments = JsonNullable.<List<Comments>>undefined();
+  private List<Comments> comments;
 
   public static final String JSON_PROPERTY_CREATED_AT = "createdAt";
-  private JsonNullable<Long> createdAt = JsonNullable.<Long>undefined();
+  private Long createdAt;
 
   public static final String JSON_PROPERTY_DATA = "data";
   private Object data = null;
@@ -63,13 +59,13 @@ public class RecordSO {
   private String id;
 
   public static final String JSON_PROPERTY_RECORD_META = "recordMeta";
-  private JsonNullable<RecordMeta> recordMeta = JsonNullable.<RecordMeta>undefined();
+  private RecordMeta recordMeta;
 
   public static final String JSON_PROPERTY_REVISION_HISTORY = "revisionHistory";
-  private JsonNullable<List<Integer>> revisionHistory = JsonNullable.<List<Integer>>undefined();
+  private List<Integer> revisionHistory;
 
   public static final String JSON_PROPERTY_UPDATED_AT = "updatedAt";
-  private JsonNullable<Long> updatedAt = JsonNullable.<Long>undefined();
+  private Long updatedAt;
 
   public RecordSO() {
   }
@@ -102,20 +98,16 @@ public class RecordSO {
 
 
   public RecordSO comments(List<Comments> comments) {
-    this.comments = JsonNullable.<List<Comments>>of(comments);
     
+    this.comments = comments;
     return this;
   }
 
   public RecordSO addCommentsItem(Comments commentsItem) {
-    if (this.comments == null || !this.comments.isPresent()) {
-      this.comments = JsonNullable.<List<Comments>>of(new ArrayList<>());
+    if (this.comments == null) {
+      this.comments = new ArrayList<>();
     }
-    try {
-      this.comments.get().add(commentsItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.comments.add(commentsItem);
     return this;
   }
 
@@ -124,32 +116,24 @@ public class RecordSO {
    * @return comments
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<Comments> getComments() {
-        return comments.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_COMMENTS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<Comments>> getComments_JsonNullable() {
+  public List<Comments> getComments() {
     return comments;
   }
-  
-  @JsonProperty(JSON_PROPERTY_COMMENTS)
-  public void setComments_JsonNullable(JsonNullable<List<Comments>> comments) {
-    this.comments = comments;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_COMMENTS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setComments(List<Comments> comments) {
-    this.comments = JsonNullable.<List<Comments>>of(comments);
+    this.comments = comments;
   }
 
 
   public RecordSO createdAt(Long createdAt) {
-    this.createdAt = JsonNullable.<Long>of(createdAt);
     
+    this.createdAt = createdAt;
     return this;
   }
 
@@ -158,26 +142,18 @@ public class RecordSO {
    * @return createdAt
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getCreatedAt() {
-        return createdAt.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_CREATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getCreatedAt_JsonNullable() {
+  public Long getCreatedAt() {
     return createdAt;
   }
-  
-  @JsonProperty(JSON_PROPERTY_CREATED_AT)
-  public void setCreatedAt_JsonNullable(JsonNullable<Long> createdAt) {
-    this.createdAt = createdAt;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_CREATED_AT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setCreatedAt(Long createdAt) {
-    this.createdAt = JsonNullable.<Long>of(createdAt);
+    this.createdAt = createdAt;
   }
 
 
@@ -234,8 +210,8 @@ public class RecordSO {
 
 
   public RecordSO recordMeta(RecordMeta recordMeta) {
-    this.recordMeta = JsonNullable.<RecordMeta>of(recordMeta);
     
+    this.recordMeta = recordMeta;
     return this;
   }
 
@@ -244,44 +220,32 @@ public class RecordSO {
    * @return recordMeta
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public RecordMeta getRecordMeta() {
-        return recordMeta.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_RECORD_META)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<RecordMeta> getRecordMeta_JsonNullable() {
+  public RecordMeta getRecordMeta() {
     return recordMeta;
   }
-  
-  @JsonProperty(JSON_PROPERTY_RECORD_META)
-  public void setRecordMeta_JsonNullable(JsonNullable<RecordMeta> recordMeta) {
-    this.recordMeta = recordMeta;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_RECORD_META)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setRecordMeta(RecordMeta recordMeta) {
-    this.recordMeta = JsonNullable.<RecordMeta>of(recordMeta);
+    this.recordMeta = recordMeta;
   }
 
 
   public RecordSO revisionHistory(List<Integer> revisionHistory) {
-    this.revisionHistory = JsonNullable.<List<Integer>>of(revisionHistory);
     
+    this.revisionHistory = revisionHistory;
     return this;
   }
 
   public RecordSO addRevisionHistoryItem(Integer revisionHistoryItem) {
-    if (this.revisionHistory == null || !this.revisionHistory.isPresent()) {
-      this.revisionHistory = JsonNullable.<List<Integer>>of(new ArrayList<>());
+    if (this.revisionHistory == null) {
+      this.revisionHistory = new ArrayList<>();
     }
-    try {
-      this.revisionHistory.get().add(revisionHistoryItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.revisionHistory.add(revisionHistoryItem);
     return this;
   }
 
@@ -290,32 +254,24 @@ public class RecordSO {
    * @return revisionHistory
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<Integer> getRevisionHistory() {
-        return revisionHistory.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_REVISION_HISTORY)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<Integer>> getRevisionHistory_JsonNullable() {
+  public List<Integer> getRevisionHistory() {
     return revisionHistory;
   }
-  
-  @JsonProperty(JSON_PROPERTY_REVISION_HISTORY)
-  public void setRevisionHistory_JsonNullable(JsonNullable<List<Integer>> revisionHistory) {
-    this.revisionHistory = revisionHistory;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_REVISION_HISTORY)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setRevisionHistory(List<Integer> revisionHistory) {
-    this.revisionHistory = JsonNullable.<List<Integer>>of(revisionHistory);
+    this.revisionHistory = revisionHistory;
   }
 
 
   public RecordSO updatedAt(Long updatedAt) {
-    this.updatedAt = JsonNullable.<Long>of(updatedAt);
     
+    this.updatedAt = updatedAt;
     return this;
   }
 
@@ -324,26 +280,18 @@ public class RecordSO {
    * @return updatedAt
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getUpdatedAt() {
-        return updatedAt.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_UPDATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getUpdatedAt_JsonNullable() {
+  public Long getUpdatedAt() {
     return updatedAt;
   }
-  
-  @JsonProperty(JSON_PROPERTY_UPDATED_AT)
-  public void setUpdatedAt_JsonNullable(JsonNullable<Long> updatedAt) {
-    this.updatedAt = updatedAt;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_UPDATED_AT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setUpdatedAt(Long updatedAt) {
-    this.updatedAt = JsonNullable.<Long>of(updatedAt);
+    this.updatedAt = updatedAt;
   }
 
   @Override
@@ -356,29 +304,18 @@ public class RecordSO {
     }
     RecordSO recordSO = (RecordSO) o;
     return Objects.equals(this.commentCount, recordSO.commentCount) &&
-        equalsNullable(this.comments, recordSO.comments) &&
-        equalsNullable(this.createdAt, recordSO.createdAt) &&
+        Objects.equals(this.comments, recordSO.comments) &&
+        Objects.equals(this.createdAt, recordSO.createdAt) &&
         Objects.equals(this.data, recordSO.data) &&
         Objects.equals(this.id, recordSO.id) &&
-        equalsNullable(this.recordMeta, recordSO.recordMeta) &&
-        equalsNullable(this.revisionHistory, recordSO.revisionHistory) &&
-        equalsNullable(this.updatedAt, recordSO.updatedAt);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+        Objects.equals(this.recordMeta, recordSO.recordMeta) &&
+        Objects.equals(this.revisionHistory, recordSO.revisionHistory) &&
+        Objects.equals(this.updatedAt, recordSO.updatedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(commentCount, hashCodeNullable(comments), hashCodeNullable(createdAt), data, id, hashCodeNullable(recordMeta), hashCodeNullable(revisionHistory), hashCodeNullable(updatedAt));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(commentCount, comments, createdAt, data, id, recordMeta, revisionHistory, updatedAt);
   }
 
   @Override

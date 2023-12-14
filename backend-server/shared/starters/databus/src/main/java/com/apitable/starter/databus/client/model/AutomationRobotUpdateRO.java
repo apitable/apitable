@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -41,19 +37,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class AutomationRobotUpdateRO {
   public static final String JSON_PROPERTY_DESCRIPTION = "description";
-  private JsonNullable<String> description = JsonNullable.<String>undefined();
+  private String description;
 
   public static final String JSON_PROPERTY_IS_ACTIVE = "is_active";
-  private JsonNullable<Boolean> isActive = JsonNullable.<Boolean>undefined();
+  private Boolean isActive;
 
   public static final String JSON_PROPERTY_IS_DELETED = "is_deleted";
-  private JsonNullable<Boolean> isDeleted = JsonNullable.<Boolean>undefined();
+  private Boolean isDeleted;
 
   public static final String JSON_PROPERTY_NAME = "name";
-  private JsonNullable<String> name = JsonNullable.<String>undefined();
+  private String name;
 
   public static final String JSON_PROPERTY_PROPS = "props";
-  private JsonNullable<String> props = JsonNullable.<String>undefined();
+  private String props;
 
   public static final String JSON_PROPERTY_UPDATED_BY = "updated_by";
   private Long updatedBy;
@@ -62,8 +58,8 @@ public class AutomationRobotUpdateRO {
   }
 
   public AutomationRobotUpdateRO description(String description) {
-    this.description = JsonNullable.<String>of(description);
     
+    this.description = description;
     return this;
   }
 
@@ -72,32 +68,24 @@ public class AutomationRobotUpdateRO {
    * @return description
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getDescription() {
-        return description.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_DESCRIPTION)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getDescription_JsonNullable() {
+  public String getDescription() {
     return description;
   }
-  
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
-  public void setDescription_JsonNullable(JsonNullable<String> description) {
-    this.description = description;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDescription(String description) {
-    this.description = JsonNullable.<String>of(description);
+    this.description = description;
   }
 
 
   public AutomationRobotUpdateRO isActive(Boolean isActive) {
-    this.isActive = JsonNullable.<Boolean>of(isActive);
     
+    this.isActive = isActive;
     return this;
   }
 
@@ -106,32 +94,24 @@ public class AutomationRobotUpdateRO {
    * @return isActive
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getIsActive() {
-        return isActive.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_IS_ACTIVE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getIsActive_JsonNullable() {
+  public Boolean getIsActive() {
     return isActive;
   }
-  
-  @JsonProperty(JSON_PROPERTY_IS_ACTIVE)
-  public void setIsActive_JsonNullable(JsonNullable<Boolean> isActive) {
-    this.isActive = isActive;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_IS_ACTIVE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIsActive(Boolean isActive) {
-    this.isActive = JsonNullable.<Boolean>of(isActive);
+    this.isActive = isActive;
   }
 
 
   public AutomationRobotUpdateRO isDeleted(Boolean isDeleted) {
-    this.isDeleted = JsonNullable.<Boolean>of(isDeleted);
     
+    this.isDeleted = isDeleted;
     return this;
   }
 
@@ -140,32 +120,24 @@ public class AutomationRobotUpdateRO {
    * @return isDeleted
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getIsDeleted() {
-        return isDeleted.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_IS_DELETED)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getIsDeleted_JsonNullable() {
+  public Boolean getIsDeleted() {
     return isDeleted;
   }
-  
-  @JsonProperty(JSON_PROPERTY_IS_DELETED)
-  public void setIsDeleted_JsonNullable(JsonNullable<Boolean> isDeleted) {
-    this.isDeleted = isDeleted;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_IS_DELETED)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIsDeleted(Boolean isDeleted) {
-    this.isDeleted = JsonNullable.<Boolean>of(isDeleted);
+    this.isDeleted = isDeleted;
   }
 
 
   public AutomationRobotUpdateRO name(String name) {
-    this.name = JsonNullable.<String>of(name);
     
+    this.name = name;
     return this;
   }
 
@@ -174,32 +146,24 @@ public class AutomationRobotUpdateRO {
    * @return name
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getName() {
-        return name.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_NAME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getName_JsonNullable() {
+  public String getName() {
     return name;
   }
-  
-  @JsonProperty(JSON_PROPERTY_NAME)
-  public void setName_JsonNullable(JsonNullable<String> name) {
-    this.name = name;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setName(String name) {
-    this.name = JsonNullable.<String>of(name);
+    this.name = name;
   }
 
 
   public AutomationRobotUpdateRO props(String props) {
-    this.props = JsonNullable.<String>of(props);
     
+    this.props = props;
     return this;
   }
 
@@ -208,26 +172,18 @@ public class AutomationRobotUpdateRO {
    * @return props
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getProps() {
-        return props.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_PROPS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getProps_JsonNullable() {
+  public String getProps() {
     return props;
   }
-  
-  @JsonProperty(JSON_PROPERTY_PROPS)
-  public void setProps_JsonNullable(JsonNullable<String> props) {
-    this.props = props;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_PROPS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setProps(String props) {
-    this.props = JsonNullable.<String>of(props);
+    this.props = props;
   }
 
 
@@ -266,28 +222,17 @@ public class AutomationRobotUpdateRO {
       return false;
     }
     AutomationRobotUpdateRO automationRobotUpdateRO = (AutomationRobotUpdateRO) o;
-    return equalsNullable(this.description, automationRobotUpdateRO.description) &&
-        equalsNullable(this.isActive, automationRobotUpdateRO.isActive) &&
-        equalsNullable(this.isDeleted, automationRobotUpdateRO.isDeleted) &&
-        equalsNullable(this.name, automationRobotUpdateRO.name) &&
-        equalsNullable(this.props, automationRobotUpdateRO.props) &&
+    return Objects.equals(this.description, automationRobotUpdateRO.description) &&
+        Objects.equals(this.isActive, automationRobotUpdateRO.isActive) &&
+        Objects.equals(this.isDeleted, automationRobotUpdateRO.isDeleted) &&
+        Objects.equals(this.name, automationRobotUpdateRO.name) &&
+        Objects.equals(this.props, automationRobotUpdateRO.props) &&
         Objects.equals(this.updatedBy, automationRobotUpdateRO.updatedBy);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(description), hashCodeNullable(isActive), hashCodeNullable(isDeleted), hashCodeNullable(name), hashCodeNullable(props), updatedBy);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(description, isActive, isDeleted, name, props, updatedBy);
   }
 
   @Override

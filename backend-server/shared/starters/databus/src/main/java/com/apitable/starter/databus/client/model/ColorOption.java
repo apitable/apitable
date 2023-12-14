@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -37,17 +33,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class ColorOption {
   public static final String JSON_PROPERTY_COLOR = "color";
-  private JsonNullable<Integer> color = JsonNullable.<Integer>undefined();
+  private Integer color;
 
   public static final String JSON_PROPERTY_FIELD_ID = "field_id";
-  private JsonNullable<String> fieldId = JsonNullable.<String>undefined();
+  private String fieldId;
 
   public ColorOption() {
   }
 
   public ColorOption color(Integer color) {
-    this.color = JsonNullable.<Integer>of(color);
     
+    this.color = color;
     return this;
   }
 
@@ -56,32 +52,24 @@ public class ColorOption {
    * @return color
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Integer getColor() {
-        return color.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_COLOR)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Integer> getColor_JsonNullable() {
+  public Integer getColor() {
     return color;
   }
-  
-  @JsonProperty(JSON_PROPERTY_COLOR)
-  public void setColor_JsonNullable(JsonNullable<Integer> color) {
-    this.color = color;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_COLOR)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setColor(Integer color) {
-    this.color = JsonNullable.<Integer>of(color);
+    this.color = color;
   }
 
 
   public ColorOption fieldId(String fieldId) {
-    this.fieldId = JsonNullable.<String>of(fieldId);
     
+    this.fieldId = fieldId;
     return this;
   }
 
@@ -90,26 +78,18 @@ public class ColorOption {
    * @return fieldId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getFieldId() {
-        return fieldId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_FIELD_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getFieldId_JsonNullable() {
+  public String getFieldId() {
     return fieldId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_FIELD_ID)
-  public void setFieldId_JsonNullable(JsonNullable<String> fieldId) {
-    this.fieldId = fieldId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_FIELD_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFieldId(String fieldId) {
-    this.fieldId = JsonNullable.<String>of(fieldId);
+    this.fieldId = fieldId;
   }
 
   @Override
@@ -121,24 +101,13 @@ public class ColorOption {
       return false;
     }
     ColorOption colorOption = (ColorOption) o;
-    return equalsNullable(this.color, colorOption.color) &&
-        equalsNullable(this.fieldId, colorOption.fieldId);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+    return Objects.equals(this.color, colorOption.color) &&
+        Objects.equals(this.fieldId, colorOption.fieldId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(color), hashCodeNullable(fieldId));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(color, fieldId);
   }
 
   @Override

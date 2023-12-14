@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -45,22 +41,22 @@ public class ViewColumnSO {
   private String fieldId;
 
   public static final String JSON_PROPERTY_HIDDEN = "hidden";
-  private JsonNullable<Boolean> hidden = JsonNullable.<Boolean>undefined();
+  private Boolean hidden;
 
   public static final String JSON_PROPERTY_HIDDEN_IN_CALENDAR = "hiddenInCalendar";
-  private JsonNullable<Boolean> hiddenInCalendar = JsonNullable.<Boolean>undefined();
+  private Boolean hiddenInCalendar;
 
   public static final String JSON_PROPERTY_HIDDEN_IN_GANTT = "hiddenInGantt";
-  private JsonNullable<Boolean> hiddenInGantt = JsonNullable.<Boolean>undefined();
+  private Boolean hiddenInGantt;
 
   public static final String JSON_PROPERTY_HIDDEN_IN_ORG_CHART = "hiddenInOrgChart";
-  private JsonNullable<Boolean> hiddenInOrgChart = JsonNullable.<Boolean>undefined();
+  private Boolean hiddenInOrgChart;
 
   public static final String JSON_PROPERTY_STAT_TYPE = "statType";
-  private JsonNullable<Integer> statType = JsonNullable.<Integer>undefined();
+  private Integer statType;
 
   public static final String JSON_PROPERTY_WIDTH = "width";
-  private JsonNullable<Double> width = JsonNullable.<Double>undefined();
+  private Double width;
 
   public ViewColumnSO() {
   }
@@ -92,8 +88,8 @@ public class ViewColumnSO {
 
 
   public ViewColumnSO hidden(Boolean hidden) {
-    this.hidden = JsonNullable.<Boolean>of(hidden);
     
+    this.hidden = hidden;
     return this;
   }
 
@@ -102,32 +98,24 @@ public class ViewColumnSO {
    * @return hidden
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getHidden() {
-        return hidden.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_HIDDEN)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getHidden_JsonNullable() {
+  public Boolean getHidden() {
     return hidden;
   }
-  
-  @JsonProperty(JSON_PROPERTY_HIDDEN)
-  public void setHidden_JsonNullable(JsonNullable<Boolean> hidden) {
-    this.hidden = hidden;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_HIDDEN)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setHidden(Boolean hidden) {
-    this.hidden = JsonNullable.<Boolean>of(hidden);
+    this.hidden = hidden;
   }
 
 
   public ViewColumnSO hiddenInCalendar(Boolean hiddenInCalendar) {
-    this.hiddenInCalendar = JsonNullable.<Boolean>of(hiddenInCalendar);
     
+    this.hiddenInCalendar = hiddenInCalendar;
     return this;
   }
 
@@ -136,32 +124,24 @@ public class ViewColumnSO {
    * @return hiddenInCalendar
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getHiddenInCalendar() {
-        return hiddenInCalendar.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_HIDDEN_IN_CALENDAR)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getHiddenInCalendar_JsonNullable() {
+  public Boolean getHiddenInCalendar() {
     return hiddenInCalendar;
   }
-  
-  @JsonProperty(JSON_PROPERTY_HIDDEN_IN_CALENDAR)
-  public void setHiddenInCalendar_JsonNullable(JsonNullable<Boolean> hiddenInCalendar) {
-    this.hiddenInCalendar = hiddenInCalendar;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_HIDDEN_IN_CALENDAR)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setHiddenInCalendar(Boolean hiddenInCalendar) {
-    this.hiddenInCalendar = JsonNullable.<Boolean>of(hiddenInCalendar);
+    this.hiddenInCalendar = hiddenInCalendar;
   }
 
 
   public ViewColumnSO hiddenInGantt(Boolean hiddenInGantt) {
-    this.hiddenInGantt = JsonNullable.<Boolean>of(hiddenInGantt);
     
+    this.hiddenInGantt = hiddenInGantt;
     return this;
   }
 
@@ -170,32 +150,24 @@ public class ViewColumnSO {
    * @return hiddenInGantt
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getHiddenInGantt() {
-        return hiddenInGantt.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_HIDDEN_IN_GANTT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getHiddenInGantt_JsonNullable() {
+  public Boolean getHiddenInGantt() {
     return hiddenInGantt;
   }
-  
-  @JsonProperty(JSON_PROPERTY_HIDDEN_IN_GANTT)
-  public void setHiddenInGantt_JsonNullable(JsonNullable<Boolean> hiddenInGantt) {
-    this.hiddenInGantt = hiddenInGantt;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_HIDDEN_IN_GANTT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setHiddenInGantt(Boolean hiddenInGantt) {
-    this.hiddenInGantt = JsonNullable.<Boolean>of(hiddenInGantt);
+    this.hiddenInGantt = hiddenInGantt;
   }
 
 
   public ViewColumnSO hiddenInOrgChart(Boolean hiddenInOrgChart) {
-    this.hiddenInOrgChart = JsonNullable.<Boolean>of(hiddenInOrgChart);
     
+    this.hiddenInOrgChart = hiddenInOrgChart;
     return this;
   }
 
@@ -204,32 +176,24 @@ public class ViewColumnSO {
    * @return hiddenInOrgChart
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getHiddenInOrgChart() {
-        return hiddenInOrgChart.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_HIDDEN_IN_ORG_CHART)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getHiddenInOrgChart_JsonNullable() {
+  public Boolean getHiddenInOrgChart() {
     return hiddenInOrgChart;
   }
-  
-  @JsonProperty(JSON_PROPERTY_HIDDEN_IN_ORG_CHART)
-  public void setHiddenInOrgChart_JsonNullable(JsonNullable<Boolean> hiddenInOrgChart) {
-    this.hiddenInOrgChart = hiddenInOrgChart;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_HIDDEN_IN_ORG_CHART)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setHiddenInOrgChart(Boolean hiddenInOrgChart) {
-    this.hiddenInOrgChart = JsonNullable.<Boolean>of(hiddenInOrgChart);
+    this.hiddenInOrgChart = hiddenInOrgChart;
   }
 
 
   public ViewColumnSO statType(Integer statType) {
-    this.statType = JsonNullable.<Integer>of(statType);
     
+    this.statType = statType;
     return this;
   }
 
@@ -238,32 +202,24 @@ public class ViewColumnSO {
    * @return statType
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Integer getStatType() {
-        return statType.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_STAT_TYPE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Integer> getStatType_JsonNullable() {
+  public Integer getStatType() {
     return statType;
   }
-  
-  @JsonProperty(JSON_PROPERTY_STAT_TYPE)
-  public void setStatType_JsonNullable(JsonNullable<Integer> statType) {
-    this.statType = statType;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_STAT_TYPE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setStatType(Integer statType) {
-    this.statType = JsonNullable.<Integer>of(statType);
+    this.statType = statType;
   }
 
 
   public ViewColumnSO width(Double width) {
-    this.width = JsonNullable.<Double>of(width);
     
+    this.width = width;
     return this;
   }
 
@@ -272,26 +228,18 @@ public class ViewColumnSO {
    * @return width
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Double getWidth() {
-        return width.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_WIDTH)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Double> getWidth_JsonNullable() {
+  public Double getWidth() {
     return width;
   }
-  
-  @JsonProperty(JSON_PROPERTY_WIDTH)
-  public void setWidth_JsonNullable(JsonNullable<Double> width) {
-    this.width = width;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_WIDTH)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setWidth(Double width) {
-    this.width = JsonNullable.<Double>of(width);
+    this.width = width;
   }
 
   @Override
@@ -304,28 +252,17 @@ public class ViewColumnSO {
     }
     ViewColumnSO viewColumnSO = (ViewColumnSO) o;
     return Objects.equals(this.fieldId, viewColumnSO.fieldId) &&
-        equalsNullable(this.hidden, viewColumnSO.hidden) &&
-        equalsNullable(this.hiddenInCalendar, viewColumnSO.hiddenInCalendar) &&
-        equalsNullable(this.hiddenInGantt, viewColumnSO.hiddenInGantt) &&
-        equalsNullable(this.hiddenInOrgChart, viewColumnSO.hiddenInOrgChart) &&
-        equalsNullable(this.statType, viewColumnSO.statType) &&
-        equalsNullable(this.width, viewColumnSO.width);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+        Objects.equals(this.hidden, viewColumnSO.hidden) &&
+        Objects.equals(this.hiddenInCalendar, viewColumnSO.hiddenInCalendar) &&
+        Objects.equals(this.hiddenInGantt, viewColumnSO.hiddenInGantt) &&
+        Objects.equals(this.hiddenInOrgChart, viewColumnSO.hiddenInOrgChart) &&
+        Objects.equals(this.statType, viewColumnSO.statType) &&
+        Objects.equals(this.width, viewColumnSO.width);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(fieldId, hashCodeNullable(hidden), hashCodeNullable(hiddenInCalendar), hashCodeNullable(hiddenInGantt), hashCodeNullable(hiddenInOrgChart), hashCodeNullable(statType), hashCodeNullable(width));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(fieldId, hidden, hiddenInCalendar, hiddenInGantt, hiddenInOrgChart, statType, width);
   }
 
   @Override

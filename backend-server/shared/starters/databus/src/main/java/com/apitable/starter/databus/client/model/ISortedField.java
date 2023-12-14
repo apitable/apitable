@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -40,7 +36,7 @@ public class ISortedField {
   private Boolean desc;
 
   public static final String JSON_PROPERTY_FIELD_ID = "fieldId";
-  private JsonNullable<String> fieldId = JsonNullable.<String>undefined();
+  private String fieldId;
 
   public ISortedField() {
   }
@@ -72,8 +68,8 @@ public class ISortedField {
 
 
   public ISortedField fieldId(String fieldId) {
-    this.fieldId = JsonNullable.<String>of(fieldId);
     
+    this.fieldId = fieldId;
     return this;
   }
 
@@ -82,26 +78,18 @@ public class ISortedField {
    * @return fieldId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getFieldId() {
-        return fieldId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_FIELD_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getFieldId_JsonNullable() {
+  public String getFieldId() {
     return fieldId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_FIELD_ID)
-  public void setFieldId_JsonNullable(JsonNullable<String> fieldId) {
-    this.fieldId = fieldId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_FIELD_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFieldId(String fieldId) {
-    this.fieldId = JsonNullable.<String>of(fieldId);
+    this.fieldId = fieldId;
   }
 
   @Override
@@ -114,23 +102,12 @@ public class ISortedField {
     }
     ISortedField isortedField = (ISortedField) o;
     return Objects.equals(this.desc, isortedField.desc) &&
-        equalsNullable(this.fieldId, isortedField.fieldId);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+        Objects.equals(this.fieldId, isortedField.fieldId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(desc, hashCodeNullable(fieldId));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(desc, fieldId);
   }
 
   @Override

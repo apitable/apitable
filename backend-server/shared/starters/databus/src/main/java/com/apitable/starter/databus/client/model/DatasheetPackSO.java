@@ -29,10 +29,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -52,16 +48,16 @@ public class DatasheetPackSO {
   private NodeSO datasheet;
 
   public static final String JSON_PROPERTY_FIELD_PERMISSION_MAP = "fieldPermissionMap";
-  private JsonNullable<Object> fieldPermissionMap = JsonNullable.<Object>of(null);
+  private Object fieldPermissionMap = null;
 
   public static final String JSON_PROPERTY_FOREIGN_DATASHEET_MAP = "foreignDatasheetMap";
-  private JsonNullable<Map<String, BaseDatasheetPackSO>> foreignDatasheetMap = JsonNullable.<Map<String, BaseDatasheetPackSO>>undefined();
+  private Map<String, BaseDatasheetPackSO> foreignDatasheetMap;
 
   public static final String JSON_PROPERTY_SNAPSHOT = "snapshot";
   private DatasheetSnapshotSO snapshot;
 
   public static final String JSON_PROPERTY_UNITS = "units";
-  private JsonNullable<List<UnitSO>> units = JsonNullable.<List<UnitSO>>undefined();
+  private List<UnitSO> units;
 
   public DatasheetPackSO() {
   }
@@ -93,8 +89,8 @@ public class DatasheetPackSO {
 
 
   public DatasheetPackSO fieldPermissionMap(Object fieldPermissionMap) {
-    this.fieldPermissionMap = JsonNullable.<Object>of(fieldPermissionMap);
     
+    this.fieldPermissionMap = fieldPermissionMap;
     return this;
   }
 
@@ -103,44 +99,32 @@ public class DatasheetPackSO {
    * @return fieldPermissionMap
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Object getFieldPermissionMap() {
-        return fieldPermissionMap.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_FIELD_PERMISSION_MAP)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Object> getFieldPermissionMap_JsonNullable() {
+  public Object getFieldPermissionMap() {
     return fieldPermissionMap;
   }
-  
-  @JsonProperty(JSON_PROPERTY_FIELD_PERMISSION_MAP)
-  public void setFieldPermissionMap_JsonNullable(JsonNullable<Object> fieldPermissionMap) {
-    this.fieldPermissionMap = fieldPermissionMap;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_FIELD_PERMISSION_MAP)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFieldPermissionMap(Object fieldPermissionMap) {
-    this.fieldPermissionMap = JsonNullable.<Object>of(fieldPermissionMap);
+    this.fieldPermissionMap = fieldPermissionMap;
   }
 
 
   public DatasheetPackSO foreignDatasheetMap(Map<String, BaseDatasheetPackSO> foreignDatasheetMap) {
-    this.foreignDatasheetMap = JsonNullable.<Map<String, BaseDatasheetPackSO>>of(foreignDatasheetMap);
     
+    this.foreignDatasheetMap = foreignDatasheetMap;
     return this;
   }
 
   public DatasheetPackSO putForeignDatasheetMapItem(String key, BaseDatasheetPackSO foreignDatasheetMapItem) {
-    if (this.foreignDatasheetMap == null || !this.foreignDatasheetMap.isPresent()) {
-      this.foreignDatasheetMap = JsonNullable.<Map<String, BaseDatasheetPackSO>>of(new HashMap<>());
+    if (this.foreignDatasheetMap == null) {
+      this.foreignDatasheetMap = new HashMap<>();
     }
-    try {
-      this.foreignDatasheetMap.get().put(key, foreignDatasheetMapItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.foreignDatasheetMap.put(key, foreignDatasheetMapItem);
     return this;
   }
 
@@ -149,26 +133,18 @@ public class DatasheetPackSO {
    * @return foreignDatasheetMap
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Map<String, BaseDatasheetPackSO> getForeignDatasheetMap() {
-        return foreignDatasheetMap.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_FOREIGN_DATASHEET_MAP)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Map<String, BaseDatasheetPackSO>> getForeignDatasheetMap_JsonNullable() {
+  public Map<String, BaseDatasheetPackSO> getForeignDatasheetMap() {
     return foreignDatasheetMap;
   }
-  
-  @JsonProperty(JSON_PROPERTY_FOREIGN_DATASHEET_MAP)
-  public void setForeignDatasheetMap_JsonNullable(JsonNullable<Map<String, BaseDatasheetPackSO>> foreignDatasheetMap) {
-    this.foreignDatasheetMap = foreignDatasheetMap;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_FOREIGN_DATASHEET_MAP)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setForeignDatasheetMap(Map<String, BaseDatasheetPackSO> foreignDatasheetMap) {
-    this.foreignDatasheetMap = JsonNullable.<Map<String, BaseDatasheetPackSO>>of(foreignDatasheetMap);
+    this.foreignDatasheetMap = foreignDatasheetMap;
   }
 
 
@@ -199,20 +175,16 @@ public class DatasheetPackSO {
 
 
   public DatasheetPackSO units(List<UnitSO> units) {
-    this.units = JsonNullable.<List<UnitSO>>of(units);
     
+    this.units = units;
     return this;
   }
 
   public DatasheetPackSO addUnitsItem(UnitSO unitsItem) {
-    if (this.units == null || !this.units.isPresent()) {
-      this.units = JsonNullable.<List<UnitSO>>of(new ArrayList<>());
+    if (this.units == null) {
+      this.units = new ArrayList<>();
     }
-    try {
-      this.units.get().add(unitsItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.units.add(unitsItem);
     return this;
   }
 
@@ -221,26 +193,18 @@ public class DatasheetPackSO {
    * @return units
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<UnitSO> getUnits() {
-        return units.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_UNITS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<UnitSO>> getUnits_JsonNullable() {
+  public List<UnitSO> getUnits() {
     return units;
   }
-  
-  @JsonProperty(JSON_PROPERTY_UNITS)
-  public void setUnits_JsonNullable(JsonNullable<List<UnitSO>> units) {
-    this.units = units;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_UNITS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setUnits(List<UnitSO> units) {
-    this.units = JsonNullable.<List<UnitSO>>of(units);
+    this.units = units;
   }
 
   @Override
@@ -253,26 +217,15 @@ public class DatasheetPackSO {
     }
     DatasheetPackSO datasheetPackSO = (DatasheetPackSO) o;
     return Objects.equals(this.datasheet, datasheetPackSO.datasheet) &&
-        equalsNullable(this.fieldPermissionMap, datasheetPackSO.fieldPermissionMap) &&
-        equalsNullable(this.foreignDatasheetMap, datasheetPackSO.foreignDatasheetMap) &&
+        Objects.equals(this.fieldPermissionMap, datasheetPackSO.fieldPermissionMap) &&
+        Objects.equals(this.foreignDatasheetMap, datasheetPackSO.foreignDatasheetMap) &&
         Objects.equals(this.snapshot, datasheetPackSO.snapshot) &&
-        equalsNullable(this.units, datasheetPackSO.units);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+        Objects.equals(this.units, datasheetPackSO.units);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(datasheet, hashCodeNullable(fieldPermissionMap), hashCodeNullable(foreignDatasheetMap), snapshot, hashCodeNullable(units));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(datasheet, fieldPermissionMap, foreignDatasheetMap, snapshot, units);
   }
 
   @Override

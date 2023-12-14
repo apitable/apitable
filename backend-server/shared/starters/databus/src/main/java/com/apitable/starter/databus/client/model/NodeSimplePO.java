@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -38,7 +34,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class NodeSimplePO {
   public static final String JSON_PROPERTY_ICON = "icon";
-  private JsonNullable<String> icon = JsonNullable.<String>undefined();
+  private String icon;
 
   public static final String JSON_PROPERTY_NODE_ID = "nodeId";
   private String nodeId;
@@ -50,8 +46,8 @@ public class NodeSimplePO {
   }
 
   public NodeSimplePO icon(String icon) {
-    this.icon = JsonNullable.<String>of(icon);
     
+    this.icon = icon;
     return this;
   }
 
@@ -60,26 +56,18 @@ public class NodeSimplePO {
    * @return icon
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getIcon() {
-        return icon.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ICON)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getIcon_JsonNullable() {
+  public String getIcon() {
     return icon;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ICON)
-  public void setIcon_JsonNullable(JsonNullable<String> icon) {
-    this.icon = icon;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ICON)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIcon(String icon) {
-    this.icon = JsonNullable.<String>of(icon);
+    this.icon = icon;
   }
 
 
@@ -143,25 +131,14 @@ public class NodeSimplePO {
       return false;
     }
     NodeSimplePO nodeSimplePO = (NodeSimplePO) o;
-    return equalsNullable(this.icon, nodeSimplePO.icon) &&
+    return Objects.equals(this.icon, nodeSimplePO.icon) &&
         Objects.equals(this.nodeId, nodeSimplePO.nodeId) &&
         Objects.equals(this.nodeName, nodeSimplePO.nodeName);
   }
 
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(icon), nodeId, nodeName);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(icon, nodeId, nodeName);
   }
 
   @Override

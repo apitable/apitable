@@ -21,10 +21,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -42,7 +38,7 @@ public class BaseDatasheetPackSO {
   private Object datasheet = null;
 
   public static final String JSON_PROPERTY_FIELD_PERMISSION_MAP = "fieldPermissionMap";
-  private JsonNullable<Object> fieldPermissionMap = JsonNullable.<Object>of(null);
+  private Object fieldPermissionMap = null;
 
   public static final String JSON_PROPERTY_SNAPSHOT = "snapshot";
   private DatasheetSnapshotSO snapshot;
@@ -77,8 +73,8 @@ public class BaseDatasheetPackSO {
 
 
   public BaseDatasheetPackSO fieldPermissionMap(Object fieldPermissionMap) {
-    this.fieldPermissionMap = JsonNullable.<Object>of(fieldPermissionMap);
     
+    this.fieldPermissionMap = fieldPermissionMap;
     return this;
   }
 
@@ -87,26 +83,18 @@ public class BaseDatasheetPackSO {
    * @return fieldPermissionMap
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Object getFieldPermissionMap() {
-        return fieldPermissionMap.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_FIELD_PERMISSION_MAP)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Object> getFieldPermissionMap_JsonNullable() {
+  public Object getFieldPermissionMap() {
     return fieldPermissionMap;
   }
-  
-  @JsonProperty(JSON_PROPERTY_FIELD_PERMISSION_MAP)
-  public void setFieldPermissionMap_JsonNullable(JsonNullable<Object> fieldPermissionMap) {
-    this.fieldPermissionMap = fieldPermissionMap;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_FIELD_PERMISSION_MAP)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFieldPermissionMap(Object fieldPermissionMap) {
-    this.fieldPermissionMap = JsonNullable.<Object>of(fieldPermissionMap);
+    this.fieldPermissionMap = fieldPermissionMap;
   }
 
 
@@ -145,24 +133,13 @@ public class BaseDatasheetPackSO {
     }
     BaseDatasheetPackSO baseDatasheetPackSO = (BaseDatasheetPackSO) o;
     return Objects.equals(this.datasheet, baseDatasheetPackSO.datasheet) &&
-        equalsNullable(this.fieldPermissionMap, baseDatasheetPackSO.fieldPermissionMap) &&
+        Objects.equals(this.fieldPermissionMap, baseDatasheetPackSO.fieldPermissionMap) &&
         Objects.equals(this.snapshot, baseDatasheetPackSO.snapshot);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(datasheet, hashCodeNullable(fieldPermissionMap), snapshot);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(datasheet, fieldPermissionMap, snapshot);
   }
 
   @Override

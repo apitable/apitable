@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -43,25 +39,25 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class AutomationRobotTriggerRO {
   public static final String JSON_PROPERTY_INPUT = "input";
-  private JsonNullable<String> input = JsonNullable.<String>undefined();
+  private String input;
 
   public static final String JSON_PROPERTY_IS_DELETED = "is_deleted";
-  private JsonNullable<Boolean> isDeleted = JsonNullable.<Boolean>undefined();
+  private Boolean isDeleted;
 
   public static final String JSON_PROPERTY_LIMIT_COUNT = "limit_count";
-  private JsonNullable<Long> limitCount = JsonNullable.<Long>undefined();
+  private Long limitCount;
 
   public static final String JSON_PROPERTY_PREV_TRIGGER_ID = "prev_trigger_id";
-  private JsonNullable<String> prevTriggerId = JsonNullable.<String>undefined();
+  private String prevTriggerId;
 
   public static final String JSON_PROPERTY_RESOURCE_ID = "resource_id";
-  private JsonNullable<String> resourceId = JsonNullable.<String>undefined();
+  private String resourceId;
 
   public static final String JSON_PROPERTY_TRIGGER_ID = "trigger_id";
-  private JsonNullable<String> triggerId = JsonNullable.<String>undefined();
+  private String triggerId;
 
   public static final String JSON_PROPERTY_TRIGGER_TYPE_ID = "trigger_type_id";
-  private JsonNullable<String> triggerTypeId = JsonNullable.<String>undefined();
+  private String triggerTypeId;
 
   public static final String JSON_PROPERTY_USER_ID = "user_id";
   private Long userId;
@@ -70,8 +66,8 @@ public class AutomationRobotTriggerRO {
   }
 
   public AutomationRobotTriggerRO input(String input) {
-    this.input = JsonNullable.<String>of(input);
     
+    this.input = input;
     return this;
   }
 
@@ -80,32 +76,24 @@ public class AutomationRobotTriggerRO {
    * @return input
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getInput() {
-        return input.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_INPUT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getInput_JsonNullable() {
+  public String getInput() {
     return input;
   }
-  
-  @JsonProperty(JSON_PROPERTY_INPUT)
-  public void setInput_JsonNullable(JsonNullable<String> input) {
-    this.input = input;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_INPUT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setInput(String input) {
-    this.input = JsonNullable.<String>of(input);
+    this.input = input;
   }
 
 
   public AutomationRobotTriggerRO isDeleted(Boolean isDeleted) {
-    this.isDeleted = JsonNullable.<Boolean>of(isDeleted);
     
+    this.isDeleted = isDeleted;
     return this;
   }
 
@@ -114,32 +102,24 @@ public class AutomationRobotTriggerRO {
    * @return isDeleted
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getIsDeleted() {
-        return isDeleted.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_IS_DELETED)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getIsDeleted_JsonNullable() {
+  public Boolean getIsDeleted() {
     return isDeleted;
   }
-  
-  @JsonProperty(JSON_PROPERTY_IS_DELETED)
-  public void setIsDeleted_JsonNullable(JsonNullable<Boolean> isDeleted) {
-    this.isDeleted = isDeleted;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_IS_DELETED)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIsDeleted(Boolean isDeleted) {
-    this.isDeleted = JsonNullable.<Boolean>of(isDeleted);
+    this.isDeleted = isDeleted;
   }
 
 
   public AutomationRobotTriggerRO limitCount(Long limitCount) {
-    this.limitCount = JsonNullable.<Long>of(limitCount);
     
+    this.limitCount = limitCount;
     return this;
   }
 
@@ -148,32 +128,24 @@ public class AutomationRobotTriggerRO {
    * @return limitCount
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getLimitCount() {
-        return limitCount.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_LIMIT_COUNT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getLimitCount_JsonNullable() {
+  public Long getLimitCount() {
     return limitCount;
   }
-  
-  @JsonProperty(JSON_PROPERTY_LIMIT_COUNT)
-  public void setLimitCount_JsonNullable(JsonNullable<Long> limitCount) {
-    this.limitCount = limitCount;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_LIMIT_COUNT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setLimitCount(Long limitCount) {
-    this.limitCount = JsonNullable.<Long>of(limitCount);
+    this.limitCount = limitCount;
   }
 
 
   public AutomationRobotTriggerRO prevTriggerId(String prevTriggerId) {
-    this.prevTriggerId = JsonNullable.<String>of(prevTriggerId);
     
+    this.prevTriggerId = prevTriggerId;
     return this;
   }
 
@@ -182,32 +154,24 @@ public class AutomationRobotTriggerRO {
    * @return prevTriggerId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getPrevTriggerId() {
-        return prevTriggerId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_PREV_TRIGGER_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getPrevTriggerId_JsonNullable() {
+  public String getPrevTriggerId() {
     return prevTriggerId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_PREV_TRIGGER_ID)
-  public void setPrevTriggerId_JsonNullable(JsonNullable<String> prevTriggerId) {
-    this.prevTriggerId = prevTriggerId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_PREV_TRIGGER_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setPrevTriggerId(String prevTriggerId) {
-    this.prevTriggerId = JsonNullable.<String>of(prevTriggerId);
+    this.prevTriggerId = prevTriggerId;
   }
 
 
   public AutomationRobotTriggerRO resourceId(String resourceId) {
-    this.resourceId = JsonNullable.<String>of(resourceId);
     
+    this.resourceId = resourceId;
     return this;
   }
 
@@ -216,32 +180,24 @@ public class AutomationRobotTriggerRO {
    * @return resourceId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getResourceId() {
-        return resourceId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_RESOURCE_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getResourceId_JsonNullable() {
+  public String getResourceId() {
     return resourceId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_RESOURCE_ID)
-  public void setResourceId_JsonNullable(JsonNullable<String> resourceId) {
-    this.resourceId = resourceId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_RESOURCE_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setResourceId(String resourceId) {
-    this.resourceId = JsonNullable.<String>of(resourceId);
+    this.resourceId = resourceId;
   }
 
 
   public AutomationRobotTriggerRO triggerId(String triggerId) {
-    this.triggerId = JsonNullable.<String>of(triggerId);
     
+    this.triggerId = triggerId;
     return this;
   }
 
@@ -250,32 +206,24 @@ public class AutomationRobotTriggerRO {
    * @return triggerId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getTriggerId() {
-        return triggerId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_TRIGGER_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getTriggerId_JsonNullable() {
+  public String getTriggerId() {
     return triggerId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_TRIGGER_ID)
-  public void setTriggerId_JsonNullable(JsonNullable<String> triggerId) {
-    this.triggerId = triggerId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_TRIGGER_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setTriggerId(String triggerId) {
-    this.triggerId = JsonNullable.<String>of(triggerId);
+    this.triggerId = triggerId;
   }
 
 
   public AutomationRobotTriggerRO triggerTypeId(String triggerTypeId) {
-    this.triggerTypeId = JsonNullable.<String>of(triggerTypeId);
     
+    this.triggerTypeId = triggerTypeId;
     return this;
   }
 
@@ -284,26 +232,18 @@ public class AutomationRobotTriggerRO {
    * @return triggerTypeId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getTriggerTypeId() {
-        return triggerTypeId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_TRIGGER_TYPE_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getTriggerTypeId_JsonNullable() {
+  public String getTriggerTypeId() {
     return triggerTypeId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_TRIGGER_TYPE_ID)
-  public void setTriggerTypeId_JsonNullable(JsonNullable<String> triggerTypeId) {
-    this.triggerTypeId = triggerTypeId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_TRIGGER_TYPE_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setTriggerTypeId(String triggerTypeId) {
-    this.triggerTypeId = JsonNullable.<String>of(triggerTypeId);
+    this.triggerTypeId = triggerTypeId;
   }
 
 
@@ -342,30 +282,19 @@ public class AutomationRobotTriggerRO {
       return false;
     }
     AutomationRobotTriggerRO automationRobotTriggerRO = (AutomationRobotTriggerRO) o;
-    return equalsNullable(this.input, automationRobotTriggerRO.input) &&
-        equalsNullable(this.isDeleted, automationRobotTriggerRO.isDeleted) &&
-        equalsNullable(this.limitCount, automationRobotTriggerRO.limitCount) &&
-        equalsNullable(this.prevTriggerId, automationRobotTriggerRO.prevTriggerId) &&
-        equalsNullable(this.resourceId, automationRobotTriggerRO.resourceId) &&
-        equalsNullable(this.triggerId, automationRobotTriggerRO.triggerId) &&
-        equalsNullable(this.triggerTypeId, automationRobotTriggerRO.triggerTypeId) &&
+    return Objects.equals(this.input, automationRobotTriggerRO.input) &&
+        Objects.equals(this.isDeleted, automationRobotTriggerRO.isDeleted) &&
+        Objects.equals(this.limitCount, automationRobotTriggerRO.limitCount) &&
+        Objects.equals(this.prevTriggerId, automationRobotTriggerRO.prevTriggerId) &&
+        Objects.equals(this.resourceId, automationRobotTriggerRO.resourceId) &&
+        Objects.equals(this.triggerId, automationRobotTriggerRO.triggerId) &&
+        Objects.equals(this.triggerTypeId, automationRobotTriggerRO.triggerTypeId) &&
         Objects.equals(this.userId, automationRobotTriggerRO.userId);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(input), hashCodeNullable(isDeleted), hashCodeNullable(limitCount), hashCodeNullable(prevTriggerId), hashCodeNullable(resourceId), hashCodeNullable(triggerId), hashCodeNullable(triggerTypeId), userId);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(input, isDeleted, limitCount, prevTriggerId, resourceId, triggerId, triggerTypeId, userId);
   }
 
   @Override

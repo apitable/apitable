@@ -21,10 +21,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -57,7 +53,7 @@ public class Comments {
   private String unitId;
 
   public static final String JSON_PROPERTY_UPDATED_AT = "updatedAt";
-  private JsonNullable<Long> updatedAt = JsonNullable.<Long>undefined();
+  private Long updatedAt;
 
   public Comments() {
   }
@@ -195,8 +191,8 @@ public class Comments {
 
 
   public Comments updatedAt(Long updatedAt) {
-    this.updatedAt = JsonNullable.<Long>of(updatedAt);
     
+    this.updatedAt = updatedAt;
     return this;
   }
 
@@ -206,26 +202,18 @@ public class Comments {
    * @return updatedAt
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getUpdatedAt() {
-        return updatedAt.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_UPDATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getUpdatedAt_JsonNullable() {
+  public Long getUpdatedAt() {
     return updatedAt;
   }
-  
-  @JsonProperty(JSON_PROPERTY_UPDATED_AT)
-  public void setUpdatedAt_JsonNullable(JsonNullable<Long> updatedAt) {
-    this.updatedAt = updatedAt;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_UPDATED_AT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setUpdatedAt(Long updatedAt) {
-    this.updatedAt = JsonNullable.<Long>of(updatedAt);
+    this.updatedAt = updatedAt;
   }
 
   @Override
@@ -242,23 +230,12 @@ public class Comments {
         Objects.equals(this.createdAt, comments.createdAt) &&
         Objects.equals(this.revision, comments.revision) &&
         Objects.equals(this.unitId, comments.unitId) &&
-        equalsNullable(this.updatedAt, comments.updatedAt);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+        Objects.equals(this.updatedAt, comments.updatedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(commentId, commentMsg, createdAt, revision, unitId, hashCodeNullable(updatedAt));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(commentId, commentMsg, createdAt, revision, unitId, updatedAt);
   }
 
   @Override

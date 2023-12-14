@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -46,25 +42,25 @@ public class AiPO {
   private String aiId;
 
   public static final String JSON_PROPERTY_EMBEDDING_MODEL = "embeddingModel";
-  private JsonNullable<String> embeddingModel = JsonNullable.<String>undefined();
+  private String embeddingModel;
 
   public static final String JSON_PROPERTY_MODEL = "model";
-  private JsonNullable<String> model = JsonNullable.<String>undefined();
+  private String model;
 
   public static final String JSON_PROPERTY_NAME = "name";
   private String name;
 
   public static final String JSON_PROPERTY_PROLOGUE = "prologue";
-  private JsonNullable<String> prologue = JsonNullable.<String>undefined();
+  private String prologue;
 
   public static final String JSON_PROPERTY_PROMPT = "prompt";
-  private JsonNullable<String> prompt = JsonNullable.<String>undefined();
+  private String prompt;
 
   public static final String JSON_PROPERTY_SETTING = "setting";
-  private JsonNullable<String> setting = JsonNullable.<String>undefined();
+  private String setting;
 
   public static final String JSON_PROPERTY_TYPE = "type";
-  private JsonNullable<String> type = JsonNullable.<String>undefined();
+  private String type;
 
   public AiPO() {
   }
@@ -96,8 +92,8 @@ public class AiPO {
 
 
   public AiPO embeddingModel(String embeddingModel) {
-    this.embeddingModel = JsonNullable.<String>of(embeddingModel);
     
+    this.embeddingModel = embeddingModel;
     return this;
   }
 
@@ -106,32 +102,24 @@ public class AiPO {
    * @return embeddingModel
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getEmbeddingModel() {
-        return embeddingModel.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_EMBEDDING_MODEL)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getEmbeddingModel_JsonNullable() {
+  public String getEmbeddingModel() {
     return embeddingModel;
   }
-  
-  @JsonProperty(JSON_PROPERTY_EMBEDDING_MODEL)
-  public void setEmbeddingModel_JsonNullable(JsonNullable<String> embeddingModel) {
-    this.embeddingModel = embeddingModel;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_EMBEDDING_MODEL)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setEmbeddingModel(String embeddingModel) {
-    this.embeddingModel = JsonNullable.<String>of(embeddingModel);
+    this.embeddingModel = embeddingModel;
   }
 
 
   public AiPO model(String model) {
-    this.model = JsonNullable.<String>of(model);
     
+    this.model = model;
     return this;
   }
 
@@ -140,26 +128,18 @@ public class AiPO {
    * @return model
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getModel() {
-        return model.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_MODEL)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getModel_JsonNullable() {
+  public String getModel() {
     return model;
   }
-  
-  @JsonProperty(JSON_PROPERTY_MODEL)
-  public void setModel_JsonNullable(JsonNullable<String> model) {
-    this.model = model;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_MODEL)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setModel(String model) {
-    this.model = JsonNullable.<String>of(model);
+    this.model = model;
   }
 
 
@@ -190,8 +170,8 @@ public class AiPO {
 
 
   public AiPO prologue(String prologue) {
-    this.prologue = JsonNullable.<String>of(prologue);
     
+    this.prologue = prologue;
     return this;
   }
 
@@ -200,32 +180,24 @@ public class AiPO {
    * @return prologue
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getPrologue() {
-        return prologue.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_PROLOGUE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getPrologue_JsonNullable() {
+  public String getPrologue() {
     return prologue;
   }
-  
-  @JsonProperty(JSON_PROPERTY_PROLOGUE)
-  public void setPrologue_JsonNullable(JsonNullable<String> prologue) {
-    this.prologue = prologue;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_PROLOGUE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setPrologue(String prologue) {
-    this.prologue = JsonNullable.<String>of(prologue);
+    this.prologue = prologue;
   }
 
 
   public AiPO prompt(String prompt) {
-    this.prompt = JsonNullable.<String>of(prompt);
     
+    this.prompt = prompt;
     return this;
   }
 
@@ -234,32 +206,24 @@ public class AiPO {
    * @return prompt
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getPrompt() {
-        return prompt.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_PROMPT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getPrompt_JsonNullable() {
+  public String getPrompt() {
     return prompt;
   }
-  
-  @JsonProperty(JSON_PROPERTY_PROMPT)
-  public void setPrompt_JsonNullable(JsonNullable<String> prompt) {
-    this.prompt = prompt;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_PROMPT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setPrompt(String prompt) {
-    this.prompt = JsonNullable.<String>of(prompt);
+    this.prompt = prompt;
   }
 
 
   public AiPO setting(String setting) {
-    this.setting = JsonNullable.<String>of(setting);
     
+    this.setting = setting;
     return this;
   }
 
@@ -268,32 +232,24 @@ public class AiPO {
    * @return setting
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getSetting() {
-        return setting.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_SETTING)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getSetting_JsonNullable() {
+  public String getSetting() {
     return setting;
   }
-  
-  @JsonProperty(JSON_PROPERTY_SETTING)
-  public void setSetting_JsonNullable(JsonNullable<String> setting) {
-    this.setting = setting;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_SETTING)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setSetting(String setting) {
-    this.setting = JsonNullable.<String>of(setting);
+    this.setting = setting;
   }
 
 
   public AiPO type(String type) {
-    this.type = JsonNullable.<String>of(type);
     
+    this.type = type;
     return this;
   }
 
@@ -302,26 +258,18 @@ public class AiPO {
    * @return type
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getType() {
-        return type.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_TYPE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getType_JsonNullable() {
+  public String getType() {
     return type;
   }
-  
-  @JsonProperty(JSON_PROPERTY_TYPE)
-  public void setType_JsonNullable(JsonNullable<String> type) {
-    this.type = type;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_TYPE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setType(String type) {
-    this.type = JsonNullable.<String>of(type);
+    this.type = type;
   }
 
   @Override
@@ -334,29 +282,18 @@ public class AiPO {
     }
     AiPO aiPO = (AiPO) o;
     return Objects.equals(this.aiId, aiPO.aiId) &&
-        equalsNullable(this.embeddingModel, aiPO.embeddingModel) &&
-        equalsNullable(this.model, aiPO.model) &&
+        Objects.equals(this.embeddingModel, aiPO.embeddingModel) &&
+        Objects.equals(this.model, aiPO.model) &&
         Objects.equals(this.name, aiPO.name) &&
-        equalsNullable(this.prologue, aiPO.prologue) &&
-        equalsNullable(this.prompt, aiPO.prompt) &&
-        equalsNullable(this.setting, aiPO.setting) &&
-        equalsNullable(this.type, aiPO.type);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+        Objects.equals(this.prologue, aiPO.prologue) &&
+        Objects.equals(this.prompt, aiPO.prompt) &&
+        Objects.equals(this.setting, aiPO.setting) &&
+        Objects.equals(this.type, aiPO.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(aiId, hashCodeNullable(embeddingModel), hashCodeNullable(model), name, hashCodeNullable(prologue), hashCodeNullable(prompt), hashCodeNullable(setting), hashCodeNullable(type));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(aiId, embeddingModel, model, name, prologue, prompt, setting, type);
   }
 
   @Override

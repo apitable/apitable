@@ -30,10 +30,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -62,62 +58,62 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class ViewSO {
   public static final String JSON_PROPERTY_AUTO_HEAD_HEIGHT = "autoHeadHeight";
-  private JsonNullable<Boolean> autoHeadHeight = JsonNullable.<Boolean>undefined();
+  private Boolean autoHeadHeight;
 
   public static final String JSON_PROPERTY_AUTO_SAVE = "autoSave";
-  private JsonNullable<Boolean> autoSave = JsonNullable.<Boolean>undefined();
+  private Boolean autoSave;
 
   public static final String JSON_PROPERTY_COLUMNS = "columns";
   private List<ViewColumnSO> columns = new ArrayList<>();
 
   public static final String JSON_PROPERTY_DESCRIPTION = "description";
-  private JsonNullable<String> description = JsonNullable.<String>undefined();
+  private String description;
 
   public static final String JSON_PROPERTY_DISPLAY_HIDDEN_COLUMN_WITHIN_MIRROR = "displayHiddenColumnWithinMirror";
-  private JsonNullable<Boolean> displayHiddenColumnWithinMirror = JsonNullable.<Boolean>undefined();
+  private Boolean displayHiddenColumnWithinMirror;
 
   public static final String JSON_PROPERTY_FILTER_INFO = "filterInfo";
-  private JsonNullable<IFilterInfo> filterInfo = JsonNullable.<IFilterInfo>undefined();
+  private IFilterInfo filterInfo;
 
   public static final String JSON_PROPERTY_FROZEN_COLUMN_COUNT = "frozenColumnCount";
-  private JsonNullable<Integer> frozenColumnCount = JsonNullable.<Integer>undefined();
+  private Integer frozenColumnCount;
 
   public static final String JSON_PROPERTY_GROUP_INFO = "groupInfo";
-  private JsonNullable<List<ISortedField>> groupInfo = JsonNullable.<List<ISortedField>>undefined();
+  private List<ISortedField> groupInfo;
 
   public static final String JSON_PROPERTY_HIDDEN = "hidden";
-  private JsonNullable<Boolean> hidden = JsonNullable.<Boolean>undefined();
+  private Boolean hidden;
 
   public static final String JSON_PROPERTY_ID = "id";
-  private JsonNullable<String> id = JsonNullable.<String>undefined();
+  private String id;
 
   public static final String JSON_PROPERTY_LOCK_INFO = "lockInfo";
-  private JsonNullable<IViewLockInfo> lockInfo = JsonNullable.<IViewLockInfo>undefined();
+  private IViewLockInfo lockInfo;
 
   public static final String JSON_PROPERTY_NAME = "name";
-  private JsonNullable<String> name = JsonNullable.<String>undefined();
+  private String name;
 
   public static final String JSON_PROPERTY_ROW_HEIGHT_LEVEL = "rowHeightLevel";
-  private JsonNullable<Integer> rowHeightLevel = JsonNullable.<Integer>undefined();
+  private Integer rowHeightLevel;
 
   public static final String JSON_PROPERTY_ROWS = "rows";
-  private JsonNullable<List<ViewRowSO>> rows = JsonNullable.<List<ViewRowSO>>undefined();
+  private List<ViewRowSO> rows;
 
   public static final String JSON_PROPERTY_SORT_INFO = "sortInfo";
-  private JsonNullable<ISortInfo> sortInfo = JsonNullable.<ISortInfo>undefined();
+  private ISortInfo sortInfo;
 
   public static final String JSON_PROPERTY_STYLE = "style";
-  private JsonNullable<ViewStyleSo> style = JsonNullable.<ViewStyleSo>undefined();
+  private ViewStyleSo style;
 
   public static final String JSON_PROPERTY_TYPE = "type";
-  private JsonNullable<Long> type = JsonNullable.<Long>undefined();
+  private Long type;
 
   public ViewSO() {
   }
 
   public ViewSO autoHeadHeight(Boolean autoHeadHeight) {
-    this.autoHeadHeight = JsonNullable.<Boolean>of(autoHeadHeight);
     
+    this.autoHeadHeight = autoHeadHeight;
     return this;
   }
 
@@ -126,32 +122,24 @@ public class ViewSO {
    * @return autoHeadHeight
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getAutoHeadHeight() {
-        return autoHeadHeight.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_AUTO_HEAD_HEIGHT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getAutoHeadHeight_JsonNullable() {
+  public Boolean getAutoHeadHeight() {
     return autoHeadHeight;
   }
-  
-  @JsonProperty(JSON_PROPERTY_AUTO_HEAD_HEIGHT)
-  public void setAutoHeadHeight_JsonNullable(JsonNullable<Boolean> autoHeadHeight) {
-    this.autoHeadHeight = autoHeadHeight;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_AUTO_HEAD_HEIGHT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setAutoHeadHeight(Boolean autoHeadHeight) {
-    this.autoHeadHeight = JsonNullable.<Boolean>of(autoHeadHeight);
+    this.autoHeadHeight = autoHeadHeight;
   }
 
 
   public ViewSO autoSave(Boolean autoSave) {
-    this.autoSave = JsonNullable.<Boolean>of(autoSave);
     
+    this.autoSave = autoSave;
     return this;
   }
 
@@ -160,26 +148,18 @@ public class ViewSO {
    * @return autoSave
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getAutoSave() {
-        return autoSave.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_AUTO_SAVE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getAutoSave_JsonNullable() {
+  public Boolean getAutoSave() {
     return autoSave;
   }
-  
-  @JsonProperty(JSON_PROPERTY_AUTO_SAVE)
-  public void setAutoSave_JsonNullable(JsonNullable<Boolean> autoSave) {
-    this.autoSave = autoSave;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_AUTO_SAVE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setAutoSave(Boolean autoSave) {
-    this.autoSave = JsonNullable.<Boolean>of(autoSave);
+    this.autoSave = autoSave;
   }
 
 
@@ -218,8 +198,8 @@ public class ViewSO {
 
 
   public ViewSO description(String description) {
-    this.description = JsonNullable.<String>of(description);
     
+    this.description = description;
     return this;
   }
 
@@ -228,32 +208,24 @@ public class ViewSO {
    * @return description
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getDescription() {
-        return description.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_DESCRIPTION)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getDescription_JsonNullable() {
+  public String getDescription() {
     return description;
   }
-  
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
-  public void setDescription_JsonNullable(JsonNullable<String> description) {
-    this.description = description;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDescription(String description) {
-    this.description = JsonNullable.<String>of(description);
+    this.description = description;
   }
 
 
   public ViewSO displayHiddenColumnWithinMirror(Boolean displayHiddenColumnWithinMirror) {
-    this.displayHiddenColumnWithinMirror = JsonNullable.<Boolean>of(displayHiddenColumnWithinMirror);
     
+    this.displayHiddenColumnWithinMirror = displayHiddenColumnWithinMirror;
     return this;
   }
 
@@ -262,32 +234,24 @@ public class ViewSO {
    * @return displayHiddenColumnWithinMirror
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getDisplayHiddenColumnWithinMirror() {
-        return displayHiddenColumnWithinMirror.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_DISPLAY_HIDDEN_COLUMN_WITHIN_MIRROR)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getDisplayHiddenColumnWithinMirror_JsonNullable() {
+  public Boolean getDisplayHiddenColumnWithinMirror() {
     return displayHiddenColumnWithinMirror;
   }
-  
-  @JsonProperty(JSON_PROPERTY_DISPLAY_HIDDEN_COLUMN_WITHIN_MIRROR)
-  public void setDisplayHiddenColumnWithinMirror_JsonNullable(JsonNullable<Boolean> displayHiddenColumnWithinMirror) {
-    this.displayHiddenColumnWithinMirror = displayHiddenColumnWithinMirror;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_DISPLAY_HIDDEN_COLUMN_WITHIN_MIRROR)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDisplayHiddenColumnWithinMirror(Boolean displayHiddenColumnWithinMirror) {
-    this.displayHiddenColumnWithinMirror = JsonNullable.<Boolean>of(displayHiddenColumnWithinMirror);
+    this.displayHiddenColumnWithinMirror = displayHiddenColumnWithinMirror;
   }
 
 
   public ViewSO filterInfo(IFilterInfo filterInfo) {
-    this.filterInfo = JsonNullable.<IFilterInfo>of(filterInfo);
     
+    this.filterInfo = filterInfo;
     return this;
   }
 
@@ -296,32 +260,24 @@ public class ViewSO {
    * @return filterInfo
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public IFilterInfo getFilterInfo() {
-        return filterInfo.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_FILTER_INFO)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<IFilterInfo> getFilterInfo_JsonNullable() {
+  public IFilterInfo getFilterInfo() {
     return filterInfo;
   }
-  
-  @JsonProperty(JSON_PROPERTY_FILTER_INFO)
-  public void setFilterInfo_JsonNullable(JsonNullable<IFilterInfo> filterInfo) {
-    this.filterInfo = filterInfo;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_FILTER_INFO)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFilterInfo(IFilterInfo filterInfo) {
-    this.filterInfo = JsonNullable.<IFilterInfo>of(filterInfo);
+    this.filterInfo = filterInfo;
   }
 
 
   public ViewSO frozenColumnCount(Integer frozenColumnCount) {
-    this.frozenColumnCount = JsonNullable.<Integer>of(frozenColumnCount);
     
+    this.frozenColumnCount = frozenColumnCount;
     return this;
   }
 
@@ -330,44 +286,32 @@ public class ViewSO {
    * @return frozenColumnCount
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Integer getFrozenColumnCount() {
-        return frozenColumnCount.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_FROZEN_COLUMN_COUNT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Integer> getFrozenColumnCount_JsonNullable() {
+  public Integer getFrozenColumnCount() {
     return frozenColumnCount;
   }
-  
-  @JsonProperty(JSON_PROPERTY_FROZEN_COLUMN_COUNT)
-  public void setFrozenColumnCount_JsonNullable(JsonNullable<Integer> frozenColumnCount) {
-    this.frozenColumnCount = frozenColumnCount;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_FROZEN_COLUMN_COUNT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFrozenColumnCount(Integer frozenColumnCount) {
-    this.frozenColumnCount = JsonNullable.<Integer>of(frozenColumnCount);
+    this.frozenColumnCount = frozenColumnCount;
   }
 
 
   public ViewSO groupInfo(List<ISortedField> groupInfo) {
-    this.groupInfo = JsonNullable.<List<ISortedField>>of(groupInfo);
     
+    this.groupInfo = groupInfo;
     return this;
   }
 
   public ViewSO addGroupInfoItem(ISortedField groupInfoItem) {
-    if (this.groupInfo == null || !this.groupInfo.isPresent()) {
-      this.groupInfo = JsonNullable.<List<ISortedField>>of(new ArrayList<>());
+    if (this.groupInfo == null) {
+      this.groupInfo = new ArrayList<>();
     }
-    try {
-      this.groupInfo.get().add(groupInfoItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.groupInfo.add(groupInfoItem);
     return this;
   }
 
@@ -376,32 +320,24 @@ public class ViewSO {
    * @return groupInfo
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<ISortedField> getGroupInfo() {
-        return groupInfo.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_GROUP_INFO)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<ISortedField>> getGroupInfo_JsonNullable() {
+  public List<ISortedField> getGroupInfo() {
     return groupInfo;
   }
-  
-  @JsonProperty(JSON_PROPERTY_GROUP_INFO)
-  public void setGroupInfo_JsonNullable(JsonNullable<List<ISortedField>> groupInfo) {
-    this.groupInfo = groupInfo;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_GROUP_INFO)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setGroupInfo(List<ISortedField> groupInfo) {
-    this.groupInfo = JsonNullable.<List<ISortedField>>of(groupInfo);
+    this.groupInfo = groupInfo;
   }
 
 
   public ViewSO hidden(Boolean hidden) {
-    this.hidden = JsonNullable.<Boolean>of(hidden);
     
+    this.hidden = hidden;
     return this;
   }
 
@@ -410,32 +346,24 @@ public class ViewSO {
    * @return hidden
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getHidden() {
-        return hidden.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_HIDDEN)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getHidden_JsonNullable() {
+  public Boolean getHidden() {
     return hidden;
   }
-  
-  @JsonProperty(JSON_PROPERTY_HIDDEN)
-  public void setHidden_JsonNullable(JsonNullable<Boolean> hidden) {
-    this.hidden = hidden;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_HIDDEN)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setHidden(Boolean hidden) {
-    this.hidden = JsonNullable.<Boolean>of(hidden);
+    this.hidden = hidden;
   }
 
 
   public ViewSO id(String id) {
-    this.id = JsonNullable.<String>of(id);
     
+    this.id = id;
     return this;
   }
 
@@ -444,32 +372,24 @@ public class ViewSO {
    * @return id
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getId() {
-        return id.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getId_JsonNullable() {
+  public String getId() {
     return id;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ID)
-  public void setId_JsonNullable(JsonNullable<String> id) {
-    this.id = id;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setId(String id) {
-    this.id = JsonNullable.<String>of(id);
+    this.id = id;
   }
 
 
   public ViewSO lockInfo(IViewLockInfo lockInfo) {
-    this.lockInfo = JsonNullable.<IViewLockInfo>of(lockInfo);
     
+    this.lockInfo = lockInfo;
     return this;
   }
 
@@ -478,32 +398,24 @@ public class ViewSO {
    * @return lockInfo
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public IViewLockInfo getLockInfo() {
-        return lockInfo.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_LOCK_INFO)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<IViewLockInfo> getLockInfo_JsonNullable() {
+  public IViewLockInfo getLockInfo() {
     return lockInfo;
   }
-  
-  @JsonProperty(JSON_PROPERTY_LOCK_INFO)
-  public void setLockInfo_JsonNullable(JsonNullable<IViewLockInfo> lockInfo) {
-    this.lockInfo = lockInfo;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_LOCK_INFO)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setLockInfo(IViewLockInfo lockInfo) {
-    this.lockInfo = JsonNullable.<IViewLockInfo>of(lockInfo);
+    this.lockInfo = lockInfo;
   }
 
 
   public ViewSO name(String name) {
-    this.name = JsonNullable.<String>of(name);
     
+    this.name = name;
     return this;
   }
 
@@ -512,32 +424,24 @@ public class ViewSO {
    * @return name
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getName() {
-        return name.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_NAME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getName_JsonNullable() {
+  public String getName() {
     return name;
   }
-  
-  @JsonProperty(JSON_PROPERTY_NAME)
-  public void setName_JsonNullable(JsonNullable<String> name) {
-    this.name = name;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setName(String name) {
-    this.name = JsonNullable.<String>of(name);
+    this.name = name;
   }
 
 
   public ViewSO rowHeightLevel(Integer rowHeightLevel) {
-    this.rowHeightLevel = JsonNullable.<Integer>of(rowHeightLevel);
     
+    this.rowHeightLevel = rowHeightLevel;
     return this;
   }
 
@@ -546,44 +450,32 @@ public class ViewSO {
    * @return rowHeightLevel
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Integer getRowHeightLevel() {
-        return rowHeightLevel.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ROW_HEIGHT_LEVEL)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Integer> getRowHeightLevel_JsonNullable() {
+  public Integer getRowHeightLevel() {
     return rowHeightLevel;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ROW_HEIGHT_LEVEL)
-  public void setRowHeightLevel_JsonNullable(JsonNullable<Integer> rowHeightLevel) {
-    this.rowHeightLevel = rowHeightLevel;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ROW_HEIGHT_LEVEL)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setRowHeightLevel(Integer rowHeightLevel) {
-    this.rowHeightLevel = JsonNullable.<Integer>of(rowHeightLevel);
+    this.rowHeightLevel = rowHeightLevel;
   }
 
 
   public ViewSO rows(List<ViewRowSO> rows) {
-    this.rows = JsonNullable.<List<ViewRowSO>>of(rows);
     
+    this.rows = rows;
     return this;
   }
 
   public ViewSO addRowsItem(ViewRowSO rowsItem) {
-    if (this.rows == null || !this.rows.isPresent()) {
-      this.rows = JsonNullable.<List<ViewRowSO>>of(new ArrayList<>());
+    if (this.rows == null) {
+      this.rows = new ArrayList<>();
     }
-    try {
-      this.rows.get().add(rowsItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.rows.add(rowsItem);
     return this;
   }
 
@@ -592,32 +484,24 @@ public class ViewSO {
    * @return rows
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<ViewRowSO> getRows() {
-        return rows.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ROWS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<ViewRowSO>> getRows_JsonNullable() {
+  public List<ViewRowSO> getRows() {
     return rows;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ROWS)
-  public void setRows_JsonNullable(JsonNullable<List<ViewRowSO>> rows) {
-    this.rows = rows;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ROWS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setRows(List<ViewRowSO> rows) {
-    this.rows = JsonNullable.<List<ViewRowSO>>of(rows);
+    this.rows = rows;
   }
 
 
   public ViewSO sortInfo(ISortInfo sortInfo) {
-    this.sortInfo = JsonNullable.<ISortInfo>of(sortInfo);
     
+    this.sortInfo = sortInfo;
     return this;
   }
 
@@ -626,32 +510,24 @@ public class ViewSO {
    * @return sortInfo
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public ISortInfo getSortInfo() {
-        return sortInfo.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_SORT_INFO)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<ISortInfo> getSortInfo_JsonNullable() {
+  public ISortInfo getSortInfo() {
     return sortInfo;
   }
-  
-  @JsonProperty(JSON_PROPERTY_SORT_INFO)
-  public void setSortInfo_JsonNullable(JsonNullable<ISortInfo> sortInfo) {
-    this.sortInfo = sortInfo;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_SORT_INFO)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setSortInfo(ISortInfo sortInfo) {
-    this.sortInfo = JsonNullable.<ISortInfo>of(sortInfo);
+    this.sortInfo = sortInfo;
   }
 
 
   public ViewSO style(ViewStyleSo style) {
-    this.style = JsonNullable.<ViewStyleSo>of(style);
     
+    this.style = style;
     return this;
   }
 
@@ -660,32 +536,24 @@ public class ViewSO {
    * @return style
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public ViewStyleSo getStyle() {
-        return style.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_STYLE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<ViewStyleSo> getStyle_JsonNullable() {
+  public ViewStyleSo getStyle() {
     return style;
   }
-  
-  @JsonProperty(JSON_PROPERTY_STYLE)
-  public void setStyle_JsonNullable(JsonNullable<ViewStyleSo> style) {
-    this.style = style;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_STYLE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setStyle(ViewStyleSo style) {
-    this.style = JsonNullable.<ViewStyleSo>of(style);
+    this.style = style;
   }
 
 
   public ViewSO type(Long type) {
-    this.type = JsonNullable.<Long>of(type);
     
+    this.type = type;
     return this;
   }
 
@@ -695,26 +563,18 @@ public class ViewSO {
    * @return type
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getType() {
-        return type.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_TYPE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getType_JsonNullable() {
+  public Long getType() {
     return type;
   }
-  
-  @JsonProperty(JSON_PROPERTY_TYPE)
-  public void setType_JsonNullable(JsonNullable<Long> type) {
-    this.type = type;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_TYPE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setType(Long type) {
-    this.type = JsonNullable.<Long>of(type);
+    this.type = type;
   }
 
   @Override
@@ -726,39 +586,28 @@ public class ViewSO {
       return false;
     }
     ViewSO viewSO = (ViewSO) o;
-    return equalsNullable(this.autoHeadHeight, viewSO.autoHeadHeight) &&
-        equalsNullable(this.autoSave, viewSO.autoSave) &&
+    return Objects.equals(this.autoHeadHeight, viewSO.autoHeadHeight) &&
+        Objects.equals(this.autoSave, viewSO.autoSave) &&
         Objects.equals(this.columns, viewSO.columns) &&
-        equalsNullable(this.description, viewSO.description) &&
-        equalsNullable(this.displayHiddenColumnWithinMirror, viewSO.displayHiddenColumnWithinMirror) &&
-        equalsNullable(this.filterInfo, viewSO.filterInfo) &&
-        equalsNullable(this.frozenColumnCount, viewSO.frozenColumnCount) &&
-        equalsNullable(this.groupInfo, viewSO.groupInfo) &&
-        equalsNullable(this.hidden, viewSO.hidden) &&
-        equalsNullable(this.id, viewSO.id) &&
-        equalsNullable(this.lockInfo, viewSO.lockInfo) &&
-        equalsNullable(this.name, viewSO.name) &&
-        equalsNullable(this.rowHeightLevel, viewSO.rowHeightLevel) &&
-        equalsNullable(this.rows, viewSO.rows) &&
-        equalsNullable(this.sortInfo, viewSO.sortInfo) &&
-        equalsNullable(this.style, viewSO.style) &&
-        equalsNullable(this.type, viewSO.type);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+        Objects.equals(this.description, viewSO.description) &&
+        Objects.equals(this.displayHiddenColumnWithinMirror, viewSO.displayHiddenColumnWithinMirror) &&
+        Objects.equals(this.filterInfo, viewSO.filterInfo) &&
+        Objects.equals(this.frozenColumnCount, viewSO.frozenColumnCount) &&
+        Objects.equals(this.groupInfo, viewSO.groupInfo) &&
+        Objects.equals(this.hidden, viewSO.hidden) &&
+        Objects.equals(this.id, viewSO.id) &&
+        Objects.equals(this.lockInfo, viewSO.lockInfo) &&
+        Objects.equals(this.name, viewSO.name) &&
+        Objects.equals(this.rowHeightLevel, viewSO.rowHeightLevel) &&
+        Objects.equals(this.rows, viewSO.rows) &&
+        Objects.equals(this.sortInfo, viewSO.sortInfo) &&
+        Objects.equals(this.style, viewSO.style) &&
+        Objects.equals(this.type, viewSO.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(autoHeadHeight), hashCodeNullable(autoSave), columns, hashCodeNullable(description), hashCodeNullable(displayHiddenColumnWithinMirror), hashCodeNullable(filterInfo), hashCodeNullable(frozenColumnCount), hashCodeNullable(groupInfo), hashCodeNullable(hidden), hashCodeNullable(id), hashCodeNullable(lockInfo), hashCodeNullable(name), hashCodeNullable(rowHeightLevel), hashCodeNullable(rows), hashCodeNullable(sortInfo), hashCodeNullable(style), hashCodeNullable(type));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(autoHeadHeight, autoSave, columns, description, displayHiddenColumnWithinMirror, filterInfo, frozenColumnCount, groupInfo, hidden, id, lockInfo, name, rowHeightLevel, rows, sortInfo, style, type);
   }
 
   @Override

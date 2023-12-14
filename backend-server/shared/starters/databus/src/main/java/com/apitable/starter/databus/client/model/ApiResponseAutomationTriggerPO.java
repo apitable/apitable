@@ -24,10 +24,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -46,7 +42,7 @@ public class ApiResponseAutomationTriggerPO {
   private Integer code;
 
   public static final String JSON_PROPERTY_DATA = "data";
-  private JsonNullable<List<AutomationTriggerPO>> data = JsonNullable.<List<AutomationTriggerPO>>undefined();
+  private List<AutomationTriggerPO> data;
 
   public static final String JSON_PROPERTY_MESSAGE = "message";
   private String message;
@@ -85,20 +81,16 @@ public class ApiResponseAutomationTriggerPO {
 
 
   public ApiResponseAutomationTriggerPO data(List<AutomationTriggerPO> data) {
-    this.data = JsonNullable.<List<AutomationTriggerPO>>of(data);
     
+    this.data = data;
     return this;
   }
 
   public ApiResponseAutomationTriggerPO addDataItem(AutomationTriggerPO dataItem) {
-    if (this.data == null || !this.data.isPresent()) {
-      this.data = JsonNullable.<List<AutomationTriggerPO>>of(new ArrayList<>());
+    if (this.data == null) {
+      this.data = new ArrayList<>();
     }
-    try {
-      this.data.get().add(dataItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.data.add(dataItem);
     return this;
   }
 
@@ -107,26 +99,18 @@ public class ApiResponseAutomationTriggerPO {
    * @return data
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<AutomationTriggerPO> getData() {
-        return data.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_DATA)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<AutomationTriggerPO>> getData_JsonNullable() {
+  public List<AutomationTriggerPO> getData() {
     return data;
   }
-  
-  @JsonProperty(JSON_PROPERTY_DATA)
-  public void setData_JsonNullable(JsonNullable<List<AutomationTriggerPO>> data) {
-    this.data = data;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_DATA)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setData(List<AutomationTriggerPO> data) {
-    this.data = JsonNullable.<List<AutomationTriggerPO>>of(data);
+    this.data = data;
   }
 
 
@@ -191,25 +175,14 @@ public class ApiResponseAutomationTriggerPO {
     }
     ApiResponseAutomationTriggerPO apiResponseAutomationTriggerPO = (ApiResponseAutomationTriggerPO) o;
     return Objects.equals(this.code, apiResponseAutomationTriggerPO.code) &&
-        equalsNullable(this.data, apiResponseAutomationTriggerPO.data) &&
+        Objects.equals(this.data, apiResponseAutomationTriggerPO.data) &&
         Objects.equals(this.message, apiResponseAutomationTriggerPO.message) &&
         Objects.equals(this.success, apiResponseAutomationTriggerPO.success);
   }
 
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hash(code, hashCodeNullable(data), message, success);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(code, data, message, success);
   }
 
   @Override

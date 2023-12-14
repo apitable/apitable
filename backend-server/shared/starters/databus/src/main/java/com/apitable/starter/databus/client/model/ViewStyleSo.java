@@ -27,10 +27,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -58,59 +54,59 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class ViewStyleSo {
   public static final String JSON_PROPERTY_AUTO_TASK_LAYOUT = "autoTaskLayout";
-  private JsonNullable<Boolean> autoTaskLayout = JsonNullable.<Boolean>undefined();
+  private Boolean autoTaskLayout;
 
   public static final String JSON_PROPERTY_CARD_COUNT = "cardCount";
-  private JsonNullable<Integer> cardCount = JsonNullable.<Integer>undefined();
+  private Integer cardCount;
 
   public static final String JSON_PROPERTY_COLOR_OPTION = "colorOption";
-  private JsonNullable<GanttColorOption> colorOption = JsonNullable.<GanttColorOption>undefined();
+  private GanttColorOption colorOption;
 
   public static final String JSON_PROPERTY_COVER_FIELD_ID = "coverFieldId";
-  private JsonNullable<String> coverFieldId = JsonNullable.<String>undefined();
+  private String coverFieldId;
 
   public static final String JSON_PROPERTY_END_FIELD_ID = "endFieldId";
-  private JsonNullable<String> endFieldId = JsonNullable.<String>undefined();
+  private String endFieldId;
 
   public static final String JSON_PROPERTY_HIDDEN_GROUP_MAP = "hiddenGroupMap";
-  private JsonNullable<Map<String, Boolean>> hiddenGroupMap = JsonNullable.<Map<String, Boolean>>undefined();
+  private Map<String, Boolean> hiddenGroupMap;
 
   public static final String JSON_PROPERTY_HORIZONTAL = "horizontal";
-  private JsonNullable<Boolean> horizontal = JsonNullable.<Boolean>undefined();
+  private Boolean horizontal;
 
   public static final String JSON_PROPERTY_IS_AUTO_LAYOUT = "isAutoLayout";
-  private JsonNullable<Boolean> isAutoLayout = JsonNullable.<Boolean>undefined();
+  private Boolean isAutoLayout;
 
   public static final String JSON_PROPERTY_IS_COL_NAME_VISIBLE = "isColNameVisible";
-  private JsonNullable<Boolean> isColNameVisible = JsonNullable.<Boolean>undefined();
+  private Boolean isColNameVisible;
 
   public static final String JSON_PROPERTY_IS_COVER_FIT = "isCoverFit";
-  private JsonNullable<Boolean> isCoverFit = JsonNullable.<Boolean>undefined();
+  private Boolean isCoverFit;
 
   public static final String JSON_PROPERTY_KANBAN_FIELD_ID = "kanbanFieldId";
-  private JsonNullable<String> kanbanFieldId = JsonNullable.<String>undefined();
+  private String kanbanFieldId;
 
   public static final String JSON_PROPERTY_LAYOUT_TYPE = "layoutType";
-  private JsonNullable<AnyBaseField> layoutType = JsonNullable.<AnyBaseField>undefined();
+  private AnyBaseField layoutType;
 
   public static final String JSON_PROPERTY_LINK_FIELD_ID = "linkFieldId";
-  private JsonNullable<String> linkFieldId = JsonNullable.<String>undefined();
+  private String linkFieldId;
 
   public static final String JSON_PROPERTY_ONLY_CALC_WORK_DAY = "onlyCalcWorkDay";
-  private JsonNullable<Boolean> onlyCalcWorkDay = JsonNullable.<Boolean>undefined();
+  private Boolean onlyCalcWorkDay;
 
   public static final String JSON_PROPERTY_START_FIELD_ID = "startFieldId";
-  private JsonNullable<String> startFieldId = JsonNullable.<String>undefined();
+  private String startFieldId;
 
   public static final String JSON_PROPERTY_WORK_DAYS = "workDays";
-  private JsonNullable<List<Integer>> workDays = JsonNullable.<List<Integer>>undefined();
+  private List<Integer> workDays;
 
   public ViewStyleSo() {
   }
 
   public ViewStyleSo autoTaskLayout(Boolean autoTaskLayout) {
-    this.autoTaskLayout = JsonNullable.<Boolean>of(autoTaskLayout);
     
+    this.autoTaskLayout = autoTaskLayout;
     return this;
   }
 
@@ -119,32 +115,24 @@ public class ViewStyleSo {
    * @return autoTaskLayout
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getAutoTaskLayout() {
-        return autoTaskLayout.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_AUTO_TASK_LAYOUT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getAutoTaskLayout_JsonNullable() {
+  public Boolean getAutoTaskLayout() {
     return autoTaskLayout;
   }
-  
-  @JsonProperty(JSON_PROPERTY_AUTO_TASK_LAYOUT)
-  public void setAutoTaskLayout_JsonNullable(JsonNullable<Boolean> autoTaskLayout) {
-    this.autoTaskLayout = autoTaskLayout;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_AUTO_TASK_LAYOUT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setAutoTaskLayout(Boolean autoTaskLayout) {
-    this.autoTaskLayout = JsonNullable.<Boolean>of(autoTaskLayout);
+    this.autoTaskLayout = autoTaskLayout;
   }
 
 
   public ViewStyleSo cardCount(Integer cardCount) {
-    this.cardCount = JsonNullable.<Integer>of(cardCount);
     
+    this.cardCount = cardCount;
     return this;
   }
 
@@ -153,32 +141,24 @@ public class ViewStyleSo {
    * @return cardCount
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Integer getCardCount() {
-        return cardCount.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_CARD_COUNT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Integer> getCardCount_JsonNullable() {
+  public Integer getCardCount() {
     return cardCount;
   }
-  
-  @JsonProperty(JSON_PROPERTY_CARD_COUNT)
-  public void setCardCount_JsonNullable(JsonNullable<Integer> cardCount) {
-    this.cardCount = cardCount;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_CARD_COUNT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setCardCount(Integer cardCount) {
-    this.cardCount = JsonNullable.<Integer>of(cardCount);
+    this.cardCount = cardCount;
   }
 
 
   public ViewStyleSo colorOption(GanttColorOption colorOption) {
-    this.colorOption = JsonNullable.<GanttColorOption>of(colorOption);
     
+    this.colorOption = colorOption;
     return this;
   }
 
@@ -187,32 +167,24 @@ public class ViewStyleSo {
    * @return colorOption
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public GanttColorOption getColorOption() {
-        return colorOption.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_COLOR_OPTION)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<GanttColorOption> getColorOption_JsonNullable() {
+  public GanttColorOption getColorOption() {
     return colorOption;
   }
-  
-  @JsonProperty(JSON_PROPERTY_COLOR_OPTION)
-  public void setColorOption_JsonNullable(JsonNullable<GanttColorOption> colorOption) {
-    this.colorOption = colorOption;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_COLOR_OPTION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setColorOption(GanttColorOption colorOption) {
-    this.colorOption = JsonNullable.<GanttColorOption>of(colorOption);
+    this.colorOption = colorOption;
   }
 
 
   public ViewStyleSo coverFieldId(String coverFieldId) {
-    this.coverFieldId = JsonNullable.<String>of(coverFieldId);
     
+    this.coverFieldId = coverFieldId;
     return this;
   }
 
@@ -221,32 +193,24 @@ public class ViewStyleSo {
    * @return coverFieldId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getCoverFieldId() {
-        return coverFieldId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_COVER_FIELD_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getCoverFieldId_JsonNullable() {
+  public String getCoverFieldId() {
     return coverFieldId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_COVER_FIELD_ID)
-  public void setCoverFieldId_JsonNullable(JsonNullable<String> coverFieldId) {
-    this.coverFieldId = coverFieldId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_COVER_FIELD_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setCoverFieldId(String coverFieldId) {
-    this.coverFieldId = JsonNullable.<String>of(coverFieldId);
+    this.coverFieldId = coverFieldId;
   }
 
 
   public ViewStyleSo endFieldId(String endFieldId) {
-    this.endFieldId = JsonNullable.<String>of(endFieldId);
     
+    this.endFieldId = endFieldId;
     return this;
   }
 
@@ -255,44 +219,32 @@ public class ViewStyleSo {
    * @return endFieldId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getEndFieldId() {
-        return endFieldId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_END_FIELD_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getEndFieldId_JsonNullable() {
+  public String getEndFieldId() {
     return endFieldId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_END_FIELD_ID)
-  public void setEndFieldId_JsonNullable(JsonNullable<String> endFieldId) {
-    this.endFieldId = endFieldId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_END_FIELD_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setEndFieldId(String endFieldId) {
-    this.endFieldId = JsonNullable.<String>of(endFieldId);
+    this.endFieldId = endFieldId;
   }
 
 
   public ViewStyleSo hiddenGroupMap(Map<String, Boolean> hiddenGroupMap) {
-    this.hiddenGroupMap = JsonNullable.<Map<String, Boolean>>of(hiddenGroupMap);
     
+    this.hiddenGroupMap = hiddenGroupMap;
     return this;
   }
 
   public ViewStyleSo putHiddenGroupMapItem(String key, Boolean hiddenGroupMapItem) {
-    if (this.hiddenGroupMap == null || !this.hiddenGroupMap.isPresent()) {
-      this.hiddenGroupMap = JsonNullable.<Map<String, Boolean>>of(new HashMap<>());
+    if (this.hiddenGroupMap == null) {
+      this.hiddenGroupMap = new HashMap<>();
     }
-    try {
-      this.hiddenGroupMap.get().put(key, hiddenGroupMapItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.hiddenGroupMap.put(key, hiddenGroupMapItem);
     return this;
   }
 
@@ -301,32 +253,24 @@ public class ViewStyleSo {
    * @return hiddenGroupMap
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Map<String, Boolean> getHiddenGroupMap() {
-        return hiddenGroupMap.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_HIDDEN_GROUP_MAP)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Map<String, Boolean>> getHiddenGroupMap_JsonNullable() {
+  public Map<String, Boolean> getHiddenGroupMap() {
     return hiddenGroupMap;
   }
-  
-  @JsonProperty(JSON_PROPERTY_HIDDEN_GROUP_MAP)
-  public void setHiddenGroupMap_JsonNullable(JsonNullable<Map<String, Boolean>> hiddenGroupMap) {
-    this.hiddenGroupMap = hiddenGroupMap;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_HIDDEN_GROUP_MAP)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setHiddenGroupMap(Map<String, Boolean> hiddenGroupMap) {
-    this.hiddenGroupMap = JsonNullable.<Map<String, Boolean>>of(hiddenGroupMap);
+    this.hiddenGroupMap = hiddenGroupMap;
   }
 
 
   public ViewStyleSo horizontal(Boolean horizontal) {
-    this.horizontal = JsonNullable.<Boolean>of(horizontal);
     
+    this.horizontal = horizontal;
     return this;
   }
 
@@ -335,32 +279,24 @@ public class ViewStyleSo {
    * @return horizontal
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getHorizontal() {
-        return horizontal.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_HORIZONTAL)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getHorizontal_JsonNullable() {
+  public Boolean getHorizontal() {
     return horizontal;
   }
-  
-  @JsonProperty(JSON_PROPERTY_HORIZONTAL)
-  public void setHorizontal_JsonNullable(JsonNullable<Boolean> horizontal) {
-    this.horizontal = horizontal;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_HORIZONTAL)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setHorizontal(Boolean horizontal) {
-    this.horizontal = JsonNullable.<Boolean>of(horizontal);
+    this.horizontal = horizontal;
   }
 
 
   public ViewStyleSo isAutoLayout(Boolean isAutoLayout) {
-    this.isAutoLayout = JsonNullable.<Boolean>of(isAutoLayout);
     
+    this.isAutoLayout = isAutoLayout;
     return this;
   }
 
@@ -369,32 +305,24 @@ public class ViewStyleSo {
    * @return isAutoLayout
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getIsAutoLayout() {
-        return isAutoLayout.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_IS_AUTO_LAYOUT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getIsAutoLayout_JsonNullable() {
+  public Boolean getIsAutoLayout() {
     return isAutoLayout;
   }
-  
-  @JsonProperty(JSON_PROPERTY_IS_AUTO_LAYOUT)
-  public void setIsAutoLayout_JsonNullable(JsonNullable<Boolean> isAutoLayout) {
-    this.isAutoLayout = isAutoLayout;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_IS_AUTO_LAYOUT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIsAutoLayout(Boolean isAutoLayout) {
-    this.isAutoLayout = JsonNullable.<Boolean>of(isAutoLayout);
+    this.isAutoLayout = isAutoLayout;
   }
 
 
   public ViewStyleSo isColNameVisible(Boolean isColNameVisible) {
-    this.isColNameVisible = JsonNullable.<Boolean>of(isColNameVisible);
     
+    this.isColNameVisible = isColNameVisible;
     return this;
   }
 
@@ -403,32 +331,24 @@ public class ViewStyleSo {
    * @return isColNameVisible
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getIsColNameVisible() {
-        return isColNameVisible.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_IS_COL_NAME_VISIBLE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getIsColNameVisible_JsonNullable() {
+  public Boolean getIsColNameVisible() {
     return isColNameVisible;
   }
-  
-  @JsonProperty(JSON_PROPERTY_IS_COL_NAME_VISIBLE)
-  public void setIsColNameVisible_JsonNullable(JsonNullable<Boolean> isColNameVisible) {
-    this.isColNameVisible = isColNameVisible;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_IS_COL_NAME_VISIBLE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIsColNameVisible(Boolean isColNameVisible) {
-    this.isColNameVisible = JsonNullable.<Boolean>of(isColNameVisible);
+    this.isColNameVisible = isColNameVisible;
   }
 
 
   public ViewStyleSo isCoverFit(Boolean isCoverFit) {
-    this.isCoverFit = JsonNullable.<Boolean>of(isCoverFit);
     
+    this.isCoverFit = isCoverFit;
     return this;
   }
 
@@ -437,32 +357,24 @@ public class ViewStyleSo {
    * @return isCoverFit
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getIsCoverFit() {
-        return isCoverFit.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_IS_COVER_FIT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getIsCoverFit_JsonNullable() {
+  public Boolean getIsCoverFit() {
     return isCoverFit;
   }
-  
-  @JsonProperty(JSON_PROPERTY_IS_COVER_FIT)
-  public void setIsCoverFit_JsonNullable(JsonNullable<Boolean> isCoverFit) {
-    this.isCoverFit = isCoverFit;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_IS_COVER_FIT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIsCoverFit(Boolean isCoverFit) {
-    this.isCoverFit = JsonNullable.<Boolean>of(isCoverFit);
+    this.isCoverFit = isCoverFit;
   }
 
 
   public ViewStyleSo kanbanFieldId(String kanbanFieldId) {
-    this.kanbanFieldId = JsonNullable.<String>of(kanbanFieldId);
     
+    this.kanbanFieldId = kanbanFieldId;
     return this;
   }
 
@@ -471,32 +383,24 @@ public class ViewStyleSo {
    * @return kanbanFieldId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getKanbanFieldId() {
-        return kanbanFieldId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_KANBAN_FIELD_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getKanbanFieldId_JsonNullable() {
+  public String getKanbanFieldId() {
     return kanbanFieldId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_KANBAN_FIELD_ID)
-  public void setKanbanFieldId_JsonNullable(JsonNullable<String> kanbanFieldId) {
-    this.kanbanFieldId = kanbanFieldId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_KANBAN_FIELD_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setKanbanFieldId(String kanbanFieldId) {
-    this.kanbanFieldId = JsonNullable.<String>of(kanbanFieldId);
+    this.kanbanFieldId = kanbanFieldId;
   }
 
 
   public ViewStyleSo layoutType(AnyBaseField layoutType) {
-    this.layoutType = JsonNullable.<AnyBaseField>of(layoutType);
     
+    this.layoutType = layoutType;
     return this;
   }
 
@@ -505,32 +409,24 @@ public class ViewStyleSo {
    * @return layoutType
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public AnyBaseField getLayoutType() {
-        return layoutType.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_LAYOUT_TYPE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<AnyBaseField> getLayoutType_JsonNullable() {
+  public AnyBaseField getLayoutType() {
     return layoutType;
   }
-  
-  @JsonProperty(JSON_PROPERTY_LAYOUT_TYPE)
-  public void setLayoutType_JsonNullable(JsonNullable<AnyBaseField> layoutType) {
-    this.layoutType = layoutType;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_LAYOUT_TYPE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setLayoutType(AnyBaseField layoutType) {
-    this.layoutType = JsonNullable.<AnyBaseField>of(layoutType);
+    this.layoutType = layoutType;
   }
 
 
   public ViewStyleSo linkFieldId(String linkFieldId) {
-    this.linkFieldId = JsonNullable.<String>of(linkFieldId);
     
+    this.linkFieldId = linkFieldId;
     return this;
   }
 
@@ -539,32 +435,24 @@ public class ViewStyleSo {
    * @return linkFieldId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getLinkFieldId() {
-        return linkFieldId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_LINK_FIELD_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getLinkFieldId_JsonNullable() {
+  public String getLinkFieldId() {
     return linkFieldId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_LINK_FIELD_ID)
-  public void setLinkFieldId_JsonNullable(JsonNullable<String> linkFieldId) {
-    this.linkFieldId = linkFieldId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_LINK_FIELD_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setLinkFieldId(String linkFieldId) {
-    this.linkFieldId = JsonNullable.<String>of(linkFieldId);
+    this.linkFieldId = linkFieldId;
   }
 
 
   public ViewStyleSo onlyCalcWorkDay(Boolean onlyCalcWorkDay) {
-    this.onlyCalcWorkDay = JsonNullable.<Boolean>of(onlyCalcWorkDay);
     
+    this.onlyCalcWorkDay = onlyCalcWorkDay;
     return this;
   }
 
@@ -573,32 +461,24 @@ public class ViewStyleSo {
    * @return onlyCalcWorkDay
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getOnlyCalcWorkDay() {
-        return onlyCalcWorkDay.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ONLY_CALC_WORK_DAY)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getOnlyCalcWorkDay_JsonNullable() {
+  public Boolean getOnlyCalcWorkDay() {
     return onlyCalcWorkDay;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ONLY_CALC_WORK_DAY)
-  public void setOnlyCalcWorkDay_JsonNullable(JsonNullable<Boolean> onlyCalcWorkDay) {
-    this.onlyCalcWorkDay = onlyCalcWorkDay;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ONLY_CALC_WORK_DAY)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setOnlyCalcWorkDay(Boolean onlyCalcWorkDay) {
-    this.onlyCalcWorkDay = JsonNullable.<Boolean>of(onlyCalcWorkDay);
+    this.onlyCalcWorkDay = onlyCalcWorkDay;
   }
 
 
   public ViewStyleSo startFieldId(String startFieldId) {
-    this.startFieldId = JsonNullable.<String>of(startFieldId);
     
+    this.startFieldId = startFieldId;
     return this;
   }
 
@@ -607,44 +487,32 @@ public class ViewStyleSo {
    * @return startFieldId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getStartFieldId() {
-        return startFieldId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_START_FIELD_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getStartFieldId_JsonNullable() {
+  public String getStartFieldId() {
     return startFieldId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_START_FIELD_ID)
-  public void setStartFieldId_JsonNullable(JsonNullable<String> startFieldId) {
-    this.startFieldId = startFieldId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_START_FIELD_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setStartFieldId(String startFieldId) {
-    this.startFieldId = JsonNullable.<String>of(startFieldId);
+    this.startFieldId = startFieldId;
   }
 
 
   public ViewStyleSo workDays(List<Integer> workDays) {
-    this.workDays = JsonNullable.<List<Integer>>of(workDays);
     
+    this.workDays = workDays;
     return this;
   }
 
   public ViewStyleSo addWorkDaysItem(Integer workDaysItem) {
-    if (this.workDays == null || !this.workDays.isPresent()) {
-      this.workDays = JsonNullable.<List<Integer>>of(new ArrayList<>());
+    if (this.workDays == null) {
+      this.workDays = new ArrayList<>();
     }
-    try {
-      this.workDays.get().add(workDaysItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.workDays.add(workDaysItem);
     return this;
   }
 
@@ -653,26 +521,18 @@ public class ViewStyleSo {
    * @return workDays
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<Integer> getWorkDays() {
-        return workDays.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_WORK_DAYS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<Integer>> getWorkDays_JsonNullable() {
+  public List<Integer> getWorkDays() {
     return workDays;
   }
-  
-  @JsonProperty(JSON_PROPERTY_WORK_DAYS)
-  public void setWorkDays_JsonNullable(JsonNullable<List<Integer>> workDays) {
-    this.workDays = workDays;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_WORK_DAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setWorkDays(List<Integer> workDays) {
-    this.workDays = JsonNullable.<List<Integer>>of(workDays);
+    this.workDays = workDays;
   }
 
   @Override
@@ -684,38 +544,27 @@ public class ViewStyleSo {
       return false;
     }
     ViewStyleSo viewStyleSo = (ViewStyleSo) o;
-    return equalsNullable(this.autoTaskLayout, viewStyleSo.autoTaskLayout) &&
-        equalsNullable(this.cardCount, viewStyleSo.cardCount) &&
-        equalsNullable(this.colorOption, viewStyleSo.colorOption) &&
-        equalsNullable(this.coverFieldId, viewStyleSo.coverFieldId) &&
-        equalsNullable(this.endFieldId, viewStyleSo.endFieldId) &&
-        equalsNullable(this.hiddenGroupMap, viewStyleSo.hiddenGroupMap) &&
-        equalsNullable(this.horizontal, viewStyleSo.horizontal) &&
-        equalsNullable(this.isAutoLayout, viewStyleSo.isAutoLayout) &&
-        equalsNullable(this.isColNameVisible, viewStyleSo.isColNameVisible) &&
-        equalsNullable(this.isCoverFit, viewStyleSo.isCoverFit) &&
-        equalsNullable(this.kanbanFieldId, viewStyleSo.kanbanFieldId) &&
-        equalsNullable(this.layoutType, viewStyleSo.layoutType) &&
-        equalsNullable(this.linkFieldId, viewStyleSo.linkFieldId) &&
-        equalsNullable(this.onlyCalcWorkDay, viewStyleSo.onlyCalcWorkDay) &&
-        equalsNullable(this.startFieldId, viewStyleSo.startFieldId) &&
-        equalsNullable(this.workDays, viewStyleSo.workDays);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+    return Objects.equals(this.autoTaskLayout, viewStyleSo.autoTaskLayout) &&
+        Objects.equals(this.cardCount, viewStyleSo.cardCount) &&
+        Objects.equals(this.colorOption, viewStyleSo.colorOption) &&
+        Objects.equals(this.coverFieldId, viewStyleSo.coverFieldId) &&
+        Objects.equals(this.endFieldId, viewStyleSo.endFieldId) &&
+        Objects.equals(this.hiddenGroupMap, viewStyleSo.hiddenGroupMap) &&
+        Objects.equals(this.horizontal, viewStyleSo.horizontal) &&
+        Objects.equals(this.isAutoLayout, viewStyleSo.isAutoLayout) &&
+        Objects.equals(this.isColNameVisible, viewStyleSo.isColNameVisible) &&
+        Objects.equals(this.isCoverFit, viewStyleSo.isCoverFit) &&
+        Objects.equals(this.kanbanFieldId, viewStyleSo.kanbanFieldId) &&
+        Objects.equals(this.layoutType, viewStyleSo.layoutType) &&
+        Objects.equals(this.linkFieldId, viewStyleSo.linkFieldId) &&
+        Objects.equals(this.onlyCalcWorkDay, viewStyleSo.onlyCalcWorkDay) &&
+        Objects.equals(this.startFieldId, viewStyleSo.startFieldId) &&
+        Objects.equals(this.workDays, viewStyleSo.workDays);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(autoTaskLayout), hashCodeNullable(cardCount), hashCodeNullable(colorOption), hashCodeNullable(coverFieldId), hashCodeNullable(endFieldId), hashCodeNullable(hiddenGroupMap), hashCodeNullable(horizontal), hashCodeNullable(isAutoLayout), hashCodeNullable(isColNameVisible), hashCodeNullable(isCoverFit), hashCodeNullable(kanbanFieldId), hashCodeNullable(layoutType), hashCodeNullable(linkFieldId), hashCodeNullable(onlyCalcWorkDay), hashCodeNullable(startFieldId), hashCodeNullable(workDays));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(autoTaskLayout, cardCount, colorOption, coverFieldId, endFieldId, hiddenGroupMap, horizontal, isAutoLayout, isColNameVisible, isCoverFit, kanbanFieldId, layoutType, linkFieldId, onlyCalcWorkDay, startFieldId, workDays);
   }
 
   @Override

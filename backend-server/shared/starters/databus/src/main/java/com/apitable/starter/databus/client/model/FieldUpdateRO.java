@@ -22,10 +22,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -42,7 +38,7 @@ public class FieldUpdateRO {
   private Map<String, Object> fields = new HashMap<>();
 
   public static final String JSON_PROPERTY_RECORD_ID = "recordId";
-  private JsonNullable<String> recordId = JsonNullable.<String>undefined();
+  private String recordId;
 
   public FieldUpdateRO() {
   }
@@ -79,8 +75,8 @@ public class FieldUpdateRO {
 
 
   public FieldUpdateRO recordId(String recordId) {
-    this.recordId = JsonNullable.<String>of(recordId);
     
+    this.recordId = recordId;
     return this;
   }
 
@@ -89,26 +85,18 @@ public class FieldUpdateRO {
    * @return recordId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getRecordId() {
-        return recordId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_RECORD_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getRecordId_JsonNullable() {
+  public String getRecordId() {
     return recordId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_RECORD_ID)
-  public void setRecordId_JsonNullable(JsonNullable<String> recordId) {
-    this.recordId = recordId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_RECORD_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setRecordId(String recordId) {
-    this.recordId = JsonNullable.<String>of(recordId);
+    this.recordId = recordId;
   }
 
   @Override
@@ -121,23 +109,12 @@ public class FieldUpdateRO {
     }
     FieldUpdateRO fieldUpdateRO = (FieldUpdateRO) o;
     return Objects.equals(this.fields, fieldUpdateRO.fields) &&
-        equalsNullable(this.recordId, fieldUpdateRO.recordId);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+        Objects.equals(this.recordId, fieldUpdateRO.recordId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(fields, hashCodeNullable(recordId));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(fields, recordId);
   }
 
   @Override

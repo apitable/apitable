@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -48,50 +44,50 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class UnitSO {
   public static final String JSON_PROPERTY_AVATAR = "avatar";
-  private JsonNullable<String> avatar = JsonNullable.<String>undefined();
+  private String avatar;
 
   public static final String JSON_PROPERTY_AVATAR_COLOR = "avatarColor";
-  private JsonNullable<Integer> avatarColor = JsonNullable.<Integer>undefined();
+  private Integer avatarColor;
 
   public static final String JSON_PROPERTY_IS_ACTIVE = "isActive";
-  private JsonNullable<Integer> isActive = JsonNullable.<Integer>undefined();
+  private Integer isActive;
 
   public static final String JSON_PROPERTY_IS_DELETED = "isDeleted";
-  private JsonNullable<Integer> isDeleted = JsonNullable.<Integer>undefined();
+  private Integer isDeleted;
 
   public static final String JSON_PROPERTY_IS_MEMBER_NAME_MODIFIED = "isMemberNameModified";
-  private JsonNullable<Boolean> isMemberNameModified = JsonNullable.<Boolean>undefined();
+  private Boolean isMemberNameModified;
 
   public static final String JSON_PROPERTY_IS_NICK_NAME_MODIFIED = "isNickNameModified";
-  private JsonNullable<Boolean> isNickNameModified = JsonNullable.<Boolean>undefined();
+  private Boolean isNickNameModified;
 
   public static final String JSON_PROPERTY_NAME = "name";
-  private JsonNullable<String> name = JsonNullable.<String>undefined();
+  private String name;
 
   public static final String JSON_PROPERTY_NICK_NAME = "nickName";
-  private JsonNullable<String> nickName = JsonNullable.<String>undefined();
+  private String nickName;
 
   public static final String JSON_PROPERTY_ORIGINAL_UNIT_ID = "originalUnitId";
-  private JsonNullable<String> originalUnitId = JsonNullable.<String>undefined();
+  private String originalUnitId;
 
   public static final String JSON_PROPERTY_TYPE = "type";
-  private JsonNullable<Integer> type = JsonNullable.<Integer>undefined();
+  private Integer type;
 
   public static final String JSON_PROPERTY_UNIT_ID = "unitId";
-  private JsonNullable<String> unitId = JsonNullable.<String>undefined();
+  private String unitId;
 
   public static final String JSON_PROPERTY_USER_ID = "userId";
-  private JsonNullable<String> userId = JsonNullable.<String>undefined();
+  private String userId;
 
   public static final String JSON_PROPERTY_UUID = "uuid";
-  private JsonNullable<String> uuid = JsonNullable.<String>undefined();
+  private String uuid;
 
   public UnitSO() {
   }
 
   public UnitSO avatar(String avatar) {
-    this.avatar = JsonNullable.<String>of(avatar);
     
+    this.avatar = avatar;
     return this;
   }
 
@@ -100,32 +96,24 @@ public class UnitSO {
    * @return avatar
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getAvatar() {
-        return avatar.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_AVATAR)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getAvatar_JsonNullable() {
+  public String getAvatar() {
     return avatar;
   }
-  
-  @JsonProperty(JSON_PROPERTY_AVATAR)
-  public void setAvatar_JsonNullable(JsonNullable<String> avatar) {
-    this.avatar = avatar;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_AVATAR)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setAvatar(String avatar) {
-    this.avatar = JsonNullable.<String>of(avatar);
+    this.avatar = avatar;
   }
 
 
   public UnitSO avatarColor(Integer avatarColor) {
-    this.avatarColor = JsonNullable.<Integer>of(avatarColor);
     
+    this.avatarColor = avatarColor;
     return this;
   }
 
@@ -134,32 +122,24 @@ public class UnitSO {
    * @return avatarColor
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Integer getAvatarColor() {
-        return avatarColor.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_AVATAR_COLOR)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Integer> getAvatarColor_JsonNullable() {
+  public Integer getAvatarColor() {
     return avatarColor;
   }
-  
-  @JsonProperty(JSON_PROPERTY_AVATAR_COLOR)
-  public void setAvatarColor_JsonNullable(JsonNullable<Integer> avatarColor) {
-    this.avatarColor = avatarColor;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_AVATAR_COLOR)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setAvatarColor(Integer avatarColor) {
-    this.avatarColor = JsonNullable.<Integer>of(avatarColor);
+    this.avatarColor = avatarColor;
   }
 
 
   public UnitSO isActive(Integer isActive) {
-    this.isActive = JsonNullable.<Integer>of(isActive);
     
+    this.isActive = isActive;
     return this;
   }
 
@@ -169,32 +149,24 @@ public class UnitSO {
    * @return isActive
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Integer getIsActive() {
-        return isActive.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_IS_ACTIVE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Integer> getIsActive_JsonNullable() {
+  public Integer getIsActive() {
     return isActive;
   }
-  
-  @JsonProperty(JSON_PROPERTY_IS_ACTIVE)
-  public void setIsActive_JsonNullable(JsonNullable<Integer> isActive) {
-    this.isActive = isActive;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_IS_ACTIVE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIsActive(Integer isActive) {
-    this.isActive = JsonNullable.<Integer>of(isActive);
+    this.isActive = isActive;
   }
 
 
   public UnitSO isDeleted(Integer isDeleted) {
-    this.isDeleted = JsonNullable.<Integer>of(isDeleted);
     
+    this.isDeleted = isDeleted;
     return this;
   }
 
@@ -204,32 +176,24 @@ public class UnitSO {
    * @return isDeleted
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Integer getIsDeleted() {
-        return isDeleted.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_IS_DELETED)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Integer> getIsDeleted_JsonNullable() {
+  public Integer getIsDeleted() {
     return isDeleted;
   }
-  
-  @JsonProperty(JSON_PROPERTY_IS_DELETED)
-  public void setIsDeleted_JsonNullable(JsonNullable<Integer> isDeleted) {
-    this.isDeleted = isDeleted;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_IS_DELETED)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIsDeleted(Integer isDeleted) {
-    this.isDeleted = JsonNullable.<Integer>of(isDeleted);
+    this.isDeleted = isDeleted;
   }
 
 
   public UnitSO isMemberNameModified(Boolean isMemberNameModified) {
-    this.isMemberNameModified = JsonNullable.<Boolean>of(isMemberNameModified);
     
+    this.isMemberNameModified = isMemberNameModified;
     return this;
   }
 
@@ -238,32 +202,24 @@ public class UnitSO {
    * @return isMemberNameModified
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getIsMemberNameModified() {
-        return isMemberNameModified.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_IS_MEMBER_NAME_MODIFIED)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getIsMemberNameModified_JsonNullable() {
+  public Boolean getIsMemberNameModified() {
     return isMemberNameModified;
   }
-  
-  @JsonProperty(JSON_PROPERTY_IS_MEMBER_NAME_MODIFIED)
-  public void setIsMemberNameModified_JsonNullable(JsonNullable<Boolean> isMemberNameModified) {
-    this.isMemberNameModified = isMemberNameModified;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_IS_MEMBER_NAME_MODIFIED)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIsMemberNameModified(Boolean isMemberNameModified) {
-    this.isMemberNameModified = JsonNullable.<Boolean>of(isMemberNameModified);
+    this.isMemberNameModified = isMemberNameModified;
   }
 
 
   public UnitSO isNickNameModified(Boolean isNickNameModified) {
-    this.isNickNameModified = JsonNullable.<Boolean>of(isNickNameModified);
     
+    this.isNickNameModified = isNickNameModified;
     return this;
   }
 
@@ -272,32 +228,24 @@ public class UnitSO {
    * @return isNickNameModified
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getIsNickNameModified() {
-        return isNickNameModified.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_IS_NICK_NAME_MODIFIED)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getIsNickNameModified_JsonNullable() {
+  public Boolean getIsNickNameModified() {
     return isNickNameModified;
   }
-  
-  @JsonProperty(JSON_PROPERTY_IS_NICK_NAME_MODIFIED)
-  public void setIsNickNameModified_JsonNullable(JsonNullable<Boolean> isNickNameModified) {
-    this.isNickNameModified = isNickNameModified;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_IS_NICK_NAME_MODIFIED)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIsNickNameModified(Boolean isNickNameModified) {
-    this.isNickNameModified = JsonNullable.<Boolean>of(isNickNameModified);
+    this.isNickNameModified = isNickNameModified;
   }
 
 
   public UnitSO name(String name) {
-    this.name = JsonNullable.<String>of(name);
     
+    this.name = name;
     return this;
   }
 
@@ -306,32 +254,24 @@ public class UnitSO {
    * @return name
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getName() {
-        return name.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_NAME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getName_JsonNullable() {
+  public String getName() {
     return name;
   }
-  
-  @JsonProperty(JSON_PROPERTY_NAME)
-  public void setName_JsonNullable(JsonNullable<String> name) {
-    this.name = name;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setName(String name) {
-    this.name = JsonNullable.<String>of(name);
+    this.name = name;
   }
 
 
   public UnitSO nickName(String nickName) {
-    this.nickName = JsonNullable.<String>of(nickName);
     
+    this.nickName = nickName;
     return this;
   }
 
@@ -340,32 +280,24 @@ public class UnitSO {
    * @return nickName
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getNickName() {
-        return nickName.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_NICK_NAME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getNickName_JsonNullable() {
+  public String getNickName() {
     return nickName;
   }
-  
-  @JsonProperty(JSON_PROPERTY_NICK_NAME)
-  public void setNickName_JsonNullable(JsonNullable<String> nickName) {
-    this.nickName = nickName;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_NICK_NAME)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setNickName(String nickName) {
-    this.nickName = JsonNullable.<String>of(nickName);
+    this.nickName = nickName;
   }
 
 
   public UnitSO originalUnitId(String originalUnitId) {
-    this.originalUnitId = JsonNullable.<String>of(originalUnitId);
     
+    this.originalUnitId = originalUnitId;
     return this;
   }
 
@@ -374,32 +306,24 @@ public class UnitSO {
    * @return originalUnitId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getOriginalUnitId() {
-        return originalUnitId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ORIGINAL_UNIT_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getOriginalUnitId_JsonNullable() {
+  public String getOriginalUnitId() {
     return originalUnitId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ORIGINAL_UNIT_ID)
-  public void setOriginalUnitId_JsonNullable(JsonNullable<String> originalUnitId) {
-    this.originalUnitId = originalUnitId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ORIGINAL_UNIT_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setOriginalUnitId(String originalUnitId) {
-    this.originalUnitId = JsonNullable.<String>of(originalUnitId);
+    this.originalUnitId = originalUnitId;
   }
 
 
   public UnitSO type(Integer type) {
-    this.type = JsonNullable.<Integer>of(type);
     
+    this.type = type;
     return this;
   }
 
@@ -409,32 +333,24 @@ public class UnitSO {
    * @return type
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Integer getType() {
-        return type.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_TYPE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Integer> getType_JsonNullable() {
+  public Integer getType() {
     return type;
   }
-  
-  @JsonProperty(JSON_PROPERTY_TYPE)
-  public void setType_JsonNullable(JsonNullable<Integer> type) {
-    this.type = type;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_TYPE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setType(Integer type) {
-    this.type = JsonNullable.<Integer>of(type);
+    this.type = type;
   }
 
 
   public UnitSO unitId(String unitId) {
-    this.unitId = JsonNullable.<String>of(unitId);
     
+    this.unitId = unitId;
     return this;
   }
 
@@ -443,32 +359,24 @@ public class UnitSO {
    * @return unitId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getUnitId() {
-        return unitId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_UNIT_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getUnitId_JsonNullable() {
+  public String getUnitId() {
     return unitId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_UNIT_ID)
-  public void setUnitId_JsonNullable(JsonNullable<String> unitId) {
-    this.unitId = unitId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_UNIT_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setUnitId(String unitId) {
-    this.unitId = JsonNullable.<String>of(unitId);
+    this.unitId = unitId;
   }
 
 
   public UnitSO userId(String userId) {
-    this.userId = JsonNullable.<String>of(userId);
     
+    this.userId = userId;
     return this;
   }
 
@@ -477,32 +385,24 @@ public class UnitSO {
    * @return userId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getUserId() {
-        return userId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_USER_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getUserId_JsonNullable() {
+  public String getUserId() {
     return userId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_USER_ID)
-  public void setUserId_JsonNullable(JsonNullable<String> userId) {
-    this.userId = userId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_USER_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setUserId(String userId) {
-    this.userId = JsonNullable.<String>of(userId);
+    this.userId = userId;
   }
 
 
   public UnitSO uuid(String uuid) {
-    this.uuid = JsonNullable.<String>of(uuid);
     
+    this.uuid = uuid;
     return this;
   }
 
@@ -511,26 +411,18 @@ public class UnitSO {
    * @return uuid
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getUuid() {
-        return uuid.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_UUID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getUuid_JsonNullable() {
+  public String getUuid() {
     return uuid;
   }
-  
-  @JsonProperty(JSON_PROPERTY_UUID)
-  public void setUuid_JsonNullable(JsonNullable<String> uuid) {
-    this.uuid = uuid;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_UUID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setUuid(String uuid) {
-    this.uuid = JsonNullable.<String>of(uuid);
+    this.uuid = uuid;
   }
 
   @Override
@@ -542,35 +434,24 @@ public class UnitSO {
       return false;
     }
     UnitSO unitSO = (UnitSO) o;
-    return equalsNullable(this.avatar, unitSO.avatar) &&
-        equalsNullable(this.avatarColor, unitSO.avatarColor) &&
-        equalsNullable(this.isActive, unitSO.isActive) &&
-        equalsNullable(this.isDeleted, unitSO.isDeleted) &&
-        equalsNullable(this.isMemberNameModified, unitSO.isMemberNameModified) &&
-        equalsNullable(this.isNickNameModified, unitSO.isNickNameModified) &&
-        equalsNullable(this.name, unitSO.name) &&
-        equalsNullable(this.nickName, unitSO.nickName) &&
-        equalsNullable(this.originalUnitId, unitSO.originalUnitId) &&
-        equalsNullable(this.type, unitSO.type) &&
-        equalsNullable(this.unitId, unitSO.unitId) &&
-        equalsNullable(this.userId, unitSO.userId) &&
-        equalsNullable(this.uuid, unitSO.uuid);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+    return Objects.equals(this.avatar, unitSO.avatar) &&
+        Objects.equals(this.avatarColor, unitSO.avatarColor) &&
+        Objects.equals(this.isActive, unitSO.isActive) &&
+        Objects.equals(this.isDeleted, unitSO.isDeleted) &&
+        Objects.equals(this.isMemberNameModified, unitSO.isMemberNameModified) &&
+        Objects.equals(this.isNickNameModified, unitSO.isNickNameModified) &&
+        Objects.equals(this.name, unitSO.name) &&
+        Objects.equals(this.nickName, unitSO.nickName) &&
+        Objects.equals(this.originalUnitId, unitSO.originalUnitId) &&
+        Objects.equals(this.type, unitSO.type) &&
+        Objects.equals(this.unitId, unitSO.unitId) &&
+        Objects.equals(this.userId, unitSO.userId) &&
+        Objects.equals(this.uuid, unitSO.uuid);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(avatar), hashCodeNullable(avatarColor), hashCodeNullable(isActive), hashCodeNullable(isDeleted), hashCodeNullable(isMemberNameModified), hashCodeNullable(isNickNameModified), hashCodeNullable(name), hashCodeNullable(nickName), hashCodeNullable(originalUnitId), hashCodeNullable(type), hashCodeNullable(unitId), hashCodeNullable(userId), hashCodeNullable(uuid));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(avatar, avatarColor, isActive, isDeleted, isMemberNameModified, isNickNameModified, name, nickName, originalUnitId, type, unitId, userId, uuid);
   }
 
   @Override

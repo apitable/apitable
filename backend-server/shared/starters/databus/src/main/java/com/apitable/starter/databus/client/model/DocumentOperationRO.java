@@ -21,10 +21,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.io.File;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -39,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class DocumentOperationRO {
   public static final String JSON_PROPERTY_CREATED_BY = "created_by";
-  private JsonNullable<Long> createdBy = JsonNullable.<Long>undefined();
+  private Long createdBy;
 
   public static final String JSON_PROPERTY_SPACE_ID = "space_id";
   private String spaceId;
@@ -51,8 +47,8 @@ public class DocumentOperationRO {
   }
 
   public DocumentOperationRO createdBy(Long createdBy) {
-    this.createdBy = JsonNullable.<Long>of(createdBy);
     
+    this.createdBy = createdBy;
     return this;
   }
 
@@ -62,26 +58,18 @@ public class DocumentOperationRO {
    * @return createdBy
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getCreatedBy() {
-        return createdBy.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_CREATED_BY)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getCreatedBy_JsonNullable() {
+  public Long getCreatedBy() {
     return createdBy;
   }
-  
-  @JsonProperty(JSON_PROPERTY_CREATED_BY)
-  public void setCreatedBy_JsonNullable(JsonNullable<Long> createdBy) {
-    this.createdBy = createdBy;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_CREATED_BY)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setCreatedBy(Long createdBy) {
-    this.createdBy = JsonNullable.<Long>of(createdBy);
+    this.createdBy = createdBy;
   }
 
 
@@ -145,25 +133,14 @@ public class DocumentOperationRO {
       return false;
     }
     DocumentOperationRO documentOperationRO = (DocumentOperationRO) o;
-    return equalsNullable(this.createdBy, documentOperationRO.createdBy) &&
+    return Objects.equals(this.createdBy, documentOperationRO.createdBy) &&
         Objects.equals(this.spaceId, documentOperationRO.spaceId) &&
         Objects.equals(this.updateData, documentOperationRO.updateData);
   }
 
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(createdBy), spaceId, updateData);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(createdBy, spaceId, updateData);
   }
 
   @Override

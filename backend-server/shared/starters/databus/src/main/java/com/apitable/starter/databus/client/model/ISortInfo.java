@@ -24,10 +24,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -41,7 +37,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class ISortInfo {
   public static final String JSON_PROPERTY_KEEP_SORT = "keepSort";
-  private JsonNullable<Boolean> keepSort = JsonNullable.<Boolean>undefined();
+  private Boolean keepSort;
 
   public static final String JSON_PROPERTY_RULES = "rules";
   private List<ISortedField> rules = new ArrayList<>();
@@ -50,8 +46,8 @@ public class ISortInfo {
   }
 
   public ISortInfo keepSort(Boolean keepSort) {
-    this.keepSort = JsonNullable.<Boolean>of(keepSort);
     
+    this.keepSort = keepSort;
     return this;
   }
 
@@ -60,26 +56,18 @@ public class ISortInfo {
    * @return keepSort
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getKeepSort() {
-        return keepSort.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_KEEP_SORT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getKeepSort_JsonNullable() {
+  public Boolean getKeepSort() {
     return keepSort;
   }
-  
-  @JsonProperty(JSON_PROPERTY_KEEP_SORT)
-  public void setKeepSort_JsonNullable(JsonNullable<Boolean> keepSort) {
-    this.keepSort = keepSort;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_KEEP_SORT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setKeepSort(Boolean keepSort) {
-    this.keepSort = JsonNullable.<Boolean>of(keepSort);
+    this.keepSort = keepSort;
   }
 
 
@@ -125,24 +113,13 @@ public class ISortInfo {
       return false;
     }
     ISortInfo isortInfo = (ISortInfo) o;
-    return equalsNullable(this.keepSort, isortInfo.keepSort) &&
+    return Objects.equals(this.keepSort, isortInfo.keepSort) &&
         Objects.equals(this.rules, isortInfo.rules);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(keepSort), rules);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(keepSort, rules);
   }
 
   @Override

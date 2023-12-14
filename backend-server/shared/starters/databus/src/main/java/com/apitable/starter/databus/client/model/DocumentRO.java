@@ -21,10 +21,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.io.File;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -49,7 +45,7 @@ public class DocumentRO {
   private Integer documentType;
 
   public static final String JSON_PROPERTY_PROPS = "props";
-  private JsonNullable<String> props = JsonNullable.<String>undefined();
+  private String props;
 
   public static final String JSON_PROPERTY_RESOURCE_ID = "resource_id";
   private String resourceId;
@@ -58,10 +54,10 @@ public class DocumentRO {
   private String spaceId;
 
   public static final String JSON_PROPERTY_TITLE = "title";
-  private JsonNullable<String> title = JsonNullable.<String>undefined();
+  private String title;
 
   public static final String JSON_PROPERTY_UPDATED_BY = "updated_by";
-  private JsonNullable<Long> updatedBy = JsonNullable.<Long>undefined();
+  private Long updatedBy;
 
   public DocumentRO() {
   }
@@ -120,8 +116,8 @@ public class DocumentRO {
 
 
   public DocumentRO props(String props) {
-    this.props = JsonNullable.<String>of(props);
     
+    this.props = props;
     return this;
   }
 
@@ -130,26 +126,18 @@ public class DocumentRO {
    * @return props
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getProps() {
-        return props.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_PROPS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getProps_JsonNullable() {
+  public String getProps() {
     return props;
   }
-  
-  @JsonProperty(JSON_PROPERTY_PROPS)
-  public void setProps_JsonNullable(JsonNullable<String> props) {
-    this.props = props;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_PROPS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setProps(String props) {
-    this.props = JsonNullable.<String>of(props);
+    this.props = props;
   }
 
 
@@ -206,8 +194,8 @@ public class DocumentRO {
 
 
   public DocumentRO title(String title) {
-    this.title = JsonNullable.<String>of(title);
     
+    this.title = title;
     return this;
   }
 
@@ -216,32 +204,24 @@ public class DocumentRO {
    * @return title
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getTitle() {
-        return title.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_TITLE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getTitle_JsonNullable() {
+  public String getTitle() {
     return title;
   }
-  
-  @JsonProperty(JSON_PROPERTY_TITLE)
-  public void setTitle_JsonNullable(JsonNullable<String> title) {
-    this.title = title;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_TITLE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setTitle(String title) {
-    this.title = JsonNullable.<String>of(title);
+    this.title = title;
   }
 
 
   public DocumentRO updatedBy(Long updatedBy) {
-    this.updatedBy = JsonNullable.<Long>of(updatedBy);
     
+    this.updatedBy = updatedBy;
     return this;
   }
 
@@ -251,26 +231,18 @@ public class DocumentRO {
    * @return updatedBy
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getUpdatedBy() {
-        return updatedBy.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_UPDATED_BY)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getUpdatedBy_JsonNullable() {
+  public Long getUpdatedBy() {
     return updatedBy;
   }
-  
-  @JsonProperty(JSON_PROPERTY_UPDATED_BY)
-  public void setUpdatedBy_JsonNullable(JsonNullable<Long> updatedBy) {
-    this.updatedBy = updatedBy;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_UPDATED_BY)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setUpdatedBy(Long updatedBy) {
-    this.updatedBy = JsonNullable.<Long>of(updatedBy);
+    this.updatedBy = updatedBy;
   }
 
   @Override
@@ -284,27 +256,16 @@ public class DocumentRO {
     DocumentRO documentRO = (DocumentRO) o;
     return Objects.equals(this.data, documentRO.data) &&
         Objects.equals(this.documentType, documentRO.documentType) &&
-        equalsNullable(this.props, documentRO.props) &&
+        Objects.equals(this.props, documentRO.props) &&
         Objects.equals(this.resourceId, documentRO.resourceId) &&
         Objects.equals(this.spaceId, documentRO.spaceId) &&
-        equalsNullable(this.title, documentRO.title) &&
-        equalsNullable(this.updatedBy, documentRO.updatedBy);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+        Objects.equals(this.title, documentRO.title) &&
+        Objects.equals(this.updatedBy, documentRO.updatedBy);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(data, documentType, hashCodeNullable(props), resourceId, spaceId, hashCodeNullable(title), hashCodeNullable(updatedBy));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(data, documentType, props, resourceId, spaceId, title, updatedBy);
   }
 
   @Override

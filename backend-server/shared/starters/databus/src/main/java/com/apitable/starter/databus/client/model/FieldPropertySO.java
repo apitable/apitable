@@ -33,10 +33,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -91,140 +87,140 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class FieldPropertySO {
   public static final String JSON_PROPERTY_AUTO_FILL = "autoFill";
-  private JsonNullable<Boolean> autoFill = JsonNullable.<Boolean>undefined();
+  private Boolean autoFill;
 
   public static final String JSON_PROPERTY_BROTHER_FIELD_ID = "brotherFieldId";
-  private JsonNullable<String> brotherFieldId = JsonNullable.<String>undefined();
+  private String brotherFieldId;
 
   public static final String JSON_PROPERTY_COLLECT_TYPE = "collectType";
-  private JsonNullable<CollectType> collectType = JsonNullable.<CollectType>undefined();
+  private CollectType collectType;
 
   public static final String JSON_PROPERTY_COMMA_STYLE = "commaStyle";
-  private JsonNullable<String> commaStyle = JsonNullable.<String>undefined();
+  private String commaStyle;
 
   public static final String JSON_PROPERTY_DATASHEET_ID = "datasheetId";
-  private JsonNullable<String> datasheetId = JsonNullable.<String>undefined();
+  private String datasheetId;
 
   public static final String JSON_PROPERTY_DATE_FORMAT = "dateFormat";
-  private JsonNullable<DateFormat> dateFormat = JsonNullable.<DateFormat>undefined();
+  private DateFormat dateFormat;
 
   public static final String JSON_PROPERTY_DEFAULT_VALUE = "defaultValue";
-  private JsonNullable<Object> defaultValue = JsonNullable.<Object>of(null);
+  private Object defaultValue = null;
 
   public static final String JSON_PROPERTY_EXPRESSION = "expression";
-  private JsonNullable<String> expression = JsonNullable.<String>undefined();
+  private String expression;
 
   public static final String JSON_PROPERTY_FIELD_ID_COLLECTION = "fieldIdCollection";
-  private JsonNullable<List<String>> fieldIdCollection = JsonNullable.<List<String>>undefined();
+  private List<String> fieldIdCollection;
 
   public static final String JSON_PROPERTY_FILTER_INFO = "filterInfo";
-  private JsonNullable<IFilterInfo> filterInfo = JsonNullable.<IFilterInfo>undefined();
+  private IFilterInfo filterInfo;
 
   public static final String JSON_PROPERTY_FOREIGN_DATASHEET_ID = "foreignDatasheetId";
-  private JsonNullable<String> foreignDatasheetId = JsonNullable.<String>undefined();
+  private String foreignDatasheetId;
 
   public static final String JSON_PROPERTY_FORMATTING = "formatting";
-  private JsonNullable<Object> formatting = JsonNullable.<Object>undefined();
+  private Object formatting;
 
   public static final String JSON_PROPERTY_FULL_LINKED_FIELDS = "fullLinkedFields";
-  private JsonNullable<List<LinkedFields>> fullLinkedFields = JsonNullable.<List<LinkedFields>>undefined();
+  private List<LinkedFields> fullLinkedFields;
 
   public static final String JSON_PROPERTY_ICON = "icon";
-  private JsonNullable<String> icon = JsonNullable.<String>undefined();
+  private String icon;
 
   public static final String JSON_PROPERTY_INCLUDE_TIME = "includeTime";
-  private JsonNullable<Boolean> includeTime = JsonNullable.<Boolean>undefined();
+  private Boolean includeTime;
 
   public static final String JSON_PROPERTY_INCLUDE_TIME_ZONE = "includeTimeZone";
-  private JsonNullable<Boolean> includeTimeZone = JsonNullable.<Boolean>undefined();
+  private Boolean includeTimeZone;
 
   public static final String JSON_PROPERTY_IS_MULTI = "isMulti";
-  private JsonNullable<Boolean> isMulti = JsonNullable.<Boolean>undefined();
+  private Boolean isMulti;
 
   public static final String JSON_PROPERTY_IS_RECOG_URL_FLAG = "isRecogUrlFlag";
-  private JsonNullable<Boolean> isRecogUrlFlag = JsonNullable.<Boolean>undefined();
+  private Boolean isRecogUrlFlag;
 
   public static final String JSON_PROPERTY_LIMIT_SINGLE_RECORD = "limitSingleRecord";
-  private JsonNullable<Boolean> limitSingleRecord = JsonNullable.<Boolean>undefined();
+  private Boolean limitSingleRecord;
 
   public static final String JSON_PROPERTY_LIMIT_TO_VIEW = "limitToView";
-  private JsonNullable<String> limitToView = JsonNullable.<String>undefined();
+  private String limitToView;
 
   public static final String JSON_PROPERTY_LINKED_DATASHEET_ID = "linkedDatasheetId";
-  private JsonNullable<String> linkedDatasheetId = JsonNullable.<String>undefined();
+  private String linkedDatasheetId;
 
   public static final String JSON_PROPERTY_LINKED_FIELDS = "linkedFields";
-  private JsonNullable<List<LinkedFields>> linkedFields = JsonNullable.<List<LinkedFields>>undefined();
+  private List<LinkedFields> linkedFields;
 
   public static final String JSON_PROPERTY_LINKED_VIEW_ID = "linkedViewId";
-  private JsonNullable<String> linkedViewId = JsonNullable.<String>undefined();
+  private String linkedViewId;
 
   public static final String JSON_PROPERTY_LOOK_UP_LIMIT = "lookUpLimit";
-  private JsonNullable<LookUpLimitType> lookUpLimit = JsonNullable.<LookUpLimitType>undefined();
+  private LookUpLimitType lookUpLimit;
 
   public static final String JSON_PROPERTY_LOOK_UP_TARGET_FIELD_ID = "lookUpTargetFieldId";
-  private JsonNullable<String> lookUpTargetFieldId = JsonNullable.<String>undefined();
+  private String lookUpTargetFieldId;
 
   public static final String JSON_PROPERTY_MAX = "max";
-  private JsonNullable<Integer> max = JsonNullable.<Integer>undefined();
+  private Integer max;
 
   public static final String JSON_PROPERTY_NEXT_ID = "nextId";
-  private JsonNullable<Integer> nextId = JsonNullable.<Integer>undefined();
+  private Integer nextId;
 
   public static final String JSON_PROPERTY_OPEN_FILTER = "openFilter";
-  private JsonNullable<Boolean> openFilter = JsonNullable.<Boolean>undefined();
+  private Boolean openFilter;
 
   public static final String JSON_PROPERTY_OPTIONS = "options";
-  private JsonNullable<List<SingleSelectProperty>> options = JsonNullable.<List<SingleSelectProperty>>undefined();
+  private List<SingleSelectProperty> options;
 
   public static final String JSON_PROPERTY_PRECISION = "precision";
-  private JsonNullable<Integer> precision = JsonNullable.<Integer>undefined();
+  private Integer precision;
 
   public static final String JSON_PROPERTY_RELATED_LINK_FIELD_ID = "relatedLinkFieldId";
-  private JsonNullable<String> relatedLinkFieldId = JsonNullable.<String>undefined();
+  private String relatedLinkFieldId;
 
   public static final String JSON_PROPERTY_ROLL_UP_TYPE = "rollUpType";
-  private JsonNullable<RollUpFuncType> rollUpType = JsonNullable.<RollUpFuncType>undefined();
+  private RollUpFuncType rollUpType;
 
   public static final String JSON_PROPERTY_SHOULD_SEND_MSG = "shouldSendMsg";
-  private JsonNullable<Boolean> shouldSendMsg = JsonNullable.<Boolean>undefined();
+  private Boolean shouldSendMsg;
 
   public static final String JSON_PROPERTY_SHOW_ALL = "showAll";
-  private JsonNullable<Boolean> showAll = JsonNullable.<Boolean>undefined();
+  private Boolean showAll;
 
   public static final String JSON_PROPERTY_SORT_INFO = "sortInfo";
-  private JsonNullable<LookUpSortInfo> sortInfo = JsonNullable.<LookUpSortInfo>undefined();
+  private LookUpSortInfo sortInfo;
 
   public static final String JSON_PROPERTY_SUBSCRIPTION = "subscription";
-  private JsonNullable<Boolean> subscription = JsonNullable.<Boolean>undefined();
+  private Boolean subscription;
 
   public static final String JSON_PROPERTY_SYMBOL = "symbol";
-  private JsonNullable<String> symbol = JsonNullable.<String>undefined();
+  private String symbol;
 
   public static final String JSON_PROPERTY_SYMBOL_ALIGN = "symbolAlign";
-  private JsonNullable<SymbolAlign> symbolAlign = JsonNullable.<SymbolAlign>undefined();
+  private SymbolAlign symbolAlign;
 
   public static final String JSON_PROPERTY_TIME_FORMAT = "timeFormat";
-  private JsonNullable<TimeFormat> timeFormat = JsonNullable.<TimeFormat>undefined();
+  private TimeFormat timeFormat;
 
   public static final String JSON_PROPERTY_TIME_ZONE = "timeZone";
-  private JsonNullable<String> timeZone = JsonNullable.<String>undefined();
+  private String timeZone;
 
   public static final String JSON_PROPERTY_UNIT_IDS = "unitIds";
-  private JsonNullable<List<String>> unitIds = JsonNullable.<List<String>>undefined();
+  private List<String> unitIds;
 
   public static final String JSON_PROPERTY_UUIDS = "uuids";
-  private JsonNullable<List<String>> uuids = JsonNullable.<List<String>>undefined();
+  private List<String> uuids;
 
   public static final String JSON_PROPERTY_VIEW_IDX = "viewIdx";
-  private JsonNullable<Integer> viewIdx = JsonNullable.<Integer>undefined();
+  private Integer viewIdx;
 
   public FieldPropertySO() {
   }
 
   public FieldPropertySO autoFill(Boolean autoFill) {
-    this.autoFill = JsonNullable.<Boolean>of(autoFill);
     
+    this.autoFill = autoFill;
     return this;
   }
 
@@ -233,32 +229,24 @@ public class FieldPropertySO {
    * @return autoFill
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getAutoFill() {
-        return autoFill.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_AUTO_FILL)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getAutoFill_JsonNullable() {
+  public Boolean getAutoFill() {
     return autoFill;
   }
-  
-  @JsonProperty(JSON_PROPERTY_AUTO_FILL)
-  public void setAutoFill_JsonNullable(JsonNullable<Boolean> autoFill) {
-    this.autoFill = autoFill;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_AUTO_FILL)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setAutoFill(Boolean autoFill) {
-    this.autoFill = JsonNullable.<Boolean>of(autoFill);
+    this.autoFill = autoFill;
   }
 
 
   public FieldPropertySO brotherFieldId(String brotherFieldId) {
-    this.brotherFieldId = JsonNullable.<String>of(brotherFieldId);
     
+    this.brotherFieldId = brotherFieldId;
     return this;
   }
 
@@ -267,32 +255,24 @@ public class FieldPropertySO {
    * @return brotherFieldId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getBrotherFieldId() {
-        return brotherFieldId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_BROTHER_FIELD_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getBrotherFieldId_JsonNullable() {
+  public String getBrotherFieldId() {
     return brotherFieldId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_BROTHER_FIELD_ID)
-  public void setBrotherFieldId_JsonNullable(JsonNullable<String> brotherFieldId) {
-    this.brotherFieldId = brotherFieldId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_BROTHER_FIELD_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setBrotherFieldId(String brotherFieldId) {
-    this.brotherFieldId = JsonNullable.<String>of(brotherFieldId);
+    this.brotherFieldId = brotherFieldId;
   }
 
 
   public FieldPropertySO collectType(CollectType collectType) {
-    this.collectType = JsonNullable.<CollectType>of(collectType);
     
+    this.collectType = collectType;
     return this;
   }
 
@@ -301,32 +281,24 @@ public class FieldPropertySO {
    * @return collectType
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public CollectType getCollectType() {
-        return collectType.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_COLLECT_TYPE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<CollectType> getCollectType_JsonNullable() {
+  public CollectType getCollectType() {
     return collectType;
   }
-  
-  @JsonProperty(JSON_PROPERTY_COLLECT_TYPE)
-  public void setCollectType_JsonNullable(JsonNullable<CollectType> collectType) {
-    this.collectType = collectType;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_COLLECT_TYPE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setCollectType(CollectType collectType) {
-    this.collectType = JsonNullable.<CollectType>of(collectType);
+    this.collectType = collectType;
   }
 
 
   public FieldPropertySO commaStyle(String commaStyle) {
-    this.commaStyle = JsonNullable.<String>of(commaStyle);
     
+    this.commaStyle = commaStyle;
     return this;
   }
 
@@ -335,32 +307,24 @@ public class FieldPropertySO {
    * @return commaStyle
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getCommaStyle() {
-        return commaStyle.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_COMMA_STYLE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getCommaStyle_JsonNullable() {
+  public String getCommaStyle() {
     return commaStyle;
   }
-  
-  @JsonProperty(JSON_PROPERTY_COMMA_STYLE)
-  public void setCommaStyle_JsonNullable(JsonNullable<String> commaStyle) {
-    this.commaStyle = commaStyle;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_COMMA_STYLE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setCommaStyle(String commaStyle) {
-    this.commaStyle = JsonNullable.<String>of(commaStyle);
+    this.commaStyle = commaStyle;
   }
 
 
   public FieldPropertySO datasheetId(String datasheetId) {
-    this.datasheetId = JsonNullable.<String>of(datasheetId);
     
+    this.datasheetId = datasheetId;
     return this;
   }
 
@@ -369,32 +333,24 @@ public class FieldPropertySO {
    * @return datasheetId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getDatasheetId() {
-        return datasheetId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_DATASHEET_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getDatasheetId_JsonNullable() {
+  public String getDatasheetId() {
     return datasheetId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_DATASHEET_ID)
-  public void setDatasheetId_JsonNullable(JsonNullable<String> datasheetId) {
-    this.datasheetId = datasheetId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_DATASHEET_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDatasheetId(String datasheetId) {
-    this.datasheetId = JsonNullable.<String>of(datasheetId);
+    this.datasheetId = datasheetId;
   }
 
 
   public FieldPropertySO dateFormat(DateFormat dateFormat) {
-    this.dateFormat = JsonNullable.<DateFormat>of(dateFormat);
     
+    this.dateFormat = dateFormat;
     return this;
   }
 
@@ -403,32 +359,24 @@ public class FieldPropertySO {
    * @return dateFormat
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public DateFormat getDateFormat() {
-        return dateFormat.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_DATE_FORMAT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<DateFormat> getDateFormat_JsonNullable() {
+  public DateFormat getDateFormat() {
     return dateFormat;
   }
-  
-  @JsonProperty(JSON_PROPERTY_DATE_FORMAT)
-  public void setDateFormat_JsonNullable(JsonNullable<DateFormat> dateFormat) {
-    this.dateFormat = dateFormat;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_DATE_FORMAT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDateFormat(DateFormat dateFormat) {
-    this.dateFormat = JsonNullable.<DateFormat>of(dateFormat);
+    this.dateFormat = dateFormat;
   }
 
 
   public FieldPropertySO defaultValue(Object defaultValue) {
-    this.defaultValue = JsonNullable.<Object>of(defaultValue);
     
+    this.defaultValue = defaultValue;
     return this;
   }
 
@@ -437,32 +385,24 @@ public class FieldPropertySO {
    * @return defaultValue
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Object getDefaultValue() {
-        return defaultValue.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_DEFAULT_VALUE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Object> getDefaultValue_JsonNullable() {
+  public Object getDefaultValue() {
     return defaultValue;
   }
-  
-  @JsonProperty(JSON_PROPERTY_DEFAULT_VALUE)
-  public void setDefaultValue_JsonNullable(JsonNullable<Object> defaultValue) {
-    this.defaultValue = defaultValue;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_DEFAULT_VALUE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDefaultValue(Object defaultValue) {
-    this.defaultValue = JsonNullable.<Object>of(defaultValue);
+    this.defaultValue = defaultValue;
   }
 
 
   public FieldPropertySO expression(String expression) {
-    this.expression = JsonNullable.<String>of(expression);
     
+    this.expression = expression;
     return this;
   }
 
@@ -471,44 +411,32 @@ public class FieldPropertySO {
    * @return expression
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getExpression() {
-        return expression.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_EXPRESSION)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getExpression_JsonNullable() {
+  public String getExpression() {
     return expression;
   }
-  
-  @JsonProperty(JSON_PROPERTY_EXPRESSION)
-  public void setExpression_JsonNullable(JsonNullable<String> expression) {
-    this.expression = expression;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_EXPRESSION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setExpression(String expression) {
-    this.expression = JsonNullable.<String>of(expression);
+    this.expression = expression;
   }
 
 
   public FieldPropertySO fieldIdCollection(List<String> fieldIdCollection) {
-    this.fieldIdCollection = JsonNullable.<List<String>>of(fieldIdCollection);
     
+    this.fieldIdCollection = fieldIdCollection;
     return this;
   }
 
   public FieldPropertySO addFieldIdCollectionItem(String fieldIdCollectionItem) {
-    if (this.fieldIdCollection == null || !this.fieldIdCollection.isPresent()) {
-      this.fieldIdCollection = JsonNullable.<List<String>>of(new ArrayList<>());
+    if (this.fieldIdCollection == null) {
+      this.fieldIdCollection = new ArrayList<>();
     }
-    try {
-      this.fieldIdCollection.get().add(fieldIdCollectionItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.fieldIdCollection.add(fieldIdCollectionItem);
     return this;
   }
 
@@ -517,32 +445,24 @@ public class FieldPropertySO {
    * @return fieldIdCollection
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<String> getFieldIdCollection() {
-        return fieldIdCollection.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_FIELD_ID_COLLECTION)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<String>> getFieldIdCollection_JsonNullable() {
+  public List<String> getFieldIdCollection() {
     return fieldIdCollection;
   }
-  
-  @JsonProperty(JSON_PROPERTY_FIELD_ID_COLLECTION)
-  public void setFieldIdCollection_JsonNullable(JsonNullable<List<String>> fieldIdCollection) {
-    this.fieldIdCollection = fieldIdCollection;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_FIELD_ID_COLLECTION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFieldIdCollection(List<String> fieldIdCollection) {
-    this.fieldIdCollection = JsonNullable.<List<String>>of(fieldIdCollection);
+    this.fieldIdCollection = fieldIdCollection;
   }
 
 
   public FieldPropertySO filterInfo(IFilterInfo filterInfo) {
-    this.filterInfo = JsonNullable.<IFilterInfo>of(filterInfo);
     
+    this.filterInfo = filterInfo;
     return this;
   }
 
@@ -551,32 +471,24 @@ public class FieldPropertySO {
    * @return filterInfo
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public IFilterInfo getFilterInfo() {
-        return filterInfo.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_FILTER_INFO)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<IFilterInfo> getFilterInfo_JsonNullable() {
+  public IFilterInfo getFilterInfo() {
     return filterInfo;
   }
-  
-  @JsonProperty(JSON_PROPERTY_FILTER_INFO)
-  public void setFilterInfo_JsonNullable(JsonNullable<IFilterInfo> filterInfo) {
-    this.filterInfo = filterInfo;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_FILTER_INFO)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFilterInfo(IFilterInfo filterInfo) {
-    this.filterInfo = JsonNullable.<IFilterInfo>of(filterInfo);
+    this.filterInfo = filterInfo;
   }
 
 
   public FieldPropertySO foreignDatasheetId(String foreignDatasheetId) {
-    this.foreignDatasheetId = JsonNullable.<String>of(foreignDatasheetId);
     
+    this.foreignDatasheetId = foreignDatasheetId;
     return this;
   }
 
@@ -585,32 +497,24 @@ public class FieldPropertySO {
    * @return foreignDatasheetId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getForeignDatasheetId() {
-        return foreignDatasheetId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_FOREIGN_DATASHEET_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getForeignDatasheetId_JsonNullable() {
+  public String getForeignDatasheetId() {
     return foreignDatasheetId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_FOREIGN_DATASHEET_ID)
-  public void setForeignDatasheetId_JsonNullable(JsonNullable<String> foreignDatasheetId) {
-    this.foreignDatasheetId = foreignDatasheetId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_FOREIGN_DATASHEET_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setForeignDatasheetId(String foreignDatasheetId) {
-    this.foreignDatasheetId = JsonNullable.<String>of(foreignDatasheetId);
+    this.foreignDatasheetId = foreignDatasheetId;
   }
 
 
   public FieldPropertySO formatting(Object formatting) {
-    this.formatting = JsonNullable.<Object>of(formatting);
     
+    this.formatting = formatting;
     return this;
   }
 
@@ -619,44 +523,32 @@ public class FieldPropertySO {
    * @return formatting
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Object getFormatting() {
-        return formatting.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_FORMATTING)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Object> getFormatting_JsonNullable() {
+  public Object getFormatting() {
     return formatting;
   }
-  
-  @JsonProperty(JSON_PROPERTY_FORMATTING)
-  public void setFormatting_JsonNullable(JsonNullable<Object> formatting) {
-    this.formatting = formatting;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_FORMATTING)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFormatting(Object formatting) {
-    this.formatting = JsonNullable.<Object>of(formatting);
+    this.formatting = formatting;
   }
 
 
   public FieldPropertySO fullLinkedFields(List<LinkedFields> fullLinkedFields) {
-    this.fullLinkedFields = JsonNullable.<List<LinkedFields>>of(fullLinkedFields);
     
+    this.fullLinkedFields = fullLinkedFields;
     return this;
   }
 
   public FieldPropertySO addFullLinkedFieldsItem(LinkedFields fullLinkedFieldsItem) {
-    if (this.fullLinkedFields == null || !this.fullLinkedFields.isPresent()) {
-      this.fullLinkedFields = JsonNullable.<List<LinkedFields>>of(new ArrayList<>());
+    if (this.fullLinkedFields == null) {
+      this.fullLinkedFields = new ArrayList<>();
     }
-    try {
-      this.fullLinkedFields.get().add(fullLinkedFieldsItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.fullLinkedFields.add(fullLinkedFieldsItem);
     return this;
   }
 
@@ -665,32 +557,24 @@ public class FieldPropertySO {
    * @return fullLinkedFields
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<LinkedFields> getFullLinkedFields() {
-        return fullLinkedFields.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_FULL_LINKED_FIELDS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<LinkedFields>> getFullLinkedFields_JsonNullable() {
+  public List<LinkedFields> getFullLinkedFields() {
     return fullLinkedFields;
   }
-  
-  @JsonProperty(JSON_PROPERTY_FULL_LINKED_FIELDS)
-  public void setFullLinkedFields_JsonNullable(JsonNullable<List<LinkedFields>> fullLinkedFields) {
-    this.fullLinkedFields = fullLinkedFields;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_FULL_LINKED_FIELDS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFullLinkedFields(List<LinkedFields> fullLinkedFields) {
-    this.fullLinkedFields = JsonNullable.<List<LinkedFields>>of(fullLinkedFields);
+    this.fullLinkedFields = fullLinkedFields;
   }
 
 
   public FieldPropertySO icon(String icon) {
-    this.icon = JsonNullable.<String>of(icon);
     
+    this.icon = icon;
     return this;
   }
 
@@ -699,32 +583,24 @@ public class FieldPropertySO {
    * @return icon
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getIcon() {
-        return icon.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ICON)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getIcon_JsonNullable() {
+  public String getIcon() {
     return icon;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ICON)
-  public void setIcon_JsonNullable(JsonNullable<String> icon) {
-    this.icon = icon;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ICON)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIcon(String icon) {
-    this.icon = JsonNullable.<String>of(icon);
+    this.icon = icon;
   }
 
 
   public FieldPropertySO includeTime(Boolean includeTime) {
-    this.includeTime = JsonNullable.<Boolean>of(includeTime);
     
+    this.includeTime = includeTime;
     return this;
   }
 
@@ -733,32 +609,24 @@ public class FieldPropertySO {
    * @return includeTime
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getIncludeTime() {
-        return includeTime.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_INCLUDE_TIME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getIncludeTime_JsonNullable() {
+  public Boolean getIncludeTime() {
     return includeTime;
   }
-  
-  @JsonProperty(JSON_PROPERTY_INCLUDE_TIME)
-  public void setIncludeTime_JsonNullable(JsonNullable<Boolean> includeTime) {
-    this.includeTime = includeTime;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_INCLUDE_TIME)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIncludeTime(Boolean includeTime) {
-    this.includeTime = JsonNullable.<Boolean>of(includeTime);
+    this.includeTime = includeTime;
   }
 
 
   public FieldPropertySO includeTimeZone(Boolean includeTimeZone) {
-    this.includeTimeZone = JsonNullable.<Boolean>of(includeTimeZone);
     
+    this.includeTimeZone = includeTimeZone;
     return this;
   }
 
@@ -767,32 +635,24 @@ public class FieldPropertySO {
    * @return includeTimeZone
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getIncludeTimeZone() {
-        return includeTimeZone.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_INCLUDE_TIME_ZONE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getIncludeTimeZone_JsonNullable() {
+  public Boolean getIncludeTimeZone() {
     return includeTimeZone;
   }
-  
-  @JsonProperty(JSON_PROPERTY_INCLUDE_TIME_ZONE)
-  public void setIncludeTimeZone_JsonNullable(JsonNullable<Boolean> includeTimeZone) {
-    this.includeTimeZone = includeTimeZone;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_INCLUDE_TIME_ZONE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIncludeTimeZone(Boolean includeTimeZone) {
-    this.includeTimeZone = JsonNullable.<Boolean>of(includeTimeZone);
+    this.includeTimeZone = includeTimeZone;
   }
 
 
   public FieldPropertySO isMulti(Boolean isMulti) {
-    this.isMulti = JsonNullable.<Boolean>of(isMulti);
     
+    this.isMulti = isMulti;
     return this;
   }
 
@@ -801,32 +661,24 @@ public class FieldPropertySO {
    * @return isMulti
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getIsMulti() {
-        return isMulti.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_IS_MULTI)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getIsMulti_JsonNullable() {
+  public Boolean getIsMulti() {
     return isMulti;
   }
-  
-  @JsonProperty(JSON_PROPERTY_IS_MULTI)
-  public void setIsMulti_JsonNullable(JsonNullable<Boolean> isMulti) {
-    this.isMulti = isMulti;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_IS_MULTI)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIsMulti(Boolean isMulti) {
-    this.isMulti = JsonNullable.<Boolean>of(isMulti);
+    this.isMulti = isMulti;
   }
 
 
   public FieldPropertySO isRecogUrlFlag(Boolean isRecogUrlFlag) {
-    this.isRecogUrlFlag = JsonNullable.<Boolean>of(isRecogUrlFlag);
     
+    this.isRecogUrlFlag = isRecogUrlFlag;
     return this;
   }
 
@@ -835,32 +687,24 @@ public class FieldPropertySO {
    * @return isRecogUrlFlag
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getIsRecogUrlFlag() {
-        return isRecogUrlFlag.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_IS_RECOG_URL_FLAG)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getIsRecogUrlFlag_JsonNullable() {
+  public Boolean getIsRecogUrlFlag() {
     return isRecogUrlFlag;
   }
-  
-  @JsonProperty(JSON_PROPERTY_IS_RECOG_URL_FLAG)
-  public void setIsRecogUrlFlag_JsonNullable(JsonNullable<Boolean> isRecogUrlFlag) {
-    this.isRecogUrlFlag = isRecogUrlFlag;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_IS_RECOG_URL_FLAG)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIsRecogUrlFlag(Boolean isRecogUrlFlag) {
-    this.isRecogUrlFlag = JsonNullable.<Boolean>of(isRecogUrlFlag);
+    this.isRecogUrlFlag = isRecogUrlFlag;
   }
 
 
   public FieldPropertySO limitSingleRecord(Boolean limitSingleRecord) {
-    this.limitSingleRecord = JsonNullable.<Boolean>of(limitSingleRecord);
     
+    this.limitSingleRecord = limitSingleRecord;
     return this;
   }
 
@@ -869,32 +713,24 @@ public class FieldPropertySO {
    * @return limitSingleRecord
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getLimitSingleRecord() {
-        return limitSingleRecord.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_LIMIT_SINGLE_RECORD)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getLimitSingleRecord_JsonNullable() {
+  public Boolean getLimitSingleRecord() {
     return limitSingleRecord;
   }
-  
-  @JsonProperty(JSON_PROPERTY_LIMIT_SINGLE_RECORD)
-  public void setLimitSingleRecord_JsonNullable(JsonNullable<Boolean> limitSingleRecord) {
-    this.limitSingleRecord = limitSingleRecord;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_LIMIT_SINGLE_RECORD)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setLimitSingleRecord(Boolean limitSingleRecord) {
-    this.limitSingleRecord = JsonNullable.<Boolean>of(limitSingleRecord);
+    this.limitSingleRecord = limitSingleRecord;
   }
 
 
   public FieldPropertySO limitToView(String limitToView) {
-    this.limitToView = JsonNullable.<String>of(limitToView);
     
+    this.limitToView = limitToView;
     return this;
   }
 
@@ -903,32 +739,24 @@ public class FieldPropertySO {
    * @return limitToView
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getLimitToView() {
-        return limitToView.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_LIMIT_TO_VIEW)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getLimitToView_JsonNullable() {
+  public String getLimitToView() {
     return limitToView;
   }
-  
-  @JsonProperty(JSON_PROPERTY_LIMIT_TO_VIEW)
-  public void setLimitToView_JsonNullable(JsonNullable<String> limitToView) {
-    this.limitToView = limitToView;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_LIMIT_TO_VIEW)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setLimitToView(String limitToView) {
-    this.limitToView = JsonNullable.<String>of(limitToView);
+    this.limitToView = limitToView;
   }
 
 
   public FieldPropertySO linkedDatasheetId(String linkedDatasheetId) {
-    this.linkedDatasheetId = JsonNullable.<String>of(linkedDatasheetId);
     
+    this.linkedDatasheetId = linkedDatasheetId;
     return this;
   }
 
@@ -937,44 +765,32 @@ public class FieldPropertySO {
    * @return linkedDatasheetId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getLinkedDatasheetId() {
-        return linkedDatasheetId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_LINKED_DATASHEET_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getLinkedDatasheetId_JsonNullable() {
+  public String getLinkedDatasheetId() {
     return linkedDatasheetId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_LINKED_DATASHEET_ID)
-  public void setLinkedDatasheetId_JsonNullable(JsonNullable<String> linkedDatasheetId) {
-    this.linkedDatasheetId = linkedDatasheetId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_LINKED_DATASHEET_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setLinkedDatasheetId(String linkedDatasheetId) {
-    this.linkedDatasheetId = JsonNullable.<String>of(linkedDatasheetId);
+    this.linkedDatasheetId = linkedDatasheetId;
   }
 
 
   public FieldPropertySO linkedFields(List<LinkedFields> linkedFields) {
-    this.linkedFields = JsonNullable.<List<LinkedFields>>of(linkedFields);
     
+    this.linkedFields = linkedFields;
     return this;
   }
 
   public FieldPropertySO addLinkedFieldsItem(LinkedFields linkedFieldsItem) {
-    if (this.linkedFields == null || !this.linkedFields.isPresent()) {
-      this.linkedFields = JsonNullable.<List<LinkedFields>>of(new ArrayList<>());
+    if (this.linkedFields == null) {
+      this.linkedFields = new ArrayList<>();
     }
-    try {
-      this.linkedFields.get().add(linkedFieldsItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.linkedFields.add(linkedFieldsItem);
     return this;
   }
 
@@ -983,32 +799,24 @@ public class FieldPropertySO {
    * @return linkedFields
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<LinkedFields> getLinkedFields() {
-        return linkedFields.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_LINKED_FIELDS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<LinkedFields>> getLinkedFields_JsonNullable() {
+  public List<LinkedFields> getLinkedFields() {
     return linkedFields;
   }
-  
-  @JsonProperty(JSON_PROPERTY_LINKED_FIELDS)
-  public void setLinkedFields_JsonNullable(JsonNullable<List<LinkedFields>> linkedFields) {
-    this.linkedFields = linkedFields;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_LINKED_FIELDS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setLinkedFields(List<LinkedFields> linkedFields) {
-    this.linkedFields = JsonNullable.<List<LinkedFields>>of(linkedFields);
+    this.linkedFields = linkedFields;
   }
 
 
   public FieldPropertySO linkedViewId(String linkedViewId) {
-    this.linkedViewId = JsonNullable.<String>of(linkedViewId);
     
+    this.linkedViewId = linkedViewId;
     return this;
   }
 
@@ -1017,32 +825,24 @@ public class FieldPropertySO {
    * @return linkedViewId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getLinkedViewId() {
-        return linkedViewId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_LINKED_VIEW_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getLinkedViewId_JsonNullable() {
+  public String getLinkedViewId() {
     return linkedViewId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_LINKED_VIEW_ID)
-  public void setLinkedViewId_JsonNullable(JsonNullable<String> linkedViewId) {
-    this.linkedViewId = linkedViewId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_LINKED_VIEW_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setLinkedViewId(String linkedViewId) {
-    this.linkedViewId = JsonNullable.<String>of(linkedViewId);
+    this.linkedViewId = linkedViewId;
   }
 
 
   public FieldPropertySO lookUpLimit(LookUpLimitType lookUpLimit) {
-    this.lookUpLimit = JsonNullable.<LookUpLimitType>of(lookUpLimit);
     
+    this.lookUpLimit = lookUpLimit;
     return this;
   }
 
@@ -1051,32 +851,24 @@ public class FieldPropertySO {
    * @return lookUpLimit
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public LookUpLimitType getLookUpLimit() {
-        return lookUpLimit.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_LOOK_UP_LIMIT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<LookUpLimitType> getLookUpLimit_JsonNullable() {
+  public LookUpLimitType getLookUpLimit() {
     return lookUpLimit;
   }
-  
-  @JsonProperty(JSON_PROPERTY_LOOK_UP_LIMIT)
-  public void setLookUpLimit_JsonNullable(JsonNullable<LookUpLimitType> lookUpLimit) {
-    this.lookUpLimit = lookUpLimit;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_LOOK_UP_LIMIT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setLookUpLimit(LookUpLimitType lookUpLimit) {
-    this.lookUpLimit = JsonNullable.<LookUpLimitType>of(lookUpLimit);
+    this.lookUpLimit = lookUpLimit;
   }
 
 
   public FieldPropertySO lookUpTargetFieldId(String lookUpTargetFieldId) {
-    this.lookUpTargetFieldId = JsonNullable.<String>of(lookUpTargetFieldId);
     
+    this.lookUpTargetFieldId = lookUpTargetFieldId;
     return this;
   }
 
@@ -1085,32 +877,24 @@ public class FieldPropertySO {
    * @return lookUpTargetFieldId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getLookUpTargetFieldId() {
-        return lookUpTargetFieldId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_LOOK_UP_TARGET_FIELD_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getLookUpTargetFieldId_JsonNullable() {
+  public String getLookUpTargetFieldId() {
     return lookUpTargetFieldId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_LOOK_UP_TARGET_FIELD_ID)
-  public void setLookUpTargetFieldId_JsonNullable(JsonNullable<String> lookUpTargetFieldId) {
-    this.lookUpTargetFieldId = lookUpTargetFieldId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_LOOK_UP_TARGET_FIELD_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setLookUpTargetFieldId(String lookUpTargetFieldId) {
-    this.lookUpTargetFieldId = JsonNullable.<String>of(lookUpTargetFieldId);
+    this.lookUpTargetFieldId = lookUpTargetFieldId;
   }
 
 
   public FieldPropertySO max(Integer max) {
-    this.max = JsonNullable.<Integer>of(max);
     
+    this.max = max;
     return this;
   }
 
@@ -1120,32 +904,24 @@ public class FieldPropertySO {
    * @return max
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Integer getMax() {
-        return max.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_MAX)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Integer> getMax_JsonNullable() {
+  public Integer getMax() {
     return max;
   }
-  
-  @JsonProperty(JSON_PROPERTY_MAX)
-  public void setMax_JsonNullable(JsonNullable<Integer> max) {
-    this.max = max;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_MAX)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setMax(Integer max) {
-    this.max = JsonNullable.<Integer>of(max);
+    this.max = max;
   }
 
 
   public FieldPropertySO nextId(Integer nextId) {
-    this.nextId = JsonNullable.<Integer>of(nextId);
     
+    this.nextId = nextId;
     return this;
   }
 
@@ -1154,32 +930,24 @@ public class FieldPropertySO {
    * @return nextId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Integer getNextId() {
-        return nextId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_NEXT_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Integer> getNextId_JsonNullable() {
+  public Integer getNextId() {
     return nextId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_NEXT_ID)
-  public void setNextId_JsonNullable(JsonNullable<Integer> nextId) {
-    this.nextId = nextId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_NEXT_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setNextId(Integer nextId) {
-    this.nextId = JsonNullable.<Integer>of(nextId);
+    this.nextId = nextId;
   }
 
 
   public FieldPropertySO openFilter(Boolean openFilter) {
-    this.openFilter = JsonNullable.<Boolean>of(openFilter);
     
+    this.openFilter = openFilter;
     return this;
   }
 
@@ -1188,44 +956,32 @@ public class FieldPropertySO {
    * @return openFilter
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getOpenFilter() {
-        return openFilter.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_OPEN_FILTER)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getOpenFilter_JsonNullable() {
+  public Boolean getOpenFilter() {
     return openFilter;
   }
-  
-  @JsonProperty(JSON_PROPERTY_OPEN_FILTER)
-  public void setOpenFilter_JsonNullable(JsonNullable<Boolean> openFilter) {
-    this.openFilter = openFilter;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_OPEN_FILTER)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setOpenFilter(Boolean openFilter) {
-    this.openFilter = JsonNullable.<Boolean>of(openFilter);
+    this.openFilter = openFilter;
   }
 
 
   public FieldPropertySO options(List<SingleSelectProperty> options) {
-    this.options = JsonNullable.<List<SingleSelectProperty>>of(options);
     
+    this.options = options;
     return this;
   }
 
   public FieldPropertySO addOptionsItem(SingleSelectProperty optionsItem) {
-    if (this.options == null || !this.options.isPresent()) {
-      this.options = JsonNullable.<List<SingleSelectProperty>>of(new ArrayList<>());
+    if (this.options == null) {
+      this.options = new ArrayList<>();
     }
-    try {
-      this.options.get().add(optionsItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.options.add(optionsItem);
     return this;
   }
 
@@ -1234,32 +990,24 @@ public class FieldPropertySO {
    * @return options
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<SingleSelectProperty> getOptions() {
-        return options.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_OPTIONS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<SingleSelectProperty>> getOptions_JsonNullable() {
+  public List<SingleSelectProperty> getOptions() {
     return options;
   }
-  
-  @JsonProperty(JSON_PROPERTY_OPTIONS)
-  public void setOptions_JsonNullable(JsonNullable<List<SingleSelectProperty>> options) {
-    this.options = options;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_OPTIONS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setOptions(List<SingleSelectProperty> options) {
-    this.options = JsonNullable.<List<SingleSelectProperty>>of(options);
+    this.options = options;
   }
 
 
   public FieldPropertySO precision(Integer precision) {
-    this.precision = JsonNullable.<Integer>of(precision);
     
+    this.precision = precision;
     return this;
   }
 
@@ -1268,32 +1016,24 @@ public class FieldPropertySO {
    * @return precision
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Integer getPrecision() {
-        return precision.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_PRECISION)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Integer> getPrecision_JsonNullable() {
+  public Integer getPrecision() {
     return precision;
   }
-  
-  @JsonProperty(JSON_PROPERTY_PRECISION)
-  public void setPrecision_JsonNullable(JsonNullable<Integer> precision) {
-    this.precision = precision;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_PRECISION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setPrecision(Integer precision) {
-    this.precision = JsonNullable.<Integer>of(precision);
+    this.precision = precision;
   }
 
 
   public FieldPropertySO relatedLinkFieldId(String relatedLinkFieldId) {
-    this.relatedLinkFieldId = JsonNullable.<String>of(relatedLinkFieldId);
     
+    this.relatedLinkFieldId = relatedLinkFieldId;
     return this;
   }
 
@@ -1302,32 +1042,24 @@ public class FieldPropertySO {
    * @return relatedLinkFieldId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getRelatedLinkFieldId() {
-        return relatedLinkFieldId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_RELATED_LINK_FIELD_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getRelatedLinkFieldId_JsonNullable() {
+  public String getRelatedLinkFieldId() {
     return relatedLinkFieldId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_RELATED_LINK_FIELD_ID)
-  public void setRelatedLinkFieldId_JsonNullable(JsonNullable<String> relatedLinkFieldId) {
-    this.relatedLinkFieldId = relatedLinkFieldId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_RELATED_LINK_FIELD_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setRelatedLinkFieldId(String relatedLinkFieldId) {
-    this.relatedLinkFieldId = JsonNullable.<String>of(relatedLinkFieldId);
+    this.relatedLinkFieldId = relatedLinkFieldId;
   }
 
 
   public FieldPropertySO rollUpType(RollUpFuncType rollUpType) {
-    this.rollUpType = JsonNullable.<RollUpFuncType>of(rollUpType);
     
+    this.rollUpType = rollUpType;
     return this;
   }
 
@@ -1336,32 +1068,24 @@ public class FieldPropertySO {
    * @return rollUpType
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public RollUpFuncType getRollUpType() {
-        return rollUpType.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ROLL_UP_TYPE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<RollUpFuncType> getRollUpType_JsonNullable() {
+  public RollUpFuncType getRollUpType() {
     return rollUpType;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ROLL_UP_TYPE)
-  public void setRollUpType_JsonNullable(JsonNullable<RollUpFuncType> rollUpType) {
-    this.rollUpType = rollUpType;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ROLL_UP_TYPE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setRollUpType(RollUpFuncType rollUpType) {
-    this.rollUpType = JsonNullable.<RollUpFuncType>of(rollUpType);
+    this.rollUpType = rollUpType;
   }
 
 
   public FieldPropertySO shouldSendMsg(Boolean shouldSendMsg) {
-    this.shouldSendMsg = JsonNullable.<Boolean>of(shouldSendMsg);
     
+    this.shouldSendMsg = shouldSendMsg;
     return this;
   }
 
@@ -1370,32 +1094,24 @@ public class FieldPropertySO {
    * @return shouldSendMsg
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getShouldSendMsg() {
-        return shouldSendMsg.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_SHOULD_SEND_MSG)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getShouldSendMsg_JsonNullable() {
+  public Boolean getShouldSendMsg() {
     return shouldSendMsg;
   }
-  
-  @JsonProperty(JSON_PROPERTY_SHOULD_SEND_MSG)
-  public void setShouldSendMsg_JsonNullable(JsonNullable<Boolean> shouldSendMsg) {
-    this.shouldSendMsg = shouldSendMsg;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_SHOULD_SEND_MSG)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setShouldSendMsg(Boolean shouldSendMsg) {
-    this.shouldSendMsg = JsonNullable.<Boolean>of(shouldSendMsg);
+    this.shouldSendMsg = shouldSendMsg;
   }
 
 
   public FieldPropertySO showAll(Boolean showAll) {
-    this.showAll = JsonNullable.<Boolean>of(showAll);
     
+    this.showAll = showAll;
     return this;
   }
 
@@ -1404,32 +1120,24 @@ public class FieldPropertySO {
    * @return showAll
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getShowAll() {
-        return showAll.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_SHOW_ALL)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getShowAll_JsonNullable() {
+  public Boolean getShowAll() {
     return showAll;
   }
-  
-  @JsonProperty(JSON_PROPERTY_SHOW_ALL)
-  public void setShowAll_JsonNullable(JsonNullable<Boolean> showAll) {
-    this.showAll = showAll;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_SHOW_ALL)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setShowAll(Boolean showAll) {
-    this.showAll = JsonNullable.<Boolean>of(showAll);
+    this.showAll = showAll;
   }
 
 
   public FieldPropertySO sortInfo(LookUpSortInfo sortInfo) {
-    this.sortInfo = JsonNullable.<LookUpSortInfo>of(sortInfo);
     
+    this.sortInfo = sortInfo;
     return this;
   }
 
@@ -1438,32 +1146,24 @@ public class FieldPropertySO {
    * @return sortInfo
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public LookUpSortInfo getSortInfo() {
-        return sortInfo.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_SORT_INFO)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<LookUpSortInfo> getSortInfo_JsonNullable() {
+  public LookUpSortInfo getSortInfo() {
     return sortInfo;
   }
-  
-  @JsonProperty(JSON_PROPERTY_SORT_INFO)
-  public void setSortInfo_JsonNullable(JsonNullable<LookUpSortInfo> sortInfo) {
-    this.sortInfo = sortInfo;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_SORT_INFO)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setSortInfo(LookUpSortInfo sortInfo) {
-    this.sortInfo = JsonNullable.<LookUpSortInfo>of(sortInfo);
+    this.sortInfo = sortInfo;
   }
 
 
   public FieldPropertySO subscription(Boolean subscription) {
-    this.subscription = JsonNullable.<Boolean>of(subscription);
     
+    this.subscription = subscription;
     return this;
   }
 
@@ -1472,32 +1172,24 @@ public class FieldPropertySO {
    * @return subscription
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getSubscription() {
-        return subscription.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_SUBSCRIPTION)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getSubscription_JsonNullable() {
+  public Boolean getSubscription() {
     return subscription;
   }
-  
-  @JsonProperty(JSON_PROPERTY_SUBSCRIPTION)
-  public void setSubscription_JsonNullable(JsonNullable<Boolean> subscription) {
-    this.subscription = subscription;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_SUBSCRIPTION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setSubscription(Boolean subscription) {
-    this.subscription = JsonNullable.<Boolean>of(subscription);
+    this.subscription = subscription;
   }
 
 
   public FieldPropertySO symbol(String symbol) {
-    this.symbol = JsonNullable.<String>of(symbol);
     
+    this.symbol = symbol;
     return this;
   }
 
@@ -1506,32 +1198,24 @@ public class FieldPropertySO {
    * @return symbol
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getSymbol() {
-        return symbol.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_SYMBOL)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getSymbol_JsonNullable() {
+  public String getSymbol() {
     return symbol;
   }
-  
-  @JsonProperty(JSON_PROPERTY_SYMBOL)
-  public void setSymbol_JsonNullable(JsonNullable<String> symbol) {
-    this.symbol = symbol;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_SYMBOL)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setSymbol(String symbol) {
-    this.symbol = JsonNullable.<String>of(symbol);
+    this.symbol = symbol;
   }
 
 
   public FieldPropertySO symbolAlign(SymbolAlign symbolAlign) {
-    this.symbolAlign = JsonNullable.<SymbolAlign>of(symbolAlign);
     
+    this.symbolAlign = symbolAlign;
     return this;
   }
 
@@ -1540,32 +1224,24 @@ public class FieldPropertySO {
    * @return symbolAlign
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public SymbolAlign getSymbolAlign() {
-        return symbolAlign.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_SYMBOL_ALIGN)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<SymbolAlign> getSymbolAlign_JsonNullable() {
+  public SymbolAlign getSymbolAlign() {
     return symbolAlign;
   }
-  
-  @JsonProperty(JSON_PROPERTY_SYMBOL_ALIGN)
-  public void setSymbolAlign_JsonNullable(JsonNullable<SymbolAlign> symbolAlign) {
-    this.symbolAlign = symbolAlign;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_SYMBOL_ALIGN)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setSymbolAlign(SymbolAlign symbolAlign) {
-    this.symbolAlign = JsonNullable.<SymbolAlign>of(symbolAlign);
+    this.symbolAlign = symbolAlign;
   }
 
 
   public FieldPropertySO timeFormat(TimeFormat timeFormat) {
-    this.timeFormat = JsonNullable.<TimeFormat>of(timeFormat);
     
+    this.timeFormat = timeFormat;
     return this;
   }
 
@@ -1574,32 +1250,24 @@ public class FieldPropertySO {
    * @return timeFormat
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public TimeFormat getTimeFormat() {
-        return timeFormat.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_TIME_FORMAT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<TimeFormat> getTimeFormat_JsonNullable() {
+  public TimeFormat getTimeFormat() {
     return timeFormat;
   }
-  
-  @JsonProperty(JSON_PROPERTY_TIME_FORMAT)
-  public void setTimeFormat_JsonNullable(JsonNullable<TimeFormat> timeFormat) {
-    this.timeFormat = timeFormat;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_TIME_FORMAT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setTimeFormat(TimeFormat timeFormat) {
-    this.timeFormat = JsonNullable.<TimeFormat>of(timeFormat);
+    this.timeFormat = timeFormat;
   }
 
 
   public FieldPropertySO timeZone(String timeZone) {
-    this.timeZone = JsonNullable.<String>of(timeZone);
     
+    this.timeZone = timeZone;
     return this;
   }
 
@@ -1608,44 +1276,32 @@ public class FieldPropertySO {
    * @return timeZone
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getTimeZone() {
-        return timeZone.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_TIME_ZONE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getTimeZone_JsonNullable() {
+  public String getTimeZone() {
     return timeZone;
   }
-  
-  @JsonProperty(JSON_PROPERTY_TIME_ZONE)
-  public void setTimeZone_JsonNullable(JsonNullable<String> timeZone) {
-    this.timeZone = timeZone;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_TIME_ZONE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setTimeZone(String timeZone) {
-    this.timeZone = JsonNullable.<String>of(timeZone);
+    this.timeZone = timeZone;
   }
 
 
   public FieldPropertySO unitIds(List<String> unitIds) {
-    this.unitIds = JsonNullable.<List<String>>of(unitIds);
     
+    this.unitIds = unitIds;
     return this;
   }
 
   public FieldPropertySO addUnitIdsItem(String unitIdsItem) {
-    if (this.unitIds == null || !this.unitIds.isPresent()) {
-      this.unitIds = JsonNullable.<List<String>>of(new ArrayList<>());
+    if (this.unitIds == null) {
+      this.unitIds = new ArrayList<>();
     }
-    try {
-      this.unitIds.get().add(unitIdsItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.unitIds.add(unitIdsItem);
     return this;
   }
 
@@ -1654,44 +1310,32 @@ public class FieldPropertySO {
    * @return unitIds
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<String> getUnitIds() {
-        return unitIds.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_UNIT_IDS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<String>> getUnitIds_JsonNullable() {
+  public List<String> getUnitIds() {
     return unitIds;
   }
-  
-  @JsonProperty(JSON_PROPERTY_UNIT_IDS)
-  public void setUnitIds_JsonNullable(JsonNullable<List<String>> unitIds) {
-    this.unitIds = unitIds;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_UNIT_IDS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setUnitIds(List<String> unitIds) {
-    this.unitIds = JsonNullable.<List<String>>of(unitIds);
+    this.unitIds = unitIds;
   }
 
 
   public FieldPropertySO uuids(List<String> uuids) {
-    this.uuids = JsonNullable.<List<String>>of(uuids);
     
+    this.uuids = uuids;
     return this;
   }
 
   public FieldPropertySO addUuidsItem(String uuidsItem) {
-    if (this.uuids == null || !this.uuids.isPresent()) {
-      this.uuids = JsonNullable.<List<String>>of(new ArrayList<>());
+    if (this.uuids == null) {
+      this.uuids = new ArrayList<>();
     }
-    try {
-      this.uuids.get().add(uuidsItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.uuids.add(uuidsItem);
     return this;
   }
 
@@ -1700,32 +1344,24 @@ public class FieldPropertySO {
    * @return uuids
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<String> getUuids() {
-        return uuids.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_UUIDS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<String>> getUuids_JsonNullable() {
+  public List<String> getUuids() {
     return uuids;
   }
-  
-  @JsonProperty(JSON_PROPERTY_UUIDS)
-  public void setUuids_JsonNullable(JsonNullable<List<String>> uuids) {
-    this.uuids = uuids;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_UUIDS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setUuids(List<String> uuids) {
-    this.uuids = JsonNullable.<List<String>>of(uuids);
+    this.uuids = uuids;
   }
 
 
   public FieldPropertySO viewIdx(Integer viewIdx) {
-    this.viewIdx = JsonNullable.<Integer>of(viewIdx);
     
+    this.viewIdx = viewIdx;
     return this;
   }
 
@@ -1734,26 +1370,18 @@ public class FieldPropertySO {
    * @return viewIdx
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Integer getViewIdx() {
-        return viewIdx.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_VIEW_IDX)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Integer> getViewIdx_JsonNullable() {
+  public Integer getViewIdx() {
     return viewIdx;
   }
-  
-  @JsonProperty(JSON_PROPERTY_VIEW_IDX)
-  public void setViewIdx_JsonNullable(JsonNullable<Integer> viewIdx) {
-    this.viewIdx = viewIdx;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_VIEW_IDX)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setViewIdx(Integer viewIdx) {
-    this.viewIdx = JsonNullable.<Integer>of(viewIdx);
+    this.viewIdx = viewIdx;
   }
 
   @Override
@@ -1765,65 +1393,54 @@ public class FieldPropertySO {
       return false;
     }
     FieldPropertySO fieldPropertySO = (FieldPropertySO) o;
-    return equalsNullable(this.autoFill, fieldPropertySO.autoFill) &&
-        equalsNullable(this.brotherFieldId, fieldPropertySO.brotherFieldId) &&
-        equalsNullable(this.collectType, fieldPropertySO.collectType) &&
-        equalsNullable(this.commaStyle, fieldPropertySO.commaStyle) &&
-        equalsNullable(this.datasheetId, fieldPropertySO.datasheetId) &&
-        equalsNullable(this.dateFormat, fieldPropertySO.dateFormat) &&
-        equalsNullable(this.defaultValue, fieldPropertySO.defaultValue) &&
-        equalsNullable(this.expression, fieldPropertySO.expression) &&
-        equalsNullable(this.fieldIdCollection, fieldPropertySO.fieldIdCollection) &&
-        equalsNullable(this.filterInfo, fieldPropertySO.filterInfo) &&
-        equalsNullable(this.foreignDatasheetId, fieldPropertySO.foreignDatasheetId) &&
-        equalsNullable(this.formatting, fieldPropertySO.formatting) &&
-        equalsNullable(this.fullLinkedFields, fieldPropertySO.fullLinkedFields) &&
-        equalsNullable(this.icon, fieldPropertySO.icon) &&
-        equalsNullable(this.includeTime, fieldPropertySO.includeTime) &&
-        equalsNullable(this.includeTimeZone, fieldPropertySO.includeTimeZone) &&
-        equalsNullable(this.isMulti, fieldPropertySO.isMulti) &&
-        equalsNullable(this.isRecogUrlFlag, fieldPropertySO.isRecogUrlFlag) &&
-        equalsNullable(this.limitSingleRecord, fieldPropertySO.limitSingleRecord) &&
-        equalsNullable(this.limitToView, fieldPropertySO.limitToView) &&
-        equalsNullable(this.linkedDatasheetId, fieldPropertySO.linkedDatasheetId) &&
-        equalsNullable(this.linkedFields, fieldPropertySO.linkedFields) &&
-        equalsNullable(this.linkedViewId, fieldPropertySO.linkedViewId) &&
-        equalsNullable(this.lookUpLimit, fieldPropertySO.lookUpLimit) &&
-        equalsNullable(this.lookUpTargetFieldId, fieldPropertySO.lookUpTargetFieldId) &&
-        equalsNullable(this.max, fieldPropertySO.max) &&
-        equalsNullable(this.nextId, fieldPropertySO.nextId) &&
-        equalsNullable(this.openFilter, fieldPropertySO.openFilter) &&
-        equalsNullable(this.options, fieldPropertySO.options) &&
-        equalsNullable(this.precision, fieldPropertySO.precision) &&
-        equalsNullable(this.relatedLinkFieldId, fieldPropertySO.relatedLinkFieldId) &&
-        equalsNullable(this.rollUpType, fieldPropertySO.rollUpType) &&
-        equalsNullable(this.shouldSendMsg, fieldPropertySO.shouldSendMsg) &&
-        equalsNullable(this.showAll, fieldPropertySO.showAll) &&
-        equalsNullable(this.sortInfo, fieldPropertySO.sortInfo) &&
-        equalsNullable(this.subscription, fieldPropertySO.subscription) &&
-        equalsNullable(this.symbol, fieldPropertySO.symbol) &&
-        equalsNullable(this.symbolAlign, fieldPropertySO.symbolAlign) &&
-        equalsNullable(this.timeFormat, fieldPropertySO.timeFormat) &&
-        equalsNullable(this.timeZone, fieldPropertySO.timeZone) &&
-        equalsNullable(this.unitIds, fieldPropertySO.unitIds) &&
-        equalsNullable(this.uuids, fieldPropertySO.uuids) &&
-        equalsNullable(this.viewIdx, fieldPropertySO.viewIdx);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+    return Objects.equals(this.autoFill, fieldPropertySO.autoFill) &&
+        Objects.equals(this.brotherFieldId, fieldPropertySO.brotherFieldId) &&
+        Objects.equals(this.collectType, fieldPropertySO.collectType) &&
+        Objects.equals(this.commaStyle, fieldPropertySO.commaStyle) &&
+        Objects.equals(this.datasheetId, fieldPropertySO.datasheetId) &&
+        Objects.equals(this.dateFormat, fieldPropertySO.dateFormat) &&
+        Objects.equals(this.defaultValue, fieldPropertySO.defaultValue) &&
+        Objects.equals(this.expression, fieldPropertySO.expression) &&
+        Objects.equals(this.fieldIdCollection, fieldPropertySO.fieldIdCollection) &&
+        Objects.equals(this.filterInfo, fieldPropertySO.filterInfo) &&
+        Objects.equals(this.foreignDatasheetId, fieldPropertySO.foreignDatasheetId) &&
+        Objects.equals(this.formatting, fieldPropertySO.formatting) &&
+        Objects.equals(this.fullLinkedFields, fieldPropertySO.fullLinkedFields) &&
+        Objects.equals(this.icon, fieldPropertySO.icon) &&
+        Objects.equals(this.includeTime, fieldPropertySO.includeTime) &&
+        Objects.equals(this.includeTimeZone, fieldPropertySO.includeTimeZone) &&
+        Objects.equals(this.isMulti, fieldPropertySO.isMulti) &&
+        Objects.equals(this.isRecogUrlFlag, fieldPropertySO.isRecogUrlFlag) &&
+        Objects.equals(this.limitSingleRecord, fieldPropertySO.limitSingleRecord) &&
+        Objects.equals(this.limitToView, fieldPropertySO.limitToView) &&
+        Objects.equals(this.linkedDatasheetId, fieldPropertySO.linkedDatasheetId) &&
+        Objects.equals(this.linkedFields, fieldPropertySO.linkedFields) &&
+        Objects.equals(this.linkedViewId, fieldPropertySO.linkedViewId) &&
+        Objects.equals(this.lookUpLimit, fieldPropertySO.lookUpLimit) &&
+        Objects.equals(this.lookUpTargetFieldId, fieldPropertySO.lookUpTargetFieldId) &&
+        Objects.equals(this.max, fieldPropertySO.max) &&
+        Objects.equals(this.nextId, fieldPropertySO.nextId) &&
+        Objects.equals(this.openFilter, fieldPropertySO.openFilter) &&
+        Objects.equals(this.options, fieldPropertySO.options) &&
+        Objects.equals(this.precision, fieldPropertySO.precision) &&
+        Objects.equals(this.relatedLinkFieldId, fieldPropertySO.relatedLinkFieldId) &&
+        Objects.equals(this.rollUpType, fieldPropertySO.rollUpType) &&
+        Objects.equals(this.shouldSendMsg, fieldPropertySO.shouldSendMsg) &&
+        Objects.equals(this.showAll, fieldPropertySO.showAll) &&
+        Objects.equals(this.sortInfo, fieldPropertySO.sortInfo) &&
+        Objects.equals(this.subscription, fieldPropertySO.subscription) &&
+        Objects.equals(this.symbol, fieldPropertySO.symbol) &&
+        Objects.equals(this.symbolAlign, fieldPropertySO.symbolAlign) &&
+        Objects.equals(this.timeFormat, fieldPropertySO.timeFormat) &&
+        Objects.equals(this.timeZone, fieldPropertySO.timeZone) &&
+        Objects.equals(this.unitIds, fieldPropertySO.unitIds) &&
+        Objects.equals(this.uuids, fieldPropertySO.uuids) &&
+        Objects.equals(this.viewIdx, fieldPropertySO.viewIdx);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(autoFill), hashCodeNullable(brotherFieldId), hashCodeNullable(collectType), hashCodeNullable(commaStyle), hashCodeNullable(datasheetId), hashCodeNullable(dateFormat), hashCodeNullable(defaultValue), hashCodeNullable(expression), hashCodeNullable(fieldIdCollection), hashCodeNullable(filterInfo), hashCodeNullable(foreignDatasheetId), hashCodeNullable(formatting), hashCodeNullable(fullLinkedFields), hashCodeNullable(icon), hashCodeNullable(includeTime), hashCodeNullable(includeTimeZone), hashCodeNullable(isMulti), hashCodeNullable(isRecogUrlFlag), hashCodeNullable(limitSingleRecord), hashCodeNullable(limitToView), hashCodeNullable(linkedDatasheetId), hashCodeNullable(linkedFields), hashCodeNullable(linkedViewId), hashCodeNullable(lookUpLimit), hashCodeNullable(lookUpTargetFieldId), hashCodeNullable(max), hashCodeNullable(nextId), hashCodeNullable(openFilter), hashCodeNullable(options), hashCodeNullable(precision), hashCodeNullable(relatedLinkFieldId), hashCodeNullable(rollUpType), hashCodeNullable(shouldSendMsg), hashCodeNullable(showAll), hashCodeNullable(sortInfo), hashCodeNullable(subscription), hashCodeNullable(symbol), hashCodeNullable(symbolAlign), hashCodeNullable(timeFormat), hashCodeNullable(timeZone), hashCodeNullable(unitIds), hashCodeNullable(uuids), hashCodeNullable(viewIdx));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(autoFill, brotherFieldId, collectType, commaStyle, datasheetId, dateFormat, defaultValue, expression, fieldIdCollection, filterInfo, foreignDatasheetId, formatting, fullLinkedFields, icon, includeTime, includeTimeZone, isMulti, isRecogUrlFlag, limitSingleRecord, limitToView, linkedDatasheetId, linkedFields, linkedViewId, lookUpLimit, lookUpTargetFieldId, max, nextId, openFilter, options, precision, relatedLinkFieldId, rollUpType, shouldSendMsg, showAll, sortInfo, subscription, symbol, symbolAlign, timeFormat, timeZone, unitIds, uuids, viewIdx);
   }
 
   @Override

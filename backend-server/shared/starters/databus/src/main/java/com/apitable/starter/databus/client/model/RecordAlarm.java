@@ -24,10 +24,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -46,32 +42,32 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class RecordAlarm {
   public static final String JSON_PROPERTY_ALARM_AT = "alarmAt";
-  private JsonNullable<Long> alarmAt = JsonNullable.<Long>undefined();
+  private Long alarmAt;
 
   public static final String JSON_PROPERTY_ALARM_USERS = "alarmUsers";
-  private JsonNullable<List<AlarmUser>> alarmUsers = JsonNullable.<List<AlarmUser>>undefined();
+  private List<AlarmUser> alarmUsers;
 
   public static final String JSON_PROPERTY_FIELD_ID = "fieldId";
-  private JsonNullable<String> fieldId = JsonNullable.<String>undefined();
+  private String fieldId;
 
   public static final String JSON_PROPERTY_ID = "id";
-  private JsonNullable<String> id = JsonNullable.<String>undefined();
+  private String id;
 
   public static final String JSON_PROPERTY_RECORD_ID = "recordId";
-  private JsonNullable<String> recordId = JsonNullable.<String>undefined();
+  private String recordId;
 
   public static final String JSON_PROPERTY_SUBTRACT = "subtract";
-  private JsonNullable<String> subtract = JsonNullable.<String>undefined();
+  private String subtract;
 
   public static final String JSON_PROPERTY_TIME = "time";
-  private JsonNullable<String> time = JsonNullable.<String>undefined();
+  private String time;
 
   public RecordAlarm() {
   }
 
   public RecordAlarm alarmAt(Long alarmAt) {
-    this.alarmAt = JsonNullable.<Long>of(alarmAt);
     
+    this.alarmAt = alarmAt;
     return this;
   }
 
@@ -81,44 +77,32 @@ public class RecordAlarm {
    * @return alarmAt
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getAlarmAt() {
-        return alarmAt.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ALARM_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getAlarmAt_JsonNullable() {
+  public Long getAlarmAt() {
     return alarmAt;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ALARM_AT)
-  public void setAlarmAt_JsonNullable(JsonNullable<Long> alarmAt) {
-    this.alarmAt = alarmAt;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ALARM_AT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setAlarmAt(Long alarmAt) {
-    this.alarmAt = JsonNullable.<Long>of(alarmAt);
+    this.alarmAt = alarmAt;
   }
 
 
   public RecordAlarm alarmUsers(List<AlarmUser> alarmUsers) {
-    this.alarmUsers = JsonNullable.<List<AlarmUser>>of(alarmUsers);
     
+    this.alarmUsers = alarmUsers;
     return this;
   }
 
   public RecordAlarm addAlarmUsersItem(AlarmUser alarmUsersItem) {
-    if (this.alarmUsers == null || !this.alarmUsers.isPresent()) {
-      this.alarmUsers = JsonNullable.<List<AlarmUser>>of(new ArrayList<>());
+    if (this.alarmUsers == null) {
+      this.alarmUsers = new ArrayList<>();
     }
-    try {
-      this.alarmUsers.get().add(alarmUsersItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.alarmUsers.add(alarmUsersItem);
     return this;
   }
 
@@ -127,32 +111,24 @@ public class RecordAlarm {
    * @return alarmUsers
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<AlarmUser> getAlarmUsers() {
-        return alarmUsers.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ALARM_USERS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<AlarmUser>> getAlarmUsers_JsonNullable() {
+  public List<AlarmUser> getAlarmUsers() {
     return alarmUsers;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ALARM_USERS)
-  public void setAlarmUsers_JsonNullable(JsonNullable<List<AlarmUser>> alarmUsers) {
-    this.alarmUsers = alarmUsers;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ALARM_USERS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setAlarmUsers(List<AlarmUser> alarmUsers) {
-    this.alarmUsers = JsonNullable.<List<AlarmUser>>of(alarmUsers);
+    this.alarmUsers = alarmUsers;
   }
 
 
   public RecordAlarm fieldId(String fieldId) {
-    this.fieldId = JsonNullable.<String>of(fieldId);
     
+    this.fieldId = fieldId;
     return this;
   }
 
@@ -161,32 +137,24 @@ public class RecordAlarm {
    * @return fieldId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getFieldId() {
-        return fieldId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_FIELD_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getFieldId_JsonNullable() {
+  public String getFieldId() {
     return fieldId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_FIELD_ID)
-  public void setFieldId_JsonNullable(JsonNullable<String> fieldId) {
-    this.fieldId = fieldId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_FIELD_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFieldId(String fieldId) {
-    this.fieldId = JsonNullable.<String>of(fieldId);
+    this.fieldId = fieldId;
   }
 
 
   public RecordAlarm id(String id) {
-    this.id = JsonNullable.<String>of(id);
     
+    this.id = id;
     return this;
   }
 
@@ -195,32 +163,24 @@ public class RecordAlarm {
    * @return id
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getId() {
-        return id.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getId_JsonNullable() {
+  public String getId() {
     return id;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ID)
-  public void setId_JsonNullable(JsonNullable<String> id) {
-    this.id = id;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setId(String id) {
-    this.id = JsonNullable.<String>of(id);
+    this.id = id;
   }
 
 
   public RecordAlarm recordId(String recordId) {
-    this.recordId = JsonNullable.<String>of(recordId);
     
+    this.recordId = recordId;
     return this;
   }
 
@@ -229,32 +189,24 @@ public class RecordAlarm {
    * @return recordId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getRecordId() {
-        return recordId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_RECORD_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getRecordId_JsonNullable() {
+  public String getRecordId() {
     return recordId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_RECORD_ID)
-  public void setRecordId_JsonNullable(JsonNullable<String> recordId) {
-    this.recordId = recordId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_RECORD_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setRecordId(String recordId) {
-    this.recordId = JsonNullable.<String>of(recordId);
+    this.recordId = recordId;
   }
 
 
   public RecordAlarm subtract(String subtract) {
-    this.subtract = JsonNullable.<String>of(subtract);
     
+    this.subtract = subtract;
     return this;
   }
 
@@ -263,32 +215,24 @@ public class RecordAlarm {
    * @return subtract
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getSubtract() {
-        return subtract.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_SUBTRACT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getSubtract_JsonNullable() {
+  public String getSubtract() {
     return subtract;
   }
-  
-  @JsonProperty(JSON_PROPERTY_SUBTRACT)
-  public void setSubtract_JsonNullable(JsonNullable<String> subtract) {
-    this.subtract = subtract;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_SUBTRACT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setSubtract(String subtract) {
-    this.subtract = JsonNullable.<String>of(subtract);
+    this.subtract = subtract;
   }
 
 
   public RecordAlarm time(String time) {
-    this.time = JsonNullable.<String>of(time);
     
+    this.time = time;
     return this;
   }
 
@@ -297,26 +241,18 @@ public class RecordAlarm {
    * @return time
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getTime() {
-        return time.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_TIME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getTime_JsonNullable() {
+  public String getTime() {
     return time;
   }
-  
-  @JsonProperty(JSON_PROPERTY_TIME)
-  public void setTime_JsonNullable(JsonNullable<String> time) {
-    this.time = time;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_TIME)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setTime(String time) {
-    this.time = JsonNullable.<String>of(time);
+    this.time = time;
   }
 
   @Override
@@ -328,29 +264,18 @@ public class RecordAlarm {
       return false;
     }
     RecordAlarm recordAlarm = (RecordAlarm) o;
-    return equalsNullable(this.alarmAt, recordAlarm.alarmAt) &&
-        equalsNullable(this.alarmUsers, recordAlarm.alarmUsers) &&
-        equalsNullable(this.fieldId, recordAlarm.fieldId) &&
-        equalsNullable(this.id, recordAlarm.id) &&
-        equalsNullable(this.recordId, recordAlarm.recordId) &&
-        equalsNullable(this.subtract, recordAlarm.subtract) &&
-        equalsNullable(this.time, recordAlarm.time);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+    return Objects.equals(this.alarmAt, recordAlarm.alarmAt) &&
+        Objects.equals(this.alarmUsers, recordAlarm.alarmUsers) &&
+        Objects.equals(this.fieldId, recordAlarm.fieldId) &&
+        Objects.equals(this.id, recordAlarm.id) &&
+        Objects.equals(this.recordId, recordAlarm.recordId) &&
+        Objects.equals(this.subtract, recordAlarm.subtract) &&
+        Objects.equals(this.time, recordAlarm.time);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(alarmAt), hashCodeNullable(alarmUsers), hashCodeNullable(fieldId), hashCodeNullable(id), hashCodeNullable(recordId), hashCodeNullable(subtract), hashCodeNullable(time));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(alarmAt, alarmUsers, fieldId, id, recordId, subtract, time);
   }
 
   @Override

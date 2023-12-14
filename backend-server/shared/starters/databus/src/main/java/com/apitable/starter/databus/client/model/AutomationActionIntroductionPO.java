@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -45,7 +41,7 @@ public class AutomationActionIntroductionPO {
   private String actionTypeId;
 
   public static final String JSON_PROPERTY_PREV_ACTION_ID = "prevActionId";
-  private JsonNullable<String> prevActionId = JsonNullable.<String>undefined();
+  private String prevActionId;
 
   public static final String JSON_PROPERTY_ROBOT_ID = "robotId";
   private String robotId;
@@ -106,8 +102,8 @@ public class AutomationActionIntroductionPO {
 
 
   public AutomationActionIntroductionPO prevActionId(String prevActionId) {
-    this.prevActionId = JsonNullable.<String>of(prevActionId);
     
+    this.prevActionId = prevActionId;
     return this;
   }
 
@@ -116,26 +112,18 @@ public class AutomationActionIntroductionPO {
    * @return prevActionId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getPrevActionId() {
-        return prevActionId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_PREV_ACTION_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getPrevActionId_JsonNullable() {
+  public String getPrevActionId() {
     return prevActionId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_PREV_ACTION_ID)
-  public void setPrevActionId_JsonNullable(JsonNullable<String> prevActionId) {
-    this.prevActionId = prevActionId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_PREV_ACTION_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setPrevActionId(String prevActionId) {
-    this.prevActionId = JsonNullable.<String>of(prevActionId);
+    this.prevActionId = prevActionId;
   }
 
 
@@ -175,24 +163,13 @@ public class AutomationActionIntroductionPO {
     AutomationActionIntroductionPO automationActionIntroductionPO = (AutomationActionIntroductionPO) o;
     return Objects.equals(this.actionId, automationActionIntroductionPO.actionId) &&
         Objects.equals(this.actionTypeId, automationActionIntroductionPO.actionTypeId) &&
-        equalsNullable(this.prevActionId, automationActionIntroductionPO.prevActionId) &&
+        Objects.equals(this.prevActionId, automationActionIntroductionPO.prevActionId) &&
         Objects.equals(this.robotId, automationActionIntroductionPO.robotId);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(actionId, actionTypeId, hashCodeNullable(prevActionId), robotId);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(actionId, actionTypeId, prevActionId, robotId);
   }
 
   @Override

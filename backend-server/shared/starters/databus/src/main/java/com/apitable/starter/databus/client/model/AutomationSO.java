@@ -27,10 +27,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -49,7 +45,7 @@ public class AutomationSO {
   private List<AutomationActionPO> actions = new ArrayList<>();
 
   public static final String JSON_PROPERTY_RELATED_RESOURCES = "relatedResources";
-  private JsonNullable<List<NodeSimplePO>> relatedResources = JsonNullable.<List<NodeSimplePO>>undefined();
+  private List<NodeSimplePO> relatedResources;
 
   public static final String JSON_PROPERTY_ROBOT = "robot";
   private AutomationRobotSO robot;
@@ -95,20 +91,16 @@ public class AutomationSO {
 
 
   public AutomationSO relatedResources(List<NodeSimplePO> relatedResources) {
-    this.relatedResources = JsonNullable.<List<NodeSimplePO>>of(relatedResources);
     
+    this.relatedResources = relatedResources;
     return this;
   }
 
   public AutomationSO addRelatedResourcesItem(NodeSimplePO relatedResourcesItem) {
-    if (this.relatedResources == null || !this.relatedResources.isPresent()) {
-      this.relatedResources = JsonNullable.<List<NodeSimplePO>>of(new ArrayList<>());
+    if (this.relatedResources == null) {
+      this.relatedResources = new ArrayList<>();
     }
-    try {
-      this.relatedResources.get().add(relatedResourcesItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.relatedResources.add(relatedResourcesItem);
     return this;
   }
 
@@ -117,26 +109,18 @@ public class AutomationSO {
    * @return relatedResources
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<NodeSimplePO> getRelatedResources() {
-        return relatedResources.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_RELATED_RESOURCES)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<NodeSimplePO>> getRelatedResources_JsonNullable() {
+  public List<NodeSimplePO> getRelatedResources() {
     return relatedResources;
   }
-  
-  @JsonProperty(JSON_PROPERTY_RELATED_RESOURCES)
-  public void setRelatedResources_JsonNullable(JsonNullable<List<NodeSimplePO>> relatedResources) {
-    this.relatedResources = relatedResources;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_RELATED_RESOURCES)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setRelatedResources(List<NodeSimplePO> relatedResources) {
-    this.relatedResources = JsonNullable.<List<NodeSimplePO>>of(relatedResources);
+    this.relatedResources = relatedResources;
   }
 
 
@@ -209,25 +193,14 @@ public class AutomationSO {
     }
     AutomationSO automationSO = (AutomationSO) o;
     return Objects.equals(this.actions, automationSO.actions) &&
-        equalsNullable(this.relatedResources, automationSO.relatedResources) &&
+        Objects.equals(this.relatedResources, automationSO.relatedResources) &&
         Objects.equals(this.robot, automationSO.robot) &&
         Objects.equals(this.triggers, automationSO.triggers);
   }
 
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hash(actions, hashCodeNullable(relatedResources), robot, triggers);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(actions, relatedResources, robot, triggers);
   }
 
   @Override

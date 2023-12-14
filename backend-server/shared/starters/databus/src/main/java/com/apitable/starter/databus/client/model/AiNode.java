@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -48,19 +44,19 @@ public class AiNode {
   private Long id;
 
   public static final String JSON_PROPERTY_NODE_ID = "nodeId";
-  private JsonNullable<String> nodeId = JsonNullable.<String>undefined();
+  private String nodeId;
 
   public static final String JSON_PROPERTY_NODE_TYPE = "nodeType";
-  private JsonNullable<Integer> nodeType = JsonNullable.<Integer>undefined();
+  private Integer nodeType;
 
   public static final String JSON_PROPERTY_SETTING = "setting";
   private Object setting = null;
 
   public static final String JSON_PROPERTY_TYPE = "type";
-  private JsonNullable<String> type = JsonNullable.<String>undefined();
+  private String type;
 
   public static final String JSON_PROPERTY_VERSION = "version";
-  private JsonNullable<Integer> version = JsonNullable.<Integer>undefined();
+  private Integer version;
 
   public AiNode() {
   }
@@ -119,8 +115,8 @@ public class AiNode {
 
 
   public AiNode nodeId(String nodeId) {
-    this.nodeId = JsonNullable.<String>of(nodeId);
     
+    this.nodeId = nodeId;
     return this;
   }
 
@@ -131,32 +127,24 @@ public class AiNode {
   **/
   @Deprecated
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getNodeId() {
-        return nodeId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_NODE_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getNodeId_JsonNullable() {
+  public String getNodeId() {
     return nodeId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_NODE_ID)
-  public void setNodeId_JsonNullable(JsonNullable<String> nodeId) {
-    this.nodeId = nodeId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_NODE_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setNodeId(String nodeId) {
-    this.nodeId = JsonNullable.<String>of(nodeId);
+    this.nodeId = nodeId;
   }
 
 
   public AiNode nodeType(Integer nodeType) {
-    this.nodeType = JsonNullable.<Integer>of(nodeType);
     
+    this.nodeType = nodeType;
     return this;
   }
 
@@ -167,26 +155,18 @@ public class AiNode {
   **/
   @Deprecated
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Integer getNodeType() {
-        return nodeType.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_NODE_TYPE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Integer> getNodeType_JsonNullable() {
+  public Integer getNodeType() {
     return nodeType;
   }
-  
-  @JsonProperty(JSON_PROPERTY_NODE_TYPE)
-  public void setNodeType_JsonNullable(JsonNullable<Integer> nodeType) {
-    this.nodeType = nodeType;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_NODE_TYPE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setNodeType(Integer nodeType) {
-    this.nodeType = JsonNullable.<Integer>of(nodeType);
+    this.nodeType = nodeType;
   }
 
 
@@ -217,8 +197,8 @@ public class AiNode {
 
 
   public AiNode type(String type) {
-    this.type = JsonNullable.<String>of(type);
     
+    this.type = type;
     return this;
   }
 
@@ -227,32 +207,24 @@ public class AiNode {
    * @return type
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getType() {
-        return type.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_TYPE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getType_JsonNullable() {
+  public String getType() {
     return type;
   }
-  
-  @JsonProperty(JSON_PROPERTY_TYPE)
-  public void setType_JsonNullable(JsonNullable<String> type) {
-    this.type = type;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_TYPE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setType(String type) {
-    this.type = JsonNullable.<String>of(type);
+    this.type = type;
   }
 
 
   public AiNode version(Integer version) {
-    this.version = JsonNullable.<Integer>of(version);
     
+    this.version = version;
     return this;
   }
 
@@ -263,26 +235,18 @@ public class AiNode {
   **/
   @Deprecated
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Integer getVersion() {
-        return version.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_VERSION)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Integer> getVersion_JsonNullable() {
+  public Integer getVersion() {
     return version;
   }
-  
-  @JsonProperty(JSON_PROPERTY_VERSION)
-  public void setVersion_JsonNullable(JsonNullable<Integer> version) {
-    this.version = version;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_VERSION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setVersion(Integer version) {
-    this.version = JsonNullable.<Integer>of(version);
+    this.version = version;
   }
 
   @Override
@@ -296,27 +260,16 @@ public class AiNode {
     AiNode aiNode = (AiNode) o;
     return Objects.equals(this.aiId, aiNode.aiId) &&
         Objects.equals(this.id, aiNode.id) &&
-        equalsNullable(this.nodeId, aiNode.nodeId) &&
-        equalsNullable(this.nodeType, aiNode.nodeType) &&
+        Objects.equals(this.nodeId, aiNode.nodeId) &&
+        Objects.equals(this.nodeType, aiNode.nodeType) &&
         Objects.equals(this.setting, aiNode.setting) &&
-        equalsNullable(this.type, aiNode.type) &&
-        equalsNullable(this.version, aiNode.version);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+        Objects.equals(this.type, aiNode.type) &&
+        Objects.equals(this.version, aiNode.version);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(aiId, id, hashCodeNullable(nodeId), hashCodeNullable(nodeType), setting, hashCodeNullable(type), hashCodeNullable(version));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(aiId, id, nodeId, nodeType, setting, type, version);
   }
 
   @Override

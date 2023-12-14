@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -38,20 +34,20 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class FieldUpdatedValue {
   public static final String JSON_PROPERTY_AT = "at";
-  private JsonNullable<Long> at = JsonNullable.<Long>undefined();
+  private Long at;
 
   public static final String JSON_PROPERTY_AUTO_NUMBER = "autoNumber";
-  private JsonNullable<Long> autoNumber = JsonNullable.<Long>undefined();
+  private Long autoNumber;
 
   public static final String JSON_PROPERTY_BY = "by";
-  private JsonNullable<String> by = JsonNullable.<String>undefined();
+  private String by;
 
   public FieldUpdatedValue() {
   }
 
   public FieldUpdatedValue at(Long at) {
-    this.at = JsonNullable.<Long>of(at);
     
+    this.at = at;
     return this;
   }
 
@@ -61,32 +57,24 @@ public class FieldUpdatedValue {
    * @return at
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getAt() {
-        return at.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getAt_JsonNullable() {
+  public Long getAt() {
     return at;
   }
-  
-  @JsonProperty(JSON_PROPERTY_AT)
-  public void setAt_JsonNullable(JsonNullable<Long> at) {
-    this.at = at;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_AT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setAt(Long at) {
-    this.at = JsonNullable.<Long>of(at);
+    this.at = at;
   }
 
 
   public FieldUpdatedValue autoNumber(Long autoNumber) {
-    this.autoNumber = JsonNullable.<Long>of(autoNumber);
     
+    this.autoNumber = autoNumber;
     return this;
   }
 
@@ -96,32 +84,24 @@ public class FieldUpdatedValue {
    * @return autoNumber
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getAutoNumber() {
-        return autoNumber.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_AUTO_NUMBER)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getAutoNumber_JsonNullable() {
+  public Long getAutoNumber() {
     return autoNumber;
   }
-  
-  @JsonProperty(JSON_PROPERTY_AUTO_NUMBER)
-  public void setAutoNumber_JsonNullable(JsonNullable<Long> autoNumber) {
-    this.autoNumber = autoNumber;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_AUTO_NUMBER)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setAutoNumber(Long autoNumber) {
-    this.autoNumber = JsonNullable.<Long>of(autoNumber);
+    this.autoNumber = autoNumber;
   }
 
 
   public FieldUpdatedValue by(String by) {
-    this.by = JsonNullable.<String>of(by);
     
+    this.by = by;
     return this;
   }
 
@@ -130,26 +110,18 @@ public class FieldUpdatedValue {
    * @return by
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getBy() {
-        return by.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_BY)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getBy_JsonNullable() {
+  public String getBy() {
     return by;
   }
-  
-  @JsonProperty(JSON_PROPERTY_BY)
-  public void setBy_JsonNullable(JsonNullable<String> by) {
-    this.by = by;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_BY)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setBy(String by) {
-    this.by = JsonNullable.<String>of(by);
+    this.by = by;
   }
 
   @Override
@@ -161,25 +133,14 @@ public class FieldUpdatedValue {
       return false;
     }
     FieldUpdatedValue fieldUpdatedValue = (FieldUpdatedValue) o;
-    return equalsNullable(this.at, fieldUpdatedValue.at) &&
-        equalsNullable(this.autoNumber, fieldUpdatedValue.autoNumber) &&
-        equalsNullable(this.by, fieldUpdatedValue.by);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+    return Objects.equals(this.at, fieldUpdatedValue.at) &&
+        Objects.equals(this.autoNumber, fieldUpdatedValue.autoNumber) &&
+        Objects.equals(this.by, fieldUpdatedValue.by);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(at), hashCodeNullable(autoNumber), hashCodeNullable(by));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(at, autoNumber, by);
   }
 
   @Override

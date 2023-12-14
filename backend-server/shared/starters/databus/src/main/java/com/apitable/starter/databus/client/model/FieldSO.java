@@ -22,10 +22,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -43,7 +39,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class FieldSO {
   public static final String JSON_PROPERTY_DESC = "desc";
-  private JsonNullable<String> desc = JsonNullable.<String>undefined();
+  private String desc;
 
   public static final String JSON_PROPERTY_ID = "id";
   private String id;
@@ -52,10 +48,10 @@ public class FieldSO {
   private String name;
 
   public static final String JSON_PROPERTY_PROPERTY = "property";
-  private JsonNullable<FieldPropertySO> property = JsonNullable.<FieldPropertySO>undefined();
+  private FieldPropertySO property;
 
   public static final String JSON_PROPERTY_REQUIRED = "required";
-  private JsonNullable<Boolean> required = JsonNullable.<Boolean>undefined();
+  private Boolean required;
 
   public static final String JSON_PROPERTY_TYPE = "type";
   private FieldKindSO type;
@@ -64,8 +60,8 @@ public class FieldSO {
   }
 
   public FieldSO desc(String desc) {
-    this.desc = JsonNullable.<String>of(desc);
     
+    this.desc = desc;
     return this;
   }
 
@@ -74,26 +70,18 @@ public class FieldSO {
    * @return desc
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getDesc() {
-        return desc.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_DESC)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getDesc_JsonNullable() {
+  public String getDesc() {
     return desc;
   }
-  
-  @JsonProperty(JSON_PROPERTY_DESC)
-  public void setDesc_JsonNullable(JsonNullable<String> desc) {
-    this.desc = desc;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_DESC)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDesc(String desc) {
-    this.desc = JsonNullable.<String>of(desc);
+    this.desc = desc;
   }
 
 
@@ -150,8 +138,8 @@ public class FieldSO {
 
 
   public FieldSO property(FieldPropertySO property) {
-    this.property = JsonNullable.<FieldPropertySO>of(property);
     
+    this.property = property;
     return this;
   }
 
@@ -160,32 +148,24 @@ public class FieldSO {
    * @return property
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public FieldPropertySO getProperty() {
-        return property.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_PROPERTY)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<FieldPropertySO> getProperty_JsonNullable() {
+  public FieldPropertySO getProperty() {
     return property;
   }
-  
-  @JsonProperty(JSON_PROPERTY_PROPERTY)
-  public void setProperty_JsonNullable(JsonNullable<FieldPropertySO> property) {
-    this.property = property;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_PROPERTY)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setProperty(FieldPropertySO property) {
-    this.property = JsonNullable.<FieldPropertySO>of(property);
+    this.property = property;
   }
 
 
   public FieldSO required(Boolean required) {
-    this.required = JsonNullable.<Boolean>of(required);
     
+    this.required = required;
     return this;
   }
 
@@ -194,26 +174,18 @@ public class FieldSO {
    * @return required
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getRequired() {
-        return required.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_REQUIRED)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getRequired_JsonNullable() {
+  public Boolean getRequired() {
     return required;
   }
-  
-  @JsonProperty(JSON_PROPERTY_REQUIRED)
-  public void setRequired_JsonNullable(JsonNullable<Boolean> required) {
-    this.required = required;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_REQUIRED)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setRequired(Boolean required) {
-    this.required = JsonNullable.<Boolean>of(required);
+    this.required = required;
   }
 
 
@@ -251,28 +223,17 @@ public class FieldSO {
       return false;
     }
     FieldSO fieldSO = (FieldSO) o;
-    return equalsNullable(this.desc, fieldSO.desc) &&
+    return Objects.equals(this.desc, fieldSO.desc) &&
         Objects.equals(this.id, fieldSO.id) &&
         Objects.equals(this.name, fieldSO.name) &&
-        equalsNullable(this.property, fieldSO.property) &&
-        equalsNullable(this.required, fieldSO.required) &&
+        Objects.equals(this.property, fieldSO.property) &&
+        Objects.equals(this.required, fieldSO.required) &&
         Objects.equals(this.type, fieldSO.type);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(desc), id, name, hashCodeNullable(property), hashCodeNullable(required), type);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(desc, id, name, property, required, type);
   }
 
   @Override

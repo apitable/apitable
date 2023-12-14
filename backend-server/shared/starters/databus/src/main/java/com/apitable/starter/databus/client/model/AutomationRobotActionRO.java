@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -42,22 +38,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class AutomationRobotActionRO {
   public static final String JSON_PROPERTY_ACTION_ID = "action_id";
-  private JsonNullable<String> actionId = JsonNullable.<String>undefined();
+  private String actionId;
 
   public static final String JSON_PROPERTY_ACTION_TYPE_ID = "action_type_id";
-  private JsonNullable<String> actionTypeId = JsonNullable.<String>undefined();
+  private String actionTypeId;
 
   public static final String JSON_PROPERTY_INPUT = "input";
-  private JsonNullable<String> input = JsonNullable.<String>undefined();
+  private String input;
 
   public static final String JSON_PROPERTY_IS_DELETED = "is_deleted";
-  private JsonNullable<Boolean> isDeleted = JsonNullable.<Boolean>undefined();
+  private Boolean isDeleted;
 
   public static final String JSON_PROPERTY_LIMIT_COUNT = "limit_count";
-  private JsonNullable<Long> limitCount = JsonNullable.<Long>undefined();
+  private Long limitCount;
 
   public static final String JSON_PROPERTY_PREV_ACTION_ID = "prev_action_id";
-  private JsonNullable<String> prevActionId = JsonNullable.<String>undefined();
+  private String prevActionId;
 
   public static final String JSON_PROPERTY_USER_ID = "user_id";
   private Long userId;
@@ -66,8 +62,8 @@ public class AutomationRobotActionRO {
   }
 
   public AutomationRobotActionRO actionId(String actionId) {
-    this.actionId = JsonNullable.<String>of(actionId);
     
+    this.actionId = actionId;
     return this;
   }
 
@@ -76,32 +72,24 @@ public class AutomationRobotActionRO {
    * @return actionId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getActionId() {
-        return actionId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ACTION_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getActionId_JsonNullable() {
+  public String getActionId() {
     return actionId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ACTION_ID)
-  public void setActionId_JsonNullable(JsonNullable<String> actionId) {
-    this.actionId = actionId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ACTION_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setActionId(String actionId) {
-    this.actionId = JsonNullable.<String>of(actionId);
+    this.actionId = actionId;
   }
 
 
   public AutomationRobotActionRO actionTypeId(String actionTypeId) {
-    this.actionTypeId = JsonNullable.<String>of(actionTypeId);
     
+    this.actionTypeId = actionTypeId;
     return this;
   }
 
@@ -110,32 +98,24 @@ public class AutomationRobotActionRO {
    * @return actionTypeId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getActionTypeId() {
-        return actionTypeId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_ACTION_TYPE_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getActionTypeId_JsonNullable() {
+  public String getActionTypeId() {
     return actionTypeId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_ACTION_TYPE_ID)
-  public void setActionTypeId_JsonNullable(JsonNullable<String> actionTypeId) {
-    this.actionTypeId = actionTypeId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_ACTION_TYPE_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setActionTypeId(String actionTypeId) {
-    this.actionTypeId = JsonNullable.<String>of(actionTypeId);
+    this.actionTypeId = actionTypeId;
   }
 
 
   public AutomationRobotActionRO input(String input) {
-    this.input = JsonNullable.<String>of(input);
     
+    this.input = input;
     return this;
   }
 
@@ -144,32 +124,24 @@ public class AutomationRobotActionRO {
    * @return input
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getInput() {
-        return input.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_INPUT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getInput_JsonNullable() {
+  public String getInput() {
     return input;
   }
-  
-  @JsonProperty(JSON_PROPERTY_INPUT)
-  public void setInput_JsonNullable(JsonNullable<String> input) {
-    this.input = input;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_INPUT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setInput(String input) {
-    this.input = JsonNullable.<String>of(input);
+    this.input = input;
   }
 
 
   public AutomationRobotActionRO isDeleted(Boolean isDeleted) {
-    this.isDeleted = JsonNullable.<Boolean>of(isDeleted);
     
+    this.isDeleted = isDeleted;
     return this;
   }
 
@@ -178,32 +150,24 @@ public class AutomationRobotActionRO {
    * @return isDeleted
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getIsDeleted() {
-        return isDeleted.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_IS_DELETED)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getIsDeleted_JsonNullable() {
+  public Boolean getIsDeleted() {
     return isDeleted;
   }
-  
-  @JsonProperty(JSON_PROPERTY_IS_DELETED)
-  public void setIsDeleted_JsonNullable(JsonNullable<Boolean> isDeleted) {
-    this.isDeleted = isDeleted;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_IS_DELETED)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIsDeleted(Boolean isDeleted) {
-    this.isDeleted = JsonNullable.<Boolean>of(isDeleted);
+    this.isDeleted = isDeleted;
   }
 
 
   public AutomationRobotActionRO limitCount(Long limitCount) {
-    this.limitCount = JsonNullable.<Long>of(limitCount);
     
+    this.limitCount = limitCount;
     return this;
   }
 
@@ -212,32 +176,24 @@ public class AutomationRobotActionRO {
    * @return limitCount
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getLimitCount() {
-        return limitCount.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_LIMIT_COUNT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getLimitCount_JsonNullable() {
+  public Long getLimitCount() {
     return limitCount;
   }
-  
-  @JsonProperty(JSON_PROPERTY_LIMIT_COUNT)
-  public void setLimitCount_JsonNullable(JsonNullable<Long> limitCount) {
-    this.limitCount = limitCount;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_LIMIT_COUNT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setLimitCount(Long limitCount) {
-    this.limitCount = JsonNullable.<Long>of(limitCount);
+    this.limitCount = limitCount;
   }
 
 
   public AutomationRobotActionRO prevActionId(String prevActionId) {
-    this.prevActionId = JsonNullable.<String>of(prevActionId);
     
+    this.prevActionId = prevActionId;
     return this;
   }
 
@@ -246,26 +202,18 @@ public class AutomationRobotActionRO {
    * @return prevActionId
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getPrevActionId() {
-        return prevActionId.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_PREV_ACTION_ID)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getPrevActionId_JsonNullable() {
+  public String getPrevActionId() {
     return prevActionId;
   }
-  
-  @JsonProperty(JSON_PROPERTY_PREV_ACTION_ID)
-  public void setPrevActionId_JsonNullable(JsonNullable<String> prevActionId) {
-    this.prevActionId = prevActionId;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_PREV_ACTION_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setPrevActionId(String prevActionId) {
-    this.prevActionId = JsonNullable.<String>of(prevActionId);
+    this.prevActionId = prevActionId;
   }
 
 
@@ -304,29 +252,18 @@ public class AutomationRobotActionRO {
       return false;
     }
     AutomationRobotActionRO automationRobotActionRO = (AutomationRobotActionRO) o;
-    return equalsNullable(this.actionId, automationRobotActionRO.actionId) &&
-        equalsNullable(this.actionTypeId, automationRobotActionRO.actionTypeId) &&
-        equalsNullable(this.input, automationRobotActionRO.input) &&
-        equalsNullable(this.isDeleted, automationRobotActionRO.isDeleted) &&
-        equalsNullable(this.limitCount, automationRobotActionRO.limitCount) &&
-        equalsNullable(this.prevActionId, automationRobotActionRO.prevActionId) &&
+    return Objects.equals(this.actionId, automationRobotActionRO.actionId) &&
+        Objects.equals(this.actionTypeId, automationRobotActionRO.actionTypeId) &&
+        Objects.equals(this.input, automationRobotActionRO.input) &&
+        Objects.equals(this.isDeleted, automationRobotActionRO.isDeleted) &&
+        Objects.equals(this.limitCount, automationRobotActionRO.limitCount) &&
+        Objects.equals(this.prevActionId, automationRobotActionRO.prevActionId) &&
         Objects.equals(this.userId, automationRobotActionRO.userId);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(actionId), hashCodeNullable(actionTypeId), hashCodeNullable(input), hashCodeNullable(isDeleted), hashCodeNullable(limitCount), hashCodeNullable(prevActionId), userId);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(actionId, actionTypeId, input, isDeleted, limitCount, prevActionId, userId);
   }
 
   @Override

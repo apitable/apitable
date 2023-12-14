@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -36,14 +32,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class SingleTextFieldPropertySO {
   public static final String JSON_PROPERTY_DEFAULT_VALUE = "defaultValue";
-  private JsonNullable<String> defaultValue = JsonNullable.<String>undefined();
+  private String defaultValue;
 
   public SingleTextFieldPropertySO() {
   }
 
   public SingleTextFieldPropertySO defaultValue(String defaultValue) {
-    this.defaultValue = JsonNullable.<String>of(defaultValue);
     
+    this.defaultValue = defaultValue;
     return this;
   }
 
@@ -52,26 +48,18 @@ public class SingleTextFieldPropertySO {
    * @return defaultValue
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getDefaultValue() {
-        return defaultValue.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_DEFAULT_VALUE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getDefaultValue_JsonNullable() {
+  public String getDefaultValue() {
     return defaultValue;
   }
-  
-  @JsonProperty(JSON_PROPERTY_DEFAULT_VALUE)
-  public void setDefaultValue_JsonNullable(JsonNullable<String> defaultValue) {
-    this.defaultValue = defaultValue;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_DEFAULT_VALUE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDefaultValue(String defaultValue) {
-    this.defaultValue = JsonNullable.<String>of(defaultValue);
+    this.defaultValue = defaultValue;
   }
 
   @Override
@@ -83,23 +71,12 @@ public class SingleTextFieldPropertySO {
       return false;
     }
     SingleTextFieldPropertySO singleTextFieldPropertySO = (SingleTextFieldPropertySO) o;
-    return equalsNullable(this.defaultValue, singleTextFieldPropertySO.defaultValue);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+    return Objects.equals(this.defaultValue, singleTextFieldPropertySO.defaultValue);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(defaultValue));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(defaultValue);
   }
 
   @Override

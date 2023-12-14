@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -37,7 +33,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class ViewRowSO {
   public static final String JSON_PROPERTY_HIDDEN = "hidden";
-  private JsonNullable<Boolean> hidden = JsonNullable.<Boolean>undefined();
+  private Boolean hidden;
 
   public static final String JSON_PROPERTY_RECORD_ID = "recordId";
   private String recordId;
@@ -46,8 +42,8 @@ public class ViewRowSO {
   }
 
   public ViewRowSO hidden(Boolean hidden) {
-    this.hidden = JsonNullable.<Boolean>of(hidden);
     
+    this.hidden = hidden;
     return this;
   }
 
@@ -56,26 +52,18 @@ public class ViewRowSO {
    * @return hidden
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getHidden() {
-        return hidden.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_HIDDEN)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getHidden_JsonNullable() {
+  public Boolean getHidden() {
     return hidden;
   }
-  
-  @JsonProperty(JSON_PROPERTY_HIDDEN)
-  public void setHidden_JsonNullable(JsonNullable<Boolean> hidden) {
-    this.hidden = hidden;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_HIDDEN)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setHidden(Boolean hidden) {
-    this.hidden = JsonNullable.<Boolean>of(hidden);
+    this.hidden = hidden;
   }
 
 
@@ -113,24 +101,13 @@ public class ViewRowSO {
       return false;
     }
     ViewRowSO viewRowSO = (ViewRowSO) o;
-    return equalsNullable(this.hidden, viewRowSO.hidden) &&
+    return Objects.equals(this.hidden, viewRowSO.hidden) &&
         Objects.equals(this.recordId, viewRowSO.recordId);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(hidden), recordId);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(hidden, recordId);
   }
 
   @Override

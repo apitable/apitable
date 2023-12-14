@@ -24,10 +24,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -46,7 +42,7 @@ public class ApiResponseRecordDTOs {
   private Integer code;
 
   public static final String JSON_PROPERTY_DATA = "data";
-  private JsonNullable<List<RecordDTO>> data = JsonNullable.<List<RecordDTO>>undefined();
+  private List<RecordDTO> data;
 
   public static final String JSON_PROPERTY_MESSAGE = "message";
   private String message;
@@ -85,20 +81,16 @@ public class ApiResponseRecordDTOs {
 
 
   public ApiResponseRecordDTOs data(List<RecordDTO> data) {
-    this.data = JsonNullable.<List<RecordDTO>>of(data);
     
+    this.data = data;
     return this;
   }
 
   public ApiResponseRecordDTOs addDataItem(RecordDTO dataItem) {
-    if (this.data == null || !this.data.isPresent()) {
-      this.data = JsonNullable.<List<RecordDTO>>of(new ArrayList<>());
+    if (this.data == null) {
+      this.data = new ArrayList<>();
     }
-    try {
-      this.data.get().add(dataItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.data.add(dataItem);
     return this;
   }
 
@@ -107,26 +99,18 @@ public class ApiResponseRecordDTOs {
    * @return data
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<RecordDTO> getData() {
-        return data.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_DATA)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<RecordDTO>> getData_JsonNullable() {
+  public List<RecordDTO> getData() {
     return data;
   }
-  
-  @JsonProperty(JSON_PROPERTY_DATA)
-  public void setData_JsonNullable(JsonNullable<List<RecordDTO>> data) {
-    this.data = data;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_DATA)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setData(List<RecordDTO> data) {
-    this.data = JsonNullable.<List<RecordDTO>>of(data);
+    this.data = data;
   }
 
 
@@ -191,25 +175,14 @@ public class ApiResponseRecordDTOs {
     }
     ApiResponseRecordDTOs apiResponseRecordDTOs = (ApiResponseRecordDTOs) o;
     return Objects.equals(this.code, apiResponseRecordDTOs.code) &&
-        equalsNullable(this.data, apiResponseRecordDTOs.data) &&
+        Objects.equals(this.data, apiResponseRecordDTOs.data) &&
         Objects.equals(this.message, apiResponseRecordDTOs.message) &&
         Objects.equals(this.success, apiResponseRecordDTOs.success);
   }
 
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hash(code, hashCodeNullable(data), message, success);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(code, data, message, success);
   }
 
   @Override

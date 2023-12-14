@@ -21,10 +21,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -43,7 +39,7 @@ public class ApiResponseAutomationRobotRunNumsSO {
   private Integer code;
 
   public static final String JSON_PROPERTY_DATA = "data";
-  private JsonNullable<AutomationRobotRunNumsSO> data = JsonNullable.<AutomationRobotRunNumsSO>undefined();
+  private AutomationRobotRunNumsSO data;
 
   public static final String JSON_PROPERTY_MESSAGE = "message";
   private String message;
@@ -82,8 +78,8 @@ public class ApiResponseAutomationRobotRunNumsSO {
 
 
   public ApiResponseAutomationRobotRunNumsSO data(AutomationRobotRunNumsSO data) {
-    this.data = JsonNullable.<AutomationRobotRunNumsSO>of(data);
     
+    this.data = data;
     return this;
   }
 
@@ -92,26 +88,18 @@ public class ApiResponseAutomationRobotRunNumsSO {
    * @return data
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public AutomationRobotRunNumsSO getData() {
-        return data.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_DATA)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<AutomationRobotRunNumsSO> getData_JsonNullable() {
+  public AutomationRobotRunNumsSO getData() {
     return data;
   }
-  
-  @JsonProperty(JSON_PROPERTY_DATA)
-  public void setData_JsonNullable(JsonNullable<AutomationRobotRunNumsSO> data) {
-    this.data = data;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_DATA)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setData(AutomationRobotRunNumsSO data) {
-    this.data = JsonNullable.<AutomationRobotRunNumsSO>of(data);
+    this.data = data;
   }
 
 
@@ -176,25 +164,14 @@ public class ApiResponseAutomationRobotRunNumsSO {
     }
     ApiResponseAutomationRobotRunNumsSO apiResponseAutomationRobotRunNumsSO = (ApiResponseAutomationRobotRunNumsSO) o;
     return Objects.equals(this.code, apiResponseAutomationRobotRunNumsSO.code) &&
-        equalsNullable(this.data, apiResponseAutomationRobotRunNumsSO.data) &&
+        Objects.equals(this.data, apiResponseAutomationRobotRunNumsSO.data) &&
         Objects.equals(this.message, apiResponseAutomationRobotRunNumsSO.message) &&
         Objects.equals(this.success, apiResponseAutomationRobotRunNumsSO.success);
   }
 
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hash(code, hashCodeNullable(data), message, success);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(code, data, message, success);
   }
 
   @Override

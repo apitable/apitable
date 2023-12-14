@@ -24,10 +24,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -45,7 +41,7 @@ public class WidgetPanelSO {
   private String id;
 
   public static final String JSON_PROPERTY_NAME = "name";
-  private JsonNullable<String> name = JsonNullable.<String>undefined();
+  private String name;
 
   public static final String JSON_PROPERTY_WIDGETS = "widgets";
   private List<WidgetInPanelSO> widgets = new ArrayList<>();
@@ -80,8 +76,8 @@ public class WidgetPanelSO {
 
 
   public WidgetPanelSO name(String name) {
-    this.name = JsonNullable.<String>of(name);
     
+    this.name = name;
     return this;
   }
 
@@ -90,26 +86,18 @@ public class WidgetPanelSO {
    * @return name
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getName() {
-        return name.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_NAME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getName_JsonNullable() {
+  public String getName() {
     return name;
   }
-  
-  @JsonProperty(JSON_PROPERTY_NAME)
-  public void setName_JsonNullable(JsonNullable<String> name) {
-    this.name = name;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setName(String name) {
-    this.name = JsonNullable.<String>of(name);
+    this.name = name;
   }
 
 
@@ -156,24 +144,13 @@ public class WidgetPanelSO {
     }
     WidgetPanelSO widgetPanelSO = (WidgetPanelSO) o;
     return Objects.equals(this.id, widgetPanelSO.id) &&
-        equalsNullable(this.name, widgetPanelSO.name) &&
+        Objects.equals(this.name, widgetPanelSO.name) &&
         Objects.equals(this.widgets, widgetPanelSO.widgets);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, hashCodeNullable(name), widgets);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(id, name, widgets);
   }
 
   @Override

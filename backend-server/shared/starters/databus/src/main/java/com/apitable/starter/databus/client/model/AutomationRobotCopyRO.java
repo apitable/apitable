@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -39,7 +35,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class AutomationRobotCopyRO {
   public static final String JSON_PROPERTY_AUTOMATION_NAME = "automation_name";
-  private JsonNullable<String> automationName = JsonNullable.<String>undefined();
+  private String automationName;
 
   public static final String JSON_PROPERTY_ORIGINAL_RESOURCE_ID = "original_resource_id";
   private String originalResourceId;
@@ -54,8 +50,8 @@ public class AutomationRobotCopyRO {
   }
 
   public AutomationRobotCopyRO automationName(String automationName) {
-    this.automationName = JsonNullable.<String>of(automationName);
     
+    this.automationName = automationName;
     return this;
   }
 
@@ -64,26 +60,18 @@ public class AutomationRobotCopyRO {
    * @return automationName
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getAutomationName() {
-        return automationName.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_AUTOMATION_NAME)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getAutomationName_JsonNullable() {
+  public String getAutomationName() {
     return automationName;
   }
-  
-  @JsonProperty(JSON_PROPERTY_AUTOMATION_NAME)
-  public void setAutomationName_JsonNullable(JsonNullable<String> automationName) {
-    this.automationName = automationName;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_AUTOMATION_NAME)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setAutomationName(String automationName) {
-    this.automationName = JsonNullable.<String>of(automationName);
+    this.automationName = automationName;
   }
 
 
@@ -174,26 +162,15 @@ public class AutomationRobotCopyRO {
       return false;
     }
     AutomationRobotCopyRO automationRobotCopyRO = (AutomationRobotCopyRO) o;
-    return equalsNullable(this.automationName, automationRobotCopyRO.automationName) &&
+    return Objects.equals(this.automationName, automationRobotCopyRO.automationName) &&
         Objects.equals(this.originalResourceId, automationRobotCopyRO.originalResourceId) &&
         Objects.equals(this.resourceId, automationRobotCopyRO.resourceId) &&
         Objects.equals(this.userId, automationRobotCopyRO.userId);
   }
 
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(automationName), originalResourceId, resourceId, userId);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(automationName, originalResourceId, resourceId, userId);
   }
 
   @Override

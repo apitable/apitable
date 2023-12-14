@@ -23,10 +23,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -46,13 +42,13 @@ public class CommentMsg {
   private String content;
 
   public static final String JSON_PROPERTY_EMOJIS = "emojis";
-  private JsonNullable<Map<String, List<String>>> emojis = JsonNullable.<Map<String, List<String>>>undefined();
+  private Map<String, List<String>> emojis;
 
   public static final String JSON_PROPERTY_HTML = "html";
   private String html;
 
   public static final String JSON_PROPERTY_REPLY = "reply";
-  private JsonNullable<String> reply = JsonNullable.<String>undefined();
+  private String reply;
 
   public static final String JSON_PROPERTY_TYPE = "type";
   private String type;
@@ -87,20 +83,16 @@ public class CommentMsg {
 
 
   public CommentMsg emojis(Map<String, List<String>> emojis) {
-    this.emojis = JsonNullable.<Map<String, List<String>>>of(emojis);
     
+    this.emojis = emojis;
     return this;
   }
 
   public CommentMsg putEmojisItem(String key, List<String> emojisItem) {
-    if (this.emojis == null || !this.emojis.isPresent()) {
-      this.emojis = JsonNullable.<Map<String, List<String>>>of(new HashMap<>());
+    if (this.emojis == null) {
+      this.emojis = new HashMap<>();
     }
-    try {
-      this.emojis.get().put(key, emojisItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.emojis.put(key, emojisItem);
     return this;
   }
 
@@ -109,26 +101,18 @@ public class CommentMsg {
    * @return emojis
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Map<String, List<String>> getEmojis() {
-        return emojis.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_EMOJIS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Map<String, List<String>>> getEmojis_JsonNullable() {
+  public Map<String, List<String>> getEmojis() {
     return emojis;
   }
-  
-  @JsonProperty(JSON_PROPERTY_EMOJIS)
-  public void setEmojis_JsonNullable(JsonNullable<Map<String, List<String>>> emojis) {
-    this.emojis = emojis;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_EMOJIS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setEmojis(Map<String, List<String>> emojis) {
-    this.emojis = JsonNullable.<Map<String, List<String>>>of(emojis);
+    this.emojis = emojis;
   }
 
 
@@ -159,8 +143,8 @@ public class CommentMsg {
 
 
   public CommentMsg reply(String reply) {
-    this.reply = JsonNullable.<String>of(reply);
     
+    this.reply = reply;
     return this;
   }
 
@@ -169,26 +153,18 @@ public class CommentMsg {
    * @return reply
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getReply() {
-        return reply.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_REPLY)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getReply_JsonNullable() {
+  public String getReply() {
     return reply;
   }
-  
-  @JsonProperty(JSON_PROPERTY_REPLY)
-  public void setReply_JsonNullable(JsonNullable<String> reply) {
-    this.reply = reply;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_REPLY)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setReply(String reply) {
-    this.reply = JsonNullable.<String>of(reply);
+    this.reply = reply;
   }
 
 
@@ -227,26 +203,15 @@ public class CommentMsg {
     }
     CommentMsg commentMsg = (CommentMsg) o;
     return Objects.equals(this.content, commentMsg.content) &&
-        equalsNullable(this.emojis, commentMsg.emojis) &&
+        Objects.equals(this.emojis, commentMsg.emojis) &&
         Objects.equals(this.html, commentMsg.html) &&
-        equalsNullable(this.reply, commentMsg.reply) &&
+        Objects.equals(this.reply, commentMsg.reply) &&
         Objects.equals(this.type, commentMsg.type);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(content, hashCodeNullable(emojis), html, hashCodeNullable(reply), type);
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(content, emojis, html, reply, type);
   }
 
   @Override

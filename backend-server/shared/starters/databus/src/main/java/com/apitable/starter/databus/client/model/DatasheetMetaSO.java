@@ -28,10 +28,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -52,7 +48,7 @@ public class DatasheetMetaSO {
   private List<ViewSO> views = new ArrayList<>();
 
   public static final String JSON_PROPERTY_WIDGET_PANELS = "widgetPanels";
-  private JsonNullable<List<WidgetPanelSO>> widgetPanels = JsonNullable.<List<WidgetPanelSO>>undefined();
+  private List<WidgetPanelSO> widgetPanels;
 
   public DatasheetMetaSO() {
   }
@@ -123,20 +119,16 @@ public class DatasheetMetaSO {
 
 
   public DatasheetMetaSO widgetPanels(List<WidgetPanelSO> widgetPanels) {
-    this.widgetPanels = JsonNullable.<List<WidgetPanelSO>>of(widgetPanels);
     
+    this.widgetPanels = widgetPanels;
     return this;
   }
 
   public DatasheetMetaSO addWidgetPanelsItem(WidgetPanelSO widgetPanelsItem) {
-    if (this.widgetPanels == null || !this.widgetPanels.isPresent()) {
-      this.widgetPanels = JsonNullable.<List<WidgetPanelSO>>of(new ArrayList<>());
+    if (this.widgetPanels == null) {
+      this.widgetPanels = new ArrayList<>();
     }
-    try {
-      this.widgetPanels.get().add(widgetPanelsItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.widgetPanels.add(widgetPanelsItem);
     return this;
   }
 
@@ -145,26 +137,18 @@ public class DatasheetMetaSO {
    * @return widgetPanels
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public List<WidgetPanelSO> getWidgetPanels() {
-        return widgetPanels.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_WIDGET_PANELS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<List<WidgetPanelSO>> getWidgetPanels_JsonNullable() {
+  public List<WidgetPanelSO> getWidgetPanels() {
     return widgetPanels;
   }
-  
-  @JsonProperty(JSON_PROPERTY_WIDGET_PANELS)
-  public void setWidgetPanels_JsonNullable(JsonNullable<List<WidgetPanelSO>> widgetPanels) {
-    this.widgetPanels = widgetPanels;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_WIDGET_PANELS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setWidgetPanels(List<WidgetPanelSO> widgetPanels) {
-    this.widgetPanels = JsonNullable.<List<WidgetPanelSO>>of(widgetPanels);
+    this.widgetPanels = widgetPanels;
   }
 
   @Override
@@ -178,23 +162,12 @@ public class DatasheetMetaSO {
     DatasheetMetaSO datasheetMetaSO = (DatasheetMetaSO) o;
     return Objects.equals(this.fieldMap, datasheetMetaSO.fieldMap) &&
         Objects.equals(this.views, datasheetMetaSO.views) &&
-        equalsNullable(this.widgetPanels, datasheetMetaSO.widgetPanels);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+        Objects.equals(this.widgetPanels, datasheetMetaSO.widgetPanels);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(fieldMap, views, hashCodeNullable(widgetPanels));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(fieldMap, views, widgetPanels);
   }
 
   @Override

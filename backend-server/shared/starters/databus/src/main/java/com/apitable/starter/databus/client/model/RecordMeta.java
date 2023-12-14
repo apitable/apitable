@@ -24,10 +24,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -45,29 +41,29 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class RecordMeta {
   public static final String JSON_PROPERTY_CREATED_AT = "createdAt";
-  private JsonNullable<Long> createdAt = JsonNullable.<Long>undefined();
+  private Long createdAt;
 
   public static final String JSON_PROPERTY_CREATED_BY = "createdBy";
-  private JsonNullable<String> createdBy = JsonNullable.<String>undefined();
+  private String createdBy;
 
   public static final String JSON_PROPERTY_FIELD_EXTRA_MAP = "fieldExtraMap";
-  private JsonNullable<Map<String, FieldExtraMapValue>> fieldExtraMap = JsonNullable.<Map<String, FieldExtraMapValue>>undefined();
+  private Map<String, FieldExtraMapValue> fieldExtraMap;
 
   public static final String JSON_PROPERTY_FIELD_UPDATED_MAP = "fieldUpdatedMap";
-  private JsonNullable<Map<String, FieldUpdatedValue>> fieldUpdatedMap = JsonNullable.<Map<String, FieldUpdatedValue>>undefined();
+  private Map<String, FieldUpdatedValue> fieldUpdatedMap;
 
   public static final String JSON_PROPERTY_UPDATED_AT = "updatedAt";
-  private JsonNullable<Long> updatedAt = JsonNullable.<Long>undefined();
+  private Long updatedAt;
 
   public static final String JSON_PROPERTY_UPDATED_BY = "updatedBy";
-  private JsonNullable<String> updatedBy = JsonNullable.<String>undefined();
+  private String updatedBy;
 
   public RecordMeta() {
   }
 
   public RecordMeta createdAt(Long createdAt) {
-    this.createdAt = JsonNullable.<Long>of(createdAt);
     
+    this.createdAt = createdAt;
     return this;
   }
 
@@ -77,32 +73,24 @@ public class RecordMeta {
    * @return createdAt
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getCreatedAt() {
-        return createdAt.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_CREATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getCreatedAt_JsonNullable() {
+  public Long getCreatedAt() {
     return createdAt;
   }
-  
-  @JsonProperty(JSON_PROPERTY_CREATED_AT)
-  public void setCreatedAt_JsonNullable(JsonNullable<Long> createdAt) {
-    this.createdAt = createdAt;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_CREATED_AT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setCreatedAt(Long createdAt) {
-    this.createdAt = JsonNullable.<Long>of(createdAt);
+    this.createdAt = createdAt;
   }
 
 
   public RecordMeta createdBy(String createdBy) {
-    this.createdBy = JsonNullable.<String>of(createdBy);
     
+    this.createdBy = createdBy;
     return this;
   }
 
@@ -111,44 +99,32 @@ public class RecordMeta {
    * @return createdBy
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getCreatedBy() {
-        return createdBy.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_CREATED_BY)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getCreatedBy_JsonNullable() {
+  public String getCreatedBy() {
     return createdBy;
   }
-  
-  @JsonProperty(JSON_PROPERTY_CREATED_BY)
-  public void setCreatedBy_JsonNullable(JsonNullable<String> createdBy) {
-    this.createdBy = createdBy;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_CREATED_BY)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setCreatedBy(String createdBy) {
-    this.createdBy = JsonNullable.<String>of(createdBy);
+    this.createdBy = createdBy;
   }
 
 
   public RecordMeta fieldExtraMap(Map<String, FieldExtraMapValue> fieldExtraMap) {
-    this.fieldExtraMap = JsonNullable.<Map<String, FieldExtraMapValue>>of(fieldExtraMap);
     
+    this.fieldExtraMap = fieldExtraMap;
     return this;
   }
 
   public RecordMeta putFieldExtraMapItem(String key, FieldExtraMapValue fieldExtraMapItem) {
-    if (this.fieldExtraMap == null || !this.fieldExtraMap.isPresent()) {
-      this.fieldExtraMap = JsonNullable.<Map<String, FieldExtraMapValue>>of(new HashMap<>());
+    if (this.fieldExtraMap == null) {
+      this.fieldExtraMap = new HashMap<>();
     }
-    try {
-      this.fieldExtraMap.get().put(key, fieldExtraMapItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.fieldExtraMap.put(key, fieldExtraMapItem);
     return this;
   }
 
@@ -157,44 +133,32 @@ public class RecordMeta {
    * @return fieldExtraMap
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Map<String, FieldExtraMapValue> getFieldExtraMap() {
-        return fieldExtraMap.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_FIELD_EXTRA_MAP)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Map<String, FieldExtraMapValue>> getFieldExtraMap_JsonNullable() {
+  public Map<String, FieldExtraMapValue> getFieldExtraMap() {
     return fieldExtraMap;
   }
-  
-  @JsonProperty(JSON_PROPERTY_FIELD_EXTRA_MAP)
-  public void setFieldExtraMap_JsonNullable(JsonNullable<Map<String, FieldExtraMapValue>> fieldExtraMap) {
-    this.fieldExtraMap = fieldExtraMap;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_FIELD_EXTRA_MAP)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFieldExtraMap(Map<String, FieldExtraMapValue> fieldExtraMap) {
-    this.fieldExtraMap = JsonNullable.<Map<String, FieldExtraMapValue>>of(fieldExtraMap);
+    this.fieldExtraMap = fieldExtraMap;
   }
 
 
   public RecordMeta fieldUpdatedMap(Map<String, FieldUpdatedValue> fieldUpdatedMap) {
-    this.fieldUpdatedMap = JsonNullable.<Map<String, FieldUpdatedValue>>of(fieldUpdatedMap);
     
+    this.fieldUpdatedMap = fieldUpdatedMap;
     return this;
   }
 
   public RecordMeta putFieldUpdatedMapItem(String key, FieldUpdatedValue fieldUpdatedMapItem) {
-    if (this.fieldUpdatedMap == null || !this.fieldUpdatedMap.isPresent()) {
-      this.fieldUpdatedMap = JsonNullable.<Map<String, FieldUpdatedValue>>of(new HashMap<>());
+    if (this.fieldUpdatedMap == null) {
+      this.fieldUpdatedMap = new HashMap<>();
     }
-    try {
-      this.fieldUpdatedMap.get().put(key, fieldUpdatedMapItem);
-    } catch (java.util.NoSuchElementException e) {
-      // this can never happen, as we make sure above that the value is present
-    }
+    this.fieldUpdatedMap.put(key, fieldUpdatedMapItem);
     return this;
   }
 
@@ -203,32 +167,24 @@ public class RecordMeta {
    * @return fieldUpdatedMap
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Map<String, FieldUpdatedValue> getFieldUpdatedMap() {
-        return fieldUpdatedMap.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_FIELD_UPDATED_MAP)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Map<String, FieldUpdatedValue>> getFieldUpdatedMap_JsonNullable() {
+  public Map<String, FieldUpdatedValue> getFieldUpdatedMap() {
     return fieldUpdatedMap;
   }
-  
-  @JsonProperty(JSON_PROPERTY_FIELD_UPDATED_MAP)
-  public void setFieldUpdatedMap_JsonNullable(JsonNullable<Map<String, FieldUpdatedValue>> fieldUpdatedMap) {
-    this.fieldUpdatedMap = fieldUpdatedMap;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_FIELD_UPDATED_MAP)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setFieldUpdatedMap(Map<String, FieldUpdatedValue> fieldUpdatedMap) {
-    this.fieldUpdatedMap = JsonNullable.<Map<String, FieldUpdatedValue>>of(fieldUpdatedMap);
+    this.fieldUpdatedMap = fieldUpdatedMap;
   }
 
 
   public RecordMeta updatedAt(Long updatedAt) {
-    this.updatedAt = JsonNullable.<Long>of(updatedAt);
     
+    this.updatedAt = updatedAt;
     return this;
   }
 
@@ -238,32 +194,24 @@ public class RecordMeta {
    * @return updatedAt
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getUpdatedAt() {
-        return updatedAt.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_UPDATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getUpdatedAt_JsonNullable() {
+  public Long getUpdatedAt() {
     return updatedAt;
   }
-  
-  @JsonProperty(JSON_PROPERTY_UPDATED_AT)
-  public void setUpdatedAt_JsonNullable(JsonNullable<Long> updatedAt) {
-    this.updatedAt = updatedAt;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_UPDATED_AT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setUpdatedAt(Long updatedAt) {
-    this.updatedAt = JsonNullable.<Long>of(updatedAt);
+    this.updatedAt = updatedAt;
   }
 
 
   public RecordMeta updatedBy(String updatedBy) {
-    this.updatedBy = JsonNullable.<String>of(updatedBy);
     
+    this.updatedBy = updatedBy;
     return this;
   }
 
@@ -272,26 +220,18 @@ public class RecordMeta {
    * @return updatedBy
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getUpdatedBy() {
-        return updatedBy.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_UPDATED_BY)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getUpdatedBy_JsonNullable() {
+  public String getUpdatedBy() {
     return updatedBy;
   }
-  
-  @JsonProperty(JSON_PROPERTY_UPDATED_BY)
-  public void setUpdatedBy_JsonNullable(JsonNullable<String> updatedBy) {
-    this.updatedBy = updatedBy;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_UPDATED_BY)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setUpdatedBy(String updatedBy) {
-    this.updatedBy = JsonNullable.<String>of(updatedBy);
+    this.updatedBy = updatedBy;
   }
 
   @Override
@@ -303,28 +243,17 @@ public class RecordMeta {
       return false;
     }
     RecordMeta recordMeta = (RecordMeta) o;
-    return equalsNullable(this.createdAt, recordMeta.createdAt) &&
-        equalsNullable(this.createdBy, recordMeta.createdBy) &&
-        equalsNullable(this.fieldExtraMap, recordMeta.fieldExtraMap) &&
-        equalsNullable(this.fieldUpdatedMap, recordMeta.fieldUpdatedMap) &&
-        equalsNullable(this.updatedAt, recordMeta.updatedAt) &&
-        equalsNullable(this.updatedBy, recordMeta.updatedBy);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+    return Objects.equals(this.createdAt, recordMeta.createdAt) &&
+        Objects.equals(this.createdBy, recordMeta.createdBy) &&
+        Objects.equals(this.fieldExtraMap, recordMeta.fieldExtraMap) &&
+        Objects.equals(this.fieldUpdatedMap, recordMeta.fieldUpdatedMap) &&
+        Objects.equals(this.updatedAt, recordMeta.updatedAt) &&
+        Objects.equals(this.updatedBy, recordMeta.updatedBy);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(createdAt), hashCodeNullable(createdBy), hashCodeNullable(fieldExtraMap), hashCodeNullable(fieldUpdatedMap), hashCodeNullable(updatedAt), hashCodeNullable(updatedBy));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(createdAt, createdBy, fieldExtraMap, fieldUpdatedMap, updatedAt, updatedBy);
   }
 
   @Override

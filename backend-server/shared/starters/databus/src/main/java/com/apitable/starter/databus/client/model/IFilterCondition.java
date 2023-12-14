@@ -22,10 +22,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -54,7 +50,7 @@ public class IFilterCondition {
   private FOperator operator;
 
   public static final String JSON_PROPERTY_VALUE = "value";
-  private JsonNullable<Object> value = JsonNullable.<Object>of(null);
+  private Object value = null;
 
   public IFilterCondition() {
   }
@@ -164,8 +160,8 @@ public class IFilterCondition {
 
 
   public IFilterCondition value(Object value) {
-    this.value = JsonNullable.<Object>of(value);
     
+    this.value = value;
     return this;
   }
 
@@ -174,26 +170,18 @@ public class IFilterCondition {
    * @return value
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Object getValue() {
-        return value.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_VALUE)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Object> getValue_JsonNullable() {
+  public Object getValue() {
     return value;
   }
-  
-  @JsonProperty(JSON_PROPERTY_VALUE)
-  public void setValue_JsonNullable(JsonNullable<Object> value) {
-    this.value = value;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_VALUE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setValue(Object value) {
-    this.value = JsonNullable.<Object>of(value);
+    this.value = value;
   }
 
   @Override
@@ -209,23 +197,12 @@ public class IFilterCondition {
         Objects.equals(this.fieldId, ifilterCondition.fieldId) &&
         Objects.equals(this.fieldType, ifilterCondition.fieldType) &&
         Objects.equals(this.operator, ifilterCondition.operator) &&
-        equalsNullable(this.value, ifilterCondition.value);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+        Objects.equals(this.value, ifilterCondition.value);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(conditionId, fieldId, fieldType, operator, hashCodeNullable(value));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(conditionId, fieldId, fieldType, operator, value);
   }
 
   @Override

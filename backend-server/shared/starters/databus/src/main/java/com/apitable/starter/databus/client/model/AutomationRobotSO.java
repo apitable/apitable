@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -44,7 +40,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class AutomationRobotSO {
   public static final String JSON_PROPERTY_DESCRIPTION = "description";
-  private JsonNullable<String> description = JsonNullable.<String>undefined();
+  private String description;
 
   public static final String JSON_PROPERTY_IS_ACTIVE = "isActive";
   private Integer isActive;
@@ -53,7 +49,7 @@ public class AutomationRobotSO {
   private String name;
 
   public static final String JSON_PROPERTY_PROPS = "props";
-  private JsonNullable<String> props = JsonNullable.<String>undefined();
+  private String props;
 
   public static final String JSON_PROPERTY_RECENTLY_RUN_COUNT = "recentlyRunCount";
   private Long recentlyRunCount;
@@ -65,17 +61,17 @@ public class AutomationRobotSO {
   private String robotId;
 
   public static final String JSON_PROPERTY_UPDATED_AT = "updatedAt";
-  private JsonNullable<Long> updatedAt = JsonNullable.<Long>undefined();
+  private Long updatedAt;
 
   public static final String JSON_PROPERTY_UPDATED_BY = "updatedBy";
-  private JsonNullable<Long> updatedBy = JsonNullable.<Long>undefined();
+  private Long updatedBy;
 
   public AutomationRobotSO() {
   }
 
   public AutomationRobotSO description(String description) {
-    this.description = JsonNullable.<String>of(description);
     
+    this.description = description;
     return this;
   }
 
@@ -84,26 +80,18 @@ public class AutomationRobotSO {
    * @return description
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getDescription() {
-        return description.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_DESCRIPTION)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getDescription_JsonNullable() {
+  public String getDescription() {
     return description;
   }
-  
-  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
-  public void setDescription_JsonNullable(JsonNullable<String> description) {
-    this.description = description;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_DESCRIPTION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDescription(String description) {
-    this.description = JsonNullable.<String>of(description);
+    this.description = description;
   }
 
 
@@ -161,8 +149,8 @@ public class AutomationRobotSO {
 
 
   public AutomationRobotSO props(String props) {
-    this.props = JsonNullable.<String>of(props);
     
+    this.props = props;
     return this;
   }
 
@@ -171,26 +159,18 @@ public class AutomationRobotSO {
    * @return props
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public String getProps() {
-        return props.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_PROPS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<String> getProps_JsonNullable() {
+  public String getProps() {
     return props;
   }
-  
-  @JsonProperty(JSON_PROPERTY_PROPS)
-  public void setProps_JsonNullable(JsonNullable<String> props) {
-    this.props = props;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_PROPS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setProps(String props) {
-    this.props = JsonNullable.<String>of(props);
+    this.props = props;
   }
 
 
@@ -273,8 +253,8 @@ public class AutomationRobotSO {
 
 
   public AutomationRobotSO updatedAt(Long updatedAt) {
-    this.updatedAt = JsonNullable.<Long>of(updatedAt);
     
+    this.updatedAt = updatedAt;
     return this;
   }
 
@@ -283,32 +263,24 @@ public class AutomationRobotSO {
    * @return updatedAt
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getUpdatedAt() {
-        return updatedAt.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_UPDATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getUpdatedAt_JsonNullable() {
+  public Long getUpdatedAt() {
     return updatedAt;
   }
-  
-  @JsonProperty(JSON_PROPERTY_UPDATED_AT)
-  public void setUpdatedAt_JsonNullable(JsonNullable<Long> updatedAt) {
-    this.updatedAt = updatedAt;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_UPDATED_AT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setUpdatedAt(Long updatedAt) {
-    this.updatedAt = JsonNullable.<Long>of(updatedAt);
+    this.updatedAt = updatedAt;
   }
 
 
   public AutomationRobotSO updatedBy(Long updatedBy) {
-    this.updatedBy = JsonNullable.<Long>of(updatedBy);
     
+    this.updatedBy = updatedBy;
     return this;
   }
 
@@ -318,26 +290,18 @@ public class AutomationRobotSO {
    * @return updatedBy
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getUpdatedBy() {
-        return updatedBy.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_UPDATED_BY)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getUpdatedBy_JsonNullable() {
+  public Long getUpdatedBy() {
     return updatedBy;
   }
-  
-  @JsonProperty(JSON_PROPERTY_UPDATED_BY)
-  public void setUpdatedBy_JsonNullable(JsonNullable<Long> updatedBy) {
-    this.updatedBy = updatedBy;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_UPDATED_BY)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setUpdatedBy(Long updatedBy) {
-    this.updatedBy = JsonNullable.<Long>of(updatedBy);
+    this.updatedBy = updatedBy;
   }
 
   @Override
@@ -349,31 +313,20 @@ public class AutomationRobotSO {
       return false;
     }
     AutomationRobotSO automationRobotSO = (AutomationRobotSO) o;
-    return equalsNullable(this.description, automationRobotSO.description) &&
+    return Objects.equals(this.description, automationRobotSO.description) &&
         Objects.equals(this.isActive, automationRobotSO.isActive) &&
         Objects.equals(this.name, automationRobotSO.name) &&
-        equalsNullable(this.props, automationRobotSO.props) &&
+        Objects.equals(this.props, automationRobotSO.props) &&
         Objects.equals(this.recentlyRunCount, automationRobotSO.recentlyRunCount) &&
         Objects.equals(this.resourceId, automationRobotSO.resourceId) &&
         Objects.equals(this.robotId, automationRobotSO.robotId) &&
-        equalsNullable(this.updatedAt, automationRobotSO.updatedAt) &&
-        equalsNullable(this.updatedBy, automationRobotSO.updatedBy);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+        Objects.equals(this.updatedAt, automationRobotSO.updatedAt) &&
+        Objects.equals(this.updatedBy, automationRobotSO.updatedBy);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(description), isActive, name, hashCodeNullable(props), recentlyRunCount, resourceId, robotId, hashCodeNullable(updatedAt), hashCodeNullable(updatedBy));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(description, isActive, name, props, recentlyRunCount, resourceId, robotId, updatedAt, updatedBy);
   }
 
   @Override

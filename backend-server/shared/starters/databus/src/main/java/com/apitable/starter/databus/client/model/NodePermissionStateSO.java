@@ -20,10 +20,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -36,14 +32,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class NodePermissionStateSO {
   public static final String JSON_PROPERTY_IS_DELETED = "isDeleted";
-  private JsonNullable<Boolean> isDeleted = JsonNullable.<Boolean>undefined();
+  private Boolean isDeleted;
 
   public NodePermissionStateSO() {
   }
 
   public NodePermissionStateSO isDeleted(Boolean isDeleted) {
-    this.isDeleted = JsonNullable.<Boolean>of(isDeleted);
     
+    this.isDeleted = isDeleted;
     return this;
   }
 
@@ -52,26 +48,18 @@ public class NodePermissionStateSO {
    * @return isDeleted
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Boolean getIsDeleted() {
-        return isDeleted.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_IS_DELETED)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Boolean> getIsDeleted_JsonNullable() {
+  public Boolean getIsDeleted() {
     return isDeleted;
   }
-  
-  @JsonProperty(JSON_PROPERTY_IS_DELETED)
-  public void setIsDeleted_JsonNullable(JsonNullable<Boolean> isDeleted) {
-    this.isDeleted = isDeleted;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_IS_DELETED)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setIsDeleted(Boolean isDeleted) {
-    this.isDeleted = JsonNullable.<Boolean>of(isDeleted);
+    this.isDeleted = isDeleted;
   }
 
   @Override
@@ -83,23 +71,12 @@ public class NodePermissionStateSO {
       return false;
     }
     NodePermissionStateSO nodePermissionStateSO = (NodePermissionStateSO) o;
-    return equalsNullable(this.isDeleted, nodePermissionStateSO.isDeleted);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+    return Objects.equals(this.isDeleted, nodePermissionStateSO.isDeleted);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(isDeleted));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(isDeleted);
   }
 
   @Override

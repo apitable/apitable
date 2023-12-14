@@ -3,8 +3,6 @@ spring-boot = "3.2.0"
 aws = "1.12.595"
 p6spy = "3.9.1"
 hutool = "5.8.23"
-jackson-nullable = "0.2.6"
-gson-fire = "1.8.5"
 javax-ws = "2.1.1"
 jsoup = "1.15.1"
 springdoc = "2.3.0"
@@ -148,9 +146,6 @@ jackson = { module = "com.fasterxml.jackson.core:jackson-databind" }
 gson = { module = "com.google.code.gson:gson" }
 servlet = { module = "jakarta.servlet:jakarta.servlet-api" }
 jedis = { module = "redis.clients:jedis" }
-okhttp3 = { module = "com.squareup.okhttp3:okhttp" }
-okhttp3-logging = { module = "com.squareup.okhttp3:logging-interceptor" }
-okhttp3-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver" }
 slf4j = { module = "org.slf4j:slf4j-api" }
 logback = { module = "ch.qos.logback:logback-classic" }
 httpclient5 = { module = "org.apache.httpcomponents.client5:httpclient5" }
@@ -180,8 +175,6 @@ xerces-impl = { module = "xerces:xercesImpl", version.ref = "xerces-impl" }
 beetl = { module = "com.ibeetl:beetl", version.ref = "ibeetl" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 javax-ws = { module = "javax.ws.rs:javax.ws.rs-api", version.ref = "javax-ws" }
-gson-fire = { module = "io.gsonfire:gson-fire", version.ref = "gson-fire" }
-jackson-databind-nullable = { module = "org.openapitools:jackson-databind-nullable", version.ref = "jackson-nullable" }
 p6spy = { module = "p6spy:p6spy", version.ref = "p6spy" }
 hutool-core = { module = "cn.hutool:hutool-core", version.ref = "hutool" }
 hutool-json = { module = "cn.hutool:hutool-json", version.ref = "hutool" }
@@ -209,7 +202,6 @@ sentry = ["sentry-spring", "sentry-logback"]
 social = ["social-feishu", "social-dingtalk", "social-wecom", "social-qq"]
 iogrpc = ["iogrpc-netty-shaded", "iogrpc-protobuf", "iogrpc-stub"]
 apidoc = ["knife4j-openapi3"]
-okhttp3 = ["okhttp3", "okhttp3-logging"]
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }

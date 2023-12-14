@@ -22,10 +22,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
-import org.openapitools.jackson.nullable.JsonNullable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.openapitools.jackson.nullable.JsonNullable;
-import java.util.NoSuchElementException;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -41,7 +37,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class ApiRecordDto {
   public static final String JSON_PROPERTY_CREATED_AT = "createdAt";
-  private JsonNullable<Long> createdAt = JsonNullable.<Long>undefined();
+  private Long createdAt;
 
   public static final String JSON_PROPERTY_FIELDS = "fields";
   private Map<String, Object> fields = new HashMap<>();
@@ -50,14 +46,14 @@ public class ApiRecordDto {
   private String recordId;
 
   public static final String JSON_PROPERTY_UPDATED_AT = "updatedAt";
-  private JsonNullable<Long> updatedAt = JsonNullable.<Long>undefined();
+  private Long updatedAt;
 
   public ApiRecordDto() {
   }
 
   public ApiRecordDto createdAt(Long createdAt) {
-    this.createdAt = JsonNullable.<Long>of(createdAt);
     
+    this.createdAt = createdAt;
     return this;
   }
 
@@ -66,26 +62,18 @@ public class ApiRecordDto {
    * @return createdAt
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getCreatedAt() {
-        return createdAt.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_CREATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getCreatedAt_JsonNullable() {
+  public Long getCreatedAt() {
     return createdAt;
   }
-  
-  @JsonProperty(JSON_PROPERTY_CREATED_AT)
-  public void setCreatedAt_JsonNullable(JsonNullable<Long> createdAt) {
-    this.createdAt = createdAt;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_CREATED_AT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setCreatedAt(Long createdAt) {
-    this.createdAt = JsonNullable.<Long>of(createdAt);
+    this.createdAt = createdAt;
   }
 
 
@@ -147,8 +135,8 @@ public class ApiRecordDto {
 
 
   public ApiRecordDto updatedAt(Long updatedAt) {
-    this.updatedAt = JsonNullable.<Long>of(updatedAt);
     
+    this.updatedAt = updatedAt;
     return this;
   }
 
@@ -157,26 +145,18 @@ public class ApiRecordDto {
    * @return updatedAt
   **/
   @javax.annotation.Nullable
-  @JsonIgnore
-
-  public Long getUpdatedAt() {
-        return updatedAt.orElse(null);
-  }
-
   @JsonProperty(JSON_PROPERTY_UPDATED_AT)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public JsonNullable<Long> getUpdatedAt_JsonNullable() {
+  public Long getUpdatedAt() {
     return updatedAt;
   }
-  
-  @JsonProperty(JSON_PROPERTY_UPDATED_AT)
-  public void setUpdatedAt_JsonNullable(JsonNullable<Long> updatedAt) {
-    this.updatedAt = updatedAt;
-  }
 
+
+  @JsonProperty(JSON_PROPERTY_UPDATED_AT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setUpdatedAt(Long updatedAt) {
-    this.updatedAt = JsonNullable.<Long>of(updatedAt);
+    this.updatedAt = updatedAt;
   }
 
   @Override
@@ -188,26 +168,15 @@ public class ApiRecordDto {
       return false;
     }
     ApiRecordDto apiRecordDto = (ApiRecordDto) o;
-    return equalsNullable(this.createdAt, apiRecordDto.createdAt) &&
+    return Objects.equals(this.createdAt, apiRecordDto.createdAt) &&
         Objects.equals(this.fields, apiRecordDto.fields) &&
         Objects.equals(this.recordId, apiRecordDto.recordId) &&
-        equalsNullable(this.updatedAt, apiRecordDto.updatedAt);
-  }
-
-  private static <T> boolean equalsNullable(JsonNullable<T> a, JsonNullable<T> b) {
-    return a == b || (a != null && b != null && a.isPresent() && b.isPresent() && Objects.deepEquals(a.get(), b.get()));
+        Objects.equals(this.updatedAt, apiRecordDto.updatedAt);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(hashCodeNullable(createdAt), fields, recordId, hashCodeNullable(updatedAt));
-  }
-
-  private static <T> int hashCodeNullable(JsonNullable<T> a) {
-    if (a == null) {
-      return 1;
-    }
-    return a.isPresent() ? Arrays.deepHashCode(new Object[]{a.get()}) : 31;
+    return Objects.hash(createdAt, fields, recordId, updatedAt);
   }
 
   @Override
