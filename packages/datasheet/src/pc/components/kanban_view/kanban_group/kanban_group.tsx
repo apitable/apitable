@@ -129,6 +129,7 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
     const fieldPermissionMap = Selectors.getFieldPermissionMap(state);
     return Selectors.getFieldRoleByFieldId(fieldPermissionMap, kanbanFieldId);
   });
+  const visibleFields = useAppSelector(Selectors.getVisibleColumns);
   const _rowCreatable = useAppSelector((state) => Selectors.getPermissions(state).rowCreatable);
   const rowCreatable = _rowCreatable && (!fieldRole || fieldRole === ConfigConstant.Role.Editor);
   const keepSort =
@@ -276,7 +277,7 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
                 <div {...provided.droppableProps} ref={provided.innerRef}>
                   <VariableSizeList
                     // change display record count will change virtualHeight, itemSize should rerender right-now.
-                    key={virtualHeight}
+                    key={`${virtualHeight}-${visibleFields.length}`}
                     height={virtualHeight}
                     itemCount={itemCount}
                     itemSize={(rowIndex) => cardHeight(rowIndex, MARGIN_DISTANCE)}
