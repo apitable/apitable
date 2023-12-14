@@ -51,6 +51,15 @@ export const TimingHour : FC = () => {
   return <Timing interval={'hour'} value={state} onUpdate={setState} readonly={false}/>;
 };
 
+export const TimingDay : FC = () => {
+  const [state, setState] = useState({
+    hour: 1,
+  });
+
+  // @ts-ignore
+  return <Timing interval={'day'} value={state} onUpdate={setState} readonly={false}/>;
+};
+
 export const TimingHourDisabled : FC = () => {
   const [state, setState] = useState({
     hour: 1,

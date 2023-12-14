@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { Input, InputNumber } from 'antd';
 import { DropdownSelect } from '../select';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import dayjs from 'dayjs';
+import { TimeInput } from './time_input';
 dayjs.extend(advancedFormat);
 
 interface Props {
@@ -108,8 +108,10 @@ export const Timing: FC<Props> = ({
     case 'day': {
       return (
         <>
-            Every <Input /> Hours  in <InputNumber />
+          {/*Every <Input /> Hours  in <InputNumber />*/}
+          <TimeInput />
         </>
+
       );
     }
 
