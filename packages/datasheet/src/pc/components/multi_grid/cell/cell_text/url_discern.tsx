@@ -21,6 +21,7 @@ import { FieldType, ISegment, string2Segment, SegmentType } from '@apitable/core
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
 import { stopPropagation } from 'pc/utils';
 import styles from './style.module.less';
+import { Typography } from '@apitable/components';
 
 interface IUrlDiscernProp {
   value?: string | null;
@@ -66,7 +67,7 @@ export const UrlDiscern: React.FC<React.PropsWithChildren<IUrlDiscernProp>> = (p
               </span>
             );
           default:
-            return <span key={`${segment.text}-${index}`}>{segment.text}</span>;
+            return <Typography key={`${segment.text}-${index}`} variant="h7" ellipsis>{segment.text}</Typography>;
         }
       })}
     </div>
