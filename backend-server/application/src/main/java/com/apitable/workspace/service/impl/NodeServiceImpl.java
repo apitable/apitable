@@ -1648,7 +1648,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     JSONUtil.createObj().toString());
                 break;
             case AI_CHAT_BOT:
-                iSpaceService.checkSeatOverLimit(spaceId, 1);
+                iSpaceService.checkSeatOverLimit(spaceId);
                 aiServiceFacade.createAi(AiCreateParam.builder()
                     .spaceId(spaceId)
                     .aiId(nodeId)

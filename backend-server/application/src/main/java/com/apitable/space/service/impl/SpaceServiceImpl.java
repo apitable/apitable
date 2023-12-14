@@ -50,7 +50,6 @@ import com.apitable.interfaces.ai.model.CreditTransactionChartData;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.DefaultSubscriptionInfo;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
@@ -240,9 +239,6 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
 
     @Resource
     private InternalSpaceService internalSpaceService;
-
-    @Value("${BILLING_APITABLE_ENABLED:false}")
-    private Boolean billingApitableEnabled;
 
     @Value("${SKIP_USAGE_VERIFICATION:false}")
     private Boolean skipUsageVerification;
@@ -606,31 +602,21 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
 
     @Override
     public void checkSeatOverLimit(String spaceId) {
-        // get subscription max seat nums
-        SubscriptionInfo subscriptionInfo =
-            entitlementServiceFacade.getSpaceSubscription(spaceId);
-        // only free space has validation, or paid space in apitable mode can skip validation.
-        if (!subscriptionInfo.isFree() && billingApitableEnabled) {
-            return;
-        }
-        SeatUsage seatUsage = getSeatUsage(spaceId);
-        SubscriptionFeatures.ConsumeFeatures.Seat seat = subscriptionInfo.getFeature().getSeat();
-        if (seat.isUnlimited() && (seatUsage.getTotal() >= seat.getValue())) {
-            throw new BusinessException(LimitException.SEATS_OVER_LIMIT);
-        }
+        checkSeatOverLimit(spaceId, 1);
     }
 
     @Override
     public void checkSeatOverLimit(String spaceId, long addedSeatNums) {
         // get subscription max seat nums
-        SubscriptionInfo subscriptionInfo =
+        var subscriptionInfo =
             entitlementServiceFacade.getSpaceSubscription(spaceId);
-        if (!subscriptionInfo.isFree() && billingApitableEnabled) {
+        var seatNums = subscriptionInfo.getFeature().getSeat();
+        if (!subscriptionInfo.isFree() && seatNums.isUnlimited()) {
             return;
         }
-        SeatUsage seatUsage = getSeatUsage(spaceId);
-        SubscriptionFeatures.ConsumeFeatures.Seat seat = subscriptionInfo.getFeature().getSeat();
-        if (!seat.isUnlimited() && (seatUsage.getTotal() + addedSeatNums > seat.getValue())) {
+        var seatUsage = getSeatUsage(spaceId);
+        if (!seatNums.isUnlimited()
+            && (seatUsage.getTotal() + addedSeatNums > seatNums.getValue())) {
             throw new BusinessException(LimitException.SEATS_OVER_LIMIT);
         }
     }
@@ -643,15 +629,15 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     @Override
     public void checkFileNumOverLimit(String spaceId, long addFileNums) {
         // get subscription max sheet nums
-        SubscriptionInfo subscriptionInfo =
+        var subscriptionInfo =
             entitlementServiceFacade.getSpaceSubscription(spaceId);
         if (!subscriptionInfo.isFree()) {
             return;
         }
-        SubscriptionFeatures.ConsumeFeatures.FileNodeNums fileNodeNums =
+        var fileNodeNums =
             subscriptionInfo.getFeature().getFileNodeNums();
-        long currentSheetNums = getNodeCountBySpaceId(spaceId, NodeType::isFolder);
-        if (fileNodeNums.isUnlimited()
+        var currentSheetNums = getNodeCountBySpaceId(spaceId, NodeType::isFolder);
+        if (!fileNodeNums.isUnlimited()
             && (currentSheetNums + addFileNums > fileNodeNums.getValue())) {
             throw new BusinessException(LimitException.FILE_NUMS_OVER_LIMIT);
         }
@@ -664,18 +650,18 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         // get subscription max seat nums
         SubscriptionInfo subscriptionInfo =
             entitlementServiceFacade.getSpaceSubscription(spaceId);
-        if (!subscriptionInfo.isFree() && billingApitableEnabled) {
+        var seat = subscriptionInfo.getFeature().getSeat();
+        if (!subscriptionInfo.isFree() && seat.isUnlimited()) {
             // apitable billing mode, paid space，skip validation
             return true;
         }
-        SubscriptionFeatures.ConsumeFeatures.Seat seat = subscriptionInfo.getFeature().getSeat();
         SeatUsage seatUsage = getSeatUsageForIM(spaceId);
         long totalSeatNums = seatUsage.getTotal() + addedSeatNums;
         if (isAllMember) {
             totalSeatNums = addedSeatNums;
         }
         if (!seat.isUnlimited() && (totalSeatNums > seat.getValue())) {
-            log.info("spaceId:{}, num of sync:{}, num of seats:{}", spaceId, totalSeatNums,
+            log.info("spaceId:{}, current num:{}, max seats:{}", spaceId, totalSeatNums,
                 seat.getValue());
             if (sendNotify) {
                 // Send space station notifications

@@ -26,7 +26,7 @@ export interface IDropdownControl {
     resetIndex:() => void;
 }
 
-const CONST_INITIAL_DROPDOWN_INDEX = 1002;
+const CONST_INITIAL_DROPDOWN_INDEX = 1202;
 
 interface SelectContextValue {
     activeIndex: number | null;

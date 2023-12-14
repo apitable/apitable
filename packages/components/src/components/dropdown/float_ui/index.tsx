@@ -58,7 +58,7 @@ export interface IDropdownControl {
     resetIndex ?:() => void;
 }
 
-const CONST_INITIAL_DROPDOWN_INDEX = 1002;
+const CONST_INITIAL_DROPDOWN_INDEX = 1202;
 export const Dropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref) => {
   const { trigger, children, onVisibleChange, options= {
     zIndex: CONST_INITIAL_DROPDOWN_INDEX
