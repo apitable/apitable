@@ -9,7 +9,7 @@ RUN set -euxo pipefail; \
   microdnf -y install findutils unzip; \
   microdnf clean all; \
   \
-  CORRETTO_VERSION=1.8.0_382.b05-1; \
+  CORRETTO_VERSION=17.0.9.8-1; \
   GNUPGHOME="$(mktemp -d)"; \
   export GNUPGHOME; \
   curl -fL -o corretto.key https://yum.corretto.aws/corretto.key; \
@@ -20,8 +20,8 @@ RUN set -euxo pipefail; \
   curl -fL -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo; \
   grep -q '^gpgcheck=1' /etc/yum.repos.d/corretto.repo; \
   echo "priority=9" >> /etc/yum.repos.d/corretto.repo; \
-  microdnf -y install "java-1.8.0-amazon-corretto-devel-${CORRETTO_VERSION}"; \
-  (find /usr/lib/jvm/java-1.8.0-amazon-corretto -name src.zip -delete || true); \
+  microdnf -y install "java-17-amazon-corretto-devel-${CORRETTO_VERSION}"; \
+  (find /usr/lib/jvm/java-17-amazon-corretto -name src.zip -delete || true); \
   \
   mkdir -p /liquibase/bin; \
   cd /liquibase; \
@@ -39,7 +39,7 @@ RUN set -euxo pipefail; \
   lpm add mysql --global
 
 ENV LANG C.UTF-8
-ENV JAVA_HOME=/usr/lib/jvm/java-1.8.0-amazon-corretto
+ENV JAVA_HOME=/usr/lib/jvm/java-17-amazon-corretto
 ENV LIQUIBASE_HOME=/liquibase
 
 COPY liquibase.docker.properties /liquibase/

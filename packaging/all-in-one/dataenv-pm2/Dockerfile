@@ -1,8 +1,8 @@
-FROM almalinux/8-minimal:8.8-20230718
+FROM almalinux/8-minimal:8.9-20231124
 
 COPY conf/yum.repos.d/*.repo /etc/yum.repos.d/
 
-ARG GOSU_VERSION=1.16
+ARG GOSU_VERSION=1.17
 
 ENV GOSU_USER=rabbitmq
 
