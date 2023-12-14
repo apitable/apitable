@@ -49,7 +49,7 @@ const FloatUiTooltip: FunctionComponent<IProps> = ({
     placement,
     whileElementsMounted: autoUpdate,
     middleware: [
-      setIndex(options?.zIndex ?? 1002),
+      setIndex(options?.zIndex ?? 1202),
       offset(options?.offset ?? 16),
       ...(
         hasArrow ? (
