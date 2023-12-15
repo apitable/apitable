@@ -42,31 +42,33 @@ declare const global: any;
 
 const _global = global || window;
 const getBrowserLanguage = (): string | undefined => {
+  if (_global.browserLang){
+    return _global.browserLang;
+  }
   // @ts-ignore
   const languageMap = _global.languageManifest;
 
   if (!_global.navigator || !languageMap) {
     return undefined;
   }
-  let userLanguage = _global.navigator.language as string;
+  let userLanguage: string | undefined = _global.navigator.language as string;
   if (userLanguage == 'zh-TW') {
     userLanguage = 'zh-HK';
   }
-  if (languageMap[userLanguage]) {
-    return userLanguage;
-  } else {
+  if (!languageMap[userLanguage]) {
     const langArr = Object.keys(languageMap);
     if (!langArr) {
-      return undefined;
+      userLanguage = undefined;
     }
     for (let i = 0; i < langArr.length; i++) {
       // @ts-ignore
       if (langArr[i] !== undefined && langArr[i].indexOf(userLanguage) > -1) {
-        return langArr[i];
+        userLanguage = langArr[i];
       }
     }
   }
-  return undefined;
+  _global.browserLang = userLanguage;
+  return userLanguage;
 };
 
 export function getLanguage() {
@@ -78,7 +80,6 @@ export function getLanguage() {
     } catch (e) {}
   }
   const browserLang = getBrowserLanguage();
-  console.log('browser language is', browserLang);
   const language = typeof _global == 'object' && _global.__initialization_data__ &&
     _global.__initialization_data__.locale != 'und' && _global.__initialization_data__.locale;
   const defaultLang = (typeof _global == 'object' && _global.__initialization_data__?.envVars?.SYSTEM_CONFIGURATION_DEFAULT_LANGUAGE) || 'zh-CN';
