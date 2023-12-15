@@ -46,7 +46,7 @@ public class NumberPlanFeature implements PlanFeature<Long> {
      * @return true or false
      */
     public boolean isUnlimited() {
-        return unlimited || value == -1;
+        return unlimited || (value != null && value == -1);
     }
 
     @Override
