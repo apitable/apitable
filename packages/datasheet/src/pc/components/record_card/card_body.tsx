@@ -79,7 +79,7 @@ export const CardBody: React.FC<React.PropsWithChildren<IGalleryCardBodyProps>> 
         if (index === 0) {
           return (
             <div key={recordId} className={classNames(styles.cellTitle, styles.cellValue, 'ellipsis')}>
-              <UrlDiscern value={showTitle(cellValue, field)} />
+              <UrlDiscern value={showTitle(cellValue, field)} isTitle />
             </div>
           );
         }

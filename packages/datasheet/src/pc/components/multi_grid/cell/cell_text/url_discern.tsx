@@ -25,6 +25,7 @@ import { Typography } from '@apitable/components';
 
 interface IUrlDiscernProp {
   value?: string | null;
+  isTitle?: boolean;
 }
 /**
  *
@@ -34,7 +35,7 @@ interface IUrlDiscernProp {
  * Splitting strings to add clickable functionality to URLs
  */
 export const UrlDiscern: React.FC<React.PropsWithChildren<IUrlDiscernProp>> = (props) => {
-  const { value = '' } = props;
+  const { value = '', isTitle } = props;
   const getValidValue = (originValue: string | null) => {
     if (originValue) {
       let segment: ISegment[] = [];
@@ -67,7 +68,12 @@ export const UrlDiscern: React.FC<React.PropsWithChildren<IUrlDiscernProp>> = (p
               </span>
             );
           default:
-            return <Typography key={`${segment.text}-${index}`} variant="h7" ellipsis>{segment.text}</Typography>;
+            return <Typography
+              key={`${segment.text}-${index}`}
+              variant={isTitle ? 'h7' : 'body3'}
+              ellipsis={{ rows: isTitle ? 1 : 4 }}>
+              {segment.text}
+            </Typography>;
         }
       })}
     </div>
