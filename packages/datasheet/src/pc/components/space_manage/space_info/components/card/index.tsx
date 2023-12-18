@@ -40,7 +40,6 @@ interface ICardProps {
   totalText: string;
   remainText: string;
   usedText: string;
-  usedString?: string;
   usedPercent: number;
   remainPercent: number;
 
@@ -63,7 +62,6 @@ export const Card: FC<React.PropsWithChildren<ICardProps>> = (props) => {
     remainText,
     totalText,
     remainPercent,
-    usedString,
     trailColor,
     strokeColor,
     shape,
@@ -100,7 +98,7 @@ export const Card: FC<React.PropsWithChildren<ICardProps>> = (props) => {
       <Desc
         color={_strokeColor}
         label={t(Strings.used)}
-        text={usedString || usedText}
+        text={usedText}
         unit={unit}
         showPercent={showPercent}
         usedPercent={usedPercent}
