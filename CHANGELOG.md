@@ -1,5 +1,12 @@
 # APITable CHANGELOG
 
+## [v1.7.0-beta](https://github.com/apitable/apitable/releases/tag/v1.7.0-beta) (2023-12-18)
+
+
+### What's more
+
+* docs: update readme.md ([#1523](https://github.com/apitable/apitable/pull/1523)) @ChambersChan 
+* sync: hosted cloud ([#1528](https://github.com/apitable/apitable/pull/1528)) @jeremyyin2012 
 ## [v1.6.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.6.0-beta.1) (2023-12-11)
 
 
