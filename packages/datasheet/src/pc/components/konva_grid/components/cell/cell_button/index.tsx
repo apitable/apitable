@@ -16,36 +16,64 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { useAtom, useSetAtom } from 'jotai';
+import { KonvaEventObject } from 'konva/lib/Node';
+import { debounce } from 'lodash';
+import dynamic from 'next/dynamic';
 import * as React from 'react';
-import { Box } from '@apitable/components';
-import { IButtonField, IRecord, KONVA_DATASHEET_ID, Selectors } from '@apitable/core';
-import { ButtonFieldItem } from 'pc/components/editors/button_editor/buton_item';
+import { useCallback, useState } from 'react';
+import { Box, useThemeColors } from '@apitable/components';
+import { ButtonStyleType, getColorValue, IButtonField, KONVA_DATASHEET_ID, Selectors } from '@apitable/core';
+import { CheckFilled } from '@apitable/icons';
+import { AutomationConstant } from 'pc/components/automation/config';
+import { automationHistoryAtom, automationStateAtom } from 'pc/components/automation/controller';
+import { automationTaskMap, AutomationTaskStatus } from 'pc/components/editors/button_editor/automation_task_map';
+import { ButtonFieldItem, handleStart } from 'pc/components/editors/button_editor/buton_item';
+import { useJobTaskContext } from 'pc/components/editors/button_editor/job_task';
 import { generateTargetName } from 'pc/components/gantt_view';
-import { Rect } from 'pc/components/konva_components';
-import { CellScrollContainer } from 'pc/components/konva_grid';
+import { autoSizerCanvas, Icon, Rect, Text } from 'pc/components/konva_components';
+import {
+  CellScrollContainer,
+  GRID_CELL_MULTI_ITEM_MARGIN_TOP,
+  GRID_CELL_MULTI_ITEM_MIN_WIDTH,
+  GRID_CELL_MULTI_PADDING_TOP,
+  GRID_CELL_VALUE_PADDING,
+  GRID_ICON_SMALL_SIZE,
+  GRID_OPTION_ITEM_HEIGHT,
+  GRID_OPTION_ITEM_PADDING,
+} from 'pc/components/konva_grid';
+import { setColor } from 'pc/components/multi_grid/format';
 import { useAppSelector } from 'pc/store/react-redux';
-import { stopPropagation, KeyCode } from 'pc/utils';
+import { KeyCode, stopPropagation } from 'pc/utils';
 import { ICellProps } from '../cell_value';
 import { IRenderData } from '../interface';
+import { TextEllipsisEngine } from './text_ellipsis_engine';
 
-type ACellProps = Pick<ICellProps, 'field' |'recordId'> & {
-  datasheetId: string
+const RotatingLoading = dynamic(() => import('pc/components/konva_grid/components/cell/cell_button/rotating_loading'), { ssr: false });
+
+type ACellProps = Pick<ICellProps, 'field' | 'recordId'> & {
+  datasheetId: string;
 };
 
 export const CellButtonItem: React.FC<React.PropsWithChildren<ACellProps>> = (props) => {
-
-  const record = useAppSelector(state => Selectors.getRecord(state, props.recordId, props.datasheetId));
-  if(!record) return null;
+  const record = useAppSelector((state) => Selectors.getRecord(state, props.recordId, props.datasheetId));
+  if (!record) return null;
   return (
     <Box flex={'1'} padding={'0 10px'} height={'20px'}>
       <span>
-        <ButtonFieldItem field={props.field as IButtonField} recordId={props.recordId} record={record}/>
+        <ButtonFieldItem field={props.field as IButtonField} recordId={props.recordId} record={record} />
       </span>
     </Box>
   );
 };
 
-export const CellButton: React.FC<React.PropsWithChildren<ICellProps>> = (props) => {
+export type IButtonCellProps = Omit<ICellProps, 'field'> & {
+  field: IButtonField;
+};
+const textFontSize = 13;
+type TO = ReturnType<typeof setTimeout>;
+
+export const CellButton: React.FC<React.PropsWithChildren<IButtonCellProps>> = (props) => {
   const { x, y, isActive, recordId, field, cellValue, columnWidth, rowHeight, onChange } = props;
   const fieldId = field.id;
   const name = generateTargetName({
@@ -55,9 +83,83 @@ export const CellButton: React.FC<React.PropsWithChildren<ICellProps>> = (props)
     mouseStyle: 'pointer',
   });
 
-  const onClick = () => {
-    onChange && onChange(!cellValue);
-  };
+  const state = useAppSelector((state) => state);
+
+  const datasheetId = useAppSelector(Selectors.getActiveDatasheetId);
+  const record = useAppSelector((state) => Selectors.getRecord(state, recordId, datasheetId));
+
+  const [automationTaskMapData, setAutomationTaskMap] = useAtom(automationTaskMap);
+
+  const key = `${recordId}-${field.id}`;
+
+  const taskStatus: AutomationTaskStatus = automationTaskMapData.get(key) ?? 'initial';
+
+  const cacheTheme = useAppSelector(Selectors.getTheme);
+  const colors = useThemeColors();
+
+  const bg = field.property.style.color ? setColor(field.property.style.color, cacheTheme) : colors.defaultBg;
+  const isValid = true;
+
+  let textColor: string = colors.textStaticPrimary;
+
+  const maxTextWidth = columnWidth - 2 * (GRID_CELL_VALUE_PADDING + GRID_OPTION_ITEM_PADDING) - GRID_ICON_SMALL_SIZE;
+
+  const operatingMaxWidth = maxTextWidth - 6;
+  let currentX = GRID_CELL_VALUE_PADDING;
+
+  let currentY = GRID_CELL_MULTI_PADDING_TOP + 2;
+
+  // item no space to display, then perform a line feed
+  let realMaxTextWidth = maxTextWidth;
+  if (operatingMaxWidth <= 10) {
+    currentX = GRID_CELL_VALUE_PADDING;
+    currentY += GRID_OPTION_ITEM_HEIGHT + GRID_CELL_MULTI_ITEM_MARGIN_TOP;
+  } else {
+    realMaxTextWidth = operatingMaxWidth;
+  }
+
+  const setAutomationStateAtom = useSetAtom(automationStateAtom);
+
+  const setAutomationHistoryPanel = useSetAtom(automationHistoryAtom);
+  const {
+    text: renderText,
+    textWidth,
+    isEllipsis,
+  } = TextEllipsisEngine.textEllipsis(
+    {
+      text: field.property.text,
+      maxWidth: columnWidth && realMaxTextWidth,
+      fontSize: 12,
+    },
+    autoSizerCanvas.context!,
+  );
+
+  const itemWidth = Math.max(textWidth + 2 * GRID_OPTION_ITEM_PADDING - (isEllipsis ? 8 : 0), GRID_CELL_MULTI_ITEM_MIN_WIDTH);
+
+  if (field.property.style.type === ButtonStyleType.Background) {
+    if (cacheTheme === 'dark') {
+      if (field.property.style.color === AutomationConstant.whiteColor) {
+        textColor = colors.textReverseDefault;
+      }
+    }
+  }
+
+  const { handleTaskStart } = useJobTaskContext();
+
+  const onStart = useCallback(() => {
+    if (!datasheetId) {
+      return;
+    }
+    if (!record) {
+      return;
+    }
+
+    handleStart(datasheetId, record, state, recordId, taskStatus, field, colors, handleTaskStart, setAutomationStateAtom, setAutomationHistoryPanel);
+  }, [colors, datasheetId, field, handleTaskStart, record, recordId, setAutomationHistoryPanel, setAutomationStateAtom, state, taskStatus]);
+
+  const onClickStart = debounce(() => {
+    onStart();
+  }, 300);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.metaKey) return;
@@ -66,6 +168,80 @@ export const CellButton: React.FC<React.PropsWithChildren<ICellProps>> = (props)
       stopPropagation(e);
     }
   };
+
+  const itemX1 = 10 + (columnWidth - itemWidth) / 2;
+  const itemY = currentY - 3;
+
+  const [isHover, setHover] = useState(false);
+
+  const handleMouseEnter = (e: KonvaEventObject<MouseEvent>) => {
+    // @ts-ignore
+    const container = e.target.getStage().container();
+    container.style.cursor = 'pointer';
+    setHover(true);
+  };
+
+  const handleMouseLeave = (e: KonvaEventObject<MouseEvent>) => {
+    // @ts-ignore
+    const container = e.target.getStage().container();
+    container.style.cursor = 'default';
+    setHover(false);
+  };
+
+  const itemLoadingX1 = (columnWidth - 22) / 2;
+  if (field.property.style.type === ButtonStyleType.OnlyText) {
+    // @ts-ignore
+    return (
+      <CellScrollContainer
+        x={x}
+        y={y}
+        columnWidth={columnWidth}
+        rowHeight={rowHeight}
+        fieldId={fieldId}
+        recordId={recordId}
+        renderData={{} as IRenderData}
+        onClick={onClickStart}
+        onTap={onClickStart}
+      >
+        <Rect
+          x={itemX1 - 10}
+          name={name}
+          onKeyDown={handleKeyDown}
+          onClick={onClickStart}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          y={itemY}
+          width={itemWidth}
+          height={GRID_OPTION_ITEM_HEIGHT}
+          fill={'transparent'}
+          cornerRadius={4}
+          listening
+        />
+
+        {taskStatus === 'running' && <RotatingLoading name={name} x={itemLoadingX1} y={itemY} textColor={bg} />}
+
+        {taskStatus === 'success' && (
+          <Icon name={name} x={itemLoadingX1} y={itemY} data={CheckFilled.toString()} backgroundWidth={22} backgroundHeight={22} fill={bg} />
+        )}
+
+        {taskStatus === 'initial' && (
+          <Text
+            onClick={onClickStart}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            width={itemWidth}
+            name={name}
+            x={itemX1}
+            y={itemY}
+            height={GRID_OPTION_ITEM_HEIGHT}
+            text={renderText}
+            fontSize={textFontSize}
+            fill={isValid ? bg : colors.textCommonTertiary}
+          />
+        )}
+      </CellScrollContainer>
+    );
+  }
 
   return (
     <CellScrollContainer
@@ -76,12 +252,42 @@ export const CellButton: React.FC<React.PropsWithChildren<ICellProps>> = (props)
       fieldId={fieldId}
       recordId={recordId}
       renderData={{} as IRenderData}
-      onKeyDown={handleKeyDown}
-      onClick={onClick}
-      onTap={onClick}
+      onClick={onClickStart}
+      onTap={onClickStart}
     >
-      {isActive && <Rect name={name} width={columnWidth} height={rowHeight} fill={'transparent'} />}
-      <Rect name={name} width={columnWidth} height={rowHeight} fill={'transparent'} />
+      <Rect
+        x={itemX1 - 10}
+        name={name}
+        onKeyDown={handleKeyDown}
+        onClick={onClickStart}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        y={itemY}
+        width={itemWidth}
+        height={GRID_OPTION_ITEM_HEIGHT}
+        fill={isHover ? getColorValue(bg, 0.8) : bg}
+        cornerRadius={4}
+        listening
+      />
+
+      {taskStatus === 'running' && <RotatingLoading name={name} x={itemLoadingX1} y={itemY} textColor={textColor} />}
+
+      {taskStatus === 'success' && (
+        <Icon
+          name={name}
+          rotation={50}
+          x={itemLoadingX1}
+          y={itemY}
+          data={CheckFilled.toString()}
+          backgroundWidth={22}
+          backgroundHeight={22}
+          fill={textColor}
+        />
+      )}
+
+      {taskStatus === 'initial' && (
+        <Text x={itemX1} width={itemWidth} y={itemY} height={GRID_OPTION_ITEM_HEIGHT} text={renderText} fontSize={textFontSize} fill={textColor} />
+      )}
     </CellScrollContainer>
   );
 };

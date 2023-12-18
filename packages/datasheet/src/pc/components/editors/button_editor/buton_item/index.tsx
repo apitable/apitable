@@ -2,11 +2,11 @@ import produce from 'immer';
 import { useAtomValue, useSetAtom } from 'jotai';
 import { isNil } from 'lodash';
 import * as React from 'react';
-import { FunctionComponent } from 'react';
+import { FunctionComponent, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { ResponseDataAutomationVO } from '@apitable/api-client';
-import { Box, LinkButton, Message, Typography, useThemeColors } from '@apitable/components';
-import { ButtonActionType, ButtonStyleType, getColorValue, IButtonField, IRecord, Selectors, Strings, t } from '@apitable/core';
+import { Box, ITheme, LinkButton, Message, Typography, useThemeColors } from '@apitable/components';
+import { ButtonActionType, ButtonStyleType, getColorValue, IButtonField, IRecord, IReduxState, Selectors, Strings, t } from '@apitable/core';
 import { CheckFilled, LoadingFilled } from '@apitable/icons';
 import { AutomationConstant } from 'pc/components/automation/config';
 import { automationHistoryAtom, automationStateAtom } from 'pc/components/automation/controller';
@@ -15,7 +15,7 @@ import { getRobotDetail } from 'pc/components/editors/button_editor/api';
 import { useJobTaskContext } from 'pc/components/editors/button_editor/job_task';
 import EllipsisText from 'pc/components/ellipsis_text';
 import { setColor } from 'pc/components/multi_grid/format';
-import { AutomationScenario } from 'pc/components/robot/interface';
+import { AutomationScenario, IRobotContext } from 'pc/components/robot/interface';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
@@ -92,6 +92,85 @@ const StyledBgBox = styled(Box)<{ defaultColor: string; disabled?: boolean; load
   `}
 `;
 
+export const handleStart = (
+  datasheetId: string,
+  record: IRecord,
+  state: IReduxState,
+  recordId: string,
+  taskStatus: AutomationTaskStatus,
+  field: IButtonField,
+  colors: ITheme['color'],
+  handleTaskStart: (recordId: string, fieldId: string, task: () => Promise<{ success: boolean }>) => void,
+  setAutomationStateAtom: (data: IRobotContext | undefined) => void,
+  setAutomationHistoryPanel: (data: { dialogVisible: boolean; taskId?: string }) => void,
+) => {
+  if (taskStatus === 'success') {
+    return;
+  }
+
+  if (isNil(field.property.action?.type)) {
+    Message.error({ content: t(Strings.automation_tips) });
+    return;
+  }
+
+  if (field.property.action.type === ButtonActionType.OpenLink) {
+    runAutomationUrl(datasheetId, record, state, recordId, field.id, field);
+    return;
+  }
+
+  const task: () => Promise<{ success: boolean }> = () =>
+    runAutomationButton(datasheetId, record, state, recordId, field.id, field, (success, code, message) => {
+      if (!success && code && CONST_AUTOMATION_ERROR.includes(code) && message) {
+        Message.error({ content: message });
+        return;
+      }
+      if (!success) {
+        Message.error({
+          content: (
+            <>
+              <Box display={'inline-flex'} alignItems={'center'} color={colors.textStaticPrimary}>
+                {t(Strings.button_execute_error)}
+                <StyledLinkButton
+                  underline
+                  color={colors.textStaticPrimary}
+                  onClick={async () => {
+                    const automationId = field.property.action.automation?.automationId;
+
+                    const data1 = await getRobotDetail(automationId ?? '', '');
+
+                    if (data1 instanceof ResponseDataAutomationVO) {
+                      if (data1?.success) {
+                        setAutomationStateAtom({
+                          currentRobotId: data1?.data?.robotId,
+                          resourceId: automationId,
+                          scenario: AutomationScenario.node,
+                          // @ts-ignore
+                          robot: data1.data,
+                        });
+                        setAutomationHistoryPanel({
+                          dialogVisible: true,
+                        });
+                      } else {
+                        Message.error({ content: data1?.message ?? '' });
+                      }
+                    } else {
+                      Message.error({ content: data1?.message ?? '' });
+                    }
+                  }}
+                >
+                  {t(Strings.button_check_history)}
+                </StyledLinkButton>
+                {t(Strings.button_check_history_end)}
+              </Box>
+            </>
+          ),
+        });
+      }
+    });
+
+  handleTaskStart(recordId, field.id, task);
+};
+
 export const StyledLinkButton = styled(LinkButton)`
   margin-left: 4px;
   font-size: 12px !important;
@@ -132,71 +211,18 @@ export const ButtonFieldItem: FunctionComponent<{ field: IButtonField; height?: 
         if (!datasheetId) {
           return;
         }
-        if (taskStatus === 'success') {
-          return;
-        }
-
-        if (isNil(field.property.action?.type)) {
-          Message.error({ content: t(Strings.automation_tips) });
-          return;
-        }
-
-        if (field.property.action.type === ButtonActionType.OpenLink) {
-          runAutomationUrl(datasheetId, record, state, recordId, field.id, field);
-          return;
-        }
-
-        const task: () => Promise<{ success: boolean }> = () =>
-          runAutomationButton(datasheetId, record, state, recordId, field.id, field, (success, code, message) => {
-            if (!success && code && CONST_AUTOMATION_ERROR.includes(code) && message) {
-              Message.error({ content: message });
-              return;
-            }
-            if (!success) {
-              Message.error({
-                content: (
-                  <>
-                    <Box display={'inline-flex'} alignItems={'center'} color={colors.textStaticPrimary}>
-                      {t(Strings.button_execute_error)}
-                      <StyledLinkButton
-                        underline
-                        color={colors.textStaticPrimary}
-                        onClick={async () => {
-                          const automationId = field.property.action.automation?.automationId;
-
-                          const data1 = await getRobotDetail(automationId ?? '', '');
-
-                          if (data1 instanceof ResponseDataAutomationVO) {
-                            if (data1?.success) {
-                              setAutomationStateAtom({
-                                currentRobotId: data1?.data?.robotId,
-                                resourceId: automationId,
-                                scenario: AutomationScenario.node,
-                                // @ts-ignore
-                                robot: data1.data,
-                              });
-                              setAutomationHistoryPanel({
-                                dialogVisible: true,
-                              });
-                            } else {
-                              Message.error({ content: data1?.message ?? '' });
-                            }
-                          } else {
-                            Message.error({ content: data1?.message ?? '' });
-                          }
-                        }}
-                      >
-                        {t(Strings.button_check_history)}
-                      </StyledLinkButton>
-                      {t(Strings.button_check_history_end)}
-                    </Box>
-                  </>
-                ),
-              });
-            }
-          });
-
-        handleTaskStart(recordId, field.id, task);
+        handleStart(
+          datasheetId,
+          record,
+          state,
+          recordId,
+          taskStatus,
+          field,
+          colors,
+          handleTaskStart,
+          setAutomationStateAtom,
+          setAutomationHistoryPanel,
+        );
       }}
     />
   );
