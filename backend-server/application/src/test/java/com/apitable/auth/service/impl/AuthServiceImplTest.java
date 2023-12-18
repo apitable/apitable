@@ -88,7 +88,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
     public void testLoginUsingPasswordWithEmailNotExist() {
         // The mobile phone number does not exist, try to log in, do not automatically register
         LoginRo loginRo = new LoginRo();
-        loginRo.setUsername("dengguiheng@apitable.com");
+        loginRo.setUsername("test_user@apitable.com");
         loginRo.setType(LoginType.PASSWORD);
         loginRo.setCredential("qwer1234");
         assertThatCode(() -> iAuthService.loginUsingPassword(loginRo)).isInstanceOf(
@@ -99,7 +99,7 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
     public void testLoginUsingPasswordWithEmailWithoutPassword() {
         // Phone number but wrong password try to log in, no automatic registration
         LoginRo loginRo = new LoginRo();
-        loginRo.setUsername("dengguiheng@apitable.com");
+        loginRo.setUsername("test_user@apitable.com");
         loginRo.setType(LoginType.PASSWORD);
         loginRo.setCredential("qwer1234");
         assertThatCode(() -> iAuthService.loginUsingPassword(loginRo)).isInstanceOf(
@@ -111,12 +111,12 @@ public class AuthServiceImplTest extends AbstractIntegrationTest {
         // The phone number and password are correct and try to log in
         UserEntity user = new UserEntity();
         user.setUuid(IdUtil.fastSimpleUUID());
-        user.setEmail("dengguiheng@apitable.com");
+        user.setEmail("test_user@apitable.com");
         user.setPassword(passwordEncoder.encode("qwer1234"));
         iUserService.save(user);
 
         LoginRo loginRo = new LoginRo();
-        loginRo.setUsername("dengguiheng@apitable.com");
+        loginRo.setUsername("test_user@apitable.com");
         loginRo.setType(LoginType.PASSWORD);
         loginRo.setCredential("qwer1234");
         assertThatNoException().isThrownBy(() -> iAuthService.loginUsingPassword(loginRo));

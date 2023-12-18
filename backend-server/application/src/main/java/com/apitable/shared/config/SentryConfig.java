@@ -5,7 +5,7 @@ import com.apitable.shared.cache.bean.LoginUserDto;
 import com.apitable.shared.cache.bean.UserSpaceDto;
 import com.apitable.shared.context.LoginContext;
 import io.sentry.protocol.User;
-import io.sentry.spring.SentryUserProvider;
+import io.sentry.spring.jakarta.SentryUserProvider;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.context.annotation.Bean;
@@ -36,9 +36,8 @@ public class SentryConfig {
                     userOthers.put("memberName", userSpaceDto.getMemberName());
                     userOthers.put("spaceName", userSpaceDto.getSpaceName());
                     userOthers.put("uuid", loginUserDto.getUuid());
-
                     MapUtil.removeNullValue(userOthers);
-                    user.setOthers(userOthers);
+                    user.setData(userOthers);
                 }
             } catch (Exception ignored) {
                 // don't bother if not log in

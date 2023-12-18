@@ -60,7 +60,7 @@ export function isGroupFieldValid(snapshot: ISnapshot, group: IGroupInfo, viewTy
 }
 
 export function isTextBaseType(type: FieldType): boolean {
-  return [FieldType.Text, FieldType.Phone, FieldType.Email, FieldType.URL, FieldType.SingleText].includes(type);
+  return [FieldType.Text, FieldType.Phone, FieldType.Email, FieldType.URL, FieldType.Button, FieldType.SingleText].includes(type);
 }
 
 export function isEnhanceTextType(type: FieldType): boolean {

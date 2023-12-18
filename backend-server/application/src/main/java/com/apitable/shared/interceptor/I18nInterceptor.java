@@ -20,7 +20,6 @@ package com.apitable.shared.interceptor;
 
 import com.apitable.shared.context.LoginContext;
 import com.google.common.collect.Sets;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Locale;
@@ -45,7 +44,7 @@ public class I18nInterceptor extends AbstractServletSupport implements HandlerIn
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-                             Object handler) throws ServletException {
+                             Object handler) {
         try {
             String requestPath = resolveServletPath(request);
             if (INCLUDE_SERVLET_PATH.contains(requestPath)) {

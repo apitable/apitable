@@ -38,6 +38,14 @@ public class SubscriptionFeatures {
             public Seat(Long value) {
                 super(value);
             }
+
+            public Seat(Long value, boolean unlimited) {
+                super(value, unlimited);
+            }
+
+            public static Seat unlimited(Long value) {
+                return new Seat(value, true);
+            }
         }
 
         /**
@@ -424,6 +432,15 @@ public class SubscriptionFeatures {
                 super(value);
             }
         }
+
+        /**
+         * Billing OrgApi feature.
+         */
+        public static class AuditQuery extends BooleanPlanFeature {
+            public AuditQuery(Boolean value) {
+                super(value);
+            }
+        }
     }
 
     /**
@@ -647,5 +664,9 @@ public class SubscriptionFeatures {
 
     public static SubscribeFeatures.AllowEmbed buildAllowEmbed(Boolean value) {
         return new SubscribeFeatures.AllowEmbed(value);
+    }
+
+    public static SubscribeFeatures.AuditQuery buildAuditQuery(Boolean value) {
+        return new SubscribeFeatures.AuditQuery(value);
     }
 }

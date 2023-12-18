@@ -816,10 +816,12 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         for (Object field : metaMapRo.getFieldMap().values()) {
             FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
             FieldType type = FieldType.create(fieldMapRo.getType());
-            Object originDstId = fieldMapRo.getProperty().get("datasheetId");
+            String originDstId = fieldMapRo.getProperty() != null
+                ? fieldMapRo.getProperty().getStr("datasheetId") : null;
             switch (type) {
                 case ONE_WAY_LINK:
                 case LINK:
+                    assert fieldMapRo.getProperty() != null;
                     LinkFieldProperty property =
                         fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                     String foreignDstId = property.getForeignDatasheetId();
@@ -839,22 +841,23 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 case LAST_MODIFIED_TIME:
                     if (originDstId != null) {
                         fieldMapRo.getProperty()
-                            .set("datasheetId", newNodeIdMap.get(originDstId.toString()));
+                            .set("datasheetId", newNodeIdMap.get(originDstId));
                     }
                     break;
                 case MEMBER:
                     if (!sameSpace) {
+                        assert fieldMapRo.getProperty() != null;
                         fieldMapRo.getProperty().set("unitIds", new ArrayList<>());
                         delFieldIds.add(fieldMapRo.getId());
                     }
                     break;
                 case CREATED_BY:
                 case LAST_MODIFIED_BY:
-                    originDstId = fieldMapRo.getProperty().get("datasheetId");
                     if (originDstId != null) {
                         fieldMapRo.getProperty()
-                            .set("datasheetId", newNodeIdMap.get(originDstId.toString()));
+                            .set("datasheetId", newNodeIdMap.get(originDstId));
                     }
+                    assert fieldMapRo.getProperty() != null;
                     fieldMapRo.getProperty().set("uuids", Collections.singletonList(uuid));
                     break;
                 default:

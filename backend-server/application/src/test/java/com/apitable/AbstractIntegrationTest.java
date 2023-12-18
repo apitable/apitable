@@ -93,6 +93,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestClient;
 
 @SpringBootTest(classes = Application.class)
 @TestPropertySource(value = {
@@ -117,6 +118,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected RedisTemplate<String, Object> redisTemplate;
+
+    @MockBean
+    protected RestClient restClient;
 
     @Autowired
     protected MybatisPlusProperties mybatisPlusProperties;

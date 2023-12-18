@@ -20,9 +20,13 @@
  * read strings.auto.json,  go translation
  */
 import { I18N } from '@apitable/i18n';
+import LANGUAGE_DATA from '@apitable/i18n-lang/src/config/strings.json';
 import type { StringKeysMapType, StringKeysType } from '../../config/stringkeys.interface';
 
-export * from '../../config/stringkeys.interface';
+export { StringKeysMapType, StringKeysType };
+
+// @ts-ignore nextjs
+const isBrowser = process.browser || typeof window !== 'undefined';
 
 export const Strings = new Proxy({} as Record<keyof StringKeysMapType, string>, {
   get: function (_target, key: string) {
@@ -37,19 +41,50 @@ declare const window: any;
 declare const global: any;
 
 const _global = global || window;
+const getBrowserLanguage = (): string | undefined => {
+  if (_global.browserLang){
+    return _global.browserLang;
+  }
+  // @ts-ignore
+  const languageMap = _global.languageManifest;
+
+  if (!_global.navigator || !languageMap) {
+    return undefined;
+  }
+  let userLanguage: string | undefined = _global.navigator.language as string;
+  if (userLanguage == 'zh-TW') {
+    userLanguage = 'zh-HK';
+  }
+  if (!languageMap[userLanguage]) {
+    const langArr = Object.keys(languageMap);
+    if (!langArr) {
+      userLanguage = undefined;
+    }
+    for (let i = 0; i < langArr.length; i++) {
+      // @ts-ignore
+      if (langArr[i] !== undefined && langArr[i].indexOf(userLanguage) > -1) {
+        userLanguage = langArr[i];
+      }
+    }
+  }
+  _global.browserLang = userLanguage;
+  return userLanguage;
+};
 
 export function getLanguage() {
   let clientLang = null;
-  if (typeof window !== 'undefined') {
+  if (isBrowser) {
     try {
       // @ts-ignore
       clientLang = localStorage.getItem('client-lang');
     } catch (e) {}
   }
+  const browserLang = getBrowserLanguage();
+  // console.log('browser language is', browserLang);
   const language = typeof _global == 'object' && _global.__initialization_data__ &&
     _global.__initialization_data__.locale != 'und' && _global.__initialization_data__.locale;
   const defaultLang = (typeof _global == 'object' && _global.__initialization_data__?.envVars?.SYSTEM_CONFIGURATION_DEFAULT_LANGUAGE) || 'zh-CN';
-  return clientLang || language || defaultLang;
+  return clientLang || browserLang || language || defaultLang;
 }
 
 const fetchLanguagePack = (lang: string, data: any) => {
@@ -76,52 +111,9 @@ const fetchLanguagePack = (lang: string, data: any) => {
   }
 };
 
-// get English language pack asynchronously
-const fetchLanguagePackAsync = (lang: string, data: any) => {
-  const version = window.__initialization_data__.version;
-  // @ts-ignore
-  fetch(`/file/langs/strings.${lang}.json?version=${version}`)
-    .then((response: any) => {
-      if (!response.ok) {
-        throw new Error('get lang pack error: ' + response.status);
-      }
-      return response.json(); // 解析响应为JSON格式
-    })
-    .then((langPack: any) => {
-      data[lang] = langPack;
-      if (_global.apitable_i18n){
-        _global.apitable_i18n[lang] = langPack;
-      }
-    });
-};
-
-const loadLanguage = (lang: string) => {
-  // console.log('start load language', lang);
-  let data = {};
-  if (typeof window !== 'undefined') {
-    fetchLanguagePack(lang, data);
-    if (lang != 'en-US') {
-      fetchLanguagePackAsync('en-US', data);
-    }
-  } else {
-    try {
-      // load language for room-server. suitable for docker environment
-      const fs = require('fs');
-      const jsonData = fs.readFileSync(`${__dirname}/../../../../i18n-lang/src/config/strings.json`);
-      data = JSON.parse(jsonData);
-    } catch (_e) {
-      // load language for frontend
-      try {
-        const path = require('path');
-        const fs = require('fs');
-        const pagesDirectory = path.resolve(process.cwd(), '../i18n-lang/src/config/strings.json');
-        const jsonData = fs.readFileSync(pagesDirectory);
-        data = JSON.parse(jsonData);
-      } catch (error) {
-        console.error('load strings.json error', error);
-      }
-    }
-  }
+const loadClientLanguage = (lang: string) => {
+  const data = {};
+  fetchLanguagePack(lang, data);
   return data;
 };
 
@@ -135,28 +127,26 @@ const rewriteI18nForEdition = () => {
     }
   }
 
+};
+
+// browser only
+if (isBrowser) {
+  require('@apitable/i18n-lang');
+
   if (_global.apitable_language_list && Object.keys(_global.apitable_language_list).length > 0) {
     _global.languageManifest = _global.apitable_language_list;
   }
-};
+}
 
 const currentLang = getLanguage().replace('_', '-');
 _global.currentLang = currentLang;
-_global.apitable_i18n = loadLanguage(currentLang);
-// browser only
-if (typeof window !== 'undefined') {
-  require('@apitable/i18n-lang');
-}
+_global.apitable_i18n = isBrowser ? loadClientLanguage(currentLang) : LANGUAGE_DATA;
+
 rewriteI18nForEdition();
 const i18n = I18N.createByLanguagePacks(_global.apitable_i18n, currentLang);
-let engI18n: I18N | null = null;
-if (currentLang != 'en-US') {
-  engI18n = I18N.createByLanguagePacks(_global.apitable_i18n, 'en-US');
-}
+
 export function t(stringKey: keyof StringKeysMapType | unknown, options: any = null, isPlural = false): string {
   const text = i18n.getText(stringKey as string, options, isPlural);
-  if (currentLang != 'en-US' && !text && engI18n != null && _global.apitable_i18n['en-US']) {
-    return engI18n.getText(stringKey as string, options, isPlural);
-  }
   return text;
 }
+

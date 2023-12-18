@@ -30,7 +30,7 @@ export class SpaceDto implements IAPISpace {
   @ApiProperty({
     type: String,
     description: 'space name',
-    example: 'Vika',
+    example: 'I am a space',
   })
   name!: string;
 }

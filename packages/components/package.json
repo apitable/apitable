@@ -1,6 +1,6 @@
 {
   "name": "@apitable/components",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "author": "APITable Ltd. <support@apitable.com>",
@@ -11,8 +11,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@apitable/core": "*",
-    "@apitable/icons": "*",
+    "@apitable/core": "workspace:*",
+    "@apitable/icons": "workspace:*",
     "@apitable/react-contexify": "^5.0.7",
     "@floating-ui/dom": "^1.5.1",
     "@floating-ui/react": "0.24.5",
@@ -66,9 +66,10 @@
     "@types/react-is": "^17.0.0",
     "@types/react-window": "^1.8.1",
     "@types/resize-observer-browser": "^0.1.5",
-    "@types/styled-components": "^5.1.26",
+    "@types/styled-components": "5.1.26",
     "@types/styled-system": "^5.1.11",
     "babel-jest": "^26.6.0",
+    "dayjs": "1.11.10",
     "chromatic": "^5.10.1",
     "concurrently": "^7.2.2",
     "jest": "^29.6.2",

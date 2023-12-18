@@ -90,6 +90,7 @@ public class SubscribeAssembler {
         result.setMaxRemainTrashDays(feature.getRemainTrashDays().getValue());
         result.setMaxRemainRecordActivityDays(feature.getRemainRecordActivityDays().getValue());
         result.setMaxAuditQueryDays(feature.getAuditQueryDays().getValue());
+        result.setAuditQuery(feature.getAuditQuery().getValue());
 
         result.setUnExpireGiftCapacity(subscriptionInfo.getGiftCapacity().getValue().toBytes());
         result.setSubscriptionCapacity(subscriptionInfo.getTotalCapacity().getValue().toBytes()

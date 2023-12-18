@@ -133,7 +133,7 @@ class MemberProperty {
 
   @ApiPropertyOptional({
     type: String,
-    example: 'https://s1.vika.cn/default/avatar001.jpg',
+    example: 'https://aitable.ai/default/avatar001.jpg',
     description: 'avatar',
   })
   @IsOptional()
@@ -157,7 +157,7 @@ class UserProperty {
 
   @ApiProperty({
     type: String,
-    example: 'https://s1.vika.cn/default/avatar001.jpg',
+    example: 'https://aitable.ai/default/avatar001.jpg',
     description: 'avatar',
   })
     avatar!: string;

@@ -1,6 +1,6 @@
 {
   "name": "@apitable/widget-sdk",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "apitable widget sdk",
   "sideEffects": false,
   "engines": {
@@ -38,9 +38,9 @@
     "react-dom": "18.2.0"
   },
   "dependencies": {
-    "@apitable/components": "*",
-    "@apitable/core": "*",
-    "@apitable/icons": "*",
+    "@apitable/components": "workspace:*",
+    "@apitable/core": "workspace:*",
+    "@apitable/icons": "workspace:*",
     "@testing-library/react-hooks": "^7.0.1",
     "ahooks": "^3.5.0",
     "antd": "4.23.5",
@@ -81,7 +81,7 @@
     "@types/react-redux": "^7.1.9",
     "@types/resize-observer-browser": "^0.1.5",
     "@types/socket.io-client": "^1.4.36",
-    "@types/styled-components": "^5.1.26",
+    "@types/styled-components": "5.1.26",
     "babel-jest": "^26.6.0",
     "concurrently": "^7.2.2",
     "copyfiles": "^2.4.1",

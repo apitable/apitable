@@ -304,7 +304,9 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
     <WorkbenchSideContext.Provider value={providerValue}>
       <div className={styles.workbenchSide}>
         <div className={styles.header}>
-          <SpaceInfo />
+          <div className={styles.left}>
+            <SpaceInfo />
+          </div>
           <div className={styles.search}>
             <IconButton
               shape="square"

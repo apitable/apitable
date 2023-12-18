@@ -76,6 +76,9 @@ public class WebSecurityConfig<S extends Session> {
         CookieCsrfTokenRepository cookieCsrfTokenRepository = new CookieCsrfTokenRepository();
         cookieCsrfTokenRepository.setCookieCustomizer((cookie) -> cookie.httpOnly(false));
         cookieCsrfTokenRepository.setCookiePath("/");
+        // opt-out of deferred csrf tokens
+        CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
+        requestHandler.setCsrfRequestAttributeName(null);
         http
             .cors(withDefaults())
             .sessionManagement((sessionManagement) -> sessionManagement
@@ -91,7 +94,7 @@ public class WebSecurityConfig<S extends Session> {
                 (headers) -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
             .csrf((csrf) ->
                 csrf.csrfTokenRepository(cookieCsrfTokenRepository)
-                    .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler())
+                    .csrfTokenRequestHandler(requestHandler)
                     .ignoringRequestMatchers(
                         ArrayUtil.toArray(IgnorePathHelper.getInstant().iterator(), String.class)
                     )

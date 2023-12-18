@@ -29,7 +29,6 @@ import { ShortcutsPanel } from 'pc/components/shortcuts_panel';
 import { useQuery } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useAppSelector } from 'pc/store/react-redux';
-import { getEnvVariables } from 'pc/utils/env';
 import { useWxTitleMap } from '../konva_grid';
 // @ts-ignore
 import { isDingtalkSkuPage } from 'enterprise/home/social_platform/utils';
@@ -40,7 +39,6 @@ import { WecomContactWrapper } from 'enterprise/wecom/wecom_contact_wrapper/weco
 
 export const SideWrapper = (props: { children: any }) => {
   const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
-  const { IS_ENTERPRISE } = getEnvVariables();
   const dispatch = useAppDispatch();
   const shortcutKeyPanelVisible = useAppSelector((state: IReduxState) => state.space.shortcutKeyPanelVisible);
   const query = useQuery();
@@ -61,7 +59,6 @@ export const SideWrapper = (props: { children: any }) => {
 
   useEffect(() => {
     if (!spaceId) return;
-    IS_ENTERPRISE && dispatch(StoreActions.fetchMarketplaceApps(spaceId));
     dispatch(StoreActions.getSpaceInfo(spaceId));
   }, [dispatch, spaceId]);
 

@@ -227,7 +227,7 @@ public class DefaultSubscriptionFeature implements SubscriptionFeature {
 
     @Override
     public AuditQueryDays getAuditQueryDays() {
-        return new AuditQueryDays(-1L);
+        return new AuditQueryDays(0L);
     }
 
     @Override

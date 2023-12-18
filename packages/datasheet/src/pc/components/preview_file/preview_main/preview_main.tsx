@@ -26,6 +26,7 @@ import { RotateOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { DOC_MIME_TYPE, getDownloadSrc, isSupportImage, KeyCode } from 'pc/utils';
 import NextFilled from 'static/icon/common/next_filled.svg';
 import PreviousFilled from 'static/icon/common/previous_filled.svg';
@@ -35,11 +36,9 @@ import { ITransFormInfo } from '../preview_file.interface';
 import useFrameSetState from '../preview_type/preview_image/hooks/use_frame_state';
 import { ToolBar } from '../tool_bar';
 import { initTransformInfo, initTranslatePosition, MAX_SCALE, MIN_SCALE } from './constant';
-import styles from './style.module.less';
 import { Swiper } from './swiper';
 import { isFocusingInput } from './util';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 interface IPreviewMain {
   activeIndex: number;
@@ -111,7 +110,7 @@ export const PreviewMain: React.FC<React.PropsWithChildren<IPreviewMain>> = (pro
     setOfficePreviewUrl(null);
     fetchPreviewUrl();
     // eslint-disable-next-line
-  }, [activeIndex]);
+  }, [activeIndex,officePreviewEnable]);
 
   const handlePrev = useCallback(
     (e: any) => {

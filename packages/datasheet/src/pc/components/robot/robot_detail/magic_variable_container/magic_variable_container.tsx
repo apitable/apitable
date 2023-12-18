@@ -155,7 +155,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
       {
         title:
             t(Strings.robot_trigger_guide),
-        items: nodeOutputSchemaList.filter(item => item.id.startsWith('atr')).map(r => r.id),
+        items: nodeOutputSchemaList.filter(item => item.id.startsWith('dst')).map(r => r.id),
       },
       {
         title:

@@ -1,6 +1,6 @@
 {
   "name": "@apitable/ai",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "author": "APITable Ltd. <support@apitable.com>",
@@ -11,9 +11,9 @@
     "access": "public"
   },
   "dependencies": {
-    "@apitable/components": "*",
-    "@apitable/core": "*",
-    "@apitable/icons": "*"
+    "@apitable/components": "workspace:*",
+    "@apitable/core": "workspace:*",
+    "@apitable/icons": "workspace:*"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^5.0.1",

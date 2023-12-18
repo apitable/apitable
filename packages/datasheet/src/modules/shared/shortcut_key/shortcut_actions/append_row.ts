@@ -17,7 +17,7 @@
  */
 
 /**
- * https://www.notion.so/vikadata/9ac1f271807f4d99a30c1b5cae32437a
+ * https://www.notion.so/9ac1f271807f4d99a30c1b5cae32437a
  */
 import {
   CollaCommandName,

@@ -227,7 +227,7 @@ public class SpaceApplyServiceImpl implements ISpaceApplyService {
         if (BooleanUtil.isTrue(agree)) {
             status = SpaceApplyStatus.APPROVE.getStatus();
             // Agree to apply and determine whether the number of people invited to the space has reached the maximum
-            iSpaceService.checkSeatOverLimit(apply.getSpaceId(), 1);
+            iSpaceService.checkSeatOverLimit(apply.getSpaceId());
             // Create member
             iMemberService.createMember(apply.getCreatedBy(), apply.getSpaceId(), null);
         }

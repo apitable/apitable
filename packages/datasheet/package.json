@@ -1,6 +1,6 @@
 {
   "name": "@apitable/datasheet",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "author": "APITable Ltd. <support@apitable.com>",
   "license": "AGPL-3.0",
   "scripts": {
@@ -22,12 +22,12 @@
     "node": "16.15.0"
   },
   "dependencies": {
-    "@apitable/ai": "*",
-    "@apitable/api-client": "*",
-    "@apitable/components": "*",
-    "@apitable/core": "*",
-    "@apitable/i18n-lang": "*",
-    "@apitable/icons": "*",
+    "@apitable/ai": "workspace:*",
+    "@apitable/api-client": "workspace:*",
+    "@apitable/components": "workspace:*",
+    "@apitable/core": "workspace:*",
+    "@apitable/i18n-lang": "workspace:*",
+    "@apitable/icons": "workspace:*",
     "@apitable/react-flow": "^9.6.12",
     "@apitable/widget-sdk": "*",
     "@floating-ui/react": "0.24.5",
@@ -72,7 +72,7 @@
     "@types/json-schema": "^7.0.12",
     "@types/react-highlight-words": "^0.16.1",
     "@types/react-window": "^1.8.1",
-    "@types/styled-components": "^5.1.26",
+    "@types/styled-components": "5.1.26",
     "ahooks": "^3.5.0",
     "ajv": "^6.12.6",
     "ajv-i18n": "^4.2.0",

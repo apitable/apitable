@@ -55,6 +55,7 @@ import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatu
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowInvitation;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowOrgApi;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowShare;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AuditQuery;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.ContactIsolation;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.ForbidCreateOnCatalog;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.RainbowLabel;
@@ -157,7 +158,12 @@ public interface SubscriptionFeature {
 
     RemainRecordActivityDays getRemainRecordActivityDays();
 
+    @Deprecated(since = "1.7.0", forRemoval = true)
     AuditQueryDays getAuditQueryDays();
+
+    default AuditQuery getAuditQuery() {
+        return new AuditQuery(false);
+    }
 
     AllowOrgApi getAllowOrgApi();
 

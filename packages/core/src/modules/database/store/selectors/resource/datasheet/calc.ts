@@ -173,6 +173,21 @@ export const getCurrentViewBase = (
 
   const permissionColumns = filterColumnsByPermission(view.columns, fieldPermissionMap);
   if (permissionColumns.length !== view.columns.length) {
+    // we need to update the frozenColumnCount in mirror view when the permissionColumns is changed
+    if (mirror?.id && (view.type === ViewType.Grid || view.type === ViewType.Gantt)) {
+      let frozenColumnCount = view.frozenColumnCount;
+      view.columns.slice(0, view.frozenColumnCount).forEach(column => {
+        const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, column.fieldId);
+        if (fieldRole === Role.None) {
+          frozenColumnCount--;
+        }
+      });
+      return {
+        ...view,
+        frozenColumnCount,
+        columns: permissionColumns,
+      };
+    }
     return {
       ...view,
       columns: permissionColumns,

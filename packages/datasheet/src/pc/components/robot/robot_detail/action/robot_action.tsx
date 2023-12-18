@@ -30,13 +30,12 @@ import { integrateCdnHost, IReduxState, Selectors, StoreActions, Strings, t } fr
 import { setSideBarVisible } from '@apitable/core/dist/modules/space/store/actions/space';
 import { ChevronDownOutlined } from '@apitable/icons';
 import { IFetchDatasheet } from '@apitable/widget-sdk/dist/message/interface';
-import { automationLocalMap, automationPanelAtom, automationStateAtom, PanelName } from 'pc/components/automation/controller';
+import { automationLocalMap, automationPanelAtom, automationStateAtom, PanelName, getResourceAutomationDetailIntegrated, useAutomationController } from 'pc/components/automation/controller';
 import { getTriggerDatasheetId, IFetchedDatasheet } from 'pc/components/automation/controller/hooks/use_robot_fields';
 import { Message, Modal } from 'pc/components/common';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useAppSelector } from 'pc/store/react-redux';
 import { useResponsive } from '../../../../hooks';
-import { getResourceAutomationDetailIntegrated, useAutomationController } from '../../../automation/controller';
 import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
 import { ScreenSize } from '../../../common/component_display';
 import { ShareContext } from '../../../share';
@@ -89,7 +88,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
   const dataSheetMap = useAppSelector((state: IReduxState) => state.datasheetMap);
 
   useEffect(() => {
-    dataList?.forEach((item) => {
+    Array.from(new Set(dataList))?.forEach((item) => {
       if (isString(item) && !dataSheetMap[item]) {
         dispatch(StoreActions.fetchDatasheet(item) as any);
       }
@@ -100,12 +99,20 @@ export const RobotAction = memo((props: IRobotActionProps) => {
     automationState?.scenario === AutomationScenario?.datasheet
       ? Array.from({ length: triggers.length }, () => activeDstId)
       : ((dataList ?? []) as IFetchedDatasheet[]);
+
+  const triggerDataSheetMap : Record<string, string> = triggers.map((trigger, index) => ({ trigger, index })).reduce((p, c) => {
+    return {
+      ...p,
+      [c.trigger.triggerId]: triggerDataSheetIds[c.index]
+    };
+  }, {});
+
   const nodeOutputSchemaList = getNodeOutputSchemaList({
     actionList,
     actionTypes: actionTypeList,
     triggerTypes: triggerTypes,
     triggers,
-    triggerDataSheetIds: triggerDataSheetIds,
+    triggerDataSheetMap,
     dataSheetMap,
   });
 
@@ -314,7 +321,7 @@ export const RobotAction = memo((props: IRobotActionProps) => {
         TextWidget: (props: any) => {
           return (
             <Box maxWidth={'100%'} maxHeight={'300px'} overflowY={'auto'} overflowX={'auto'}>
-              <MagicTextField {...props} nodeOutputSchemaList={prevActionSchemaList} triggerType={triggerType} />
+              <MagicTextField {...props} nodeOutputSchemaList={prevActionSchemaList} triggerType={triggerType} triggerDataSheetMap={triggerDataSheetMap} />
             </Box>
           );
         },

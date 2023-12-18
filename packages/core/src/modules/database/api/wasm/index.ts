@@ -148,7 +148,9 @@ const getBrowserDatabusApiEnabled = () => {
     const parsedTestFunctionSettings = testFunctionSettings == null ? {} : JSON.parse(testFunctionSettings);
     return parsedTestFunctionSettings['dataBusWasmEnable'] != null;
   } catch (e) {
-    console.error('error getting browser databus api enabled', e);
+    if (isClient()) {
+      console.error('error getting browser databus api enabled', e);
+    }
     return false;
   }
 };

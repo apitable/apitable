@@ -20,8 +20,6 @@ import { ErrorBoundary } from '@sentry/nextjs';
 import { useLocalStorageState, useMount, useToggle, useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
 import { last } from 'lodash';
-import { expandRecordManager } from 'modules/database/expand_record_manager';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -44,6 +42,8 @@ import {
   t,
 } from '@apitable/core';
 import { AttentionOutlined, CommentOutlined, NarrowOutlined } from '@apitable/icons';
+import { expandRecordManager } from 'modules/database/expand_record_manager';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 
 // eslint-disable-next-line no-restricted-imports
 import { Message } from 'pc/components/common/message';
@@ -73,6 +73,7 @@ import { getStorage, StorageName } from 'pc/utils/storage';
 import { dispatch } from 'pc/worker/store';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { IModalReturn } from '../common/modal/modal/modal.interface';
+import { JobTaskProvider } from '../editors/button_editor/job_task';
 import { ActivityPane } from './activity_pane';
 import { ICacheType } from './activity_pane/interface';
 import { EditorContainer } from './editor_container';
@@ -195,26 +196,28 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
 
   root.render(
     <Provider store={store}>
-      <ExpandRecordModal onCancel={modalClose} wrapClassName={styles.mobileWrapper} forceCenter={props.forceCenter}>
-        <ErrorBoundary
-          onError={() => {
-            clearExpandModal();
-            setTimeout(() => Api.keepTabbar({}), 500);
-          }}
-          beforeCapture={(scope) => {
-            scope.setTag('catcher', 'expandRecordCrash');
-          }}
-        >
-          <WrapperWithTheme {...{ ...wrapperProps, nodeId: wrapperProps.datasheetId }} />
-        </ErrorBoundary>
-        <div
-          ref={focusHolderRef}
-          tabIndex={-1}
-          onFocus={() => {
-            document.body.onkeydown = monitorBodyFocus;
-          }}
-        />
-      </ExpandRecordModal>
+      <JobTaskProvider>
+        <ExpandRecordModal onCancel={modalClose} wrapClassName={styles.mobileWrapper} forceCenter={props.forceCenter}>
+          <ErrorBoundary
+            onError={() => {
+              clearExpandModal();
+              setTimeout(() => Api.keepTabbar({}), 500);
+            }}
+            beforeCapture={(scope) => {
+              scope.setTag('catcher', 'expandRecordCrash');
+            }}
+          >
+            <WrapperWithTheme {...{ ...wrapperProps, nodeId: wrapperProps.datasheetId }} />
+          </ErrorBoundary>
+          <div
+            ref={focusHolderRef}
+            tabIndex={-1}
+            onFocus={() => {
+              document.body.onkeydown = monitorBodyFocus;
+            }}
+          />
+        </ExpandRecordModal>
+      </JobTaskProvider>
     </Provider>,
   );
 };

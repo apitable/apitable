@@ -27,6 +27,8 @@ export enum LevelType {
   Free = 'free',
   Plus = 'plus',
   Pro = 'pro',
+  Starter = 'starter',
+  Business = 'business',
   Enterprise = 'enterprise',
   DingtalkBase = 'dingtalk_base',
   DingtalkStandard = 'dingtalk_standard',
@@ -66,6 +68,8 @@ export type ISpaceLevelType =
   | 'free'
   | 'plus'
   | 'pro'
+  | 'starter'
+  | 'business'
   | 'appsumo_tier1'
   | 'appsumo_tier2'
   | 'appsumo_tier3'

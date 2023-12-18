@@ -143,6 +143,7 @@ const LevelConfigMap = {
   free: bronzeAndFree,
   silver: silverAndPlus,
   plus: silverAndPlus,
+  starter: silverAndPlus,
   golden: goldenAndPro,
   pro: goldenAndPro,
   enterprise: {
@@ -227,6 +228,12 @@ export const SpaceLevelInfo: ISpaceLevelInfo = {
     buttonText: t(Strings.upgrade),
     tagText: t(Strings.paid_edition),
   }),
+  starter: getSpaceConfig('starter', {
+    title: t(Strings.subscribe_grade_starter),
+    titleTip: t(Strings.grade_desc),
+    buttonText: t(Strings.upgrade),
+    tagText: t(Strings.paid_edition),
+  }),
   pro: getSpaceConfig('pro', {
     title: t(Strings.subscribe_grade_pro),
     titleTip: t(Strings.grade_desc),
@@ -278,6 +285,12 @@ export const SpaceLevelInfo: ISpaceLevelInfo = {
   }),
   enterprise: getSpaceConfig('enterprise', {
     title: t(Strings.enterprise_edition),
+    titleTip: t(Strings.grade_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  business: getSpaceConfig('enterprise', {
+    title: t(Strings.subscribe_grade_business),
     titleTip: t(Strings.grade_desc),
     buttonText: t(Strings.renew),
     tagText: t(Strings.paid_edition),

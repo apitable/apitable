@@ -18,19 +18,10 @@
 
 package com.apitable.automation.service;
 
-import com.apitable.automation.model.TriggerTypeCreateRO;
-import com.apitable.automation.model.TriggerTypeEditRO;
-
 /**
  * IAutomationTriggerTypeService.
  */
 public interface IAutomationTriggerTypeService {
 
     String getTriggerTypeByEndpoint(String endpoint);
-
-    String create(Long userId, TriggerTypeCreateRO ro);
-
-    void edit(Long userId, String triggerTypeId, TriggerTypeEditRO ro);
-
-    void delete(Long userId, String triggerTypeId);
 }

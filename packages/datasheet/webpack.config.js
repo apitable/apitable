@@ -56,7 +56,7 @@ const compatibleIE11 = async (config) => {
   return entries;
 };
 
-const setResolveAlias = (config) => {
+const setResolveAlias = (config, options) => {
   config.resolve.alias.react = path.resolve(__dirname, '../../', 'node_modules', 'react');
   config.resolve.alias['react-dom'] = path.resolve(__dirname, '../../', 'node_modules', 'react-dom');
   config.resolve.alias = {
@@ -65,6 +65,8 @@ const setResolveAlias = (config) => {
     pc: path.resolve(__dirname, './src/pc'),
     static: path.resolve(__dirname, './public/static'),
     enterprise: process.env.IS_ENTERPRISE === 'true' ? path.resolve(__dirname, './src/modules/enterprise') : false,
+    // JSON cannot use tree shaking, it needs to be configured here
+    '@apitable/i18n-lang/src/config/strings.json': options.isServer ? '@apitable/i18n-lang/src/config/strings.json' : false
   };
 };
 
@@ -150,8 +152,7 @@ module.exports = (config, options) => {
   //             callback();
   //         }])
   // }
-
-  setResolveAlias(config);
+  setResolveAlias(config, options);
 
   setRules(config);
 

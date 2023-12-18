@@ -16,7 +16,7 @@ export const setIndex = (zIndex: number) => {
   };
 };
 
-const CONST_INITIAL_DROPDOWN_INDEX = 1002;
+const CONST_INITIAL_DROPDOWN_INDEX = 1202;
 export const useFloatUiDropdown: any = (options: {
     isOpen: boolean
     setOpen: (v: boolean) => void;

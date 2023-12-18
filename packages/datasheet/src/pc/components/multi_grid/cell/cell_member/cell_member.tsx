@@ -83,7 +83,6 @@ export const CellMember: React.FC<React.PropsWithChildren<ICellMember>> = (props
   const isMulti = field?.property.isMulti;
   const cellValue = useMemo(() => {
     const unitIds = MemberField.polyfillOldData(cellValueIncludeOldData as IUnitIds);
-    // https://sentry.vika.ltd/organizations/vika/issues/6939/events/348bdf36c4c4437c8984d55f23c2d2bc/?project=7
     return Array.isArray(unitIds) ? unitIds.flat() : null;
   }, [cellValueIncludeOldData]);
 

@@ -27,77 +27,77 @@ jobs:
       contents: read
       security-events: write
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-    - name: Set up JDK
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'corretto'
-        cache: 'gradle'
-    # Initializes the CodeQL tools for scanning.
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: java
-    - run: |
-        make _build-java
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-      with:
-        category: "/language:java"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+          cache: 'gradle'
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: java
+      - run: |
+          make _build-java
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:java"
 
-#  analyze-js-core:
-#    name: Analyze (javascript-core)
-#    runs-on: ubuntu-latest
-#    permissions:
-#      actions: read
-#      contents: read
-#      security-events: write
-#    steps:
-#    - name: Checkout repository
-#      uses: actions/checkout@v3
-#    # Initializes the CodeQL tools for scanning.
-#    - name: Initialize CodeQL
-#      uses: github/codeql-action/init@v2
-#      with:
-#        languages: javascript
-#    - run: |
-#        make _build-core
-#    - name: Perform CodeQL Analysis
-#      uses: github/codeql-action/analyze@v2
-#      with:
-#        category: "/language:javascript"
+  #  analyze-js-core:
+  #    name: Analyze (javascript-core)
+  #    runs-on: ubuntu-latest
+  #    permissions:
+  #      actions: read
+  #      contents: read
+  #      security-events: write
+  #    steps:
+  #    - name: Checkout repository
+  #      uses: actions/checkout@v4
+  #    # Initializes the CodeQL tools for scanning.
+  #    - name: Initialize CodeQL
+  #      uses: github/codeql-action/init@v2
+  #      with:
+  #        languages: javascript
+  #    - run: |
+  #        make _build-core
+  #    - name: Perform CodeQL Analysis
+  #      uses: github/codeql-action/analyze@v2
+  #      with:
+  #        category: "/language:javascript"
 
-#  analyze-js-room:
-#    name: Analyze (javascript-room)
-#    runs-on: ubuntu-latest
-#    permissions:
-#      actions: read
-#      contents: read
-#      security-events: write
-#    steps:
-#    - name: Checkout repository
-#      uses: actions/checkout@v3
-#    - name: Install build-essential
-#      run: sudo apt-get update -y && sudo apt-get install -y build-essential
-#    - name: Set up Rust
-#      uses: actions-rs/toolchain@v1
-#      with:
-#        toolchain: nightly
-#        profile: minimal
-#        override: true
-#    # Initializes the CodeQL tools for scanning.
-#    - name: Initialize CodeQL
-#      uses: github/codeql-action/init@v2
-#      with:
-#        languages: javascript
-#    - run: |
-#        make _build-room
-#    - name: Perform CodeQL Analysis
-#      uses: github/codeql-action/analyze@v2
-#      with:
-#        category: "/language:javascript"
+  #  analyze-js-room:
+  #    name: Analyze (javascript-room)
+  #    runs-on: ubuntu-latest
+  #    permissions:
+  #      actions: read
+  #      contents: read
+  #      security-events: write
+  #    steps:
+  #    - name: Checkout repository
+  #      uses: actions/checkout@v4
+  #    - name: Install build-essential
+  #      run: sudo apt-get update -y && sudo apt-get install -y build-essential
+  #    - name: Set up Rust
+  #      uses: actions-rs/toolchain@v1
+  #      with:
+  #        toolchain: nightly
+  #        profile: minimal
+  #        override: true
+  #    # Initializes the CodeQL tools for scanning.
+  #    - name: Initialize CodeQL
+  #      uses: github/codeql-action/init@v2
+  #      with:
+  #        languages: javascript
+  #    - run: |
+  #        make _build-room
+  #    - name: Perform CodeQL Analysis
+  #      uses: github/codeql-action/analyze@v2
+  #      with:
+  #        category: "/language:javascript"
 
   # analyze-js-web:
   #   name: Analyze (javascript-web)
@@ -108,7 +108,7 @@ jobs:
   #     security-events: write
   #   steps:
   #   - name: Checkout repository
-  #     uses: actions/checkout@v3
+  #     uses: actions/checkout@v4
   #   # Initializes the CodeQL tools for scanning.
   #   - name: Initialize CodeQL
   #     uses: github/codeql-action/init@v2
@@ -140,7 +140,7 @@ jobs:
 
   #   steps:
   #   - name: Checkout repository
-  #     uses: actions/checkout@v3
+  #     uses: actions/checkout@v4
 
   #   # Initializes the CodeQL tools for scanning.
   #   - name: Initialize CodeQL

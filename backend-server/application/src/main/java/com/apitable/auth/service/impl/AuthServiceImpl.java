@@ -49,6 +49,7 @@ import com.apitable.shared.captcha.ValidateCodeProcessor;
 import com.apitable.shared.captcha.ValidateCodeProcessorManage;
 import com.apitable.shared.captcha.ValidateCodeType;
 import com.apitable.shared.captcha.ValidateTarget;
+import com.apitable.shared.component.LanguageManager;
 import com.apitable.shared.security.PasswordService;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
@@ -91,14 +92,22 @@ public class AuthServiceImpl implements IAuthService {
     @Resource
     private EntitlementServiceFacade entitlementServiceFacade;
 
+    @Resource
+    private LanguageManager languageManager;
+
     @Override
     public Long register(final String username, final String password) {
+        return register(username, password, languageManager.getDefaultLanguageTag());
+    }
+
+    @Override
+    public Long register(final String username, final String password, String lang) {
         // Check email format and if exists
         ExceptionUtil.isTrue(Validator.isEmail(username), REGISTER_EMAIL_ERROR);
         boolean exist = iUserService.checkByEmail(username);
         ExceptionUtil.isFalse(exist, REGISTER_EMAIL_HAS_EXIST);
         // Register User
-        return this.registerUserUsingEmail(username, password, null);
+        return this.registerUserUsingEmail(username, password, null, lang);
     }
 
     @Override
@@ -218,7 +227,7 @@ public class AuthServiceImpl implements IAuthService {
                 inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
         } else {
             // Email automatic registration users do not provide third-party scan code login binding
-            userId = registerUserUsingEmail(email, null, loginRo.getSpaceId());
+            userId = registerUserUsingEmail(email, null, loginRo.getSpaceId(), languageManager.getDefaultLanguageTag());
             result.setIsSignUp(true);
         }
         // delete verification code
@@ -244,9 +253,9 @@ public class AuthServiceImpl implements IAuthService {
         return user.getId();
     }
 
-    private Long registerUserUsingEmail(final String email, final String password, String spaceId) {
+    private Long registerUserUsingEmail(final String email, final String password, String spaceId, String lang) {
         // Create a new user based on the mailbox and activate the corresponding member
-        UserEntity user = iUserService.createUserByEmail(email, password);
+        UserEntity user = iUserService.createUserByEmail(email, password, lang);
         // Query whether there is a space member corresponding to the mailbox, only new
         // registration will have this operation
         List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(email);

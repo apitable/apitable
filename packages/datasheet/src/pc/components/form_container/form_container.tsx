@@ -627,7 +627,7 @@ export const FormContainer: React.FC<
     const newSnapshot = produce(preSnapshot, (draft) => {
       const view = draft.meta.views.find((view) => view.id === viewId);
       if (view) {
-        if (!view.rows.find((row) => row.recordId === recordId)) {
+        if (!view.rows.find((row) => row.recordId === recordId) && !recordId.endsWith('_temp')) {
           view.rows.push({ recordId });
         }
         draft.recordMap[recordId] = record;

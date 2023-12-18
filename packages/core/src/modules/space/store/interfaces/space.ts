@@ -130,6 +130,7 @@ export interface ISpaceBasicInfo {
   galleryViewNums: number;
   ganttViewNums: number;
   kanbanViewNums: number;
+  labsKeys: string[];
   calendarViewNums: number;
   mirrorNums: number;
   nodeRoleNums: number;
