@@ -65,6 +65,7 @@
     "pnpm": "^8"
   },
   "devDependencies": {
+    "eslint-config-prettier": "^8",
     "git-format-staged": "^3.0.0",
     "@babel/core": "7.22.20",
     "@commitlint/cli": "17.7.1",
