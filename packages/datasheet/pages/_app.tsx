@@ -155,7 +155,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
     const endLoading = () => {
       const ele = document.querySelector('.script-loading-wrap');
-      // delete loading : scale logo -> vika -> wait 1000ms -> disappear
+      // delete loading : scale logo -> aitable -> wait 1000ms -> disappear
       const logoImg = document.querySelector('.script-loading-logo-img');
       logoImg?.classList.remove('loading-static-animation');
       setTimeout(() => ele?.classList.add('script-loading-wrap-finished'), 0);

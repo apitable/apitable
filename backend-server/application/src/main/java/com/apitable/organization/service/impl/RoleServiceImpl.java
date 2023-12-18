@@ -28,7 +28,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.vika.core.utils.StringUtil;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
@@ -128,7 +127,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         log.info("modify role's information");
         RoleEntity role = baseMapper.selectById(roleId);
         role.setUpdateBy(userId);
-        if (!StringUtil.isEmpty(roleName)) {
+        if (StrUtil.isNotEmpty(roleName)) {
             role.setRoleName(roleName);
         }
         if (null != position) {

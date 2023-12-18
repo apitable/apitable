@@ -38,13 +38,12 @@ import com.apitable.automation.model.UpdateTriggerRO;
 import com.apitable.automation.service.IAutomationTriggerService;
 import com.apitable.automation.service.IAutomationTriggerTypeService;
 import com.apitable.core.util.ExceptionUtil;
-import com.apitable.databusclient.ApiException;
-import com.apitable.databusclient.api.AutomationDaoApiApi;
-import com.apitable.databusclient.model.ApiResponseAutomationTriggerPO;
-import com.apitable.databusclient.model.AutomationRobotTriggerRO;
-import com.apitable.databusclient.model.AutomationTriggerPO;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.util.IdUtil;
+import com.apitable.starter.databus.client.api.AutomationDaoApiApi;
+import com.apitable.starter.databus.client.model.ApiResponseAutomationTriggerPO;
+import com.apitable.starter.databus.client.model.AutomationRobotTriggerRO;
+import com.apitable.starter.databus.client.model.AutomationTriggerPO;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import jakarta.annotation.Resource;
 import java.math.BigInteger;
@@ -55,6 +54,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 
 /**
  * automation trigger service impl.
@@ -106,7 +106,7 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
                 log.error("CreateTriggerEmpty:{}", data.getRobotId());
             }
             return formatVoFromDatabusResponse(response.getData());
-        } catch (ApiException e) {
+        } catch (RestClientException e) {
             log.error("Robot create trigger: {}", data.getRobotId(), e);
         }
         return new ArrayList<>();
@@ -128,7 +128,7 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
                 AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
                 AUTOMATION_ROBOT_NOT_EXIST);
             return formatVoFromDatabusResponse(response.getData());
-        } catch (ApiException e) {
+        } catch (RestClientException e) {
             log.error("Robot update trigger: {}", data.getRobotId(), e);
         }
         return new ArrayList<>();
@@ -146,7 +146,7 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
             ExceptionUtil.isFalse(
                 AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
                 AUTOMATION_ROBOT_NOT_EXIST);
-        } catch (ApiException e) {
+        } catch (RestClientException e) {
             log.error("Delete trigger: {}", triggerId, e);
         }
     }

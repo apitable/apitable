@@ -98,8 +98,8 @@ export const ListDropdown = forwardRef<IDropdownControl, IDropdownProps>((props,
 
   const handleSelect = React.useCallback((index: number | null) => {
     setSelectedIndex(index);
-    setOpen(false);
-  }, [setOpen]);
+    // setOpen(false);
+  }, []);
 
   const listNav = useListNavigation(context, {
     listRef: elementsRef,

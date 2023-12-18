@@ -80,6 +80,7 @@ export function getLanguage() {
     } catch (e) {}
   }
   const browserLang = getBrowserLanguage();
+  // console.log('browser language is', browserLang);
   const language = typeof _global == 'object' && _global.__initialization_data__ &&
     _global.__initialization_data__.locale != 'und' && _global.__initialization_data__.locale;
   const defaultLang = (typeof _global == 'object' && _global.__initialization_data__?.envVars?.SYSTEM_CONFIGURATION_DEFAULT_LANGUAGE) || 'zh-CN';

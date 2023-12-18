@@ -53,7 +53,7 @@ public class WidgetUploadServiceImplTest extends AbstractIntegrationTest {
     }
 
     private UserEntity getTestUser() {
-        return iUserService.createUserByEmail("test@vikadata.com");
+        return iUserService.createUserByEmail("test@aitable.ai");
     }
 
     private WidgetPackageEntity initWidget(UserEntity testOpUser) throws JsonProcessingException {

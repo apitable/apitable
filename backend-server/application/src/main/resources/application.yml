@@ -116,7 +116,7 @@ starter:
       access-key: ${QINIU_ACCESS_KEY:' '}
       secret-key: ${QINIU_SECRET_KEY:' '}
       region: ${QINIU_REGION:z2}
-      download-domain: ${QINIU_DOWNLOAD_DOMAIN:s1.vika.cn}
+      download-domain: ${QINIU_DOWNLOAD_DOMAIN:aitable.ai}
       upload-url: ${QINIU_UPLOAD_URL:https://up-z2.qiniup.com}
       callback:
         enabled: ${QINIU_CALLBACK_ENABLED:false}

@@ -16,9 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { StoryType } from '../../stories/constants';
 import { NextTimePreview } from './preview';
+import { Timing } from './timing';
 
 const COMPONENT_NAME = 'Time';
 
@@ -40,3 +41,34 @@ export default {
 export const NextTime: FC = () => <><NextTimePreview title={'Preview next 5 execution times'}
   times={[new Date(), new Date(), new Date(), new Date(), new Date()]}
 /></>;
+
+export const TimingHour : FC = () => {
+  const [state, setState] = useState({
+    hour: 1,
+  });
+
+  // @ts-ignore
+  return <Timing interval={'hour'} value={state} onUpdate={setState} readonly={false}/>;
+};
+
+export const TimingDay : FC = () => {
+  const [state, setState] = useState({
+    hour: 1,
+  });
+
+  // @ts-ignore
+  return <Timing interval={'day'} value={state} onUpdate={setState} readonly={false}/>;
+};
+
+export const TimingHourDisabled : FC = () => {
+  const [state, setState] = useState({
+    hour: 1,
+  });
+
+  // @ts-ignore
+  return <Timing interval={'hour'} value={state} onUpdate={setState} readonly/>;
+};
+
+// export const TimingMonth : FC = () => <Timing interval={'month'} />;
+// export const TimingDay : FC = () => <Timing interval={'day'} />;
+// export const TimingWeek : FC = () => <Timing interval={'week'} />;
