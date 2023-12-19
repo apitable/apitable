@@ -52,6 +52,11 @@ const getBrowserLanguage = (): string | undefined => {
     return undefined;
   }
   let userLanguage: string | undefined = _global.navigator.language as string;
+  if (userLanguage){
+    userLanguage = userLanguage.replace(/-(.+)/g, (match, group1) => {
+      return '-' + group1.toUpperCase();
+    });
+  }
   if (userLanguage == 'zh-TW') {
     userLanguage = 'zh-HK';
   }
