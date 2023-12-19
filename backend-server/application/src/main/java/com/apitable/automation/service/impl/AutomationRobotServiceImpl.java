@@ -365,13 +365,13 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
         Optional<AutomationTriggerDto> trigger = triggers.stream()
             .filter(i -> i.getResourceId().equals(CollUtil.getFirst(subtract)))
             .findFirst();
-        if (!trigger.isPresent()) {
+        if (trigger.isEmpty()) {
             return;
         }
         Optional<AutomationRobotDto> robot = robots.stream()
             .filter(i -> i.getRobotId().equals(trigger.get().getRobotId()))
             .findFirst();
-        if (!robot.isPresent()) {
+        if (robot.isEmpty()) {
             return;
         }
         List<String> nodeIds = new ArrayList<>();

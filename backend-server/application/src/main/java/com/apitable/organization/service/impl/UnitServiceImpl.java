@@ -581,12 +581,12 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
         IPage<Long> teamIds =
             teamMapper.selectTeamIdsBySpaceIdAndParentIdAndPage(page, spaceId, parentTeamId);
         if (teamIds.getSize() == 0) {
-            return PageHelper.build((int) teamIds.getCurrent(), (int) teamIds.getSize(),
-                (int) teamIds.getTotal(), new ArrayList<>());
+            return PageHelper.build(teamIds.getCurrent(), teamIds.getSize(),
+                teamIds.getTotal(), new ArrayList<>());
         }
         List<UnitTeamInfoVo> units = getUnitTeamByTeamIds(teamIds.getRecords());
-        return PageHelper.build((int) teamIds.getCurrent(), (int) teamIds.getSize(),
-            (int) teamIds.getTotal(), units);
+        return PageHelper.build(teamIds.getCurrent(), teamIds.getSize(),
+            teamIds.getTotal(), units);
     }
 
     @Override
@@ -594,8 +594,8 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
                                                          Page<RoleBaseInfoDto> page) {
         IPage<RoleBaseInfoDto> roles = roleMapper.selectBySpaceIdAndPage(page, spaceId);
         if (roles.getSize() == 0) {
-            return PageHelper.build((int) roles.getCurrent(), (int) roles.getSize(),
-                (int) roles.getTotal(), new ArrayList<>());
+            return PageHelper.build(roles.getCurrent(), roles.getSize(),
+                roles.getTotal(), new ArrayList<>());
         }
         List<Long> roleIds =
             roles.getRecords().stream().map(RoleBaseInfoDto::getId).collect(Collectors.toList());
@@ -603,8 +603,8 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
             .collect(Collectors.toMap(UnitBaseInfoDTO::getUnitRefId,
                 UnitBaseInfoDTO::getUnitId));
         if (roleUnits.keySet().isEmpty()) {
-            return PageHelper.build((int) roles.getCurrent(), (int) roles.getSize(),
-                (int) roles.getTotal(), new ArrayList<>());
+            return PageHelper.build(roles.getCurrent(), roles.getSize(),
+                roles.getTotal(), new ArrayList<>());
         }
         List<UnitRoleInfoVo> units = new ArrayList<>();
         roles.getRecords().forEach(r -> {
@@ -614,8 +614,8 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
                 .build();
             units.add(unit);
         });
-        return PageHelper.build((int) roles.getCurrent(), (int) roles.getSize(),
-            (int) roles.getTotal(), units);
+        return PageHelper.build(roles.getCurrent(), roles.getSize(),
+            roles.getTotal(), units);
     }
 
     @Override
@@ -624,13 +624,13 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
         IPage<Long> memberIds =
             teamMemberRelMapper.selectMemberIdsByTeamIdAndPage(page, parentTeamId);
         if (memberIds.getRecords().isEmpty()) {
-            return PageHelper.build((int) memberIds.getCurrent(), (int) memberIds.getSize(),
-                (int) memberIds.getTotal(), new ArrayList<>());
+            return PageHelper.build(memberIds.getCurrent(), memberIds.getSize(),
+                memberIds.getTotal(), new ArrayList<>());
         }
         List<UnitMemberInfoVo> members =
             getUnitMemberByMemberIds(memberIds.getRecords(), sensitiveData);
-        return PageHelper.build((int) memberIds.getCurrent(), (int) memberIds.getSize(),
-            (int) memberIds.getTotal(), members);
+        return PageHelper.build(memberIds.getCurrent(), memberIds.getSize(),
+            memberIds.getTotal(), members);
     }
 
     @Override
