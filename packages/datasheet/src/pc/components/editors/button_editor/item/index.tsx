@@ -10,17 +10,15 @@ import { AutomationConstant } from 'pc/components/automation/config';
 import { runAutomationButton, runAutomationUrl } from 'pc/components/editors/button_editor';
 import { getRobotDetail } from 'pc/components/editors/button_editor/api';
 import EllipsisText from 'pc/components/ellipsis_text';
+import { autoSizerCanvas } from 'pc/components/konva_components';
+import { GRID_CELL_MULTI_ITEM_MIN_WIDTH, GRID_OPTION_ITEM_PADDING } from 'pc/components/konva_grid';
+import { TextEllipsisEngine } from 'pc/components/konva_grid/components/cell/cell_button/text_ellipsis_engine';
 import { setColor } from 'pc/components/multi_grid/format';
 import { AutomationScenario, IRobotContext } from 'pc/components/robot/interface';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { AutomationTaskStatus } from '../automation_task_map';
-import { TextEllipsisEngine } from 'pc/components/konva_grid/components/cell/cell_button/text_ellipsis_engine';
-import { autoSizerCanvas } from 'pc/components/konva_components';
-import { GRID_CELL_MULTI_ITEM_MIN_WIDTH, GRID_OPTION_ITEM_PADDING } from 'pc/components/konva_grid';
-
-type TO = ReturnType<typeof setTimeout>;
 
 // (444, 'button field automation not configured');
 // (445, 'button field automation trigger not configured');
@@ -92,85 +90,6 @@ const StyledBgBox = styled(Box)<{ defaultColor: string; disabled?: boolean; load
   `}
 `;
 
-export const handleStart = (
-  datasheetId: string,
-  record: IRecord,
-  state: IReduxState,
-  recordId: string,
-  taskStatus: AutomationTaskStatus,
-  field: IButtonField,
-  colors: ITheme['color'],
-  handleTaskStart: (recordId: string, fieldId: string, task: () => Promise<{ success: boolean }>) => void,
-  setAutomationStateAtom: (data: IRobotContext | undefined) => void,
-  setAutomationHistoryPanel: (data: { dialogVisible: boolean; taskId?: string }) => void,
-) => {
-  if (taskStatus === 'success') {
-    return;
-  }
-
-  if (isNil(field.property.action?.type)) {
-    Message.error({ content: t(Strings.automation_tips) });
-    return;
-  }
-
-  if (field.property.action.type === ButtonActionType.OpenLink) {
-    runAutomationUrl(datasheetId, record, state, recordId, field.id, field);
-    return;
-  }
-
-  const task: () => Promise<{ success: boolean }> = () =>
-    runAutomationButton(datasheetId, record, state, recordId, field.id, field, (success, code, message) => {
-      if (!success && code && CONST_AUTOMATION_ERROR.includes(code) && message) {
-        Message.error({ content: message });
-        return;
-      }
-      if (!success) {
-        Message.error({
-          content: (
-            <>
-              <Box display={'inline-flex'} alignItems={'center'} color={colors.textStaticPrimary}>
-                {t(Strings.button_execute_error)}
-                <StyledLinkButton
-                  underline
-                  color={colors.textStaticPrimary}
-                  onClick={async () => {
-                    const automationId = field.property.action.automation?.automationId;
-
-                    const data1 = await getRobotDetail(automationId ?? '', '');
-
-                    if (data1 instanceof ResponseDataAutomationVO) {
-                      if (data1?.success) {
-                        setAutomationStateAtom({
-                          currentRobotId: data1?.data?.robotId,
-                          resourceId: automationId,
-                          scenario: AutomationScenario.node,
-                          // @ts-ignore
-                          robot: data1.data,
-                        });
-                        setAutomationHistoryPanel({
-                          dialogVisible: true,
-                        });
-                      } else {
-                        Message.error({ content: data1?.message ?? '' });
-                      }
-                    } else {
-                      Message.error({ content: data1?.message ?? '' });
-                    }
-                  }}
-                >
-                  {t(Strings.button_check_history)}
-                </StyledLinkButton>
-                {t(Strings.button_check_history_end)}
-              </Box>
-            </>
-          ),
-        });
-      }
-    });
-
-  handleTaskStart(recordId, field.id, task);
-};
-
 export const StyledLinkButton = styled(LinkButton)`
   margin-left: 4px;
   font-size: 12px !important;
@@ -179,7 +98,7 @@ export const StyledLinkButton = styled(LinkButton)`
 
 const marginTop = '0';
 
-const itemHeight = '22px';
+const itemHeight = '24px';
 
 const ButtonItem: FunctionComponent<{
   field: IButtonField;
@@ -194,7 +113,6 @@ const ButtonItem: FunctionComponent<{
   const cssColors = useCssColors();
 
   const bg = field.property.style.color ? setColor(field.property.style.color, cacheTheme) : colors.defaultBg;
-  const txt = field.property.text;
   const {
     text: renderText,
     textWidth,
@@ -225,7 +143,7 @@ const ButtonItem: FunctionComponent<{
       return (
         <StyledBox
           disabled
-          borderRadius={'4px'}
+          borderRadius={'2px'}
           paddingX={'10px'}
           height={height ?? itemHeight}
           // maxWidth={maxWidth ?? '100%'}
@@ -248,7 +166,7 @@ const ButtonItem: FunctionComponent<{
         disabled={false}
         height={height ?? itemHeight}
         loading={isLoading}
-        borderRadius={'4px'}
+        borderRadius={'2px'}
         justifyContent={'center'}
         onClick={(e) => {
           stopPropagation(e);
@@ -283,7 +201,7 @@ const ButtonItem: FunctionComponent<{
       <StyledBox
         backgroundColor={colors.bgControlsDisabled}
         disabled
-        borderRadius={'4px'}
+        borderRadius={'2px'}
         paddingX={'10px'}
         // maxWidth={maxWidth ?? '100%'}
         width={itemWidth ?? '100%'}
@@ -313,7 +231,7 @@ const ButtonItem: FunctionComponent<{
       defaultColor={bg}
       disabled={false}
       loading={isLoading}
-      borderRadius={'4px'}
+      borderRadius={'2px'}
       paddingX={'10px'}
       onClick={(e) => {
         stopPropagation(e);

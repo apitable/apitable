@@ -114,7 +114,7 @@ export const ButtonFieldItem: FunctionComponent<{ field: IButtonField; height?: 
   recordId,
   maxWidth,
   record,
-  height = '22px',
+  height = '24px',
 }) => {
   const setAutomationStateAtom = useSetAtom(automationStateAtom);
 

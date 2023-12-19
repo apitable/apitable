@@ -39,7 +39,6 @@ import {
   GRID_CELL_MULTI_PADDING_TOP,
   GRID_CELL_VALUE_PADDING,
   GRID_ICON_SMALL_SIZE,
-  GRID_OPTION_ITEM_HEIGHT,
   GRID_OPTION_ITEM_PADDING,
 } from 'pc/components/konva_grid';
 import { setColor } from 'pc/components/multi_grid/format';
@@ -48,6 +47,8 @@ import { KeyCode, stopPropagation } from 'pc/utils';
 import { ICellProps } from '../cell_value';
 import { IRenderData } from '../interface';
 import { TextEllipsisEngine } from './text_ellipsis_engine';
+
+const GRID_OPTION_ITEM_HEIGHT = 22;
 
 const RotatingLoading = dynamic(() => import('pc/components/konva_grid/components/cell/cell_button/rotating_loading'), { ssr: false });
 
@@ -71,7 +72,6 @@ export type IButtonCellProps = Omit<ICellProps, 'field'> & {
   field: IButtonField;
 };
 const textFontSize = 13;
-type TO = ReturnType<typeof setTimeout>;
 
 export const CellButton: React.FC<React.PropsWithChildren<IButtonCellProps>> = (props) => {
   const { x, y, isActive, recordId, field, cellValue, columnWidth, rowHeight, onChange } = props;
@@ -215,11 +215,11 @@ export const CellButton: React.FC<React.PropsWithChildren<IButtonCellProps>> = (
           width={itemWidth}
           height={GRID_OPTION_ITEM_HEIGHT}
           fill={'transparent'}
-          cornerRadius={4}
+          cornerRadius={2}
           listening
         />
 
-        {taskStatus === 'running' && <RotatingLoading name={name} x={itemLoadingX1} y={itemY} textColor={bg} />}
+        {taskStatus === 'running' && <RotatingLoading name={name} x={itemLoadingX1} y={itemY + 1} textColor={bg} />}
 
         {taskStatus === 'success' && (
           <Icon name={name} x={itemLoadingX1} y={itemY} data={CheckFilled.toString()} backgroundWidth={22} backgroundHeight={22} fill={bg} />
@@ -267,11 +267,11 @@ export const CellButton: React.FC<React.PropsWithChildren<IButtonCellProps>> = (
         width={itemWidth}
         height={GRID_OPTION_ITEM_HEIGHT}
         fill={isHover ? getColorValue(bg, 0.8) : bg}
-        cornerRadius={4}
+        cornerRadius={2}
         listening
       />
 
-      {taskStatus === 'running' && <RotatingLoading name={name} x={itemLoadingX1} y={itemY} textColor={textColor} />}
+      {taskStatus === 'running' && <RotatingLoading name={name} x={itemLoadingX1} y={itemY + 1} textColor={textColor} />}
 
       {taskStatus === 'success' && (
         <Icon

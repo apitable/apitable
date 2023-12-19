@@ -64,7 +64,6 @@ import { FileOutlined } from '@apitable/icons';
 import { assertSignatureManager } from '@apitable/widget-sdk';
 import { AutomationConstant } from 'pc/components/automation/config';
 import { AvatarSize, AvatarType } from 'pc/components/common';
-import { getIsValid } from 'pc/components/editors/button_editor/valid_map';
 import { GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT } from 'pc/components/gantt_view';
 import { isUnitLeave } from 'pc/components/multi_grid/cell/cell_member/member_item';
 import { setColor } from 'pc/components/multi_grid/format';
@@ -319,6 +318,7 @@ export class CellHelper extends KonvaDrawer {
   private renderCellButton(renderProps: IRenderProps, ctx?: any) {
     const { x, y, rowHeight, rowHeightLevel, columnWidth, isActive, callback } = renderProps;
 
+    const GRID_OPTION_ITEM_HEIGHT = 22;
     const buttonField = renderProps.field as IButtonField;
     const cellValue = [1];
     const isOperating = isActive;
@@ -413,7 +413,7 @@ export class CellHelper extends KonvaDrawer {
           height: GRID_OPTION_ITEM_HEIGHT,
           background,
           color,
-          radius: 4,
+          radius: 2,
           padding: GRID_OPTION_ITEM_PADDING,
           text: renderText,
           fontSize: 12,
