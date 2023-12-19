@@ -59,7 +59,7 @@ export const CellButtonItem: React.FC<React.PropsWithChildren<ACellProps>> = (pr
   const record = useAppSelector((state) => Selectors.getRecord(state, props.recordId, props.datasheetId));
   if (!record) return null;
   return (
-    <Box flex={'1'} padding={'0 10px'} height={'20px'}>
+    <Box flex={'1'} padding={'0 10px'} height={'22px'}>
       <span>
         <ButtonFieldItem field={props.field as IButtonField} recordId={props.recordId} record={record} />
       </span>
@@ -170,7 +170,8 @@ export const CellButton: React.FC<React.PropsWithChildren<IButtonCellProps>> = (
   };
 
   const itemX1 = 10 + (columnWidth - itemWidth) / 2;
-  const itemY = currentY - 3;
+
+  const itemY = currentY - 2;
 
   const [isHover, setHover] = useState(false);
 

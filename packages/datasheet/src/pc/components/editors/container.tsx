@@ -54,7 +54,6 @@ import {
 } from '@apitable/core';
 import { ContextName, ShortcutActionManager, ShortcutActionName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { appendRow } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
-import { ButtonEditor } from 'pc/components/editors/button_editor';
 import { autoTaskScheduling } from 'pc/components/gantt_view/utils/auto_task_line_layout';
 import { useDispatch } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
