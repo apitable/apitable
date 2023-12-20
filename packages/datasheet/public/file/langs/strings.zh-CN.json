@@ -5900,6 +5900,7 @@
   "workdoc_ws_connected": "已连接",
   "workdoc_ws_connecting": "正在连接...",
   "workdoc_ws_disconnected": "连接已断开",
+  "workdoc_ws_reconnecting": "正在重连...",
   "workflow_execute_failed_notify": "<a class=\"automationName\"></a>于<a class=\"endAt\"></a>执行失败，请根据运行历史排查问题，需要任何帮助或有任何疑问，请随时与客服团队联系",
   "workspace_data": "空间站数据",
   "workspace_files": "工作台数据",
