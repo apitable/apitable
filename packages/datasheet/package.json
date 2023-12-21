@@ -25,6 +25,7 @@
     "@apitable/ai": "workspace:*",
     "@apitable/api-client": "workspace:*",
     "@apitable/components": "workspace:*",
+    "purify-ts": "^2.0.1",
     "@apitable/core": "workspace:*",
     "@apitable/i18n-lang": "workspace:*",
     "@apitable/icons": "workspace:*",

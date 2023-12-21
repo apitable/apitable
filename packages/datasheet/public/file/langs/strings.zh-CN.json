@@ -3500,6 +3500,7 @@
   "open_auto_save_success": "开启自动保存视图配置成功",
   "open_auto_save_warn_content": "所有成员修改当前视图配置会自动保存并同步给其他成员。（视图配置包括：筛选、分组、排序、隐藏列、布局、样式等）",
   "open_auto_save_warn_title": "开启自动保存视图配置",
+  "open_automation_time_arrival": "https://aitable.ai/contact-sales-open-source",
   "open_failed": "查看失败",
   "open_in_new_tab": "新标签页打开",
   "open_invite_after_operate": "打开邀请成员后，全体成员可以在“通讯录面板”进行邀请成员操作",

@@ -1,123 +1,196 @@
-import React, { FC } from 'react';
+/**
+ * APITable <https://github.com/apitable/apitable>
+ * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+import React, { FC, useCallback, useMemo } from 'react';
 import { DropdownSelect } from '../select';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import dayjs from 'dayjs';
 import { TimeInput } from './time_input';
+import CronTime from 'cron-time-generator';
+import { ICronSchema } from './types';
+import { CronConverter } from './utils';
+import { MultipleSelect } from '../select/dropdown/multiple';
+import { ScheduleOptions } from './ScheduleOptions';
+
 dayjs.extend(advancedFormat);
 
 interface Props {
-    interval: 'day'|'month'|'week' | 'hour';
-    readonly : boolean;
-    value: {
-        // interval
-        hour?: number;
-        minute?: number;
-    }
-    onUpdate: (value: Props['value']) => void;
+  interval: 'day' | 'month' | 'week' | 'hour';
+  readonly?: boolean;
+  value: ICronSchema;
+  onUpdate: (value: Props['value']) => void;
 }
 
-const weekOptions = Array.from({ length: 7 }, (_, i) => (i))
-  .map(item => dayjs().day(item))
-  .map(num => ({
-    label: num.format('dddd'),
-    value: num.day().toString()
-  }));
-
-const hourOptions = Array.from({ length: 24 }, (_, i) => (i + 1)).map(num => ({
+export const monthOptions = Array.from({ length: 12 }, (_, i) => i + 1).map((num) => ({
   label: String(num),
-  value: num.toString()
+  value: num.toString(),
 }));
 
-const minuteOptions = Array.from({ length: 59 }, (_, i) => (i + 1)).map(num => ({
+export const minuteOptions = Array.from({ length: 59 }, (_, i) => i).map((num) => ({
   label: num < 10 ? `0${num}` : String(num),
-  value: num.toString()
+  value: num.toString(),
 }));
 
-const dayOptions = Array.from({ length: 31 }, (_, i) => {
-  return dayjs().set('date', i + 1);
-}).map(num => ({
-  label: num.format('Do'),
-  value: num.date().toString()
-}));
+export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate }) => {
+  const handleUpdateItem = useCallback(
+    (cron: ICronSchema) => {
+      console.info('new cron', cron);
+      onUpdate(cron);
+    },
+    [onUpdate]
+  );
 
-export const Timing: FC<Props> = ({
-  interval,
-  value,
-  onUpdate,
+  const dayOptionsWithLastDay = useMemo(() => ScheduleOptions.getDayOptions(), []);
+  const weekOptions = useMemo(() => ScheduleOptions.getWeekOptions(), []);
 
-}) => {
-
-  console.log('Timing Timing value', value);
-
-  // day of month
-  // week days
-  // input hour
-
+  const dayOptions = useMemo(() => ScheduleOptions.getHourIntervalOptions(), []);
+  const dayIntervalOptions = useMemo(() => ScheduleOptions.getDayIntervalOptions(), []);
   switch (interval) {
     case 'hour': {
+      const hourInterval = CronConverter.getEveryProps(value, 'hour', 1);
+      const minutes = CronConverter.getNumericProps(value, 'minute', 0);
+
       return (
         <>
-            Every <DropdownSelect
-            value={value.hour?.toString()}
-            options={hourOptions}
-            onSelected={(node) => {
-              onUpdate({ ...value,
-                hour: Number(node.value)
-              });
-            }}
-
-          />
-            Hours  in
-
-          {/*TODO update postfix*/}
           <DropdownSelect
-            value={value.minute?.toString()}
-            options={minuteOptions}
-            triggerLabel={<>Miniutes</>}
-            onSelected={(node) => {
-              onUpdate({ ...value,
-                minute: Number(node.value)
-              });
-            }}
-
-          />
-
-          <DropdownSelect
-            value={value.minute?.toString()}
+            disabled={readonly}
+            value={String(hourInterval)}
             options={dayOptions}
             onSelected={(node) => {
-              onUpdate({ ...value,
-                minute: Number(node.value)
-              });
+              const everyHour = CronTime.every(Number(node.value)).hours();
+              handleUpdateItem(
+                CronConverter.updateCronProps('hour', {
+                  previous: value,
+                  next: everyHour,
+                })
+              );
             }}
           />
-
           <DropdownSelect
-            value={value.minute?.toString()}
-            options={weekOptions}
+            value={String(minutes)}
+            disabled={readonly}
+            options={minuteOptions}
             onSelected={(node) => {
-              onUpdate({ ...value,
-                minute: Number(node.value)
-              });
+              const miniute = Number(node.value);
+
+              const everyHour = CronTime.everyHourAt(miniute);
+              handleUpdateItem(
+                CronConverter.updateCronProps('minute', {
+                  previous: value,
+                  next: everyHour,
+                })
+              );
             }}
           />
         </>
       );
     }
-
-    case 'day': {
+    case 'week': {
+      const dayInMonths = CronConverter.getLists(value, 'dayOfWeek');
       return (
         <>
-          {/*Every <Input /> Hours  in <InputNumber />*/}
-          <TimeInput />
+          week Every 1 Week on Day i
+          <MultipleSelect
+            disabled={readonly}
+            placeholder={'请选择'}
+            value={dayInMonths}
+            options={weekOptions}
+            onChange={(list) => {
+              handleUpdateItem(new CronConverter(value).setLists('dayOfWeek', list));
+            }}
+          />
+          <TimeInput
+            readonly={readonly}
+            time={new CronConverter(value).getHourTime()}
+            onChange={(v) => {
+              const newCro = new CronConverter(value).setHourTime(v);
+              handleUpdateItem(newCro);
+            }}
+          />
         </>
-
       );
     }
 
-    default : {
-      return (<></>);
+    case 'month': {
+      const monthInterval = CronConverter.getEveryProps(value, 'month', 1);
+      const dayInMonths = CronConverter.getLists(value, 'dayOfMonth');
+      return (
+        <>
+          <DropdownSelect
+            disabled={readonly}
+            value={String(monthInterval)}
+            options={monthOptions}
+            onSelected={(node) => {
+              const v = new CronConverter(value).setInterval('month', Number(node.value));
+              handleUpdateItem(v);
+            }}
+          />
+          <MultipleSelect
+            value={dayInMonths}
+            disabled={readonly}
+            options={dayOptionsWithLastDay}
+            onChange={(list) => {
+              handleUpdateItem(new CronConverter(value).setLists('dayOfMonth', list));
+            }}
+          />
+          <TimeInput
+            readonly={readonly}
+            time={new CronConverter(value).getHourTime()}
+            onChange={(v) => {
+              const a = new CronConverter(value).setHourTime(v);
+              handleUpdateItem(a);
+            }}
+          />
+        </>
+      );
+    }
+    case 'day': {
+      const dayInterval = CronConverter.getEveryProps(value, 'dayOfMonth', 1);
+      return (
+        <>
+          <DropdownSelect
+            disabled={readonly}
+            value={String(dayInterval)}
+            options={dayIntervalOptions}
+            onSelected={(node) => {
+              const everyHour = CronTime.every(Number(node.value)).days();
+              handleUpdateItem(
+                CronConverter.updateCronProps('dayOfMonth', {
+                  previous: value,
+                  next: everyHour,
+                })
+              );
+            }}
+          />
+          <TimeInput
+            readonly={readonly}
+            time={new CronConverter(value).getHourTime()}
+            onChange={(v) => {
+              const a = new CronConverter(value).setHourTime(v);
+              handleUpdateItem(a);
+            }}
+          />
+        </>
+      );
+    }
+
+    default: {
+      return <></>;
     }
   }
-
 };

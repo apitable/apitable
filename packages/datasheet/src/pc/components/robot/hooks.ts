@@ -133,12 +133,12 @@ export const useToggleRobotActive = (resourceId: string, robotId: string) => {
         setLoading(false);
         if (ok) {
           await refreshItem();
-          const item = automationState?.robot?.triggers?.find(item => getFieldId(item) != null);
-          if( item != null && isNotifed==null && !isActive){
+          const item = automationState?.robot?.triggers?.find((item) => getFieldId(item) != null);
+          if (item != null && isNotifed == null && !isActive) {
             Message.success({
               content: t(Strings.automation_enabled_return_via_related_files),
             });
-            setIsNotified(String(true))
+            setIsNotified(String(true));
             return;
           }
 
@@ -244,6 +244,23 @@ export const useNodeTypeByIds = () => {
     });
     return nodeTypeByIds;
   }, [triggerTypes, actionTypes]);
+};
+
+export const getDefaultSchema = (timeZone: string) => {
+  const defaultFormData = {
+    type: 'Expression',
+    value: {
+      operator: 'newObject',
+      operands: [
+        'timeZone',
+        {
+          type: 'Literal',
+          value: timeZone,
+        },
+      ],
+    },
+  };
+  return defaultFormData;
 };
 
 // For triggers where there is only one option and a default value when the record is created,

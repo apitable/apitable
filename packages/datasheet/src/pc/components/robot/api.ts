@@ -22,6 +22,7 @@ import { automationApiClient } from 'pc/common/api-client';
 import { IAutomationDatum, IRobotHistoryTask, IRobotTrigger } from './interface';
 import { IAutomationRobotDetailItem } from './robot_context';
 import { IRunHistoryDatum } from './robot_detail/robot_run_history';
+import { ICronSchema } from '@apitable/components';
 
 export const nestReq = axios.create({
   baseURL: '/nest/v1/',
@@ -62,9 +63,12 @@ export const updateAutomationRobot = async (resourceId: string, robotId: string,
   return res.data.success;
 };
 
-export const getResourceAutomations = async (resourceId: string, options?: {
-    shareId: string
-}): Promise<IAutomationDatum[]> => {
+export const getResourceAutomations = async (
+  resourceId: string,
+  options?: {
+    shareId: string;
+  },
+): Promise<IAutomationDatum[]> => {
   const resp = await automationApiClient.getResourceRobots({
     resourceId: resourceId,
     // @ts-ignore
@@ -91,13 +95,15 @@ export const createAutomationRobot = (robot: { resourceId: string; name: string 
   });
 };
 
-export const checkObject = (val: object) => Object.values(val).some(value => value != null);
-export const getResourceAutomationDetail = (resourceId: string, robotId: string,
+export const checkObject = (val: object) => Object.values(val).some((value) => value != null);
+export const getResourceAutomationDetail = (
+  resourceId: string,
+  robotId: string,
   options: {
-                                                shareId?: string
-                                            }): Promise<IAutomationRobotDetailItem> => {
-
-  const query = (options != null && checkObject(options)) ? qs.stringify(options) : '';
+    shareId?: string;
+  },
+): Promise<IAutomationRobotDetailItem> => {
+  const query = options != null && checkObject(options) ? qs.stringify(options) : '';
   return axios.get(`/automation/${resourceId}/robots/${robotId}?${query}`).then((res) => {
     if (res.data.success) {
       return res.data.data;
@@ -138,13 +144,17 @@ export const deleteRobot = (resourceId: string, robotId: string) => {
 };
 
 interface ICreateTrigger {
-    'robotId'?: string
-    'input': unknown,
-    'relatedResourceId'?: string
-    'prevTriggerId'?: string,
-    'triggerTypeId': string
+  robotId?: string;
+  input: unknown;
+  relatedResourceId?: string;
+  prevTriggerId?: string;
+  triggerTypeId: string;
+  scheduleConfig?: ICronSchemaTimeZone;
 }
 
+export type ICronSchemaTimeZone = ICronSchema & {
+  timeZone: string;
+};
 export const createTrigger = (resourceId: string, data: ICreateTrigger) => {
   return axios.post(`/automation/${resourceId}/triggers`, data);
 };
@@ -154,22 +164,27 @@ export const changeTriggerTypeId = (resourceId: string, triggerId: string, trigg
     robotId,
     triggerTypeId,
     relatedResourceId: '',
-    input: {}
+    input: {},
   });
 };
 
-export const updateTriggerInput = (resourceId: string, triggerId: string, input: any, robotId: string, data: {
-    relatedResourceId: string
-}) => {
+export const updateTriggerInput = (
+  resourceId: string,
+  triggerId: string,
+  input: any,
+  robotId: string,
+  data: {
+    relatedResourceId: string;
+    scheduleConfig?: ICronSchemaTimeZone;
+  },
+) => {
   return axios.patch(`/automation/${resourceId}/triggers/${triggerId}`, {
     input,
     robotId,
-    ...data
+    ...data,
   });
 };
-export const createAction = (
-  resourceId: string,
-  data: { robotId: string; actionTypeId: string; prevActionId?: string; input?: any }) => {
+export const createAction = (resourceId: string, data: { robotId: string; actionTypeId: string; prevActionId?: string; input?: any }) => {
   return axios.post(`/automation/${resourceId}/actions`, data);
 };
 
@@ -177,7 +192,7 @@ export const changeActionTypeId = (resourceId: string, actionId: string, actionT
   return axios.patch(`/automation/${resourceId}/actions/${actionId}`, {
     actionTypeId,
     robotId,
-    input: {}
+    input: {},
   });
 };
 
@@ -201,10 +216,6 @@ export const getAutomationRunHistoryDetail = (taskId: string): Promise<IRobotHis
   });
 };
 
-export const reqDatasheetButtonTrigger = (data: {
-    dstId: string,
-    recordId: string,
-    fieldId: string
-}) => {
+export const reqDatasheetButtonTrigger = (data: { dstId: string; recordId: string; fieldId: string }) => {
   return nestReq.post(`/datasheets/${data.dstId}/triggers`, data);
 };

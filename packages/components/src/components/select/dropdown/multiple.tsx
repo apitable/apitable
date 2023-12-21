@@ -24,14 +24,15 @@ import { ListDeprecate } from '../../list_deprecate';
 import { IListItemProps } from '../../list_deprecate/interface';
 import { IOption, ISelectProps, ISelectValue } from '../interface';
 import {
-  GlobalStyle, hightLightCls, OptionOutside,
+  GlobalStyle,
+  hightLightCls,
+  OptionOutside,
   StyledArrowIcon,
   StyledListContainer,
   StyledSelectedContainer,
   StyledSelectTrigger,
 } from '../styled';
 import debounce from 'lodash/debounce';
-import { IOverLayProps } from '../../dropdown/float_ui';
 import styled from 'styled-components';
 import { ListDropdown, SelectContext } from './list_dropdown';
 import { useListItem } from '@floating-ui/react';
@@ -43,7 +44,7 @@ import { WrapperTooltip } from '../../tooltip';
 
 const StyledDropdown = styled(ListDropdown)`
   z-index: 1200;
-  `;
+`;
 
 const OFFSET = [0, 4];
 
@@ -53,17 +54,39 @@ const _renderValue = (option: IOption) => {
 
 const _GlobalStyle: any = GlobalStyle;
 
-export const MultipleSelect: FC<React.PropsWithChildren<Omit<ISelectProps, 'value'> & {
-    value: ISelectValue[],
-    onChange ?: (value: ISelectValue[]) => void
-}>> & {
-    Option: React.FC<React.PropsWithChildren<Omit<IListItemProps, 'wrapperComponent'> & Pick<IOption, 'value' | 'prefixIcon' | 'suffixIcon'>>>
+export const MultipleSelect: FC<
+  React.PropsWithChildren<
+    Omit<ISelectProps, 'value'> & {
+      value: ISelectValue[];
+      onChange?: (value: ISelectValue[]) => void;
+    }
+  >
+> & {
+  Option: React.FC<React.PropsWithChildren<Omit<IListItemProps, 'wrapperComponent'> & Pick<IOption, 'value' | 'prefixIcon' | 'suffixIcon'>>>;
 } = (props) => {
   const {
-    placeholder, value, triggerStyle, onChange, triggerCls, options: _options, prefixIcon, suffixIcon, dropdownMatchSelectWidth = true,
-    openSearch = false, searchPlaceholder, noDataTip, defaultVisible, hiddenArrow = false, triggerLabel,
-    onSelected, dropdownRender, disabled, disabledTip, listStyle, listCls, renderValue = _renderValue,
-    children, maxListWidth = 240
+    placeholder,
+    value,
+    triggerStyle,
+    onChange,
+    triggerCls,
+    options: _options,
+    dropdownMatchSelectWidth = true,
+    openSearch = false,
+    searchPlaceholder,
+    noDataTip,
+    defaultVisible,
+    hiddenArrow = false,
+    triggerLabel,
+    onSelected,
+    dropdownRender,
+    disabled,
+    disabledTip,
+    listStyle,
+    listCls,
+    renderValue = _renderValue,
+    children,
+    maxListWidth = 240,
   } = props;
   const [isInit, setIsInit] = useState(true);
   const listContainer = useRef<HTMLDivElement>(null);
@@ -74,7 +97,7 @@ export const MultipleSelect: FC<React.PropsWithChildren<Omit<ISelectProps, 'valu
   const options = useMemo(() => {
     return _options == null ? convertChildrenToData(children) : _options;
   }, [children, _options]);
-  const selectedOption = options.filter(item => Boolean(item)).filter(item => value.includes(item!.value));
+  const selectedOption = options.filter((item) => Boolean(item)).filter((item) => value.includes(item!.value));
 
   const setKeywordDebounce = debounce(setKeyword, 300);
 
@@ -103,12 +126,11 @@ export const MultipleSelect: FC<React.PropsWithChildren<Omit<ISelectProps, 'valu
       return item.label.toUpperCase().includes(keyword.toUpperCase());
     }
     return true;
-
   };
 
   const afterFilterOptions = options!.filter(optionsFilter);
 
-  const triggerRef: React.MutableRefObject<HTMLElement|null> = useRef<HTMLElement>(null);
+  const triggerRef: React.MutableRefObject<HTMLElement | null> = useRef<HTMLElement>(null);
 
   const [triggerInfo, setTriggerInfo] = useState<IUseListenTriggerInfo>();
 
@@ -118,11 +140,11 @@ export const MultipleSelect: FC<React.PropsWithChildren<Omit<ISelectProps, 'valu
       setTriggerInfo({ triggerSize: size, triggerOffset: OFFSET, adjust: true });
     }
     // eslint-disable-next-line
-    }, [triggerRef.current]);
+  }, [triggerRef.current]);
 
   const colors = useThemeColors();
 
-  const renderOptionList = ({ toggle }: IOverLayProps) => {
+  const renderOptionList = () => {
     return (
       <StyledListContainer
         width={dropdownMatchSelectWidth ? containerRef.current?.clientWidth + 'px' : 'auto'}
@@ -131,50 +153,60 @@ export const MultipleSelect: FC<React.PropsWithChildren<Omit<ISelectProps, 'valu
         className={listCls}
         style={{
           ...listStyle,
-          maxWidth: dropdownMatchSelectWidth ? '' : maxListWidth
+          maxWidth: dropdownMatchSelectWidth ? '' : maxListWidth,
         }}
         ref={listContainer}
       >
         {
           // @ts-ignore
-          dropdownRender || <ListDeprecate
-            onClick={(_e, index) => {
-              onSelected && onSelected(afterFilterOptions[index]!, index);
-              const item = afterFilterOptions[index];
-              if(item?.value) {
-                if (value.includes(item?.value)) {
-                  onChange?.(value.filter(v => v !== item.value));
-                } else {
-                  onChange?.(value.concat(item.value));
-                }
-              }
-            }}
-            searchProps={
-              openSearch ? {
-                inputRef: inputRef,
-                onSearchChange: inputOnChange,
-                placeholder: searchPlaceholder,
-              } : undefined
-            }
-            noDataTip={noDataTip}
-            triggerInfo={triggerInfo}
-            autoHeight
-          >
-            {
-              afterFilterOptions.filter(Boolean).map((item, index) => {
-                return (<OptionItem onClick={()=> {
-                  onSelected && onSelected(afterFilterOptions[index]!, index);
-                  if(item?.value) {
-                    if (value.includes(item?.value)) {
-                      onChange?.(value.filter(v => v !== item.value));
-                    } else {
-                      onChange?.(value.concat(item.value));
-                    }
+          dropdownRender || (
+            <ListDeprecate
+              onClick={(_e, index) => {
+                onSelected && onSelected(afterFilterOptions[index]!, index);
+                const item = afterFilterOptions[index];
+                if (item?.value) {
+                  if (value.includes(item?.value)) {
+                    onChange?.(value.filter((v) => v !== item.value));
+                  } else {
+                    onChange?.(value.concat(item.value));
                   }
-                }} item={item as IOption} currentIndex={index} keyword={keyword} value={value}/>);
-              })
-            }
-          </ListDeprecate>
+                }
+              }}
+              searchProps={
+                openSearch
+                  ? {
+                      inputRef: inputRef,
+                      onSearchChange: inputOnChange,
+                      placeholder: searchPlaceholder,
+                    }
+                  : undefined
+              }
+              noDataTip={noDataTip}
+              triggerInfo={triggerInfo}
+              autoHeight
+            >
+              {afterFilterOptions.filter(Boolean).map((item, index) => {
+                return (
+                  <OptionItem
+                    onClick={() => {
+                      onSelected && onSelected(afterFilterOptions[index]!, index);
+                      if (item?.value) {
+                        if (value.includes(item?.value)) {
+                          onChange?.(value.filter((v) => v !== item.value));
+                        } else {
+                          onChange?.(value.concat(item.value));
+                        }
+                      }
+                    }}
+                    item={item as IOption}
+                    currentIndex={index}
+                    keyword={keyword}
+                    value={value}
+                  />
+                );
+              })}
+            </ListDeprecate>
+          )
         }
       </StyledListContainer>
     );
@@ -199,92 +231,94 @@ export const MultipleSelect: FC<React.PropsWithChildren<Omit<ISelectProps, 'valu
     checked2View();
   };
 
-  return <>
-    <_GlobalStyle />
-    <StyledDropdown
-      onVisibleChange={
-        (visible) => {
+  return (
+    <>
+      <_GlobalStyle />
+      <StyledDropdown
+        onVisibleChange={(visible) => {
           setVisible(visible);
-        }
-      }
-      setTriggerRef={(element) => {
-        triggerRef.current = element;
-      }}
-      options={{
-        arrow: false,
-        offset: 4,
-        // TODO find index
-        // selectedIndex: findIndex,
-        disabled,
-      }}
-      trigger={
-        <div style={triggerStyle}>
-          <WrapperTooltip wrapper={Boolean(disabledTip && disabled)} tip={disabledTip as string}>
-            <StyledSelectTrigger
-              onClick={() => {
-                triggerClick();
-              }}
-              style={triggerStyle}
-              className={triggerCls}
-              tabIndex={-1}
-              ref={containerRef}
-              disabled={Boolean(disabled)}
-              focus={visible}
-              data-name='select'
-            >
-              <StyledSelectedContainer
-                className={'ellipsis'}
-                disabled={disabled}
+        }}
+        setTriggerRef={(element) => {
+          triggerRef.current = element;
+        }}
+        options={{
+          arrow: false,
+          offset: 4,
+          // TODO find index
+          // selectedIndex: findIndex,
+          disabled,
+        }}
+        trigger={
+          <div style={triggerStyle}>
+            <WrapperTooltip wrapper={Boolean(disabledTip && disabled)} tip={disabledTip as string}>
+              <StyledSelectTrigger
+                onClick={() => {
+                  triggerClick();
+                }}
+                style={triggerStyle}
+                className={triggerCls}
+                tabIndex={-1}
+                ref={containerRef}
+                disabled={Boolean(disabled)}
+                focus={visible}
+                data-name="select"
               >
-                {triggerLabel}
-                {!triggerLabel && (
-                  value != null && selectedOption.length> 0 ? <SelectItem
-                    item={{
-                      ...selectedOption,
-                      label: selectedOption.map(item => item?.label).join(','),
-                    }}
-                    renderValue={renderValue}
-                  /> :
-                    <span className={'placeholder ellipsis'}>
-                      {placeholder}
-                    </span>
-                )
-                }
-              </StyledSelectedContainer>
-              {
-                !hiddenArrow && <StyledArrowIcon rotated={visible}>
-                  <ChevronDownOutlined color={disabled ? Color(colors.textCommonTertiary).alpha(0.5).hsl().string() : colors.textCommonTertiary} />
-                </StyledArrowIcon>
-              }
-            </StyledSelectTrigger>
-          </WrapperTooltip>
-        </div>
-      }
-    >
-      {
-        renderOptionList
-      }
-    </StyledDropdown>
-  </>;
+                <StyledSelectedContainer className={'ellipsis'} disabled={disabled}>
+                  {triggerLabel}
+                  {!triggerLabel &&
+                    (value != null && selectedOption.length > 0 ? (
+                      <SelectItem
+                        item={{
+                          ...selectedOption,
+                          value: selectedOption.map((item) => item?.value).join(','),
+                          label: selectedOption.map((item) => item?.label).join(','),
+                        }}
+                        renderValue={renderValue}
+                      />
+                    ) : (
+                      <span className={'placeholder ellipsis'}>{placeholder}</span>
+                    ))}
+                </StyledSelectedContainer>
+                {!hiddenArrow && (
+                  <StyledArrowIcon rotated={visible}>
+                    <ChevronDownOutlined color={disabled ? Color(colors.textCommonTertiary).alpha(0.5).hsl().string() : colors.textCommonTertiary} />
+                  </StyledArrowIcon>
+                )}
+              </StyledSelectTrigger>
+            </WrapperTooltip>
+          </div>
+        }
+      >
+        {renderOptionList}
+      </StyledDropdown>
+    </>
+  );
 };
 
 const Option = ListDeprecate.Item;
 
 MultipleSelect.Option = Option;
 
-export function OptionItem({ item,currentIndex, value , keyword, className,
+export function OptionItem({
+  item,
+  currentIndex,
+  value,
+  keyword,
+  className,
   onClick,
   iconClassName,
-}: {item: IOption, currentIndex: number, iconClassName?: string, className?: string, value: any[]|any, keyword: string,onClick: () => void}) {
+}: {
+  item: IOption;
+  currentIndex: number;
+  iconClassName?: string;
+  className?: string;
+  value: any[] | any;
+  keyword: string;
+  onClick: () => void;
+}) {
+  const { activeIndex, selectedIndex, getItemProps, handleSelect } = React.useContext(SelectContext);
 
-  const {
-    activeIndex,
-    selectedIndex,
-    getItemProps,
-    handleSelect
-  } = React.useContext(SelectContext);
-
-  const { ref, index:aIndex } = useListItem();
+  const { ref, index: aIndex } = useListItem();
 
   const isActive = activeIndex === aIndex;
   const isSelected = selectedIndex === aIndex;
@@ -300,36 +334,39 @@ export function OptionItem({ item,currentIndex, value , keyword, className,
         onClick?.();
         handleSelect(aIndex);
       }
-    }
+    },
   });
 
-  const isChecked = Array.isArray(value) ? value.includes(item?.value): value === item?.value;
-  return <OptionOutside
-    currentIndex={currentIndex}
-    setRef={ref}
-    tabIndex={isActive ? 0 : -1}
-    active={isActive}
-    selected={isSelected}
-    className={className}
-    id={item.value as string}
-    {...item}
-    {...itemProps}
-  >
-    <SelectItem iconClassName={iconClassName} item={
-      isChecked ? {
-        suffixIcon: <CheckOutlined />,
-        ...item,
-      }:
-        item
-    } renderValue={_renderValue} isChecked={isChecked}>
-      {
-        !keyword ? null : <Highlighter
-          highlightClassName={hightLightCls.toString()}
-          searchWords={[keyword]}
-          autoEscape
-          textToHighlight={item.label}
-        />
-      }
-    </SelectItem>
-  </OptionOutside>;
+  const isChecked = Array.isArray(value) ? value.includes(item?.value) : value === item?.value;
+  return (
+    <OptionOutside
+      currentIndex={currentIndex}
+      setRef={ref}
+      tabIndex={isActive ? 0 : -1}
+      active={isActive}
+      selected={isSelected}
+      className={className}
+      id={item.value as string}
+      {...item}
+      {...itemProps}
+    >
+      <SelectItem
+        iconClassName={iconClassName}
+        item={
+          isChecked
+            ? {
+                suffixIcon: <CheckOutlined />,
+                ...item,
+              }
+            : item
+        }
+        renderValue={_renderValue}
+        isChecked={isChecked}
+      >
+        {!keyword ? null : (
+          <Highlighter highlightClassName={hightLightCls.toString()} searchWords={[keyword]} autoEscape textToHighlight={item.label} />
+        )}
+      </SelectItem>
+    </OptionOutside>
+  );
 }

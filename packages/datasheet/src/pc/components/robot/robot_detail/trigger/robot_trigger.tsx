@@ -20,6 +20,7 @@ import { useMount } from 'ahooks';
 import produce from 'immer';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { identity, isEqual, isEqualWith, isNil, pickBy } from 'lodash';
+import { Just, Maybe } from 'purify-ts';
 import * as React from 'react';
 import { memo, MutableRefObject, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { shallowEqual } from 'react-redux';
@@ -32,8 +33,11 @@ import {
   EmptyNullOperand,
   Events,
   FieldType,
+  getUtcOptionList,
+  IButtonAction,
   IButtonField,
   IExpression,
+  IField,
   integrateCdnHost,
   IReduxState,
   IServerFormPack,
@@ -46,6 +50,7 @@ import {
 } from '@apitable/core';
 import { fetchFormPack } from '@apitable/core/dist/modules/database/api/form_api';
 import { CONST_MAX_TRIGGER_COUNT } from 'pc/components/automation/config';
+import { getDataParameter, getDataSlot } from 'pc/components/automation/controller/hooks/get_data_parameter';
 import { getDatasheetId } from 'pc/components/automation/controller/hooks/get_datasheet_id';
 import { getFieldId } from 'pc/components/automation/controller/hooks/get_field_id';
 import { getFormId } from 'pc/components/automation/controller/hooks/get_form_id';
@@ -53,8 +58,10 @@ import { Message, Modal } from 'pc/components/common';
 import { OrEmpty } from 'pc/components/common/or_empty';
 import { OrTooltip } from 'pc/components/common/or_tooltip';
 import { Trigger } from 'pc/components/robot/robot_context';
+import { AutomationTiming } from 'pc/components/robot/robot_detail/automation_timing';
 import { CreateNewTrigger } from 'pc/components/robot/robot_detail/create_new_trigger';
 import { ReadonlyFieldColumn } from 'pc/components/robot/robot_detail/trigger/readonly_field_column';
+import { NodeFormData, TimeScheduleManager, TimeScheduleTransformer } from 'pc/components/robot/robot_detail/trigger/time_schedule_manager';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { getTriggerList } from 'pc/components/robot/robot_detail/utils';
 import { ShareContext } from 'pc/components/share';
@@ -304,13 +311,27 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
     ],
   );
 
+  const options = getUtcOptionList();
+
+  const scheduleType = getDataParameter<string>(formData, 'scheduleType');
+
+  const tz = getDataParameter<string>(formData, 'timeZone');
+  const userTimezone = useAppSelector(Selectors.getUserTimeZone)!;
+
+  const defaultTimeZone = tz ?? userTimezone;
+
   const { schema, uiSchema = {} } = useMemo(() => {
     const getTriggerInputSchema = (triggerType: ITriggerType) => {
       if (automationState?.scenario === AutomationScenario.datasheet) {
         return produce(triggerType.inputJsonSchema, (draft) => {
           const properties = draft.schema.properties as any;
-
           switch (triggerType.endpoint) {
+            case 'scheduled_time_arrive': {
+              properties!.timeZone.default = defaultTimeZone;
+              properties!.timeZone.enum = options.map((r) => r.value);
+              properties!.timeZone.enumNames = options.map((r) => r.label);
+              break;
+            }
             case 'form_submitted':
               properties!.formId.enum = formList.map((f: IFormNodeItem) => f.nodeId);
               properties!.formId.enumNames = formList.map((f: IFormNodeItem) => f.nodeName);
@@ -336,10 +357,23 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         });
       }
 
-      return triggerType.inputJsonSchema;
+      return produce(triggerType.inputJsonSchema, (draft) => {
+        const properties = draft.schema.properties as any;
+        switch (triggerType.endpoint) {
+          case 'scheduled_time_arrive': {
+            properties!.timeZone.default = defaultTimeZone;
+            properties!.timeZone.enum = options.map((r) => r.value);
+            properties!.timeZone.enumNames = options.map((r) => r.label);
+            break;
+          }
+          default:
+            break;
+        }
+        return draft;
+      });
     };
     return getTriggerInputSchema(triggerType!);
-  }, [automationState?.scenario, datasheetId, datasheetName, formList, triggerType]);
+  }, [automationState?.scenario, datasheetId, datasheetName, formList, options, triggerType, userTimezone]);
 
   const triggerTypeOptionsWithoutButtonIsClicked = useMemo(() => {
     if (automationState?.scenario === AutomationScenario.datasheet) {
@@ -408,10 +442,42 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       }
     }
 
-    console.log('uiSchema', uiSchema);
-
     return {
       ...uiSchema,
+      scheduleRule: {
+        'ui:widget': ({ value, onChange }: any) => {
+          const v = TimeScheduleManager.getCronWithTimeZone(value);
+
+          return (
+            <AutomationTiming
+              value={v}
+              onUpdate={(x) => {
+                const emptyObject = {
+                  type: 'Expression',
+                  value: {
+                    operator: 'newObject',
+                    operands: [],
+                  },
+                };
+
+                const newData: Maybe<NodeFormData> = Just(emptyObject as NodeFormData)
+                  .chain((item) => Just(TimeScheduleTransformer.modifyNodeForm(item, 'dayOfWeek', literal2Operand(x.dayOfWeek))))
+                  .chain((item) => Just(TimeScheduleTransformer.modifyNodeForm(item, 'minute', literal2Operand(x.minute))))
+                  .chain((item) => Just(TimeScheduleTransformer.modifyNodeForm(item, 'month', literal2Operand(x.month))))
+                  .chain((item) => Just(TimeScheduleTransformer.modifyNodeForm(item, 'hour', literal2Operand(x.hour))))
+                  .chain((item) => Just(TimeScheduleTransformer.modifyNodeForm(item, 'dayOfMonth', literal2Operand(x.dayOfMonth))));
+
+                onChange(newData.extract());
+              }}
+              scheduleType={scheduleType as unknown as 'day' | 'month' | 'week' | 'hour'}
+              tz={tz}
+              options={{
+                userTimezone,
+              }}
+            />
+          );
+        },
+      },
       formId: {
         'ui:widget': ({ value, onChange }: any) => {
           return (
@@ -520,12 +586,16 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
     automationState?.resourceId,
     automationState?.scenario,
     datasheetId,
+    formData,
     getDstIdItem,
+    scheduleType,
     setTriggerDatasheetValue,
     trigger.triggerId,
     triggerDatasheetValue?.id,
     triggerType?.endpoint,
+    tz,
     uiSchema,
+    userTimezone,
   ]);
 
   const handleUpdateFormChange = useCallback(
@@ -559,8 +629,14 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         };
 
         const relatedResourceId = getDstIdItem() || getFormIdItem() || '';
+
+        const scheduleConfig = TimeScheduleManager.getCronWithTimeZone(getDataSlot<any>(formData, 'scheduleRule'));
         updateTriggerInput(automationState?.resourceId, trigger.triggerId, formData, automationState?.robot?.robotId, {
           relatedResourceId,
+          scheduleConfig: {
+            ...scheduleConfig,
+            ['timeZone']: getDataParameter<string>(formData, 'timeZone')!,
+          },
         })
           .then(() => {
             refreshItem();
@@ -638,6 +714,8 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       const removeFiltered = produce(e.formData, (draft) => {
         draft.value.operands.splice(2);
       });
+
+      const data = TimeScheduleManager.checkScheduleConfig(formData, e.formData);
       setLocalStateMap(
         produce((draft) => {
           if (previous !== current) {
@@ -645,7 +723,7 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
             return;
           }
 
-          draft.set(trigger.triggerId, e.formData);
+          draft.set(trigger.triggerId, data);
         }),
       );
     },
