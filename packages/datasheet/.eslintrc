@@ -2,8 +2,7 @@
   "extends": [
     "../../.eslintrc",
     //    "next/core-web-vitals",
-    "next",
-    "prettier"
+    "next"
   ],
   //  "parserOptions": {
   //    "project": "./tsconfig.json"
