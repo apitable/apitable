@@ -43,6 +43,7 @@ import UpgradeSucceedLight from 'static/icon/workbench/workbench_upgrade_succeed
 import { Tooltip, VikaSplitPanel } from '../common';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { CommonSide } from '../common_side';
+import { usePaymentReminder } from './hooks/usePaymentReminder';
 // @ts-ignore
 import { showOrderModal } from 'enterprise/subscribe_system/order_modal/pay_order_success';
 import styles from './style.module.less';
@@ -54,7 +55,6 @@ const resumeUserHistory = (path: string) => {
   const spaceId = state.space.activeId;
   const { nodeId, datasheetId, viewId, recordId, widgetId, mirrorId } = getPageParams(path);
   if (spaceId === user.spaceId) {
-
     if (mirrorId) {
       Router.replace(Navigation.WORKBENCH, {
         params: {
@@ -115,6 +115,8 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
   const [newTdbId, setNewTdbId] = useState('');
   const sideBarVisible = useAppSelector((state) => state.space.sideBarVisible);
   const showUpgradeSpaceModal = useRef(false);
+
+  usePaymentReminder();
 
   useEffect(() => {
     if (showUpgradeSpaceModal.current) return;

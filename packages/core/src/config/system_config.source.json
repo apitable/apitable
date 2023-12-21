@@ -2404,7 +2404,6 @@
         "uiConfigId": "player_step_ui_config_automation_1",
         "uiType": "breath"
       },
-
       "178": {
         "description": "ui dialog for use button field first time and active node ",
         "next": "下一步",
@@ -2427,7 +2426,6 @@
         "uiConfigId": "player_step_ui_config_button_field_node",
         "uiType": "popover"
       },
-
       "179": {
         "description": "ui dialog for use button field first time for node actived status ",
         "next": "下一步",
@@ -2452,8 +2450,6 @@
         "uiConfigId": "player_step_ui_config_button_field_node_form_active",
         "uiType": "popover"
       },
-
-
       "180": {
         "description": "ui dialog for use button field first time active bind datasheeet ",
         "nextId": "next_step",
@@ -2478,7 +2474,6 @@
         "uiConfigId": "player_step_ui_config_button_field_bound_datasheet",
         "uiType": "popover"
       },
-
       "181": {
         "description": "ui dialog for use button field first time active create action ",
         "next": "好的",
@@ -2502,7 +2497,6 @@
         "uiConfigId": "player_step_ui_config_button_field_action_create",
         "uiType": "popover"
       },
-
       "124": {
         "next": "下一步",
         "nextId": "next_step",
@@ -2857,10 +2851,8 @@
         "next": "获取特殊优惠",
         "nextId": "claim_special_offer",
         "onClose": [
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
-        ],
-        "onNext": [
-          "open_guide_next_step({\"clearAllPrevUi\":true})"
+          "set_wizard_completed({\"curWizard\": true})",
+          "clear_guide_all_ui()"
         ],
         "skipId": "maybe_later",
         "uiConfig": "{\n  \"title\": \"恭喜你！获得试用权益\",\n  \"description\": \"你获得了14天Pro版本的试用权益，你可以点击按钮查看详情\",\n  \"listHeader\": \"试用权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/management/upgrade\"\n}",
@@ -2925,8 +2917,10 @@
       },
       "176": {
         "onClose": [
-          "set_wizard_completed({\"curWizard\": true})",
-          "clear_guide_all_ui()"
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onNext": [
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
         ],
         "uiConfig": "{\n\"\"title\"\":\"\"AI 功能介绍\"\",\n\"\"video\"\":\"\"space/2023/12/12/8e870a50d98646f0a4cc2f76e3cd6d46\"\",\n\"\"videoId\"\":\"\"VIKA_GUIDE_VIDEO_FOR_AI\"\",\n\"\"autoPlay\"\":true\n}",
         "uiConfigId": "player_step_ui_config_176",
@@ -3556,7 +3550,6 @@
         },
         "steps": "[[170]]"
       },
-
       "118": {
         "description": "steps for automation button",
         "completeIndex": 0,
@@ -3568,7 +3561,6 @@
         "repeat": false,
         "steps": "[[178], [179], [180], [181]]"
       },
-
       "117": {
         "completeIndex": -1,
         "player": {
@@ -5065,9 +5057,9 @@
         "commandArgs": "[105, 104]"
       },
       {
-        "id": "open_guide_wizards([105, 104, 115])",
+        "id": "open_guide_wizards([105, 115, 104])",
         "command": "open_guide_wizards",
-        "commandArgs": "[105, 104, 115]"
+        "commandArgs": "[105, 115 ,104]"
       },
       {
         "id": "open_guide_wizards([19])",
@@ -5176,17 +5168,14 @@
         "module": "app",
         "name": "error_logger"
       },
-
       "guide_use_automation_first_time": {
         "module": "guide",
         "name": "use_automation_first_time"
       },
-
       "guide_use_button_column_first_time": {
         "module": "guide",
         "name": "guide_use_button_column_first_time"
       },
-
       "app_modal_confirm": {
         "module": "app",
         "name": "modal_confirm"
@@ -6030,7 +6019,7 @@
       },
       {
         "actions": [
-          "open_guide_wizards([105, 104, 115])"
+          "open_guide_wizards([105, 115, 104])"
         ],
         "rules": [
           "device_IS_pc",
@@ -6039,7 +6028,7 @@
           "edition_IS_apitable",
           "url_INCLUDES_ai_onboarding"
         ],
-        "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId,edition_IS_apitable, url_INCLUDES_ai_onboarding],[open_guide_wizards([105, 104, 115])]",
+        "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId,edition_IS_apitable, url_INCLUDES_ai_onboarding],[open_guide_wizards([105, 115, 104])]",
         "event": [
           "workbench_shown"
         ]

@@ -27,7 +27,16 @@
 import { SystemConfigInterfacePlayer, SystemConfigInterfaceGuide, Api } from '@apitable/core';
 
 // @ts-ignore
-import { openGuideWizard, openGuideWizards, openGuideNextStep, skipCurrentWizard, skipAllWizards, clearGuideUis, clearGuideAllUi, setWizardCompleted } from 'enterprise/guide/trigger_guide_commands';
+import {
+  openGuideWizard,
+  openGuideWizards,
+  openGuideNextStep,
+  skipCurrentWizard,
+  skipAllWizards,
+  clearGuideUis,
+  clearGuideAllUi,
+  setWizardCompleted,
+} from 'enterprise/guide/trigger_guide_commands';
 // @ts-ignore
 import { openVikaby } from 'enterprise/vikaby/vikaby';
 
@@ -53,8 +62,8 @@ export const TriggerCommands: any = {
   open_vikaby: (props: { defaultExpandMenu: true; visible: true }) => {
     openVikaby?.({ ...props });
   },
-  open_guide_wizard: (wizardId: number) => {
-    openGuideWizard?.(wizardId);
+  open_guide_wizard: (wizardId: number, ignoreRepeat?: boolean) => {
+    openGuideWizard?.(wizardId, ignoreRepeat);
   },
   open_guide_wizards: (wizards: number[]) => {
     openGuideWizards?.(wizards);
