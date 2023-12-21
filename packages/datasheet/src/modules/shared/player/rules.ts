@@ -194,9 +194,6 @@ export const isRulesPassed = (rulesConfig: any[] | undefined, ruleIds: string[] 
     if (!curRule) {
       return true;
     }
-    if (ruleId === 'edition_IS_vika') {
-      return false;
-    }
     const conditionValue = getConditionValue(curRule.condition as IPlayerRulesCondition);
     return !isRulePassed(conditionValue, curRule.operator as IPlayerRulesOperator, curRule.conditionArgs);
   });
