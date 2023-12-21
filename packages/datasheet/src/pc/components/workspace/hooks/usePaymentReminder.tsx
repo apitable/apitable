@@ -5,6 +5,7 @@ import store from 'store2';
 import { ConfigConstant, Strings, t } from '@apitable/core';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
+// @ts-ignore
 import { usageWarnModal } from 'enterprise/subscribe_system/usage_warn_modal/usage_warn_modal';
 
 function withinFirstFiveDaysOfRegistration(time: number) {
@@ -51,7 +52,7 @@ export const usePaymentReminder = () => {
         return;
       }
 
-      TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.VIKA_VIDEO, true);
+      TriggerCommands.open_guide_wizard?.(ConfigConstant.WizardIdConstant.INTRODUCTION_VIDEO_14_SERVER, true);
       return;
     }
 
