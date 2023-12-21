@@ -40,6 +40,7 @@ export enum IDPrefix {
   AutomationAction = 'aac',
   Document = 'doc',
   AutomationTrigger = 'atr',
+  WorkDocAonymousId = 'wda',
 }
 
 /**
