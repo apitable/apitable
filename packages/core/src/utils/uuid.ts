@@ -111,3 +111,14 @@ export function getUniqName(newName: string, names: string[]) {
   }
   return uniqName;
 }
+
+const numbers = '0123456789';
+export function generateRandomNumber(length: number): string {
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * numbers.length);
+    result += numbers.charAt(randomIndex);
+  }
+
+  return result;
+}
