@@ -5810,7 +5810,7 @@
   "archived_time": "归档时间",
   "archived_action": "操作",
   "archived_select_info": "选择了${selected}条记录",
-  "archive_notice": "<p>正在尝试对选定的记录进行归档，一旦记录被归档，将会发生以下变化：</p><p>1. 不支持通过任何方式进行编辑</p><p>2. 不支持日期提醒、关注记录等功能</p><p>3. 不再参与神奇引用、公式等字段的计算</p><p>确定要继续吗？（在高级能力里的归档箱中可以取消归档）</p>",
+  "archive_notice": "<p>正在尝试对选定的记录进行归档，一旦记录被归档，将会发生以下变化：</p><p>1. 该记录的所有双向关联关系将被取消</p><p>2. 不支持通过任何方式进行编辑</p><p>3. 不支持日期提醒、关注记录等功能</p><p>4. 不再参与神奇引用、公式等字段的计算</p><p>确定要继续吗？（在高级能力里的归档箱中可以取消归档）</p>",
   "ArchiveRecords": "归档了 ${record_count} 条记录",
   "UnarchiveRecords": "取消归档了 ${record_count} 条记录",
   "DeleteArchivedRecords": "删除了 ${record_count} 条归档记录",

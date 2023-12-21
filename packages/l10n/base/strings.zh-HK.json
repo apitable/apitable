@@ -638,7 +638,7 @@
   "apps_support": "全平台客戶端支持",
   "archive_delete_record": "刪除存檔記錄",
   "archive_delete_record_title": "刪除記錄",
-  "archive_notice": "<p>您正在嘗試歸檔特定記錄。歸檔記錄將導致以下變更：</p><p> 1.不支援編輯</p><p>2.不支援日期提醒、訂閱記錄等功能</p><p>3.不再參與lookup、formula等字段的計算</p><p>你確定你要繼續嗎？ （您可以在「進階」的「存檔箱」中取消存檔）</p>",
+  "archive_notice": "<p>您正在嘗試歸檔特定記錄。歸檔記錄將導致以下變更：</p><p> 1. 該記錄的所有雙向連結將被取消</p><p>2.不支援編輯</p><p>3.不支援日期提醒、訂閱記錄等功能</p><p>4.不再參與lookup、formula等字段的計算</p><p>你確定你要繼續嗎？ （您可以在「進階」的「存檔箱」中取消存檔）</p>",
   "archive_record_in_activity": "已將此記錄存檔",
   "archive_record_in_menu": "存檔記錄",
   "archive_record_success": "成功存檔記錄",

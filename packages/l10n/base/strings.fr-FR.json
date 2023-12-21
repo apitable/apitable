@@ -638,7 +638,7 @@
   "apps_support": "Support client de toutes les plates-formes",
   "archive_delete_record": "Supprimer les enregistrements archivés",
   "archive_delete_record_title": "Supprimer l'enregistrement",
-  "archive_notice": "<p>Vous essayez d'archiver des enregistrements spécifiques. L'archivage des enregistrements entraînera les modifications suivantes :</p><p> 1. L'édition n'est pas prise en charge</p><p> 2. Les fonctions telles que les rappels de date et les enregistrements d'abonnement ne sont pas prises en charge</p><p> 3. Ne participez plus au calcul des champs de recherche, de formule et autres</p><p> Es-tu sur de vouloir continuer? (Vous pouvez désarchiver dans Archive Box dans Advanced)</p>",
+  "archive_notice": "<p>Vous essayez d'archiver des enregistrements spécifiques. L'archivage des enregistrements entraînera les modifications suivantes :</p><p> 1. Tous les liens bidirectionnels pour cet enregistrement seront annulés</p><p> 2. L'édition n'est pas prise en charge</p><p> 3. Les fonctions telles que les rappels de date et les enregistrements d'abonnement ne sont pas prises en charge</p><p> 4. Ne participez plus au calcul des champs de recherche, de formule et autres</p><p> Es-tu sur de vouloir continuer? (Vous pouvez désarchiver dans Archive Box dans Advanced)</p>",
   "archive_record_in_activity": "Archivé cet enregistrement",
   "archive_record_in_menu": "Dossier d'archive",
   "archive_record_success": "Enregistrements archivés avec succès",

@@ -5814,7 +5814,7 @@
   "archived_time": "Archied time",
   "archived_action": "Action",
   "archived_select_info": "Selected${selected}items",
-  "archive_notice": "<p>You are trying to archive specific records. Archiving the records will result in the following changes:</p><p>1. Editing is not supported</p><p>2. Functions such as date reminders and subscribe records are not supported</p><p>3. No longer participate in the calculation of lookup, formula and other fields</p><p>Are you sure you want to continue? (You can unarchive in Archive Box in Advanced)</p>",
+  "archive_notice": "<p>You are trying to archive specific records. Archiving the records will result in the following changes:</p> <p>1. All two-way link for this record will be canceled</p><p>2. Editing is not supported</p><p>3. Functions such as date reminders and subscribe records are not supported</p><p>4. No longer participate in the calculation of lookup, formula and other fields</p><p>Are you sure you want to continue? (You can unarchive in Archive Box in Advanced)</p>",
   "ArchiveRecords": "archived ${record_count} record(s)",
   "UnarchiveRecords": "unarchived ${record_count} record(s)",
   "DeleteArchivedRecords": "delete ${record_count} archived record(s)",

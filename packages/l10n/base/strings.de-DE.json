@@ -638,7 +638,7 @@
   "apps_support": "Plattformübergreifender Kundensupport",
   "archive_delete_record": "Archivierte Datensätze löschen",
   "archive_delete_record_title": "Aufzeichnung löschen",
-  "archive_notice": "<p>Sie versuchen, bestimmte Datensätze zu archivieren. Durch die Archivierung der Datensätze ergeben sich folgende Änderungen:</p><p> 1. Das Bearbeiten wird nicht unterstützt</p><p> 2. Funktionen wie Terminerinnerungen und Abonnementdatensätze werden nicht unterstützt</p><p> 3. Beteiligen Sie sich nicht mehr an der Berechnung von Such-, Formel- und anderen Feldern</p><p> Bist du dir sicher, dass du weitermachen willst? (Sie können die Archivierung in der Archivbox unter „Erweitert“ aufheben)</p>",
+  "archive_notice": "<p>Sie versuchen, bestimmte Datensätze zu archivieren. Durch die Archivierung der Datensätze ergeben sich folgende Änderungen:</p><p> 1. Alle bidirektionalen Verbindungen für diesen Datensatz werden gelöscht</p><p> 2. Das Bearbeiten wird nicht unterstützt</p><p> 3. Funktionen wie Terminerinnerungen und Abonnementdatensätze werden nicht unterstützt</p><p> 4. Beteiligen Sie sich nicht mehr an der Berechnung von Such-, Formel- und anderen Feldern</p><p> Bist du dir sicher, dass du weitermachen willst? (Sie können die Archivierung in der Archivbox unter „Erweitert“ aufheben)</p>",
   "archive_record_in_activity": "Archiviert diesen Datensatz",
   "archive_record_in_menu": "Datensatz archivieren",
   "archive_record_success": "Erfolgreich archivierte Aufzeichnungen",

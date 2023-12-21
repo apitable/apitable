@@ -638,7 +638,7 @@
   "apps_support": "Supporto clienti su tutte le piattaforme",
   "archive_delete_record": "Elimina i record archiviati",
   "archive_delete_record_title": "Elimina registrazione",
-  "archive_notice": "<p>Stai tentando di archiviare record specifici. L'archiviazione dei record comporterà le seguenti modifiche:</p><p> 1. La modifica non è supportata</p><p> 2. Funzioni come promemoria della data e record di abbonamento non sono supportate</p><p> 3. Non partecipare più al calcolo di ricerca, formula e altri campi</p><p> Sei sicuro di voler continuare? (Puoi annullare l'archiviazione nella casella Archivio in Avanzato)</p>",
+  "archive_notice": "<p>Stai tentando di archiviare record specifici. L'archiviazione dei record comporterà le seguenti modifiche:</p><p> 1. Tutti i collegamenti bidirezionali per questo record verranno annullati</p><p> 2. La modifica non è supportata</p><p> 3. Funzioni come promemoria della data e record di abbonamento non sono supportate</p><p> 4. Non partecipare più al calcolo di ricerca, formula e altri campi</p><p> Sei sicuro di voler continuare? (Puoi annullare l'archiviazione nella casella Archivio in Avanzato)</p>",
   "archive_record_in_activity": "Archiviato questo disco",
   "archive_record_in_menu": "Archivio record",
   "archive_record_success": "Archiviati con successo",

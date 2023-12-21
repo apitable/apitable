@@ -47,7 +47,6 @@ export const archiveRecord: ICollaCommandDef<IArchiveRecordOptions> = {
      * Multiple self-associated fields will have multiple such maps
      */
     const fieldRelinkMap: { [fieldId: string]: { [recordId: string]: string[] } } = {};
-
     linkField
       .filter((field) => {
         // Filter out the associated field of the word table
@@ -55,7 +54,6 @@ export const archiveRecord: ICollaCommandDef<IArchiveRecordOptions> = {
       })
       .forEach((field) => {
         const reLinkRecords: { [recordId: string]: string[] } = {};
-
         Object.values(snapshot.recordMap).forEach((v) => {
           const linkRecords = v.data[field.id] as string[] | undefined;
           if (linkRecords) {
@@ -67,27 +65,24 @@ export const archiveRecord: ICollaCommandDef<IArchiveRecordOptions> = {
             });
           }
         });
-
         fieldRelinkMap[field.id] = reLinkRecords;
       });
 
     data.forEach((recordId) => {
       const record = snapshot.recordMap[recordId];
-
       if (!record) {
         return;
       }
-
       linkField.forEach((field: ILinkField) => {
         let oldValue: string[] | undefined;
-
-        try {
-          // Logic for both associated and unassociated tables
+        // two tables are associated
+        if (field.property.brotherFieldId) {
+          oldValue = record.data[field.id] as string[] | undefined;
+        } else {
+          // self-association
           oldValue = fieldRelinkMap[field.id]![record.id] || undefined;
+          // LinkedActions are not generated when the self-table is associated and the associated record contains the deleted record itself
           oldValue = oldValue?.filter((item) => !data.includes(item));
-        } catch (e) {
-          console.error(`Error processing field ${field.id} for record ${record.id}:`, e);
-          return; // Skip further processing for this field
         }
 
         const linkedSnapshot = getSnapshot(state, field.property.foreignDatasheetId)!;
@@ -96,14 +91,12 @@ export const archiveRecord: ICollaCommandDef<IArchiveRecordOptions> = {
         if (!oldValue?.length) {
           return;
         }
-
         if (!linkedSnapshot) {
           return Player.doTrigger(Events.app_error_logger, {
             error: new Error(`foreignDatasheet:${field.property.foreignDatasheetId} has been deleted`),
             metaData: { foreignDatasheetId: field.property.foreignDatasheetId },
           });
         }
-
         ldcMaintainer.insert(state, linkedSnapshot, record.id, field, null, oldValue);
       });
     }, []);
