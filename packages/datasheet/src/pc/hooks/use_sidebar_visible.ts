@@ -18,14 +18,15 @@
 
 import { isNull } from 'lodash';
 import { useCallback, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { StoreActions } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
 
 export const useSideBarVisible = () => {
-  const sideBarVisible = useSelector((state) => state.space.sideBarVisible);
+  const sideBarVisible = useAppSelector((state) => state.space.sideBarVisible);
   const { screenIsAtMost } = useResponsive();
   const dispatch = useDispatch();
   const setSideBarVisible = useCallback(

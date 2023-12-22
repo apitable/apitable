@@ -19,14 +19,15 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, integrateCdnHost, IReduxState, Settings, Strings, t } from '@apitable/core';
 import { EyeOpenOutlined } from '@apitable/icons';
 import styles from 'pc/components/catalog/share_node/public_link/style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const DisabledShareFile = ({ style }: { style?: React.CSSProperties }) => {
-  const spaceResource = useSelector((state: IReduxState) => state.spacePermissionManage.spaceResource);
+  const spaceResource = useAppSelector((state: IReduxState) => state.spacePermissionManage.spaceResource);
   const colors = useThemeColors();
   return (
     <div className={styles.disabledFileSharable} style={style}>

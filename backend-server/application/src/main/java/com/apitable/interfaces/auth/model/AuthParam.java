@@ -18,6 +18,12 @@
 
 package com.apitable.interfaces.auth.model;
 
+import lombok.Data;
+
+/**
+ * auth param.
+ */
+@Data
 public class AuthParam {
 
     private String username;
@@ -29,11 +35,4 @@ public class AuthParam {
         this.password = password;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
 }

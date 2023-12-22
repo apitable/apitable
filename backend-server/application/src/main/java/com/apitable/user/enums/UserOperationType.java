@@ -21,6 +21,9 @@ package com.apitable.user.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * use operation type.
+ */
 @AllArgsConstructor
 @Getter
 public enum UserOperationType {

@@ -17,12 +17,12 @@
  */
 
 import { ResourceType } from 'types';
-import { getRecord } from '../../exports/store/selectors';
+import { getRecord } from 'modules/database/store/selectors/resource/datasheet/base';
 import { ExecuteResult, ICollaCommandDef, ICollaCommandExecuteContext } from 'command_manager';
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 import { IJOTAction } from 'engine';
-import { DatasheetActions } from 'model';
-import { IComments } from '../../exports/store';
+import { DatasheetActions } from 'commands_actions/datasheet';
+import { IComments } from '../../exports/store/interfaces';
 
 export interface IDeleteComment {
   cmd: CollaCommandName.DeleteComment;

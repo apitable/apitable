@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * <p>
- * Member records recently mentioned by users in the space
+ * Member records recently mentioned by users in the space.
  * </p>
  *
  * @author Chambers
@@ -30,7 +30,7 @@ import java.util.List;
 public interface UserSpaceRemindRecordCacheService {
 
     /**
-     * get member unit id list recently mentioned by users in the space
+     * get member unit id list recently mentioned by users in the space.
      *
      * @param userId  user id
      * @param spaceId space id
@@ -39,7 +39,7 @@ public interface UserSpaceRemindRecordCacheService {
     List<Long> getRemindUnitIds(Long userId, String spaceId);
 
     /**
-     * refresh cache
+     * refresh cache.
      *
      * @param userId  user id
      * @param spaceId space id

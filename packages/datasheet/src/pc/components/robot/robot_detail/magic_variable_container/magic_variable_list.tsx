@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Typography, useTheme } from '@apitable/components';
+import React from 'react';
+import { Box, Typography, useTheme } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { IUISchemaLayoutGroup } from '../../interface';
 import { useCssColors } from '../trigger/use_css_colors';
@@ -29,10 +30,11 @@ interface ISchemaPropertyListProps {
   layout?: IUISchemaLayoutGroup[];
   activeIndex?: number;
   handleItemClick: ISchemaPropertyListItemClickFunc;
+  placeHolder?: string;
 }
 
 export const SchemaPropertyList = (props: ISchemaPropertyListProps) => {
-  const { list, activeIndex, currentStep, handleItemClick, layout } = props;
+  const { list, activeIndex, currentStep, handleItemClick, layout, placeHolder } = props;
   const listItemMap = list.reduce((map, item) => {
     map[item.key] = item;
     return map;
@@ -42,6 +44,15 @@ export const SchemaPropertyList = (props: ISchemaPropertyListProps) => {
   // Whether there are prototype properties/methods, and if so, group them.
   const hasPrototype = list.some((item) => item.isPrototype);
 
+  if(list.length === 0 && placeHolder) {
+    return (
+      <Box padding={'15px 0 12px 0'} display={'flex'} justifyContent={'center'}>
+        <Typography variant={'body4'} color={colors.textCommonTertiary}>{
+          placeHolder
+        }</Typography>
+      </Box>
+    );
+  }
   // No layout requirements, directly in order
   if (!hasPrototype && (!layout || !listItemMap)) {
     return (
@@ -78,19 +89,24 @@ export const SchemaPropertyList = (props: ISchemaPropertyListProps) => {
     <>
       {layoutGroupList.map((eachGroup) => {
         const { items, title } = eachGroup;
+        if(items.length===0) {
+          return null;
+        }
         return (
           <>
-            <Typography
-              variant="body4"
-              color={colors.textCommonTertiary}
-              style={{
-                marginTop: 8,
-                marginBottom: 4,
-                marginLeft: 8,
-              }}
-            >
-              {title}
-            </Typography>
+            <Box>
+              <Typography
+                variant="body4"
+                color={colors.textCommonTertiary}
+                style={{
+                  marginTop: 8,
+                  marginBottom: 4,
+                  marginLeft: 8,
+                }}
+              >
+                {title}
+              </Typography>
+            </Box>
             {items.map((itemKey) => {
               const item = listItemMap[itemKey];
               if (!item) return null;

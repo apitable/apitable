@@ -18,7 +18,7 @@
 
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Skeleton, Typography } from '@apitable/components';
 import { IReduxState, Strings, t } from '@apitable/core';
 import { CopyOutlined } from '@apitable/icons';
@@ -26,10 +26,12 @@ import { Message } from 'pc/components/common';
 import { copy2clipBoard } from 'pc/utils';
 import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export const BasicInfo = () => {
-  const { spaceInfo, spaceId } = useSelector((state: IReduxState) => {
+  const { spaceInfo, spaceId } = useAppSelector((state: IReduxState) => {
     return {
       spaceInfo: state.space.curSpaceInfo,
       spaceId: state.space.activeId,
@@ -68,7 +70,7 @@ export const BasicInfo = () => {
       },
       {
         label: t(Strings.create_date),
-        value: <span>{createTime && dayjs(new Date(createTime)).format('YYYY-MM-DD')}</span>,
+        value: <span>{createTime && dayjs.tz(new Date(createTime)).format('YYYY-MM-DD')}</span>,
       },
       {
         label: t(Strings.primary_admin),

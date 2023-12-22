@@ -18,7 +18,7 @@
 
 import cls from 'classnames';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import { useDispatch, shallowEqual } from 'react-redux';
 import { Skeleton, IOption, Typography, LinkButton } from '@apitable/components';
 import { Api, INodeRoleMap, IReduxState, IUnitValue, StoreActions, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, QuestionCircleOutlined, UserAddOutlined, LinkOutlined } from '@apitable/icons';
@@ -33,11 +33,15 @@ import { MembersDetail } from '../permission_settings_plus/permission/members_de
 import { IShareContentProps } from './interface';
 import styles from './style.module.less';
 // @ts-ignore
-import { isSocialPlatformEnabled, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
+// @ts-ignore
+import { isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);
-  const socketData = useSelector((state) => state.catalogTree.socketData);
+  const socketData = useAppSelector((state) => state.catalogTree.socketData);
   const { getNodeRoleListReq, getCollaboratorListPageReq } = useCatalogTreeRequest();
   const { run: getNodeRoleList, data: roleList, loading } = useRequest<INodeRoleMap>(() => getNodeRoleListReq(data.nodeId));
   const [pageNo, setPageNo] = useState<number>(1);
@@ -65,7 +69,7 @@ export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }
   }, [socketData, getNodeRoleList]);
 
   const dispatch = useDispatch();
-  const { spaceFeatures } = useSelector(
+  const { spaceFeatures } = useAppSelector(
     (state: IReduxState) => ({
       spaceFeatures: state.space.spaceFeatures,
       spaceInfo: state.space.curSpaceInfo!,
@@ -73,7 +77,7 @@ export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }
     shallowEqual,
   );
 
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
 
   const adminAndOwnerUnitIds = roleList
     ? [

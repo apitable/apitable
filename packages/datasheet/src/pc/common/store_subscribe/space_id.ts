@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { updateSubscription } from 'modules/billing';
 import { CacheManager, StoreActions } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-// @ts-ignore
-import { updateSubscription } from 'enterprise';
 
 let spaceId: string | null;
 

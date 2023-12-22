@@ -21,7 +21,6 @@ package com.apitable.organization.controller;
 import static java.util.stream.Collectors.toList;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Editor;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.core.support.ResponseData;
@@ -64,10 +63,10 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Resource;
-import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -123,14 +122,14 @@ public class OrganizationController {
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight")
     })
     public ResponseData<SearchResultVo> searchTeamInfo(@RequestParam("keyword") String keyword,
-        @RequestParam(value = "className", required = false, defaultValue = "highLight")
-        String className) {
+                                                       @RequestParam(value = "className", required = false, defaultValue = "highLight")
+                                                       String className) {
         String spaceId = LoginContext.me().getSpaceId();
         SearchResultVo result = new SearchResultVo();
         // fuzzy search department
         List<SearchTeamResultVo> teams = teamMapper.selectByTeamName(spaceId, keyword);
         if (CollUtil.isNotEmpty(teams)) {
-            CollUtil.filter(teams, (Editor<SearchTeamResultVo>) vo -> {
+            CollUtil.edit(teams, vo -> {
                 vo.setOriginName(vo.getTeamName());
                 vo.setTeamName(
                     InformationUtil.keywordHighlight(vo.getTeamName(), keyword, className));
@@ -219,9 +218,10 @@ public class OrganizationController {
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "design")
     })
     public ResponseData<UnitSearchResultVo> search(@RequestParam(name = "keyword") String keyword,
-        @RequestParam(value = "linkId", required = false) String linkId,
-        @RequestParam(value = "className", required = false, defaultValue = "highLight")
-        String className) {
+                                                   @RequestParam(value = "linkId", required = false)
+                                                   String linkId,
+                                                   @RequestParam(value = "className", required = false, defaultValue = "highLight")
+                                                   String className) {
 
         String spaceId = this.getSpaceId(linkId);
         UnitSearchResultVo vo = iOrganizationService.findLikeUnitName(spaceId, keyword, className);

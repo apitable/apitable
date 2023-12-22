@@ -20,7 +20,7 @@ package com.apitable.starter.mail.autoconfigure;
 
 /**
  * <p>
- * email template instance
+ * email template instance.
  * </p>
  *
  * @author Shawn Deng
@@ -28,14 +28,14 @@ package com.apitable.starter.mail.autoconfigure;
 public interface MailTemplate {
 
     /**
-     * Send Mail
+     * Send Mail.
      *
      * @param emailMessage message body
      */
     void send(EmailMessage emailMessage);
 
     /**
-     * Send mail in bulk
+     * Send mail in bulk.
      *
      * @param emailMessages message body list
      */

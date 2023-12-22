@@ -17,9 +17,10 @@
  */
 
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { CollaCommandName, ResourceType } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 /**
  * Widget data storage.
@@ -34,7 +35,7 @@ import { resourceService } from 'pc/resource_service';
  */
 export function useCloudStorage<S>(key: string, widgetId: string): [S, Dispatch<SetStateAction<S>>] {
   const [_initValue] = useState();
-  const cloudStorageData = useSelector((state) => state.widgetMap[widgetId]?.widget?.snapshot.storage ?? null);
+  const cloudStorageData = useAppSelector((state) => state.widgetMap[widgetId]?.widget?.snapshot.storage ?? null);
 
   return useMemo(() => {
     if (!resourceService.instance) {

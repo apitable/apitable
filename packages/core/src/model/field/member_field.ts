@@ -23,10 +23,14 @@ import { getMemberTypeString } from 'model/utils';
 import { IOpenMemberFieldProperty, IOpenMemberOption } from 'types/open/open_field_read_types';
 import { IAddOpenMemberFieldProperty, IUpdateOpenMemberFieldProperty } from 'types/open/open_field_write_types';
 import { Strings, t } from '../../exports/i18n';
-import { IReduxState, IUnitValue, Selectors } from '../../exports/store';
+import { IReduxState } from '../../exports/store/interfaces';
+import { getUnitMap } from 'modules/org/store/selectors/unit_info';
 import { IAPIMetaMember, IAPIMetaMemberFieldProperty, IMemberField, IMemberFieldOpenValue, IMemberProperty } from '../../types';
 import { IStandardValue, IUnitIds } from '../../types/field_types';
+import { polyfillOldData } from './const';
 import { MemberBaseField } from './member_base_field';
+import { getFieldDefaultProperty } from './const';
+import { FieldType } from '../../types/field_types';
 
 export class MemberField extends MemberBaseField {
   constructor(public override field: IMemberField, public override state: IReduxState) {
@@ -68,7 +72,7 @@ export class MemberField extends MemberBaseField {
   }
 
   override get apiMetaProperty(): IAPIMetaMemberFieldProperty {
-    const unitMap = Selectors.getUnitMap(this.state);
+    const unitMap = getUnitMap(this.state);
     const options: IAPIMetaMember[] = [];
     if (unitMap) {
       this.field.property.unitIds.forEach(unitId => {
@@ -119,29 +123,9 @@ export class MemberField extends MemberBaseField {
     };
   }
 
-  static polyfillOldData(cellValue: IUnitIds | null) {
-    if (!cellValue) {
-      return cellValue;
-    }
-    if (!Array.isArray(cellValue)) {
-      return null;
-    }
-    return cellValue.map(item => {
-      if (typeof item === 'object') {
-        // old data only returns unitId
-        return (item as IUnitValue).unitId;
-      }
-      return item;
-    });
-  }
-
+  static polyfillOldData = polyfillOldData;
   static defaultProperty() {
-    return {
-      isMulti: true,
-      shouldSendMsg: true,
-      subscription: false,
-      unitIds: [],
-    };
+    return getFieldDefaultProperty(FieldType.Member) as IMemberProperty;
   }
 
   override recordEditable(datasheetId?: string, mirrorId?: string) {
@@ -158,12 +142,12 @@ export class MemberField extends MemberBaseField {
 
   override stdValueToCellValue(stdValue: IStandardValue): ICellValue | null {
     // Match matching member information with name text in redux.
-    const unitMap = Selectors.getUnitMap(this.state);
+    const unitMap = getUnitMap(this.state);
     if (!unitMap) {
       return null;
     }
     const unitValue = Object.values(unitMap);
-    // The members of the space station may have the same name, so every time the data is converted, 
+    // The members of the space station may have the same name, so every time the data is converted,
     // it is necessary to first find the members that are activated and not deleted, so all data must be checked
     const unitNames = Array.from(new Set(stdValue.data.map(d => d.text.split(/, ?/)).flat()));
     const cvMap = new Map();
@@ -191,7 +175,7 @@ export class MemberField extends MemberBaseField {
   }
 
   override getUnitNames(cellValue: IUnitIds) {
-    const unitMap = Selectors.getUnitMap(this.state);
+    const unitMap = getUnitMap(this.state);
     if (!unitMap) {
       return null;
     }
@@ -211,7 +195,7 @@ export class MemberField extends MemberBaseField {
   }
 
   override getUnits(cellValue: IUnitIds) {
-    const unitMap = Selectors.getUnitMap(this.state);
+    const unitMap = getUnitMap(this.state);
     if (!unitMap) {
       return null;
     }
@@ -228,7 +212,7 @@ export class MemberField extends MemberBaseField {
     if (isNil(cellValues)) {
       return null;
     }
-    const unitMap = Selectors.getUnitMap(this.state);
+    const unitMap = getUnitMap(this.state);
     if (isNil(unitMap)) {
       return null;
     }
@@ -277,7 +261,7 @@ export class MemberField extends MemberBaseField {
   }
 
   override get openFieldProperty(): IOpenMemberFieldProperty {
-    const unitMap = Selectors.getUnitMap(this.state);
+    const unitMap = getUnitMap(this.state);
     const options: IOpenMemberOption[] = [];
     if (unitMap) {
       this.field.property.unitIds.forEach(unitId => {

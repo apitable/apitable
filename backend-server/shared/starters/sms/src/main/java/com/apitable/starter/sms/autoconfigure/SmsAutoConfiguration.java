@@ -18,32 +18,30 @@
 
 package com.apitable.starter.sms.autoconfigure;
 
-import java.util.Optional;
-
 import com.apitable.starter.sms.core.LocalSmsSenderFactory;
 import com.apitable.starter.sms.core.OutlandSmsSenderFactory;
 import com.apitable.starter.sms.core.SmsSenderTemplate;
-
+import java.util.Optional;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
  * <p>
- * autoconfiguration of SMS
+ * autoconfiguration of SMS.
  * </p>
  *
  * @author Shawn Deng
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @ConditionalOnClass(SmsSenderTemplate.class)
 @EnableConfigurationProperties(SmsProperties.class)
 @ConditionalOnProperty(value = "starter.sms.enabled", havingValue = "true")
-@Import({ TencentSmsAutoConfiguration.class, YunpianSmsAutoConfiguration.class })
+@Import({TencentSmsAutoConfiguration.class, YunpianSmsAutoConfiguration.class})
 public class SmsAutoConfiguration {
 
     private final SmsProperties properties;
@@ -52,9 +50,18 @@ public class SmsAutoConfiguration {
         this.properties = properties;
     }
 
+    /**
+     * register SmsSenderTemplate bean.
+     *
+     * @param localSmsSenderFactory   localSmsSenderFactory
+     * @param outlandSmsSenderFactory outlandSmsSenderFactory
+     * @return SmsSenderTemplate
+     */
     @Bean
     @ConditionalOnMissingBean
-    public SmsSenderTemplate smsSenderTemplate(Optional<LocalSmsSenderFactory> localSmsSenderFactory, Optional<OutlandSmsSenderFactory> outlandSmsSenderFactory) {
+    public SmsSenderTemplate smsSenderTemplate(
+        Optional<LocalSmsSenderFactory> localSmsSenderFactory,
+        Optional<OutlandSmsSenderFactory> outlandSmsSenderFactory) {
         SmsSenderTemplate template = new SmsSenderTemplate();
         template.setLocalAreaCode(properties.getLocalAreaCode());
         template.setLocalSmsSenderFactory(localSmsSenderFactory.orElse(null));

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IRobotTask } from '@apitable/core';
+import { IDPrefix, IRobotTask } from '@apitable/core';
 import { RunHistoryStatusEnum } from 'shared/enums/automation.enum';
 import { EntityRepository, In, Repository } from 'typeorm';
 import { AutomationRunHistoryEntity } from '../entities/automation.run.history.entity';
@@ -43,6 +43,25 @@ export class AutomationRunHistoryRepository extends Repository<AutomationRunHist
       where: {
         taskId,
       },
+    }).then((result) => {
+      if (result.data && result.data.hasOwnProperty('executedNodeIds')) {
+        const executedNodeIds = result.data['executedNodeIds'] as string[];
+        if (executedNodeIds.length) {
+          const nodeIds = [];
+          let executedTriggerId;
+          for (const nodeId of executedNodeIds) {
+            if (nodeId.startsWith(IDPrefix.AutomationTrigger) && !executedTriggerId) {
+              executedTriggerId = nodeId;
+              nodeIds.push(nodeId);
+            }
+            if (nodeId.startsWith(IDPrefix.AutomationAction)) {
+              nodeIds.push(nodeId);
+            }
+          }
+          result.data['executedNodeIds'] = nodeIds;
+        }
+      }
+      return result;
     });
   }
 
@@ -64,7 +83,11 @@ export class AutomationRunHistoryRepository extends Repository<AutomationRunHist
   }
 
   async selectRobotIdByTaskId(taskId: string): Promise<string | undefined> {
-    const result = await this.findOne({ select: ['robotId'], where: { taskId }});
+    const result = await this.findOne({ select: ['robotId'], where: { taskId } });
     return result?.robotId;
+  }
+
+  async selectStatusByTaskId(taskId: string): Promise<number | undefined> {
+    return await this.findOne({ select: ['status'], where: { taskId } }).then((result) => result?.status);
   }
 }

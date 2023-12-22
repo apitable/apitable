@@ -123,7 +123,7 @@ services:
 
   unit-test-backend:
     container_name: unit-test-backend
-    image: amazoncorretto:8
+    image: amazoncorretto:17
     working_dir: /app
     networks:
       - unit-test

@@ -18,7 +18,7 @@
 
 import { str2text } from '..';
 import assert from 'assert';
-import cases from './other2text.test.json';
+import * as cases from './other2text.test.json';
 
 describe('test convert text to number', () => {
   it('should convert string to number correctly', () => {

@@ -23,7 +23,7 @@ import { debounce } from 'lodash';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { Provider, shallowEqual, useDispatch } from 'react-redux';
 import { Api, INodeDescription, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { CloseCircleOutlined, CloseOutlined } from '@apitable/icons';
 import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
@@ -35,6 +35,8 @@ import { stopPropagation } from '../../../utils/dom';
 import { automationStateAtom } from '../../automation/controller';
 import { useAutomationResourcePermission } from '../../automation/controller/use_automation_permission';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const SLATE_EDITOR_TYPE = 'slate';
 
@@ -56,25 +58,24 @@ const getDefaultValue = (desc: INodeDescription | null) => {
 
 const getJsonValue = (value?: string) => {
   if (!value) return null;
-  debugger;
   try {
     return JSON.parse(value);
-  } catch {
+  } catch(_e) {
     return null;
   }
 };
 const RenderModalBase: React.FC<React.PropsWithChildren<IRenderModalBase>> = (props) => {
   const { visible, onClose, activeNodeId, onChange, datasheetName, modalStyle, isMobile } = props;
   const dispatch = useDispatch();
-  const descDst = useSelector((state) => Selectors.getNodeDesc(state), shallowEqual);
-  const [automationState, setAutomationState] = useAtom(automationStateAtom);
+  const descDst = useAppSelector((state) => Selectors.getNodeDesc(state), shallowEqual);
+  const [automationState] = useAtom(automationStateAtom);
   const nodeDesc= checkIfAutomationNode(props.activeNodeId) ? getJsonValue(automationState?.robot?.description): descDst;
 
   const [value, setValue] = useState(getDefaultValue(nodeDesc));
-  const permissionsOrigin = useSelector((state) => Selectors.getPermissions(state));
+  const permissionsOrigin = useAppSelector((state) => Selectors.getPermissions(state));
   const permissionAutomations = useAutomationResourcePermission();
   const permissions= checkIfAutomationNode(props.activeNodeId) ? permissionAutomations : permissionsOrigin;
-  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state)!);
+  const datasheetId = useAppSelector((state) => Selectors.getActiveDatasheetId(state)!);
   const { uploadImage } = useImageUpload();
   // This ref is mainly used to prevent cursor changes from triggering repeated submissions of the same data
   const editorHtml = useRef('');
@@ -265,13 +266,13 @@ const checkIfAutomationNode=(node: string) => {
 export const DescriptionModal: React.FC<React.PropsWithChildren<IDescriptionModal>> = (props) => {
   const { activeNodeId, datasheetName, showIntroduction = true, onVisibleChange, className, ...rest } = props;
   const [visible, setVisible] = useState(false);
-  const [automationState, setAutomationState] = useAtom(automationStateAtom);
-  const descDst= useSelector((state) => {
+  const [automationState] = useAtom(automationStateAtom);
+  const descDst = useAppSelector((state) => {
     return Selectors.getNodeDesc(state);
   }, shallowEqual);
 
   const desc= checkIfAutomationNode(props.activeNodeId) ? getJsonValue(automationState?.robot?.description): descDst;
-  const curGuideWizardId = useSelector((state: IReduxState) => state.hooks?.curGuideWizardId);
+  const curGuideWizardId = useAppSelector((state: IReduxState) => state.hooks?.curGuideWizardId);
 
   useEffect(() => {
     const storage = polyfillData(getStorage(StorageName.Description)) || [];

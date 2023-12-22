@@ -18,6 +18,12 @@
 
 package com.apitable.interfaces.user.model;
 
+import lombok.Getter;
+
+/**
+ * invitation code.
+ */
+@Getter
 public class InvitationCode {
 
     private String code;
@@ -29,7 +35,4 @@ public class InvitationCode {
         this.code = code;
     }
 
-    public String getCode() {
-        return code;
-    }
 }

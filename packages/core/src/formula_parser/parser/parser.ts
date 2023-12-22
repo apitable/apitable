@@ -28,7 +28,7 @@ import {
   StringOperandNode,
   PureValueOperandNode,
 } from './ast';
-import type { IFieldMap, IReduxState } from 'exports/store';
+import type { IFieldMap, IReduxState } from 'exports/store/interfaces';
 import { Functions } from 'formula_parser/functions';
 import type { IField } from 'types';
 import { t, Strings } from 'exports/i18n';
@@ -236,10 +236,10 @@ export class FormulaExprParser {
       const currentTokenIndex = this.lexer.currentTokenIndex;
       /**
         * Take a step forward, get the token and go back
-        * 
-        * 1. If you encounter a function or left parenthesis, go forward to test the entire function or parenthesis content, 
+        *
+        * 1. If you encounter a function or left parenthesis, go forward to test the entire function or parenthesis content,
         * get the following operator and then fall back
-        * 
+        *
         * 2. If it is not a function, just try a token forward, get the operator and then fall back
         */
       if ([TokenType.Call, TokenType.LeftParen].includes(currentToken.type)) {
@@ -255,7 +255,7 @@ export class FormulaExprParser {
       const currentOpIndex = PriorityMap.get(token.type);
       if (nextToken) {
         const nextOpIndex = PriorityMap.get(nextToken.type);
-      
+
         if (currentOpIndex != null && nextOpIndex != null && nextOpIndex < currentOpIndex) {
           right = this.expr(true);
         }

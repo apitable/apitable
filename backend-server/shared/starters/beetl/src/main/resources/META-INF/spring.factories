@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.apitable.starter.beetl.autoconfigure.BeetlAutoConfiguration

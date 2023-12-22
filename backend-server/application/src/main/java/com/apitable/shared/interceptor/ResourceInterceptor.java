@@ -18,38 +18,34 @@
 
 package com.apitable.shared.interceptor;
 
-import java.util.Arrays;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import static com.apitable.auth.enums.AuthException.NONE_RESOURCE;
+import static com.apitable.space.enums.SpaceException.SPACE_NOT_EXIST;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
-import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.shared.constants.ParamsConstants;
-import com.apitable.user.mapper.DeveloperMapper;
 import com.apitable.auth.enums.AuthException;
-import com.apitable.space.service.ISpaceService;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.core.util.HttpContextUtil;
 import com.apitable.shared.cache.bean.UserSpaceDto;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.component.ResourceDefinition;
 import com.apitable.shared.component.scanner.ApiResourceFactory;
+import com.apitable.shared.constants.ParamsConstants;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.holder.MemberHolder;
 import com.apitable.shared.holder.SpaceHolder;
 import com.apitable.shared.holder.UserHolder;
 import com.apitable.shared.util.ApiHelper;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.HttpContextUtil;
-
+import com.apitable.space.service.ISpaceService;
+import com.apitable.user.mapper.DeveloperMapper;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
-
-import static com.apitable.auth.enums.AuthException.NONE_RESOURCE;
-import static com.apitable.space.enums.SpaceException.SPACE_NOT_EXIST;
 
 /**
  * <p>
@@ -76,7 +72,8 @@ public class ResourceInterceptor extends AbstractServletSupport implements Handl
     private DeveloperMapper developerMapper;
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
+                             Object handler) {
         String requestPath = resolveServletPath(request);
         ResourceDefinition resourceDef =
             apiResourceFactory.getResourceByUrl(requestPath, request.getMethod());
@@ -95,14 +92,13 @@ public class ResourceInterceptor extends AbstractServletSupport implements Handl
             String apiKey = ApiHelper.getApiKey(request);
             if (StringUtils.isEmpty(apiKey)) {
                 userId = SessionContext.getUserIdFromRequest();
-            }else {
+            } else {
                 userId = developerMapper.selectUserIdByApiKey(apiKey);
             }
             if (userId == null) {
                 throw new BusinessException(AuthException.UNAUTHORIZED);
             }
-        }
-        else {
+        } else {
             // UserId in Session Cookies
             userId = SessionContext.getUserId();
         }
@@ -131,7 +127,9 @@ public class ResourceInterceptor extends AbstractServletSupport implements Handl
                     }
                 }
             }
-            if (ArrayUtil.isNotEmpty(resourceDef.getTags()) && !CollUtil.containsAny(userSpace.getResourceCodes(), Arrays.asList(resourceDef.getTags()))) {
+            if (ArrayUtil.isNotEmpty(resourceDef.getTags())
+                && !CollUtil.containsAny(userSpace.getResourceCodes(),
+                Arrays.asList(resourceDef.getTags()))) {
                 throw new BusinessException(AuthException.FORBIDDEN);
             }
         }

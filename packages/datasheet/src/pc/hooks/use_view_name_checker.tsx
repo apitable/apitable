@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { IReduxState, Selectors, Strings, t } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 
 export const useViewNameChecker = () => {
   const [errMsg, setErrMsg] = useState<string | null>(null);
 
-  const datasheet = useSelector((state: IReduxState) => Selectors.getDatasheet(state));
+  const datasheet = useAppSelector((state: IReduxState) => Selectors.getDatasheet(state));
 
   const viewList = datasheet?.snapshot.meta.views || [];
 

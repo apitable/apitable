@@ -140,22 +140,23 @@ export interface SystemConfigInterfaceGuide {
 }
 
 export interface Step {
-    backdrop?:  Backdrop;
-    next?:      Next;
-    nextId?:    NextID;
-    onClose?:   string[];
-    onNext?:    On[];
-    onPlay?:    string[];
-    onPrev?:    On[];
-    onSkip?:    On[];
-    onTarget?:  On[];
-    prev?:      string;
-    uiConfig:   string;
-    uiConfigId: string;
-    uiType:     string;
-    skipId?:    string;
-    byEvent?:   string[];
-    skip?:      string;
+    backdrop?:    Backdrop;
+    next?:        Next;
+    nextId?:      NextID;
+    onClose?:     string[];
+    onNext?:      On[];
+    onPlay?:      string[];
+    onPrev?:      On[];
+    onSkip?:      On[];
+    onTarget?:    On[];
+    prev?:        string;
+    uiConfig:     string;
+    uiConfigId:   string;
+    uiType:       string;
+    skipId?:      string;
+    byEvent?:     string[];
+    skip?:        string;
+    description?: string;
 }
 
 export enum Backdrop {
@@ -208,6 +209,7 @@ export interface Wizard {
     freeVCount?:      number;
     integral_action?: string;
     manualActions?:   string[];
+    description?:     string;
 }
 
 export interface WizardPlayer {
@@ -533,6 +535,7 @@ export interface Action {
     command:      string;
     guide?:       ActionGuide;
     commandArgs?: string;
+    description?: string;
 }
 
 export interface ActionGuide {
@@ -544,6 +547,7 @@ export interface Events {
     address_shown:                                 AddressShown;
     app_error_logger:                              AddressShown;
     guide_use_automation_first_time:               AddressShown;
+    guide_use_button_column_first_time:            AddressShown;
     app_modal_confirm:                             AddressShown;
     app_set_user_id:                               AddressShown;
     app_tracker:                                   AddressShown;

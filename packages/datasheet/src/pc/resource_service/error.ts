@@ -25,7 +25,7 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
 import { Router } from 'pc/components/route_manager/router';
 // @ts-ignore
-import { triggerUsageAlertForDatasheet } from 'enterprise';
+import { triggerUsageAlertForDatasheet } from 'enterprise/billing/trigger_usage_alert';
 
 export const onError: IServiceError = (error, type) => {
   const { isShowQrcode, title, code, message: errorMessage } = error;

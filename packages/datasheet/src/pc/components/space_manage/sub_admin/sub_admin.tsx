@@ -21,7 +21,7 @@ import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';
 import { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button, TextButton, Typography, useThemeColors, Pagination } from '@apitable/components';
 import { ConfigConstant, Events, IReduxState, ISubAdminList, Player, StoreActions, Strings, t } from '@apitable/core';
 import { InfoCard, Modal } from 'pc/components/common';
@@ -31,7 +31,11 @@ import { getEnvVariables } from 'pc/utils/env';
 import { AddAdminModal, ModalType } from './add_admin_modal';
 import styles from './style.module.less';
 // @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert, getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert'
+
+import {useAppSelector} from "pc/store/react-redux";
 
 // Some permissions that are no longer used, but because the old space will still return the corresponding data,
 // the front-end to do the filtering of these permissions
@@ -50,7 +54,7 @@ export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const dispatch = useAppDispatch();
   const tableRef = useRef<HTMLDivElement>(null);
-  const { subAdminList, subAdminListData, user, subscription, spaceInfo } = useSelector(
+  const { subAdminList, subAdminListData, user, subscription, spaceInfo } = useAppSelector(
     (state: IReduxState) => ({
       subAdminList: state.spacePermissionManage.subAdminListData ? state.spacePermissionManage.subAdminListData.records : [],
       subAdminListData: state.spacePermissionManage.subAdminListData,

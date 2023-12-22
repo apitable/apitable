@@ -19,7 +19,6 @@
 import { produce } from 'immer';
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import {
   CollaCommandName,
   ExecuteResult,
@@ -43,6 +42,8 @@ import { useFocusEffect } from '../hooks/use_focus_effect';
 import { IBaseEditorProps, IEditor } from '../interface';
 import { PopStructure } from '../pop_structure';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IEditorProps extends IBaseEditorProps {
   style?: React.CSSProperties;
@@ -71,12 +72,12 @@ export const OptionsEditorBase: React.ForwardRefRenderFunction<IEditor, IEditorP
   );
   const { field, recordId, style, datasheetId, height, width, editing, toggleEditing, onSave } = props;
   const inputRef = useRef<HTMLInputElement>(null);
-  const { fieldPropertyEditable } = useSelector((state) => Selectors.getPermissions(state, datasheetId));
-  const cellValue = useSelector((state: IReduxState) => {
+  const { fieldPropertyEditable } = useAppSelector((state) => Selectors.getPermissions(state, datasheetId));
+  const cellValue = useAppSelector((state: IReduxState) => {
     const snapshot = Selectors.getSnapshot(state, datasheetId);
     return Selectors.getCellValue(state, snapshot!, recordId, field.id);
   });
-  const currentFieldInfo = useSelector((state) => Selectors.getField(state, field.id, datasheetId));
+  const currentFieldInfo = useAppSelector((state) => Selectors.getField(state, field.id, datasheetId));
   const isMulti = FieldType.MultiSelect === field.type;
 
   const { screenIsAtMost } = useResponsive();

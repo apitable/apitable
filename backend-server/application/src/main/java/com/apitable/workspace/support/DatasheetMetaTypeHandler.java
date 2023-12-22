@@ -18,26 +18,21 @@
 
 package com.apitable.workspace.support;
 
+import com.apitable.workspace.dto.DatasheetSnapshot.Meta;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
 import org.apache.ibatis.type.MappedTypes;
 
-import com.apitable.workspace.dto.DatasheetSnapshot.Meta;
-
 /**
- * datasheet meta analysis
- * 
- * 
+ * datasheet meta type handler.
  */
-
 @MappedTypes(Meta.class)
 @MappedJdbcTypes(JdbcType.VARCHAR)
 public class DatasheetMetaTypeHandler extends BaseTypeHandler<Meta> {
@@ -51,9 +46,8 @@ public class DatasheetMetaTypeHandler extends BaseTypeHandler<Meta> {
     private Meta parse(String json) {
         try {
             return mapper.readValue(json, Meta.class);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            // ignore
         }
         return null;
     }
@@ -61,15 +55,15 @@ public class DatasheetMetaTypeHandler extends BaseTypeHandler<Meta> {
     private String toJSON(Meta object) {
         try {
             return mapper.writeValueAsString(object);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            // ignore
         }
         return null;
     }
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, Meta parameter, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, Meta parameter, JdbcType jdbcType)
+        throws SQLException {
         ps.setString(i, toJSON(parameter));
     }
 

@@ -21,10 +21,10 @@
  */
 import * as React from 'react';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, colorVars, LinkButton, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
-import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+// import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 
 const ErrorPage = () => {
@@ -36,18 +36,18 @@ const ErrorPage = () => {
       '*',
     );
   }, []);
-  const { embedId } = useSelector((state) => state.pageParams);
+  const { embedId } = useAppSelector((state) => state.pageParams);
 
   const handleClick = () => {
     window.location.href = '/workbench';
   };
 
   const handleContactUs = () => {
-    navigationToUrl(getEnvVariables().CRASH_PAGE_CONTACT_US_URL);
+    // navigationToUrl(getEnvVariables().CRASH_PAGE_CONTACT_US_URL);
   };
 
   const handleFeedback = () => {
-    navigationToUrl(getEnvVariables().CRASH_PAGE_REPORT_ISSUES_URL);
+    // navigationToUrl(getEnvVariables().CRASH_PAGE_REPORT_ISSUES_URL);
   };
 
   return (

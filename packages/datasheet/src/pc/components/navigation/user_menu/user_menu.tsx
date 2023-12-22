@@ -24,7 +24,7 @@ import { AnimationItem } from 'lottie-web';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button, useThemeColors } from '@apitable/components';
 import { ConfigConstant, Events, hiddenMobile, IReduxState, isIdassPrivateDeployment, NAV_ID, Player, Selectors, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, CopyOutlined, EditOutlined, LogoutOutlined, UserOutlined } from '@apitable/icons';
@@ -43,18 +43,20 @@ import AnimationJson from 'static/json/invite_box_filled.json';
 import { defaultAvatars } from '../account_center_modal/basic_setting/default_avatar';
 import styles from './style.module.less';
 import {
-  clearWizardsData,
-  getDingtalkConfig,
   getSocialWecomUnitName,
   inSocialApp,
-  isEnterprise,
   isSocialDingTalk,
   isSocialFeiShu,
   isSocialPlatformEnabled,
   isSocialWecom,
   isWecomFunc,
   // @ts-ignore
-} from 'enterprise';
+} from 'enterprise/home/social_platform/utils';
+// @ts-ignore
+import { clearWizardsData } from 'enterprise/guide/utils';
+// @ts-ignore
+import { getDingtalkConfig } from 'enterprise/dingtalk/utils/index';
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IUserMenuProps {
   setShowUserMenu: React.Dispatch<React.SetStateAction<boolean>>;
@@ -74,8 +76,9 @@ const customTips = {
 
 export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = (props) => {
   const colors = useThemeColors();
+  const { IS_ENTERPRISE } = getEnvVariables();
   const { ACCOUNT_LOGOUT_VISIBLE, USER_BIND_PHONE_VISIBLE, IS_SELFHOST, IS_APITABLE } = getEnvVariables();
-  const { userInfo, spaceId, spaceInfo, unitMap } = useSelector(
+  const { userInfo, spaceId, spaceInfo, unitMap } = useAppSelector(
     (state: IReduxState) => ({
       userInfo: state.user.info,
       spaceId: state.space.activeId || '',
@@ -381,7 +384,7 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = (props) => 
             {email || t(Strings.unbound)}
           </div>
 
-          {isEnterprise && !isWecomSpace && !(IS_SELFHOST || IS_APITABLE) && inviteCode && (
+          {IS_ENTERPRISE && !isWecomSpace && !(IS_SELFHOST || IS_APITABLE) && inviteCode && (
             <div className={classNames(styles.centerItem, styles.inviteItem)}>
               <span className={styles.label}>{t(Strings.personal_invite_code_usercenter)}</span>
               <div className={styles.valueWrapper}>
@@ -395,7 +398,7 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = (props) => 
             </div>
           )}
           {isMobile && items.filter((item) => item.visible).map((item) => <PrivacyItem key={item.label} label={item.label} onClick={item.onClick} />)}
-          {!isMobile && !isMobileApp() && !isWecomSpace && !(IS_SELFHOST || IS_APITABLE) && isEnterprise && (
+          {!isMobile && !isMobileApp() && !isWecomSpace && !(IS_SELFHOST || IS_APITABLE) && IS_ENTERPRISE && (
             <div className={styles.inviteCodeBtnWrap}>
               <div
                 className={styles.inviteCodeBtn}
@@ -410,7 +413,7 @@ export const UserMenu: FC<React.PropsWithChildren<IUserMenuProps>> = (props) => 
             </div>
           )}
         </div>
-        {!isWecomSpace && !(IS_SELFHOST || IS_APITABLE) && isEnterprise && (
+        {!isWecomSpace && !(IS_SELFHOST || IS_APITABLE) && IS_ENTERPRISE && (
           <ComponentDisplay maxWidthCompatible={ScreenSize.md}>
             <div className={styles.centerTip}>
               <span>{t(Strings.invitation_code_usage_tip)}</span>

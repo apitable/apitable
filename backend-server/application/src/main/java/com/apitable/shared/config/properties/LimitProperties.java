@@ -38,16 +38,6 @@ public class LimitProperties {
     public static final String PREFIX_LIMIT = "limit";
 
     /**
-     * Allow excessive use.
-     */
-    private Boolean isAllowOverLimit = Boolean.FALSE;
-
-    /**
-     * Maximum retention days of recovery cabin（Under excessive use）.
-     */
-    private Integer rubbishMaxRetainDay = 365;
-
-    /**
      * Maximum user space.
      */
     private Integer spaceMaxCount = 10;
@@ -81,7 +71,6 @@ public class LimitProperties {
     /**
      * Maximum rows.
      */
-    @Deprecated
     private Integer maxRowCount = 50000;
 
     /**
@@ -123,13 +112,11 @@ public class LimitProperties {
     /**
      * Maximum dashboard numbers of space.
      */
-    @Deprecated
     private Integer dsbWidgetMaxCount = 15;
 
     /**
      * Maximum robot number of space.
      */
-    @Deprecated
     private Integer dstRobotMaxCount = 30;
 
     /**

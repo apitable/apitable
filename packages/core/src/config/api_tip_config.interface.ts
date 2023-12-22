@@ -130,6 +130,7 @@ export interface Tips {
     api_params_lookup_filter_field_not_exists:            APIAddRowFailedWrongLengthOfValueClass;
     api_params_lookup_filter_field_invalid_operation:     APIAddRowFailedWrongLengthOfValueClass;
     api_params_lookup_can_not_operate:                    APIAddRowFailedWrongLengthOfValueClass;
+    api_params_workdoc_can_not_operate:                   APIAddRowFailedWrongLengthOfValueClass;
     api_params_max_count_error:                           APIAddRowFailedWrongLengthOfValueClass;
     api_params_max_error:                                 APIAddRowFailedWrongLengthOfValueClass;
     api_params_max_length_error:                          APIAddRowFailedWrongLengthOfValueClass;
@@ -192,6 +193,7 @@ export interface Tips {
     api_param_widget_id_not_exists:                       APIAddRowFailedWrongLengthOfValueClass;
     api_params_widget_package_id_error:                   APIAddRowFailedWrongLengthOfValueClass;
     api_widget_number_limit:                              APIAddRowFailedWrongLengthOfValueClass;
+    api_param_validate_error:                             APIAddRowFailedWrongLengthOfValueClass;
 }
 
 export interface APIAddRowFailedWrongLengthOfValueClass {

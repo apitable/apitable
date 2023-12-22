@@ -17,16 +17,18 @@
  */
 
 import { FC, useState, useEffect } from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { IReduxState, Api, IAddIsActivedMemberInfo, UnitItem, ITeam, IMember } from '@apitable/core';
 import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { useMemberManage } from 'pc/hooks';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IAddMember {
   onCancel: () => void;
 }
 export const AddMember: FC<React.PropsWithChildren<IAddMember>> = ({ onCancel }) => {
-  const { selectedTeamInfoInSpace, spaceId } = useSelector(
+  const { selectedTeamInfoInSpace, spaceId } = useAppSelector(
     (state: IReduxState) => ({
       selectedTeamInfoInSpace: state.spaceMemberManage.selectedTeamInfoInSpace,
       spaceId: state.space.activeId || '',

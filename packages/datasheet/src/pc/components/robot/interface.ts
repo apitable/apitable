@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { IFormNodeItem } from 'pc/components/tool_bar/foreign_form/form_list_panel';
 import { IAutomationRobotDetailItem } from './robot_context';
 
 export interface IRobotHistoryTask {
@@ -40,10 +41,12 @@ export interface IUISchemaLayoutGroup {
   title: string;
   items: string[];
 }
+
 export enum AutomationScenario {
   'datasheet',
-  'node'
+  'node',
 }
+
 export interface IRobotContext {
   currentRobotId?: string;
   resourceId?: string;
@@ -51,10 +54,13 @@ export interface IRobotContext {
   robot?: IAutomationRobotDetailItem;
 }
 
+export type EnumTriggerEndpoint ='button_field'|'button_clicked' | 'form_submitted' | 'record_matches_conditions' | 'record_created'
+  | 'sendLarkMsg' | 'sendRequest' | 'sendMail';
+
 interface INodeBaseType {
   name: string;
   description: string;
-  endpoint: string;
+  endpoint: EnumTriggerEndpoint ;
   inputJsonSchema: INodeSchema;
   outputJsonSchema?: INodeSchema;
   service: {
@@ -89,7 +95,9 @@ export interface IRobotAction {
 
 export interface IRobotTrigger {
   triggerId: string;
+  prevTriggerId: string;
   triggerTypeId: string;
+  relatedResourceId?: string;
   input: any;
 }
 
@@ -98,6 +106,7 @@ export interface INodeOutputSchema {
   icon?: string;
   title: string;
   schema: IJsonSchema | undefined;
+  description?: string;
   uiSchema?: any;
 }
 
@@ -114,6 +123,7 @@ export interface IAutomationDatum {
   name: string;
   description: string;
   isActive: boolean;
+  isOverLimit: boolean;
   updatedBy: number;
   updatedAt: number;
   props: Props;
@@ -121,18 +131,9 @@ export interface IAutomationDatum {
   actions: Action[];
 }
 
-export interface Action {
-  actionId: string;
-  actionTypeId: string;
-  nextActionId: string;
-  prevActionId: string;
-}
+export type Action = IRobotAction;
 
-export interface Trigger {
-  triggerId: string;
-  triggerTypeId?: any;
-  prevTriggerId: string;
-}
+export type Trigger = IRobotTrigger;
 
 export interface Props {
   failureNotifyEnable: boolean;
@@ -338,4 +339,5 @@ export enum RobotRunStatusEnums {
   RUNNING = 0,
   SUCCESS = 1,
   ERROR = 2,
+  LIMIT = 4,
 }

@@ -19,7 +19,7 @@
 import { Form } from 'antd';
 import { FC, useState } from 'react';
 import * as React from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button } from '@apitable/components';
 import { Api, ConfigConstant, IReduxState, Strings, t } from '@apitable/core';
 import { IdentifyingCodeInput, WithTipWrapper } from 'pc/components/common/input';
@@ -27,6 +27,8 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { getVerifyData, IDelSpaceConfig, VerifyTypes } from 'pc/components/navigation/account_center_modal/utils';
 import { useRequest, useSetState } from 'pc/hooks';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IDelSpaceModalProps {
   setIsDelSpaceModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,7 +38,7 @@ export interface IDelSpaceModalProps {
 export const DelSpaceModal: FC<React.PropsWithChildren<IDelSpaceModalProps>> = (props) => {
   const [identifyingCode, setIdentifyingCode] = useState('');
   const { setIsDelSpaceModal, setIsDelSuccessModal } = props;
-  const { user, spaceId } = useSelector(
+  const { user, spaceId } = useAppSelector(
     (state: IReduxState) => ({
       spaceId: state.space.activeId || '',
       user: state.user.info,

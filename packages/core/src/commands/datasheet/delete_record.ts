@@ -17,11 +17,15 @@
  */
 
 import { ICollaCommandDef, ExecuteResult } from 'command_manager';
-import { DatasheetActions } from 'model';
-import { Selectors } from '../../exports/store';
+import { DatasheetActions } from 'commands_actions/datasheet';
+import {
+  getActiveDatasheetId,
+  getSnapshot,
+  getField,
+} from 'modules/database/store/selectors/resource/datasheet/base';
 import { FieldType, ILinkField, ResourceType } from 'types';
 import { Player, Events } from '../../modules/shared/player';
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 
 export interface IDeleteRecordOptions {
   cmd: CollaCommandName.DeleteRecords;
@@ -35,8 +39,8 @@ export const deleteRecord: ICollaCommandDef<IDeleteRecordOptions> = {
   execute: (context, options) => {
     const { state: state, ldcMaintainer } = context;
     const { data } = options;
-    const datasheetId = options.datasheetId || Selectors.getActiveDatasheetId(state)!;
-    const snapshot = Selectors.getSnapshot(state, datasheetId);
+    const datasheetId = options.datasheetId || getActiveDatasheetId(state)!;
+    const snapshot = getSnapshot(state, datasheetId);
     if (!snapshot) {
       return null;
     }
@@ -50,7 +54,7 @@ export const deleteRecord: ICollaCommandDef<IDeleteRecordOptions> = {
     }
 
     const getFieldByFieldId = (fieldId: string) => {
-      return Selectors.getField(state, fieldId, datasheetId);
+      return getField(state, fieldId, datasheetId);
     };
 
     const actions = DatasheetActions.deleteRecords(snapshot, {
@@ -60,7 +64,7 @@ export const deleteRecord: ICollaCommandDef<IDeleteRecordOptions> = {
     });
 
     /**
-     * According to the self-association field, generate a map, the key is recordId, 
+     * According to the self-association field, generate a map, the key is recordId,
      * and the value is the id array of those records associated with this recordId.
      * Multiple self-associated fields will have multiple such maps
      */
@@ -101,7 +105,7 @@ export const deleteRecord: ICollaCommandDef<IDeleteRecordOptions> = {
           oldValue = oldValue?.filter(item => !data.includes(item));
         }
 
-        const linkedSnapshot = Selectors.getSnapshot(state, field.property.foreignDatasheetId)!;
+        const linkedSnapshot = getSnapshot(state, field.property.foreignDatasheetId)!;
 
         // When the associated field cell itself has no value, do nothing
         if (!oldValue?.length) {

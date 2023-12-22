@@ -21,7 +21,6 @@ import { sum } from 'lodash';
 import * as React from 'react';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { DraggableProvided, Droppable } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 import { VariableSizeList } from 'react-window';
 import { Button, useThemeColors } from '@apitable/components';
 import { ConfigConstant, ExecuteResult, FieldType, IKanbanViewProperty, Selectors, Strings, t, UN_GROUP, ViewType } from '@apitable/core';
@@ -36,6 +35,8 @@ import { useCommand } from '../hooks/use_command';
 import { Card, Row } from './rows';
 import { MARGIN_DISTANCE } from './rows/rows';
 import styles from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IKanbanGroupProps {
   groupId: string;
@@ -68,10 +69,10 @@ export enum InsertPlace {
 }
 
 export function useAddNewCard(groupId: string, cb?: () => void, insertPlace?: InsertPlace) {
-  const kanbanFieldId = useSelector(Selectors.getKanbanFieldId)!;
-  const field = useSelector((state) => Selectors.getField(state, kanbanFieldId));
-  const kanbanGroupMap = useSelector(Selectors.getKanbanGroupMap)!;
-  const recordIndex = useSelector((state) => {
+  const kanbanFieldId = useAppSelector(Selectors.getKanbanFieldId)!;
+  const field = useAppSelector((state) => Selectors.getField(state, kanbanFieldId));
+  const kanbanGroupMap = useAppSelector(Selectors.getKanbanGroupMap)!;
+  const recordIndex = useAppSelector((state) => {
     const rowIndexMap = Selectors.getRowsIndexMap(state);
     const records = kanbanGroupMap[groupId] || [];
     const targetRecord = insertPlace === InsertPlace.Bottom ? records.length && records[records.length - 1] : records[0];
@@ -102,12 +103,12 @@ export function useAddNewCard(groupId: string, cb?: () => void, insertPlace?: In
 export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> = (props) => {
   const colors = useThemeColors();
   const { provided, groupId, height, setCollapse, isDragging, kanbanFieldId, dragId } = props;
-  const kanbanGroupMap = useSelector(Selectors.getKanbanGroupMap)!;
-  const activeView = useSelector((state) => Selectors.getCurrentView(state))!;
+  const kanbanGroupMap = useAppSelector(Selectors.getKanbanGroupMap)!;
+  const activeView = useAppSelector((state) => Selectors.getCurrentView(state))!;
   const rows = useMemo(() => kanbanGroupMap[groupId] || [], [groupId, kanbanGroupMap]);
   const rowsCount = rows.length;
   const listRef = useRef<VariableSizeList>(null);
-  const coverFieldId = useSelector((state) => {
+  const coverFieldId = useAppSelector((state) => {
     const activeView = Selectors.getCurrentView(state) as IKanbanViewProperty;
     return activeView.style.coverFieldId;
   });
@@ -124,19 +125,20 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
     isColNameVisible,
     isVirtual: true,
   });
-  const fieldRole = useSelector((state) => {
+  const fieldRole = useAppSelector((state) => {
     const fieldPermissionMap = Selectors.getFieldPermissionMap(state);
     return Selectors.getFieldRoleByFieldId(fieldPermissionMap, kanbanFieldId);
   });
-  const _rowCreatable = useSelector((state) => Selectors.getPermissions(state).rowCreatable);
+  const visibleFields = useAppSelector(Selectors.getVisibleColumns);
+  const _rowCreatable = useAppSelector((state) => Selectors.getPermissions(state).rowCreatable);
   const rowCreatable = _rowCreatable && (!fieldRole || fieldRole === ConfigConstant.Role.Editor);
   const keepSort =
-    useSelector((state) => {
+    useAppSelector((state) => {
       const sortInfo = Selectors.getActiveViewSortInfo(state);
       return sortInfo && sortInfo.keepSort;
     }) || false;
 
-  const searchRecordId = useSelector(Selectors.getCurrentSearchRecordId);
+  const searchRecordId = useAppSelector(Selectors.getCurrentSearchRecordId);
   const showSortBorderRef = useRef(false);
 
   const { screenIsAtMost } = useResponsive();
@@ -275,7 +277,7 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
                 <div {...provided.droppableProps} ref={provided.innerRef}>
                   <VariableSizeList
                     // change display record count will change virtualHeight, itemSize should rerender right-now.
-                    key={virtualHeight}
+                    key={`${virtualHeight}-${visibleFields.length}`}
                     height={virtualHeight}
                     itemCount={itemCount}
                     itemSize={(rowIndex) => cardHeight(rowIndex, MARGIN_DISTANCE)}

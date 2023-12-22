@@ -19,7 +19,7 @@
 import { Select as MultiSelect } from 'antd';
 import classNames from 'classnames';
 import { FC, memo, useContext, useMemo } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { black, IOption, Select, Switch, Tooltip, Typography, WrapperTooltip } from '@apitable/components';
 import {
@@ -74,6 +74,8 @@ import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const Option = Select.Option;
 const MultiOption = MultiSelect.Option;
@@ -134,7 +136,7 @@ interface ISettingPanelProps {
 export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = memo(({ ganttViewStatus }) => {
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
-  const { view, fieldMap, ganttStyle, fieldPermissionMap, permissions, exitFieldNames } = useSelector((state) => {
+  const { view, fieldMap, ganttStyle, fieldPermissionMap, permissions, exitFieldNames } = useAppSelector((state) => {
     const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
     return {
       fieldMap,
@@ -149,8 +151,8 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
   const dispatch = useDispatch();
   const columns = view.columns as IGanttViewColumn[];
   const columnCount = columns.length;
-  const { datasheetId, viewId } = useSelector((state) => state.pageParams);
-  const spaceId = useSelector((state) => state.space.activeId);
+  const { datasheetId, viewId } = useAppSelector((state) => state.pageParams);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const {
     startFieldId,
     endFieldId,
@@ -166,11 +168,11 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
   const isCryptoEndField = Boolean(endFieldRole && endFieldRole === ConfigConstant.Role.None);
   const noRequiredField = startFieldId == null && endFieldId == null;
   const manageable = permissions.manageable;
-  const activeView = useSelector((state) => Selectors.getCurrentView(state)) as IGanttViewProperty;
+  const activeView = useAppSelector((state) => Selectors.getCurrentView(state)) as IGanttViewProperty;
   const linkFieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, linkFieldId);
   const isCryptoLinkField = Boolean(linkFieldRole && linkFieldRole === ConfigConstant.Role.None);
   const linkField = fieldMap[linkFieldId];
-  const visibleRows = useSelector((state) => Selectors.getVisibleRows(state));
+  const visibleRows = useAppSelector((state) => Selectors.getVisibleRows(state));
   const isViewLock = useShowViewLockModal();
 
   const fieldOptions = columns

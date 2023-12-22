@@ -31,11 +31,10 @@ import { NewItem } from '../../robot_list/new_item';
 import { EditType } from '../trigger/robot_trigger';
 import itemStyle from '../trigger/select_styles.module.less';
 
-export const CONST_MAX_ACTION_COUNT = 9;
-
 export const getNextAction = (actionList: IRobotAction[], preActionId ?: string) => {
   const actionIndex = actionList.findIndex(action => action.actionId === preActionId);
-  return actionList[actionIndex + 1];
+  const r = actionList[actionIndex + 1];
+  return r;
 };
 export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled = false, nodeOutputSchemaList }: {
   robotId: string;
@@ -68,18 +67,28 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
     });
 
     const data = getNextAction(getActionList(res.data.data), prevActionId);
-    setAutomationPanel({
-      panelName: PanelName.Action,
-      dataId: data.actionId,
-      data: {
-        // @ts-ignore
-        robotId: action.robotId,
-        editType: EditType.detail,
-        nodeOutputSchemaList: nodeOutputSchemaList,
-        action:  { ...data, id: data.actionId, typeId: data.actionTypeId },
+
+    if(data) {
+      setAutomationPanel({
+        panelName: PanelName.Action,
+        dataId: data.actionId,
+        data: {
+          // @ts-ignore
+          robotId: action.robotId,
+          editType: EditType.detail,
+          nodeOutputSchemaList: nodeOutputSchemaList,
+          action: { ...data, id: data.actionId, typeId: data.actionTypeId },
+        }
       }
+      );
+    }else {
+
+      setAutomationPanel({
+        panelName: PanelName.BasicInfo,
+        dataId: undefined,
+        data: undefined
+      });
     }
-    );
     return res.data;
   };
 
@@ -107,7 +116,7 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
         });
       }}>
 
-      <NewItem disabled={disabled} >
+      <NewItem disabled={disabled} itemId={'CONST_ROBOT_ACTION_CREATE'}>
         {t(Strings.robot_new_action)}
       </NewItem>
     </SearchSelect>);
@@ -149,18 +158,25 @@ export const CreateNewActionLineButton = ({ robotId, actionTypes, prevActionId, 
 
     const newAction = getNextAction(getActionList(res.data.data), prevActionId);
 
-    setAutomationPanel({
-      panelName: PanelName.Action,
-      dataId: newAction.actionId,
-      data: {
-        // @ts-ignore
-        robotId: action.robotId,
-        editType: EditType.detail,
-        nodeOutputSchemaList: nodeOutputSchemaList,
-        action:  { ...newAction, id: newAction.actionId, typeId: newAction.actionTypeId },
-      }
+    if(newAction) {
+      setAutomationPanel({
+        panelName: PanelName.Action,
+        dataId: newAction.actionId,
+        data: {
+          // @ts-ignore
+          robotId: action.robotId,
+          editType: EditType.detail,
+          nodeOutputSchemaList: nodeOutputSchemaList,
+          action:  { ...newAction, id: newAction.actionId, typeId: newAction.actionTypeId },
+        }
+      });
+    }else {
+      setAutomationPanel({
+        panelName: PanelName.BasicInfo,
+        dataId: undefined,
+        data: undefined
+      });
     }
-    );
 
     return res.data;
 

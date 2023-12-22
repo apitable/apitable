@@ -78,6 +78,7 @@ import com.apitable.workspace.vo.NodeRoleMemberVo;
 import com.apitable.workspace.vo.NodeRoleUnit;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -90,7 +91,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -533,9 +533,9 @@ public class NodeRoleServiceImpl implements INodeRoleService {
     }
 
     @Override
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public PageInfo<NodeRoleMemberVo> getNodeRoleMembersPageInfo(Page<NodeRoleMemberVo> page,
-        String nodeId) {
+                                                                 String nodeId) {
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         boolean assignMode = this.getNodeRoleIfEnabled(nodeId);
         if (assignMode) {

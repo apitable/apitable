@@ -1,0 +1,55 @@
+.createWorkdoc {
+  display: flex;
+  padding-top: 4px;
+  align-items: center;
+  color: var(--textCommonTertiary);
+  padding-left: 8px;
+  min-width: 100px;
+}
+.expandWorkdoc {
+  padding: 4px 8px 0;
+  .workdocBtn {
+    border-radius: 4px;
+    display: inline-flex;
+    padding: 2px 8px;
+    align-items: center;
+    background-color: var(--bgBrandLightDefault);
+    cursor: pointer;
+    width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    &:hover {
+      background-color: var(--bgBrandLightHover);
+    }
+    .workdocTitle {
+      color: var(--textBrandDefault);
+      font-size: 13px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    svg {
+      fill: var(--textBrandDefault);
+      flex: none;
+      align-self: flex-start;
+      margin-top: 2px;
+      margin-right: 4px;
+    }
+  }
+  &.disabled {
+    .workdocBtn {
+      cursor: not-allowed;
+      &:hover {
+        background-color: var(--bgBrandLightDefault);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .expandWorkdoc {
+    width: 100%;
+    padding: 0;
+  }
+}

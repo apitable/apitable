@@ -19,7 +19,6 @@
 import { usePostHog } from 'posthog-js/react';
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button } from '@apitable/components';
 import { AutoTestID, ConfigConstant, Events, IReduxState, ITemplateTree, Navigation, Player, Strings, t, TrackEvents } from '@apitable/core';
 import { ArrowRightOutlined } from '@apitable/icons';
@@ -29,7 +28,11 @@ import { useRequest, useUserRequest } from 'pc/hooks';
 import { UsingTemplateModal } from '../using_template_modal';
 import styles from './style.module.less';
 // @ts-ignore
-import { LoginModal, SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
+// @ts-ignore
+import { LoginModal } from 'enterprise/home/login_modal/login_modal';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ITemplateUseButtonProps {
   style?: React.CSSProperties;
@@ -49,13 +52,13 @@ const calcNodeNum = (directory: ITemplateTree[]): number => {
 
 export const TemplateUseButton: React.FC<React.PropsWithChildren<ITemplateUseButtonProps>> = (props) => {
   const { style, showIcon, children, id, block } = props;
-  const userInfo = useSelector((state: IReduxState) => state.user.info);
-  const spaceId = useSelector((state) => state.space.activeId);
-  const { templateId, categoryId } = useSelector((state: IReduxState) => state.pageParams);
+  const userInfo = useAppSelector((state: IReduxState) => state.user.info);
+  const spaceId = useAppSelector((state) => state.space.activeId);
+  const { templateId, categoryId } = useAppSelector((state: IReduxState) => state.pageParams);
   const [openTemplateModal, setOpenTemplateModal] = useState('');
   const [openLoginModal, setOpenLoginModal] = useState(false);
-  const templateDirectory = useSelector((state) => state.templateCentre.directory);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const templateDirectory = useAppSelector((state) => state.templateCentre.directory);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus } = useRequest(getLoginStatusReq, { manual: true });
   const posthog = usePostHog();

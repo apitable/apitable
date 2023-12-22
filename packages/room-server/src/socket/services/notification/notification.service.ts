@@ -18,10 +18,10 @@
 
 import { Injectable, Logger } from '@nestjs/common';
 import { isNil } from '@nestjs/common/utils/shared.utils';
+import { BackendGrpcClient } from 'grpc/client/backend.grpc.client';
 import { SocketConstants } from 'shared/common/constants/socket.module.constants';
 import { NotificationTypes } from 'shared/enums/request-types.enum';
 import { Socket } from 'socket.io';
-import { GrpcClient } from 'socket/grpc/client/grpc.client';
 import { IAuthenticatedSocket } from 'socket/interface/socket/authenticated-socket.interface';
 import { NodeChangeRo } from 'socket/ros/notification/node-change.ro';
 import { INotificationRo } from 'socket/ros/notification/notification.ro';
@@ -31,7 +31,9 @@ import { WatchSpaceRo } from 'socket/ros/notification/watch-space.ro';
 export class NotificationService {
   private readonly logger = new Logger(NotificationService.name);
 
-  constructor(private readonly grpcClient: GrpcClient) {}
+  constructor(
+    private readonly backendGrpcClient: BackendGrpcClient
+  ) {}
 
   broadcastNotify(message: INotificationRo, client: Socket): boolean {
     if (isNil(message.toUuid)) {
@@ -75,7 +77,7 @@ export class NotificationService {
 
   async nodeBrowsed(nodeId: string, uuid: string): Promise<boolean> {
     try {
-      const result = await this.grpcClient.recordNodeBrowsing({ nodeId, uuid });
+      const result = await this.backendGrpcClient.recordNodeBrowsing({ nodeId, uuid });
       return result.success;
     } catch (e) {
       this.logger.error('Error:nodeBrowsed', (e as Error)?.stack);

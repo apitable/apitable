@@ -18,13 +18,12 @@
 
 package com.apitable.space.enums;
 
+import com.apitable.core.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.core.exception.BaseException;
-
 /**
- * Space ExceptionEnum
+ * Space ExceptionEnum.
  * status code range（400-409）
  *
  * @author Chambers
@@ -35,7 +34,8 @@ public enum SpaceException implements BaseException {
 
     CREATE_SPACE_ERROR(401, "Failed to create space"),
 
-    SPACE_QUIT_FAILURE(402, "The main administrator cannot leave the space, please transfer permissions first or delete the space directly"),
+    SPACE_QUIT_FAILURE(402,
+        "The main administrator cannot leave the space, please transfer permissions first or delete the space directly"),
 
     NOT_IN_SPACE(403, "Sorry, you have been removed from this space, operation is not allowed"),
 
@@ -43,9 +43,11 @@ public enum SpaceException implements BaseException {
 
     NUMBER_LIMIT(405, "The number of spaces has reached the limit"),
 
-    USER_ADMIN_SPACE_LIMIT(405, "This user-manageable space station has exceeded the limit, only silver-class space stations can be handed over"),
+    USER_ADMIN_SPACE_LIMIT(405,
+        "This user-manageable space station has exceeded the limit, only silver-class space stations can be handed over"),
 
-    NOT_DELETED(408, "The space station has not entered the deletion countdown and cannot be deleted directly"),
+    NOT_DELETED(408,
+        "The space station has not entered the deletion countdown and cannot be deleted directly"),
 
     DELETE_SPACE_ERROR(408, "failed to delete space"),
 
@@ -57,7 +59,8 @@ public enum SpaceException implements BaseException {
 
     NOT_SPACE_ADMIN(412, "Only space administrators can operate"),
 
-    SPACE_ALREADY_CERTIFIED(413, "The space has been certified, please do not repeat the operation");
+    SPACE_ALREADY_CERTIFIED(413,
+        "The space has been certified, please do not repeat the operation");
 
     private final Integer code;
 

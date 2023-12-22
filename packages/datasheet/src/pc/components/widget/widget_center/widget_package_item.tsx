@@ -20,7 +20,6 @@ import classNames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, IconButton, Tooltip, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IWidgetPackage, ResourceType, Strings, t, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType } from '@apitable/core';
 import { AddOutlined, LinkOutlined, MoreOutlined } from '@apitable/icons';
@@ -36,6 +35,8 @@ import { useResourceManageable } from '../hooks';
 import { WrapperTooltip } from '../widget_panel/widget_panel_header';
 import { expandReviewInfo } from './review_info';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 type IWidgetPackageItemProps = IWidgetPackage & IWidgetPackageItemBase;
 
@@ -60,27 +61,31 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
     installEnv,
   } = props;
   const colors = useThemeColors();
-  const isOwner = useSelector((state) => state.user.info?.uuid === ownerUuid);
-  const { dashboardId, datasheetId, mirrorId } = useSelector((state) => state.pageParams);
-  const spacePermission = useSelector((state) => state.spacePermissionManage.spaceResource?.permissions || []);
+  const isOwner = useAppSelector((state) => state.user.info?.uuid === ownerUuid);
+  const { dashboardId, datasheetId, mirrorId } = useAppSelector((state) => state.pageParams);
+  const spacePermission = useAppSelector((state) => state.spacePermissionManage.spaceResource?.permissions || []);
   const [installing, setInstalling] = useState(false);
   const manageable = useResourceManageable();
   const cover = useGetSignatureAssertByToken(_cover);
   const toInstallWidget = async (widgetPackageId: string) => {
     const nodeId = installPosition === InstallPosition.WidgetPanel ? (mirrorId || datasheetId)! : dashboardId!;
     setInstalling(true);
-    const widget = await installWidget(widgetPackageId, nodeId, name);
-    setInstalling(false);
-    Message.success({
-      content: t(Strings.add_widget_success),
-    });
-    if (installPosition === InstallPosition.WidgetPanel) {
-      await installToPanel(widget, nodeId, mirrorId ? ResourceType.Mirror : ResourceType.Datasheet);
+    try {
+      const widget = await installWidget(widgetPackageId, nodeId, name);
+      setInstalling(false);
+      Message.success({
+        content: t(Strings.add_widget_success),
+      });
+      if (installPosition === InstallPosition.WidgetPanel) {
+        await installToPanel(widget, nodeId, mirrorId ? ResourceType.Mirror : ResourceType.Datasheet);
+        onModalClose(widget.id);
+        return;
+      }
+      await installToDashboard(widget, nodeId);
       onModalClose(widget.id);
-      return;
+    } catch (e) {
+      setInstalling(false);
     }
-    await installToDashboard(widget, nodeId);
-    onModalClose(widget.id);
   };
 
   // Check before installing the widget, distinguish between the space station and the official different interactions.

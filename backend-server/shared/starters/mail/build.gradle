@@ -1,12 +1,14 @@
 plugins {
-  id 'java-library'
+    id 'java-library'
+    id 'testing.java-conventions'
 }
 
 dependencies {
-  implementation(rootProject.ext.dependencies['boot-starter'])
-  implementation(rootProject.ext.dependencies['spring-mail-starter'])
-  implementation(rootProject.ext.dependencies['qcloudses'])
-  implementation(rootProject.ext.dependencies['hutool'])
-  implementation(rootProject.ext.dependencies['slf4j'])
-  testImplementation(rootProject.ext.dependencies['spring-test-starter'])
+    implementation platform(libs.spring.boot.dependencies)
+    implementation(libs.spring.boot.starter)
+    implementation(libs.spring.boot.mail)
+    implementation(libs.qcloud.ses)
+    implementation(libs.bundles.hutool)
+    implementation(libs.slf4j)
+    testImplementation(libs.spring.boot.test)
 }

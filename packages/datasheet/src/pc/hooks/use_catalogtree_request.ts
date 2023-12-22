@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import {
   Api,
   ConfigConstant,
@@ -34,16 +34,17 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { Router } from 'pc/components/route_manager/router';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 // @ts-ignore
-import { billingErrorCode, SubscribeUsageTipType, triggerUsageAlert, triggerUsageAlertUniversal } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
 
 export const useCatalogTreeRequest = () => {
   const dispatch = useAppDispatch();
-  const { spaceId, formId, datasheetId, automationId, dashboardId, mirrorId, embedId } = useSelector((state: IReduxState) => {
+  const { spaceId, formId, datasheetId, automationId, dashboardId, mirrorId, embedId } = useAppSelector((state: IReduxState) => {
     const spaceId = state.space.activeId;
     const { datasheetId, formId, automationId, dashboardId, mirrorId, embedId } = state.pageParams;
     return {
@@ -56,10 +57,10 @@ export const useCatalogTreeRequest = () => {
       embedId,
     };
   }, shallowEqual);
-  const activedNodeId = useSelector((state) => Selectors.getNodeId(state));
-  const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-  const expandedKeys = useSelector((state: IReduxState) => state.catalogTree.expandedKeys);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo)!;
+  const activedNodeId = useAppSelector((state) => Selectors.getNodeId(state));
+  const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const expandedKeys = useAppSelector((state: IReduxState) => state.catalogTree.expandedKeys);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo)!;
 
   const checkNodeNumberLimit = (nodeType: ConfigConstant.NodeType) => {
     // First check that the total number of nodes is as required
@@ -141,9 +142,6 @@ export const useCatalogTreeRequest = () => {
         dispatch(StoreActions.getSpaceInfo(spaceId || '', true));
         Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId } });
       } else {
-        if (code === billingErrorCode.OVER_LIMIT) {
-          return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
-        }
         if (code === StatusCode.NODE_NOT_EXIST) {
           return;
         }
@@ -216,9 +214,6 @@ export const useCatalogTreeRequest = () => {
         Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId } });
         dispatch(StoreActions.getSpaceInfo(spaceId || '', true));
         return;
-      }
-      if (code === billingErrorCode.OVER_LIMIT) {
-        return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
       }
       Message.error({ content: message });
     });

@@ -26,8 +26,8 @@ option java_package = "com.apitable.integration.grpc";
 option java_outer_classname = "GrpcRoomServingService";
 
 // room-server provided service
-// socket->room
 service RoomServingService {
+  // ============ socket->room ======================================
   // user join datasheet room
   rpc WatchRoom (WatchRoomRo) returns (WatchRoomVo);
   // user leave datasheet room
@@ -38,10 +38,14 @@ service RoomServingService {
   rpc GetActiveCollaborators (WatchRoomRo) returns (GetActiveCollaboratorsVo);
   // Server sends room Change event
   rpc ServerRoomChange (grpc.common.ServerRoomChangeRo) returns (grpc.common.BasicResult);
+
+  // ============ backend->room ======================================
   // copy datasheet effect ot
   rpc CopyNodeEffectOt (NodeCopyRo) returns (grpc.common.BasicResult);
   // delete datasheet effect ot
   rpc DeleteNodeEffectOt (NodeDeleteRo) returns (grpc.common.BasicResult);
+  // document asset statistic
+  rpc DocumentAssetStatistic (DocumentAssetStatisticRo) returns (DocumentAssetStatisticResult);
 }
 
 message WatchRoomRo {
@@ -159,4 +163,30 @@ message NodeDeleteRo {
   string user_id = 3;
   // user uuid
   string uuid = 4;
+}
+
+message DocumentAssetStatisticRo {
+  message DocumentAssetInfo {
+    string document_name = 1;
+    repeated string file_urls = 2;
+  }
+  repeated DocumentAssetInfo infos = 1;
+}
+
+message DocumentAssetStatisticResult {
+  message AssetStatisticInfo {
+    string file_url = 1;
+    int32 cite = 2;
+  }
+  message DocumentAssetStatisticInfo {
+    string document_name = 1;
+    repeated AssetStatisticInfo asset_infos = 2;
+  }
+  message DocumentAssetStatisticData {
+    repeated DocumentAssetStatisticInfo infos = 1;
+  }
+  bool success = 1;
+  int32 code = 2;
+  string message = 3;
+  DocumentAssetStatisticData data = 4;
 }

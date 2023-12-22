@@ -75,7 +75,7 @@ class MyDocument extends Document<IClientInfo> {
             <Script id="__initialization_data__" strategy={'beforeInteractive'}>
               {`
             window.__initialization_data__ = {
-                env: '${env}',
+                env: '${process.env.NODE_ENV === 'development' ? 'development' : env}',
                 version: '${version}',
                 envVars: ${envVars},
                 locale:'${locale}',

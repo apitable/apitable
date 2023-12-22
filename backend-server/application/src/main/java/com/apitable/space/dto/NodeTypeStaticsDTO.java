@@ -21,7 +21,7 @@ package com.apitable.space.dto;
 import lombok.Data;
 
 /**
- * Node Type Statistics
+ * Node Type Statistics.
  */
 @Data
 public class NodeTypeStaticsDTO {

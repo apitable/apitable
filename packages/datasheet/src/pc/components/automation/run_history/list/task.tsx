@@ -11,7 +11,7 @@ export const TaskList: FC<{ list:IRunHistoryDatum []; isSummary: boolean,
 }> = ({ list = [], isSummary, activeId }) => {
   const [, setHistoryItem] = useAtom(automationHistoryAtom);
 
-  const sortedList = list.sort((a, b) => dayjs(a.createdAt).isBefore(b.createdAt) ? 1 : -1);
+  const sortedList = list.sort((a, b) => dayjs.tz(a.createdAt).isBefore(b.createdAt) ? 1 : -1);
 
   return (
     <>

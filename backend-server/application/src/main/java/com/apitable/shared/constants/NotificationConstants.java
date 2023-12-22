@@ -20,7 +20,7 @@ package com.apitable.shared.constants;
 
 /**
  * <p>
- * notification constants
+ * notification constants.
  * </p>
  *
  * @author zoe zheng
@@ -28,24 +28,28 @@ package com.apitable.shared.constants;
 public class NotificationConstants {
 
     public static final String BODY_REQUEST_DESC =
-            "Description:{\"extras\":{\"viewId\":\"view ID\",\"recordIds\":[\"record ID\", \"record ID\"], \"toast\": " +
-                    "{\"allowPrev\": \"When the page changes toast, do you need to destroy the existing toast on the page，default false\", " +
-                    "\"duration\": \"Auto-off delay, in seconds. Set to 0 to not automatically turn off\", \"msg\": \"the content of the message must be sent\", \"closable\": \"Whether there is a close button, the default is false\", " +
-                    "\"reloadBtnText\": \" button text to refresh the page，Set to an empty string or do not pass this parameter to not display this button\"}}}";
+        "Description:{\"extras\":{\"viewId\":\"view ID\",\"recordIds\":[\"record ID\", \"record ID\"], \"toast\": "
+            +
+            "{\"allowPrev\": \"When the page changes toast, do you need to destroy the existing toast on the page，default false\", "
+            +
+            "\"duration\": \"Auto-off delay, in seconds. Set to 0 to not automatically turn off\", \"msg\": \"the content of the message must be sent\", \"closable\": \"Whether there is a close button, the default is false\", "
+            +
+            "\"reloadBtnText\": \" button text to refresh the page，Set to an empty string or do not pass this parameter to not display this button\"}}}";
 
     public static final String BODY_REQUEST_EXAMPLE =
-            "{\"extras\":{\"viewId\":\"viwrdXGTaiifG\",\"recordIds\":[\"rec5ckjeq843t\", \"recETGJkQHmbR\"], \"toast\": { " +
-                    "\"allowPrev\": false, \"duration\": 0, \"msg\": \"rich text message content\", \"closable\": false, \"reloadBtnText\": \"click here to refresh the page\"}}}";
+        "{\"extras\":{\"viewId\":\"viwrdXGTaiifG\",\"recordIds\":[\"rec5ckjeq843t\", \"recETGJkQHmbR\"], \"toast\": { "
+            +
+            "\"allowPrev\": false, \"duration\": 0, \"msg\": \"rich text message content\", \"closable\": false, \"reloadBtnText\": \"click here to refresh the page\"}}}";
 
     public static final String BODY_EXTRAS = "extras";
 
     public static final String URL_HOST_TAG = "host";
 
     public static final String BODY_EXTRAS_DESC =
-            "Description:{\"viewId\":\"view ID\",\"recordIds\":[\"record ID 1\", \"record ID 2\"]}";
+        "Description:{\"viewId\":\"view ID\",\"recordIds\":[\"record ID 1\", \"record ID 2\"]}";
 
     public static final String BODY_EXTRAS_EXAMPLE =
-            "{\"viewId\":\"viwrdXGTaiifG\",\"recordIds\":[\"rec5ckjeq843t\", \"recETGJkQHmbR\"]}";
+        "{\"viewId\":\"viwrdXGTaiifG\",\"recordIds\":[\"rec5ckjeq843t\", \"recETGJkQHmbR\"]}";
 
     public static final String TO_MANAGE_MEMBER_RESOURCE_CODE = "MANAGE_MEMBER";
 
@@ -104,23 +108,23 @@ public class NotificationConstants {
     public static final String EMAIL_CREATED_AT = "CREATED_AT";
 
     /**
-     * notification toast
+     * notification toast.
      */
     public static final String EXTRA_TOAST = "toast";
 
     /**
-     * notification toast url
+     * notification toast url.
      */
     public static final String EXTRA_TOAST_URL = "url";
 
     /**
-     * the keyword about role in notifications body  {extras:roleName}
+     * the keyword about role in notifications body  {extras:roleName}.
      */
     public static final String ROLE_NAME = "roleName";
 
     /**
-     * toast close event name
+     * toast close event name.
      */
-    public  static  final String EXTRA_TOAST_CLOSE = "onClose";
+    public static final String EXTRA_TOAST_CLOSE = "onClose";
 
 }

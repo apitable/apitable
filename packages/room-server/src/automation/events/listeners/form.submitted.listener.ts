@@ -16,19 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { defaultEventListenerOptions, IEventListenerOptions, IWorkdocValue, OPEventNameEnums } from '@apitable/core';
+import { defaultEventListenerOptions, FieldType, IEventListenerOptions, IWorkDocValue, OPEventNameEnums } from '@apitable/core';
 import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { AutomationService } from '../../services/automation.service';
-import { RobotTriggerService } from '../../services/robot.trigger.service';
 import { InjectLogger } from 'shared/common';
 import { Logger } from 'winston';
-import { EventTypeEnums } from '../domains/event.type.enums';
-import { IShouldFireRobot, TriggerEventHelper } from '../helpers/trigger.event.helper';
-import { isHandleEvent } from '../helpers/listener.helper';
-import { FormSubmittedEvent, FormSubmittedEventContext } from '../domains/form.submitted.event';
-import { ResourceRobotTriggerDto } from '../../dtos/trigger.dto';
 import { DocumentBaseService } from 'workdoc/services/document.base.service';
+import { ResourceRobotTriggerDto } from '../../dtos/trigger.dto';
+import { AutomationService } from '../../services/automation.service';
+import { RobotTriggerService } from '../../services/robot.trigger.service';
+import { EventTypeEnums } from '../domains/event.type.enums';
+import { FormSubmittedEvent, FormSubmittedEventContext } from '../domains/form.submitted.event';
+import { isHandleEvent } from '../helpers/listener.helper';
+import { IShouldFireRobot, TriggerEventHelper } from '../helpers/trigger.event.helper';
 
 @Injectable()
 export class FormSubmittedListener {
@@ -54,10 +54,7 @@ export class FormSubmittedListener {
     const eventContext = event.context;
     const resourceId = eventContext.datasheetId;
     if (!resourceId) return;
-    await Promise.all([
-      this.automationEventHandler(resourceId, eventContext),
-      this.workdocEventHandler(resourceId, eventContext),
-    ]);
+    await Promise.all([this.automationEventHandler(resourceId, eventContext), this.workdocEventHandler(resourceId, eventContext)]);
   }
 
   private async automationEventHandler(datasheetId: string, context: FormSubmittedEventContext) {
@@ -87,6 +84,7 @@ export class FormSubmittedListener {
           prev.push({
             robotId: item.robotId,
             trigger: {
+              triggerId: item.triggerId,
               input: triggerInput,
               output: eventContext,
             },
@@ -102,11 +100,10 @@ export class FormSubmittedListener {
     }
     const documentIds = [];
     for (const [fieldId, type] of (context.fieldTypeMap as Map<string, number>).entries()) {
-      //TODO 27 replace to FieldType.Workdoc
-      if (27 !== type || !context[fieldId]) {
+      if (FieldType.WorkDoc !== type || !context[fieldId]) {
         continue;
       }
-      const cellValue = context[fieldId] as IWorkdocValue[];
+      const cellValue = context[fieldId] as IWorkDocValue[];
       for (const value of cellValue) {
         value.documentId && documentIds.push(value.documentId);
       }

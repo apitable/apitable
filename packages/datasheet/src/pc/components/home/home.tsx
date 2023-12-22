@@ -18,7 +18,7 @@
 
 import { configResponsive, useResponsive } from 'ahooks';
 import { FC } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { IReduxState, Navigation } from '@apitable/core';
 import { Router } from 'pc/components/route_manager/router';
 import { getSearchParams } from 'pc/utils';
@@ -27,7 +27,9 @@ import { MobileHome } from './mobile_home';
 import { PcHome } from './pc_home';
 import styles from './style.module.less';
 //@ts-ignore
-import { Home as EnterpriseHome } from 'enterprise';
+import { Home as EnterpriseHome } from 'enterprise/home/home';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 configResponsive({
   large: 1023.98,
@@ -41,7 +43,7 @@ const HomeBase: FC<React.PropsWithChildren<unknown>> = () => {
   const urlParams = getSearchParams();
   const reference = urlParams.get('reference') || undefined;
 
-  const { isLogin } = useSelector((state: IReduxState) => ({ isLogin: state.user.isLogin, user: state.user }), shallowEqual);
+  const { isLogin } = useAppSelector((state: IReduxState) => ({ isLogin: state.user.isLogin, user: state.user }), shallowEqual);
 
   if (isLogin) {
     if (reference) {

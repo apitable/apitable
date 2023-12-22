@@ -18,7 +18,7 @@
 
 import { Strings, t } from 'exports/i18n';
 import { isString } from 'lodash';
-import type { ICellValue } from 'model';
+import type { ICellValue } from 'model/record';
 
 /**
  * Filter the strings in the cells of the numeric column, that is, illegal processing
@@ -37,7 +37,7 @@ export function convertToNumber(value: ICellValue): number | null {
 }
 
 /**
- * Change from scientific notation to number format 
+ * Change from scientific notation to number format
  * (because large numbers will be automatically converted back to scientific notation, recorded in string mode)
  * @param value The numbers in js will be converted to part of the data in scientific notation
  */
@@ -77,9 +77,9 @@ export function number2str(value: string) {
 
   const demarcationLen = 15; // 15 significant digits are the cutoff point
   if (len > demarcationLen) {
-    // Use 0 for positive numbers and 1 for negative numbers, 
+    // Use 0 for positive numbers and 1 for negative numbers,
     // which is convenient for counting later, because negative numbers need to calculate one more bit of length
-    let isNegative = 0; 
+    let isNegative = 0;
     if (Number(value) < 0) {
       isNegative = 1;
     }
@@ -107,14 +107,14 @@ export function number2str(value: string) {
  * Rewrite toFixed precision problem
  * Only supports 20 digits of precision
  */
-export const toFixed = function(value: number, precision = 0): string {
+export const toFixed = function (value: number, precision = 0): string {
   if (isNaN(value)) return '0';
   const that = Math.abs(value);
   let changenum;
   let index;
 
   // If the input parameter is negative, an error will be reported. Here, it is treated as 0 by default, that is, the form of bits is not reserved.
-  if (precision < 0) precision = 0; 
+  if (precision < 0) precision = 0;
   changenum = that * Math.pow(10, precision) + 0.5;
   changenum = (parseInt(String(changenum), 10) / Math.pow(10, precision)).toString();
   index = changenum.indexOf('.');
@@ -156,7 +156,7 @@ export function numberToShow(value: number, precision = 0): string | null {
   if (integerCount >= demarcationLen || (str.includes('e') && !str.includes('e-'))) {
     const significanceDigitCount = 5; // number of significant digits after the decimal point
     // There will also be precision problems, but because there are already precision requirements in the premise, there will be no rounding problems
-    str = value.toExponential(significanceDigitCount); 
+    str = value.toExponential(significanceDigitCount);
   } else {
     str = toFixed(value, precision);
   }
@@ -195,7 +195,7 @@ export function normalByteMGArr(bytes: number) {
 }
 
 // Storage unit conversion, parameter unit is b
-// Rule: The decimal point is advanced by 1, and one place is reserved after the decimal point. 
+// Rule: The decimal point is advanced by 1, and one place is reserved after the decimal point.
 // There are only two units of 'MB' and 'GB'. The returned arr[2] is the corresponding bytes value after the decimal point is advanced by 1.
 // Example: interval (greater than 0 and less than 0.1mb) returns ['0.1', 'MB', 104857.6]
 // Example: If the incoming storage size is 0.13mb, then return ['0.2','MB', 209715.2]

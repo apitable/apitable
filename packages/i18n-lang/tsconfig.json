@@ -2,7 +2,6 @@
   "extends": "../../common-tsconfig.json",
   "compilerOptions": {
     "types": [
-      "jest",
       "node"
     ],
     "outDir": "dist",
@@ -21,7 +20,7 @@
     ]
   },
   "include": [
-    "src/index.ts",
+    "src/**/*.ts",
     "src/**/language.manifest.json"
   ],
   "exclude": [

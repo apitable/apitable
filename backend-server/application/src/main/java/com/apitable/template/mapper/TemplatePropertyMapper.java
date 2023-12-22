@@ -28,7 +28,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
- * Template Property Mapper
+ * Template Property Mapper.
  * </p>
  */
 public interface TemplatePropertyMapper extends BaseMapper<TemplatePropertyEntity> {
@@ -46,12 +46,13 @@ public interface TemplatePropertyMapper extends BaseMapper<TemplatePropertyEntit
         @Param("propertyType") Integer propertyType, @Param("propertyName") String propertyName);
 
     /**
-     * query property names by property codes
+     * query property names by property codes.
      */
-    List<String> selectPropertyNameByPropertyCodeIn(@Param("propertyCodes") List<String> propertyCodes);
+    List<String> selectPropertyNameByPropertyCodeIn(
+        @Param("propertyCodes") List<String> propertyCodes);
 
     /**
-     * Query template property dto list by i18n
+     * Query template property dto list by i18n.
      */
     List<TemplatePropertyDto> selectTemplatePropertiesWithI18n(@Param("lang") String lang);
 
@@ -62,58 +63,63 @@ public interface TemplatePropertyMapper extends BaseMapper<TemplatePropertyEntit
         @Param("propertyType") Integer propertyType, @Param("i18nName") String i18nName);
 
     /**
-     * Query template property dto list by i18n after order
+     * Query template property dto list by i18n after order.
      */
-    List<TemplatePropertyDto> selectTemplatePropertiesWithLangAndOrder(@Param("type") Integer type, @Param("lang") String lang);
+    List<TemplatePropertyDto> selectTemplatePropertiesWithLangAndOrder(@Param("type") Integer type,
+                                                                       @Param("lang") String lang);
 
     /**
-     * query all template property
+     * query all template property.
      */
     List<TemplatePropertyDto> selectAllTemplatePropertyDto();
 
     /**
-     * update updatedBy by ids
+     * update updatedBy by ids.
      */
-    int updateUpdatedByByPropertyCodes(@Param("propertyCodes") List<String> propertyCodes, @Param("updatedBy") Long updatedBy);
+    int updateUpdatedByByPropertyCodes(@Param("propertyCodes") List<String> propertyCodes,
+                                       @Param("updatedBy") Long updatedBy);
 
     /**
-     * remove by property codes
+     * remove by property codes.
      */
-    int removeByPropertyCodes(@Param("propertyCodes") List<String> propertyCodes, @Param("updatedBy") Long updatedBy);
+    int removeByPropertyCodes(@Param("propertyCodes") List<String> propertyCodes,
+                              @Param("updatedBy") Long updatedBy);
 
     /**
-     * Batch insert
+     * Batch insert.
      */
     int insertBatch(@Param("entities") List<TemplatePropertyEntity> entities);
 
     /**
-     * Batch delete by ids
+     * Batch delete by ids.
      */
     int deleteBatchByIds(@Param("ids") List<Long> ids, @Param("updatedBy") Long updatedBy);
 
     /**
-     * Query property id by code and type
+     * Query property id by code and type.
      */
     Long selectIdByCodeAndType(@Param("code") String code, @Param("type") Integer type);
 
     /**
-     * Query properties by template id list and type
+     * Query properties by template id list and type.
      */
-    List<TemplatePropertyRelDto> selectPropertiesByTemplateIdsAndType(@Param("templateIds") List<String> templateIds,
-            @Param("type") Integer type);
+    List<TemplatePropertyRelDto> selectPropertiesByTemplateIdsAndType(
+        @Param("templateIds") List<String> templateIds,
+        @Param("type") Integer type);
 
     /**
-     * Query dto by fuzzy search
+     * Query dto by fuzzy search.
      */
-    List<TemplateKeyWordSearchDto> selectTemplateByPropertyNameAndLang(@Param("keyWord") String keyWord, @Param("lang") String lang);
+    List<TemplateKeyWordSearchDto> selectTemplateByPropertyNameAndLang(
+        @Param("keyWord") String keyWord, @Param("lang") String lang);
 
     /**
-     * Batch delete
+     * Batch delete.
      */
     int deleteBatch();
 
     /**
-     * Query count by i18n
+     * Query count by i18n.
      */
     int countByI18n(@Param("lang") String lang);
 }

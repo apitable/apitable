@@ -16,16 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+export * from './model';
+export * from './exports/store';
+export * from './exports/api';
 export * from './command_manager';
 export * from './commands';
 export * from './engine';
 export * from './io';
-export * from './model';
 export * from './tablebundle';
 export * from './sync';
+export * from './config';
 export * from './types';
 export * from './utils';
-export * from './config';
 export * from './exports/i18n';
 export * from './formula_parser';
 export * from './compensator';
@@ -34,10 +36,7 @@ export * from './compute_manager';
 export * from './subscribe_usage_check';
 export * from './cache_manager';
 export * from './automation_manager';
-
 export * from './modules/shared/player';
-export * from './exports/api';
-export * from './exports/store';
 export * from './modules/database/store/reducers/resource';
 
 export * as api from './modules/shared/api';

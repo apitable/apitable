@@ -21,7 +21,7 @@ import { intersection } from 'lodash';
 import Trigger from 'rc-trigger';
 import { useCallback, useMemo, useRef } from 'react';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import {
   CollaCommandName,
@@ -45,6 +45,8 @@ import { store } from 'pc/store';
 import { stopPropagation } from 'pc/utils';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import styles from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IStatOption {
   fieldId: string;
@@ -99,7 +101,7 @@ const StatOptionBase: React.FC<React.PropsWithChildren<IStatOption>> = (props) =
   const triggerRef = useRef<any>(null);
   const state = store.getState();
   const { field, shouldUseSelectRecordAggregate, viewId, groupInfo, statType, selectRecordIds, fieldIndex, permission, recordIds, groupBreakpoint } =
-    useSelector((state) => {
+    useAppSelector((state) => {
       const field = Selectors.getField(state, fieldId);
       const view = Selectors.getCurrentView(state) as IGridViewProperty;
       const selection = Selectors.getSelectRanges(state);

@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import util from 'util';
 
 // constant definition only
 
@@ -27,8 +28,15 @@ export enum CacheKeys {
   DATASHEET_FIELD_RE_REF = 'apitable:nest:fieldReRef:%s',
   DATASHEET_REVISION_CACHE = 'apitable:nest:datasheetCacheRevision:%s',
   DATASHEET_PACK_CACHE = 'apitable:nest:datasheetCache:%s',
-  DATASHEET_CASCADER_TREE = 'apitable:nest:datasheetCascaderCache:%s:%s'
+  DATASHEET_CASCADER_TREE = 'apitable:nest:datasheetCascaderCache:%s:%s',
+  // first is space id, second is month start date
 }
+
+export const SPACE_AUTOMATION_RUN_COUNT_KEY = (spaceId: string): string => {
+  const currentYear = new Date().getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
+  return util.format('cache:space:automation:count:%s:%s', spaceId, currentYear + '-' + currentMonth);
+};
 
 // Redis expire time, units are in seconds
 export const STORAGE_EXPIRE_TIME = parseInt(process.env.STORAGE_EXPIRE_TIME!) || 5 * 24 * 3600;
@@ -138,6 +146,8 @@ export class NodeExtraConstant {
   public static readonly SHOW_RECORD_HISTORY = 'showRecordHistory';
 }
 
+export const BACKEND_GRPC_CLIENT = 'BACKEND_GRPC_CLIENT';
+export const ROOM_GRPC_CLIENT = 'ROOM_GRPC_CLIENT';
 export const SOCKET_GRPC_CLIENT = 'SOCKET_GRPC_CLIENT';
 
 // 100M

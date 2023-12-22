@@ -18,16 +18,11 @@
 
 package com.apitable.control.infrastructure;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
-
-import javax.annotation.Resource;
+import static com.apitable.workspace.enums.PermissionException.MEMBER_NOT_IN_SPACE;
+import static com.apitable.workspace.enums.PermissionException.NODE_ACCESS_DENIED;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.control.infrastructure.ControlIdBuilder.ControlId;
 import com.apitable.control.infrastructure.PrincipalBuilder.Principal;
 import com.apitable.control.infrastructure.exception.UnknownControlTypeException;
@@ -42,21 +37,23 @@ import com.apitable.control.infrastructure.request.NodeControlRequestFactory;
 import com.apitable.control.infrastructure.role.ControlRole;
 import com.apitable.control.infrastructure.role.FieldEditorRole;
 import com.apitable.control.infrastructure.role.NodeManagerRole;
+import com.apitable.core.exception.BusinessException;
 import com.apitable.organization.entity.UnitEntity;
 import com.apitable.organization.enums.UnitType;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.organization.service.ITeamService;
 import com.apitable.organization.service.IUnitService;
 import com.apitable.space.service.ISpaceRoleService;
-import com.apitable.core.exception.BusinessException;
-
+import jakarta.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import static com.apitable.workspace.enums.PermissionException.MEMBER_NOT_IN_SPACE;
-import static com.apitable.workspace.enums.PermissionException.NODE_ACCESS_DENIED;
-
 /**
- * control api
+ * control template.
+ *
  * @author Shawn Deng
  */
 @Slf4j
@@ -86,8 +83,16 @@ public class ControlTemplate {
         return factories;
     }
 
+    /**
+     * fetch node role.
+     *
+     * @param memberId member id
+     * @param nodeId   node id
+     * @return control role
+     */
     public ControlRole fetchNodeRole(Long memberId, String nodeId) {
-        ControlRoleDict controlRoleDict = execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.nodeId(nodeId));
+        ControlRoleDict controlRoleDict =
+            execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.nodeId(nodeId));
         if (controlRoleDict.isEmpty()) {
             throw new BusinessException(NODE_ACCESS_DENIED);
         }
@@ -98,38 +103,55 @@ public class ControlTemplate {
         return execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.nodeIds(nodeIds));
     }
 
-    public ControlRoleDict fetchNodeTreeNode(Long memberId, List<String> nodeIds) {
-        return execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.nodeIds(nodeIds), ControlRequestOption.create().setNodeTreeRoleBuilding(true));
+    public ControlRoleDict fetchNodeRoleByTeamId(Long teamId, List<String> nodeIds) {
+        return execute(PrincipalBuilder.teamId(teamId), ControlIdBuilder.nodeIds(nodeIds));
     }
 
+    public ControlRoleDict fetchNodeTreeNode(Long memberId, List<String> nodeIds) {
+        return execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.nodeIds(nodeIds),
+            ControlRequestOption.create().setNodeTreeRoleBuilding(true));
+    }
+
+    /**
+     * fetch node role.
+     *
+     * @param memberId member id
+     * @param nodeIds  node id list
+     * @return control role dict
+     */
     public ControlRoleDict fetchShareNodeTree(Long memberId, List<String> nodeIds) {
         return execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.nodeIds(nodeIds),
-                ControlRequestOption.create().setNodeTreeRoleBuilding(true).setShareNodeTreeRoleBuilding(true));
+            ControlRequestOption.create().setNodeTreeRoleBuilding(true)
+                .setShareNodeTreeRoleBuilding(true));
     }
 
     public ControlRoleDict fetchRubbishNodeRole(Long memberId, List<String> nodeIds) {
-        return execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.nodeIds(nodeIds), ControlRequestOption.create().setRubbishRoleBuilding(true));
+        return execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.nodeIds(nodeIds),
+            ControlRequestOption.create().setRubbishRoleBuilding(true));
     }
 
     public ControlRoleDict fetchInternalNodeRole(Long memberId, List<String> nodeIds) {
-        return execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.nodeIds(nodeIds), ControlRequestOption.create().setInternalBuilding(true));
+        return execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.nodeIds(nodeIds),
+            ControlRequestOption.create().setInternalBuilding(true));
     }
 
-    public void checkNodePermission(Long memberId, String nodeId, NodePermission permission, Consumer<Boolean> consumer) {
+    public void checkNodePermission(Long memberId, String nodeId, NodePermission permission,
+                                    Consumer<Boolean> consumer) {
         ControlRole controlRole = fetchNodeRole(memberId, nodeId);
         consumer.accept(controlRole.hasPermission(permission));
     }
 
     /**
-     * Determine whether the member has the specified permission on the node
+     * Determine whether the member has the specified permission on the node.
      *
-     * @param memberId member ID
-     * @param nodeId node ID
+     * @param memberId   member ID
+     * @param nodeId     node ID
      * @param permission node permission
      * @return true | false
      */
     public boolean hasNodePermission(Long memberId, String nodeId, NodePermission permission) {
-        ControlRoleDict controlRoleDict = execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.nodeId(nodeId));
+        ControlRoleDict controlRoleDict =
+            execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.nodeId(nodeId));
         if (controlRoleDict.isEmpty()) {
             return false;
         }
@@ -141,19 +163,31 @@ public class ControlTemplate {
         return execute(PrincipalBuilder.unitId(unitId), ControlIdBuilder.nodeId(nodeId));
     }
 
+    /**
+     * fetch field role.
+     *
+     * @param memberId    member id
+     * @param datasheetId datasheet id
+     * @param fieldId     field id
+     * @return control role
+     */
     public ControlRole fetchFieldRole(Long memberId, String datasheetId, String fieldId) {
-        ControlRoleDict controlRoleDict = execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.fieldId(datasheetId, fieldId));
+        ControlRoleDict controlRoleDict = execute(PrincipalBuilder.memberId(memberId),
+            ControlIdBuilder.fieldId(datasheetId, fieldId));
         if (controlRoleDict.isEmpty()) {
             throw new BusinessException(NODE_ACCESS_DENIED);
         }
         return controlRoleDict.get(fieldId);
     }
 
-    public ControlRoleDict fetchFieldRole(Long memberId, String datasheetId, List<String> fieldIds) {
-        return execute(PrincipalBuilder.memberId(memberId), ControlIdBuilder.fieldIds(datasheetId, fieldIds));
+    public ControlRoleDict fetchFieldRole(Long memberId, String datasheetId,
+                                          List<String> fieldIds) {
+        return execute(PrincipalBuilder.memberId(memberId),
+            ControlIdBuilder.fieldIds(datasheetId, fieldIds));
     }
 
-    public void checkFieldPermission(Long memberId, String datasheetId, String fieldId, FieldPermission permission, Consumer<Boolean> consumer) {
+    public void checkFieldPermission(Long memberId, String datasheetId, String fieldId,
+                                     FieldPermission permission, Consumer<Boolean> consumer) {
         ControlRole controlRole = fetchFieldRole(memberId, datasheetId, fieldId);
         consumer.accept(controlRole.hasPermission(permission));
     }
@@ -170,61 +204,68 @@ public class ControlTemplate {
         public void doWrapper(ControlRequest request) {
             if (this.requestOption != null) {
                 if (request instanceof NodeControlRequest) {
-                    ((NodeControlRequest) request).setTreeBuilding(this.requestOption.nodeTreeRoleBuilding);
-                    ((NodeControlRequest) request).setShareTreeBuilding(this.requestOption.shareNodeTreeRoleBuilding);
-                    ((NodeControlRequest) request).setRubbishBuilding(this.requestOption.rubbishRoleBuilding);
-                    ((NodeControlRequest) request).setInternalBuilding(this.requestOption.internalBuilding);
+                    ((NodeControlRequest) request).setTreeBuilding(
+                        this.requestOption.nodeTreeRoleBuilding);
+                    ((NodeControlRequest) request).setShareTreeBuilding(
+                        this.requestOption.shareNodeTreeRoleBuilding);
+                    ((NodeControlRequest) request).setRubbishBuilding(
+                        this.requestOption.rubbishRoleBuilding);
+                    ((NodeControlRequest) request).setInternalBuilding(
+                        this.requestOption.internalBuilding);
                 }
             }
         }
     }
 
     protected ControlRoleDict execute(Principal principal, ControlId controlId) {
-        return execute(principal, controlId, ControlRequestOption.create().setNodeTreeRoleBuilding(false));
+        return execute(principal, controlId,
+            ControlRequestOption.create().setNodeTreeRoleBuilding(false));
     }
 
-    protected ControlRoleDict execute(Principal principal, ControlId controlId, ControlRequestOption requestOption) {
+    protected ControlRoleDict execute(Principal principal, ControlId controlId,
+                                      ControlRequestOption requestOption) {
         return doExecute(principal, controlId, new DefaultControlRequestWrapper(requestOption));
     }
 
-    protected ControlRoleDict doExecute(Principal principal, ControlId controlId, ControlRequestWrapper requestWrapper) {
+    protected ControlRoleDict doExecute(Principal principal, ControlId controlId,
+                                        ControlRequestWrapper requestWrapper) {
         if (principal.getPrincipalType() == PrincipalType.UNIT_ID) {
             UnitEntity unitEntity = iUnitService.getById(principal.getPrincipal());
             if (unitEntity.getUnitType().equals(UnitType.MEMBER.getType())) {
-                return this.doExecute(PrincipalBuilder.memberId(unitEntity.getUnitRefId()), controlId, requestWrapper);
+                return this.doExecute(PrincipalBuilder.memberId(unitEntity.getUnitRefId()),
+                    controlId, requestWrapper);
+            } else if (unitEntity.getUnitType().equals(UnitType.TEAM.getType())) {
+                return this.doExecute(PrincipalBuilder.teamId(unitEntity.getUnitRefId()), controlId,
+                    requestWrapper);
             }
-            else if (unitEntity.getUnitType().equals(UnitType.TEAM.getType())) {
-                return this.doExecute(PrincipalBuilder.teamId(unitEntity.getUnitRefId()), controlId, requestWrapper);
-            }
-            return this.doExecute(PrincipalBuilder.roleId(unitEntity.getUnitRefId()), controlId, requestWrapper);
-        }
-        else if (principal.getPrincipalType() == PrincipalType.MEMBER_ID) {
+            return this.doExecute(PrincipalBuilder.roleId(unitEntity.getUnitRefId()), controlId,
+                requestWrapper);
+        } else if (principal.getPrincipalType() == PrincipalType.MEMBER_ID) {
             // Check if main admin only if principal is member
             if (isWorkbenchAdmin(principal.getPrincipal())) {
                 ControlRoleDict controlRoleDict = ControlRoleDict.create();
                 ControlRole topRole = this.getTopRole(controlId.getControlType());
-                controlId.toRealIdList().forEach(cId -> controlRoleDict.put(cId, topRole));
+                controlId.toRealIdList().forEach(id -> controlRoleDict.put(id, topRole));
                 return controlRoleDict;
             }
             // Query members, their departments, and the organizational units corresponding to their roles
             List<Long> fromUnitIds = iMemberService.getUnitsByMember(principal.getPrincipal());
             return doExecute(fromUnitIds, controlId, requestWrapper);
-        }
-        else if (principal.getPrincipalType() == PrincipalType.TEAM_ID) {
+        } else if (principal.getPrincipalType() == PrincipalType.TEAM_ID) {
             // Query the organizational unit of a department and all parent departments and roles
             List<Long> fromUnitIds = iTeamService.getUnitsByTeam(principal.getPrincipal());
             return doExecute(fromUnitIds, controlId, requestWrapper);
-        }
-        else if(principal.getPrincipalType() == PrincipalType.ROLE_ID) {
-            List<Long> unitIds = iUnitService.getUnitIdsByRefIds(CollUtil.newArrayList(principal.getPrincipal()));
+        } else if (principal.getPrincipalType() == PrincipalType.ROLE_ID) {
+            List<Long> unitIds =
+                iUnitService.getUnitIdsByRefIds(CollUtil.newArrayList(principal.getPrincipal()));
             return doExecute(unitIds, controlId, requestWrapper);
-        }
-        else {
+        } else {
             throw new UnknownPrincipalTypeException(principal.getPrincipalType());
         }
     }
 
-    protected ControlRoleDict doExecute(List<Long> principalFromUnitIds, ControlId controlId, ControlRequestWrapper requestWrapper) {
+    protected ControlRoleDict doExecute(List<Long> principalFromUnitIds, ControlId controlId,
+                                        ControlRequestWrapper requestWrapper) {
         ControlRequest request = createRequest(principalFromUnitIds, controlId);
         if (requestWrapper != null) {
             requestWrapper.doWrapper(request);

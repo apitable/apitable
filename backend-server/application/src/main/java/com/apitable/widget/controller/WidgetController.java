@@ -55,11 +55,11 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Resource;
-import javax.validation.Valid;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,7 +71,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "Widget SDK - Widget Api")
-@ApiResource(path = "/")
+@ApiResource
 public class WidgetController {
 
     @Resource
@@ -264,6 +264,8 @@ public class WidgetController {
         controlTemplate.checkNodePermission(memberId, widget.getNodeId(),
             NodePermission.MANAGE_NODE,
             status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
+        // Check the number of running installations
+        iWidgetService.checkWidgetOverLimit(spaceId);
         // create widget
         String widgetId = iWidgetService.create(userId, spaceId, widget);
         return ResponseData.success(iWidgetService.getWidgetPack(widgetId));
@@ -289,6 +291,8 @@ public class WidgetController {
         controlTemplate.checkNodePermission(memberId, nodeId,
             NodePermission.MANAGE_NODE,
             status -> ExceptionUtil.isTrue(status, NODE_OPERATION_DENIED));
+        // Check the number of running installations
+        iWidgetService.checkWidgetOverLimit(spaceId);
         // copy widget
         Collection<String> widgetIds = iWidgetService.copyWidget(userId,
             spaceId, nodeId, widgetRo.getWidgetIds());

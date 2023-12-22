@@ -18,13 +18,14 @@
 
 package com.apitable.shared.component;
 
+import static com.apitable.base.enums.ParameterException.INCORRECT_ARG;
 import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_ERROR_CODE;
 
 import cn.hutool.core.map.MapUtil;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.support.ResponseData;
 import com.apitable.shared.context.I18nContext;
-import javax.validation.ConstraintViolationException;
+import jakarta.validation.ConstraintViolationException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 /**
  * <p>
- * Global Exception Capture in webmvc
+ * Global Exception Capture in webmvc.
  * </p>
  *
  * @author Benson Cheung
@@ -58,8 +59,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<Object> handleResponseStatusException(ResponseStatusException exception) {
-        return ResponseEntity.status(exception.getStatus())
-            .body(new ErrorResponse(exception.getStatus().value(), exception.getReason()));
+        return ResponseEntity.status(exception.getStatusCode())
+            .body(new ErrorResponse(exception.getStatusCode().value(), exception.getReason()));
     }
 
     /**
@@ -78,6 +79,12 @@ public class GlobalExceptionHandler {
         }
     }
 
+    /**
+     * handle business exception.
+     *
+     * @param ex business exception
+     * @return response data
+     */
     @ExceptionHandler(BusinessException.class)
     @ResponseStatus(HttpStatus.OK)
     public ResponseData<Void> businessException(BusinessException ex) {
@@ -92,6 +99,12 @@ public class GlobalExceptionHandler {
             i18nErrorMessage);
     }
 
+    /**
+     * handle validation exception.
+     *
+     * @param exception exception
+     * @return response data
+     */
     @ExceptionHandler({MethodArgumentNotValidException.class, MaxUploadSizeExceededException.class,
         ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.OK)
@@ -103,8 +116,7 @@ public class GlobalExceptionHandler {
             if (result.hasErrors()) {
                 return ResponseData.error(result.getAllErrors().get(0).getDefaultMessage());
             }
-        } else if (exception instanceof ConstraintViolationException) {
-            ConstraintViolationException e = (ConstraintViolationException) exception;
+        } else if (exception instanceof ConstraintViolationException e) {
             return ResponseData.error(e.getLocalizedMessage());
         } else if (exception instanceof MaxUploadSizeExceededException) {
             // Upload exceeds the maximum limit exception
@@ -113,12 +125,17 @@ public class GlobalExceptionHandler {
         return ResponseData.error();
     }
 
+    /**
+     * handle internal server exception.
+     *
+     * @param ex exception
+     * @return response data
+     */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseData<Void> exception(Exception ex) {
         log.error("internal service exception:", ex);
-        if (ex instanceof BindException) {
-            BindException e = (BindException) ex;
+        if (ex instanceof BindException e) {
             BindingResult result = e.getBindingResult();
             if (result.hasErrors()) {
                 return ResponseData.error(result.getAllErrors().get(0).getDefaultMessage());
@@ -128,7 +145,7 @@ public class GlobalExceptionHandler {
         } else if (ex instanceof HttpRequestMethodNotSupportedException) {
             return ResponseData.error(ex.getLocalizedMessage());
         } else if (ex instanceof HttpMessageNotReadableException) {
-            return ResponseData.error(ex.getLocalizedMessage());
+            return ResponseData.error(INCORRECT_ARG.getMessage());
         }
         return ResponseData.error();
     }

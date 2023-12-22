@@ -20,7 +20,6 @@ import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { AlarmUsersType, CollaCommandName, Field, IDateTimeField, Selectors, shallowEqual, Strings, t } from '@apitable/core';
 import { NotificationOutlined } from '@apitable/icons';
@@ -31,8 +30,10 @@ import { getEnvVariables } from 'pc/utils/env';
 import { ICellComponentProps } from '../cell_value/interface';
 import styles from './styles.module.less';
 // @ts-ignore
-import { AlarmTipText } from 'enterprise';
+import { AlarmTipText } from 'enterprise/alarm/alarm_tip_text';
 import { INNER_DAY_ALARM_SUBTRACT } from 'pc/utils';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ICellDateTime extends ICellComponentProps {
   field: IDateTimeField;
@@ -41,8 +42,8 @@ interface ICellDateTime extends ICellComponentProps {
 export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = (props) => {
   const colors = useThemeColors();
   const { className, field, recordId, cellValue, toggleEdit, showAlarm } = props;
-  const userTimeZone = useSelector(Selectors.getUserTimeZone)!;
-  const { snapshot, user, dstId } = useSelector((state) => {
+  const userTimeZone = useAppSelector(Selectors.getUserTimeZone)!;
+  const { snapshot, user, dstId } = useAppSelector((state) => {
     return {
       snapshot: Selectors.getSnapshot(state)!,
       user: state.user.info,
@@ -56,11 +57,11 @@ export const CellDateTime: React.FC<React.PropsWithChildren<ICellDateTime>> = (p
   const { RECORD_TASK_REMINDER_VISIBLE } = getEnvVariables();
   const timeZone = field.property.timeZone || userTimeZone;
 
-  // let alarmTime = alarm?.time || dayjs(alarm?.alarmAt).tz(timeZone).format('HH:mm');
+  // let alarmTime = alarm?.time || dayjs.tz(alarm?.alarmAt).tz(timeZone).format('HH:mm');
   const isInnerDay = alarm?.subtract && Object.keys(INNER_DAY_ALARM_SUBTRACT).includes(alarm?.subtract);
   const alarmRealTime = useMemo(() => {
-    let alarmTime = alarm?.time || dayjs(alarm?.alarmAt).tz(timeZone).format('HH:mm');
-    const alarmDate = dayjs(cellValue as number).tz(timeZone);
+    let alarmTime = alarm?.time || dayjs.tz(alarm?.alarmAt).tz(timeZone).format('HH:mm');
+    const alarmDate = dayjs.tz(cellValue as number).tz(timeZone);
     if (isInnerDay) {
       alarmTime = alarmDate.format('HH:mm');
     }

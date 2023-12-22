@@ -19,9 +19,11 @@
 package com.apitable.organization.dto;
 
 import java.util.List;
-
 import lombok.Data;
 
+/**
+ * team member dto.
+ */
 @Data
 public class TeamMemberDTO {
 

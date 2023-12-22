@@ -41,6 +41,7 @@ export class OPEventRecordDeleted extends IAtomEventType<IRecordDelete> {
     return {
       pass: success,
       context: {
+        action,
         datasheetId: resourceId,
         recordId,
       }

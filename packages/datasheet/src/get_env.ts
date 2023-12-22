@@ -148,6 +148,7 @@ export const getEnvVars = () => {
     HELP_CONFIG: process.env.HELP_CONFIG,
     CUSTOM_WIDGET_VISIBLE: process.env.CUSTOM_WIDGET_VISIBLE === 'true',
     HELP_MENU_CONTACT_US_URL: process.env.HELP_MENU_CONTACT_US_URL,
+    SHARE_LOGO:process.env.SHARE_LOGO,
     LOGO: process.env.LOGO,
     COMMON_IMG_LOGO: process.env.COMMON_IMG_LOGO,
     LONG_DARK_LOGO: process.env.LONG_DARK_LOGO,
@@ -192,7 +193,7 @@ export const getEnvVars = () => {
     HIDDEN_BUSINESS_SUPPORT_PROGRAM_MODAL: process.env.HIDDEN_BUSINESS_SUPPORT_PROGRAM_MODAL,
     DEFAULT_TITLE_NAME: process.env.DEFAULT_TITLE_NAME,
     IS_APITABLE: process.env.IS_APITABLE === 'true',
-    IS_AITABLE: process.env.IS_APITABLE === 'true',
+    IS_AITABLE: process.env.IS_AITABLE === 'true',
     UNIT_LIST_TEAM_INFO_VISIBLE: process.env.UNIT_LIST_TEAM_INFO_VISIBLE === 'true',
     WIDGET_CENTER_OFFICIAL_TIP_VISIBLE: process.env.WIDGET_CENTER_OFFICIAL_TIP_VISIBLE === 'true',
     IS_ENTERPRISE: process.env.IS_ENTERPRISE === 'true',
@@ -226,5 +227,8 @@ export const getEnvVars = () => {
     OSS_SIGNATURE_ENABLED: process.env.OSS_SIGNATURE_ENABLED === 'true',
     AI_API_HELP_URL: process.env.AI_API_HELP_URL,
     ARCHIVED_HELP_LINK: process.env.ARCHIVED_HELP_LINK,
+    ENABLE_WORKDOC_FIELD: process.env.ENABLE_WORKDOC_FIELD === 'true',
+    AI_TRAINING_HELP_DOC_LINK: process.env.AI_TRAINING_HELP_DOC_LINK,
+    AI_SETTING_HELP_DOC_LINK: process.env.AI_SETTING_HELP_DOC_LINK,
   };
 };

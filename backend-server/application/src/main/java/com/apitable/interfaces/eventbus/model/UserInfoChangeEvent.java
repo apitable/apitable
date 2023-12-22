@@ -20,6 +20,9 @@ package com.apitable.interfaces.eventbus.model;
 
 import com.apitable.shared.util.information.ClientOriginInfo;
 
+/**
+ * user info change event.
+ */
 public class UserInfoChangeEvent implements EventBusEvent {
 
     private Long userId;

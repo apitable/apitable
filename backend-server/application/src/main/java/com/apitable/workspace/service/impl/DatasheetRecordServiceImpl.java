@@ -40,6 +40,7 @@ import com.apitable.workspace.vo.DatasheetRecordMapVo;
 import com.apitable.workspace.vo.DatasheetRecordVo;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.annotation.Resource;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -50,7 +51,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -134,15 +134,17 @@ public class DatasheetRecordServiceImpl
     }
 
     @Override
-    public void copyRecords(Long userId, String oldDstId, String newDstId, NodeCopyDTO nodeCopyDTO,
+    public void copyRecords(Long userId, String sourceDatasheetId, String targetDatasheetId,
+                            NodeCopyDTO nodeCopyDTO,
                             boolean retain) {
         log.info("Copy records");
-        List<DatasheetRecordVo> voList = baseMapper.selectListByDstId(oldDstId);
+        List<DatasheetRecordVo> voList = baseMapper.selectListByDstId(sourceDatasheetId);
         if (CollUtil.isEmpty(voList)) {
             return;
         }
 
-        Set<String> archivedRecordIds = baseMapper.selectArchivedRecordIdsByDstId(oldDstId);
+        Set<String> archivedRecordIds =
+            baseMapper.selectArchivedRecordIdsByDstId(sourceDatasheetId);
         Set<String> delFieldIds = CollUtil.unionDistinct(nodeCopyDTO.getDelFieldIds(),
             nodeCopyDTO.getLinkFieldIds());
         List<String> autoNumberFieldIds = nodeCopyDTO.getAutoNumberFieldIds();
@@ -159,7 +161,7 @@ public class DatasheetRecordServiceImpl
             }
             DatasheetRecordEntity entity = new DatasheetRecordEntity();
             entity.setId(IdWorker.getId());
-            entity.setDstId(newDstId);
+            entity.setDstId(targetDatasheetId);
             entity.setRecordId(vo.getId());
             entity.setData(StrUtil.toString(data));
             String fieldUpdatedInfo;
@@ -186,15 +188,15 @@ public class DatasheetRecordServiceImpl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void copyFieldData(String dstId, String oldFieldId, String newFieldId) {
+    public void copyFieldData(String dstId, String sourceFieldId, String targetFieldId) {
         log.info("Copy data from a column to a new column");
         List<DataSheetRecordDTO> voList = baseMapper.selectDtoByDstId(dstId);
         List<DatasheetRecordEntity> list = new ArrayList<>();
         voList.forEach(vo -> {
             JSONObject data = vo.getData();
-            Object fieldData = data.get(oldFieldId);
+            Object fieldData = data.get(sourceFieldId);
             if (ObjectUtil.isNotNull(fieldData)) {
-                data.set(newFieldId, fieldData);
+                data.set(targetFieldId, fieldData);
                 DatasheetRecordEntity entity = DatasheetRecordEntity.builder()
                     .id(vo.getId()).data(StrUtil.toString(data)).build();
                 list.add(entity);

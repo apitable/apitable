@@ -20,7 +20,7 @@ package com.apitable.workspace.enums;
 
 /**
  * <p>
- * custom id prefix
+ * custom id prefix.
  * </p>
  *
  * @author Benson Cheung
@@ -74,6 +74,8 @@ public enum IdRulePrefixEnum {
     ALB("alb"),
 
     EMB("emb"),
+
+    DOCUMENT_NAME("doc"),
 
     AI("ai_"),
 

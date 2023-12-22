@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IReduxState, Selectors, ICollaborator, ResourceType } from 'core';
+import {IReduxState, Selectors, ICollaborator, ResourceType, IUserInfo} from 'core';
 import { IWidgetDatasheetState, IWidgetPermission, IWidgetState, IDatasheetMap } from 'interface';
 import { DEFAULT_WIDGET_PERMISSION } from './slice/permission/reducer';
- 
+
 export const getWidgetErrorCode = (state: IReduxState, widgetId: string) => {
   const widgetSnapshot = Selectors.getWidgetSnapshot(state, widgetId);
   if (!widgetSnapshot) {
@@ -29,17 +29,17 @@ export const getWidgetErrorCode = (state: IReduxState, widgetId: string) => {
   const sourceId = widgetSnapshot.sourceId;
   return sourceId?.startsWith('mir') ? Selectors.getMirrorErrorCode(state, sourceId) : Selectors.getDatasheetErrorCode(state, datasheetId);
 };
- 
+
 /**
   * init widgetState;
-  * @param state 
-  * @param widgetId 
+  * @param state
+  * @param widgetId
   */
 export const initRootWidgetState = (state: IReduxState, widgetId: string, opt?: { foreignDatasheetIds?: string[]}): IWidgetState => {
   const widget = Selectors.getWidget(state, widgetId)!;
   const datasheetId = widget.snapshot.datasheetId!;
   const mirrorId = widget.snapshot?.sourceId;
- 
+
   const bindDatasheet = widgetDatasheetSelector(state, datasheetId);
   const mirrorPack = mirrorId ? Selectors.getMirrorPack(state, mirrorId) : undefined;
   const datasheetMap: IDatasheetMap = bindDatasheet ? { [datasheetId]: bindDatasheet } : {};
@@ -54,24 +54,27 @@ export const initRootWidgetState = (state: IReduxState, widgetId: string, opt?: 
       datasheetMap[dstId] = datasheet;
     }
   });
- 
+
   return {
     widget,
     datasheetMap,
     unitInfo: state.unitInfo,
     pageParams: state.pageParams,
     mirrorMap: mirrorPack ? { [mirrorId!]: mirrorPack } : undefined,
-    user: state.user.info,
+    user: {
+      ...state.user.info,
+      info: state.user.info ?? undefined
+    } as IUserInfo,
     errorCode: getWidgetErrorCode(state, widgetId) || null,
     permission: aggregationWidgetPermission(state, widgetId),
     collaborators: aggregationWidgetCollaborators(state)
   };
 };
- 
+
 /**
   * Aggregate widget permissions.
-  * @param state 
-  * @param widgetId 
+  * @param state
+  * @param widgetId
   */
 export const aggregationWidgetPermission = (state: IReduxState, widgetId: string): IWidgetPermission => {
   const widget = Selectors.getWidget(state, widgetId);
@@ -91,11 +94,11 @@ export const aggregationWidgetPermission = (state: IReduxState, widgetId: string
     datasheet: datasheetPermission
   };
 };
- 
+
 /**
   * Aggregate widget collaborators.
   * Change according to the node you are currently at.
-  * @param state 
+  * @param state
   */
 export const aggregationWidgetCollaborators = (state: IReduxState): ICollaborator[] => {
   const { dashboardId, datasheetId, mirrorId } = state.pageParams;
@@ -112,7 +115,7 @@ export const aggregationWidgetCollaborators = (state: IReduxState): ICollaborato
   }
   return Selectors.getResourceCollaborator(state, resourceId!, resourceType) || [];
 };
- 
+
 /**
   * Get the datasheet state required by the widget in one go.
   */
@@ -148,4 +151,3 @@ export const widgetDatasheetSelector = (state: IReduxState, datasheetId: string,
     }
   };
 };
- 

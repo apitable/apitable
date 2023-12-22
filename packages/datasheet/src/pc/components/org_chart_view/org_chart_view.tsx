@@ -19,7 +19,7 @@
 import { useSize, useLocalStorageState } from 'ahooks';
 import { IFuncUpdater } from 'ahooks/lib/createUseStorageState';
 import { Fragment, FC, useEffect, useMemo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import {
   FieldType,
@@ -64,7 +64,9 @@ import { IGhostNodesRef, INodeStateMap, IViewNodeStateMap } from './interfaces';
 import { OrgChart } from './org_chart';
 import styles from './styles.module.less';
 // @ts-ignore
-import { getWizardRunCount } from 'enterprise';
+import { getWizardRunCount } from 'enterprise/guide/utils';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const _ReactFlowProvider: any = ReactFlowProvider;
 
@@ -87,7 +89,7 @@ export const OrgChartView: FC<React.PropsWithChildren<IOrgChartViewProps>> = ({ 
     columns,
     permissions,
     fieldPermissionMap,
-  } = useSelector((state: IReduxState) => {
+  } = useAppSelector((state: IReduxState) => {
     return {
       currentSearchCell: Selectors.getCurrentSearchItem(state),
       activeView: Selectors.getCurrentView(state) as IOrgChartViewProperty,
@@ -365,7 +367,7 @@ export const OrgChartView: FC<React.PropsWithChildren<IOrgChartViewProps>> = ({ 
     bounds,
   };
 
-  const user = useSelector((state) => state.user);
+  const user = useAppSelector((state) => state.user);
   /****** User guidance ******/
   const wizardHandler = () => {
     // There are no link nodes and the architecture view is created ORG_VIEW_CREATE is executed before ORG_VIEW_PANEL is executed

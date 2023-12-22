@@ -19,7 +19,7 @@
 import Joi from 'joi';
 import dayjs from 'dayjs';
 import { ICellValue } from 'model/record';
-import { IRecord } from '../../exports/store';
+import { IRecord } from '../../exports/store/interfaces';
 import {
   DateFormat, FieldType, ICreatedTimeField, ICreatedTimeFieldProperty, IField,
   TimeFormat
@@ -29,6 +29,7 @@ import { DateTimeBaseField } from './date_time_base_field';
 import { datasheetIdString, enumKeyToArray, enumToArray, joiErrorResult } from './validate_schema';
 import { IOpenCreatedTimeFieldProperty } from 'types/open/open_field_read_types';
 import { IUpdateOpenCreatedTimeFieldProperty } from 'types/open/open_field_write_types';
+import { getFieldDefaultProperty } from './const';
 
 export class CreatedTimeField extends DateTimeBaseField {
   static propertySchema = Joi.object({
@@ -52,12 +53,7 @@ export class CreatedTimeField extends DateTimeBaseField {
   }
 
   static defaultProperty(): ICreatedTimeFieldProperty {
-    return {
-      datasheetId: '',
-      dateFormat: DateFormat['YYYY/MM/DD'],
-      timeFormat: TimeFormat['hh:mm'],
-      includeTime: false,
-    };
+    return getFieldDefaultProperty(FieldType.CreatedTime) as ICreatedTimeFieldProperty;
   }
 
   override get isComputed() {

@@ -200,9 +200,22 @@ public class SpaceSubscribeVo {
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxAuditQueryDays;
 
+    @Schema(description = "Advance - whether to use audit log query",
+        example = "false")
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean auditQuery;
+
     @Schema(description = "the maximum credit number for ai query(unit: int)", example = "1000")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxMessageCredits;
+
+    @Schema(description = "the maximum automation count (unit: int)", example = "100")
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    private Long maxAutomationRunNums;
+
+    @Schema(description = "the maximum Widget count (unit: int)", example = "30")
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    private Long maxWidgetNums;
 
     @Schema(description = "complimentary unexpired capacity(unit：byte)", type = "java.lang.String",
         example = "1024")

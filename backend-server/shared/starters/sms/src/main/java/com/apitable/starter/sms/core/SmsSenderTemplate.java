@@ -18,15 +18,13 @@
 
 package com.apitable.starter.sms.core;
 
-import java.util.Optional;
-
 import cn.hutool.core.util.StrUtil;
+import java.util.Optional;
 
 /**
  * <p>
- * SMS sending template
+ * SMS sending template.
  * </p>
- *
  */
 public class SmsSenderTemplate {
 
@@ -63,11 +61,18 @@ public class SmsSenderTemplate {
         this.outlandSmsSenderFactory = outlandSmsSenderFactory;
     }
 
+    /**
+     * send.
+     *
+     * @param smsMessage sms message object.
+     */
     public void send(SmsMessage smsMessage) {
         boolean isLocal = this.getLocalAreaCode().equals(smsMessage.getAreaCode());
-        SmsSenderFactory factory = isLocal ? this.getLocalSmsSenderFactory() : this.getOutlandSmsSenderFactory();
+        SmsSenderFactory factory =
+            isLocal ? this.getLocalSmsSenderFactory() : this.getOutlandSmsSenderFactory();
         if (factory == null) {
-            throw new RuntimeException(StrUtil.format("{}SMS service is not configured", isLocal ? "local" : "field"));
+            throw new RuntimeException(
+                StrUtil.format("{}SMS service is not configured", isLocal ? "local" : "field"));
         }
         SmsSender sender = factory.createSender();
         sender.send(smsMessage);

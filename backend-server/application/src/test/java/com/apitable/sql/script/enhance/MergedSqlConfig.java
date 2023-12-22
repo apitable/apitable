@@ -20,13 +20,13 @@ package com.apitable.sql.script.enhance;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
-
 import org.springframework.core.annotation.AnnotationAttributes;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.style.ToStringCreator;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.lang.Nullable;
 import org.springframework.test.context.TestContextAnnotationUtils;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.jdbc.SqlConfig.ErrorMode;
 import org.springframework.test.context.jdbc.SqlConfig.TransactionMode;
@@ -39,8 +39,8 @@ import org.springframework.util.Assert;
  * <p>Explicit local configuration attributes override global configuration attributes.
  *
  * @author Sam Brannen
- * @since 4.1
  * @see SqlConfig
+ * @since 4.1
  */
 public class MergedSqlConfig {
 
@@ -85,32 +85,37 @@ public class MergedSqlConfig {
         this.dataSource = mergedAttributes.getString("dataSource");
         this.transactionManager = mergedAttributes.getString("transactionManager");
         this.transactionMode = getEnum(mergedAttributes, "transactionMode", TransactionMode.DEFAULT,
-                TransactionMode.INFERRED);
+            TransactionMode.INFERRED);
         this.encoding = mergedAttributes.getString("encoding");
-        this.separator = getString(mergedAttributes, "separator", ScriptUtils.DEFAULT_STATEMENT_SEPARATOR);
+        this.separator =
+            getString(mergedAttributes, "separator", ScriptUtils.DEFAULT_STATEMENT_SEPARATOR);
         this.commentPrefixes = getCommentPrefixes(mergedAttributes);
         this.blockCommentStartDelimiter = getString(mergedAttributes, "blockCommentStartDelimiter",
-                ScriptUtils.DEFAULT_BLOCK_COMMENT_START_DELIMITER);
+            ScriptUtils.DEFAULT_BLOCK_COMMENT_START_DELIMITER);
         this.blockCommentEndDelimiter = getString(mergedAttributes, "blockCommentEndDelimiter",
-                ScriptUtils.DEFAULT_BLOCK_COMMENT_END_DELIMITER);
-        this.errorMode = getEnum(mergedAttributes, "errorMode", ErrorMode.DEFAULT, ErrorMode.FAIL_ON_ERROR);
+            ScriptUtils.DEFAULT_BLOCK_COMMENT_END_DELIMITER);
+        this.errorMode =
+            getEnum(mergedAttributes, "errorMode", ErrorMode.DEFAULT, ErrorMode.FAIL_ON_ERROR);
     }
 
     private AnnotationAttributes mergeAttributes(SqlConfig localSqlConfig, Class<?> testClass) {
-        AnnotationAttributes localAttributes = AnnotationUtils.getAnnotationAttributes(localSqlConfig, false, false);
+        AnnotationAttributes localAttributes =
+            AnnotationUtils.getAnnotationAttributes(localSqlConfig, false, false);
 
         // Enforce comment prefix aliases within the local @SqlConfig.
         enforceCommentPrefixAliases(localAttributes);
 
         // Get global attributes, if any.
-        SqlConfig globalSqlConfig = TestContextAnnotationUtils.findMergedAnnotation(testClass, SqlConfig.class);
+        SqlConfig globalSqlConfig =
+            TestContextAnnotationUtils.findMergedAnnotation(testClass, SqlConfig.class);
 
         // Use local attributes only?
         if (globalSqlConfig == null) {
             return localAttributes;
         }
 
-        AnnotationAttributes globalAttributes = AnnotationUtils.getAnnotationAttributes(globalSqlConfig, false, false);
+        AnnotationAttributes globalAttributes =
+            AnnotationUtils.getAnnotationAttributes(globalSqlConfig, false, false);
 
         // Enforce comment prefix aliases within the global @SqlConfig.
         enforceCommentPrefixAliases(globalAttributes);
@@ -122,10 +127,11 @@ public class MergedSqlConfig {
                 globalAttributes.put(key, value);
 
                 // Ensure comment prefix aliases are honored during the merge.
-                if (key.equals(COMMENT_PREFIX) && isEmptyArray(localAttributes.get(COMMENT_PREFIXES))) {
+                if (key.equals(COMMENT_PREFIX) &&
+                    isEmptyArray(localAttributes.get(COMMENT_PREFIXES))) {
                     globalAttributes.put(COMMENT_PREFIXES, value);
-                }
-                else if (key.equals(COMMENT_PREFIXES) && isEmptyString(localAttributes.get(COMMENT_PREFIX))) {
+                } else if (key.equals(COMMENT_PREFIXES) &&
+                    isEmptyString(localAttributes.get(COMMENT_PREFIX))) {
                     globalAttributes.put(COMMENT_PREFIX, value);
                 }
             }
@@ -135,6 +141,7 @@ public class MergedSqlConfig {
 
     /**
      * Get the bean name of the {@link javax.sql.DataSource}.
+     *
      * @see SqlConfig#dataSource()
      */
     public String getDataSource() {
@@ -143,6 +150,7 @@ public class MergedSqlConfig {
 
     /**
      * Get the bean name of the {@link org.springframework.transaction.PlatformTransactionManager}.
+     *
      * @see SqlConfig#transactionManager()
      */
     public String getTransactionManager() {
@@ -151,6 +159,7 @@ public class MergedSqlConfig {
 
     /**
      * Get the {@link TransactionMode}.
+     *
      * @see SqlConfig#transactionMode()
      */
     public TransactionMode getTransactionMode() {
@@ -160,6 +169,7 @@ public class MergedSqlConfig {
     /**
      * Get the encoding for the SQL scripts, if different from the platform
      * encoding.
+     *
      * @see SqlConfig#encoding()
      */
     public String getEncoding() {
@@ -169,6 +179,7 @@ public class MergedSqlConfig {
     /**
      * Get the character string used to separate individual statements within the
      * SQL scripts.
+     *
      * @see SqlConfig#separator()
      */
     public String getSeparator() {
@@ -177,8 +188,9 @@ public class MergedSqlConfig {
 
     /**
      * Get the prefixes that identify single-line comments within the SQL scripts.
-     * @since 5.2
+     *
      * @see SqlConfig#commentPrefixes()
+     * @since 5.2
      */
     public String[] getCommentPrefixes() {
         return this.commentPrefixes;
@@ -186,6 +198,7 @@ public class MergedSqlConfig {
 
     /**
      * Get the start delimiter that identifies block comments within the SQL scripts.
+     *
      * @see SqlConfig#blockCommentStartDelimiter()
      */
     public String getBlockCommentStartDelimiter() {
@@ -194,6 +207,7 @@ public class MergedSqlConfig {
 
     /**
      * Get the end delimiter that identifies block comments within the SQL scripts.
+     *
      * @see SqlConfig#blockCommentEndDelimiter()
      */
     public String getBlockCommentEndDelimiter() {
@@ -202,6 +216,7 @@ public class MergedSqlConfig {
 
     /**
      * Get the {@link ErrorMode}.
+     *
      * @see SqlConfig#errorMode()
      */
     public ErrorMode getErrorMode() {
@@ -214,21 +229,22 @@ public class MergedSqlConfig {
     @Override
     public String toString() {
         return new ToStringCreator(this)
-                .append("dataSource", this.dataSource)
-                .append("transactionManager", this.transactionManager)
-                .append("transactionMode", this.transactionMode)
-                .append("encoding", this.encoding)
-                .append("separator", this.separator)
-                .append("commentPrefixes", this.commentPrefixes)
-                .append("blockCommentStartDelimiter", this.blockCommentStartDelimiter)
-                .append("blockCommentEndDelimiter", this.blockCommentEndDelimiter)
-                .append("errorMode", this.errorMode)
-                .toString();
+            .append("dataSource", this.dataSource)
+            .append("transactionManager", this.transactionManager)
+            .append("transactionMode", this.transactionMode)
+            .append("encoding", this.encoding)
+            .append("separator", this.separator)
+            .append("commentPrefixes", this.commentPrefixes)
+            .append("blockCommentStartDelimiter", this.blockCommentStartDelimiter)
+            .append("blockCommentEndDelimiter", this.blockCommentEndDelimiter)
+            .append("errorMode", this.errorMode)
+            .toString();
     }
 
 
-    private static <E extends Enum<?>> E getEnum(AnnotationAttributes attributes, String attributeName,
-            E inheritedOrDefaultValue, E defaultValue) {
+    private static <E extends Enum<?>> E getEnum(AnnotationAttributes attributes,
+                                                 String attributeName,
+                                                 E inheritedOrDefaultValue, E defaultValue) {
 
         E value = attributes.getEnum(attributeName);
         if (value == inheritedOrDefaultValue) {
@@ -237,7 +253,8 @@ public class MergedSqlConfig {
         return value;
     }
 
-    private static String getString(AnnotationAttributes attributes, String attributeName, String defaultValue) {
+    private static String getString(AnnotationAttributes attributes, String attributeName,
+                                    String defaultValue) {
         String value = attributes.getString(attributeName);
         if (value.isEmpty()) {
             value = defaultValue;
@@ -252,19 +269,18 @@ public class MergedSqlConfig {
         boolean explicitCommentPrefix = !commentPrefix.isEmpty();
         boolean explicitCommentPrefixes = (commentPrefixes.length != 0);
         Assert.isTrue(!(explicitCommentPrefix && explicitCommentPrefixes),
-                "You may declare the 'commentPrefix' or 'commentPrefixes' attribute in @SqlConfig but not both");
+            "You may declare the 'commentPrefix' or 'commentPrefixes' attribute in @SqlConfig but not both");
 
         if (explicitCommentPrefix) {
             Assert.hasText(commentPrefix, "@SqlConfig(commentPrefix) must contain text");
-            attributes.put(COMMENT_PREFIXES, new String[] { commentPrefix });
-        }
-        else if (explicitCommentPrefixes) {
+            attributes.put(COMMENT_PREFIXES, new String[] {commentPrefix});
+        } else if (explicitCommentPrefixes) {
             for (String prefix : commentPrefixes) {
-                Assert.hasText(prefix, "@SqlConfig(commentPrefixes) must not contain empty prefixes");
+                Assert.hasText(prefix,
+                    "@SqlConfig(commentPrefixes) must not contain empty prefixes");
             }
             attributes.put(COMMENT_PREFIX, commentPrefixes);
-        }
-        else {
+        } else {
             // We know commentPrefixes is an empty array, so make sure commentPrefix
             // is set to that as well in order to honor the alias contract.
             attributes.put(COMMENT_PREFIX, commentPrefixes);
@@ -276,9 +292,10 @@ public class MergedSqlConfig {
         String[] commentPrefixes = attributes.getStringArray(COMMENT_PREFIXES);
 
         Assert.state(Arrays.equals(commentPrefix, commentPrefixes),
-                "Failed to properly handle 'commentPrefix' and 'commentPrefixes' aliases");
+            "Failed to properly handle 'commentPrefix' and 'commentPrefixes' aliases");
 
-        return (commentPrefixes.length != 0 ? commentPrefixes : ScriptUtils.DEFAULT_COMMENT_PREFIXES);
+        return (commentPrefixes.length != 0 ? commentPrefixes :
+            ScriptUtils.DEFAULT_COMMENT_PREFIXES);
     }
 
     /**
@@ -286,9 +303,9 @@ public class MergedSqlConfig {
      */
     private static boolean isExplicitValue(@Nullable Object value) {
         return !(isEmptyString(value) ||
-                isEmptyArray(value) ||
-                value == TransactionMode.DEFAULT ||
-                value == ErrorMode.DEFAULT);
+            isEmptyArray(value) ||
+            value == TransactionMode.DEFAULT ||
+            value == ErrorMode.DEFAULT);
     }
 
     private static boolean isEmptyString(@Nullable Object value) {

@@ -9,12 +9,12 @@ import {
   IViewDerivation, IViewProperty, IViewRow, Role,
 } from 'exports/store/interfaces';
 import {
-  getActiveRecordId, getActiveRowInfo, getActiveViewFilterInfo, 
+  getActiveRecordId, getActiveRowInfo, getActiveViewFilterInfo,
   getCellValue, getFieldMap, getFieldRoleByFieldId,
   getActiveViewSortInfo, getGroupFields, getIsSearching, getRecordSnapshot, getCurrentView,
 } from 'modules/database/store/selectors/resource/datasheet';
 import { RecordMoveType, WhyRecordMoveType } from 'modules/shared/store/constants';
-import { handleEmptyCellValue } from 'model';
+import { handleEmptyCellValue } from 'model/utils';
 import { ViewDerivateBase } from './view_derivate_base';
 
 export class ViewDerivateGrid extends ViewDerivateBase {
@@ -40,7 +40,7 @@ export class ViewDerivateGrid extends ViewDerivateBase {
     if (!activeRowInfo) {
       return visibleRows;
     }
-    const { positionInfo: { recordId, visibleRowIndex }} = activeRowInfo;
+    const { positionInfo: { recordId, visibleRowIndex } } = activeRowInfo;
     const nextVisibleRows = produce(visibleRows, draftVisibleRows => {
       if ([RecordMoveType.OutOfView, RecordMoveType.WillMove].includes(recordMoveType)) {
         if (RecordMoveType.WillMove === recordMoveType) {
@@ -81,12 +81,12 @@ export class ViewDerivateGrid extends ViewDerivateBase {
     }
     if (type === WhyRecordMoveType.NewRecord) {
       if (!visibleRowsIndexMap.has(activeRecordId)) {
-        // does not exist in the current view, 
+        // does not exist in the current view,
         // but the recordMap exists, indicating that it is filtered
         if (activeRecordId in snapshot.recordMap) {
           return RecordMoveType.OutOfView;
         }
-        // The current view does not exist and the recordMap does not exist, 
+        // The current view does not exist and the recordMap does not exist,
         // indicating that it is deleted.
         return NOT_MOVE;
       }
@@ -115,7 +115,7 @@ export class ViewDerivateGrid extends ViewDerivateBase {
     const isRecordEffectPositionCellValueChanged = (
       recordSnapshot: IRecordSnapshot,
     ) => {
-      // Whether the record is pre-sorted is determined by the group, filter, 
+      // Whether the record is pre-sorted is determined by the group, filter,
       // and sort fields that have auto-sorting turned on.
       const fieldsWhichMakeRecordMove: string[] = groupField.map(field => field.id);
       if (sortInfo?.keepSort) {
@@ -130,7 +130,7 @@ export class ViewDerivateGrid extends ViewDerivateBase {
         /**
         * The recordSnapshot passed in by getCellValue will not work for the formula,
         * which is always up-to-date.
-        * So store the value of the calculated field in the old recordSnapshot. 
+        * So store the value of the calculated field in the old recordSnapshot.
         * Used to handle the case of pre-sorted calculated fields.
         */
         const field = fieldMap[fieldId]!;
@@ -155,7 +155,7 @@ export class ViewDerivateGrid extends ViewDerivateBase {
 
   /**
    * Incrementally update view-derived data when pre-sorting behavior changes
-   * 
+   *
    * @returns viewDerivationPatch partial derivation data
    */
   getViewDerivationPatchByLazySort(
@@ -164,7 +164,7 @@ export class ViewDerivateGrid extends ViewDerivateBase {
     const activeRecordId = getActiveRecordId(this.state);
     const recordMoveType = this.getRecordMoveType(view, prevViewDerivation.pureVisibleRowsIndexMap, activeRecordId, activeRowInfo);
     const visibleRows = this.getVisibleRowsWithLazySort(prevViewDerivation.pureVisibleRows, recordMoveType, activeRowInfo);
-  
+
     const { groupBreakpoint, linearRows, pureLinearRows } =
       this.viewGroupDerivate.getGroupDerivation(view, visibleRows, recordMoveType);
 
@@ -226,14 +226,14 @@ export class ViewDerivateGrid extends ViewDerivateBase {
       * groupBreakpoint
       * field1 Grouping Breakpoints 0---------10---------20
       * field2 level Grouping Breakpoints 0--3-5-6--10----15---20
-      * 
+      *
       * field1: [0, 10, 20]
       * field2: [0, 3, 5, 6, 10, 15, 20]
       */
       groupBreakpoint,
 
       /**
-      * Guide the table view to draw the structured data of the table, 
+      * Guide the table view to draw the structured data of the table,
       * with the hierarchical structure reflected by depth.
       * [
       *    Blank 0

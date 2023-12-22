@@ -1,5 +1,5 @@
 import { ExecuteResult, ExecuteType, ICollaCommandExecuteSuccessResult } from 'command_manager';
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 import { ICommandExecutionSuccessResult } from 'databus/logic';
 import { IOperation, OTActionName } from 'engine';
 import { ResourceType } from 'types';

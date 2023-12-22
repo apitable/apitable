@@ -18,10 +18,12 @@
 
 import { useKeyPress } from 'ahooks';
 import type { InputRef } from 'antd';
-import { Input } from 'antd';
+import { Input, message } from 'antd';
+import produce from 'immer';
+import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState, FC, PropsWithChildren } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { Button, Checkbox, TextButton, useListenVisualHeight, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName,
@@ -45,7 +47,6 @@ import {
   DatasheetApi,
 } from '@apitable/core';
 import { QuestionCircleOutlined, WarnCircleFilled } from '@apitable/icons';
-import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Divider } from 'pc/components/common/divider';
 import { Message } from 'pc/components/common/message';
@@ -56,13 +57,15 @@ import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { EXPAND_RECORD_CLS } from 'pc/components/expand_record/expand_record_modal';
-import { useResponsive } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
+import { useResponsive } from 'pc/hooks/use_responsive';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
-import { ButtonOperateType, getParentNodeByClass, isTouchDevice } from 'pc/utils';
-import { stopPropagation } from '../../../utils/dom';
-import { FieldFormat } from '../format';
+import { useAppSelector } from 'pc/store/react-redux';
+import { ButtonOperateType } from 'pc/utils/constant';
+import { stopPropagation, getParentNodeByClass } from 'pc/utils/dom';
+import { isTouchDevice } from 'pc/utils/mobile';
+import { FieldFormat } from '../format/format';
 import { useFieldOperate } from '../hooks';
 import { checkFactory, CheckFieldSettingBase } from './check_factory';
 import { FieldTypeSelect } from './field_type_select';
@@ -99,7 +102,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
   const colors = useThemeColors();
   const { scrollToItem, datasheetId: propDatasheetId, viewId: propViewId, targetDOM, showAdvancedFields = true } = props;
   const dispatch = useDispatch();
-  const { visibleColumnsCount, columns, columnCount, snapshot, activeFieldState, viewId, linkId, datasheetId, spaceId } = useSelector((state) => {
+  const { visibleColumnsCount, columns, columnCount, snapshot, activeFieldState, viewId, linkId, datasheetId, spaceId } = useAppSelector((state) => {
     const columnCount = Selectors.getColumnCount(state)!;
     const datasheetId = propDatasheetId || Selectors.getActiveDatasheetId(state)!;
     const snapshot = Selectors.getSnapshot(state, datasheetId)!;
@@ -441,6 +444,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
       isModal && renderModal(baseErrMsg);
       return;
     }
+
     const checkResult = checkFactory[currentField.type]
       ? checkFactory[currentField.type](currentField, propDatasheetId)
       : CheckFieldSettingBase.checkStream(currentField, propDatasheetId);
@@ -449,6 +453,10 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
       setOptionErrMsg(checkResult);
       const _checkResult = checkResult.errors ? (Object.values(checkResult.errors)[0] as string) : checkResult;
       isModal && renderModal(_checkResult);
+
+      if(!isModal && currentField.type === FieldType.Button) {
+        message.error(_checkResult);
+      }
       return;
     }
 
@@ -540,6 +548,37 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
           <FieldFormat
             from={activeFieldState.from}
             currentField={currentField}
+            onCreate={(field) => {
+              const integractedItem: IField = produce(field, draft => {
+                draft.property.action = field.property.action;
+              });
+
+              const checkResult : IField= checkFactory[currentField.type]
+                ? checkFactory[currentField.type](integractedItem, propDatasheetId)
+                : CheckFieldSettingBase.checkStream(integractedItem, propDatasheetId);
+
+              // @ts-ignore
+              if (typeof checkResult === 'string' || checkResult.errors) {
+                setOptionErrMsg(checkResult);
+                // @ts-ignore
+                const _checkResult = checkResult.errors ? (Object.values(checkResult.errors)[0] as string) : checkResult;
+                renderModal(_checkResult as string);
+                return;
+              }
+
+              // Passing datasheetId externally means that FieldSetting is mounted in a non-numbered table, using the activeFieldState column index.
+              if (propDatasheetId) {
+                addField(checkResult, activeFieldState?.fieldIndex);
+              } else {
+                addField(checkResult);
+              }
+              return;
+            }
+            }
+            onUpdate={(field) => {
+              modifyFieldType(field);
+            }
+            }
             setCurrentField={setCurrentField}
             hideOperateBox={hideOperateBox}
             datasheetId={propDatasheetId}

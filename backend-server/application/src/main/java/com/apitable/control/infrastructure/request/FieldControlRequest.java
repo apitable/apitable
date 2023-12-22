@@ -18,11 +18,6 @@
 
 package com.apitable.control.infrastructure.request;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-
 import com.apitable.control.entity.ControlRoleEntity;
 import com.apitable.control.infrastructure.ControlIdBuilder;
 import com.apitable.control.infrastructure.ControlRoleDict;
@@ -34,10 +29,14 @@ import com.apitable.control.mapper.ControlMapper;
 import com.apitable.control.mapper.ControlRoleMapper;
 import com.apitable.control.model.ControlUnitDTO;
 import com.apitable.core.util.SpringContextHolder;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 /**
  * <p>
- * field control executor
+ * field control executor.
  * </p>
  *
  * @author Chambers
@@ -72,29 +71,32 @@ public class FieldControlRequest extends AbstractControlRequest {
     public ControlRoleDict execute() {
         ControlRoleDict roleDict = ControlRoleDict.create();
         // Load Control Owner List
-        List<ControlUnitDTO> controlUnitDTOList = SpringContextHolder.getBean(ControlMapper.class).selectOwnerControlUnitDTO(controlIds);
+        List<ControlUnitDTO> controlUnitDTOList =
+            SpringContextHolder.getBean(ControlMapper.class).selectOwnerControlUnitDTO(controlIds);
         if (!controlUnitDTOList.isEmpty()) {
             ControlRole role = ControlRoleManager.parseNodeRole(Field.EDITOR);
             controlUnitDTOList.stream().filter(dto -> units.contains(dto.getUnitId()))
-                    .forEach(dto -> {
-                        String controlId = dto.getControlId();
-                        roleDict.put(controlId.substring(controlId.indexOf(ControlIdBuilder.SYMBOL) + 1), role);
-                        controlIds.remove(controlId);
-                    });
+                .forEach(dto -> {
+                    String controlId = dto.getControlId();
+                    roleDict.put(
+                        controlId.substring(controlId.indexOf(ControlIdBuilder.SYMBOL) + 1), role);
+                    controlIds.remove(controlId);
+                });
         }
         if (controlIds.isEmpty()) {
             return roleDict;
         }
         // Get field role list
-        List<ControlRoleEntity> controlEntities = SpringContextHolder.getBean(ControlRoleMapper.class).selectByControlIds(controlIds);
+        List<ControlRoleEntity> controlEntities =
+            SpringContextHolder.getBean(ControlRoleMapper.class).selectByControlIds(controlIds);
         Map<String, List<ControlRoleEntity>> controlIdMap = controlEntities.stream()
-                .collect(Collectors.groupingBy(ControlRoleEntity::getControlId, Collectors.toList()));
+            .collect(Collectors.groupingBy(ControlRoleEntity::getControlId, Collectors.toList()));
         // each field has different permissions, group by control id
         for (Entry<String, List<ControlRoleEntity>> e : controlIdMap.entrySet()) {
             String controlId = e.getKey();
             List<String> roleCodes = e.getValue().stream()
-                    .filter(controlRole -> units.contains(controlRole.getUnitId()))
-                    .map(ControlRoleEntity::getRoleCode).collect(Collectors.toList());
+                .filter(controlRole -> units.contains(controlRole.getUnitId()))
+                .map(ControlRoleEntity::getRoleCode).collect(Collectors.toList());
             if (roleCodes.isEmpty()) {
                 continue;
             }

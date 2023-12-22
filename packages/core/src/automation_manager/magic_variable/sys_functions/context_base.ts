@@ -17,8 +17,8 @@
  */
 
 import { IRobotTaskRuntimeContext, OperatorEnums } from 'automation_manager/interface';
-import { Field } from 'model';
-import { IReduxState } from 'exports/store';
+import type { IReduxState } from 'exports/store/interfaces';
+import { Field } from 'model/field';
 import { FOperator } from 'types/view_types';
 
 /**
@@ -26,10 +26,10 @@ import { FOperator } from 'types/view_types';
  */
 
 export function getNodeOutput(_context: IRobotTaskRuntimeContext, nodeId: string) {
-  if (!_context.executedNodeIds.includes(nodeId)) {
+  if (!_context.executedNodeIds.includes(nodeId) && !_context.executedNodeIds.includes(_context.robot.triggerId)) {
     throw Error(`${nodeId} Does Not Executed!`);
   }
-  return _context.context[nodeId]!.output;
+  return _context.context[nodeId]?.output || _context.context[_context.robot.triggerId]?.output;
 }
 
 // for now we have 3 trigger of apitable, their output will be like this:

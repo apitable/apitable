@@ -8,5 +8,5 @@
     "noEmit": true,
     "jsx": "react"
   },
-  "exclude": ["**/node_modules", "../enterprise"]
+  "exclude": ["**/node_modules", "../enterprise", "./packages/api-client"]
 }

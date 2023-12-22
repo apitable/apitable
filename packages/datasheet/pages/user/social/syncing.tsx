@@ -23,7 +23,7 @@ import React from 'react';
 const ContactSyncingWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/dingtalk/dingtalk').then((components) => {
       return components.ContactSyncing;
     }),
   { ssr: false },

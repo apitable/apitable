@@ -17,8 +17,8 @@
  */
 
 import { Token, TokenType } from '../lexer/token';
-import type { IFieldMap, IReduxState } from 'exports/store';
-import { Field } from 'model';
+import type { IFieldMap, IReduxState } from 'exports/store/interfaces';
+import { Field } from 'model/field';
 import { BasicValueType, IField } from 'types';
 import { ROLLUP_KEY_WORDS } from 'formula_parser/consts';
 import { t, Strings } from 'exports/i18n';

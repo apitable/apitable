@@ -21,7 +21,6 @@ import produce from 'immer';
 import * as React from 'react';
 import { useCallback, useMemo, useRef } from 'react';
 import { DropResult } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 import {
   Button,
   IUseListenTriggerInfo,
@@ -38,6 +37,7 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { SyncViewTip } from '../../sync_view_tip';
 import { CommonViewSet } from '../common_view_set';
@@ -56,16 +56,16 @@ const MAX_HEIGHT = 340;
 export const ViewSort: React.FC<React.PropsWithChildren<IViewSetting>> = (props) => {
   const { triggerInfo } = props;
   const colors = useThemeColors();
-  const activeViewGroupInfo = useSelector(Selectors.getActiveViewGroupInfo);
-  const fieldMap = useSelector((state) => {
+  const activeViewGroupInfo = useAppSelector(Selectors.getActiveViewGroupInfo);
+  const fieldMap = useAppSelector((state) => {
     return Selectors.getFieldMap(state, state.pageParams.datasheetId!);
   })!;
-  const sortInfo = useSelector(Selectors.getActiveViewSortInfo);
-  const activityViewId = useSelector(Selectors.getActiveViewId)!;
+  const sortInfo = useAppSelector(Selectors.getActiveViewSortInfo);
+  const activityViewId = useAppSelector(Selectors.getActiveViewId)!;
   const sortFieldIds = sortInfo ? sortInfo.rules.map((item) => item.fieldId) : [];
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { editable } = useSelector(Selectors.getPermissions);
+  const { editable } = useAppSelector(Selectors.getPermissions);
   const isViewLock = useShowViewLockModal();
 
   const containerRef = useRef<HTMLDivElement | null>(null);

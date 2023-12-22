@@ -20,7 +20,6 @@ import { Dropdown } from 'antd';
 import classnames from 'classnames';
 import { get } from 'lodash';
 import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors, Box, Tooltip, Typography, Space } from '@apitable/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
 import { ChevronDownOutlined, ChevronUpOutlined } from '@apitable/icons';
@@ -32,7 +31,9 @@ import { IRoleOption, IUnitItemProps } from './interface';
 import { PermissionSelectMobile } from './permission_select_mobile';
 import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export const DEFAULT_ROLE: IRoleOption[] = [
   {
@@ -81,8 +82,8 @@ export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = (props) => 
   const isAdmin = identity?.admin;
   const isOwner = identity?.permissionOpener;
 
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
-  const curUnitId = useSelector((state) => state.user.info?.unitId);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
+  const curUnitId = useAppSelector((state) => state.user.info?.unitId);
 
   const title =
     getSocialWecomUnitName?.({

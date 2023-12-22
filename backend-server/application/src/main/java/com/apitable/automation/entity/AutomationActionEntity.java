@@ -36,7 +36,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Automation - Action Table
+ * Automation - Action Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -53,61 +53,61 @@ public class AutomationActionEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private BigInteger id;
 
     /**
-     * Robot ID (link#xxxx_automation_robot#robot_id)
+     * Robot ID (link#xxxx_automation_robot#robot_id).
      */
     private String robotId;
 
     /**
-     * Action Type ID (link#xxxx_automation_action_type#action_type_id)
+     * Action Type ID (link#xxxx_automation_action_type#action_type_id).
      */
     private String actionTypeId;
 
     /**
-     * Custom Action ID
+     * Custom Action ID.
      */
     private String actionId;
 
     /**
-     * Previous Action ID
+     * Previous Action ID.
      */
     private String prevActionId;
 
     /**
-     * Action Input data of the instance
+     * Action Input data of the instance.
      */
     private String input;
 
     /**
-     * Delete Tag(0: No, 1: Yes)
+     * Delete Tag(0: No, 1: Yes).
      */
     @TableLogic
     private Integer isDeleted;
 
     /**
-     * Creator
+     * Creator.
      */
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
 
     /**
-     * Last Update By
+     * Last Update By.
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updatedBy;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

@@ -18,16 +18,16 @@
 
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
+import { SimpleEmitter } from 'modules/shared/simple_emitter';
 import Image from 'next/image';
 import * as React from 'react';
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { ThemeName } from '@apitable/components';
 import { CollaCommandName, ConfigConstant, ExecuteResult, ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { RuntimeEnv } from '@apitable/widget-sdk';
 import { WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
-import { SimpleEmitter } from 'modules/shared/simple_emitter';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { DataSourceSelectorForNode } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/data_source_selector_for_node';
 import { SearchPanel, SecondConfirmType } from 'pc/components/datasheet_search_panel';
 import { expandRecordInCenter } from 'pc/components/expand_record';
 import { expandRecordPicker } from 'pc/components/record_picker';
@@ -37,6 +37,7 @@ import { useResponsive } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import PngLinkdatasheetDark from 'static/icon/datasheet/chart/dashboard_widget_empty_dark.png';
 import PngLinkdatasheetLight from 'static/icon/datasheet/chart/dashboard_widget_empty_light.png';
 import { ErrorWidget } from '../../error_widget';
@@ -44,13 +45,12 @@ import { closeWidgetRoute, expandWidgetRoute } from '../../expand_widget';
 import { useDevLoadCheck, useFullScreen } from '../../hooks';
 import { usePreLoadError } from '../../hooks/use_pre_load_error';
 import { IWidgetPropsBase } from './interface';
-import styles from './style.module.less';
 import { IWidgetBlockRefs, WidgetBlock } from './widget_block';
 import { WidgetBlockMain } from './widget_block_main';
 import { WidgetLoading } from './widget_loading';
 // @ts-ignore
-import { EmbedContext } from 'enterprise';
-import { DataSourceSelectorForNode } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/data_source_selector_for_node';
+import { EmbedContext } from 'enterprise/embed/embed_context';
+import styles from './style.module.less';
 
 export const simpleEmitter = new SimpleEmitter();
 
@@ -77,17 +77,17 @@ export const WidgetItem: React.FC<React.PropsWithChildren<IWidgetItemProps>> = (
 
   const { folderId: folderIdForEmbed } = (useContext(EmbedContext || createContext({})) as any) || {};
 
-  const widget = useSelector((state) => Selectors.getWidget(state, widgetId));
+  const widget = useAppSelector((state) => Selectors.getWidget(state, widgetId));
   const widgetSnapshot = widget?.snapshot;
   const widgetBindDatasheetId = widgetSnapshot ? widgetSnapshot.datasheetId : '';
   const doNotBindDatasheet = !widgetBindDatasheetId;
-  const { templateId, shareId } = useSelector((state) => state.pageParams);
+  const { templateId, shareId } = useAppSelector((state) => state.pageParams);
   const linkId = templateId || shareId;
-  const rootNodeId = useSelector((state) => folderIdForEmbed || state.catalogTree.rootId);
-  const isExpandWidget = useSelector((state) => Boolean(state.pageParams.widgetId === widgetId));
-  const errorCode = useSelector((state) => Selectors.getDatasheetErrorCode(state, widgetBindDatasheetId));
+  const rootNodeId = useAppSelector((state) => folderIdForEmbed || state.catalogTree.rootId);
+  const isExpandWidget = useAppSelector((state) => Boolean(state.pageParams.widgetId === widgetId));
+  const errorCode = useAppSelector((state) => Selectors.getDatasheetErrorCode(state, widgetBindDatasheetId));
   const dispatch = useAppDispatch();
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const PngLinkdatasheet = themeName === ThemeName.Light ? PngLinkdatasheetLight : PngLinkdatasheetDark;
 
   const [searchPanelVisible, setSearchPanelVisible] = useState(false);

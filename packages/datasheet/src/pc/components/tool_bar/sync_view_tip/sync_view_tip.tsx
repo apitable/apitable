@@ -17,18 +17,19 @@
  */
 
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Typography } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const SyncViewTip: React.FC<React.PropsWithChildren<{ style?: React.CSSProperties; content?: string }>> = ({ style, content }) => {
-  const mirrorId = useSelector((state) => state.pageParams.mirrorId);
-  const { editable } = useSelector(Selectors.getPermissions);
-  const snapshot = useSelector(Selectors.getSnapshot)!;
+  const mirrorId = useAppSelector((state) => state.pageParams.mirrorId);
+  const { editable } = useAppSelector(Selectors.getPermissions);
+  const snapshot = useAppSelector(Selectors.getSnapshot)!;
   const isViewLock = useShowViewLockModal();
-  const isViewSync = useSelector((state) => {
+  const isViewSync = useAppSelector((state) => {
     if (!state.labs.includes('view_manual_save')) {
       return true;
     }

@@ -18,7 +18,7 @@
 
 // Form common
 export * from './AddButton';
-export * from './ErrorList';
+export * from './DefaultErrorList';
 export * from './IconButton';
 
 // Field common

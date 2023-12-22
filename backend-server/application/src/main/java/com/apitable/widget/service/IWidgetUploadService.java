@@ -23,21 +23,25 @@ import com.apitable.base.model.WidgetUploadMetaVo;
 import com.apitable.base.model.WidgetUploadTokenVo;
 import java.util.List;
 
+/**
+ * widget upload service.
+ */
 public interface IWidgetUploadService {
 
     /**
-     * batch create widget asset pre-signed url
+     * batch create widget asset pre-signed url.
      *
-     * @param userId            user id
-     * @param packageId         widget package id
-     * @param data              widget uploadData
+     * @param userId    user id
+     * @param packageId widget package id
+     * @param data      widget uploadData
      * @return AssetUploadTokenVo
      */
     List<WidgetUploadTokenVo> createWidgetAssetPreSignedUrl(Long userId,
-        String packageId, WidgetAssetUploadCertificateRO data);
+                                                            String packageId,
+                                                            WidgetAssetUploadCertificateRO data);
 
     /**
-     * get widget upload meta
+     * get widget upload meta.
      *
      * @return WidgetUploadMetaVo
      */

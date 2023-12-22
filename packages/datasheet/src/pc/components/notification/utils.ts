@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import semver from 'semver';
 import { integrateCdnHost, Strings, SystemConfig, t } from '@apitable/core';
 import { Notifications, Templates, Types } from '@apitable/core/src/config/system_config.interface';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { getEnvVariables, getInitializationData } from 'pc/utils/env';
 
 const jsonToObject = (object: any) => {
@@ -54,7 +54,7 @@ export const isUserInOldVersionOrLocal = (latestVersion: string) => {
   return semver.lt(removeFirstV(curVersion), removeFirstV(latestVersion));
 };
 
-export const stringToActions = (arr: string[], id: string, url?: string) => {
+export const stringToActions = (arr: string[], id: string, url?: string | { text: string }) => {
   arr.forEach((str) => {
     const firstIndex = str.indexOf('(');
     const secondIndex = str.lastIndexOf(')');
@@ -67,8 +67,9 @@ export const stringToActions = (arr: string[], id: string, url?: string) => {
         break;
       case 'window_open_url':
       case 'window_location_href_to':
-        if (url) {
-          TriggerCommands[actionStr]?.(url);
+        const _url = typeof url === 'string' ? url : url?.text;
+        if (_url) {
+          TriggerCommands[actionStr]?.(_url);
         }
         break;
       default:

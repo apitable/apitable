@@ -17,14 +17,15 @@
  */
 
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { MemberType, Strings, t, IMember, ISpaceInfo, ISpaceBasicInfo, UnitItem } from '@apitable/core';
 import { generateUserInfo } from 'pc/utils';
 import styles from './style.module.less';
 import { UnitTag } from './unit_tag';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import { SelectUnitSource } from '.';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ISelectUnitRightProps {
   source?: SelectUnitSource;
@@ -35,7 +36,7 @@ interface ISelectUnitRightProps {
 
 export const SelectUnitRight: React.FC<React.PropsWithChildren<ISelectUnitRightProps>> = (props) => {
   const { source, checkedList, cancelCheck, spaceInfo: wecomSpaceInfo = null } = props;
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo) || wecomSpaceInfo;
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo) || wecomSpaceInfo;
   return (
     <div className={styles.right}>
       <div className={styles.title}>{t(Strings.selected)}</div>

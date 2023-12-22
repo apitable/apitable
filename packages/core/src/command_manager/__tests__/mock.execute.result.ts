@@ -18,8 +18,9 @@
 
 import { ExecuteResult, ExecuteType, ICollaCommandExecuteSuccessResult } from 'command_manager/types';
 import { IJOTAction, ILocalChangeset, IOperation, OTActionName } from 'engine';
-import { IComments, IResourceOpsCollect } from 'index';
-import { ICellValue } from 'model';
+import { IResourceOpsCollect } from 'command_manager/command_manager';
+import { IComments } from 'modules/database/store/interfaces/resource/datasheet/datasheet';
+import { ICellValue } from 'model/record';
 import { FieldType, ResourceType } from 'types';
 
 export const mockOperationOfAddOneDefaultRecordInDst1 = (recordId: string): IOperation => ({

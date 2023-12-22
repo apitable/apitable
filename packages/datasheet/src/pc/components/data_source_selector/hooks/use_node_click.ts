@@ -11,8 +11,17 @@ interface IParams {
 export const useNodeClick = ({ localDispatch, localState, needFetchDatasheetMeta }: IParams) => {
   const { data: datasheetMetaData } = useFetchDatasheetMeta({ localState, localDispatch, needFetchDatasheetMeta });
 
-  const onNodeClick = (nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string) => {
+  const onNodeClick = (nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form' | 'Automation', id: string) => {
     switch (nodeType) {
+      case 'Automation': {
+        if (localState.currentAutomationId !== id) {
+          localDispatch({
+            loading: true,
+          });
+          localDispatch({ currentAutomationId: id });
+        }
+        break;
+      }
       case 'Form': {
         _onFormClick(id);
         break;

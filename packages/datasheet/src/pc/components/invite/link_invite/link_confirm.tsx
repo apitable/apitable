@@ -15,41 +15,43 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 import { useMount } from 'ahooks';
 import Image from 'next/image';
-import { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, FC } from 'react';
+import { useDispatch } from 'react-redux';
 import { Button } from '@apitable/components';
-import { Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t, ThemeName } from '@apitable/core';
+import { ConfigConstant, Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t, ThemeName } from '@apitable/core';
 import { Message, Wrapper } from 'pc/components/common';
 import { HomeWrapper } from 'pc/components/home/home_wrapper';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
+import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import inviteImageDark from 'static/icon/common/invitation_link_page_dark.png';
 import inviteImageLight from 'static/icon/common/invitation_link_page_light.png';
 import { InviteTitle } from '../components/invite_title';
 import { useInvitePageRefreshed } from '../use_invite';
-// @ts-ignore
-import { billingErrorCode, triggerUsageAlertUniversal } from 'enterprise';
 
 const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
+  const [noTraceVerification, setNoTraceVerification] = useState<string | null>(null);
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'linkInvite' });
   const query = useQuery();
-  const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
+  const inviteLinkInfo = useAppSelector((state: IReduxState) => state.invite.inviteLinkInfo);
   const inviteLinkToken = query.get('inviteLinkToken');
   const inviteCode = query.get('inviteCode') || undefined;
   const nodeId = query.get('nodeId');
   const shareId = query.get('shareId') || '';
   const { LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL, INVITE_USER_BY_AUTH0, IS_ENTERPRISE } = getEnvVariables();
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
 
   const InviteImage = themeName === ThemeName.Light ? inviteImageLight : inviteImageDark;
 
-  const { loading, run: join } = useRequest((linkToken, nodeId) => Api.joinViaSpace(linkToken, nodeId), {
-    onSuccess: (res) => {
+  const { loading, run: join } = useRequest(function (linkToken, nodeId, data = '') {
+    return Api.joinViaSpace(linkToken, nodeId, data);
+  }, {
+    onSuccess: function (res: any, params: any[]) {
       const { success, code } = res.data;
       if (success) {
         Router.push(Navigation.WORKBENCH, { params: { spaceId: inviteLinkInfo!.data.spaceId, nodeId: shareId }, clearQuery: true });
@@ -57,7 +59,7 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
         dispatch(StoreActions.updateErrCode(null));
       } else if (code === StatusCode.UN_AUTHORIZED) {
         if (LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL) {
-          const redirectUri = `${location.pathname}?inviteLinkToken=${inviteLinkToken}&inviteCode=${inviteCode}&nodeId=${nodeId}`;
+          const redirectUri = `${location.pathname}?inviteLinkToken=${inviteLinkToken}&inviteCode=${inviteCode}&nodeId=${nodeId}&inviteLinkData=${params[2]}`;
           location.href = `${LOGIN_ON_AUTHORIZATION_REDIRECT_TO_URL}${redirectUri}`;
           return;
         }
@@ -66,6 +68,7 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
           const info = {
             inviteLinkInfo,
             linkToken: inviteLinkToken,
+            inviteLinkData: params[2],
             inviteCode: urlParams.get('inviteCode'),
           };
           localStorage.setItem('invite_link_data', JSON.stringify(info));
@@ -74,16 +77,14 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
         }
         Router.push(Navigation.INVITE, {
           params: { invitePath: 'link/login' },
-          query: { inviteLinkToken: inviteLinkToken!, inviteCode, nodeId },
+          query: { inviteLinkToken: inviteLinkToken!, inviteCode, nodeId, inviteLinkData: params[2] },
         });
-      } else if (code === billingErrorCode.OVER_LIMIT) {
-        return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
       } else {
         window.location.reload();
       }
       return;
     },
-    onError: () => {
+    onError: function () {
       Message.error({ content: t(Strings.error) });
     },
     manual: true,
@@ -91,10 +92,13 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
 
   useMount(() => {
     whenPageRefreshed();
+    initNoTraceVerification(setNoTraceVerification, ConfigConstant.CaptchaIds.LOGIN);
   });
 
   const confirmBtn = () => {
-    join(inviteLinkToken, nodeId);
+    execNoTraceVerification((data) => {
+      join(inviteLinkToken, nodeId, data);
+    });
   };
   if (!inviteLinkInfo) {
     return null;

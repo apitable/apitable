@@ -271,12 +271,15 @@ export const useCells = (props: IUseGridBaseProps) => {
             const realY = y - 0.5;
             const style = { fontWeight: isFirstColumn ? 'bold' : 'normal' };
             const cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldId);
+
+            const permissions = Selectors.getDatasheet(state)?.permissions || {};
             const renderProps = {
               x: realX,
               y: realY,
               columnWidth: width,
               rowHeight,
               recordId,
+              permissions,
               field,
               cellValue,
               isActive,

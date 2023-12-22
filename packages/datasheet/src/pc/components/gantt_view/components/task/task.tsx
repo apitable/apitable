@@ -240,7 +240,7 @@ const Task: FC<React.PropsWithChildren<ITaskProps>> = (props) => {
       const unitStopIndex = instance.getUnitIndex(taskX + taskWidth) - 1;
       let startTime = instance.getDateFromStartDate(unitStartIndex);
       let endTime = instance.getDateFromStartDate(unitStopIndex);
-      const startFieldTimeZone = fieldMap[startFieldId]?.property.timeZone;
+      const startFieldTimeZone = fieldMap[startFieldId]?.property?.timeZone;
       const totalCount = onlyCalcWorkDay ? getDiffCountByWorkdays(startTime, endTime, workDays) : getDiffCount(startTime, endTime) + 1;
       let totalText = onlyCalcWorkDay
         ? t(Strings.gantt_task_total_workdays, { count: totalCount })

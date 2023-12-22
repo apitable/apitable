@@ -20,9 +20,8 @@ package com.apitable.starter.sms.core;
 
 /**
  * <p>
- * SMS message body
+ * SMS message body.
  * </p>
- *
  */
 public class SmsMessage {
 

@@ -23,7 +23,7 @@ import { last } from 'lodash';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { Provider, shallowEqual, useDispatch } from 'react-redux';
 import { IconButton, Skeleton, ThemeProvider, useThemeColors } from '@apitable/components';
 import {
   Api,
@@ -46,7 +46,9 @@ import { expandRecordManager } from 'modules/database/expand_record_manager';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 
 // eslint-disable-next-line no-restricted-imports
-import { Message, Modal as CustomModal, Tooltip } from 'pc/components/common';
+import { Message } from 'pc/components/common/message';
+import { Modal as CustomModal } from 'pc/components/common/modal/modal/modal';
+import { Tooltip } from 'pc/components/common/tooltip';
 import { EXPAND_RECORD, RecordType } from 'pc/components/expand_record/expand_record.enum';
 import {
   IExpandRecordComponentProp,
@@ -58,17 +60,20 @@ import { ExpandRecordMoreOption } from 'pc/components/expand_record/expand_recor
 import { RecordPageTurn } from 'pc/components/expand_record/record_page_turn';
 import { clearExpandModal, expandRecordIdNavigate, getRecordName, recordModalCloseFns } from 'pc/components/expand_record/utils';
 import { FieldDesc } from 'pc/components/multi_grid/field_desc';
-import { FieldSetting } from 'pc/components/multi_grid/field_setting';
+import { FieldSetting } from 'pc/components/multi_grid/field_setting/field_setting';
+
 import { Router } from 'pc/components/route_manager/router';
 import { useGetViewByIdWithDefault, useQuery, useRequest, useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ActivitySelectType, KeyCode } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, StorageName } from 'pc/utils/storage';
 import { dispatch } from 'pc/worker/store';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { IModalReturn } from '../common/modal/modal/modal.interface';
+import { JobTaskProvider } from '../editors/button_editor/job_task';
 import { ActivityPane } from './activity_pane';
 import { ICacheType } from './activity_pane/interface';
 import { EditorContainer } from './editor_container';
@@ -191,26 +196,28 @@ export const expandRecordInner = (props: IExpandRecordInnerProp) => {
 
   root.render(
     <Provider store={store}>
-      <ExpandRecordModal onCancel={modalClose} wrapClassName={styles.mobileWrapper} forceCenter={props.forceCenter}>
-        <ErrorBoundary
-          onError={() => {
-            clearExpandModal();
-            setTimeout(() => Api.keepTabbar({}), 500);
-          }}
-          beforeCapture={(scope) => {
-            scope.setTag('catcher', 'expandRecordCrash');
-          }}
-        >
-          <WrapperWithTheme {...{ ...wrapperProps, nodeId: wrapperProps.datasheetId }} />
-        </ErrorBoundary>
-        <div
-          ref={focusHolderRef}
-          tabIndex={-1}
-          onFocus={() => {
-            document.body.onkeydown = monitorBodyFocus;
-          }}
-        />
-      </ExpandRecordModal>
+      <JobTaskProvider>
+        <ExpandRecordModal onCancel={modalClose} wrapClassName={styles.mobileWrapper} forceCenter={props.forceCenter}>
+          <ErrorBoundary
+            onError={() => {
+              clearExpandModal();
+              setTimeout(() => Api.keepTabbar({}), 500);
+            }}
+            beforeCapture={(scope) => {
+              scope.setTag('catcher', 'expandRecordCrash');
+            }}
+          >
+            <WrapperWithTheme {...{ ...wrapperProps, nodeId: wrapperProps.datasheetId }} />
+          </ErrorBoundary>
+          <div
+            ref={focusHolderRef}
+            tabIndex={-1}
+            onFocus={() => {
+              document.body.onkeydown = monitorBodyFocus;
+            }}
+          />
+        </ExpandRecordModal>
+      </JobTaskProvider>
     </Provider>,
   );
 };
@@ -222,7 +229,7 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = (pr
   const [realRecordIds, setRealRecordIds] = useState(recordIds);
   const isMirror = nodeId.startsWith(ResourceIdPrefix.Mirror);
   const [datasheetId, setDatasheetId] = useState<string | undefined>(nodeId);
-  const { snapshot, isPartOfData, visibleRows, datasheetErrorCode, pageParamsRecordId, activeDatasheetId, mirrorSourceDstId } = useSelector(
+  const { snapshot, isPartOfData, visibleRows, datasheetErrorCode, pageParamsRecordId, activeDatasheetId, mirrorSourceDstId } = useAppSelector(
     (state) => ({
       snapshot: Selectors.getSnapshot(state, datasheetId),
       isPartOfData: Selectors.getDatasheet(state, datasheetId)?.isPartOfData,
@@ -389,7 +396,7 @@ const Wrapper: React.FC<React.PropsWithChildren<IExpandRecordWrapperProp>> = (pr
 };
 
 const WrapperWithTheme = (props: any) => {
-  const cacheTheme = useSelector(Selectors.getTheme);
+  const cacheTheme = useAppSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>
       <Wrapper {...props} />
@@ -400,7 +407,7 @@ const WrapperWithTheme = (props: any) => {
 const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordComponentProp>> = (props) => {
   const colors = useThemeColors();
   const { activeRecordId, datasheetId, mirrorId, recordIds, modalClose, switchRecord, recordType, pageParamsRecordId } = props;
-  const { allowShowCommentPane, activeDatasheetId, snapshot, shareId, templateId, embedId } = useSelector(
+  const { allowShowCommentPane, activeDatasheetId, snapshot, shareId, templateId, embedId } = useAppSelector(
     (state) => ({
       nodeName: mirrorId ? Selectors.getMirror(state, mirrorId)?.name : Selectors.getDatasheet(state, datasheetId)!.name,
       allowShowCommentPane: Selectors.allowShowCommentPane(state),
@@ -412,8 +419,8 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
     }),
     shallowEqual,
   );
-  // const { fieldId: activeFieldId, operate: activeFieldOperateType } = useSelector(state => Selectors.gridViewActiveFieldState(state, datasheetId));
-  const subscriptions = useSelector((state) => state.subscriptions)!;
+  // const { fieldId: activeFieldId, operate: activeFieldOperateType } = useAppSelector(state => Selectors.gridViewActiveFieldState(state, datasheetId));
+  const subscriptions = useAppSelector((state) => state.subscriptions)!;
   const [commentPaneShow, { toggle: toggleCommentPane, set: setCommentPane }] = useToggle(Boolean(allowShowCommentPane));
   const { screenIsAtMost } = useResponsive();
   const query = useQuery();
@@ -422,7 +429,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
   const viewId = props.viewId || view.id;
   const clickWithinField = useRef<boolean>();
   const _dispatch = useDispatch();
-  const embedInfo = useSelector((state) => state.embedInfo);
+  const embedInfo = useAppSelector((state) => state.embedInfo);
   const isEmbedShowCommentPane = embedId ? embedInfo.permissionType === PermissionType.PRIVATEEDIT : true;
 
   const { run: subscribeRecordByIds } = useRequest(DatasheetApi.subscribeRecordByIds, { manual: true });
@@ -433,8 +440,8 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
     { defaultValue: {} },
   );
 
-  const isSideRecordOpen = useSelector((state) => state.space.isSideRecordOpen);
-  const recordVision = useSelector((state) => state.recordVision);
+  const isSideRecordOpen = useAppSelector((state) => state.space.isSideRecordOpen);
+  const recordVision = useAppSelector((state) => state.recordVision);
   const isColumnLayout = recordVision === RecordVision.Side && isSideRecordOpen && !props.forceCenter;
   const isSetFocusIdByClickFieldRef = useRef(false);
 
@@ -453,7 +460,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
     fieldId: activeFieldId,
     operate: activeFieldOperateType,
     from: setFieldFrom,
-  } = useSelector((state) => Selectors.gridViewActiveFieldState(state, datasheetId));
+  } = useAppSelector((state) => Selectors.gridViewActiveFieldState(state, datasheetId));
 
   useMount(() => {
     if (!allowShowCommentPane) {
@@ -480,7 +487,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
   }, [_dispatch, recordVision]);
 
   const fromCurrentDatasheet = datasheetId === activeDatasheetId;
-  const activeCellFieldId = useSelector((state) => {
+  const activeCellFieldId = useAppSelector((state) => {
     const activeCell = Selectors.getActiveCell(state);
     return activeCell?.fieldId || null;
   });

@@ -24,11 +24,11 @@ import { CloseOutlined } from '@apitable/icons';
 import { StatusIconFunc } from 'pc/components/common/icon';
 import { FooterBtnInModal } from 'pc/components/common/modal/components/footer_btn';
 import { store } from 'pc/store';
-import { stopPropagation } from '../../../../utils';
+import { stopPropagation } from 'pc/utils/dom';
 import { IModalFuncBaseProps } from './modal.interface';
 import { ModalWithTheme } from './modal_with_theme';
-import styles from './style.module.less';
 import { destroyFns } from './utils';
+import styles from './style.module.less';
 
 export const FuncModalBase = (config: IModalFuncBaseProps) => {
   const {

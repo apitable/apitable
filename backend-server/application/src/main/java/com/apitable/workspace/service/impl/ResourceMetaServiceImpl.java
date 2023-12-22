@@ -18,15 +18,10 @@
 
 package com.apitable.workspace.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
+import static com.apitable.shared.constants.NodeDescConstants.FORM_DESC_DESCRIPTION_CHILDREN_PREFIX;
+import static com.apitable.shared.constants.NodeDescConstants.FORM_DESC_DESCRIPTION_CHILDREN_RAW_PREFIX;
+import static com.apitable.shared.constants.NodeDescConstants.FORM_DESC_DESCRIPTION_CHILDREN_TEXT_PREFIX;
+import static com.apitable.shared.constants.NodeDescConstants.FORM_DESC_DESCRIPTION_PREFIX;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ReUtil;
@@ -51,16 +46,21 @@ import com.apitable.workspace.service.IDatasheetService;
 import com.apitable.workspace.service.IResourceMetaService;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.apitable.shared.constants.NodeDescConstants.FORM_DESC_DESCRIPTION_CHILDREN_PREFIX;
-import static com.apitable.shared.constants.NodeDescConstants.FORM_DESC_DESCRIPTION_CHILDREN_RAW_PREFIX;
-import static com.apitable.shared.constants.NodeDescConstants.FORM_DESC_DESCRIPTION_CHILDREN_TEXT_PREFIX;
-import static com.apitable.shared.constants.NodeDescConstants.FORM_DESC_DESCRIPTION_PREFIX;
-
+/**
+ * resource meta service implementation.
+ */
 @Slf4j
 @Service
 public class ResourceMetaServiceImpl implements IResourceMetaService {
@@ -79,22 +79,25 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void copyBatch(Long userId, Collection<String> originResourceId, Map<String, String> newResourceMap) {
-        log.info("batch copy resource metadata，userId:{},originResourceId:{},newResourceMap:{}", userId, originResourceId, newResourceMap);
-        List<ResourceMetaEntity> entities = resourceMetaMapper.selectByResourceIds(originResourceId);
+    public void copyBatch(Long userId, Collection<String> originResourceId,
+                          Map<String, String> newResourceMap) {
+        log.info("batch copy resource metadata，userId:{},originResourceId:{},newResourceMap:{}",
+            userId, originResourceId, newResourceMap);
+        List<ResourceMetaEntity> entities =
+            resourceMetaMapper.selectByResourceIds(originResourceId);
         if (CollUtil.isEmpty(entities)) {
             return;
         }
         List<ResourceMetaEntity> insertEntities = new ArrayList<>(entities.size());
         for (ResourceMetaEntity entity : entities) {
             ResourceMetaEntity resourceMeta = ResourceMetaEntity.builder()
-                    .id(IdWorker.getId())
-                    .resourceId(newResourceMap.get(entity.getResourceId()))
-                    .resourceType(entity.getResourceType())
-                    .metaData(entity.getMetaData())
-                    .createdBy(userId)
-                    .updatedBy(userId)
-                    .build();
+                .id(IdWorker.getId())
+                .resourceId(newResourceMap.get(entity.getResourceId()))
+                .resourceType(entity.getResourceType())
+                .metaData(entity.getMetaData())
+                .createdBy(userId)
+                .updatedBy(userId)
+                .build();
             insertEntities.add(resourceMeta);
         }
         boolean flag = SqlHelper.retBool(resourceMetaMapper.insertBatch(insertEntities));
@@ -104,45 +107,53 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void create(Long userId, String resourceId, Integer resourceType, String metaData) {
-        log.info("create resource metadata，userId:{},resourceId:{},resourceType:{},metaData:{}", userId, resourceId, resourceType, metaData);
+        log.info("create resource metadata，userId:{},resourceId:{},resourceType:{},metaData:{}",
+            userId, resourceId, resourceType, metaData);
         ResourceMetaEntity entity = ResourceMetaEntity.builder()
-                .id(IdWorker.getId())
-                .resourceId(resourceId)
-                .resourceType(resourceType)
-                .metaData(metaData)
-                .createdBy(userId)
-                .updatedBy(userId)
-                .build();
-        boolean flag = SqlHelper.retBool(resourceMetaMapper.insertBatch(Collections.singletonList(entity)));
+            .id(IdWorker.getId())
+            .resourceId(resourceId)
+            .resourceType(resourceType)
+            .metaData(metaData)
+            .createdBy(userId)
+            .updatedBy(userId)
+            .build();
+        boolean flag =
+            SqlHelper.retBool(resourceMetaMapper.insertBatch(Collections.singletonList(entity)));
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void copyResourceMeta(Long userId, String spaceId, String originRscId, String destRscId, ResourceType type) {
-        log.info("[{}] copy metadata configuration of resource [{}] to new resource [{}]", userId, originRscId, destRscId);
+    public void copyResourceMeta(Long userId, String spaceId, String originRscId, String destRscId,
+                                 ResourceType type) {
+        log.info("[{}] copy metadata configuration of resource [{}] to new resource [{}]", userId,
+            originRscId, destRscId);
         String metaData = resourceMetaMapper.selectMetaDataByResourceId(originRscId);
         Map<String, String> newWidgetIdMap = new HashMap<>(8);
         // assemble new resource metadata
         String meta = this.generateResourceMeta(metaData, newWidgetIdMap, type);
         // save new resource metadata
         this.create(userId, destRscId, type.getValue(), meta);
-        if (newWidgetIdMap.size() == 0) {
+        if (newWidgetIdMap.isEmpty()) {
             return;
         }
         // Query table component association information
-        List<DatasheetWidgetDTO> datasheetWidgetDTOList = datasheetWidgetMapper.selectDtoByWidgetIds(newWidgetIdMap.keySet());
+        List<DatasheetWidgetDTO> datasheetWidgetDTOList =
+            datasheetWidgetMapper.selectDtoByWidgetIds(newWidgetIdMap.keySet());
         Map<String, DatasheetWidgetDTO> newWidgetIdToDstIdMap = datasheetWidgetDTOList.stream()
-                .collect(Collectors.toMap(dto -> newWidgetIdMap.get(dto.getWidgetId()),
-                        dto -> new DatasheetWidgetDTO(dto.getDstId(), type == ResourceType.DASHBOARD ? dto.getSourceId() : destRscId)));
+            .collect(Collectors.toMap(dto -> newWidgetIdMap.get(dto.getWidgetId()),
+                dto -> new DatasheetWidgetDTO(dto.getDstId(),
+                    type == ResourceType.DASHBOARD ? dto.getSourceId() : destRscId)));
         // batch generation of new components
         Map<String, String> newNodeMap = new HashMap<>(1);
         newNodeMap.put(originRscId, destRscId);
-        iWidgetService.copyBatch(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstIdMap);
+        iWidgetService.copyBatch(userId, spaceId, newNodeMap, newWidgetIdMap,
+            newWidgetIdToDstIdMap);
     }
 
     @Override
-    public void batchCopyResourceMeta(Long userId, String spaceId, List<String> originRscIds, Map<String, String> newNodeMap, ResourceType type) {
+    public void batchCopyResourceMeta(Long userId, String spaceId, List<String> originRscIds,
+                                      Map<String, String> newNodeMap, ResourceType type) {
         List<ResourceMetaEntity> entities = resourceMetaMapper.selectByResourceIds(originRscIds);
         if (CollUtil.isEmpty(entities)) {
             return;
@@ -153,32 +164,33 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
             // assemble new resource metadata
             String meta = this.generateResourceMeta(entity.getMetaData(), newWidgetIdMap, type);
             ResourceMetaEntity resourceMeta = ResourceMetaEntity.builder()
-                    .id(IdWorker.getId())
-                    .resourceId(newNodeMap.get(entity.getResourceId()))
-                    .resourceType(entity.getResourceType())
-                    .metaData(meta)
-                    .createdBy(userId)
-                    .updatedBy(userId)
-                    .build();
+                .id(IdWorker.getId())
+                .resourceId(newNodeMap.get(entity.getResourceId()))
+                .resourceType(entity.getResourceType())
+                .metaData(meta)
+                .createdBy(userId)
+                .updatedBy(userId)
+                .build();
             insertEntities.add(resourceMeta);
         }
         // save new dashboard resource metadata
         boolean flag = SqlHelper.retBool(resourceMetaMapper.insertBatch(insertEntities));
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
 
-        if (newWidgetIdMap.size() == 0) {
+        if (newWidgetIdMap.isEmpty()) {
             return;
         }
         // Query number table component association information
-        List<DatasheetWidgetDTO> datasheetWidgetDTOList = datasheetWidgetMapper.selectDtoByWidgetIds(newWidgetIdMap.keySet());
+        List<DatasheetWidgetDTO> datasheetWidgetDTOList =
+            datasheetWidgetMapper.selectDtoByWidgetIds(newWidgetIdMap.keySet());
         // The data source number table is also listed in the dump, and the new reference relationship with the component is retained.
         Map<String, DatasheetWidgetDTO> newWidgetIdToDstMap = datasheetWidgetDTOList.stream()
-                .filter(dto -> newNodeMap.containsKey(dto.getDstId()))
-                .collect(Collectors.toMap(dto -> newWidgetIdMap.get(dto.getWidgetId()), dto -> {
-                    String dstId = newNodeMap.get(dto.getDstId());
-                    String sourceId = newNodeMap.getOrDefault(dto.getSourceId(), dstId);
-                    return new DatasheetWidgetDTO(dstId, sourceId);
-                }));
+            .filter(dto -> newNodeMap.containsKey(dto.getDstId()))
+            .collect(Collectors.toMap(dto -> newWidgetIdMap.get(dto.getWidgetId()), dto -> {
+                String dstId = newNodeMap.get(dto.getDstId());
+                String sourceId = newNodeMap.getOrDefault(dto.getSourceId(), dstId);
+                return new DatasheetWidgetDTO(dstId, sourceId);
+            }));
 
         // batch generation of new components
         iWidgetService.copyBatch(userId, spaceId, newNodeMap, newWidgetIdMap, newWidgetIdToDstMap);
@@ -194,21 +206,26 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
             return NodeDescParseDTO.builder().content(content).imageUrl(imageUrl).build();
         }
         JSONUtil.parseArray(descObj).forEach(i -> {
-            Object childObj = JSONUtil.getByPath(JSONUtil.parse(i), FORM_DESC_DESCRIPTION_CHILDREN_PREFIX);
+            Object childObj =
+                JSONUtil.getByPath(JSONUtil.parse(i), FORM_DESC_DESCRIPTION_CHILDREN_PREFIX);
             if (null != childObj) {
                 JSONUtil.parseArray(childObj).forEach(item -> {
-                    Object text = JSONUtil.getByPath(JSONUtil.parse(item), FORM_DESC_DESCRIPTION_CHILDREN_TEXT_PREFIX);
+                    Object text = JSONUtil.getByPath(JSONUtil.parse(item),
+                        FORM_DESC_DESCRIPTION_CHILDREN_TEXT_PREFIX);
                     if (text instanceof String) {
                         String reStr = HtmlUtil.escape(
-                                ReUtil.replaceAll(text.toString(), NodeDescConstants.DESC_JSON_DATA_ESCAPE_RE, " "));
+                            ReUtil.replaceAll(text.toString(),
+                                NodeDescConstants.DESC_JSON_DATA_ESCAPE_RE, " "));
                         if (StrUtil.isNotBlank(reStr)) {
                             content.add(reStr);
                         }
                     }
-                    Object raw = JSONUtil.getByPath(JSONUtil.parse(item), FORM_DESC_DESCRIPTION_CHILDREN_RAW_PREFIX);
+                    Object raw = JSONUtil.getByPath(JSONUtil.parse(item),
+                        FORM_DESC_DESCRIPTION_CHILDREN_RAW_PREFIX);
                     if (raw instanceof String) {
                         String reStr = HtmlUtil.escape(
-                                ReUtil.replaceAll(raw.toString(), NodeDescConstants.DESC_JSON_DATA_ESCAPE_RE, " "));
+                            ReUtil.replaceAll(raw.toString(),
+                                NodeDescConstants.DESC_JSON_DATA_ESCAPE_RE, " "));
                         if (StrUtil.isNotBlank(reStr)) {
                             content.add(reStr);
                         }
@@ -237,7 +254,8 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
         return JSONUtil.parseObj(meta).toString();
     }
 
-    private String generateResourceMeta(String metaData, Map<String, String> newWidgetIdMap, ResourceType type) {
+    private String generateResourceMeta(String metaData, Map<String, String> newWidgetIdMap,
+                                        ResourceType type) {
         String meta;
         switch (type) {
             case DASHBOARD:
@@ -245,9 +263,12 @@ public class ResourceMetaServiceImpl implements IResourceMetaService {
                 meta = this.parseDashboardMeta(metaData, newWidgetIdMap);
                 break;
             case MIRROR:
-                JSONArray panels = JSONUtil.isJsonObj(metaData) ? JSONUtil.parseObj(metaData).getJSONArray("widgetPanels") : null;
-                JSONArray widgetPanels = iDatasheetService.generateWidgetPanels(panels, newWidgetIdMap);
-                meta = widgetPanels.size() == 0 ? JSONUtil.createObj().toString() : JSONUtil.createObj().set("widgetPanels", widgetPanels).toString();
+                JSONArray panels = JSONUtil.isTypeJSONObject(metaData)
+                    ? JSONUtil.parseObj(metaData).getJSONArray("widgetPanels") : null;
+                JSONArray widgetPanels =
+                    iDatasheetService.generateWidgetPanels(panels, newWidgetIdMap);
+                meta = widgetPanels.isEmpty() ? JSONUtil.createObj().toString() :
+                    JSONUtil.createObj().set("widgetPanels", widgetPanels).toString();
                 break;
             default:
                 throw new BusinessException("Types of resources that have not yet been processed.");

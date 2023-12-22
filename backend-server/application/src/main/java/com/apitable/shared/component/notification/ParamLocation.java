@@ -20,7 +20,7 @@ package com.apitable.shared.component.notification;
 
 /**
  * <p>
- * param location
+ * param location.
  * </p>
  *
  * @author Shawn Deng

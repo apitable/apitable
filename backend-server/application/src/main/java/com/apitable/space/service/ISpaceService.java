@@ -18,8 +18,8 @@
 
 package com.apitable.space.service;
 
-import com.apitable.interfaces.ai.model.CreditInfo;
 import com.apitable.interfaces.ai.model.ChartTimeDimension;
+import com.apitable.interfaces.ai.model.CreditInfo;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
 import com.apitable.internal.vo.InternalSpaceUsageVo;
 import com.apitable.space.dto.GetSpaceListFilterCondition;
@@ -35,9 +35,11 @@ import com.apitable.space.vo.SpaceSubscribeVo;
 import com.apitable.space.vo.SpaceVO;
 import com.apitable.space.vo.UserSpaceVo;
 import com.apitable.user.entity.UserEntity;
+import com.apitable.workspace.enums.NodeType;
 import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * space service interface.
@@ -142,6 +144,15 @@ public interface ISpaceService extends IService<SpaceEntity> {
     List<SpaceVO> getSpaceListByUserId(Long userId, GetSpaceListFilterCondition condition);
 
     /**
+     * get node count by space id and exclude node type.
+     *
+     * @param spaceId space id
+     * @param exclude exclude node type
+     * @return node count
+     */
+    long getNodeCountBySpaceId(String spaceId, Predicate<NodeType> exclude);
+
+    /**
      * get space credit info.
      *
      * @param spaceId space id
@@ -181,6 +192,41 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @param addedSeatNums added seat nums
      */
     void checkSeatOverLimit(String spaceId, long addedSeatNums);
+
+    /**
+     * check whether file nums of the space is over limit.
+     *
+     * @param spaceId space id
+     */
+    void checkFileNumOverLimit(String spaceId);
+
+    /**
+     * check whether file nums of the space is over limit.
+     *
+     * @param spaceId     space id
+     * @param addFileNums added file nums
+     */
+    void checkFileNumOverLimit(String spaceId, long addFileNums);
+
+    /**
+     * check whether seat nums of the space is over limit.
+     * If the limit is exceeded, a notification needs to be sent
+     *
+     * @param spaceId       space id
+     * @param addedSeatNums added seat nums
+     * @param sendNotify    whether send notify
+     * @param isAllMember   whether all member
+     */
+    boolean checkSeatOverLimitAndSendNotify(List<Long> userIds, String spaceId, long addedSeatNums,
+                                            boolean isAllMember, boolean sendNotify);
+
+    /**
+     * Get the seat usage status of third-party IM.
+     *
+     * @param spaceId space id
+     * @return SeatUsage
+     */
+    SeatUsage getSeatUsageForIM(String spaceId);
 
     /**
      * get space info.
@@ -275,22 +321,6 @@ public interface ISpaceService extends IService<SpaceEntity> {
     void checkMembersIsMainAdmin(String spaceId, List<Long> memberIds);
 
     /**
-     * queries whether a member is in a space.
-     *
-     * @param spaceId  space id
-     * @param memberId memberId
-     */
-    void checkMemberInSpace(String spaceId, Long memberId);
-
-    /**
-     * batch queries whether a member is in a space.
-     *
-     * @param spaceId   space id
-     * @param memberIds memberIds
-     */
-    void checkMembersInSpace(String spaceId, List<Long> memberIds);
-
-    /**
      * get permission resource in space.
      *
      * @param userId  userId
@@ -367,8 +397,9 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * check space available.
      *
      * @param spaceId spaceId
+     * @return SpaceEntity
      */
-    void isSpaceAvailable(String spaceId);
+    SpaceEntity isSpaceAvailable(String spaceId);
 
     /**
      * Check whether the user is in space.
@@ -386,6 +417,15 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @return SpaceSubscribeVo
      */
     SpaceSubscribeVo getSpaceSubscriptionInfo(String spaceId);
+
+    /**
+     * get space owner open id.
+     *
+     * @param spaceId space id
+     * @return open id
+     */
+    String getSpaceOwnerOpenId(String spaceId);
+
 
     /**
      * Get space seat available status.

@@ -20,7 +20,7 @@ package com.apitable.shared.captcha;
 
 /**
  * <p>
- * global captcha business type scope
+ * global captcha business type scope.
  * </p>
  *
  * @author Shawn Deng
@@ -57,6 +57,12 @@ public enum CodeValidateScope {
 
     SOCIAL_USER_BIND;
 
+    /**
+     * transform name to enum.
+     *
+     * @param name name
+     * @return enum
+     */
     public static CodeValidateScope fromName(String name) {
         CodeValidateScope scope = null;
         for (CodeValidateScope ele : CodeValidateScope.values()) {

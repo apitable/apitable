@@ -17,20 +17,19 @@
  */
 
 import { FC } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { IReduxState } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileBar } from 'pc/components/mobile_bar';
-// @ts-ignore
-import { ChatWelcome } from 'enterprise';
 import { CreateDatasheet } from 'pc/components/workspace/welcome/components/create_datasheet/create_datasheet';
 import { Guide } from 'pc/components/workspace/welcome/components/guide/guide';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
-
-console.log({ ChatWelcome });
+// @ts-ignore
+import { ChatWelcome } from 'enterprise/chat_welcome/chat_welcome';
 
 export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
-  const { treeNodesMap, rootId } = useSelector(
+  const { treeNodesMap, rootId } = useAppSelector(
     (state: IReduxState) => ({
       treeNodesMap: state.catalogTree.treeNodesMap,
       rootId: state.catalogTree.rootId,
@@ -38,7 +37,7 @@ export const Welcome: FC<React.PropsWithChildren<unknown>> = () => {
     }),
     shallowEqual,
   );
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
 
   if (!treeNodesMap[rootId] || !spaceId) {
     return <></>;

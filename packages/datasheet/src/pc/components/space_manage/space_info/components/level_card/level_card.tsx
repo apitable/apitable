@@ -20,19 +20,21 @@ import dayjs from 'dayjs';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, ButtonGroup, Typography, useThemeColors } from '@apitable/components';
 import { IReduxState, Navigation, Strings, t } from '@apitable/core';
 import { QuestionCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { ISpaceLevelType, LevelType, Position } from '../../interface';
 import { useLevelInfo } from '../../utils';
-import styles from './style.module.less';
 // @ts-ignore
-import { showUpgradeContactUs, SubscribePageType, isEnterprise } from 'enterprise';
+import { SubscribePageType } from 'enterprise/subscribe_system/config';
+// @ts-ignore
+import { showUpgradeContactUs } from 'enterprise/subscribe_system/order_modal/pay_order_success';
+import styles from './style.module.less';
 
 interface ILevelCard {
   type: ISpaceLevelType;
@@ -62,15 +64,16 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
     },
     strokeColor,
   } = useLevelInfo(type, deadline);
+  const { IS_ENTERPRISE } = getEnvVariables();
   const colors = useThemeColors();
-  const space = useSelector((state) => state.space);
-  const onTrial = useSelector((state: IReduxState) => state.billing?.subscription?.onTrial);
+  const space = useAppSelector((state) => state.space);
+  const { onTrial, product } = useAppSelector((state: IReduxState) => state.billing?.subscription) || {};
   const appType = space.curSpaceInfo?.social.appType;
   const expirationText = useMemo(() => {
     if (expiration <= 0) {
       return t(Strings.without_day);
     }
-    return dayjs(typeof expiration === 'number' ? expiration * 1000 : expiration).format('YYYY-MM-DD');
+    return dayjs.tz(typeof expiration === 'number' ? expiration * 1000 : expiration).format('YYYY-MM-DD');
   }, [expiration]);
 
   const style: React.CSSProperties = useMemo(() => {
@@ -120,7 +123,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
         </Button>
       );
     }
-    if (type === LevelType.Free || type === LevelType.Plus || type === LevelType.Pro) {
+    if (type === LevelType.Free || type === LevelType.Plus || type === LevelType.Pro || type === LevelType.Starter || type === LevelType.Business) {
       return (
         <Button
           onClick={() => {
@@ -208,7 +211,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
             </span>
           )}
         </div>
-        {isEnterprise && operateButton}
+        {IS_ENTERPRISE && !product?.includes('appsumo') && operateButton}
       </div>
     </div>
   );

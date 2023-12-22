@@ -1,11 +1,27 @@
 import produce from 'immer';
 import { useAtom, useAtomValue } from 'jotai/index';
 import { useContext, useMemo } from 'react';
+import { IAutomationRobotDetailItem } from 'pc/components/robot/robot_context';
+import { getActionList, getTriggerList } from 'pc/components/robot/robot_detail/utils';
 import { getResourceAutomationDetail } from '../../robot/api';
-import { ShareContext } from '../../share';
+import { ShareContext } from '../../share/share';
 import { automationStateAtom, loadableFormList } from './atoms';
 
 export * from './atoms';
+
+export const getResourceAutomationDetailIntegrated = async (resourceId: string, robotId: string,
+  options: {
+                                                       shareId?: string
+                                                     }
+): Promise<IAutomationRobotDetailItem> => {
+  const resp = await getResourceAutomationDetail(resourceId, robotId, options);
+  return {
+    ...resp,
+    triggers: resp.triggers,
+    actions: getActionList(resp.actions)
+  };
+};
+
 export const useAutomationController = () => {
   const [state, setAutomationAtom] = useAtom(automationStateAtom);
 
@@ -16,7 +32,7 @@ export const useAutomationController = () => {
       api: {
         refreshItem: async () => {
           if (state?.resourceId && state?.currentRobotId) {
-            const itemDetail = await getResourceAutomationDetail(state?.resourceId, state?.currentRobotId, {
+            const itemDetail = await getResourceAutomationDetailIntegrated(state?.resourceId, state?.currentRobotId, {
               shareId: shareInfo?.shareId
             });
             setAutomationAtom(draft => produce(draft, state => {
@@ -36,7 +52,7 @@ export const useAutomationController = () => {
             return;
           }
           if (data?.resourceId && data?.robotId) {
-            const itemDetail = await getResourceAutomationDetail(data?.resourceId, data?.robotId, {
+            const itemDetail = await getResourceAutomationDetailIntegrated(data?.resourceId, data?.robotId, {
               shareId: shareInfo?.shareId
             });
             setAutomationAtom(state => produce(state, draft => {

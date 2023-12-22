@@ -21,9 +21,8 @@ package com.apitable.organization.ro;
 import com.apitable.shared.constants.PatternConstants;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Pattern.Flag;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 /**
@@ -38,7 +37,7 @@ public class InviteMemberAgainRo {
     @NotNull(message = "The mailbox does not exist, and the invitation cannot be sent again")
     @Schema(description = "Email address, strictly checked",
         requiredMode = RequiredMode.REQUIRED, example = "123456@qq.com")
-    @Pattern(regexp = PatternConstants.EMAIL, flags = Flag.CASE_INSENSITIVE,
+    @Pattern(regexp = PatternConstants.EMAIL, flags = Pattern.Flag.CASE_INSENSITIVE,
         message = "Incorrect mailbox format")
     private String email;
 }

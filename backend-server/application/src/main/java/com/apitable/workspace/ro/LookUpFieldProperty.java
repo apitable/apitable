@@ -22,24 +22,24 @@ import lombok.Data;
 
 /**
  * <p>
- * lookup Field Properties
+ * lookup Field Properties.
  * </p>
  */
 @Data
 public class LookUpFieldProperty {
 
     /**
-     * Mapping associated field ID
+     * Mapping associated field ID.
      */
     private String relatedLinkFieldId;
 
     /**
-     * lookup Target Field ID
+     * lookup Target Field ID.
      */
     private String lookUpTargetFieldId;
 
     /**
-     * DataSheet ID
+     * DataSheet ID.
      */
     private String datasheetId;
 }

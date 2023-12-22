@@ -18,15 +18,14 @@
 
 package com.apitable.base.enums;
 
+import com.apitable.core.support.serializer.IBaseEnum;
+import com.apitable.shared.constants.MailPropConstants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.shared.constants.MailPropConstants;
-import com.apitable.core.support.serializer.IBaseEnum;
-
 /**
  * <p>
- * email verification code type
+ * email verification code type.
  * </p>
  *
  * @author Chambers
@@ -36,17 +35,17 @@ import com.apitable.core.support.serializer.IBaseEnum;
 public enum EmailCodeType implements IBaseEnum {
 
     /**
-     * email binding
+     * email binding.
      */
     BOUND_EMAIL(1, MailPropConstants.SUBJECT_VERIFY_CODE),
 
     /**
-     * email registration
+     * email registration.
      */
     REGISTER_EMAIL(2, MailPropConstants.SUBJECT_REGISTER),
 
     /**
-     * universal check
+     * universal check.
      */
     COMMON_VERIFICATION(3, MailPropConstants.SUBJECT_VERIFY_CODE);
 
@@ -54,6 +53,12 @@ public enum EmailCodeType implements IBaseEnum {
 
     private final String subject;
 
+    /**
+     * transform name to enum.
+     *
+     * @param name name
+     * @return enum
+     */
     public static EmailCodeType ofName(String name) {
         for (EmailCodeType type : EmailCodeType.values()) {
             if (name.equalsIgnoreCase(type.name())) {
@@ -63,6 +68,12 @@ public enum EmailCodeType implements IBaseEnum {
         throw new IllegalArgumentException("unknown email code type");
     }
 
+    /**
+     * transform name to enum.
+     *
+     * @param name name
+     * @return enum
+     */
     public static EmailCodeType fromName(Integer name) {
         for (EmailCodeType type : EmailCodeType.values()) {
             if (type.getValue().equals(name)) {

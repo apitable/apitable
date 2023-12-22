@@ -19,7 +19,7 @@
 import classnames from 'classnames';
 import Trigger from 'rc-trigger';
 import { FC, useState, useEffect } from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Strings, t, Selectors, DATASHEET_ID, StoreActions } from '@apitable/core';
 import { FormOutlined } from '@apitable/icons';
@@ -27,6 +27,8 @@ import { TComponent } from 'pc/components/common/t_component';
 import { ToolItem } from '../tool_item';
 import { FormListPanel, IFormNodeItem } from './form_list_panel';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IForeignFormProps {
   className: string;
@@ -38,10 +40,10 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
   const { className, showLabel = true, isHide } = props;
   const [loading, setLoading] = useState(false);
   const [panelVisible, setPanelVisible] = useState(false);
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const [formList, setFormList] = useState<IFormNodeItem[]>([]);
   const colors = useThemeColors();
-  const { folderId, datasheetId, viewId, viewName } = useSelector((state) => {
+  const { folderId, datasheetId, viewId, viewName } = useAppSelector((state) => {
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const datasheet = Selectors.getDatasheet(state, datasheetId);
     const activeView = Selectors.getActiveViewId(state)!;
@@ -54,7 +56,7 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
       viewName,
     };
   }, shallowEqual);
-  const creatable = useSelector((state) => {
+  const creatable = useAppSelector((state) => {
     const { manageable } = state.catalogTree.treeNodesMap[folderId]?.permissions || {};
     const { editable } = Selectors.getPermissions(state);
     return manageable && editable;

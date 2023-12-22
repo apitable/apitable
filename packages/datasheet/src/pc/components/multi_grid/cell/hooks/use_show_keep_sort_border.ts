@@ -16,11 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useSelector, shallowEqual } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Selectors } from '@apitable/core';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const useShowKeepSortBorder = (groupHeadRecordId: string) => {
-  const { gridViewDragState, keepSort } = useSelector((state) => {
+  const { gridViewDragState, keepSort } = useAppSelector((state) => {
     return {
       gridViewDragState: Selectors.getGridViewDragState(state),
       keepSort: Selectors.getActiveViewSortInfo(state)?.keepSort,

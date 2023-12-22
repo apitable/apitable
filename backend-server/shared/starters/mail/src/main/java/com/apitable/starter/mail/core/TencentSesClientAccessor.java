@@ -23,6 +23,9 @@ import com.tencentcloudapi.common.profile.ClientProfile;
 import com.tencentcloudapi.common.profile.HttpProfile;
 import com.tencentcloudapi.ses.v20201002.SesClient;
 
+/**
+ * tencent ses client accessor.
+ */
 public abstract class TencentSesClientAccessor {
 
     private static final String ENDPOINT = "ses.tencentcloudapi.com";
@@ -37,7 +40,17 @@ public abstract class TencentSesClientAccessor {
 
     protected String reply;
 
-    public TencentSesClientAccessor(String region, String secretId, String secretKey, String from, String reply) {
+    /**
+     * constructor.
+     *
+     * @param region    region
+     * @param secretId  secret id
+     * @param secretKey secret key
+     * @param from      from
+     * @param reply     reply
+     */
+    public TencentSesClientAccessor(String region, String secretId, String secretKey, String from,
+                                    String reply) {
         this.region = region;
         this.secretId = secretId;
         this.secretKey = secretKey;

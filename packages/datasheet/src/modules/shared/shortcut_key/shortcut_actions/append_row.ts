@@ -17,7 +17,7 @@
  */
 
 /**
- * https://www.notion.so/vikadata/9ac1f271807f4d99a30c1b5cae32437a
+ * https://www.notion.so/9ac1f271807f4d99a30c1b5cae32437a
  */
 import {
   CollaCommandName,
@@ -31,7 +31,7 @@ import {
   StoreActions,
   ViewType,
 } from '@apitable/core';
-import { expandRecordIdNavigate } from 'pc/components/expand_record';
+import { expandRecordIdNavigate } from 'pc/components/expand_record/utils';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { dispatch } from 'pc/worker/store';
@@ -51,6 +51,7 @@ interface IAppendRowsOption {
 
 export function appendRow(option: IAppendRowsOption = {}): Promise<ICollaCommandExecuteResult<string[]>> {
   const state = store.getState();
+
   const activeCell = Selectors.getActiveCell(state)!;
   const { recordId = activeCell?.recordId, direction = Direction.Down, isDuplicate, recordData, count = 1 } = option;
   const view = Selectors.getCurrentView(state)!;

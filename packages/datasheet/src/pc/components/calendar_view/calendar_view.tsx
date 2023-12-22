@@ -21,7 +21,7 @@ import dayjs from 'dayjs';
 import { FC, useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { Button, Calendar, Tooltip, useThemeColors } from '@apitable/components';
 import {
@@ -60,6 +60,8 @@ import { Drop } from './drop';
 import { RecordList } from './record_list';
 import styles from './styles.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface ICalendarViewProps {
   height: number;
   width: number;
@@ -88,7 +90,7 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
     viewId,
     cacheTheme,
     activeCell,
-  } = useSelector((state) => {
+  } = useAppSelector((state) => {
     const dstId = Selectors.getActiveDatasheetId(state)!;
     const currSnapshot = Selectors.getSnapshot(state, dstId)!;
     const currView = Selectors.getCurrentView(state)!;
@@ -143,7 +145,7 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
   const startField = fieldMap[startFieldId];
   const endField = fieldMap[endFieldId];
   const dispatch = useDispatch();
-  const mirrorId = useSelector((state) => state.pageParams.mirrorId);
+  const mirrorId = useAppSelector((state) => state.pageParams.mirrorId);
 
   useEffect(() => {
     /**
@@ -233,8 +235,8 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
       }
       const startDate = startTime && isStartDateTimeField ? new Date(startTime) : null;
       const endDate = endTime && isEndDateTimeField ? new Date(endTime) : null;
-      const isStartDateValid = startDate ? dayjs(startDate).isValid() : true;
-      const isEndDateValid = endTime ? dayjs(endTime).isValid() : true;
+      const isStartDateValid = startDate ? dayjs.tz(startDate).isValid() : true;
+      const isEndDateValid = endTime ? dayjs.tz(endTime).isValid() : true;
       // Start time, end time must be legal and one of them must not be null
       if (isStartDateValid && isEndDateValid && (startDate || endTime)) {
         records.push({
@@ -315,7 +317,7 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
       data.push({
         recordId,
         fieldId: startFieldId,
-        value: startTime ? dayjs(startTime).valueOf() : null,
+        value: startTime ? dayjs.tz(startTime).valueOf() : null,
       });
     }
     if (endFieldId && endField && isEndDateTimeField) {
@@ -323,7 +325,7 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
       data.push({
         recordId,
         fieldId: endFieldId,
-        value: endTime ? dayjs(endTime).valueOf() : null,
+        value: endTime ? dayjs.tz(endTime).valueOf() : null,
       });
     }
     resourceService.instance!.commandManager.execute({
@@ -348,7 +350,7 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
   }, [currentSearchRecordId]);
 
   const [date, setDate] = useState<dayjs.Dayjs | null>(() => {
-    return dayjs(new Date());
+    return dayjs.tz(new Date());
   });
 
   let panelRight = <React.Fragment />;

@@ -17,8 +17,8 @@
  */
 
 import { Strings, t } from '../../exports/i18n';
-import { LayoutType, ViewType } from '../../exports/store';
-import { getViewById } from '../../exports/store/selectors';
+import { LayoutType, ViewType } from 'modules/shared/store/constants';
+import { getViewById } from 'modules/database/store/selectors/resource/datasheet/base';
 import { FieldType } from 'types';
 import { IGalleryViewProperty, ISnapshot, IViewProperty } from '../../exports/store/interfaces';
 import { DatasheetActions } from '../../commands_actions/datasheet';

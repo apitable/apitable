@@ -23,7 +23,6 @@ import { difference } from 'lodash';
 import Image from 'next/image';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Box, IconButton, Loading, Skeleton, Tooltip, Typography } from '@apitable/components';
 import {
   Api,
@@ -43,6 +42,10 @@ import {
   ThemeName,
 } from '@apitable/core';
 import { CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
+// @ts-ignore
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+// @ts-ignore
+import { Backup } from 'enterprise/time_machine/backup/backup';
 import { Avatar, Modal } from 'pc/components/common';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
@@ -55,10 +58,10 @@ import DataEmptyDark from 'static/icon/common/time_machine_empty_dark.png';
 import DataEmptyLight from 'static/icon/common/time_machine_empty_light.png';
 
 import { TabPaneKeys } from './interface';
-import styles from './style.module.less';
 import { getForeignDatasheetIdsByOp, getOperationInfo } from './utils';
-// @ts-ignore
-import { getSocialWecomUnitName, Backup } from 'enterprise';
+import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const { TabPane } = Tabs;
 
@@ -66,14 +69,14 @@ const MAX_COUNT = Number.MAX_SAFE_INTEGER;
 const DATEFORMAT = 'YYYY-MM-DD HH:mm:ss';
 
 export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: boolean) => void }>> = ({ onClose }) => {
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-  const curDatasheet = useSelector((state) => Selectors.getDatasheet(state, datasheetId));
+  const datasheetId = useAppSelector(Selectors.getActiveDatasheetId)!;
+  const curDatasheet = useAppSelector((state) => Selectors.getDatasheet(state, datasheetId));
   const [curPreview, setCurPreview] = useState<number | string>();
   const [changesetList, setChangesetList] = useState<IRemoteChangeset[]>([]);
   const [fetching, setFetching] = useState(false);
   const [uuidMap, setUuidMap] = useState<Record<string, IMemberInfoInAddressList>>();
-  const currentRevision = useSelector((state) => Selectors.getResourceRevision(state, datasheetId, ResourceType.Datasheet)!);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const currentRevision = useAppSelector((state) => Selectors.getResourceRevision(state, datasheetId, ResourceType.Datasheet)!);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
 
   const uuids = useMemo(() => {
     const uuids =
@@ -88,11 +91,11 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
     return !changesetList?.length;
   }, [changesetList?.length]);
 
-  const currentDatasheetIds = useSelector(Selectors.getDatasheetIds);
+  const currentDatasheetIds = useAppSelector(Selectors.getDatasheetIds);
   const [rollbackIng, setRollbackIng] = useState(false);
   const dispatch = useAppDispatch();
 
-  const theme = useSelector((state) => state.theme);
+  const theme = useAppSelector((state) => state.theme);
   const DataEmpty = theme === ThemeName.Light ? DataEmptyLight : DataEmptyDark;
 
   const fetchChangesets = (lastRevision: number) => {
@@ -104,9 +107,7 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
         const csl = res.data.data.reverse();
         console.log('Load changesetList: ', csl);
         const nextCsl = changesetList.concat(csl);
-        setChangesetList(nextCsl.filter(item =>
-          item.operations.filter((op) => !op.cmd.startsWith('System')).length > 0
-        ));
+        setChangesetList(nextCsl.filter((item) => item.operations.filter((op) => !op.cmd.startsWith('System')).length > 0));
       })
       .finally(() => {
         setFetching(false);
@@ -296,30 +297,31 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
             ) : (
               changesetList.map((item, index) => {
                 const memberInfo = uuidMap && uuidMap[item.userId!];
-                const title = getSocialWecomUnitName?.({
-                  name: memberInfo?.memberName,
-                  isModified: memberInfo?.isMemberNameModified,
-                  spaceInfo,
-                }) || '';
+                const title =
+                  getSocialWecomUnitName?.({
+                    name: memberInfo?.memberName,
+                    isModified: memberInfo?.isMemberNameModified,
+                    spaceInfo,
+                  }) || '';
                 const ops = item.operations.filter((op) => !op.cmd.startsWith('System'));
                 return (
                   <section
                     className={styles.listItem}
                     key={`${item.messageId}-${item.revision}`}
                     data-active={index === curPreview}
-                    onClick={() =>{
+                    onClick={() => {
                       onPreviewClick(index);
                       console.log('ops', ops);
                     }}
                   >
                     <div style={{ display: 'flex', gap: '8px' }}>
-                      <Avatar id={item.userId || ''} title={typeof title==='string'?title:''} size={24} src={memberInfo?.avatar} />
+                      <Avatar id={item.userId || ''} title={typeof title === 'string' ? title : ''} size={24} src={memberInfo?.avatar} />
                       <div>
                         <div className={styles.title}>
                           <span style={{ paddingRight: '4px' }}>{title}</span>
                           <span>{getOperationInfo(ops)}</span>
                         </div>
-                        <div className={styles.timestamp}>{dayjs(item.createdAt).format(DATEFORMAT)}</div>
+                        <div className={styles.timestamp}>{dayjs.tz(item.createdAt).format(DATEFORMAT)}</div>
                       </div>
                     </div>
                   </section>
@@ -331,7 +333,7 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
         </TabPane>
         {Boolean(Backup) && (
           <TabPane tab={t(Strings.backup_title)} key={TabPaneKeys.BACKUP}>
-            <Backup datasheetId={datasheetId} setCurPreview={setCurPreview} curPreview={curPreview} />
+            <Backup datasheetId={datasheetId} setCurPreview={setCurPreview} curPreview={curPreview!} />
           </TabPane>
         )}
       </Tabs>

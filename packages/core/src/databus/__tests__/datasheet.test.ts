@@ -19,19 +19,19 @@
 import { mockDatasheetMap } from './mock.datasheets';
 import { MockDataBus, resetDataLoader } from './mock.databus';
 import { DateFormat, FieldType, ResourceType, SegmentType, TimeFormat } from 'types';
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 import { ExecuteFailReason, ExecuteResult, ExecuteType, ICollaCommandExecuteSuccessResult } from 'command_manager';
 import { ICommandExecutionSuccessResult } from 'databus/logic';
 import { mockOperationOfAddRecords } from './mock.record';
 import { IOperation, OTActionName } from 'engine';
-import { IGanttViewStyle, IViewProperty, ViewType } from 'exports/store';
-
+import { IGanttViewStyle, IViewProperty } from 'exports/store/interfaces';
+import { ViewType } from 'modules/shared/store/constants';
 const db = MockDataBus.getDatabase();
 
 beforeAll(resetDataLoader);
 
 describe('datasheet info', () => {
-  test('basic datasheet info', async() => {
+  test('basic datasheet info', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -47,7 +47,7 @@ describe('datasheet info', () => {
 });
 
 describe('get view', () => {
-  it('should return View for existing view', async() => {
+  it('should return View for existing view', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -60,7 +60,7 @@ describe('get view', () => {
     expect(view1!.id).toStrictEqual('viw1');
   });
 
-  it('should return null if view does not exist', async() => {
+  it('should return null if view does not exist', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -76,7 +76,7 @@ describe('get view', () => {
 describe('doCommand', () => {
   beforeEach(resetDataLoader);
 
-  it('should return success if command execution succeeded', async() => {
+  it('should return success if command execution succeeded', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -96,7 +96,7 @@ describe('doCommand', () => {
     expect(result.result).toStrictEqual(ExecuteResult.Success);
   });
 
-  it('should fail if count != cellValues.length when adding records', async() => {
+  it('should fail if count != cellValues.length when adding records', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -122,7 +122,7 @@ describe('doCommand', () => {
     });
   });
 
-  it('should return none when adding zero records', async() => {
+  it('should return none when adding zero records', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -150,7 +150,7 @@ describe('doCommand', () => {
 describe('addRecords', () => {
   beforeEach(resetDataLoader);
 
-  test('add two records with count in viw1', async() => {
+  test('add two records with count in viw1', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -193,8 +193,8 @@ describe('addRecords', () => {
         id: recordIds[1]!,
         rows: [
           { view: 0, index: 4 },
-          { view: 1, index: 5 },
-          { view: 2, index: 5 },
+          { view: 1, index: 6 },
+          { view: 2, index: 6 },
         ],
       },
     ]);
@@ -225,7 +225,7 @@ describe('addRecords', () => {
     });
   });
 
-  test('add two records with recordValues', async() => {
+  test('add two records with recordValues', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -281,8 +281,8 @@ describe('addRecords', () => {
         id: recordIds[1]!,
         rows: [
           { view: 0, index: 4 },
-          { view: 1, index: 5 },
-          { view: 2, index: 5 },
+          { view: 1, index: 6 },
+          { view: 2, index: 6 },
         ],
         values: {
           fld1: [{ type: SegmentType.Text, text: 'second' }],
@@ -321,7 +321,7 @@ describe('addRecords', () => {
 describe('updateRecords', () => {
   beforeEach(resetDataLoader);
 
-  test('update rec2:fld2', async() => {
+  test('update rec2:fld2', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -393,7 +393,7 @@ describe('updateRecords', () => {
 describe('deleteRecords', () => {
   beforeEach(resetDataLoader);
 
-  test('delete rec2', async() => {
+  test('delete rec2', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -485,7 +485,7 @@ describe('deleteRecords', () => {
 describe('addFields', () => {
   beforeEach(resetDataLoader);
 
-  test('add a datetime field', async() => {
+  test('add a datetime field', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -598,7 +598,7 @@ describe('addFields', () => {
 describe('deleteFields', () => {
   beforeEach(resetDataLoader);
 
-  test('delete fld2', async() => {
+  test('delete fld2', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -733,7 +733,7 @@ describe('deleteFields', () => {
 describe('updateField', () => {
   beforeEach(resetDataLoader);
 
-  test('delete fld2', async() => {
+  test('delete fld2', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -856,7 +856,7 @@ describe('updateField', () => {
 describe('addViews', () => {
   beforeEach(resetDataLoader);
 
-  test('add a grid view', async() => {
+  test('add a grid view', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -934,7 +934,7 @@ describe('addViews', () => {
     });
   });
 
-  test('add a gantt view in middle', async() => {
+  test('add a gantt view in middle', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -1015,7 +1015,7 @@ describe('addViews', () => {
 describe('deleteViews', () => {
   beforeEach(resetDataLoader);
 
-  test('delete single view', async() => {
+  test('delete single view', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -1077,7 +1077,7 @@ describe('deleteViews', () => {
     });
   });
 
-  test('delete multiple views', async() => {
+  test('delete multiple views', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},

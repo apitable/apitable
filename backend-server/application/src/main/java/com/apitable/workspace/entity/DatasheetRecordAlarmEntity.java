@@ -18,15 +18,14 @@
 
 package com.apitable.workspace.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +35,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Workbench - Datasheet Record Alarm Table
+ * Workbench - Datasheet Record Alarm Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -53,71 +52,71 @@ public class DatasheetRecordAlarmEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Alarm ID
+     * Alarm ID.
      */
     private String alarmId;
 
     /**
-     * Space ID(link#space#space_id)
+     * Space ID(link#space#space_id).
      */
     private String spaceId;
 
     /**
-     * Datasheet ID(link#datasheet#dst_id)
+     * Datasheet ID(link#datasheet#dst_id).
      */
     private String dstId;
 
     /**
-     * Record ID(link#datasheet_record#record_id)
+     * Record ID(link#datasheet_record#record_id).
      */
     private String recordId;
 
     /**
-     * Field ID
+     * Field ID.
      */
     private String fieldId;
 
     /**
-     * Alarm Time
+     * Alarm Time.
      */
     private LocalDateTime alarmAt;
 
     /**
-     * Status: 0 - default, 1 - processing, 2 - process succeeded, 3 - process failed
+     * Status: 0 - default, 1 - processing, 2 - process succeeded, 3 - process failed.
      */
     private Integer alarmStatus;
 
     /**
-     * Delete Tag(0: No, 1: Yes)
+     * Delete Tag(0: No, 1: Yes).
      */
     @TableLogic
     private Integer isDeleted;
 
     /**
-     * Create User
+     * Create User.
      */
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
 
     /**
-     * Last Update By
+     * Last Update By.
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updatedBy;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

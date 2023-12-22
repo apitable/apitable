@@ -18,22 +18,21 @@
 
 package com.apitable.interfaces.security.model;
 
+import lombok.Getter;
+
+/**
+ * captcha receiver.
+ */
+@Getter
 public class CaptchaReceiver {
 
-    private String receiver;
+    private final String receiver;
 
-    private String captchaCode;
+    private final String captchaCode;
 
     public CaptchaReceiver(String receiver, String captchaCode) {
         this.receiver = receiver;
         this.captchaCode = captchaCode;
     }
 
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public String getCaptchaCode() {
-        return captchaCode;
-    }
 }

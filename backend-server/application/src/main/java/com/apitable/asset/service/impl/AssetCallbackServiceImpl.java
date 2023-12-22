@@ -18,19 +18,9 @@
 
 package com.apitable.asset.service.impl;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.locks.Lock;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-import javax.imageio.ImageIO;
+import static com.apitable.shared.constants.AssetsPublicConstants.IMAGE_PREFIX;
+import static com.apitable.shared.constants.AssetsPublicConstants.SPACE_PREFIX;
+import static com.apitable.shared.constants.WidgetAssetConstants.TOKEN_MAX;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -60,17 +50,24 @@ import com.apitable.space.service.ISpaceAssetService;
 import com.apitable.starter.oss.core.OssClientTemplate;
 import com.apitable.starter.oss.core.OssStatObject;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.Lock;
+import java.util.stream.Collectors;
+import javax.imageio.ImageIO;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import static com.apitable.shared.constants.AssetsPublicConstants.IMAGE_PREFIX;
-import static com.apitable.shared.constants.AssetsPublicConstants.SPACE_PREFIX;
-import static com.apitable.shared.constants.WidgetAssetConstants.TOKEN_MAX;
 
 /**
  * Asset Upload Callback Service Implement Class.
@@ -81,44 +78,30 @@ import static com.apitable.shared.constants.WidgetAssetConstants.TOKEN_MAX;
 @Service
 public class AssetCallbackServiceImpl implements IAssetCallbackService {
 
-    /**  */
     @Resource
     private AssetMapper assetMapper;
 
-    /**  */
     @Resource
     private IAssetAuditService iAssetAuditService;
 
-    /**  */
     @Resource
     private ISpaceAssetService iSpaceAssetService;
 
-    /**  */
     @Resource
     private SpaceAssetMapper spaceAssetMapper;
 
-    /**  */
     @Autowired(required = false)
     private OssClientTemplate ossTemplate;
 
-    /**  */
     @Resource
     private RedisLockRegistry redisLockRegistry;
 
-    /**  */
     @Resource
     private AssetCacheService assetCacheService;
 
-    /**  */
     @Resource
     private ConstProperties constProperties;
 
-    /**
-     * *
-     * @param assetType     assert type
-     * @param resourceKeys  resource key list
-     * @return List<AssetUploadResult>
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<AssetUploadResult> loadAssetUploadResult(
@@ -179,10 +162,6 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
         return results;
     }
 
-    /**
-     * *
-     * @param resourceKeys   file urls
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void widgetCallback(final List<String> resourceKeys) {
@@ -198,19 +177,19 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
             OssStatObject statObject =
                 ossTemplate.getStatObject(asset.getBucketName(),
                     asset.getFileUrl());
-            int fileSize = new Long(statObject.getFileSize()).intValue();
+            int fileSize = Long.valueOf(statObject.getFileSize()).intValue();
             AssetEntity updatedAssetEntity = AssetEntity.builder()
-                    .id(asset.getId())
-                    .fileSize(fileSize)
-                    .mimeType(statObject.getMimeType())
-                    .build();
+                .id(asset.getId())
+                .fileSize(fileSize)
+                .mimeType(statObject.getMimeType())
+                .build();
             // update asset info
             assetMapper.updateFileSizeMimeTypeById(updatedAssetEntity);
         }
     }
 
     private void checkFileType(final String mimeType, final Long id,
-        final String bucketName, final String key) {
+                               final String bucketName, final String key) {
         // Unrestricted type, end return
         if (!MediaType.TEXT_HTML_VALUE.equals(mimeType)) {
             return;
@@ -286,8 +265,9 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
                                 && assetType.equals(AssetType.COVER);
                             Integer type = flag ? AssetType.COVER.getValue()
                                 : null;
-                            iSpaceAssetService.edit(assetDto.getId(),
-                                assetDto.getCite() + 1, type);
+                            int cite = Boolean.TRUE.equals(assetDto.getIsDeleted())
+                                ? 1 : assetDto.getCite() + 1;
+                            iSpaceAssetService.edit(assetDto.getId(), cite, type);
                         } else {
                             iSpaceAssetService.saveAssetInSpace(
                                 body.getSpaceId(), body.getNodeId(),
@@ -304,7 +284,7 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
                     + "please try again later.");
             }
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.warn("ignore exception", e);
         } finally {
             lock.unlock();
         }
@@ -338,49 +318,49 @@ public class AssetCallbackServiceImpl implements IAssetCallbackService {
     }
 
     private String uploadAndSavePdfImg(final String bucketName,
-        final String key) {
+                                       final String key) {
         AtomicReference<String> pdfImgUploadPath = new AtomicReference<>();
         ossTemplate.executeStreamFunction(bucketName, key,
-                in -> {
-                    InputStream imageIn = PdfToImageUtil.convert(in);
-                    if (imageIn == null) {
-                        return;
-                    }
-                    try (InputStreamCache pdfImgStreamCache =
-                             new InputStreamCache(imageIn,
-                                 imageIn.available())) {
-                        pdfImgUploadPath.set(
-                            StringUtil.buildPath(SPACE_PREFIX));
-                        String pdfImgChecksum =
-                            DigestUtil.md5Hex(
-                                pdfImgStreamCache.getInputStream());
-                        ossTemplate.upload(bucketName,
-                            pdfImgStreamCache.getInputStream(),
-                            pdfImgUploadPath.get(),
-                            MediaType.IMAGE_JPEG_VALUE, pdfImgChecksum);
-                    } catch (IOException e) {
-                        log.error("Failed to upload PDF preview resource", e);
-                    }
-                });
+            in -> {
+                InputStream imageIn = PdfToImageUtil.convert(in);
+                if (imageIn == null) {
+                    return;
+                }
+                try (InputStreamCache pdfImgStreamCache =
+                         new InputStreamCache(imageIn,
+                             imageIn.available())) {
+                    pdfImgUploadPath.set(
+                        StringUtil.buildPath(SPACE_PREFIX));
+                    String pdfImgChecksum =
+                        DigestUtil.md5Hex(
+                            pdfImgStreamCache.getInputStream());
+                    ossTemplate.upload(bucketName,
+                        pdfImgStreamCache.getInputStream(),
+                        pdfImgUploadPath.get(),
+                        MediaType.IMAGE_JPEG_VALUE, pdfImgChecksum);
+                } catch (IOException e) {
+                    log.error("Failed to upload PDF preview resource", e);
+                }
+            });
         return pdfImgUploadPath.get();
     }
 
     private void appendImageInfo(final String bucketName, final String key,
-        final AssetEntity entity) {
+                                 final AssetEntity entity) {
         // If it is a picture, parse the height and width of the picture
         ossTemplate.executeStreamFunction(bucketName, key,
-                in -> {
-                    try {
-                        BufferedImage bi = ImageIO.read(in);
-                        if (bi != null) {
-                            entity.setHeight(bi.getHeight());
-                            entity.setWidth(bi.getWidth());
-                        }
-                    } catch (IOException e) {
-                        log.error("Error reading image {}, error message: {}",
-                            key, e.getMessage());
+            in -> {
+                try {
+                    BufferedImage bi = ImageIO.read(in);
+                    if (bi != null) {
+                        entity.setHeight(bi.getHeight());
+                        entity.setWidth(bi.getWidth());
                     }
-                });
+                } catch (IOException e) {
+                    log.error("Error reading image {}, error message: {}",
+                        key, e.getMessage());
+                }
+            });
     }
 
 }

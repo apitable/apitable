@@ -18,29 +18,27 @@
 
 package com.apitable.control.service.impl;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.control.entity.ControlSettingEntity;
 import com.apitable.control.mapper.ControlSettingMapper;
 import com.apitable.control.service.IControlSettingService;
 import com.apitable.core.util.ExceptionUtil;
-
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.annotation.Resource;
+import java.util.Collections;
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
- * Control setting service implementation class
+ * Control setting service implementation class.
  */
 @Service
 @Slf4j
-public class ControlSettingServiceImpl extends ServiceImpl<ControlSettingMapper, ControlSettingEntity> implements IControlSettingService {
+public class ControlSettingServiceImpl
+    extends ServiceImpl<ControlSettingMapper, ControlSettingEntity>
+    implements IControlSettingService {
 
     @Resource
     private ControlSettingMapper controlSettingMapper;
@@ -57,17 +55,18 @@ public class ControlSettingServiceImpl extends ServiceImpl<ControlSettingMapper,
 
     @Override
     public void create(Long userId, String controlId) {
-        log.info("Create permission control unit settings.userId:{},controlId:{}", userId, controlId);
+        log.info("Create permission control unit settings.userId:{},controlId:{}", userId,
+            controlId);
         Integer count;
         ControlSettingEntity deletedEntity =
-                controlSettingMapper.selectDeletedByControlId(controlId);
+            controlSettingMapper.selectDeletedByControlId(controlId);
         if (deletedEntity != null) {
             deletedEntity.setIsDeleted(false);
             deletedEntity.setUpdatedBy(userId);
-            count = controlSettingMapper.updateIsDeletedByIds(Collections.singletonList(deletedEntity.getId()), userId,
-                    false);
-        }
-        else {
+            count = controlSettingMapper.updateIsDeletedByIds(
+                Collections.singletonList(deletedEntity.getId()), userId,
+                false);
+        } else {
             // Initialize field permission settings
             ControlSettingEntity controlSetting = new ControlSettingEntity();
             controlSetting.setId(IdWorker.getId());

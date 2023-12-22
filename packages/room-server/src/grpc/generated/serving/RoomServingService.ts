@@ -126,27 +126,57 @@ export interface UserRoomChangeVo {
 }
 
 export interface NodeCopyRo {
-  /** 原始数表ID */
+  /** Raw table ID */
   nodeId: string;
-  /** 复制的数表ID */
+  /** Copy table ID */
   copyNodeId: string;
-  /** 用户ID */
+  /** user ID */
   userId: string;
-  /** 用户uuid */
+  /** user uuid */
   uuid: string;
-  /** 需要转换的fieldId数组 */
+  /** Array of fieldIds that need to be converted */
   fieldIds: string[];
 }
 
 export interface NodeDeleteRo {
-  /** 删除节点的数组 */
+  /** delete the array of nodes */
   deleteNodeId: string[];
-  /** 需要转换字段的关联表 */
+  /** The association table that needs to convert the field */
   linkNodeId: string[];
-  /** 用户ID */
+  /** user ID */
   userId: string;
-  /** 用户uuid */
+  /** user uuid */
   uuid: string;
+}
+
+export interface DocumentAssetStatisticRo {
+  infos: DocumentAssetStatisticRo_DocumentAssetInfo[];
+}
+
+export interface DocumentAssetStatisticRo_DocumentAssetInfo {
+  documentName: string;
+  fileUrls: string[];
+}
+
+export interface DocumentAssetStatisticResult {
+  success: boolean;
+  code: number;
+  message: string;
+  data: DocumentAssetStatisticResult_DocumentAssetStatisticData | undefined;
+}
+
+export interface DocumentAssetStatisticResult_AssetStatisticInfo {
+  fileUrl: string;
+  cite: number;
+}
+
+export interface DocumentAssetStatisticResult_DocumentAssetStatisticInfo {
+  documentName: string;
+  assetInfos: DocumentAssetStatisticResult_AssetStatisticInfo[];
+}
+
+export interface DocumentAssetStatisticResult_DocumentAssetStatisticData {
+  infos: DocumentAssetStatisticResult_DocumentAssetStatisticInfo[];
 }
 
 function createBaseWatchRoomRo(): WatchRoomRo {
@@ -1483,12 +1513,427 @@ export const NodeDeleteRo = {
   },
 };
 
-/**
- * room-server provided service
- * socket->room
- */
+function createBaseDocumentAssetStatisticRo(): DocumentAssetStatisticRo {
+  return { infos: [] };
+}
+
+export const DocumentAssetStatisticRo = {
+  encode(message: DocumentAssetStatisticRo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.infos) {
+      DocumentAssetStatisticRo_DocumentAssetInfo.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DocumentAssetStatisticRo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = Object.create(createBaseDocumentAssetStatisticRo()) as DocumentAssetStatisticRo;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.infos.push(DocumentAssetStatisticRo_DocumentAssetInfo.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DocumentAssetStatisticRo {
+    return {
+      infos: Array.isArray(object?.infos)
+        ? object.infos.map((e: any) => DocumentAssetStatisticRo_DocumentAssetInfo.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: DocumentAssetStatisticRo): unknown {
+    const obj: any = {};
+    if (message.infos) {
+      obj.infos = message.infos.map((e) => e ? DocumentAssetStatisticRo_DocumentAssetInfo.toJSON(e) : undefined);
+    } else {
+      obj.infos = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DocumentAssetStatisticRo>, I>>(object: I): DocumentAssetStatisticRo {
+    const message = Object.create(createBaseDocumentAssetStatisticRo()) as DocumentAssetStatisticRo;
+    message.infos = object.infos?.map((e) => DocumentAssetStatisticRo_DocumentAssetInfo.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseDocumentAssetStatisticRo_DocumentAssetInfo(): DocumentAssetStatisticRo_DocumentAssetInfo {
+  return { documentName: "", fileUrls: [] };
+}
+
+export const DocumentAssetStatisticRo_DocumentAssetInfo = {
+  encode(message: DocumentAssetStatisticRo_DocumentAssetInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.documentName !== "") {
+      writer.uint32(10).string(message.documentName);
+    }
+    for (const v of message.fileUrls) {
+      writer.uint32(18).string(v!);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DocumentAssetStatisticRo_DocumentAssetInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = Object.create(
+      createBaseDocumentAssetStatisticRo_DocumentAssetInfo(),
+    ) as DocumentAssetStatisticRo_DocumentAssetInfo;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.documentName = reader.string();
+          break;
+        case 2:
+          message.fileUrls.push(reader.string());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DocumentAssetStatisticRo_DocumentAssetInfo {
+    return {
+      documentName: isSet(object.documentName) ? String(object.documentName) : "",
+      fileUrls: Array.isArray(object?.fileUrls) ? object.fileUrls.map((e: any) => String(e)) : [],
+    };
+  },
+
+  toJSON(message: DocumentAssetStatisticRo_DocumentAssetInfo): unknown {
+    const obj: any = {};
+    message.documentName !== undefined && (obj.documentName = message.documentName);
+    if (message.fileUrls) {
+      obj.fileUrls = message.fileUrls.map((e) => e);
+    } else {
+      obj.fileUrls = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DocumentAssetStatisticRo_DocumentAssetInfo>, I>>(
+    object: I,
+  ): DocumentAssetStatisticRo_DocumentAssetInfo {
+    const message = Object.create(
+      createBaseDocumentAssetStatisticRo_DocumentAssetInfo(),
+    ) as DocumentAssetStatisticRo_DocumentAssetInfo;
+    message.documentName = object.documentName ?? "";
+    message.fileUrls = object.fileUrls?.map((e) => e) || [];
+    return message;
+  },
+};
+
+function createBaseDocumentAssetStatisticResult(): DocumentAssetStatisticResult {
+  return { success: false, code: 0, message: "", data: undefined };
+}
+
+export const DocumentAssetStatisticResult = {
+  encode(message: DocumentAssetStatisticResult, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.success === true) {
+      writer.uint32(8).bool(message.success);
+    }
+    if (message.code !== 0) {
+      writer.uint32(16).int32(message.code);
+    }
+    if (message.message !== "") {
+      writer.uint32(26).string(message.message);
+    }
+    if (message.data !== undefined) {
+      DocumentAssetStatisticResult_DocumentAssetStatisticData.encode(message.data, writer.uint32(34).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DocumentAssetStatisticResult {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = Object.create(createBaseDocumentAssetStatisticResult()) as DocumentAssetStatisticResult;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.success = reader.bool();
+          break;
+        case 2:
+          message.code = reader.int32();
+          break;
+        case 3:
+          message.message = reader.string();
+          break;
+        case 4:
+          message.data = DocumentAssetStatisticResult_DocumentAssetStatisticData.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DocumentAssetStatisticResult {
+    return {
+      success: isSet(object.success) ? Boolean(object.success) : false,
+      code: isSet(object.code) ? Number(object.code) : 0,
+      message: isSet(object.message) ? String(object.message) : "",
+      data: isSet(object.data)
+        ? DocumentAssetStatisticResult_DocumentAssetStatisticData.fromJSON(object.data)
+        : undefined,
+    };
+  },
+
+  toJSON(message: DocumentAssetStatisticResult): unknown {
+    const obj: any = {};
+    message.success !== undefined && (obj.success = message.success);
+    message.code !== undefined && (obj.code = Math.round(message.code));
+    message.message !== undefined && (obj.message = message.message);
+    message.data !== undefined && (obj.data = message.data
+      ? DocumentAssetStatisticResult_DocumentAssetStatisticData.toJSON(message.data)
+      : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DocumentAssetStatisticResult>, I>>(object: I): DocumentAssetStatisticResult {
+    const message = Object.create(createBaseDocumentAssetStatisticResult()) as DocumentAssetStatisticResult;
+    message.success = object.success ?? false;
+    message.code = object.code ?? 0;
+    message.message = object.message ?? "";
+    message.data = (object.data !== undefined && object.data !== null)
+      ? DocumentAssetStatisticResult_DocumentAssetStatisticData.fromPartial(object.data)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseDocumentAssetStatisticResult_AssetStatisticInfo(): DocumentAssetStatisticResult_AssetStatisticInfo {
+  return { fileUrl: "", cite: 0 };
+}
+
+export const DocumentAssetStatisticResult_AssetStatisticInfo = {
+  encode(
+    message: DocumentAssetStatisticResult_AssetStatisticInfo,
+    writer: _m0.Writer = _m0.Writer.create(),
+  ): _m0.Writer {
+    if (message.fileUrl !== "") {
+      writer.uint32(10).string(message.fileUrl);
+    }
+    if (message.cite !== 0) {
+      writer.uint32(16).int32(message.cite);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DocumentAssetStatisticResult_AssetStatisticInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = Object.create(
+      createBaseDocumentAssetStatisticResult_AssetStatisticInfo(),
+    ) as DocumentAssetStatisticResult_AssetStatisticInfo;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.fileUrl = reader.string();
+          break;
+        case 2:
+          message.cite = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DocumentAssetStatisticResult_AssetStatisticInfo {
+    return {
+      fileUrl: isSet(object.fileUrl) ? String(object.fileUrl) : "",
+      cite: isSet(object.cite) ? Number(object.cite) : 0,
+    };
+  },
+
+  toJSON(message: DocumentAssetStatisticResult_AssetStatisticInfo): unknown {
+    const obj: any = {};
+    message.fileUrl !== undefined && (obj.fileUrl = message.fileUrl);
+    message.cite !== undefined && (obj.cite = Math.round(message.cite));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DocumentAssetStatisticResult_AssetStatisticInfo>, I>>(
+    object: I,
+  ): DocumentAssetStatisticResult_AssetStatisticInfo {
+    const message = Object.create(
+      createBaseDocumentAssetStatisticResult_AssetStatisticInfo(),
+    ) as DocumentAssetStatisticResult_AssetStatisticInfo;
+    message.fileUrl = object.fileUrl ?? "";
+    message.cite = object.cite ?? 0;
+    return message;
+  },
+};
+
+function createBaseDocumentAssetStatisticResult_DocumentAssetStatisticInfo(): DocumentAssetStatisticResult_DocumentAssetStatisticInfo {
+  return { documentName: "", assetInfos: [] };
+}
+
+export const DocumentAssetStatisticResult_DocumentAssetStatisticInfo = {
+  encode(
+    message: DocumentAssetStatisticResult_DocumentAssetStatisticInfo,
+    writer: _m0.Writer = _m0.Writer.create(),
+  ): _m0.Writer {
+    if (message.documentName !== "") {
+      writer.uint32(10).string(message.documentName);
+    }
+    for (const v of message.assetInfos) {
+      DocumentAssetStatisticResult_AssetStatisticInfo.encode(v!, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DocumentAssetStatisticResult_DocumentAssetStatisticInfo {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = Object.create(
+      createBaseDocumentAssetStatisticResult_DocumentAssetStatisticInfo(),
+    ) as DocumentAssetStatisticResult_DocumentAssetStatisticInfo;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.documentName = reader.string();
+          break;
+        case 2:
+          message.assetInfos.push(DocumentAssetStatisticResult_AssetStatisticInfo.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DocumentAssetStatisticResult_DocumentAssetStatisticInfo {
+    return {
+      documentName: isSet(object.documentName) ? String(object.documentName) : "",
+      assetInfos: Array.isArray(object?.assetInfos)
+        ? object.assetInfos.map((e: any) => DocumentAssetStatisticResult_AssetStatisticInfo.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: DocumentAssetStatisticResult_DocumentAssetStatisticInfo): unknown {
+    const obj: any = {};
+    message.documentName !== undefined && (obj.documentName = message.documentName);
+    if (message.assetInfos) {
+      obj.assetInfos = message.assetInfos.map((e) =>
+        e ? DocumentAssetStatisticResult_AssetStatisticInfo.toJSON(e) : undefined
+      );
+    } else {
+      obj.assetInfos = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DocumentAssetStatisticResult_DocumentAssetStatisticInfo>, I>>(
+    object: I,
+  ): DocumentAssetStatisticResult_DocumentAssetStatisticInfo {
+    const message = Object.create(
+      createBaseDocumentAssetStatisticResult_DocumentAssetStatisticInfo(),
+    ) as DocumentAssetStatisticResult_DocumentAssetStatisticInfo;
+    message.documentName = object.documentName ?? "";
+    message.assetInfos =
+      object.assetInfos?.map((e) => DocumentAssetStatisticResult_AssetStatisticInfo.fromPartial(e)) || [];
+    return message;
+  },
+};
+
+function createBaseDocumentAssetStatisticResult_DocumentAssetStatisticData(): DocumentAssetStatisticResult_DocumentAssetStatisticData {
+  return { infos: [] };
+}
+
+export const DocumentAssetStatisticResult_DocumentAssetStatisticData = {
+  encode(
+    message: DocumentAssetStatisticResult_DocumentAssetStatisticData,
+    writer: _m0.Writer = _m0.Writer.create(),
+  ): _m0.Writer {
+    for (const v of message.infos) {
+      DocumentAssetStatisticResult_DocumentAssetStatisticInfo.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): DocumentAssetStatisticResult_DocumentAssetStatisticData {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = Object.create(
+      createBaseDocumentAssetStatisticResult_DocumentAssetStatisticData(),
+    ) as DocumentAssetStatisticResult_DocumentAssetStatisticData;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.infos.push(DocumentAssetStatisticResult_DocumentAssetStatisticInfo.decode(reader, reader.uint32()));
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): DocumentAssetStatisticResult_DocumentAssetStatisticData {
+    return {
+      infos: Array.isArray(object?.infos)
+        ? object.infos.map((e: any) => DocumentAssetStatisticResult_DocumentAssetStatisticInfo.fromJSON(e))
+        : [],
+    };
+  },
+
+  toJSON(message: DocumentAssetStatisticResult_DocumentAssetStatisticData): unknown {
+    const obj: any = {};
+    if (message.infos) {
+      obj.infos = message.infos.map((e) =>
+        e ? DocumentAssetStatisticResult_DocumentAssetStatisticInfo.toJSON(e) : undefined
+      );
+    } else {
+      obj.infos = [];
+    }
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<DocumentAssetStatisticResult_DocumentAssetStatisticData>, I>>(
+    object: I,
+  ): DocumentAssetStatisticResult_DocumentAssetStatisticData {
+    const message = Object.create(
+      createBaseDocumentAssetStatisticResult_DocumentAssetStatisticData(),
+    ) as DocumentAssetStatisticResult_DocumentAssetStatisticData;
+    message.infos = object.infos?.map((e) => DocumentAssetStatisticResult_DocumentAssetStatisticInfo.fromPartial(e)) ||
+      [];
+    return message;
+  },
+};
+
+/** room-server provided service */
 export interface RoomServingService {
-  /** user join datasheet room */
+  /**
+   * ============ socket->room ======================================
+   * user join datasheet room
+   */
   watchRoom(request: WatchRoomRo, metadata?: Metadata): Observable<WatchRoomVo>;
   /** user leave datasheet room */
   leaveRoom(request: LeaveRoomRo, metadata?: Metadata): Observable<BasicResult>;
@@ -1498,10 +1943,18 @@ export interface RoomServingService {
   getActiveCollaborators(request: WatchRoomRo, metadata?: Metadata): Observable<GetActiveCollaboratorsVo>;
   /** Server sends room Change event */
   serverRoomChange(request: ServerRoomChangeRo, metadata?: Metadata): Observable<BasicResult>;
-  /** copy datasheet effect ot */
+  /**
+   * ============ backend->room ======================================
+   * copy datasheet effect ot
+   */
   copyNodeEffectOt(request: NodeCopyRo, metadata?: Metadata): Observable<BasicResult>;
   /** delete datasheet effect ot */
   deleteNodeEffectOt(request: NodeDeleteRo, metadata?: Metadata): Observable<BasicResult>;
+  /** document asset statistic */
+  documentAssetStatistic(
+    request: DocumentAssetStatisticRo,
+    metadata?: Metadata,
+  ): Observable<DocumentAssetStatisticResult>;
 }
 
 type Builtin = Date | Function | Uint8Array | string | number | boolean | undefined;

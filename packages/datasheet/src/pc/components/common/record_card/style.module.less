@@ -67,6 +67,19 @@
         height: 31px;
         display: flex;
         align-items: center;
+        :global {
+          .expandWorkdoc {
+            padding: 0;
+          }
+          .workdocBtn {
+            max-width: 94px;
+            padding: 0 2px;
+            cursor: default;
+            &:hover{
+              background-color: var(--bgBrandLightDefault);
+            }
+          }
+        }
 
         .cellHolder {
           border: solid 1px var(--fourthLevelText);

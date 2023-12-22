@@ -22,6 +22,7 @@ import static com.apitable.shared.constants.SpaceConstants.SPACE_ROOT_TEAM_UNIT_
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.control.service.IControlRoleService;
@@ -66,6 +67,7 @@ import com.apitable.workspace.enums.PermissionException;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -75,11 +77,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * unit service implementation.
+ */
 @Slf4j
 @Service
 public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
@@ -145,16 +149,18 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
     public UnitEntity create(String spaceId, UnitType unitType, Long unitRefId) {
         log.info("create unit，unit type:{}, unit id:{}", unitType, unitRefId);
         UnitEntity unit = new UnitEntity();
+        unit.setId(IdWorker.getId());
         unit.setSpaceId(spaceId);
         unit.setUnitType(unitType.getType());
         unit.setUnitRefId(unitRefId);
-        unit.setUnitId(IdWorker.get32UUID());
+        unit.setUnitId(IdUtil.fastSimpleUUID());
         boolean flag = save(unit);
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
         return unit;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean createBatch(List<UnitEntity> unitEntities) {
         log.info("Batch create unit.");
         return saveBatch(unitEntities);
@@ -337,6 +343,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
                     List<Long> roleMemberIds =
                         iRoleMemberService.getMemberIdsByRoleIds(entry.getValue());
                     memberIds.addAll(roleMemberIds);
+                    break;
                 default:
                     break;
             }
@@ -616,7 +623,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
                                                          boolean sensitiveData, Page<Long> page) {
         IPage<Long> memberIds =
             teamMemberRelMapper.selectMemberIdsByTeamIdAndPage(page, parentTeamId);
-        if (memberIds.getRecords().size() == 0) {
+        if (memberIds.getRecords().isEmpty()) {
             return PageHelper.build((int) memberIds.getCurrent(), (int) memberIds.getSize(),
                 (int) memberIds.getTotal(), new ArrayList<>());
         }

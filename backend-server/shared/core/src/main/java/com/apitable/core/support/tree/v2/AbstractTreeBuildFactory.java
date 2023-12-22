@@ -28,7 +28,7 @@ import java.util.List;
 public abstract class AbstractTreeBuildFactory<T> {
 
     /**
-     * the process of building the tree
+     * the process of building the tree.
      *
      * @param nodes the list of nodes
      * @return List
@@ -52,7 +52,7 @@ public abstract class AbstractTreeBuildFactory<T> {
     protected abstract void setRoot(String rootNode);
 
     /**
-     * processing before the build
+     * processing before the build.
      *
      * @param nodes the list of nodes
      * @return List
@@ -60,7 +60,7 @@ public abstract class AbstractTreeBuildFactory<T> {
     protected abstract List<T> beforeBuild(List<T> nodes);
 
     /**
-     * the build process
+     * the build process.
      *
      * @param nodes the list of nodes
      * @return List
@@ -68,7 +68,7 @@ public abstract class AbstractTreeBuildFactory<T> {
     protected abstract List<T> executeBuilding(List<T> nodes);
 
     /**
-     * processing after the build
+     * processing after the build.
      *
      * @param nodes the list of nodes
      * @return List

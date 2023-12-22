@@ -18,11 +18,11 @@
 
 import Image from 'next/image';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { ThemeName } from '@apitable/components';
 import { ConfigConstant, INode, IViewColumn, Strings, t, ViewType } from '@apitable/core';
 import { useLoader } from 'pc/components/data_source_selector/hooks/use_loader';
 import { ScrollBar } from 'pc/components/scroll_bar';
+import { useAppSelector } from 'pc/store/react-redux';
 import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 import { File, Folder, View } from './components';
@@ -40,6 +40,7 @@ export type ICommonNode = INode | IViewNode;
 
 interface IFolderContentProps {
   nodes: ICommonNode[];
+  currentAutomationId: string;
   currentViewId: string;
   currentMirrorId: string;
   currentDatasheetId: string;
@@ -47,14 +48,25 @@ interface IFolderContentProps {
   loading: boolean;
   onlyShowAvailable: boolean;
 
-  onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string): void;
+  onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form' | 'Automation', id: string): void;
 
   hideViewNode?: boolean;
 }
 
 export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps>> = (props) => {
-  const { nodes, onlyShowAvailable, onNodeClick, currentViewId, currentMirrorId, loading, currentDatasheetId, hideViewNode, currentFormId } = props;
-  const themeName = useSelector((state) => state.theme);
+  const {
+    nodes,
+    onlyShowAvailable,
+    currentAutomationId,
+    onNodeClick,
+    currentViewId,
+    currentMirrorId,
+    loading,
+    currentDatasheetId,
+    hideViewNode,
+    currentFormId,
+  } = props;
+  const themeName = useAppSelector((state) => state.theme);
   const EmptyFolderImg = themeName === ThemeName.Light ? EmptyPngLight : EmptyPngDark;
   const { nodeVisibleFilterLoader, nodeStatusLoader } = useLoader();
 
@@ -79,6 +91,21 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
                 id={node.nodeId}
                 active={currentDatasheetId === node.nodeId}
                 onClick={(id) => onNodeClick('Datasheet', id)}
+                disable={nodeStatusLoader(node as INode)}
+                nodeType={node.type}
+              >
+                {node.nodeName}
+              </File>
+            );
+          }
+
+          if (node.type === ConfigConstant.NodeType.AUTOMATION) {
+            return (
+              <File
+                key={node.nodeId}
+                id={node.nodeId}
+                active={currentAutomationId === node.nodeId}
+                onClick={(id) => onNodeClick('Automation', id)}
                 disable={nodeStatusLoader(node as INode)}
                 nodeType={node.type}
               >

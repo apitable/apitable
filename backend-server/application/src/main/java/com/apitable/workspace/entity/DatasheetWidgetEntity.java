@@ -18,12 +18,11 @@
 
 package com.apitable.workspace.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +32,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Workbench - Datasheet Widget Table
+ * Workbench - Datasheet Widget Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -50,38 +49,38 @@ public class DatasheetWidgetEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Space ID
+     * Space ID.
      */
     private String spaceId;
 
     /**
-     * Datasheet ID(link#xxxx_datasheet#dst_id)
+     * Datasheet ID(link#xxxx_datasheet#dst_id).
      */
     private String dstId;
 
     /**
-     * Customized component ID
+     * Customized component ID.
      */
     private String widgetId;
 
     /**
-     * Widget references source ID, such as mirror
+     * Widget references source ID, such as mirror.
      */
     private String sourceId;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

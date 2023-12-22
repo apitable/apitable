@@ -21,6 +21,9 @@ package com.apitable.user.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * third party member type.
+ */
 @Getter
 @AllArgsConstructor
 public enum ThirdPartyMemberType {

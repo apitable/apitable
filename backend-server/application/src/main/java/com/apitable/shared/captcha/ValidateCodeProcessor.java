@@ -20,7 +20,7 @@ package com.apitable.shared.captcha;
 
 /**
  * <p>
- * check code processor
+ * check code processor.
  * </p>
  *
  * @author Shawn Deng
@@ -28,7 +28,7 @@ package com.apitable.shared.captcha;
 public interface ValidateCodeProcessor {
 
     /**
-     * create a verification code and send
+     * create a verification code and send.
      *
      * @param target Send destination, may be mobile phone or email
      * @param scope  captcha scope
@@ -36,7 +36,7 @@ public interface ValidateCodeProcessor {
     String createAndSend(ValidateTarget target, CodeValidateScope scope);
 
     /**
-     * create a verification code and send
+     * create a verification code and send.
      *
      * @param target Send destination, may be mobile phone or email
      * @param scope  captcha scope
@@ -45,17 +45,18 @@ public interface ValidateCodeProcessor {
     String createAndSend(ValidateTarget target, CodeValidateScope scope, boolean actual);
 
     /**
-     * verify verification code
+     * verify verification code.
      *
      * @param target            Send destination, may be mobile phone or email
      * @param code              verification code
      * @param immediatelyDelete whether to delete immediately
      * @param scope             captcha scope
      */
-    void validate(ValidateTarget target, String code, boolean immediatelyDelete, CodeValidateScope scope);
+    void validate(ValidateTarget target, String code, boolean immediatelyDelete,
+                  CodeValidateScope scope);
 
     /**
-     * delete verification code
+     * delete verification code.
      *
      * @param target Send destination, which can be mobile phone or email
      * @param scope  captcha scope
@@ -63,14 +64,14 @@ public interface ValidateCodeProcessor {
     void delCode(String target, CodeValidateScope scope);
 
     /**
-     * save the verification record
+     * save the verification record.
      *
      * @param target Send destination, may be mobile phone or email
      */
     void savePassRecord(String target);
 
     /**
-     * Verify that the verification code has passed the verification
+     * Verify that the verification code has passed the verification.
      *
      * @param target Send destination, may be mobile phone or email
      */

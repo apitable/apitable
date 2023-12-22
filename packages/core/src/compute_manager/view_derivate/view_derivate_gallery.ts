@@ -2,9 +2,8 @@
 import {
   IReduxState, IViewDerivation, IViewProperty, IViewRow,
 } from 'exports/store/interfaces';
-import {
-  getCellValue, getFieldMap,
-} from 'modules/database/store/selectors/resource/datasheet';
+import { getFieldMap } from 'modules/database/store/selectors/resource/datasheet/calc';
+import { getCellValue } from 'modules/database/store/selectors/resource/datasheet/cell_calc';
 import { Field } from 'model/field';
 import { ViewDerivateBase } from './view_derivate_base';
 
@@ -71,7 +70,7 @@ export class ViewDerivateGallery extends ViewDerivateBase {
 
   /**
    * Get computationally derived data containing search results.
-   * 
+   *
    * Used to do calculations when searching for updates.
    */
   override getViewDerivationWithSearch(view: IViewProperty, rowsWithoutSearch: IViewRow[]) {

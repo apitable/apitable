@@ -27,6 +27,8 @@ export enum LevelType {
   Free = 'free',
   Plus = 'plus',
   Pro = 'pro',
+  Starter = 'starter',
+  Business = 'business',
   Enterprise = 'enterprise',
   DingtalkBase = 'dingtalk_base',
   DingtalkStandard = 'dingtalk_standard',
@@ -65,7 +67,14 @@ export type ISpaceLevelType =
   | 'wecom_profession'
   | 'free'
   | 'plus'
-  | 'pro';
+  | 'pro'
+  | 'starter'
+  | 'business'
+  | 'appsumo_tier1'
+  | 'appsumo_tier2'
+  | 'appsumo_tier3'
+  | 'appsumo_tier4'
+  | 'appsumo_tier5';
 
 export interface ISpaceLevelTagInfo {
   label: React.ReactNode;

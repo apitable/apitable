@@ -19,13 +19,15 @@
 import classNames from 'classnames';
 import { useCallback } from 'react';
 import * as React from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { IGroupInfo, Selectors, ILinearRowRecord } from '@apitable/core';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { CommentCount, OperateColumn } from 'pc/components/multi_grid/operate_column';
 import { OPERATE_HEAD_CLASS } from 'pc/utils';
 import styles from '../../styles.module.less';
 import { GRAY_COLOR_BORDER } from '../cell_group_tab/cell_group_tab';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ICellRowHead {
   row: ILinearRowRecord;
@@ -45,7 +47,7 @@ export const CellRowHead: React.FC<React.PropsWithChildren<ICellRowHead>> = Reac
     [className]: className.length,
   });
 
-  const { commentCount, allowSHowCommentPane, active, activeCell } = useSelector((state) => {
+  const { commentCount, allowSHowCommentPane, active, activeCell } = useAppSelector((state) => {
     const record = Selectors.getRecord(state, recordId!, state.pageParams.datasheetId!);
     return {
       commentCount: record ? record.commentCount : 0,

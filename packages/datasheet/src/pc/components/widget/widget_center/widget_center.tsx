@@ -25,7 +25,7 @@ import { CSSProperties, useCallback, useEffect, useRef, useState } from 'react';
 // eslint-disable-next-line no-restricted-imports
 import { Scrollbars } from 'react-custom-scrollbars';
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { Box, Button, Skeleton, ThemeName, ThemeProvider, Tooltip, Typography, useThemeColors } from '@apitable/components';
 import { IMember, IWidgetPackage, Selectors, Strings, t, UnitItem, WidgetApi, WidgetReleaseType } from '@apitable/core';
 import { InfoCircleOutlined, TransferOutlined, QuestionCircleOutlined, UnpublishOutlined, WarnFilled, AddOutlined } from '@apitable/icons';
@@ -36,6 +36,7 @@ import { InstallPosition } from 'pc/components/widget/widget_center/enum';
 import { WidgetPackageList } from 'pc/components/widget/widget_center/widget_package_list';
 import { useQuery, useRequest } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import WidgetCenterEmptyDark from 'static/icon/datasheet/widget_center_empty_dark.png';
 import WidgetCenterEmptyLight from 'static/icon/datasheet/widget_center_empty_light.png';
@@ -43,8 +44,8 @@ import { ScrollBar } from '../../scroll_bar';
 import { useResourceManageable } from '../hooks';
 import { WrapperTooltip } from '../widget_panel/widget_panel_header';
 import { ContextMenu, IContextMenuMethods } from './context_menu';
-import styles from './style.module.less';
 import { expandWidgetCreate } from './widget_create_modal';
+import styles from './style.module.less';
 
 const { TabPane } = Tabs;
 
@@ -60,7 +61,7 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
   const [loading, setLoading] = useState<boolean>();
   const { run: unpublishWidget } = useRequest(WidgetApi.unpublishWidget, { manual: true });
   const curOperationProps = useRef<any>();
-  const { dashboardId } = useSelector((state) => state.pageParams);
+  const { dashboardId } = useAppSelector((state) => state.pageParams);
   const manageable = useResourceManageable();
   const contextMenuRef = useRef<IContextMenuMethods>(null);
   const [selectMemberModal, setSelectMemberModal] = useState(false);
@@ -86,7 +87,7 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
   );
   const needPlaceholder = (packageListMap?.[WidgetReleaseType.Global]?.length ?? 0) % 2 !== 0;
 
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const widgetCenterEmpty = themeName === ThemeName.Light ? WidgetCenterEmptyLight : WidgetCenterEmptyDark;
 
   useEffect(() => {
@@ -341,7 +342,7 @@ export const WidgetCenterModal: React.FC<React.PropsWithChildren<IWidgetCenterMo
 };
 
 const WidgetCenterModalWithTheme: React.FC<React.PropsWithChildren<IWidgetCenterModalProps>> = (props) => {
-  const cacheTheme = useSelector(Selectors.getTheme);
+  const cacheTheme = useAppSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>
       <WidgetCenterModal {...props} />

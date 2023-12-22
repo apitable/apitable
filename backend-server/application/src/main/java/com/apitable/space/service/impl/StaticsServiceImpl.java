@@ -24,7 +24,6 @@ import static java.time.temporal.TemporalAdjusters.firstDayOfMonth;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.text.StrSpliter;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -46,6 +45,7 @@ import com.apitable.workspace.enums.ViewType;
 import com.apitable.workspace.mapper.DatasheetMapper;
 import com.apitable.workspace.mapper.NodeMapper;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -55,7 +55,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -301,7 +300,7 @@ public class StaticsServiceImpl implements IStaticsService {
         // Get the table of column permissions
         List<String> dstIds = controlIds.stream()
             .map(controlId -> {
-                List<String> ids = StrSpliter.split(controlId, ControlIdBuilder.SYMBOL,
+                List<String> ids = StrUtil.split(controlId, ControlIdBuilder.SYMBOL,
                     0, true, true);
                 if (CollUtil.isNotEmpty(ids)) {
                     String dstId = ids.get(0);

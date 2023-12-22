@@ -19,10 +19,23 @@
 import { ExecuteResult, ICollaCommandDef, ILinkedActions } from 'command_manager';
 import { IJOTAction, IObjectReplaceAction } from 'engine';
 import { isEqual, omit } from 'lodash';
-import { DatasheetActions, Field, handleEmptyCellValue, ICellValue } from 'model';
-import { AlarmUsersType, IRecordAlarm, Selectors, ViewType } from '../../exports/store';
+import { Field } from 'model/field';
+import { handleEmptyCellValue } from 'model/utils';
+import { DatasheetActions } from 'commands_actions/datasheet';
+import { ICellValue } from 'model/record';
+import { IRecordAlarm } from '../../exports/store/interfaces';
+import { ViewType } from 'modules/shared/store/constants';
+import { AlarmUsersType } from 'modules/database/store/interfaces/resource/datasheet/datasheet';
+import {
+  getActiveDatasheetId,
+  getSnapshot,
+} from 'modules/database/store/selectors/resource/datasheet/base';
+import { getRangeRecords } from 'modules/database/store/selectors/resource/datasheet/cell_range_calc';
+import { getDateTimeCellAlarm,getRangeFields } from 'modules/database/store/selectors/resource/datasheet/calc';
 import { IViewColumn, IViewRow } from '../../exports/store/interfaces';
-import { getActualRowCount, getRangeRows, getSelectRanges, getViewById, getVisibleColumns } from '../../exports/store/selectors';
+import { getViewById } from 'modules/database/store/selectors/resource/datasheet/base';
+import { getRangeRows, getSelectRanges } from 'modules/database/store/selectors/resource/datasheet/cell_range_calc';
+import { getActualRowCount, getVisibleColumns } from 'modules/database/store/selectors/resource/datasheet/calc';
 import { ResourceType } from 'types';
 import { FieldType, IField, IStandardValue } from 'types/field_types';
 import { getNewId, IDPrefix } from 'utils';
@@ -52,8 +65,8 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
   execute: (context, options) => {
     const { state: state, fieldMapSnapshot } = context;
     const { recordIds, column, row, viewId, stdValues, cut, groupCellValues, notifyExistIncompatibleField } = options;
-    const datasheetId = Selectors.getActiveDatasheetId(state)!;
-    const snapshot = Selectors.getSnapshot(state, datasheetId);
+    const datasheetId = getActiveDatasheetId(state)!;
+    const snapshot = getSnapshot(state, datasheetId);
     const userInfo = state.user.info;
     if (!snapshot) {
       return null;
@@ -95,7 +108,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
         cutRows.forEach(row => {
           cutColumns.forEach(column => {
             const field = fieldMap[column.fieldId];
-            if (field && field.type !== FieldType.NotSupport) {
+            if (field && field.type !== FieldType.NotSupport && field.type !== FieldType.WorkDoc) {
               recordValues.push({
                 recordId: row.recordId,
                 fieldId: column.fieldId,
@@ -118,7 +131,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
 
     function addAlarm(cv: ICellValue, field: IField, recordId: string, oldRecordId: string) {
       if (field.type === FieldType.DateTime && cv && snapshot) {
-        const alarm = Selectors.getDateTimeCellAlarm(snapshot, oldRecordId, field.id);
+        const alarm = getDateTimeCellAlarm(snapshot, oldRecordId, field.id);
         if (alarm) {
           const curAlarmActions = DatasheetActions.setDateTimeCellAlarm(snapshot, {
             recordId,
@@ -163,7 +176,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
     }
 
     function pushPasteValue(stdValue: IStandardValue, field: IField, recordId: string, oldRecordId?: string) {
-      if (!field || field.type === FieldType.NotSupport) {
+      if (!field || field.type === FieldType.NotSupport || field.type === FieldType.WorkDoc) {
         return;
       }
 
@@ -191,8 +204,8 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
     if (singleCellPaste) {
       const ranges = getSelectRanges(state)!;
       const range = ranges[0]!;
-      const rows = Selectors.getRangeRecords(state, range);
-      const fields = Selectors.getRangeFields(state, range, datasheetId);
+      const rows = getRangeRecords(state, range);
+      const fields = getRangeFields(state, range, datasheetId);
       if (!rows || !fields) {
         return null;
       }
@@ -238,7 +251,7 @@ export const pasteSetRecords: ICollaCommandDef<IPasteSetRecordsOptions> = {
           const fieldId = columnsToPaste[column]!.fieldId;
           const stdValue = stdValuesRow[column]!;
           const field = fieldMap[fieldId];
-          if (!field || field.type === FieldType.NotSupport) {
+          if (!field || field.type === FieldType.NotSupport || field.type === FieldType.WorkDoc) {
             continue;
           }
           let value = Field.bindContext(field, state).stdValueToCellValue(stdValue);

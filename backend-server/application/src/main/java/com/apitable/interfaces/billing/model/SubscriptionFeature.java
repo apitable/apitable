@@ -19,23 +19,30 @@
 package com.apitable.interfaces.billing.model;
 
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AdminNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiCallNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiQps;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AiAgentNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiCallNumsPerMonth;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ApiQpsNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ArchitectureViewNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ArchivedRowsPerSheet;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CalendarViews;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.AutomationRunNumsPerMonth;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CalendarViewNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.CapacitySize;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.ColumnsPerSheet;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.DashboardNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FieldPermissionNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FormViews;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.GalleryViews;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.GanttViews;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.KanbanViews;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FileNodeNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.FormNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.GalleryViewNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.GanttViewNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.KanbanViewNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MessageCreditNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.MirrorNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.NodePermissionNums;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.RowNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.RowsPerSheet;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.Seat;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.SheetNums;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.SnapshotNumsPerSheet;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.TotalRows;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.ConsumeFeatures.WidgetNums;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SolidFeatures.AuditQueryDays;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SolidFeatures.RemainRecordActivityDays;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SolidFeatures.RemainTimeMachineDays;
@@ -48,6 +55,7 @@ import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatu
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowInvitation;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowOrgApi;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowShare;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AuditQuery;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.ContactIsolation;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.ForbidCreateOnCatalog;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.RainbowLabel;
@@ -64,35 +72,59 @@ public interface SubscriptionFeature {
 
     CapacitySize getCapacitySize();
 
-    SheetNums getSheetNums();
+    FileNodeNums getFileNodeNums();
+
+    default ColumnsPerSheet getColumnsPerSheet() {
+        return new ColumnsPerSheet(30L);
+    }
 
     RowsPerSheet getRowsPerSheet();
 
+    default SnapshotNumsPerSheet getSnapshotNumsPerSheet() {
+        return new SnapshotNumsPerSheet(0L);
+    }
+
     ArchivedRowsPerSheet getArchivedRowsPerSheet();
 
-    RowNums getRowNums();
-
-    MirrorNums getMirrorNums();
+    TotalRows getTotalRows();
 
     AdminNums getAdminNums();
 
-    ApiCallNums getApiCallNums();
+    ApiCallNumsPerMonth getApiCallNumsPerMonth();
 
-    GalleryViews getGalleryViews();
+    default GalleryViewNums getGalleryViewNums() {
+        return new GalleryViewNums(-1L);
+    }
 
-    KanbanViews getKanbanViews();
+    default KanbanViewNums getKanbanViewNums() {
+        return new KanbanViewNums(-1L);
+    }
 
-    FormViews getFormViews();
+    default ArchitectureViewNums getArchitectureViewNums() {
+        return new ArchitectureViewNums(-1L);
+    }
 
-    GanttViews getGanttViews();
+    GanttViewNums getGanttViewNums();
 
-    CalendarViews getCalendarViews();
+    CalendarViewNums getCalendarViewNums();
+
+    FormNums getFormNums();
+
+    MirrorNums getMirrorNums();
+
+    default DashboardNums getDashboardNums() {
+        return new DashboardNums(0L);
+    }
+
+    default WidgetNums getWidgetNums() {
+        return new WidgetNums(0L);
+    }
 
     FieldPermissionNums getFieldPermissionNums();
 
     NodePermissionNums getNodePermissionNums();
 
-    ApiQps getApiQps();
+    ApiQpsNums getApiQpsNums();
 
     SocialConnect getSocialConnect();
 
@@ -126,11 +158,24 @@ public interface SubscriptionFeature {
 
     RemainRecordActivityDays getRemainRecordActivityDays();
 
+    @Deprecated(since = "1.7.0", forRemoval = true)
     AuditQueryDays getAuditQueryDays();
+
+    default AuditQuery getAuditQuery() {
+        return new AuditQuery(false);
+    }
 
     AllowOrgApi getAllowOrgApi();
 
+    default AiAgentNums getAiAgentNums() {
+        return new AiAgentNums(0L);
+    }
+
     default MessageCreditNums getMessageCreditNums() {
         return new MessageCreditNums(0L);
+    }
+
+    default AutomationRunNumsPerMonth getAutomationRunNumsPerMonth() {
+        return new AutomationRunNumsPerMonth(0L);
     }
 }

@@ -52,11 +52,11 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import java.util.List;
-import javax.annotation.Resource;
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -93,25 +93,20 @@ public class NodeRubbishController {
     @Parameters({
         @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW"),
-        @Parameter(name = "isOverLimit", in = ParameterIn.QUERY,
-            description = "whether to request an overrun node（default FALSE）",
-            schema = @Schema(type = "boolean"), example = "true"),
         @Parameter(name = "size", in = ParameterIn.QUERY,
             description = "expected load quantity（May be because the total"
-            + " number or permissions are not enough）",
+                + " number or permissions are not enough）",
             schema = @Schema(type = "integer"), example = "15"),
         @Parameter(name = "lastNodeId", description = "id of the last node in the loaded list",
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "dstM5qG7")
     })
     public ResponseData<List<RubbishNodeVo>> list(
         @RequestParam(value = "size", defaultValue = "20") @Valid @Min(5) @Max(100) Integer size,
-        @RequestParam(value = "isOverLimit", defaultValue = "false") Boolean isOverLimit,
         @RequestParam(value = "lastNodeId", required = false) String lastNodeId) {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
         List<RubbishNodeVo> nodeVos =
-            iNodeRubbishService.getRubbishNodeList(spaceId, memberId, size, lastNodeId,
-                isOverLimit);
+            iNodeRubbishService.getRubbishNodeList(spaceId, memberId, size, lastNodeId);
         return ResponseData.success(nodeVos);
     }
 

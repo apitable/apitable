@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/**
+ * role service.
+ */
 public interface IRoleService {
 
     /**
@@ -103,16 +106,16 @@ public interface IRoleService {
      * check whether role exist in the space
      * then the callback deal with the check result.
      *
-     * @param spaceId   the space's id
-     * @param roleId    the role's id
-     * @param consumer  the callback function
+     * @param spaceId  the space's id
+     * @param roleId   the role's id
+     * @param consumer the callback function
      */
     void checkRoleExistBySpaceIdAndRoleId(String spaceId, Long roleId, Consumer<Boolean> consumer);
 
     /**
      * query the space's roles list.
      *
-     * @param spaceId   the space's id
+     * @param spaceId the space's id
      * @return role's information RolesVo
      */
     List<RoleInfoVo> getRoles(String spaceId);
@@ -136,8 +139,8 @@ public interface IRoleService {
     /**
      * fuzzy search by keyword in the space.
      *
-     * @param spaceId   the space's id
-     * @param keyword  fuzzy search's keyword
+     * @param spaceId the space's id
+     * @param keyword fuzzy search's keyword
      * @return the search result of roles.
      */
     List<Long> getRoleIdsByKeyWord(String spaceId, String keyword);
@@ -161,16 +164,17 @@ public interface IRoleService {
     /**
      * query role info by the space's id and roles' id.
      *
-     * @param spaceId   the space's id
-     * @param roleIds   the roles' id
+     * @param spaceId the space's id
+     * @param roleIds the roles' id
      * @return the role information.
      */
     List<RoleInfoVo> getRoleVos(String spaceId, List<Long> roleIds);
 
     /**
-     * init the space's role list:
-     * @param userId    the user's id
-     * @param spaceId   the space's id
+     * init the space's role list.
+     *
+     * @param userId  the user's id
+     * @param spaceId the space's id
      */
     void initRoleList(Long userId, String spaceId);
 

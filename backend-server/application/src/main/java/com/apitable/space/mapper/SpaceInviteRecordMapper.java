@@ -18,13 +18,15 @@
 
 package com.apitable.space.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.apitable.space.entity.SpaceInviteRecordEntity;
-import org.apache.ibatis.annotations.Param;
-
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import java.util.Collection;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
+/**
+ * space invite record mapper.
+ */
 public interface SpaceInviteRecordMapper extends BaseMapper<SpaceInviteRecordEntity> {
 
     /**
@@ -35,7 +37,7 @@ public interface SpaceInviteRecordMapper extends BaseMapper<SpaceInviteRecordEnt
      * @return affected rows
      */
     int expireBySpaceIdAndEmail(@Param("spaceIds") List<String> spaceIds,
-        @Param("email") String email);
+                                @Param("email") String email);
 
     /**
      * All the specified invitation email links in the space have expired.
@@ -45,7 +47,7 @@ public interface SpaceInviteRecordMapper extends BaseMapper<SpaceInviteRecordEnt
      * @return affected rows
      */
     int expireBySpaceIdAndEmails(@Param("spaceId") String spaceId,
-        @Param("emails") Collection<String> emails);
+                                 @Param("emails") Collection<String> emails);
 
     /**
      * Query invite record.

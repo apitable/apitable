@@ -20,7 +20,8 @@ import axios from 'axios';
 import * as Url from './url.widget';
 import Qs from 'qs';
 import urlcat from 'urlcat';
-import { IApiWrapper, IWidget, WidgetPackageType, WidgetReleaseType } from '../../../exports/store';
+import { WidgetReleaseType } from 'modules/database/store/interfaces/resource/widget';
+import { IApiWrapper, IWidget } from '../../../exports/store/interfaces';
 import { IWidgetTemplateItem } from './widget_api.interface';
 
 // const baseURL = '/nest/v1';
@@ -57,37 +58,12 @@ export const installWidget = (nodeId: string, packageId: string, name?: string) 
   });
 };
 
-/**
- * Generic interface to support generating a new widget using an existing widget as a template
- *
- */
-export const copyWidgetsToNode = (nodeId: string, widgetIds: string[]) => {
-  return axios.post(Url.COPY_WIDGET, {
-    nodeId,
-    widgetIds: widgetIds,
-  });
-};
-
 export const getRecentInstalledWidgets = (spaceId: string) => {
   return axios.get(urlcat(Url.RECENT_INSTALL_WIDGET, { spaceId }));
 };
 
 export const getWidgetsInfoByNodeId = (nodeId: string) => {
   return axios.get(urlcat(Url.GET_NODE_WIDGETS_PREVIOUS, { nodeId }));
-};
-
-/**
- * create widget
- * @param name
- * @param spaceId
- * @param packageType
- * @param releaseType
- * @returns
- */
-export const createWidget = (
-  name: string, spaceId: string, packageType: WidgetPackageType = WidgetPackageType.Custom, releaseType: WidgetReleaseType = WidgetReleaseType.Space
-) => {
-  return axios.post(Url.CREATE_WIDGET, { name, spaceId, packageType, releaseType });
 };
 
 export const getTemplateList = () => {

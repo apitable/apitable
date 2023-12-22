@@ -17,7 +17,7 @@
  */
 
 import { useDebounceEffect } from 'ahooks';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { colors } from '@apitable/components';
 import { CollaCommandName, Selectors, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
@@ -27,6 +27,8 @@ import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { GRID_ROW_HEAD_WIDTH } from '../constant';
 import styles from '../style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IUseGridMessageProps {
   text?: string;
   containerWidth: number;
@@ -35,7 +37,7 @@ interface IUseGridMessageProps {
 
 export const useGridMessage = (props: IUseGridMessageProps) => {
   const { text = t(Strings.freeze_tips_when_windows_too_narrow), containerWidth, firstColumnWidth } = props;
-  const { view, visibleColumns } = useSelector((state) => {
+  const { view, visibleColumns } = useAppSelector((state) => {
     return {
       view: Selectors.getCurrentView(state)!,
       visibleColumns: Selectors.getVisibleColumns(state),

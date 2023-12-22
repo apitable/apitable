@@ -1,0 +1,68 @@
+# .ClientInterfaceApi
+
+All URIs are relative to *http://backend/api/v1*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**getTemplateInfo**](ClientInterfaceApi.md#getTemplateInfo) | **GET** /client/info | Get application version information
+
+
+# **getTemplateInfo**
+> ClientInfoVO getTemplateInfo()
+
+Get the application client version rendering information
+
+### Example
+
+
+```typescript
+import {  } from '';
+import * as fs from 'fs';
+
+const configuration = .createConfiguration();
+const apiInstance = new .ClientInterfaceApi(configuration);
+
+let body:.ClientInterfaceApiGetTemplateInfoRequest = {
+  // string (optional)
+  spaceId: "spaceId_example",
+  // string | Construction serial number (optional)
+  pipeline: "4818",
+};
+
+apiInstance.getTemplateInfo(body).then((data:any) => {
+  console.log('API called successfully. Returned data: ' + data);
+}).catch((error:any) => console.error(error));
+```
+
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **spaceId** | [**string**] |  | (optional) defaults to undefined
+ **pipeline** | [**string**] | Construction serial number | (optional) defaults to undefined
+
+
+### Return type
+
+**ClientInfoVO**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: */*
+
+
+### HTTP response details
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | OK |  -  |
+**500** | Internal Server Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](README.md#documentation-for-api-endpoints) [[Back to Model list]](README.md#documentation-for-models) [[Back to README]](README.md)
+
+

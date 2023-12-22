@@ -19,12 +19,11 @@
 package com.apitable.shared.listener.event;
 
 import java.util.List;
-
 import org.springframework.context.ApplicationEvent;
 
 /**
  * <p>
- * Shared Node Disable Event
+ * Shared Node Disable Event.
  * </p>
  *
  * @author Chambers

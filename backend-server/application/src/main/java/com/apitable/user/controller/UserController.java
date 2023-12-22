@@ -99,11 +99,11 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -261,7 +261,7 @@ public class UserController {
      */
     // Before getting the user information, try to return the Space id first
     private String tryReturnSpaceId(final String nodeId, final String spaceId,
-        final Long userId, final HttpServletRequest request) {
+                                    final Long userId, final HttpServletRequest request) {
         if (StrUtil.isNotBlank(nodeId)) {
             // 1.Use url - NodeId to locate the space and return the bound
             // domain name
@@ -305,7 +305,7 @@ public class UserController {
      */
     // Return the space station domain name
     private String returnSpaceDomain(final String spaceId,
-        final String userSpaceId) {
+                                     final String userSpaceId) {
         // Returns the domain name information, and returns the public domain
         // name if there is no credential acquisition or search
         if (StrUtil.isNotBlank(spaceId)) {
@@ -761,7 +761,7 @@ public class UserController {
      * @return {@link ResponseData}
      */
     @PostResource(path = "/delActiveSpaceCache",
-        method = { RequestMethod.GET}, requiredPermission = false)
+        method = {RequestMethod.GET}, requiredPermission = false)
     @Operation(summary = "Delete Active Space Cache")
     public ResponseData<Void> delActiveSpaceCache() {
         // Fill in the invitation code and reward integral

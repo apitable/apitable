@@ -1,4 +1,4 @@
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 import { IResourceOpsCollect } from 'command_manager';
 import { OTActionName } from 'engine';
 import {
@@ -11,8 +11,8 @@ import {
   IReduxState,
   ISnapshot,
   IViewProperty,
-  ViewType,
-} from 'exports/store';
+} from 'exports/store/interfaces';
+import { ViewType } from 'modules/shared/store/constants';
 import { range } from 'lodash';
 import { FieldType, ResourceType, SegmentType } from 'types';
 import { checkInnerConsistency, generateFixInnerConsistencyChangesets, IInnerConsistencyErrorInfo } from 'utils/inner_consistency';

@@ -19,7 +19,14 @@
 package com.apitable.interfaces.user.model;
 
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+/**
+ * multi invitation metadata.
+ */
+@Getter
+@AllArgsConstructor
 public class MultiInvitationMetadata {
 
     private String spaceId;
@@ -27,22 +34,4 @@ public class MultiInvitationMetadata {
     private Long inviteUserId;
 
     private List<String> emails;
-
-    public MultiInvitationMetadata(String spaceId, Long inviteUserId, List<String> emails) {
-        this.spaceId = spaceId;
-        this.inviteUserId = inviteUserId;
-        this.emails = emails;
-    }
-
-    public String getSpaceId() {
-        return spaceId;
-    }
-
-    public Long getInviteUserId() {
-        return inviteUserId;
-    }
-
-    public List<String> getEmails() {
-        return emails;
-    }
 }

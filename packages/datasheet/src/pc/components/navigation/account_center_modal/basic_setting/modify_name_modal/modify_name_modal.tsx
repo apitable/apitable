@@ -19,11 +19,15 @@
 import { Form } from 'antd';
 import * as React from 'react';
 import { FC, useState, useEffect } from 'react';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { useDispatch, shallowEqual } from 'react-redux';
 import { IReduxState, StoreActions, Api, t, Strings, ConfigConstant } from '@apitable/core';
-import { Message, NormalModal, WithTipTextInput } from 'pc/components/common';
-import { useRequest, useUserRequest } from 'pc/hooks';
+import { WithTipTextInput } from 'pc/components/common/input/with_tip_input/with_tip_text_input';
+import { Message } from 'pc/components/common/message/message';
+import { NormalModal } from 'pc/components/common/modal/normal_modal/normal_modal';
 import { usePlatform } from 'pc/hooks/use_platform';
+import { useRequest } from 'pc/hooks/use_request';
+import { useUserRequest } from 'pc/hooks/use_user_request';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
 
 export interface IModifyNameModalProps {
@@ -34,7 +38,7 @@ export interface IModifyNameModalProps {
 export const ModifyNameModal: FC<React.PropsWithChildren<IModifyNameModalProps>> = (props) => {
   const { setNameModal, originName } = props;
   const { getLoginStatusReq } = useUserRequest();
-  const { err, loading } = useSelector(
+  const { err, loading } = useAppSelector(
     (state: IReduxState) => ({
       err: state.user.err,
       loading: state.user.loading,

@@ -23,7 +23,7 @@ import React from 'react';
 const InvitationValidationWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/home/invitation_validation').then((components) => {
       return components.InvitationValidation;
     }),
   { ssr: false },

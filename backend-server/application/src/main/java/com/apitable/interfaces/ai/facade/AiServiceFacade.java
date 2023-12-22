@@ -24,10 +24,10 @@ public interface AiServiceFacade {
     /**
      * update ai.
      *
-     * @param aiId  ai unique id
-     * @param param update parameter
+     * @param aiId        ai unique id
+     * @param updateParam update parameter
      */
-    void updateAi(String aiId, AiUpdateParam param);
+    void updateAi(String aiId, AiUpdateParam updateParam);
 
     /**
      * delete ai node.

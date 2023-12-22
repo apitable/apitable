@@ -20,7 +20,6 @@ import { Form } from 'antd';
 import classNames from 'classnames';
 import { FC, useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { TextInput, Button } from '@apitable/components';
 import { Api, IReduxState, t, Strings } from '@apitable/core';
 import { WithTipWrapper, IdentifyingCodeInput } from 'pc/components/common';
@@ -28,14 +27,16 @@ import { getVerifyData, IChangeMainAdminConfig, VerifyTypes } from 'pc/component
 import { useRequest, useSetState } from 'pc/hooks';
 import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+
+import {useAppSelector} from "pc/store/react-redux";
 interface IVerifyAdminProps {
   setCurrent: React.Dispatch<React.SetStateAction<number>>;
 }
 export const VerifyAdmin: FC<React.PropsWithChildren<IVerifyAdminProps>> = (props) => {
   const [identifyingCode, setIdentifyingCode] = useState('');
-  const mainAdminInfo = useSelector((state: IReduxState) => state.spacePermissionManage.mainAdminInfo);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const mainAdminInfo = useAppSelector((state: IReduxState) => state.spacePermissionManage.mainAdminInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const [errMsg, setErrMsg] = useSetState<{
     accountErrMsg: string;
     identifyingCodeErrMsg: string;

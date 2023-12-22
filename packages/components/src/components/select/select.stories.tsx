@@ -23,6 +23,7 @@ import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
 import { ISelectProps } from './interface';
 import { StarOutlined, WarnCircleFilled } from '@apitable/icons';
+import { MultipleSelect } from './dropdown/multiple';
 
 const COMPONENT_NAME = 'Select';
 
@@ -54,6 +55,119 @@ export const Default = Template.bind({});
 export const WithData = Template.bind({});
 WithData.args = {
   options: data
+};
+
+export const MultipleSelectDemo = () => {
+  const [value, setValue] = React.useState(['value4', 'value5']);
+  return (
+    <MultipleSelect
+      placeholder={
+        '请选择'
+      }
+      value={value}
+      options={[
+        {
+          value: 'value1',
+          label: 'a1'
+        },
+        {
+          value: 'value2',
+          label: '3'
+        },
+        {
+          value: 'value5',
+          label: 'a5'
+        },
+        {
+          value: 'value1',
+          label: 'a'
+        },
+
+        {
+          value: 'value1',
+          label: 'a'
+        },
+
+        {
+          value: 'value1',
+          label: 'a'
+        },
+
+        {
+          value: 'value1',
+          label: 'a'
+        },
+
+        {
+          value: 'value1',
+          label: 'a'
+        },
+
+        {
+          value: 'value1',
+          label: 'a'
+        },
+
+        {
+          value: 'value1',
+          label: 'a'
+        },
+
+        {
+          value: 'value1',
+          label: 'a'
+        },
+
+        {
+          value: 'value1',
+          label: 'a'
+        },
+
+        {
+          value: 'value1',
+          label: 'a'
+        },
+
+        {
+          value: 'value1',
+          label: 'a'
+        },
+
+        {
+          value: 'value1',
+          label: 'a'
+        },
+
+        {
+          value: 'value1',
+          label: 'a'
+        },
+
+        {
+          value: 'value1',
+          label: 'a'
+        },
+
+        {
+          value: 'value1',
+          label: 'a'
+        },
+
+        {
+          value: 'value5',
+          label: 'a'
+        },
+        {
+          value: 'value4',
+          label: 'b'
+        }
+      ]}
+      onChange={(option) => {
+        console.log('options', option);
+        setValue(option as any);
+      }}
+    />
+  );
 };
 
 export const SearchSelectDemo = () => {

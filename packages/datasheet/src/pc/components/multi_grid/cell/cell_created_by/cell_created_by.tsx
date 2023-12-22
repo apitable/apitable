@@ -20,7 +20,7 @@ import classNames from 'classnames';
 import keyBy from 'lodash/keyBy';
 import { useEffect, useMemo, useState, Fragment } from 'react';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import {
   DatasheetApi,
   integrateCdnHost,
@@ -42,6 +42,8 @@ import { ICellComponentProps } from '../cell_value/interface';
 import { OptionalCellContainer } from '../optional_cell_container/optional_cell_container';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export interface ICellCreatedByProps extends ICellComponentProps {
   keyPrefix?: string;
   isFromExpand?: boolean;
@@ -50,7 +52,7 @@ export interface ICellCreatedByProps extends ICellComponentProps {
 
 export const CellCreatedBy: React.FC<React.PropsWithChildren<ICellCreatedByProps>> = (props) => {
   const { field: currentField, isFromExpand, className, readonly, cellValue, rowHeightLevel } = props;
-  const { userMap, userInfo: userData } = useSelector(
+  const { userMap, userInfo: userData } = useAppSelector(
     (state) => ({
       userMap: Selectors.getUserMap(state),
       userInfo: state.user.info!,

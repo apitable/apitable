@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 
 /**
- * Json Converter
+ * Json Converter.
  */
 public class Converter {
 

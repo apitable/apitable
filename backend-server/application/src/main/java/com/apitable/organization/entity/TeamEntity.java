@@ -18,13 +18,12 @@
 
 package com.apitable.organization.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +33,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Organizational Structure - Department Table
+ * Organizational Structure - Department Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -51,49 +50,49 @@ public class TeamEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Space ID(link#xxxx_space#space_id)
+     * Space ID(link#xxxx_space#space_id).
      */
     private String spaceId;
 
     /**
-     * Parent ID, 0 if it is root department
+     * Parent ID, 0 if it is root department.
      */
     private Long parentId;
 
     /**
-     * Department Name
+     * Department Name.
      */
     private String teamName;
 
     /**
-     * Level, starting from 1 by default
+     * Level, starting from 1 by default.
      */
     private Integer teamLevel;
 
     /**
-     * Sort (sibling starts from 1 by default)
+     * Sort (sibling starts from 1 by default).
      */
     private Integer sequence;
 
     /**
-     * Delete Tag (0: No, 1: Yes)
+     * Delete Tag (0: No, 1: Yes).
      */
     @TableLogic
     private Boolean isDeleted;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

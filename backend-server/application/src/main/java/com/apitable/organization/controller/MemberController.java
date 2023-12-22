@@ -99,6 +99,9 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
@@ -107,9 +110,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -203,45 +203,6 @@ public class MemberController {
         List<SearchMemberVo> resultList =
             iMemberSearchService.getLikeMemberName(spaceId, CharSequenceUtil.trim(keyword), filter,
                 className);
-        return ResponseData.success(resultList);
-    }
-
-    /**
-     * Query the team's members.
-     */
-    @GetResource(path = "/list")
-    @Operation(summary = "Query the team's members",
-        description = "Query all the members of the department,"
-            + " including the members of the sub department."
-            + "if root team can lack teamId, teamId default 0.")
-    @Parameters({
-        @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
-        @Parameter(name = "teamId", in = ParameterIn.QUERY,
-            description = "team id. if root team can lack teamId, teamId default 0.",
-            schema = @Schema(type = "string"), example = "0")
-    })
-    public ResponseData<List<MemberInfoVo>> getMemberList(
-        @RequestParam(name = "teamId", required = false, defaultValue = "0") Long teamId) {
-        String spaceId = LoginContext.me().getSpaceId();
-        SpaceGlobalFeature feature = iSpaceService.getSpaceGlobalFeature(spaceId);
-        SpaceHolder.setGlobalFeature(feature);
-        if (teamId == 0) {
-            // query the members of the root department
-            List<MemberInfoVo> resultList = memberMapper.selectMembersByRootTeamId(spaceId);
-            if (CollUtil.isNotEmpty(resultList)) {
-                // handle member's team name, get full hierarchy team names
-                iTeamService.handleListMemberTeams(resultList, spaceId);
-            }
-            return ResponseData.success(resultList);
-        }
-        // query the ids of all sub departments
-        List<Long> teamIds = iTeamService.getAllTeamIdsInTeamTree(teamId);
-        List<MemberInfoVo> resultList = memberMapper.selectMembersByTeamId(teamIds);
-        if (CollUtil.isNotEmpty(resultList)) {
-            // handle member's team name, get full hierarchy team names
-            iTeamService.handleListMemberTeams(resultList, spaceId);
-        }
         return ResponseData.success(resultList);
     }
 
@@ -602,7 +563,8 @@ public class MemberController {
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
             // fileName is the name of the file that displays the download dialog box
             String name = "员工信息模板";
-            String fileName = URLEncoder.encode(name, "UTF-8").replaceAll("\\+", "%20");
+            String fileName =
+                URLEncoder.encode(name, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
             response.setHeader("Content-disposition",
                 "attachment;filename*=utf-8''" + fileName + ".xlsx");
             InputStream inputStream =

@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * SMS verification code generator
+ * SMS verification code generator.
  * </p>
  *
  * @author Shawn Deng

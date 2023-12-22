@@ -31,19 +31,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+/**
+ * role member service.
+ */
 public interface IRoleMemberService {
 
     /**
-     * add role members
+     * add role members.
      *
-     * @param roleId            role id
-     * @param roleMemberUnits   the unit information about role members
+     * @param roleId          role id
+     * @param roleMemberUnits the unit information about role members
      * @return the ref row ids of role and role members.
      */
     List<Long> addRoleMembers(Long roleId, List<RoleMemberUnitRo> roleMemberUnits);
 
     /**
-     * remove role members
+     * remove role members.
      *
      * @param roleId        role id
      * @param roleMemberIds role members' id
@@ -54,14 +57,14 @@ public interface IRoleMemberService {
     /**
      * remove role members by role id.
      *
-     * @param roleId    role id
+     * @param roleId role id
      */
     void removeByRoleId(Long roleId);
 
     /**
      * get the role's base information by role id.
      *
-     * @param roleIds   roles' id
+     * @param roleIds roles' id
      * @return the roles' base information.
      */
     List<RoleMemberInfoDTO> getRoleMembersByRoleIds(List<Long> roleIds);
@@ -69,9 +72,9 @@ public interface IRoleMemberService {
     /**
      * get page vo about role members.
      *
-     * @param spaceId   space id
-     * @param roleId    role id
-     * @param page      page parameter
+     * @param spaceId space id
+     * @param roleId  role id
+     * @param page    page parameter
      * @return page vo about role members.
      */
     IPage<RoleMemberVo> getRoleMembersPage(String spaceId, Long roleId, Page<Void> page);

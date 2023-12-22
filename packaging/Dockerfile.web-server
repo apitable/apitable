@@ -15,6 +15,8 @@ COPY packages/databus-wasm-nodejs/package.json ./packages/databus-wasm-nodejs/
 COPY packages/i18n-lang/package.json ./packages/i18n-lang/
 COPY packages/icons/package.json ./packages/icons/
 COPY packages/widget-sdk/package.json ./packages/widget-sdk/
+COPY packages/ai-components/package.json ./packages/ai-components/
+COPY packages/api-client/package.json ./packages/api-client/
 
 # datasheet main
 COPY packages/datasheet/package.json ./packages/datasheet/
@@ -33,7 +35,7 @@ RUN npm install -g pnpm
 
 WORKDIR /app
 
-COPY ./pnpm-workspace.yaml  ./package.json ./pnpm-lock.yaml ./nx.json ./common-tsconfig.json ./tsconfig.json ./.eslintrc ./
+COPY ./pnpm-workspace.yaml ./build.js ./package.json ./pnpm-lock.yaml ./nx.json ./common-tsconfig.json ./tsconfig.json ./.eslintrc ./
 COPY packages/ ./packages/
 
 COPY --from=deps /workspace-install/node_modules ./node_modules
@@ -43,6 +45,8 @@ COPY --from=deps /workspace-install/packages/core/node_modules ./packages/core/n
 COPY --from=deps /workspace-install/packages/icons/node_modules ./packages/icons/node_modules
 COPY --from=deps /workspace-install/packages/i18n-lang/node_modules ./packages/i18n-lang/node_modules
 COPY --from=deps /workspace-install/packages/widget-sdk/node_modules ./packages/widget-sdk/node_modules
+COPY --from=deps /workspace-install/packages/ai-components/node_modules ./packages/ai-components/node_modules
+COPY --from=deps /workspace-install/packages/api-client/node_modules ./packages/api-client/node_modules
 
 RUN set -eux; \
     sed -i~ '$a\WEB_CLIENT_VERSION='${SEMVER_FULL}'' packages/datasheet/.env; \

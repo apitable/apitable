@@ -32,45 +32,57 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.List;
 
+/**
+ * widget package service.
+ */
 public interface IWidgetPackageService extends IService<WidgetPackageEntity> {
 
     /**
+     * check packageId exist.
+     *
      * @param customPackageId custom widget id
      * @return whether widget exist
      */
     boolean checkCustomPackageId(String customPackageId);
 
     /**
-     * @param opUserId  opUserId
-     * @param widget create widget package request parameters
+     * create widget.
+     *
+     * @param opUserId opUserId
+     * @param widget   create widget package request parameters
      * @return widget id
      */
     WidgetReleaseCreateVo createWidget(Long opUserId, WidgetPackageCreateRo widget);
 
     /**
-     * get a list of publishing history
+     * get a list of publishing history.
      *
      * @param opUserId  opUserId
      * @param packageId widget id
-     * @param page page object
+     * @param page      page object
      * @return publish list
      */
     List<WidgetReleaseListVo> releaseListWidget(Long opUserId, String packageId,
-        Page<WidgetReleaseListVo> page);
+                                                Page<WidgetReleaseListVo> page);
 
     /**
+     * rollback widget.
+     *
      * @param opUserId opUserId
-     * @param widget rollback widget request parameters
+     * @param widget   rollback widget request parameters
      */
     void rollbackWidget(Long opUserId, WidgetPackageRollbackRo widget);
 
     /**
+     * unpublish widget.
+     *
      * @param opUserId opUserId
-     * @param widget unpublish widget request parameters
+     * @param widget   unpublish widget request parameters
      */
     void unpublishWidget(Long opUserId, WidgetPackageUnpublishRo widget);
 
     /**
+     * get widget package info.
      *
      * @param packageId widget id
      * @return WidgetPackageInfoVo
@@ -78,18 +90,24 @@ public interface IWidgetPackageService extends IService<WidgetPackageEntity> {
     WidgetPackageInfoVo getWidgetPackageInfo(String packageId);
 
     /**
+     * get widget package list info.
+     *
      * @param spaceId space id
      * @return WidgetPackageInfoVo
      */
     List<WidgetPackageInfoVo> getWidgetPackageListInfo(String spaceId);
 
     /**
-     * @param opUserId          opUserId
-     * @param transferOwnerRo   request to transfer widget parameters
+     * transfer widget owner.
+     *
+     * @param opUserId        opUserId
+     * @param transferOwnerRo request to transfer widget parameters
      */
     void transferWidgetOwner(Long opUserId, WidgetTransferOwnerRo transferOwnerRo);
 
     /**
+     * get entity by package id.
+     *
      * @param packageId widget packageId id
      * @param checkBan  check if the widget is disabled
      * @return WidgetPackageEntity
@@ -106,14 +124,18 @@ public interface IWidgetPackageService extends IService<WidgetPackageEntity> {
     WidgetPackageEntity getByPackageId(String packageId);
 
     /**
+     * release widget.
+     *
      * @param opUserId opUserId
-     * @param widget publish widget request parameters
+     * @param widget   publish widget request parameters
      */
     void releaseWidget(Long opUserId, WidgetPackageReleaseV2Ro widget);
 
     /**
+     * submit widget.
+     *
      * @param opUserId opUserId
-     * @param widget publish widget request parameters
+     * @param widget   publish widget request parameters
      */
     void submitWidget(Long opUserId, WidgetPackageSubmitV2Ro widget);
 }

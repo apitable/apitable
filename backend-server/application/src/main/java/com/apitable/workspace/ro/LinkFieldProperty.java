@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * Associated Field Properties
+ * Associated Field Properties.
  * </p>
  */
 @Data
@@ -34,23 +34,23 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 public class LinkFieldProperty {
 
-	/**
-	 * Associated number table ID
-	 */
-	private String foreignDatasheetId;
+    /**
+     * Associated number table ID.
+     */
+    private String foreignDatasheetId;
 
-	/**
-	 * Brother field ID of related number table
-	 */
-	private String brotherFieldId;
+    /**
+     * Brother field ID of related number table.
+     */
+    private String brotherFieldId;
 
-	/**
-	 * Only records can be selected for the corresponding viewId
-	 */
-	private String limitToView;
+    /**
+     * Only records can be selected for the corresponding viewId.
+     */
+    private String limitToView;
 
-	/**
-	 * Whether to restrict the association of only one record
-	 */
-	private Boolean limitSingleRecord;
+    /**
+     * Whether to restrict the association of only one record.
+     */
+    private Boolean limitSingleRecord;
 }

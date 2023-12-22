@@ -20,7 +20,7 @@ import { useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
 import * as React from 'react';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { ConfigConstant, Field, FieldType, ILookUpField, Selectors, Strings, t } from '@apitable/core';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
@@ -32,6 +32,8 @@ import { isTouchDevice } from 'pc/utils';
 import { FieldBlock, ICommonProps } from './field_block';
 import { FieldTitle } from './field_title';
 import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IFieldEditorProps {
   datasheetId: string;
@@ -52,7 +54,7 @@ export type IExpandFieldEditRef = Pick<IEditor, 'focus' | 'setValue' | 'saveValu
 const FieldEditorBase = (props: IFieldEditorProps) => {
   const { fieldId, datasheetId, mirrorId, expandRecordId, isFocus, setFocus, showAlarm, allowToInsertField, colIndex } = props;
   const [hover, setHover] = useState(false);
-  const { snapshot, cellValue, cellEditable, fieldRole } = useSelector((state) => {
+  const { snapshot, cellValue, cellEditable, fieldRole } = useAppSelector((state) => {
     const innerSnapshot = Selectors.getSnapshot(state, datasheetId)!;
     const fieldPermissionMap = Selectors.getFieldPermissionMap(state);
     return {
@@ -72,6 +74,8 @@ const FieldEditorBase = (props: IFieldEditorProps) => {
   const editable = cellEditable && (!fieldRole || fieldRole === ConfigConstant.Role.Editor);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
+
+  const canWorkDocExpand = field.type === FieldType.WorkDoc && cellValue !== null;
 
   const setFocusFunc = useCallback(
     (status: boolean) => {
@@ -124,7 +128,8 @@ const FieldEditorBase = (props: IFieldEditorProps) => {
   }, []);
 
   function onMouseDown() {
-    if (Field.bindModel(field).isComputed || field.type === FieldType.AutoNumber || (fieldRole && fieldRole !== ConfigConstant.Role.Editor)) {
+    if (Field.bindModel(field).isComputed ||
+      field.type === FieldType.AutoNumber || (fieldRole && fieldRole !== ConfigConstant.Role.Editor)) {
       window.clearTimeout(timeoutRef.current);
       setShowTip(true);
       timeoutRef.current = window.setTimeout(() => {
@@ -176,7 +181,7 @@ const FieldEditorBase = (props: IFieldEditorProps) => {
         <div
           className={classNames('displayItem', {
             [styles.displayItem]: !notNeedBgField.includes(fieldType),
-            [styles.disabled]: !editable,
+            [styles.disabled]: !editable && !canWorkDocExpand,
             [styles.active]: isFocus && editable,
             [styles.checkBox]: fieldType === FieldType.Checkbox,
           })}
@@ -190,8 +195,9 @@ const FieldEditorBase = (props: IFieldEditorProps) => {
           }}
         >
           <div
-            className={classNames({
+            className={classNames(styles.fieldBlockWrap, {
               [styles.mobileFieldContainer]: isMobile,
+              [styles.fieldButtonColumn]: field.type === FieldType.Button,
             })}
           >
             <FieldBlock commonProps={commonProps} cellValue={cellValue} isFocus={isFocus} onMouseDown={onMouseDown} showAlarm={showAlarm} />

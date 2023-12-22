@@ -23,8 +23,8 @@ import React from 'react';
 const FeiShuBindUserWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
-      return components.FeiShuBindUser;
+    import('enterprise/lark/feishu/feishu_bind_user').then((components) => {
+      return components.default;
     }),
   { ssr: false },
 );

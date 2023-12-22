@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ResourceRobotDto } from 'automation/dtos/robot.dto';
-import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
-import { EntityRepository, In, IsNull, Not, Repository } from 'typeorm';
-import { TriggerCreateRo } from '../ros/trigger.create.ro';
 import { generateRandomString } from '@apitable/core';
+import { ResourceRobotDto } from 'automation/dtos/robot.dto';
+import { EntityRepository, In, IsNull, Not, Repository } from 'typeorm';
 import { ResourceRobotTriggerDto, RobotTriggerBaseInfoDto, RobotTriggerInfoDto } from '../dtos/trigger.dto';
+import { AutomationTriggerEntity } from '../entities/automation.trigger.entity';
+import { TriggerCreateRo } from '../ros/trigger.create.ro';
 
 @EntityRepository(AutomationTriggerEntity)
 export class AutomationTriggerRepository extends Repository<AutomationTriggerEntity> {
@@ -74,6 +74,21 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
       where: {
         isDeleted: 0,
         robotId: robotId,
+        resourceId: Not(''),
+        input: Not(IsNull()),
+      },
+      order: {
+        createdAt: 'ASC',
+      },
+    });
+  }
+
+  public async selectTriggerInfoByTriggerId(triggerId: string): Promise<RobotTriggerInfoDto | undefined> {
+    return await this.findOne({
+      select: ['triggerId', 'input', 'triggerTypeId'],
+      where: {
+        isDeleted: 0,
+        triggerId: triggerId,
       },
     });
   }
@@ -97,7 +112,7 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
         isDeleted: false,
       },
     });
-    return results.filter(i => i.robotId).map((result) => result.robotId);
+    return results.filter((i) => i.robotId).map((result) => result.robotId);
   }
 
   async selectRobotIdAndResourceIdByResourceIds(resourceIds: string[]): Promise<ResourceRobotDto[]> {
@@ -110,5 +125,28 @@ export class AutomationTriggerRepository extends Repository<AutomationTriggerEnt
       },
     });
     return results as ResourceRobotDto[];
+  }
+
+  async selectTriggerByTriggerId(triggerId: string): Promise<AutomationTriggerEntity | undefined> {
+    return await this.findOne({
+      select: ['robotId', 'triggerId', 'triggerTypeId', 'input', 'resourceId'],
+      where: { triggerId, isDeleted: 0 },
+    });
+  }
+
+  async selectResourceIdCountByRobotId(robotId: string): Promise<number> {
+    return await this.count({
+      where: { robotId, isDeleted: 0, resourceId: Not('') },
+    });
+  }
+
+  public async selectTriggerInfosByRobotId(robotId: string): Promise<AutomationTriggerEntity[]> {
+    return await this.find({
+      select: ['triggerId', 'input', 'triggerTypeId', 'resourceId'],
+      where: {
+        isDeleted: 0,
+        robotId: robotId,
+      },
+    });
   }
 }

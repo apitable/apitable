@@ -1,6 +1,13 @@
 import {
-  FieldType, IField, Field, BasicValueType, INumberFormatFieldProperty,
-  INumberFieldProperty, NumberField, IDateTimeFieldProperty, DateTimeField
+  FieldType,
+  IField,
+  Field,
+  BasicValueType,
+  INumberFormatFieldProperty,
+  INumberFieldProperty,
+  NumberField,
+  IDateTimeFieldProperty,
+  DateTimeField,
 } from '@apitable/core';
 
 export enum EditorType {
@@ -32,8 +39,10 @@ const editorMap = {
   [FieldType.URL]: EditorType.Text,
   [FieldType.Email]: EditorType.Text,
   [FieldType.Phone]: EditorType.Text,
+  [FieldType.Button]: EditorType.Text,
   [FieldType.Link]: EditorType.Text,
   [FieldType.OneWayLink]: EditorType.Text,
+  [FieldType.WorkDoc]: EditorType.Text,
   [FieldType.Checkbox]: EditorType.Boolean,
   [FieldType.Member]: EditorType.Member,
   [FieldType.CreatedBy]: EditorType.Member,
@@ -99,14 +108,14 @@ export const getFieldByBasicType = (field: IField) => {
         id: 'fidxxxxxxxxx',
         name: 'fakename',
         type: FieldType.Number,
-        property: field.property.formatting as INumberFieldProperty || NumberField.defaultProperty(),
+        property: (field.property.formatting as INumberFieldProperty) || NumberField.defaultProperty(),
       };
     case BasicValueType.DateTime:
       return {
         id: 'fidxxxxxxxxx',
         name: 'fakename',
         type: FieldType.DateTime,
-        property: field.property.formatting as IDateTimeFieldProperty || DateTimeField.defaultProperty(),
+        property: (field.property.formatting as IDateTimeFieldProperty) || DateTimeField.defaultProperty(),
       };
     default:
       return;

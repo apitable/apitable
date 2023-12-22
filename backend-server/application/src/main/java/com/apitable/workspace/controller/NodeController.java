@@ -107,17 +107,18 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.validation.annotation.Validated;
@@ -259,7 +260,8 @@ public class NodeController {
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "manager")
     })
     public ResponseData<List<NodeInfo>> list(@RequestParam(value = "type") Integer type,
-        @RequestParam(value = "role", required = false, defaultValue = "manager") String role) {
+                                             @RequestParam(value = "role", required = false, defaultValue = "manager")
+                                             String role) {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
         List<String> nodeIds = iNodeService.getNodeIdBySpaceIdAndType(spaceId, type);
@@ -290,6 +292,9 @@ public class NodeController {
         schema = @Schema(type = "string"), example = "nodRTGSy43DJ9,nodRTGSy43DJ9")
     public ResponseData<List<NodeInfoVo>> getByNodeId(
         @RequestParam("nodeIds") List<String> nodeIds) {
+        if (nodeIds.isEmpty()) {
+            return ResponseData.success(ListUtil.empty());
+        }
         // Obtain the space ID. The method includes determining whether the node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeIds.get(0));
         // Gets the member ID by determining whether the user is in this space.
@@ -310,7 +315,8 @@ public class NodeController {
             in = ParameterIn.QUERY, example = "shrRTGSy43DJ9")
     })
     public ResponseData<ShowcaseVo> showcase(@RequestParam("nodeId") String nodeId,
-        @RequestParam(value = "shareId", required = false) String shareId) {
+                                             @RequestParam(value = "shareId", required = false)
+                                             String shareId) {
         // Obtain the node entity. The method includes determining whether the node exists.
         NodeEntity node = iNodeService.getByNodeId(nodeId);
         ControlRole role;
@@ -476,13 +482,15 @@ public class NodeController {
         // specified operation permissions.
         iNodeService.checkSourceDatasheet(spaceId, memberId, nodeOpRo.getType(),
             nodeOpRo.getExtra());
-        if (Boolean.TRUE.equals(nodeOpRo.getCheckDuplicateName())) {
-            String oldNodeId = iNodeService.getNodeIdByParentIdAndNodeName(nodeOpRo.getParentId(),
-                nodeOpRo.getNodeName());
-            if (StrUtil.isNotBlank(oldNodeId)) {
+        if (Boolean.TRUE.equals(nodeOpRo.getCheckDuplicateName())
+            && StrUtil.isNotBlank(nodeOpRo.getNodeName())) {
+            Optional<NodeEntity> nodeOptional = iNodeService.findSameNameInSameLevel(
+                nodeOpRo.getParentId(), nodeOpRo.getNodeName());
+            if (nodeOptional.isPresent()) {
                 return ResponseData.status(false, DUPLICATE_NODE_NAME.getCode(),
                         DUPLICATE_NODE_NAME.getMessage())
-                    .data(iNodeService.getNodeInfoByNodeId(spaceId, oldNodeId, role));
+                    .data(iNodeService.getNodeInfoByNodeId(spaceId, nodeOptional.get().getNodeId(),
+                        role));
             }
         }
         String nodeId = iNodeService.createNode(userId, spaceId, nodeOpRo);
@@ -701,8 +709,9 @@ public class NodeController {
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "qwer1234")
     })
     public void exportBundle(@RequestParam("nodeId") String nodeId,
-        @RequestParam(value = "saveData", required = false, defaultValue = "true") Boolean saveData,
-        @RequestParam(value = "password", required = false) String password) {
+                             @RequestParam(value = "saveData", required = false, defaultValue = "true")
+                             Boolean saveData,
+                             @RequestParam(value = "password", required = false) String password) {
         Long userId = SessionContext.getUserId();
         // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
@@ -750,8 +759,10 @@ public class NodeController {
      * Import excel.
      */
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
-    @PostResource(path = { "/import", "/{parentId}/importExcel" }, requiredPermission = false)
+    @PostResource(path = {"/import", "/{parentId}/importExcel"}, requiredPermission = false)
     @Operation(summary = "Import excel", description = "all parameters must be")
+    @Parameter(name = "parentId", description = "Parent Node ID", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fodNwmWE5QWPs")
     public ResponseData<NodeInfoVo> importExcel(@Valid ImportExcelOpRo data) throws IOException {
         ExceptionUtil.isTrue(data.getFile().getSize() <= limitProperties.getMaxFileSize(),
             ActionException.FILE_EXCEED_LIMIT);
@@ -902,8 +913,10 @@ public class NodeController {
             schema = @Schema(type = "integer"), example = "5")
     })
     public ResponseData<List<NodeInfo>> checkRelNode(@RequestParam("nodeId") String nodeId,
-        @RequestParam(value = "viewId", required = false) String viewId,
-        @RequestParam(value = "type", required = false) Integer type) {
+                                                     @RequestParam(value = "viewId", required = false)
+                                                     String viewId,
+                                                     @RequestParam(value = "type", required = false)
+                                                     Integer type) {
         return ResponseData.success(
             iNodeRelService.getRelationNodeInfoByNodeId(nodeId, viewId, null, type));
     }
@@ -925,8 +938,10 @@ public class NodeController {
             schema = @Schema(type = "integer"), example = "5")
     })
     public ResponseData<List<NodeInfo>> getNodeRel(@RequestParam("nodeId") String nodeId,
-        @RequestParam(value = "viewId", required = false) String viewId,
-        @RequestParam(value = "type", required = false) Integer type) {
+                                                   @RequestParam(value = "viewId", required = false)
+                                                   String viewId,
+                                                   @RequestParam(value = "type", required = false)
+                                                   Integer type) {
         Long userId = SessionContext.getUserId();
         // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);

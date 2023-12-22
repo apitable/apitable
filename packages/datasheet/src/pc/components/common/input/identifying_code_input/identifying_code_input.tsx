@@ -21,9 +21,10 @@ import { FC, useEffect, useState } from 'react';
 import { Button, ITextInputProps, TextInput } from '@apitable/components';
 import { AutoTestID, ConfigConstant, StatusCode, Strings, t } from '@apitable/core';
 import { ShieldCheckFilled } from '@apitable/icons';
-import { Message } from 'pc/components/common';
-import { useRequest, useUserRequest } from 'pc/hooks';
-import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
+import { Message } from 'pc/components/common/message/message';
+import { useRequest } from 'pc/hooks/use_request';
+import { useUserRequest } from 'pc/hooks/use_user_request';
+import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils/no_trace_verification';
 import styles from './style.module.less';
 
 export interface IIdentifyingCodeInputProps extends ITextInputProps {

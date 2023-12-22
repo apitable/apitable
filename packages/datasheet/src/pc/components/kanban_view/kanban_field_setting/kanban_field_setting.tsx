@@ -23,18 +23,19 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { Button, ThemeProvider, WrapperTooltip, Typography } from '@apitable/components';
 import { CollaCommandName, ConfigConstant, ExecuteResult, FieldType, IField, KanbanStyleKey, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, ChevronLeftOutlined } from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
-import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view';
+import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view/id';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { useCommand } from '../hooks/use_command';
 import { KanbanMember } from './kanban_member';
 import { KanbanOption } from './kanban_option/kanban_option';
@@ -79,14 +80,14 @@ const SettingHead: React.FC<React.PropsWithChildren<ISettingHeadProps>> = ({ rou
 
 export const KanbanFieldSettingModal: React.FC<React.PropsWithChildren<IKanbanFieldSettingModalProps>> = ({ onClose }) => {
   const [route, setRoute] = useState<KanbanRoute>(KanbanRoute.Init);
-  const columnCount = useSelector(Selectors.getColumnCount)!;
-  const groupFieldId = useSelector(Selectors.getKanbanFieldId);
+  const columnCount = useAppSelector(Selectors.getColumnCount)!;
+  const groupFieldId = useAppSelector(Selectors.getKanbanFieldId);
   const command = useCommand();
-  const fieldCreatable = useSelector((state) => Selectors.getPermissions(state).fieldCreatable);
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!));
+  const fieldCreatable = useAppSelector((state) => Selectors.getPermissions(state).fieldCreatable);
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!));
   const ref = useRef<HTMLDivElement>(null);
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
-  const viewId = useSelector(Selectors.getActiveViewId)!;
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
+  const viewId = useAppSelector(Selectors.getActiveViewId)!;
   const isCryptoField = Boolean(groupFieldId && Selectors.getFieldRoleByFieldId(fieldPermissionMap, groupFieldId) === ConfigConstant.Role.None);
   const isViewLock = useShowViewLockModal();
 

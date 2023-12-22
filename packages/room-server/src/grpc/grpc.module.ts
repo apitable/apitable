@@ -23,6 +23,7 @@ import { GrpcSocketService } from 'grpc/services/grpc.socket.service';
 import { NodeModule } from 'node/node.module';
 import { UserModule } from 'user/user.module';
 import { GrpcController } from './controllers/grpc.controller';
+import { DocumentServiceDynamicModule } from 'workdoc/services/document.service.dynamic.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { GrpcController } from './controllers/grpc.controller';
     UserModule,
     forwardRef(() => NodeModule),
     GrpcClientModule,
+    DocumentServiceDynamicModule.forRoot(),
   ],
   controllers: [GrpcController],
   providers: [

@@ -22,6 +22,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.shared.component.ResourceDefinition;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,7 +34,7 @@ import org.springframework.util.PathMatcher;
 
 /**
  * <p>
- * default resource factory(system memory)
+ * default resource factory(system memory).
  * </p>
  *
  * @author Shawn Deng
@@ -44,7 +45,8 @@ public class DefaultApiResourceFactory implements ApiResourceFactory {
 
     private final Map<String, ResourceDefinition> resourceDefinitions = new ConcurrentHashMap<>();
 
-    private final Map<String, Map<String, ResourceDefinition>> modularResourceDefinitions = new ConcurrentHashMap<>();
+    private final Map<String, Map<String, ResourceDefinition>> modularResourceDefinitions =
+        new ConcurrentHashMap<>();
 
     private final Map<String, List<ResourceDefinition>> urlDefineResources =
         new ConcurrentHashMap<>();
@@ -53,9 +55,12 @@ public class DefaultApiResourceFactory implements ApiResourceFactory {
     public synchronized void registerDefinition(List<ResourceDefinition> apiResource) {
         if (CollUtil.isNotEmpty(apiResource)) {
             for (ResourceDefinition resourceDefinition : apiResource) {
-                ResourceDefinition alreadyFlag = resourceDefinitions.get(resourceDefinition.getResourceCode());
+                ResourceDefinition alreadyFlag =
+                    resourceDefinitions.get(resourceDefinition.getResourceCode());
                 if (alreadyFlag != null) {
-                    throw new RuntimeException("There are duplicate resources during resource scanning！\nNew resources are： " + resourceDefinition);
+                    throw new RuntimeException(
+                        "There are duplicate resources during resource scanning！\nNew resources are： "
+                            + resourceDefinition);
                 }
                 resourceDefinitions.put(resourceDefinition.getResourceCode(), resourceDefinition);
                 for (String resourceUrl : resourceDefinition.getResourceUrls()) {
@@ -70,11 +75,14 @@ public class DefaultApiResourceFactory implements ApiResourceFactory {
                     }
                 }
 
-                Map<String, ResourceDefinition> modularResources = modularResourceDefinitions.get(StrUtil.toUnderlineCase(resourceDefinition.getModularCode()));
+                Map<String, ResourceDefinition> modularResources = modularResourceDefinitions.get(
+                    StrUtil.toUnderlineCase(resourceDefinition.getModularCode()));
                 if (modularResources == null) {
-                    modularResources = CollUtil.newHashMap();
+                    modularResources = new HashMap<>();
                     modularResources.put(resourceDefinition.getResourceCode(), resourceDefinition);
-                    modularResourceDefinitions.put(StrUtil.toUnderlineCase(resourceDefinition.getModularCode()), modularResources);
+                    modularResourceDefinitions.put(
+                        StrUtil.toUnderlineCase(resourceDefinition.getModularCode()),
+                        modularResources);
                 } else {
                     modularResources.put(resourceDefinition.getResourceCode(), resourceDefinition);
                 }

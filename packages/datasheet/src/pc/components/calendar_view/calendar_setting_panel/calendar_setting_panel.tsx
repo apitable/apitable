@@ -17,7 +17,7 @@
  */
 
 import { FC, useContext, useMemo } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 // eslint-disable-next-line no-restricted-imports
 import { black, IOption, Select, Tooltip, Typography, useThemeColors } from '@apitable/components';
@@ -58,6 +58,8 @@ import { setStorage, StorageName } from 'pc/utils/storage';
 import { CalendarContext } from '../calendar_context';
 import styles from './styles.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 const UNUSED_END_DATE = 'unusedEndDate';
 
 interface ICalendarSettingPanel {
@@ -75,7 +77,7 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
   const isEndFieldDeleted = endFieldId && !isCryptoEndField && !fieldMap[endFieldId];
   const columns = view.columns as ICalendarViewColumn[];
   const isViewLock = useShowViewLockModal();
-  const { spaceId, viewId, datasheetId, cacheTheme } = useSelector((state) => {
+  const { spaceId, viewId, datasheetId, cacheTheme } = useAppSelector((state) => {
     const { datasheetId: dstId, viewId: vId } = state.pageParams;
     return {
       datasheetId: dstId,
@@ -301,7 +303,7 @@ export const CalendarSettingPanel: FC<React.PropsWithChildren<ICalendarSettingPa
           })}
         </div>
         {noRequiredField && <span className={styles.errorText}>{t(Strings.must_one_date)}</span>}
-        {startFieldId && endFieldId && fieldMap[startFieldId]?.property.timeZone !== fieldMap[endFieldId]?.property.timeZone && (
+        {startFieldId && endFieldId && fieldMap[startFieldId]?.property?.timeZone !== fieldMap[endFieldId]?.property?.timeZone && (
           <div className={styles.timeZoneTip}>
             <WarnCircleOutlined color={colors.textCommonTertiary} />
             <span>{t(Strings.time_zone_inconsistent_tips)}</span>

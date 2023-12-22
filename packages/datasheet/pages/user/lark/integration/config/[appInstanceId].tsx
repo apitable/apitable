@@ -23,8 +23,8 @@ import React from 'react';
 const FeishuIntegrationWithNoSSR: any = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
-      return components.FeishuIntegration;
+    import('enterprise/lark/feishu_integration/feishu_integration').then((components) => {
+      return components.default;
     }),
   { ssr: false },
 );
@@ -33,8 +33,8 @@ const FeishuIntegrationWithNoSSR: any = dynamic(
 const FeishuConfigWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
-      return components.FeishuConfig;
+    import('enterprise/lark/feishu_integration/feishu_integration_config').then((components) => {
+      return components.default;
     }),
   { ssr: false },
 );

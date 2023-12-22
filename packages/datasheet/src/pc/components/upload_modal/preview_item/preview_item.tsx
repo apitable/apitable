@@ -18,7 +18,6 @@
 
 import classnames from 'classnames';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Tooltip, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IAttacheField, IAttachmentValue, Selectors } from '@apitable/core';
 import { DeleteOutlined, DownloadOutlined } from '@apitable/icons';
@@ -27,6 +26,8 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { DisplayFile } from 'pc/components/display_file';
 import { download } from 'pc/components/preview_file/tool_bar';
 import styles from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface IPreviewItemProps {
   datasheetId: string;
@@ -46,9 +47,9 @@ interface IPreviewItemProps {
 }
 
 const useGetRole = (currentDatasheetId: string | undefined) => {
-  const {mirrorId, datasheetId} = useSelector(state => state.pageParams)
-  const datasheetRole = useSelector((state) => Selectors.getDatasheet(state, currentDatasheetId))?.role;
-  const mirrorRole = useSelector((state) => Selectors.getMirror(state, mirrorId))?.role;
+  const {mirrorId, datasheetId} = useAppSelector(state => state.pageParams)
+  const datasheetRole = useAppSelector((state) => Selectors.getDatasheet(state, currentDatasheetId))?.role;
+  const mirrorRole = useAppSelector((state) => Selectors.getMirror(state, mirrorId))?.role;
 
   // Here the main purpose is to ensure that the card opened through association is using his own role.
   if (mirrorRole && datasheetId === currentDatasheetId) {
@@ -60,14 +61,14 @@ const useGetRole = (currentDatasheetId: string | undefined) => {
 
 export const useAllowDownloadAttachment = (fieldId: string, datasheetId?: string): boolean => {
   // Get whether it is read-only user and get download permission for read-only user of space station.
-  const allowDownloadAttachment = useSelector((state) => {
+  const allowDownloadAttachment = useAppSelector((state) => {
     const _allowDownloadAttachment = state.space.spaceFeatures?.allowDownloadAttachment || state.share.allowDownloadAttachment;
     return Boolean(_allowDownloadAttachment);
   });
 
   const role = useGetRole(datasheetId)
-  const fieldPermissionMap = useSelector((state) => Selectors.getFieldPermissionMap(state));
-  const fieldRole = useSelector(() => Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId));
+  const fieldPermissionMap = useAppSelector((state) => Selectors.getFieldPermissionMap(state));
+  const fieldRole = useAppSelector(() => Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId));
 
   if (allowDownloadAttachment) return true;
 

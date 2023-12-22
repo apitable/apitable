@@ -26,23 +26,18 @@ import com.apitable.asset.service.IAssetUploadTokenService;
 import com.apitable.asset.vo.AssetUploadCertificateVO;
 import com.apitable.asset.vo.AssetUrlSignatureVo;
 import com.apitable.auth.enums.AuthException;
-import com.apitable.core.exception.BusinessException;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
-import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.context.SessionContext;
-import com.apitable.starter.oss.core.OssSignatureTemplate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.ArrayList;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import java.util.Collections;
 import java.util.List;
-import javax.annotation.Resource;
-import javax.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,41 +56,18 @@ public class AssetUploadTokenController {
     @Resource
     private IAssetUploadTokenService iAssetUploadTokenService;
 
-    @Resource
-    private ConstProperties constProperties;
-
-    @Autowired(required = false)
-    private OssSignatureTemplate ossSignatureTemplate;
-
     @GetResource(path = "/signature", requiredLogin = false)
     @Operation(summary = "Get asset signature url")
     public ResponseData<String> getSignatureUrl(@RequestParam(value = "token") String token) {
-        if (ossSignatureTemplate == null) {
-            throw new BusinessException("Signature is not turned on.");
-        }
-        String host = constProperties.getOssBucketByAsset().getResourceUrl();
-        String signedUrl = ossSignatureTemplate.getSignatureUrl(host, token);
-        return ResponseData.success(signedUrl);
+        return ResponseData.success(iAssetUploadTokenService.getSignatureUrl(token));
     }
 
     @PostResource(path = "/signatures", requiredLogin = false)
     @Operation(summary = "Batch get asset signature url")
     public ResponseData<List<AssetUrlSignatureVo>> getSignatureUrls(
-            @RequestBody final AssetUrlSignatureRo assetUrlSignatureRo) {
-        if (ossSignatureTemplate == null) {
-            throw new BusinessException("Signature is not turned on.");
-        }
-        List<AssetUrlSignatureVo> vos = new ArrayList<>();
-        String host = constProperties.getOssBucketByAsset().getResourceUrl();
-        List<String> resourceKeys = assetUrlSignatureRo.getResourceKeys();
-        for (String resourceKey : resourceKeys) {
-            String signedUrl = ossSignatureTemplate.getSignatureUrl(host, resourceKey);
-            AssetUrlSignatureVo vo = new AssetUrlSignatureVo();
-            vo.setResourceKey(resourceKey);
-            vo.setUrl(signedUrl);
-            vos.add(vo);
-        }
-        return ResponseData.success(vos);
+        @RequestBody final AssetUrlSignatureRo data) {
+        return ResponseData.success(
+            iAssetUploadTokenService.getAssetUrlSignatureVos(data.getResourceKeys()));
     }
 
     /**

@@ -17,7 +17,6 @@
  */
 import parser from 'html-react-parser';
 import { FC, useContext } from 'react';
-import { useSelector } from 'react-redux';
 import { ContextMenu, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, Strings, t, Selectors } from '@apitable/core';
 import {
@@ -44,12 +43,14 @@ import { FlowContext } from '../../context/flow_context';
 import { INode } from '../../interfaces';
 import { addRecord } from '../record_list';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const { linkField, viewId, nodeStateMap, setNodeStateMap, rowsCount, fieldEditable, onChange } = useContext(FlowContext);
 
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-  const { manageable } = useSelector((state) => Selectors.getPermissions(state, datasheetId));
+  const datasheetId = useAppSelector(Selectors.getActiveDatasheetId)!;
+  const { manageable } = useAppSelector((state) => Selectors.getPermissions(state, datasheetId));
 
   const toggleNodeCollapse = (id: string) => {
     setNodeStateMap((s) => ({
@@ -86,9 +87,9 @@ export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
 
   function archiveRecord(recordId: string) {
     const data: string[] = [];
- 
+
     data.push(recordId);
-    
+
     // The setTimeout is used here to ensure that the user is alerted that a large amount of data is being deleted before it is deleted
     const { result } = resourceService.instance!.commandManager.execute({
       cmd: CollaCommandName.ArchiveRecords,

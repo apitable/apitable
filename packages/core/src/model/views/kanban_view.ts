@@ -18,8 +18,9 @@
 
 import { Settings } from 'config';
 import { Strings, t } from '../../exports/i18n';
-import { DatasheetActions } from 'model';
-import { IFieldMap, IKanbanViewProperty, ISnapshot, ViewType } from '../../exports/store';
+import { DatasheetActions } from 'commands_actions/datasheet';
+import { IFieldMap, IKanbanViewProperty, ISnapshot } from '../../exports/store/interfaces';
+import { ViewType } from 'modules/shared/store/constants';
 import { IViewColumn, IViewProperty } from '../../exports/store/interfaces';
 import { FieldType, IField, IMemberProperty } from 'types';
 import { CardView } from './card_view';

@@ -1,12 +1,12 @@
 import classNames from 'classnames';
 import { useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { IReduxState, Selectors, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined } from '@apitable/icons';
 import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { ISearchChangeProps, SearchPanel } from 'pc/components/datasheet_search_panel';
+import { useAppSelector } from 'pc/store/react-redux';
 import settingStyles from '../../../field_setting/styles.module.less';
 import { IFormatCascaderProps } from '../format_cascader_select';
 import styles from './styles.module.less';
@@ -18,8 +18,8 @@ export const CascaderDatasourceDatasheetSelect = ({ currentField, setCurrentFiel
 
   const [searchPanelVisible, setSearchPanelVisible] = useState(false);
 
-  const linkedDatasheet = useSelector((state: IReduxState) => (propLinkedDatasheetId ? Selectors.getDatasheet(state, propLinkedDatasheetId) : null));
-  const datasheetParentId = useSelector((state: IReduxState) => Selectors.getDatasheet(state)?.parentId) || '';
+  const linkedDatasheet = useAppSelector((state: IReduxState) => (propLinkedDatasheetId ? Selectors.getDatasheet(state, propLinkedDatasheetId) : null));
+  const datasheetParentId = useAppSelector((state: IReduxState) => Selectors.getDatasheet(state)?.parentId) || '';
 
   const onSelectDatasource = ({ datasheetId }: ISearchChangeProps) => {
     const isDstChange = datasheetId !== currentField.property.linkedDatasheetId;

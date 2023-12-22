@@ -19,6 +19,17 @@
   padding-bottom: 4px;
 
   :global {
+    .workdocBtn {
+      margin: 4px 2px;
+      cursor: inherit;
+      & > svg {
+        fill: var(--secondLevelText);
+      }
+      & > div {
+        color: var(--secondLevelText) !important;
+        white-space: inherit !important;
+      }
+    }
     .optionCellContainer {
       .unitMember {
         margin: 4px 2px;
@@ -203,6 +214,7 @@
         }
       }
 
+      .workdocBtn > div,
       .unitName,
       .time,
       .cellDateTimeDate,
@@ -333,10 +345,12 @@
     word-break: break-word;
     text-overflow: ellipsis;
     white-space: nowrap;
+    margin-right: 2px;
   }
 
   .op {
     white-space: pre-wrap;
+    margin-left: 2px;
   }
 
   .activityInfo {

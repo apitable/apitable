@@ -29,11 +29,11 @@ import com.apitable.workspace.mapper.NodeShareSettingMapper;
 import com.apitable.workspace.ro.NodeShareDisableNotifyRo;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.BaseNodeInfo;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
@@ -41,7 +41,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * node share close event listener
+ * node share close event listener.
  * </p>
  *
  * @author Chambers

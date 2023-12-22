@@ -28,9 +28,9 @@ import com.apitable.shared.context.SessionContext;
 import com.apitable.widget.service.IWidgetUploadService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import java.util.List;
-import javax.annotation.Resource;
-import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "Widget Upload API")
-@ApiResource(path = "/")
+@ApiResource
 public class WidgetUploadController {
 
     @Resource

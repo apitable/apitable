@@ -18,14 +18,14 @@
 
 package com.apitable.shared.util;
 
+
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 /**
  * @author tao

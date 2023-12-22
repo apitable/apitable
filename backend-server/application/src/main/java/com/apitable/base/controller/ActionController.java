@@ -44,9 +44,8 @@ import com.apitable.user.ro.SmsCodeValidateRo;
 import com.apitable.user.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import javax.annotation.Resource;
-import javax.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,7 +56,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Tag(name = "Basic module - verify action module interface")
 @ApiResource(path = "/base/action")
-@Slf4j
 public class ActionController {
 
     @Resource
@@ -79,13 +77,12 @@ public class ActionController {
     @Operation(summary = "Send SMS verification code",
         description = "SMS type; 1: Registration, 2:Login, "
             + "3: Modify login password, 4: DingTalk binding, 5: Bind mobile phone, "
-            + "6: (Remove replacement) mobile phone binding 7: Modify mailbox binding, 8: Delete "
-            + "space, "
+            + "6: (Remove replacement) mobile phone binding 7: Modify mailbox binding,"
+            + "8: Delete space, "
             + "9: Replace main administrator 10: General verification, 11: Change developer "
             + "configuration, "
             + "12: Bind third-party platform account")
     public ResponseData<Void> send(@RequestBody @Valid SmsOpRo smsOpRo) {
-        log.info("Send SMS verification code");
         // Ali man-machine verification
         humanVerificationServiceFacade.verifyNonRobot(new NonRobotMetadata(smsOpRo.getData()));
         // Code optimization, here is only responsible for sending short messages, and the
@@ -132,8 +129,8 @@ public class ActionController {
     @PostResource(path = "/sms/code/validate", requiredLogin = false)
     @Operation(summary = "Mobile verification code verification",
         description = "Usage scenarios: DingTalk binding, "
-            + "identity verification before changing the mobile phone mailbox, changing the main "
-            + "administrator")
+            + "identity verification before changing the mobile phone mailbox,"
+            + " changing the main administrator")
     public ResponseData<Void> verifyPhone(@RequestBody @Valid SmsCodeValidateRo param) {
         // The verification is handed over to the component verification, and the specific
         // business verification code is only verified once

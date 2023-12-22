@@ -279,7 +279,7 @@ export class KonvaDrawer {
 
     if (originValue?.length) {
       (originValue as ISegment[]).forEach((item) => {
-        const length = item.text.length;
+        const length = (item.text || (item as any).title || '').length;
         const nextIndex = linkIndex + length;
         // The isLinkSplit is used as an identifier for special handling of multiple URL references
         if (item.type === SegmentType.Url || isLinkSplit) {

@@ -4,7 +4,7 @@ import {
   IFieldPermissionMap, IMirror, IRecord, IReduxState, ISnapshot, IViewDerivation, IViewProperty, IViewRow, Role,
 } from 'exports/store/interfaces';
 
-import { Field, LookUpField } from 'model';
+import { Field } from 'model/field';
 import { PREVIEW_DATASHEET_ID, RecordMoveType } from 'modules/shared/store/constants';
 import createCachedSelector from 're-reselect';
 import { createSelector } from 'reselect';
@@ -110,7 +110,7 @@ export const findRealField = (state: IReduxState, propsField: IField) => {
   if (propsField.type !== FieldType.LookUp) {
     return propsField;
   }
-  return (Field.bindContext(propsField, state) as LookUpField).getLookUpEntityField();
+  return Field.bindContext(propsField, state).getLookUpEntityField();
 };
 
 export const EMPTY_DERATION: IViewDerivation = {

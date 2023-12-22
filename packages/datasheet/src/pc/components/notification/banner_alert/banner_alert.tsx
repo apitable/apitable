@@ -22,7 +22,7 @@ import { createRoot } from 'react-dom/client';
 import { Button, LinkButton, Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
-import { Emoji } from 'pc/components/common';
+import { Emoji } from 'pc/components/common/emoji';
 import Vikaby from 'static/icon/workbench/vikaby-good.png';
 import styles from './style.module.less';
 

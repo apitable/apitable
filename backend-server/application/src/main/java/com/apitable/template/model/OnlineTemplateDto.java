@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * Online Template Information
+ * Online Template Information.
  * </p>
  */
 @Data

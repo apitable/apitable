@@ -1,19 +1,21 @@
 import { Tabs } from 'antd';
 import TabPane from 'antd/es/tabs/TabPane';
 import { useAtom } from 'jotai';
-import { FunctionComponent, memo, useContext, useEffect } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { FunctionComponent, memo, useEffect } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import styled, { css } from 'styled-components';
 import { Box, Switch, Typography, useThemeColors, useThemeMode } from '@apitable/components';
 import { IReduxState, Strings, t } from '@apitable/core';
+import { InfoCircleOutlined } from '@apitable/icons';
+// @ts-ignore
+import { goToUpgrade } from 'enterprise/subscribe_system/upgrade_method';
 import { VikaSplitPanel } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
 import { useResponsive, useSideBarVisible } from '../../../hooks';
 import { ScreenSize } from '../../common/component_display';
 import { useAutomationRobot, useToggleRobotActive } from '../../robot/hooks';
 import { RobotDetailForm } from '../../robot/robot_detail';
-import { ShareContext } from '../../share';
 import { ListWithFooter } from '../components/list_with_footer';
 import { automationPanelAtom, PanelName } from '../controller/atoms';
 import { useAutomationResourcePermission } from '../controller/use_automation_permission';
@@ -71,29 +73,19 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
   const invisible = panel.panelName == null || isMobile;
 
-  useEffect(() => {
-    if(isXl) {
-      if(sideBarVisible) {
-        setPanel({
-          panelName: undefined
-        });
-      }
-    }
-  }, [isXl, setPanel, setSideBarVisible, sideBarVisible]);
-  const user = useSelector((state: IReduxState) => state.user);
+  const user = useAppSelector((state: IReduxState) => state.user);
 
   if (!robot) {
     return null;
   }
-
   return (
     <Box display="flex" flexDirection={'row'} height={'100%'} position={'relative'}>
       <AutoSizer style={{ width: '100%', height: '100%' }}>
-        {({ width }) =>(
+        {({ width }) => (
           <VikaSplitPanel
-            size={invisible?width: width - 480}
-            maxSize={invisible? width: width - 320}
-            minSize={invisible? width:width - 800}
+            size={invisible ? width : width - 480}
+            maxSize={invisible ? width : width - 320}
+            minSize={invisible ? width : width - 800}
             style={shareStyle}
             panelLeft={
               <Left
@@ -104,8 +96,7 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
                   // @ts-ignore
                   if (e.target?.className?.includes?.(CONST_BG_CLS_NAME)) {
                     if (panel.panelName != PanelName.BasicInfo) {
-
-                      if(isMobile) {
+                      if (isMobile) {
                         setSideBarVisible(false);
                       }
                       setPanel((draft) => {
@@ -120,11 +111,11 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
                   padding={'0 24px'}
                   className={CONST_BG_CLS_NAME}
                   footer={
-                    <Box display={'flex'} flexDirection="row" justifyContent={'center'} flex={'0 0 80px'} alignItems={'end'}>
+                    <Box display={'flex'} flexDirection="column" justifyContent={'center'} flex={'0 0 80px'} alignItems={'center'}>
                       <ShadowBox theme={theme} position={'absolute'} left={0} bottom={80} width={'100%'} height={'20px'} />
-                      <Box paddingBottom={'24px'}>
+                      <Box paddingBottom={'12px'}>
                         <Switch
-                          disabled={loading||!(user.isLogin && permissions.editable)}
+                          disabled={loading || !(user.isLogin && permissions.editable)}
                           text={robot.isActive ? t(Strings.disable) : t(Strings.enable)}
                           size={'xl'}
                           loadingIcon={<></>}
@@ -141,10 +132,27 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
                           loading={loading}
                         />
                       </Box>
+                      {robot.isOverLimit && (
+                        <Box display={'flex'} alignItems={'center'} paddingBottom={'24px'}>
+                          <InfoCircleOutlined color={colors.textDangerDefault} />
+                          <Typography variant={'body3'} color={colors.textDangerDefault} style={{ marginLeft: 4 }}>
+                            {t(Strings.automation_run_failure_tip)}
+                          </Typography>
+                          <Typography
+                            className={'vk-cursor-pointer\t'}
+                            onClick={goToUpgrade}
+                            variant={'body3'}
+                            color={colors.textDangerDefault}
+                            style={{ marginLeft: 8, textDecoration: 'underline' }}
+                          >
+                            {t(Strings.upgrade_now)}
+                          </Typography>
+                        </Box>
+                      )}
                     </Box>
                   }
                 >
-                  <Box width={isXl ? 'inherit': '400px'} margin={'0 auto'}>
+                  <Box width={isXl ? 'inherit' : '400px'} margin={'0 auto'}>
                     <RobotDetailForm />
                   </Box>
                 </ListWithFooter>
@@ -152,47 +160,44 @@ export const AutomationPanelContent: FunctionComponent<{}> = memo(() => {
             }
             panelRight={
               <>
-                {
-                  !invisible && (
-                    <Box className={'flex-auto'} height={'100%'} backgroundColor={colors.bgCommonDefault} overflowY={'auto'}>
-                      <Tabs className={styles.tabItem}>
-                        <TabPane
-                          className={styles.tabPannel}
-                          tab={
-                            <Typography variant="body2" color={colors.textBrandDefault}>
-                              {t(Strings.automation)}
-                            </Typography>
-                          }
-                          key={t(Strings.automation)}
-                        >
-                          <Side />
-                        </TabPane>
+                {!invisible && (
+                  <Box className={'flex-auto'} height={'100%'} backgroundColor={colors.bgCommonDefault} overflowY={'auto'}>
+                    <Tabs className={styles.tabItem}>
+                      <TabPane
+                        className={styles.tabPannel}
+                        tab={
+                          <Typography variant="body2" color={colors.textBrandDefault}>
+                            {t(Strings.automation)}
+                          </Typography>
+                        }
+                        key={t(Strings.automation)}
+                      >
+                        <Side />
+                      </TabPane>
 
-                        <TabPane
-                          tab={
-                            <Box display={'inline-flex'} alignItems={'center'}>
-                              <Typography variant="body2" color={colors.textCommonTertiary}>
-                                {t(Strings.ai_chat)}
+                      <TabPane
+                        tab={
+                          <Box display={'inline-flex'} alignItems={'center'}>
+                            <Typography variant="body2" color={colors.textCommonTertiary}>
+                              {t(Strings.ai_chat)}
+                            </Typography>
+                            <Box height={'20px'} border={'1px'} backgroundColor={colors.bgTagDefault} marginLeft={'8px'} padding={'0 4px'}>
+                              <Typography variant="body4" color={colors.textCommonTertiary}>
+                                {t(Strings.automation_stay_tuned)}
                               </Typography>
-                              <Box height={'20px'} border={'1px'} backgroundColor={colors.bgTagDefault} marginLeft={'8px'} padding={'0 4px'}>
-                                <Typography variant="body4" color={colors.textCommonTertiary}>
-                                  {t(Strings.automation_stay_tuned)}
-                                </Typography>
-                              </Box>
                             </Box>
-                          }
-                          key={t(Strings.automation_stay_tuned)}
-                          disabled
-                        />
-                      </Tabs>
-                    </Box>
-                  )
-                }
+                          </Box>
+                        }
+                        key={t(Strings.automation_stay_tuned)}
+                        disabled
+                      />
+                    </Tabs>
+                  </Box>
+                )}
               </>
             }
           />
-        )
-        }
+        )}
       </AutoSizer>
     </Box>
   );

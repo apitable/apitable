@@ -16,10 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Field } from 'model';
+import { Field } from 'model/field';
 // import 'reflect-metadata';
-import { IRecordCellValue, IReduxState, Selectors } from '../exports/store';
-import { getDatasheet } from '../modules/database/store/selectors/resource';
+import { IRecordCellValue, IReduxState } from '../exports/store/interfaces';
+import {
+  getSnapshot,
+  getDatasheet,
+  getCellValue
+} from 'modules/database/store/selectors/resource/datasheet';
 import { BasicOpenValueType } from 'types/field_types_open';
 import { getDashboard } from '../modules/database/store/selectors/resource/dashboard';
 import { getForm } from '../modules/database/store/selectors/resource/form';
@@ -29,7 +33,7 @@ import { FieldType } from 'types';
 
 /**
  * Register event prototype decorator
- * 
+ *
  * @EventMeta("RecordUpdated","ATOM")
  * class EventRecordUpdated {
  *  test(){
@@ -61,10 +65,10 @@ export const getResourceState = (resourceId: string, resourceType: ResourceType,
 /**
  * pathList = ["recordMap", "recGa2EHHKOTQ", "data", "fldBSXiPB3UQY"]
  * testPathList = ["recordMap", ":recordId", "data",":fieldId"]
- * return { 
+ * return {
  *  pass:true,
  *  recordId:recGa2EHHKOTQ,
- *  fieldId:fldBSXiPB3UQY 
+ *  fieldId:fldBSXiPB3UQY
  * }
  */
 export const testPath = (pathList: (string | number)[], testPathList: string[], flag = true) => {
@@ -128,19 +132,19 @@ interface ITransformOpFieldsProps {
 
 export const transformOpFields = (props: ITransformOpFieldsProps) => {
   const { state, datasheetId, recordData, recordId } = props;
-  const snapshot = Selectors.getSnapshot(state, datasheetId)!;
+  const snapshot = getSnapshot(state, datasheetId)!;
   const eventFields: { [key: string]: BasicOpenValueType | null } = {};
   const fieldTypeMap = new Map<string, number>();
   const newFields = { ...recordData };
   Object.keys(snapshot?.meta.fieldMap).forEach(fieldId => {
     const field = snapshot.meta.fieldMap[fieldId]!;
     let cellValue = recordData[fieldId]!;
-    // FIXME: Only fill in what is not, there is a problem here. 
+    // FIXME: Only fill in what is not, there is a problem here.
     // The change to of op is the latest, and the one obtained from the database search may be old. subject to op
-    // There is no field value in recordData, indicating that it is a calculated field. 
+    // There is no field value in recordData, indicating that it is a calculated field.
     // Whether it is updated or created, it needs to be updated and recalculated.
     if (!recordData.hasOwnProperty(fieldId)) {
-      cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldId);
+      cellValue = getCellValue(state, snapshot, recordId, fieldId);
       newFields[fieldId] = cellValue;
     }
     fieldTypeMap.set(fieldId, field.type);

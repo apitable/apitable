@@ -18,29 +18,14 @@
 
 package com.apitable.shared.listener;
 
-import java.time.Clock;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.base.service.RestTemplateService;
 import com.apitable.control.infrastructure.ControlIdBuilder;
 import com.apitable.control.infrastructure.ControlIdBuilder.ControlId;
@@ -68,17 +53,28 @@ import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.FieldPermission;
 import com.apitable.workspace.vo.FieldRoleSetting;
 import com.apitable.workspace.vo.NodeRoleMemberVo;
-
+import jakarta.annotation.Resource;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.toList;
-
 /**
  * <p>
- * Field permission event listener
+ * Field permission event listener.
  * </p>
  *
  * @author Chambers
@@ -118,7 +114,8 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
     @Async
     public void onApplicationEvent(FieldPermissionEvent event) {
         Arg arg = event.getArg();
-        FieldPermissionChangeNotifyRo notifyRo = BeanUtil.copyProperties(arg, FieldPermissionChangeNotifyRo.class);
+        FieldPermissionChangeNotifyRo notifyRo =
+            BeanUtil.copyProperties(arg, FieldPermissionChangeNotifyRo.class);
         notifyRo.setChangeTime(Instant.now(Clock.system(ZoneId.of("+8"))).toEpochMilli());
         switch (arg.getEvent()) {
             case FIELD_PERMISSION_ENABLE:
@@ -133,7 +130,9 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
                 notifyRo.setSetting(fieldRoleSetting);
                 break;
             case FIELD_PERMISSION_CHANGE:
-                List<Long> unitIds = arg.getChangedUnitIds() != null ? ListUtil.toList(arg.getChangedUnitIds()) : arg.getDelUnitIds();
+                List<Long> unitIds =
+                    arg.getChangedUnitIds() != null ? ListUtil.toList(arg.getChangedUnitIds()) :
+                        arg.getDelUnitIds();
                 if (unitIds.isEmpty()) {
                     return;
                 }
@@ -144,14 +143,16 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
                     return;
                 }
                 // get space workbench admin
-                List<Long> spaceAdmins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(iNodeService.getSpaceIdByNodeId(arg.getDatasheetId()));
+                List<Long> spaceAdmins = iSpaceRoleService.getSpaceAdminsWithWorkbenchManage(
+                    iNodeService.getSpaceIdByNodeId(arg.getDatasheetId()));
                 // Changes to space workbench administrators do not result in permission changes, filtering
                 spaceAdmins.stream().filter(memberIds::contains).forEach(memberIds::remove);
                 if (memberIds.isEmpty()) {
                     return;
                 }
                 // get column permission opener
-                ControlId controlId = ControlIdBuilder.fieldId(arg.getDatasheetId(), arg.getFieldId());
+                ControlId controlId =
+                    ControlIdBuilder.fieldId(arg.getDatasheetId(), arg.getFieldId());
                 Long ownerMemberId = iControlService.getOwnerMemberId(controlId.toString());
                 if (ownerMemberId != null) {
                     spaceAdmins.add(ownerMemberId);
@@ -162,7 +163,8 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
                 }
                 // load member information
                 List<MemberInfoDTO> members = memberMapper.selectMemberInfoDTOByIds(memberIds);
-                Map<Long, String> memberIdToUuidMap = members.stream().filter(info -> info.getUuid() != null)
+                Map<Long, String> memberIdToUuidMap =
+                    members.stream().filter(info -> info.getUuid() != null)
                         .collect(Collectors.toMap(MemberInfoDTO::getId, MemberInfoDTO::getUuid));
                 // no active members exist just end
                 if (memberIdToUuidMap.isEmpty()) {
@@ -172,43 +174,47 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
                 Map<String, List<String>> roleToUuidsMap = new HashMap<>(3);
                 String noRoleKey = "";
                 // field permission roles of members after getting the organizational unit that filters changes
-                Map<Long, ControlRole> memberRoleMap = this.getFilterMemberRoleMap(controlId, spaceAdmins, unitIds);
+                Map<Long, ControlRole> memberRoleMap =
+                    this.getFilterMemberRoleMap(controlId, spaceAdmins, unitIds);
                 if (arg.getRole() != null && arg.getChangedUnitIds() != null) {
                     // Add or modify field roles, and the changed role permissions are created from scratch,
                     // or broadcast only when they become higher (for example, the original editable permissions are already available, and another organizational unit setting brings viewing permissions, no need to broadcast)
                     for (Entry<Long, String> entry : memberIdToUuidMap.entrySet()) {
-                        if (memberRoleMap.containsKey(entry.getKey()) && memberRoleMap.get(entry.getKey()).isGreaterThan(fieldRole)) {
+                        if (memberRoleMap.containsKey(entry.getKey())
+                            && memberRoleMap.get(entry.getKey()).isGreaterThan(fieldRole)) {
                             continue;
                         }
-                        MultiValueMapUtils.accumulatedValueIfAbsent(roleToUuidsMap, arg.getRole(), entry.getValue());
+                        MultiValueMapUtils.accumulatedValueIfAbsent(roleToUuidsMap, arg.getRole(),
+                            entry.getValue());
                     }
-                }
-                else if (CollUtil.isNotEmpty(arg.getDelUnitIds())) {
+                } else if (CollUtil.isNotEmpty(arg.getDelUnitIds())) {
                     // After the specified organizational unit role is deleted,
                     // the changed role permissions will be broadcast from existence to non-existence, or only if they are reduced.
                     for (Entry<Long, String> entry : memberIdToUuidMap.entrySet()) {
                         if (memberRoleMap.containsKey(entry.getKey())) {
                             ControlRole memberFileRole = memberRoleMap.get(entry.getKey());
                             if (memberFileRole.isLessThan(fieldRole)) {
-                                MultiValueMapUtils.accumulatedValueIfAbsent(roleToUuidsMap, memberFileRole.getRoleTag(), entry.getValue());
+                                MultiValueMapUtils.accumulatedValueIfAbsent(roleToUuidsMap,
+                                    memberFileRole.getRoleTag(), entry.getValue());
                             }
-                        }
-                        else {
-                            MultiValueMapUtils.accumulatedValueIfAbsent(roleToUuidsMap, noRoleKey, entry.getValue());
+                        } else {
+                            MultiValueMapUtils.accumulatedValueIfAbsent(roleToUuidsMap, noRoleKey,
+                                entry.getValue());
                         }
                     }
                 }
-                if (roleToUuidsMap.size() == 0) {
+                if (roleToUuidsMap.isEmpty()) {
                     return;
                 }
                 List<ChangeObject> objects = new ArrayList<>(roleToUuidsMap.size());
                 for (Entry<String, List<String>> entry : roleToUuidsMap.entrySet()) {
                     if (entry.getKey().equals(noRoleKey)) {
-                        objects.add(new ChangeObject(entry.getValue(), noRoleKey, new FieldPermission()));
-                    }
-                    else {
+                        objects.add(
+                            new ChangeObject(entry.getValue(), noRoleKey, new FieldPermission()));
+                    } else {
                         ControlRole controlRole = ControlRoleManager.parseFieldRole(entry.getKey());
-                        objects.add(new ChangeObject(entry.getValue(), controlRole.getRoleTag(), controlRole.permissionToBean(FieldPermission.class)));
+                        objects.add(new ChangeObject(entry.getValue(), controlRole.getRoleTag(),
+                            controlRole.permissionToBean(FieldPermission.class)));
                     }
                 }
                 notifyRo.setChanges(objects);
@@ -224,36 +230,41 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
         String nodeId = iNodeRoleService.getClosestEnabledRoleNode(arg.getDatasheetId());
         // check all members of a node
         List<NodeRoleMemberVo> roleMembers =
-                nodeId == null ? iNodeRoleService.getNodeRoleMembers(spaceId)
-                        : iNodeRoleService.getNodeRoleMembers(spaceId, nodeId);
+            nodeId == null ? iNodeRoleService.getNodeRoleMembers(spaceId)
+                : iNodeRoleService.getNodeRoleMembers(spaceId, nodeId);
         // With the node manageable group, take out the corresponding user uuid
         Map<Boolean, List<String>> isManagerToUuidsMap = roleMembers.stream()
-                .filter(vo -> vo.getUuid() != null && (vo.getIsWorkbenchAdmin() || !vo.getUuid().equals(arg.getUuid())))
-                .collect(Collectors.groupingBy(vo -> {
-                            if (BooleanUtil.isFalse(arg.getIncludeExtend())) {
-                                return vo.getIsWorkbenchAdmin().equals(Boolean.TRUE);
-                            }
-                            return vo.getIsWorkbenchAdmin().equals(Boolean.TRUE) || ControlRoleManager.parseNodeRole(vo.getRole())
-                                    .isGreaterThan(ControlRoleManager.parseNodeRole(Node.READER));
-                        },
-                        Collectors.mapping(NodeRoleMemberVo::getUuid, Collectors.toList())));
+            .filter(vo -> vo.getUuid() != null
+                && (vo.getIsWorkbenchAdmin() || !vo.getUuid().equals(arg.getUuid())))
+            .collect(Collectors.groupingBy(vo -> {
+                if (BooleanUtil.isFalse(arg.getIncludeExtend())) {
+                    return vo.getIsWorkbenchAdmin().equals(Boolean.TRUE);
+                }
+                return vo.getIsWorkbenchAdmin().equals(Boolean.TRUE)
+                    || ControlRoleManager.parseNodeRole(vo.getRole())
+                    .isGreaterThan(ControlRoleManager.parseNodeRole(Node.READER));
+            }, Collectors.mapping(NodeRoleMemberVo::getUuid, Collectors.toList())));
 
         List<ChangeObject> changes = new ArrayList<>(isManagerToUuidsMap.size());
         // If include Extend is false: Broadcast the column editable permission set to workbench administrators and column permission enablers.
         // If include Extend is true: broadcasts the column editable permission set to workbench administrators or node permissions greater than readers, and column permission openers.
         isManagerToUuidsMap.get(true).add(arg.getUuid());
         ControlRole role = ControlRoleManager.parseFieldRole(Field.EDITOR);
-        changes.add(new ChangeObject(isManagerToUuidsMap.get(true), role.getRoleTag(), role.permissionToBean(FieldPermission.class)));
+        changes.add(new ChangeObject(isManagerToUuidsMap.get(true), role.getRoleTag(),
+            role.permissionToBean(FieldPermission.class)));
         if (isManagerToUuidsMap.containsKey(false)) {
             // If include Extend is false: members of other permissions broadcast an empty permission set.
             // If include Extend is true: the read permission set of the broadcast column is equal to the read permission of the node.
-            String defaultRole = BooleanUtil.isFalse(arg.getIncludeExtend()) ? StrUtil.EMPTY : Field.READER;
-            changes.add(new ChangeObject(isManagerToUuidsMap.get(false), defaultRole, new FieldPermission()));
+            String defaultRole =
+                BooleanUtil.isFalse(arg.getIncludeExtend()) ? StrUtil.EMPTY : Field.READER;
+            changes.add(new ChangeObject(isManagerToUuidsMap.get(false), defaultRole,
+                new FieldPermission()));
         }
         return changes;
     }
 
-    private Map<Long, ControlRole> getFilterMemberRoleMap(ControlId controlId, List<Long> admins, Collection<Long> changedUnitIds) {
+    private Map<Long, ControlRole> getFilterMemberRoleMap(ControlId controlId, List<Long> admins,
+                                                          Collection<Long> changedUnitIds) {
         // build member role mappings
         Map<Long, ControlRole> memberRoleMap = new HashMap<>(16);
         FieldEditorRole editorRole = new FieldEditorRole();
@@ -262,15 +273,19 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
         admins.forEach(admin -> memberRoleMap.put(admin, editorRole));
 
         // get permission set information
-        List<ControlRoleUnitDTO> controlRoles = iControlRoleService.getControlRolesUnitDtoByControlId(controlId.toString());
+        List<ControlRoleUnitDTO> controlRoles =
+            iControlRoleService.getControlRolesUnitDtoByControlId(controlId.toString());
         if (controlRoles.isEmpty()) {
             return memberRoleMap;
         }
         // Filter org units with no changes and administrators
         Map<String, List<ControlRoleUnitDTO>> fieldRoleControlMap = controlRoles.stream()
-                .filter(dto -> !changedUnitIds.contains(dto.getUnitId()) && !admins.contains(dto.getUnitRefId()))
-                .sorted(Comparator.comparing((Function<ControlRoleUnitDTO, Long>) t -> ControlRoleManager.parseFieldRole(t.getRole()).getBits()).reversed())
-                .collect(groupingBy(ControlRoleUnitDTO::getRole, LinkedHashMap::new, toList()));
+            .filter(dto -> !changedUnitIds.contains(dto.getUnitId())
+                && !admins.contains(dto.getUnitRefId()))
+            .sorted(Comparator.comparing(
+                (Function<ControlRoleUnitDTO, Long>) t -> ControlRoleManager.parseFieldRole(
+                    t.getRole()).getBits()).reversed())
+            .collect(groupingBy(ControlRoleUnitDTO::getRole, LinkedHashMap::new, toList()));
         if (fieldRoleControlMap.isEmpty()) {
             return memberRoleMap;
         }
@@ -281,8 +296,7 @@ public class FieldPermissionEventListener implements ApplicationListener<FieldPe
                 UnitType unitType = UnitType.toEnum(control.getUnitType());
                 if (unitType == UnitType.TEAM) {
                     teamIds.add(control.getUnitRefId());
-                }
-                else if (unitType == UnitType.MEMBER) {
+                } else if (unitType == UnitType.MEMBER) {
                     memberRoleMap.putIfAbsent(control.getUnitRefId(), fieldRole);
                 }
             }

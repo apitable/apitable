@@ -16,19 +16,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, IBaseDatasheetPack, IViewProperty, IEventResourceMap, IFieldMap, IReduxState, IResourceRevision } from '@apitable/core';
+import {
+  EventAtomTypeEnums,
+  EventRealTypeEnums,
+  EventSourceTypeEnums,
+  FieldType,
+  IBaseDatasheetPack,
+  IEventResourceMap,
+  IFieldMap,
+  IReduxState,
+  IResourceRevision,
+  IViewProperty,
+  OPEventNameEnums,
+  ResourceType,
+  Selectors,
+  transformOpFields,
+} from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { ButtonClickedEventContext } from 'automation/events/domains/button.clicked.event';
+import { ButtonClickedListener } from 'automation/events/listeners/button.clicked.listener';
+import { AutomationRobotRepository } from 'automation/repositories/automation.robot.repository';
+import { AutomationTriggerRepository } from 'automation/repositories/automation.trigger.repository';
+import { AutomationService } from 'automation/services/automation.service';
 import { CommandService } from 'database/command/services/command.service';
 import { MetaService } from 'database/resource/services/meta.service';
 import { isEmpty } from 'lodash';
 import { NodeService } from 'node/services/node.service';
 import type { Store } from 'redux';
 import { InjectLogger } from 'shared/common';
-import { DatasheetException, ServerException } from 'shared/exception';
+import { CommonException, DatasheetException, ServerException } from 'shared/exception';
+import { getRecordUrl } from 'shared/helpers/env';
 import type { IAuthHeader, IFetchDataOptions, IFetchDataOriginOptions, IFetchDataPackOptions, ILoadBasePackOptions } from 'shared/interfaces';
+import { UserService } from 'user/services/user.service';
 import { Logger } from 'winston';
-import { UserService } from '../../../user/services/user.service';
 import type { DatasheetPack, UnitInfo, UserInfo, ViewPack } from '../../interfaces';
 import type { DatasheetEntity } from '../entities/datasheet.entity';
 import { DatasheetRepository } from '../repositories/datasheet.repository';
@@ -50,8 +71,13 @@ export class DatasheetService {
     private readonly commandService: CommandService,
     @Inject(forwardRef(() => MetaService))
     private readonly resourceMetaService: MetaService,
-  ) {
-  }
+    private readonly automationRobotRepository: AutomationRobotRepository,
+    private readonly automationTriggerRepository: AutomationTriggerRepository,
+    @Inject(forwardRef(() => ButtonClickedListener))
+    private readonly buttonClickedListener: ButtonClickedListener,
+    @Inject(forwardRef(() => AutomationService))
+    private readonly automationService: AutomationService,
+  ) {}
 
   /**
    * Obtain datasheet info, throw exception if not exist
@@ -98,7 +124,13 @@ export class DatasheetService {
     const meta = options?.meta ?? (await this.datasheetMetaService.getMetaDataByDstId(dstId, options?.metadataException));
     const fetchDataPackProfiler = this.logger.startTimer();
     const recordMap = options?.recordIds
-      ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(dstId, options?.recordIds, false, options.includeCommentCount, options.includeArchivedRecords)
+      ? await this.datasheetRecordService.getRecordsByDstIdAndRecordIds(
+        dstId,
+        options?.recordIds,
+        false,
+        options.includeCommentCount,
+        options.includeArchivedRecords,
+      )
       : await this.datasheetRecordService.getRecordsByDstId(dstId, options?.includeCommentCount, options?.includeArchivedRecords);
     fetchDataPackProfiler.done({ message: `fetchDataPackProfiler ${dstId} done` });
     // Query foreignDatasheetMap and unitMap
@@ -122,11 +154,7 @@ export class DatasheetService {
   }
 
   async batchSave(records: any[]) {
-    return await this.datasheetRepository
-      .createQueryBuilder()
-      .insert()
-      .values(records)
-      .execute();
+    return await this.datasheetRepository.createQueryBuilder().insert().values(records).execute();
   }
 
   /**
@@ -394,5 +422,56 @@ export class DatasheetService {
 
   async getRevisionByDstId(dstId: string): Promise<DatasheetEntity | undefined> {
     return await this.datasheetRepository.selectRevisionByDstId(dstId);
+  }
+
+  async triggerAutomation(automationId: string, triggerId: string, datasheetId: string, recordId: string, userId: string) {
+    const hasRobots = await this.automationRobotRepository.isResourcesHasRobots([automationId]);
+    if (!hasRobots) {
+      throw new ServerException(CommonException.AUTOMATION_NOT_ACTIVE);
+    }
+    const trigger = await this.automationTriggerRepository.selectTriggerByTriggerId(triggerId);
+    if (!trigger) {
+      throw new ServerException(CommonException.AUTOMATION_TRIGGER_NOT_EXIST);
+    }
+    if (!trigger.input) {
+      throw new ServerException(CommonException.AUTOMATION_TRIGGER_INVALID);
+    }
+    const datasheetName = await this.nodeService.getNameByNodeId(datasheetId);
+    const spaceId = await this.nodeService.getSpaceIdByNodeId(datasheetId);
+    const clickedBy = await this.userService.getUserMemberName(userId, spaceId);
+    const resourceMap = new Map<string, string[]>();
+    resourceMap.set(datasheetId, [recordId]);
+    const dataPack = await this.getTinyBasePacks(resourceMap);
+    const store = this.commandService.fillTinyStore(dataPack);
+    const thisRecord = Selectors.getRecord(store.getState(), recordId, datasheetId);
+    const { eventFields } = transformOpFields({
+      recordData: thisRecord!.data,
+      state: store.getState(),
+      datasheetId,
+      recordId,
+    });
+    const eventContext = {
+      // Flattened new structure
+      triggerId: triggerId,
+      datasheetId,
+      datasheetName,
+      recordId,
+      clickedBy,
+      recordUrl: getRecordUrl(datasheetId, recordId),
+      ...eventFields,
+    } as ButtonClickedEventContext;
+    const taskId = await this.buttonClickedListener.handleButtonClickedEvent({
+      eventName: OPEventNameEnums.FormSubmitted,
+      scope: ResourceType.Form,
+      realType: EventRealTypeEnums.REAL,
+      atomType: EventAtomTypeEnums.ATOM,
+      sourceType: EventSourceTypeEnums.ALL,
+      context: eventContext,
+      beforeApply: false,
+    });
+    return {
+      taskId,
+      message: await this.automationService.analysisStatus(taskId),
+    };
   }
 }

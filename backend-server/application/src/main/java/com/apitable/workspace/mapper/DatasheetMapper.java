@@ -24,15 +24,22 @@ import java.util.Collection;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
+/**
+ * datasheet mapper.
+ */
 public interface DatasheetMapper extends BaseMapper<DatasheetEntity> {
 
     /**
+     * insert batch.
+     *
      * @param entities datasheets
      * @return affected rows
      */
     int insertBatch(@Param("entities") List<DatasheetEntity> entities);
 
     /**
+     * update name by dst id.
+     *
      * @param userId  user id
      * @param dstId   datasheet id
      * @param dstName new datasheet name
@@ -42,6 +49,8 @@ public interface DatasheetMapper extends BaseMapper<DatasheetEntity> {
                           @Param("dstName") String dstName);
 
     /**
+     * update is deleted by dst id.
+     *
      * @param userId  user id
      * @param nodeIds node ids
      * @param isDel   logical delete status
@@ -52,6 +61,8 @@ public interface DatasheetMapper extends BaseMapper<DatasheetEntity> {
                                  @Param("isDel") Boolean isDel);
 
     /**
+     * query by datasheet id.
+     *
      * @param nodeId datasheet id
      * @return DatasheetEntity
      */
@@ -64,4 +75,9 @@ public interface DatasheetMapper extends BaseMapper<DatasheetEntity> {
      * @return list of dst id
      */
     List<String> selectDstIdBySpaceId(@Param("spaceId") String spaceId);
+
+    /**
+     * query space id by dst id.
+     */
+    String selectSpaceIdByDstId(@Param("dstId") String dstId);
 }

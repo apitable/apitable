@@ -18,26 +18,26 @@
 
 package com.apitable.shared.cache.service.impl;
 
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.Resource;
-
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-import lombok.extern.slf4j.Slf4j;
-
+import com.apitable.core.constants.RedisConstants;
 import com.apitable.shared.cache.bean.OpenedSheet;
 import com.apitable.shared.cache.service.UserSpaceOpenedSheetCacheService;
-import com.apitable.core.constants.RedisConstants;
-
+import jakarta.annotation.Resource;
+import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+/**
+ * user space opened sheet cache in redis service implementation.
+ */
 @Slf4j
 @Service
-public class UserSpaceOpenedSheetCacheInRedisServiceImpl implements UserSpaceOpenedSheetCacheService {
+public class UserSpaceOpenedSheetCacheInRedisServiceImpl
+    implements UserSpaceOpenedSheetCacheService {
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
@@ -46,7 +46,8 @@ public class UserSpaceOpenedSheetCacheInRedisServiceImpl implements UserSpaceOpe
 
     @Override
     public OpenedSheet getOpenedSheet(Long userId, String spaceId) {
-        BoundValueOperations<String, String> opts = redisTemplate.boundValueOps(RedisConstants.getUserSpaceOpenedSheetKey(userId, spaceId));
+        BoundValueOperations<String, String> opts =
+            redisTemplate.boundValueOps(RedisConstants.getUserSpaceOpenedSheetKey(userId, spaceId));
         String str = opts.get();
         if (str != null) {
             return JSONUtil.toBean(str, OpenedSheet.class);

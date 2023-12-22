@@ -18,18 +18,16 @@
 
 package com.apitable.shared.component.notification;
 
+import com.apitable.player.vo.PlayerBaseVo;
+import com.apitable.space.dto.BaseSpaceInfoDTO;
+import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import java.io.Serializable;
 import java.util.Map;
-
 import lombok.Data;
-
-import com.apitable.workspace.dto.NodeBaseInfoDTO;
-import com.apitable.space.dto.BaseSpaceInfoDTO;
-import com.apitable.player.vo.PlayerBaseVo;
 
 /**
  * <p>
- * notification render map
+ * notification render map.
  * </p>
  *
  * @author zoe zheng

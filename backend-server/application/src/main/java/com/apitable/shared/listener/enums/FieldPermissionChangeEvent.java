@@ -20,7 +20,7 @@ package com.apitable.shared.listener.enums;
 
 /**
  * <p>
- * field permission change event
+ * field permission change event.
  * </p>
  *
  * @author Chambers
@@ -28,22 +28,22 @@ package com.apitable.shared.listener.enums;
 public enum FieldPermissionChangeEvent {
 
     /**
-     * enable event
+     * enable event.
      */
     FIELD_PERMISSION_ENABLE,
 
     /**
-     * change event
+     * change event.
      */
     FIELD_PERMISSION_CHANGE,
 
     /**
-     * disable event
+     * disable event.
      */
     FIELD_PERMISSION_DISABLE,
 
     /**
-     * setting change event
+     * setting change event.
      */
     FIELD_PERMISSION_SETTING_CHANGE
 }

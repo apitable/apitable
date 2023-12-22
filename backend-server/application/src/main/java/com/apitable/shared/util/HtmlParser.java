@@ -36,6 +36,12 @@ public class HtmlParser {
         }
     }
 
+    /**
+     * return default favicon url.
+     *
+     * @param url url
+     * @return favicon url
+     */
     public static String usingUrlDefaultFaviconUrl(URL url) {
         StringBuilder builder = StrUtil.builder()
             .append(url.getProtocol())

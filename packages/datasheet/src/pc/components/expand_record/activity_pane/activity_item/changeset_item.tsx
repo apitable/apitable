@@ -22,7 +22,6 @@ import dayjs from 'dayjs';
 import { find, get, toPairs } from 'lodash';
 import * as React from 'react';
 import { useContext, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { IconButton } from '@apitable/components';
 import {
   CollaCommandName,
@@ -46,14 +45,15 @@ import { ReplyBox } from 'pc/components/expand_record/activity_pane/reply_box/re
 import { useResponsive } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { commandTran } from 'pc/utils';
 import { EXPAND_RECORD_ACTIVITY_ITEM, EXPAND_RECORD_DELETE_COMMENT_MORE } from 'pc/utils/test_id_constant';
 import { ActivityContext } from '../activity_context';
 import { IActivityPaneProps, IChooseComment } from '../interface';
 import { ChangesetItemAction } from './changeset_item_action';
-import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 type IChangesetItem = IActivityPaneProps & {
   unit: IUnitValue | undefined;
@@ -72,7 +72,7 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = (pr
   const { mobile: isMobile } = usePlatform();
 
   const { setReplyText, emojis, setFocus, setReplyUnitId } = useContext(ActivityContext);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
 
   const actions = operations.reduce((actionArr: IJOTAction[], op: IOperation) => {
     let { actions } = op;
@@ -113,11 +113,11 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = (pr
 
   const { cmd } = operations[0];
 
-  const selfUserId = useSelector((state) => state.user.info?.userId);
+  const selfUserId = useAppSelector((state) => state.user.info?.userId);
   const isSelf = selfUserId === userId;
-  const relativeTime = dayjs(Number(createdAt)).fromNow();
+  const relativeTime = dayjs.tz(Number(createdAt)).fromNow();
 
-  const allowDeleteComment = useSelector((state) => {
+  const allowDeleteComment = useAppSelector((state) => {
     const spacePermissions = state.spacePermissionManage.spaceResource?.permissions;
     const isSpaceAdmin = spacePermissions && spacePermissions.includes('MANAGE_WORKBENCH');
     return Boolean(isSpaceAdmin || isSelf);
@@ -239,8 +239,8 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = (pr
               <div className={styles.title}>
                 <div className={styles.activityInfo}>
                   <div className={styles.nickName}>
-                    <span className={styles.name}>{isSelf ? t(Strings.you) : title || unit.name}</span>
-                    <span className={styles.op}>{commandTran(cmd)}</span>
+                    <div className={styles.name}>{isSelf ? t(Strings.you) : title || unit.name}</div>
+                    <div className={styles.op}>{commandTran(cmd)}</div>
                   </div>
                   {Boolean(action) && (
                     <div className={styles.activityAction}>
@@ -299,7 +299,7 @@ const ChangesetItemBase: React.FC<React.PropsWithChildren<IChangesetItem>> = (pr
                   )}
                 </div>
                 <div className={styles.activityInfo}>
-                  <Tooltip title={dayjs(Number(createdAt)).format('YYYY-MM-DD HH:mm:ss')}>
+                  <Tooltip title={dayjs.tz(Number(createdAt)).format('YYYY-MM-DD HH:mm:ss')}>
                     <span className={styles.relativeTime}>{relativeTime}</span>
                   </Tooltip>
                 </div>

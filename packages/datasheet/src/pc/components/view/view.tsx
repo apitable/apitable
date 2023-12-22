@@ -19,8 +19,8 @@
 import classNames from 'classnames';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { useEffect } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { shallowEqual } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
 import {
@@ -38,11 +38,13 @@ import {
 } from '@apitable/core';
 import { ArrowDownOutlined, ArrowUpOutlined, CopyOutlined, DeleteOutlined, EditOutlined, EyeOpenOutlined, InfoCircleOutlined } from '@apitable/icons';
 import { MobileGrid } from 'pc/components/mobile_grid';
+import { useTriggerTypes } from 'pc/components/robot/robot_panel/hook_trigger';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { useQuery, useResponsive } from 'pc/hooks';
 import { useExpandWidget } from 'pc/hooks/use_expand_widget';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData } from 'pc/utils';
 import { CalendarView } from '../calendar_view';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
@@ -53,12 +55,13 @@ import { KanbanView } from '../kanban_view';
 import { KonvaGridView } from '../konva_grid';
 import { OrgChartView } from '../org_chart_view';
 import { Toolbar } from '../tool_bar';
+import { DATASHEET_VIEW_CONTAINER_ID } from './id';
 import styles from './style.module.less';
+export { DATASHEET_VIEW_CONTAINER_ID };
 
-export const DATASHEET_VIEW_CONTAINER_ID = 'DATASHEET_VIEW_CONTAINER_ID';
 export const View: React.FC<React.PropsWithChildren<any>> = () => {
   const colors = useThemeColors();
-  const { currentView, rows, fieldMap } = useSelector((state: IReduxState) => {
+  const { currentView, rows, fieldMap } = useAppSelector((state: IReduxState) => {
     const currentView = Selectors.getCurrentView(state)!;
     const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
     return {
@@ -68,15 +71,20 @@ export const View: React.FC<React.PropsWithChildren<any>> = () => {
       fieldMap,
     };
   }, shallowEqual);
+
+  const { data: triggerTypes } = useTriggerTypes();
+  const buttonFieldTriggerId = triggerTypes.find((item) => item.endpoint === 'button_field' || item.endpoint === 'button_clicked');
+  const dstId = useAppSelector(Selectors.getActiveDatasheetId);
+
   const { screenIsAtMost } = useResponsive();
   const query = useQuery();
   const activeRecordId = query.get('activeRecordId');
-  const views = useSelector(Selectors.getViewsList);
-  const { datasheetId, mirrorId, shareId, templateId, embedId } = useSelector((state) => {
+  const views = useAppSelector(Selectors.getViewsList);
+  const { datasheetId, mirrorId, shareId, templateId, embedId } = useAppSelector((state) => {
     const { datasheetId, mirrorId, shareId, templateId, embedId } = state.pageParams;
     return { datasheetId, mirrorId, shareId, templateId, embedId };
   }, shallowEqual);
-  const isSideRecordOpen = useSelector((state) => state.space.isSideRecordOpen);
+  const isSideRecordOpen = useAppSelector((state) => state.space.isSideRecordOpen);
   const router = useRouter();
   const isViewLock = useShowViewLockModal();
 
@@ -133,7 +141,7 @@ export const View: React.FC<React.PropsWithChildren<any>> = () => {
 
   const isOrgChart = currentView.type === ViewType.OrgChart;
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
+  const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
   const { isShowEmbedToolBar = true } = embedInfo;
 
   return (

@@ -1,8 +1,10 @@
 plugins {
-  id 'java-library'
+    id 'java-library'
+    id 'testing.java-conventions'
 }
 
 dependencies {
-  implementation(rootProject.ext.dependencies['boot-starter'])
-  api(rootProject.ext.dependencies['spring-rabbit'])
+    implementation platform(libs.spring.boot.dependencies)
+    implementation libs.spring.boot.starter
+    api libs.spring.rabbit
 }

@@ -15,10 +15,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+// @ts-ignore
+import { inSocialApp, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 import { useMemo } from 'react';
 import { Strings, t } from '@apitable/core';
 import { CreditCostCard } from 'pc/components/space_manage/space_info/components/credit_cost_card/credit_cost_card';
+import { useAutomation } from 'pc/components/space_manage/space_info/hooks/use_automation';
 import { useCredit } from 'pc/components/space_manage/space_info/hooks/use_credit';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { CapacityWithRewardCard, Card, Info, LevelCard, MultiLineCard } from '../components';
@@ -28,8 +30,6 @@ import { useApi, useCapacity, useFile, useMember, useOthers, useRecord, useView 
 import { ILayoutProps } from '../interface';
 import { Advert } from '../ui';
 import { SpaceLevelInfo } from '../utils';
-// @ts-ignore
-import { inSocialApp, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise';
 
 interface ICardProps {
   minHeight?: string | number;
@@ -38,6 +38,7 @@ interface ICardProps {
 export const useCards = (props: ILayoutProps) => {
   const { showContextMenu, handleDelSpace, level, spaceId, spaceInfo, spaceFeatures, subscription, onUpgrade, isMobile } = props;
   const apiData = useApi({ spaceInfo, subscription });
+  const automationData = useAutomation({ spaceInfo, subscription });
   const capacityData = useCapacity({ spaceInfo, subscription });
   const fileData = useFile({ spaceInfo, subscription });
   const recordData = useRecord({ spaceInfo, subscription });
@@ -54,7 +55,7 @@ export const useCards = (props: ILayoutProps) => {
   }, [level, showContextMenu, handleDelSpace]);
 
   const { trailColor, strokeColor, hightLightColor } = useMemo(() => {
-    return SpaceLevelInfo[level];
+    return SpaceLevelInfo[level] || SpaceLevelInfo.bronze;
   }, [level]);
 
   const basicCert = useMemo(() => {
@@ -113,6 +114,20 @@ export const useCards = (props: ILayoutProps) => {
           strokeColor={strokeColor}
           title={t(Strings.api_usage)}
           titleTip={t(Strings.api_usage_info)}
+        />
+      ),
+
+      AutomationCard: (props: ICardProps) => (
+        <Card
+          {...props}
+          {...automationData}
+          isMobile={isMobile}
+          shape="circle"
+          unit={t(Strings.times_unit)}
+          trailColor={trailColor}
+          strokeColor={strokeColor}
+          title={t(Strings.automation_run_usage)}
+          titleTip={t(Strings.automation_run_usage_info)}
         />
       ),
 

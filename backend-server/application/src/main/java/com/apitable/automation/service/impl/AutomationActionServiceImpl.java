@@ -33,23 +33,26 @@ import com.apitable.automation.model.TriggerCopyResultDto;
 import com.apitable.automation.model.UpdateActionRO;
 import com.apitable.automation.service.IAutomationActionService;
 import com.apitable.core.util.ExceptionUtil;
-import com.apitable.databusclient.ApiException;
-import com.apitable.databusclient.api.AutomationDaoApiApi;
-import com.apitable.databusclient.model.ApiResponseAutomationActionPO;
-import com.apitable.databusclient.model.AutomationActionPO;
-import com.apitable.databusclient.model.AutomationRobotActionRO;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.util.IdUtil;
+import com.apitable.starter.databus.client.api.AutomationDaoApiApi;
+import com.apitable.starter.databus.client.model.ApiResponseAutomationActionPO;
+import com.apitable.starter.databus.client.model.AutomationActionPO;
+import com.apitable.starter.databus.client.model.AutomationRobotActionRO;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import jakarta.annotation.Resource;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 
+/**
+ * automation action service impl.
+ */
 @Slf4j
 @Service
 public class AutomationActionServiceImpl implements IAutomationActionService {
@@ -109,7 +112,7 @@ public class AutomationActionServiceImpl implements IAutomationActionService {
 
     @Override
     public void updateActionTypeIdAndInputByRobotId(String robotId,
-        String actionTypeId, String input) {
+                                                    String actionTypeId, String input) {
         actionMapper.updateActionTypeIdAndInputByRobotId(robotId, actionTypeId, input);
     }
 
@@ -131,7 +134,7 @@ public class AutomationActionServiceImpl implements IAutomationActionService {
                 AUTOMATION_TRIGGER_LIMIT.getCode().equals(response.getCode()),
                 AUTOMATION_TRIGGER_LIMIT);
             return formatVoFromDatabusResponse(response.getData());
-        } catch (ApiException e) {
+        } catch (RestClientException e) {
             log.error("Robot create action: {}", data.getRobotId(), e);
         }
         return new ArrayList<>();
@@ -152,7 +155,7 @@ public class AutomationActionServiceImpl implements IAutomationActionService {
                 AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
                 AUTOMATION_ROBOT_NOT_EXIST);
             return formatVoFromDatabusResponse(response.getData());
-        } catch (ApiException e) {
+        } catch (RestClientException e) {
             log.error("Robot update action: {}", data.getRobotId(), e);
         }
         return new ArrayList<>();
@@ -170,7 +173,7 @@ public class AutomationActionServiceImpl implements IAutomationActionService {
             ExceptionUtil.isFalse(
                 AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
                 AUTOMATION_ROBOT_NOT_EXIST);
-        } catch (ApiException e) {
+        } catch (RestClientException e) {
             log.error("Delete action: {}", actionId, e);
         }
     }

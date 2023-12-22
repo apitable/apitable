@@ -18,13 +18,12 @@
 
 package com.apitable.space.enums;
 
+import com.apitable.core.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.core.exception.BaseException;
-
 /**
- * space permission exception
+ * space permission exception.
  *
  * @author Chambers
  */

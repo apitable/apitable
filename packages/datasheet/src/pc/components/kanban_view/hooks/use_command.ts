@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useSelector } from 'react-redux';
 import {
   CollaCommandName,
   ICellValue,
@@ -32,6 +31,8 @@ import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface ISetRecordData {
   recordId: string;
   fieldId: string;
@@ -41,9 +42,9 @@ interface ISetRecordData {
 }
 
 export const useCommand = () => {
-  const { viewId, datasheetId } = useSelector((state) => state.pageParams);
-  const view = useSelector((state) => Selectors.getCurrentView(state))!;
-  const snapshot = useSelector(Selectors.getSnapshot);
+  const { viewId, datasheetId } = useAppSelector((state) => state.pageParams);
+  const view = useAppSelector((state) => Selectors.getCurrentView(state))!;
+  const snapshot = useAppSelector(Selectors.getSnapshot);
 
   const addRecords = (index: number, count: number, cellValues?: { [fieldId: string]: ICellValue }[]) => {
     return resourceService.instance!.commandManager.execute({

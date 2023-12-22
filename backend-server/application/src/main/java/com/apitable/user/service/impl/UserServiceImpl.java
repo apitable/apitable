@@ -112,6 +112,8 @@ import com.apitable.workspace.service.INodeShareService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.google.common.collect.Lists;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -120,8 +122,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -486,11 +486,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserEntity createUserByEmail(final String email, final String password) {
+        return createUserByEmail(email, password, languageManager.getDefaultLanguageTag());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public UserEntity createUserByEmail(final String email, final String password, String lang) {
         UserEntity entity = UserEntity.builder()
             .uuid(IdUtil.fastSimpleUUID())
             .email(email)
             .nickName(StringUtils.substringBefore(email, "@"))
-            .locale(languageManager.getDefaultLanguageTag())
+            .locale(lang)
             .color(RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE))
             .lastLoginTime(LocalDateTime.now())
             .build();

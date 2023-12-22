@@ -76,9 +76,9 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import java.util.List;
-import javax.annotation.Resource;
-import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -90,7 +90,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "Template Center - Template API")
-@ApiResource(path = "/")
+@ApiResource
 public class TemplateController {
 
     @Resource
@@ -345,7 +345,7 @@ public class TemplateController {
         method = RequestMethod.DELETE, requiredPermission = false)
     @Operation(summary = "Delete Template",
         description = "Deletion objects: main administrator, "
-        + "sub-admins with template permissions, creator of the template")
+            + "sub-admins with template permissions, creator of the template")
     @Parameter(name = "templateId", description = "Template ID", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "tplHTbkg7qbNJ")
     public ResponseData<Void> delete(@PathVariable("templateId") String templateId) {

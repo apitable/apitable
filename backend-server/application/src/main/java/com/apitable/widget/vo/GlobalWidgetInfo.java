@@ -18,12 +18,14 @@
 
 package com.apitable.widget.vo;
 
+import lombok.Getter;
+
 /**
  * <p>
- * Global widget config
+ * Global widget config.
  * </p>
- *
  */
+@Getter
 public class GlobalWidgetInfo {
 
     private String packageId;
@@ -46,72 +48,36 @@ public class GlobalWidgetInfo {
     private String website;
     /* Widget Extension Fields, widget_body */
 
-    public String getPackageName() {
-        return packageName;
-    }
-
     public void setPackageName(String packageName) {
         this.packageName = packageName;
-    }
-
-    public String getPackageId() {
-        return packageId;
     }
 
     public void setPackageId(String packageId) {
         this.packageId = packageId;
     }
 
-    public Boolean getIsEnabled() {
-        return isEnabled;
-    }
-
     public void setIsEnabled(Boolean enabled) {
         this.isEnabled = enabled;
-    }
-
-    public Boolean getIsTemplate() {
-        return isTemplate;
     }
 
     public void setIsTemplate(Boolean template) {
         this.isTemplate = template;
     }
 
-    public String getVersion() {
-        return version;
-    }
-
     public void setVersion(String version) {
         this.version = version;
-    }
-
-    public Integer getWidgetSort() {
-        return widgetSort;
     }
 
     public void setWidgetSort(Integer widgetSort) {
         this.widgetSort = widgetSort;
     }
 
-    public String getOpenSourceAddress() {
-        return openSourceAddress;
-    }
-
     public void setOpenSourceAddress(String openSourceAddress) {
         this.openSourceAddress = openSourceAddress;
     }
 
-    public String getTemplateCover() {
-        return templateCover;
-    }
-
     public void setTemplateCover(String templateCover) {
         this.templateCover = templateCover;
-    }
-
-    public String getWebsite() {
-        return website;
     }
 
     public void setWebsite(String website) {

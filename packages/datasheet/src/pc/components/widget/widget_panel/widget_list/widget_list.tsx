@@ -19,9 +19,10 @@
 import { useLocalStorageState } from 'ahooks';
 import classNames from 'classnames';
 import { keyBy } from 'lodash';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
+import { EmitterEventName } from 'modules/shared/simple_emitter';
 import { useEffect, useState } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
-import { useSelector } from 'react-redux';
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName,
@@ -43,14 +44,13 @@ import {
   QuestionCircleOutlined,
   SettingOutlined,
 } from '@apitable/icons';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { EmitterEventName } from 'modules/shared/simple_emitter';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { simpleEmitter as panelSimpleEmitter } from 'pc/components/common/vika_split_panel';
 import { expandWidgetRoute } from 'pc/components/widget/expand_widget';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData } from 'pc/utils';
 import { WidgetContextProvider } from '../../context';
 import { copyWidget, installToPanel } from '../../widget_center/install_utils';
@@ -67,21 +67,21 @@ export const WIDGET_MENU = 'WIDGET_MENU';
 
 export const WidgetList = () => {
   const colors = useThemeColors();
-  const { datasheetId, widgetId, mirrorId } = useSelector((state) => state.pageParams);
+  const { datasheetId, widgetId, mirrorId } = useAppSelector((state) => state.pageParams);
   const resourceId = mirrorId || datasheetId;
   const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;
-  const activeWidgetPanel = useSelector((state) => {
+  const activeWidgetPanel = useAppSelector((state) => {
     return Selectors.getResourceActiveWidgetPanel(state, resourceId!, resourceType);
   })!;
   const widgetList = activeWidgetPanel.widgets;
-  const { editable, manageable } = useSelector((state) => {
+  const { editable, manageable } = useAppSelector((state) => {
     return Selectors.getResourcePermission(state, datasheetId!, ResourceType.Datasheet);
   });
-  const linkId = useSelector(Selectors.getLinkId);
+  const linkId = useAppSelector(Selectors.getLinkId);
   const hadWidgetExpanding = Boolean(widgetId);
   const [devWidgetId, setDevWidgetId] = useLocalStorageState<string>('devWidgetId');
   const [activeMenuWidget, setActiveMenuWidget] = useState<IWidget>();
-  const widgetMap = useSelector((state) => state.widgetMap);
+  const widgetMap = useAppSelector((state) => state.widgetMap);
   const readonly = !editable;
   // Is scaling in.
   const [dragging, setDragging] = useState<boolean>(false);

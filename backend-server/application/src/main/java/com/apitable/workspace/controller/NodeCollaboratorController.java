@@ -42,7 +42,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -66,6 +66,13 @@ public class NodeCollaboratorController {
     @Resource
     private ControlTemplate controlTemplate;
 
+    /**
+     * get collaborator info.
+     *
+     * @param uuid   user uuid
+     * @param nodeId node id
+     * @return collaborator info
+     */
     @GetResource(path = "/collaborator/info")
     @Operation(summary = "Get Collaborator Info",
         description = "Scene: Collaborator Card Information")

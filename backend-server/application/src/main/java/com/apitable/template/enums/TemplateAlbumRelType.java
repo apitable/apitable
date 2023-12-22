@@ -23,7 +23,7 @@ import lombok.Getter;
 
 /**
  * <p>
- * Template Center - Template Album Rel Type
+ * Template Center - Template Album Rel Type.
  * </p>
  *
  * @author Chambers
@@ -33,22 +33,22 @@ import lombok.Getter;
 public enum TemplateAlbumRelType {
 
     /**
-     * TEMPLATE CATEGORY
+     * TEMPLATE CATEGORY.
      */
     TEMPLATE_CATEGORY(0),
 
     /**
-     * TEMPLATE
+     * TEMPLATE.
      */
     TEMPLATE(1),
 
     /**
-     * TEMPLATE TAG
+     * TEMPLATE TAG.
      */
     TEMPLATE_TAG(2),
 
     ;
 
 
-    private int type;
+    private final int type;
 }

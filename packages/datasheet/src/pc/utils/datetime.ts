@@ -39,22 +39,22 @@ export const timeFormatter = (time: string): string => {
       break;
     }
     // More than 1 hour and within the same day
-    case dayjs().isSame(time, 'd'): {
-      text = dayjs(time).format(t(Strings.time_format_today));
+    case dayjs.tz().isSame(time, 'd'): {
+      text = dayjs.tz(time).format(t(Strings.time_format_today));
       break;
     }
     // Yesterday
-    case dayjs(time).add(1, 'day').isSame(dayjs(), 'd'): {
-      text = dayjs(time).format(t(Strings.time_format_yesterday));
+    case dayjs.tz(time).add(1, 'day').isSame(dayjs.tz(), 'd'): {
+      text = dayjs.tz(time).format(t(Strings.time_format_yesterday));
       break;
     }
     // This year
-    case dayjs().isSame(time, 'y'): {
-      text = dayjs(time).format(t(Strings.time_format_month_and_day));
+    case dayjs.tz().isSame(time, 'y'): {
+      text = dayjs.tz(time).format(t(Strings.time_format_month_and_day));
       break;
     }
     default:
-      text = dayjs(time).format(t(Strings.time_format_year_month_and_day));
+      text = dayjs.tz(time).format(t(Strings.time_format_year_month_and_day));
       break;
   }
   return text;

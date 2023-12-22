@@ -20,7 +20,7 @@ package com.apitable.shared.cache.service;
 
 /**
  * <p>
- * space capacity cache interface
+ * space capacity cache interface.
  * </p>
  *
  * @author Chambers
@@ -28,7 +28,7 @@ package com.apitable.shared.cache.service;
 public interface SpaceCapacityCacheService {
 
     /**
-     * get space capacity cache
+     * get space capacity cache.
      *
      * @param spaceId space id
      * @return capacity size(byte)
@@ -36,7 +36,7 @@ public interface SpaceCapacityCacheService {
     long getSpaceCapacity(String spaceId);
 
     /**
-     * delete cache
+     * delete cache.
      *
      * @param spaceId space id
      */

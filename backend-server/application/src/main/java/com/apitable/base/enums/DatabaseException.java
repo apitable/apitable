@@ -18,14 +18,14 @@
 
 package com.apitable.base.enums;
 
+import com.apitable.core.exception.BaseException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import com.apitable.core.exception.BaseException;
 
 /**
  * <p>
- * database exception
+ * database exception.
  * status code range（210-219）
  * </p>
  *

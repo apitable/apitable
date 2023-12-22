@@ -36,7 +36,7 @@ const plugins = [
       },
     },
   ],
-  [withTM(['@apitable/components', 'antd', 'antd-mobile', 'rc-util', 'rc-picker', 'rc-notification', 'rc-calendar'])],
+  [withTM(['antd', 'antd-mobile', 'rc-util', 'rc-picker', 'rc-notification', 'rc-calendar'])],
   [withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' })],
 ];
 /** @type {import('next').NextConfig} */
@@ -89,4 +89,10 @@ module.exports = withPlugins(plugins, {
     // this includes files from the monorepo base two directories up
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
+  // eslint: {
+  //   ignoreDuringBuilds: true,
+  // },
+  // typescript: {
+  //   ignoreBuildErrors: true,
+  // }
 });

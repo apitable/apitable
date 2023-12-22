@@ -22,6 +22,7 @@ public class SeatUsage {
     private Long memberCount;
 
     public SeatUsage() {
+        this(0L, 0L);
     }
 
     /**

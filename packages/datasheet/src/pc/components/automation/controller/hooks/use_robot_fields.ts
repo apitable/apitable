@@ -1,95 +1,58 @@
 import { useAtomValue } from 'jotai';
 import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import {IReduxState, Selectors, StoreActions} from '@apitable/core';
+import { IReduxState, IServerFormPack, Selectors, StoreActions } from '@apitable/core';
+import { fetchFormPack } from '@apitable/core/dist/modules/database/api/form_api';
+import { getDatasheetId } from 'pc/components/automation/controller/hooks/get_datasheet_id';
+import { getFormId } from 'pc/components/automation/controller/hooks/get_form_id';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
-import { useAllFieldsByDstId } from '../../../robot/hooks';
+import { getAllFieldsByDstIdFp, useAllFieldsByDstId } from '../../../robot/hooks';
 import { AutomationScenario, IRobotTrigger } from '../../../robot/interface';
 import { automationStateAtom, automationTriggerAtom, loadableFormMeta } from '../index';
 
-export const getDatasheetId = (trigger?: Pick<IRobotTrigger, 'input'>) => {
-  if (!trigger) {
-    return undefined;
-  }
-
-  const operands = trigger?.input?.value?.operands ?? [];
-
-  if (operands.length === 0) {
-    return undefined;
-  }
-  // @ts-ignore
-  const f = operands.findIndex(item => item === 'datasheetId');
-  if (f > -1) {
-    return operands[f + 1].value;
-  }
-  return undefined;
-};
-
-export const getFormId = (trigger?: Pick<IRobotTrigger, 'input'>) => {
-
-  if (!trigger) {
-    return undefined;
-  }
-  const operands = trigger?.input?.value?.operands ?? [];
-
-  if (operands.length === 0) {
-    return undefined;
-  }
-  // @ts-ignore
-  const f = operands.findIndex(item => item === 'formId');
-  if (f > -1) {
-    return operands[f + 1].value;
-  }
-  return undefined;
-};
-
 export const getRelativedId = (automationTrigger?: Pick<IRobotTrigger, 'input'>) => {
-  if(!automationTrigger) {
+  if (!automationTrigger) {
     return null;
   }
   const formId = getFormId(automationTrigger);
-  const datasheetId= getDatasheetId(automationTrigger);
+  const datasheetId = getDatasheetId(automationTrigger);
   return formId ?? datasheetId;
 };
 
-export const useTriggerDatasheetId = (): string | undefined => {
+export type IFetchedDatasheet = string | undefined;
 
-  const automationState = useAtomValue(automationStateAtom);
-  const automationTrigger = useAtomValue(automationTriggerAtom);
-
-  const activeDatasheetId = useSelector(Selectors.getActiveDatasheetId);
-  const data = useMemo(() => ({
-    formId: getFormId(automationTrigger),
-    datasheetId: getDatasheetId(automationTrigger)
-  }), [automationTrigger]);
-
-  const formMeta = useAtomValue(loadableFormMeta);
-
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    // @ts-ignore
-    const dId = formMeta?.data?.sourceInfo?.datasheetId;
-    if (dId) {
-      dispatch(StoreActions.fetchDatasheet(dId));
-    }
-
-  }, [dispatch, formMeta]);
-
-  if (data.datasheetId) {
-    return data.datasheetId;
+export const getTriggerDstId = (relatedResourceId: string): Promise<IFetchedDatasheet> => {
+  if (relatedResourceId?.startsWith('dst')) {
+    return new Promise((r) => r(relatedResourceId));
   }
 
-  if (automationState?.scenario === AutomationScenario.datasheet) {
-    return activeDatasheetId;
+  const formId = relatedResourceId;
+  if (formId && formId.startsWith('fom')) {
+    return fetchFormPack(String(formId)).then(res => res?.data?.data ?? {} as IServerFormPack).then(res => res?.sourceInfo?.datasheetId);
   }
-  // @ts-ignore
-  return formMeta?.data?.sourceInfo?.datasheetId;
+
+  return new Promise<IFetchedDatasheet>(r => r(undefined));
 };
 
-export const useAutomationRobotFields = (dstId: string) => {
+export const getTriggerDatasheetId: (triggers: IRobotTrigger[]) => Promise<IFetchedDatasheet[]> = async (triggers: IRobotTrigger[]) => {
+  const arr = triggers.map(automationTrigger => automationTrigger.relatedResourceId).map(item=> getTriggerDstId(item ?? ''));
+  const list = await Promise.all(arr);
+  return list;
+};
+
+export const getTriggerDatasheetId2: (triggers: string[]) => Promise<IFetchedDatasheet[]> = async (triggers: string[]) => {
+  const arr = triggers.map(item=> getTriggerDstId(item ?? ''));
+  const list = await Promise.all(arr);
+  return list;
+};
+
+export const useAutomationFieldInfo = (triggers: string[]) => {
   const fieldPermissionMap = useSelector((state: IReduxState) => {
-    return Selectors.getFieldPermissionMap(state, dstId);
+    return triggers.map((trigger) => ({
+      fields: getAllFieldsByDstIdFp(state, trigger),
+      fieldPermissionMap: Selectors.getFieldPermissionMap(state, trigger)
+    }));
   });
-  const fields = useAllFieldsByDstId(dstId);
-  return { fields, fieldPermissionMap };
+
+  return fieldPermissionMap;
 };

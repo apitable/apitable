@@ -19,9 +19,10 @@
 import { FC, useState } from 'react';
 // eslint-disable-next-line no-restricted-imports
 import { Select, Typography } from '@apitable/components';
-import { Api, getLanguage, Strings, t } from '@apitable/core';
-import { Message } from 'pc/components/common';
-import { useRequest, useUserRequest } from 'pc/hooks';
+import { getLanguage, Strings, t } from '@apitable/core';
+import { Message } from 'pc/components/common/message/message';
+import { useRequest } from 'pc/hooks/use_request';
+import { useUserRequest } from 'pc/hooks/use_user_request';
 import { getEnvVariables } from 'pc/utils/env';
 import styles from './style.module.less';
 

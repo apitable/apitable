@@ -18,42 +18,41 @@
 
 package com.apitable.asset.service.impl;
 
-import com.apitable.workspace.mapper.DocumentMapper;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
+import static com.apitable.shared.constants.AssetsPublicConstants.MIME_LIMIT;
+import static com.apitable.shared.constants.AssetsPublicConstants.PUBLIC_PREFIX;
+import static com.apitable.shared.constants.AssetsPublicConstants.SPACE_PREFIX;
 
 import cn.hutool.core.lang.Dict;
-import com.apitable.starter.oss.core.OssClientTemplate;
-import com.apitable.starter.oss.core.OssUploadAuth;
-import com.apitable.starter.oss.core.OssUploadPolicy;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.asset.entity.AssetEntity;
 import com.apitable.asset.enums.AssetType;
 import com.apitable.asset.enums.AssetUploadSource;
 import com.apitable.asset.service.IAssetService;
 import com.apitable.asset.service.IAssetUploadTokenService;
 import com.apitable.asset.vo.AssetUploadCertificateVO;
+import com.apitable.asset.vo.AssetUrlSignatureVo;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.base.enums.ParameterException;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.interfaces.document.facade.DocumentServiceFacade;
 import com.apitable.shared.cache.bean.SpaceAssetDTO;
 import com.apitable.shared.cache.service.AssetCacheService;
 import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.config.properties.ConstProperties.OssBucketInfo;
 import com.apitable.shared.util.StringUtil;
+import com.apitable.starter.oss.core.OssClientTemplate;
+import com.apitable.starter.oss.core.OssSignatureTemplate;
+import com.apitable.starter.oss.core.OssUploadAuth;
+import com.apitable.starter.oss.core.OssUploadPolicy;
 import com.apitable.workspace.service.INodeService;
-import com.apitable.core.util.ExceptionUtil;
-
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import jakarta.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import static com.apitable.shared.constants.AssetsPublicConstants.MIME_LIMIT;
-import static com.apitable.shared.constants.AssetsPublicConstants.PUBLIC_PREFIX;
-import static com.apitable.shared.constants.AssetsPublicConstants.SPACE_PREFIX;
 
 /**
  * <p>
@@ -82,7 +81,36 @@ public class AssetUploadTokenServiceImpl implements IAssetUploadTokenService {
     private AssetCacheService assetCacheService;
 
     @Resource
-    private DocumentMapper documentMapper;
+    private DocumentServiceFacade documentServiceFacade;
+
+    @Autowired(required = false)
+    private OssSignatureTemplate ossSignatureTemplate;
+
+    @Override
+    public String getSignatureUrl(String fileName) {
+        if (ossSignatureTemplate == null) {
+            throw new BusinessException("Signature is not turned on.");
+        }
+        String host = constProperties.getOssBucketByAsset().getResourceUrl();
+        return ossSignatureTemplate.getSignatureUrl(host, fileName);
+    }
+
+    @Override
+    public List<AssetUrlSignatureVo> getAssetUrlSignatureVos(List<String> fileNames) {
+        if (ossSignatureTemplate == null) {
+            throw new BusinessException("Signature is not turned on.");
+        }
+        List<AssetUrlSignatureVo> vos = new ArrayList<>();
+        String host = constProperties.getOssBucketByAsset().getResourceUrl();
+        for (String resourceKey : fileNames) {
+            String signedUrl = ossSignatureTemplate.getSignatureUrl(host, resourceKey);
+            AssetUrlSignatureVo vo = new AssetUrlSignatureVo();
+            vo.setResourceKey(resourceKey);
+            vo.setUrl(signedUrl);
+            vos.add(vo);
+        }
+        return vos;
+    }
 
     @Override
     public AssetUploadCertificateVO createPublishAssetPreSignedUrl() {
@@ -104,12 +132,13 @@ public class AssetUploadTokenServiceImpl implements IAssetUploadTokenService {
 
     @Override
     public List<AssetUploadCertificateVO> createSpaceAssetPreSignedUrl(Long userId,
-        String nodeId, int assetType, int count) {
+                                                                       String nodeId, int assetType,
+                                                                       int count) {
         ExceptionUtil.isTrue(count <= 20, ParameterException.INCORRECT_ARG);
         ExceptionUtil.isNotBlank(nodeId, ParameterException.INCORRECT_ARG);
         // query space, including whether the check node exists
         String spaceId = AssetType.DOCUMENT.getValue() == assetType
-            ? documentMapper.selectSpaceIdByName(nodeId)
+            ? documentServiceFacade.getSpaceIdByDocumentName(nodeId)
             : iNodeService.getSpaceIdByNodeId(nodeId);
 
         List<AssetUploadCertificateVO> vos = new ArrayList<>(count);

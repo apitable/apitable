@@ -25,13 +25,14 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.apitable.automation.model.AutomationTaskSimpleVO;
 import com.apitable.automation.service.IAutomationRunHistoryService;
-import com.apitable.databusclient.api.AutomationDaoApiApi;
-import com.apitable.databusclient.model.AutomationRunHistoryPO;
+import com.apitable.shared.clock.spring.ClockManager;
+import com.apitable.starter.databus.client.api.AutomationDaoApiApi;
+import com.apitable.starter.databus.client.model.AutomationRunHistoryPO;
 import com.apitable.workspace.enums.IdRulePrefixEnum;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +45,7 @@ public class AutomationRunHistoryServiceImpl implements IAutomationRunHistorySer
 
     @Resource
     private AutomationDaoApiApi automationDaoApiApi;
+
 
     @Override
     public List<AutomationTaskSimpleVO> getRobotRunHistory(String robotId, Integer pageSize,
@@ -67,7 +69,9 @@ public class AutomationRunHistoryServiceImpl implements IAutomationRunHistorySer
                 result.setRobotId(task.getRobotId());
                 result.setStatus(task.getStatus());
                 result.setTaskId(task.getTaskId());
-                result.setCreatedAt(LocalDateTimeUtil.parse(task.getCreatedAt()));
+                result.setCreatedAt(
+                    LocalDateTimeUtil.parse(task.getCreatedAt())
+                        .atZone(ClockManager.me().getDefaultTimeZone()).toInstant().toEpochMilli());
                 result.setRobotId(task.getRobotId());
                 // format action execution list
                 if (StrUtil.isNotBlank(task.getActionIds())) {

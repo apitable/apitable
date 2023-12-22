@@ -25,7 +25,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { Button, colorVars, IconButton, LinkButton, TextInput, ThemeProvider, Typography, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName,
@@ -64,7 +64,10 @@ import { installedWidgetHandle } from '../../widget_panel/widget_panel_header';
 import { Steps } from './steps';
 import styles from './styles.module.less';
 // @ts-ignore
-import { clearWizardsData } from 'enterprise';
+import { clearWizardsData } from 'enterprise/guide/utils';
+import { createWidget } from 'api/widget/api';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 const WIDGET_CMD = {
   publish: 'widget-cli release',
@@ -106,9 +109,9 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
   const { closeModal, installPosition } = props;
   const [widgetName, setWidgetName] = useState<string>();
   const [inputWidgetName, setInputWidgetName] = useState<string>();
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const [widgetCreating, setWidgetCreating] = useState(false);
-  const { dashboardId, datasheetId, mirrorId } = useSelector((state) => state.pageParams);
+  const { dashboardId, datasheetId, mirrorId } = useAppSelector((state) => state.pageParams);
   const { data: templateData, loading: templateDataLoading } = useRequest(WidgetApi.getTemplateList);
   const [templateWidgetList, setTemplateWidgetList] = useState<WidgetApiInterface.IWidgetTemplateItem[]>([]);
   const [selectTemplate, setSelectTemplate] = useState<WidgetApiInterface.IWidgetTemplateItem>();
@@ -122,12 +125,12 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
     inputName.current?.focus();
   });
 
-  const createWidget = async () => {
+  const _createWidget = async () => {
     if (!widgetName) {
       return;
     }
     setWidgetCreating(true);
-    const res = await WidgetApi.createWidget(
+    const res = await createWidget(
       JSON.stringify({
         'en-US': widgetName,
         'zh-CN': widgetName,
@@ -227,7 +230,7 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
           ))}
         </div>
         <div className={styles.buttonWrap}>
-          <Button color="primary" loading={widgetCreating} block disabled={!isValid} onClick={createWidget}>
+          <Button color="primary" loading={widgetCreating} block disabled={!isValid} onClick={_createWidget}>
             {t(Strings.create_widget)}
           </Button>
         </div>
@@ -291,7 +294,7 @@ const WidgetCreateModalStep: React.FC<React.PropsWithChildren<IExpandWidgetCreat
   const { closeModal, widgetId, sourceCodeBundle, widgetName, widgetPackageId, devCodeUrl = '' } = props;
   const [current, setCurrent] = useState(0);
   const [devUrl, setDevUrl] = useState<string>(devCodeUrl);
-  const userInfo = useSelector((state) => state.user.info);
+  const userInfo = useAppSelector((state) => state.user.info);
   const [urlError, setUrlError] = useState<string>();
   const [isCretInvalid, setIsCretInvalid] = useState<boolean>();
   const defaultTemplateUrl = integrateCdnHost(getEnvVariables().WIDGET_DEFAULT_TEMPLATE_URL!);
@@ -583,7 +586,7 @@ const WidgetDevConfigModal: React.FC<React.PropsWithChildren<IExpandWidgetDevCon
   const { codeUrl, onClose, onConfirm, widgetPackageId, widgetId } = props;
   const [devUrl, setDevUrl] = useState<string | undefined>(codeUrl);
   const [error, setError] = useState<string>();
-  const widget = useSelector((state) => Selectors.getWidget(state, widgetId))!;
+  const widget = useAppSelector((state) => Selectors.getWidget(state, widgetId))!;
   const [isCretInvalid, setIsCretInvalid] = useState<boolean>();
 
   const startDev = () => {

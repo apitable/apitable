@@ -51,7 +51,6 @@ import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Nullable;
 
 /**
  * node service.
@@ -92,6 +91,14 @@ public interface INodeService extends IService<NodeEntity> {
      * @return NodeEntity
      */
     NodeEntity getByNodeId(String nodeId);
+
+    /**
+     * get sub node list.
+     *
+     * @param parentId parent id
+     * @return NodeEntity List
+     */
+    List<NodeEntity> getSubNodeList(String parentId);
 
     /**
      * gets the id of the existing node.
@@ -555,7 +562,7 @@ public interface INodeService extends IService<NodeEntity> {
      * @param extras  node additional information
      * @return ShowcaseVo.NodeExtra
      */
-    NodeExtra getNodeExtras(String nodeId, @Nullable String spaceId, @Nullable String extras);
+    NodeExtra getNodeExtras(String nodeId, String spaceId, String extras);
 
     /**
      * get node window info.
@@ -628,12 +635,12 @@ public interface INodeService extends IService<NodeEntity> {
     Long getCreatedMemberId(String nodeId);
 
     /**
-     * whether the node name exists on the same directory.
+     * whether the node name exists on the same level.
      *
      * @param parentNodeId parent node id
      * @param nodeName     node name
-     * @return boolean
+     * @return optional
      */
-    String getNodeIdByParentIdAndNodeName(String parentNodeId, String nodeName);
+    Optional<NodeEntity> findSameNameInSameLevel(String parentNodeId, String nodeName);
 
 }

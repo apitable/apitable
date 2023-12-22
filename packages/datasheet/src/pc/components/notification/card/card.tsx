@@ -22,10 +22,8 @@ import QueueAnim from 'rc-queue-anim';
 import * as React from 'react';
 import { FC, useRef, useState } from 'react';
 
-import { useSelector } from 'react-redux';
 import { Button, ButtonGroup } from '@apitable/components';
 import { Api, INoticeDetail, INotifyBody, Strings, t } from '@apitable/core';
-
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { expandRecord } from 'pc/components/expand_record';
@@ -39,10 +37,10 @@ import { navigationToConfigUrl } from '../publish';
 import { NoticeTypesConstant } from '../utils';
 import { BottomMsgAvatar, OfficialAvatar } from './card_avatar';
 import { HandleMsg } from './handle_msg';
-import styles from './style.module.less';
 import { canJumpWhenClickCard, commentContentFormat, getNoticeUrlParams, isAskForJoiningMsg, NotifyType, renderNoticeBody } from './utils';
-// @ts-ignore
-import { billingErrorCode, triggerUsageAlertUniversal } from 'enterprise';
+import styles from './style.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface ICard {
   data: INoticeDetail;
@@ -58,7 +56,7 @@ export const Card: FC<React.PropsWithChildren<ICard>> = ({ data, isProcessed }) 
   const notifyType = data.notifyType;
   const isAskForJoining = isAskForJoiningMsg(data);
   const { transferNoticeToRead, transferNoticeToReadAndRefresh } = useNotificationRequest();
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const { run: processJoin } = useRequest((agree: boolean) => Api.processSpaceJoin(data.id, agree), {
     manual: true,
     onSuccess: (res) => {
@@ -67,9 +65,6 @@ export const Card: FC<React.PropsWithChildren<ICard>> = ({ data, isProcessed }) 
         transferNoticeToReadAndRefresh([data]);
         setShow(false);
         return;
-      }
-      if (code === billingErrorCode.OVER_LIMIT) {
-        return triggerUsageAlertUniversal(t(Strings.subscribe_seats_usage_over_limit));
       }
       Modal.warning({
         title: t(Strings.please_note),

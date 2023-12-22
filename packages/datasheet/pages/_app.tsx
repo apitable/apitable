@@ -23,8 +23,9 @@ import * as Sentry from '@sentry/nextjs';
 import axios from 'axios';
 import classNames from 'classnames';
 import elementClosest from 'element-closest';
-import { enableMapSet } from 'immer';
+import ErrorPage from 'error_page';
 import * as immer from 'immer';
+import { enableMapSet } from 'immer';
 import { merge } from 'lodash';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
@@ -53,13 +54,12 @@ import {
 } from '@apitable/core';
 import 'antd/es/date-picker/style/index';
 import { getBrowserDatabusApiEnabled } from '@apitable/core/dist/modules/database/api/wasm';
-import ErrorPage from 'error_page';
 import { init as initPlayer } from 'modules/shared/player/init';
 import 'normalize.css';
 import { initializer } from 'pc/common/initializer';
-import { Modal } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Router } from 'pc/components/route_manager/router';
-import { initEventListen } from 'pc/events';
+import { initEventListen } from 'pc/events/init_events_listener';
 import { getPageParams, getRegResult, LOGIN_SUCCESS, shareIdReg, spaceIdReg } from 'pc/hooks';
 import { initResourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -84,6 +84,7 @@ import '../src/main.less';
 import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
 import { getInitialProps } from '../utils/get_initial_props';
+import dayjs from 'dayjs';
 
 enableMapSet();
 
@@ -91,19 +92,6 @@ const RouterProvider = dynamic(() => import('pc/components/route_manager/router_
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
 
 declare const window: any;
-
-if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
-  posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
-    api_host: getEnvVariables().NEXT_PUBLIC_POSTHOG_HOST,
-    autocapture: false,
-    capture_pageview: false,
-    capture_pageleave: false,
-    // Disable in development
-    loaded: (posthog) => {
-      if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
-    },
-  });
-}
 
 export interface IUserInfoError {
   code: number;
@@ -122,7 +110,6 @@ const initWorker = async () => {
     console.log('web assembly is not supported');
   }
 };
-
 immer.setAutoFreeze(false);
 (() => {
   if (!process.env.SSR) {
@@ -158,7 +145,6 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   });
   const [userData, setUserData] = useState<IUserInfo | null>(null);
   const [userLoading, setUserLoading] = useState(true);
-
   useEffect(() => {
     const handleStart = () => {
       if (loading !== LoadingStatus.None) {
@@ -169,7 +155,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
     const endLoading = () => {
       const ele = document.querySelector('.script-loading-wrap');
-      // delete loading : scale logo -> vika -> wait 1000ms -> disappear
+      // delete loading : scale logo -> aitable -> wait 1000ms -> disappear
       const logoImg = document.querySelector('.script-loading-logo-img');
       logoImg?.classList.remove('loading-static-animation');
       setTimeout(() => ele?.classList.add('script-loading-wrap-finished'), 0);
@@ -220,9 +206,18 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           spaceId,
         },
       });
-      console.log(res);
-      let userInfo = JSON.parse(res.data.userInfo);
-      setUserData(userInfo);
+      // console.log(res);
+      let userInfo: IUserInfo | undefined;
+      try {
+        userInfo = JSON.parse(res.data.userInfo);
+        if (userInfo?.timeZone) {
+          dayjs.tz.setDefault(userInfo.timeZone);
+          console.log('set default timezone', userInfo.timeZone);
+        }
+        userInfo && setUserData(userInfo);
+      } catch (e) {
+        console.error(e);
+      }
 
       const { nodeId } = getPageParams(pathUrl || '');
       let userInfoError: IUserInfoError | undefined;
@@ -244,7 +239,6 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       ) {
         const res = await Api.getUserMe({ nodeId, spaceId }, false);
         const { data, success, message, code } = res.data;
-
         if (success) {
           userInfo = data;
         } else {
@@ -380,7 +374,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           hiddenCancelBtn: false,
           onCancel: () => {
             localStorage.setItem('timeZoneCheck', 'close');
-          }
+          },
         });
       }
     };
@@ -397,17 +391,17 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
         <meta name="description" content="" />
         <meta
           name="keywords"
-          content="APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,维格表,维格云,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
+          content="APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,AITable.ai,AITable,多维表格,AI多维表格,维格表,维格云,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
         数字化智能办公,远程办公,数据工作台,区块链,人工智能,多维表格,数据库应用,快速开发工具"
         />
-        <meta name="renderer" content="webkit"/>
+        <meta name="renderer" content="webkit" />
         <meta
           name="viewport"
           content="width=device-width,viewport-fit=cover, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
-        <meta name="theme-color" content="#000000"/>
+        <meta name="theme-color" content="#000000" />
         {/* In the pinning browser, join the monitoring center */}
-        <meta name="wpk-bid" content="dta_2_83919"/>
+        <meta name="wpk-bid" content="dta_2_83919" />
       </Head>
       {env.ENABLED_REWARDFUL && (
         <>
@@ -473,11 +467,11 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       </Script>
       {!env.IS_SELFHOST && (
         <>
-          <Script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js" referrerPolicy="origin"/>
-          <Script src="https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js" referrerPolicy="origin"/>
+          <Script src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js" referrerPolicy="origin" />
+          <Script src="https://open.work.weixin.qq.com/wwopen/js/jwxwork-1.0.0.js" referrerPolicy="origin" />
         </>
       )}
-      {env.DINGTALK_MONITOR_PLATFORM_ID && <Script src="https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js"/>}
+      {env.DINGTALK_MONITOR_PLATFORM_ID && <Script src="https://g.alicdn.com/dingding/dinglogin/0.0.5/ddLogin.js" />}
       {env.GOOGLE_TAG_MANAGER_ID && (
         <>
           <Script id={'googleTag'}>
@@ -508,7 +502,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
                   <Provider store={store}>
                     <RouterProvider>
                       <ThemeWrapper>
-                        <Component {...pageProps} userInfo={userData}/>
+                        <Component {...pageProps} userInfo={userData} />
                       </ThemeWrapper>
                     </RouterProvider>
                   </Provider>
@@ -521,10 +515,8 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
               >
                 {(loading !== LoadingStatus.Complete || userLoading) && (
                   <div className="main-img-wrap" style={{ height: 'auto' }}>
-                    <img src={integrateCdnHost(getEnvVariables().LOGO!)} className="script-loading-logo-img"
-                      alt="logo"/>
-                    <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)}
-                      className="script-loading-logo-text-img" alt="logo_text_dark"/>
+                    <img src={integrateCdnHost(getEnvVariables().LOGO!)} className="script-loading-logo-img" alt="logo" />
+                    <img src={integrateCdnHost(getEnvVariables().LOGO_TEXT_LIGHT!)} className="script-loading-logo-text-img" alt="logo_text_dark" />
                   </div>
                 )}
               </div>
@@ -558,3 +550,18 @@ MyApp.getInitialProps = getInitialProps;
 const beforeCapture = (scope: Scope) => {
   scope.setTag('PageCrash', true);
 };
+
+if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
+  window.onload = () => {
+    posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
+      api_host: getEnvVariables().NEXT_PUBLIC_POSTHOG_HOST,
+      autocapture: false,
+      capture_pageview: false,
+      capture_pageleave: false,
+      // Disable in development
+      loaded: (posthog) => {
+        if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
+      },
+    });
+  };
+}

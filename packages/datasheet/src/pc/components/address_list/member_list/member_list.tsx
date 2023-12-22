@@ -20,7 +20,6 @@ import { useThrottleFn } from 'ahooks';
 import { List } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import { FC, useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Loading } from '@apitable/components';
 import { IMemberInfoInAddressList, Navigation, StoreActions, Strings, t, ConfigConstant } from '@apitable/core';
 import { InfoCard } from 'pc/components/common';
@@ -33,7 +32,9 @@ import { expandMemberInfo } from '../expand_member_info';
 import { getIdentity } from '../member_info';
 import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 export interface IMemberList {
   memberList: IMemberInfoInAddressList[];
@@ -44,16 +45,16 @@ export interface IMemberList {
 export const MemberList: FC<React.PropsWithChildren<IMemberList>> = (props) => {
   const { memberList } = props;
   const dispatch = useAppDispatch();
-  const curMemberId = useSelector((state) => state.pageParams.memberId);
-  const spaceId = useSelector((state) => state.space.activeId);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const curMemberId = useAppSelector((state) => state.pageParams.memberId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const [selectedMemberId, setSelectedMemberId] = useState('');
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const memberListPageNo = useSelector((state) => state.addressList.memberListPageNo);
-  const memberListTotal = useSelector((state) => state.addressList.memberListTotal);
-  const memberListLoading = useSelector((state) => state.addressList.memberListLoading);
-  const selectedTeamInfo = useSelector((state) => state.addressList.selectedTeamInfo);
+  const memberListPageNo = useAppSelector((state) => state.addressList.memberListPageNo);
+  const memberListTotal = useAppSelector((state) => state.addressList.memberListTotal);
+  const memberListLoading = useAppSelector((state) => state.addressList.memberListLoading);
+  const selectedTeamInfo = useAppSelector((state) => state.addressList.selectedTeamInfo);
   const onSelect = (data: IMemberInfoInAddressList) => {
     const { memberId } = data;
     setSelectedMemberId(memberId);

@@ -17,8 +17,6 @@
  */
 
 // ================ Contacts related =======================
-// Address Book - Query the member list of the specified department
-export const MEMBER_LIST = '/org/member/list';
 // address book - get member details
 export const MEMBER_INFO = '/org/member/read';
 // Space Station-Address Book Management-Member Management-Pagination to query the member list of the specified department

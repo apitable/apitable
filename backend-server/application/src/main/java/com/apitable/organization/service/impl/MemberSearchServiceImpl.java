@@ -18,14 +18,7 @@
 
 package com.apitable.organization.service.impl;
 
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-
 import cn.hutool.core.collection.CollUtil;
-
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.organization.dto.MemberTeamDTO;
 import com.apitable.organization.dto.SearchMemberDTO;
@@ -36,9 +29,15 @@ import com.apitable.organization.vo.MemberTeamPathInfo;
 import com.apitable.organization.vo.SearchMemberResultVo;
 import com.apitable.organization.vo.SearchMemberVo;
 import com.apitable.shared.util.information.InformationUtil;
-
+import jakarta.annotation.Resource;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
+/**
+ * member search service implement.
+ */
 @Service
 public class MemberSearchServiceImpl implements IMemberSearchService {
 
@@ -52,54 +51,63 @@ public class MemberSearchServiceImpl implements IMemberSearchService {
     private ITeamService iTeamService;
 
     @Override
-    public List<SearchMemberResultVo> getByName(String spaceId, String keyword, String highlightClassName) {
+    public List<SearchMemberResultVo> getByName(String spaceId, String keyword,
+                                                String highlightClassName) {
         // Query the local member that meets the conditions
         List<SearchMemberDTO> searchMembers = memberMapper.selectByName(spaceId, keyword);
         List<SearchMemberResultVo> results = searchMembers.stream()
-                .map(searchMember -> {
-                    SearchMemberResultVo result = new SearchMemberResultVo();
-                    result.setMemberId(searchMember.getMemberId());
-                    result.setOriginName(searchMember.getMemberName());
-                    result.setMemberName(InformationUtil.keywordHighlight(searchMember.getMemberName(), keyword, highlightClassName));
-                    result.setAvatar(searchMember.getAvatar());
-                    result.setAvatarColor(searchMember.getColor());
-                    result.setNickName(searchMember.getNickName());
-                    result.setIsActive(searchMember.getIsActive());
-                    if (CollUtil.isNotEmpty(searchMember.getTeam())) {
-                        List<String> teamNames = CollUtil.getFieldValues(searchMember.getTeam(), "teamName", String.class);
-                        result.setTeam(CollUtil.join(teamNames, "｜"));
-                    }
+            .map(searchMember -> {
+                SearchMemberResultVo result = new SearchMemberResultVo();
+                result.setMemberId(searchMember.getMemberId());
+                result.setOriginName(searchMember.getMemberName());
+                result.setMemberName(
+                    InformationUtil.keywordHighlight(searchMember.getMemberName(), keyword,
+                        highlightClassName));
+                result.setAvatar(searchMember.getAvatar());
+                result.setAvatarColor(searchMember.getColor());
+                result.setNickName(searchMember.getNickName());
+                result.setIsActive(searchMember.getIsActive());
+                if (CollUtil.isNotEmpty(searchMember.getTeam())) {
+                    List<String> teamNames =
+                        CollUtil.getFieldValues(searchMember.getTeam(), "teamName", String.class);
+                    result.setTeam(CollUtil.join(teamNames, "｜"));
+                }
 
-                    return result;
-                }).collect(Collectors.toList());
+                return result;
+            }).collect(Collectors.toList());
 
         List<String> openIds = socialServiceFacade.fuzzySearchIfSatisfyCondition(spaceId, keyword);
         if (CollUtil.isNotEmpty(openIds)) {
             // Populate the returned result with the un-renamed members
-            List<SearchMemberDTO> socialMembers = memberMapper.selectByNameAndOpenIds(spaceId, openIds);
+            List<SearchMemberDTO> socialMembers =
+                memberMapper.selectByNameAndOpenIds(spaceId, openIds);
             List<SearchMemberResultVo> socialResults = socialMembers.stream()
-                    .map(socialMember -> {
-                        SearchMemberResultVo result = new SearchMemberResultVo();
-                        result.setMemberId(socialMember.getMemberId());
-                        result.setOriginName(socialMember.getMemberName());
-                        // Wecom usernames need to be front-end rendered, and search results do not return highlighting
-                        result.setMemberName(socialMember.getMemberName());
-                        result.setAvatar(socialMember.getAvatar());
-                        if (CollUtil.isNotEmpty(socialMember.getTeam())) {
-                            List<String> teamNames = socialMember.getTeam().stream().map(MemberTeamDTO::getTeamName).collect(Collectors.toList());
-                            result.setTeam(CollUtil.join(teamNames, "｜"));
-                        }
+                .map(socialMember -> {
+                    SearchMemberResultVo result = new SearchMemberResultVo();
+                    result.setMemberId(socialMember.getMemberId());
+                    result.setOriginName(socialMember.getMemberName());
+                    // Wecom usernames need to be front-end rendered, and search results do not return highlighting
+                    result.setMemberName(socialMember.getMemberName());
+                    result.setAvatar(socialMember.getAvatar());
+                    if (CollUtil.isNotEmpty(socialMember.getTeam())) {
+                        List<String> teamNames =
+                            socialMember.getTeam().stream().map(MemberTeamDTO::getTeamName)
+                                .collect(Collectors.toList());
+                        result.setTeam(CollUtil.join(teamNames, "｜"));
+                    }
 
-                        return result;
-                    }).collect(Collectors.toList());
+                    return result;
+                }).toList();
 
             results.addAll(socialResults);
         }
 
         // get all member's ids
-        List<Long> memberIds = results.stream().map(SearchMemberResultVo::getMemberId).collect(Collectors.toList());
+        List<Long> memberIds =
+            results.stream().map(SearchMemberResultVo::getMemberId).collect(Collectors.toList());
         // handle member's team name，get full hierarchy team name
-        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap = iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
+        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap =
+            iTeamService.batchGetFullHierarchyTeamNames(memberIds, spaceId);
         for (SearchMemberResultVo member : results) {
             if (memberToTeamPathInfoMap.containsKey(member.getMemberId())) {
                 member.setTeamData(memberToTeamPathInfoMap.get(member.getMemberId()));
@@ -111,18 +119,22 @@ public class MemberSearchServiceImpl implements IMemberSearchService {
     }
 
     @Override
-    public List<SearchMemberVo> getLikeMemberName(String spaceId, String keyword, Boolean filter, String highlightClassName) {
+    public List<SearchMemberVo> getLikeMemberName(String spaceId, String keyword, Boolean filter,
+                                                  String highlightClassName) {
         // Query the local member that meets the conditions
-        List<SearchMemberVo> searchMembers = memberMapper.selectLikeMemberName(spaceId, keyword, filter);
+        List<SearchMemberVo> searchMembers =
+            memberMapper.selectLikeMemberName(spaceId, keyword, filter);
         searchMembers.forEach(vo -> {
             vo.setOriginName(vo.getMemberName());
-            vo.setMemberName(InformationUtil.keywordHighlight(vo.getMemberName(), keyword, highlightClassName));
+            vo.setMemberName(
+                InformationUtil.keywordHighlight(vo.getMemberName(), keyword, highlightClassName));
         });
 
         List<String> openIds = socialServiceFacade.fuzzySearchIfSatisfyCondition(spaceId, keyword);
         if (CollUtil.isNotEmpty(openIds)) {
             // Populate the returned result with the un-renamed members
-            List<SearchMemberVo> socialMembers = memberMapper.selectLikeMemberNameByOpenIds(spaceId, openIds, filter);
+            List<SearchMemberVo> socialMembers =
+                memberMapper.selectLikeMemberNameByOpenIds(spaceId, openIds, filter);
             socialMembers.forEach(vo -> {
                 vo.setOriginName(vo.getMemberName());
                 // The wecom username of the company needs front-end rendering, and the search result does not return highlighting

@@ -20,19 +20,21 @@ import { useMount } from 'ahooks';
 import cls from 'classnames';
 import { usePostHog } from 'posthog-js/react';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { Events, IReduxState, Player, TrackEvents } from '@apitable/core';
 import { SideWrapper } from 'pc/components/route_manager/side_wrapper';
 import { usePageParams, useQuery, useRequest, useUserRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { MobileSideBar } from '../mobile_side_bar';
-import styles from './style.module.less';
 // @ts-ignore
-import { WecomContactWrapper, isDingtalkSkuPage } from 'enterprise';
+import { isDingtalkSkuPage } from 'enterprise/home/social_platform/utils';
+//  @ts-ignore
+import { WecomContactWrapper } from 'enterprise/wecom/wecom_contact_wrapper/wecom_contact_wrapper.tsx';
+import styles from './style.module.less';
 
 const TemplateCentre: FC<React.PropsWithChildren<unknown>> = (props) => {
   const { getLoginStatusReq } = useUserRequest();
-  const spaceId = useSelector((state: IReduxState) => state.space.activeId);
+  const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
   const { run: getLoginStatus, loading } = useRequest(getLoginStatusReq, { manual: true });
   const query = useQuery();
   const purchaseToken = query.get('purchaseToken') || '';

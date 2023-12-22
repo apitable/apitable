@@ -18,46 +18,55 @@
 
 package com.apitable.core.support;
 
-import java.io.Serializable;
+import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_SUCCESS_CODE;
+import static com.apitable.core.constants.ResponseExceptionConstants.DEFAULT_SUCCESS_MESSAGE;
 
 import com.apitable.core.constants.ResponseExceptionConstants;
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * <p>
- *  response result wrapper
+ * response result wrapper.
  * </p>
- *
  */
 public class ResponseData<T> implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 6941456238190558441L;
 
     /**
-     * Is request successful?
+     * Is request successful?.
      */
     private Boolean success;
 
     /**
-     * response status code
+     * response status code.
      */
     private Integer code;
 
     /**
-     * response status code's message
+     * response status code's message.
      */
     private String message;
 
     /**
-     * response object
+     * response object.
      */
     private T data;
 
+    /**
+     * default constructor.
+     */
     public ResponseData(Boolean success, Integer code, T data) {
         this.success = success;
         this.code = code;
         this.data = data;
     }
 
+    /**
+     * default constructor.
+     */
     public ResponseData(Boolean success, Integer code, String message, T data) {
         this.success = success;
         this.code = code;
@@ -66,7 +75,7 @@ public class ResponseData<T> implements Serializable {
     }
 
     public static ResponseDataBuilder ok() {
-        return status(true, ResponseExceptionConstants.DEFAULT_SUCCESS_CODE, ResponseExceptionConstants.DEFAULT_SUCCESS_MESSAGE);
+        return status(true, DEFAULT_SUCCESS_CODE, DEFAULT_SUCCESS_MESSAGE);
     }
 
     public static <T> ResponseData<T> ok(T body) {
@@ -78,7 +87,7 @@ public class ResponseData<T> implements Serializable {
     }
 
     public static ResponseData<Void> success() {
-        return status(true, ResponseExceptionConstants.DEFAULT_SUCCESS_CODE, ResponseExceptionConstants.DEFAULT_SUCCESS_MESSAGE).build();
+        return status(true, DEFAULT_SUCCESS_CODE, DEFAULT_SUCCESS_MESSAGE).build();
     }
 
     public static <T> ResponseData<T> success(T body) {
@@ -86,7 +95,8 @@ public class ResponseData<T> implements Serializable {
     }
 
     public static ResponseData<Void> error() {
-        return status(false, ResponseExceptionConstants.DEFAULT_ERROR_CODE, ResponseExceptionConstants.DEFAULT_ERROR_MESSAGE).build();
+        return status(false, ResponseExceptionConstants.DEFAULT_ERROR_CODE,
+            ResponseExceptionConstants.DEFAULT_ERROR_MESSAGE).build();
     }
 
     public static ResponseData<Void> error(String message) {

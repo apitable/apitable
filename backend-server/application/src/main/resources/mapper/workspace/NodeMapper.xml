@@ -69,6 +69,7 @@
                 AND pre_node_id IS NULL
             </otherwise>
         </choose>
+        AND is_rubbish = 0
         LIMIT 1
     </select>
 
@@ -543,7 +544,10 @@
     <select id="selectRubbishNodeIds" resultType="java.lang.String">
         SELECT node_id
         FROM ${tablePrefix}node
-        WHERE space_id = #{spaceId} AND parent_id = '-1' AND is_rubbish = 1 AND is_deleted = 0
+        WHERE space_id = #{spaceId}
+          AND parent_id = '-1'
+          AND is_rubbish = 1
+          AND is_deleted = 0
         <if test="beginTime != null">
             AND updated_at > #{beginTime}
         </if>
@@ -557,7 +561,7 @@
     <select id="selectRubbishNodeInfo" resultType="com.apitable.workspace.vo.RubbishNodeVo">
         SELECT vn.node_id, vn.space_id, vn.node_name, vn.type, vn.icon, vn.updated_at AS deletedAt, vn.deleted_path AS
         delPath,
-        vu.uuid, vu.avatar, vu.color AS avatarColor, vu.nick_name AS nickName, vum.member_name, #{retainDay} AS retainDay,
+        vu.uuid, vu.avatar, vu.color AS avatarColor, vu.nick_name AS nickName, vum.member_name,
         IFNULL(vu.is_social_name_modified, 2) > 0 AS isNickNameModified,
         IFNULL(vum.is_social_name_modified, 2) > 0 AS isMemberNameModified
         FROM ${tablePrefix}node vn
@@ -644,5 +648,10 @@
         AND node_name = #{nodeName}
         AND is_deleted = 0
         LIMIT 1
+    </select>
+
+    <select id="selectByParentId" resultType="com.apitable.workspace.entity.NodeEntity">
+        SELECT * FROM ${tablePrefix}node
+        WHERE parent_id = #{parentId} AND is_deleted = 0
     </select>
 </mapper>

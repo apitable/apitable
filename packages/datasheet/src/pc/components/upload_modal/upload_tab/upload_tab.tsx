@@ -16,23 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import {useMount} from 'ahooks';
-import {Tooltip} from 'antd';
+import { useMount } from 'ahooks';
+import { Tooltip } from 'antd';
 import classNames from 'classnames';
-import {uniqBy} from 'lodash';
-import {useContext, useEffect, useRef, useState} from 'react';
+import { uniqBy } from 'lodash';
+import { useContext, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
-import {useSelector} from 'react-redux';
-import {useThemeColors} from '@apitable/components';
-import {ConfigConstant, IAttachmentValue, Strings, t} from '@apitable/core';
-import {FileAddOutlined, LinkOutlined, PasteOutlined} from '@apitable/icons';
-import {ComponentDisplay, ScreenSize} from 'pc/components/common/component_display';
-import {ExpandAttachContext} from 'pc/components/expand_record/expand_attachment';
-import {resourceService} from 'pc/resource_service';
-import {initNoTraceVerification, UploadManager} from 'pc/utils';
-import {IUploadFileList} from '../upload_core';
-import {UploadPaste} from '../upload_paste/upload_paste';
-import {IUploadZoneItem, UploadZone} from '../upload_zone';
+import { useThemeColors } from '@apitable/components';
+import { ConfigConstant, IAttachmentValue, Strings, t } from '@apitable/core';
+import { FileAddOutlined, LinkOutlined, PasteOutlined } from '@apitable/icons';
+import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { ExpandAttachContext } from 'pc/components/expand_record/expand_attachment';
+import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
+import { initNoTraceVerification, UploadManager } from 'pc/utils';
+import { IUploadFileList } from '../upload_core';
+import { UploadPaste } from '../upload_paste/upload_paste';
+import { IUploadZoneItem, UploadZone } from '../upload_zone';
 import styles from './styles.module.less';
 
 export enum UploadTabType {
@@ -79,15 +79,15 @@ export interface ICommonTabRef {
 
 export const UploadTab: React.FC<React.PropsWithChildren<IUploadTabProps>> = (props) => {
   const colors = useThemeColors();
-  const {recordId, fieldId, setUploadList, className, cellValue} = props;
+  const { recordId, fieldId, setUploadList, className, cellValue } = props;
   const uploadManager = resourceService.instance!.uploadManager;
   const tabInfoRef = useRef<ICommonTabRef>(null);
 
-  const {isFocus} = useContext(ExpandAttachContext);
+  const { isFocus } = useContext(ExpandAttachContext);
 
   const [currentTab, setCurrentTab] = useState(UploadTabType.Drag);
-  const userInfo = useSelector((state) => state.user.info);
-  const {shareId, formId, aiId} = useSelector((state) => state.pageParams);
+  const userInfo = useAppSelector((state) => state.user.info);
+  const { shareId, formId, aiId } = useAppSelector((state) => state.pageParams);
   useMount(() => {
     if (!shareId || (!formId && !aiId)) {
       return;
@@ -160,7 +160,7 @@ export const UploadTab: React.FC<React.PropsWithChildren<IUploadTabProps>> = (pr
               [styles.activeLine]: true,
               [styles.grayColor]: isFocus === false,
             })}
-            style={{transform: `translateX(${calcActiveLineOffset()}px)`}}
+            style={{ transform: `translateX(${calcActiveLineOffset()}px)` }}
           />
         </nav>
       </ComponentDisplay>
@@ -169,11 +169,11 @@ export const UploadTab: React.FC<React.PropsWithChildren<IUploadTabProps>> = (pr
         <ComponentDisplay minWidthCompatible={ScreenSize.md}>
           {currentTab === UploadTabType.Drag && (
             <UploadZone onUpload={onUpload} recordId={recordId} fieldId={fieldId} cellValue={cellValue}
-                        ref={tabInfoRef}/>
+              ref={tabInfoRef}/>
           )}
           {currentTab === UploadTabType.Paste && (
             <UploadPaste onUpload={onUpload} ref={tabInfoRef} fieldId={fieldId} recordId={recordId}
-                         cellValue={cellValue}/>
+              cellValue={cellValue}/>
           )}
         </ComponentDisplay>
         <ComponentDisplay maxWidthCompatible={ScreenSize.md}>

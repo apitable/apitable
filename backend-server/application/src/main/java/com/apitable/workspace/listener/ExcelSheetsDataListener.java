@@ -18,40 +18,40 @@
 
 package com.apitable.workspace.listener;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.enums.CellDataTypeEnum;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.metadata.data.ReadCellData;
+import com.apitable.shared.util.CollectionUtil;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
-import com.apitable.shared.util.CollectionUtil;
 
 /**
  * <p>
- * Excel worksheet data listener（can't be handed over to spring container management）
+ * Excel worksheet data listener(can't be handed over to spring container management).
  * </p>
  */
 @Slf4j
 @Setter
 @Getter
 public class ExcelSheetsDataListener extends AnalysisEventListener<Map<Integer, String>> {
+
     /**
-     * Excel worksheet header
-     * */
+     * Excel worksheet header.
+     */
     private List<Object> sheetHeader;
 
     /**
-     * Excel worksheet data
-     * */
+     * Excel worksheet data.
+     */
     private List<List<Object>> sheetData;
 
     public ExcelSheetsDataListener() {
@@ -60,11 +60,11 @@ public class ExcelSheetsDataListener extends AnalysisEventListener<Map<Integer, 
     }
 
     /**
-     * analyzing excel worksheet data line by line
-     * */
+     * analyzing excel worksheet data line by line.
+     */
     @Override
     public void invoke(Map<Integer, String> data, AnalysisContext context) {
-        if (Objects.isNull(data) || data.size() == 0) {
+        if (Objects.isNull(data) || data.isEmpty()) {
             return;
         }
         List<Object> tempSheetData = new ArrayList<>();
@@ -88,8 +88,8 @@ public class ExcelSheetsDataListener extends AnalysisEventListener<Map<Integer, 
     }
 
     /**
-     * operations after all excel data rows are parsed
-     * */
+     * operations after all excel data rows are parsed.
+     */
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
         log.info("finish to parse {}...", context.readSheetHolder().getSheetName());
@@ -97,10 +97,10 @@ public class ExcelSheetsDataListener extends AnalysisEventListener<Map<Integer, 
 
     /**
      * Parses the header information of each worksheet, and each worksheet is executed only once.
-     * */
+     */
     @Override
     public void invokeHead(Map<Integer, ReadCellData<?>> headMap, AnalysisContext context) {
-        if (Objects.isNull(headMap) || headMap.size() == 0) {
+        if (Objects.isNull(headMap) || headMap.isEmpty()) {
             return;
         }
         Integer[] headerKeyArr = headMap.keySet().toArray(new Integer[0]);
@@ -146,8 +146,8 @@ public class ExcelSheetsDataListener extends AnalysisEventListener<Map<Integer, 
         }
         int count = 0;
         for (Object data : list) {
-            count = Objects.equals(data, "") ?
-                    count + 1 : 0;
+            count = Objects.equals(data, "")
+                ? count + 1 : 0;
         }
         return count == list.size();
     }

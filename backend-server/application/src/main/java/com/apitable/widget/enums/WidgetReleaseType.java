@@ -23,6 +23,9 @@ import com.apitable.core.support.serializer.IBaseEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * widget release type.
+ */
 @Getter
 @AllArgsConstructor
 public enum WidgetReleaseType implements IBaseEnum {
@@ -37,6 +40,12 @@ public enum WidgetReleaseType implements IBaseEnum {
 
     private final Integer value;
 
+    /**
+     * get enum by value.
+     *
+     * @param type value
+     * @return enum
+     */
     public static WidgetReleaseType toEnum(Integer type) {
         if (null != type) {
             for (WidgetReleaseType e : WidgetReleaseType.values()) {

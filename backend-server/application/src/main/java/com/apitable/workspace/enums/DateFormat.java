@@ -21,6 +21,9 @@ package com.apitable.workspace.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * Date format.
+ */
 @Getter
 @AllArgsConstructor
 public enum DateFormat {
@@ -37,6 +40,12 @@ public enum DateFormat {
 
     private final String pattern;
 
+    /**
+     * get pattern by type.
+     *
+     * @param type type
+     * @return pattern
+     */
     public static String getPattern(int type) {
         for (DateFormat format : DateFormat.values()) {
             if (format.getType() == type) {

@@ -54,7 +54,7 @@ public interface UserMapper extends BaseMapper<UserEntity> {
     String selectEmailById(@Param("userId") Long userId);
 
     /**
-     * Query avatar
+     * Query avatar.
      *
      * @param userId user id
      * @return avatar

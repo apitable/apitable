@@ -27,9 +27,14 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * datasheet record service.
+ */
 public interface IDatasheetRecordService extends IService<DatasheetRecordEntity> {
 
     /**
+     * save batch.
+     *
      * @param entities records
      */
     void batchSave(List<DatasheetRecordEntity> entities);
@@ -45,6 +50,8 @@ public interface IDatasheetRecordService extends IService<DatasheetRecordEntity>
     Datasheet.Records createRecords(Long userId, String dstId, Datasheet.Records records);
 
     /**
+     * custom save batch.
+     *
      * @param userId    user id
      * @param recordMap json format: record - field
      * @param dstId     datasheet id
@@ -52,25 +59,26 @@ public interface IDatasheetRecordService extends IService<DatasheetRecordEntity>
     void saveBatch(Long userId, JSONObject recordMap, String dstId);
 
     /**
-     * copy datasheet records
+     * copy datasheet records.
      *
-     * @param userId      user id
-     * @param oDstId      source datasheet id
-     * @param tDstId      target datasheet id
-     * @param nodeCopyDTO node replication DTO
-     * @param retain      reserved RecordMeta
+     * @param userId            user id
+     * @param sourceDatasheetId source datasheet id
+     * @param targetDatasheetId target datasheet id
+     * @param nodeCopyDTO       node replication DTO
+     * @param retain            reserved RecordMeta
      */
-    void copyRecords(Long userId, String oDstId, String tDstId, NodeCopyDTO nodeCopyDTO,
+    void copyRecords(Long userId, String sourceDatasheetId, String targetDatasheetId,
+                     NodeCopyDTO nodeCopyDTO,
                      boolean retain);
 
     /**
-     * copy data from a column to a new column
+     * copy data from a column to a new column.
      *
-     * @param dstId    datasheet id
-     * @param oFieldId source field id
-     * @param tFieldId target field id
+     * @param dstId         datasheet id
+     * @param sourceFieldId source field id
+     * @param targetFieldId target field id
      */
-    void copyFieldData(String dstId, String oFieldId, String tFieldId);
+    void copyFieldData(String dstId, String sourceFieldId, String targetFieldId);
 
     /**
      * Deletes the data of the specified field in the number table record.
@@ -83,6 +91,8 @@ public interface IDatasheetRecordService extends IService<DatasheetRecordEntity>
     DatasheetRecordMapVo delFieldData(String dstId, List<String> delFieldIds, boolean saveDb);
 
     /**
+     * get record map by datasheet id.
+     *
      * @param dstIds datasheet ids
      * @return recordMapVo
      */

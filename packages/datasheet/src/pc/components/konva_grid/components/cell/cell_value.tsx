@@ -17,9 +17,10 @@
  */
 
 import { ShapeConfig } from 'konva/lib/Shape';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { FC, memo } from 'react';
 import { CollaCommandName, FieldType, ICellValue, IField } from '@apitable/core';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import {CellButton, CellButtonItem} from './cell_button';
 import { resourceService } from 'pc/resource_service';
 import { CellScrollContainer } from '../cell_scroll_container';
 import { CellAttachment } from './cell_attachment';
@@ -32,6 +33,7 @@ import { CellMultiSelect } from './cell_multi_select';
 import { CellRating } from './cell_rating';
 import { CellSingleSelect } from './cell_single_select';
 import { CellText } from './cell_text';
+import { CellWorkdoc } from './cell_workdoc';
 import { IRenderData } from './interface';
 
 export interface ICellProps {
@@ -152,6 +154,10 @@ export const CellValue: FC<React.PropsWithChildren<ICellValueProps>> = memo((pro
       return <CellLookUp {...cellProps} />;
     case FieldType.Attachment:
       return <CellAttachment {...cellProps} />;
+    case FieldType.Button:
+      return <CellButton {...cellProps} />;
+    case FieldType.WorkDoc:
+      return <CellWorkdoc {...cellProps} />;
     default:
       return null;
   }

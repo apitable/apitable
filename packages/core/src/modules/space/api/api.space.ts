@@ -20,7 +20,7 @@ import axios from 'axios';
 import { ConfigConstant } from 'config';
 import urlcat from 'urlcat';
 import { NodeType, ShowRecordHistory } from '../../../config/constant';
-import { IApiWrapper, INode, INodesMapItem, IParent, IUpdateRoleData } from '../../../exports/store';
+import { IApiWrapper, INode, INodesMapItem, IParent, IUpdateRoleData } from '../../../exports/store/interfaces';
 import * as Url from '../../shared/api/url';
 import { IAddNodeParams } from './api.space.interface';
 import { getBrowserDatabusApiEnabled } from '../../database/api/wasm';
@@ -233,7 +233,7 @@ export function positionNode(nodeId: string) {
  * Get space list
  */
 export function spaceList(onlyManageable?: boolean) {
-  return axios.get(Url.SPACE_LIST, { params: { onlyManageable }});
+  return axios.get(Url.SPACE_LIST, { params: { onlyManageable } });
 }
 
 /**
@@ -397,14 +397,6 @@ export function getSpaceResource() {
 }
 
 /**
- * clean the red dot of space
- * @param spaceId
- */
-export function removeSpaceRedPoint(spaceId: string) {
-  return axios.post(`${Url.REMOVE_RED_POINT}${spaceId}`);
-}
-
-/**
  * get main admin info
  */
 export function getMainAdminInfo() {
@@ -538,22 +530,6 @@ export function updateRole(data: IUpdateRoleData) {
  */
 export function deleteSubAdmin(memberId: string) {
   return axios.delete(Url.DELETE_SUB_ADMIN + memberId);
-}
-
-/**
- * update member setting
- */
-export function updateMemberSetting(data: { invitable?: boolean; joinable?: boolean; mobileShowable?: boolean }) {
-  return axios.post(Url.UPDATE_MEMBER_SETTING, {
-    ...data,
-  });
-}
-
-/**
- * update workbench setting
- */
-export function updateWorkbenchSetting(data: { nodeExportable?: boolean }) {
-  return axios.post(Url.UPDATE_WORKBENCH_SETTING, { ...data });
 }
 
 /**

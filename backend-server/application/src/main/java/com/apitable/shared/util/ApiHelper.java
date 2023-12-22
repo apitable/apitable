@@ -18,16 +18,14 @@
 
 package com.apitable.shared.util;
 
-import javax.servlet.http.HttpServletRequest;
-
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
-
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 
 /**
  * <p>
- * api helper
+ * api helper.
  * </p>
  *
  * @author Chambers
@@ -37,9 +35,16 @@ public class ApiHelper {
     private static final String API_KEY_PREFIX = "usk";
 
     public static String createKey() {
-        return API_KEY_PREFIX + RandomUtil.randomString(RandomUtil.BASE_CHAR_NUMBER + RandomUtil.BASE_CHAR.toUpperCase(), 20);
+        return API_KEY_PREFIX + RandomUtil.randomString(
+            RandomUtil.BASE_CHAR_NUMBER + RandomUtil.BASE_CHAR.toUpperCase(), 20);
     }
 
+    /**
+     * get api key from request header.
+     *
+     * @param request http servlet request
+     * @return api key
+     */
     public static String getApiKey(HttpServletRequest request) {
         String bearerToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (StrUtil.isBlank(bearerToken)) {

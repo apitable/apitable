@@ -28,7 +28,8 @@ export const Avatar: FC<React.PropsWithChildren<IAvatarProps>> = ({
   alt,
   children,
   style,
-  shape = 'circle'
+  shape = 'circle',
+  onClick
 }) => {
   const avatarNodeRef = useRef<HTMLSpanElement>(null);
   const avatarChildrenRef = useRef<HTMLElement>(null);
@@ -76,7 +77,7 @@ export const Avatar: FC<React.PropsWithChildren<IAvatarProps>> = ({
     setScale(scale());
   }, [src, icon, size]);
 
-  const wrapperProps = { size, src, shape, icon, style };
+  const wrapperProps = { size, src, shape, icon, style, onClick };
 
   return (
     <AvatarWrapper {...wrapperProps} ref={avatarNodeRef}>

@@ -16,38 +16,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Button, ThemeName } from '@apitable/components';
-import { Events, Field, FieldType, IMeta, Player, Selectors, Strings, t, ViewType } from '@apitable/core';
 import { useMount } from 'ahooks';
 import classnames from 'classnames';
 import Image from 'next/image';
+import * as React from 'react';
+import { useMemo } from 'react';
+import { Button, ThemeName } from '@apitable/components';
+import { Events, Field, FieldType, IMeta, Player, Selectors, Strings, t, ViewType } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { FormFieldContainer } from 'pc/components/form_container/form_field_container';
 import { useResponsive } from 'pc/hooks';
-import * as React from 'react';
-import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IFormPreviewerProps {
-  datasheetId: string;
-  viewId: string;
-  meta: IMeta;
+  datasheetId: string | undefined;
+  viewId: string | undefined;
+  meta: IMeta | undefined;
   onChange: (result: { datasheetId?: string; viewId?: string; widgetId?: string; viewName?: string }) => void;
 }
 
-export const FormPreviewer: React.FC<React.PropsWithChildren<IFormPreviewerProps>> = props => {
+export const FormPreviewer: React.FC<React.PropsWithChildren<IFormPreviewerProps>> = (props) => {
   const { datasheetId, viewId, meta, onChange } = props;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const currentView = meta.views.filter(view => view.id === viewId)[0];
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMapFromForm);
-  const fieldMap = useMemo(() => meta.fieldMap || {}, [meta.fieldMap]);
+  const currentView = meta?.views.filter((view) => view.id === viewId)[0];
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMapFromForm);
+
+  const fieldMap = meta?.fieldMap || {};
 
   const filteredColumns = useMemo(() => {
-    return currentView?.columns.filter(column => {
+    return currentView?.columns.filter((column) => {
       const { fieldId, hidden } = column;
       const field = fieldMap[fieldId];
       if (field == null) {
@@ -59,7 +61,7 @@ export const FormPreviewer: React.FC<React.PropsWithChildren<IFormPreviewerProps
     });
   }, [currentView?.columns, fieldMap, fieldPermissionMap]);
 
-  const themeName = useSelector(state => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   const canCreate = useMemo(() => {
@@ -70,7 +72,7 @@ export const FormPreviewer: React.FC<React.PropsWithChildren<IFormPreviewerProps
   }, [currentView]);
 
   const onFormCreate = () => {
-    const viewName = currentView.name ? `${currentView.name}${t(Strings.key_of_adjective)}${t(Strings.view_form)}` : undefined;
+    const viewName = currentView?.name ? `${currentView.name}${t(Strings.key_of_adjective)}${t(Strings.view_form)}` : undefined;
     onChange({ datasheetId, viewId, viewName });
   };
   useMount(() => {
@@ -90,10 +92,10 @@ export const FormPreviewer: React.FC<React.PropsWithChildren<IFormPreviewerProps
             <h3 className={styles.panelTitle}>{t(Strings.preview_form_title)}</h3>
             <div className={styles.panelContent}>
               <FormFieldContainer
-                filteredColumns={filteredColumns}
-                datasheetId={datasheetId}
-                viewId={viewId}
-                meta={meta}
+                filteredColumns={filteredColumns!}
+                datasheetId={datasheetId!}
+                viewId={viewId!}
+                meta={meta!}
                 fieldUI={({ title, index, children, required }: any) => (
                   <div className={styles.formField}>
                     <h4 className={styles.title} data-required={required}>
@@ -109,7 +111,7 @@ export const FormPreviewer: React.FC<React.PropsWithChildren<IFormPreviewerProps
           </>
         ) : (
           <div className={styles.emptyTipWrap}>
-            <Image src={templateEmptyPng} alt="" className={styles.img}/>
+            <Image src={templateEmptyPng} alt="" className={styles.img} />
             <div className={styles.emptyTip}>{t(Strings.no_view_create_form)}</div>
           </div>
         )}

@@ -18,36 +18,32 @@
 
 package com.apitable.shared.captcha.sms;
 
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
+import static com.apitable.base.enums.ActionException.MOBILE_SEND_MAX_COUNT_LIMIT;
+import static com.apitable.base.enums.ActionException.SMS_SEND_ONLY_ONE_MINUTE;
 
 import cn.hutool.core.util.StrUtil;
-import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.shared.config.properties.SecurityProperties;
 import com.apitable.base.enums.SmsCodeType;
-import com.apitable.shared.component.notification.NotifyMailFactory;
+import com.apitable.core.constants.RedisConstants;
+import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.HttpContextUtil;
 import com.apitable.shared.captcha.AbstractValidateCodeProcessor;
 import com.apitable.shared.captcha.CodeValidateScope;
 import com.apitable.shared.captcha.ValidateCode;
 import com.apitable.shared.captcha.ValidateCodeRepository;
 import com.apitable.shared.captcha.ValidateTarget;
+import com.apitable.shared.component.notification.NotifyMailFactory;
+import com.apitable.shared.config.properties.SecurityProperties;
 import com.apitable.shared.util.DateHelper;
-import com.apitable.core.exception.BusinessException;
-import com.apitable.core.util.HttpContextUtil;
-import com.apitable.core.constants.RedisConstants;
-
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import static com.apitable.base.enums.ActionException.MOBILE_SEND_MAX_COUNT_LIMIT;
-import static com.apitable.base.enums.ActionException.SMS_SEND_ONLY_ONE_MINUTE;
-
 /**
  * <p>
- * Mobile phone SMS verification code processor
+ * Mobile phone SMS verification code processor.
  * </p>
  *
  * @author Shawn Deng
@@ -65,7 +61,9 @@ public class SmsValidateCodeProcessor extends AbstractValidateCodeProcessor {
     @Resource
     private SecurityProperties properties;
 
-    public SmsValidateCodeProcessor(ValidateCodeRepository validateCodeRepository, RedisTemplate<String, Object> redisTemplate, SecurityProperties properties) {
+    public SmsValidateCodeProcessor(ValidateCodeRepository validateCodeRepository,
+                                    RedisTemplate<String, Object> redisTemplate,
+                                    SecurityProperties properties) {
         super(validateCodeRepository, redisTemplate, properties);
     }
 
@@ -81,16 +79,16 @@ public class SmsValidateCodeProcessor extends AbstractValidateCodeProcessor {
         SmsCodeType type = SmsCodeType.ofName(scope.name());
         try {
             iSmsService.sendValidateCode(validateTarget, validateCode.getCode(), type);
-        }
-        catch (Exception e) {
-            NotifyMailFactory.me().notify("Fail to send sms", StrUtil.format("phone number：{}，error message：{}", target, e.getMessage()));
+        } catch (Exception e) {
+            NotifyMailFactory.me().notify("Fail to send sms",
+                StrUtil.format("phone number：{}，error message：{}", target, e.getMessage()));
             throw new BusinessException("fail to send sms");
         }
         this.saveSendCount(target, ipAddr);
     }
 
     /**
-     * Handling SMS traffic
+     * Handling SMS traffic.
      *
      * @param mobile phone number
      * @param ipAddr IP address
@@ -100,18 +98,17 @@ public class SmsValidateCodeProcessor extends AbstractValidateCodeProcessor {
         String mobileSmsCountKey = RedisConstants.getSendCaptchaCountKey(mobile, "mobile");
         // Number of IPs sent on the day
         String ipSmsCountKey = RedisConstants.getSendCaptchaCountKey(ipAddr, "ip:mobile");
-        // The number of all mobile phones sent on the day
-        String totalSmsCountKey = RedisConstants.getSendCaptchaCountKey("total", "mobile");
         // mobile phone frequency
         String sendSmsRateKey = RedisConstants.getSendCaptchaRateKey(mobile);
 
         // The one-minute limit cannot be obtained again, unless the verification code expires and is automatically deleted
         Integer sendSmsRateCount = (Integer) redisTemplate.opsForValue().get(sendSmsRateKey);
         if (sendSmsRateCount != null) {
-            log.info("Repeated acquisitions are not allowed within 60 seconds，IP address={}, phone number={}", ipAddr, mobile);
+            log.info(
+                "Repeated acquisitions are not allowed within 60 seconds，IP address={}, phone number={}",
+                ipAddr, mobile);
             throw new BusinessException(SMS_SEND_ONLY_ONE_MINUTE);
-        }
-        else {
+        } else {
             // Lock for 1 minute not to send
             redisTemplate.opsForValue().set(sendSmsRateKey, 1, 1, TimeUnit.MINUTES);
         }
@@ -119,31 +116,42 @@ public class SmsValidateCodeProcessor extends AbstractValidateCodeProcessor {
         // The maximum number of SMS messages sent by the mobile phone in one day
         Integer mobileSmsCount = (Integer) redisTemplate.opsForValue().get(mobileSmsCountKey);
         if (mobileSmsCount != null && mobileSmsCount >= properties.getSms().getMaxSendCount()) {
-            log.error("The maximum number of SMS messages sent by the mobile phone in one day，IP address={}, phone number={}", ipAddr, mobile);
+            log.error(
+                "The maximum number of SMS messages sent by the mobile phone in one day，IP address={}, phone number={}",
+                ipAddr, mobile);
             throw new BusinessException(MOBILE_SEND_MAX_COUNT_LIMIT);
         }
 
         Integer ipSmsCount = (Integer) redisTemplate.opsForValue().get(ipSmsCountKey);
         if (ipSmsCount != null && ipSmsCount >= properties.getSms().getMaxIpSendCount()) {
-            log.error("The maximum number of SMS messages sent by an IP address in one day, ip={}, phone={}", ipAddr, mobile);
-            throw new BusinessException("The maximum number of SMS messages sent by an IP address in one day");
+            log.error(
+                "The maximum number of SMS messages sent by an IP address in one day, ip={}, phone={}",
+                ipAddr, mobile);
+            throw new BusinessException(
+                "The maximum number of SMS messages sent by an IP address in one day");
         }
 
+        // The number of all mobile phones sent on the day
+        String totalSmsCountKey = RedisConstants.getSendCaptchaCountKey("total", "mobile");
         Integer totalSmsCount = (Integer) redisTemplate.opsForValue().get(totalSmsCountKey);
         if (totalSmsCount != null) {
             if (totalSmsCount >= properties.getSms().getMaxDaySendCount()) {
-                log.error("The maximum number of text messages sent in one day, ip address={}, phone={}", ipAddr, mobile);
+                log.error(
+                    "The maximum number of text messages sent in one day, ip address={}, phone={}",
+                    ipAddr, mobile);
                 throw new BusinessException("The maximum number of text messages sent in one day");
             }
             int count = properties.getSms().getMaxDaySendCount() * 9 / 10;
             if (totalSmsCount == count) {
-                NotifyMailFactory.me().notify("Alarm on the upper limit of the number of SMS sent in the day", "The number of sending has reached 90% of the upper limit, please note！");
+                NotifyMailFactory.me()
+                    .notify("Alarm on the upper limit of the number of SMS sent in the day",
+                        "The number of sending has reached 90% of the upper limit, please note！");
             }
         }
     }
 
     /**
-     * After the transmission is completed, save the number of transmissions and establish a threshold
+     * After the transmission is completed, save the number of transmissions and establish a threshold.
      *
      * @param mobile mobile phone
      * @param ipAddr IP address

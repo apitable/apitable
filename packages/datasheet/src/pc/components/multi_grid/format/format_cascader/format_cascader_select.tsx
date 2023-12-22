@@ -2,11 +2,12 @@ import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import { useState } from 'react';
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, LinkButton, useThemeColors, Typography, Switch } from '@apitable/components';
 import { ICascaderField, IField, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { SettingOutlined } from '@apitable/icons';
 
+import { useAppSelector } from 'pc/store/react-redux';
 import { IFieldCascaderErrors } from '../../field_setting/check_factory';
 import commonStyles from '../styles.module.less';
 import { CascaderDatasourceDatasheetSelect } from './cascader_datasource_datasheet_select';
@@ -26,7 +27,7 @@ export const FormatCascader = ({ currentField, setCurrentField, optionErrMsg }: 
 
   const dispatch = useDispatch();
 
-  const linkedDatasheetLoading = useSelector((state: IReduxState) => Selectors.getDatasheetLoading(state, linkedDatasheetId));
+  const linkedDatasheetLoading = useAppSelector((state: IReduxState) => Selectors.getDatasheetLoading(state, linkedDatasheetId));
 
   const [rulesModalVisible, setRulesModalVisible] = useState(false);
 

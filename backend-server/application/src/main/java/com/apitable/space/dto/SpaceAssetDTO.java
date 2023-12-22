@@ -20,6 +20,9 @@ package com.apitable.space.dto;
 
 import lombok.Data;
 
+/**
+ * space asset dto.
+ */
 @Data
 public class SpaceAssetDTO {
 
@@ -29,5 +32,11 @@ public class SpaceAssetDTO {
 
     private Integer type;
 
+    private String nodeId;
+
+    private Long assetId;
+
     private String assetChecksum;
+
+    private Boolean isDeleted;
 }

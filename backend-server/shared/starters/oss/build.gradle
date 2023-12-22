@@ -1,15 +1,19 @@
 plugins {
-  id 'java-library'
+    id 'java-library'
+    id 'testing.java-conventions'
 }
 
 dependencies {
-  implementation(rootProject.ext.dependencies['boot-starter'])
-  implementation(rootProject.ext.dependencies['aws'])
-  implementation(rootProject.ext.dependencies['minio'])
-  implementation(rootProject.ext.dependencies['qiniu'])
-  implementation(rootProject.ext.dependencies['huaweicloud-obs'])
-  implementation(rootProject.ext.dependencies['slf4j'])
-  implementation(rootProject.ext.dependencies['hutool'])
-  implementation(rootProject.ext.dependencies['gson'])
-  testImplementation(rootProject.ext.dependencies['spring-test-starter'])
+    implementation platform(libs.spring.boot.dependencies)
+    implementation(platform(libs.aws))
+
+    implementation(libs.spring.boot.starter)
+    implementation(libs.aws.s3)
+    implementation(libs.minio)
+    implementation(libs.qiniu)
+    implementation(libs.huaweicloud.obs)
+    implementation(libs.slf4j)
+    implementation(libs.bundles.hutool)
+    implementation(libs.gson)
+    testImplementation(libs.spring.boot.test)
 }

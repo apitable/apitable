@@ -25,14 +25,14 @@ import { FC, useCallback, useRef, useState } from 'react';
 // @ts-ignore
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import { useSelector } from 'react-redux';
 import { Button, TextButton, useThemeColors } from '@apitable/components';
 import { ConfigConstant, CutMethod, getImageThumbSrc, integrateCdnHost, Strings, t } from '@apitable/core';
 import { CheckOutlined } from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Message } from 'pc/components/common/message/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { useResponsive } from 'pc/hooks';
+import { useResponsive } from 'pc/hooks/use_responsive';
+import { useAppSelector } from 'pc/store/react-redux';
 import { createAvatarRainbowColorsArr } from 'pc/utils/color_utils';
 import { Avatar, AvatarSize } from '../avatar';
 import { ICropShape, IImageUploadProps, IUploadType, IPreviewShape, TabKeys } from './interface';
@@ -66,7 +66,7 @@ export const ImageCropUpload: FC<React.PropsWithChildren<IImageUploadProps>> = (
     avatarColor: initAvatarColor = null,
   } = props;
   const colors = useThemeColors();
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const avatarColorList = createAvatarRainbowColorsArr(themeName);
   const imgRef = useRef<HTMLImageElement | null>(null);
   const initCropConfig = initCropConfigMap.get(cropShape);

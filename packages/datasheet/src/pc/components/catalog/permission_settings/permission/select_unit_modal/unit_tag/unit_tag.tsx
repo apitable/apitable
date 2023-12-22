@@ -19,7 +19,7 @@
 import classNames from 'classnames';
 import { FC } from 'react';
 import { CloseOutlined } from '@apitable/icons';
-import { Avatar, AvatarSize, AvatarType } from 'pc/components/common';
+import { Avatar, AvatarSize, AvatarType } from 'pc/components/common/avatar/avatar';
 import styles from './style.module.less';
 
 export interface IUnitTagProps {

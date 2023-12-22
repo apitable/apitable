@@ -18,19 +18,19 @@
 
 import { ExecuteResult, ExecuteType, ICollaCommandExecuteSuccessResult } from 'command_manager';
 import { ICommandExecutionSuccessResult } from '../logic';
-import { ViewType } from 'exports/store';
+import { ViewType } from 'modules/shared/store/constants';
 import { ResourceType, SegmentType } from 'types';
 import { MockDataBus, resetDataLoader } from './mock.databus';
 import { mockOperationOfAddRecords } from './mock.record';
 import { IOperation, OTActionName } from 'engine';
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 
 const db = MockDataBus.getDatabase();
 
 describe('view info', () => {
   beforeAll(resetDataLoader);
 
-  test('basic view info', async() => {
+  test('basic view info', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -49,7 +49,7 @@ describe('view info', () => {
 });
 
 describe('getFields', () => {
-  it('should not include hidden fields by default', async() => {
+  it('should not include hidden fields by default', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -68,7 +68,7 @@ describe('getFields', () => {
     expect(fieldIds).toStrictEqual(['fld1']);
   });
 
-  it('should include hidden fields if includeHidden is true', async() => {
+  it('should include hidden fields if includeHidden is true', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -91,7 +91,7 @@ describe('getFields', () => {
 });
 
 describe('getRecords', () => {
-  it('should return records in order of rows in the view', async() => {
+  it('should return records in order of rows in the view', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -108,7 +108,7 @@ describe('getRecords', () => {
     expect(recordIds).toStrictEqual(['rec2', 'rec3', 'rec5', 'rec1', 'rec4']);
   });
 
-  test('maxRecords limit number of records', async() => {
+  test('maxRecords limit number of records', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -127,7 +127,7 @@ describe('getRecords', () => {
     expect(recordIds).toStrictEqual(['rec2', 'rec3', 'rec5']);
   });
 
-  test('maxRecords > total number of records', async() => {
+  test('maxRecords > total number of records', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -147,7 +147,7 @@ describe('getRecords', () => {
   });
 
   describe('pagination', () => {
-    test('pageNum = 1, pageSize = 3', async() => {
+    test('pageNum = 1, pageSize = 3', async () => {
       const dst1 = await db.getDatasheet('dst1', {
         loadOptions: {},
         storeOptions: {},
@@ -169,7 +169,7 @@ describe('getRecords', () => {
       expect(recordIds).toStrictEqual(['rec2', 'rec3', 'rec5']);
     });
 
-    test('pageNum = 1, pageSize = 0', async() => {
+    test('pageNum = 1, pageSize = 0', async () => {
       const dst1 = await db.getDatasheet('dst1', {
         loadOptions: {},
         storeOptions: {},
@@ -191,7 +191,7 @@ describe('getRecords', () => {
       expect(recordIds).toStrictEqual([]);
     });
 
-    test('pageNum = 1, pageSize = 0', async() => {
+    test('pageNum = 1, pageSize = 0', async () => {
       const dst1 = await db.getDatasheet('dst1', {
         loadOptions: {},
         storeOptions: {},
@@ -213,7 +213,7 @@ describe('getRecords', () => {
       expect(recordIds).toStrictEqual([]);
     });
 
-    test('pageNum = 2, pageSize = 2', async() => {
+    test('pageNum = 2, pageSize = 2', async () => {
       const dst1 = await db.getDatasheet('dst1', {
         loadOptions: {},
         storeOptions: {},
@@ -235,7 +235,7 @@ describe('getRecords', () => {
       expect(recordIds).toStrictEqual(['rec5', 'rec1']);
     });
 
-    test('pageNum = 2, pageSize = 3', async() => {
+    test('pageNum = 2, pageSize = 3', async () => {
       const dst1 = await db.getDatasheet('dst1', {
         loadOptions: {},
         storeOptions: {},
@@ -257,7 +257,7 @@ describe('getRecords', () => {
       expect(recordIds).toStrictEqual(['rec1', 'rec4']);
     });
 
-    test('pageNum = 3, pageSize = 3', async() => {
+    test('pageNum = 3, pageSize = 3', async () => {
       const dst1 = await db.getDatasheet('dst1', {
         loadOptions: {},
         storeOptions: {},
@@ -280,7 +280,7 @@ describe('getRecords', () => {
     });
   });
 
-  test('maxRecords = 4 and pagnation: pageNum = 2, pageSize = 3', async() => {
+  test('maxRecords = 4 and pagnation: pageNum = 2, pageSize = 3', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -307,7 +307,7 @@ describe('getRecords', () => {
 describe('addRecords', () => {
   beforeEach(resetDataLoader);
 
-  test('add two records with count', async() => {
+  test('add two records with count', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -351,8 +351,8 @@ describe('addRecords', () => {
         id: recordIds[1]!,
         rows: [
           { view: 0, index: 4 },
-          { view: 1, index: 5 },
-          { view: 2, index: 5 },
+          { view: 1, index: 6 },
+          { view: 2, index: 6 },
         ],
       },
     ]);
@@ -383,7 +383,7 @@ describe('addRecords', () => {
     });
   });
 
-  test('add two records with recordValues', async() => {
+  test('add two records with recordValues', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -440,8 +440,8 @@ describe('addRecords', () => {
         id: recordIds[1]!,
         rows: [
           { view: 0, index: 4 },
-          { view: 1, index: 5 },
-          { view: 2, index: 5 },
+          { view: 1, index: 6 },
+          { view: 2, index: 6 },
         ],
         values: {
           fld1: [{ type: SegmentType.Text, text: 'second' }],
@@ -480,7 +480,7 @@ describe('addRecords', () => {
 describe('modify view', () => {
   beforeEach(resetDataLoader);
 
-  test('modify view name', async() => {
+  test('modify view name', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -545,7 +545,7 @@ describe('modify view', () => {
     });
   });
 
-  test('modify view columns', async() => {
+  test('modify view columns', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},
@@ -614,7 +614,7 @@ describe('modify view', () => {
 describe('delete view', () => {
   beforeEach(resetDataLoader);
 
-  test('delete single view', async() => {
+  test('delete single view', async () => {
     const dst1 = await db.getDatasheet('dst1', {
       loadOptions: {},
       storeOptions: {},

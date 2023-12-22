@@ -60,9 +60,9 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import java.util.List;
-import javax.annotation.Resource;
-import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -117,7 +117,7 @@ public class RoleController {
             schema = @Schema(type = "string"), example = "15622")
     })
     public ResponseData<Void> updateRole(@PathVariable("roleId") Long roleId,
-        @RequestBody @Valid UpdateRoleRo data) {
+                                         @RequestBody @Valid UpdateRoleRo data) {
         String spaceId = LoginContext.me().getSpaceId();
         // check if exist the same role name.
         iRoleService.checkDuplicationRoleName(spaceId, data.getRoleName(),
@@ -159,7 +159,7 @@ public class RoleController {
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = PAGE_SIMPLE_EXAMPLE)
     })
     public ResponseData<PageInfo<RoleMemberVo>> getRoleMembers(@PathVariable("roleId") Long roleId,
-        @PageObjectParam Page<Void> page) {
+                                                               @PageObjectParam Page<Void> page) {
         String spaceId = LoginContext.me().getSpaceId();
         // check if user in the space.
         Long userId = UserHolder.get();
@@ -186,7 +186,7 @@ public class RoleController {
             schema = @Schema(type = "string"), example = "15622")
     })
     public ResponseData<Void> addRoleMembers(@PathVariable("roleId") Long roleId,
-        @RequestBody @Valid AddRoleMemberRo data) {
+                                             @RequestBody @Valid AddRoleMemberRo data) {
         String spaceId = LoginContext.me().getSpaceId();
         // check if space has the role.
         iRoleService.checkRoleExistBySpaceIdAndRoleId(spaceId, roleId,
@@ -215,7 +215,7 @@ public class RoleController {
             schema = @Schema(type = "string"), example = "15622")
     })
     public ResponseData<Void> removeRoleMembers(@PathVariable("roleId") Long roleId,
-        @RequestBody @Valid DeleteRoleMemberRo data) {
+                                                @RequestBody @Valid DeleteRoleMemberRo data) {
         String spaceId = LoginContext.me().getSpaceId();
         // check if space has the role.
         iRoleService.checkRoleExistBySpaceIdAndRoleId(spaceId, roleId,

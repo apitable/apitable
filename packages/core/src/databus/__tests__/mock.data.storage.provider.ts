@@ -18,10 +18,17 @@
 
 import { IResourceOpsCollect, resourceOpsToChangesets } from 'command_manager';
 import { IDataStorageProvider, ISaveOpsOptions } from '../providers';
-import { IBaseDatasheetPack, IServerDashboardPack, IServerDatasheetPack, Selectors, StoreActions } from 'exports/store';
+import { IBaseDatasheetPack, IServerDashboardPack, IServerDatasheetPack } from 'exports/store/interfaces';
+import {
+  getSnapshot,
+  getDatasheet,
+} from 'modules/database/store/selectors/resource/datasheet/base';
+import { getDashboard } from 'modules/database/store/selectors/resource/dashboard';
+
 import { mockDatasheetMap } from './mock.datasheets';
 import { ResourceType } from '../../types';
 import { mockDashboardMap } from './mock.dashboards';
+import { applyJOTOperations,updateRevision } from 'modules/database/store/actions/resource';
 
 export class MockDataStorageProvider implements IDataStorageProvider {
   datasheets!: Record<string, IBaseDatasheetPack>;
@@ -54,25 +61,28 @@ export class MockDataStorageProvider implements IDataStorageProvider {
     const { store } = options;
     const changesets = resourceOpsToChangesets(ops, store.getState());
     changesets.forEach(cs => {
-      store.dispatch(StoreActions.applyJOTOperations(cs.operations, cs.resourceType, cs.resourceId));
+      store.dispatch(applyJOTOperations(cs.operations, cs.resourceType, cs.resourceId));
       if (cs.baseRevision !== undefined) {
-        store.dispatch(StoreActions.updateRevision(cs.baseRevision + 1, cs.resourceId, cs.resourceType));
+        store.dispatch(updateRevision(cs.baseRevision + 1, cs.resourceId, cs.resourceType));
       }
       switch (cs.resourceType) {
         case ResourceType.Datasheet:
           this.datasheets[cs.resourceId] = {
-            datasheet: Selectors.getDatasheet(store.getState())!,
-            snapshot: Selectors.getSnapshot(store.getState())!,
+            datasheet: getDatasheet(store.getState())!,
+            snapshot: getSnapshot(store.getState())!,
           };
           break;
         case ResourceType.Dashboard:
           if (this.dashboards[cs.resourceId]) {
-            this.dashboards[cs.resourceId]!.dashboard = Selectors.getDashboard(store.getState(), cs.resourceId)!;
+            this.dashboards[cs.resourceId]!.dashboard = getDashboard(store.getState(), cs.resourceId)!;
           }
           break;
       }
     });
 
     return Promise.resolve(changesets);
+  }
+
+  async nestRoomChangeFromRust(_roomId: string, _data: any) {
   }
 }

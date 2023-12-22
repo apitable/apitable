@@ -15,14 +15,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+import { Field } from './field';
 import { Strings, t } from '../../exports/i18n';
 import { sum, uniq } from 'lodash';
-import { ICellValue } from 'model';
-import { Selectors, ISnapshot, IReduxState } from '../../exports/store';
+import { ICellValue } from 'model/record';
+import { ISnapshot, IReduxState } from '../../exports/store/interfaces';
+import { getCellValue } from 'modules/database/store/selectors/resource/datasheet/cell_calc';
 import { BasicValueType, FieldType, IField } from 'types/field_types';
 import { toFixed } from '../../utils/number';
-import { Field } from './field';
 
 export enum StatType {
   None = 0,
@@ -195,7 +195,7 @@ export const getFieldResultByStatType = (
   state: IReduxState,
 ) => {
   let cellValues: ICellValue[] = records.map(recId => {
-    return Selectors.getCellValue(state, snapshot, recId, field.id);
+    return getCellValue(state, snapshot, recId, field.id);
   });
 
   const instance = Field.bindContext(field, state);

@@ -18,27 +18,27 @@
 
 package com.apitable.shared.cache.service.impl;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
+import com.apitable.core.constants.RedisConstants;
+import com.apitable.shared.cache.service.UserSpaceRemindRecordCacheService;
+import com.apitable.shared.config.properties.LimitProperties;
+import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-
-import javax.annotation.Resource;
-
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.shared.cache.service.UserSpaceRemindRecordCacheService;
-import com.apitable.shared.config.properties.LimitProperties;
-import com.apitable.core.constants.RedisConstants;
-
 import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+/**
+ * user space remind record cache in redis service implementation.
+ */
 @Slf4j
 @Service
-public class UserSpaceRemindRecordCacheInRedisServiceImpl implements UserSpaceRemindRecordCacheService {
+public class UserSpaceRemindRecordCacheInRedisServiceImpl
+    implements UserSpaceRemindRecordCacheService {
 
     @Resource
     private RedisTemplate<String, Long> redisTemplate;
@@ -53,7 +53,8 @@ public class UserSpaceRemindRecordCacheInRedisServiceImpl implements UserSpaceRe
         String key = RedisConstants.getUserSpaceRemindRecordKey(userId, spaceId);
         BoundListOperations<String, Long> opts = redisTemplate.boundListOps(key);
         List<Long> unitIds = opts.range(0, Optional.ofNullable(opts.size()).orElse(1L));
-        return CollUtil.sub(CollUtil.distinct(unitIds), 0, limitProperties.getMemberFieldMaxLoadCount());
+        return CollUtil.sub(CollUtil.distinct(unitIds), 0,
+            limitProperties.getMemberFieldMaxLoadCount());
     }
 
     @Override
@@ -63,7 +64,8 @@ public class UserSpaceRemindRecordCacheInRedisServiceImpl implements UserSpaceRe
         }
         String key = RedisConstants.getUserSpaceRemindRecordKey(userId, spaceId);
         BoundListOperations<String, Long> opts = redisTemplate.boundListOps(key);
-        for (int i = 0; i < limitProperties.getMemberFieldMaxLoadCount() && i < unitIds.size(); i++) {
+        for (int i = 0; i < limitProperties.getMemberFieldMaxLoadCount() && i < unitIds.size();
+             i++) {
             opts.leftPush(unitIds.get(i));
         }
         opts.expire(TIMEOUT, TimeUnit.DAYS);

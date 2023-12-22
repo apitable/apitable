@@ -84,7 +84,7 @@ public class SpaceRoleServiceImplTest extends AbstractIntegrationTest {
                 Arrays.asList("MANAGE_TEAM", "MANAGE_MEMBER")));
 
         List<String> roleCodes =
-            spaceMemberRoleRelMapper.selectRoleCodesBySpaceId(mockUserSpace.getSpaceId());
+            iSpaceMemberRoleRelService.getRoleCodesBySpaceId(mockUserSpace.getSpaceId());
         assertThat(roleCodes).isNotEmpty().hasSize(2);
 
         // no share the same role
@@ -108,9 +108,9 @@ public class SpaceRoleServiceImplTest extends AbstractIntegrationTest {
             iSpaceRoleService.getRoleDetail(mockUserSpace.getSpaceId(), memberId);
         assertThat(roleDetail.getResources().size()).isEqualTo(0);
         String roleCode =
-            spaceMemberRoleRelMapper.selectRoleCodeByMemberId(mockUserSpace.getSpaceId(), memberId);
+            iSpaceMemberRoleRelService.getRoleCodeByMemberId(mockUserSpace.getSpaceId(), memberId);
         List<String> resourceCodes =
-            spaceRoleResourceRelMapper.selectResourceCodesByRoleCode(roleCode);
+            iSpaceRoleResourceRelService.getResourceCodesByRoleCode(roleCode);
         assertThat(resourceCodes.size()).isEqualTo(1);
     }
 

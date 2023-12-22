@@ -1144,6 +1144,14 @@
       "to_tag": "space_admins",
       "url": "/management"
     },
+    "space_refresh_contact_seats_limit": {
+      "format_string": "space_refresh_contact_seats_limit",
+      "id": "space_refresh_contact_seats_limit",
+      "is_browser": true,
+      "is_notification": true,
+      "notifications_type": "space",
+      "to_tag": "space_admins"
+    },
     "space_yozooffice_notify": {
       "billing_notify": "integration_yozo_office",
       "can_jump": true,

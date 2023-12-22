@@ -168,11 +168,25 @@
       "descriptionId": "api_panel_type_desc_text",
       "valueType": "string"
     },
+    "Workdoc": {
+      "defaultExample": "文档内容",
+      "defaultExampleId": "api_panel_type_default_example_workdoc",
+      "description": "文档，可用于存放文档。",
+      "descriptionId": "api_panel_type_desc_workdoc",
+      "valueType": "array"
+    },
     "URL": {
       "defaultExample": "{\"title\":\"vika\",\"text\":\"https://vika.cn\", \"favicon\":\"https://s1.vika.cn/space/2022/12/20/73456950217f4f79b20c7ef1a49acf6e\"}",
       "defaultExampleId": "api_panel_type_default_example_url",
       "description": "URL 地址（字符串）",
       "descriptionId": "api_panel_type_desc_url",
+      "valueType": "string"
+    },
+    "Button": {
+      "defaultExample": "Click Start",
+      "defaultExampleId": "click_start",
+      "description": "按钮列",
+      "descriptionId": "field_desc_button",
       "valueType": "string"
     }
   },
@@ -1281,7 +1295,7 @@
         "onPlay": [
           "set_wizard_completed({\"curWizard\": true})"
         ],
-        "uiConfig": "{\n\"title\":\"一分钟快速入门\",\n\"video\":\"space/2021/03/10/a68dbf1e2e7943b09b1550175253fdab\",\n\"videoId\":\"VIKA_GUIDE_VIDEO_2\",\n\"autoPlay\":true\n}\n",
+        "uiConfig": "{\n\"title\":\"VIKA产品演示\",\n\"video\":\"space/2023/12/12/8e870a50d98646f0a4cc2f76e3cd6d46\",\n\"videoId\":\"VIKA_GUIDE_VIDEO_2\",\n\"autoPlay\":true\n}\n",
         "uiConfigId": "player_step_ui_config_5",
         "uiType": "modal"
       },
@@ -1733,7 +1747,7 @@
         "onPlay": [
           "set_wizard_completed({\"wizardId\": 14})"
         ],
-        "uiConfig": "{\n\"title\":\"一分钟快速入门\",\n\"video\":\"space/2021/03/10/a68dbf1e2e7943b09b1550175253fdab\",\n\"videoId\":\"VIKA_GUIDE_VIDEO_NEW_USER\",\n\"autoPlay\":true\n}\n",
+        "uiConfig": "{\n\"title\":\"VIKA产品演示\",\n\"video\":\"space/2023/12/12/8e870a50d98646f0a4cc2f76e3cd6d46\",\n\"videoId\":\"VIKA_GUIDE_VIDEO_NEW_USER\",\n\"autoPlay\":true\n}\n",
         "uiConfigId": "player_step_ui_config_44",
         "uiType": "modal"
       },
@@ -2386,10 +2400,109 @@
           "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
         ],
-        "uiConfig": "{\n \"element\": \"#AUTOMATION_ADD_TRIGGER_BTN\"\n} ",
+        "uiConfig": "{\n \"element\": \"#NODE_FORM_ACTIVE\"\n} ",
         "uiConfigId": "player_step_ui_config_automation_1",
         "uiType": "breath"
       },
+
+      "178": {
+        "description": "ui dialog for use button field first time and active node ",
+        "next": "下一步",
+        "nextId": "next_step",
+        "onClose": [
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onSkip": [
+          "clear_guide_all_ui()"
+        ],
+        "onTarget": [
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onNext": [
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "skip": "跳过",
+        "skipId": "skip",
+        "uiConfig": "{\n \"element\": \".TREE_NODE_ACTIVE_ONE\", \"description\": \"description\",  \"title\": \"title\"\n} ",
+        "uiConfigId": "player_step_ui_config_button_field_node",
+        "uiType": "popover"
+      },
+
+      "179": {
+        "description": "ui dialog for use button field first time for node actived status ",
+        "next": "下一步",
+        "nextId": "next_step",
+        "onClose": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onSkip": [
+          "clear_guide_all_ui()"
+        ],
+        "onTarget": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onNext": [
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "skip": "跳过",
+        "skipId": "skip",
+        "uiConfig": "{\n \"element\": \"#NODE_FORM_ACTIVE\"\n} ",
+        "uiConfigId": "player_step_ui_config_button_field_node_form_active",
+        "uiType": "popover"
+      },
+
+
+      "180": {
+        "description": "ui dialog for use button field first time active bind datasheeet ",
+        "nextId": "next_step",
+        "next": "下一步",
+        "onSkip": [
+          "clear_guide_all_ui()"
+        ],
+        "onClose": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "skip": "跳过",
+        "skipId": "skip",
+        "onTarget": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onNext": [
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "uiConfig": "{\n \"element\": \"#AUTOMATION_BOUND_DATASHEET\"\n} ",
+        "uiConfigId": "player_step_ui_config_button_field_bound_datasheet",
+        "uiType": "popover"
+      },
+
+      "181": {
+        "description": "ui dialog for use button field first time active create action ",
+        "next": "好的",
+        "nextId": "okay",
+        "onClose": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onSkip": [
+          "clear_guide_all_ui()"
+        ],
+        "onTarget": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "onNext": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "uiConfig": "{\n \"element\": \"#CONST_ROBOT_ACTION_CREATE\"\n} ",
+        "uiConfigId": "player_step_ui_config_button_field_action_create",
+        "uiType": "popover"
+      },
+
       "124": {
         "next": "下一步",
         "nextId": "next_step",
@@ -2750,7 +2863,7 @@
           "open_guide_next_step({\"clearAllPrevUi\":true})"
         ],
         "skipId": "maybe_later",
-        "uiConfig": "{\n  \"title\": \"恭喜你！获得试用权益\",\n  \"description\": \"你获得了14天Pro版本的试用权益，你可以点击按钮查看详情\",\n  \"listHeader\": \"试用权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/management/upgrade\n}",
+        "uiConfig": "{\n  \"title\": \"恭喜你！获得试用权益\",\n  \"description\": \"你获得了14天Pro版本的试用权益，你可以点击按钮查看详情\",\n  \"listHeader\": \"试用权益：\",\n  \"listContent\": [\n    \"空间站记录总数上限提高至 2,000,000 行\",\n    \"空间站附件容量数提高至 140 GB\",\n    \"支持调用所有高级 API\"\n  ],\n  \"listFooter\": \"更多权益\",\n  \"url\": \"https://apitable.com/management/upgrade\"\n}",
         "uiConfigId": "player_step_ui_config_166",
         "uiType": "billingStrip"
       },
@@ -2815,7 +2928,7 @@
           "set_wizard_completed({\"curWizard\": true})",
           "clear_guide_all_ui()"
         ],
-        "uiConfig": "{\n\"\"title\"\":\"\"AI 功能介绍\"\",\n\"\"video\"\":\"\"space/2021/03/10/a68dbf1e2e7943b09b1550175253fdab\"\",\n\"\"videoId\"\":\"\"VIKA_GUIDE_VIDEO_FOR_AI\"\",\n\"\"autoPlay\"\":true\n}",
+        "uiConfig": "{\n\"\"title\"\":\"\"AI 功能介绍\"\",\n\"\"video\"\":\"\"space/2023/12/12/8e870a50d98646f0a4cc2f76e3cd6d46\"\",\n\"\"videoId\"\":\"\"VIKA_GUIDE_VIDEO_FOR_AI\"\",\n\"\"autoPlay\"\":true\n}",
         "uiConfigId": "player_step_ui_config_176",
         "uiType": "modal"
       }
@@ -3442,6 +3555,18 @@
           ]
         },
         "steps": "[[170]]"
+      },
+
+      "118": {
+        "description": "steps for automation button",
+        "completeIndex": 0,
+        "player": {
+          "action": [
+            "rec4kT7UZkdww"
+          ]
+        },
+        "repeat": false,
+        "steps": "[[178], [179], [180], [181]]"
       },
 
       "117": {
@@ -4809,6 +4934,12 @@
         "commandArgs": "{\"clearAllPrevUi\":true}"
       },
       {
+        "id": "open_guide_wizard(118)",
+        "description": "打开引导向导 首次Button列",
+        "command": "open_guide_wizard",
+        "commandArgs": "118"
+      },
+      {
         "id": "open_guide_wizard(117)",
         "command": "open_guide_wizard",
         "commandArgs": "117"
@@ -5049,6 +5180,11 @@
       "guide_use_automation_first_time": {
         "module": "guide",
         "name": "use_automation_first_time"
+      },
+
+      "guide_use_button_column_first_time": {
+        "module": "guide",
+        "name": "guide_use_button_column_first_time"
       },
 
       "app_modal_confirm": {
@@ -5613,6 +5749,20 @@
       },
       {
         "actions": [
+          "open_guide_wizard(118)"
+        ],
+        "rules": [
+          "device_IS_pc",
+          "url_EXCLUDES_templateId",
+          "url_EXCLUDES_shareId"
+        ],
+        "id": "guide_use_button_column_first_time,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(118)]",
+        "event": [
+          "guide_use_button_column_first_time"
+        ]
+      },
+      {
+        "actions": [
           "open_guide_wizard(117)"
         ],
         "rules": [
@@ -5620,7 +5770,7 @@
           "url_EXCLUDES_templateId",
           "url_EXCLUDES_shareId"
         ],
-        "id": "guide_use_automation_first_time,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(88)]",
+        "id": "guide_use_automation_first_time,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId],[open_guide_wizard(117)]",
         "event": [
           "guide_use_automation_first_time"
         ]
@@ -6346,7 +6496,7 @@
       "value": "{ \"title\":\"玩转一张维格表\", \"video\":\"space/2020/12/21/cb7bdf6fe22146068111d46915587fb2\", \"autoPlay\":true }"
     },
     "user_guide_welcome_quick_start_video": {
-      "value": "{\"title\":\"一分钟快速入门\", \"video\":\"space/2021/03/10/a68dbf1e2e7943b09b1550175253fdab\", \"autoPlay\":true}"
+      "value": "{\"title\":\"VIKA产品演示\", \"video\":\"space/2023/12/12/8e870a50d98646f0a4cc2f76e3cd6d46\", \"autoPlay\":true}"
     },
     "user_guide_welcome_template1_icon": {
       "value": "现有的 icon 链接"

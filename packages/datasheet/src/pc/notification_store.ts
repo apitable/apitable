@@ -19,7 +19,7 @@
 import axios from 'axios';
 import SocketIO from 'socket.io-client';
 import { INodeChangeSocketData, INoticeDetail, Navigation, StoreActions, Strings, t, Url } from '@apitable/core';
-import { Modal } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { canJumpWhenClickCard, getNoticeUrlParams, NotifyType, renderNoticeBody } from 'pc/components/notification/card/utils';
 import { navigationToConfigUrl, PublishController } from 'pc/components/notification/publish/controller';
 import { NoticeTemplatesConstant, requestWebNotification } from 'pc/components/notification/utils';
@@ -85,6 +85,7 @@ export class NotificationStore {
     ws.on('NOTIFY', (data: INoticeDetail) => {
       console.log('Receive real-time messages: ', data);
       const templateId = data.templateId;
+      if(['subscribed_record_archived', 'subscribed_record_unarchived'].includes(templateId)) return;
       // Browser notifications
       if (!PublishNotifyList.includes(templateId)) {
         requestWebNotification({

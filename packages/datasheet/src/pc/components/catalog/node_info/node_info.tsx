@@ -20,7 +20,7 @@ import classNames from 'classnames';
 import dayjs from 'dayjs';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { Skeleton } from '@apitable/components';
 import { Api, Strings, t } from '@apitable/core';
 import { Avatar, AvatarSize } from 'pc/components/common/avatar';
@@ -31,7 +31,9 @@ import { store } from 'pc/store';
 import { getNodeIcon } from '../tree/node_icon';
 import styles from './styles.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+
+import {useAppSelector} from "pc/store/react-redux";
 
 interface INodeInfoProps {
   nodeId: string;
@@ -43,7 +45,7 @@ const NodeInfoModal: React.FC<React.PropsWithChildren<INodeInfoProps>> = (props)
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { data, loading } = useRequest(() => Api.getNodeInfoWindow(nodeId));
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const nodeInfo = data?.data?.data;
   const Title = () => {
     if (!nodeInfo) {
@@ -108,7 +110,7 @@ const NodeInfoModal: React.FC<React.PropsWithChildren<INodeInfoProps>> = (props)
         </li>
         <li>
           <div className={styles.label}>{t(Strings.node_info_created_time)}</div>
-          <div className={styles.value}>{nodeInfo.creator.time ? dayjs(nodeInfo.creator.time).format(timeFormat) : '-'}</div>
+          <div className={styles.value}>{nodeInfo.creator.time ? dayjs.tz(nodeInfo.creator.time).format(timeFormat) : '-'}</div>
         </li>
       </ul>
     );

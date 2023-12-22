@@ -18,22 +18,13 @@
 
 package com.apitable.asset.service.impl;
 
-import com.apitable.shared.config.properties.ConstProperties.OssBucketInfo;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
-import java.util.stream.Collectors;
-
-import javax.annotation.Resource;
-import javax.imageio.ImageIO;
+import static com.apitable.core.constants.RedisConstants.GENERAL_LOCKED;
+import static com.apitable.shared.constants.AssetsPublicConstants.DEVELOP_PREFIX;
+import static com.apitable.shared.constants.AssetsPublicConstants.PUBLIC_PREFIX;
+import static com.apitable.shared.constants.AssetsPublicConstants.SPACE_PREFIX;
+import static org.springframework.util.MimeTypeUtils.IMAGE_GIF;
+import static org.springframework.util.MimeTypeUtils.IMAGE_JPEG;
+import static org.springframework.util.MimeTypeUtils.IMAGE_PNG;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.FileUtil;
@@ -44,12 +35,6 @@ import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
-import com.apitable.starter.oss.core.OssClientTemplate;
-import com.apitable.starter.oss.core.UrlFetchResponse;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.google.common.collect.ImmutableList;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.asset.dto.ImageDto;
 import com.apitable.asset.entity.AssetEntity;
 import com.apitable.asset.enums.AssetType;
@@ -64,25 +49,44 @@ import com.apitable.auth.enums.AuthException;
 import com.apitable.base.enums.ActionException;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.base.enums.ParameterException;
-import com.apitable.interfaces.security.facade.HumanVerificationServiceFacade;
-import com.apitable.interfaces.security.model.NonRobotMetadata;
-import com.apitable.shared.cache.service.SpaceCapacityCacheService;
-import com.apitable.shared.config.properties.ConstProperties;
-import com.apitable.shared.util.ApiHelper;
-import com.apitable.shared.util.PdfToImageUtil;
-import com.apitable.space.dto.SpaceAssetDTO;
-import com.apitable.space.mapper.SpaceAssetMapper;
-import com.apitable.space.service.ISpaceAssetService;
-import com.apitable.user.service.IDeveloperService;
-import com.apitable.workspace.enums.PermissionException;
-import com.apitable.workspace.mapper.NodeMapper;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.DigestUtil;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.HttpContextUtil;
 import com.apitable.core.util.InputStreamCache;
 import com.apitable.core.util.MimeTypeMapping;
-
+import com.apitable.interfaces.security.facade.HumanVerificationServiceFacade;
+import com.apitable.interfaces.security.model.NonRobotMetadata;
+import com.apitable.shared.cache.service.SpaceCapacityCacheService;
+import com.apitable.shared.config.properties.ConstProperties;
+import com.apitable.shared.config.properties.ConstProperties.OssBucketInfo;
+import com.apitable.shared.util.ApiHelper;
+import com.apitable.shared.util.PdfToImageUtil;
+import com.apitable.space.dto.SpaceAssetDTO;
+import com.apitable.space.mapper.SpaceAssetMapper;
+import com.apitable.space.service.ISpaceAssetService;
+import com.apitable.starter.oss.core.OssClientTemplate;
+import com.apitable.starter.oss.core.UrlFetchResponse;
+import com.apitable.user.service.IDeveloperService;
+import com.apitable.workspace.enums.PermissionException;
+import com.apitable.workspace.mapper.NodeMapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.common.collect.ImmutableList;
+import jakarta.annotation.Resource;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.stream.Collectors;
+import javax.imageio.ImageIO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
@@ -93,20 +97,13 @@ import org.springframework.util.InvalidMimeTypeException;
 import org.springframework.util.MimeType;
 import org.springframework.util.MimeTypeUtils;
 
-import static com.apitable.shared.constants.AssetsPublicConstants.DEVELOP_PREFIX;
-import static com.apitable.shared.constants.AssetsPublicConstants.PUBLIC_PREFIX;
-import static com.apitable.shared.constants.AssetsPublicConstants.SPACE_PREFIX;
-import static com.apitable.core.constants.RedisConstants.GENERAL_LOCKED;
-import static org.springframework.util.MimeTypeUtils.IMAGE_GIF;
-import static org.springframework.util.MimeTypeUtils.IMAGE_JPEG;
-import static org.springframework.util.MimeTypeUtils.IMAGE_PNG;
-
 /**
  * Basics - Attachment Table Service Implementation Class.
  */
 @Slf4j
 @Service
-public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> implements IAssetService {
+public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity>
+    implements IAssetService {
 
     @Autowired(required = false)
     private OssClientTemplate ossTemplate;
@@ -181,7 +178,8 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
     @Override
     @Transactional(rollbackFor = Throwable.class)
     public AssetUploadResult uploadFileInSpace(String nodeId, InputStream in,
-        String fileOriginalName, long fileSize, String mimeType, AssetType assetType) {
+                                               String fileOriginalName, long fileSize,
+                                               String mimeType, AssetType assetType) {
         log.info("upload resources in the space");
         ExceptionUtil.isFalse(MediaType.TEXT_HTML_VALUE.equals(mimeType),
             ActionException.FILE_NOT_SUPPORT_HTML);
@@ -261,10 +259,12 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
                                 uploadAndSavePdfImg(streamCache.getInputStream());
                             result.setPreview(pdfImgUploadPath);
                             // Basic resource records, supplementary preview data
-                            AssetEntity update = new AssetEntity();
-                            update.setId(assetEntity.getId());
-                            update.setPreview(result.getPreview());
-                            updateById(update);
+                            if (pdfImgUploadPath != null) {
+                                AssetEntity update = new AssetEntity();
+                                update.setId(assetEntity.getId());
+                                update.setPreview(result.getPreview());
+                                updateById(update);
+                            }
                         }
                         // Determine whether the file has been referenced on the number table,
                         // if so, add the number of references once,
@@ -279,8 +279,9 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
                                 && assetType.equals(AssetType.COVER);
                             Integer type = flag ? AssetType.COVER.getValue() : null;
                             if (assetType != AssetType.DATASHEET) {
-                                iSpaceAssetService.edit(assetDto.getId(),
-                                    assetDto.getCite() + 1, type);
+                                int cite = Boolean.TRUE.equals(assetDto.getIsDeleted())
+                                    ? 1 : assetDto.getCite() + 1;
+                                iSpaceAssetService.edit(assetDto.getId(), cite, type);
                                 spaceCapacityCacheService.del(spaceId);
                             }
                         } else {
@@ -295,8 +296,9 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
                     }
                 } else {
                     log.error("The upload operation is too frequent. "
-                            + "Please try again later.checksum:{}", checksum);
-                    throw new BusinessException("Upload operation is too frequent, please try again later");
+                        + "Please try again later.checksum:{}", checksum);
+                    throw new BusinessException(
+                        "Upload operation is too frequent, please try again later");
                 }
             } finally {
                 lock.unlock();
@@ -372,8 +374,9 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
     @Override
     @Transactional(rollbackFor = Throwable.class)
     public AssetUploadResult uploadFileInDeveloper(InputStream in, String uploadPath,
-        String fileOriginalName, long fileSize, String contentType, Long createdBy,
-        DeveloperAssetType developerAssetType) {
+                                                   String fileOriginalName, long fileSize,
+                                                   String contentType, Long createdBy,
+                                                   DeveloperAssetType developerAssetType) {
         ExceptionUtil.isFalse(MediaType.TEXT_HTML_VALUE.equals(contentType),
             ActionException.FILE_NOT_SUPPORT_HTML);
         ExceptionUtil.isNotNull(createdBy, AuthException.UNAUTHORIZED);
@@ -428,8 +431,8 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
         return StrUtil.join("/", prefix, date, IdUtil.fastSimpleUUID());
     }
 
-    public Long save(String checksum, String headSum, long size, String path,
-        String mimeType, Integer height, Integer width, String preview) {
+    private Long save(String checksum, String headSum, long size, String path,
+                      String mimeType, Integer height, Integer width, String preview) {
         log.info("save records of base attachments");
         OssBucketInfo ossBucketInfo = constProperties.getOssBucketByAsset();
         AssetEntity entity = AssetEntity.builder()
@@ -457,6 +460,7 @@ public class AssetServiceImpl extends ServiceImpl<AssetMapper, AssetEntity> impl
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public AssetUploadResult urlUpload(AttachUrlOpRo attachUrlOpRo) {
         log.info("URL upload attachment");
         try {

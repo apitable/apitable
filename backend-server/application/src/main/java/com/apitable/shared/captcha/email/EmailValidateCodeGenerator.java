@@ -21,12 +21,11 @@ package com.apitable.shared.captcha.email;
 import cn.hutool.core.util.RandomUtil;
 import com.apitable.shared.captcha.ValidateCode;
 import com.apitable.shared.captcha.ValidateCodeGenerator;
-
 import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * email verification code generator
+ * email verification code generator.
  * </p>
  *
  * @author Shawn Deng

@@ -26,7 +26,7 @@ export interface IDropdownControl {
     resetIndex:() => void;
 }
 
-const CONST_INITIAL_DROPDOWN_INDEX = 1002;
+const CONST_INITIAL_DROPDOWN_INDEX = 1202;
 
 interface SelectContextValue {
     activeIndex: number | null;
@@ -98,8 +98,8 @@ export const ListDropdown = forwardRef<IDropdownControl, IDropdownProps>((props,
 
   const handleSelect = React.useCallback((index: number | null) => {
     setSelectedIndex(index);
-    setOpen(false);
-  }, [setOpen]);
+    // setOpen(false);
+  }, []);
 
   const listNav = useListNavigation(context, {
     listRef: elementsRef,

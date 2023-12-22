@@ -30,12 +30,12 @@ import com.apitable.template.model.TemplatePropertyDto;
 import com.apitable.template.model.TemplatePropertyRelDto;
 import com.apitable.template.service.ITemplatePropertyService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -80,13 +80,13 @@ public class TemplatePropertyServiceImpl
 
     @Override
     public List<String> getTemplateIdsByPropertyCodeAndType(String code,
-        TemplatePropertyType type) {
+                                                            TemplatePropertyType type) {
         return propertyRelMapper.selectTemplateIdsByPropertyCode(code);
     }
 
     @Override
     public List<TemplatePropertyRelDto> getPropertyByTemplateIds(List<String> templateIds,
-        TemplatePropertyType type) {
+                                                                 TemplatePropertyType type) {
         return baseMapper.selectPropertiesByTemplateIdsAndType(templateIds, type.getType());
     }
 

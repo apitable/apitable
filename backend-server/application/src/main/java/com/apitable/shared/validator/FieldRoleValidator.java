@@ -18,16 +18,16 @@
 
 package com.apitable.shared.validator;
 
+import com.apitable.control.infrastructure.role.RoleConstants.Field;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
 import lombok.extern.slf4j.Slf4j;
 
-import com.apitable.control.infrastructure.role.RoleConstants.Field;
-
+/**
+ * field role validator.
+ */
 @Slf4j
 public class FieldRoleValidator implements ConstraintValidator<FieldRoleMatch, String> {
 

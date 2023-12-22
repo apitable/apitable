@@ -20,9 +20,15 @@ package com.apitable.space.dto;
 
 import lombok.Data;
 
+/**
+ * base space info dto.
+ */
 @Data
 public class BaseSpaceInfoDTO {
-    String spaceId;
-    String name;
-    String logo;
+
+    private String spaceId;
+
+    private String name;
+
+    private String logo;
 }

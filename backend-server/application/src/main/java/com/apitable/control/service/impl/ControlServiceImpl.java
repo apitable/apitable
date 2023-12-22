@@ -18,17 +18,6 @@
 
 package com.apitable.control.service.impl;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Consumer;
-
-import javax.annotation.Resource;
-
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.control.entity.ControlEntity;
 import com.apitable.control.infrastructure.ControlType;
@@ -36,20 +25,28 @@ import com.apitable.control.mapper.ControlMapper;
 import com.apitable.control.service.IControlRoleService;
 import com.apitable.control.service.IControlService;
 import com.apitable.control.service.IControlSettingService;
-import com.apitable.organization.entity.MemberEntity;
-import com.apitable.organization.service.IMemberService;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
-
+import com.apitable.organization.entity.MemberEntity;
+import com.apitable.organization.service.IMemberService;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Consumer;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Control service implementation class
+ * Control service implementation class.
  */
 @Service
 @Slf4j
-public class ControlServiceImpl extends ServiceImpl<ControlMapper, ControlEntity> implements IControlService {
+public class ControlServiceImpl extends ServiceImpl<ControlMapper, ControlEntity>
+    implements IControlService {
 
     @Resource
     private ControlMapper controlMapper;
@@ -82,24 +79,26 @@ public class ControlServiceImpl extends ServiceImpl<ControlMapper, ControlEntity
 
     @Override
     public void create(Long userId, String spaceId, String controlId, ControlType controlType) {
-        log.info("Create permission control unit.userId:{},spaceId:{},controlId:{}", userId, spaceId, controlId);
-        ControlEntity deletedEntity = controlMapper.selectDeletedByControlIdAndSpaceId(controlId, spaceId, controlType);
+        log.info("Create permission control unit.userId:{},spaceId:{},controlId:{}", userId,
+            spaceId, controlId);
+        ControlEntity deletedEntity =
+            controlMapper.selectDeletedByControlIdAndSpaceId(controlId, spaceId, controlType);
         boolean flag;
         if (deletedEntity != null) {
             deletedEntity.setIsDeleted(false);
             deletedEntity.setUpdatedBy(userId);
             flag =
-                    SqlHelper.retBool(controlMapper.updateIsDeletedByIds(Collections.singletonList(deletedEntity.getId()), userId, false));
-        }
-        else {
+                SqlHelper.retBool(controlMapper.updateIsDeletedByIds(
+                    Collections.singletonList(deletedEntity.getId()), userId, false));
+        } else {
             ControlEntity entity = ControlEntity.builder()
-                    .id(IdWorker.getId())
-                    .spaceId(spaceId)
-                    .controlId(controlId)
-                    .controlType(controlType.getVal())
-                    .createdBy(userId)
-                    .updatedBy(userId)
-                    .build();
+                .id(IdWorker.getId())
+                .spaceId(spaceId)
+                .controlId(controlId)
+                .controlType(controlType.getVal())
+                .createdBy(userId)
+                .updatedBy(userId)
+                .build();
             flag = SqlHelper.retBool(controlMapper.insertBatch(Collections.singletonList(entity)));
         }
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
@@ -139,7 +138,9 @@ public class ControlServiceImpl extends ServiceImpl<ControlMapper, ControlEntity
         if (controlEntity.getUpdatedBy() == null) {
             return null;
         }
-        MemberEntity memberEntity = iMemberService.getByUserIdAndSpaceId(controlEntity.getUpdatedBy(), controlEntity.getSpaceId());
+        MemberEntity memberEntity =
+            iMemberService.getByUserIdAndSpaceId(controlEntity.getUpdatedBy(),
+                controlEntity.getSpaceId());
         if (memberEntity == null) {
             return null;
         }

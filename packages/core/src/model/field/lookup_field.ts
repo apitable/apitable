@@ -17,22 +17,38 @@
  */
 
 import { getComputeRefManager } from 'compute_manager';
-import { evaluate, parse } from 'formula_parser/evaluate';
-import { ROLLUP_KEY_WORDS } from 'formula_parser/consts';
-import { Functions } from 'formula_parser/functions';
+import { ViewFilterDerivate } from 'compute_manager/view_derivate/slice/view_filter_derivate';
 import { Strings, t } from 'exports/i18n';
+import { sortRowsBySortInfo } from 'modules/database/store/selectors/resource/datasheet/rows_calc';
+import { getUserTimeZone } from 'modules/user/store/selectors/user';
+import { getCellValue, _getLookUpTreeValue } from 'modules/database/store/selectors/resource/datasheet/cell_calc';
+import { getFieldMap }from 'modules/database/store/selectors/resource/datasheet/calc';
+import { getSnapshot } from 'modules/database/store/selectors/resource/datasheet/base';
+import { ROLLUP_KEY_WORDS } from 'formula_parser/consts';
+import { evaluate, parse } from 'formula_parser/evaluate';
+import { Functions } from 'formula_parser/functions';
 import Joi from 'joi';
 import { isEmpty, uniqWith, zip } from 'lodash';
 import { ValueTypeMap } from 'model/constants';
-import { computedFormattingToFormat, getApiMetaPropertyFormat, getFieldTypeByString, getFieldTypeString, handleNullArray } from 'model/utils';
+import { computedFormattingToFormat, getFieldTypeByString, handleNullArray } from 'model/utils';
+import { getFieldTypeString } from 'model/utils';
+import { APIMetaFieldType } from 'types';
 import { IAPIMetaLookupFieldProperty } from 'types/field_api_property_types';
 import { BasicOpenValueType, BasicOpenValueTypeBase } from 'types/field_types_open';
 import { IOpenMagicLookUpFieldProperty } from 'types/open/open_field_read_types';
 import { IEffectOption, IUpdateOpenMagicLookUpFieldProperty } from 'types/open/open_field_write_types';
+import { getApiMetaPropertyFormat } from 'model/field/utils';
+
+import {
+  IOpenFilterValue,
+  IOpenFilterValueBoolean,
+  IOpenFilterValueDataTime,
+  IOpenFilterValueNumber,
+  IOpenFilterValueString,
+} from 'types/open/open_filter_types';
 import { checkTypeSwitch, filterOperatorAcceptsValue, getNewIds, IDPrefix, isTextBaseType } from 'utils';
 import { isClient } from 'utils/env';
-import { IReduxState, IViewRow, Selectors } from '../../exports/store';
-import { _getLookUpTreeValue, getFieldMap, getSnapshot, getUserTimeZone, sortRowsBySortInfo } from 'exports/store/selectors';
+import { IReduxState, IViewRow } from '../../exports/store/interfaces';
 import {
   BasicValueType,
   FieldType,
@@ -44,7 +60,8 @@ import {
   ILookUpField,
   ILookUpProperty,
   ILookUpSortInfo,
-  INumberFormatFieldProperty, IOneWayLinkField,
+  INumberFormatFieldProperty,
+  IOneWayLinkField,
   IStandardValue,
   ITimestamp,
   IUnitIds,
@@ -64,20 +81,13 @@ import {
 import { ICellToStringOption, ICellValue, ICellValueBase, ILookUpValue } from '../record';
 import { CheckboxField } from './checkbox_field';
 import { DateTimeBaseField, dateTimeFormat } from './date_time_base_field';
-import { ArrayValueField, Field } from './field';
+import { ArrayValueField } from './array_field';
+import { Field } from './field';
 import { NumberBaseField, numberFormat } from './number_base_field';
 import { StatTranslate, StatType } from './stat';
 import { TextBaseField } from './text_base_field';
 import { computedFormatting, computedFormattingStr, datasheetIdString, enumToArray, joiErrorResult } from './validate_schema';
-import { ViewFilterDerivate } from 'compute_manager/view_derivate/slice/view_filter_derivate';
-import {
-  IOpenFilterValue,
-  IOpenFilterValueBoolean,
-  IOpenFilterValueDataTime,
-  IOpenFilterValueNumber,
-  IOpenFilterValueString,
-} from 'types/open/open_filter_types';
-import { APIMetaFieldType } from 'types';
+import { getFieldDefaultProperty } from './const';
 
 export interface ILookUpTreeValue {
   datasheetId: string;
@@ -361,11 +371,7 @@ export class LookUpField extends ArrayValueField {
   }
 
   static defaultProperty() {
-    return {
-      datasheetId: '',
-      relatedLinkFieldId: '',
-      lookUpTargetFieldId: '',
-    };
+    return getFieldDefaultProperty(FieldType.LookUp) as ILookUpProperty;
   }
 
   override get isComputed() {
@@ -646,7 +652,7 @@ export class LookUpField extends ArrayValueField {
     const { lookUpTargetFieldId, datasheetId, filterInfo, openFilter, sortInfo, lookUpLimit } = this.field.property;
     const thisSnapshot = getSnapshot(this.state, datasheetId)!;
     // IDs of the associated table records
-    let recordIds = Selectors.getCellValue(this.state, thisSnapshot, recordId, relatedLinkField.id, true, datasheetId, true) as ILinkIds;
+    let recordIds = getCellValue(this.state, thisSnapshot, recordId, relatedLinkField.id, true, datasheetId, true) as ILinkIds;
 
     if (!recordIds) {
       return [];
@@ -1249,17 +1255,20 @@ export class LookUpField extends ArrayValueField {
       const conditionIds = getNewIds(IDPrefix.Condition, apiFilterInfo.conditions.length);
       filterInfo = {
         conjunction: apiFilterInfo.conjunction,
-        conditions: apiFilterInfo.conditions.map((cond, i) => ({
-          ...cond,
-          fieldType: getFieldTypeByString(cond.fieldType)! as Exclude<FieldType, FieldType.DeniedField | FieldType.NotSupport>,
-          operator: cond.operator,
-          conditionId: conditionIds[i]!,
-          value: (filterOperatorAcceptsValue(cond.operator)
-            ? cond.fieldType === APIMetaFieldType.Checkbox || Array.isArray(cond.value)
-              ? cond.value
-              : [cond.value]
-            : undefined) as any,
-        })),
+        conditions: apiFilterInfo.conditions.map((cond, i) => {
+          const _fieldType = getFieldTypeByString(cond.fieldType)!;
+          return {
+            ...cond,
+            fieldType: _fieldType,
+            operator: cond.operator,
+            conditionId: conditionIds[i]!,
+            value: (filterOperatorAcceptsValue(cond.operator)
+              ? cond.fieldType === APIMetaFieldType.Checkbox || Array.isArray(cond.value)
+                ? cond.value
+                : [cond.value]
+              : undefined) as any,
+          };
+        }),
       };
     }
     return {

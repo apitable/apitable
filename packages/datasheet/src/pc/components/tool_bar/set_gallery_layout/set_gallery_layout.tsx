@@ -19,7 +19,6 @@
 // import * as React from 'react';
 import { Slider } from 'antd';
 import { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors, useListenVisualHeight, IUseListenTriggerInfo, WrapperTooltip, Switch } from '@apitable/components';
 import {
   CollaCommandName,
@@ -37,6 +36,7 @@ import { AddOutlined, GalleryOutlined, ListOutlined } from '@apitable/icons';
 import { Tooltip } from 'pc/components/common';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import ReduceIcon from 'static/icon/common/common_icon_reduce.svg';
@@ -50,7 +50,7 @@ const MAX_HEIGHT = 340;
 export const SetGalleryLayout = (props: { triggerInfo?: IUseListenTriggerInfo }) => {
   const { triggerInfo } = props;
   const colors = useThemeColors();
-  const activeView = useSelector((state) => Selectors.getCurrentView(state))! as IGalleryViewProperty;
+  const activeView = useAppSelector((state) => Selectors.getCurrentView(state))! as IGalleryViewProperty;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { style, onListenResize } = useListenVisualHeight({
     listenNode: containerRef,

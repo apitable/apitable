@@ -20,7 +20,7 @@ import classNames from 'classnames';
 import { useCallback, useRef, useEffect, useState } from 'react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { VariableSizeList as List, VariableSizeGrid as Grid, GridOnScrollProps } from 'react-window';
 import { DATASHEET_ID, Field, FieldOperateType, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { browser } from 'modules/shared/browser';
@@ -33,6 +33,8 @@ import { AddRecord } from './add_record';
 import { Cell, CellTitle, CellHead } from './cell';
 import { FieldMenu } from './field_menu';
 import styles from './styles.module.less';
+
+import {useAppSelector} from "pc/store/react-redux";
 const COLUMN_WIDTH = 134;
 const ROW_HEIGHT = 80 + 16 + 14;
 const FIXED_TITLE_HEIGHT = 32;
@@ -59,7 +61,7 @@ export const MobileGrid: React.FC<React.PropsWithChildren<IMobileGridProps>> = (
     searchKeyword,
     snapshot,
     mirrorId,
-  } = useSelector((state: IReduxState) => {
+  } = useAppSelector((state: IReduxState) => {
     const visibleColumns = Selectors.getVisibleColumns(state)!;
     const { datasheetId, mirrorId } = state.pageParams;
     const fieldMap = Selectors.getFieldMap(state, datasheetId)!;
@@ -251,7 +253,7 @@ export const MobileGrid: React.FC<React.PropsWithChildren<IMobileGridProps>> = (
   }, [syncScroll, viewId, searchKeyword]);
 
   // Hidden columns are clicked into the middle of the view and highlighted
-  const activeCell = useSelector((state) => Selectors.getActiveCell(state));
+  const activeCell = useAppSelector((state) => Selectors.getActiveCell(state));
   useEffect(() => {
     if (!activeCell) {
       return;

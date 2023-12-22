@@ -3,7 +3,7 @@ package com.apitable.shared.config;
 import net.javacrumbs.shedlock.core.LockProvider;
 import net.javacrumbs.shedlock.provider.redis.spring.RedisLockProvider;
 import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
-import org.springframework.boot.task.TaskSchedulerCustomizer;
+import org.springframework.boot.task.ThreadPoolTaskSchedulerCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -25,7 +25,7 @@ public class ShedlockConfig {
      * @return TaskSchedulerCustomizer
      */
     @Bean
-    public TaskSchedulerCustomizer taskSchedulerCustomizer() {
+    public ThreadPoolTaskSchedulerCustomizer taskSchedulerCustomizer() {
         return taskScheduler -> {
             taskScheduler.setThreadNamePrefix("schedule-task-");
             taskScheduler.setWaitForTasksToCompleteOnShutdown(true);

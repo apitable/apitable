@@ -2,17 +2,17 @@ import type { InputRef } from 'antd';
 import { Form } from 'antd';
 import classnames from 'classnames';
 import throttle from 'lodash/throttle';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors, ThemeName, TextInput, Typography } from '@apitable/components';
 import { Api, getArrayLoopIndex, Navigation, Strings, t } from '@apitable/core';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getElementDataset, KeyCode } from 'pc/utils';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
@@ -20,8 +20,8 @@ import { Loading } from '../common/loading';
 import { DefaultContent } from './default_content';
 import { FooterTips } from './footer_tips';
 import { ISearchNode, Node } from './node';
-import styles from './style.module.less';
 import { nodeTypeList, TabNodeType, TypeTab } from './type_tab';
+import styles from './style.module.less';
 
 let reqToken: () => void;
 
@@ -45,7 +45,7 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
 
   const inputRef = useRef<InputRef>(null);
   const listContainerRef = useRef<any>(null);
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const ref = useRef<HTMLDivElement>(null);
@@ -58,7 +58,7 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
       [
         ShortcutActionName.QuickSearchEnter,
         () => {
-          jumpNode(nodeList[currentIndex].nodeId);
+          jumpNode(nodeList[currentIndex + 1].nodeId);
         },
       ],
       [
@@ -99,7 +99,14 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
-  const themeName = useSelector((state) => state.theme);
+
+  useEffect(() => {
+    setTimeout(() => {
+      inputRef.current?.select();
+    }, 0);
+  }, []);
+
+  const themeName = useAppSelector((state) => state.theme);
   const EmptyResultIcon = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   const focusIntoView = throttle((direction: 'up' | 'down') => {
@@ -157,6 +164,9 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
     e.nativeEvent.stopImmediatePropagation();
     setKeyword('');
 
+    sessionStorage.removeItem('searchKeyword');
+    sessionStorage.removeItem('searchData');
+
     setCurrentIndex(-1);
   };
 
@@ -188,6 +198,25 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
     </div>
   );
 
+  useEffect(() => {
+    const savedKeyword = sessionStorage.getItem('searchKeyword');
+    const savedData = sessionStorage.getItem('searchData');
+    if (savedKeyword) {
+      setKeyword(savedKeyword);
+      getNodeList(savedKeyword);
+    }
+    if (savedData) {
+      setDataNodeList(JSON.parse(savedData));
+    }
+  }, []);
+
+  useEffect(() => {
+    sessionStorage.setItem('searchKeyword', keyword);
+    if (dataNodeList.length > 0) {
+      sessionStorage.setItem('searchData', JSON.stringify(dataNodeList));
+    }
+  }, [keyword, dataNodeList]);
+
   return (
     <div className={classnames(styles.searchWrapper, className)} ref={ref}>
       <div className={styles.searchContent}>
@@ -217,12 +246,12 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
             }
           />
         </Form>
-        {!keyword && <DefaultContent />}
-        {/** content */}
-        {keyword && (
+        {!keyword ? (
+          <DefaultContent />
+        ) : (
           <>
             <TypeTab nodeType={tabType} onChange={setTabType} />
-            {!loading && (
+            {!loading ? (
               <>
                 {!totalSearchResultItemsCount ? (
                   <Empty />
@@ -235,8 +264,7 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
                   </div>
                 )}
               </>
-            )}
-            {loading && (
+            ) : (
               <div className={styles.loadingWrap}>
                 <Loading className={styles.loading} showText={false} />
                 <Typography color={colors.textCommonTertiary} variant={'body2'}>

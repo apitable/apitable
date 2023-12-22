@@ -26,7 +26,7 @@ import { Message, Popconfirm, Tooltip } from 'pc/components/common';
 import { Identity } from '../../identity';
 import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 
 export const Reinvite: FC<React.PropsWithChildren<{ record: IMemberInfoInSpace }>> = ({ record }) => {
   const reSendEmail = (record: IMemberInfoInSpace) => {

@@ -76,15 +76,15 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
     /**
      * sheet[index] -> index head.
      */
-    private Map<String, Map<Integer, String>> sheetHeadMap = new LinkedHashMap<>();
+    private final Map<String, Map<Integer, String>> sheetHeadMap = new LinkedHashMap<>();
 
-    private Map<String, NodeData> nodeMap = new LinkedHashMap<>();
+    private final Map<String, NodeData> nodeMap = new LinkedHashMap<>();
 
-    private Map<String, Meta> metaMap = new LinkedHashMap<>();
+    private final Map<String, Meta> metaMap = new LinkedHashMap<>();
 
-    private JSONObject fieldUpdatedInfo = new JSONObject();
+    private final JSONObject fieldUpdatedInfo = new JSONObject();
 
-    private INodeService iNodeService;
+    private final INodeService iNodeService;
 
     private final Long userId;
 
@@ -106,7 +106,8 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
      * Multi Sheet Read Listener.
      */
     public MultiSheetReadListener(INodeService nodeService, Long userId, String uuid,
-        String spaceId, Long memberId, String parentNodeId, String viewName, String fileName) {
+                                  String spaceId, Long memberId, String parentNodeId,
+                                  String viewName, String fileName) {
         this.iNodeService = nodeService;
         this.userId = userId;
         this.spaceId = spaceId;
@@ -161,7 +162,7 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
             ? context.readSheetHolder().getApproximateTotalRowNumber() : 0;
         View view = new View(headSize, totalRow);
         view.id = IdUtil.createViewId();
-        view.name = viewName != null ? viewName: I18nStringsUtil.t("default_view");
+        view.name = viewName != null ? viewName : I18nStringsUtil.t("default_view");
         view.type = ViewType.GRID.getType();
         view.frozenColumnCount = 1;
 

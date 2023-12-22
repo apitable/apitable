@@ -4,11 +4,7 @@ import { useCallback } from 'react';
 import { Strings, t } from '@apitable/core';
 import { Drawer } from 'pc/shared/components/drawer/drawer';
 import { Modal as ConfirmModal } from '../../common';
-import {
-  automationActionsAtom,
-  automationLocalMap,
-  inheritedTriggerAtom
-} from '../controller/atoms';
+import { automationActionsAtom, automationLocalMap, automationTriggersAtom } from '../controller/atoms';
 import { AutomationPanel } from '../panel';
 import { checkIfModified } from './step_input_compare';
 import style from './styles.module.less';
@@ -21,7 +17,7 @@ export const DrawerWrapper: React.FC<React.PropsWithChildren<{
 
   const isClosedRef = React.useRef(false);
 
-  const trigger = useAtomValue(inheritedTriggerAtom);
+  const triggers = useAtomValue(automationTriggersAtom);
   const actions = useAtomValue(automationActionsAtom);
 
   const localMap = useAtomValue(automationLocalMap);
@@ -31,11 +27,8 @@ export const DrawerWrapper: React.FC<React.PropsWithChildren<{
       return true;
     }
 
-    if(!trigger) {
-      return true;
-    }
     if (!checkIfModified({
-      trigger: trigger!,
+      triggers,
       actions
     }, localMap)) {
       return true;

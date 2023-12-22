@@ -19,16 +19,16 @@
 import classnames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
-import { FC, useContext, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { Button, Skeleton, ThemeName, Typography, useThemeColors } from '@apitable/components';
+import { FC, useMemo } from 'react';
+import { Button, ThemeName, Typography, useThemeColors } from '@apitable/components';
+import { Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, QuestionCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
 import { isMobileApp } from 'pc/utils/env';
 import MarketingAdvertisementDark from 'static/icon/datasheet/overview_marketing_advertisement_dark.png';
 import MarketingAdvertisementLight from 'static/icon/datasheet/overview_marketing_advertisement_light.png';
-import { SpaceContext } from '../context';
 import styles from './style.module.less';
 
 interface IAvertProps {
@@ -40,15 +40,11 @@ interface IAvertProps {
 }
 
 export const Advert: FC<React.PropsWithChildren<IAvertProps>> = (props) => {
-  const { adData } = useContext(SpaceContext);
-
   const handleClick = () => {
-    if (adData) {
-      window.open(props.linkUrl || adData.linkUrl.text, '_blank');
-    }
+    window.open('https://vika.cn/share/shrFVCtHXQwYm3DVgNn91/fomHVJEutJ9SdV1Bj4?fldpZx6obKDv2=02', '_blank');
   };
 
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const marketingAdvertisement = themeName === ThemeName.Light ? MarketingAdvertisementLight : MarketingAdvertisementDark;
 
   const style: React.CSSProperties = useMemo(() => {
@@ -62,25 +58,16 @@ export const Advert: FC<React.PropsWithChildren<IAvertProps>> = (props) => {
     return null;
   }
 
-  if (!adData) {
-    return (
-      <div className={styles.advert} style={style}>
-        <Skeleton width="38%" />
-        <Skeleton count={2} />
-        <Skeleton width="61%" />
-      </div>
-    );
-  }
   return (
     <div className={classnames(styles.advert, props.className)} style={style}>
       <span className={styles.advertImg}>
         <Image src={marketingAdvertisement} width={160} height={110} alt="" />
       </span>
       <Typography variant="body3" className={styles.content}>
-        {props.desc || adData.desc}
+        {t(Strings.ad_card_desc)}
       </Typography>
       <Button color="primary" onClick={handleClick}>
-        {props.linkText || adData.linkText}
+        {t(Strings.contact_us)}
       </Button>
     </div>
   );

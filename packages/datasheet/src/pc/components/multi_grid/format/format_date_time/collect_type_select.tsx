@@ -19,7 +19,6 @@
 import { useClickAway } from 'ahooks';
 import RcTrigger from 'rc-trigger';
 import { memo, useState, useMemo, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { TextButton, useThemeColors } from '@apitable/components';
 import { CollectType, Selectors, Strings, t, ILastModifiedByField, ILastModifiedTimeField } from '@apitable/core';
 import { EditOutlined } from '@apitable/icons';
@@ -31,6 +30,8 @@ import { AutoLayout } from '../../field_setting/auto_layout';
 import settingStyles from '../../field_setting/styles.module.less';
 import styles from './styles.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface ICollectTypeSelectProps {
   field: ILastModifiedTimeField | ILastModifiedByField;
   onChange: (type: CollectType) => void;
@@ -40,7 +41,7 @@ export const CollectTypeSelect = memo((props: ICollectTypeSelectProps) => {
   const colors = useThemeColors();
   const { onChange, field: currentField } = props;
   const { collectType, fieldIdCollection } = currentField.property;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
   const [visible, setVisible] = useState(false);
   const collectTypeOptions = useMemo(
     () => [

@@ -16,14 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { handleNullArray } from 'model';
+import { handleNullArray } from 'model/utils';
 import { FieldType } from 'types';
 import { IFormulaParam } from './functions/basic';
 import { AstNodeType, ValueOperandNode } from './parser';
 import { produce } from 'immer';
 
 /**
- * lookup cv now leaves null by default. 
+ * lookup cv now leaves null by default.
  * When the formula refers to the lookup field as a parameter, some functions need to convert the null value to make it as expected.
  */
 export const handleLookupNullValue = (params: IFormulaParam<any>[]) => {

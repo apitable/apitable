@@ -1,28 +1,32 @@
-import { usePrevious } from 'ahooks';
-import throttle from 'lodash/throttle';
+import { debounce } from 'lodash';
 import * as React from 'react';
-import { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useMemo, useRef } from 'react';
 import { Api, ConfigConstant, INode } from '@apitable/core';
 import { IViewNode } from 'pc/components/data_source_selector/folder_content';
 import { useLoader } from 'pc/components/data_source_selector/hooks/use_loader';
 import { ISearchPanelState } from '../store/interface/search_panel';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface IParams {
-  folderId: string;
   localDispatch: React.Dispatch<Partial<ISearchPanelState>>;
   localState: ISearchPanelState;
 }
 
-export const useSearch = ({ localDispatch, folderId, localState }: IParams) => {
-  const spaceId = useSelector((state) => state.space.activeId!);
-  const previousCurrentFolderId = usePrevious(localState.currentFolderId);
+export const useSearch = ({ localDispatch, localState }: IParams) => {
+  const spaceId = useAppSelector((state) => state.space.activeId!);
   const { nodeTypeFilterLoader } = useLoader();
+  const requestNumberRef = useRef(0);
 
   const search = useMemo(() => {
-    return throttle((spaceId: string, val: string) => {
+    return debounce((spaceId: string, val: string, currentRequestNumber: number) => {
       Api.searchNode(spaceId, val.trim()).then((res) => {
+        if (currentRequestNumber !== requestNumberRef.current) {
+          return;
+        }
+
         const { data, success } = res.data;
+
         if (success) {
           const nodes = nodeTypeFilterLoader(data);
           const { folders, files } = nodes.reduce<{
@@ -40,7 +44,7 @@ export const useSearch = ({ localDispatch, folderId, localState }: IParams) => {
               { folders: [], files: [] },
               );
 
-          localDispatch({ showSearch: true, currentFolderId: folderId });
+          localDispatch({ showSearch: true });
           if (!folders.length && !files.length) {
             localDispatch({ searchResult: val });
             return;
@@ -49,22 +53,15 @@ export const useSearch = ({ localDispatch, folderId, localState }: IParams) => {
         }
       });
     }, 500);
-  }, [folderId, localDispatch]);
+  }, [localDispatch]);
 
   useEffect(() => {
     if (!localState.searchValue) {
       localDispatch({ showSearch: false });
+      requestNumberRef.current++;
       return;
     }
-
-    if (previousCurrentFolderId === localState.currentFolderId || folderId === localState.currentFolderId) {
-      search(spaceId, localState.searchValue);
-    }
-
+    search(spaceId, localState.searchValue, ++requestNumberRef.current);
     // eslint-disable-next-line
-  }, [search, spaceId, localState.searchValue, localState.currentFolderId, folderId]);
-
-  return {
-    search,
-  };
+  }, [spaceId, localState.searchValue]);
 };

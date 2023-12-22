@@ -18,7 +18,7 @@
 
 import { CollaCommandManager, IResourceOpsCollect } from 'command_manager';
 import { CommandExecutionResultType, IEventEmitter, IResourceEvent, IResourceEventHandler, ResourceEventType } from 'databus/common/event';
-import { IReduxState } from 'exports/store';
+import { IReduxState } from 'exports/store/interfaces';
 import { Store } from 'redux';
 import { IDataStorageProvider, IStoreProvider } from '../providers';
 import { Dashboard, IDashboardOptions } from './dashboard';

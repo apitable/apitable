@@ -143,6 +143,7 @@ const LevelConfigMap = {
   free: bronzeAndFree,
   silver: silverAndPlus,
   plus: silverAndPlus,
+  starter: silverAndPlus,
   golden: goldenAndPro,
   pro: goldenAndPro,
   enterprise: {
@@ -227,6 +228,12 @@ export const SpaceLevelInfo: ISpaceLevelInfo = {
     buttonText: t(Strings.upgrade),
     tagText: t(Strings.paid_edition),
   }),
+  starter: getSpaceConfig('starter', {
+    title: t(Strings.subscribe_grade_starter),
+    titleTip: t(Strings.grade_desc),
+    buttonText: t(Strings.upgrade),
+    tagText: t(Strings.paid_edition),
+  }),
   pro: getSpaceConfig('pro', {
     title: t(Strings.subscribe_grade_pro),
     titleTip: t(Strings.grade_desc),
@@ -282,6 +289,12 @@ export const SpaceLevelInfo: ISpaceLevelInfo = {
     buttonText: t(Strings.renew),
     tagText: t(Strings.paid_edition),
   }),
+  business: getSpaceConfig('enterprise', {
+    title: t(Strings.subscribe_grade_business),
+    titleTip: t(Strings.grade_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
   dingtalk_enterprise: getSpaceConfig('enterprise', {
     title: t(Strings.dingtalk_enterprise),
     titleTip: t(Strings.dingtalk_grade_desc),
@@ -330,6 +343,36 @@ export const SpaceLevelInfo: ISpaceLevelInfo = {
   private_cloud: getSpaceConfig('enterprise', {
     title: t(Strings.private_cloud),
     titleTip: t(Strings.company_grade_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  appsumo_tier1: getSpaceConfig('enterprise', {
+    title: 'AppSumo Tier 1',
+    titleTip: t(Strings.app_sumo_plan_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  appsumo_tier2: getSpaceConfig('enterprise', {
+    title: 'AppSumo Tier 2',
+    titleTip: t(Strings.app_sumo_plan_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  appsumo_tier3: getSpaceConfig('enterprise', {
+    title: 'AppSumo Tier 3',
+    titleTip: t(Strings.app_sumo_plan_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  appsumo_tier4: getSpaceConfig('enterprise', {
+    title: 'AppSumo Tier 4',
+    titleTip: t(Strings.app_sumo_plan_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  appsumo_tier5: getSpaceConfig('enterprise', {
+    title: 'AppSumo Tier 5',
+    titleTip: t(Strings.app_sumo_plan_desc),
     buttonText: t(Strings.renew),
     tagText: t(Strings.paid_edition),
   }),

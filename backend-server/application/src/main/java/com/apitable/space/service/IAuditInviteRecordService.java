@@ -18,18 +18,18 @@
 
 package com.apitable.space.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.apitable.space.entity.AuditInviteRecordEntity;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- * Audit Invite Record Service
+ * Audit Invite Record Service.
  * </p>
  */
 public interface IAuditInviteRecordService extends IService<AuditInviteRecordEntity> {
 
     /**
-     * Save audit invite record
+     * Save audit invite record.
      *
      * @param spaceId  space id
      * @param inviter  member id of inviter

@@ -42,14 +42,11 @@ import org.springframework.integration.redis.util.RedisLockRegistry;
 public class RedisConfig {
 
     private static Jackson2JsonRedisSerializer<Object> json() {
-        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer =
-            new Jackson2JsonRedisSerializer<>(Object.class);
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance,
             ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.WRAPPER_ARRAY);
-        jackson2JsonRedisSerializer.setObjectMapper(om);
-        return jackson2JsonRedisSerializer;
+        return new Jackson2JsonRedisSerializer<>(om, Object.class);
     }
 
     /**

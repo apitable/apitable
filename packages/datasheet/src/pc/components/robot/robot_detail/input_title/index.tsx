@@ -1,13 +1,13 @@
 import { useAtomValue } from 'jotai';
-import { selectAtom } from 'jotai/utils';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { useThemeColors } from '@apitable/components';
 import { IReduxState, Strings, t } from '@apitable/core';
 import { updateNodeInfo } from '@apitable/core/dist/modules/space/store/actions/catalog_tree';
-import { automationStateAtom } from '../../../automation/controller';
+import { useAppSelector } from 'pc/store/react-redux';
+import { automationNameAtom, automationStateAtom } from '../../../automation/controller';
 import {
   useAutomationResourceNode,
   useAutomationResourcePermission
@@ -21,8 +21,6 @@ export const WidthEditableText = styled(EditableText)`
   max-width: 400px;
 `;
 
-const automationNameAtom = selectAtom(automationStateAtom, (automation) => automation?.robot?.name);
-
 export const InputTitle: FC = () => {
   const { robot, updateRobot } = useAutomationRobot();
   const colors = useThemeColors();
@@ -33,7 +31,7 @@ export const InputTitle: FC = () => {
 
   const nodeItem = useAutomationResourceNode();
 
-  const { templateId } = useSelector((state: IReduxState) => state.pageParams);
+  const { templateId } = useAppSelector((state: IReduxState) => state.pageParams);
   const dispatch = useDispatch();
   useEffect(() => {
     if (!templateId) {
@@ -43,7 +41,7 @@ export const InputTitle: FC = () => {
     }else {
       setValue(automationName);
     }
-  }, [automationName, automationState?.scenario, dispatch, nodeItem.nodeId, nodeItem?.nodeName, nodeItem.type, templateId]);
+  }, [automationName, automationState?.scenario, dispatch, nodeItem?.nodeId, nodeItem?.nodeName, nodeItem?.type, templateId]);
 
   const { manageable } = useAutomationResourcePermission();
   if (!robot) {

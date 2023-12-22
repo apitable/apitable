@@ -20,7 +20,7 @@ import { difference } from 'lodash';
 import keyBy from 'lodash/keyBy';
 import * as React from 'react';
 import { useEffect, useMemo } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button, useThemeColors } from '@apitable/components';
 import {
   Api,
@@ -49,6 +49,8 @@ import optionalStyle from '../optional_cell_container/style.module.less';
 import { MemberItem } from './member_item';
 import styles from './styles.module.less';
 
+import {useAppSelector} from "pc/store/react-redux";
+
 interface ICellMember extends ICellComponentProps {
   field: IMemberField;
   keyPrefix?: string;
@@ -69,7 +71,7 @@ export const CellMember: React.FC<React.PropsWithChildren<ICellMember>> = (props
     deletable = true,
   } = props;
   const colors = useThemeColors();
-  const { datasheetId, unitMap, userInfo, field } = useSelector(
+  const { datasheetId, unitMap, userInfo, field } = useAppSelector(
     (state: IReduxState) => ({
       datasheetId: Selectors.getActiveDatasheetId(state)!,
       unitMap: Selectors.getUnitMap(state)!,
@@ -81,7 +83,6 @@ export const CellMember: React.FC<React.PropsWithChildren<ICellMember>> = (props
   const isMulti = field?.property.isMulti;
   const cellValue = useMemo(() => {
     const unitIds = MemberField.polyfillOldData(cellValueIncludeOldData as IUnitIds);
-    // https://sentry.vika.ltd/organizations/vika/issues/6939/events/348bdf36c4c4437c8984d55f23c2d2bc/?project=7
     return Array.isArray(unitIds) ? unitIds.flat() : null;
   }, [cellValueIncludeOldData]);
 

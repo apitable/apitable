@@ -18,6 +18,7 @@
 
 import { KonvaEventObject } from 'konva/lib/Node';
 import { isEqual } from 'lodash';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { useCallback, useContext, useMemo } from 'react';
@@ -35,7 +36,6 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { generateTargetName, IScrollState } from 'pc/components/gantt_view';
 import { Rect } from 'pc/components/konva_components';
 import {
@@ -198,9 +198,11 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
             }
             const editable = getCellEditable(activeField, _editable);
             const fontWeight = isFirstColumn ? 'bold' : 'normal';
+            const permissions = Selectors.getDatasheet(state)?.permissions || {};
             const renderProps = {
               x: x + offset,
               y,
+              permissions,
               columnWidth: width,
               rowHeight,
               recordId,
@@ -358,7 +360,19 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
               strokeWidth={0.5}
             />
           );
-          if (fieldMaxIndex < frozenColumnCount) {
+          // select section with workdoc field cannot be filled
+          let selectWithWorkdocField = false;
+          for(let idx = fieldMinIndex; idx <= fieldMaxIndex; idx++) {
+            const { fieldId } = visibleColumns[idx];
+            const field = fieldMap[fieldId];
+            if (field.type === FieldType.WorkDoc) {
+              selectWithWorkdocField = true;
+              break;
+            }
+          }
+          if (selectWithWorkdocField) {
+            fillHandler = null;
+          } else if (fieldMaxIndex < frozenColumnCount) {
             frozenFillHandler = currentHandler;
           } else {
             fillHandler = currentHandler;

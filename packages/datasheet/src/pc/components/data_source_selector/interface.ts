@@ -34,6 +34,7 @@ export interface INodeInstalledWidget {
 
 export interface IOnChangeParams {
   datasheetId?: string;
+  automationId?: string;
   mirrorId?: string;
   viewId?: string;
   widgetIds?: string[];
@@ -62,6 +63,7 @@ export interface ISearchPanelProps<R extends IOnChangeParams = IOnChangeParams> 
   defaultNodeIds: {
     folderId: string;
     datasheetId?: string;
+    automationId?: string;
     formId?: string;
   };
 }

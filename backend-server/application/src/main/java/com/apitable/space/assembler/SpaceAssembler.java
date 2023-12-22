@@ -6,8 +6,17 @@ import com.apitable.space.dto.SpaceDTO;
 import com.apitable.space.vo.SpaceSocialConfig;
 import com.apitable.space.vo.SpaceVO;
 
+/**
+ * space assembler.
+ */
 public class SpaceAssembler {
 
+    /**
+     * transform space dto to space vo.
+     *
+     * @param spaceDTO space dto
+     * @return space vo
+     */
     public static SpaceVO toVO(SpaceDTO spaceDTO) {
         SpaceVO spaceVO = new SpaceVO();
         spaceVO.setSpaceId(spaceDTO.getSpaceId());
@@ -19,6 +28,12 @@ public class SpaceAssembler {
         return spaceVO;
     }
 
+    /**
+     * transform social connect info to social config.
+     *
+     * @param socialConnectInfo social connect info
+     * @return social config
+     */
     public static SpaceSocialConfig toSocialConfig(SocialConnectInfo socialConnectInfo) {
         SpaceSocialConfig socialConfig = new SpaceSocialConfig();
         if (ObjectUtil.isNotNull(socialConnectInfo)) {

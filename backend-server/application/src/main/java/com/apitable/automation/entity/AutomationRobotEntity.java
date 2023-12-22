@@ -36,7 +36,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Automation - Robot Table
+ * Automation - Robot Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -53,81 +53,81 @@ public class AutomationRobotEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private BigInteger id;
 
     /**
-     * Resource ID(link#xxxx_node#node_id)
+     * Resource ID(link#xxxx_node#node_id).
      */
     private String resourceId;
 
     /**
-     * Custom Robot ID
+     * Custom Robot ID.
      */
     private String robotId;
 
     /**
-     * Name
+     * Name.
      */
     private String name;
 
     /**
-     * Description
+     * Description.
      */
     private String description;
 
     /**
-     * Option Properties
+     * Option Properties.
      */
     private String props;
 
     /**
-     * Version
+     * Version.
      */
     private String version;
 
     /**
-     * Is it active
+     * Is it active.
      */
     private Boolean isActive;
 
     /**
-     * Delete Tag(0: No, 1: Yes)
+     * Delete Tag(0: No, 1: Yes).
      */
     @TableLogic
     private Boolean isDeleted;
 
     /**
-     * Creator
+     * Creator.
      */
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
 
     /**
-     * Last Update By
+     * Last Update By.
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updatedBy;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 
     /**
-     * Request source request number
+     * Request source request number.
      */
     private String seqId;
 
     /**
-     * Service Provider Certification Token
+     * Service Provider Certification Token.
      */
     private String xServiceToken;
 

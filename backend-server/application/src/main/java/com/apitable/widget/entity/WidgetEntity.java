@@ -18,15 +18,14 @@
 
 package com.apitable.widget.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +35,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Workbench - Widget Table
+ * Workbench - Widget Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -53,71 +52,71 @@ public class WidgetEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Space ID
+     * Space ID.
      */
     private String spaceId;
 
     /**
-     * Node ID
+     * Node ID.
      */
     private String nodeId;
 
     /**
-     * Widget ID(link#xxxx_widget_package#package_id)
+     * Widget ID(link#xxxx_widget_package#package_id).
      */
     private String packageId;
 
     /**
-     * Customized Widget ID
+     * Customized Widget ID.
      */
     private String widgetId;
 
     /**
-     * Name
+     * Name.
      */
     private String name;
 
     /**
-     * Storage configuration
+     * Storage configuration.
      */
     private String storage;
 
     /**
-     * Version
+     * Version.
      */
     private Long revision;
 
     /**
-     * Delete Tag(0: No, 1: Yes)
+     * Delete Tag(0: No, 1: Yes).
      */
     @TableLogic
     private Integer isDeleted;
 
     /**
-     * Creator
+     * Creator.
      */
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
 
     /**
-     * Last Update By
+     * Last Update By.
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updatedBy;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

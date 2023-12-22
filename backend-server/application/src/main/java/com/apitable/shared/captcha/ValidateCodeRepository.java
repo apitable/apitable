@@ -20,7 +20,7 @@ package com.apitable.shared.captcha;
 
 /**
  * <p>
- * verification code access interface
+ * verification code access interface.
  * </p>
  *
  * @author Shawn Deng
@@ -28,7 +28,7 @@ package com.apitable.shared.captcha;
 public interface ValidateCodeRepository {
 
     /**
-     * save verification code
+     * save verification code.
      *
      * @param type          verification code type
      * @param code          verification code information
@@ -38,7 +38,7 @@ public interface ValidateCodeRepository {
     void save(String type, ValidateCode code, String target, int effectiveTime);
 
     /**
-     * get verification code
+     * get verification code.
      *
      * @param type   verification code type
      * @param target verification object mobile phone or email
@@ -48,7 +48,7 @@ public interface ValidateCodeRepository {
     ValidateCode get(String target, ValidateCodeType type, String scope);
 
     /**
-     * remove verification code
+     * remove verification code.
      *
      * @param type   verification code type
      * @param target verification object mobile phone or email

@@ -21,7 +21,7 @@ import classnames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, IconButton, TextButton, ThemeName } from '@apitable/components';
 import { Api, AutoTestID, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
@@ -30,6 +30,7 @@ import { Message } from 'pc/components/common/message';
 import { Modal as CustomModal } from 'pc/components/common/modal/modal/modal';
 import CreateSpace from 'pc/components/create_space/create_space';
 import { Router } from 'pc/components/route_manager/router';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import IconNoSpaceDark from 'static/icon/datasheet/space_img_empty_dark.png';
 import IconNoSpaceLight from 'static/icon/datasheet/space_img_empty_light.png';
@@ -51,14 +52,14 @@ interface IShareSave {
 
 export const ShareSave: React.FC<React.PropsWithChildren<IShareSave>> = (props) => {
   const { visible, setVisible, shareSpace } = props;
-  const { shareId } = useSelector((state) => state.pageParams);
+  const { shareId } = useAppSelector((state) => state.pageParams);
   const dispatch = useDispatch();
   const [radio, setRadio] = useState('');
   const [spaceList, setSpaceList] = useState<{ spaceId: string; name: string; logo: string }[]>([]);
   const [modalType, setModalType] = useState<ModalType | null>(null);
 
   const env = getEnvVariables();
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const IconNoSpace = themeName === ThemeName.Light ? IconNoSpaceLight : IconNoSpaceDark;
 
   const onCancel = () => {
