@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,18 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { supportedLanguages } from 'app.environment';
-import { I18nJsonLoader, I18nTranslation } from 'nestjs-i18n';
-import { util } from 'protobufjs';
-import { Observable } from 'rxjs';
-import global = util.global;
+package com.apitable.interfaces.automation.facede;
 
-export class I18nJsonParser extends I18nJsonLoader {
-  override languages(): Promise<string[]> {
-    return Promise.resolve(supportedLanguages);
-  }
+/**
+ * default automation service facade implement.
+ */
+public class DefaultAutomationServiceFacadeImpl implements AutomationServiceFacade {
 
-  override load(): Promise<I18nTranslation | Observable<I18nTranslation>> {
-    return Promise.resolve(global['apitable_i18n']);
-  }
+    @Override
+    public void publishSchedule(Long scheduleId) {
+        // do nothing
+    }
 }

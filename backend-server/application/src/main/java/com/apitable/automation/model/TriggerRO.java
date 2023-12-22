@@ -27,4 +27,35 @@ public abstract class TriggerRO {
 
     @Schema(description = "prev trigger id", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "atr")
     private String prevTriggerId;
+
+    @Schema(description = "schedule config", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "{}")
+    private TriggerScheduleConfig scheduleConfig;
+
+    /**
+     * schedule config.
+     */
+    @Data
+    @Schema(description = "Trigger schedule config ro")
+    public static class TriggerScheduleConfig {
+        @Schema(description = "second", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1")
+        private String second;
+
+        @Schema(description = "minute", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1")
+        private String minute;
+
+        @Schema(description = "hour", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1")
+        private String hour;
+
+        @Schema(description = "month", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1")
+        private String month;
+
+        @Schema(description = "dayOfMonth", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1L,2L, 6-8L")
+        private String dayOfMonth;
+
+        @Schema(description = "dayOfWeek", requiredMode = Schema.RequiredMode.NOT_REQUIRED, example = "1L,3L")
+        private String dayOfWeek;
+
+        @Schema(description = "timeZone", requiredMode = Schema.RequiredMode.REQUIRED, example = "UTC")
+        private String timeZone;
+    }
 }

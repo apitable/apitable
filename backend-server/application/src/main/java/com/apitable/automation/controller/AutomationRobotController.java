@@ -270,8 +270,9 @@ public class AutomationRobotController {
         iPermissionService.checkPermissionBySessionOrShare(resourceId, shareId,
             NodePermission.EDIT_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
+        String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
         return ResponseData.success(
-            iAutomationTriggerService.createByDatabus(userId, data));
+            iAutomationTriggerService.createByDatabus(userId, spaceId, data));
 
     }
 
@@ -300,8 +301,9 @@ public class AutomationRobotController {
         iPermissionService.checkPermissionBySessionOrShare(resourceId, shareId,
             NodePermission.EDIT_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
+        String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
         return ResponseData.success(
-            iAutomationTriggerService.updateByDatabus(triggerId, userId, data));
+            iAutomationTriggerService.updateByDatabus(triggerId, userId, spaceId, data));
     }
 
     /**

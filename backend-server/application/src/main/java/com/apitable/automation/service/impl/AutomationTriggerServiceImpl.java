@@ -38,12 +38,13 @@ import com.apitable.automation.model.UpdateTriggerRO;
 import com.apitable.automation.service.IAutomationTriggerService;
 import com.apitable.automation.service.IAutomationTriggerTypeService;
 import com.apitable.core.util.ExceptionUtil;
+import com.apitable.interfaces.automation.facede.AutomationServiceFacade;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.starter.databus.client.api.AutomationDaoApiApi;
-import com.apitable.starter.databus.client.model.ApiResponseAutomationTriggerPO;
+import com.apitable.starter.databus.client.model.ApiResponseAutomationTriggerSO;
 import com.apitable.starter.databus.client.model.AutomationRobotTriggerRO;
-import com.apitable.starter.databus.client.model.AutomationTriggerPO;
+import com.apitable.starter.databus.client.model.AutomationTriggerSO;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import jakarta.annotation.Resource;
 import java.math.BigInteger;
@@ -65,6 +66,7 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
     
     @Resource
     private AutomationDaoApiApi automationDaoApiApi;
+
     @Resource
     private AutomationTriggerMapper triggerMapper;
 
@@ -73,6 +75,9 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
 
     @Resource
     private IAutomationTriggerTypeService iAutomationTriggerTypeService;
+
+    @Resource
+    private AutomationServiceFacade automationServiceFacade;
 
     @Override
     public List<AutomationTriggerDto> getTriggersByRobotIds(List<String> robotIds) {
@@ -85,16 +90,18 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
     }
 
     @Override
-    public List<TriggerVO> createByDatabus(Long userId, CreateTriggerRO data) {
+    public List<TriggerVO> createByDatabus(Long userId, String spaceId, CreateTriggerRO data) {
         AutomationRobotTriggerRO ro = new AutomationRobotTriggerRO();
         ro.setResourceId(data.getRelatedResourceId());
         ro.setUserId(userId);
         ro.setInput(JSONUtil.toJsonStr(data.getInput()));
         ro.setPrevTriggerId(data.getPrevTriggerId());
         ro.setTriggerTypeId(data.getTriggerTypeId());
+        ro.setSpaceId(spaceId);
         ro.setLimitCount(Long.valueOf(limitProperties.getAutomationTriggerCount()));
+        ro.setScheduleConf(JSONUtil.toJsonStr(data.getScheduleConfig()));
         try {
-            ApiResponseAutomationTriggerPO response =
+            ApiResponseAutomationTriggerSO response =
                 automationDaoApiApi.daoCreateOrUpdateAutomationRobotTrigger(data.getRobotId(), ro);
             ExceptionUtil.isFalse(
                 AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
@@ -105,7 +112,7 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
             if (null == response.getData()) {
                 log.error("CreateTriggerEmpty:{}", data.getRobotId());
             }
-            return formatVoFromDatabusResponse(response.getData());
+            return handleTriggerResponse(response.getData());
         } catch (RestClientException e) {
             log.error("Robot create trigger: {}", data.getRobotId(), e);
         }
@@ -113,7 +120,8 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
     }
 
     @Override
-    public List<TriggerVO> updateByDatabus(String triggerId, Long userId, UpdateTriggerRO data) {
+    public List<TriggerVO> updateByDatabus(String triggerId, Long userId, String spaceId,
+                                           UpdateTriggerRO data) {
         AutomationRobotTriggerRO ro = new AutomationRobotTriggerRO();
         ro.setResourceId(data.getRelatedResourceId());
         ro.setUserId(userId);
@@ -121,13 +129,15 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
         ro.setPrevTriggerId(data.getPrevTriggerId());
         ro.setTriggerTypeId(data.getTriggerTypeId());
         ro.setTriggerId(triggerId);
+        ro.setSpaceId(spaceId);
+        ro.setScheduleConf(JSONUtil.toJsonStr(data.getScheduleConfig()));
         try {
-            ApiResponseAutomationTriggerPO response =
+            ApiResponseAutomationTriggerSO response =
                 automationDaoApiApi.daoCreateOrUpdateAutomationRobotTrigger(data.getRobotId(), ro);
             ExceptionUtil.isFalse(
                 AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
                 AUTOMATION_ROBOT_NOT_EXIST);
-            return formatVoFromDatabusResponse(response.getData());
+            return handleTriggerResponse(response.getData());
         } catch (RestClientException e) {
             log.error("Robot update trigger: {}", data.getRobotId(), e);
         }
@@ -141,7 +151,7 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
         ro.setIsDeleted(true);
         ro.setTriggerId(triggerId);
         try {
-            ApiResponseAutomationTriggerPO response =
+            ApiResponseAutomationTriggerSO response =
                 automationDaoApiApi.daoCreateOrUpdateAutomationRobotTrigger(robotId, ro);
             ExceptionUtil.isFalse(
                 AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
@@ -219,7 +229,7 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
         triggerMapper.updateTriggerInputByRobotIdsAndTriggerType(robotIds, triggerTypeId, input);
     }
 
-    private List<TriggerVO> formatVoFromDatabusResponse(List<AutomationTriggerPO> data) {
+    private List<TriggerVO> handleTriggerResponse(List<AutomationTriggerSO> data) {
         if (null != data) {
             return data.stream().map(i -> {
                 TriggerVO vo = new TriggerVO();
@@ -228,6 +238,9 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
                 vo.setRelatedResourceId(i.getResourceId());
                 vo.setPrevTriggerId(i.getPrevTriggerId());
                 vo.setInput(i.getInput());
+                if (null != i.getScheduleId()) {
+                    automationServiceFacade.publishSchedule(i.getScheduleId());
+                }
                 return vo;
             }).sorted(triggerComparator).collect(toList());
         }

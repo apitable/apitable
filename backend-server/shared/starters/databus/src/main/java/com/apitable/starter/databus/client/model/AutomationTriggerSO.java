@@ -24,21 +24,33 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * AutomationTriggerIntroductionPO
+ * AutomationTriggerSO
  */
 @JsonPropertyOrder({
-  AutomationTriggerIntroductionPO.JSON_PROPERTY_PREV_TRIGGER_ID,
-  AutomationTriggerIntroductionPO.JSON_PROPERTY_ROBOT_ID,
-  AutomationTriggerIntroductionPO.JSON_PROPERTY_TRIGGER_ID,
-  AutomationTriggerIntroductionPO.JSON_PROPERTY_TRIGGER_TYPE_ID
+  AutomationTriggerSO.JSON_PROPERTY_INPUT,
+  AutomationTriggerSO.JSON_PROPERTY_PREV_TRIGGER_ID,
+  AutomationTriggerSO.JSON_PROPERTY_RESOURCE_ID,
+  AutomationTriggerSO.JSON_PROPERTY_ROBOT_ID,
+  AutomationTriggerSO.JSON_PROPERTY_SCHEDULE_ID,
+  AutomationTriggerSO.JSON_PROPERTY_TRIGGER_ID,
+  AutomationTriggerSO.JSON_PROPERTY_TRIGGER_TYPE_ID
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
-public class AutomationTriggerIntroductionPO {
+public class AutomationTriggerSO {
+  public static final String JSON_PROPERTY_INPUT = "input";
+  private String input;
+
   public static final String JSON_PROPERTY_PREV_TRIGGER_ID = "prevTriggerId";
   private String prevTriggerId;
 
+  public static final String JSON_PROPERTY_RESOURCE_ID = "resourceId";
+  private String resourceId;
+
   public static final String JSON_PROPERTY_ROBOT_ID = "robotId";
   private String robotId;
+
+  public static final String JSON_PROPERTY_SCHEDULE_ID = "scheduleId";
+  private Long scheduleId;
 
   public static final String JSON_PROPERTY_TRIGGER_ID = "triggerId";
   private String triggerId;
@@ -46,10 +58,36 @@ public class AutomationTriggerIntroductionPO {
   public static final String JSON_PROPERTY_TRIGGER_TYPE_ID = "triggerTypeId";
   private String triggerTypeId;
 
-  public AutomationTriggerIntroductionPO() {
+  public AutomationTriggerSO() {
   }
 
-  public AutomationTriggerIntroductionPO prevTriggerId(String prevTriggerId) {
+  public AutomationTriggerSO input(String input) {
+    
+    this.input = input;
+    return this;
+  }
+
+   /**
+   * Get input
+   * @return input
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_INPUT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getInput() {
+    return input;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_INPUT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setInput(String input) {
+    this.input = input;
+  }
+
+
+  public AutomationTriggerSO prevTriggerId(String prevTriggerId) {
     
     this.prevTriggerId = prevTriggerId;
     return this;
@@ -75,7 +113,33 @@ public class AutomationTriggerIntroductionPO {
   }
 
 
-  public AutomationTriggerIntroductionPO robotId(String robotId) {
+  public AutomationTriggerSO resourceId(String resourceId) {
+    
+    this.resourceId = resourceId;
+    return this;
+  }
+
+   /**
+   * Get resourceId
+   * @return resourceId
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_RESOURCE_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getResourceId() {
+    return resourceId;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_RESOURCE_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setResourceId(String resourceId) {
+    this.resourceId = resourceId;
+  }
+
+
+  public AutomationTriggerSO robotId(String robotId) {
     
     this.robotId = robotId;
     return this;
@@ -101,7 +165,34 @@ public class AutomationTriggerIntroductionPO {
   }
 
 
-  public AutomationTriggerIntroductionPO triggerId(String triggerId) {
+  public AutomationTriggerSO scheduleId(Long scheduleId) {
+    
+    this.scheduleId = scheduleId;
+    return this;
+  }
+
+   /**
+   * Get scheduleId
+   * minimum: 0
+   * @return scheduleId
+  **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_SCHEDULE_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Long getScheduleId() {
+    return scheduleId;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_SCHEDULE_ID)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setScheduleId(Long scheduleId) {
+    this.scheduleId = scheduleId;
+  }
+
+
+  public AutomationTriggerSO triggerId(String triggerId) {
     
     this.triggerId = triggerId;
     return this;
@@ -127,7 +218,7 @@ public class AutomationTriggerIntroductionPO {
   }
 
 
-  public AutomationTriggerIntroductionPO triggerTypeId(String triggerTypeId) {
+  public AutomationTriggerSO triggerTypeId(String triggerTypeId) {
     
     this.triggerTypeId = triggerTypeId;
     return this;
@@ -160,24 +251,30 @@ public class AutomationTriggerIntroductionPO {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AutomationTriggerIntroductionPO automationTriggerIntroductionPO = (AutomationTriggerIntroductionPO) o;
-    return Objects.equals(this.prevTriggerId, automationTriggerIntroductionPO.prevTriggerId) &&
-        Objects.equals(this.robotId, automationTriggerIntroductionPO.robotId) &&
-        Objects.equals(this.triggerId, automationTriggerIntroductionPO.triggerId) &&
-        Objects.equals(this.triggerTypeId, automationTriggerIntroductionPO.triggerTypeId);
+    AutomationTriggerSO automationTriggerSO = (AutomationTriggerSO) o;
+    return Objects.equals(this.input, automationTriggerSO.input) &&
+        Objects.equals(this.prevTriggerId, automationTriggerSO.prevTriggerId) &&
+        Objects.equals(this.resourceId, automationTriggerSO.resourceId) &&
+        Objects.equals(this.robotId, automationTriggerSO.robotId) &&
+        Objects.equals(this.scheduleId, automationTriggerSO.scheduleId) &&
+        Objects.equals(this.triggerId, automationTriggerSO.triggerId) &&
+        Objects.equals(this.triggerTypeId, automationTriggerSO.triggerTypeId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(prevTriggerId, robotId, triggerId, triggerTypeId);
+    return Objects.hash(input, prevTriggerId, resourceId, robotId, scheduleId, triggerId, triggerTypeId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class AutomationTriggerIntroductionPO {\n");
+    sb.append("class AutomationTriggerSO {\n");
+    sb.append("    input: ").append(toIndentedString(input)).append("\n");
     sb.append("    prevTriggerId: ").append(toIndentedString(prevTriggerId)).append("\n");
+    sb.append("    resourceId: ").append(toIndentedString(resourceId)).append("\n");
     sb.append("    robotId: ").append(toIndentedString(robotId)).append("\n");
+    sb.append("    scheduleId: ").append(toIndentedString(scheduleId)).append("\n");
     sb.append("    triggerId: ").append(toIndentedString(triggerId)).append("\n");
     sb.append("    triggerTypeId: ").append(toIndentedString(triggerTypeId)).append("\n");
     sb.append("}");

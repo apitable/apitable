@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,18 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { supportedLanguages } from 'app.environment';
-import { I18nJsonLoader, I18nTranslation } from 'nestjs-i18n';
-import { util } from 'protobufjs';
-import { Observable } from 'rxjs';
-import global = util.global;
+package com.apitable.interfaces.automation;
 
-export class I18nJsonParser extends I18nJsonLoader {
-  override languages(): Promise<string[]> {
-    return Promise.resolve(supportedLanguages);
-  }
+import com.apitable.interfaces.automation.facede.AutomationServiceFacade;
+import com.apitable.interfaces.automation.facede.DefaultAutomationServiceFacadeImpl;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
-  override load(): Promise<I18nTranslation | Observable<I18nTranslation>> {
-    return Promise.resolve(global['apitable_i18n']);
-  }
+/**
+ * automation context config.
+ */
+@Configuration(proxyBeanMethods = false)
+public class AutomationContextConfig {
+
+    @Bean
+    @ConditionalOnMissingBean
+    public AutomationServiceFacade defaultAutomationServiceFacade() {
+        return new DefaultAutomationServiceFacadeImpl();
+    }
 }
