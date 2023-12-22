@@ -26,6 +26,11 @@ import { ICronSchema } from './types';
 import { CronConverter } from './utils';
 import { MultipleSelect } from '../select/dropdown/multiple';
 import { ScheduleOptions } from './ScheduleOptions';
+import { Box } from 'components/box';
+import { Maybe } from 'purify-ts';
+import { Strings, t } from '@apitable/core';
+import { Typography } from 'components/typography';
+import styled, { css } from 'styled-components';
 
 dayjs.extend(advancedFormat);
 
@@ -36,6 +41,13 @@ interface Props {
   onUpdate: (value: Props['value']) => void;
 }
 
+const GapBox = styled(Box)<{ gap: string }>`
+  ${(props) =>
+    props.gap &&
+    css`
+      gap: ${props.gap};
+    `}
+`;
 export const monthOptions = Array.from({ length: 12 }, (_, i) => i + 1).map((num) => ({
   label: String(num),
   value: num.toString(),
@@ -66,9 +78,14 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
       const minutes = CronConverter.getNumericProps(value, 'minute', 0);
 
       return (
-        <>
+        <GapBox display={'flex'} alignItems={'center'} gap={'8px'}>
+          <Typography>{Maybe.encase(() => t(Strings.every)).orDefault('Every')}</Typography>
+
           <DropdownSelect
             disabled={readonly}
+            triggerStyle={{
+              minWidth: '64px',
+            }}
             value={String(hourInterval)}
             options={dayOptions}
             onSelected={(node) => {
@@ -81,7 +98,13 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
               );
             }}
           />
+
+          <Typography>{Maybe.encase(() => t(Strings.every_hour_at)).orDefault('小时的')}</Typography>
+
           <DropdownSelect
+            triggerStyle={{
+              minWidth: '64px',
+            }}
             value={String(minutes)}
             disabled={readonly}
             options={minuteOptions}
@@ -97,23 +120,28 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
               );
             }}
           />
-        </>
+        </GapBox>
       );
     }
     case 'week': {
       const dayInMonths = CronConverter.getLists(value, 'dayOfWeek');
       return (
-        <>
-          week Every 1 Week on Day i
+        <GapBox display={'flex'} alignItems={'center'} gap={'8px'}>
+          <Typography>{Maybe.encase(() => t(Strings.every_week_at)).orDefault('Every weekday on')}</Typography>
+
           <MultipleSelect
+            triggerStyle={{
+              minWidth: '218px',
+              width: '218px',
+            }}
             disabled={readonly}
-            placeholder={'请选择'}
             value={dayInMonths}
             options={weekOptions}
             onChange={(list) => {
               handleUpdateItem(new CronConverter(value).setLists('dayOfWeek', list));
             }}
           />
+
           <TimeInput
             readonly={readonly}
             time={new CronConverter(value).getHourTime()}
@@ -122,7 +150,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
               handleUpdateItem(newCro);
             }}
           />
-        </>
+        </GapBox>
       );
     }
 
@@ -130,17 +158,28 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
       const monthInterval = CronConverter.getEveryProps(value, 'month', 1);
       const dayInMonths = CronConverter.getLists(value, 'dayOfMonth');
       return (
-        <>
+        <GapBox display={'flex'} alignItems={'center'} gap={'8px'}>
+          <Typography>{Maybe.encase(() => t(Strings.every)).orDefault('Every')}</Typography>
+
           <DropdownSelect
             disabled={readonly}
             value={String(monthInterval)}
+            triggerStyle={{
+              minWidth: '64px',
+            }}
             options={monthOptions}
             onSelected={(node) => {
               const v = new CronConverter(value).setInterval('month', Number(node.value));
               handleUpdateItem(v);
             }}
           />
+
+          <Typography>{Maybe.encase(() => t(Strings.every_month_at)).orDefault('month on')}</Typography>
+
           <MultipleSelect
+            triggerStyle={{
+              width: '142px',
+            }}
             value={dayInMonths}
             disabled={readonly}
             options={dayOptionsWithLastDay}
@@ -148,6 +187,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
               handleUpdateItem(new CronConverter(value).setLists('dayOfMonth', list));
             }}
           />
+
           <TimeInput
             readonly={readonly}
             time={new CronConverter(value).getHourTime()}
@@ -156,14 +196,18 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
               handleUpdateItem(a);
             }}
           />
-        </>
+        </GapBox>
       );
     }
     case 'day': {
       const dayInterval = CronConverter.getEveryProps(value, 'dayOfMonth', 1);
       return (
-        <>
+        <GapBox display={'flex'} alignItems={'center'} gap={'8px'}>
+          <Typography>{Maybe.encase(() => t(Strings.every)).orDefault('Every ')}</Typography>
           <DropdownSelect
+            triggerStyle={{
+              minWidth: '64px',
+            }}
             disabled={readonly}
             value={String(dayInterval)}
             options={dayIntervalOptions}
@@ -177,6 +221,11 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
               );
             }}
           />
+
+          <Box display={'inline-flex'} alignItems={'center'}>
+            <Typography>{Maybe.encase(() => t(Strings.every_day_at)).orDefault('天的')}</Typography>
+          </Box>
+
           <TimeInput
             readonly={readonly}
             time={new CronConverter(value).getHourTime()}
@@ -185,7 +234,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
               handleUpdateItem(a);
             }}
           />
-        </>
+        </GapBox>
       );
     }
 

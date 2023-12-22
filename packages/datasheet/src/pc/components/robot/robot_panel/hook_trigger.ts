@@ -27,6 +27,8 @@ import { loadableWithDefault } from 'pc/components/robot/robot_detail/api';
 import { covertThemeIcon } from 'pc/components/robot/utils';
 import { useAppSelector } from 'pc/store/react-redux';
 
+import { getEnvVariables } from 'pc/utils/env';
+
 const nestReq = axios.create({
   baseURL: '/nest/v1/',
 });
@@ -350,8 +352,7 @@ export const useTriggerTypes = (): { loading: boolean; data: ITriggerType[] } =>
 
   return {
     loading: false,
-    // @ts-ignore
-    data: covertThemeIcon(data.data, themeName),
+    data: covertThemeIcon(value.data, themeName),
   };
 };
 

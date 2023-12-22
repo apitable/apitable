@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, memo, useMemo, useState } from 'react';
 import { ListDropdown } from '../../select/dropdown/list_dropdown';
 import { stopPropagation } from '../../../helper';
 import { OptionItem, StyledListContainer } from '../../select';
 import { ListDeprecate } from '../../list_deprecate';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { CronConverter } from '../utils';
+import { applyDefaultTheme } from '../../../theme';
 
 export const getDefaultHourArray = () => {
   const CONST_DEFAULT_HOUR_ARRAY = [
@@ -81,18 +82,86 @@ export const getDefaultHourArray = () => {
 const regex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
 const StyledInput = styled.input<{ disabled: boolean }>`
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  padding: 0 28px 0 8px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 40px;
+  user-select: none;
+  outline: none;
+  transition: all 0.3s;
+  width: 86px;
   background-color: var(--bgControlsDefault);
+
   ${(props) =>
     props.disabled &&
     `
-    user-select: none;
+    user-select: not_allowed;
     outline: none;
     cursor: none;
     border: none;
   `}
 `;
 
-export const TimeInput: FC<{
+const StyledSelectTrigger = styled.div.attrs(applyDefaultTheme)<{ disabled: boolean; focus: boolean }>`
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 40px;
+  user-select: none;
+  outline: none;
+  transition: all 0.3s;
+
+  ${(props) => {
+    const { fc5 } = props.theme.color;
+    if (props.disabled) {
+      return css`
+        cursor: not-allowed;
+      `;
+    }
+    return (
+      !props.disabled &&
+      css`
+        &:hover {
+          border-color: ${fc5};
+        }
+      `
+    );
+  }};
+
+  ${(props) => {
+    const { fc6 } = props.theme.color;
+    return css`
+      background-color: ${fc6};
+    `;
+  }};
+
+  ${(props) => {
+    const { fc0 } = props.theme.color;
+    if (props.focus) {
+      return css`
+        border-color: ${fc0} !important;
+      `;
+    }
+
+    return (
+      !props.disabled &&
+      css`
+        &:focus-within {
+          border-color: ${fc0} !important;
+        }
+      `
+    );
+  }}
+`;
+
+const TimeInputComp: FC<{
   time: string;
   readonly?: boolean;
   onChange?: (value: string) => void;
@@ -101,98 +170,80 @@ export const TimeInput: FC<{
 
   const CONST_DEFAULT_HOUR_ARRAY = useMemo(() => getDefaultHourArray(), []);
   return (
-    <>
-      <ListDropdown
-        options={{
-          arrow: false,
-          offset: 4,
-          zIndex: 1200,
-          disabled: readonly,
-          autoWidth: true,
-        }}
-        trigger={
-          <span>
-            <StyledInput
-              value={input}
-              disabled={readonly}
-              onBlur={(e) => {
-                if (readonly) {
-                  return;
-                }
-                const input = e.target.value;
-                if (regex.test(input)) {
-                  const inputText = CronConverter.getHourTime(time ?? '');
-                  onChange?.(inputText);
-                  setInput(inputText);
-                } else {
-                  const inputText = CronConverter.getHourTime(time ?? '');
-                  setInput(inputText);
-                }
-              }}
-              onChange={(e) => {
-                if (readonly) {
-                  return;
-                }
-                const input = e.target.value;
-                if (regex.test(input)) {
-                  onChange?.(e.target.value);
-                }
-                setInput(e.target.value);
-              }}
-            />
-          </span>
-        }
-      >
-        {({ toggle }) => (
-          <StyledListContainer
-            width={'auto'}
-            minWidth={'auto'}
-            onClick={stopPropagation}
-            style={{
-              height: '200px',
-              overflow: 'auto',
+    <ListDropdown
+      options={{
+        arrow: false,
+        offset: 4,
+        zIndex: 1200,
+        disabled: readonly,
+        autoWidth: true,
+      }}
+      trigger={
+        <StyledSelectTrigger disabled={readonly} focus={false}>
+          <StyledInput
+            value={input}
+            disabled={readonly}
+            onBlur={(e) => {
+              if (readonly) {
+                return;
+              }
+              const input = e.target.value;
+              if (!regex.test(input)) {
+                const inputText = CronConverter.getHourTime(time ?? '');
+                onChange?.(inputText);
+                setInput(inputText);
+              }
+              // const inputText = CronConverter.getHourTime(time ?? '');
+              // setInput(inputText);
+              // }
+            }}
+            onChange={(e) => {
+              if (readonly) {
+                return;
+              }
+              const input = e.target.value;
+              if (regex.test(input)) {
+                onChange?.(e.target.value);
+              }
+              setInput(e.target.value);
+            }}
+          />
+        </StyledSelectTrigger>
+      }
+    >
+      {({ toggle }) => (
+        <StyledListContainer width={'auto'} minWidth={'auto'} onClick={stopPropagation}>
+          <ListDeprecate
+            onClick={(_e, index) => {
+              toggle();
+              const item = CONST_DEFAULT_HOUR_ARRAY[index];
+              if (item) {
+                setInput(item);
+                onChange?.(item);
+              }
             }}
           >
-            <ListDeprecate
-              // noDataTip={options?.noDataText}
-              onClick={(_e, index) => {
-                toggle();
-                const item = CONST_DEFAULT_HOUR_ARRAY[index];
-                if (item) {
+            {CONST_DEFAULT_HOUR_ARRAY.map((item, index) => (
+              <OptionItem
+                keyword={''}
+                currentIndex={index}
+                onClick={() => {
                   setInput(item);
                   onChange?.(item);
-                }
-                // onChange?.(afterFilterOptions[index]!);
-              }}
-              // searchProps={
-              //     options?.searchEnabled == true ? {
-              //         inputRef: inputRef,
-              //         onSearchChange: inputOnChange,
-              //         placeholder: options?.placeholder,
-              //     }: undefined
-              // }
-              // autoHeight
-            >
-              {CONST_DEFAULT_HOUR_ARRAY.map((item, index) => (
-                <OptionItem
-                  keyword={''}
-                  currentIndex={index}
-                  onClick={() => {
-                    setInput(item);
-                    onChange?.(item);
-                    toggle();
-                  }}
-                  value={null}
-                  item={{
-                    value: item,
-                    label: item,
-                  }}
-                />
-              ))}
-            </ListDeprecate>
-          </StyledListContainer>
-        )}
-      </ListDropdown>
-    </>
+                  toggle();
+                }}
+                value={null}
+                item={{
+                  value: item,
+                  label: item,
+                }}
+              />
+            ))}
+          </ListDeprecate>
+        </StyledListContainer>
+      )}
+    </ListDropdown>
   );
 };
+
+export const TimeInput = memo(TimeInputComp);

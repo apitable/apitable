@@ -7,6 +7,7 @@ import 'dayjs/locale/zh';
 import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/zh-hk';
 import 'dayjs/locale/zh-tw';
+import { Maybe } from 'purify-ts';
 
 export const ScheduleOptions = {
   getDayIntervalOptions: () => {
@@ -42,7 +43,7 @@ export const ScheduleOptions = {
       value: num.date().toString(),
     }));
     const dayOptionsWithLastDay = dayOptions.concat({
-      label: t(Strings.last_day),
+      label: Maybe.encase(() => t(Strings.last_day)).orDefault('最后一天'),
       value: '1L',
     });
     return dayOptionsWithLastDay;

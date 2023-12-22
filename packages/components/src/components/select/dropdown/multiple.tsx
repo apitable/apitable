@@ -19,7 +19,7 @@ import { CheckOutlined, ChevronDownOutlined } from '@apitable/icons';
 import { useToggle } from 'ahooks';
 import Color from 'color';
 import Highlighter from 'react-highlight-words';
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, memo, useEffect, useMemo, useRef, useState } from 'react';
 import { ListDeprecate } from '../../list_deprecate';
 import { IListItemProps } from '../../list_deprecate/interface';
 import { IOption, ISelectProps, ISelectValue } from '../interface';
@@ -54,7 +54,7 @@ const _renderValue = (option: IOption) => {
 
 const _GlobalStyle: any = GlobalStyle;
 
-export const MultipleSelect: FC<
+const MultipleSelectComp: FC<
   React.PropsWithChildren<
     Omit<ISelectProps, 'value'> & {
       value: ISelectValue[];
@@ -244,6 +244,7 @@ export const MultipleSelect: FC<
         options={{
           arrow: false,
           offset: 4,
+          stopPropagation: true,
           // TODO find index
           // selectedIndex: findIndex,
           disabled,
@@ -255,7 +256,7 @@ export const MultipleSelect: FC<
                 onClick={() => {
                   triggerClick();
                 }}
-                style={triggerStyle}
+                // style={triggerStyle}
                 className={triggerCls}
                 tabIndex={-1}
                 ref={containerRef}
@@ -297,7 +298,7 @@ export const MultipleSelect: FC<
 
 const Option = ListDeprecate.Item;
 
-MultipleSelect.Option = Option;
+MultipleSelectComp.Option = Option;
 
 export function OptionItem({
   item,
@@ -370,3 +371,5 @@ export function OptionItem({
     </OptionOutside>
   );
 }
+
+export const MultipleSelect = memo(MultipleSelectComp);

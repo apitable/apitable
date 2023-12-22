@@ -273,6 +273,6 @@ export class CronConverter {
   };
 }
 
-export const CONST_FORMAT_AUTOMATION = 'YYYY-MM-DD HH:mm zzz z Z';
+export const CONST_FORMAT_AUTOMATION = 'YYYY-MM-DD HH:mm zzz z';
 
 type IDayOption = string | number;

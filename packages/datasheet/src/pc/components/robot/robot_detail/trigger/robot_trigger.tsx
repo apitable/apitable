@@ -405,46 +405,9 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
   }, [getDstIdItem, setTriggerDatasheetValue]);
 
   const mergedUiSchema = useMemo(() => {
-    if (automationState?.scenario === AutomationScenario.datasheet) {
-      switch (triggerType?.endpoint) {
-        case 'record_matches_conditions': {
-          return {
-            ...uiSchema,
-            filter: {
-              'ui:widget': ({ value, onChange }: any) => {
-                const transformedValue =
-                  value == null || isEqual(value, EmptyNullOperand)
-                    ? {
-                        operator: OperatorEnums.And,
-                        operands: [],
-                      }
-                    : value.value;
-                return (
-                  <RecordMatchesConditionsFilter
-                    datasheetId={datasheetId!}
-                    filter={transformedValue as IExpression}
-                    onChange={(value) => {
-                      onChange(value);
-                    }}
-                  />
-                );
-              },
-            },
-            datasheetId: {
-              'ui:disabled': true,
-            },
-          };
-        }
-
-        default: {
-          return {};
-        }
-      }
-    }
-
-    return {
-      ...uiSchema,
-      scheduleRule: {
+    const uiSchemaWithRule = produce(uiSchema, (draft) => {
+      // @ts-ignore
+      draft.scheduleRule = {
         'ui:widget': ({ value, onChange }: any) => {
           const v = TimeScheduleManager.getCronWithTimeZone(value);
 
@@ -477,7 +440,48 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
             />
           );
         },
-      },
+      };
+    });
+
+    if (automationState?.scenario === AutomationScenario.datasheet) {
+      switch (triggerType?.endpoint) {
+        case 'record_matches_conditions': {
+          return {
+            ...uiSchemaWithRule,
+            filter: {
+              'ui:widget': ({ value, onChange }: any) => {
+                const transformedValue =
+                  value == null || isEqual(value, EmptyNullOperand)
+                    ? {
+                        operator: OperatorEnums.And,
+                        operands: [],
+                      }
+                    : value.value;
+                return (
+                  <RecordMatchesConditionsFilter
+                    datasheetId={datasheetId!}
+                    filter={transformedValue as IExpression}
+                    onChange={(value) => {
+                      onChange(value);
+                    }}
+                  />
+                );
+              },
+            },
+            datasheetId: {
+              'ui:disabled': true,
+            },
+          };
+        }
+
+        default: {
+          return uiSchemaWithRule;
+        }
+      }
+    }
+
+    return {
+      ...uiSchemaWithRule,
       formId: {
         'ui:widget': ({ value, onChange }: any) => {
           return (
@@ -586,7 +590,6 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
     automationState?.resourceId,
     automationState?.scenario,
     datasheetId,
-    formData,
     getDstIdItem,
     scheduleType,
     setTriggerDatasheetValue,
