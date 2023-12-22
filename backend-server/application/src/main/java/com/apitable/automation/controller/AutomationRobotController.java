@@ -294,7 +294,7 @@ public class AutomationRobotController {
     public ResponseData<List<TriggerVO>> updateTrigger(
         @PathVariable String resourceId,
         @PathVariable String triggerId,
-        @RequestBody UpdateTriggerRO data,
+        @RequestBody @Valid UpdateTriggerRO data,
         @RequestParam(name = "shareId", required = false) String shareId
     ) {
         Long userId = SessionContext.getUserId();
