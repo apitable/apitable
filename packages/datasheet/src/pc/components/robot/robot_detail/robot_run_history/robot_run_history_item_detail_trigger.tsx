@@ -21,7 +21,7 @@ import { shallowEqual } from 'react-redux';
 import ReactJson from 'react18-json-view';
 import styled from 'styled-components';
 import useSWR from 'swr';
-import { Box, Typography, useTheme, useThemeColors } from '@apitable/components';
+import { Box, Timing, Typography, useTheme, useThemeColors } from '@apitable/components';
 import { Selectors, t, Strings, data2Operand } from '@apitable/core';
 import { getTriggerDstId } from 'pc/components/automation/controller/hooks/use_robot_fields';
 import { AutomationTiming } from 'pc/components/robot/robot_detail/automation_timing';
@@ -84,7 +84,7 @@ export const ScheduleRuleDisplay = ({
   if (!timeZone) {
     return null;
   }
-  const v = TimeScheduleManager.getCronWithTimeZone(value);
+  const cronSchema = TimeScheduleManager.getCronWithTimeZone(value);
 
   return (
     <Box>
@@ -92,14 +92,7 @@ export const ScheduleRuleDisplay = ({
         {label}
       </Typography>
       <FilterWrapper>
-        <AutomationTiming
-          value={v}
-          scheduleType={scheduleType as any}
-          tz={timeZone}
-          options={{
-            userTimezone,
-          }}
-        />
+        <Timing interval={scheduleType as any} value={cronSchema} readonly />
       </FilterWrapper>
     </Box>
   );

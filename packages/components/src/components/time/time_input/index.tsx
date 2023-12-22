@@ -93,15 +93,15 @@ const StyledInput = styled.input<{ disabled: boolean }>`
   user-select: none;
   outline: none;
   transition: all 0.3s;
-  width: 48px;
+  width: 64px;
   background-color: var(--bgControlsDefault);
 
   ${(props) =>
     props.disabled &&
     `
-    user-select: not_allowed;
+    user-select: none;
     outline: none;
-    cursor: none;
+    cursor: not-allowed;
     border: none;
   `}
 `;
@@ -112,6 +112,7 @@ const StyledSelectTrigger = styled.div.attrs(applyDefaultTheme)<{ disabled: bool
   border: 1px solid transparent;
   display: flex;
   align-items: center;
+  height: 40px;
   position: relative;
   user-select: none;
   outline: none;
@@ -211,7 +212,7 @@ const TimeInputComp: FC<{
       }
     >
       {({ toggle }) => (
-        <StyledListContainer width={'auto'} minWidth={'auto'} onClick={stopPropagation}>
+        <StyledListContainer width={'104px'} minWidth={'auto'} onClick={stopPropagation}>
           <ListDeprecate
             onClick={(_e, index) => {
               toggle();

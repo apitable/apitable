@@ -92,6 +92,11 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             triggerStyle={{
               minWidth: '64px',
             }}
+            listStyle={{
+              width: '120px',
+            }}
+            openSearch
+            searchPlaceholder={Maybe.encase(() => t(Strings.calendar_list_search_placeholder)).orDefault('Search')}
             value={String(hourInterval)}
             options={dayOptions}
             onSelected={(node) => {
@@ -115,7 +120,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             }}
             suffixContent={
               <Typography variant={'body3'} color={colors.textCommonPrimary}>
-                {Maybe.encase(() => t(Strings.every_hour_at)).orDefault('Min')}
+                {Maybe.encase(() => t(Strings.by_min)).orDefault('Min')}
               </Typography>
             }
             hiddenArrow
@@ -158,6 +163,12 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             }}
           />
 
+          {Maybe.encase(() => t(Strings.by_at)).orDefault('at').length > 0 && (
+            <Typography variant={'body3'} color={colors.textCommonPrimary}>
+              {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
+            </Typography>
+          )}
+
           <TimeInput
             readonly={readonly}
             time={new CronConverter(value).getHourTime()}
@@ -185,6 +196,11 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             triggerStyle={{
               minWidth: '64px',
             }}
+            openSearch
+            searchPlaceholder={Maybe.encase(() => t(Strings.calendar_list_search_placeholder)).orDefault('Search')}
+            listStyle={{
+              width: '120px',
+            }}
             options={monthOptions}
             onSelected={(node) => {
               const v = new CronConverter(value).setInterval('month', Number(node.value));
@@ -200,6 +216,8 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             triggerStyle={{
               width: '142px',
             }}
+            searchPlaceholder={Maybe.encase(() => t(Strings.calendar_list_search_placeholder)).orDefault('Search')}
+            openSearch
             value={dayInMonths}
             disabled={readonly}
             options={dayOptionsWithLastDay}
@@ -207,6 +225,12 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
               handleUpdateItem(new CronConverter(value).setLists('dayOfMonth', list));
             }}
           />
+
+          {Maybe.encase(() => t(Strings.by_at)).orDefault('at').length > 0 && (
+            <Typography variant={'body3'} color={colors.textCommonPrimary}>
+              {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
+            </Typography>
+          )}
 
           <TimeInput
             readonly={readonly}
@@ -229,6 +253,11 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
           <DropdownSelect
             triggerStyle={{
               minWidth: '64px',
+            }}
+            openSearch
+            searchPlaceholder={Maybe.encase(() => t(Strings.calendar_list_search_placeholder)).orDefault('Search')}
+            listStyle={{
+              width: '120px',
             }}
             disabled={readonly}
             value={String(dayInterval)}

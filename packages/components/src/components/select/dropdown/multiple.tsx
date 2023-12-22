@@ -41,6 +41,7 @@ import { convertChildrenToData } from '../utils';
 import { IUseListenTriggerInfo, stopPropagation } from '../../../helper';
 import { useThemeColors } from '../../../hooks';
 import { WrapperTooltip } from '../../tooltip';
+import { useCssColors } from '../../../hooks/use_css_colors';
 
 const StyledDropdown = styled(ListDropdown)`
   z-index: 1200;
@@ -338,6 +339,7 @@ export function OptionItem({
     },
   });
 
+  const colors = useCssColors();
   const isChecked = Array.isArray(value) ? value.includes(item?.value) : value === item?.value;
   return (
     <OptionOutside
@@ -356,7 +358,7 @@ export function OptionItem({
         item={
           isChecked
             ? {
-                suffixIcon: <CheckOutlined />,
+                suffixIcon: <CheckOutlined color={colors.textBrandDefault} />,
                 ...item,
               }
             : item

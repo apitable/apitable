@@ -36,7 +36,7 @@ export const NextTimePreview: FC<{
   const colors = useCssColors();
 
   return (
-    <Box borderColor={colors.borderCommonDefault} borderWidth={'1px'} padding={'8px 12px'} borderRadius={'4px'}>
+    <Box borderColor={colors.borderCommonDefault} borderWidth={'1px'} borderStyle={'solid'} padding={'8px 12px'} borderRadius={'4px'}>
       <Typography color={colors.textCommonTertiary} variant={'body4'}>
         {title}
       </Typography>
