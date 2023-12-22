@@ -17,7 +17,6 @@
  */
 
 import { useSize } from 'ahooks';
-import { useEffect, useState } from 'react';
 import { ScreenWidth } from '@apitable/core';
 
 export type Orientation = 'landscape' | 'portrait';
@@ -69,21 +68,7 @@ export const getScreen = (width: number, height: number): IScreen<{ [name: strin
 };
 
 export const useResponsive = <T extends { [name: string]: number }>(): IScreen<T> => {
-  const [bodySize, setBodySize] = useState(() => {
-    const el = isRenderServer() ? null : document.body;
-    return {
-      width: el?.clientWidth,
-      height: el?.clientHeight,
-    };
-  });
-
-  const size = useSize(isRenderServer() ? undefined : document.body);
-
-  useEffect(() => {
-    if (size) {
-      setBodySize(size);
-    }
-  }, [size, setBodySize]);
+  const bodySize = useSize(isRenderServer() ? undefined : document.body);
 
   // @ts-ignore
   if (sizes[sizes.length - 1][1] !== 0) {
@@ -93,12 +78,5 @@ export const useResponsive = <T extends { [name: string]: number }>(): IScreen<T
     sizes[sizes.length - 1][1] = 0;
   }
 
-  const [screen, setScreen] = useState(getScreen(bodySize?.width!, bodySize?.height!));
-
-  useEffect(() => {
-    setScreen(getScreen(bodySize?.width!, bodySize?.height!));
-    // eslint-disable-next-line
-  }, [bodySize, setScreen]);
-
-  return screen;
+  return getScreen(bodySize?.width!, bodySize?.height!);
 };
