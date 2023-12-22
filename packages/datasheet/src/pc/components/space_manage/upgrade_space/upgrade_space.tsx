@@ -97,7 +97,7 @@ const UpgradeSpace:React.FC<IUpgradeSpaceProps> = ({ hideDetail }) => {
           const res = await Api?.updateBillingSubscription(spaceId, subscriptionId);
           const { success, data } = res.data;
           if (success) {
-            location.href = data.url;
+            window.open(data.url, '_blank', 'noopener,noreferrer');
           }
         }
 
@@ -105,7 +105,7 @@ const UpgradeSpace:React.FC<IUpgradeSpaceProps> = ({ hideDetail }) => {
           // 修改订阅产品呢
           const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon()?.id);
           const { url } = res.data;
-          location.href = url;
+          window.open(url, '_blank', 'noopener,noreferrer');
         }
       }
 

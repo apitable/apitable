@@ -1,14 +1,14 @@
 import Joi from 'joi';
-import { FieldType, IField, ICascaderField, ISegment } from 'types/field_types';
+import { FieldType, ICascaderField, IField, ISegment } from 'types/field_types';
 import { DatasheetActions } from '../../commands_actions/datasheet';
-import { TextBaseField } from './text_base_field';
-import { ICellValue } from '../record';
 import { Strings, t } from '../../exports/i18n';
-import { FOperator, IFilterText } from '../../types';
-import { getFieldDefaultProperty } from './const';
+import { FOperator, IAPIMetaTextBaseFieldProperty, IFilterText } from '../../types';
 import { ICascaderProperty } from '../../types/field_types';
-export class CascaderField extends TextBaseField {
+import { ICellValue } from '../record';
+import { getFieldDefaultProperty } from './const';
+import { TextBaseField } from './text_base_field';
 
+export class CascaderField extends TextBaseField {
   static defaultProperty() {
     return getFieldDefaultProperty(FieldType.Cascader) as ICascaderProperty;
   }
@@ -17,17 +17,24 @@ export class CascaderField extends TextBaseField {
     showAll: Joi.bool().required(),
     linkedDatasheetId: Joi.string().required(),
     linkedViewId: Joi.string().required(),
-    linkedFields: Joi.array().items(Joi.object({
-      id: Joi.string().required(),
-      name: Joi.string().required(),
-      type: Joi.number().required(),
-    })).required(),
-    fullLinkedFields: Joi.array().items(Joi.object({
-      id: Joi.string().required(),
-      name: Joi.string().required(),
-      type: Joi.number().required(),
-    })).required(),
-
+    linkedFields: Joi.array()
+      .items(
+        Joi.object({
+          id: Joi.string().required(),
+          name: Joi.string().required(),
+          type: Joi.number().required(),
+        }),
+      )
+      .required(),
+    fullLinkedFields: Joi.array()
+      .items(
+        Joi.object({
+          id: Joi.string().required(),
+          name: Joi.string().required(),
+          type: Joi.number().required(),
+        }),
+      )
+      .required(),
   }).required();
 
   static createDefault(fieldMap: { [fieldId: string]: IField }): ICascaderField {
@@ -58,13 +65,17 @@ export class CascaderField extends TextBaseField {
     }
     const showAll = this.field.property.showAll;
     const cv = [cellValue].flat();
-    return (cv as ISegment[]).map(seg => {
-      if (!showAll) {
-        const segArr = seg.text.split('/');
-        return segArr[segArr.length - 1];
-      }
-      return seg.text;
-    }).join('') || null;
+    return (
+      (cv as ISegment[])
+        .map((seg) => {
+          if (!showAll) {
+            const segArr = seg.text.split('/');
+            return segArr[segArr.length - 1];
+          }
+          return seg.text;
+        })
+        .join('') || null
+    );
   }
 
   cellValueToFullString(cellValue: ICellValue): string | null {
@@ -72,7 +83,7 @@ export class CascaderField extends TextBaseField {
       return null;
     }
     const cv = [cellValue].flat();
-    return (cv as ISegment[]).map(seg => seg.text).join('') || null;
+    return (cv as ISegment[]).map((seg) => seg.text).join('') || null;
   }
 
   override isMeetFilter(operator: FOperator, cellValue: ISegment[] | null, conditionValue: Exclude<IFilterText, null>) {
@@ -80,7 +91,11 @@ export class CascaderField extends TextBaseField {
     return TextBaseField._isMeetFilter(operator, cellText, conditionValue, {
       containsFn: (filterValue: string) => cellText != null && this.stringInclude(cellText, filterValue),
       doesNotContainFn: (filterValue: string) => cellText == null || !this.stringInclude(cellText, filterValue),
-      defaultFn: () => super.isMeetFilter(operator, cellValue, conditionValue)
+      defaultFn: () => super.isMeetFilter(operator, cellValue, conditionValue),
     });
+  }
+
+  override get apiMetaProperty(): IAPIMetaTextBaseFieldProperty {
+    return { ...this.field.property, fullLinkedFields: undefined };
   }
 }

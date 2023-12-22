@@ -31,6 +31,7 @@ import { ResourceType } from 'types/resource_types';
 import { IAtomEventType, ICellUpdatedContext } from '../interface';
 import { EventAtomTypeEnums, EventRealTypeEnums, EventSourceTypeEnums, OPEventNameEnums } from './../../enum';
 import { IEventInstance, IOPBaseContext, IOPEvent, IVirtualAtomEvent } from './../../interface/event.interface';
+import { CacheManager } from 'cache_manager';
 
 // @EventMeta(OPEventNameEnums.CellUpdated)
 export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
@@ -108,6 +109,11 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
             const relatedLinkField = Field.bindContext(field, state).getRelatedLinkField();
             if (!relatedLinkField) {
               return;
+            }
+            // https://github.com/vikadata/vikadata/issues/9875
+            // if relate field type is OneWayLink. clear old lookup field values
+            if (relatedLinkField.type === FieldType.OneWayLink) {
+              CacheManager.removeCellCache(_datasheetId, field.id);
             }
             let triggerRecIds: string[] = [];
             // 2. The same table triggers a lookup update, which must be associated with the table.
