@@ -3333,66 +3333,46 @@
       },
       {
         "actions": [
-          "open_guide_wizards([105, 104])"
-        ],
-        "rules": [
-          "device_IS_pc",
-          "sign_up_time_IS_AFTER_2023-11-23 20:00",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId",
-          "edition_IS_apitable",
-          "url_EXCLUDES_ai_onboarding"
-        ],
-        "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-11-23 20:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable, url_EXCLUDES_ai_onboarding],[open_guide_wizards([105, 104])]",
-        "event": [
-          "workbench_shown"
-        ]
-      },
-      {
-        "actions": [
-          "open_guide_wizards([105, 104, 115])"
-        ],
-        "rules": [
-          "device_IS_pc",
-          "sign_up_time_IS_AFTER_2023-11-23 20:00",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId",
-          "edition_IS_apitable",
-          "url_INCLUDES_ai_onboarding"
-        ],
-        "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-11-23 20:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable, url_INCLUDES_ai_onboarding],[open_guide_wizards([105, 104, 115])]",
-        "event": [
-          "workbench_shown"
-        ]
-      },
-      {
-        "actions": [
-          "open_guide_wizards([1, 24])"
-        ],
-        "rules": [
-          "device_IS_pc",
-          "sign_up_time_IS_AFTER_2023-11-23 20:00",
-          "url_EXCLUDES_templateId",
-          "url_EXCLUDES_shareId",
-          "edition_IS_vika"
-        ],
-        "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_AFTER_2023-11-23 20:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([1, 24])]",
-        "event": [
-          "workbench_shown"
-        ]
-      },
-      {
-        "actions": [
           "open_guide_wizards([29, 76, 131])"
         ],
         "rules": [
           "device_IS_pc",
-          "sign_up_time_IS_BEFORE_2023-12-18 20:00",
+          "sign_up_time_IS_BEFORE_2024-12-31 23:59",
           "url_EXCLUDES_templateId",
           "url_EXCLUDES_shareId",
           "edition_IS_vika"
         ],
-        "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2023-12-18 20:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([29, 76, 131])]",
+        "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2024-12-31 23:59, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([29, 76, 131])]",
+        "event": [
+          "workbench_shown"
+        ]
+      },
+      {
+        "actions": [
+          "open_guide_wizards([105, 115, 104])"
+        ],
+        "rules": [
+          "device_IS_pc",
+          "url_EXCLUDES_templateId",
+          "url_EXCLUDES_shareId",
+          "edition_IS_apitable"
+        ],
+        "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 115, 104])]",
+        "event": [
+          "workbench_shown"
+        ]
+      },
+      {
+        "actions": [
+          "open_guide_wizards([1, 24, 104])"
+        ],
+        "rules": [
+          "device_IS_pc",
+          "url_EXCLUDES_templateId",
+          "url_EXCLUDES_shareId",
+          "edition_IS_vika"
+        ],
+        "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([1, 24, 104])]",
         "event": [
           "workbench_shown"
         ]
@@ -3402,13 +3382,13 @@
           "open_guide_wizards([76, 131])"
         ],
         "rules": [
-          "sign_up_time_IS_BEFORE_2023-12-18 20:00",
+          "sign_up_time_IS_BEFORE_2024-12-31 23:59",
           "device_IS_mobile",
           "url_EXCLUDES_templateId",
           "url_EXCLUDES_shareId",
           "edition_IS_vika"
         ],
-        "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-12-18 20:00, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([76, 131])]",
+        "id": "workbench_shown,[sign_up_time_IS_BEFORE_2024-12-31 23:59, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([76, 131])]",
         "event": [
           "workbench_shown"
         ]
@@ -3418,13 +3398,13 @@
           "open_guide_wizards([76])"
         ],
         "rules": [
-          "sign_up_time_IS_BEFORE_2023-12-18 20:00",
+          "sign_up_time_IS_BEFORE_2024-12-31 23:59",
           "url_EXCLUDES_templateId",
           "url_EXCLUDES_shareId",
           "device_IS_app",
           "edition_IS_vika"
         ],
-        "id": "workbench_shown,[sign_up_time_IS_BEFORE_2023-12-18 20:00, url_EXCLUDES_templateId, url_EXCLUDES_shareId, device_IS_app, edition_IS_vika],[open_guide_wizards([76])]",
+        "id": "workbench_shown,[sign_up_time_IS_BEFORE_2024-12-31 23:59, url_EXCLUDES_templateId, url_EXCLUDES_shareId, device_IS_app, edition_IS_vika],[open_guide_wizards([76])]",
         "event": [
           "workbench_shown"
         ]
@@ -3791,8 +3771,8 @@
       {
         "operator": "IS_BEFORE",
         "condition": "sign_up_time",
-        "id": "sign_up_time_IS_BEFORE_2023-12-18 20:00",
-        "conditionArgs": "2023-12-18 20:00"
+        "id": "sign_up_time_IS_BEFORE_2024-12-31 23:59",
+        "conditionArgs": "2024-12-31 23:59"
       },
       {
         "operator": "EXCLUDES",
@@ -4067,19 +4047,19 @@
         "commandArgs": "88"
       },
       {
-        "id": "open_guide_wizards([1, 24])",
+        "id": "open_guide_wizards([1, 24, 104])",
         "command": "open_guide_wizards",
-        "commandArgs": "[1, 24]"
-      },
-      {
-        "id": "open_guide_wizards([105, 104, 115])",
-        "command": "open_guide_wizards",
-        "commandArgs": "[105, 104, 115]"
+        "commandArgs": "[1, 24, 104]"
       },
       {
         "id": "open_guide_wizards([105, 104])",
         "command": "open_guide_wizards",
         "commandArgs": "[105, 104]"
+      },
+      {
+        "id": "open_guide_wizards([105, 115, 104])",
+        "command": "open_guide_wizards",
+        "commandArgs": "[105, 115, 104]"
       },
       {
         "id": "open_guide_wizards([19])",
@@ -4756,7 +4736,8 @@
         "player": {
           "action": [
             "recRyoECYFqBv",
-            "recIPTZiGHiIK"
+            "recIPTZiGHiIK",
+            "recH5upxLpgTD"
           ]
         }
       },
@@ -4827,7 +4808,6 @@
         "steps": "[[175]]"
       },
       "115": {
-        "repeat": true,
         "completeIndex": -1,
         "steps": "[[176]]",
         "player": {
@@ -4858,7 +4838,6 @@
         "steps": "[[179]]"
       },
       "131": {
-        "repeat": true,
         "completeIndex": -1,
         "steps": "[[192]]",
         "player": {
