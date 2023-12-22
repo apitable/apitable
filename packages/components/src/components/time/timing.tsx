@@ -119,9 +119,11 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
               minWidth: '64px',
             }}
             suffixContent={
-              <Typography variant={'body3'} color={colors.textCommonPrimary} paddingLeft={'8px'}>
-                {Maybe.encase(() => t(Strings.by_min)).orDefault('Min')}
-              </Typography>
+              <Box paddingLeft={'8px'} display={'inline-flex'} alignItems={'center'}>
+                <Typography variant={'body3'} color={colors.textCommonPrimary}>
+                  {Maybe.encase(() => t(Strings.by_min)).orDefault('Min')}
+                </Typography>
+              </Box>
             }
             hiddenArrow
             value={String(minutes)}
