@@ -105,7 +105,12 @@ export class CronConverter {
         interval.next().value.toDate(),
       ];
 
-      return newTimes.map((time) => dayjs(time).tz(options.userTimezone).format(CONST_FORMAT_AUTOMATION));
+      return newTimes.map(
+        (time) =>
+          `${dayjs(time).tz(options.userTimezone).format(CONST_FORMAT_AUTOMATION_TIME)} UTC+${
+            dayjs(time).tz(options.userTimezone).utcOffset() / 60
+          }(${options.userTimezone})`
+      );
     }).orDefault([]);
   };
 
@@ -274,5 +279,6 @@ export class CronConverter {
 }
 
 export const CONST_FORMAT_AUTOMATION = 'YYYY-MM-DD HH:mm zzz z';
+export const CONST_FORMAT_AUTOMATION_TIME = 'YYYY-MM-DD HH:mm';
 
 type IDayOption = string | number;

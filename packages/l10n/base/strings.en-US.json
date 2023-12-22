@@ -5930,6 +5930,7 @@
   "by_weeks": "Weeks",
   "by_months": "Months",
   "every": "Every",
+  "by_min": "Min",
   "every_hour_at": "hour(s) at",
   "every_day_at": "day(s) at",
   "every_month_at": "month on",

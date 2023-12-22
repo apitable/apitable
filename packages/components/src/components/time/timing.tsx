@@ -31,6 +31,7 @@ import { Maybe } from 'purify-ts';
 import { Strings, t } from '@apitable/core';
 import { Typography } from 'components/typography';
 import styled, { css } from 'styled-components';
+import { useCssColors } from '../../hooks/use_css_colors';
 
 dayjs.extend(advancedFormat);
 
@@ -38,10 +39,11 @@ interface Props {
   interval: 'day' | 'month' | 'week' | 'hour';
   readonly?: boolean;
   value: ICronSchema;
-  onUpdate: (value: Props['value']) => void;
+  onUpdate?: (value: Props['value']) => void;
 }
 
 const GapBox = styled(Box)<{ gap: string }>`
+  flex-wrap: wrap;
   ${(props) =>
     props.gap &&
     css`
@@ -62,7 +64,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
   const handleUpdateItem = useCallback(
     (cron: ICronSchema) => {
       console.info('new cron', cron);
-      onUpdate(cron);
+      onUpdate?.(cron);
     },
     [onUpdate]
   );
@@ -72,6 +74,8 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
 
   const dayOptions = useMemo(() => ScheduleOptions.getHourIntervalOptions(), []);
   const dayIntervalOptions = useMemo(() => ScheduleOptions.getDayIntervalOptions(), []);
+  const colors = useCssColors();
+
   switch (interval) {
     case 'hour': {
       const hourInterval = CronConverter.getEveryProps(value, 'hour', 1);
@@ -79,7 +83,9 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
 
       return (
         <GapBox display={'flex'} alignItems={'center'} gap={'8px'}>
-          <Typography>{Maybe.encase(() => t(Strings.every)).orDefault('Every')}</Typography>
+          <Typography variant={'body3'} color={colors.textCommonPrimary}>
+            {Maybe.encase(() => t(Strings.every)).orDefault('Every')}
+          </Typography>
 
           <DropdownSelect
             disabled={readonly}
@@ -99,12 +105,20 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             }}
           />
 
-          <Typography>{Maybe.encase(() => t(Strings.every_hour_at)).orDefault('小时的')}</Typography>
+          <Typography variant={'body3'} color={colors.textCommonPrimary}>
+            {Maybe.encase(() => t(Strings.every_hour_at)).orDefault('小时的')}
+          </Typography>
 
           <DropdownSelect
             triggerStyle={{
               minWidth: '64px',
             }}
+            suffixContent={
+              <Typography variant={'body3'} color={colors.textCommonPrimary}>
+                {Maybe.encase(() => t(Strings.every_hour_at)).orDefault('Min')}
+              </Typography>
+            }
+            hiddenArrow
             value={String(minutes)}
             disabled={readonly}
             options={minuteOptions}
@@ -127,7 +141,9 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
       const dayInMonths = CronConverter.getLists(value, 'dayOfWeek');
       return (
         <GapBox display={'flex'} alignItems={'center'} gap={'8px'}>
-          <Typography>{Maybe.encase(() => t(Strings.every_week_at)).orDefault('Every weekday on')}</Typography>
+          <Typography variant={'body3'} color={colors.textCommonPrimary}>
+            {Maybe.encase(() => t(Strings.every_week_at)).orDefault('Every weekday on')}
+          </Typography>
 
           <MultipleSelect
             triggerStyle={{
@@ -159,7 +175,9 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
       const dayInMonths = CronConverter.getLists(value, 'dayOfMonth');
       return (
         <GapBox display={'flex'} alignItems={'center'} gap={'8px'}>
-          <Typography>{Maybe.encase(() => t(Strings.every)).orDefault('Every')}</Typography>
+          <Typography variant={'body3'} color={colors.textCommonPrimary}>
+            {Maybe.encase(() => t(Strings.every)).orDefault('Every')}
+          </Typography>
 
           <DropdownSelect
             disabled={readonly}
@@ -174,7 +192,9 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             }}
           />
 
-          <Typography>{Maybe.encase(() => t(Strings.every_month_at)).orDefault('month on')}</Typography>
+          <Typography variant={'body3'} color={colors.textCommonPrimary}>
+            {Maybe.encase(() => t(Strings.every_month_at)).orDefault('month on')}
+          </Typography>
 
           <MultipleSelect
             triggerStyle={{
@@ -203,7 +223,9 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
       const dayInterval = CronConverter.getEveryProps(value, 'dayOfMonth', 1);
       return (
         <GapBox display={'flex'} alignItems={'center'} gap={'8px'}>
-          <Typography>{Maybe.encase(() => t(Strings.every)).orDefault('Every ')}</Typography>
+          <Typography variant={'body3'} color={colors.textCommonPrimary}>
+            {Maybe.encase(() => t(Strings.every)).orDefault('Every ')}
+          </Typography>
           <DropdownSelect
             triggerStyle={{
               minWidth: '64px',
@@ -223,7 +245,9 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
           />
 
           <Box display={'inline-flex'} alignItems={'center'}>
-            <Typography>{Maybe.encase(() => t(Strings.every_day_at)).orDefault('天的')}</Typography>
+            <Typography variant={'body3'} color={colors.textCommonPrimary}>
+              {Maybe.encase(() => t(Strings.every_day_at)).orDefault('天的')}
+            </Typography>
           </Box>
 
           <TimeInput

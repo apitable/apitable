@@ -110,4 +110,8 @@ describe('timing test', () => {
     });
     expect(data).toBe('5 */5 * * *');
   });
+
+  it('check get interval Utc ', () => {
+    expect(dayjs().tz('Asia/Shanghai').utcOffset() / 60).toBe(8);
+  });
 });

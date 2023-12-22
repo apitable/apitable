@@ -373,7 +373,7 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
       });
     };
     return getTriggerInputSchema(triggerType!);
-  }, [automationState?.scenario, datasheetId, datasheetName, formList, options, triggerType, userTimezone]);
+  }, [automationState?.scenario, datasheetId, datasheetName, defaultTimeZone, formList, options, triggerType]);
 
   const triggerTypeOptionsWithoutButtonIsClicked = useMemo(() => {
     if (automationState?.scenario === AutomationScenario.datasheet) {

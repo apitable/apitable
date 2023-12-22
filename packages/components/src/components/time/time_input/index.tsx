@@ -85,15 +85,15 @@ const StyledInput = styled.input<{ disabled: boolean }>`
   cursor: pointer;
   border-radius: 4px;
   border: 1px solid transparent;
-  padding: 0 28px 0 8px;
+  padding: 0 8px 0 8px;
   display: flex;
   align-items: center;
   position: relative;
-  height: 40px;
+  height: 100%;
   user-select: none;
   outline: none;
   transition: all 0.3s;
-  width: 86px;
+  width: 48px;
   background-color: var(--bgControlsDefault);
 
   ${(props) =>
@@ -113,7 +113,6 @@ const StyledSelectTrigger = styled.div.attrs(applyDefaultTheme)<{ disabled: bool
   display: flex;
   align-items: center;
   position: relative;
-  height: 40px;
   user-select: none;
   outline: none;
   transition: all 0.3s;

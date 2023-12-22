@@ -1,5 +1,5 @@
 import React, { FC, memo } from 'react';
-import { Timing, NextTimePreview, CronConverter, ICronSchema } from '@apitable/components';
+import { Timing, NextTimePreview, CronConverter, ICronSchema, Box } from '@apitable/components';
 
 import { Strings, t } from '@apitable/core';
 
@@ -10,7 +10,7 @@ const AutomationTimingComp: FC<{
   options: {
     userTimezone: string;
   };
-  onUpdate: (_: ICronSchema) => void;
+  onUpdate?: (_: ICronSchema) => void;
 }> = ({ tz, options, scheduleType, value, onUpdate }) => {
   const settingTimezone = tz ?? options?.userTimezone;
 
@@ -19,10 +19,12 @@ const AutomationTimingComp: FC<{
     return null;
   }
   return (
-    <>
+    <Box paddingX={'8px'}>
       <Timing interval={scheduleType} value={value} onUpdate={onUpdate} readonly={false} />
-      <NextTimePreview title={t(Strings.preview_next_automation_execution_time)} cron={cron} tz={settingTimezone} options={options} />
-    </>
+      <Box marginTop={'8px'}>
+        <NextTimePreview title={t(Strings.preview_next_automation_execution_time)} cron={cron} tz={settingTimezone} options={options} />
+      </Box>
+    </Box>
   );
 };
 

@@ -23,7 +23,10 @@ import styled from 'styled-components';
 import useSWR from 'swr';
 import { Box, Typography, useTheme, useThemeColors } from '@apitable/components';
 import { Selectors, t, Strings, data2Operand } from '@apitable/core';
-import { getTriggerDatasheetId, getTriggerDstId } from 'pc/components/automation/controller/hooks/use_robot_fields';
+import { getTriggerDstId } from 'pc/components/automation/controller/hooks/use_robot_fields';
+import { AutomationTiming } from 'pc/components/robot/robot_detail/automation_timing';
+import { TimeScheduleManager } from 'pc/components/robot/robot_detail/trigger/time_schedule_manager';
+import { useAppSelector } from 'pc/store/react-redux';
 import { useAllFields } from '../../hooks';
 import { INodeType, IRobotRunHistoryDetail } from '../../interface';
 import { enrichDatasheetTriggerOutputSchema } from '../magic_variable_container/helper';
@@ -33,22 +36,16 @@ import { KeyValueDisplay, StyledTitle } from './common';
 import { FormDataRender } from './form_data_render';
 import styles from './style.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
-
 interface IRobotRunHistoryTriggerDetail {
-    nodeType: INodeType;
-    nodeDetail: IRobotRunHistoryDetail['nodeByIds'][string];
+  nodeType: INodeType;
+  nodeDetail: IRobotRunHistoryDetail['nodeByIds'][string];
 }
 
 const FilterWrapper = styled.div`
   margin-top: 8px;
   margin-bottom: 8px;
 `;
-export const FilterValueDisplay = ({ filter, label, datasheetId }: {
-    filter: any;
-    label: string;
-    datasheetId: string
-}) => {
+export const FilterValueDisplay = ({ filter, label, datasheetId }: { filter: any; label: string; datasheetId: string }) => {
   const theme = useTheme();
   if (!filter) return null;
   if (!datasheetId) {
@@ -60,7 +57,49 @@ export const FilterValueDisplay = ({ filter, label, datasheetId }: {
         {label}
       </Typography>
       <FilterWrapper>
-        <RecordMatchesConditionsFilter filter={filter} readonly datasheetId={datasheetId}/>
+        <RecordMatchesConditionsFilter filter={filter} readonly datasheetId={datasheetId} />
+      </FilterWrapper>
+    </Box>
+  );
+};
+
+export const ScheduleRuleDisplay = ({
+  value,
+  label,
+  timeZone,
+  scheduleType,
+}: {
+  value: any;
+  label: string;
+  scheduleType: string;
+  timeZone: string;
+}) => {
+  const theme = useTheme();
+  const userTimezone = useAppSelector(Selectors.getUserTimeZone)!;
+  if (!value) return null;
+
+  if (!scheduleType) {
+    return null;
+  }
+  if (!timeZone) {
+    return null;
+  }
+  const v = TimeScheduleManager.getCronWithTimeZone(value);
+
+  return (
+    <Box>
+      <Typography variant="body3" color={theme.color.fc1}>
+        {label}
+      </Typography>
+      <FilterWrapper>
+        <AutomationTiming
+          value={v}
+          scheduleType={scheduleType as any}
+          tz={timeZone}
+          options={{
+            userTimezone,
+          }}
+        />
       </FilterWrapper>
     </Box>
   );
@@ -75,7 +114,7 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
   const { data: dataList1 } = useSWR(['getRobotMagicDatasheetByResourceId', resourceId], () => getTriggerDstId(resourceId), {});
 
   const datasheetId = dataList1 ?? '';
-  const datasheet = useAppSelector(a => Selectors.getDatasheet(a, datasheetId), shallowEqual);
+  const datasheet = useAppSelector((a) => Selectors.getDatasheet(a, datasheetId), shallowEqual);
 
   const fieldPermissionMap = useAppSelector((state) => {
     return Selectors.getFieldPermissionMap(state, datasheetId);
@@ -88,21 +127,16 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
   const colors = useThemeColors();
   const oldSchema = { schema: nodeType.outputJsonSchema };
 
-  if (!datasheet || !fieldPermissionMap || !fields) return (
-    <Box color={colors.bgCommonDefault} width={'100%'}>
-      <StyledTitle>{t(Strings.robot_run_history_input)}</StyledTitle>
+  if (!datasheet || !fieldPermissionMap || !fields)
+    return (
+      <Box color={colors.bgCommonDefault} width={'100%'}>
+        <StyledTitle>{t(Strings.robot_run_history_input)}</StyledTitle>
 
-      <Box
-        width={'100%'}
-        boxShadow={`inset 1px 0px 0px ${theme.color.fc5}`}
-        className={styles.historyDetailList}
-      >
-        {!datasheet && (
-          <ReactJson src={nodeDetail.input} collapsed={3}/>
-        )}
+        <Box width={'100%'} boxShadow={`inset 1px 0px 0px ${theme.color.fc5}`} className={styles.historyDetailList}>
+          {!datasheet && <ReactJson src={nodeDetail.input} collapsed={3} />}
+        </Box>
       </Box>
-    </Box>
-  );
+    );
 
   const outputSchema: any = enrichDatasheetTriggerOutputSchema(oldSchema as any, fields, fieldPermissionMap);
 
@@ -118,18 +152,29 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
         className={styles.historyDetailList}
       >
         {retrievedSchema.type === 'object' &&
-                    Object.keys(retrievedSchema.properties!).map((propertyKey) => {
-                      const propertyValue = formData[propertyKey];
-                      const label = retrievedSchema.properties![propertyKey].title || '';
-                      if (propertyKey === 'filter') {
-                        return <FilterValueDisplay key={propertyKey} label={label} filter={nodeDetail.input.filter}
-                          datasheetId={datasheetId}/>;
-                      }
-                      return <KeyValueDisplay key={propertyKey} label={label} value={propertyValue}/>;
-                    })}
+          Object.keys(retrievedSchema.properties!).map((propertyKey) => {
+            const propertyValue = formData[propertyKey];
+            const label = retrievedSchema.properties![propertyKey].title || '';
+            if (propertyKey === 'scheduleRule') {
+              console.log('nodeDetail input', nodeDetail.input);
+              return (
+                <ScheduleRuleDisplay
+                  key={propertyKey}
+                  label={label}
+                  scheduleType={nodeDetail.input.scheduleType}
+                  timeZone={nodeDetail.input.timeZone}
+                  value={nodeDetail.input.scheduleRule}
+                />
+              );
+            }
+            if (propertyKey === 'filter') {
+              return <FilterValueDisplay key={propertyKey} label={label} filter={nodeDetail.input.filter} datasheetId={datasheetId} />;
+            }
+            return <KeyValueDisplay key={propertyKey} label={label} value={propertyValue} />;
+          })}
       </Box>
-            ;<StyledTitle>{t(Strings.robot_run_history_output)}</StyledTitle>
-      <FormDataRender nodeSchema={outputSchema} formData={nodeDetail.output} disableRetrieveSchema/>
+      ;<StyledTitle>{t(Strings.robot_run_history_output)}</StyledTitle>
+      <FormDataRender nodeSchema={outputSchema} formData={nodeDetail.output} disableRetrieveSchema />
     </Box>
   );
 };
