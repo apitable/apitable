@@ -23,7 +23,16 @@ import { Typography } from '../typography';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import { CronConverter } from './utils';
+import styled, { css } from 'styled-components';
 dayjs.extend(timezone);
+
+const GapBox = styled(Box)<{ gap: string }>`
+  ${(props) =>
+    props.gap &&
+    css`
+      gap: ${props.gap};
+    `}
+`;
 
 export const NextTimePreview: FC<{
   cron: string;
@@ -36,12 +45,12 @@ export const NextTimePreview: FC<{
   const colors = useCssColors();
 
   return (
-    <Box borderColor={colors.borderCommonDefault} borderWidth={'1px'} borderStyle={'solid'} padding={'8px 12px'} borderRadius={'4px'}>
+    <GapBox borderColor={colors.borderCommonDefault} borderWidth={'1px'} borderStyle={'solid'} padding={'8px 12px'} borderRadius={'4px'}>
       <Typography color={colors.textCommonTertiary} variant={'body4'}>
         {title}
       </Typography>
 
-      <Box display={'flex'} flexDirection={'column'} gap={'8px'}>
+      <Box display={'flex'} flexDirection={'column'} gap={'8px'} marginTop={'8px'}>
         {CronConverter.getHumanReadableInformation(cron, tz, options).map((time, index) => {
           return (
             <Typography key={index} color={colors.textCommonTertiary} variant={'body4'}>
@@ -50,6 +59,6 @@ export const NextTimePreview: FC<{
           );
         })}
       </Box>
-    </Box>
+    </GapBox>
   );
 };

@@ -96,7 +96,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
               width: '120px',
             }}
             openSearch
-            searchPlaceholder={Maybe.encase(() => t(Strings.calendar_list_search_placeholder)).orDefault('Search')}
+            searchPlaceholder={Maybe.encase(() => t(Strings.datasource_selector_search_placeholder)).orDefault('Search')}
             value={String(hourInterval)}
             options={dayOptions}
             onSelected={(node) => {
@@ -119,7 +119,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
               minWidth: '64px',
             }}
             suffixContent={
-              <Typography variant={'body3'} color={colors.textCommonPrimary}>
+              <Typography variant={'body3'} color={colors.textCommonPrimary} paddingLeft={'8px'}>
                 {Maybe.encase(() => t(Strings.by_min)).orDefault('Min')}
               </Typography>
             }
@@ -197,7 +197,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
               minWidth: '64px',
             }}
             openSearch
-            searchPlaceholder={Maybe.encase(() => t(Strings.calendar_list_search_placeholder)).orDefault('Search')}
+            searchPlaceholder={Maybe.encase(() => t(Strings.datasource_selector_search_placeholder)).orDefault('Search')}
             listStyle={{
               width: '120px',
             }}
@@ -216,7 +216,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             triggerStyle={{
               width: '142px',
             }}
-            searchPlaceholder={Maybe.encase(() => t(Strings.calendar_list_search_placeholder)).orDefault('Search')}
+            searchPlaceholder={Maybe.encase(() => t(Strings.datasource_selector_search_placeholder)).orDefault('Search')}
             openSearch
             value={dayInMonths}
             disabled={readonly}
@@ -255,7 +255,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
               minWidth: '64px',
             }}
             openSearch
-            searchPlaceholder={Maybe.encase(() => t(Strings.calendar_list_search_placeholder)).orDefault('Search')}
+            searchPlaceholder={Maybe.encase(() => t(Strings.datasource_selector_search_placeholder)).orDefault('Search')}
             listStyle={{
               width: '120px',
             }}

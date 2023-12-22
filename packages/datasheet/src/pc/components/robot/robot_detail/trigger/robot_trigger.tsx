@@ -26,7 +26,7 @@ import { memo, MutableRefObject, useCallback, useContext, useEffect, useMemo, us
 import { shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import useSWR from 'swr';
-import { Box, IDropdownControl, SearchSelect, Typography } from '@apitable/components';
+import { Box, DropdownSelect, IDropdownControl, SearchSelect, Typography } from '@apitable/components';
 import {
   ButtonActionType,
   CollaCommandName,
@@ -34,10 +34,8 @@ import {
   Events,
   FieldType,
   getUtcOptionList,
-  IButtonAction,
   IButtonField,
   IExpression,
-  IField,
   integrateCdnHost,
   IReduxState,
   IServerFormPack,
@@ -406,6 +404,27 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
 
   const mergedUiSchema = useMemo(() => {
     const uiSchemaWithRule = produce(uiSchema, (draft) => {
+      // @ts-ignore
+      draft.timeZone = {
+        'ui:widget': ({ _, onChange }: any) => {
+          return (
+            <DropdownSelect
+              disabled={false}
+              triggerStyle={{
+                minWidth: '64px',
+              }}
+              openSearch
+              searchPlaceholder={Maybe.encase(() => t(Strings.calendar_list_search_placeholder)).orDefault('Search')}
+              value={defaultTimeZone}
+              options={options}
+              onSelected={(node) => {
+                onChange(literal2Operand(node.value));
+              }}
+            />
+          );
+        },
+      };
+
       // @ts-ignore
       draft.scheduleRule = {
         'ui:widget': ({ value, onChange }: any) => {

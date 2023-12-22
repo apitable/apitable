@@ -212,7 +212,7 @@ const TimeInputComp: FC<{
       }
     >
       {({ toggle }) => (
-        <StyledListContainer width={'104px'} minWidth={'auto'} onClick={stopPropagation}>
+        <StyledListContainer width={'min-content'} onClick={stopPropagation}>
           <ListDeprecate
             onClick={(_e, index) => {
               toggle();

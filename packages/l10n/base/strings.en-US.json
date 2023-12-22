@@ -5934,7 +5934,7 @@
   "every_hour_at": "hour(s) in",
   "every_day_at": "day(s) at",
   "every_month_at": "month on",
-  "every_week_at": "Every weekday on",
+  "every_week_at": "Every Week on",
   "by_at": "at",
   "by_in": "in",
   "api_param_validate_error": "{message}",
