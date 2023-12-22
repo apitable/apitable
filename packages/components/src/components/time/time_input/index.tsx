@@ -81,31 +81,6 @@ export const getDefaultHourArray = () => {
 
 const regex = /^([01]\d|2[0-3]):([0-5]\d)$/;
 
-const StyledInput = styled.input<{ disabled: boolean }>`
-  cursor: pointer;
-  border-radius: 4px;
-  border: 1px solid transparent;
-  padding: 0 8px 0 8px;
-  display: flex;
-  align-items: center;
-  position: relative;
-  height: 100%;
-  user-select: none;
-  outline: none;
-  transition: all 0.3s;
-  width: 64px;
-  background-color: var(--bgControlsDefault);
-
-  ${(props) =>
-    props.disabled &&
-    `
-    user-select: none;
-    outline: none;
-    cursor: not-allowed;
-    border: none;
-  `}
-`;
-
 const StyledSelectTrigger = styled.div.attrs(applyDefaultTheme)<{ disabled: boolean; focus: boolean }>`
   cursor: pointer;
   border-radius: 4px;
@@ -136,17 +111,16 @@ const StyledSelectTrigger = styled.div.attrs(applyDefaultTheme)<{ disabled: bool
   }};
 
   ${(props) => {
-    const { fc6 } = props.theme.color;
     return css`
-      background-color: ${fc6};
+      background-color: ${props.theme.color.bgControlsDefault};
     `;
   }};
 
   ${(props) => {
-    const { fc0 } = props.theme.color;
+    const { borderBrandDefault } = props.theme.color;
     if (props.focus) {
       return css`
-        border-color: ${fc0} !important;
+        border-color: ${borderBrandDefault} !important;
       `;
     }
 
@@ -154,11 +128,42 @@ const StyledSelectTrigger = styled.div.attrs(applyDefaultTheme)<{ disabled: bool
       !props.disabled &&
       css`
         &:focus-within {
-          border-color: ${fc0} !important;
+          border-color: ${borderBrandDefault} !important;
         }
       `
     );
   }}
+`;
+
+const StyledInput = styled.input.attrs(applyDefaultTheme)<{ disabled: boolean }>`
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 0 8px 0 8px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  user-select: none;
+  outline: none;
+  transition: all 0.3s;
+  width: 64px;
+  border: none;
+  //1px solid transparent;
+
+  ${(props) => {
+    return css`
+      background-color: ${props.theme.color.bgControlsDefault};
+    `;
+  }};
+
+  ${(props) =>
+    props.disabled &&
+    `
+    user-select: none;
+    outline: none;
+    cursor: not-allowed;
+    border: none;
+  `}
 `;
 
 const TimeInputComp: FC<{

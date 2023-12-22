@@ -128,11 +128,11 @@ export const StyledSelectTrigger = styled.div.attrs(applyDefaultTheme)<{ disable
   }};
 
   ${(props) => {
-    const { fc6 } = props.theme.color;
     return css`
-      background-color: ${fc6};
+      cursor: not-allowed;
+      background-color: ${props.theme.color.bgControlsDefault};
     `;
-  }};
+  }}
 
   ${(props) => {
     const { fc0 } = props.theme.color;
