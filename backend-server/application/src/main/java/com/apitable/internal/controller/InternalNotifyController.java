@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @ApiResource(path = "/internal/notification")
-@Tag(name = "Internal Service - Notification Interface")
+@Tag(name = "Internal")
 public class InternalNotifyController {
 
     @Resource
@@ -46,8 +46,8 @@ public class InternalNotifyController {
     /**
      * Send a message.
      */
-    @PostResource(name = "send a message", path = "/create", requiredLogin = false)
-    @Operation(summary = "send a message", description = "send a message")
+    @PostResource(path = "/create", requiredLogin = false)
+    @Operation(summary = "Notify Message", description = "send a message")
     public ResponseData<Void> create(
         @Valid @RequestBody List<NotificationCreateRo> notificationCreateRoList) {
         boolean bool = playerNotificationService.batchCreateNotify(notificationCreateRoList);

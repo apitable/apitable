@@ -31,7 +31,7 @@ describe('ApiUsageGuard', () => {
   let restService: RestService;
   let context: any;
 
-  beforeAll(async() => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -45,7 +45,7 @@ describe('ApiUsageGuard', () => {
     guard = app.get(ApiUsageGuard);
   });
 
-  afterAll(async() => {
+  afterAll(async () => {
     await app.close();
   });
 
@@ -65,7 +65,9 @@ describe('ApiUsageGuard', () => {
         () => Promise.resolve({
           isAllowOverLimit: false,
           maxApiUsageCount: 2,
-          apiUsageUsedCount: 4
+          apiCallUsedNumsCurrentMonth: 2,
+          apiUsageUsedCount: 4,
+          apiCallNumsPerMonth: 4
         }),
       );
       return guard.canActivate(context).catch(e => {
