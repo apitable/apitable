@@ -18,6 +18,7 @@
 
 import React, { FC, useState } from 'react';
 import { StoryType } from '../../stories/constants';
+import { Box } from '../box';
 import { NextTimePreview } from './preview';
 import { Timing } from './timing';
 import { ICronSchema } from './types';
@@ -104,13 +105,13 @@ export const TimingDisabled: FC = () => {
   const [state, setState] = useState<ICronSchema>(CronConverter.extractCron(CronConverter.getDefaultValue('month'))!);
 
   return (
-    <>
+    <Box width={'500px'} display={'flex'} flexDirection={'column'}>
       <>{JSON.stringify(state)}</>
       <Timing interval={'month'} value={state} onUpdate={setState} readonly />
       <Timing interval={'day'} value={state} onUpdate={setState} readonly />
       <Timing interval={'week'} value={state} onUpdate={setState} readonly />
       <Timing interval={'hour'} value={state} onUpdate={setState} readonly />
-    </>
+    </Box>
   );
 };
 

@@ -21,7 +21,7 @@ const AutomationTimingComp: FC<{
   return (
     <Box>
       <Timing interval={scheduleType} value={value} onUpdate={onUpdate} readonly={false} />
-      <Box marginTop={'8px'}>
+      <Box marginTop={'16px'}>
         <NextTimePreview title={t(Strings.preview_next_automation_execution_time)} cron={cron} tz={settingTimezone} options={options} />
       </Box>
     </Box>
