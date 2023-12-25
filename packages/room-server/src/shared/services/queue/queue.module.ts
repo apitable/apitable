@@ -14,6 +14,7 @@
  */
 
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
+import { RabbitMQConfig } from '@golevelup/nestjs-rabbitmq/lib/rabbitmq.interfaces';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { QueueSenderBaseService } from 'shared/services/queue/queue.sender.base.service';
@@ -29,7 +30,7 @@ export const automationRunningQueueName = 'apitable.automation.running';
     RabbitMQModule.forRootAsync(RabbitMQModule, {
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => {
+      useFactory: (configService: ConfigService): RabbitMQConfig => {
         const uri = process.env.RABBITMQ_HOST
           ? `amqp://${process.env.RABBITMQ_USERNAME}:${process.env.RABBITMQ_PASSWORD}@${process.env.RABBITMQ_HOST}:${process.env.RABBITMQ_PORT}`
           : process.env.QUEUE_URI;
@@ -49,6 +50,7 @@ export const automationRunningQueueName = 'apitable.automation.running';
           connectionInitOptions: { wait: false },
           registerHandlers: true,
           enableDirectReplyTo: false,
+          prefetchCount: 1,
         };
       },
     }),
@@ -56,16 +58,14 @@ export const automationRunningQueueName = 'apitable.automation.running';
   providers: [
     {
       provide: QueueSenderBaseService,
-      useClass: QueueSenderService
+      useClass: QueueSenderService,
     },
   ],
   exports: [
     {
       provide: QueueSenderBaseService,
-      useClass: QueueSenderService
+      useClass: QueueSenderService,
     },
   ],
 })
-export class QueueModule {
-}
-
+export class QueueModule {}
