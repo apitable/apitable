@@ -129,7 +129,6 @@ export const StyledSelectTrigger = styled.div.attrs(applyDefaultTheme)<{ disable
 
   ${(props) => {
     return css`
-      cursor: not-allowed;
       background-color: ${props.theme.color.bgControlsDefault};
     `;
   }}
