@@ -79,6 +79,7 @@ export const FilterNumber: React.FC<React.PropsWithChildren<Omit<IFilterNumberPr
           }}
           ref={numberRef}
           editing
+          isLeftTextAlign
           width={160}
           datasheetId={datasheetId}
           height={editorHeight}

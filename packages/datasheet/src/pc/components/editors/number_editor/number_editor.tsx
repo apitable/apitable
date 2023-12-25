@@ -50,12 +50,12 @@ export interface INumberEditorProps extends IBaseEditorProps {
 
   commandFn?: (data: string) => void;
   isFromFormat?: boolean;
-  isFromFieldEditor?: boolean;
+  isLeftTextAlign?: boolean;
   onBlur?: (...args: any) => void;
 }
 
 const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorProps> = (props, ref) => {
-  const { isFromFieldEditor, field, editing, commandFn, onSave, onBlur, isFromFormat, disabled = false, style: propStyle, height, onChange } = props;
+  const { isLeftTextAlign, field, editing, commandFn, onSave, onBlur, isFromFormat, disabled = false, style: propStyle, height, onChange } = props;
   const colors = useThemeColors();
   const [value, setValue] = useState('');
   const [canInput, setCanInput] = useState<boolean>(true);
@@ -231,7 +231,7 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
     <div
       className={style.numberEditor}
       style={{
-        boxShadow: isFromFormat || isFromFieldEditor || commandFn ? 'none' : `0px 0px 0px 2px ${colors.primaryColor}`,
+        boxShadow: isFromFormat || isLeftTextAlign || commandFn ? 'none' : `0px 0px 0px 2px ${colors.primaryColor}`,
         ...propStyle,
         height,
       }}
@@ -243,7 +243,7 @@ const NumberEditorBase: React.ForwardRefRenderFunction<IEditor, INumberEditorPro
           <div style={{ width: '100%' }}>
             <input
               className={classnames(style.numberInput, 'numberEditorInput', { [style.numberEditorDisabled]: disabled })}
-              style={{ textAlign: isFromFieldEditor ? 'left' : 'right' }}
+              style={{ textAlign: isLeftTextAlign ? 'left' : 'right' }}
               ref={editorRef}
               onBlur={onBlur}
               {...commonProps}
