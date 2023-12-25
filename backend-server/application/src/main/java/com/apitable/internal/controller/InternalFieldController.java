@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @ApiResource(path = "/internal/field")
-@Tag(name = "Internal Service - Field Service Interface")
+@Tag(name = "Internal")
 public class InternalFieldController {
 
     @Resource
@@ -48,7 +48,7 @@ public class InternalFieldController {
      * Get url related information.
      */
     @PostResource(path = "/url/awareContents", requiredPermission = false)
-    @Operation(summary = "get url related information", description = "get url related information")
+    @Operation(summary = "Fetch url", description = "get url related information")
     public ResponseData<UrlAwareContentsVo> urlContentsAwareFill(
         @RequestBody @Valid UrlsWrapperRo ro) {
         List<String> urls = ro.getUrls();

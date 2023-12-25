@@ -21,24 +21,44 @@ import { useCssColors } from '../../hooks/use_css_colors';
 import { Box } from '../box';
 import { Typography } from '../typography';
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import { CronConverter } from './utils';
+import styled, { css } from 'styled-components';
+dayjs.extend(timezone);
+
+const GapBox = styled(Box)<{ gap: string }>`
+  ${(props) =>
+    props.gap &&
+    css`
+      gap: ${props.gap};
+    `}
+`;
 
 export const NextTimePreview: FC<{
-  title: string
-  times: Date[]
-}> = ({ title , times }) => {
+  cron: string;
+  title: string;
+  tz?: string;
+  options: {
+    userTimezone: string;
+  };
+}> = ({ title, cron, tz = 'Asia/Shanghai', options }) => {
   const colors = useCssColors();
-  return (<Box borderColor={colors.borderCommonDefault} borderWidth={'1px'} padding={'8px 12px'}>
-    <Typography color={colors.textCommonTertiary} variant={'body4'}>{title}</Typography>
 
-    <Box display={'flex'} flexDirection={'column'} gap={'8px'}>
-      {
-        times.map((time, index) => {
+  return (
+    <GapBox borderColor={colors.borderCommonDefault} borderWidth={'1px'} borderStyle={'solid'} padding={'8px 12px'} borderRadius={'4px'}>
+      <Typography color={colors.textCommonTertiary} variant={'body4'}>
+        {title}
+      </Typography>
 
+      <Box display={'flex'} flexDirection={'column'} gap={'8px'} marginTop={'8px'}>
+        {CronConverter.getHumanReadableInformation(cron, tz, options).map((time, index) => {
           return (
-            <Typography color={colors.textCommonTertiary} variant={'body4'}>{dayjs(time).format('YYYY-MM-DD HH:mm')}</Typography>
+            <Typography key={index} color={colors.textCommonTertiary} variant={'body4'}>
+              {time}
+            </Typography>
           );
-        })
-      }
-    </Box>
-  </Box>);
+        })}
+      </Box>
+    </GapBox>
+  );
 };

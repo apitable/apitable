@@ -36,6 +36,8 @@ public enum AutomationTriggerType {
 
     BUTTON_CLICKED("button_clicked"),
 
+    SCHEDULED_TIME_ARRIVE("scheduled_time_arrive"),
+
     ;
 
 

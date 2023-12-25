@@ -17,27 +17,15 @@
  */
 
 import * as React from 'react';
-import { forwardRef, memo, useImperativeHandle } from 'react';
-import { Box } from '@apitable/components';
-import {
-  ButtonActionType,
-  evaluate,
-  IButtonField,
-  ICellValue,
-  IReduxState,
-  OpenLinkType,
-  Strings,
-  t
-  , IRecord } from '@apitable/core';
+import { ButtonActionType, evaluate, IButtonField, ICellValue, IReduxState, OpenLinkType, Strings, t, IRecord } from '@apitable/core';
 import { reqDatasheetButtonTrigger } from 'pc/components/robot/api';
 import { IBaseEditorProps, IEditor } from '../interface';
-import { ButtonFieldItem } from './buton_item';
 
 export interface IButtonEditorProps extends IBaseEditorProps {
   editable: boolean;
   editing?: boolean;
   cellValue?: ICellValue;
-  record?: IRecord,
+  record?: IRecord;
   datasheetId: string;
   toggleEditing?: (next?: boolean) => void;
   field: IButtonField;
@@ -46,21 +34,17 @@ export interface IButtonEditorProps extends IBaseEditorProps {
 }
 
 export interface IRunRespStatus {
- success:boolean, message: string
+  success: boolean;
+  message: string;
 }
 
 const timeout = (prom: any, time: number, exception: any) => {
   let timer;
-  return Promise.race([
-    prom,
-    new Promise((_r, rej) => timer = setTimeout(rej, time, exception))
-  ]).finally(() => clearTimeout(timer));
+  return Promise.race([prom, new Promise((_r, rej) => (timer = setTimeout(rej, time, exception)))]).finally(() => clearTimeout(timer));
 };
 
-export const runAutomationUrl = (datasheetId: string, record: any, state: IReduxState, recordId: string, fieldId: string, field: IButtonField,
-) => {
+export const runAutomationUrl = (datasheetId: string, record: any, state: IReduxState, recordId: string, fieldId: string, field: IButtonField) => {
   if (field.property.action.type === ButtonActionType.OpenLink) {
-
     try {
       if (field.property.action.openLink?.type === OpenLinkType.Url) {
         window.open(field.property.action.openLink?.expression, '_blank');
@@ -70,7 +54,6 @@ export const runAutomationUrl = (datasheetId: string, record: any, state: IRedux
         const url = evaluate(expression, { field, record, state }, false);
 
         window.open(String(url), '_blank');
-
       }
     } catch (e) {
       console.log('error', e);
@@ -78,22 +61,28 @@ export const runAutomationUrl = (datasheetId: string, record: any, state: IRedux
   }
 };
 
-export const runAutomationButton = async (datasheetId: string, record: any, state: IReduxState, recordId: string, fieldId: string, field: IButtonField,
-  callback: (success?: boolean, code?: number, message?: string) => void
-) : Promise<{success: boolean}>=> {
-  if(field.property.action.type === ButtonActionType.OpenLink) {
+export const runAutomationButton = async (
+  datasheetId: string,
+  record: any,
+  state: IReduxState,
+  recordId: string,
+  fieldId: string,
+  field: IButtonField,
+  callback: (success?: boolean, code?: number, message?: string) => void,
+): Promise<{ success: boolean }> => {
+  if (field.property.action.type === ButtonActionType.OpenLink) {
     return {
       success: true,
     };
   }
   try {
-    const respTrigger = await reqDatasheetButtonTrigger({
+    const respTrigger = (await reqDatasheetButtonTrigger({
       dstId: datasheetId,
       recordId,
       fieldId,
-    }) as unknown as {data : {success: boolean, code: number, message: string}};
+    })) as unknown as { data: { success: boolean; code: number; message: string } };
     const success = respTrigger?.data?.success ?? false;
-    callback(success, respTrigger?.data?.code, respTrigger?.data?.message );
+    callback(success, respTrigger?.data?.code, respTrigger?.data?.message);
     return respTrigger?.data;
   } catch (e) {
     callback(false);
@@ -102,47 +91,3 @@ export const runAutomationButton = async (datasheetId: string, record: any, stat
     };
   }
 };
-
-const ButtonEditorBase: React.ForwardRefRenderFunction<IEditor, IButtonEditorProps> = (props, ref) => {
-  const { recordId, record, field, cellValue, editable, editing = false, toggleEditing } = props;
-  useImperativeHandle(
-    ref,
-    (): IEditor => ({
-      focus: () => {
-        focus();
-      },
-      onEndEdit: () => {
-        onEndEdit();
-      },
-      onStartEdit: () => {
-        onStartEdit();
-      },
-      setValue: () => {
-        onStartEdit();
-      },
-      saveValue: () => {
-        saveValue();
-      },
-    }),
-  );
-
-  const focus = () => {};
-
-  const onEndEdit = () => {};
-
-  const saveValue = () => {};
-
-  const onStartEdit = () => {};
-
-  return (
-    <Box width={props.width} display={'flex'} justifyContent={'center'} height={'26px'} paddingTop={'4px'}>
-      {
-        recordId && record && (
-          <ButtonFieldItem record={record} recordId={recordId} field={field} maxWidth={'calc(100% - 40px)'}/>
-        )
-      }
-    </Box>
-  );
-};
-
-export const ButtonEditor = memo(forwardRef(ButtonEditorBase));

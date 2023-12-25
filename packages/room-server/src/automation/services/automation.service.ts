@@ -27,7 +27,7 @@ import {
   IRobotTaskExtraTrigger,
   NoticeTemplatesConstant,
   Strings,
-  validateMagicForm
+  validateMagicForm,
 } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
 import { Nack, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
@@ -47,7 +47,7 @@ import {
   automationExchangeName,
   automationRunning,
   automationRunningQueueName,
-  notificationQueueExchangeName
+  notificationQueueExchangeName,
 } from 'shared/services/queue/queue.module';
 import { QueueSenderBaseService } from 'shared/services/queue/queue.sender.base.service';
 import { RestService } from 'shared/services/rest/rest.service';
@@ -262,7 +262,7 @@ export class AutomationService {
     await this.createRunHistory(robotId, taskId, spaceId);
     try {
       // 2. execute the robot
-      await this.robotRunner.run({
+      await this.robotRunner. run({
         robotId,
         triggerId: trigger.triggerId,
         triggerInput: trigger.input,
@@ -312,12 +312,7 @@ export class AutomationService {
   async activeRobot(robotId: string, user: IUserBaseInfo) {
     const errorsByNodeId: any = {};
     try {
-      const resourceCount = await this.automationTriggerRepository.selectResourceIdCountByRobotId(robotId);
-      if (resourceCount == 0) {
-        return {
-          ok: false,
-        };
-      }
+      // todo validate resource ?
       const robot = await this.robotService.getRobotDetailById(robotId);
       const actions = Object.values(robot.actionsById);
       const { trigger, triggerType } = robot as any;
@@ -443,7 +438,7 @@ export class AutomationService {
    * @param status run status
    * @param data context
    */
-  private async createRunHistory(robotId: string, taskId: string, spaceId: string, status = RunHistoryStatusEnum.RUNNING, data?: any) {
+  public async createRunHistory(robotId: string, taskId: string, spaceId: string, status = RunHistoryStatusEnum.RUNNING, data?: any) {
     const newRunHistory = this.automationRunHistoryRepository.create({
       taskId,
       robotId,
@@ -477,13 +472,28 @@ export class AutomationService {
     return { success, data };
   }
 
-  private async getSpaceIdByRobotId(robotId: string) {
+  public async getSpaceIdByRobotId(robotId: string) {
     const resourceId = await this.automationRobotRepository.getResourceIdByRobotId(robotId);
     const rawResult = await this.nodeService.selectSpaceIdByNodeId(resourceId!);
     if (!rawResult?.spaceId) {
       throw new ServerException(PermissionException.NODE_NOT_EXIST);
     }
     return rawResult.spaceId;
+  }
+
+  public async isAutomationRunnableInSpace(spaceId: string): Promise<boolean> {
+    try {
+      const automationRunsMessage = await this.restService.getSpaceAutomationRunsMessage(spaceId);
+      const allowRun = automationRunsMessage?.allowRun;
+      if (!allowRun) {
+        // The number of space station automation runs exceeds the limit and an excess record is generated.
+        this.logger.log('Automation Subscription UsageExceeded', { spaceId });
+      }
+      return allowRun;
+    } catch (e) {
+      this.logger.error('Automation Subscription Error', { e });
+    }
+    return true;
   }
 
   private async sendFailureMessage(taskId: string) {
@@ -520,18 +530,4 @@ export class AutomationService {
     }
   }
 
-  private async isAutomationRunnableInSpace(spaceId: string): Promise<boolean> {
-    try {
-      const automationRunsMessage = await this.restService.getSpaceAutomationRunsMessage(spaceId);
-      const allowRun = automationRunsMessage?.allowRun;
-      if (!allowRun) {
-        // The number of space station automation runs exceeds the limit and an excess record is generated.
-        this.logger.log('Automation Subscription UsageExceeded', { spaceId });
-      }
-      return allowRun;
-    } catch (e) {
-      this.logger.error('Automation Subscription Error', { e });
-    }
-    return true;
-  }
 }

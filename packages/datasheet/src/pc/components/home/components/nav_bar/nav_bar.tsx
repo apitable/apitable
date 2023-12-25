@@ -16,12 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { getEnvVariables } from '../../../../utils/env';
+import { compact } from 'lodash';
+import { ActionType } from 'pc/components/home/pc_home';
+import { getEnvVariables } from 'pc/utils/env';
 import styles from './style.module.less';
 
-export const NavBar: React.FC<React.PropsWithChildren<{ gap?: number }>> = (props) => {
-  const { gap = 32 } = props;
-  const linkList = [
+interface INavBar {
+  action?: ActionType;
+  gap?: number
+}
+
+export const NavBar: React.FC<React.PropsWithChildren<INavBar>> = (props) => {
+  const { gap = 32, action } = props;
+  const linkList = compact([
     {
       href: 'https://help.apitable.com',
       target: '_blank',
@@ -32,7 +39,17 @@ export const NavBar: React.FC<React.PropsWithChildren<{ gap?: number }>> = (prop
       target: '_blank',
       text: 'About',
     },
-  ];
+    action === ActionType.BindAppSumo && {
+      href: 'https://aitable.ai/privacy-policy',
+      target: '_blank',
+      text: 'Privacy Policy',
+    },
+    action === ActionType.BindAppSumo && {
+      href: 'https://aitable.ai/terms-and-conditions',
+      target: '_blank',
+      text: 'Terms and Conditions',
+    },
+  ]);
 
   if (getEnvVariables().LOGIN_SOCIAL_ICONS_DISABLE) {
     return null;

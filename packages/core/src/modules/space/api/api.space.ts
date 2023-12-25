@@ -164,10 +164,12 @@ export function addNode(nodeInfo: IAddNodeParams) {
  * @param nodeId Node Id
  */
 export function delNode(nodeId: string) {
-  if (getBrowserDatabusApiEnabled()){
-    WasmApi.getInstance().delete_cache(nodeId).then((result) => {
-      console.log('delete indexDb cache', result);
-    });
+  if (getBrowserDatabusApiEnabled()) {
+    WasmApi.getInstance()
+      .delete_cache(nodeId)
+      .then((result) => {
+        console.log('delete indexDb cache', result);
+      });
   }
   return axios.delete(Url.DELETE_NODE + nodeId);
 }
@@ -186,12 +188,15 @@ export function getSpecifyNodeList(nodeType: NodeType) {
  * @param nodeId Node ID
  * @param data
  */
-export function editNode(nodeId: string, data: {
-  nodeName?: string;
-  icon?: string;
-  cover?: string;
-  showRecordHistory?: ShowRecordHistory
-}) {
+export function editNode(
+  nodeId: string,
+  data: {
+    nodeName?: string;
+    icon?: string;
+    cover?: string;
+    showRecordHistory?: ShowRecordHistory;
+  }
+) {
   return axios.post(Url.EDIT_NODE + nodeId, data);
 }
 
@@ -646,7 +651,7 @@ export function updateShare(
     onlyRead?: boolean;
     canBeEdited?: boolean;
     canBeStored?: boolean;
-  },
+  }
 ) {
   return axios.post(Url.UPDATE_SHARE + nodeId, {
     props: JSON.stringify(permission),
@@ -667,11 +672,12 @@ export function nodeShowcase(nodeId: string, shareId?: string) {
   });
 }
 
-export function checkoutOrder(spaceId: string, priceId: string, clientReferenceId: string, couponId: string) {
+export function checkoutOrder(spaceId: string, priceId: string, clientReferenceId: string, couponId: string, trial?: boolean) {
   return axios.post(Url.CHECKOUT_ORDER, {
     spaceId,
     priceId,
     clientReferenceId,
     couponId,
+    trial,
   });
 }

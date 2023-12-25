@@ -16,14 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useAtomValue, useAtom, useSetAtom } from 'jotai';
-import { useEffect, useMemo } from 'react';
+import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import * as React from 'react';
+import { useEffect, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { applyDefaultTheme, SearchSelect } from '@apitable/components';
-import { ConfigConstant, Events, Player, Strings, t } from '@apitable/core';
+import { Selectors, Strings, t } from '@apitable/core';
 import { CONST_MAX_TRIGGER_COUNT } from 'pc/components/automation/config';
-import { TriggerCommands } from '../../../../../modules/shared/apphook/trigger_commands';
+import { useAppSelector } from 'pc/store/react-redux';
+import { getEnvVariables } from 'pc/utils/env';
 import {
   automationCurrentTriggerId,
   automationPanelAtom,
@@ -32,9 +33,9 @@ import {
   useAutomationController,
 } from '../../../automation/controller';
 import { useAutomationResourcePermission } from '../../../automation/controller/use_automation_permission';
-import { createTrigger } from '../../api';
+import { createTrigger, ICronSchemaTimeZone } from '../../api';
 import { getNodeTypeOptions } from '../../helper';
-import { useDefaultTriggerFormData } from '../../hooks';
+import { getDefaultSchema, useDefaultTriggerFormData } from '../../hooks';
 import { AutomationScenario, ITriggerType } from '../../interface';
 import { NewItem } from '../../robot_list/new_item';
 import itemStyle from './select_styles.module.less';
@@ -62,6 +63,8 @@ export const StyledListContainer = styled.div.attrs(applyDefaultTheme)<{ width: 
 export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: IRobotTriggerCreateProps) => {
   const defaultFormData = useDefaultTriggerFormData();
 
+  const userTimezone = useAppSelector(Selectors.getUserTimeZone)!;
+
   const permissions = useAutomationResourcePermission();
   const {
     api: { refresh },
@@ -71,6 +74,11 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
   const setAutomationCurrentTriggerId = useSetAtom(automationCurrentTriggerId);
 
   const triggerList = state?.robot?.triggers ?? [];
+
+  const timeScheduleTriggerType = useMemo(() => {
+    return triggerTypes.find((item) => item.endpoint === 'scheduled_time_arrive');
+  }, [triggerTypes]);
+
   const triggerTypeOptions = useMemo(() => {
     let list = triggerTypes;
     if (state?.scenario === AutomationScenario.datasheet) {
@@ -92,7 +100,15 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
     return async (triggerTypeId: string) => {
       const triggerType = triggerTypes.find((item) => item.triggerTypeId === triggerTypeId);
       // When the trigger is created for a record, the default value needs to be filled in.
-      const input = triggerType?.endpoint === 'record_created' ? defaultFormData : undefined;
+      let input = triggerType?.endpoint === 'record_created' ? defaultFormData : undefined;
+
+      let scheduleConfig: ICronSchemaTimeZone | undefined = undefined;
+      if (triggerType?.endpoint === 'scheduled_time_arrive') {
+        scheduleConfig = {
+          timeZone: userTimezone,
+        };
+        input = getDefaultSchema(userTimezone);
+      }
       if (!state?.resourceId) {
         console.error('.resourceId unfound ');
         return;
@@ -137,11 +153,17 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
     setAutomationPanel,
   ]);
 
+  const { IS_ENTERPRISE } = getEnvVariables();
   if (!triggerTypes) {
     return null;
   }
 
   const handleCreateFormChange = (triggerTypeId: string) => {
+    if (triggerTypeId === timeScheduleTriggerType?.triggerTypeId && !IS_ENTERPRISE) {
+      window.open('https://aitable.ai/pricing/');
+      return;
+    }
+
     if (triggerTypeId) {
       createRobotTrigger(triggerTypeId);
     }
@@ -164,11 +186,9 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
         handleCreateFormChange(String(item.value));
       }}
     >
-      <NewItem
-        itemId={'ROBOT_ITEM_TRIGGER_CREATE'}
-        disabled={
-          !permissions.editable
-        }>{t(Strings.add_a_trigger)}</NewItem>
+      <NewItem itemId={'ROBOT_ITEM_TRIGGER_CREATE'} disabled={!permissions.editable}>
+        {t(Strings.add_a_trigger)}
+      </NewItem>
     </SearchSelect>
   );
 };

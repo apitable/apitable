@@ -755,12 +755,13 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
                 style={
                   isColumnLayout
                     ? {
-                      height: 150,
-                      width: '100%',
-                      maxWidth: '100%',
-                      borderTop: '1px solid var(--fc5)',
-                      flexGrow: 1,
-                    }
+                        height: 150,
+                        width: '100%',
+                        maxWidth: '100%',
+                        borderTop: '1px solid var(--fc5)',
+
+                        flexGrow: 1,
+                      }
                     : undefined
                 }
               />

@@ -26,11 +26,10 @@ import { ICollaborator, integrateCdnHost, ResourceType, Selectors, Settings } fr
 // eslint-disable-next-line no-restricted-imports
 import { Avatar, AvatarSize, Tooltip, UserCardTrigger } from 'pc/components/common';
 import { backCorrectAvatarName, backCorrectName, isAlien } from 'pc/components/multi_grid/cell/cell_other';
-import styles from './style.module.less';
+import { useAppSelector } from 'pc/store/react-redux';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const MAX_SHOW_NUMBER = 3;
 
@@ -93,6 +92,7 @@ export const CollaboratorStatus: React.FC<
             return {
               name: item.userName,
               avatar: item.avatar,
+              userId: item.userId,
             };
           }),
         },

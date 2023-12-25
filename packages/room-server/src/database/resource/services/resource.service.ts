@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FieldType, ResourceIdPrefix, ResourceType } from '@apitable/core';
+import { FieldType, IMeta, ResourceIdPrefix, ResourceType } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { Injectable } from '@nestjs/common';
 import { AutomationService } from 'automation/services/automation.service';
@@ -88,15 +88,22 @@ export class ResourceService {
       return;
     }
     // Check if datasheet has linked datasheet with foreignDatasheetId
-    const meta = await this.datasheetMetaService.getMetaDataByDstId(dstId);
-    const isExist = Object.values(meta.fieldMap).some(field => {
-      if (field.type === FieldType.Link) {
+    const metaMap = await this.datasheetMetaService.getMetaMapByDstIds([dstId, resourceId]);
+    const isExist = this.hasLinkRelation(metaMap[dstId], resourceId) || this.hasLinkRelation(metaMap[resourceId], dstId);
+    if (!isExist) {
+      throw new ServerException(PermissionException.ACCESS_DENIED);
+    }
+  }
+
+  private hasLinkRelation(meta?: IMeta, resourceId?: string): boolean {
+    if (!meta) {
+      return false;
+    }
+    return Object.values(meta.fieldMap).some((field) => {
+      if (field.type === FieldType.Link || field.type === FieldType.OneWayLink) {
         return field.property.foreignDatasheetId === resourceId;
       }
       return false;
     });
-    if (!isExist) {
-      throw new ServerException(PermissionException.ACCESS_DENIED);
-    }
   }
 }

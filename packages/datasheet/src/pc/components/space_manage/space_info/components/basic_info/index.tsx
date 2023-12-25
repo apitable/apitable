@@ -72,7 +72,16 @@ export const Info = (props: IInfoProps) => {
     <div className={classnames(styles.card, className)} style={{ ...style, transform: 'none' }}>
       {env.DELETE_SPACE_VISIBLE && (
         <div className={styles.moreMenuWrap} onClick={handleClick}>
-          <TextButton size="small" prefixIcon={<SettingOutlined />}>
+          <TextButton
+            size="small"
+            prefixIcon={<SettingOutlined />}
+            style={{
+              height: '32px',
+              padding: '6px 12px',
+              fontSize: '13px',
+              lineHeight: '20px',
+            }}
+          >
             {t(Strings.form_tab_setting)}
           </TextButton>
         </div>

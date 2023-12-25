@@ -89,7 +89,7 @@ export class ApiUsageGuard implements CanActivate {
     }
     // only works for those who are allowed to exceed the limit of usage
     if (res && !res.isAllowOverLimit) {
-      if (res.maxApiUsageCount && res.apiUsageUsedCount && res.maxApiUsageCount - res.apiUsageUsedCount < 0) {
+      if (res.apiCallNumsPerMonth && res.apiCallUsedNumsCurrentMonth && res.apiCallNumsPerMonth - res.apiCallUsedNumsCurrentMonth < 0) {
         throw ApiException.tipError(ApiTipConstant.api_forbidden_because_of_usage);
       }
     }

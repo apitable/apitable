@@ -57,7 +57,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @ApiResource(path = "/internal")
-@Tag(name = "Internal service - data table field permission interface")
+@Tag(name = "Internal")
 public class InternalFieldPermissionController {
 
     @Resource
@@ -79,7 +79,7 @@ public class InternalFieldPermissionController {
      * turn off multiple field permissions.
      */
     @PostResource(path = "/datasheet/{dstId}/field/permission/disable", requiredPermission = false)
-    @Operation(summary = "turn off multiple field permissions", description = "room layer ot "
+    @Operation(summary = "Disable Field Permissions", description = "Batch disable file permission of a specific datasheet"
         + "delete field operation call")
     @Parameters({
         @Parameter(name = "dstId", description = "table id", required = true,
@@ -110,7 +110,7 @@ public class InternalFieldPermissionController {
      * get field permissions.
      */
     @GetResource(path = "/node/{nodeId}/field/permission", requiredLogin = false)
-    @Operation(summary = "get field permissions")
+    @Operation(summary = "Retrieve Single Node Field Permissions")
     @Parameters({
         @Parameter(name = "nodeId", description = "node id", required = true, schema = @Schema
             (type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNsaP"),
@@ -145,7 +145,7 @@ public class InternalFieldPermissionController {
      * get field permission set for multiple nodes.
      */
     @PostResource(path = "/node/field/permission", requiredLogin = false)
-    @Operation(summary = "get field permission set for multiple nodes")
+    @Operation(summary = "Retrieve Multi Node Field Permission")
     public ResponseData<List<FieldPermissionView>> getMultiFieldPermissionViews(
         @RequestBody @Valid InternalPermissionRo data) {
         // Filter non-existing nodes to prevent subsequent exceptions from being thrown

@@ -84,7 +84,7 @@ export const PcHome: React.FC<React.PropsWithChildren<unknown>> = () => {
   };
 
   return (
-    <HomeWrapper>
+    <HomeWrapper action={action}>
       <div className={styles.loginBox}>
         {inviteLinkInfo || inviteEmailInfo ? (
           <div className={styles.invite}>

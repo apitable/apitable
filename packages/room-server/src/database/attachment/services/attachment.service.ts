@@ -40,8 +40,7 @@ export class AttachmentService {
     private readonly httpService: HttpService,
     @InjectLogger() private readonly logger: Logger,
     private readonly i18n: I18nService,
-  ) {
-  }
+  ) {}
 
   /**
    * Save files in directory
@@ -55,9 +54,9 @@ export class AttachmentService {
       const errMsg = await this.i18n.translate(error.getTip().id, {
         lang: req[USER_HTTP_DECORATE]?.locale,
       });
-      throw new ServerException(new CommonException(error.getTip().code, errMsg), error.getTip().statusCode);
+      throw new ServerException(new CommonException(error.getTip().code, errMsg as string), error.getTip().statusCode);
     }
-    return async(_field: string, file: pump.Stream, filename: string, _encoding: string, mimetype: string): Promise<void> => {
+    return async (_field: string, file: pump.Stream, filename: string, _encoding: string, mimetype: string): Promise<void> => {
       try {
         const result = await this.uploadFile({ token: req.headers.authorization }, dstId, file, filename, mimetype);
         void reply.send(ApiResponse.success(result));
@@ -66,7 +65,7 @@ export class AttachmentService {
           lang: req[USER_HTTP_DECORATE]?.locale,
           args: e.getExtra(),
         });
-        void reply.send(ApiResponse.error(errMsg, e.getTip().statusCode));
+        void reply.send(ApiResponse.error(errMsg as string, e.getTip().statusCode));
       }
     };
   }
@@ -82,7 +81,7 @@ export class AttachmentService {
       const form = new FormData();
       await form.append('file', file, {
         filename,
-        contentType: mimetype
+        contentType: mimetype,
       });
       await form.append('nodeId', dstId);
       await form.append('type', AttachmentTypeEnum.DATASHEET_ATTACH.toString());

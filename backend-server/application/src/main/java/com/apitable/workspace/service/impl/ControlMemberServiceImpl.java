@@ -93,16 +93,16 @@ public class ControlMemberServiceImpl implements IControlMemberService {
         Map<Long, ControlMemberDTO> memberControlRoleMap =
             this.getMemberControlRoleMap(spaceId, controlId);
         // calculate position
-        int sub = (int) (page.getCurrent() - 1) * (int) page.getSize();
+        long sub = (page.getCurrent() - 1) * page.getSize();
         if (sub > memberControlRoleMap.size()) {
-            return PageHelper.build((int) page.getCurrent(), (int) page.getSize(),
+            return PageHelper.build(page.getCurrent(), page.getSize(),
                 memberControlRoleMap.size(), new ArrayList<>());
         }
 
-        int end = (sub + page.getSize()) > memberControlRoleMap.size()
-            ? memberControlRoleMap.size() : sub + (int) page.getSize();
+        long end = (sub + page.getSize()) > memberControlRoleMap.size()
+            ? memberControlRoleMap.size() : sub + page.getSize();
         List<Long> memberIds =
-            new ArrayList<>(memberControlRoleMap.keySet()).subList(sub, end);
+            new ArrayList<>(memberControlRoleMap.keySet()).subList((int) sub, (int) end);
         List<T> records = new ArrayList<>(memberIds.size());
         List<NodeRoleMemberVo> results = iMemberService.getNodeRoleMemberWithSort(memberIds);
         // Give permission value
@@ -113,7 +113,7 @@ public class ControlMemberServiceImpl implements IControlMemberService {
             result.setIsControlOwner(controlMemberDTO.getIsControlOwner());
             records.add(BeanUtil.toBean(result, clz));
         });
-        return PageHelper.build((int) page.getCurrent(), (int) page.getSize(),
+        return PageHelper.build(page.getCurrent(), page.getSize(),
             memberControlRoleMap.size(), records);
     }
 

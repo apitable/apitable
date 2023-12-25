@@ -92,7 +92,7 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
             res.setHeader('Content-Type', 'application/json');
             res.statusCode = error.getTip().statusCode;
             const errMsg = await this.i18n.translate(error.getMessage(), { lang: user?.locale });
-            res.write(JSON.stringify(ApiResponse.error(errMsg, error.getTip().code)));
+            res.write(JSON.stringify(ApiResponse.error(errMsg as string, error.getTip().code)));
             res.end();
           }
           // unknown error
@@ -114,13 +114,13 @@ export class NodeRateLimiterMiddleware implements NestMiddleware {
       .then(() => {
         next();
       })
-      .catch(async() => {
+      .catch(async () => {
         const user = await this.developerService.getUserInfoByApiKey(token);
         const err = ApiException.tipError(ApiTipConstant.api_frequently_error, { value: points });
         res.setHeader('Content-Type', 'application/json');
         res.statusCode = err.getTip().statusCode;
-        const errMsg = await this.i18n.translate(err.getMessage(), { lang: user?.locale, args: { value: points }});
-        res.write(JSON.stringify(ApiResponse.error(errMsg, err.getTip().code)));
+        const errMsg = await this.i18n.translate(err.getMessage(), { lang: user?.locale, args: { value: points } });
+        res.write(JSON.stringify(ApiResponse.error(errMsg as string, err.getTip().code)));
         res.end();
       });
   }

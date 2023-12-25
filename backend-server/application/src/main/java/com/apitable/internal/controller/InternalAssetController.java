@@ -41,11 +41,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Internal Server - Asset API.
+ * Internal - Asset API.
  */
 @RestController
 @ApiResource(path = "/internal/asset")
-@Tag(name = "Internal Server - Asset API")
+@Tag(name = "Internal")
 public class InternalAssetController {
 
     @Resource
@@ -77,7 +77,7 @@ public class InternalAssetController {
     /**
      * Get Asset Info.
      */
-    @GetResource(name = "Get Asset Info", path = "/get", requiredLogin = false)
+    @GetResource(path = "/get", requiredLogin = false)
     @Operation(summary = "Get Asset Info", description = "scene：Fusion server query the "
         + "attachment field data before writing")
     @Parameter(name = "token", description = "resource key", required = true, schema = @Schema(type =
