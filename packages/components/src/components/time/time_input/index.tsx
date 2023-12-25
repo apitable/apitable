@@ -148,11 +148,10 @@ const StyledInput = styled.input.attrs(applyDefaultTheme)<{ disabled: boolean }>
   transition: all 0.3s;
   width: 64px;
   border: none;
-  //1px solid transparent;
 
   ${(props) => {
     return css`
-      background-color: ${props.theme.color.bgControlsDefault};
+      background-color: ${props.theme.color.fc6};
     `;
   }};
 

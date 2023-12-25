@@ -134,6 +134,9 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             triggerStyle={{
               minWidth: '64px',
             }}
+            listStyle={{
+              width: '120px',
+            }}
             openSearch
             searchPlaceholder={Maybe.encase(() => t(Strings.datasource_selector_search_placeholder)).orDefault('Search')}
             suffixContent={
