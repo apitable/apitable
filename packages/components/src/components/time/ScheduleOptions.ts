@@ -36,7 +36,7 @@ export const ScheduleOptions = {
     return hourOptions;
   },
   getDayOptions: () => {
-    const dayOptions = Array.from({ length: 30 }, (_, i) => {
+    const dayOptions = Array.from({ length: 31 }, (_, i) => {
       return dayjs().set('date', i + 1);
     }).map((num) => ({
       label: num.format('Do'),

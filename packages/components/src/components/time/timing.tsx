@@ -55,7 +55,7 @@ export const monthOptions = Array.from({ length: 12 }, (_, i) => i + 1).map((num
   value: num.toString(),
 }));
 
-export const minuteOptions = Array.from({ length: 59 }, (_, i) => i).map((num) => ({
+export const minuteOptions = Array.from({ length: 60 }, (_, i) => i).map((num) => ({
   label: num < 10 ? `0${num}` : String(num),
   value: num.toString(),
 }));

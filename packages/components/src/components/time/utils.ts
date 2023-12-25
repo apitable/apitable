@@ -37,6 +37,10 @@ const integratedMinitue = (value: number) => {
 export type AutomationInterval = 'day' | 'month' | 'week' | 'hour';
 type AutomationCron = string;
 
+const getUTCOffset = (timezone: string): number => {
+  const utcOffset = dayjs().tz(timezone).utcOffset();
+  return utcOffset / 60;
+};
 export class CronConverter {
   cron: ICronSchema;
 
@@ -107,9 +111,9 @@ export class CronConverter {
 
       return newTimes.map(
         (time) =>
-          `${dayjs(time).tz(options.userTimezone).format(CONST_FORMAT_AUTOMATION_TIME)} UTC${
-            dayjs(time).tz(options.userTimezone).utcOffset() / 60
-          } (${options.userTimezone})`
+          `${dayjs(time).tz(options.userTimezone).format(CONST_FORMAT_AUTOMATION_TIME)} UTC${getUTCOffset(options.userTimezone)} (${
+            options.userTimezone
+          })`
       );
     }).orDefault([]);
   };
