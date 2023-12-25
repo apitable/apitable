@@ -40,7 +40,6 @@ public abstract class TriggerRO {
     @Schema(description = "Trigger schedule config ro")
     public static class TriggerScheduleConfig {
         @Schema(description = "second", requiredMode = Schema.RequiredMode.REQUIRED, example = "*")
-        @NotBlank(message = "second cannot be empty")
         private String second;
 
         @Schema(description = "minute", requiredMode = Schema.RequiredMode.REQUIRED, example = "*")

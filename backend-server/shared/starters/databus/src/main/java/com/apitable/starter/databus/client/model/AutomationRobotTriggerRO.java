@@ -239,9 +239,9 @@ public class AutomationRobotTriggerRO {
    * Get spaceId
    * @return spaceId
   **/
-  @javax.annotation.Nonnull
+  @javax.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_SPACE_ID)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
   public String getSpaceId() {
     return spaceId;
@@ -249,7 +249,7 @@ public class AutomationRobotTriggerRO {
 
 
   @JsonProperty(JSON_PROPERTY_SPACE_ID)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setSpaceId(String spaceId) {
     this.spaceId = spaceId;
   }

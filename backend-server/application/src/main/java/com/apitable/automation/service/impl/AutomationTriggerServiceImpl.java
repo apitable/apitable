@@ -24,6 +24,7 @@ import static com.apitable.automation.model.TriggerSimpleVO.triggerComparator;
 import static java.util.stream.Collectors.toList;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import com.apitable.automation.entity.AutomationTriggerEntity;
@@ -99,7 +100,16 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
         ro.setTriggerTypeId(data.getTriggerTypeId());
         ro.setSpaceId(spaceId);
         ro.setLimitCount(Long.valueOf(limitProperties.getAutomationTriggerCount()));
-        ro.setScheduleConf(JSONUtil.toJsonStr(data.getScheduleConfig()));
+        if (null != data.getScheduleConfig()) {
+            ro.setScheduleConf(JSONUtil.toJsonStr(data.getScheduleConfig()));
+        } else {
+            String triggerTypeId = iAutomationTriggerTypeService.getTriggerTypeByEndpoint(
+                AutomationTriggerType.SCHEDULED_TIME_ARRIVE.getType());
+            // if is a schedule should create schedule job
+            if (ObjectUtil.equals(triggerTypeId, data.getTriggerTypeId())) {
+                ro.setScheduleConf(JSONUtil.toJsonStr(JSONUtil.createObj()));
+            }
+        }
         try {
             ApiResponseAutomationTriggerSO response =
                 automationDaoApiApi.daoCreateOrUpdateAutomationRobotTrigger(data.getRobotId(), ro);

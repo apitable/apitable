@@ -210,7 +210,7 @@ public class FieldPropertySO {
   private List<String> unitIds;
 
   public static final String JSON_PROPERTY_UUIDS = "uuids";
-  private List<String> uuids;
+  private List<Object> uuids;
 
   public static final String JSON_PROPERTY_VIEW_IDX = "viewIdx";
   private Integer viewIdx;
@@ -1325,13 +1325,13 @@ public class FieldPropertySO {
   }
 
 
-  public FieldPropertySO uuids(List<String> uuids) {
+  public FieldPropertySO uuids(List<Object> uuids) {
     
     this.uuids = uuids;
     return this;
   }
 
-  public FieldPropertySO addUuidsItem(String uuidsItem) {
+  public FieldPropertySO addUuidsItem(Object uuidsItem) {
     if (this.uuids == null) {
       this.uuids = new ArrayList<>();
     }
@@ -1347,14 +1347,14 @@ public class FieldPropertySO {
   @JsonProperty(JSON_PROPERTY_UUIDS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public List<String> getUuids() {
+  public List<Object> getUuids() {
     return uuids;
   }
 
 
   @JsonProperty(JSON_PROPERTY_UUIDS)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setUuids(List<String> uuids) {
+  public void setUuids(List<Object> uuids) {
     this.uuids = uuids;
   }
 

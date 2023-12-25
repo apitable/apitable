@@ -26,9 +26,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public enum CellFormatEnum {
   
-  STRING("STRING"),
+  STRING("string"),
   
-  JSON("JSON");
+  JSON("json");
 
   private String value;
 

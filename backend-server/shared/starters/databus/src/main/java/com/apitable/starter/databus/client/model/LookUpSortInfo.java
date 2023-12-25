@@ -15,7 +15,7 @@ package com.apitable.starter.databus.client.model;
 
 import java.util.Objects;
 import java.util.Arrays;
-import com.apitable.starter.databus.client.model.LookUpSortField;
+import com.apitable.starter.databus.client.model.ISortedField;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -36,18 +36,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class LookUpSortInfo {
   public static final String JSON_PROPERTY_RULES = "rules";
-  private List<LookUpSortField> rules = new ArrayList<>();
+  private List<ISortedField> rules = new ArrayList<>();
 
   public LookUpSortInfo() {
   }
 
-  public LookUpSortInfo rules(List<LookUpSortField> rules) {
+  public LookUpSortInfo rules(List<ISortedField> rules) {
     
     this.rules = rules;
     return this;
   }
 
-  public LookUpSortInfo addRulesItem(LookUpSortField rulesItem) {
+  public LookUpSortInfo addRulesItem(ISortedField rulesItem) {
     if (this.rules == null) {
       this.rules = new ArrayList<>();
     }
@@ -63,14 +63,14 @@ public class LookUpSortInfo {
   @JsonProperty(JSON_PROPERTY_RULES)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-  public List<LookUpSortField> getRules() {
+  public List<ISortedField> getRules() {
     return rules;
   }
 
 
   @JsonProperty(JSON_PROPERTY_RULES)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setRules(List<LookUpSortField> rules) {
+  public void setRules(List<ISortedField> rules) {
     this.rules = rules;
   }
 

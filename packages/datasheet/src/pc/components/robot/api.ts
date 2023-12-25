@@ -18,11 +18,11 @@
 
 import axios from 'axios';
 import qs from 'qs';
+import { ICronSchema } from '@apitable/components';
 import { automationApiClient } from 'pc/common/api-client';
 import { IAutomationDatum, IRobotHistoryTask, IRobotTrigger } from './interface';
 import { IAutomationRobotDetailItem } from './robot_context';
 import { IRunHistoryDatum } from './robot_detail/robot_run_history';
-import { ICronSchema } from '@apitable/components';
 
 export const nestReq = axios.create({
   baseURL: '/nest/v1/',
@@ -136,10 +136,7 @@ export const deActiveRobot = (robotId: string): Promise<any> => {
 };
 export const deleteRobot = (resourceId: string, robotId: string) => {
   return axios.delete(`/automation/${resourceId}/robots/${robotId}`).then((res) => {
-    if (res.data.success) {
-      return true;
-    }
-    return false;
+    return !!res.data.success;
   });
 };
 
@@ -149,7 +146,6 @@ interface ICreateTrigger {
   relatedResourceId?: string;
   prevTriggerId?: string;
   triggerTypeId: string;
-  scheduleConfig?: ICronSchemaTimeZone;
 }
 
 export type ICronSchemaTimeZone = ICronSchema & {
