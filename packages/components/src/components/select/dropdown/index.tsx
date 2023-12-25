@@ -38,7 +38,7 @@ import {
   StyledSelectTrigger,
 } from '../styled';
 import debounce from 'lodash/debounce';
-import { IOverLayProps } from '../../dropdown/float_ui';
+import { IDropdownProps, IOverLayProps } from '../../dropdown/float_ui';
 import styled from 'styled-components';
 import { ListDropdown, SelectContext } from './list_dropdown';
 import { useListItem } from '@floating-ui/react';
@@ -59,6 +59,7 @@ export const DropdownSelect: FC<
   React.PropsWithChildren<
     ISelectProps & {
       suffixContent?: React.ReactNode;
+      dropDownOptions?: IDropdownProps['options'];
     }
   >
 > & {
@@ -86,6 +87,7 @@ export const DropdownSelect: FC<
     disabled,
     disabledTip,
     listStyle,
+    dropDownOptions = {},
     listCls,
     renderValue = _renderValue,
     children,
@@ -241,6 +243,7 @@ export const DropdownSelect: FC<
           triggerRef.current = element;
         }}
         options={{
+          ...dropDownOptions,
           arrow: false,
           offset: 4,
           selectedIndex: findIndex,

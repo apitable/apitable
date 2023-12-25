@@ -107,7 +107,7 @@ export class CronConverter {
 
       return newTimes.map(
         (time) =>
-          `${dayjs(time).tz(options.userTimezone).format(CONST_FORMAT_AUTOMATION_TIME)} UTC+${
+          `${dayjs(time).tz(options.userTimezone).format(CONST_FORMAT_AUTOMATION_TIME)} UTC${
             dayjs(time).tz(options.userTimezone).utcOffset() / 60
           } (${options.userTimezone})`
       );

@@ -95,6 +95,9 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             listStyle={{
               width: '120px',
             }}
+            dropDownOptions={{
+              placement: 'bottom-start',
+            }}
             openSearch
             searchPlaceholder={Maybe.encase(() => t(Strings.datasource_selector_search_placeholder)).orDefault('Search')}
             value={String(hourInterval)}
@@ -115,9 +118,14 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
           </Typography>
 
           <DropdownSelect
+            dropDownOptions={{
+              placement: 'bottom-start',
+            }}
             triggerStyle={{
               minWidth: '64px',
             }}
+            openSearch
+            searchPlaceholder={Maybe.encase(() => t(Strings.datasource_selector_search_placeholder)).orDefault('Search')}
             suffixContent={
               <Box paddingLeft={'8px'} display={'inline-flex'} alignItems={'center'}>
                 <Typography variant={'body3'} color={colors.textCommonPrimary}>
@@ -194,6 +202,9 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
 
           <DropdownSelect
             disabled={readonly}
+            dropDownOptions={{
+              placement: 'bottom-start',
+            }}
             value={String(monthInterval)}
             triggerStyle={{
               minWidth: '64px',
@@ -253,6 +264,9 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             {Maybe.encase(() => t(Strings.every)).orDefault('Every ')}
           </Typography>
           <DropdownSelect
+            dropDownOptions={{
+              placement: 'bottom-start',
+            }}
             triggerStyle={{
               minWidth: '64px',
             }}
