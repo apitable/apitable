@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-// @ts-ignore
 import { useMemo } from 'react';
 import { Strings, t } from '@apitable/core';
 import { CreditCostCard } from 'pc/components/space_manage/space_info/components/credit_cost_card/credit_cost_card';
@@ -29,6 +28,7 @@ import { useApi, useCapacity, useFile, useMember, useOthers, useRecord, useView 
 import { ILayoutProps } from '../interface';
 import { Advert } from '../ui';
 import { SpaceLevelInfo } from '../utils';
+// @ts-ignore
 import { inSocialApp, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 
 interface ICardProps {

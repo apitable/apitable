@@ -26,7 +26,6 @@
  */
 import { SystemConfigInterfacePlayer, SystemConfigInterfaceGuide, Api } from '@apitable/core';
 
-// @ts-ignore
 import {
   openGuideWizard,
   openGuideWizards,
@@ -36,6 +35,7 @@ import {
   clearGuideUis,
   clearGuideAllUi,
   setWizardCompleted,
+  // @ts-ignore
 } from 'enterprise/guide/trigger_guide_commands';
 // @ts-ignore
 import { openVikaby } from 'enterprise/vikaby/vikaby';

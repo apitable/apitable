@@ -27,9 +27,9 @@ import { ICollaborator, integrateCdnHost, ResourceType, Selectors, Settings } fr
 import { Avatar, AvatarSize, Tooltip, UserCardTrigger } from 'pc/components/common';
 import { backCorrectAvatarName, backCorrectName, isAlien } from 'pc/components/multi_grid/cell/cell_other';
 import { useAppSelector } from 'pc/store/react-redux';
+// @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 const MAX_SHOW_NUMBER = 3;
 
