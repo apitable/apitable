@@ -192,14 +192,11 @@ export function initAxios(store: Store<IReduxState>) {
     return config;
   });
 
+  const IGNORE_PATHS = ['/client/info', '/user/me', '/space/link/join', '/org/loadOrSearch'];
   axios.interceptors.response.use((response) => {
     if (!response) return response;
-    if (
-      response.config &&
-      response.config.url &&
-      (response.config.url?.includes('/client/info') ||
-        response.config.url?.includes('/user/me') ||
-        response.config.url?.includes('/org/loadOrSearch'))
+    if (response.config && response.config.url &&
+      IGNORE_PATHS.some(path => response.config.url?.includes(path))
     ) {
       return response;
     }
