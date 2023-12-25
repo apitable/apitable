@@ -16,34 +16,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import { Box, Typography } from '@apitable/components';
-import {
-  ResourceType,
-  Strings,
-  t,
-} from '@apitable/core';
-import {CONST_MAX_ACTION_COUNT, CONST_MAX_TRIGGER_COUNT} from 'pc/components/automation/config';
+import { Strings, t } from '@apitable/core';
+import { CONST_MAX_ACTION_COUNT, CONST_MAX_TRIGGER_COUNT } from 'pc/components/automation/config';
+import { CONST_BG_CLS_NAME } from 'pc/components/automation/content';
 import { useActionTypes, useAutomationRobot, useTriggerTypes } from '../hooks';
 import { RobotActions } from './action/robot_actions';
 import { EditType, RobotTrigger } from './trigger/robot_trigger';
 import { useCssColors } from './trigger/use_css_colors';
-import {CONST_BG_CLS_NAME} from "pc/components/automation/content";
 
 export const RobotDetailForm = memo(() => {
   const { loading, data: actionTypes } = useActionTypes();
   const { loading: triggerTypeLoading, data: triggerTypes } = useTriggerTypes();
   const { robot } = useAutomationRobot();
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     resourceService.instance?.initialized &&
-  //     resourceService.instance?.switchResource({
-  //       to: resourceId as string,
-  //       resourceType: ResourceType.Datasheet,
-  //     });
-  //   }, 1000);
-  // }, []);
 
   const colors = useCssColors();
   if (loading || !actionTypes || triggerTypeLoading || !triggerTypes || !robot) {

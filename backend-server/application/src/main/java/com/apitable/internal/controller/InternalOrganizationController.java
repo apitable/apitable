@@ -44,7 +44,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @ApiResource(path = "/internal/org")
-@Tag(name = "Internal Server - org API")
+@Tag(name = "Internal")
 public class InternalOrganizationController {
 
     @Resource

@@ -7,7 +7,7 @@ import com.apitable.starter.databus.client.model.ApiResponseAutomationRobotIntro
 import com.apitable.starter.databus.client.model.ApiResponseAutomationRobotRunNumsSO;
 import com.apitable.starter.databus.client.model.ApiResponseAutomationRunHistoryPO;
 import com.apitable.starter.databus.client.model.ApiResponseAutomationSO;
-import com.apitable.starter.databus.client.model.ApiResponseAutomationTriggerPO;
+import com.apitable.starter.databus.client.model.ApiResponseAutomationTriggerSO;
 import com.apitable.starter.databus.client.model.ApiResponseEmptySO;
 import com.apitable.starter.databus.client.model.AutomationHistoryStatusRO;
 import com.apitable.starter.databus.client.model.AutomationRobotActionRO;
@@ -226,10 +226,10 @@ public class AutomationDaoApiApi {
      * <p><b>201</b> - Create automation robot trigger successfully
      * @param robotId robot id (required)
      * @param automationRobotTriggerRO  (required)
-     * @return ApiResponseAutomationTriggerPO
+     * @return ApiResponseAutomationTriggerSO
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public ApiResponseAutomationTriggerPO daoCreateOrUpdateAutomationRobotTrigger(String robotId, AutomationRobotTriggerRO automationRobotTriggerRO) throws RestClientException {
+    public ApiResponseAutomationTriggerSO daoCreateOrUpdateAutomationRobotTrigger(String robotId, AutomationRobotTriggerRO automationRobotTriggerRO) throws RestClientException {
         return daoCreateOrUpdateAutomationRobotTriggerWithHttpInfo(robotId, automationRobotTriggerRO).getBody();
     }
 
@@ -240,10 +240,10 @@ public class AutomationDaoApiApi {
      * <p><b>201</b> - Create automation robot trigger successfully
      * @param robotId robot id (required)
      * @param automationRobotTriggerRO  (required)
-     * @return ResponseEntity&lt;ApiResponseAutomationTriggerPO&gt;
+     * @return ResponseEntity&lt;ApiResponseAutomationTriggerSO&gt;
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public ResponseEntity<ApiResponseAutomationTriggerPO> daoCreateOrUpdateAutomationRobotTriggerWithHttpInfo(String robotId, AutomationRobotTriggerRO automationRobotTriggerRO) throws RestClientException {
+    public ResponseEntity<ApiResponseAutomationTriggerSO> daoCreateOrUpdateAutomationRobotTriggerWithHttpInfo(String robotId, AutomationRobotTriggerRO automationRobotTriggerRO) throws RestClientException {
         Object localVarPostBody = automationRobotTriggerRO;
         
         // verify the required parameter 'robotId' is set
@@ -276,7 +276,7 @@ public class AutomationDaoApiApi {
 
         String[] localVarAuthNames = new String[] {  };
 
-        ParameterizedTypeReference<ApiResponseAutomationTriggerPO> localReturnType = new ParameterizedTypeReference<ApiResponseAutomationTriggerPO>() {};
+        ParameterizedTypeReference<ApiResponseAutomationTriggerSO> localReturnType = new ParameterizedTypeReference<ApiResponseAutomationTriggerSO>() {};
         return apiClient.invokeAPI("/databus/dao/automations/robots/{robot_id}/triggers", HttpMethod.PUT, uriVariables, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localReturnType);
     }
     /**

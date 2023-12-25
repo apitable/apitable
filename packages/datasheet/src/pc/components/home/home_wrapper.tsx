@@ -22,9 +22,14 @@ import { EmailfeedbackOutlined, LinkedinOutlined, TwitterOutlined } from '@apita
 import { getEnvVariables } from 'pc/utils/env';
 import { GithubButton } from './components/github_button';
 import { NavBar } from './components/nav_bar';
+import { ActionType } from './pc_home';
 import styles from './style.module.less';
 
-export const HomeWrapper: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => {
+interface IHomeWrapper {
+  action?: ActionType
+}
+
+export const HomeWrapper: React.FC<React.PropsWithChildren<IHomeWrapper>> = ({ children, action }) => {
   const colors = useThemeColors();
 
   const linkIcons = [
@@ -96,7 +101,7 @@ export const HomeWrapper: React.FC<React.PropsWithChildren<unknown>> = ({ childr
       </div>
       <div className={styles.main}>{children}</div>
       <div className={styles.footer}>
-        <NavBar />
+        <NavBar action={action} />
       </div>
     </div>
   );

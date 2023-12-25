@@ -52,18 +52,24 @@ const getBrowserLanguage = (): string | undefined => {
     return undefined;
   }
   let userLanguage: string | undefined = _global.navigator.language as string;
+  if (userLanguage){
+    userLanguage = userLanguage.replace(/-(.+)/g, (match, group1) => {
+      return '-' + group1.toUpperCase();
+    });
+  }
   if (userLanguage == 'zh-TW') {
     userLanguage = 'zh-HK';
   }
   if (!languageMap[userLanguage]) {
+    userLanguage = undefined;
     const langArr = Object.keys(languageMap);
-    if (!langArr) {
-      userLanguage = undefined;
-    }
-    for (let i = 0; i < langArr.length; i++) {
-      // @ts-ignore
-      if (langArr[i] !== undefined && langArr[i].indexOf(userLanguage) > -1) {
-        userLanguage = langArr[i];
+    if (langArr) {
+      for (let i = 0; i < langArr.length; i++) {
+        // @ts-ignore
+        if (langArr[i] !== undefined && langArr[i].indexOf(userLanguage) > -1) {
+          userLanguage = langArr[i];
+          break;
+        }
       }
     }
   }

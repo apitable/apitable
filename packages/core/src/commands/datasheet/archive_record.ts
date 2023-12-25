@@ -1,10 +1,6 @@
 import { ICollaCommandDef, ExecuteResult } from 'command_manager';
 import { CollaCommandName } from 'commands/enum';
-import {
-  getActiveDatasheetId,
-  getSnapshot,
-  getField,
-} from 'modules/database/store/selectors/resource/datasheet/base';
+import { getActiveDatasheetId, getSnapshot, getField } from 'modules/database/store/selectors/resource/datasheet/base';
 
 import { FieldType, ILinkField, ResourceType } from 'types';
 import { DatasheetActions } from 'commands_actions/datasheet';
@@ -51,26 +47,28 @@ export const archiveRecord: ICollaCommandDef<IArchiveRecordOptions> = {
      * Multiple self-associated fields will have multiple such maps
      */
     const fieldRelinkMap: { [fieldId: string]: { [recordId: string]: string[] } } = {};
-    linkField.filter(field => {
-      // Filter out the associated field of the word table
-      return !field.property.brotherFieldId;
-    }).forEach(field => {
-      const reLinkRecords: { [recordId: string]: string[] } = {};
-      Object.values(snapshot.recordMap).forEach(v => {
-        const linkRecords = v.data[field.id] as string[] | undefined;
-        if (linkRecords) {
-          linkRecords.forEach(id => {
-            if (!reLinkRecords[id]) {
-              reLinkRecords[id] = [];
-            }
-            reLinkRecords[id]!.push(v.id);
-          });
-        }
+    linkField
+      .filter((field) => {
+        // Filter out the associated field of the word table
+        return !field.property.brotherFieldId;
+      })
+      .forEach((field) => {
+        const reLinkRecords: { [recordId: string]: string[] } = {};
+        Object.values(snapshot.recordMap).forEach((v) => {
+          const linkRecords = v.data[field.id] as string[] | undefined;
+          if (linkRecords) {
+            linkRecords.forEach((id) => {
+              if (!reLinkRecords[id]) {
+                reLinkRecords[id] = [];
+              }
+              reLinkRecords[id]!.push(v.id);
+            });
+          }
+        });
+        fieldRelinkMap[field.id] = reLinkRecords;
       });
-      fieldRelinkMap[field.id] = reLinkRecords;
-    });
 
-    data.forEach(recordId => {
+    data.forEach((recordId) => {
       const record = snapshot.recordMap[recordId];
       if (!record) {
         return;
@@ -84,7 +82,7 @@ export const archiveRecord: ICollaCommandDef<IArchiveRecordOptions> = {
           // self-association
           oldValue = fieldRelinkMap[field.id]![record.id] || undefined;
           // LinkedActions are not generated when the self-table is associated and the associated record contains the deleted record itself
-          oldValue = oldValue?.filter(item => !data.includes(item));
+          oldValue = oldValue?.filter((item) => !data.includes(item));
         }
 
         const linkedSnapshot = getSnapshot(state, field.property.foreignDatasheetId)!;

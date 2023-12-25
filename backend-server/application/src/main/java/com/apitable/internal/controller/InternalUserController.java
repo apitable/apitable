@@ -57,7 +57,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @ApiResource(path = "/internal")
-@Tag(name = "Internal Service - User Interface")
+@Tag(name = "Internal")
 public class InternalUserController {
 
     @Resource

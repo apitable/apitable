@@ -49,7 +49,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Internal Service - Space Interface.
  */
 @RestController
-@Tag(name = "Internal Service - Space Interface")
+@Tag(name = "Internal")
 @ApiResource(path = "/internal")
 public class InternalSpaceController {
 

@@ -59,7 +59,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -71,7 +70,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @ApiResource(path = "/internal")
-@Tag(name = "Internal Service - Node Interface")
+@Tag(name = "Internal")
 public class InternalNodeController {
 
     @Resource
@@ -92,9 +91,8 @@ public class InternalNodeController {
     /**
      * Create a table node.
      */
-    @PostResource(name = "create a table node", path = "/spaces/{spaceId}/datasheets",
-        requiredPermission = false)
-    @Operation(summary = "create a table node", description = "create a table node")
+    @PostResource(path = "/spaces/{spaceId}/datasheets", requiredPermission = false)
+    @Operation(summary = "Create Node", description = "create a table node")
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     public ResponseData<CreateDatasheetVo> createDatasheet(@PathVariable("spaceId") String spaceId,
                                                            @RequestBody CreateDatasheetRo ro) {
@@ -129,9 +127,9 @@ public class InternalNodeController {
     /**
      * Delete node.
      */
-    @PostResource(name = "delete node", path = "/spaces/{spaceId}/nodes/{nodeId}/delete",
+    @PostResource(path = "/spaces/{spaceId}/nodes/{nodeId}/delete",
         requiredPermission = false)
-    @Operation(summary = "delete node", description = "delete node")
+    @Operation(summary = "Delete Node", description = "delete node")
     @Notification(templateId = NotificationTemplateId.NODE_DELETE)
     public ResponseData<Void> deleteNode(@PathVariable("spaceId") String spaceId,
                                          @PathVariable("nodeId") String nodeId) {
@@ -154,10 +152,8 @@ public class InternalNodeController {
     /**
      * Get the space station id to which the node belongs.
      */
-    @GetResource(name = "get the space station id to which the node belongs", path = "/spaces"
-        + "/nodes/{nodeId}/belongSpace", requiredLogin = false, requiredPermission = false)
-    @Operation(summary = "get the space station id to which the node belongs", description = "get"
-        + " the space station id to which the node belongs", hidden = true)
+    @GetResource(path = "/spaces" + "/nodes/{nodeId}/belongSpace", requiredLogin = false)
+    @Operation(summary = "Retrieve Node", description = "get the space station id to which the node belongs", hidden = true)
     public ResponseData<NodeFromSpaceVo> nodeFromSpace(
         @RequestHeader(name = ParamsConstants.INTERNAL_REQUEST) String internalRequest,
         @PathVariable("nodeId") String nodeId) {
@@ -198,7 +194,7 @@ public class InternalNodeController {
             List<String> subFilterNodeIds = roleDict.entrySet().stream()
                 .filter(entry -> entry.getValue().isEqualTo(requireRole))
                 .peek(entry -> nodeIdToNodeRole.put(entry.getKey(), entry.getValue().getRoleTag()))
-                .map(Map.Entry::getKey).collect(Collectors.toList());
+                .map(Map.Entry::getKey).toList();
             filterNodeIds.addAll(subFilterNodeIds);
         });
         if (CollUtil.isEmpty(filterNodeIds)) {

@@ -18,11 +18,15 @@
 
 package com.apitable.space.assembler;
 
+import static java.time.temporal.TemporalAdjusters.lastDayOfMonth;
+
 import cn.hutool.core.collection.CollUtil;
 import com.apitable.core.util.DateTimeUtil;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
+import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.space.vo.SpaceSubscribeVo;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 
 /**
@@ -50,6 +54,9 @@ public class SubscribeAssembler {
         if (CollUtil.isNotEmpty(subscriptionInfo.getAddOnPlans())) {
             result.setAddOnPlans(subscriptionInfo.getAddOnPlans());
         }
+        LocalDate now = ClockManager.me().getLocalDateNow();
+        int defaultCycleDayOfMonth = now.with(lastDayOfMonth()).getDayOfMonth();
+        result.setCycleDayOfMonth(subscriptionInfo.cycleDayOfMonth(defaultCycleDayOfMonth));
         SubscriptionFeature feature = subscriptionInfo.getFeature();
         result.setMaxSeats(feature.getSeat().getValue());
         result.setMaxCapacitySizeInBytes(feature.getCapacitySize().getValue().toBytes());
@@ -59,6 +66,7 @@ public class SubscribeAssembler {
         result.setMaxAdminNums(feature.getAdminNums().getValue());
         result.setMaxMirrorNums(feature.getMirrorNums().getValue());
         result.setMaxApiCall(feature.getApiCallNumsPerMonth().getValue());
+        result.setApiCallNumsPerMonth(feature.getApiCallNumsPerMonth().getValue());
         result.setMaxGalleryViewsInSpace(feature.getGalleryViewNums().getValue());
         result.setMaxKanbanViewsInSpace(feature.getKanbanViewNums().getValue());
         result.setMaxFormViewsInSpace(feature.getFormNums().getValue());

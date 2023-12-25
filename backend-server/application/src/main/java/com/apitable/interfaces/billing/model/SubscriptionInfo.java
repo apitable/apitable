@@ -112,6 +112,19 @@ public interface SubscriptionInfo {
     }
 
     /**
+     * return billing cycle day of month.
+     *
+     * @param defaultDayOfMonth default day of month if not free
+     * @return billing cycle day of month
+     */
+    default int cycleDayOfMonth(int defaultDayOfMonth) {
+        if (getRecurringInterval() == null || getRecurringInterval().isEmpty()) {
+            return defaultDayOfMonth;
+        }
+        return getStartDate().getDayOfMonth();
+    }
+
+    /**
      * feature map.
      *
      * @return billing plan feature

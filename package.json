@@ -13,6 +13,7 @@
     "start:i18n": "nx start @apitable/i18n-lang",
     "start:datasheet": "cd packages/datasheet && pnpm run dev",
     "lint:datasheet": "nx check:lint @apitable/datasheet",
+    "storybook:components": "nx storybook @apitable/components",
     "start:widget-sdk": "nx start @apitable/widget-sdk",
     "start:room-server": "nx start:dev @apitable/room-server ",
     "start:socket-server": "nx start:socket:dev @apitable/room-server",
@@ -65,6 +66,8 @@
     "pnpm": "^8"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "eslint-config-prettier": "^8",
     "git-format-staged": "^3.0.0",
     "@babel/core": "7.22.20",
     "@commitlint/cli": "17.7.1",

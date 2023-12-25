@@ -1,11 +1,11 @@
-import { IReduxState, Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { Modal } from 'antd';
 import { apiErrorManager } from 'api/utils/error_manager';
 import axios from 'axios';
+import { Store } from 'redux';
+import { IReduxState, Navigation, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { Router } from 'pc/components/route_manager/router';
 import { store } from 'pc/store';
 import { getInitializationData, getReleaseVersion, getSpaceIdFormTemplate } from 'pc/utils/env';
-import { Store } from 'redux';
 
 declare let window: any;
 
@@ -192,10 +192,11 @@ export function initAxios(store: Store<IReduxState>) {
     return config;
   });
 
+  const IGNORE_PATHS = ['/client/info', '/user/me', '/space/link/join', '/org/loadOrSearch'];
   axios.interceptors.response.use((response) => {
     if (!response) return response;
     if (response.config && response.config.url &&
-      (response.config.url?.includes('/client/info') || response.config.url?.includes('/user/me'))
+      IGNORE_PATHS.some(path => response.config.url?.includes(path))
     ) {
       return response;
     }

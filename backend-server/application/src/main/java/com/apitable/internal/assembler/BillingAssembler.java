@@ -68,6 +68,7 @@ public class BillingAssembler {
     public InternalSpaceApiUsageVo toApiUsageVo(SubscriptionFeature planFeature) {
         InternalSpaceApiUsageVo vo = new InternalSpaceApiUsageVo();
         vo.setMaxApiUsageCount(planFeature.getApiCallNumsPerMonth().getValue());
+        vo.setApiCallNumsPerMonth(planFeature.getApiCallNumsPerMonth().getValue());
         vo.setIsAllowOverLimit(true);
         return vo;
     }

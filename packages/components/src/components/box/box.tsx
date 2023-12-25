@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import styled from 'styled-components';
+import styled  from 'styled-components';
 import {
   space, SpaceProps,
   color, ColorProps,
@@ -32,7 +32,9 @@ import {
 } from 'styled-system';
 
 type IBoxProps = SpaceProps & LayoutProps & ColorProps & FlexboxProps & TypographyProps
-  & GridProps & BackgroundProps & BorderProps & PositionProps & ShadowProps;
+  & GridProps & BackgroundProps & BorderProps & PositionProps & ShadowProps & {
+  gap?: string | number;
+};
 
 export const Box: any = styled.div<IBoxProps>(
   compose(
@@ -46,5 +48,5 @@ export const Box: any = styled.div<IBoxProps>(
     border,
     position,
     shadow,
-  )
+  ),
 );

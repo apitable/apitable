@@ -56,14 +56,17 @@ const loadableActionTypesAtom = loadableWithDefault(actionTypesAtom, []);
 export const useTriggerTypes = (): { loading: boolean; data: ITriggerType[] } => {
   const themeName = useAppSelector((state) => state.theme);
   const value = useAtomValue(loadableTriggerAtom);
+
   if (value.loading) {
     return {
       loading: true,
       data: [],
     };
   }
+
   return {
     loading: false,
+    // @ts-ignore
     data: covertThemeIcon(value.data, themeName),
   };
 };

@@ -41,6 +41,7 @@ import com.apitable.player.dto.PlayerBaseDTO;
 import com.apitable.player.ro.NotificationCreateRo;
 import com.apitable.player.vo.NotificationDetailVo;
 import com.apitable.player.vo.PlayerBaseVo;
+import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.shared.sysconfig.notification.NotificationConfigLoader;
 import com.apitable.shared.sysconfig.notification.NotificationTemplate;
 import com.apitable.space.dto.BaseSpaceInfoDTO;
@@ -337,7 +338,7 @@ public class NotificationFactory implements INotificationFactory {
         if (Boolean.TRUE.equals(redisTemplate.hasKey(key))) {
             redisTemplate.opsForValue().increment(key);
         } else {
-            LocalDateTime now = DateUtil.toLocalDateTime(new Date());
+            LocalDateTime now = ClockManager.me().getLocalDateTimeNow();
             LocalDateTime endOfDay = LocalDateTimeUtil.endOfDay(now);
             long between = LocalDateTimeUtil.between(now, endOfDay, ChronoUnit.SECONDS);
             redisTemplate.opsForValue().set(key, Long.valueOf("1"), between, TimeUnit.SECONDS);

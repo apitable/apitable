@@ -48,4 +48,4 @@ export * from './divider';
 export * from './context_menu';
 export * from './pagination';
 export * from './avatar/avatar_group';
-export * from './avatar';
+export * from './time';

@@ -22,6 +22,7 @@ import static com.apitable.organization.enums.OrganizationException.CREATE_MEMBE
 import static com.apitable.organization.enums.OrganizationException.NOT_EXIST_MEMBER;
 import static com.apitable.shared.constants.NotificationConstants.NEW_SPACE_NAME;
 import static com.apitable.shared.constants.NotificationConstants.OLD_SPACE_NAME;
+import static com.apitable.shared.util.DateHelper.safeSetDayOfMonth;
 import static com.apitable.space.enums.SpaceException.NO_ALLOW_OPERATE;
 import static com.apitable.space.enums.SpaceException.SPACE_NOT_EXIST;
 import static com.apitable.space.enums.SpaceException.SPACE_QUIT_FAILURE;
@@ -74,6 +75,7 @@ import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.captcha.ValidateCodeProcessorManage;
 import com.apitable.shared.captcha.ValidateCodeType;
 import com.apitable.shared.captcha.ValidateTarget;
+import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.shared.component.TaskManager;
 import com.apitable.shared.component.notification.NotificationManager;
 import com.apitable.shared.component.notification.NotificationRenderField;
@@ -137,6 +139,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import jakarta.annotation.Resource;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -708,6 +711,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             spaceInfoVO.setSeatUsage(new SeatUsage());
             return spaceInfoVO;
         }
+        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        LocalDate now = ClockManager.me().getLocalDateNow();
+        int cycleDayOfMonth = subscriptionInfo.cycleDayOfMonth(now.getDayOfMonth());
+        LocalDate cycleDate = safeSetDayOfMonth(now, cycleDayOfMonth);
         SeatUsage seatUsage = getSeatUsage(spaceId);
         spaceInfoVO.setSeatUsage(seatUsage);
         spaceInfoVO.setSeats(seatUsage.getMemberCount());
@@ -733,7 +740,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             spaceCapacityCacheService.getSpaceCapacity(spaceId);
         spaceInfoVO.setCapacityUsedSizes(capacityUsedSize);
         // API usage statistics
-        long apiUsage = iStaticsService.getCurrentMonthApiUsage(spaceId);
+        long apiUsage = iStaticsService.getCurrentMonthApiUsage(spaceId, cycleDate);
         spaceInfoVO.setApiRequestCountUsage(apiUsage);
         // file control amount
         ControlStaticsDTO controlStaticsDTO =
