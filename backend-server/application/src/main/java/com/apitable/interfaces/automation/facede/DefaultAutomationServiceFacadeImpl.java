@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-<<<<<<<< HEAD:apitable/backend-server/application/src/main/java/com/apitable/interfaces/automation/facede/DefaultAutomationServiceFacadeImpl.java
 package com.apitable.interfaces.automation.facede;
 
 /**
@@ -29,20 +28,3 @@ public class DefaultAutomationServiceFacadeImpl implements AutomationServiceFaca
         // do nothing
     }
 }
-========
-import { useThemeColors } from './use_theme_colors';
-import { useMemo } from 'react';
-
-export const useCssColors = () => {
-  const colors = useThemeColors();
-  const newColors = useMemo(() => {
-    return new Proxy(colors, {
-      get: function (target, prop) {
-        return `var(--${String(prop)})`;
-      },
-    });
-  }, [colors]);
-
-  return newColors;
-};
->>>>>>>> fd1aeae360804caa0994774498eda28fa2b0cd08:apitable/packages/components/src/hooks/use_css_colors.ts
