@@ -1,5 +1,16 @@
 # APITable CHANGELOG
 
+## [v1.7.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.7.0-beta.1) (2023-12-25)
+
+
+### Bug fixes
+
+* fix: func undefined check ([#1542](https://github.com/apitable/apitable/pull/1542)) @wangkailang 
+
+### What's more
+
+* refactor: use_responsive hook ([#1419](https://github.com/apitable/apitable/pull/1419)) @liaoliao666 
+* sync: hosted cloud ([#1540](https://github.com/apitable/apitable/pull/1540)) @ChambersChan 
 ## [v1.7.0-beta](https://github.com/apitable/apitable/releases/tag/v1.7.0-beta) (2023-12-18)
 
 
