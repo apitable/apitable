@@ -19,6 +19,7 @@
 package com.apitable.internal.service.impl;
 
 import static com.apitable.core.constants.RedisConstants.GENERAL_LOCKED;
+import static com.apitable.shared.util.DateHelper.safeSetDayOfMonth;
 
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
@@ -38,11 +39,13 @@ import com.apitable.internal.vo.InternalSpaceApiUsageVo;
 import com.apitable.internal.vo.InternalSpaceAutomationRunMessageV0;
 import com.apitable.internal.vo.InternalSpaceInfoVo;
 import com.apitable.internal.vo.InternalSpaceSubscriptionVo;
+import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.space.enums.LabsFeatureEnum;
 import com.apitable.space.service.ILabsApplicantService;
 import com.apitable.space.service.IStaticsService;
 import com.apitable.space.vo.LabsFeatureVo;
 import jakarta.annotation.Resource;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -136,7 +139,11 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
         SubscriptionFeature planFeature = subscriptionInfo.getFeature();
         BillingAssembler assembler = new BillingAssembler();
         InternalSpaceApiUsageVo vo = assembler.toApiUsageVo(planFeature);
-        vo.setApiUsageUsedCount(iStaticsService.getCurrentMonthApiUsage(spaceId));
+        LocalDate now = ClockManager.me().getLocalDateNow();
+        int cycleDayOfMonth = subscriptionInfo.cycleDayOfMonth(now.getDayOfMonth());
+        LocalDate cycleDate = safeSetDayOfMonth(now, cycleDayOfMonth);
+        vo.setApiUsageUsedCount(iStaticsService.getCurrentMonthApiUsage(spaceId, cycleDate));
+        vo.setApiCallUsedNumsCurrentMonth(iStaticsService.getCurrentMonthApiUsage(spaceId, cycleDate));
         vo.setIsAllowOverLimit(true);
         return vo;
     }

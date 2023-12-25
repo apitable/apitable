@@ -60,6 +60,8 @@ const StyledMenu = styled(Box)`
   }
 
   cursor: pointer;
+  margin: 0 8px;
+  border-radius: 4px;
 `;
 
 const StyledBox = styled(Box)`
@@ -214,6 +216,7 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
                   borderRadius={'4px'}
                   backgroundColor={colors.bgCommonHighest}
                   borderWidth={'1px'}
+                  padding={'4px 0'}
                   boxShadow={'0px 12px 24px 0px rgba(0, 0, 0, 0.16), 0px 3px 6px 0px rgba(0, 0, 0, 0.12)'}
                 >
                   <StyledMenu

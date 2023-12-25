@@ -20,6 +20,8 @@ import React, { FC, useState } from 'react';
 import { StoryType } from '../../stories/constants';
 import { NextTimePreview } from './preview';
 import { Timing } from './timing';
+import { ICronSchema } from './types';
+import { CronConverter } from './utils';
 
 const COMPONENT_NAME = 'Time';
 
@@ -35,38 +37,81 @@ export default {
   },
   args: {
     content: 'Scanner for decks of cards with bar codes printed on card edges',
-  }
+  },
 };
 
-export const NextTime: FC = () => <><NextTimePreview title={'Preview next 5 execution times'}
-  times={[new Date(), new Date(), new Date(), new Date(), new Date()]}
-/></>;
+export const NextTime: FC = () => (
+  <>
+    <NextTimePreview title={'Preview next 5 execution times'} times={[new Date(), new Date(), new Date(), new Date(), new Date()]} />
+  </>
+);
 
-export const TimingHour : FC = () => {
-  const [state, setState] = useState({
-    hour: 1,
-  });
+export const TimingHour: FC = () => {
+  const [state, setState] = useState<ICronSchema>(CronConverter.extractCron(CronConverter.getDefaultValue('hour'))!);
 
-  // @ts-ignore
-  return <Timing interval={'hour'} value={state} onUpdate={setState} readonly={false}/>;
+  return (
+    <>
+      <>{JSON.stringify(state)}</>
+      <Timing interval={'hour'} value={state} onUpdate={setState} readonly={false} />
+    </>
+  );
 };
 
-export const TimingDay : FC = () => {
-  const [state, setState] = useState({
-    hour: 1,
-  });
+export const TimingDay: FC = () => {
+  const [state, setState] = useState<ICronSchema>(CronConverter.extractCron(CronConverter.getDefaultValue('day'))!);
 
-  // @ts-ignore
-  return <Timing interval={'day'} value={state} onUpdate={setState} readonly={false}/>;
+  return (
+    <>
+      <>{JSON.stringify(state)}</>
+      <Timing interval={'day'} value={state} onUpdate={setState} readonly={false} />
+    </>
+  );
 };
 
-export const TimingHourDisabled : FC = () => {
-  const [state, setState] = useState({
-    hour: 1,
-  });
+export const TimingHourDisabled: FC = () => {
+  const [state, setState] = useState<ICronSchema>(CronConverter.extractCron(CronConverter.getDefaultValue('hour'))!);
+  return (
+    <>
+      <>{JSON.stringify(state)}</>
+      <Timing interval={'hour'} value={state} onUpdate={setState} readonly />
+    </>
+  );
+};
 
-  // @ts-ignore
-  return <Timing interval={'hour'} value={state} onUpdate={setState} readonly/>;
+export const TimingWeek: FC = () => {
+  const [state, setState] = useState<ICronSchema>(CronConverter.extractCron(CronConverter.getDefaultValue('week'))!);
+
+  return (
+    <>
+      <>{JSON.stringify(state)}</>
+      <Timing interval={'week'} value={state} onUpdate={setState} />
+    </>
+  );
+};
+
+export const TimingMonth: FC = () => {
+  const [state, setState] = useState<ICronSchema>(CronConverter.extractCron(CronConverter.getDefaultValue('month'))!);
+
+  return (
+    <>
+      <>{JSON.stringify(state)}</>
+      <Timing interval={'month'} value={state} onUpdate={setState} />
+    </>
+  );
+};
+
+export const TimingDisabled: FC = () => {
+  const [state, setState] = useState<ICronSchema>(CronConverter.extractCron(CronConverter.getDefaultValue('month'))!);
+
+  return (
+    <>
+      <>{JSON.stringify(state)}</>
+      <Timing interval={'month'} value={state} onUpdate={setState} readonly />
+      <Timing interval={'day'} value={state} onUpdate={setState} readonly />
+      <Timing interval={'week'} value={state} onUpdate={setState} readonly />
+      <Timing interval={'hour'} value={state} onUpdate={setState} readonly />
+    </>
+  );
 };
 
 // export const TimingMonth : FC = () => <Timing interval={'month'} />;

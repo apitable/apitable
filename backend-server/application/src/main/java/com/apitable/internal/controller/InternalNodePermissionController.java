@@ -54,7 +54,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @ApiResource(path = "/internal")
-@Tag(name = "Internal Service - Node Permission Interface")
+@Tag(name = "Internal")
 public class InternalNodePermissionController {
 
     @Resource

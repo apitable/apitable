@@ -15,8 +15,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-// @ts-ignore
-import { inSocialApp, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 import { useMemo } from 'react';
 import { Strings, t } from '@apitable/core';
 import { CreditCostCard } from 'pc/components/space_manage/space_info/components/credit_cost_card/credit_cost_card';
@@ -30,6 +28,8 @@ import { useApi, useCapacity, useFile, useMember, useOthers, useRecord, useView 
 import { ILayoutProps } from '../interface';
 import { Advert } from '../ui';
 import { SpaceLevelInfo } from '../utils';
+// @ts-ignore
+import { inSocialApp, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 
 interface ICardProps {
   minHeight?: string | number;
@@ -95,7 +95,7 @@ export const useCards = (props: ILayoutProps) => {
           isMobile={isMobile}
           level={level}
           shape="line"
-          unit={memberData.usedString ? '' : t(Strings.people)}
+          unit={t(Strings.people)}
           trailColor={trailColor}
           strokeColor={strokeColor}
           title={t(Strings.current_count_of_person)}

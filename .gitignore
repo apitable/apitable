@@ -98,3 +98,5 @@ eslint-results.sarif
 /backend-server/shared/starters/databus/.openapi-generator/
 
 .nx
+
+/scripts/enterprise

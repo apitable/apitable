@@ -53,9 +53,10 @@ public interface IAutomationTriggerService {
      *
      * @param userId creator's user id
      * @param data   data
+     * @param spaceId space id
      * @return TriggerVO
      */
-    List<TriggerVO> createByDatabus(Long userId, CreateTriggerRO data);
+    List<TriggerVO> createByDatabus(Long userId, String spaceId, CreateTriggerRO data);
 
     /**
      * Update trigger.
@@ -63,9 +64,11 @@ public interface IAutomationTriggerService {
      * @param userId    creator's user id
      * @param triggerId trigger id
      * @param data      data
+     * @param  spaceId space id
      * @return TriggerVO
      */
-    List<TriggerVO> updateByDatabus(String triggerId, Long userId, UpdateTriggerRO data);
+    List<TriggerVO> updateByDatabus(String triggerId, Long userId, String spaceId,
+                                    UpdateTriggerRO data);
 
     /**
      * Delete trigger.

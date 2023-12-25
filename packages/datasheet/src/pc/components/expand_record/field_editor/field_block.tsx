@@ -305,7 +305,7 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = (
     case FieldType.Button:
 
       return (
-        <Box paddingLeft={'16px'}>
+        <Box paddingLeft={'16px'} height={'22px'}>
           <ButtonFieldItem recordId={record.id} field={field} record={record} />
         </Box>
       );

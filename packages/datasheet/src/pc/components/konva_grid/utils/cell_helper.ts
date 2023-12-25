@@ -64,7 +64,6 @@ import { FileOutlined } from '@apitable/icons';
 import { assertSignatureManager } from '@apitable/widget-sdk';
 import { AutomationConstant } from 'pc/components/automation/config';
 import { AvatarSize, AvatarType } from 'pc/components/common';
-import { getIsValid } from 'pc/components/editors/button_editor/valid_map';
 import { GANTT_SHORT_TASK_MEMBER_ITEM_HEIGHT } from 'pc/components/gantt_view';
 import { isUnitLeave } from 'pc/components/multi_grid/cell/cell_member/member_item';
 import { setColor } from 'pc/components/multi_grid/format';
@@ -319,6 +318,7 @@ export class CellHelper extends KonvaDrawer {
   private renderCellButton(renderProps: IRenderProps, ctx?: any) {
     const { x, y, rowHeight, rowHeightLevel, columnWidth, isActive, callback } = renderProps;
 
+    const GRID_OPTION_ITEM_HEIGHT = 22;
     const buttonField = renderProps.field as IButtonField;
     const cellValue = [1];
     const isOperating = isActive;
@@ -331,29 +331,25 @@ export class CellHelper extends KonvaDrawer {
     const listCount = cellValue.length;
     let isOverflow = false;
 
-    const isValid = true
-    // let isValid: boolean = getIsValid(buttonField.id);
-    // if(buttonField.property.action.type === ButtonActionType.TriggerAutomation) {
-    //   isValid = isValid && (renderProps.permissions?.['editable'] ?? true);
-    // }
+    const isValid = true;
 
     const defaultColor = buttonField.property.style.color ? setColor(buttonField.property.style.color, renderProps.cacheTheme) : colors.defaultBg;
     let bg = '';
-    if(buttonField.property.style.type === ButtonStyleType.Background) {
-      if(isValid) {
+    if (buttonField.property.style.type === ButtonStyleType.Background) {
+      if (isValid) {
         bg = defaultColor;
-      }else {
+      } else {
         bg = colors.bgControlsDisabled;
       }
     }
 
     for (let index = 0; index < listCount; index++) {
-      let color = isValid ? defaultColor: colors.textCommonDisabled;
-      if(buttonField.property.style.type === ButtonStyleType.Background) {
-        if(isValid) {
+      let color = isValid ? defaultColor : colors.textCommonDisabled;
+      if (buttonField.property.style.type === ButtonStyleType.Background) {
+        if (isValid) {
           color = colors.textStaticPrimary;
-          if(renderProps.cacheTheme === 'dark') {
-            if(buttonField.property.style.color === AutomationConstant.whiteColor) {
+          if (renderProps.cacheTheme === 'dark') {
+            if (buttonField.property.style.color === AutomationConstant.whiteColor) {
               color = colors.textReverseDefault;
             }
           }
@@ -386,10 +382,7 @@ export class CellHelper extends KonvaDrawer {
         fontSize: 12,
       });
       // GRID_ICON_SMALL_SIZE
-      const itemWidth = Math.max(
-        textWidth + 2 * GRID_OPTION_ITEM_PADDING - (isEllipsis ? 8 : 0),
-        GRID_CELL_MULTI_ITEM_MIN_WIDTH,
-      );
+      const itemWidth = Math.max(textWidth + 2 * GRID_OPTION_ITEM_PADDING - (isEllipsis ? 8 : 0), GRID_CELL_MULTI_ITEM_MIN_WIDTH);
 
       if (columnWidth != null) {
         // In the inactive state, subsequent items are not rendered when the line width is exceeded
@@ -410,17 +403,9 @@ export class CellHelper extends KonvaDrawer {
         if (isActive && currentY >= maxHeight) isOverflow = true;
       }
 
-      const itemX = x + currentX;
       const itemY = y + currentY;
       if (ctx && !isActive) {
-        // this.path({
-        //   x: itemX + 4,
-        //   y: itemY + 2,
-        //   data: FileOutlinedPath,
-        //   size: 12,
-        //   fill: colors.textBrandDefault,
-        const itemX1 = x + (columnWidth - itemWidth) /2;
-        // });
+        const itemX1 = x + (columnWidth - itemWidth) / 2;
         this.label({
           x: itemX1,
           y: itemY,
@@ -428,7 +413,7 @@ export class CellHelper extends KonvaDrawer {
           height: GRID_OPTION_ITEM_HEIGHT,
           background,
           color,
-          radius: 4,
+          radius: 2,
           padding: GRID_OPTION_ITEM_PADDING,
           text: renderText,
           fontSize: 12,

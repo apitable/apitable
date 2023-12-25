@@ -16,7 +16,6 @@
 import { RabbitMQModule } from '@golevelup/nestjs-rabbitmq';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { enableQueueWorker } from 'app.environment';
 import { QueueSenderBaseService } from 'shared/services/queue/queue.sender.base.service';
 import { QueueSenderService } from 'shared/services/queue/queue.sender.service';
 
@@ -48,7 +47,7 @@ export const automationRunningQueueName = 'apitable.automation.running';
             },
           ],
           connectionInitOptions: { wait: false },
-          registerHandlers: enableQueueWorker,
+          registerHandlers: true,
           enableDirectReplyTo: false,
         };
       },

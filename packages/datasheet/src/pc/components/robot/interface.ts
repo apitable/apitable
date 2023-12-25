@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { IFormNodeItem } from 'pc/components/tool_bar/foreign_form/form_list_panel';
+
 import { IAutomationRobotDetailItem } from './robot_context';
 
 export interface IRobotHistoryTask {
@@ -54,13 +54,21 @@ export interface IRobotContext {
   robot?: IAutomationRobotDetailItem;
 }
 
-export type EnumTriggerEndpoint ='button_field'|'button_clicked' | 'form_submitted' | 'record_matches_conditions' | 'record_created'
-  | 'sendLarkMsg' | 'sendRequest' | 'sendMail';
+export type EnumTriggerEndpoint =
+  | 'button_field'
+  | 'button_clicked'
+  | 'form_submitted'
+  | 'record_matches_conditions'
+  | 'record_created'
+  | 'scheduled_time_arrive'
+  | 'sendLarkMsg'
+  | 'sendRequest'
+  | 'sendMail';
 
 interface INodeBaseType {
   name: string;
   description: string;
-  endpoint: EnumTriggerEndpoint ;
+  endpoint: EnumTriggerEndpoint;
   inputJsonSchema: INodeSchema;
   outputJsonSchema?: INodeSchema;
   service: {

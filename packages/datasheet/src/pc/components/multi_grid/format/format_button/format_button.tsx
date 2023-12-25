@@ -412,7 +412,6 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
 
       <section className={settingStyles.section}>
         <div className={settingStyles.sectionTitle}>{t(Strings.button_operation)}</div>
-
         <DropdownSelect
           searchPlaceholder={t(Strings.please_select)}
           placeholder={t(Strings.please_select)}
@@ -542,7 +541,7 @@ export const FormatButton: React.FC<React.PropsWithChildren<IFormateButtonProps>
                     >
                       <span>
                         <SyncOnOutlined
-                            color={colors.textCommonTertiary}
+                          color={colors.textCommonTertiary}
                           size={16}
                           onClick={() => {
                             setFieldProperty('action')({

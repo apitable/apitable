@@ -46,7 +46,7 @@ interface IUpgradeSpaceProps {
   hideDetail?: boolean;
 }
 
-const UpgradeSpace:React.FC<IUpgradeSpaceProps> = ({ hideDetail }) => {
+const UpgradeSpace: React.FC<IUpgradeSpaceProps> = ({ hideDetail }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const spaceId = useAppSelector((state) => state.space.activeId);
   const { product, recurringInterval, onTrial } = useAppSelector((state) => state.billing?.subscription) || {};
@@ -64,7 +64,7 @@ const UpgradeSpace:React.FC<IUpgradeSpaceProps> = ({ hideDetail }) => {
         return;
       }
       const {
-        data: { msg, pageType, grade, priceId, productInterval },
+        data: { msg, pageType, grade, priceId, productInterval, isTrail = true },
       } = event;
 
       if (msg === 'pageLoaded') {
@@ -97,15 +97,15 @@ const UpgradeSpace:React.FC<IUpgradeSpaceProps> = ({ hideDetail }) => {
           const res = await Api?.updateBillingSubscription(spaceId, subscriptionId);
           const { success, data } = res.data;
           if (success) {
-            location.href = data.url;
+            window.open(data.url, '_blank', 'noopener,noreferrer');
           }
         }
 
         if (_product !== _grade) {
           // 修改订阅产品呢
-          const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon()?.id);
+          const res = await Api.checkoutOrder(spaceId!, priceId, getClientReferenceId(), getStripeCoupon()?.id, isTrail);
           const { url } = res.data;
-          location.href = url;
+          window.open(url, '_blank', 'noopener,noreferrer');
         }
       }
 

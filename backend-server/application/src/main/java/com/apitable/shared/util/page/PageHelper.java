@@ -125,11 +125,11 @@ public class PageHelper {
     }
 
     public static <T> PageInfo<T> build(IPage<T> page) {
-        return new PageInfo<>((int) page.getCurrent(), (int) page.getSize(), (int) page.getTotal(),
+        return new PageInfo<>(page.getCurrent(), page.getSize(), page.getTotal(),
             page.getRecords());
     }
 
-    public static <T> PageInfo<T> build(int pageNum, int pageSize, int total, List<T> records) {
+    public static <T> PageInfo<T> build(long pageNum, long pageSize, long total, List<T> records) {
         return new PageInfo<>(pageNum, pageSize, total, records);
     }
 }

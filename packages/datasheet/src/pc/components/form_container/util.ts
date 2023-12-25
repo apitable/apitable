@@ -35,6 +35,9 @@ export const query2formData = (query: IFormQuery, fieldMap: IFieldMap, fieldPerm
             // filter invalid item name item
             res[key] = compact((value as string[]).map((v) => find(field.property.options, { name: v })?.id));
           }
+          if (field.type === FieldType.SingleSelect) {
+            res[key] = res[key]?.[0];
+          }
         } else if ([FieldType.SingleText, FieldType.Text].includes(field.type)) {
           res[key] = string2Segment(value as string);
         } else if (FORM_FIELD_TYPE.number.includes(field.type)) {

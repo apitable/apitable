@@ -293,7 +293,7 @@ export enum ContextMenuType {
   MIRROR = 'MIRROR', // Action menu for view tab bar
   FORM_FIELD_OP = 'FORM_FIELD_OP', // Magical form field operation menu
   EXPAND_RECORD_FIELD = 'EXPAND_RECORD_FIELD', // Expand the operation field configuration in the card
-  AI = 'AI'
+  AI = 'AI',
 }
 
 export const NODE_DESCRIPTION_EDITOR_ID = 'folderDescribeEditor';
@@ -371,7 +371,7 @@ export enum ScanQrType {
 
 export enum ImproveType {
   Phone = 'phone',
-  Email = 'email'
+  Email = 'email',
 }
 
 export const IDENTIFY_CODE_LOGIN = 'identify_code_login'; // login verify code
@@ -502,7 +502,9 @@ export enum WizardIdConstant {
   PERMISSION_SETTING_EXTEND = 95, // Open permission settings, inherit state
   PERMISSION_SETTING_OPENED = 96, // Open permission settings, non-inherited state
 
-  CREATE_MIRROR_TIP = 106
+  CREATE_MIRROR_TIP = 106,
+  PRICE_MODAL = 104,
+  AI_TABLE_VIDEO = 115,
 }
 
 export const WIDGET_PANEL_MAX_WIDGET_COUNT = 30;

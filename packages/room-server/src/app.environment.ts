@@ -31,9 +31,6 @@ export const isApiCacheEnabled = Object.is(process.env.API_CACHEABLE, 'true');
 // whether or not enable scheduler. (only for one instance, should use zookeeper if there are multiple instances)
 export const enableScheduler = Object.is(process.env.ENABLE_SCHED, 'true');
 
-// whether or not enable queue worker. (individual instances in worker queue mode to handle messages)
-export const enableQueueWorker = Object.is(process.env.ENABLE_QUEUE_WORKER, 'true');
-
 // whether or not enable socket. (data collaboration middleware)
 export const enableSocket = Object.is(process.env.ENABLE_SOCKET, 'true');
 export const enableHocuspocus = Object.is(process.env.ENABLE_HOCUSPOCUS, 'true');

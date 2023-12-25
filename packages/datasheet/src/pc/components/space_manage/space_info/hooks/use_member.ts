@@ -17,11 +17,11 @@
  */
 
 import { useMemo } from 'react';
-import { decimalCeil, Strings, t } from '@apitable/core';
+import { decimalCeil } from '@apitable/core';
 import { IHooksParams, IHooksResult } from '../interface';
 import { getPercent } from '../utils';
 
-export const useMember = ({ subscription, spaceInfo }: IHooksParams): IHooksResult & { usedString: string } => {
+export const useMember = ({ subscription, spaceInfo }: IHooksParams): IHooksResult => {
   const { seatUsage, total } = useMemo(() => {
     return {
       seatUsage: spaceInfo?.seatUsage || { total: 0, chatBotCount: 0, memberCount: 0 },
@@ -32,7 +32,6 @@ export const useMember = ({ subscription, spaceInfo }: IHooksParams): IHooksResu
   return useMemo(() => {
     const remain = Math.max(0, total - seatUsage.total);
     const usedText = seatUsage.total.toLocaleString();
-    const usedString = `${seatUsage.memberCount} ${t(Strings.people)} + ${seatUsage.chatBotCount} ${t(Strings.ai_chat_unit)}`;
     const totalText = total.toLocaleString();
     const usedPercent = decimalCeil(getPercent(seatUsage.total / total) * 100);
     const remainText = remain.toLocaleString();
@@ -41,7 +40,6 @@ export const useMember = ({ subscription, spaceInfo }: IHooksParams): IHooksResu
     return {
       used: seatUsage.total,
       usedText,
-      usedString,
       total,
       totalText,
       remain,
