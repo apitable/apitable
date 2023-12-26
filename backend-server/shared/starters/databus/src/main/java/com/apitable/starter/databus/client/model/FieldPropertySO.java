@@ -13,33 +13,19 @@
 
 package com.apitable.starter.databus.client.model;
 
-import java.util.Objects;
-import java.util.Arrays;
-import com.apitable.starter.databus.client.model.CollectType;
-import com.apitable.starter.databus.client.model.DateFormat;
-import com.apitable.starter.databus.client.model.IFilterInfo;
-import com.apitable.starter.databus.client.model.LinkedFields;
-import com.apitable.starter.databus.client.model.LookUpLimitType;
-import com.apitable.starter.databus.client.model.LookUpSortInfo;
-import com.apitable.starter.databus.client.model.RollUpFuncType;
-import com.apitable.starter.databus.client.model.SingleSelectProperty;
-import com.apitable.starter.databus.client.model.SymbolAlign;
-import com.apitable.starter.databus.client.model.TimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * FieldPropertySO
  */
 @JsonPropertyOrder({
+    FieldPropertySO.JSON_PROPERTY_ACTION,
   FieldPropertySO.JSON_PROPERTY_AUTO_FILL,
   FieldPropertySO.JSON_PROPERTY_BROTHER_FIELD_ID,
   FieldPropertySO.JSON_PROPERTY_COLLECT_TYPE,
@@ -47,6 +33,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   FieldPropertySO.JSON_PROPERTY_DATASHEET_ID,
   FieldPropertySO.JSON_PROPERTY_DATE_FORMAT,
   FieldPropertySO.JSON_PROPERTY_DEFAULT_VALUE,
+    FieldPropertySO.JSON_PROPERTY_ENABLE_FILTER_SORT,
   FieldPropertySO.JSON_PROPERTY_EXPRESSION,
   FieldPropertySO.JSON_PROPERTY_FIELD_ID_COLLECTION,
   FieldPropertySO.JSON_PROPERTY_FILTER_INFO,
@@ -75,9 +62,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
   FieldPropertySO.JSON_PROPERTY_SHOULD_SEND_MSG,
   FieldPropertySO.JSON_PROPERTY_SHOW_ALL,
   FieldPropertySO.JSON_PROPERTY_SORT_INFO,
+    FieldPropertySO.JSON_PROPERTY_STYLE,
   FieldPropertySO.JSON_PROPERTY_SUBSCRIPTION,
   FieldPropertySO.JSON_PROPERTY_SYMBOL,
   FieldPropertySO.JSON_PROPERTY_SYMBOL_ALIGN,
+    FieldPropertySO.JSON_PROPERTY_TEXT,
   FieldPropertySO.JSON_PROPERTY_TIME_FORMAT,
   FieldPropertySO.JSON_PROPERTY_TIME_ZONE,
   FieldPropertySO.JSON_PROPERTY_UNIT_IDS,
@@ -86,6 +75,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class FieldPropertySO {
+  public static final String JSON_PROPERTY_ACTION = "action";
+  public static final String JSON_PROPERTY_ENABLE_FILTER_SORT = "enableFilterSort";
+
   public static final String JSON_PROPERTY_AUTO_FILL = "autoFill";
   private Boolean autoFill;
 
@@ -106,6 +98,8 @@ public class FieldPropertySO {
 
   public static final String JSON_PROPERTY_DEFAULT_VALUE = "defaultValue";
   private Object defaultValue = null;
+  public static final String JSON_PROPERTY_STYLE = "style";
+  public static final String JSON_PROPERTY_TEXT = "text";
 
   public static final String JSON_PROPERTY_EXPRESSION = "expression";
   private String expression;
@@ -190,6 +184,8 @@ public class FieldPropertySO {
 
   public static final String JSON_PROPERTY_SORT_INFO = "sortInfo";
   private LookUpSortInfo sortInfo;
+  private Object action;
+  private Boolean enableFilterSort;
 
   public static final String JSON_PROPERTY_SUBSCRIPTION = "subscription";
   private Boolean subscription;
@@ -199,6 +195,8 @@ public class FieldPropertySO {
 
   public static final String JSON_PROPERTY_SYMBOL_ALIGN = "symbolAlign";
   private SymbolAlign symbolAlign;
+  private Object style;
+  private String text;
 
   public static final String JSON_PROPERTY_TIME_FORMAT = "timeFormat";
   private TimeFormat timeFormat;
@@ -217,6 +215,33 @@ public class FieldPropertySO {
 
   public FieldPropertySO() {
   }
+
+  public FieldPropertySO action(Object action) {
+
+    this.action = action;
+    return this;
+  }
+
+  /**
+   * Get action
+   *
+   * @return action
+   **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_ACTION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Object getAction() {
+    return action;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_ACTION)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setAction(Object action) {
+    this.action = action;
+  }
+
 
   public FieldPropertySO autoFill(Boolean autoFill) {
     
@@ -397,6 +422,33 @@ public class FieldPropertySO {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setDefaultValue(Object defaultValue) {
     this.defaultValue = defaultValue;
+  }
+
+
+  public FieldPropertySO enableFilterSort(Boolean enableFilterSort) {
+
+    this.enableFilterSort = enableFilterSort;
+    return this;
+  }
+
+  /**
+   * Get enableFilterSort
+   *
+   * @return enableFilterSort
+   **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_ENABLE_FILTER_SORT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Boolean getEnableFilterSort() {
+    return enableFilterSort;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_ENABLE_FILTER_SORT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setEnableFilterSort(Boolean enableFilterSort) {
+    this.enableFilterSort = enableFilterSort;
   }
 
 
@@ -1161,6 +1213,33 @@ public class FieldPropertySO {
   }
 
 
+  public FieldPropertySO style(Object style) {
+
+    this.style = style;
+    return this;
+  }
+
+  /**
+   * Get style
+   *
+   * @return style
+   **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_STYLE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public Object getStyle() {
+    return style;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_STYLE)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setStyle(Object style) {
+    this.style = style;
+  }
+
+
   public FieldPropertySO subscription(Boolean subscription) {
     
     this.subscription = subscription;
@@ -1236,6 +1315,33 @@ public class FieldPropertySO {
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
   public void setSymbolAlign(SymbolAlign symbolAlign) {
     this.symbolAlign = symbolAlign;
+  }
+
+
+  public FieldPropertySO text(String text) {
+
+    this.text = text;
+    return this;
+  }
+
+  /**
+   * Get text
+   *
+   * @return text
+   **/
+  @javax.annotation.Nullable
+  @JsonProperty(JSON_PROPERTY_TEXT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+
+  public String getText() {
+    return text;
+  }
+
+
+  @JsonProperty(JSON_PROPERTY_TEXT)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setText(String text) {
+    this.text = text;
   }
 
 
@@ -1393,13 +1499,15 @@ public class FieldPropertySO {
       return false;
     }
     FieldPropertySO fieldPropertySO = (FieldPropertySO) o;
-    return Objects.equals(this.autoFill, fieldPropertySO.autoFill) &&
+    return Objects.equals(this.action, fieldPropertySO.action) &&
+        Objects.equals(this.autoFill, fieldPropertySO.autoFill) &&
         Objects.equals(this.brotherFieldId, fieldPropertySO.brotherFieldId) &&
         Objects.equals(this.collectType, fieldPropertySO.collectType) &&
         Objects.equals(this.commaStyle, fieldPropertySO.commaStyle) &&
         Objects.equals(this.datasheetId, fieldPropertySO.datasheetId) &&
         Objects.equals(this.dateFormat, fieldPropertySO.dateFormat) &&
         Objects.equals(this.defaultValue, fieldPropertySO.defaultValue) &&
+        Objects.equals(this.enableFilterSort, fieldPropertySO.enableFilterSort) &&
         Objects.equals(this.expression, fieldPropertySO.expression) &&
         Objects.equals(this.fieldIdCollection, fieldPropertySO.fieldIdCollection) &&
         Objects.equals(this.filterInfo, fieldPropertySO.filterInfo) &&
@@ -1428,9 +1536,11 @@ public class FieldPropertySO {
         Objects.equals(this.shouldSendMsg, fieldPropertySO.shouldSendMsg) &&
         Objects.equals(this.showAll, fieldPropertySO.showAll) &&
         Objects.equals(this.sortInfo, fieldPropertySO.sortInfo) &&
+        Objects.equals(this.style, fieldPropertySO.style) &&
         Objects.equals(this.subscription, fieldPropertySO.subscription) &&
         Objects.equals(this.symbol, fieldPropertySO.symbol) &&
         Objects.equals(this.symbolAlign, fieldPropertySO.symbolAlign) &&
+        Objects.equals(this.text, fieldPropertySO.text) &&
         Objects.equals(this.timeFormat, fieldPropertySO.timeFormat) &&
         Objects.equals(this.timeZone, fieldPropertySO.timeZone) &&
         Objects.equals(this.unitIds, fieldPropertySO.unitIds) &&
@@ -1440,13 +1550,20 @@ public class FieldPropertySO {
 
   @Override
   public int hashCode() {
-    return Objects.hash(autoFill, brotherFieldId, collectType, commaStyle, datasheetId, dateFormat, defaultValue, expression, fieldIdCollection, filterInfo, foreignDatasheetId, formatting, fullLinkedFields, icon, includeTime, includeTimeZone, isMulti, isRecogUrlFlag, limitSingleRecord, limitToView, linkedDatasheetId, linkedFields, linkedViewId, lookUpLimit, lookUpTargetFieldId, max, nextId, openFilter, options, precision, relatedLinkFieldId, rollUpType, shouldSendMsg, showAll, sortInfo, subscription, symbol, symbolAlign, timeFormat, timeZone, unitIds, uuids, viewIdx);
+    return Objects.hash(action, autoFill, brotherFieldId, collectType, commaStyle, datasheetId,
+        dateFormat, defaultValue, enableFilterSort, expression, fieldIdCollection, filterInfo,
+        foreignDatasheetId, formatting, fullLinkedFields, icon, includeTime, includeTimeZone,
+        isMulti, isRecogUrlFlag, limitSingleRecord, limitToView, linkedDatasheetId, linkedFields,
+        linkedViewId, lookUpLimit, lookUpTargetFieldId, max, nextId, openFilter, options, precision,
+        relatedLinkFieldId, rollUpType, shouldSendMsg, showAll, sortInfo, style, subscription,
+        symbol, symbolAlign, text, timeFormat, timeZone, unitIds, uuids, viewIdx);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class FieldPropertySO {\n");
+    sb.append("    action: ").append(toIndentedString(action)).append("\n");
     sb.append("    autoFill: ").append(toIndentedString(autoFill)).append("\n");
     sb.append("    brotherFieldId: ").append(toIndentedString(brotherFieldId)).append("\n");
     sb.append("    collectType: ").append(toIndentedString(collectType)).append("\n");
@@ -1454,6 +1571,7 @@ public class FieldPropertySO {
     sb.append("    datasheetId: ").append(toIndentedString(datasheetId)).append("\n");
     sb.append("    dateFormat: ").append(toIndentedString(dateFormat)).append("\n");
     sb.append("    defaultValue: ").append(toIndentedString(defaultValue)).append("\n");
+    sb.append("    enableFilterSort: ").append(toIndentedString(enableFilterSort)).append("\n");
     sb.append("    expression: ").append(toIndentedString(expression)).append("\n");
     sb.append("    fieldIdCollection: ").append(toIndentedString(fieldIdCollection)).append("\n");
     sb.append("    filterInfo: ").append(toIndentedString(filterInfo)).append("\n");
@@ -1482,9 +1600,11 @@ public class FieldPropertySO {
     sb.append("    shouldSendMsg: ").append(toIndentedString(shouldSendMsg)).append("\n");
     sb.append("    showAll: ").append(toIndentedString(showAll)).append("\n");
     sb.append("    sortInfo: ").append(toIndentedString(sortInfo)).append("\n");
+    sb.append("    style: ").append(toIndentedString(style)).append("\n");
     sb.append("    subscription: ").append(toIndentedString(subscription)).append("\n");
     sb.append("    symbol: ").append(toIndentedString(symbol)).append("\n");
     sb.append("    symbolAlign: ").append(toIndentedString(symbolAlign)).append("\n");
+    sb.append("    text: ").append(toIndentedString(text)).append("\n");
     sb.append("    timeFormat: ").append(toIndentedString(timeFormat)).append("\n");
     sb.append("    timeZone: ").append(toIndentedString(timeZone)).append("\n");
     sb.append("    unitIds: ").append(toIndentedString(unitIds)).append("\n");

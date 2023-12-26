@@ -18,6 +18,8 @@
 
 package com.apitable.interfaces.automation.facede;
 
+import java.util.Map;
+
 /**
  * automation service facade.
  */
@@ -28,4 +30,11 @@ public interface AutomationServiceFacade {
      * @param scheduleId schedule id
      */
     void publishSchedule(Long scheduleId);
+
+    /**
+     * copy trigger schedule.
+     *
+     * @param newTriggerMap old triggerId -> new triggerId
+     */
+    void copy(Map<String, String> newTriggerMap);
 }

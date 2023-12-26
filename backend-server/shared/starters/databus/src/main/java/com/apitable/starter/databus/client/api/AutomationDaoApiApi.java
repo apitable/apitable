@@ -695,7 +695,7 @@ public class AutomationDaoApiApi {
         String[] localVarAuthNames = new String[] {  };
 
         ParameterizedTypeReference<ApiResponseEmptySO> localReturnType = new ParameterizedTypeReference<ApiResponseEmptySO>() {};
-        return apiClient.invokeAPI("/databus/dao/automations/robots/{robot_id}", HttpMethod.PATCH, uriVariables, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localReturnType);
+        return apiClient.invokeAPI("/databus/dao/automations/robots/{robot_id}", HttpMethod.PUT, uriVariables, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localReturnType);
     }
     /**
      * Get automation task input and output todo

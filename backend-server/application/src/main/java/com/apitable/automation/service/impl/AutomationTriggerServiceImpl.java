@@ -224,6 +224,7 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
         Map<String, List<String>> robotIdToTriggerIdsMap =
             triggers.stream().collect(Collectors.groupingBy(AutomationTriggerEntity::getRobotId,
                 Collectors.mapping(AutomationTriggerEntity::getTriggerId, toList())));
+        automationServiceFacade.copy(newTriggerMap);
         return new TriggerCopyResultDto(robotIdToTriggerIdsMap, newTriggerMap);
     }
 

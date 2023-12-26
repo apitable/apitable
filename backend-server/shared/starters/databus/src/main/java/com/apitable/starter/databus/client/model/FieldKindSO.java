@@ -80,6 +80,8 @@ public enum FieldKindSO {
   
   WORKDOC("WorkDoc"),
   
+  BUTTON("Button"),
+  
   DENIEDFIELD("DeniedField");
 
   private String value;
