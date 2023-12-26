@@ -510,9 +510,6 @@ _l10n: ## l10n apitable-ce
 	bash ./scripts/l10n.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base ./packages/l10n/base ./
 	pnpm run build
 
-wizard: ## wizard update
-	npx ts-node ./scripts/enterprise/wizard-update.ts
-
 ### help
 .PHONY: search
 search:

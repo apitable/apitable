@@ -3418,12 +3418,12 @@
       },
       "ai_create_ai_node": {
         "module": "ai",
-        "name": "create_ai_node",
         "guide": {
           "step": [
             "recn59RPV1b8Q"
           ]
-        }
+        },
+        "name": "create_ai_node"
       },
       "app_error_logger": {
         "module": "app",
@@ -3447,12 +3447,12 @@
       },
       "datasheet_create_mirror_tip": {
         "module": "datasheet",
-        "name": "create_mirror_tip",
         "guide": {
           "step": [
             "recixOMO4Roib"
           ]
-        }
+        },
+        "name": "create_mirror_tip"
       },
       "datasheet_dashboard_panel_shown": {
         "module": "datasheet",
@@ -3472,12 +3472,12 @@
       },
       "datasheet_field_setting_hidden": {
         "module": "datasheet",
-        "name": "field_setting_hidden",
         "guide": {
           "step": [
             "recMyeQyjTId0"
           ]
-        }
+        },
+        "name": "field_setting_hidden"
       },
       "datasheet_field_setting_shown": {
         "module": "datasheet",
@@ -3489,12 +3489,12 @@
       },
       "datasheet_grid_view_shown": {
         "module": "datasheet",
-        "name": "grid_view_shown",
         "guide": {
           "step": [
             "recYXMUXd8Rv8"
           ]
-        }
+        },
+        "name": "grid_view_shown"
       },
       "datasheet_org_has_link_field": {
         "module": "datasheet",
@@ -3514,21 +3514,21 @@
       },
       "datasheet_search_panel_hidden": {
         "module": "datasheet",
-        "name": "search_panel_hidden",
         "guide": {
           "step": [
             "recnHGTjyU7Jw"
           ]
-        }
+        },
+        "name": "search_panel_hidden"
       },
       "datasheet_search_panel_shown": {
         "module": "datasheet",
-        "name": "search_panel_shown",
         "guide": {
           "step": [
             "reczmcUK1NLK4"
           ]
-        }
+        },
+        "name": "search_panel_shown"
       },
       "datasheet_shown": {
         "module": "datasheet",
@@ -3540,12 +3540,12 @@
       },
       "datasheet_widget_center_modal_shown": {
         "module": "datasheet",
-        "name": "widget_center_modal_shown",
         "guide": {
           "step": [
             "reciAEMbU27Q0"
           ]
-        }
+        },
+        "name": "widget_center_modal_shown"
       },
       "datasheet_wigdet_empty_panel_shown": {
         "module": "datasheet",
@@ -3645,12 +3645,12 @@
       },
       "workbench_create_form_previewer_shown": {
         "module": "workbench",
-        "name": "create_form_previewer_shown",
         "guide": {
           "step": [
             "recZFoBGGlEJ5"
           ]
-        }
+        },
+        "name": "create_form_previewer_shown"
       },
       "workbench_entry": {
         "module": "workbench",
@@ -3899,13 +3899,13 @@
     },
     "action": [
       {
-        "id": "clear_guide_all_ui()",
-        "command": "clear_guide_all_ui",
         "guide": {
           "step": [
             "recsHUjGVAb1E"
           ]
-        }
+        },
+        "id": "clear_guide_all_ui()",
+        "command": "clear_guide_all_ui"
       },
       {
         "id": "clear_guide_uis([\"popover\"])",
@@ -4117,9 +4117,6 @@
         "commandArgs": "{\"defaultExpandMenu\": true, \"visible\": true}"
       },
       {
-        "id": "set_wizard_completed({\"curWizard\": true})",
-        "command": "set_wizard_completed",
-        "commandArgs": "{\"curWizard\": true}",
         "guide": {
           "step": [
             "recQExamygtJd",
@@ -4128,17 +4125,20 @@
             "recSkdfQ9C4uM",
             "rec6yMTEJEjgF"
           ]
-        }
+        },
+        "id": "set_wizard_completed({\"curWizard\": true})",
+        "command": "set_wizard_completed",
+        "commandArgs": "{\"curWizard\": true}"
       },
       {
-        "id": "set_wizard_completed({\"wizardId\": 14})",
-        "command": "set_wizard_completed",
-        "commandArgs": "{\"wizardId\": 14}",
         "guide": {
           "step": [
             "recLftzTSNtNZ"
           ]
-        }
+        },
+        "id": "set_wizard_completed({\"wizardId\": 14})",
+        "command": "set_wizard_completed",
+        "commandArgs": "{\"wizardId\": 14}"
       },
       {
         "id": "skip_all_wizards()",
@@ -4166,12 +4166,12 @@
     "wizard": {
       "1": {
         "completeIndex": -1,
-        "steps": "[[2]]",
         "player": {
           "action": [
             "recH5upxLpgTD"
           ]
-        }
+        },
+        "steps": "[[2]]"
       },
       "2": {
         "completeIndex": 0
@@ -4181,12 +4181,12 @@
       },
       "4": {
         "completeIndex": 0,
-        "steps": "[[8,9],[12,13],[10,11]]",
         "player": {
           "action": [
             "recSciFoQEPTM"
           ]
-        }
+        },
+        "steps": "[[8,9],[12,13],[10,11]]"
       },
       "5": {
         "repeat": true,
@@ -4250,21 +4250,21 @@
       "18": {
         "repeat": true,
         "completeIndex": 1,
-        "steps": "[[107,108],[105,106]]",
         "player": {
           "action": [
             "recMKNK2u3tkA"
           ]
-        }
+        },
+        "steps": "[[107,108],[105,106]]"
       },
       "19": {
         "completeIndex": 0,
-        "steps": "[[14],[15,16],[17],[18],[20,21],[22]]",
         "player": {
           "action": [
             "recl36N2sBDBe"
           ]
-        }
+        },
+        "steps": "[[14],[15,16],[17],[18],[20,21],[22]]"
       },
       "20": {
         "completeIndex": -1,
@@ -4273,24 +4273,24 @@
       },
       "21": {
         "completeIndex": -1,
-        "manualActions": [
-          "open_vikaby({\n\"visible\": true,\n\"defaultExpandDialog\": true,\n\"dialogConfig\": {\n\"title\": \"维格表首届模板征集大赛\",\n\"description\":\"分享你的模板，免费获得200G空间赠礼，并有机会获得20人版6个月白银空间站！\",\n\"btnText\":\"查看详情\",\n\"btnUrl\": \"https://u.vika.cn/3pkza\",\n\"wizardId\": 21\n}\n}\n )"
-        ],
         "player": {
           "action": [
             "recCrcOjScQhC",
             "rec2I8ZbLDFGw"
           ]
-        }
+        },
+        "manualActions": [
+          "open_vikaby({\n\"visible\": true,\n\"defaultExpandDialog\": true,\n\"dialogConfig\": {\n\"title\": \"维格表首届模板征集大赛\",\n\"description\":\"分享你的模板，免费获得200G空间赠礼，并有机会获得20人版6个月白银空间站！\",\n\"btnText\":\"查看详情\",\n\"btnUrl\": \"https://u.vika.cn/3pkza\",\n\"wizardId\": 21\n}\n}\n )"
+        ]
       },
       "22": {
         "completeIndex": 0,
-        "steps": "[[23],[24]]",
         "player": {
           "action": [
             "recbAdanWwVvE"
           ]
-        }
+        },
+        "steps": "[[23],[24]]"
       },
       "23": {
         "completeIndex": 0,
@@ -4298,21 +4298,21 @@
       },
       "24": {
         "completeIndex": 0,
-        "steps": "[[44]]",
         "player": {
           "action": [
             "recH5upxLpgTD"
           ]
-        }
+        },
+        "steps": "[[44]]"
       },
       "25": {
         "completeIndex": -1,
-        "steps": "[[43]]",
         "player": {
           "action": [
             "recpp069I2Fvi"
           ]
-        }
+        },
+        "steps": "[[43]]"
       },
       "26": {
         "completeIndex": 0,
@@ -4330,30 +4330,30 @@
       },
       "29": {
         "completeIndex": 0,
-        "steps": "[[47,48],[49],[50],[51,52],[53],[54]]",
         "player": {
           "action": [
             "recBtbbzXDolQ"
           ]
-        }
+        },
+        "steps": "[[47,48],[49],[50],[51,52],[53],[54]]"
       },
       "30": {
         "completeIndex": 0,
-        "steps": "[[55],[56,57],[58],[50],[51,52],[59],[60],[61]]",
         "player": {
           "action": [
             "recnbU7bovh9p"
           ]
-        }
+        },
+        "steps": "[[55],[56,57],[58],[50],[51,52],[59],[60],[61]]"
       },
       "31": {
         "completeIndex": 0,
-        "steps": "[[49],[50],[51,52],[53],[54]]",
         "player": {
           "action": [
             "recH7YVXq8ev2"
           ]
-        }
+        },
+        "steps": "[[49],[50],[51,52],[53],[54]]"
       },
       "32": {
         "completeIndex": 0,
@@ -4370,12 +4370,12 @@
       },
       "35": {
         "completeIndex": 0,
-        "steps": "[[64]]",
         "player": {
           "action": [
             "recWzFTYL5aqi"
           ]
-        }
+        },
+        "steps": "[[64]]"
       },
       "36": {
         "completeIndex": 0,
@@ -4388,12 +4388,12 @@
       },
       "38": {
         "completeIndex": 0,
-        "steps": "[[66]]",
         "player": {
           "action": [
             "recUsJf5WI1XK"
           ]
-        }
+        },
+        "steps": "[[66]]"
       },
       "39": {
         "completeIndex": 0,
@@ -4401,22 +4401,22 @@
       },
       "40": {
         "completeIndex": 0,
-        "steps": "[[70],[68],[69]]",
         "player": {
           "action": [
             "rec3Wfcm2vUu4"
           ]
-        }
+        },
+        "steps": "[[70],[68],[69]]"
       },
       "41": {
         "repeat": true,
         "completeIndex": 0,
-        "steps": "[[71]]",
         "player": {
           "action": [
             "recksrkgpIWGA"
           ]
-        }
+        },
+        "steps": "[[71]]"
       },
       "42": {},
       "43": {},
@@ -4430,21 +4430,21 @@
       },
       "46": {
         "completeIndex": 0,
-        "steps": "[[74]]",
         "player": {
           "action": [
             "reczvbPaxSPAU"
           ]
-        }
+        },
+        "steps": "[[74]]"
       },
       "47": {
         "completeIndex": 0,
-        "steps": "[[75]]",
         "player": {
           "action": [
             "recV5500IVb6G"
           ]
-        }
+        },
+        "steps": "[[75]]"
       },
       "48": {
         "completeIndex": 0,
@@ -4456,39 +4456,39 @@
       },
       "50": {
         "completeIndex": 0,
-        "manualActions": [
-          "open_guide_wizard(50)"
-        ],
-        "steps": "[[78]]",
         "player": {
           "action": [
             "recepgn7o0mNn"
           ]
-        }
+        },
+        "manualActions": [
+          "open_guide_wizard(50)"
+        ],
+        "steps": "[[78]]"
       },
       "51": {
         "completeIndex": 0,
-        "manualActions": [
-          "open_guide_wizard(51)"
-        ],
-        "steps": "[[79]]",
         "player": {
           "action": [
             "recnv8Qb15HQI"
           ]
-        }
+        },
+        "manualActions": [
+          "open_guide_wizard(51)"
+        ],
+        "steps": "[[79]]"
       },
       "52": {
         "completeIndex": 0,
-        "manualActions": [
-          "open_guide_wizard(52)"
-        ],
-        "steps": "[[80]]",
         "player": {
           "action": [
             "recoiIMY1gIXm"
           ]
-        }
+        },
+        "manualActions": [
+          "open_guide_wizard(52)"
+        ],
+        "steps": "[[80]]"
       },
       "53": {
         "completeIndex": 0,
@@ -4500,12 +4500,12 @@
       },
       "55": {
         "completeIndex": 0,
-        "steps": "[[82]]",
         "player": {
           "action": [
             "rech73EZuut4l"
           ]
-        }
+        },
+        "steps": "[[82]]"
       },
       "56": {
         "completeIndex": 0,
@@ -4513,21 +4513,21 @@
       },
       "57": {
         "completeIndex": 0,
-        "steps": "[[85]]",
         "player": {
           "action": [
             "rec7Y8opYoPK5"
           ]
-        }
+        },
+        "steps": "[[85]]"
       },
       "58": {
         "completeIndex": 0,
-        "steps": "[[86,87],[88,89],[90,91]]",
         "player": {
           "action": [
             "recNjTOtE8kzG"
           ]
-        }
+        },
+        "steps": "[[86,87],[88,89],[90,91]]"
       },
       "59": {
         "completeIndex": 0,
@@ -4538,12 +4538,12 @@
       },
       "61": {
         "completeIndex": -1,
-        "steps": "[[94]]",
         "player": {
           "action": [
             "recWziPefmN7N"
           ]
-        }
+        },
+        "steps": "[[94]]"
       },
       "62": {
         "completeIndex": 0,
@@ -4600,26 +4600,26 @@
         "steps": "[[93]]"
       },
       "76": {
-        "steps": "[[93]]",
         "player": {
           "action": [
             "recZmyGfgUNR6",
             "recEIcl9v4jzr",
             "recBtbbzXDolQ"
           ]
-        }
+        },
+        "steps": "[[93]]"
       },
       "77": {
         "steps": "[[111]]"
       },
       "78": {
         "completeIndex": 1,
-        "steps": "[[83]]",
         "player": {
           "action": [
             "recBEBtlrHNqc"
           ]
-        }
+        },
+        "steps": "[[83]]"
       },
       "79": {
         "completeIndex": 0,
@@ -4643,21 +4643,21 @@
       },
       "84": {
         "completeIndex": 0,
-        "steps": "[[135,133]]",
         "player": {
           "action": [
             "rec5MG0Q07sgC"
           ]
-        }
+        },
+        "steps": "[[135,133]]"
       },
       "85": {
         "repeat": true,
-        "steps": "[[136]]",
         "player": {
           "action": [
             "recpiCI64j675"
           ]
-        }
+        },
+        "steps": "[[136]]"
       },
       "86": {
         "steps": "[[137]]"
@@ -4667,12 +4667,12 @@
       },
       "88": {
         "completeIndex": 0,
-        "steps": "[[139,140],[141,143]]",
         "player": {
           "action": [
             "recGMkwh9WpxC"
           ]
-        }
+        },
+        "steps": "[[139,140],[141,143]]"
       },
       "89": {
         "completeIndex": -1,
@@ -4732,35 +4732,35 @@
       },
       "104": {
         "completeIndex": 0,
-        "steps": "[[166]]",
         "player": {
           "action": [
             "recRyoECYFqBv",
             "recIPTZiGHiIK",
             "recH5upxLpgTD"
           ]
-        }
+        },
+        "steps": "[[166]]"
       },
       "105": {
         "completeIndex": -1,
-        "steps": "[[167]]",
         "player": {
           "action": [
             "recRyoECYFqBv",
             "recIPTZiGHiIK"
           ]
-        }
+        },
+        "steps": "[[167]]"
       },
       "106": {
-        "manualActions": [
-          "open_guide_wizard(106)"
-        ],
-        "steps": "[[168]]",
         "player": {
           "action": [
             "recO09HUv27dd"
           ]
-        }
+        },
+        "manualActions": [
+          "open_guide_wizard(106)"
+        ],
+        "steps": "[[168]]"
       },
       "107": {
         "completeIndex": -1,
@@ -4792,15 +4792,15 @@
       },
       "113": {
         "completeIndex": -1,
-        "manualActions": [
-          "open_guide_wizard(113)"
-        ],
-        "steps": "[[174]]",
         "player": {
           "action": [
             "recS412alvczx"
           ]
-        }
+        },
+        "manualActions": [
+          "open_guide_wizard(113)"
+        ],
+        "steps": "[[174]]"
       },
       "114": {
         "completeIndex": -1,
@@ -4809,24 +4809,24 @@
       },
       "115": {
         "completeIndex": -1,
-        "steps": "[[176]]",
         "player": {
           "action": [
             "recIPTZiGHiIK"
           ]
-        }
+        },
+        "steps": "[[176]]"
       },
       "117": {
         "repeat": true,
-        "manualActions": [
-          "open_guide_wizard([117])"
-        ],
-        "steps": "[[177]]",
         "player": {
           "action": [
             "reca04Hhjjn7B"
           ]
-        }
+        },
+        "manualActions": [
+          "open_guide_wizard([117])"
+        ],
+        "steps": "[[177]]"
       },
       "118": {
         "completeIndex": -1,
@@ -4839,13 +4839,14 @@
       },
       "131": {
         "completeIndex": -1,
-        "steps": "[[192]]",
         "player": {
           "action": [
             "recEIcl9v4jzr",
             "recBtbbzXDolQ"
           ]
-        }
+        },
+        "endTime": 1703487600000,
+        "steps": "[[192]]"
       }
     },
     "step": {
