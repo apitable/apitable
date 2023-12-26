@@ -84,6 +84,19 @@
         WHERE template_id = #{templateId} AND is_deleted = 0
     </update>
 
+    <select id="selectInfoByTypeIdAndTemplateIds"
+            resultType="com.apitable.template.dto.TemplateInfo">
+        SELECT template_id, node_id
+        FROM ${tablePrefix}template
+        WHERE type_id = #{typeId}
+        AND template_id IN
+        <foreach item="item" index="index" collection="templateIds" open="("
+                 separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
+    </select>
+
     <select id="selectDtoByTypeId" resultMap="TemplateDtoMap">
         SELECT vt.template_id, vt.node_id, vt.name,
         vn.cover, vn.type, vu.avatar, vu.nick_name, vu.uuid,
