@@ -52,6 +52,16 @@ export interface IHelpProps {
   templateActived: boolean;
 }
 
+const handleEmailClick = (email: string) => {
+  const url = `mailto:${email}`;
+  try {
+    const newWindow = window.open(url, '_blank', 'noopener=yes,noreferrer=yes');
+    newWindow && ((newWindow as any).opener = null);
+  } catch (error) {
+    console.log('error', error);
+  }
+};
+
 export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templateActived }) => {
   const colors = useThemeColors();
   const [visible, setVisible] = useState(false);
@@ -111,7 +121,13 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
     {
       icon: <AdviseOutlined />,
       text: t(Strings.vomit_a_slot),
-      onClick: () => navigationToUrl(getEnvVariables().USER_FEEDBACK_FORM_URL),
+      onClick: () => {
+        if (getEnvVariables().IS_AITABLE) {
+          handleEmailClick('support@aitable.ai');
+        } else {
+          navigationToUrl(getEnvVariables().USER_FEEDBACK_FORM_URL)
+        }
+      },
       hidden: isPrivateDeployment(),
     },
     {
