@@ -5941,6 +5941,12 @@
   "open_automation_time_arrival": "https://aitable.ai/contact-sales-open-source",
   "subscribe_grade_starter": "Starter",
   "subscribe_grade_business": "Business",
+  "copilot_data_agent_name": "Data Agent",
+  "copilot_data_agent_desc": "A powerful assistant for data analysis, it can generate data analysis insights/visualizations/data analysis reports based on your views.",
+  "copilot_help_agent_name": "Help Agent",
+  "copilot_help_agent_desc": "How to operate AItable? You can hand over any usage problems to this AItable expert for resolution.",
+  "copilot_auto_agent_name": "Auto Agent",
+  "copilot_auto_agent_desc": "Not sure which one to choose Agent? Try AutoAgent.",
   "payment_reminder_modal_title": "You are currently using the free version",
   "payment_reminder_modal_content": "You can try the advanced version to enjoy more file nodes, enterprise permissions, attachment capacity, data volume, AI and other advanced features and privileges."
 }

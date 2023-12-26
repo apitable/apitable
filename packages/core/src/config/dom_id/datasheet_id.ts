@@ -38,6 +38,7 @@ export const API_BTN = PREFIX + 'API_BTN'; // view tab bar - api panel
 export const FORM_BTN = PREFIX + 'FORM_BTN'; // View Tab Bar - Magic Form
 export const WIDGET_BTN = PREFIX + 'WIDGET_BTN'; // View Tab Bar - Widget
 export const ROBOT_BTN = PREFIX + 'ROBOT_BTN'; // View Tab Bar - Robot
+export const COPILOT_BTN = PREFIX + 'COPILOT_BTN'; // View Tab Bar - Copilot
 export const FORM_LIST_PANEL = PREFIX + 'FORM_LIST_PANEL'; // view tab bar - magic form list
 export const TIME_MACHINE_BTN = PREFIX + 'TIME_MACHINE_BTN'; // View Tab Bar - Time Machine
 export const ARCHIVED_RECORDS_BTN = PREFIX + 'ARCHIVED_RECORDS_BTN'; // View Tab Bar - Archived Records
