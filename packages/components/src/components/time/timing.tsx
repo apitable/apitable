@@ -34,6 +34,7 @@ import styled, { css } from 'styled-components';
 import { useCssColors } from '../../hooks/use_css_colors';
 
 dayjs.extend(advancedFormat);
+export const CONST_EMTPTY = '__DANGER_EMPTY__';
 
 interface Props {
   interval: 'day' | 'month' | 'week' | 'hour';
@@ -190,7 +191,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
           </Box>
 
           <Box display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
-            {Maybe.encase(() => t(Strings.by_at)).orDefault('').length > 0 && (
+            {Maybe.fromPredicate((item) => item != CONST_EMTPTY, t(Strings.by_at)).orDefault('').length > 0 && (
               <Typography variant={'body3'} color={colors.textCommonPrimary}>
                 {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
               </Typography>
@@ -267,7 +268,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
           </Box>
 
           <Box flex={'0 0 max-content'} width={'min-content'}>
-            {Maybe.encase(() => t(Strings.by_at)).orDefault('').length > 0 && (
+            {Maybe.fromPredicate((item) => item != CONST_EMTPTY, t(Strings.by_at)).orDefault('').length > 0 && (
               <Typography variant={'body3'} color={colors.textCommonPrimary}>
                 {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
               </Typography>

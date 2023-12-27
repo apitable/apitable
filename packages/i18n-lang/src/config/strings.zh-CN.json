@@ -940,7 +940,7 @@
   "button_text": "按钮文案",
   "button_text_click_start": "点击开始",
   "button_type": "按钮类型",
-  "by_at": "at",
+  "by_at": "__DANGER_EMPTY__",
   "by_days": "按天",
   "by_field_id": "使用 Field ID",
   "by_hours": "按小时",
