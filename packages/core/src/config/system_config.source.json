@@ -3324,9 +3324,9 @@
           "device_IS_pc",
           "url_EXCLUDES_templateId",
           "url_EXCLUDES_shareId",
-          "edition_IS_apitable"
+          "edition_IS_aitable"
         ],
-        "id": "workbench_show_trial_tip,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 104])]",
+        "id": "workbench_show_trial_tip,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_aitable],[open_guide_wizards([105, 104])]",
         "event": [
           "workbench_show_trial_tip"
         ]
@@ -3355,9 +3355,9 @@
           "device_IS_pc",
           "url_EXCLUDES_templateId",
           "url_EXCLUDES_shareId",
-          "edition_IS_apitable"
+          "edition_IS_aitable"
         ],
-        "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 115, 104])]",
+        "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_aitable],[open_guide_wizards([105, 115, 104])]",
         "event": [
           "workbench_shown"
         ]
@@ -3711,8 +3711,8 @@
       {
         "operator": "IS",
         "condition": "edition",
-        "id": "edition_IS_apitable",
-        "conditionArgs": "apitable"
+        "id": "edition_IS_aitable",
+        "conditionArgs": "aitable"
       },
       {
         "operator": "IS",
