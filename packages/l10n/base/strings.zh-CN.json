@@ -5949,11 +5949,15 @@
   "subscribe_grade_starter": "Starter",
   "subscribe_grade_business": "Business",
   "copilot_data_agent_name": "数据分析助手",
-  "copilot_data_agent_desc": "数据分析的得力助手，可以根据您的视图生成数据分析见解/可视化/数据分析报告",
-  "copilot_help_agent_name": "AItable使用助手",
-  "copilot_help_agent_desc": "How to operate AItable? You can hand over any usage problems to this AItable expert for resolution.",
   "copilot_auto_agent_name": "全能助手",
   "copilot_auto_agent_desc": "不知道选哪个?试试看全能助手",
+  "copilot_data_agent_desc": "基于您的视图生成数据分析/可视化。",
+  "copilot_data_agent_name": "数据分析助手",
+  "copilot_help_agent_desc": "询问有关AITable帮助中心文档的任何问题。",
+  "copilot_help_agent_name": "检索帮助中心",
+  "ai_copilot_start_process_request": "开始处理您的请求...",
+  "ai_copilot_generate_response": "为您生成答案...",
+  "ai_copilot_processs": "处理中，请稍候...",
   "payment_reminder_modal_title": "你目前正在使用免费版",
   "payment_reminder_modal_content": "可以试试看高级版本，享受更多文件节点、企业权限、附件容量、数据量、AI等高级功能和特权。"
 }
