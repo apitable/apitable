@@ -101,7 +101,10 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
         InternalCreditUsageVo vo = new InternalCreditUsageVo();
         vo.setAllowOverLimit(subscriptionInfo.getConfig().isAllowCreditOverLimit());
         vo.setMaxMessageCredits(subscriptionInfo.getFeature().getMessageCreditNums().getValue());
-        vo.setUsedCredit(aiServiceFacade.getUsedCreditCount(spaceId));
+        LocalDate now = ClockManager.me().getLocalDateNow();
+        int cycleDayOfMonth = subscriptionInfo.cycleDayOfMonth(now.getDayOfMonth());
+        LocalDate cycleDate = safeSetDayOfMonth(now, cycleDayOfMonth);
+        vo.setUsedCredit(aiServiceFacade.getUsedCreditCount(spaceId, cycleDate));
         return vo;
     }
 
@@ -143,7 +146,8 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
         int cycleDayOfMonth = subscriptionInfo.cycleDayOfMonth(now.getDayOfMonth());
         LocalDate cycleDate = safeSetDayOfMonth(now, cycleDayOfMonth);
         vo.setApiUsageUsedCount(iStaticsService.getCurrentMonthApiUsage(spaceId, cycleDate));
-        vo.setApiCallUsedNumsCurrentMonth(iStaticsService.getCurrentMonthApiUsage(spaceId, cycleDate));
+        vo.setApiCallUsedNumsCurrentMonth(
+            iStaticsService.getCurrentMonthApiUsage(spaceId, cycleDate));
         vo.setIsAllowOverLimit(true);
         return vo;
     }

@@ -582,9 +582,12 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             subscriptionInfo =
                 entitlementServiceFacade.getSpaceSubscription(spaceId);
         }
+        LocalDate now = ClockManager.me().getLocalDateNow();
+        int cycleDayOfMonth = subscriptionInfo.cycleDayOfMonth(now.getDayOfMonth());
+        LocalDate cycleDate = safeSetDayOfMonth(now, cycleDayOfMonth);
         return new CreditInfo(subscriptionInfo.getConfig().isAllowCreditOverLimit(),
             subscriptionInfo.getFeature().getMessageCreditNums().getValue(),
-            aiServiceFacade.getUsedCreditCount(spaceId));
+            aiServiceFacade.getUsedCreditCount(spaceId, cycleDate));
     }
 
     @Override
@@ -797,7 +800,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         }
         spaceInfoVO.setSocial(bindInfo);
         // credit
-        BigDecimal usedCredit = aiServiceFacade.getUsedCreditCount(spaceId);
+        BigDecimal usedCredit = aiServiceFacade.getUsedCreditCount(spaceId, cycleDate);
         spaceInfoVO.setUsedCredit(usedCredit);
         // chat bot status
         CommonCacheService cacheService = SpringContextHolder.getBean(CommonCacheService.class);
@@ -913,8 +916,6 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         vo.setKanbanViewNums(viewVO.getKanbanViews());
         vo.setGanttViewNums(viewVO.getGanttViews());
         vo.setCalendarViewNums(viewVO.getCalendarViews());
-        BigDecimal usedCredit = aiServiceFacade.getUsedCreditCount(spaceId);
-        vo.setUsedCredit(usedCredit);
         return vo;
     }
 
