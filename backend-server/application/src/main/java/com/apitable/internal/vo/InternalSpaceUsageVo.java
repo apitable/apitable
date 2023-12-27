@@ -18,9 +18,11 @@
 
 package com.apitable.internal.vo;
 
+import com.apitable.shared.support.serializer.CreditUnitSerializer;
 import com.apitable.shared.support.serializer.NullNumberSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.math.BigDecimal;
 import lombok.Data;
 
 /**
@@ -49,4 +51,9 @@ public class InternalSpaceUsageVo {
     @Schema(description = "total number of calendar views", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long calendarViewNums;
+
+    @Schema(description = "Number of used credit", example = "5.0001", deprecated = true)
+    @JsonSerialize(nullsUsing = CreditUnitSerializer.class)
+    @Deprecated(since = "1.8.0", forRemoval = true)
+    private BigDecimal usedCredit;
 }
