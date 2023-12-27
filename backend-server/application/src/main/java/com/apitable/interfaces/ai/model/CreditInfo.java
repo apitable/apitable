@@ -39,6 +39,10 @@ public class CreditInfo {
         if (BigDecimal.ZERO.equals(usedCredit)) {
             return BigDecimal.valueOf(maxMessageCredits).setScale(4, HALF_UP);
         }
+        if (usedCredit.longValue() > maxMessageCredits) {
+            // may exceed used credit in a trial period
+            return BigDecimal.ZERO;
+        }
         return BigDecimal.valueOf(maxMessageCredits).subtract(usedCredit).setScale(4, HALF_UP);
     }
 

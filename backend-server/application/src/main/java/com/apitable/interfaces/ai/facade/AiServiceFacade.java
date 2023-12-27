@@ -41,10 +41,11 @@ public interface AiServiceFacade {
      * get total credit transaction count.
      *
      * @param spaceId   space id
-     * @param cycleDate cycleDate
+     * @param beginDate begin date
+     * @param endDate   end date
      * @return total credit transaction count
      */
-    BigDecimal getUsedCreditCount(String spaceId, LocalDate cycleDate);
+    BigDecimal getUsedCreditCount(String spaceId, LocalDate beginDate, LocalDate endDate);
 
     /**
      * load credit transaction chart data.

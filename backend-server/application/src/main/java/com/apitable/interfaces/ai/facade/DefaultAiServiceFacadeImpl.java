@@ -32,7 +32,7 @@ public class DefaultAiServiceFacadeImpl implements AiServiceFacade {
     }
 
     @Override
-    public BigDecimal getUsedCreditCount(String spaceId, LocalDate cycleDate) {
+    public BigDecimal getUsedCreditCount(String spaceId, LocalDate startDate, LocalDate endDate) {
         return BigDecimal.ZERO;
     }
 

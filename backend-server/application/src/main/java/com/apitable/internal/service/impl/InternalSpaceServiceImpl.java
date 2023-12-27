@@ -19,7 +19,6 @@
 package com.apitable.internal.service.impl;
 
 import static com.apitable.core.constants.RedisConstants.GENERAL_LOCKED;
-import static com.apitable.shared.util.DateHelper.safeSetDayOfMonth;
 
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
@@ -27,6 +26,7 @@ import com.apitable.automation.service.impl.AutomationRobotServiceImpl;
 import com.apitable.core.constants.RedisConstants;
 import com.apitable.interfaces.ai.facade.AiServiceFacade;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
+import com.apitable.interfaces.billing.model.CycleDateRange;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
@@ -40,6 +40,7 @@ import com.apitable.internal.vo.InternalSpaceAutomationRunMessageV0;
 import com.apitable.internal.vo.InternalSpaceInfoVo;
 import com.apitable.internal.vo.InternalSpaceSubscriptionVo;
 import com.apitable.shared.clock.spring.ClockManager;
+import com.apitable.shared.util.SubscriptionDateRange;
 import com.apitable.space.enums.LabsFeatureEnum;
 import com.apitable.space.service.ILabsApplicantService;
 import com.apitable.space.service.IStaticsService;
@@ -102,9 +103,9 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
         vo.setAllowOverLimit(subscriptionInfo.getConfig().isAllowCreditOverLimit());
         vo.setMaxMessageCredits(subscriptionInfo.getFeature().getMessageCreditNums().getValue());
         LocalDate now = ClockManager.me().getLocalDateNow();
-        int cycleDayOfMonth = subscriptionInfo.cycleDayOfMonth(now.getDayOfMonth());
-        LocalDate cycleDate = safeSetDayOfMonth(now, cycleDayOfMonth);
-        vo.setUsedCredit(aiServiceFacade.getUsedCreditCount(spaceId, cycleDate));
+        CycleDateRange dateRange = SubscriptionDateRange.calculateCycleDate(subscriptionInfo, now);
+        vo.setUsedCredit(aiServiceFacade.getUsedCreditCount(spaceId, dateRange.getCycleStartDate(),
+            dateRange.getCycleEndDate()));
         return vo;
     }
 
@@ -143,11 +144,11 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
         BillingAssembler assembler = new BillingAssembler();
         InternalSpaceApiUsageVo vo = assembler.toApiUsageVo(planFeature);
         LocalDate now = ClockManager.me().getLocalDateNow();
-        int cycleDayOfMonth = subscriptionInfo.cycleDayOfMonth(now.getDayOfMonth());
-        LocalDate cycleDate = safeSetDayOfMonth(now, cycleDayOfMonth);
-        vo.setApiUsageUsedCount(iStaticsService.getCurrentMonthApiUsage(spaceId, cycleDate));
+        CycleDateRange dateRange = SubscriptionDateRange.calculateCycleDate(subscriptionInfo, now);
+        vo.setApiUsageUsedCount(
+            iStaticsService.getCurrentMonthApiUsage(spaceId, dateRange.getCycleEndDate()));
         vo.setApiCallUsedNumsCurrentMonth(
-            iStaticsService.getCurrentMonthApiUsage(spaceId, cycleDate));
+            iStaticsService.getCurrentMonthApiUsage(spaceId, dateRange.getCycleEndDate()));
         vo.setIsAllowOverLimit(true);
         return vo;
     }
