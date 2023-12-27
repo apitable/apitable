@@ -5948,5 +5948,8 @@
   "copilot_auto_agent_name": "Auto Agent",
   "copilot_auto_agent_desc": "Not sure which one to choose Agent? Try AutoAgent.",
   "payment_reminder_modal_title": "You are currently using the free version",
+  "automation_is_not_yet_enabled": "Automation is not yet enabled, please enable it and try again",
+  "the_button_field_is_misconfigured": "The button field is misconfigured, please check and try again",
+  "invalid_automation_configuration": "Invalid automation configuration, please check and try again",
   "payment_reminder_modal_content": "You can try the advanced version to enjoy more file nodes, enterprise permissions, attachment capacity, data volume, AI and other advanced features and privileges."
 }

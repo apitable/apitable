@@ -1,5 +1,6 @@
 import { useAtomValue, useSetAtom } from 'jotai';
 import { isNil } from 'lodash';
+import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import styled, { css } from 'styled-components';
@@ -14,7 +15,6 @@ import { AutomationScenario, IRobotContext } from 'pc/components/robot/interface
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
 import { automationTaskMap, AutomationTaskStatus } from '../automation_task_map';
-import dynamic from 'next/dynamic';
 
 const ButtonItem = dynamic(() => import('pc/components/editors/button_editor/item'), { ssr: false });
 
@@ -23,7 +23,10 @@ const ButtonItem = dynamic(() => import('pc/components/editors/button_editor/ite
 // (1106, 'The automation not activated');
 // (1107, 'The automation trigger not exits');
 // (1108, 'The automation trigger invalid');
-const CONST_AUTOMATION_ERROR = [444, 445, 1106, 1107, 1108];
+const ERROR_CODE_NOT_ACTIVATED_1106 = 1106;
+const ERROR_CODE_TRIGGER_NOT_EXISTS_1107 = 1107;
+const ERROR_CODE_TRIGGER_INVALID_1108 = 1108;
+const CONST_AUTOMATION_ERROR = [444, 445, ERROR_CODE_NOT_ACTIVATED_1106, ERROR_CODE_TRIGGER_NOT_EXISTS_1107, ERROR_CODE_TRIGGER_INVALID_1108];
 
 export const handleStart = (
   datasheetId: string,
@@ -54,7 +57,16 @@ export const handleStart = (
   const task: () => Promise<{ success: boolean }> = () =>
     runAutomationButton(datasheetId, record, state, recordId, field.id, field, (success, code, message) => {
       if (!success && code && CONST_AUTOMATION_ERROR.includes(code) && message) {
-        Message.error({ content: message });
+        if (code === ERROR_CODE_NOT_ACTIVATED_1106) {
+          Message.error({ content: t(Strings.automation_is_not_yet_enabled) });
+        } else if (code === ERROR_CODE_TRIGGER_NOT_EXISTS_1107) {
+          Message.error({ content: t(Strings.the_button_field_is_misconfigured) });
+        } else if (code === ERROR_CODE_TRIGGER_INVALID_1108) {
+          Message.error({ content: t(Strings.invalid_automation_configuration) });
+        } else {
+          Message.error({ content: message });
+        }
+
         return;
       }
       if (!success) {

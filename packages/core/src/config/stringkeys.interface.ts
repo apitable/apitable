@@ -816,6 +816,7 @@ export type StringKeysMapType = {
   automation_enabled_return_via_related_files: 'automation_enabled_return_via_related_files';
   automation_field: 'automation_field';
   automation_import_variables_from_pre_tep: 'automation_import_variables_from_pre_tep';
+  automation_is_not_yet_enabled: 'automation_is_not_yet_enabled';
   automation_last_edited_by: 'automation_last_edited_by';
   automation_last_edited_time: 'automation_last_edited_time';
   automation_manager_label: 'automation_manager_label';
@@ -1282,6 +1283,12 @@ export type StringKeysMapType = {
   convert: 'convert';
   convert_tip: 'convert_tip';
   cook_islands: 'cook_islands';
+  copilot_auto_agent_desc: 'copilot_auto_agent_desc';
+  copilot_auto_agent_name: 'copilot_auto_agent_name';
+  copilot_data_agent_desc: 'copilot_data_agent_desc';
+  copilot_data_agent_name: 'copilot_data_agent_name';
+  copilot_help_agent_desc: 'copilot_help_agent_desc';
+  copilot_help_agent_name: 'copilot_help_agent_name';
   copy: 'copy';
   copy_automation_url: 'copy_automation_url';
   copy_card_link: 'copy_card_link';
@@ -2692,6 +2699,7 @@ export type StringKeysMapType = {
   intro_widget_tips: 'intro_widget_tips';
   introduction: 'introduction';
   invalid_action_sort_tip: 'invalid_action_sort_tip';
+  invalid_automation_configuration: 'invalid_automation_configuration';
   invalid_field_type: 'invalid_field_type';
   invalid_option_sort_tip: 'invalid_option_sort_tip';
   invalid_redemption_code_entered: 'invalid_redemption_code_entered';
@@ -3650,6 +3658,8 @@ export type StringKeysMapType = {
   payment_record: 'payment_record';
   payment_reminder: 'payment_reminder';
   payment_reminder_content: 'payment_reminder_content';
+  payment_reminder_modal_content: 'payment_reminder_modal_content';
+  payment_reminder_modal_title: 'payment_reminder_modal_title';
   pending_invite: 'pending_invite';
   people: 'people';
   per_person_per_year: 'per_person_per_year';
@@ -5255,6 +5265,7 @@ export type StringKeysMapType = {
   text_editor_tip_end: 'text_editor_tip_end';
   text_functions: 'text_functions';
   thailand: 'thailand';
+  the_button_field_is_misconfigured: 'the_button_field_is_misconfigured';
   the_current_automation_workflow_has_no_related_files_you_can_establish_a_link_by_adding_trigger_conditions_and_actions_on_the_left_side: 'the_current_automation_workflow_has_no_related_files_you_can_establish_a_link_by_adding_trigger_conditions_and_actions_on_the_left_side';
   the_current_button_column_has_expired_please_reselect: 'the_current_button_column_has_expired_please_reselect';
   the_last_7_days: 'the_last_7_days';

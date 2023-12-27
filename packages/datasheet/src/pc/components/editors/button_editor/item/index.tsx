@@ -1,31 +1,19 @@
-import { isNil } from 'lodash';
 import * as React from 'react';
 import { FunctionComponent } from 'react';
 import styled, { css } from 'styled-components';
-import { ResponseDataAutomationVO } from '@apitable/api-client';
-import { Box, ITheme, LinkButton, Message, Typography, useThemeColors } from '@apitable/components';
-import { ButtonActionType, ButtonStyleType, getColorValue, IButtonField, IRecord, IReduxState, Selectors, Strings, t } from '@apitable/core';
+import { Box, LinkButton, Typography, useThemeColors } from '@apitable/components';
+import { ButtonStyleType, getColorValue, IButtonField, Selectors } from '@apitable/core';
 import { CheckFilled, LoadingFilled } from '@apitable/icons';
 import { AutomationConstant } from 'pc/components/automation/config';
-import { runAutomationButton, runAutomationUrl } from 'pc/components/editors/button_editor';
-import { getRobotDetail } from 'pc/components/editors/button_editor/api';
 import EllipsisText from 'pc/components/ellipsis_text';
 import { autoSizerCanvas } from 'pc/components/konva_components';
 import { GRID_CELL_MULTI_ITEM_MIN_WIDTH, GRID_OPTION_ITEM_PADDING } from 'pc/components/konva_grid';
 import { TextEllipsisEngine } from 'pc/components/konva_grid/components/cell/cell_button/text_ellipsis_engine';
 import { setColor } from 'pc/components/multi_grid/format';
-import { AutomationScenario, IRobotContext } from 'pc/components/robot/interface';
 import { useCssColors } from 'pc/components/robot/robot_detail/trigger/use_css_colors';
 import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { AutomationTaskStatus } from '../automation_task_map';
-
-// (444, 'button field automation not configured');
-// (445, 'button field automation trigger not configured');
-// (1106, 'The automation not activated');
-// (1107, 'The automation trigger not exits');
-// (1108, 'The automation trigger invalid');
-const CONST_AUTOMATION_ERROR = [444, 445, 1106, 1107, 1108];
 
 const StyledTypographyNoMargin = styled(Typography)`
   margin-bottom: 0 !important;
