@@ -30,15 +30,8 @@ export const TimeTips: FC<{
   }
 
   return (
-    <Box
-      display={'flex'}
-      flexDirection={'row'}
-      marginTop={'16px'}
-      padding={'8px'}
-      borderRadius={'8px'}
-      backgroundColor={colors.bgControlsElevateDefault}
-    >
-      <Box flex={'0 0 max-content'}>
+    <Box display={'flex'} flexDirection={'row'} marginTop={'16px'} padding={'8px'} borderRadius={'4px'} backgroundColor={colors.bgControlsDefault}>
+      <Box flex={'0 0 max-content'} paddingTop={'2px'}>
         <InfoCircleOutlined size={16} color={colors.textCommonTertiary} />
       </Box>
 
