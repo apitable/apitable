@@ -23,6 +23,7 @@ import { NextTimePreview } from './preview';
 import { Timing } from './timing';
 import { ICronSchema } from './types';
 import { CronConverter } from './utils';
+import { TimeTips } from './tips';
 
 const COMPONENT_NAME = 'Time';
 
@@ -40,6 +41,12 @@ export default {
     content: 'Scanner for decks of cards with bar codes printed on card edges',
   },
 };
+
+export const TimeTipsView: FC = () => (
+  <>
+    <TimeTips interval={'hour'} />
+  </>
+);
 
 export const NextTime: FC = () => (
   <>

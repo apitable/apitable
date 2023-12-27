@@ -95,7 +95,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
       return (
         <GapBox display={'flex'} alignItems={'center'} gap={'8px'}>
           <Typography variant={'body3'} color={colors.textCommonPrimary}>
-            {Maybe.encase(() => t(Strings.every)).orDefault('Every')}
+            {Maybe.encase(() => t(Strings.starting_from_midnight)).orDefault('从每天 0 点起，每隔')}
           </Typography>
 
           <DropdownSelect
@@ -132,21 +132,11 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             dropDownOptions={{
               placement: 'bottom-start',
             }}
-            triggerStyle={{
-              minWidth: '64px',
-            }}
             listStyle={{
               width: '120px',
             }}
             openSearch
             searchPlaceholder={Maybe.encase(() => t(Strings.datasource_selector_search_placeholder)).orDefault('Search')}
-            suffixContent={
-              <Box paddingLeft={'8px'} display={'inline-flex'} alignItems={'center'}>
-                <Typography variant={'body3'} color={colors.textCommonPrimary}>
-                  {Maybe.encase(() => t(Strings.by_min)).orDefault('Min')}
-                </Typography>
-              </Box>
-            }
             hiddenArrow
             value={String(minutes)}
             disabled={readonly}
@@ -163,6 +153,9 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
               );
             }}
           />
+          <Typography variant={'body3'} color={colors.textCommonPrimary}>
+            {Maybe.encase(() => t(Strings.by_min)).orDefault('minute(s)')}
+          </Typography>
         </GapBox>
       );
     }
@@ -191,11 +184,9 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
           </Box>
 
           <Box display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
-            {Maybe.fromPredicate((item) => item != CONST_EMTPTY, t(Strings.by_at)).orDefault('').length > 0 && (
-              <Typography variant={'body3'} color={colors.textCommonPrimary}>
-                {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
-              </Typography>
-            )}
+            <Typography variant={'body3'} color={colors.textCommonPrimary}>
+              {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
+            </Typography>
           </Box>
 
           <Box display={'flex'} alignItems={'center'} flex={'0 0'}>
@@ -219,7 +210,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
         <BoxWithGap display={'flex'} alignItems={'center'} gap={'8px'}>
           <Box display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
             <Typography variant={'body3'} color={colors.textCommonPrimary}>
-              {Maybe.encase(() => t(Strings.every)).orDefault('Every')}
+              {Maybe.encase(() => t(Strings.schedule_start_month)).orDefault('从每年 1 月份起，每隔')}
             </Typography>
           </Box>
           <Box display={'flex'} alignItems={'center'} flex={'0 0 '}>
@@ -247,7 +238,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
 
           <Box display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
             <Typography variant={'body3'} color={colors.textCommonPrimary}>
-              {Maybe.encase(() => t(Strings.every_month_at)).orDefault('month on')}
+              {Maybe.encase(() => t(Strings.every_month_at)).orDefault('month(s) on the')}
             </Typography>
           </Box>
 
@@ -255,6 +246,9 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             <MultipleSelect
               triggerStyle={{
                 width: '100%',
+              }}
+              listStyle={{
+                minWidth: '40px',
               }}
               searchPlaceholder={Maybe.encase(() => t(Strings.datasource_selector_search_placeholder)).orDefault('Search')}
               openSearch
@@ -268,11 +262,9 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
           </Box>
 
           <Box flex={'0 0 max-content'} width={'min-content'}>
-            {Maybe.fromPredicate((item) => item != CONST_EMTPTY, t(Strings.by_at)).orDefault('').length > 0 && (
-              <Typography variant={'body3'} color={colors.textCommonPrimary}>
-                {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
-              </Typography>
-            )}
+            <Typography variant={'body3'} color={colors.textCommonPrimary}>
+              {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
+            </Typography>
           </Box>
 
           <Box display={'flex'} alignItems={'center'} flex={'0 0 '}>
@@ -293,7 +285,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
       return (
         <GapBox display={'flex'} alignItems={'center'} gap={'8px'}>
           <Typography variant={'body3'} color={colors.textCommonPrimary}>
-            {Maybe.encase(() => t(Strings.every)).orDefault('Every ')}
+            {Maybe.encase(() => t(Strings.schedule_start_day)).orDefault('从每月 1 日起，每隔')}
           </Typography>
           <DropdownSelect
             dropDownOptions={{

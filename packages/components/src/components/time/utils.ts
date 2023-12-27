@@ -114,6 +114,11 @@ export class CronConverter {
         interval.next().value.toDate(),
         interval.next().value.toDate(),
         interval.next().value.toDate(),
+        interval.next().value.toDate(),
+        interval.next().value.toDate(),
+        interval.next().value.toDate(),
+        interval.next().value.toDate(),
+        interval.next().value.toDate(),
       ];
 
       return newTimes.map(

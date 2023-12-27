@@ -4514,7 +4514,12 @@ export type StringKeysMapType = {
   scan_to_login: 'scan_to_login';
   scan_to_login_by_method: 'scan_to_login_by_method';
   scatter_chart: 'scatter_chart';
+  schedule_day_tips: 'schedule_day_tips';
+  schedule_hour_tips: 'schedule_hour_tips';
+  schedule_start_day: 'schedule_start_day';
+  schedule_start_month: 'schedule_start_month';
   schedule_type: 'schedule_type';
+  schedule_year_tips: 'schedule_year_tips';
   science_and_technology: 'science_and_technology';
   scroll_screen_down: 'scroll_screen_down';
   scroll_screen_left: 'scroll_screen_left';
@@ -5017,6 +5022,7 @@ export type StringKeysMapType = {
   start_onfiguration: 'start_onfiguration';
   start_time: 'start_time';
   start_use: 'start_use';
+  starting_from_midnight: 'starting_from_midnight';
   startup: 'startup';
   startup_company_support_program: 'startup_company_support_program';
   stat_average: 'stat_average';
