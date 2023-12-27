@@ -603,8 +603,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     public SeatUsage getSeatUsage(String spaceId) {
         long memberCount =
             iMemberService.getTotalActiveMemberCountBySpaceId(spaceId);
-        long chatBotCount = iStaticsService.getTotalChatbotNodesfromCache(spaceId);
-        return new SeatUsage(chatBotCount, memberCount);
+        return new SeatUsage(0L, memberCount);
     }
 
     @Override
@@ -622,8 +621,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             return;
         }
         var seatUsage = getSeatUsage(spaceId);
-        if (!seatNums.isUnlimited()
-            && (seatUsage.getTotal() + addedSeatNums > seatNums.getValue())) {
+        var total = seatUsage.getTotal();
+        if (total + addedSeatNums > seatNums.getValue()) {
             throw new BusinessException(LimitException.SEATS_OVER_LIMIT);
         }
     }
@@ -696,8 +695,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     public SeatUsage getSeatUsageForIM(String spaceId) {
         long memberCount =
             iMemberService.getTotalMemberCountBySpaceId(spaceId);
-        long chatBotCount = iStaticsService.getTotalChatbotNodesfromCache(spaceId);
-        return new SeatUsage(chatBotCount, memberCount);
+        return new SeatUsage(0L, memberCount);
     }
 
     /**
