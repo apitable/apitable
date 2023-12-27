@@ -190,7 +190,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
           </Box>
 
           <Box display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
-            {Maybe.encase(() => t(Strings.by_at)).orDefault('at').length > 0 && (
+            {Maybe.encase(() => t(Strings.by_at)).orDefault('').length > 0 && (
               <Typography variant={'body3'} color={colors.textCommonPrimary}>
                 {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
               </Typography>
@@ -267,7 +267,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
           </Box>
 
           <Box flex={'0 0 max-content'} width={'min-content'}>
-            {Maybe.encase(() => t(Strings.by_at)).orDefault('at').length > 0 && (
+            {Maybe.encase(() => t(Strings.by_at)).orDefault('').length > 0 && (
               <Typography variant={'body3'} color={colors.textCommonPrimary}>
                 {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
               </Typography>
