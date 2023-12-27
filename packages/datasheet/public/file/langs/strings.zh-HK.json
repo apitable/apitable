@@ -1292,6 +1292,8 @@
   "copilot_auto_agent_name": "自動代理",
   "copilot_data_agent_desc": "根據您的觀點生成數據分析/可視化。",
   "copilot_data_agent_name": "數據代理",
+  "copilot_data_agent_policy": "When chatting with Copilot, you agree to the user terms policy",
+  "copilot_data_agent_policy_button": "Policy",
   "copilot_help_agent_desc": "詢問有關AITable幫助中心文件的任何問題。",
   "copilot_help_agent_name": "檢索幫助中心",
   "copy": "的副本",

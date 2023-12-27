@@ -1292,6 +1292,8 @@
   "copilot_auto_agent_name": "自動エージェント",
   "copilot_data_agent_desc": "ビューに基づいてデータ分析/可視化を生成します。",
   "copilot_data_agent_name": "データエージェント",
+  "copilot_data_agent_policy": "When chatting with Copilot, you agree to the user terms policy",
+  "copilot_data_agent_policy_button": "Policy",
   "copilot_help_agent_desc": "AITableのヘルプセンタードキュメントに関する質問は何でもどうぞ。",
   "copilot_help_agent_name": "ヘルプセンターを検索",
   "copy": "レプリケーション",

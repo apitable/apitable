@@ -1292,6 +1292,8 @@
   "copilot_auto_agent_name": "자동 에이전트",
   "copilot_data_agent_desc": "귀하의 의견을 기반으로 데이터 분석/시각화를 생성합니다.",
   "copilot_data_agent_name": "데이터 에이전트",
+  "copilot_data_agent_policy": "When chatting with Copilot, you agree to the user terms policy",
+  "copilot_data_agent_policy_button": "Policy",
   "copilot_help_agent_desc": "AITable의 도움말 센터 문서에 관한 모든 것을 물어보세요.",
   "copilot_help_agent_name": "도움말 센터 검색",
   "copy": "복제",

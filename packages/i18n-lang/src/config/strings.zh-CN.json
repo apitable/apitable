@@ -1292,6 +1292,8 @@
   "copilot_auto_agent_name": "全能助手",
   "copilot_data_agent_desc": "基于您的视图生成数据分析/可视化。",
   "copilot_data_agent_name": "数据分析助手",
+  "copilot_data_agent_policy": "当与Copliot 开始对话时默认你已同意用户协议",
+  "copilot_data_agent_policy_button": "Policy",
   "copilot_help_agent_desc": "询问有关AITable帮助中心文档的任何问题。",
   "copilot_help_agent_name": "检索帮助中心",
   "copy": "的副本",

@@ -1292,6 +1292,8 @@
   "copilot_auto_agent_name": "Auto-Agent",
   "copilot_data_agent_desc": "Generiere Datenanalyse/Visualisierungen basierend auf Ihren Ansichten.",
   "copilot_data_agent_name": "Datenagent",
+  "copilot_data_agent_policy": "When chatting with Copilot, you agree to the user terms policy",
+  "copilot_data_agent_policy_button": "Policy",
   "copilot_help_agent_desc": "Fragen Sie alles über die Hilfezentrumsdokumente von AITable.",
   "copilot_help_agent_name": "Hilfezentrum abrufen",
   "copy": "Kopieren",

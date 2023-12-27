@@ -1292,6 +1292,8 @@
   "copilot_auto_agent_name": "Agent automobile",
   "copilot_data_agent_desc": "Générer des analyses de données/visualisations basées sur vos vues.",
   "copilot_data_agent_name": "Agent de données",
+  "copilot_data_agent_policy": "When chatting with Copilot, you agree to the user terms policy",
+  "copilot_data_agent_policy_button": "Policy",
   "copilot_help_agent_desc": "Posez des questions sur les documents du centre d'aide d'AITable.",
   "copilot_help_agent_name": "Récupérer le centre d'aide",
   "copy": " Copie",

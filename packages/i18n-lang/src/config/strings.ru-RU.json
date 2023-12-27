@@ -1292,6 +1292,8 @@
   "copilot_auto_agent_name": "Авто Агент",
   "copilot_data_agent_desc": "Генерация анализа данных/визуализаций на основе ваших взглядов.",
   "copilot_data_agent_name": "Агент данных",
+  "copilot_data_agent_policy": "When chatting with Copilot, you agree to the user terms policy",
+  "copilot_data_agent_policy_button": "Policy",
   "copilot_help_agent_desc": "Спросите что угодно о документах центра помощи AITable.",
   "copilot_help_agent_name": "Получить центр помощи",
   "copy": "Копирование",

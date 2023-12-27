@@ -173,7 +173,7 @@ const DefaultPanelWidth = {
   Api: '50%',
   Robot: 360,
   SideRecord: 450,
-  Copilot: 360,
+  Copilot: 480,
 } as const;
 
 const DISABLED_CLOSE_SIDEBAR_WIDTH = 1920;
