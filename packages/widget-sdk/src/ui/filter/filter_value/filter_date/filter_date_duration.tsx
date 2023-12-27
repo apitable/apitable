@@ -36,11 +36,11 @@ interface IFilterDateDurationProps {
   onChange: (value: FilterDuration) => void;
 }
 
-export const FilterDateDuration: React.FC<IFilterDateDurationProps> = props => {
+export const FilterDateDuration: React.FC<IFilterDateDurationProps> = (props) => {
   const { value, onChange, operator } = props;
 
   function createOptionData() {
-    let filterDuration = Object.values(FilterDuration).filter(item => {
+    let filterDuration = Object.values(FilterDuration).filter((item) => {
       return item !== FilterDuration.SomeDayAfter && item !== FilterDuration.SomeDayBefore;
     });
 
@@ -53,7 +53,7 @@ export const FilterDateDuration: React.FC<IFilterDateDurationProps> = props => {
       filterDuration = DateDuration;
     }
 
-    return filterDuration.map(item => {
+    return filterDuration.map((item) => {
       return {
         label: DurationStringsMap[item],
         value: item,
@@ -63,11 +63,17 @@ export const FilterDateDuration: React.FC<IFilterDateDurationProps> = props => {
 
   return (
     <Select
+      dropDownOptions={{
+        placement: 'bottom-start',
+      }}
+      panelOptions={{
+        maxWidth: '300px',
+      }}
+      dropdownMatchSelectWidth={false}
       placeholder={t(Strings.pick_one_option)}
       value={value}
       options={createOptionData()}
       onSelected={(option) => onChange(option.value as FilterDuration)}
-      dropdownMatchSelectWidth={false}
       openSearch={false}
       triggerStyle={{ width: 100 }}
     />

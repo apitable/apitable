@@ -214,9 +214,10 @@ export const hightLightCls = styled.div.attrs(applyDefaultTheme)`
   padding: 0;
 `;
 
-export const StyledListContainer = styled.div.attrs(applyDefaultTheme)<{ width: string; minWidth?: string }>`
+export const StyledListContainer = styled.div.attrs(applyDefaultTheme)<{ width: string; minWidth?: string; maxWidth?: string }>`
   width: ${(props) => props.width};
   min-width: ${(props) => props.minWidth};
+  max-width: ${(props) => props.maxWidth};
   padding: 4px 0;
   ${(props) => css`
     background-color: ${props.theme.color.highestBg};

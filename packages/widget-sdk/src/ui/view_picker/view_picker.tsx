@@ -36,10 +36,10 @@ const ViewPickerWrapper = (props: IViewPicker) => {
       !datasheet &&
       controlJump &&
       pickerViewId !== viewId &&
-      viewsMeta.some(viewMeta => viewMeta.id === viewId)
+      viewsMeta.some((viewMeta) => viewMeta.id === viewId)
     ) {
       /**
-       * Asynchronously go through the jump to the associated datasheet to set the view, 
+       * Asynchronously go through the jump to the associated datasheet to set the view,
        * without affecting the current operation
        */
       setTimeout(() => {
@@ -54,26 +54,34 @@ const ViewPickerWrapper = (props: IViewPicker) => {
   useMount(() => {
     syncPickerViewId(viewId);
   });
-  return <ViewPickerBase {...props} onChange={onChangeProxy}/>;
+  return <ViewPickerBase {...props} onChange={onChangeProxy} />;
 };
 
 const ViewPickerBase = (props: IViewPicker) => {
   const { viewId, onChange, placeholder, datasheet, disabled, allowedTypes } = props;
   const allViewsMeta = useViewsMeta(datasheet);
-  const viewsMeta = allViewsMeta.filter(viewMate => !allowedTypes || allowedTypes?.includes(viewMate.type));
+  const viewsMeta = allViewsMeta.filter((viewMate) => !allowedTypes || allowedTypes?.includes(viewMate.type));
 
   return (
     <Select
+      dropDownOptions={{
+        placement: 'bottom-start',
+      }}
+      panelOptions={{
+        maxWidth: '300px',
+      }}
+      dropdownMatchSelectWidth={false}
       placeholder={placeholder || t(Strings.please_choose)}
       value={viewId as any}
       disabled={disabled}
-      options={viewsMeta.map(viewMate => ({ label: viewMate.name, value: viewMate.id }))}
-      onSelected={option => onChange ? onChange(option as IOption) : noop} />
+      options={viewsMeta.map((viewMate) => ({ label: viewMate.name, value: viewMate.id }))}
+      onSelected={(option) => (onChange ? onChange(option as IOption) : noop)}
+    />
   );
 };
 
 /**
- * 
+ *
  * View selector, using this components you can select all views of the currently datasheet.
  *
  * @returns

@@ -60,6 +60,9 @@ export const DropdownSelect: FC<
     ISelectProps & {
       suffixContent?: React.ReactNode;
       dropDownOptions?: IDropdownProps['options'];
+      panelOptions?: {
+        maxWidth?: string;
+      };
     }
   >
 > & {
@@ -72,6 +75,7 @@ export const DropdownSelect: FC<
     triggerStyle,
     triggerCls,
     options: _options,
+    panelOptions,
     prefixIcon,
     suffixIcon,
     dropdownMatchSelectWidth = true,
@@ -160,6 +164,7 @@ export const DropdownSelect: FC<
     return (
       <StyledListContainer
         width={dropdownMatchSelectWidth ? containerRef.current?.clientWidth + 'px' : 'auto'}
+        maxWidth={panelOptions?.maxWidth}
         minWidth={!dropdownMatchSelectWidth ? containerRef.current?.clientWidth + 'px' : 'auto'}
         onClick={stopPropagation}
         className={listCls}

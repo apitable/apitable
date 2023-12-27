@@ -20,6 +20,7 @@ export * from './button';
 export * from './icon_button';
 export * from './form';
 export * from './switch';
+export * from './ellipsis_text';
 export * from './select';
 export * from './form';
 export * from './checkbox';
