@@ -2325,7 +2325,7 @@
   "function_set_timezone_summary": "为指定日期设置特定的时区。\n\n【date】是指定日期。\n【tz_identifier】是时区说明符。比如\"8\"代表东8区，\"-2\"代表西2区。\n\n本函数必须与DATETIME_FORMAT结合使用。",
   "function_sqrt_example": "SQRT(10000)\n=> 100",
   "function_sqrt_summary": "返回数值的平方根。\n\n【value】是要对其求平方根的数值。\n\n如果数值为负数，则 SQRT 返回 Nan",
-  "function_substitute_example": "SUBSTITUTE(\"小胡，小张，小王\", \"小\", \"老\")\n=> 老胡，老张，老王\n\nSUBSTITUTE(\"小胡，小张，小王\", \"小\", \"老\", 3)\n=> 小胡，老张，小王",
+  "function_substitute_example": "SUBSTITUTE(\"小胡，小张，小王\", \"小\", \"老\")\n=> 老胡，老张，老王\n\nSUBSTITUTE(\"小胡，小张，小王\", \"小\", \"老\", 3)\n=> 小胡，小张，老王",
   "function_substitute_summary": "将内容中特定的文本全部替换为新文本。\n\n【string】是你输入的一段内容，其中包含了被替换的文本。该内容可以是输入的文本或者引用的维格列数据。\n【old_text】要被替换的原文本。\n【new_text】替换原文本的新文本。\n【index】非必填，是索引号，指定索引号后系统仅会替换特定位置的原文本。\n\n本函数将文本中的原字符替换为新字符，在没有特别声明的情况下，新字符将替换所有出现的原字符。\n\n（如果你想替换指定起点位置和终点位置之间的字符，请参见REPLACE。）",
   "function_sum_example": "SUM(1, 2, \"3\", \"四\")\n=> 1 + 2 + 3 =6\n\nSUM({数学成绩}, {英语成绩}, {语文成绩})",
   "function_sum_summary": "将所有数值相加。\n\n【number...】是进行运算的数值参数，可以输入数字或引用数值类型的列。数值类型的列包括数字、货币、百分比、评分等。",
