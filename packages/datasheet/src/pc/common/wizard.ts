@@ -88,6 +88,7 @@ const CONST_MODIFYED_WIZARDS = [
       onNext: ['set_wizard_completed({"curWizard": true})', 'open_guide_next_step({"clearAllPrevUi":true})'],
       uiConfig: '{\n "element": "#CONST_ROBOT_ACTION_CREATE"\n} ',
       uiConfigId: 'player_step_ui_config_button_field_action_create',
+      skipId: 'skip',
       uiType: 'popover',
     })
     .addStep(180, {
