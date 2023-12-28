@@ -69,14 +69,33 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
     dispatch(StoreActions.setExpandedKeys(nodeIds, ConfigConstant.Modules.FAVORITE));
   };
 
-  const { getFavoriteNodeListReq } = useCatalogTreeRequest();
+  const { getFavoriteNodeListReq, getChildNodeListReq } = useCatalogTreeRequest();
   const { run: getFavoriteNodeList } = useRequest(getFavoriteNodeListReq, { manual: true });
+  const { run: getChildNodeList } = useRequest(getChildNodeListReq, { manual: true });
+
   useEffect(() => {
     if (spaceId) {
       getFavoriteNodeList();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spaceId]);
+
+  const fetchNodeList = async (folderId: string) => {
+    const result = await getChildNodeList(folderId);
+    if (result) {
+      dispatch(StoreActions.addNodeToMap(result, false));
+    }
+  };
+  
+  useEffect(() => {
+    if (favoriteExpandedKeys.length) {
+      favoriteExpandedKeys.forEach((nodeId) => {
+        if (treeNodesMap[nodeId]?.hasChildren && !treeNodesMap[nodeId]?.children?.length) {
+          fetchNodeList(nodeId);
+        }
+      });
+    }
+  }, [favoriteExpandedKeys, fetchNodeList, treeNodesMap]);
 
   const onContextMenu = (e: React.SyntheticEvent) => {
     e.stopPropagation();
