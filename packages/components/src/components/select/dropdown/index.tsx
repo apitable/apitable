@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { ChevronDownOutlined, ChevronUpOutlined } from '@apitable/icons';
+import { ChevronDownOutlined } from '@apitable/icons';
 import { useToggle } from 'ahooks';
 import Color from 'color';
 import Highlighter from 'react-highlight-words';
@@ -254,7 +254,7 @@ export const DropdownSelect: FC<
           selectedIndex: findIndex,
           disabled,
         }}
-        trigger={
+        trigger={({ visible }) => (
           <div style={triggerStyle}>
             <WrapperTooltip wrapper={Boolean(disabledTip && disabled)} tip={disabledTip as string}>
               <StyledSelectTrigger
@@ -294,19 +294,13 @@ export const DropdownSelect: FC<
                 {suffixContent}
                 {!hiddenArrow && (
                   <StyledArrowIcon rotated={visible}>
-                    {visible ? (
-                      <ChevronUpOutlined color={disabled ? Color(colors.textCommonTertiary).alpha(0.5).hsl().string() : colors.textCommonTertiary} />
-                    ) : (
-                      <ChevronDownOutlined
-                        color={disabled ? Color(colors.textCommonTertiary).alpha(0.5).hsl().string() : colors.textCommonTertiary}
-                      />
-                    )}
+                    <ChevronDownOutlined color={disabled ? Color(colors.textCommonTertiary).alpha(0.5).hsl().string() : colors.textCommonTertiary} />
                   </StyledArrowIcon>
                 )}
               </StyledSelectTrigger>
             </WrapperTooltip>
           </div>
-        }
+        )}
       >
         {renderOptionList}
       </StyledDropdown>
