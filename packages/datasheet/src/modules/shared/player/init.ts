@@ -21,6 +21,7 @@ import { startActions, TriggerCommands } from '../apphook/trigger_commands';
 import { isEventStateMatch, isRulesPassed, isTimeRulePassed } from './rules';
 // @ts-ignore
 import { getPlayerHooks, updatePlayerConfig } from 'enterprise/guide/utils';
+import {modifyWizardConfig} from "pc/common/wizard";
 
 // const Triggers = SystemConfig.player.trigger;
 
@@ -40,9 +41,9 @@ export function init() {
    * if not distinguish the environment, the impact on debugging will be greater
    */
   if (process.env.NODE_ENV === 'development') {
-    config = { player: SystemConfig.player, guide: SystemConfig.guide };
+    config = modifyWizardConfig({ player: SystemConfig.player, guide: SystemConfig.guide });
   } else if (HooksConfig) {
-    config = HooksConfig;
+    config = modifyWizardConfig(HooksConfig);
   }
 
   if (!config) return;
