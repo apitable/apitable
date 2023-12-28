@@ -4540,6 +4540,7 @@
   "search_folder_or_sheet": "ファイルを検索する",
   "search_new_admin": "検索けんさく",
   "search_node_pleaseholder": "ファイルの検索 (${shortcutKey})",
+  "search_node_tip": "Quick search (${shortcutKey})",
   "search_or_add": "オプションの検索または追加",
   "search_role_placeholder": "ロールの検索",
   "seats": "座席",

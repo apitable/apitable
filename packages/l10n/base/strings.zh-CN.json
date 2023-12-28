@@ -4428,6 +4428,7 @@
   "search_folder_or_form": "搜索文件夹或神奇表单",
   "search_new_admin": "搜索成员昵称，选择移交的主管理员",
   "search_node_pleaseholder": "搜索文件 (${shortcutKey})",
+  "search_node_tip": "搜索 (${shortcutKey})",
   "search_or_add": "查找或添加",
   "search_role_placeholder": "搜索角色",
   "seats": "席位数量",

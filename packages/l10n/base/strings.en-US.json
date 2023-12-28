@@ -4152,6 +4152,7 @@
   "search_folder_or_form": "Find a folder or form ",
   "search_new_admin": "Search",
   "search_node_pleaseholder": "Search for files (${shortcutKey})",
+  "search_node_tip": "Quick search (${shortcutKey})",
   "search_or_add": "Find or add an option",
   "search_role_placeholder": "Search roles",
   "seats": "Seats",

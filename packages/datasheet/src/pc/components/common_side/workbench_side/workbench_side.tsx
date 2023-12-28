@@ -63,6 +63,7 @@ import { Favorite } from './favorite';
 import { SpaceInfo } from './space-info';
 import { WorkbenchSideContext } from './workbench_side_context';
 import styles from './style.module.less';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 
 export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
@@ -308,15 +309,19 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
             <SpaceInfo />
           </div>
           <div className={styles.search}>
-            <IconButton
-              shape="square"
-              className={styles.searchBtn}
-              icon={SearchOutlined}
-              onClick={(e) => {
-                stopPropagation(e);
-                expandSearch();
-              }}
-            />
+            <Tooltip title={t(Strings.search_node_tip, {
+              shortcutKey: getShortcutKeyString(ShortcutActionName.SearchNode)
+            })} placement="right">
+              <IconButton
+                shape="square"
+                className={styles.searchBtn}
+                icon={SearchOutlined}
+                onClick={(e) => {
+                  stopPropagation(e);
+                  expandSearch();
+                }}
+              />
+            </Tooltip>
           </div>
         </div>
 

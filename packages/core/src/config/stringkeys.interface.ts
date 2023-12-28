@@ -4538,6 +4538,7 @@ export type StringKeysMapType = {
   'search_folder_or_sheet': 'search_folder_or_sheet',
   'search_new_admin': 'search_new_admin',
   'search_node_pleaseholder': 'search_node_pleaseholder',
+  'search_node_tip': 'search_node_tip',
   'search_or_add': 'search_or_add',
   'search_role_placeholder': 'search_role_placeholder',
   'seats': 'seats',

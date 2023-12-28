@@ -4540,6 +4540,7 @@
   "search_folder_or_sheet": "搜索文件夾或維格表",
   "search_new_admin": "搜索成員暱稱，選擇移交的主管理員",
   "search_node_pleaseholder": "搜索文件 (${shortcutKey})",
+  "search_node_tip": "Quick search (${shortcutKey})",
   "search_or_add": "查找或添加",
   "search_role_placeholder": "搜索角色",
   "seats": "席位數量",

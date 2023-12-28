@@ -4540,6 +4540,7 @@
   "search_folder_or_sheet": "파일 검색",
   "search_new_admin": "검색",
   "search_node_pleaseholder": "파일 검색(${shortcutKey})",
+  "search_node_tip": "Quick search (${shortcutKey})",
   "search_or_add": "옵션 찾기 또는 추가",
   "search_role_placeholder": "역할 검색",
   "seats": "좌석",

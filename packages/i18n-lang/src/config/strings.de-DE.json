@@ -4540,6 +4540,7 @@
   "search_folder_or_sheet": "Dateien suchen",
   "search_new_admin": "Suche",
   "search_node_pleaseholder": "Nach Dateien suchen (${shortcutKey})",
+  "search_node_tip": "Quick search (${shortcutKey})",
   "search_or_add": "Eine Option suchen oder hinzufügen",
   "search_role_placeholder": "Rollen suchen",
   "seats": "Sitze",
