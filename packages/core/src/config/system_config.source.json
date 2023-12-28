@@ -7443,6 +7443,20 @@
         "is_mobile": true,
         "format_string": "web_publish",
         "is_component": true
+      },
+      "workflow_execute_failed_notify": {
+        "can_jump": true,
+        "format_string": "workflow_execute_failed_notify",
+        "id": "workflow_execute_failed_notify",
+        "is_browser": true,
+        "is_mail": true,
+        "is_mobile": false,
+        "is_notification": true,
+        "mail_template_subject": "automationError",
+        "notifications_type": "space",
+        "is_component": true,
+        "to_tag": "users",
+        "url": "/workbench"
       }
     }
   },
