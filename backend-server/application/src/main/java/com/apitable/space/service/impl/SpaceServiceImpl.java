@@ -607,6 +607,28 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     }
 
     @Override
+    public void checkChatBotNumsOverLimit(String spaceId) {
+        checkChatBotNumsOverLimit(spaceId, 1);
+    }
+
+    @Override
+    public void checkChatBotNumsOverLimit(String spaceId, int addedNums) {
+        var subscriptionInfo =
+            entitlementServiceFacade.getSpaceSubscription(spaceId);
+        var aiAgentNums = subscriptionInfo.getFeature().getAiAgentNums();
+        if (!subscriptionInfo.isFree() && aiAgentNums.isUnlimited()) {
+            return;
+        }
+        if (aiAgentNums.isUnlimited()) {
+            return;
+        }
+        long chatBotCount = iStaticsService.getTotalChatbotNodesfromCache(spaceId);
+        if (chatBotCount + addedNums > aiAgentNums.getValue()) {
+            throw new BusinessException(LimitException.CHAT_BOT_OVER_LIMIT);
+        }
+    }
+
+    @Override
     public void checkSeatOverLimit(String spaceId) {
         checkSeatOverLimit(spaceId, 1);
     }
