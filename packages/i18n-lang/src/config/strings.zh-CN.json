@@ -3869,7 +3869,7 @@
   "player_step_ui_config_41": "",
   "player_step_ui_config_42": "{\n \"element\": \"#DATASHEET_FORM_LIST_PANEL\", \n\"placement\": \"leftTop\",\n \"title\": \"神奇表单\", \n\"description\": \"在这里可以快速生成当前视图的神奇表单，神奇表单的字段是依照视图的维格列数量以及顺序来生成的哦\", \"children\":\"\" \n}",
   "player_step_ui_config_43": "{\n \"element\": \".style_navigation__1U5cR .style_help__1sXEA\", \n\"placement\": \"rightBottom\",\n \"title\": \"小提示\", \n\"offsetY\":5,\n\"description\": \"你可以在左侧的「帮助中心」找回你的维格小助手\", \"children\":\"\" \n}",
-  "player_step_ui_config_44": "{\n\"title\":\"VIKA产品演示\",\n\"video\":\"space/2023/12/12/8e870a50d98646f0a4cc2f76e3cd6d46\",\n\"videoId\":\"VIKA_GUIDE_VIDEO_NEW_USER\",\n\"autoPlay\":true\n}\n",
+  "player_step_ui_config_44": "{\n\"title\":\"VIKA产品演示\",\n\"video\":\"space/2023/12/29/212a38dda62f4e52a58a92bf86657705\",\n\"videoId\":\"VIKA_GUIDE_VIDEO_NEW_USER\",\n\"autoPlay\":true\n}\n",
   "player_step_ui_config_45": "",
   "player_step_ui_config_46": "",
   "player_step_ui_config_47": "{\n \"element\": \"#DATASHEET_WIDGET_BTN\",\n\"placement\": \"bottomRight\",\n \"title\": \"新功能\", \n\"description\": \"小程序上线！想要让沉淀下来的数据得到更好的运用吗？那就赶紧来体验一下吧\", \"children\":\"\" \n}",

@@ -3863,7 +3863,7 @@
   "player_step_ui_config_41": "",
   "player_step_ui_config_42": "{\n \"element\": \"#DATASHEET_FORM_LIST_PANEL\", \n\"placement\": \"leftTop\",\n \"title\": \"Form\", \n\"description\": \"You can quickly create a form from the current view. The number and order of the fields in the form is consistent with the view.\", \"children\":\"\" \n}",
   "player_step_ui_config_43": "{\n \"element\": \".style_navigation__1U5cR .style_help__1sXEA\", \n\"placement\": \"rightBottom\",\n \"title\": \"Tip\", \n\"offsetY\":5,\n\"description\": \"You can find your Vikaby assistant from the \"Help\" icon on the left\", \"children\":\"\" \n}",
-  "player_step_ui_config_44": "{\n\"title\":\"Vikadata's hierarchy\",\n\"video\":\"space/2023/12/12/8e870a50d98646f0a4cc2f76e3cd6d46\",\n\"videoId\":\"VIKA_GUIDE_VIDEO_NEW_USER\",\n\"autoPlay\":true\n}\n",
+  "player_step_ui_config_44": "{\n\"title\":\"Vikadata's hierarchy\",\n\"video\":\"space/2023/12/29/212a38dda62f4e52a58a92bf86657705\",\n\"videoId\":\"VIKA_GUIDE_VIDEO_NEW_USER\",\n\"autoPlay\":true\n}\n",
   "player_step_ui_config_45": "",
   "player_step_ui_config_46": "",
   "player_step_ui_config_47": "{\n \"element\": \"#DATASHEET_WIDGET_BTN\",\n\"placement\": \"bottomRight\",\n \"title\": \"Widget\", \n\"description\": \"Want to use and view your data in a richer way? Try the widget!\", \"children\":\"\" \n}",
