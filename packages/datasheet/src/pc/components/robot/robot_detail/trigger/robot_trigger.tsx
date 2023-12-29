@@ -472,9 +472,9 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
                 const transformedValue =
                   value == null || isEqual(value, EmptyNullOperand)
                     ? {
-                        operator: OperatorEnums.And,
-                        operands: [],
-                      }
+                      operator: OperatorEnums.And,
+                      operands: [],
+                    }
                     : value.value;
                 return (
                   <RecordMatchesConditionsFilter
@@ -583,9 +583,9 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
           const transformedValue =
             value == null || isEqual(value, EmptyNullOperand)
               ? {
-                  operator: OperatorEnums.And,
-                  operands: [],
-                }
+                operator: OperatorEnums.And,
+                operands: [],
+              }
               : value.value;
           const dstId = getDstIdItem ?? triggerDatasheetValue?.id;
 
@@ -924,7 +924,7 @@ export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTri
           data: item,
         };
         setAutomationPanel(newPanel);
-        Player.doTrigger(Events.guide_use_button_column_first_time);
+        Player.doTrigger(Events['guide_use_button_column_first_time']);
       }, 2000);
     }
     checkGuideRef.current = false;

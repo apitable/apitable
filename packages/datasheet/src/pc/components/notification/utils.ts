@@ -35,7 +35,7 @@ const NotificationTypes = NotificationsConfig.types;
 const NotificationTemplates = NotificationsConfig.templates;
 
 const NoticeTypesConstant = jsonToObject(NotificationsConfig.types) as { [key in keyof Types]: string };
-const NoticeTemplatesConstant = jsonToObject(NotificationsConfig.templates) as { [key in keyof Templates]: string };
+const NoticeTemplatesConstant = jsonToObject(NotificationsConfig.templates) as { [key in keyof Templates]: string } as any;
 
 export { NotificationTypes, NotificationTemplates, NoticeTypesConstant, NoticeTemplatesConstant };
 
