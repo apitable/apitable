@@ -6588,7 +6588,7 @@
         ],
         "next": "查看详情",
         "nextId": "check_detail",
-        "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/12/28/36139bb2556a4c68b267dd5c29739087\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-12-29-updates\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul>\\n<li>自动化支持定时触发，工作提醒再无担忧</li>\\n</ul>\"\n}",
+        "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/12/28/36139bb2556a4c68b267dd5c29739087\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-12-29-updates\",\n    \"children\": \"<h3>🚀 自动化支持定时触发，工作提醒再无担忧</h3>\\n<p>你可以按小时、天、周甚至是月份运行周期性执行任务，只要满足所设定的时间条件，它就会自动启动，如发送邮件、提醒或调用业务接口，都可以轻松实现。</p>\"\n}",
         "onClose": [
           "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
