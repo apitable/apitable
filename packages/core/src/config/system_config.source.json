@@ -3333,7 +3333,7 @@
       },
       {
         "actions": [
-          "open_guide_wizards([29, 76, 131])"
+          "open_guide_wizards([29, 76, 136])"
         ],
         "rules": [
           "device_IS_pc",
@@ -3342,14 +3342,14 @@
           "url_EXCLUDES_shareId",
           "edition_IS_vika"
         ],
-        "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2024-12-31 23:59, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([29, 76, 131])]",
+        "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2024-12-31 23:59, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([29, 76, 136])]",
         "event": [
           "workbench_shown"
         ]
       },
       {
         "actions": [
-          "open_guide_wizards([105, 115, 104])"
+          "open_guide_wizards([105, 115])"
         ],
         "rules": [
           "device_IS_pc",
@@ -3357,7 +3357,7 @@
           "url_EXCLUDES_shareId",
           "edition_IS_aitable"
         ],
-        "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_aitable],[open_guide_wizards([105, 115, 104])]",
+        "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_aitable],[open_guide_wizards([105, 115])]",
         "event": [
           "workbench_shown"
         ]
@@ -3370,16 +3370,17 @@
           "device_IS_pc",
           "url_EXCLUDES_templateId",
           "url_EXCLUDES_shareId",
-          "edition_IS_vika"
+          "edition_IS_vika",
+          "sign_up_time_IS_AFTER_2023-12-28 20:00"
         ],
-        "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([1, 24, 104])]",
+        "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika, sign_up_time_IS_AFTER_2023-12-28 20:00],[open_guide_wizards([1, 24, 104])]",
         "event": [
           "workbench_shown"
         ]
       },
       {
         "actions": [
-          "open_guide_wizards([76, 131])"
+          "open_guide_wizards([76, 136])"
         ],
         "rules": [
           "sign_up_time_IS_BEFORE_2024-12-31 23:59",
@@ -3388,7 +3389,7 @@
           "url_EXCLUDES_shareId",
           "edition_IS_vika"
         ],
-        "id": "workbench_shown,[sign_up_time_IS_BEFORE_2024-12-31 23:59, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([76, 131])]",
+        "id": "workbench_shown,[sign_up_time_IS_BEFORE_2024-12-31 23:59, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([76, 136])]",
         "event": [
           "workbench_shown"
         ]
@@ -3769,6 +3770,12 @@
         "conditionArgs": "2023-11-23 20:00"
       },
       {
+        "operator": "IS_AFTER",
+        "condition": "sign_up_time",
+        "id": "sign_up_time_IS_AFTER_2023-12-28 20:00",
+        "conditionArgs": "2023-12-28 20:00"
+      },
+      {
         "operator": "IS_BEFORE",
         "condition": "sign_up_time",
         "id": "sign_up_time_IS_BEFORE_2024-12-31 23:59",
@@ -4057,9 +4064,9 @@
         "commandArgs": "[105, 104]"
       },
       {
-        "id": "open_guide_wizards([105, 115, 104])",
+        "id": "open_guide_wizards([105, 115])",
         "command": "open_guide_wizards",
-        "commandArgs": "[105, 115, 104]"
+        "commandArgs": "[105, 115]"
       },
       {
         "id": "open_guide_wizards([19])",
@@ -4072,9 +4079,9 @@
         "commandArgs": "[21]"
       },
       {
-        "id": "open_guide_wizards([29, 76, 131])",
+        "id": "open_guide_wizards([29, 76, 136])",
         "command": "open_guide_wizards",
-        "commandArgs": "[29, 76, 131]"
+        "commandArgs": "[29, 76, 136]"
       },
       {
         "id": "open_guide_wizards([31])",
@@ -4087,9 +4094,9 @@
         "commandArgs": "[4]"
       },
       {
-        "id": "open_guide_wizards([76, 131])",
+        "id": "open_guide_wizards([76, 136])",
         "command": "open_guide_wizards",
-        "commandArgs": "[76, 131]"
+        "commandArgs": "[76, 136]"
       },
       {
         "id": "open_guide_wizards([76])",
@@ -4122,13 +4129,22 @@
             "recQExamygtJd",
             "recgn9PAJNAtX",
             "recE9LnXquMPZ",
-            "recSkdfQ9C4uM",
-            "rec6yMTEJEjgF"
+            "recSkdfQ9C4uM"
           ]
         },
         "id": "set_wizard_completed({\"curWizard\": true})",
         "command": "set_wizard_completed",
         "commandArgs": "{\"curWizard\": true}"
+      },
+      {
+        "guide": {
+          "step": [
+            "rec6yMTEJEjgF"
+          ]
+        },
+        "id": "set_wizard_completed({\"wizardId\": 115})",
+        "command": "set_wizard_completed",
+        "commandArgs": "{\"wizardId\": 115}"
       },
       {
         "guide": {
@@ -4735,7 +4751,6 @@
         "player": {
           "action": [
             "recRyoECYFqBv",
-            "recIPTZiGHiIK",
             "recH5upxLpgTD"
           ]
         },
@@ -4839,14 +4854,19 @@
       },
       "131": {
         "completeIndex": -1,
+        "endTime": 1703487600000,
+        "steps": "[[192]]"
+      },
+      "136": {
+        "completeIndex": -1,
         "player": {
           "action": [
             "recEIcl9v4jzr",
             "recBtbbzXDolQ"
           ]
         },
-        "endTime": 1703487600000,
-        "steps": "[[192]]"
+        "endTime": 1704420420000,
+        "steps": "[[196]]"
       }
     },
     "step": {
@@ -6493,7 +6513,7 @@
         "uiConfigId": "player_step_ui_config_176",
         "uiType": "modal",
         "onPlay": [
-          "set_wizard_completed({\"curWizard\": true})"
+          "set_wizard_completed({\"wizardId\": 115})"
         ],
         "onNext": [
           "open_guide_next_step({\"clearAllPrevUi\":true})"
@@ -6555,6 +6575,20 @@
         "next": "查看详情",
         "nextId": "check_detail",
         "uiConfig": "{\n    \"headerImg\": \"https://help.vika.cn/assets/images/update_cover@4x-dc5caa13339ad2deaea06e1db4aae0ac.png\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-12-01-updates\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul>\\n<li>基于全新数据引擎的 Fusion API v3 内测启动，搭载全新数据引擎，期待您的加入</li>\\n<li>全新「按钮」维格列上线：一键操作，简化工作流程，提升效率</li>\\n<li>新功能「轻文档」维格列上线：一站式解决文档管理与业务管理</li>\\n</ul>\"\n}",
+        "onClose": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ]
+      },
+      "196": {
+        "uiConfigId": "player_step_ui_config_196·",
+        "uiType": "notice",
+        "onNext": [
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "next": "查看详情",
+        "nextId": "check_detail",
+        "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/12/28/36139bb2556a4c68b267dd5c29739087\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-12-29-updates\",\n    \"children\": \"<h3>🚀 本次更新内容</h3>\\n<ul>\\n<li>自动化支持定时触发，工作提醒再无担忧</li>\\n</ul>\"\n}",
         "onClose": [
           "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
