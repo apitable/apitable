@@ -1174,7 +1174,7 @@ importers:
         version: 0.8.5-pre1
       '@hocuspocus/provider':
         specifier: ^2.5.0
-        version: registry.npmmirror.com/@hocuspocus/provider@2.5.0(y-protocols@1.0.6)(yjs@13.6.8)
+        version: 2.5.0(y-protocols@1.0.6)(yjs@13.6.8)
       '@huse/click-outside':
         specifier: ^1.0.1
         version: 1.1.1(react@18.2.0)
@@ -1222,64 +1222,64 @@ importers:
         version: 5.17.0
       '@tiptap/core':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+        version: 2.1.11(@tiptap/pm@2.1.11)
       '@tiptap/extension-blockquote':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/extension-blockquote@2.1.11(@tiptap/core@2.1.11)
+        version: 2.1.11(@tiptap/core@2.1.11)
       '@tiptap/extension-collaboration':
         specifier: ^2.1.11
-        version: registry.npmmirror.com/@tiptap/extension-collaboration@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)(y-prosemirror@1.0.20)
+        version: 2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)(y-prosemirror@1.0.20)
       '@tiptap/extension-collaboration-cursor':
         specifier: ^2.1.11
-        version: registry.npmmirror.com/@tiptap/extension-collaboration-cursor@2.1.11(@tiptap/core@2.1.11)(y-prosemirror@1.0.20)
+        version: 2.1.11(@tiptap/core@2.1.11)(y-prosemirror@1.0.20)
       '@tiptap/extension-color':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/extension-color@2.1.8(@tiptap/core@2.1.11)(@tiptap/extension-text-style@2.1.8)
+        version: 2.1.8(@tiptap/core@2.1.11)(@tiptap/extension-text-style@2.1.8)
       '@tiptap/extension-document':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/extension-document@2.1.11(@tiptap/core@2.1.11)
+        version: 2.1.11(@tiptap/core@2.1.11)
       '@tiptap/extension-highlight':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/extension-highlight@2.1.8(@tiptap/core@2.1.11)
+        version: 2.1.8(@tiptap/core@2.1.11)
       '@tiptap/extension-horizontal-rule':
         specifier: ^2.1.11
-        version: registry.npmmirror.com/@tiptap/extension-horizontal-rule@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
+        version: 2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
       '@tiptap/extension-image':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/extension-image@2.1.8(@tiptap/core@2.1.11)
+        version: 2.1.8(@tiptap/core@2.1.11)
       '@tiptap/extension-link':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/extension-link@2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
+        version: 2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
       '@tiptap/extension-placeholder':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/extension-placeholder@2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
+        version: 2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
       '@tiptap/extension-task-item':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/extension-task-item@2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
+        version: 2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
       '@tiptap/extension-task-list':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/extension-task-list@2.1.8(@tiptap/core@2.1.11)
+        version: 2.1.8(@tiptap/core@2.1.11)
       '@tiptap/extension-text-align':
         specifier: ^2.1.9
-        version: registry.npmmirror.com/@tiptap/extension-text-align@2.1.9(@tiptap/core@2.1.11)
+        version: 2.1.9(@tiptap/core@2.1.11)
       '@tiptap/extension-text-style':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/extension-text-style@2.1.8(@tiptap/core@2.1.11)
+        version: 2.1.8(@tiptap/core@2.1.11)
       '@tiptap/extension-underline':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/extension-underline@2.1.8(@tiptap/core@2.1.11)
+        version: 2.1.8(@tiptap/core@2.1.11)
       '@tiptap/pm':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/pm@2.1.11
+        version: 2.1.11
       '@tiptap/react':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/react@2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)(react-dom@18.2.0)(react@18.2.0)
+        version: 2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)(react-dom@18.2.0)(react@18.2.0)
       '@tiptap/starter-kit':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/starter-kit@2.1.11(@tiptap/pm@2.1.11)
+        version: 2.1.11(@tiptap/pm@2.1.11)
       '@tiptap/suggestion':
         specifier: ^2.1.8
-        version: registry.npmmirror.com/@tiptap/suggestion@2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
+        version: 2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
       '@types/color':
         specifier: ^3.0.1
         version: 3.0.4
@@ -1685,6 +1685,9 @@ importers:
       swr:
         specifier: 2.2.0
         version: 2.2.0(react@18.2.0)
+      tiptap-markdown:
+        specifier: ^0.8.8
+        version: 0.8.8(@tiptap/core@2.1.11)
       urlcat:
         specifier: ^2.0.4
         version: 2.0.4
@@ -1705,7 +1708,7 @@ importers:
         version: 2.32.3(core-js@3.33.3)
       yjs:
         specifier: ^13.6.8
-        version: registry.npmmirror.com/yjs@13.6.8
+        version: 13.6.8
     devDependencies:
       '@next/bundle-analyzer':
         specifier: ^12.2.2
@@ -7284,7 +7287,7 @@ packages:
   /@hocuspocus/common@2.5.0:
     resolution: {integrity: sha512-TpnQAb1Rtff1trwURFWaUEYZwqykaIGo6NNnMr6ZISdDZFWNHMAMUmy7dwJDS9ECnEtcjXhpPxXeLV+MVQXVnw==}
     dependencies:
-      lib0: registry.npmmirror.com/lib0@0.2.85
+      lib0: 0.2.85
     dev: false
 
   /@hocuspocus/extension-database@2.5.0(y-protocols@1.0.6)(yjs@13.6.8):
@@ -7320,6 +7323,23 @@ packages:
       - utf-8-validate
     dev: false
 
+  /@hocuspocus/provider@2.5.0(y-protocols@1.0.6)(yjs@13.6.8):
+    resolution: {integrity: sha512-Du/q0kcVhaSQiKPBha19f+mnFOl4sFybARRWsGp4JIoDG+Vt3r73ZqjalIJmp9h4mBr2tGtS5zK/oQ/Vrv5/Bw==}
+    peerDependencies:
+      y-protocols: ^1.0.5
+      yjs: ^13.6.4
+    dependencies:
+      '@hocuspocus/common': 2.5.0
+      '@lifeomic/attempt': 3.0.3
+      lib0: 0.2.85
+      ws: 7.5.9
+      y-protocols: 1.0.6(yjs@13.6.8)
+      yjs: 13.6.8
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
   /@hocuspocus/server@2.5.0(y-protocols@1.0.6)(yjs@13.6.8):
     resolution: {integrity: sha512-7oopepZIdkU2XxJouVZSdsFTg2VaqwfM1so87VEY+b7DER68BS+rVb8Eimz9WER9ZLLyg5DK+t797rnXJX/1cQ==}
     peerDependencies:
@@ -7346,9 +7366,9 @@ packages:
       y-prosemirror: ^1.0.15
       yjs: ^13.6.4
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
       '@tiptap/pm': 2.1.11
-      '@tiptap/starter-kit': registry.npmmirror.com/@tiptap/starter-kit@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/starter-kit': 2.1.11(@tiptap/pm@2.1.11)
       y-prosemirror: 1.2.1(prosemirror-model@1.19.3)(prosemirror-state@1.4.3)(prosemirror-view@1.31.8)(y-protocols@1.0.6)(yjs@13.6.8)
       yjs: 13.6.8
     dev: false
@@ -8156,6 +8176,10 @@ packages:
       '@jridgewell/resolve-uri': 3.1.1
       '@jridgewell/sourcemap-codec': 1.4.15
 
+  /@lifeomic/attempt@3.0.3:
+    resolution: {integrity: sha512-GlM2AbzrErd/TmLL3E8hAHmb5Q7VhDJp35vIbyPVA5Rz55LZuRr8pwL3qrwwkVNo05gMX1J44gURKb4MHQZo7w==}
+    dev: false
+
   /@lit-labs/react@1.2.1:
     resolution: {integrity: sha512-DiZdJYFU0tBbdQkfwwRSwYyI/mcWkg3sWesKRsHUd4G+NekTmmeq9fzsurvcKTNVa0comNljwtg4Hvi1ds3V+A==}
     dev: true
@@ -8899,6 +8923,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
     requiresBuild: true
     optional: true
 
@@ -8907,6 +8932,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
     requiresBuild: true
     optional: true
 
@@ -8915,6 +8941,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
     requiresBuild: true
     optional: true
 
@@ -8923,6 +8950,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
     requiresBuild: true
     optional: true
 
@@ -9059,6 +9087,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
     requiresBuild: true
     dev: true
     optional: true
@@ -9068,6 +9097,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
     requiresBuild: true
     dev: true
     optional: true
@@ -9077,6 +9107,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
     requiresBuild: true
     dev: true
     optional: true
@@ -9086,6 +9117,7 @@ packages:
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
     requiresBuild: true
     dev: true
     optional: true
@@ -9894,7 +9926,7 @@ packages:
   /@remirror/core-helpers@3.0.0:
     resolution: {integrity: sha512-tusEgQJIqg4qKj6HSBUFcyRnWnziw3neh4T9wOmsPGHFC3w9kl5KSrDb9UAgE8uX6y32FnS7vJ955mWOl3n50A==}
     dependencies:
-      '@remirror/core-constants': registry.npmmirror.com/@remirror/core-constants@2.0.2
+      '@remirror/core-constants': 2.0.2
       '@remirror/types': 1.0.1
       '@types/object.omit': 3.0.1
       '@types/object.pick': 1.3.2
@@ -10197,6 +10229,7 @@ packages:
     resolution: {integrity: sha512-TzJ+N2EoTLWkaClV2CUhBlj6ljXofaYzF/R9HXqQ3JCMnCHQZmQnbnZllw7yTDp0OG5whP4gIPozR4QiX+00MQ==}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
     requiresBuild: true
     dev: true
     optional: true
@@ -10205,6 +10238,7 @@ packages:
     resolution: {integrity: sha512-aVPmNMdp6Dlo2tWkAduAD/5TL/NT5uor290YvjvFvCv0Q3L7tVdlD8MOGDL+oRSw5XKXKAsDzHhUOPUNPRHVTQ==}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
     requiresBuild: true
     dev: true
     optional: true
@@ -10213,6 +10247,7 @@ packages:
     resolution: {integrity: sha512-77Fb79ayiDad0grvVsz4/OB55wJRyw9Ao+GdOBA9XywtHpuq5iRbVyHToGxWquYWlEf6WHFQQnFEttsAzboyKg==}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
     requiresBuild: true
     dev: true
     optional: true
@@ -10221,6 +10256,7 @@ packages:
     resolution: {integrity: sha512-/t6C6niEQTqmQTVTD9TDwUzxG91Mlk69/v0qodIPUnjjB3wR4UA3klg+orR2SU3Ux2Cgf2pWPL9utK80/1ek8g==}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
     requiresBuild: true
     dev: true
     optional: true
@@ -12359,6 +12395,7 @@ packages:
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
+    libc: [glibc]
     requiresBuild: true
     optional: true
 
@@ -12367,6 +12404,7 @@ packages:
     engines: {node: '>=10'}
     cpu: [arm64]
     os: [linux]
+    libc: [musl]
     requiresBuild: true
     optional: true
 
@@ -12375,6 +12413,7 @@ packages:
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
+    libc: [glibc]
     requiresBuild: true
     optional: true
 
@@ -12383,6 +12422,7 @@ packages:
     engines: {node: '>=10'}
     cpu: [x64]
     os: [linux]
+    libc: [musl]
     requiresBuild: true
     optional: true
 
@@ -12602,12 +12642,31 @@ packages:
       '@tiptap/pm': 2.1.11
     dev: false
 
+  /@tiptap/extension-blockquote@2.1.11(@tiptap/core@2.1.11):
+    resolution: {integrity: sha512-IEVe3goA0rgp1G8Wm733BSRJiy71Vh2fmTCyZKWmc2A6GREVSy1X3fCvAo6pMENRObhjIoaBQUCE3p4iJYOxqg==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+    dev: false
+
   /@tiptap/extension-bold@2.1.11(@tiptap/core@2.1.11):
     resolution: {integrity: sha512-vhdkBtvd029ufOYt2ug49Gz+RLKSczO/CCqKYBqBmpIpsifyK7M6jkgamvAQg3c/vYk0LNcKiL2dp0Jp7L+5Gw==}
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+    dev: false
+
+  /@tiptap/extension-bubble-menu@2.1.12(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
+    resolution: {integrity: sha512-gAGi21EQ4wvLmT7klgariAc2Hf+cIjaNU2NWze3ut6Ku9gUo5ZLqj1t9SKHmNf4d5JG63O8GxpErqpA7lHlRtw==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+      '@tiptap/pm': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/pm': 2.1.11
+      tippy.js: 6.3.7
     dev: false
 
   /@tiptap/extension-bullet-list@2.1.11(@tiptap/core@2.1.11):
@@ -12615,7 +12674,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
     dev: false
 
   /@tiptap/extension-code-block@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
@@ -12624,7 +12683,7 @@ packages:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
       '@tiptap/pm': 2.1.11
     dev: false
 
@@ -12633,7 +12692,47 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+    dev: false
+
+  /@tiptap/extension-collaboration-cursor@2.1.11(@tiptap/core@2.1.11)(y-prosemirror@1.0.20):
+    resolution: {integrity: sha512-IRLqVGwQo8l715VWzyGr+RUuFfQFLB2BsSSy9w5JSekBMbFd7OZcLFXjvwQnQjGqtzPZcc3D1dPCZd/Za17fXg==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+      y-prosemirror: 1.0.20
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+      y-prosemirror: 1.0.20(prosemirror-model@1.19.3)(prosemirror-state@1.4.3)(prosemirror-view@1.31.8)(y-protocols@1.0.6)(yjs@13.6.8)
+    dev: false
+
+  /@tiptap/extension-collaboration@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)(y-prosemirror@1.0.20):
+    resolution: {integrity: sha512-f/O0XHIUqQEaQ/gwG9tlhcO7Vmt02EeCWWvuLySvR8VaGGfxl6n72WQHpRpQcxxL+IB4Kp/Al4vijfrDw6gqzA==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+      '@tiptap/pm': ^2.0.0
+      y-prosemirror: 1.0.20
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/pm': 2.1.11
+      y-prosemirror: 1.0.20(prosemirror-model@1.19.3)(prosemirror-state@1.4.3)(prosemirror-view@1.31.8)(y-protocols@1.0.6)(yjs@13.6.8)
+    dev: false
+
+  /@tiptap/extension-color@2.1.8(@tiptap/core@2.1.11)(@tiptap/extension-text-style@2.1.8):
+    resolution: {integrity: sha512-eAfJhUbqqNFTdgWraLcg6O1d7YWj6Ivga0YVfhnBpWmZiS8JXAmgOHq9b7sRrDOMdEp6D2njDBEIWpltHNmi1A==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+      '@tiptap/extension-text-style': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/extension-text-style': 2.1.8(@tiptap/core@2.1.11)
+    dev: false
+
+  /@tiptap/extension-document@2.1.11(@tiptap/core@2.1.11):
+    resolution: {integrity: sha512-L/iLuqxvJep33ycCFNrnUhdR0VtcZyeNnqB+ZvVHzEwLoRud+LBy44lpEdBrAFsvRm3DG14m/FGYL+TfaD0vxA==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
     dev: false
 
   /@tiptap/extension-dropcursor@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
@@ -12642,8 +12741,19 @@ packages:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
       '@tiptap/pm': 2.1.11
+    dev: false
+
+  /@tiptap/extension-floating-menu@2.1.12(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
+    resolution: {integrity: sha512-uo0ydCJNg6AWwLT6cMUJYVChfvw2PY9ZfvKRhh9YJlGfM02jS4RUG/bJBts6R37f+a5FsOvAVwg8EvqPlNND1A==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+      '@tiptap/pm': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/pm': 2.1.11
+      tippy.js: 6.3.7
     dev: false
 
   /@tiptap/extension-gapcursor@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
@@ -12652,7 +12762,7 @@ packages:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
       '@tiptap/pm': 2.1.11
     dev: false
 
@@ -12661,7 +12771,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
     dev: false
 
   /@tiptap/extension-heading@2.1.11(@tiptap/core@2.1.11):
@@ -12669,7 +12779,15 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+    dev: false
+
+  /@tiptap/extension-highlight@2.1.8(@tiptap/core@2.1.11):
+    resolution: {integrity: sha512-OCXtFWCbwsgOHq7IP4Qr02EfjwYeRRcuL1ipv0LojGtMcvnkw7OLhQZ8oocrqi4/6QCOtPLSGlcqrQ6pmN7jww==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
     dev: false
 
   /@tiptap/extension-history@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
@@ -12678,8 +12796,26 @@ packages:
       '@tiptap/core': ^2.0.0
       '@tiptap/pm': ^2.0.0
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
       '@tiptap/pm': 2.1.11
+    dev: false
+
+  /@tiptap/extension-horizontal-rule@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
+    resolution: {integrity: sha512-uvHPa2YCKnDhtSBSZB3lk5U4H3wRKP0DNvVx4Y2F7MdQianVzcyOd1pZYO9BQs+lUB1aZots6doE69Zqz3mU2Q==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+      '@tiptap/pm': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/pm': 2.1.11
+    dev: false
+
+  /@tiptap/extension-image@2.1.8(@tiptap/core@2.1.11):
+    resolution: {integrity: sha512-o+vUIYLvYcJHftIMoIukzZZ+fTTfC/gXXvQIYz51p3f1qeYXszD11FbtkaJCgXYj8BcGCO7QuzcCdQg+wyROZw==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
     dev: false
 
   /@tiptap/extension-italic@2.1.11(@tiptap/core@2.1.11):
@@ -12687,7 +12823,18 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+    dev: false
+
+  /@tiptap/extension-link@2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
+    resolution: {integrity: sha512-f3yPNbbo3rNuusEX+Xh/oKUWkq/P1yyVip6ZmtUJVrrG4PFeq/w+f1vEVnlC+uZk3qoC4o8J1DTAOrlrZehx/g==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+      '@tiptap/pm': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/pm': 2.1.11
+      linkifyjs: 4.1.1
     dev: false
 
   /@tiptap/extension-list-item@2.1.11(@tiptap/core@2.1.11):
@@ -12695,7 +12842,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
     dev: false
 
   /@tiptap/extension-ordered-list@2.1.11(@tiptap/core@2.1.11):
@@ -12703,7 +12850,7 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
     dev: false
 
   /@tiptap/extension-paragraph@2.1.11(@tiptap/core@2.1.11):
@@ -12711,7 +12858,17 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+    dev: false
+
+  /@tiptap/extension-placeholder@2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
+    resolution: {integrity: sha512-4yhyvvqsXTzXtJs+39cgvsld4df3ppbajCoxkzHYntKoonm3DtgFTSh+lbdEVCQgDmIfIt1o6DKY1n8NAJRQUQ==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+      '@tiptap/pm': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/pm': 2.1.11
     dev: false
 
   /@tiptap/extension-strike@2.1.11(@tiptap/core@2.1.11):
@@ -12719,7 +12876,41 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+    dev: false
+
+  /@tiptap/extension-task-item@2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
+    resolution: {integrity: sha512-PoY2PDiYEQC44qDQLubzDuhZ3f6OL7sui89960M1HUQR2URnPvToOBaa5veNY8VyACdAolm+LwTpseBKKkcpmw==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+      '@tiptap/pm': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/pm': 2.1.11
+    dev: false
+
+  /@tiptap/extension-task-list@2.1.8(@tiptap/core@2.1.11):
+    resolution: {integrity: sha512-PmEPJHTOgy0AveE6YoxY6w09+bh5OqkrMI/sluY88291cnSPPEf9sFWmBHOrONNj54Ti6ua37arudUY5mqxOCA==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+    dev: false
+
+  /@tiptap/extension-text-align@2.1.9(@tiptap/core@2.1.11):
+    resolution: {integrity: sha512-xkhCWe7QEh+rSM4T3K5IraSSUOOHrmuCJZQOjp0GREMt0nsHYquCA0U+IbuDsA2o+4Vi0+skilhB3D3WM/vbMg==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+    dev: false
+
+  /@tiptap/extension-text-style@2.1.8(@tiptap/core@2.1.11):
+    resolution: {integrity: sha512-xnx/Pq5ttt2/gOQPmqVQIBz/jo3MErtYdYk22fUaOyu1xT36X4BDJYsrLyWhcs3aWR/tv1/XylbNOFvhrDOHoQ==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
     dev: false
 
   /@tiptap/extension-text@2.1.11(@tiptap/core@2.1.11):
@@ -12727,7 +12918,15 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.0.0
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+    dev: false
+
+  /@tiptap/extension-underline@2.1.8(@tiptap/core@2.1.11):
+    resolution: {integrity: sha512-vsmdyR8z40xNPZzTSNGLcCMaIf8Tgm9OzsZb1qWILe+PYuv/mIM1LogBbfouEzVpG5sPoxwFTDgxnC+M3Ohgzg==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
     dev: false
 
   /@tiptap/pm@2.1.11:
@@ -12753,22 +12952,38 @@ packages:
       prosemirror-view: 1.31.8
     dev: false
 
+  /@tiptap/react@2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-yTjlin4tOfYNwBdpX4+2CmNxybq2Ms50rX0RIRLABbnCTqhBIKko/eBLFq7DCot/Dwdw6c5Y098/fayKywfJWg==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+      '@tiptap/pm': ^2.0.0
+      react: ^17.0.0 || ^18.0.0
+      react-dom: ^17.0.0 || ^18.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/extension-bubble-menu': 2.1.12(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
+      '@tiptap/extension-floating-menu': 2.1.12(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
+      '@tiptap/pm': 2.1.11
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@tiptap/starter-kit@2.1.11(@tiptap/pm@2.1.11):
     resolution: {integrity: sha512-kZXwuo9yxrs1ASxluRKjXThjdcy90d7owJxnJWD7SyEwXaXYc4h+Ar1M9rP3jieCDBuRTtCgvAOKbVbhnRJ2jg==}
     dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/extension-blockquote': registry.npmmirror.com/@tiptap/extension-blockquote@2.1.11(@tiptap/core@2.1.11)
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/extension-blockquote': 2.1.11(@tiptap/core@2.1.11)
       '@tiptap/extension-bold': 2.1.11(@tiptap/core@2.1.11)
       '@tiptap/extension-bullet-list': 2.1.11(@tiptap/core@2.1.11)
       '@tiptap/extension-code': 2.1.11(@tiptap/core@2.1.11)
       '@tiptap/extension-code-block': 2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
-      '@tiptap/extension-document': registry.npmmirror.com/@tiptap/extension-document@2.1.11(@tiptap/core@2.1.11)
+      '@tiptap/extension-document': 2.1.11(@tiptap/core@2.1.11)
       '@tiptap/extension-dropcursor': 2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
       '@tiptap/extension-gapcursor': 2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
       '@tiptap/extension-hard-break': 2.1.11(@tiptap/core@2.1.11)
       '@tiptap/extension-heading': 2.1.11(@tiptap/core@2.1.11)
       '@tiptap/extension-history': 2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
-      '@tiptap/extension-horizontal-rule': registry.npmmirror.com/@tiptap/extension-horizontal-rule@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
+      '@tiptap/extension-horizontal-rule': 2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
       '@tiptap/extension-italic': 2.1.11(@tiptap/core@2.1.11)
       '@tiptap/extension-list-item': 2.1.11(@tiptap/core@2.1.11)
       '@tiptap/extension-ordered-list': 2.1.11(@tiptap/core@2.1.11)
@@ -12777,6 +12992,16 @@ packages:
       '@tiptap/extension-text': 2.1.11(@tiptap/core@2.1.11)
     transitivePeerDependencies:
       - '@tiptap/pm'
+    dev: false
+
+  /@tiptap/suggestion@2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
+    resolution: {integrity: sha512-3QypKFCeZSRrjgSz0n0JE5SimisolaxDZn45GGtkXuJWmKGCmsJw9UsXeH3S9ZuP3pvPImL0P9uAHlhRReRw1w==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+      '@tiptap/pm': ^2.0.0
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+      '@tiptap/pm': 2.1.11
     dev: false
 
   /@tootallnate/once@2.0.0:
@@ -13429,7 +13654,6 @@ packages:
 
   /@types/linkify-it@3.0.3:
     resolution: {integrity: sha512-pTjcqY9E4nOI55Wgpz7eiI8+LzdYnw3qxXCfHyBDdPbYvbyLgWLJGh8EdPvqawwMK1Uo1794AUkkR38Fr0g+2g==}
-    dev: true
 
   /@types/loadjs@4.0.2:
     resolution: {integrity: sha512-tsPs2Pv+T+MYU6wh+a5IZS9ryHrQza27j+yJ84yiPCLQgDjjM7aBfjAKPgDi9ks1x5vY0tESvux/SwHRAlMqLQ==}
@@ -13469,7 +13693,6 @@ packages:
     dependencies:
       '@types/linkify-it': 3.0.3
       '@types/mdurl': 1.0.2
-    dev: true
 
   /@types/marked@4.3.1:
     resolution: {integrity: sha512-vSSbKZFbNktrQ15v7o1EaH78EbWV+sPQbPjHG+Cp8CaNcPFUEfjZ0Iml/V0bFDwsTlYe8o6XC5Hfdp91cqPV2g==}
@@ -13483,7 +13706,6 @@ packages:
 
   /@types/mdurl@1.0.2:
     resolution: {integrity: sha512-eC4U9MlIcu2q0KQmXszyn5Akca/0jrQmwDRgpAMJai7qBWq4amIQhZyNau4VYGtCeALvW1/NtjzJJ567aZxfKA==}
-    dev: true
 
   /@types/mdx-js__react@1.5.5:
     resolution: {integrity: sha512-k8pnaP6JXVlQh18HgL5X6sYFNC/qZnzO7R2+HsmwrwUd+JnnsU0d9lyyT0RQrHg1anxDU36S98TI/fsGtmYqqg==}
@@ -15711,8 +15933,8 @@ packages:
     peerDependencies:
       postcss: ^8.1.0
     dependencies:
-      browserslist: 4.21.10
-      caniuse-lite: 1.0.30001528
+      browserslist: 4.22.1
+      caniuse-lite: 1.0.30001563
       fraction.js: 4.3.6
       normalize-range: 0.1.2
       picocolors: 1.0.0
@@ -20443,7 +20665,7 @@ packages:
       eslint: 8.49.0
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 2.7.1(eslint-plugin-import@2.28.1)(eslint@8.49.0)
-      eslint-plugin-import: 2.28.1(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-typescript@2.7.1)(eslint@8.49.0)
+      eslint-plugin-import: 2.28.1(@typescript-eslint/parser@6.7.2)(eslint@8.49.0)
       eslint-plugin-jsx-a11y: 6.7.1(eslint@8.49.0)
       eslint-plugin-react: 7.33.2(eslint@8.49.0)
       eslint-plugin-react-hooks: 4.6.0(eslint@8.49.0)
@@ -20481,7 +20703,7 @@ packages:
       confusing-browser-globals: 1.0.11
       eslint: 8.49.0
       eslint-plugin-flowtype: 8.0.3(@babel/plugin-syntax-flow@7.22.5)(@babel/plugin-transform-react-jsx@7.22.15)(eslint@8.49.0)
-      eslint-plugin-import: 2.28.1(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-typescript@2.7.1)(eslint@8.49.0)
+      eslint-plugin-import: 2.28.1(@typescript-eslint/parser@5.62.0)(eslint@8.49.0)
       eslint-plugin-jest: 25.7.0(@typescript-eslint/eslint-plugin@5.62.0)(eslint@8.49.0)(typescript@4.8.2)
       eslint-plugin-jsx-a11y: 6.7.1(eslint@8.49.0)
       eslint-plugin-react: 7.33.2(eslint@8.49.0)
@@ -20516,7 +20738,7 @@ packages:
     dependencies:
       debug: 4.3.4(supports-color@8.1.1)
       eslint: 8.49.0
-      eslint-plugin-import: 2.28.1(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-typescript@2.7.1)(eslint@8.49.0)
+      eslint-plugin-import: 2.28.1(@typescript-eslint/parser@6.7.2)(eslint@8.49.0)
       glob: 7.2.3
       is-glob: 4.0.3
       resolve: 1.22.4
@@ -20599,7 +20821,7 @@ packages:
       string-natural-compare: 3.0.1
     dev: true
 
-  /eslint-plugin-import@2.28.1(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-typescript@2.7.1)(eslint@8.49.0):
+  /eslint-plugin-import@2.28.1(@typescript-eslint/parser@5.62.0)(eslint@8.49.0):
     resolution: {integrity: sha512-9I9hFlITvOV55alzoKBI+K9q74kv0iKMeY6av5+umsNwayt59fz692daGyjR+oStBQgx6nwR9rXldDev3Clw+A==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -26427,6 +26649,10 @@ packages:
       uc.micro: 1.0.6
     dev: false
 
+  /linkifyjs@4.1.1:
+    resolution: {integrity: sha512-zFN/CTVmbcVef+WaDXT63dNzzkfRBKT1j464NJQkV7iSgJU0sLBus9W0HBwnXK13/hf168pbrx/V/bjEHOXNHA==}
+    dev: false
+
   /lint-staged@14.0.1:
     resolution: {integrity: sha512-Mw0cL6HXnHN1ag0mN/Dg4g6sr8uf8sn98w2Oc1ECtFto9tvRF7nkXGJRbx8gPlHyoR0pLyBr2lQHbWwmUHe1Sw==}
     engines: {node: ^16.14.0 || >=18.0.0}
@@ -27053,6 +27279,10 @@ packages:
   /markdown-escapes@1.0.4:
     resolution: {integrity: sha512-8z4efJYk43E0upd0NbVXwgSTQs6cT3T06etieCMEg7dRbzCbxUCK/GHlX8mhHRDcp+OLlHkPKsvqQTCvsRl2cg==}
     dev: true
+
+  /markdown-it-task-lists@2.1.1:
+    resolution: {integrity: sha512-TxFAc76Jnhb2OUu+n3yz9RMu4CwGfaT788br6HhEDlvWfdeJcLUsxk1Hgw2yJio0OXsxv7pyIPmvECY7bMbluA==}
+    dev: false
 
   /markdown-it@12.3.2:
     resolution: {integrity: sha512-TchMembfxfNVpHkbtriWltGWc+m3xszaRD0CZup7GFFhzIgQqxIfn3eGj1yZpfuflzPvfkt611B2Q/Bsk1YnGg==}
@@ -30450,60 +30680,60 @@ packages:
   /prosemirror-changeset@2.2.1:
     resolution: {integrity: sha512-J7msc6wbxB4ekDFj+n9gTW/jav/p53kdlivvuppHsrZXCaQdVgRghoZbSS3kwrRyAstRVQ4/+u5k7YfLgkkQvQ==}
     dependencies:
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
+      prosemirror-transform: 1.7.5
     dev: false
 
   /prosemirror-collab@1.3.1:
     resolution: {integrity: sha512-4SnynYR9TTYaQVXd/ieUvsVV4PDMBzrq2xPUWutHivDuOshZXqQ5rGbZM84HEaXKbLdItse7weMGOUdDVcLKEQ==}
     dependencies:
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
+      prosemirror-state: 1.4.3
     dev: false
 
   /prosemirror-commands@1.5.2:
     resolution: {integrity: sha512-hgLcPaakxH8tu6YvVAaILV2tXYsW3rAdDR8WNkeKGcgeMVQg3/TMhPdVoh7iAmfgVjZGtcOSjKiQaoeKjzd2mQ==}
     dependencies:
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
+      prosemirror-model: 1.19.3
+      prosemirror-state: 1.4.3
+      prosemirror-transform: 1.7.5
     dev: false
 
   /prosemirror-dropcursor@1.8.1:
     resolution: {integrity: sha512-M30WJdJZLyXHi3N8vxN6Zh5O8ZBbQCz0gURTfPmTIBNQ5pxrdU7A58QkNqfa98YEjSAL1HUyyU34f6Pm5xBSGw==}
     dependencies:
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
-      prosemirror-view: registry.npmmirror.com/prosemirror-view@1.31.8
+      prosemirror-state: 1.4.3
+      prosemirror-transform: 1.7.5
+      prosemirror-view: 1.31.8
     dev: false
 
   /prosemirror-gapcursor@1.3.2:
     resolution: {integrity: sha512-wtjswVBd2vaQRrnYZaBCbyDqr232Ed4p2QPtRIUK5FuqHYKGWkEwl08oQM4Tw7DOR0FsasARV5uJFvMZWxdNxQ==}
     dependencies:
-      prosemirror-keymap: registry.npmmirror.com/prosemirror-keymap@1.2.2
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-view: registry.npmmirror.com/prosemirror-view@1.31.8
+      prosemirror-keymap: 1.2.2
+      prosemirror-model: 1.19.3
+      prosemirror-state: 1.4.3
+      prosemirror-view: 1.31.8
     dev: false
 
   /prosemirror-history@1.3.2:
     resolution: {integrity: sha512-/zm0XoU/N/+u7i5zepjmZAEnpvjDtzoPWW6VmKptcAnPadN/SStsBjMImdCEbb3seiNTpveziPTIrXQbHLtU1g==}
     dependencies:
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
-      prosemirror-view: registry.npmmirror.com/prosemirror-view@1.31.8
+      prosemirror-state: 1.4.3
+      prosemirror-transform: 1.7.5
+      prosemirror-view: 1.31.8
       rope-sequence: 1.3.4
     dev: false
 
   /prosemirror-inputrules@1.2.1:
     resolution: {integrity: sha512-3LrWJX1+ULRh5SZvbIQlwZafOXqp1XuV21MGBu/i5xsztd+9VD15x6OtN6mdqSFI7/8Y77gYUbQ6vwwJ4mr6QQ==}
     dependencies:
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
+      prosemirror-state: 1.4.3
+      prosemirror-transform: 1.7.5
     dev: false
 
   /prosemirror-keymap@1.2.2:
     resolution: {integrity: sha512-EAlXoksqC6Vbocqc0GtzCruZEzYgrn+iiGnNjsJsH4mrnIGex4qbLdWWNza3AW5W36ZRrlBID0eM6bdKH4OStQ==}
     dependencies:
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
+      prosemirror-state: 1.4.3
       w3c-keyname: 2.2.8
     dev: false
 
@@ -30511,16 +30741,16 @@ packages:
     resolution: {integrity: sha512-Eu5g4WPiCdqDTGhdSsG9N6ZjACQRYrsAkrF9KYfdMaCmjIApH75aVncsWYOJvEk2i1B3i8jZppv3J/tnuHGiUQ==}
     dependencies:
       markdown-it: 13.0.1
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
+      prosemirror-model: 1.19.3
     dev: false
 
   /prosemirror-menu@1.2.4:
     resolution: {integrity: sha512-S/bXlc0ODQup6aiBbWVsX/eM+xJgCTAfMq/nLqaO5ID/am4wS0tTCIkzwytmao7ypEtjj39i7YbJjAgO20mIqA==}
     dependencies:
       crelt: 1.0.6
-      prosemirror-commands: registry.npmmirror.com/prosemirror-commands@1.5.2
-      prosemirror-history: registry.npmmirror.com/prosemirror-history@1.3.2
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
+      prosemirror-commands: 1.5.2
+      prosemirror-history: 1.3.2
+      prosemirror-state: 1.4.3
     dev: false
 
   /prosemirror-model@1.19.3:
@@ -30532,33 +30762,33 @@ packages:
   /prosemirror-schema-basic@1.2.2:
     resolution: {integrity: sha512-/dT4JFEGyO7QnNTe9UaKUhjDXbTNkiWTq/N4VpKaF79bBjSExVV2NXmJpcM7z/gD7mbqNjxbmWW5nf1iNSSGnw==}
     dependencies:
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
+      prosemirror-model: 1.19.3
     dev: false
 
   /prosemirror-schema-list@1.3.0:
     resolution: {integrity: sha512-Hz/7gM4skaaYfRPNgr421CU4GSwotmEwBVvJh5ltGiffUJwm7C8GfN/Bc6DR1EKEp5pDKhODmdXXyi9uIsZl5A==}
     dependencies:
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
+      prosemirror-model: 1.19.3
+      prosemirror-state: 1.4.3
+      prosemirror-transform: 1.7.5
     dev: false
 
   /prosemirror-state@1.4.3:
     resolution: {integrity: sha512-goFKORVbvPuAQaXhpbemJFRKJ2aixr+AZMGiquiqKxaucC6hlpHNZHWgz5R7dS4roHiwq9vDctE//CZ++o0W1Q==}
     dependencies:
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
-      prosemirror-view: registry.npmmirror.com/prosemirror-view@1.31.8
+      prosemirror-model: 1.19.3
+      prosemirror-transform: 1.7.5
+      prosemirror-view: 1.31.8
     dev: false
 
   /prosemirror-tables@1.3.4:
     resolution: {integrity: sha512-z6uLSQ1BLC3rgbGwZmpfb+xkdvD7W/UOsURDfognZFYaTtc0gsk7u/t71Yijp2eLflVpffMk6X0u0+u+MMDvIw==}
     dependencies:
-      prosemirror-keymap: registry.npmmirror.com/prosemirror-keymap@1.2.2
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
-      prosemirror-view: registry.npmmirror.com/prosemirror-view@1.31.8
+      prosemirror-keymap: 1.2.2
+      prosemirror-model: 1.19.3
+      prosemirror-state: 1.4.3
+      prosemirror-transform: 1.7.5
+      prosemirror-view: 1.31.8
     dev: false
 
   /prosemirror-trailing-node@2.0.7(prosemirror-model@1.19.3)(prosemirror-state@1.4.3)(prosemirror-view@1.31.8):
@@ -30579,15 +30809,15 @@ packages:
   /prosemirror-transform@1.7.5:
     resolution: {integrity: sha512-U/fWB6frEzY7dzwJUo+ir8dU1JEanaI/RwL12Imy9js/527N0v/IRUKewocP1kTq998JNT18IGtThaDLwLOBxQ==}
     dependencies:
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
+      prosemirror-model: 1.19.3
     dev: false
 
   /prosemirror-view@1.31.8:
     resolution: {integrity: sha512-VQrEIdiPJ4YV65Ifj2kWISwaiqocMHy7cpUKVQYt19C/87FepoqnwVW3kMKRpeY/nQzED8L+vyOaYDBn0WqT7w==}
     dependencies:
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
+      prosemirror-model: 1.19.3
+      prosemirror-state: 1.4.3
+      prosemirror-transform: 1.7.5
     dev: false
 
   /protobufjs@7.2.5:
@@ -30955,7 +31185,7 @@ packages:
     resolution: {integrity: sha512-nv9wYUYdfyfK+qskThf4BQUSIadeI/dCsfaMZfNEoxm9HwOIioQ+LyqmMK6jWHAZQgOzMLaqawhuBXlF63vgjw==}
     dependencies:
       babel-runtime: 6.26.0
-      dom-align: registry.npmmirror.com/dom-align@1.12.4
+      dom-align: 1.12.4
       prop-types: 15.8.1
       rc-util: 4.21.1
     dev: false
@@ -31586,7 +31816,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.23.2
       classnames: 2.2.6
-      rc-align: registry.npmmirror.com/rc-align@4.0.15(react-dom@18.2.0)(react@18.2.0)
+      rc-align: 4.0.15(react-dom@18.2.0)(react@18.2.0)
       rc-motion: 2.9.0(react-dom@18.2.0)(react@18.2.0)
       rc-util: 5.38.0(react-dom@18.2.0)(react@18.2.0)
       react: 18.2.0
@@ -32312,7 +32542,7 @@ packages:
       element-resize-detector: 1.2.4
       invariant: 2.2.4
       shallowequal: 1.1.0
-      throttle-debounce: registry.npmmirror.com/throttle-debounce@3.0.1
+      throttle-debounce: 3.0.1
     dev: true
 
   /react-smooth@2.0.3(prop-types@15.8.1)(react-dom@18.2.0)(react@18.2.0):
@@ -34822,7 +35052,7 @@ packages:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
     dependencies:
-      has-flag: registry.npmmirror.com/has-flag@4.0.0
+      has-flag: 4.0.0
 
   /supports-color@8.1.1:
     resolution: {integrity: sha512-MpUEN2OodtUzxvKQl72cUF7RQ5EiHsGvSsVG0ia9c5RbWGL2CI4C7EpPS8UTBIplnlzZiNuV56w+FuNxy3ty2Q==}
@@ -35198,7 +35428,6 @@ packages:
   /throttle-debounce@3.0.1:
     resolution: {integrity: sha512-dTEWWNu6JmeVXY0ZYoPuH5cRIwc0MeGbJwah9KUNYSJwommQpCzTySTpEe8Gs1J23aeWEuAobe4Ag7EHVt/LOg==}
     engines: {node: '>=10'}
-    dev: false
 
   /throttleit@1.0.0:
     resolution: {integrity: sha512-rkTVqu6IjfQ/6+uNuuc3sZek4CEYxTJom3IktzgdSxcZqdARuebbA/f4QmAxMQIxqq9ZLEUkSYqvuk1I6VKq4g==}
@@ -35274,6 +35503,24 @@ packages:
 
   /tinycolor2@1.6.0:
     resolution: {integrity: sha512-XPaBkWQJdsf3pLKJV9p4qN/S+fm2Oj8AIPo1BTUhg5oxkvm9+SVEGFdhyOz7tTdUTfvxMiAs4sp6/eZO2Ew+pw==}
+    dev: false
+
+  /tippy.js@6.3.7:
+    resolution: {integrity: sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==}
+    dependencies:
+      '@popperjs/core': 2.11.8
+    dev: false
+
+  /tiptap-markdown@0.8.8(@tiptap/core@2.1.11):
+    resolution: {integrity: sha512-I2w/IpvCZ1BoR3nQzG0wRK3uGmDv+Ohyr++G24Ma6RzoDYd0TVGXZp0BOODX5Jj4c6heVY8eksahSeAwJMZBeg==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.3
+    dependencies:
+      '@tiptap/core': 2.1.11(@tiptap/pm@2.1.11)
+      '@types/markdown-it': 12.2.3
+      markdown-it: 13.0.1
+      markdown-it-task-lists: 2.1.1
+      prosemirror-markdown: 1.11.2
     dev: false
 
   /tmp-promise@3.0.2:
@@ -37618,11 +37865,11 @@ packages:
       yjs: ^13.3.2
     dependencies:
       lib0: 0.2.85
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-view: registry.npmmirror.com/prosemirror-view@1.31.8
+      prosemirror-model: 1.19.3
+      prosemirror-state: 1.4.3
+      prosemirror-view: 1.31.8
       y-protocols: 1.0.6(yjs@13.6.8)
-      yjs: registry.npmmirror.com/yjs@13.6.8
+      yjs: 13.6.8
     dev: false
 
   /y-prosemirror@1.2.1(prosemirror-model@1.19.3)(prosemirror-state@1.4.3)(prosemirror-view@1.31.8)(y-protocols@1.0.6)(yjs@13.6.8):
@@ -37649,7 +37896,7 @@ packages:
       yjs: ^13.0.0
     dependencies:
       lib0: 0.2.85
-      yjs: registry.npmmirror.com/yjs@13.6.8
+      yjs: 13.6.8
     dev: false
 
   /y18n@4.0.3:
@@ -37818,904 +38065,3 @@ packages:
   /zwitch@1.0.5:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
     dev: true
-
-  registry.npmmirror.com/@hocuspocus/common@2.5.0:
-    resolution: {integrity: sha512-TpnQAb1Rtff1trwURFWaUEYZwqykaIGo6NNnMr6ZISdDZFWNHMAMUmy7dwJDS9ECnEtcjXhpPxXeLV+MVQXVnw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@hocuspocus/common/-/common-2.5.0.tgz}
-    name: '@hocuspocus/common'
-    version: 2.5.0
-    dependencies:
-      lib0: registry.npmmirror.com/lib0@0.2.85
-    dev: false
-
-  registry.npmmirror.com/@hocuspocus/provider@2.5.0(y-protocols@1.0.6)(yjs@13.6.8):
-    resolution: {integrity: sha512-Du/q0kcVhaSQiKPBha19f+mnFOl4sFybARRWsGp4JIoDG+Vt3r73ZqjalIJmp9h4mBr2tGtS5zK/oQ/Vrv5/Bw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@hocuspocus/provider/-/provider-2.5.0.tgz}
-    id: registry.npmmirror.com/@hocuspocus/provider/2.5.0
-    name: '@hocuspocus/provider'
-    version: 2.5.0
-    peerDependencies:
-      y-protocols: ^1.0.5
-      yjs: ^13.6.4
-    dependencies:
-      '@hocuspocus/common': registry.npmmirror.com/@hocuspocus/common@2.5.0
-      '@lifeomic/attempt': registry.npmmirror.com/@lifeomic/attempt@3.0.3
-      lib0: registry.npmmirror.com/lib0@0.2.85
-      ws: registry.npmmirror.com/ws@7.5.9
-      y-protocols: 1.0.6(yjs@13.6.8)
-      yjs: registry.npmmirror.com/yjs@13.6.8
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-    dev: false
-
-  registry.npmmirror.com/@lifeomic/attempt@3.0.3:
-    resolution: {integrity: sha512-GlM2AbzrErd/TmLL3E8hAHmb5Q7VhDJp35vIbyPVA5Rz55LZuRr8pwL3qrwwkVNo05gMX1J44gURKb4MHQZo7w==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@lifeomic/attempt/-/attempt-3.0.3.tgz}
-    name: '@lifeomic/attempt'
-    version: 3.0.3
-    dev: false
-
-  registry.npmmirror.com/@remirror/core-constants@2.0.2:
-    resolution: {integrity: sha512-dyHY+sMF0ihPus3O27ODd4+agdHMEmuRdyiZJ2CCWjPV5UFmn17ZbElvk6WOGVE4rdCJKZQCrPV2BcikOMLUGQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@remirror/core-constants/-/core-constants-2.0.2.tgz}
-    name: '@remirror/core-constants'
-    version: 2.0.2
-    dev: false
-
-  registry.npmmirror.com/@remirror/core-helpers@3.0.0:
-    resolution: {integrity: sha512-tusEgQJIqg4qKj6HSBUFcyRnWnziw3neh4T9wOmsPGHFC3w9kl5KSrDb9UAgE8uX6y32FnS7vJ955mWOl3n50A==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@remirror/core-helpers/-/core-helpers-3.0.0.tgz}
-    name: '@remirror/core-helpers'
-    version: 3.0.0
-    dependencies:
-      '@remirror/core-constants': registry.npmmirror.com/@remirror/core-constants@2.0.2
-      '@remirror/types': registry.npmmirror.com/@remirror/types@1.0.1
-      '@types/object.omit': registry.npmmirror.com/@types/object.omit@3.0.1
-      '@types/object.pick': registry.npmmirror.com/@types/object.pick@1.3.2
-      '@types/throttle-debounce': registry.npmmirror.com/@types/throttle-debounce@2.1.0
-      case-anything: registry.npmmirror.com/case-anything@2.1.13
-      dash-get: registry.npmmirror.com/dash-get@1.0.2
-      deepmerge: 4.3.1
-      fast-deep-equal: 3.1.3
-      make-error: 1.3.6
-      object.omit: registry.npmmirror.com/object.omit@3.0.0
-      object.pick: registry.npmmirror.com/object.pick@1.3.0
-      throttle-debounce: registry.npmmirror.com/throttle-debounce@3.0.1
-    dev: false
-
-  registry.npmmirror.com/@remirror/types@1.0.1:
-    resolution: {integrity: sha512-VlZQxwGnt1jtQ18D6JqdIF+uFZo525WEqrfp9BOc3COPpK4+AWCgdnAWL+ho6imWcoINlGjR/+3b6y5C1vBVEA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@remirror/types/-/types-1.0.1.tgz}
-    name: '@remirror/types'
-    version: 1.0.1
-    dependencies:
-      type-fest: 2.19.0
-    dev: false
-
-  registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11):
-    resolution: {integrity: sha512-1W2DdjpPwfphHgQ3Qm4s5wzCnEjiXm1TeZ+6/zBl89yKURXgv8Mw1JGdj/NcImQjtDcsNn97MscACK3GKbEJBA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/core/-/core-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/core/2.1.11
-    name: '@tiptap/core'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/pm': ^2.0.0
-    dependencies:
-      '@tiptap/pm': registry.npmmirror.com/@tiptap/pm@2.1.11
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-blockquote@2.1.11(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-IEVe3goA0rgp1G8Wm733BSRJiy71Vh2fmTCyZKWmc2A6GREVSy1X3fCvAo6pMENRObhjIoaBQUCE3p4iJYOxqg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-blockquote/-/extension-blockquote-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-blockquote/2.1.11
-    name: '@tiptap/extension-blockquote'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-bold@2.1.11(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-vhdkBtvd029ufOYt2ug49Gz+RLKSczO/CCqKYBqBmpIpsifyK7M6jkgamvAQg3c/vYk0LNcKiL2dp0Jp7L+5Gw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-bold/-/extension-bold-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-bold/2.1.11
-    name: '@tiptap/extension-bold'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-bubble-menu@2.1.12(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
-    resolution: {integrity: sha512-gAGi21EQ4wvLmT7klgariAc2Hf+cIjaNU2NWze3ut6Ku9gUo5ZLqj1t9SKHmNf4d5JG63O8GxpErqpA7lHlRtw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-bubble-menu/-/extension-bubble-menu-2.1.12.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-bubble-menu/2.1.12
-    name: '@tiptap/extension-bubble-menu'
-    version: 2.1.12
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-      '@tiptap/pm': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/pm': registry.npmmirror.com/@tiptap/pm@2.1.11
-      tippy.js: registry.npmmirror.com/tippy.js@6.3.7
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-bullet-list@2.1.11(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-SOOVH2aSmdMtjWL7TTLbN72xbAFz2G5jifT4UCXb7Qx6LsyhNCyDCu0ukOW8rSosGoSdmBXxAsD9sBJ1jEOmZw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-bullet-list/-/extension-bullet-list-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-bullet-list/2.1.11
-    name: '@tiptap/extension-bullet-list'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-code-block@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
-    resolution: {integrity: sha512-QhmhCCWqg/5qLXpZ3sl2A0rqJqV8zMOegcxUFaqcJMOqNbsuHcRgc9C+1hWSVLbCmstB7M6sgF02QpTBOkYHxg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-code-block/-/extension-code-block-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-code-block/2.1.11
-    name: '@tiptap/extension-code-block'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-      '@tiptap/pm': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/pm': registry.npmmirror.com/@tiptap/pm@2.1.11
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-code@2.1.11(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-G0UEbMFunujy/F86yHN0/dumPLbwTis9C+6IQv1XRPNsV28U0MgxBhlPcJUgyO5lwuleePDxiBVcRv2XrysgKw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-code/-/extension-code-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-code/2.1.11
-    name: '@tiptap/extension-code'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-collaboration-cursor@2.1.11(@tiptap/core@2.1.11)(y-prosemirror@1.0.20):
-    resolution: {integrity: sha512-IRLqVGwQo8l715VWzyGr+RUuFfQFLB2BsSSy9w5JSekBMbFd7OZcLFXjvwQnQjGqtzPZcc3D1dPCZd/Za17fXg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-collaboration-cursor/-/extension-collaboration-cursor-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-collaboration-cursor/2.1.11
-    name: '@tiptap/extension-collaboration-cursor'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-      y-prosemirror: 1.0.20
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      y-prosemirror: 1.0.20(prosemirror-model@1.19.3)(prosemirror-state@1.4.3)(prosemirror-view@1.31.8)(y-protocols@1.0.6)(yjs@13.6.8)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-collaboration@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)(y-prosemirror@1.0.20):
-    resolution: {integrity: sha512-f/O0XHIUqQEaQ/gwG9tlhcO7Vmt02EeCWWvuLySvR8VaGGfxl6n72WQHpRpQcxxL+IB4Kp/Al4vijfrDw6gqzA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-collaboration/-/extension-collaboration-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-collaboration/2.1.11
-    name: '@tiptap/extension-collaboration'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-      '@tiptap/pm': ^2.0.0
-      y-prosemirror: 1.0.20
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/pm': registry.npmmirror.com/@tiptap/pm@2.1.11
-      y-prosemirror: 1.0.20(prosemirror-model@1.19.3)(prosemirror-state@1.4.3)(prosemirror-view@1.31.8)(y-protocols@1.0.6)(yjs@13.6.8)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-color@2.1.8(@tiptap/core@2.1.11)(@tiptap/extension-text-style@2.1.8):
-    resolution: {integrity: sha512-eAfJhUbqqNFTdgWraLcg6O1d7YWj6Ivga0YVfhnBpWmZiS8JXAmgOHq9b7sRrDOMdEp6D2njDBEIWpltHNmi1A==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-color/-/extension-color-2.1.8.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-color/2.1.8
-    name: '@tiptap/extension-color'
-    version: 2.1.8
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-      '@tiptap/extension-text-style': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/extension-text-style': registry.npmmirror.com/@tiptap/extension-text-style@2.1.8(@tiptap/core@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-document@2.1.11(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-L/iLuqxvJep33ycCFNrnUhdR0VtcZyeNnqB+ZvVHzEwLoRud+LBy44lpEdBrAFsvRm3DG14m/FGYL+TfaD0vxA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-document/-/extension-document-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-document/2.1.11
-    name: '@tiptap/extension-document'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-dropcursor@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
-    resolution: {integrity: sha512-MiJepRpHlu93aInOMW8NeRCvm9VE5rL0MA9TONY/IspJFGFIqonc/01J6t33JQa3Xh/x3xAfis4nKa/UazeVJw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-dropcursor/-/extension-dropcursor-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-dropcursor/2.1.11
-    name: '@tiptap/extension-dropcursor'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-      '@tiptap/pm': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/pm': registry.npmmirror.com/@tiptap/pm@2.1.11
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-floating-menu@2.1.12(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
-    resolution: {integrity: sha512-uo0ydCJNg6AWwLT6cMUJYVChfvw2PY9ZfvKRhh9YJlGfM02jS4RUG/bJBts6R37f+a5FsOvAVwg8EvqPlNND1A==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-floating-menu/-/extension-floating-menu-2.1.12.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-floating-menu/2.1.12
-    name: '@tiptap/extension-floating-menu'
-    version: 2.1.12
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-      '@tiptap/pm': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/pm': registry.npmmirror.com/@tiptap/pm@2.1.11
-      tippy.js: registry.npmmirror.com/tippy.js@6.3.7
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-gapcursor@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
-    resolution: {integrity: sha512-P/xjyhSOVyop5XXbNtRPgrooQrSlpYblwR67ClI9FAC7uQliuOwi5VcndmEItjWWSe85kJa2IHjOS7mLYvJe8A==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-gapcursor/-/extension-gapcursor-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-gapcursor/2.1.11
-    name: '@tiptap/extension-gapcursor'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-      '@tiptap/pm': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/pm': registry.npmmirror.com/@tiptap/pm@2.1.11
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-hard-break@2.1.11(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-qhiPe6FA0b6PPb/ITlgSnY0l9tEVmXZ9e7eSjvks12ORfqL/dofSCLtChHWvhZxugzo92xejG2hXLi6lyOLbkg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-hard-break/-/extension-hard-break-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-hard-break/2.1.11
-    name: '@tiptap/extension-hard-break'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-heading@2.1.11(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-QBtl0S1aDFB+F1wvTrS5iGdNUEeXp+WuTddj+L2f5EP4KqG2x7sj7e7ENMy20g/l8tbKwzd3AZZydvClH4Ybbw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-heading/-/extension-heading-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-heading/2.1.11
-    name: '@tiptap/extension-heading'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-highlight@2.1.8(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-OCXtFWCbwsgOHq7IP4Qr02EfjwYeRRcuL1ipv0LojGtMcvnkw7OLhQZ8oocrqi4/6QCOtPLSGlcqrQ6pmN7jww==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-highlight/-/extension-highlight-2.1.8.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-highlight/2.1.8
-    name: '@tiptap/extension-highlight'
-    version: 2.1.8
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-history@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
-    resolution: {integrity: sha512-88dovV2O9icmBn0IvaArFFeS6X5ts6BxZPu5VbGML8KBL8iAu+Og7RXEPdOy5e13K0K4V21fDpO3n7KdvNOAYQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-history/-/extension-history-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-history/2.1.11
-    name: '@tiptap/extension-history'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-      '@tiptap/pm': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/pm': registry.npmmirror.com/@tiptap/pm@2.1.11
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-horizontal-rule@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
-    resolution: {integrity: sha512-uvHPa2YCKnDhtSBSZB3lk5U4H3wRKP0DNvVx4Y2F7MdQianVzcyOd1pZYO9BQs+lUB1aZots6doE69Zqz3mU2Q==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-horizontal-rule/-/extension-horizontal-rule-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-horizontal-rule/2.1.11
-    name: '@tiptap/extension-horizontal-rule'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-      '@tiptap/pm': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/pm': registry.npmmirror.com/@tiptap/pm@2.1.11
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-image@2.1.8(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-o+vUIYLvYcJHftIMoIukzZZ+fTTfC/gXXvQIYz51p3f1qeYXszD11FbtkaJCgXYj8BcGCO7QuzcCdQg+wyROZw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-image/-/extension-image-2.1.8.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-image/2.1.8
-    name: '@tiptap/extension-image'
-    version: 2.1.8
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-italic@2.1.11(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-QmDsHtnBBit/1KtQpBPxjSPjDC1mVKtoNTgsEwMWK6YAkCKOKPj7oPEqqjaNZIRMKPPzE5XCsfBoS3jtVmo+6A==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-italic/-/extension-italic-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-italic/2.1.11
-    name: '@tiptap/extension-italic'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-link@2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
-    resolution: {integrity: sha512-f3yPNbbo3rNuusEX+Xh/oKUWkq/P1yyVip6ZmtUJVrrG4PFeq/w+f1vEVnlC+uZk3qoC4o8J1DTAOrlrZehx/g==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-link/-/extension-link-2.1.8.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-link/2.1.8
-    name: '@tiptap/extension-link'
-    version: 2.1.8
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-      '@tiptap/pm': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/pm': registry.npmmirror.com/@tiptap/pm@2.1.11
-      linkifyjs: registry.npmmirror.com/linkifyjs@4.1.1
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-list-item@2.1.11(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-YhwHaPGhffsFsg/zjCu1G24//j/BTRDRZbZXmMwp77m1yEqPULcWyoWrI+gUzetQxJRD/ruAucqjLtoLLfICmQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-list-item/-/extension-list-item-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-list-item/2.1.11
-    name: '@tiptap/extension-list-item'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-ordered-list@2.1.11(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-/tghfEJ5U7WFbF8xyOqRJks8KxP/lRjnroMXMglaushSMx8PYPo1dZDB/dJZw7ksy47MAaKJfKlx3gyN2CPXBQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-ordered-list/-/extension-ordered-list-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-ordered-list/2.1.11
-    name: '@tiptap/extension-ordered-list'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-paragraph@2.1.11(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-gXMgJ2CU3X4yh1wKnb8RdbDmhITB76pH6DX0uWprmEgvzNMN3Qw+h5uBD9lgxg1WVghbCmkG9mY9J4PPbPTLxw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-paragraph/-/extension-paragraph-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-paragraph/2.1.11
-    name: '@tiptap/extension-paragraph'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-placeholder@2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
-    resolution: {integrity: sha512-4yhyvvqsXTzXtJs+39cgvsld4df3ppbajCoxkzHYntKoonm3DtgFTSh+lbdEVCQgDmIfIt1o6DKY1n8NAJRQUQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-placeholder/-/extension-placeholder-2.1.8.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-placeholder/2.1.8
-    name: '@tiptap/extension-placeholder'
-    version: 2.1.8
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-      '@tiptap/pm': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/pm': registry.npmmirror.com/@tiptap/pm@2.1.11
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-strike@2.1.11(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-UnjeSVgu3bDuyjjUdWsUErRCoQKAHCzH/pAiqTEPEEdFYgZFQPBpcJICRVdlYjRmI2ZKh6d0TMUS55m7ckmwmQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-strike/-/extension-strike-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-strike/2.1.11
-    name: '@tiptap/extension-strike'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-task-item@2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
-    resolution: {integrity: sha512-PoY2PDiYEQC44qDQLubzDuhZ3f6OL7sui89960M1HUQR2URnPvToOBaa5veNY8VyACdAolm+LwTpseBKKkcpmw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-task-item/-/extension-task-item-2.1.8.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-task-item/2.1.8
-    name: '@tiptap/extension-task-item'
-    version: 2.1.8
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-      '@tiptap/pm': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/pm': registry.npmmirror.com/@tiptap/pm@2.1.11
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-task-list@2.1.8(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-PmEPJHTOgy0AveE6YoxY6w09+bh5OqkrMI/sluY88291cnSPPEf9sFWmBHOrONNj54Ti6ua37arudUY5mqxOCA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-task-list/-/extension-task-list-2.1.8.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-task-list/2.1.8
-    name: '@tiptap/extension-task-list'
-    version: 2.1.8
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-text-align@2.1.9(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-xkhCWe7QEh+rSM4T3K5IraSSUOOHrmuCJZQOjp0GREMt0nsHYquCA0U+IbuDsA2o+4Vi0+skilhB3D3WM/vbMg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-text-align/-/extension-text-align-2.1.9.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-text-align/2.1.9
-    name: '@tiptap/extension-text-align'
-    version: 2.1.9
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-text-style@2.1.8(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-xnx/Pq5ttt2/gOQPmqVQIBz/jo3MErtYdYk22fUaOyu1xT36X4BDJYsrLyWhcs3aWR/tv1/XylbNOFvhrDOHoQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-text-style/-/extension-text-style-2.1.8.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-text-style/2.1.8
-    name: '@tiptap/extension-text-style'
-    version: 2.1.8
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-text@2.1.11(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-Iey0EXYv9079+lbHMvZtLc6XcYfKrq++msEXuFFNHxvL0i/XzndhGf+qlDhLROLgEtDiiTqzOBBwFCGlFjbDow==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-text/-/extension-text-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-text/2.1.11
-    name: '@tiptap/extension-text'
-    version: 2.1.11
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/extension-underline@2.1.8(@tiptap/core@2.1.11):
-    resolution: {integrity: sha512-vsmdyR8z40xNPZzTSNGLcCMaIf8Tgm9OzsZb1qWILe+PYuv/mIM1LogBbfouEzVpG5sPoxwFTDgxnC+M3Ohgzg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/extension-underline/-/extension-underline-2.1.8.tgz}
-    id: registry.npmmirror.com/@tiptap/extension-underline/2.1.8
-    name: '@tiptap/extension-underline'
-    version: 2.1.8
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/pm@2.1.11:
-    resolution: {integrity: sha512-vBIAic+H8fjHfT8r2qJkAOxdx1Iiss9+qMyujAoIdPkiyjEc4+sXcM0qSYgIr6KL5icITyuK8J7x/V62VfB7Uw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/pm/-/pm-2.1.11.tgz}
-    name: '@tiptap/pm'
-    version: 2.1.11
-    dependencies:
-      prosemirror-changeset: registry.npmmirror.com/prosemirror-changeset@2.2.1
-      prosemirror-collab: registry.npmmirror.com/prosemirror-collab@1.3.1
-      prosemirror-commands: registry.npmmirror.com/prosemirror-commands@1.5.2
-      prosemirror-dropcursor: registry.npmmirror.com/prosemirror-dropcursor@1.8.1
-      prosemirror-gapcursor: registry.npmmirror.com/prosemirror-gapcursor@1.3.2
-      prosemirror-history: registry.npmmirror.com/prosemirror-history@1.3.2
-      prosemirror-inputrules: registry.npmmirror.com/prosemirror-inputrules@1.2.1
-      prosemirror-keymap: registry.npmmirror.com/prosemirror-keymap@1.2.2
-      prosemirror-markdown: registry.npmmirror.com/prosemirror-markdown@1.11.2
-      prosemirror-menu: registry.npmmirror.com/prosemirror-menu@1.2.4
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-schema-basic: registry.npmmirror.com/prosemirror-schema-basic@1.2.2
-      prosemirror-schema-list: registry.npmmirror.com/prosemirror-schema-list@1.3.0
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-tables: registry.npmmirror.com/prosemirror-tables@1.3.4
-      prosemirror-trailing-node: registry.npmmirror.com/prosemirror-trailing-node@2.0.7(prosemirror-model@1.19.3)(prosemirror-state@1.4.3)(prosemirror-view@1.31.8)
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
-      prosemirror-view: registry.npmmirror.com/prosemirror-view@1.31.8
-    dev: false
-
-  registry.npmmirror.com/@tiptap/react@2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-yTjlin4tOfYNwBdpX4+2CmNxybq2Ms50rX0RIRLABbnCTqhBIKko/eBLFq7DCot/Dwdw6c5Y098/fayKywfJWg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/react/-/react-2.1.8.tgz}
-    id: registry.npmmirror.com/@tiptap/react/2.1.8
-    name: '@tiptap/react'
-    version: 2.1.8
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-      '@tiptap/pm': ^2.0.0
-      react: ^17.0.0 || ^18.0.0
-      react-dom: ^17.0.0 || ^18.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/extension-bubble-menu': registry.npmmirror.com/@tiptap/extension-bubble-menu@2.1.12(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
-      '@tiptap/extension-floating-menu': registry.npmmirror.com/@tiptap/extension-floating-menu@2.1.12(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
-      '@tiptap/pm': registry.npmmirror.com/@tiptap/pm@2.1.11
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    dev: false
-
-  registry.npmmirror.com/@tiptap/starter-kit@2.1.11(@tiptap/pm@2.1.11):
-    resolution: {integrity: sha512-kZXwuo9yxrs1ASxluRKjXThjdcy90d7owJxnJWD7SyEwXaXYc4h+Ar1M9rP3jieCDBuRTtCgvAOKbVbhnRJ2jg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/starter-kit/-/starter-kit-2.1.11.tgz}
-    id: registry.npmmirror.com/@tiptap/starter-kit/2.1.11
-    name: '@tiptap/starter-kit'
-    version: 2.1.11
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/extension-blockquote': registry.npmmirror.com/@tiptap/extension-blockquote@2.1.11(@tiptap/core@2.1.11)
-      '@tiptap/extension-bold': registry.npmmirror.com/@tiptap/extension-bold@2.1.11(@tiptap/core@2.1.11)
-      '@tiptap/extension-bullet-list': registry.npmmirror.com/@tiptap/extension-bullet-list@2.1.11(@tiptap/core@2.1.11)
-      '@tiptap/extension-code': registry.npmmirror.com/@tiptap/extension-code@2.1.11(@tiptap/core@2.1.11)
-      '@tiptap/extension-code-block': registry.npmmirror.com/@tiptap/extension-code-block@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
-      '@tiptap/extension-document': registry.npmmirror.com/@tiptap/extension-document@2.1.11(@tiptap/core@2.1.11)
-      '@tiptap/extension-dropcursor': registry.npmmirror.com/@tiptap/extension-dropcursor@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
-      '@tiptap/extension-gapcursor': registry.npmmirror.com/@tiptap/extension-gapcursor@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
-      '@tiptap/extension-hard-break': registry.npmmirror.com/@tiptap/extension-hard-break@2.1.11(@tiptap/core@2.1.11)
-      '@tiptap/extension-heading': registry.npmmirror.com/@tiptap/extension-heading@2.1.11(@tiptap/core@2.1.11)
-      '@tiptap/extension-history': registry.npmmirror.com/@tiptap/extension-history@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
-      '@tiptap/extension-horizontal-rule': registry.npmmirror.com/@tiptap/extension-horizontal-rule@2.1.11(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11)
-      '@tiptap/extension-italic': registry.npmmirror.com/@tiptap/extension-italic@2.1.11(@tiptap/core@2.1.11)
-      '@tiptap/extension-list-item': registry.npmmirror.com/@tiptap/extension-list-item@2.1.11(@tiptap/core@2.1.11)
-      '@tiptap/extension-ordered-list': registry.npmmirror.com/@tiptap/extension-ordered-list@2.1.11(@tiptap/core@2.1.11)
-      '@tiptap/extension-paragraph': registry.npmmirror.com/@tiptap/extension-paragraph@2.1.11(@tiptap/core@2.1.11)
-      '@tiptap/extension-strike': registry.npmmirror.com/@tiptap/extension-strike@2.1.11(@tiptap/core@2.1.11)
-      '@tiptap/extension-text': registry.npmmirror.com/@tiptap/extension-text@2.1.11(@tiptap/core@2.1.11)
-    transitivePeerDependencies:
-      - '@tiptap/pm'
-    dev: false
-
-  registry.npmmirror.com/@tiptap/suggestion@2.1.8(@tiptap/core@2.1.11)(@tiptap/pm@2.1.11):
-    resolution: {integrity: sha512-3QypKFCeZSRrjgSz0n0JE5SimisolaxDZn45GGtkXuJWmKGCmsJw9UsXeH3S9ZuP3pvPImL0P9uAHlhRReRw1w==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@tiptap/suggestion/-/suggestion-2.1.8.tgz}
-    id: registry.npmmirror.com/@tiptap/suggestion/2.1.8
-    name: '@tiptap/suggestion'
-    version: 2.1.8
-    peerDependencies:
-      '@tiptap/core': ^2.0.0
-      '@tiptap/pm': ^2.0.0
-    dependencies:
-      '@tiptap/core': registry.npmmirror.com/@tiptap/core@2.1.11(@tiptap/pm@2.1.11)
-      '@tiptap/pm': registry.npmmirror.com/@tiptap/pm@2.1.11
-    dev: false
-
-  registry.npmmirror.com/@types/object.omit@3.0.1:
-    resolution: {integrity: sha512-24XD34UeRWw505TsMNBrQ4bES2s8IxiFC59mmNUFhTz9IX2hAtA7gQ8wVww1i17QmhBYILg5iqYP2y7aqA3pwQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@types/object.omit/-/object.omit-3.0.1.tgz}
-    name: '@types/object.omit'
-    version: 3.0.1
-    dev: false
-
-  registry.npmmirror.com/@types/object.pick@1.3.2:
-    resolution: {integrity: sha512-sn7L+qQ6RLPdXRoiaE7bZ/Ek+o4uICma/lBFPyJEKDTPTBP1W8u0c4baj3EiS4DiqLs+Hk+KUGvMVJtAw3ePJg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@types/object.pick/-/object.pick-1.3.2.tgz}
-    name: '@types/object.pick'
-    version: 1.3.2
-    dev: false
-
-  registry.npmmirror.com/@types/throttle-debounce@2.1.0:
-    resolution: {integrity: sha512-5eQEtSCoESnh2FsiLTxE121IiE60hnMqcb435fShf4bpLRjEu1Eoekht23y6zXS9Ts3l+Szu3TARnTsA0GkOkQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/@types/throttle-debounce/-/throttle-debounce-2.1.0.tgz}
-    name: '@types/throttle-debounce'
-    version: 2.1.0
-    dev: false
-
-  registry.npmmirror.com/case-anything@2.1.13:
-    resolution: {integrity: sha512-zlOQ80VrQ2Ue+ymH5OuM/DlDq64mEm+B9UTdHULv5osUMD6HalNTblf2b1u/m6QecjsnOkBpqVZ+XPwIVsy7Ng==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/case-anything/-/case-anything-2.1.13.tgz}
-    name: case-anything
-    version: 2.1.13
-    engines: {node: '>=12.13'}
-    dev: false
-
-  registry.npmmirror.com/crelt@1.0.6:
-    resolution: {integrity: sha512-VQ2MBenTq1fWZUH9DJNGti7kKv6EeAuYr3cLwxUWhIu1baTaXh4Ib5W2CqHVqib4/MqbYGJqiL3Zb8GJZr3l4g==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/crelt/-/crelt-1.0.6.tgz}
-    name: crelt
-    version: 1.0.6
-    dev: false
-
-  registry.npmmirror.com/dash-get@1.0.2:
-    resolution: {integrity: sha512-4FbVrHDwfOASx7uQVxeiCTo7ggSdYZbqs8lH+WU6ViypPlDbe9y6IP5VVUDQBv9DcnyaiPT5XT0UWHgJ64zLeQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/dash-get/-/dash-get-1.0.2.tgz}
-    name: dash-get
-    version: 1.0.2
-    dev: false
-
-  registry.npmmirror.com/dom-align@1.12.4:
-    resolution: {integrity: sha512-R8LUSEay/68zE5c8/3BDxiTEvgb4xZTF0RKmAHfiEVN3klfIpXfi2/QCoiWPccVQ0J/ZGdz9OjzL4uJEP/MRAw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/dom-align/-/dom-align-1.12.4.tgz}
-    name: dom-align
-    version: 1.12.4
-    dev: false
-
-  registry.npmmirror.com/has-flag@4.0.0:
-    resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/has-flag/-/has-flag-4.0.0.tgz}
-    name: has-flag
-    version: 4.0.0
-    engines: {node: '>=8'}
-
-  registry.npmmirror.com/is-extendable@1.0.1:
-    resolution: {integrity: sha512-arnXMxT1hhoKo9k1LZdmlNyJdDDfy2v0fXjFlmok4+i8ul/6WlbVge9bhM74OpNPQPMGUToDtz+KXa1PneJxOA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/is-extendable/-/is-extendable-1.0.1.tgz}
-    name: is-extendable
-    version: 1.0.1
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      is-plain-object: 2.0.4
-    dev: false
-
-  registry.npmmirror.com/isobject@3.0.1:
-    resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/isobject/-/isobject-3.0.1.tgz}
-    name: isobject
-    version: 3.0.1
-    engines: {node: '>=0.10.0'}
-    dev: false
-
-  registry.npmmirror.com/isomorphic.js@0.2.5:
-    resolution: {integrity: sha512-PIeMbHqMt4DnUP3MA/Flc0HElYjMXArsw1qwJZcm9sqR8mq3l8NYizFMty0pWwE/tzIGH3EKK5+jes5mAr85yw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/isomorphic.js/-/isomorphic.js-0.2.5.tgz}
-    name: isomorphic.js
-    version: 0.2.5
-    dev: false
-
-  registry.npmmirror.com/lib0@0.2.85:
-    resolution: {integrity: sha512-vtAhVttLXCu3ps2OIsTz8CdKYKdcMo7ds1MNBIcSXz6vrY8sxASqpTi4vmsAIn7xjWvyT7haKcWW6woP6jebjQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/lib0/-/lib0-0.2.85.tgz}
-    name: lib0
-    version: 0.2.85
-    engines: {node: '>=16'}
-    hasBin: true
-    dependencies:
-      isomorphic.js: registry.npmmirror.com/isomorphic.js@0.2.5
-    dev: false
-
-  registry.npmmirror.com/linkifyjs@4.1.1:
-    resolution: {integrity: sha512-zFN/CTVmbcVef+WaDXT63dNzzkfRBKT1j464NJQkV7iSgJU0sLBus9W0HBwnXK13/hf168pbrx/V/bjEHOXNHA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/linkifyjs/-/linkifyjs-4.1.1.tgz}
-    name: linkifyjs
-    version: 4.1.1
-    dev: false
-
-  registry.npmmirror.com/object.omit@3.0.0:
-    resolution: {integrity: sha512-EO+BCv6LJfu+gBIF3ggLicFebFLN5zqzz/WWJlMFfkMyGth+oBkhxzDl0wx2W4GkLzuQs/FsSkXZb2IMWQqmBQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/object.omit/-/object.omit-3.0.0.tgz}
-    name: object.omit
-    version: 3.0.0
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      is-extendable: registry.npmmirror.com/is-extendable@1.0.1
-    dev: false
-
-  registry.npmmirror.com/object.pick@1.3.0:
-    resolution: {integrity: sha512-tqa/UMy/CCoYmj+H5qc07qvSL9dqcs/WZENZ1JbtWBlATP+iVOe778gE6MSijnyCnORzDuX6hU+LA4SZ09YjFQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/object.pick/-/object.pick-1.3.0.tgz}
-    name: object.pick
-    version: 1.3.0
-    engines: {node: '>=0.10.0'}
-    dependencies:
-      isobject: registry.npmmirror.com/isobject@3.0.1
-    dev: false
-
-  registry.npmmirror.com/prosemirror-changeset@2.2.1:
-    resolution: {integrity: sha512-J7msc6wbxB4ekDFj+n9gTW/jav/p53kdlivvuppHsrZXCaQdVgRghoZbSS3kwrRyAstRVQ4/+u5k7YfLgkkQvQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-changeset/-/prosemirror-changeset-2.2.1.tgz}
-    name: prosemirror-changeset
-    version: 2.2.1
-    dependencies:
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
-    dev: false
-
-  registry.npmmirror.com/prosemirror-collab@1.3.1:
-    resolution: {integrity: sha512-4SnynYR9TTYaQVXd/ieUvsVV4PDMBzrq2xPUWutHivDuOshZXqQ5rGbZM84HEaXKbLdItse7weMGOUdDVcLKEQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-collab/-/prosemirror-collab-1.3.1.tgz}
-    name: prosemirror-collab
-    version: 1.3.1
-    dependencies:
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-    dev: false
-
-  registry.npmmirror.com/prosemirror-commands@1.5.2:
-    resolution: {integrity: sha512-hgLcPaakxH8tu6YvVAaILV2tXYsW3rAdDR8WNkeKGcgeMVQg3/TMhPdVoh7iAmfgVjZGtcOSjKiQaoeKjzd2mQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-commands/-/prosemirror-commands-1.5.2.tgz}
-    name: prosemirror-commands
-    version: 1.5.2
-    dependencies:
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
-    dev: false
-
-  registry.npmmirror.com/prosemirror-dropcursor@1.8.1:
-    resolution: {integrity: sha512-M30WJdJZLyXHi3N8vxN6Zh5O8ZBbQCz0gURTfPmTIBNQ5pxrdU7A58QkNqfa98YEjSAL1HUyyU34f6Pm5xBSGw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-dropcursor/-/prosemirror-dropcursor-1.8.1.tgz}
-    name: prosemirror-dropcursor
-    version: 1.8.1
-    dependencies:
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
-      prosemirror-view: registry.npmmirror.com/prosemirror-view@1.31.8
-    dev: false
-
-  registry.npmmirror.com/prosemirror-gapcursor@1.3.2:
-    resolution: {integrity: sha512-wtjswVBd2vaQRrnYZaBCbyDqr232Ed4p2QPtRIUK5FuqHYKGWkEwl08oQM4Tw7DOR0FsasARV5uJFvMZWxdNxQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-gapcursor/-/prosemirror-gapcursor-1.3.2.tgz}
-    name: prosemirror-gapcursor
-    version: 1.3.2
-    dependencies:
-      prosemirror-keymap: registry.npmmirror.com/prosemirror-keymap@1.2.2
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-view: registry.npmmirror.com/prosemirror-view@1.31.8
-    dev: false
-
-  registry.npmmirror.com/prosemirror-history@1.3.2:
-    resolution: {integrity: sha512-/zm0XoU/N/+u7i5zepjmZAEnpvjDtzoPWW6VmKptcAnPadN/SStsBjMImdCEbb3seiNTpveziPTIrXQbHLtU1g==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-history/-/prosemirror-history-1.3.2.tgz}
-    name: prosemirror-history
-    version: 1.3.2
-    dependencies:
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
-      prosemirror-view: registry.npmmirror.com/prosemirror-view@1.31.8
-      rope-sequence: registry.npmmirror.com/rope-sequence@1.3.4
-    dev: false
-
-  registry.npmmirror.com/prosemirror-inputrules@1.2.1:
-    resolution: {integrity: sha512-3LrWJX1+ULRh5SZvbIQlwZafOXqp1XuV21MGBu/i5xsztd+9VD15x6OtN6mdqSFI7/8Y77gYUbQ6vwwJ4mr6QQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-inputrules/-/prosemirror-inputrules-1.2.1.tgz}
-    name: prosemirror-inputrules
-    version: 1.2.1
-    dependencies:
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
-    dev: false
-
-  registry.npmmirror.com/prosemirror-keymap@1.2.2:
-    resolution: {integrity: sha512-EAlXoksqC6Vbocqc0GtzCruZEzYgrn+iiGnNjsJsH4mrnIGex4qbLdWWNza3AW5W36ZRrlBID0eM6bdKH4OStQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-keymap/-/prosemirror-keymap-1.2.2.tgz}
-    name: prosemirror-keymap
-    version: 1.2.2
-    dependencies:
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      w3c-keyname: registry.npmmirror.com/w3c-keyname@2.2.8
-    dev: false
-
-  registry.npmmirror.com/prosemirror-markdown@1.11.2:
-    resolution: {integrity: sha512-Eu5g4WPiCdqDTGhdSsG9N6ZjACQRYrsAkrF9KYfdMaCmjIApH75aVncsWYOJvEk2i1B3i8jZppv3J/tnuHGiUQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-markdown/-/prosemirror-markdown-1.11.2.tgz}
-    name: prosemirror-markdown
-    version: 1.11.2
-    dependencies:
-      markdown-it: 13.0.1
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-    dev: false
-
-  registry.npmmirror.com/prosemirror-menu@1.2.4:
-    resolution: {integrity: sha512-S/bXlc0ODQup6aiBbWVsX/eM+xJgCTAfMq/nLqaO5ID/am4wS0tTCIkzwytmao7ypEtjj39i7YbJjAgO20mIqA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-menu/-/prosemirror-menu-1.2.4.tgz}
-    name: prosemirror-menu
-    version: 1.2.4
-    dependencies:
-      crelt: registry.npmmirror.com/crelt@1.0.6
-      prosemirror-commands: registry.npmmirror.com/prosemirror-commands@1.5.2
-      prosemirror-history: registry.npmmirror.com/prosemirror-history@1.3.2
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-    dev: false
-
-  registry.npmmirror.com/prosemirror-model@1.19.3:
-    resolution: {integrity: sha512-tgSnwN7BS7/UM0sSARcW+IQryx2vODKX4MI7xpqY2X+iaepJdKBPc7I4aACIsDV/LTaTjt12Z56MhDr9LsyuZQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-model/-/prosemirror-model-1.19.3.tgz}
-    name: prosemirror-model
-    version: 1.19.3
-    dependencies:
-      orderedmap: 2.1.1
-    dev: false
-
-  registry.npmmirror.com/prosemirror-schema-basic@1.2.2:
-    resolution: {integrity: sha512-/dT4JFEGyO7QnNTe9UaKUhjDXbTNkiWTq/N4VpKaF79bBjSExVV2NXmJpcM7z/gD7mbqNjxbmWW5nf1iNSSGnw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-schema-basic/-/prosemirror-schema-basic-1.2.2.tgz}
-    name: prosemirror-schema-basic
-    version: 1.2.2
-    dependencies:
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-    dev: false
-
-  registry.npmmirror.com/prosemirror-schema-list@1.3.0:
-    resolution: {integrity: sha512-Hz/7gM4skaaYfRPNgr421CU4GSwotmEwBVvJh5ltGiffUJwm7C8GfN/Bc6DR1EKEp5pDKhODmdXXyi9uIsZl5A==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-schema-list/-/prosemirror-schema-list-1.3.0.tgz}
-    name: prosemirror-schema-list
-    version: 1.3.0
-    dependencies:
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
-    dev: false
-
-  registry.npmmirror.com/prosemirror-state@1.4.3:
-    resolution: {integrity: sha512-goFKORVbvPuAQaXhpbemJFRKJ2aixr+AZMGiquiqKxaucC6hlpHNZHWgz5R7dS4roHiwq9vDctE//CZ++o0W1Q==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-state/-/prosemirror-state-1.4.3.tgz}
-    name: prosemirror-state
-    version: 1.4.3
-    dependencies:
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
-      prosemirror-view: registry.npmmirror.com/prosemirror-view@1.31.8
-    dev: false
-
-  registry.npmmirror.com/prosemirror-tables@1.3.4:
-    resolution: {integrity: sha512-z6uLSQ1BLC3rgbGwZmpfb+xkdvD7W/UOsURDfognZFYaTtc0gsk7u/t71Yijp2eLflVpffMk6X0u0+u+MMDvIw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-tables/-/prosemirror-tables-1.3.4.tgz}
-    name: prosemirror-tables
-    version: 1.3.4
-    dependencies:
-      prosemirror-keymap: registry.npmmirror.com/prosemirror-keymap@1.2.2
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
-      prosemirror-view: registry.npmmirror.com/prosemirror-view@1.31.8
-    dev: false
-
-  registry.npmmirror.com/prosemirror-trailing-node@2.0.7(prosemirror-model@1.19.3)(prosemirror-state@1.4.3)(prosemirror-view@1.31.8):
-    resolution: {integrity: sha512-8zcZORYj/8WEwsGo6yVCRXFMOfBo0Ub3hCUvmoWIZYfMP26WqENU0mpEP27w7mt8buZWuGrydBewr0tOArPb1Q==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-trailing-node/-/prosemirror-trailing-node-2.0.7.tgz}
-    id: registry.npmmirror.com/prosemirror-trailing-node/2.0.7
-    name: prosemirror-trailing-node
-    version: 2.0.7
-    peerDependencies:
-      prosemirror-model: ^1.19.0
-      prosemirror-state: ^1.4.2
-      prosemirror-view: ^1.31.2
-    dependencies:
-      '@remirror/core-constants': registry.npmmirror.com/@remirror/core-constants@2.0.2
-      '@remirror/core-helpers': registry.npmmirror.com/@remirror/core-helpers@3.0.0
-      escape-string-regexp: 4.0.0
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-view: registry.npmmirror.com/prosemirror-view@1.31.8
-    dev: false
-
-  registry.npmmirror.com/prosemirror-transform@1.7.5:
-    resolution: {integrity: sha512-U/fWB6frEzY7dzwJUo+ir8dU1JEanaI/RwL12Imy9js/527N0v/IRUKewocP1kTq998JNT18IGtThaDLwLOBxQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-transform/-/prosemirror-transform-1.7.5.tgz}
-    name: prosemirror-transform
-    version: 1.7.5
-    dependencies:
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-    dev: false
-
-  registry.npmmirror.com/prosemirror-view@1.31.8:
-    resolution: {integrity: sha512-VQrEIdiPJ4YV65Ifj2kWISwaiqocMHy7cpUKVQYt19C/87FepoqnwVW3kMKRpeY/nQzED8L+vyOaYDBn0WqT7w==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-view/-/prosemirror-view-1.31.8.tgz}
-    name: prosemirror-view
-    version: 1.31.8
-    dependencies:
-      prosemirror-model: registry.npmmirror.com/prosemirror-model@1.19.3
-      prosemirror-state: registry.npmmirror.com/prosemirror-state@1.4.3
-      prosemirror-transform: registry.npmmirror.com/prosemirror-transform@1.7.5
-    dev: false
-
-  registry.npmmirror.com/rc-align@4.0.15(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-wqJtVH60pka/nOX7/IspElA8gjPNQKIx/ZqJ6heATCkXpe1Zg4cPVrMD2vC96wjsFFL8WsmhPbx9tdMo1qqlIA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/rc-align/-/rc-align-4.0.15.tgz}
-    id: registry.npmmirror.com/rc-align/4.0.15
-    name: rc-align
-    version: 4.0.15
-    peerDependencies:
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    dependencies:
-      '@babel/runtime': 7.23.2
-      classnames: 2.2.6
-      dom-align: registry.npmmirror.com/dom-align@1.12.4
-      rc-util: 5.38.0(react-dom@18.2.0)(react@18.2.0)
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-      resize-observer-polyfill: 1.5.1
-    dev: false
-
-  registry.npmmirror.com/rope-sequence@1.3.4:
-    resolution: {integrity: sha512-UT5EDe2cu2E/6O4igUr5PSFs23nvvukicWHx6GnOPlHAiiYbzNuCRQCuiUdHJQcqKalLKlrYJnjY0ySGsXNQXQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/rope-sequence/-/rope-sequence-1.3.4.tgz}
-    name: rope-sequence
-    version: 1.3.4
-    dev: false
-
-  registry.npmmirror.com/throttle-debounce@3.0.1:
-    resolution: {integrity: sha512-dTEWWNu6JmeVXY0ZYoPuH5cRIwc0MeGbJwah9KUNYSJwommQpCzTySTpEe8Gs1J23aeWEuAobe4Ag7EHVt/LOg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/throttle-debounce/-/throttle-debounce-3.0.1.tgz}
-    name: throttle-debounce
-    version: 3.0.1
-    engines: {node: '>=10'}
-
-  registry.npmmirror.com/tippy.js@6.3.7:
-    resolution: {integrity: sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/tippy.js/-/tippy.js-6.3.7.tgz}
-    name: tippy.js
-    version: 6.3.7
-    dependencies:
-      '@popperjs/core': 2.11.8
-    dev: false
-
-  registry.npmmirror.com/w3c-keyname@2.2.8:
-    resolution: {integrity: sha512-dpojBhNsCNN7T82Tm7k26A6G9ML3NkhDsnw9n/eoxSRlVBB4CEtIQ/KTCLI2Fwf3ataSXRhYFkQi3SlnFwPvPQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/w3c-keyname/-/w3c-keyname-2.2.8.tgz}
-    name: w3c-keyname
-    version: 2.2.8
-    dev: false
-
-  registry.npmmirror.com/ws@7.5.9:
-    resolution: {integrity: sha512-F+P9Jil7UiSKSkppIiD94dN07AwvFixvLIj1Og1Rl9GGMuNipJnV9JzjD6XuqmAeiswGvUmNLjr5cFuXwNS77Q==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/ws/-/ws-7.5.9.tgz}
-    name: ws
-    version: 7.5.9
-    engines: {node: '>=8.3.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: ^5.0.2
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-    dev: false
-
-  registry.npmmirror.com/yjs@13.6.8:
-    resolution: {integrity: sha512-ZPq0hpJQb6f59B++Ngg4cKexDJTvfOgeiv0sBc4sUm8CaBWH7OQC4kcCgrqbjJ/B2+6vO49exvTmYfdlPtcjbg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/yjs/-/yjs-13.6.8.tgz}
-    name: yjs
-    version: 13.6.8
-    engines: {node: '>=16.0.0', npm: '>=8.0.0'}
-    dependencies:
-      lib0: registry.npmmirror.com/lib0@0.2.85
-    dev: false
