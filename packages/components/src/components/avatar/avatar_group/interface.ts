@@ -27,5 +27,8 @@ export interface IAvatarGroup {
    * avatar inline style
    */
   maxStyle?: React.CSSProperties;
-  moreClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+  /**
+   * popover
+   */
+  popoverContent?: React.ReactNode;
 }
