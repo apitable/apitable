@@ -1662,17 +1662,17 @@ importers:
         specifier: ^7.5.2
         version: 7.5.4
       slate:
-        specifier: 0.66.1
-        version: 0.66.1
+        specifier: 0.71.1-2021114161528
+        version: 0.71.1-2021114161528
       slate-history:
         specifier: 0.66.0
-        version: 0.66.0(slate@0.66.1)
+        version: 0.66.0(slate@0.71.1-2021114161528)
       slate-hyperscript:
         specifier: 0.66.0
-        version: 0.66.0(slate@0.66.1)
+        version: 0.66.0(slate@0.71.1-2021114161528)
       slate-react:
         specifier: 0.66.1
-        version: 0.66.1(react-dom@18.2.0)(react@18.2.0)(slate@0.66.1)
+        version: 0.66.1(react-dom@18.2.0)(react@18.2.0)(slate@0.71.1-2021114161528)
       socket.io-client:
         specifier: 2.2.0
         version: 2.2.0
@@ -20665,7 +20665,7 @@ packages:
       eslint: 8.49.0
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 2.7.1(eslint-plugin-import@2.28.1)(eslint@8.49.0)
-      eslint-plugin-import: 2.28.1(@typescript-eslint/parser@6.7.2)(eslint@8.49.0)
+      eslint-plugin-import: 2.28.1(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-typescript@2.7.1)(eslint@8.49.0)
       eslint-plugin-jsx-a11y: 6.7.1(eslint@8.49.0)
       eslint-plugin-react: 7.33.2(eslint@8.49.0)
       eslint-plugin-react-hooks: 4.6.0(eslint@8.49.0)
@@ -20703,7 +20703,7 @@ packages:
       confusing-browser-globals: 1.0.11
       eslint: 8.49.0
       eslint-plugin-flowtype: 8.0.3(@babel/plugin-syntax-flow@7.22.5)(@babel/plugin-transform-react-jsx@7.22.15)(eslint@8.49.0)
-      eslint-plugin-import: 2.28.1(@typescript-eslint/parser@5.62.0)(eslint@8.49.0)
+      eslint-plugin-import: 2.28.1(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-typescript@2.7.1)(eslint@8.49.0)
       eslint-plugin-jest: 25.7.0(@typescript-eslint/eslint-plugin@5.62.0)(eslint@8.49.0)(typescript@4.8.2)
       eslint-plugin-jsx-a11y: 6.7.1(eslint@8.49.0)
       eslint-plugin-react: 7.33.2(eslint@8.49.0)
@@ -20738,7 +20738,7 @@ packages:
     dependencies:
       debug: 4.3.4(supports-color@8.1.1)
       eslint: 8.49.0
-      eslint-plugin-import: 2.28.1(@typescript-eslint/parser@6.7.2)(eslint@8.49.0)
+      eslint-plugin-import: 2.28.1(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-typescript@2.7.1)(eslint@8.49.0)
       glob: 7.2.3
       is-glob: 4.0.3
       resolve: 1.22.4
@@ -20821,7 +20821,7 @@ packages:
       string-natural-compare: 3.0.1
     dev: true
 
-  /eslint-plugin-import@2.28.1(@typescript-eslint/parser@5.62.0)(eslint@8.49.0):
+  /eslint-plugin-import@2.28.1(@typescript-eslint/parser@5.62.0)(eslint-import-resolver-typescript@2.7.1)(eslint@8.49.0):
     resolution: {integrity: sha512-9I9hFlITvOV55alzoKBI+K9q74kv0iKMeY6av5+umsNwayt59fz692daGyjR+oStBQgx6nwR9rXldDev3Clw+A==}
     engines: {node: '>=4'}
     peerDependencies:
@@ -33978,22 +33978,22 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /slate-history@0.66.0(slate@0.66.1):
+  /slate-history@0.66.0(slate@0.71.1-2021114161528):
     resolution: {integrity: sha512-6MWpxGQZiMvSINlCbMW43E2YBSVMCMCIwQfBzGssjWw4kb0qfvj0pIdblWNRQZD0hR6WHP+dHHgGSeVdMWzfng==}
     peerDependencies:
       slate: '>=0.65.3'
     dependencies:
       is-plain-object: 5.0.0
-      slate: 0.66.1
+      slate: 0.71.1-2021114161528
     dev: false
 
-  /slate-hyperscript@0.66.0(slate@0.66.1):
+  /slate-hyperscript@0.66.0(slate@0.71.1-2021114161528):
     resolution: {integrity: sha512-uMBwuVBKl5jk0V37BMYhJdqO/R8mgoKvYGo1NmJbTxwf2capX4/4RgQtPPH20o09rbx8l9e554hLc8UiRPGg4w==}
     peerDependencies:
       slate: '>=0.65.3'
     dependencies:
       is-plain-object: 5.0.0
-      slate: 0.66.1
+      slate: 0.71.1-2021114161528
     dev: false
 
   /slate-hyperscript@0.77.0(slate@0.94.1):
@@ -34005,7 +34005,7 @@ packages:
       slate: 0.94.1
     dev: true
 
-  /slate-react@0.66.1(react-dom@18.2.0)(react@18.2.0)(slate@0.66.1):
+  /slate-react@0.66.1(react-dom@18.2.0)(react@18.2.0)(slate@0.71.1-2021114161528):
     resolution: {integrity: sha512-coIW1gyP3bpw+ORyEDhXYYkKXcb09KIe2FtjiAzoK9HrIjseXZmjxtfwJpeV9xAZgNxvJqyw72NQZqGlhY7LzA==}
     peerDependencies:
       react: '>=16.8.0'
@@ -34021,7 +34021,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       scroll-into-view-if-needed: 2.2.31
-      slate: 0.66.1
+      slate: 0.71.1-2021114161528
       tiny-invariant: 1.0.6
     dev: false
 
@@ -34047,8 +34047,8 @@ packages:
       slate-hyperscript: 0.77.0(slate@0.94.1)
     dev: true
 
-  /slate@0.66.1:
-    resolution: {integrity: sha512-9myS4PrGBbz1Wokyrvr9i1/+bJMqJTZ9h2LMNGUPZ0IsmDwzSbJ9blNx1JwM8YzBYLuWMaAyZIglTd7nexDVIQ==}
+  /slate@0.71.1-2021114161528:
+    resolution: {integrity: sha512-xcoSg/Zow6KzUTkWwLmJk5K+ZNK0eFLVmNPeL7vEck53LtPSyWS8dmlSxBK2U7aCyDolw4f9pBYGXuwHJIYbLQ==}
     dependencies:
       immer: 9.0.16
       is-plain-object: 5.0.0

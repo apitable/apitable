@@ -195,7 +195,7 @@
     "resize-observer-polyfill": "^1.5.1",
     "scroller": "^0.0.3",
     "semver": "^7.5.2",
-    "slate": "0.66.1",
+    "slate": "0.71.1-2021114161528",
     "slate-history": "0.66.0",
     "slate-hyperscript": "0.66.0",
     "slate-react": "0.66.1",
