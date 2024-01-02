@@ -21,11 +21,9 @@ import { shallowEqual } from 'react-redux';
 import ReactJson from 'react18-json-view';
 import styled from 'styled-components';
 import useSWR from 'swr';
-import { Box, Timing, Typography, useTheme, useThemeColors } from '@apitable/components';
+import {Box, ICronSchema, Timing, Typography, useTheme, useThemeColors} from '@apitable/components';
 import { Selectors, t, Strings, data2Operand } from '@apitable/core';
 import { getTriggerDstId } from 'pc/components/automation/controller/hooks/use_robot_fields';
-import { AutomationTiming } from 'pc/components/robot/robot_detail/automation_timing';
-import { TimeScheduleManager } from 'pc/components/robot/robot_detail/trigger/time_schedule_manager';
 import { useAppSelector } from 'pc/store/react-redux';
 import { useAllFields } from '../../hooks';
 import { INodeType, IRobotRunHistoryDetail } from '../../interface';
@@ -69,13 +67,12 @@ export const ScheduleRuleDisplay = ({
   timeZone,
   scheduleType,
 }: {
-  value: any;
+  value: ICronSchema;
   label: string;
   scheduleType: string;
   timeZone: string;
 }) => {
   const theme = useTheme();
-  const userTimezone = useAppSelector(Selectors.getUserTimeZone)!;
   if (!value) return null;
 
   if (!scheduleType) {
@@ -84,7 +81,6 @@ export const ScheduleRuleDisplay = ({
   if (!timeZone) {
     return null;
   }
-  const cronSchema = TimeScheduleManager.getCronWithTimeZone(value);
 
   return (
     <Box>
@@ -92,7 +88,7 @@ export const ScheduleRuleDisplay = ({
         {label}
       </Typography>
       <FilterWrapper>
-        <Timing interval={scheduleType as any} value={cronSchema} readonly />
+        <Timing interval={scheduleType as any} value={value} readonly />
       </FilterWrapper>
     </Box>
   );
@@ -120,7 +116,10 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
   const colors = useThemeColors();
   const oldSchema = { schema: nodeType.outputJsonSchema };
 
-  if (!datasheet || !fieldPermissionMap || !fields)
+  const hasTimeZone = retrievedSchema?.properties?.timeZone != null;
+
+  const datasheetEmpty = !datasheet || !fieldPermissionMap || !fields;
+  if (!hasTimeZone && datasheetEmpty ) {
     return (
       <Box color={colors.bgCommonDefault} width={'100%'}>
         <StyledTitle>{t(Strings.robot_run_history_input)}</StyledTitle>
@@ -130,7 +129,28 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
         </Box>
       </Box>
     );
+  }
 
+  if (hasTimeZone && datasheetEmpty ) {
+    return (
+      <Box color={colors.bgCommonDefault} width={'100%'}>
+        <StyledTitle>{t(Strings.robot_run_history_input)}</StyledTitle>
+        <Box marginTop="8px" marginBottom="16px" padding="0 16px" boxShadow={`inset 1px 0px 0px ${theme.color.fc5}`}>
+          <Box marginBottom={'8px'}>
+            <KeyValueDisplay key={'timeZone'} label={retrievedSchema.properties?.timeZone?.title} value={nodeDetail.input.timeZone} />
+          </Box>
+          <ScheduleRuleDisplay
+            label={retrievedSchema.properties?.scheduleRule?.title}
+            scheduleType={nodeDetail.input.scheduleType}
+            timeZone={nodeDetail.input.timeZone}
+            value={nodeDetail.input.scheduleRule}
+          />
+        </Box>
+      </Box>
+    );
+  }
+
+  // @ts-ignore
   const outputSchema: any = enrichDatasheetTriggerOutputSchema(oldSchema as any, fields, fieldPermissionMap);
 
   return (
@@ -148,8 +168,8 @@ export const RobotRunHistoryTriggerDetail = (props: IRobotRunHistoryTriggerDetai
           Object.keys(retrievedSchema.properties!).map((propertyKey) => {
             const propertyValue = formData[propertyKey];
             const label = retrievedSchema.properties![propertyKey].title || '';
+
             if (propertyKey === 'scheduleRule') {
-              console.log('nodeDetail input', nodeDetail.input);
               return (
                 <ScheduleRuleDisplay
                   key={propertyKey}

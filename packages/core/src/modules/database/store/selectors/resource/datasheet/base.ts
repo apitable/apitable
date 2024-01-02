@@ -397,6 +397,19 @@ export const getActiveViewId = (state: IReduxState, id?: string | void) => {
   return pageViewId;
 };
 
+export const getActiveView = (state: IReduxState, id?: string | void) => {
+  const datasheet = getDatasheet(state, id);
+  const views = datasheet?.snapshot.meta.views;
+  const pageViewId = state.pageParams.viewId;
+  if (views) {
+    const view = views.find(item => item.id === pageViewId);
+    if (view) {
+      return view;
+    }
+  }
+  return null;
+};
+
 export const getViewIdByNodeId = (state: IReduxState, datasheetId: string, viewId?: string, mirror?: IMirror) => {
   const _mirror = mirror || getMirror(state);
   const _viewId = viewId ?? state.pageParams.viewId;

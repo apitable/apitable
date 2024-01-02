@@ -30,8 +30,10 @@
 
 :root[data-theme="light"] {
   --closeIconBg: rgba(38,38,38,0.5);
+  --workdocSelectionBg: rgba(123, 103, 238, 0.2);
 }
 
 :root[data-theme="dark"] {
   --closeIconBg: rgba(255,255,255,0.1);
+  --workdocSelectionBg: rgba(144, 127, 240, 0.16);
 }

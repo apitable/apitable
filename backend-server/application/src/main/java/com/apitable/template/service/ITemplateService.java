@@ -126,6 +126,16 @@ public interface ITemplateService extends IService<TemplateEntity> {
     String getDefaultTemplateNodeId();
 
     /**
+     * Get template node ids.
+     *
+     * @param spaceId       space id
+     * @param templateIds   template ids
+     * @return node ids
+     * @author Chambers
+     */
+    List<String> getTemplateNodeIds(String spaceId, List<String> templateIds);
+
+    /**
      * fuzzy search template related content.
      */
     TemplateSearchDTO globalSearchTemplate(String lang, String keyword, String className);

@@ -77,6 +77,17 @@ public interface TemplateMapper extends BaseMapper<TemplateEntity> {
     int updateIsDeletedByTempId(@Param("templateId") String templateId);
 
     /**
+     * Query template information.
+     *
+     * @param typeId        type id
+     * @param templateIds   template ids
+     * @return List of TemplateInfo
+     * @author Chambers
+     */
+    List<TemplateInfo> selectInfoByTypeIdAndTemplateIds(@Param("typeId") String typeId,
+                                                        @Param("templateIds") List<String> templateIds);
+
+    /**
      * Query dto by type id.
      */
     List<TemplateDto> selectDtoByTypeId(@Param("typeId") String typeId,

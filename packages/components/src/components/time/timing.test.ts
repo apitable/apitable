@@ -86,7 +86,7 @@ describe('timing test', () => {
       CronConverter.getHumanReadableInformation('0 */5 * * *', 'Europe/London', {
         userTimezone: 'Asia/Shanghai',
       }).length
-    ).toBe(5);
+    ).toBe(10);
   });
 
   it('check every hour', () => {

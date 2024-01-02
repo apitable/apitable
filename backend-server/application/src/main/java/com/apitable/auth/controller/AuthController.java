@@ -60,7 +60,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Authorization interface.
  */
 @RestController
-@Tag(name = "Authorization related interface")
+@Tag(name = "Authorization")
 @ApiResource
 public class AuthController {
 
@@ -101,7 +101,8 @@ public class AuthController {
         if (BooleanUtil.isFalse(skipRegisterValidate)) {
             return ResponseData.error("Validate failure");
         }
-        Long userId = iAuthService.register(data.getUsername(), data.getCredential(), data.getLang());
+        Long userId =
+            iAuthService.register(data.getUsername(), data.getCredential(), data.getLang());
         SessionContext.setUserId(userId);
         return ResponseData.success();
     }

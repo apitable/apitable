@@ -11,16 +11,26 @@ import {
   TimeOutlined,
   UserAddOutlined,
   UserOutlined,
-  NumberOutlined, FormulaOutlined,
+  NumberOutlined,
+  FormulaOutlined,
   HistoryFilled,
   TwoWayLinkOutlined,
   OneWayLinkOutlined,
   LongtextOutlined,
-  LookupOutlined, SelectMultipleOutlined, PercentOutlined,
+  LookupOutlined,
+  SelectMultipleOutlined,
+  PercentOutlined,
   TelephoneOutlined,
-  StarOutlined, SelectSingleOutlined, TextOutlined,
+  StarOutlined,
+  SelectSingleOutlined,
+  TextOutlined,
   LinkOutlined,
-  LockFilled, CascadeOutlined, FileOutlined, IIconProps, UserEditOutlined, CursorButtonOutlined,
+  LockFilled,
+  CascadeOutlined,
+  FileOutlined,
+  IIconProps,
+  UserEditOutlined,
+  CursorButtonOutlined,
 } from '@apitable/icons';
 
 import React, { FC } from 'react';
@@ -58,7 +68,6 @@ const FieldIconMap: { [key in WidgetFieldType]: FC<IIconProps> } = {
   [WidgetFieldType.WorkDoc]: FileOutlined,
 };
 
-
 const FieldIconMapFieldType: { [key in FieldType]: FC<IIconProps> } = {
   [FieldType.NotSupport]: LockFilled,
   [FieldType.DeniedField]: LockFilled,
@@ -90,29 +99,31 @@ const FieldIconMapFieldType: { [key in FieldType]: FC<IIconProps> } = {
   [FieldType.LastModifiedBy]: UserEditOutlined,
   [FieldType.Cascader]: CascadeOutlined,
   [FieldType.WorkDoc]: FileOutlined,
-  [FieldType.Button]: CursorButtonOutlined
+  [FieldType.Button]: CursorButtonOutlined,
 };
 
 const transformOptions = (fields: IField[], theme: ITheme) => {
   const notSupportField = [FieldType.CreatedBy, FieldType.LastModifiedBy, FieldType.Member];
-  return fields.filter(field => {
-    if (field.type === FieldType.LookUp) {
-      const entityField = Field.bindModel(field).getLookUpEntityField();
-      return entityField ? !notSupportField.includes(entityField.type) : true;
-    }
-    return !notSupportField.includes(field.type);
-  }).map(field => {
-    const res = {
-      label: field.name,
-      value: field.id,
-    };
-    const FieldIcon = FieldIconMapFieldType[field.type];
-    return {
-      ...res,
-      disabled: field.type === FieldType.DeniedField,
-      prefixIcon: <FieldIcon color={theme.color.fc3} />,
-    };
-  });
+  return fields
+    .filter((field) => {
+      if (field.type === FieldType.LookUp) {
+        const entityField = Field.bindModel(field).getLookUpEntityField();
+        return entityField ? !notSupportField.includes(entityField.type) : true;
+      }
+      return !notSupportField.includes(field.type);
+    })
+    .map((field) => {
+      const res = {
+        label: field.name,
+        value: field.id,
+      };
+      const FieldIcon = FieldIconMapFieldType[field.type];
+      return {
+        ...res,
+        disabled: field.type === FieldType.DeniedField,
+        prefixIcon: <FieldIcon color={theme.color.fc3} />,
+      };
+    });
 };
 
 interface IFieldSelectProps {
@@ -124,20 +135,28 @@ export const FieldSelect = ({ fields, value, onChange }: IFieldSelectProps) => {
   const theme = useTheme();
   const options = transformOptions(fields, theme);
 
-  return <>
-    <Select
-      placeholder={t(Strings.pick_one_option)}
-      searchPlaceholder={t(Strings.search)}
-      options={options}
-      value={value}
-      onSelected={(option) => {
-        onChange && onChange(option.value);
-      }}
-      hideSelectedOption={!value}
-      dropdownMatchSelectWidth
-      openSearch={options.length > 7}
-    />
-  </>;
+  return (
+    <>
+      <Select
+        dropDownOptions={{
+          placement: 'bottom-start',
+        }}
+        panelOptions={{
+          maxWidth: '300px',
+        }}
+        dropdownMatchSelectWidth={false}
+        placeholder={t(Strings.pick_one_option)}
+        searchPlaceholder={t(Strings.search)}
+        options={options}
+        value={value}
+        onSelected={(option) => {
+          onChange && onChange(option.value);
+        }}
+        hideSelectedOption={!value}
+        openSearch={options.length > 7}
+      />
+    </>
+  );
 };
 
 export { FieldIconMap, FieldIconMapFieldType };

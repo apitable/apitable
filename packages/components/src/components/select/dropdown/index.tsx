@@ -38,7 +38,7 @@ import {
   StyledSelectTrigger,
 } from '../styled';
 import debounce from 'lodash/debounce';
-import { IOverLayProps } from '../../dropdown/float_ui';
+import { IDropdownProps, IOverLayProps } from '../../dropdown/float_ui';
 import styled from 'styled-components';
 import { ListDropdown, SelectContext } from './list_dropdown';
 import { useListItem } from '@floating-ui/react';
@@ -59,6 +59,10 @@ export const DropdownSelect: FC<
   React.PropsWithChildren<
     ISelectProps & {
       suffixContent?: React.ReactNode;
+      dropDownOptions?: IDropdownProps['options'];
+      panelOptions?: {
+        maxWidth?: string;
+      };
     }
   >
 > & {
@@ -71,6 +75,7 @@ export const DropdownSelect: FC<
     triggerStyle,
     triggerCls,
     options: _options,
+    panelOptions,
     prefixIcon,
     suffixIcon,
     dropdownMatchSelectWidth = true,
@@ -86,6 +91,7 @@ export const DropdownSelect: FC<
     disabled,
     disabledTip,
     listStyle,
+    dropDownOptions = {},
     listCls,
     renderValue = _renderValue,
     children,
@@ -158,6 +164,7 @@ export const DropdownSelect: FC<
     return (
       <StyledListContainer
         width={dropdownMatchSelectWidth ? containerRef.current?.clientWidth + 'px' : 'auto'}
+        maxWidth={panelOptions?.maxWidth}
         minWidth={!dropdownMatchSelectWidth ? containerRef.current?.clientWidth + 'px' : 'auto'}
         onClick={stopPropagation}
         className={listCls}
@@ -241,12 +248,13 @@ export const DropdownSelect: FC<
           triggerRef.current = element;
         }}
         options={{
+          ...dropDownOptions,
           arrow: false,
           offset: 4,
           selectedIndex: findIndex,
           disabled,
         }}
-        trigger={
+        trigger={({ visible }) => (
           <div style={triggerStyle}>
             <WrapperTooltip wrapper={Boolean(disabledTip && disabled)} tip={disabledTip as string}>
               <StyledSelectTrigger
@@ -292,7 +300,7 @@ export const DropdownSelect: FC<
               </StyledSelectTrigger>
             </WrapperTooltip>
           </div>
-        }
+        )}
       >
         {renderOptionList}
       </StyledDropdown>

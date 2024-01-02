@@ -55,6 +55,7 @@ const _renderValue = (option: IOption) => {
 
 const _GlobalStyle: any = GlobalStyle;
 
+const CONST_WIDTH_CHECK_BUTTON = 30;
 const MultipleSelectComp: FC<
   React.PropsWithChildren<
     Omit<ISelectProps, 'value'> & {
@@ -148,8 +149,8 @@ const MultipleSelectComp: FC<
   const renderOptionList = () => {
     return (
       <StyledListContainer
-        width={dropdownMatchSelectWidth ? containerRef.current?.clientWidth + 'px' : 'auto'}
-        minWidth={!dropdownMatchSelectWidth ? containerRef.current?.clientWidth + 'px' : 'auto'}
+        width={dropdownMatchSelectWidth ? (containerRef.current?.clientWidth ?? 0) + CONST_WIDTH_CHECK_BUTTON + 'px' : 'auto'}
+        minWidth={!dropdownMatchSelectWidth ? (containerRef.current?.clientWidth ?? 0) + CONST_WIDTH_CHECK_BUTTON + 'px' : 'auto'}
         onClick={stopPropagation}
         className={listCls}
         style={{
@@ -176,10 +177,10 @@ const MultipleSelectComp: FC<
               searchProps={
                 openSearch
                   ? {
-                      inputRef: inputRef,
-                      onSearchChange: inputOnChange,
-                      placeholder: searchPlaceholder,
-                    }
+                    inputRef: inputRef,
+                    onSearchChange: inputOnChange,
+                    placeholder: searchPlaceholder,
+                  }
                   : undefined
               }
               noDataTip={noDataTip}
@@ -358,9 +359,9 @@ export function OptionItem({
         item={
           isChecked
             ? {
-                suffixIcon: <CheckOutlined color={colors.textBrandDefault} />,
-                ...item,
-              }
+              suffixIcon: <CheckOutlined color={colors.textBrandDefault} />,
+              ...item,
+            }
             : item
         }
         renderValue={_renderValue}

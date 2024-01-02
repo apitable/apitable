@@ -103,6 +103,7 @@ export enum ShortcutActionName {
   ToggleApiPanel = 'ToggleApiPanel',
   ToggleRobotPanel = 'ToggleRobotPanel',
   ToggleTimeMachinePanel = 'ToggleTimeMachinePanel',
+  ToggleCopilotPanel = 'ToggleCopilotPanel',
   ToggleArchivedRecordsPanel = 'ToggleArchivedRecordsPanel',
   // Expand the card
   PreviousRecord = 'PreviousRecord',

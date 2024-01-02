@@ -5,6 +5,7 @@ import com.apitable.interfaces.ai.model.AiUpdateParam;
 import com.apitable.interfaces.ai.model.ChartTimeDimension;
 import com.apitable.interfaces.ai.model.CreditTransactionChartData;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -39,10 +40,12 @@ public interface AiServiceFacade {
     /**
      * get total credit transaction count.
      *
-     * @param spaceId space id
+     * @param spaceId   space id
+     * @param beginDate begin date
+     * @param endDate   end date
      * @return total credit transaction count
      */
-    BigDecimal getUsedCreditCount(String spaceId);
+    BigDecimal getUsedCreditCount(String spaceId, LocalDate beginDate, LocalDate endDate);
 
     /**
      * load credit transaction chart data.

@@ -75,6 +75,7 @@ const:
   template-space: ${TEMPLATE_SPACE:spcNTxlv8Drra}
   quote-template-id: ${QUOTE_TEMPLATE_ID:tpll8mltwrZMT}
   quoteEn-template-id: ${QUOTE_EN_TEMPLATE_ID:spcNA5eN3Sj6Q}
+  register-quote-templates: ${REGISTER_QUOTE_TEMPLATES:tplZYaYZqaPLE,tplED3FVnX8U6}
   ding-talk-order-datasheet: ${DING_TALK_ORDER_DATASHEET:dstbPAnKDwnPpliqg4}
   cooling-off-period: ${COOLING_OFF_PERIOD:30}
   close-paused-user-cron: ${CLOSE_PAUSED_USER_CRON:0 0 0 * * ?}

@@ -148,18 +148,6 @@ export const TIMEZONES = [
     ]
   },
   {
-    value: 'Pacific Daylight Time',
-    abbr: 'PDT',
-    offset: -7,
-    isdst: true,
-    text: '(UTC-07:00) Pacific Daylight Time (US & Canada)',
-    utc: [
-      'America/Los_Angeles',
-      'America/Tijuana',
-      'America/Vancouver'
-    ]
-  },
-  {
     value: 'Pacific Standard Time',
     abbr: 'PST',
     offset: -8,
@@ -302,33 +290,8 @@ export const TIMEZONES = [
     value: 'Eastern Standard Time',
     abbr: 'EST',
     offset: -5,
-    isdst: true,
+    // isdst: true,
     text: '(UTC-05:00) Eastern Time (US & Canada)',
-    utc: [
-      'America/Detroit',
-      'America/Havana',
-      'America/Indiana/Petersburg',
-      'America/Indiana/Vincennes',
-      'America/Indiana/Winamac',
-      'America/Iqaluit',
-      'America/Kentucky/Monticello',
-      'America/Louisville',
-      'America/Montreal',
-      'America/Nassau',
-      'America/New_York',
-      'America/Nipigon',
-      'America/Pangnirtung',
-      'America/Port-au-Prince',
-      'America/Thunder_Bay',
-      'America/Toronto'
-    ]
-  },
-  {
-    value: 'Eastern Daylight Time',
-    abbr: 'EDT',
-    offset: -4,
-    isdst: false,
-    text: '(UTC-04:00) Eastern Daylight Time (US & Canada)',
     utc: [
       'America/Detroit',
       'America/Havana',

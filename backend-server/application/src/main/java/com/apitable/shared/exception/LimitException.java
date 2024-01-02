@@ -21,6 +21,8 @@ public enum LimitException implements BaseException {
 
     SEATS_OVER_LIMIT(1503, "seat nums over limit"),
 
+    CHAT_BOT_OVER_LIMIT(1503, "chat bot nums over limit"),
+
     CREDIT_OVER_LIMIT(1504, "credit over limit"),
 
     FILE_NUMS_OVER_LIMIT(1505, "file nums over limit");

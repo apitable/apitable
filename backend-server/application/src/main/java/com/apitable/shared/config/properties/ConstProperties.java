@@ -75,6 +75,11 @@ public class ConstProperties {
     private String quoteEnTemplateId = "tpll8mltwrZMT";
 
     /**
+     * List of templates referenced by new registered users.
+     */
+    private String registerQuoteTemplates;
+
+    /**
      * dingtalk subscription information table id.
      */
     private String dingTalkOrderDatasheet;

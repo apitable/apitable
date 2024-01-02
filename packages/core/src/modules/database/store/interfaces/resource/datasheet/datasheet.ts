@@ -479,6 +479,7 @@ export interface IDatasheetClientState {
   isRobotPanelOpen?: boolean;
   operateViewIds?: string[] | null;
   isTimeMachinePanelOpen?: boolean;
+  isCopilotPanelOpen?: boolean;
   isArchivedRecordsPanelOpen?: boolean;
   exportViewId?: string | null;
   // View-derived data, all content obtained by calculation, is uniformly maintained here.

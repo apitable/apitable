@@ -20,6 +20,7 @@ import { useToggle } from 'ahooks';
 import classNames from 'classnames';
 import { useAtom } from 'jotai';
 import { get } from 'lodash';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
@@ -39,11 +40,11 @@ import {
   SystemConfig,
   t,
 } from '@apitable/core';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ApiPanel } from 'pc/components/api_panel';
 import { automationHistoryAtom } from 'pc/components/automation/controller';
 import AutomationHistoryPanel from 'pc/components/automation/run_history/modal/modal';
 import { Message, VikaSplitPanel } from 'pc/components/common';
+
 import { JobTaskProvider } from 'pc/components/editors/button_editor/job_task';
 import { TimeMachine } from 'pc/components/time_machine';
 import { useMountWidgetPanelShortKeys } from 'pc/components/widget/hooks';
@@ -65,6 +66,8 @@ import { SuspensionPanel } from '../suspension_panel';
 import { TabBar } from '../tab_bar';
 import { ViewContainer } from '../view_container';
 import { WidgetPanel } from '../widget';
+// @ts-ignore
+import { Copilot } from 'enterprise/Copilot';
 // @ts-ignore
 import { createBackupSnapshot } from 'enterprise/time_machine/backup/backup';
 // @ts-ignore
@@ -170,6 +173,7 @@ const DefaultPanelWidth = {
   Api: '50%',
   Robot: 360,
   SideRecord: 450,
+  Copilot: 480,
 } as const;
 
 const DISABLED_CLOSE_SIDEBAR_WIDTH = 1920;
@@ -215,6 +219,7 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
     const clientState = Selectors.getDatasheetClient(state, datasheetId);
     return clientState && clientState.isTimeMachinePanelOpen;
   });
+
   const isArchivedRecordsPanelOpen = useAppSelector((state) => {
     const clientState = Selectors.getDatasheetClient(state, datasheetId);
     return clientState && clientState.isArchivedRecordsPanelOpen;
@@ -225,6 +230,8 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
   const [historyDialog, setHistoryDialog] = useAtom(automationHistoryAtom);
   const [isDevToolsOpen, { toggle: toggleDevToolsOpen, set: setDevToolsOpen }] = useToggle();
   const [isRobotPanelOpen, { toggle: toggleRobotPanelOpen, set: setRobotPanelOpen }] = useToggle();
+  const [isCopilotPanelOpen, { toggle: toggleCopilotPanelOpen, set: setCopilotPanelOpen }] = useToggle();
+
   const toggleTimeMachineOpen = useCallback(
     (state?: boolean) => {
       if (activeDatasheetId) {
@@ -282,6 +289,10 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
   }, [toggleTimeMachineOpen]);
 
   useEffect(() => {
+    ShortcutActionManager.bind(ShortcutActionName.ToggleCopilotPanel, toggleCopilotPanelOpen);
+  }, [toggleCopilotPanelOpen]);
+
+  useEffect(() => {
     if (manageable && Boolean(createBackupSnapshot)) {
       ShortcutActionManager.bind(ShortcutActionName.CreateBackup, () => {
         _createBackupSnapshot();
@@ -295,6 +306,13 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
     }
     dispatch(StoreActions.setRobotPanelStatus(isRobotPanelOpen, activeDatasheetId));
   }, [isRobotPanelOpen, dispatch, activeDatasheetId]);
+
+  useEffect(() => {
+    if (!activeDatasheetId) {
+      return;
+    }
+    dispatch(StoreActions.setCoPilotPanelStatus(isCopilotPanelOpen, activeDatasheetId));
+  }, [isCopilotPanelOpen, dispatch, activeDatasheetId]);
 
   useEffect(() => {
     setDevToolsOpen(false);
@@ -382,6 +400,9 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
     if (isMobile || isNoPermission) {
       return DefaultPanelWidth.Empty;
     }
+    if (isCopilotPanelOpen) {
+      return DefaultPanelWidth.Copilot;
+    }
     if (isDevToolsOpen) {
       return DefaultPanelWidth.DevTool;
     }
@@ -453,18 +474,18 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
       />
     </JobTaskProvider>
   );
-
   const childComponent = (
     <AutoSizer style={{ width: '100%', height: '100%' }}>
       {({ width }) =>
         panelSize ? (
           <VikaSplitPanel
             panelLeft={
-                datasheetMain
+              datasheetMain
             }
             panelRight={
               <div style={{ width: '100%', height: '100%' }}>
                 {isSideRecordOpen && <ExpandRecordPanel />}
+                { isCopilotPanelOpen && <Copilot onClose={setCopilotPanelOpen} /> }
                 <WidgetPanel />
                 {!isShareMode && <ApiPanel />}
                 {isDevToolsOpen && <DevToolsPanel onClose={setDevToolsOpen} />}

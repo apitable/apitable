@@ -183,7 +183,7 @@ const ToolbarBase = () => {
     }
     return widgetPanel.reduce((total, item) => total + item.widgets.length, 0);
   });
-  const { isRobotPanelOpen, isTimeMachinePanelOpen } = useAppSelector((state) => {
+  const { isRobotPanelOpen, isTimeMachinePanelOpen, isCopilotPanelOpen } = useAppSelector((state) => {
     const clientState = Selectors.getDatasheetClient(state);
     return clientState || ({} as IDatasheetClientState);
   });
@@ -378,14 +378,14 @@ const ToolbarBase = () => {
   const handleToggleRightBar = async (toggleKey: ShortcutActionName) => {
     // Close sidebar.
     if (isSideRecordOpen) {
-      store.dispatch(StoreActions.toggleSideRecord(false));
-      await closeAllExpandRecord();
+      // store.dispatch(StoreActions.toggleSideRecord(false));
+      // await closeAllExpandRecord();
     }
-
     const panelMap = {
       [ShortcutActionName.ToggleApiPanel]: isApiPanelOpen,
       [ShortcutActionName.ToggleWidgetPanel]: isWidgetPanel,
       [ShortcutActionName.ToggleRobotPanel]: isRobotPanelOpen,
+      [ShortcutActionName.ToggleCopilotPanel]: isCopilotPanelOpen,
       [ShortcutActionName.ToggleTimeMachinePanel]: isTimeMachinePanelOpen,
     };
     for (const key in panelMap) {
@@ -393,7 +393,6 @@ const ToolbarBase = () => {
         await ShortcutActionManager.trigger(key as ShortcutActionName);
       }
     }
-
     onSetClickType && onSetClickType(SideBarClickType.ToolBar);
     await ShortcutActionManager.trigger(toggleKey);
   };
@@ -441,6 +440,23 @@ const ToolbarBase = () => {
       label: t(Strings.find),
       key: 'find',
       show: true,
+    },
+    {
+      component: (
+        <ToolItem
+          key="copilot"
+          icon={<RobotOutlined size={16} />}
+          text={'Copilot'}
+          onClick={() => handleToggleRightBar(ShortcutActionName.ToggleCopilotPanel)}
+          className={classNames({ [styles.toolbarItem]: true, [styles.apiActive]: isCopilotPanelOpen })}
+          id={DATASHEET_ID.COPILOT_BTN}
+          showLabel={showIconBarLabel}
+          disabled={!permissions.editable} // ?
+        />
+      ),
+      label: 'Copilot',
+      key: 'copilot',
+      show:  getEnvVariables().AI_ENTRANCE_VISIBLE && getEnvVariables().IS_APITABLE && !shareId
     },
     {
       component: <ForeignForm key="foreignForm" className={styles.toolbarItem} showLabel={showIconBarLabel} />,

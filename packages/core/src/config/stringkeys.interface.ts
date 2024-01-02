@@ -171,6 +171,9 @@ export type StringKeysMapType = {
   ai_chat_unit: 'ai_chat_unit';
   ai_close_setting_tip_content: 'ai_close_setting_tip_content';
   ai_close_setting_tip_title: 'ai_close_setting_tip_title';
+  ai_copilot_generate_response: 'ai_copilot_generate_response';
+  ai_copilot_processs: 'ai_copilot_processs';
+  ai_copilot_start_process_request: 'ai_copilot_start_process_request';
   ai_create_guide_btn_text: 'ai_create_guide_btn_text';
   ai_create_guide_content: 'ai_create_guide_content';
   ai_credit_cost_chart_title: 'ai_credit_cost_chart_title';
@@ -816,6 +819,7 @@ export type StringKeysMapType = {
   automation_enabled_return_via_related_files: 'automation_enabled_return_via_related_files';
   automation_field: 'automation_field';
   automation_import_variables_from_pre_tep: 'automation_import_variables_from_pre_tep';
+  automation_is_not_yet_enabled: 'automation_is_not_yet_enabled';
   automation_last_edited_by: 'automation_last_edited_by';
   automation_last_edited_time: 'automation_last_edited_time';
   automation_manager_label: 'automation_manager_label';
@@ -1282,6 +1286,14 @@ export type StringKeysMapType = {
   convert: 'convert';
   convert_tip: 'convert_tip';
   cook_islands: 'cook_islands';
+  copilot_auto_agent_desc: 'copilot_auto_agent_desc';
+  copilot_auto_agent_name: 'copilot_auto_agent_name';
+  copilot_data_agent_desc: 'copilot_data_agent_desc';
+  copilot_data_agent_name: 'copilot_data_agent_name';
+  copilot_data_agent_policy: 'copilot_data_agent_policy';
+  copilot_data_agent_policy_button: 'copilot_data_agent_policy_button';
+  copilot_help_agent_desc: 'copilot_help_agent_desc';
+  copilot_help_agent_name: 'copilot_help_agent_name';
   copy: 'copy';
   copy_automation_url: 'copy_automation_url';
   copy_card_link: 'copy_card_link';
@@ -2692,6 +2704,7 @@ export type StringKeysMapType = {
   intro_widget_tips: 'intro_widget_tips';
   introduction: 'introduction';
   invalid_action_sort_tip: 'invalid_action_sort_tip';
+  invalid_automation_configuration: 'invalid_automation_configuration';
   invalid_field_type: 'invalid_field_type';
   invalid_option_sort_tip: 'invalid_option_sort_tip';
   invalid_redemption_code_entered: 'invalid_redemption_code_entered';
@@ -3650,6 +3663,8 @@ export type StringKeysMapType = {
   payment_record: 'payment_record';
   payment_reminder: 'payment_reminder';
   payment_reminder_content: 'payment_reminder_content';
+  payment_reminder_modal_content: 'payment_reminder_modal_content';
+  payment_reminder_modal_title: 'payment_reminder_modal_title';
   pending_invite: 'pending_invite';
   people: 'people';
   per_person_per_year: 'per_person_per_year';
@@ -4504,7 +4519,12 @@ export type StringKeysMapType = {
   scan_to_login: 'scan_to_login';
   scan_to_login_by_method: 'scan_to_login_by_method';
   scatter_chart: 'scatter_chart';
+  schedule_day_tips: 'schedule_day_tips';
+  schedule_hour_tips: 'schedule_hour_tips';
+  schedule_start_day: 'schedule_start_day';
+  schedule_start_month: 'schedule_start_month';
   schedule_type: 'schedule_type';
+  schedule_year_tips: 'schedule_year_tips';
   science_and_technology: 'science_and_technology';
   scroll_screen_down: 'scroll_screen_down';
   scroll_screen_left: 'scroll_screen_left';
@@ -4518,6 +4538,7 @@ export type StringKeysMapType = {
   search_folder_or_sheet: 'search_folder_or_sheet';
   search_new_admin: 'search_new_admin';
   search_node_pleaseholder: 'search_node_pleaseholder';
+  search_node_tip: 'search_node_tip';
   search_or_add: 'search_or_add';
   search_role_placeholder: 'search_role_placeholder';
   seats: 'seats';
@@ -5007,6 +5028,7 @@ export type StringKeysMapType = {
   start_onfiguration: 'start_onfiguration';
   start_time: 'start_time';
   start_use: 'start_use';
+  starting_from_midnight: 'starting_from_midnight';
   startup: 'startup';
   startup_company_support_program: 'startup_company_support_program';
   stat_average: 'stat_average';
@@ -5255,6 +5277,7 @@ export type StringKeysMapType = {
   text_editor_tip_end: 'text_editor_tip_end';
   text_functions: 'text_functions';
   thailand: 'thailand';
+  the_button_field_is_misconfigured: 'the_button_field_is_misconfigured';
   the_current_automation_workflow_has_no_related_files_you_can_establish_a_link_by_adding_trigger_conditions_and_actions_on_the_left_side: 'the_current_automation_workflow_has_no_related_files_you_can_establish_a_link_by_adding_trigger_conditions_and_actions_on_the_left_side';
   the_current_button_column_has_expired_please_reselect: 'the_current_button_column_has_expired_please_reselect';
   the_last_7_days: 'the_last_7_days';
@@ -5545,6 +5568,7 @@ export type StringKeysMapType = {
   verify_account_title: 'verify_account_title';
   verify_via_email: 'verify_via_email';
   verify_via_phone: 'verify_via_phone';
+  video: 'video';
   video_not_support_play: 'video_not_support_play';
   vietnam: 'vietnam';
   view: 'view';

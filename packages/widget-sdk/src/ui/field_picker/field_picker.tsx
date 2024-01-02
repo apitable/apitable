@@ -25,11 +25,11 @@ import { Strings, t } from 'core';
 
 /**
  * A field selector component that can select the fields inside the corresponding view ID.
- * 
+ *
  * @returns
- * 
+ *
  * #### Example
- * 
+ *
  * Common usage.
  * ``` ts
  * import React, { useState } from 'react';
@@ -40,7 +40,7 @@ import { Strings, t } from 'core';
  *   return <FieldPicker viewId={viewId} fieldId={fieldId} onChange={option => setFieldId(option.value)} />
  * }
  * ```
- * 
+ *
  * Use {@link useCloudStorage} implementing persistent storage.
  * ``` ts
  * import React, { useState } from 'react';
@@ -51,21 +51,28 @@ import { Strings, t } from 'core';
  *   return  <FieldPicker viewId={viewId} fieldId={fieldId} onChange={option => setFieldId(option.value)} />;
  * };
  * ```
- * 
+ *
  */
 export function FieldPicker(props: IFieldPicker) {
   const { onChange, fieldId, viewId, placeholder, datasheet, allowedTypes, disabled } = props;
   const hasDatasheet = 'datasheet' in props;
   const datasheetFields = useFields(datasheet, viewId);
   const allFields = useFields(viewId);
-  const fields = (hasDatasheet ? datasheetFields : allFields).filter(field => !allowedTypes || allowedTypes.includes(field.type));
+  const fields = (hasDatasheet ? datasheetFields : allFields).filter((field) => !allowedTypes || allowedTypes.includes(field.type));
 
   return (
     <Select
+      dropDownOptions={{
+        placement: 'bottom-start',
+      }}
+      panelOptions={{
+        maxWidth: '300px',
+      }}
+      dropdownMatchSelectWidth={false}
       placeholder={placeholder || t(Strings.please_choose)}
       value={fieldId as any}
-      options={fields.map(field => ({ label: field.name, value: field.id }))}
-      onSelected={option => onChange ? onChange(option as IOption) : noop}
+      options={fields.map((field) => ({ label: field.name, value: field.id }))}
+      onSelected={(option) => (onChange ? onChange(option as IOption) : noop)}
       disabled={disabled}
     />
   );

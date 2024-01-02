@@ -37,15 +37,15 @@ import {
   WorkbenchOutlined,
 } from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { OrganizationHead } from 'pc/components/organization_head';
+import { SpaceInfo } from 'pc/components/common_side/workbench_side/space-info';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 // @ts-ignore
-import { Marketing } from 'enterprise/marketing/marketing';
-// @ts-ignore
 import { Log } from 'enterprise/log/log';
+// @ts-ignore
+import { Marketing } from 'enterprise/marketing/marketing';
 import styles from './style.module.less';
 
 const { TreeNode, DirectoryTree } = Tree;
@@ -235,7 +235,9 @@ export const SpaceMenuTree: React.FC<React.PropsWithChildren<unknown>> = () => {
 
   return (
     <div className={styles.spaceMenuTree}>
-      <OrganizationHead />
+      <div className={styles.header}>
+        <SpaceInfo />
+      </div>
       <Typography variant="h8" className={styles.spaceSubTitle}>
         {t(Strings.space_setting)}
       </Typography>

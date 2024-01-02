@@ -116,7 +116,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@Tag(name = "Account Center Module_User Management Interface")
+@Tag(name = "User")
 @ApiResource(path = "/user")
 public class UserController {
 

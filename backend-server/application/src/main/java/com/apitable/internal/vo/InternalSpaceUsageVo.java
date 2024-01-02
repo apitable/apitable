@@ -52,7 +52,8 @@ public class InternalSpaceUsageVo {
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long calendarViewNums;
 
-    @Schema(description = "Number of used credit", example = "5.0001")
+    @Schema(description = "Number of used credit", example = "5.0001", deprecated = true)
     @JsonSerialize(nullsUsing = CreditUnitSerializer.class)
+    @Deprecated(since = "1.8.0", forRemoval = true)
     private BigDecimal usedCredit;
 }

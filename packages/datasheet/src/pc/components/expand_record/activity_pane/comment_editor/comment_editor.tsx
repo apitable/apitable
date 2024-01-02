@@ -210,6 +210,7 @@ export const CommentEditor: React.FC<React.PropsWithChildren<IActivityPaneProps>
         >
           <div style={{ padding: '8px' }}>
             <SlateEditor
+              className={styles.commentSlateEditor}
               syncContent={contentChangeHandler}
               submit={slateSubmit}
               maxRow={4}

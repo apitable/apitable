@@ -18,6 +18,8 @@
 
 package com.apitable.interfaces.automation.facede;
 
+import java.util.Map;
+
 /**
  * default automation service facade implement.
  */
@@ -26,5 +28,10 @@ public class DefaultAutomationServiceFacadeImpl implements AutomationServiceFaca
     @Override
     public void publishSchedule(Long scheduleId) {
         // do nothing
+    }
+
+    @Override
+    public void copy(Map<String, String> newTriggerMap) {
+        
     }
 }

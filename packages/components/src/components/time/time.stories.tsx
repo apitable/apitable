@@ -18,10 +18,12 @@
 
 import React, { FC, useState } from 'react';
 import { StoryType } from '../../stories/constants';
+import { Box } from '../box';
 import { NextTimePreview } from './preview';
 import { Timing } from './timing';
 import { ICronSchema } from './types';
 import { CronConverter } from './utils';
+import { TimeTips } from './tips';
 
 const COMPONENT_NAME = 'Time';
 
@@ -39,6 +41,12 @@ export default {
     content: 'Scanner for decks of cards with bar codes printed on card edges',
   },
 };
+
+export const TimeTipsView: FC = () => (
+  <>
+    <TimeTips interval={'hour'} />
+  </>
+);
 
 export const NextTime: FC = () => (
   <>
@@ -104,13 +112,13 @@ export const TimingDisabled: FC = () => {
   const [state, setState] = useState<ICronSchema>(CronConverter.extractCron(CronConverter.getDefaultValue('month'))!);
 
   return (
-    <>
+    <Box width={'500px'} display={'flex'} flexDirection={'column'}>
       <>{JSON.stringify(state)}</>
       <Timing interval={'month'} value={state} onUpdate={setState} readonly />
       <Timing interval={'day'} value={state} onUpdate={setState} readonly />
       <Timing interval={'week'} value={state} onUpdate={setState} readonly />
       <Timing interval={'hour'} value={state} onUpdate={setState} readonly />
-    </>
+    </Box>
   );
 };
 

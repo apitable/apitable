@@ -8,7 +8,7 @@ import { AddOutlined } from '@apitable/icons';
 import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
 import { useAppSelector } from 'pc/store/react-redux';
 // @ts-ignore
-import { Status } from 'enterprise/editor/workdoc';
+import { Status } from 'enterprise/editor/workdoc/interface';
 import styles from './style.module.less';
 
 // @ts-ignore

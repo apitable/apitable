@@ -39,7 +39,6 @@ const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
   const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
 
   useMount(() => {
-    Player.doTrigger(Events.questionnaire_shown_after_sign);
     Player.doTrigger(Events.questionnaire_shown);
   });
 

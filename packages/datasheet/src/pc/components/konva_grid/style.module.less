@@ -70,6 +70,13 @@
   bottom: 0;
   pointer-events: none;
 
+  :global(.multiText) {
+    border: 2px solid var(--primaryColor);
+    box-sizing: content-box;
+    margin: -2px;
+    border-radius: 4px;
+  }
+
   .microWrapper {
     position: fixed;
     background: var(--defaultBg);

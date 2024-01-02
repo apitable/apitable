@@ -16,16 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export interface IAvatarGroup {
-  /**
-   * maximum number of avatars displayed
-   */
-  max?: number;
-  /** avatar size xxs(20px)、xs(24px)、s(32px)、m(40px)、l(64px)、xl(80px) */
-  size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
-  /**
-   * avatar inline style
-   */
-  maxStyle?: React.CSSProperties;
-  moreClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+import { DynamicModule, Module } from '@nestjs/common';
+import path from 'path';
+import * as fs from 'fs';
+
+@Module({})
+export class AiDynamicModule {
+  static forRoot(): DynamicModule {
+    const enterpriseModulePath = path.join(__dirname, '../enterprise/ai');
+    const isEnterpriseLevel: boolean = fs.existsSync(enterpriseModulePath);
+    if (isEnterpriseLevel) {
+      const { AiEnterpriseModule } = require(`${enterpriseModulePath}/ai.enterprise.module`);
+      return {
+        module: AiEnterpriseModule,
+      };
+    }
+    return {
+      module: AiModule,
+    };
+  }
 }
+
+@Module({})
+export class AiModule {}

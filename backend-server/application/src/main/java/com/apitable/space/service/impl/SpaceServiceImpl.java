@@ -22,7 +22,6 @@ import static com.apitable.organization.enums.OrganizationException.CREATE_MEMBE
 import static com.apitable.organization.enums.OrganizationException.NOT_EXIST_MEMBER;
 import static com.apitable.shared.constants.NotificationConstants.NEW_SPACE_NAME;
 import static com.apitable.shared.constants.NotificationConstants.OLD_SPACE_NAME;
-import static com.apitable.shared.util.DateHelper.safeSetDayOfMonth;
 import static com.apitable.space.enums.SpaceException.NO_ALLOW_OPERATE;
 import static com.apitable.space.enums.SpaceException.SPACE_NOT_EXIST;
 import static com.apitable.space.enums.SpaceException.SPACE_QUIT_FAILURE;
@@ -49,6 +48,7 @@ import com.apitable.interfaces.ai.model.ChartTimeDimension;
 import com.apitable.interfaces.ai.model.CreditInfo;
 import com.apitable.interfaces.ai.model.CreditTransactionChartData;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
+import com.apitable.interfaces.billing.model.CycleDateRange;
 import com.apitable.interfaces.billing.model.DefaultSubscriptionInfo;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
@@ -91,6 +91,7 @@ import com.apitable.shared.holder.NotificationRenderFieldHolder;
 import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
 import com.apitable.shared.util.IdUtil;
+import com.apitable.shared.util.SubscriptionDateRange;
 import com.apitable.shared.util.information.ClientOriginInfo;
 import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.assembler.SpaceAssembler;
@@ -582,9 +583,12 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             subscriptionInfo =
                 entitlementServiceFacade.getSpaceSubscription(spaceId);
         }
+        LocalDate now = ClockManager.me().getLocalDateNow();
+        CycleDateRange dateRange = SubscriptionDateRange.calculateCycleDate(subscriptionInfo, now);
         return new CreditInfo(subscriptionInfo.getConfig().isAllowCreditOverLimit(),
             subscriptionInfo.getFeature().getMessageCreditNums().getValue(),
-            aiServiceFacade.getUsedCreditCount(spaceId));
+            aiServiceFacade.getUsedCreditCount(spaceId, dateRange.getCycleStartDate(),
+                dateRange.getCycleEndDate()));
     }
 
     @Override
@@ -599,8 +603,29 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     public SeatUsage getSeatUsage(String spaceId) {
         long memberCount =
             iMemberService.getTotalActiveMemberCountBySpaceId(spaceId);
+        return new SeatUsage(0L, memberCount);
+    }
+
+    @Override
+    public void checkChatBotNumsOverLimit(String spaceId) {
+        checkChatBotNumsOverLimit(spaceId, 1);
+    }
+
+    @Override
+    public void checkChatBotNumsOverLimit(String spaceId, int addedNums) {
+        var subscriptionInfo =
+            entitlementServiceFacade.getSpaceSubscription(spaceId);
+        var aiAgentNums = subscriptionInfo.getFeature().getAiAgentNums();
+        if (!subscriptionInfo.isFree() && aiAgentNums.isUnlimited()) {
+            return;
+        }
+        if (aiAgentNums.isUnlimited()) {
+            return;
+        }
         long chatBotCount = iStaticsService.getTotalChatbotNodesfromCache(spaceId);
-        return new SeatUsage(chatBotCount, memberCount);
+        if (chatBotCount + addedNums > aiAgentNums.getValue()) {
+            throw new BusinessException(LimitException.CHAT_BOT_OVER_LIMIT);
+        }
     }
 
     @Override
@@ -618,8 +643,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             return;
         }
         var seatUsage = getSeatUsage(spaceId);
-        if (!seatNums.isUnlimited()
-            && (seatUsage.getTotal() + addedSeatNums > seatNums.getValue())) {
+        var total = seatUsage.getTotal();
+        if (total + addedSeatNums > seatNums.getValue()) {
             throw new BusinessException(LimitException.SEATS_OVER_LIMIT);
         }
     }
@@ -692,8 +717,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     public SeatUsage getSeatUsageForIM(String spaceId) {
         long memberCount =
             iMemberService.getTotalMemberCountBySpaceId(spaceId);
-        long chatBotCount = iStaticsService.getTotalChatbotNodesfromCache(spaceId);
-        return new SeatUsage(chatBotCount, memberCount);
+        return new SeatUsage(0L, memberCount);
     }
 
     /**
@@ -713,8 +737,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         }
         SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
         LocalDate now = ClockManager.me().getLocalDateNow();
-        int cycleDayOfMonth = subscriptionInfo.cycleDayOfMonth(now.getDayOfMonth());
-        LocalDate cycleDate = safeSetDayOfMonth(now, cycleDayOfMonth);
+        CycleDateRange dateRange = SubscriptionDateRange.calculateCycleDate(subscriptionInfo, now);
         SeatUsage seatUsage = getSeatUsage(spaceId);
         spaceInfoVO.setSeatUsage(seatUsage);
         spaceInfoVO.setSeats(seatUsage.getMemberCount());
@@ -740,7 +763,8 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             spaceCapacityCacheService.getSpaceCapacity(spaceId);
         spaceInfoVO.setCapacityUsedSizes(capacityUsedSize);
         // API usage statistics
-        long apiUsage = iStaticsService.getCurrentMonthApiUsage(spaceId, cycleDate);
+        long apiUsage =
+            iStaticsService.getCurrentMonthApiUsage(spaceId, dateRange.getCycleEndDate());
         spaceInfoVO.setApiRequestCountUsage(apiUsage);
         // file control amount
         ControlStaticsDTO controlStaticsDTO =
@@ -797,7 +821,9 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         }
         spaceInfoVO.setSocial(bindInfo);
         // credit
-        BigDecimal usedCredit = aiServiceFacade.getUsedCreditCount(spaceId);
+        BigDecimal usedCredit =
+            aiServiceFacade.getUsedCreditCount(spaceId, dateRange.getCycleStartDate(),
+                dateRange.getCycleEndDate());
         spaceInfoVO.setUsedCredit(usedCredit);
         // chat bot status
         CommonCacheService cacheService = SpringContextHolder.getBean(CommonCacheService.class);
@@ -913,8 +939,6 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         vo.setKanbanViewNums(viewVO.getKanbanViews());
         vo.setGanttViewNums(viewVO.getGanttViews());
         vo.setCalendarViewNums(viewVO.getCalendarViews());
-        BigDecimal usedCredit = aiServiceFacade.getUsedCreditCount(spaceId);
-        vo.setUsedCredit(usedCredit);
         return vo;
     }
 

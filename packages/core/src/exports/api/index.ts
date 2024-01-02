@@ -87,7 +87,7 @@ const onResponse = (response: AxiosResponse<IServerResponse>) => {
 };
 const createAxios = (config: AxiosRequestConfig) => {
   const http = axios.create(Object.assign({
-    timeout: 20 * 1000,
+    timeout: 60 * 1000,
     withCredentials: true,
   }, config));
   http.interceptors.response.use(onResponse, onResponseError);

@@ -756,6 +756,19 @@ public class TemplateServiceImpl
         return baseMapper.selectNodeIdByTempId(quoteTemplateId);
     }
 
+    @Override
+    public List<String> getTemplateNodeIds(String spaceId, List<String> templateIds) {
+        List<TemplateInfo> templates =
+            baseMapper.selectInfoByTypeIdAndTemplateIds(spaceId, templateIds);
+        if (templates.isEmpty()) {
+            return new ArrayList<>();
+        }
+        CollectionUtil.customSequenceSort(templates, TemplateInfo::getTemplateId, templateIds);
+        return templates.stream()
+            .map(TemplateInfo::getNodeId)
+            .collect(Collectors.toList());
+    }
+
     private List<TemplateSearchResult> searchTemplate(final String keyword,
                                                       final String rawLang) {
         log.info("Fuzzy Search Template. keyword:{},lang:{}", keyword, rawLang);

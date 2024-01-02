@@ -53,10 +53,12 @@ export const enableAutomationWorker = Object.is(process.env.ENABLE_QUEUE_WORKER,
 
 export const maxRobotActionCount = parseInt(process.env.MAX_ROBOT_ACTION_COUNT || '9', 10);
 
+// whether or not enable queue worker. auto register customers (individual instances in worker queue mode to handle messages)
+export const enableQueueWorker = Object.is(process.env.ENABLE_QUEUE_CONSUMER_WORKER, 'true');
+
 export default {
   isDevMode,
   isProdMode,
   serviceDomain,
   environment,
 };
-

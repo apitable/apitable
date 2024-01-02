@@ -652,13 +652,13 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
 
         const relatedResourceId = getDstIdItem() || getFormIdItem() || '';
 
-        const scheduleConfig = TimeScheduleManager.getCronWithTimeZone(getDataSlot<any>(formData, 'scheduleRule'));
+        const scheduleConfigInput = getDataSlot<any>(formData, 'scheduleRule');
+        const scheduleConfig = scheduleConfigInput
+          ? { ...TimeScheduleManager.getCronWithTimeZone(scheduleConfigInput), ['timeZone']: getDataParameter<string>(formData, 'timeZone')! }
+          : undefined;
         updateTriggerInput(automationState?.resourceId, trigger.triggerId, formData, automationState?.robot?.robotId, {
           relatedResourceId,
-          scheduleConfig: {
-            ...scheduleConfig,
-            ['timeZone']: getDataParameter<string>(formData, 'timeZone')!,
-          },
+          scheduleConfig,
         })
           .then(() => {
             refreshItem();
@@ -924,7 +924,7 @@ export const RobotTrigger = memo(({ robotId, editType, triggerTypes }: IRobotTri
           data: item,
         };
         setAutomationPanel(newPanel);
-        Player.doTrigger(Events.guide_use_button_column_first_time);
+        Player.doTrigger(Events['guide_use_button_column_first_time']);
       }, 2000);
     }
     checkGuideRef.current = false;

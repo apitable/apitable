@@ -26,7 +26,7 @@ import elementClosest from 'element-closest';
 import ErrorPage from 'error_page';
 import * as immer from 'immer';
 import { enableMapSet } from 'immer';
-import { merge } from 'lodash';
+import { init as initPlayer } from 'modules/shared/player/init';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
@@ -54,7 +54,6 @@ import {
 } from '@apitable/core';
 import 'antd/es/date-picker/style/index';
 import { getBrowserDatabusApiEnabled } from '@apitable/core/dist/modules/database/api/wasm';
-import { init as initPlayer } from 'modules/shared/player/init';
 import 'normalize.css';
 import { initializer } from 'pc/common/initializer';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -287,10 +286,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
       store.dispatch(batchActions(_batchActions, LOGIN_SUCCESS));
       window.__initialization_data__.userInfo = userInfo;
-      window.__initialization_data__.wizards = merge(JSON.parse(res.data.wizards), {
+      window.__initialization_data__.wizards = {
         guide: SystemConfig.guide,
         player: SystemConfig.player,
-      });
+      };
     };
     getUser().then(() => {
       import('../src/preIndex');

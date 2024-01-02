@@ -45,12 +45,25 @@ export const NextTimePreview: FC<{
   const colors = useCssColors();
 
   return (
-    <GapBox borderColor={colors.borderCommonDefault} borderWidth={'1px'} borderStyle={'solid'} padding={'8px 12px'} borderRadius={'4px'}>
-      <Typography color={colors.textCommonTertiary} variant={'body4'}>
+    <GapBox
+      borderColor={colors.borderCommonDefault}
+      borderWidth={'1px'}
+      borderStyle={'solid'}
+      paddingTop={'16px'}
+      padding={'8px 12px'}
+      borderRadius={'4px'}
+    >
+      <Typography
+        color={colors.textCommonTertiary}
+        variant={'body4'}
+        style={{
+          fontWeight: 600,
+        }}
+      >
         {title}
       </Typography>
 
-      <Box display={'flex'} flexDirection={'column'} gap={'8px'} marginTop={'8px'}>
+      <Box display={'flex'} flexDirection={'column'} gap={'4px'} marginTop={'4px'}>
         {CronConverter.getHumanReadableInformation(cron, tz, options).map((time, index) => {
           return (
             <Typography key={index} color={colors.textCommonTertiary} variant={'body4'}>

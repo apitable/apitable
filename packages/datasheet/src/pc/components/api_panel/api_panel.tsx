@@ -23,6 +23,7 @@ import { useDispatch } from 'react-redux';
 import { Button, Checkbox, Divider, useThemeColors } from '@apitable/components';
 import { ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { ApiOutlined, BookOutlined, AdjustmentOutlined, CloseOutlined } from '@apitable/icons';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { Message } from '../common';
 import { InlineNodeName } from '../common/inline_node_name';
@@ -31,8 +32,6 @@ import { CodeLanguage, CodeType } from './field_codes/enum';
 import { FieldCode } from './field_codes/field_codes';
 import { FieldDocs } from './field_docs';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const ApiPanel: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
