@@ -5963,8 +5963,6 @@
   "schedule_hour_tips": "The cycle calculation begins at midnight (0:00) each day. Assuming it repeats 0 minutes every three hours, it will occur at midnight (0:00), 3 AM, 6 AM, 9 AM, noon (12 PM), \n\n3 PM，6 PM, and finally at nightfall (9 PM) daily",
   "schedule_day_tips":"The cycle calculation begins counting from the first day of each month. If we assume that it repeats every 10 days, then it will be triggered on the 1st, 11th, 21st and 31st day of each month",
   "schedule_year_tips": "The cycle calculation begins counting from the first month of each year. Assuming an interval of first day 3 months, triggers will be activated at midnight on the first day of January, April, July, and October every year.",
-
   "schedule_start_month": "Starting from January each year, every",
-
   "payment_reminder_modal_content": "You can try the advanced version to enjoy more file nodes, enterprise permissions, attachment capacity, data volume, AI and other advanced features and privileges."
 }
