@@ -93,7 +93,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
       const minutes = CronConverter.getNumericProps(value, 'minute', 0);
 
       return (
-        <GapBox display={'flex'} alignItems={'center'} gap={'8px'}>
+        <GapBox display={'flex'} alignItems={'center'}>
           <Typography variant={'body3'} color={colors.textCommonPrimary}>
             {Maybe.encase(() => t(Strings.starting_from_midnight)).orDefault('从每天 0 点起，')}
           </Typography>
@@ -173,7 +173,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
     case 'week': {
       const dayInMonths = CronConverter.getLists(value, 'dayOfWeek');
       return (
-        <BoxWithGap display={'flex'} alignItems={'center'} gap={'8px'}>
+        <BoxWithGap display={'flex'} alignItems={'center'}>
           <Box alignItems={'center'} display={'flex'} flex={' 0 0  max-content'}>
             <Typography variant={'body3'} color={colors.textCommonPrimary}>
               {Maybe.encase(() => t(Strings.every_week_at)).orDefault('Every weekday on')}
@@ -305,7 +305,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
     case 'day': {
       const dayInterval = CronConverter.getEveryProps(value, 'dayOfMonth', 1);
       return (
-        <GapBox display={'flex'} alignItems={'center'} gap={'8px'}>
+        <GapBox display={'flex'} alignItems={'center'}>
           <Typography variant={'body3'} color={colors.textCommonPrimary}>
             {Maybe.encase(() => t(Strings.schedule_start_day)).orDefault('从每月 1 日起，')}
           </Typography>
