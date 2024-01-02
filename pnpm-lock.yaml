@@ -1662,17 +1662,17 @@ importers:
         specifier: ^7.5.2
         version: 7.5.4
       slate:
-        specifier: 0.71.1-2021114161528
-        version: 0.71.1-2021114161528
+        specifier: 0.81.3
+        version: 0.81.3
       slate-history:
         specifier: 0.66.0
-        version: 0.66.0(slate@0.71.1-2021114161528)
+        version: 0.66.0(slate@0.81.3)
       slate-hyperscript:
         specifier: 0.66.0
-        version: 0.66.0(slate@0.71.1-2021114161528)
+        version: 0.66.0(slate@0.81.3)
       slate-react:
-        specifier: 0.66.1
-        version: 0.66.1(react-dom@18.2.0)(react@18.2.0)(slate@0.71.1-2021114161528)
+        specifier: 0.81.0
+        version: 0.81.0(react-dom@18.2.0)(react@18.2.0)(slate@0.81.3)
       socket.io-client:
         specifier: 2.2.0
         version: 2.2.0
@@ -33978,22 +33978,22 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /slate-history@0.66.0(slate@0.71.1-2021114161528):
+  /slate-history@0.66.0(slate@0.81.3):
     resolution: {integrity: sha512-6MWpxGQZiMvSINlCbMW43E2YBSVMCMCIwQfBzGssjWw4kb0qfvj0pIdblWNRQZD0hR6WHP+dHHgGSeVdMWzfng==}
     peerDependencies:
       slate: '>=0.65.3'
     dependencies:
       is-plain-object: 5.0.0
-      slate: 0.71.1-2021114161528
+      slate: 0.81.3
     dev: false
 
-  /slate-hyperscript@0.66.0(slate@0.71.1-2021114161528):
+  /slate-hyperscript@0.66.0(slate@0.81.3):
     resolution: {integrity: sha512-uMBwuVBKl5jk0V37BMYhJdqO/R8mgoKvYGo1NmJbTxwf2capX4/4RgQtPPH20o09rbx8l9e554hLc8UiRPGg4w==}
     peerDependencies:
       slate: '>=0.65.3'
     dependencies:
       is-plain-object: 5.0.0
-      slate: 0.71.1-2021114161528
+      slate: 0.81.3
     dev: false
 
   /slate-hyperscript@0.77.0(slate@0.94.1):
@@ -34005,8 +34005,8 @@ packages:
       slate: 0.94.1
     dev: true
 
-  /slate-react@0.66.1(react-dom@18.2.0)(react@18.2.0)(slate@0.71.1-2021114161528):
-    resolution: {integrity: sha512-coIW1gyP3bpw+ORyEDhXYYkKXcb09KIe2FtjiAzoK9HrIjseXZmjxtfwJpeV9xAZgNxvJqyw72NQZqGlhY7LzA==}
+  /slate-react@0.81.0(react-dom@18.2.0)(react@18.2.0)(slate@0.81.3):
+    resolution: {integrity: sha512-bwryad4EvOmc7EFKb8aGg9DWNDh3KvToaggGieIgGTTbHJYHc9ADFC3A87Ittlpd5XUVopR0MpChQ3g3ODyvqw==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -34021,7 +34021,7 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
       scroll-into-view-if-needed: 2.2.31
-      slate: 0.71.1-2021114161528
+      slate: 0.81.3
       tiny-invariant: 1.0.6
     dev: false
 
@@ -34047,8 +34047,8 @@ packages:
       slate-hyperscript: 0.77.0(slate@0.94.1)
     dev: true
 
-  /slate@0.71.1-2021114161528:
-    resolution: {integrity: sha512-xcoSg/Zow6KzUTkWwLmJk5K+ZNK0eFLVmNPeL7vEck53LtPSyWS8dmlSxBK2U7aCyDolw4f9pBYGXuwHJIYbLQ==}
+  /slate@0.81.3:
+    resolution: {integrity: sha512-9rME3rSOsR76BsTGezNp6kiwjJL4yVJLwVQawj9xUf8wEZqoPU8d38hyQ3Jeg1SG6me2aS43m6H+n163/BhGWw==}
     dependencies:
       immer: 9.0.16
       is-plain-object: 5.0.0
