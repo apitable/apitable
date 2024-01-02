@@ -225,6 +225,7 @@ test-ut-backend-run:
 	RABBITMQ_PORT=5672 \
 	RABBITMQ_USERNAME=apitable \
 	RABBITMQ_PASSWORD=password \
+	BACKEND_GRPC_PORT=-1 \
 	./gradlew testCodeCoverageReport --stacktrace
 
 ###### 【backend server unit test】 ######
