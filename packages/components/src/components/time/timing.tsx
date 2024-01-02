@@ -95,67 +95,78 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
       return (
         <GapBox display={'flex'} alignItems={'center'} gap={'8px'}>
           <Typography variant={'body3'} color={colors.textCommonPrimary}>
-            {Maybe.encase(() => t(Strings.starting_from_midnight)).orDefault('从每天 0 点起，每隔')}
+            {Maybe.encase(() => t(Strings.starting_from_midnight)).orDefault('从每天 0 点起，')}
           </Typography>
 
-          <DropdownSelect
-            disabled={readonly}
-            triggerStyle={{
-              minWidth: '64px',
-            }}
-            listStyle={{
-              width: '120px',
-            }}
-            dropDownOptions={{
-              placement: 'bottom-start',
-            }}
-            openSearch
-            searchPlaceholder={Maybe.encase(() => t(Strings.datasource_selector_search_placeholder)).orDefault('Search')}
-            value={String(hourInterval)}
-            options={dayOptions}
-            onSelected={(node) => {
-              const everyHour = CronTime.every(Number(node.value)).hours();
-              handleUpdateItem(
-                CronConverter.updateCronProps('hour', {
-                  previous: value,
-                  next: everyHour,
-                })
-              );
-            }}
-          />
+          <GapBox display={'flex'} flex={'0 0 max-content'} alignItems={'center'} gap={'8px'} flexDirection={'row'}>
+            <Typography variant={'body3'} color={colors.textCommonPrimary}>
+              {Maybe.encase(() => t(Strings.by_every)).orDefault('每隔')}
+            </Typography>
+            <DropdownSelect
+              disabled={readonly}
+              triggerStyle={{
+                minWidth: '64px',
+              }}
+              listStyle={{
+                width: '120px',
+              }}
+              dropDownOptions={{
+                placement: 'bottom-start',
+              }}
+              openSearch
+              searchPlaceholder={Maybe.encase(() => t(Strings.datasource_selector_search_placeholder)).orDefault('Search')}
+              value={String(hourInterval)}
+              options={dayOptions}
+              onSelected={(node) => {
+                const everyHour = CronTime.every(Number(node.value)).hours();
+                handleUpdateItem(
+                  CronConverter.updateCronProps('hour', {
+                    previous: value,
+                    next: everyHour,
+                  })
+                );
+              }}
+            />
 
-          <Typography variant={'body3'} color={colors.textCommonPrimary}>
-            {Maybe.encase(() => t(Strings.every_hour_at)).orDefault('小时的')}
-          </Typography>
+            <Typography variant={'body3'} color={colors.textCommonPrimary}>
+              {Maybe.encase(() => t(Strings.every_hour_at)).orDefault('小时')}
+            </Typography>
+          </GapBox>
 
-          <DropdownSelect
-            dropDownOptions={{
-              placement: 'bottom-start',
-            }}
-            listStyle={{
-              width: '120px',
-            }}
-            openSearch
-            searchPlaceholder={Maybe.encase(() => t(Strings.datasource_selector_search_placeholder)).orDefault('Search')}
-            hiddenArrow
-            value={String(minutes)}
-            disabled={readonly}
-            options={minuteOptions}
-            onSelected={(node) => {
-              const miniute = Number(node.value);
+          <GapBox display={'flex'} flex={'0 0 max-content'} alignItems={'center'} gap={'8px'} flexDirection={'row'}>
+            <Typography variant={'body3'} color={colors.textCommonPrimary}>
+              {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
+            </Typography>
 
-              const everyHour = CronTime.everyHourAt(miniute);
-              handleUpdateItem(
-                CronConverter.updateCronProps('minute', {
-                  previous: value,
-                  next: everyHour,
-                })
-              );
-            }}
-          />
-          <Typography variant={'body3'} color={colors.textCommonPrimary}>
-            {Maybe.encase(() => t(Strings.by_min)).orDefault('minute(s)')}
-          </Typography>
+            <DropdownSelect
+              dropDownOptions={{
+                placement: 'bottom-start',
+              }}
+              listStyle={{
+                width: '120px',
+              }}
+              openSearch
+              searchPlaceholder={Maybe.encase(() => t(Strings.datasource_selector_search_placeholder)).orDefault('Search')}
+              hiddenArrow
+              value={String(minutes)}
+              disabled={readonly}
+              options={minuteOptions}
+              onSelected={(node) => {
+                const miniute = Number(node.value);
+
+                const everyHour = CronTime.everyHourAt(miniute);
+                handleUpdateItem(
+                  CronConverter.updateCronProps('minute', {
+                    previous: value,
+                    next: everyHour,
+                  })
+                );
+              }}
+            />
+            <Typography variant={'body3'} color={colors.textCommonPrimary}>
+              {Maybe.encase(() => t(Strings.by_min)).orDefault('minute(s)')}
+            </Typography>
+          </GapBox>
         </GapBox>
       );
     }
@@ -183,22 +194,24 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             />
           </Box>
 
-          <Box display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
-            <Typography variant={'body3'} color={colors.textCommonPrimary}>
-              {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
-            </Typography>
-          </Box>
+          <BoxWithGap display={'flex'} flexDirection={'8px'} alignItems={'center'} flex={'0 0 max-content'} gap={'8px'}>
+            <Box display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
+              <Typography variant={'body3'} color={colors.textCommonPrimary}>
+                {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
+              </Typography>
+            </Box>
 
-          <Box display={'flex'} alignItems={'center'} flex={'0 0'}>
-            <TimeInput
-              readonly={readonly}
-              time={new CronConverter(value).getHourTime()}
-              onChange={(v) => {
-                const newCro = new CronConverter(value).setHourTime(v);
-                handleUpdateItem(newCro);
-              }}
-            />
-          </Box>
+            <Box display={'flex'} alignItems={'center'} flex={'0 0'}>
+              <TimeInput
+                readonly={readonly}
+                time={new CronConverter(value).getHourTime()}
+                onChange={(v) => {
+                  const newCro = new CronConverter(value).setHourTime(v);
+                  handleUpdateItem(newCro);
+                }}
+              />
+            </Box>
+          </BoxWithGap>
         </BoxWithGap>
       );
     }
@@ -208,12 +221,17 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
       const dayInMonths = CronConverter.getLists(value, 'dayOfMonth');
       return (
         <BoxWithGap display={'flex'} alignItems={'center'} gap={'8px'}>
-          <Box display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
+          <BoxWithGap display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
             <Typography variant={'body3'} color={colors.textCommonPrimary}>
-              {Maybe.encase(() => t(Strings.schedule_start_month)).orDefault('从每年 1 月份起，每隔')}
+              {Maybe.encase(() => t(Strings.schedule_start_month)).orDefault('从每年 1 月份起，')}
             </Typography>
-          </Box>
-          <Box display={'flex'} alignItems={'center'} flex={'0 0 '}>
+          </BoxWithGap>
+          <BoxWithGap display={'flex'} alignItems={'center'} flex={'0 0 max-content'} gap={'8px'}>
+            <Box display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
+              <Typography variant={'body3'} color={colors.textCommonPrimary}>
+                {Maybe.encase(() => t(Strings.by_every)).orDefault('每隔')}
+              </Typography>
+            </Box>
             <DropdownSelect
               disabled={readonly}
               dropDownOptions={{
@@ -234,18 +252,20 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
                 handleUpdateItem(v);
               }}
             />
-          </Box>
-
-          <Box display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
             <Typography variant={'body3'} color={colors.textCommonPrimary}>
-              {Maybe.encase(() => t(Strings.every_month_at)).orDefault('month(s) on the')}
+              {Maybe.encase(() => t(Strings.every_month_at)).orDefault('month(s)')}
             </Typography>
-          </Box>
+          </BoxWithGap>
 
-          <Box display={'flex'} alignItems={'center'} flex={'1 1 auto '}>
+          <BoxWithGap display={'inline-flex'} alignItems={'center'} flex={'0 0 max-content'} gap={'8px'} flexDirection={'row'}>
+            <Box display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
+              <Typography variant={'body3'} color={colors.textCommonPrimary}>
+                {Maybe.encase(() => t(Strings.by_on)).orDefault('on the')}
+              </Typography>
+            </Box>
             <MultipleSelect
               triggerStyle={{
-                width: '100%',
+                minWidth: '150px',
               }}
               listStyle={{
                 minWidth: '40px',
@@ -259,24 +279,26 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
                 handleUpdateItem(new CronConverter(value).setLists('dayOfMonth', list));
               }}
             />
-          </Box>
+          </BoxWithGap>
 
-          <Box flex={'0 0 max-content'} width={'min-content'}>
-            <Typography variant={'body3'} color={colors.textCommonPrimary}>
-              {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
-            </Typography>
-          </Box>
+          <BoxWithGap flex={'0 0 max-content'} alignItems={'center'} display={'flex'} gap={'8px'} flexDirection={'row'}>
+            <Box flex={'0 0 max-content'}>
+              <Typography variant={'body3'} color={colors.textCommonPrimary}>
+                {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
+              </Typography>
+            </Box>
 
-          <Box display={'flex'} alignItems={'center'} flex={'0 0 '}>
-            <TimeInput
-              readonly={readonly}
-              time={new CronConverter(value).getHourTime()}
-              onChange={(v) => {
-                const a = new CronConverter(value).setHourTime(v);
-                handleUpdateItem(a);
-              }}
-            />
-          </Box>
+            <Box display={'flex'} alignItems={'center'} flex={'0 0 '}>
+              <TimeInput
+                readonly={readonly}
+                time={new CronConverter(value).getHourTime()}
+                onChange={(v) => {
+                  const a = new CronConverter(value).setHourTime(v);
+                  handleUpdateItem(a);
+                }}
+              />
+            </Box>
+          </BoxWithGap>
         </BoxWithGap>
       );
     }
@@ -285,48 +307,59 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
       return (
         <GapBox display={'flex'} alignItems={'center'} gap={'8px'}>
           <Typography variant={'body3'} color={colors.textCommonPrimary}>
-            {Maybe.encase(() => t(Strings.schedule_start_day)).orDefault('从每月 1 日起，每隔')}
+            {Maybe.encase(() => t(Strings.schedule_start_day)).orDefault('从每月 1 日起，')}
           </Typography>
-          <DropdownSelect
-            dropDownOptions={{
-              placement: 'bottom-start',
-            }}
-            triggerStyle={{
-              minWidth: '64px',
-            }}
-            openSearch
-            searchPlaceholder={Maybe.encase(() => t(Strings.datasource_selector_search_placeholder)).orDefault('Search')}
-            listStyle={{
-              width: '120px',
-            }}
-            disabled={readonly}
-            value={String(dayInterval)}
-            options={dayIntervalOptions}
-            onSelected={(node) => {
-              const everyHour = CronTime.every(Number(node.value)).days();
-              handleUpdateItem(
-                CronConverter.updateCronProps('dayOfMonth', {
-                  previous: value,
-                  next: everyHour,
-                })
-              );
-            }}
-          />
+          <GapBox display={'flex'} alignItems={'center'} gap={'8px'} flex={'0 0 max-content'}>
+            <Typography variant={'body3'} color={colors.textCommonPrimary}>
+              {Maybe.encase(() => t(Strings.by_every)).orDefault('every')}
+            </Typography>
+            <DropdownSelect
+              dropDownOptions={{
+                placement: 'bottom-start',
+              }}
+              triggerStyle={{
+                minWidth: '64px',
+              }}
+              openSearch
+              searchPlaceholder={Maybe.encase(() => t(Strings.datasource_selector_search_placeholder)).orDefault('Search')}
+              listStyle={{
+                width: '120px',
+              }}
+              disabled={readonly}
+              value={String(dayInterval)}
+              options={dayIntervalOptions}
+              onSelected={(node) => {
+                const everyHour = CronTime.every(Number(node.value)).days();
+                handleUpdateItem(
+                  CronConverter.updateCronProps('dayOfMonth', {
+                    previous: value,
+                    next: everyHour,
+                  })
+                );
+              }}
+            />
+          </GapBox>
 
           <Box display={'inline-flex'} alignItems={'center'}>
             <Typography variant={'body3'} color={colors.textCommonPrimary}>
-              {Maybe.encase(() => t(Strings.every_day_at)).orDefault('天的')}
+              {Maybe.encase(() => t(Strings.every_day_at)).orDefault('天')}
             </Typography>
           </Box>
 
-          <TimeInput
-            readonly={readonly}
-            time={new CronConverter(value).getHourTime()}
-            onChange={(v) => {
-              const a = new CronConverter(value).setHourTime(v);
-              handleUpdateItem(a);
-            }}
-          />
+          <GapBox display={'flex'} alignItems={'center'} gap={'8px'} flex={'0 0 max-content'}>
+            <Typography variant={'body3'} color={colors.textCommonPrimary}>
+              {Maybe.encase(() => t(Strings.by_at)).orDefault('的')}
+            </Typography>
+
+            <TimeInput
+              readonly={readonly}
+              time={new CronConverter(value).getHourTime()}
+              onChange={(v) => {
+                const a = new CronConverter(value).setHourTime(v);
+                handleUpdateItem(a);
+              }}
+            />
+          </GapBox>
         </GapBox>
       );
     }

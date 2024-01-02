@@ -943,11 +943,13 @@ export type StringKeysMapType = {
   button_type: 'button_type';
   by_at: 'by_at';
   by_days: 'by_days';
+  by_every: 'by_every';
   by_field_id: 'by_field_id';
   by_hours: 'by_hours';
   by_in: 'by_in';
   by_min: 'by_min';
   by_months: 'by_months';
+  by_on: 'by_on';
   by_the_day: 'by_the_day';
   by_the_month: 'by_the_month';
   by_the_year: 'by_the_year';
