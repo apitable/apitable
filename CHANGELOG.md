@@ -6,21 +6,7 @@
 ### Bug fixes
 
 * fix: func undefined check ([#1542](https://github.com/apitable/apitable/pull/1542)) @wangkailang 
-* fix: usage warn func check ([#1555](https://github.com/apitable/apitable/pull/1555)) @wangkailang 
-
-### What's more
-
-* refactor: use_responsive hook ([#1419](https://github.com/apitable/apitable/pull/1419)) @liaoliao666 
-* sync: hosted cloud ([#1540](https://github.com/apitable/apitable/pull/1540)) @ChambersChan 
-* docs: changelog for v1.7.0 ([#1544](https://github.com/apitable/apitable/pull/1544)) @ChambersChan 
-* sync: hosted cloud ([#1553](https://github.com/apitable/apitable/pull/1553)) @zoe-icu 
-* docs: add change log ([#1554](https://github.com/apitable/apitable/pull/1554)) @zoe-icu 
-## [v1.8.0-beta](https://github.com/apitable/apitable/releases/tag/v1.8.0-beta) (2024-01-02)
-
-
-### Bug fixes
-
-* fix: func undefined check ([#1542](https://github.com/apitable/apitable/pull/1542)) @wangkailang 
+* fix: usage warn func check ([#1555](https://github.com/apitable/apitable/pull/1555)) @wangkailang
 
 ### What's more
 
