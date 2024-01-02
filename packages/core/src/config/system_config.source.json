@@ -6588,7 +6588,7 @@
         ],
         "next": "查看详情",
         "nextId": "check_detail",
-        "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/12/28/36139bb2556a4c68b267dd5c29739087\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-12-29-updates\",\n    \"children\": \"<h3>🚀 自动化支持定时触发，工作提醒再无担忧</h3>\\n<p>你可以按小时、天、周甚至是月份运行周期性执行任务，只要满足所设定的时间条件，它就会自动启动，如发送邮件、提醒或调用业务接口，都可以轻松实现。</p>\"\n}",
+        "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/12/28/36139bb2556a4c68b267dd5c29739087\",\n    \"readMoreUrl\": \"https://meeting.tencent.com/dw/2XYzYvyVHtqH\",\n    \"children\": \"<h3>🚀 实现定时触发的自动化支持，无需担心工作提醒问题</h3>\\n<p>你可以根据小时、天、周或月份设定周期性任务，满足时间条件后自动启动，例如发送邮件、提醒或调用业务接口，轻松实现。</p>\\n<p>重要通知：周三上午11点，将举办新用户产品培训会。培训旨在帮助新用户了解和使用vika维格云。如果你是新用户，请点击链接报名参加。</p>\"\n}",
         "onClose": [
           "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
