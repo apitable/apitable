@@ -728,6 +728,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             .preNodeId(preNodeId)
             .nodeName(name)
             .type(nodeOpRo.getType())
+            .extra(JSONUtil.toJsonStr(nodeOpRo.getExtra()))
             .nodeId(nodeId)
             .build();
         // Change the front node ID of the next node to the new node ID(A <- C => B <- C)

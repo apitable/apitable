@@ -94,6 +94,10 @@ public class NodeInfoVo extends BaseNodeInfo {
     @Schema(description = "Node Permissions")
     private NodePermissionView permissions;
 
+
+    @Schema(description = "Node Permissions")
+    private String extra;
+
     /**
      * Get Column Limit.
      */

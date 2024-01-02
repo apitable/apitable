@@ -258,6 +258,7 @@
         <result column="node_favorite" property="nodeFavorite"/>
         <result column="created_at" property="createTime"/>
         <result column="updated_at" property="updateTime"/>
+        <result column="extra" property="extra"/>
     </resultMap>
 
     <select id="selectNodeInfoByNodeId" resultMap="nodeInfoMap">
@@ -286,7 +287,7 @@
     </select>
 
     <select id="selectNodeInfoByNodeIds" resultMap="nodeInfoMap">
-        SELECT vn.node_id, vn.space_id, IF(vn.parent_id = '0', vs.name, vn.node_name) AS node_name, vn.type,
+        SELECT vn.node_id, vn.space_id, IF(vn.parent_id = '0', vs.name, vn.node_name) AS node_name, vn.type, vn.extra,
         vn.parent_id,
         vn.pre_node_id, vn.icon, IF(leaf.id IS NULL, 0, 1) has_children,vdm.meta_data,
         vn.created_at, vn.updated_at, IF(vnss.id IS NULL, 0 ,1) AS node_shared,
@@ -309,7 +310,7 @@
     <resultMap id="nodeInfoTree" type="com.apitable.workspace.vo.NodeInfoTreeVo" extends="nodeInfoMap"/>
 
     <select id="selectNodeInfoTreeByNodeIds" resultMap="nodeInfoTree">
-        SELECT vn.node_id, vn.space_id, IF(vn.parent_id = '0', vs.name, vn.node_name) AS node_name, vn.type,
+        SELECT vn.node_id, vn.space_id, IF(vn.parent_id = '0', vs.name, vn.node_name) AS node_name, vn.type, vn.extra,
         vn.parent_id,
         vn.pre_node_id, vn.icon, IF(leaf.id IS NULL, 0, 1) has_children,
         JSON_LENGTH(vdm.meta_data -> '$.fieldMap') AS md_field_map_size,

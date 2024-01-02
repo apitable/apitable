@@ -24,29 +24,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * <p>
- * Node Association Request Parameters.
- * </p>
+ * Node embed page parameters.
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Node Association Request Parameters")
-public class NodeRelRo {
+@Schema(description = "Node embed page parameters")
+public class NodeEmbedPageRo {
 
-    @Schema(description = "Datasheet ID")
-    private String datasheetId;
+    @Schema(description = "url", requiredMode = Schema.RequiredMode.REQUIRED)
+    private String url;
 
-    @Schema(description = "View ID")
-    private String viewId;
-
-    @Schema(description = "View Name")
-    private String viewName;
-
-    @Schema(description = "Embed page info", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-    private NodeEmbedPageRo embedPage;
-
-    public NodeRelRo(String viewId) {
-        this.viewId = viewId;
-    }
+    @Schema(description = "Embed page type, figma et.")
+    private String type;
 }
