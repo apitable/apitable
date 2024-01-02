@@ -6,6 +6,7 @@
 ### Bug fixes
 
 * fix: func undefined check ([#1542](https://github.com/apitable/apitable/pull/1542)) @wangkailang 
+* fix: usage warn func check ([#1555](https://github.com/apitable/apitable/pull/1555)) @wangkailang
 
 ### What's more
 
