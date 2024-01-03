@@ -92,6 +92,15 @@ public interface IMemberService extends IService<MemberEntity> {
     MemberEntity getByUserIdAndSpaceId(Long userId, String spaceId);
 
     /**
+     * Get member include deleted.
+     *
+     * @param userId  user id
+     * @param spaceId space id
+     * @return MemberId
+     */
+    MemberEntity getByUserIdAndSpaceIdIncludeDeleted(Long userId, String spaceId);
+
+    /**
      * get user info.
      *
      * @param userIds user id
@@ -316,14 +325,6 @@ public interface IMemberService extends IService<MemberEntity> {
     List<String> getSpaceIdWithoutNameModifiedByUserId(Long userId);
 
     /**
-     * get inactive member by email.
-     *
-     * @param email email
-     * @return MemberDto List
-     */
-    List<MemberDTO> getInactiveMemberByEmails(String email);
-
-    /**
      * update the user's member name in all spaces.
      *
      * @param userId     user id
@@ -401,9 +402,19 @@ public interface IMemberService extends IService<MemberEntity> {
      * @param inviteUserId invite user id
      * @param spaceId      space id
      * @param emails       email list
-     * @return invite member id list
+     * @return invite email list
      */
-    List<Long> emailInvitation(Long inviteUserId, String spaceId, List<String> emails);
+    List<String> emailInvitation(Long inviteUserId, String spaceId, List<String> emails);
+
+    /**
+     * Create invitation member.
+     *
+     * @param inviteUserId invite user id
+     * @param spaceId      space id
+     * @param emails       email list
+     * @author Chambers
+     */
+    void createInvitationMember(Long inviteUserId, String spaceId, List<String> emails);
 
     /**
      * send invite email to email.
@@ -411,8 +422,9 @@ public interface IMemberService extends IService<MemberEntity> {
      * @param spaceId      space id
      * @param fromMemberId the member who invite user
      * @param email        email
+     * @return invite token
      */
-    void sendInviteEmail(String lang, String spaceId, Long fromMemberId, String email);
+    String sendInviteEmail(String lang, String spaceId, Long fromMemberId, String email);
 
     /**
      * send an invitation space notification email.
@@ -664,12 +676,12 @@ public interface IMemberService extends IService<MemberEntity> {
     List<MemberDTO> getInactiveMemberDtoByMobile(String mobile);
 
     /**
-     * get inactive space by email.
+     * get inactive member by email.
      *
      * @param email email
      * @return MemberDto List
      */
-    List<MemberDTO> getInactiveMemberDtoByEmail(String email);
+    List<MemberDTO> getInactiveMemberByEmail(String email);
 
     /**
      * get the user's space's amount.

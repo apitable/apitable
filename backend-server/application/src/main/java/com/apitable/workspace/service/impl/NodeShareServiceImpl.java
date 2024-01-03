@@ -37,8 +37,8 @@ import com.apitable.core.support.tree.DefaultTreeBuildFactory;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.HttpContextUtil;
 import com.apitable.core.util.SpringContextHolder;
-import com.apitable.organization.dto.MemberDTO;
-import com.apitable.organization.mapper.MemberMapper;
+import com.apitable.organization.entity.MemberEntity;
+import com.apitable.organization.service.IMemberService;
 import com.apitable.organization.service.ITeamService;
 import com.apitable.shared.constants.AuditConstants;
 import com.apitable.shared.listener.event.AuditSpaceEvent;
@@ -52,10 +52,11 @@ import com.apitable.space.entity.LabsApplicantEntity;
 import com.apitable.space.entity.SpaceEntity;
 import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.space.enums.LabsFeatureEnum;
-import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.space.service.ILabsApplicantService;
+import com.apitable.space.service.ISpaceService;
 import com.apitable.space.vo.SpaceGlobalFeature;
-import com.apitable.workspace.dto.MemberInfoDTO;
+import com.apitable.user.entity.UserEntity;
+import com.apitable.user.service.IUserService;
 import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.NodeSharePropsDTO;
@@ -100,10 +101,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class NodeShareServiceImpl implements INodeShareService {
 
     @Resource
-    private SpaceMapper spaceMapper;
+    private IUserService iUserService;
 
     @Resource
-    private MemberMapper memberMapper;
+    private ISpaceService iSpaceService;
+
+    @Resource
+    private ITeamService iTeamService;
+
+    @Resource
+    private IMemberService iMemberService;
 
     @Resource
     private NodeMapper nodeMapper;
@@ -130,9 +137,6 @@ public class NodeShareServiceImpl implements INodeShareService {
     private ControlTemplate controlTemplate;
 
     @Resource
-    private ITeamService iTeamService;
-
-    @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
     @Override
@@ -151,17 +155,17 @@ public class NodeShareServiceImpl implements INodeShareService {
                 JSONUtil.toBean(setting.getProps(), NodeShareSettingPropsVO.class));
             // turn on sharers
             String spaceId = nodeMapper.selectSpaceIdByNodeIdIncludeDeleted(nodeId);
-            MemberDTO dto =
-                memberMapper.selectDtoByUserIdAndSpaceId(setting.getUpdatedBy(), spaceId);
+            MemberEntity member =
+                iMemberService.getByUserIdAndSpaceId(setting.getUpdatedBy(), spaceId);
             // compatible member no longer in space station
-            if (dto == null) {
+            if (member == null) {
                 settingInfoVO.setOperatorHasPermission(false);
                 return settingInfoVO;
             }
-            settingInfoVO.setShareOpenOperator(dto.getMemberName());
+            settingInfoVO.setShareOpenOperator(member.getMemberName());
             // Obtain the node permissions of the sharer
             ControlRoleDict roleDict =
-                controlTemplate.fetchNodeRole(dto.getId(), Collections.singletonList(nodeId));
+                controlTemplate.fetchNodeRole(member.getId(), Collections.singletonList(nodeId));
             if (roleDict.isEmpty()) {
                 settingInfoVO.setOperatorHasPermission(false);
             } else {
@@ -284,7 +288,7 @@ public class NodeShareServiceImpl implements INodeShareService {
         // settings
         nodeShareInfoVo.setSpaceId(node.getSpaceId());
         // Check whether the space has been deleted
-        SpaceEntity space = spaceMapper.selectBySpaceId(node.getSpaceId());
+        SpaceEntity space = iSpaceService.getBySpaceId(node.getSpaceId());
         ExceptionUtil.isFalse(Objects.isNull(space) || !Objects.isNull(space.getPreDeletionTime()),
             NodeException.SHARE_EXPIRE);
         SpaceGlobalFeature feature = JSONUtil.toBean(space.getProps(), SpaceGlobalFeature.class);
@@ -315,14 +319,16 @@ public class NodeShareServiceImpl implements INodeShareService {
             nodeShareInfoVo.setAllowEdit(props.getBool("canBeEdited", false));
         }
         // Get the last operator info
-        MemberInfoDTO memberInfo =
-            memberMapper.selectIdByUserIdAndSpaceIdExcludeDelete(setting.getUpdatedBy(),
+        MemberEntity member =
+            iMemberService.getByUserIdAndSpaceIdIncludeDeleted(setting.getUpdatedBy(),
                 node.getSpaceId());
-        ExceptionUtil.isNotNull(memberInfo, NodeException.SHARE_EXPIRE);
-        nodeShareInfoVo.setIsDeleted(memberInfo.getIsDeleted());
-        MemberDTO member = memberMapper.selectDtoByMemberId(memberInfo.getId());
+        ExceptionUtil.isNotNull(member, NodeException.SHARE_EXPIRE);
+        nodeShareInfoVo.setIsDeleted(member.getIsDeleted());
         nodeShareInfoVo.setLastModifiedBy(member.getMemberName());
-        nodeShareInfoVo.setLastModifiedAvatar(member.getAvatar());
+        UserEntity updatedBy = iUserService.getById(setting.getUpdatedBy());
+        if (updatedBy != null) {
+            nodeShareInfoVo.setLastModifiedAvatar(updatedBy.getAvatar());
+        }
         nodeShareInfoVo.setHasLogin(HttpContextUtil.hasSession());
         // If it is a directory node, query the permissions of the sharer and exclude child nodes without permissions.
         List<String> nodeIds = CollUtil.newArrayList(node.getNodeId());
@@ -335,8 +341,8 @@ public class NodeShareServiceImpl implements INodeShareService {
             }
         }
 
-        ControlRoleDict roleDict = controlTemplate.fetchNodeRole(memberInfo.getId(), nodeIds);
-        if (roleDict.isEmpty() && memberInfo.getIsDeleted()) {
+        ControlRoleDict roleDict = controlTemplate.fetchNodeRole(member.getId(), nodeIds);
+        if (roleDict.isEmpty() && member.getIsDeleted()) {
             Long rootTeamId = iTeamService.getRootTeamId(node.getSpaceId());
             roleDict = controlTemplate.fetchNodeRoleByTeamId(rootTeamId, nodeIds);
         }
@@ -468,8 +474,8 @@ public class NodeShareServiceImpl implements INodeShareService {
         String nodeSpaceId = nodeMapper.selectSpaceIdByNodeId(nodeSetting.getNodeId());
         ExceptionUtil.isNotNull(nodeSpaceId, NodeException.SHARE_EXPIRE);
         // Get the last operator to determine if it does not exist.
-        MemberInfoDTO member =
-            memberMapper.selectIdByUserIdAndSpaceIdExcludeDelete(nodeSetting.getUpdatedBy(),
+        MemberEntity member =
+            iMemberService.getByUserIdAndSpaceIdIncludeDeleted(nodeSetting.getUpdatedBy(),
                 nodeSpaceId);
         ExceptionUtil.isNotNull(member.getId(), NodeException.SHARE_EXPIRE);
         // Obtain the node ID of the node and its child descendants.

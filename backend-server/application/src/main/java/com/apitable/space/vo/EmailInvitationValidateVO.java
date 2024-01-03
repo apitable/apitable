@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.organization.vo;
+package com.apitable.space.vo;
 
 import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -25,12 +25,12 @@ import lombok.Data;
 
 /**
  * <p>
- * Invitation Information View.
+ * Email Invitation Validate View.
  * </p>
  */
 @Data
-@Schema(description = "Invitation Information View")
-public class InviteInfoVo {
+@Schema(description = "Email Invitation Validate View")
+public class EmailInvitationValidateVO {
 
     @Schema(description = "Space ID", example = "spcyQkKp9XJEl")
     private String spaceId;
@@ -47,6 +47,10 @@ public class InviteInfoVo {
     @Schema(description = "Whether it is in login status", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isLogin;
+
+    @Schema(description = "Whether the user's email matches the invitation email", example = "true")
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean isMatch;
 
     @Schema(description = "Whether the invited mailbox has an account bound", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)

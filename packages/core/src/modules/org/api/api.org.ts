@@ -254,10 +254,9 @@ export function updateMemberTeam(memberIds: string[], newTeamIds: string[], preT
 /**
  * Invite members(batch available)
  */
-export function sendInvite(invite: IInviteMemberList[], nodeId?: string, nvcVal?: string) {
-  return axios.post(Url.SEND_INVITE, {
+export function sendInvite(spaceId: string, invite: IInviteMemberList[], nvcVal?: string) {
+  return axios.post(urlcat(Url.SEND_EMAIL_INVITATION, { spaceId }), {
     invite,
-    nodeId,
     data: nvcVal,
   });
 }
@@ -267,8 +266,8 @@ export function sendInvite(invite: IInviteMemberList[], nodeId?: string, nvcVal?
  *
  * @param email strict email format
  */
-export function reSendInvite(email: string) {
-  return axios.post(Url.RESEND_INVITE, {
+export function reSendInvite(spaceId: string, email: string) {
+  return axios.post(urlcat(Url.RESEND_EMAIL_INVITATION, { spaceId }), {
     email,
   });
 }
@@ -276,12 +275,16 @@ export function reSendInvite(email: string) {
 /**
  * Invite Email Verify
  * @param token one-time invite token
- * @param from inviter
  */
 export function inviteEmailVerify(token: string) {
-  return axios.post(Url.INVITE_EMAIL_VERIFY, {
-    token,
-  });
+  return axios.post(urlcat(Url.VALID_EMAIL_INVITATION, { token }));
+}
+
+/**
+ * Accept email invitation.
+ */
+export function acceptEmailInvitation(spaceId: string, inviteToken: string) {
+  return axios.post(urlcat(Url.ACCEPT_EMAIL_INVITATION, { spaceId, inviteToken }));
 }
 
 /**
