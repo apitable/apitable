@@ -45,6 +45,7 @@ interface Props {
 
 const GapBox = styled(Box)<{ gap: string; columnGap?: string; rowGap?: string }>`
   flex-wrap: wrap;
+  white-space: pre;
   ${(props) =>
     props.rowGap &&
     css`
