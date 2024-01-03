@@ -593,6 +593,10 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
             .nodeName("embed_page")
             .extra(nodeRelRo)
             .build();
+        DefaultSubscriptionFeature feature = new DefaultSubscriptionFeature();
+        SubscriptionInfo subscriptionInfo = new MockSubscriptionInfo(feature);
+        Mockito.doReturn(subscriptionInfo).when(entitlementServiceFacade)
+            .getSpaceSubscription(userSpace.getSpaceId());
         String nodeId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), op);
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(),
             userSpace.getSpaceId());
