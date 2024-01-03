@@ -336,10 +336,8 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
               judgeShowAIEntrance()
                 ? contextItemMap.get(ContextItemKey.addAi)(() => {
                   if (!spaceInfo?.isEnableChatbot) {
-                    const version = getReleaseVersion();
-                    const env = getEnvVariables();
-                    if (!env.ENV.includes('apitable')) {
-                      if (version !== 'development') {
+                    if (!getEnvVariables().IS_APITABLE) {
+                      if (getReleaseVersion() !== 'development') {
                         window.open(getAIOpenFormUrl());
                         return;
                       }
