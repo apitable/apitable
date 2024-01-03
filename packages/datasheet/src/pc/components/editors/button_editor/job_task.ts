@@ -26,15 +26,14 @@ import { automationTaskMap } from 'pc/components/editors/button_editor/automatio
 
 type Job = {
   jobId: string;
-  task: () => Promise<{success:boolean}>
+  task: () => Promise<{ success: boolean }>;
 };
 export const useButtonJobTask = () => {
-
   const [taskQueue, setTaskQueue] = useState<Job[]>([]);
   const [tick, setTick] = useState(nanoid());
 
   const setAutomationTaskMap = useSetAtom(automationTaskMap);
-  const runningRef : MutableRefObject<boolean>= useRef(false);
+  const runningRef: MutableRefObject<boolean> = useRef(false);
 
   const refreshTick = useCallback(() => {
     setTick(nanoid());
@@ -45,59 +44,72 @@ export const useButtonJobTask = () => {
   });
 
   const processTaskQueue = useCallback(() => {
-    if(runningRef.current) {
+    if (runningRef.current) {
       return;
     }
 
     if (taskQueue.length > 0) {
       const { jobId, task } = taskQueue[0];
       runningRef.current = true;
-      task().then((resp) => {
-        setTaskQueue((prevQueue) => prevQueue.slice(1));
-        setAutomationTaskMap(d => produce(d, draft => {
-          if(resp.success) {
-            draft.set(jobId, 'success');
-          }else {
-            draft.set(jobId, 'initial');
+      task()
+        .then((resp) => {
+          setTaskQueue((prevQueue) => prevQueue.slice(1));
+          setAutomationTaskMap((d) =>
+            produce(d, (draft) => {
+              if (resp.success) {
+                draft.set(jobId, 'success');
+              } else {
+                draft.set(jobId, 'initial');
+              }
+            }),
+          );
+          runningRef.current = false;
+          if (resp.success) {
+            setTimeout(() => {
+              setAutomationTaskMap((d) =>
+                produce(d, (draft) => {
+                  draft.set(jobId, 'initial');
+                }),
+              );
+            }, 3000);
           }
-        }));
-        runningRef.current = false;
-        if(resp.success) {
-          setTimeout(() => {
-            setAutomationTaskMap(d => produce(d, draft => {
+          refreshTick();
+        })
+        .catch(() => {
+          setTaskQueue((prevQueue) => prevQueue.slice(1));
+          setAutomationTaskMap((d) =>
+            produce(d, (draft) => {
               draft.set(jobId, 'initial');
-            }));
-          }, 1200);
-        }
-        refreshTick();
-      }).catch(() => {
-        setTaskQueue((prevQueue) => prevQueue.slice(1));
-        setAutomationTaskMap(d => produce(d, draft => {
-          draft.set(jobId, 'initial');
-        }));
-        runningRef.current = false;
-        refreshTick();
-      });
+            }),
+          );
+          runningRef.current = false;
+          refreshTick();
+        });
     }
   }, [setAutomationTaskMap, taskQueue, refreshTick]);
 
-  const handleTaskStart = useCallback((recordId: string, fieldId: string, task: () => Promise<{success: boolean}>) => {
-    const key = `${recordId}-${fieldId}`;
+  const handleTaskStart = useCallback(
+    (recordId: string, fieldId: string, task: () => Promise<{ success: boolean }>) => {
+      const key = `${recordId}-${fieldId}`;
 
-    setAutomationTaskMap(d => produce(d, draft => {
-      draft.set(key, 'running');
-    }));
+      setAutomationTaskMap((d) =>
+        produce(d, (draft) => {
+          draft.set(key, 'running');
+        }),
+      );
 
-    if(taskQueue.find(item => item.jobId === key)) {
-      return;
-    }
+      if (taskQueue.find((item) => item.jobId === key)) {
+        return;
+      }
 
-    setTaskQueue((prevQueue) => [...prevQueue, { jobId: key, task }]);
-    refreshTick();
-  }, [setAutomationTaskMap, refreshTick, taskQueue]);
+      setTaskQueue((prevQueue) => [...prevQueue, { jobId: key, task }]);
+      refreshTick();
+    },
+    [setAutomationTaskMap, refreshTick, taskQueue],
+  );
 
   useEffect(() => {
-    if(!runningRef.current) {
+    if (!runningRef.current) {
       processTaskQueue();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

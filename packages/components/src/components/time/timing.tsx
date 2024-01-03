@@ -43,17 +43,18 @@ interface Props {
   onUpdate?: (value: Props['value']) => void;
 }
 
-const GapBox = styled(Box)<{ gap: string }>`
+const GapBox = styled(Box)<{ gap: string; columnGap?: string; rowGap?: string }>`
   flex-wrap: wrap;
   ${(props) =>
-    props.gap &&
+    props.rowGap &&
     css`
-      gap: ${props.gap};
+      row-gap: ${props.rowGap};
     `}
-`;
-
-const BoxWithGap = styled(Box)<{ gap: string }>`
-  flex-wrap: wrap;
+  ${(props) =>
+    props.columnGap &&
+    css`
+      column-gap: ${props.columnGap};
+    `}
   ${(props) =>
     props.gap &&
     css`
@@ -93,7 +94,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
       const minutes = CronConverter.getNumericProps(value, 'minute', 0);
 
       return (
-        <GapBox display={'flex'} alignItems={'center'}>
+        <GapBox display={'flex'} alignItems={'center'} rowGap={'8px'}>
           <Typography variant={'body3'} color={colors.textCommonPrimary}>
             {Maybe.encase(() => t(Strings.starting_from_midnight)).orDefault('从每天 0 点起，')}
           </Typography>
@@ -135,7 +136,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
 
           <GapBox display={'flex'} flex={'0 0 max-content'} alignItems={'center'} gap={'8px'} flexDirection={'row'}>
             <Typography variant={'body3'} color={colors.textCommonPrimary}>
-              {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
+              {Maybe.encase(() => t(Strings.by_in)).orDefault('的')}
             </Typography>
 
             <DropdownSelect
@@ -173,7 +174,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
     case 'week': {
       const dayInMonths = CronConverter.getLists(value, 'dayOfWeek');
       return (
-        <BoxWithGap display={'flex'} alignItems={'center'}>
+        <GapBox display={'flex'} alignItems={'center'} rowGap={'8px'} columnGap={'8px'} gap={'8px'}>
           <Box alignItems={'center'} display={'flex'} flex={' 0 0  max-content'}>
             <Typography variant={'body3'} color={colors.textCommonPrimary}>
               {Maybe.encase(() => t(Strings.every_week_at)).orDefault('Every weekday on')}
@@ -194,7 +195,7 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             />
           </Box>
 
-          <BoxWithGap display={'flex'} flexDirection={'8px'} alignItems={'center'} flex={'0 0 max-content'} gap={'8px'}>
+          <GapBox display={'flex'} flexDirection={'8px'} alignItems={'center'} flex={'0 0 max-content'} gap={'8px'}>
             <Box display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
               <Typography variant={'body3'} color={colors.textCommonPrimary}>
                 {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
@@ -211,8 +212,8 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
                 }}
               />
             </Box>
-          </BoxWithGap>
-        </BoxWithGap>
+          </GapBox>
+        </GapBox>
       );
     }
 
@@ -220,13 +221,13 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
       const monthInterval = CronConverter.getEveryProps(value, 'month', 1);
       const dayInMonths = CronConverter.getLists(value, 'dayOfMonth');
       return (
-        <BoxWithGap display={'flex'} alignItems={'center'} gap={'8px'}>
-          <BoxWithGap display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
+        <GapBox display={'flex'} alignItems={'center'} flexDirection={'row'} rowGap={'8px'}>
+          <GapBox display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
             <Typography variant={'body3'} color={colors.textCommonPrimary}>
               {Maybe.encase(() => t(Strings.schedule_start_month)).orDefault('从每年 1 月份起，')}
             </Typography>
-          </BoxWithGap>
-          <BoxWithGap display={'flex'} alignItems={'center'} flex={'0 0 max-content'} gap={'8px'}>
+          </GapBox>
+          <GapBox display={'flex'} alignItems={'center'} flex={'0 0 max-content'} gap={'8px'}>
             <Box display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
               <Typography variant={'body3'} color={colors.textCommonPrimary}>
                 {Maybe.encase(() => t(Strings.by_every)).orDefault('每隔')}
@@ -255,12 +256,12 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
             <Typography variant={'body3'} color={colors.textCommonPrimary}>
               {Maybe.encase(() => t(Strings.every_month_at)).orDefault('month(s)')}
             </Typography>
-          </BoxWithGap>
+          </GapBox>
 
-          <BoxWithGap display={'inline-flex'} alignItems={'center'} flex={'0 0 max-content'} gap={'8px'} flexDirection={'row'}>
+          <GapBox display={'inline-flex'} alignItems={'center'} flex={'0 0 max-content'} gap={'8px'} flexDirection={'row'}>
             <Box display={'flex'} alignItems={'center'} flex={'0 0 max-content'}>
               <Typography variant={'body3'} color={colors.textCommonPrimary}>
-                {Maybe.encase(() => t(Strings.by_on)).orDefault('on the')}
+                {Maybe.encase(() => t(Strings.by_on)).orDefault(' on the')}
               </Typography>
             </Box>
             <MultipleSelect
@@ -279,14 +280,14 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
                 handleUpdateItem(new CronConverter(value).setLists('dayOfMonth', list));
               }}
             />
-          </BoxWithGap>
+          </GapBox>
 
-          <BoxWithGap flex={'0 0 max-content'} alignItems={'center'} display={'flex'} gap={'8px'} flexDirection={'row'}>
-            <Box flex={'0 0 max-content'}>
+          <GapBox flex={'0 0 max-content'} alignItems={'center'} display={'flex'} flexDirection={'row'} gap={'8px'} paddingLeft={'8px'}>
+            <GapBox flex={'0 0 max-content'}>
               <Typography variant={'body3'} color={colors.textCommonPrimary}>
                 {Maybe.encase(() => t(Strings.by_at)).orDefault('at')}
               </Typography>
-            </Box>
+            </GapBox>
 
             <Box display={'flex'} alignItems={'center'} flex={'0 0 '}>
               <TimeInput
@@ -298,14 +299,14 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
                 }}
               />
             </Box>
-          </BoxWithGap>
-        </BoxWithGap>
+          </GapBox>
+        </GapBox>
       );
     }
     case 'day': {
       const dayInterval = CronConverter.getEveryProps(value, 'dayOfMonth', 1);
       return (
-        <GapBox display={'flex'} alignItems={'center'}>
+        <GapBox display={'flex'} alignItems={'center'} rowGap={'8px'}>
           <Typography variant={'body3'} color={colors.textCommonPrimary}>
             {Maybe.encase(() => t(Strings.schedule_start_day)).orDefault('从每月 1 日起，')}
           </Typography>
@@ -338,17 +339,14 @@ export const Timing: FC<Props> = ({ interval, readonly = false, value, onUpdate 
                 );
               }}
             />
-          </GapBox>
-
-          <Box display={'inline-flex'} alignItems={'center'}>
             <Typography variant={'body3'} color={colors.textCommonPrimary}>
               {Maybe.encase(() => t(Strings.every_day_at)).orDefault('天')}
             </Typography>
-          </Box>
+          </GapBox>
 
           <GapBox display={'flex'} alignItems={'center'} gap={'8px'} flex={'0 0 max-content'}>
             <Typography variant={'body3'} color={colors.textCommonPrimary}>
-              {Maybe.encase(() => t(Strings.by_at)).orDefault('的')}
+              {Maybe.encase(() => t(Strings.by_in)).orDefault(' at')}
             </Typography>
 
             <TimeInput
