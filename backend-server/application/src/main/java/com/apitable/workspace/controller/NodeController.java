@@ -119,6 +119,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.validation.annotation.Validated;
@@ -967,6 +968,23 @@ public class NodeController {
         Long memberId = LoginContext.me().getMemberId();
         List<NodeSearchResult> nodeInfos = iNodeService.recentList(spaceId, memberId);
         return ResponseData.success(nodeInfos);
+    }
+
+
+    /**
+     * get node description.
+     */
+    @GetResource(path = "/{nodeId}/description", requiredPermission = false)
+    @Operation(summary = "Get node description")
+    @Parameter(name = "nodeId", description = "node id", required = true,
+        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "nodRTGSy43DJ9")
+    public ResponseData<String> getNodeDescription(@PathVariable("nodeId") String nodeId) {
+        // The method includes determining whether a node exists.
+        String desc =
+            iNodeDescService.getNodeIdToDescMap(Stream.of(nodeId).toList())
+                .getOrDefault(nodeId, "");
+
+        return ResponseData.success(desc);
     }
 
 }

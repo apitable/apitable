@@ -49,4 +49,13 @@ public class MemberServiceImplTest extends AbstractIntegrationTest {
         long memberCount = iMemberService.getTotalActiveMemberCountBySpaceId(mockUserSpace.getSpaceId());
         assertThat(memberCount).isEqualTo(1L);
     }
+
+
+    @Test
+    void testGetMemberIdIsNull() {
+        MockUserSpace mockUserSpace = createSingleUserAndSpace();
+        Long memberId =
+            iMemberService.getMemberIdByUserIdAndSpaceId(mockUserSpace.getUserId(), "");
+        assertThat(memberId).isEqualTo(null);
+    }
 }

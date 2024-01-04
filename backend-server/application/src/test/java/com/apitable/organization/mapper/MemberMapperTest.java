@@ -148,6 +148,13 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
 
     @Test
     @Sql("/sql/unit-member-data.sql")
+    void testSelectIdByUserIdAndSpaceIdIsNull() {
+        Long id = memberMapper.selectIdByUserIdAndSpaceId(40L, "spc41");
+        assertThat(id).isEqualTo(null);
+    }
+
+    @Test
+    @Sql("/sql/unit-member-data.sql")
     void testSelectMemberIdByUserIdAndSpaceIdIncludeDeleted() {
         Long id = memberMapper.selectMemberIdByUserIdAndSpaceIdIncludeDeleted(41L, "spc41");
         assertThat(id).isEqualTo(41L);

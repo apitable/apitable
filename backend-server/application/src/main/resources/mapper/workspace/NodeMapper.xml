@@ -582,7 +582,7 @@
         WHERE node_id = #{nodeId} AND is_rubbish = 0
     </update>
 
-    <update id="updateExtraByNodeId">
+    <update id="insertExtraByNodeId">
         UPDATE ${tablePrefix}node
         SET extra = #{extra}
         WHERE node_id = #{nodeId} AND is_rubbish = 0
@@ -655,4 +655,10 @@
         SELECT * FROM ${tablePrefix}node
         WHERE parent_id = #{parentId} AND is_deleted = 0
     </select>
+
+    <update id="updateExtraByNodeId">
+        UPDATE ${tablePrefix}node
+        SET extra = JSON_MERGE_PATCH(`extra`, #{extra})
+        WHERE node_id = #{nodeId} AND is_rubbish = 0
+    </update>
 </mapper>
