@@ -15,7 +15,8 @@ package com.apitable.starter.databus.client.model;
 
 import java.util.Objects;
 import java.util.Arrays;
-import com.apitable.starter.databus.client.model.GanttColorType;
+import com.apitable.starter.databus.client.model.ButtonActionType;
+import com.apitable.starter.databus.client.model.IOpenLink;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -25,80 +26,50 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * GanttColorOption
+ * IButtonAction
  */
 @JsonPropertyOrder({
-  GanttColorOption.JSON_PROPERTY_COLOR,
-  GanttColorOption.JSON_PROPERTY_FIELD_ID,
-  GanttColorOption.JSON_PROPERTY_TYPE
+  IButtonAction.JSON_PROPERTY_OPEN_LINK,
+  IButtonAction.JSON_PROPERTY_TYPE
 })
 @jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
-public class GanttColorOption {
-  public static final String JSON_PROPERTY_COLOR = "color";
-  private Integer color;
-
-  public static final String JSON_PROPERTY_FIELD_ID = "field_id";
-  private String fieldId;
+public class IButtonAction {
+  public static final String JSON_PROPERTY_OPEN_LINK = "openLink";
+  private IOpenLink openLink;
 
   public static final String JSON_PROPERTY_TYPE = "type";
-  private GanttColorType type;
+  private ButtonActionType type;
 
-  public GanttColorOption() {
+  public IButtonAction() {
   }
 
-  public GanttColorOption color(Integer color) {
+  public IButtonAction openLink(IOpenLink openLink) {
     
-    this.color = color;
+    this.openLink = openLink;
     return this;
   }
 
    /**
-   * Get color
-   * @return color
+   * Get openLink
+   * @return openLink
   **/
   @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_COLOR)
+  @JsonProperty(JSON_PROPERTY_OPEN_LINK)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public Integer getColor() {
-    return color;
+  public IOpenLink getOpenLink() {
+    return openLink;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_COLOR)
+  @JsonProperty(JSON_PROPERTY_OPEN_LINK)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setColor(Integer color) {
-    this.color = color;
+  public void setOpenLink(IOpenLink openLink) {
+    this.openLink = openLink;
   }
 
 
-  public GanttColorOption fieldId(String fieldId) {
-    
-    this.fieldId = fieldId;
-    return this;
-  }
-
-   /**
-   * Get fieldId
-   * @return fieldId
-  **/
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_FIELD_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getFieldId() {
-    return fieldId;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_FIELD_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setFieldId(String fieldId) {
-    this.fieldId = fieldId;
-  }
-
-
-  public GanttColorOption type(GanttColorType type) {
+  public IButtonAction type(ButtonActionType type) {
     
     this.type = type;
     return this;
@@ -108,18 +79,18 @@ public class GanttColorOption {
    * Get type
    * @return type
   **/
-  @jakarta.annotation.Nonnull
+  @jakarta.annotation.Nullable
   @JsonProperty(JSON_PROPERTY_TYPE)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public GanttColorType getType() {
+  public ButtonActionType getType() {
     return type;
   }
 
 
   @JsonProperty(JSON_PROPERTY_TYPE)
-  @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setType(GanttColorType type) {
+  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  public void setType(ButtonActionType type) {
     this.type = type;
   }
 
@@ -131,23 +102,21 @@ public class GanttColorOption {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    GanttColorOption ganttColorOption = (GanttColorOption) o;
-    return Objects.equals(this.color, ganttColorOption.color) &&
-        Objects.equals(this.fieldId, ganttColorOption.fieldId) &&
-        Objects.equals(this.type, ganttColorOption.type);
+    IButtonAction ibuttonAction = (IButtonAction) o;
+    return Objects.equals(this.openLink, ibuttonAction.openLink) &&
+        Objects.equals(this.type, ibuttonAction.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(color, fieldId, type);
+    return Objects.hash(openLink, type);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class GanttColorOption {\n");
-    sb.append("    color: ").append(toIndentedString(color)).append("\n");
-    sb.append("    fieldId: ").append(toIndentedString(fieldId)).append("\n");
+    sb.append("class IButtonAction {\n");
+    sb.append("    openLink: ").append(toIndentedString(openLink)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("}");
     return sb.toString();

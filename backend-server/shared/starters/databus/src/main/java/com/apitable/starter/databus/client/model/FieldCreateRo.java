@@ -15,7 +15,6 @@ package com.apitable.starter.databus.client.model;
 
 import java.util.Objects;
 import java.util.Arrays;
-import com.apitable.starter.databus.client.model.GanttColorType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -25,80 +24,80 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * GanttColorOption
+ * FieldCreateRo
  */
 @JsonPropertyOrder({
-  GanttColorOption.JSON_PROPERTY_COLOR,
-  GanttColorOption.JSON_PROPERTY_FIELD_ID,
-  GanttColorOption.JSON_PROPERTY_TYPE
+  FieldCreateRo.JSON_PROPERTY_NAME,
+  FieldCreateRo.JSON_PROPERTY_PROPERTY,
+  FieldCreateRo.JSON_PROPERTY_TYPE
 })
 @jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
-public class GanttColorOption {
-  public static final String JSON_PROPERTY_COLOR = "color";
-  private Integer color;
+public class FieldCreateRo {
+  public static final String JSON_PROPERTY_NAME = "name";
+  private String name;
 
-  public static final String JSON_PROPERTY_FIELD_ID = "field_id";
-  private String fieldId;
+  public static final String JSON_PROPERTY_PROPERTY = "property";
+  private Object property = null;
 
   public static final String JSON_PROPERTY_TYPE = "type";
-  private GanttColorType type;
+  private String type;
 
-  public GanttColorOption() {
+  public FieldCreateRo() {
   }
 
-  public GanttColorOption color(Integer color) {
+  public FieldCreateRo name(String name) {
     
-    this.color = color;
+    this.name = name;
     return this;
   }
 
    /**
-   * Get color
-   * @return color
+   * Get name
+   * @return name
   **/
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_COLOR)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @jakarta.annotation.Nonnull
+  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-  public Integer getColor() {
-    return color;
+  public String getName() {
+    return name;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_COLOR)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setColor(Integer color) {
-    this.color = color;
+  @JsonProperty(JSON_PROPERTY_NAME)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
+  public void setName(String name) {
+    this.name = name;
   }
 
 
-  public GanttColorOption fieldId(String fieldId) {
+  public FieldCreateRo property(Object property) {
     
-    this.fieldId = fieldId;
+    this.property = property;
     return this;
   }
 
    /**
-   * Get fieldId
-   * @return fieldId
+   * Get property
+   * @return property
   **/
   @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_FIELD_ID)
+  @JsonProperty(JSON_PROPERTY_PROPERTY)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
 
-  public String getFieldId() {
-    return fieldId;
+  public Object getProperty() {
+    return property;
   }
 
 
-  @JsonProperty(JSON_PROPERTY_FIELD_ID)
+  @JsonProperty(JSON_PROPERTY_PROPERTY)
   @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setFieldId(String fieldId) {
-    this.fieldId = fieldId;
+  public void setProperty(Object property) {
+    this.property = property;
   }
 
 
-  public GanttColorOption type(GanttColorType type) {
+  public FieldCreateRo type(String type) {
     
     this.type = type;
     return this;
@@ -112,14 +111,14 @@ public class GanttColorOption {
   @JsonProperty(JSON_PROPERTY_TYPE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-  public GanttColorType getType() {
+  public String getType() {
     return type;
   }
 
 
   @JsonProperty(JSON_PROPERTY_TYPE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setType(GanttColorType type) {
+  public void setType(String type) {
     this.type = type;
   }
 
@@ -131,23 +130,23 @@ public class GanttColorOption {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    GanttColorOption ganttColorOption = (GanttColorOption) o;
-    return Objects.equals(this.color, ganttColorOption.color) &&
-        Objects.equals(this.fieldId, ganttColorOption.fieldId) &&
-        Objects.equals(this.type, ganttColorOption.type);
+    FieldCreateRo fieldCreateRo = (FieldCreateRo) o;
+    return Objects.equals(this.name, fieldCreateRo.name) &&
+        Objects.equals(this.property, fieldCreateRo.property) &&
+        Objects.equals(this.type, fieldCreateRo.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(color, fieldId, type);
+    return Objects.hash(name, property, type);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class GanttColorOption {\n");
-    sb.append("    color: ").append(toIndentedString(color)).append("\n");
-    sb.append("    fieldId: ").append(toIndentedString(fieldId)).append("\n");
+    sb.append("class FieldCreateRo {\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    property: ").append(toIndentedString(property)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("}");
     return sb.toString();

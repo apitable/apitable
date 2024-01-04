@@ -22,17 +22,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Gets or Sets AlarmUsersType
+ * Gets or Sets ButtonStyleType
  */
-public enum AlarmUsersType {
+public enum ButtonStyleType {
   
-  FIELD("field"),
+  BACKGROUND("Background"),
   
-  MEMBER("member");
+  ONLYTEXT("OnlyText");
 
   private String value;
 
-  AlarmUsersType(String value) {
+  ButtonStyleType(String value) {
     this.value = value;
   }
 
@@ -47,8 +47,8 @@ public enum AlarmUsersType {
   }
 
   @JsonCreator
-  public static AlarmUsersType fromValue(String value) {
-    for (AlarmUsersType b : AlarmUsersType.values()) {
+  public static ButtonStyleType fromValue(String value) {
+    for (ButtonStyleType b : ButtonStyleType.values()) {
       if (b.value.equals(value)) {
         return b;
       }

@@ -22,17 +22,17 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Gets or Sets AlarmUsersType
+ * Gets or Sets ButtonActionType
  */
-public enum AlarmUsersType {
+public enum ButtonActionType {
   
-  FIELD("field"),
+  OPENLINK("OpenLink"),
   
-  MEMBER("member");
+  TRIGGERAUTOMATION("TriggerAutomation");
 
   private String value;
 
-  AlarmUsersType(String value) {
+  ButtonActionType(String value) {
     this.value = value;
   }
 
@@ -47,8 +47,8 @@ public enum AlarmUsersType {
   }
 
   @JsonCreator
-  public static AlarmUsersType fromValue(String value) {
-    for (AlarmUsersType b : AlarmUsersType.values()) {
+  public static ButtonActionType fromValue(String value) {
+    for (ButtonActionType b : ButtonActionType.values()) {
       if (b.value.equals(value)) {
         return b;
       }

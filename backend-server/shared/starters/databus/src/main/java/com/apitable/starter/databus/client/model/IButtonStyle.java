@@ -15,7 +15,7 @@ package com.apitable.starter.databus.client.model;
 
 import java.util.Objects;
 import java.util.Arrays;
-import com.apitable.starter.databus.client.model.GanttColorType;
+import com.apitable.starter.databus.client.model.ButtonStyleType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -25,28 +25,24 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * GanttColorOption
+ * IButtonStyle
  */
 @JsonPropertyOrder({
-  GanttColorOption.JSON_PROPERTY_COLOR,
-  GanttColorOption.JSON_PROPERTY_FIELD_ID,
-  GanttColorOption.JSON_PROPERTY_TYPE
+  IButtonStyle.JSON_PROPERTY_COLOR,
+  IButtonStyle.JSON_PROPERTY_TYPE
 })
 @jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
-public class GanttColorOption {
+public class IButtonStyle {
   public static final String JSON_PROPERTY_COLOR = "color";
   private Integer color;
 
-  public static final String JSON_PROPERTY_FIELD_ID = "field_id";
-  private String fieldId;
-
   public static final String JSON_PROPERTY_TYPE = "type";
-  private GanttColorType type;
+  private ButtonStyleType type;
 
-  public GanttColorOption() {
+  public IButtonStyle() {
   }
 
-  public GanttColorOption color(Integer color) {
+  public IButtonStyle color(Integer color) {
     
     this.color = color;
     return this;
@@ -54,11 +50,12 @@ public class GanttColorOption {
 
    /**
    * Get color
+   * minimum: 0
    * @return color
   **/
-  @jakarta.annotation.Nullable
+  @jakarta.annotation.Nonnull
   @JsonProperty(JSON_PROPERTY_COLOR)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
   public Integer getColor() {
     return color;
@@ -66,39 +63,13 @@ public class GanttColorOption {
 
 
   @JsonProperty(JSON_PROPERTY_COLOR)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
+  @JsonInclude(value = JsonInclude.Include.ALWAYS)
   public void setColor(Integer color) {
     this.color = color;
   }
 
 
-  public GanttColorOption fieldId(String fieldId) {
-    
-    this.fieldId = fieldId;
-    return this;
-  }
-
-   /**
-   * Get fieldId
-   * @return fieldId
-  **/
-  @jakarta.annotation.Nullable
-  @JsonProperty(JSON_PROPERTY_FIELD_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-
-  public String getFieldId() {
-    return fieldId;
-  }
-
-
-  @JsonProperty(JSON_PROPERTY_FIELD_ID)
-  @JsonInclude(value = JsonInclude.Include.USE_DEFAULTS)
-  public void setFieldId(String fieldId) {
-    this.fieldId = fieldId;
-  }
-
-
-  public GanttColorOption type(GanttColorType type) {
+  public IButtonStyle type(ButtonStyleType type) {
     
     this.type = type;
     return this;
@@ -112,14 +83,14 @@ public class GanttColorOption {
   @JsonProperty(JSON_PROPERTY_TYPE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
 
-  public GanttColorType getType() {
+  public ButtonStyleType getType() {
     return type;
   }
 
 
   @JsonProperty(JSON_PROPERTY_TYPE)
   @JsonInclude(value = JsonInclude.Include.ALWAYS)
-  public void setType(GanttColorType type) {
+  public void setType(ButtonStyleType type) {
     this.type = type;
   }
 
@@ -131,23 +102,21 @@ public class GanttColorOption {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    GanttColorOption ganttColorOption = (GanttColorOption) o;
-    return Objects.equals(this.color, ganttColorOption.color) &&
-        Objects.equals(this.fieldId, ganttColorOption.fieldId) &&
-        Objects.equals(this.type, ganttColorOption.type);
+    IButtonStyle ibuttonStyle = (IButtonStyle) o;
+    return Objects.equals(this.color, ibuttonStyle.color) &&
+        Objects.equals(this.type, ibuttonStyle.type);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(color, fieldId, type);
+    return Objects.hash(color, type);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class GanttColorOption {\n");
+    sb.append("class IButtonStyle {\n");
     sb.append("    color: ").append(toIndentedString(color)).append("\n");
-    sb.append("    fieldId: ").append(toIndentedString(fieldId)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("}");
     return sb.toString();
