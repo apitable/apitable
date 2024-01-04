@@ -48,8 +48,7 @@ export const getUtcOptionList = () => {
   let list: IUtcOption[] = [];
 
   for (let i = 0; i < TIMEZONES.length; i++) {
-    const { abbr, offset, utc, isdst } = TIMEZONES[i]!;
-    if (isdst) continue;
+    const { abbr, offset, utc } = TIMEZONES[i]!;
     list = list.concat(utc.filter((tz: string) => !tz.includes('Etc/GMT')).map((tz: string) => {
       return {
         abbr,
