@@ -1,14 +1,15 @@
 import { IUnitValue } from '../../exports/store/interfaces';
-import { t,Strings } from '../../exports/i18n';
+import { t, Strings } from '../../exports/i18n';
 import { ButtonStyleType } from 'types';
 import { CollectType, SymbolAlign, IUnitIds, FieldType, DateFormat, TimeFormat } from 'types/field_types';
+import { AutomationConstant } from './button_field';
 export enum OtherTypeUnitId {
   Self = 'Self', // used to identify the current user
   Alien = 'Alien', // used to identify anonymous
 }
 
 // scientific notation threshold
-export const numberThresholdValue = 1e+16;
+export const numberThresholdValue = 1e16;
 
 export function polyfillOldData(cellValue: IUnitIds | null) {
   if (!cellValue) {
@@ -17,7 +18,7 @@ export function polyfillOldData(cellValue: IUnitIds | null) {
   if (!Array.isArray(cellValue)) {
     return null;
   }
-  return cellValue.map(item => {
+  return cellValue.map((item) => {
     if (typeof item === 'object') {
       // old data only returns unitId
       return (item as IUnitValue).unitId;
@@ -42,7 +43,7 @@ export const getFieldDefaultProperty = (fieldType: FieldType) => {
         text: t(Strings.button_text_click_start),
         style: {
           type: ButtonStyleType.Background,
-          color: 50,
+          color: AutomationConstant.defaultColor,
         },
         action: {},
       };
@@ -75,7 +76,7 @@ export const getFieldDefaultProperty = (fieldType: FieldType) => {
       return {
         symbol: '$',
         precision: 2,
-        symbolAlign: SymbolAlign.default
+        symbolAlign: SymbolAlign.default,
       };
     case FieldType.DateTime:
       return {
@@ -89,7 +90,7 @@ export const getFieldDefaultProperty = (fieldType: FieldType) => {
     case FieldType.Formula:
       return {
         expression: '',
-        datasheetId: ''
+        datasheetId: '',
       };
     case FieldType.LastModifiedBy:
       return {
@@ -125,7 +126,7 @@ export const getFieldDefaultProperty = (fieldType: FieldType) => {
     case FieldType.Number:
       return {
         precision: 0,
-        symbolAlign: SymbolAlign.right
+        symbolAlign: SymbolAlign.right,
       };
     case FieldType.Percent:
       return {
@@ -156,4 +157,3 @@ export const getFieldDefaultProperty = (fieldType: FieldType) => {
   }
   return null;
 };
-
