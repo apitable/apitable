@@ -1,3 +1,5 @@
+import org.springframework.boot.loader.tools.LoaderImplementation
+
 import java.nio.charset.StandardCharsets
 import java.time.LocalDateTime
 
@@ -71,7 +73,10 @@ dependencies {
     implementation libs.semver
     implementation libs.javax.ws
     implementation libs.jsoup
-    implementation libs.bundles.easyexcel
+    implementation(libs.bundles.easyexcel) {
+        exclude(group: 'org.apache.commons', module: 'commons-compress')
+    }
+    implementation(libs.commons.compress)
     implementation libs.bundles.hutool
     implementation(libs.bundles.pdfbox) {
         exclude(group: 'commons-logging', module: 'commons-logging')
@@ -79,8 +84,13 @@ dependencies {
     implementation libs.bundles.shedlock
 
     // for enterprise module
-    implementation libs.bundles.social
-    implementation libs.v.client
+    implementation(libs.bundles.social) {
+        exclude(group: 'com.thoughtworks.xstream', module: 'xstream')
+    }
+    implementation(libs.xstream)
+    implementation(libs.v.client) {
+        exclude(group: 'log4j', module: 'log4j')
+    }
     implementation libs.auth0
     implementation libs.pingpp
     implementation libs.stripe
@@ -124,6 +134,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 bootJar {
+    loaderImplementation = LoaderImplementation.CLASSIC
     mainClass.set('com.apitable.Application')
     manifest {
         attributes 'Start-Class': 'com.apitable.Application'
