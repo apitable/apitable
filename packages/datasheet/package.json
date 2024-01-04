@@ -203,7 +203,7 @@
     "store2": "^2.12.0",
     "styled-components": "5.3.6",
     "swr": "2.2.0",
-    "tiptap-markdown": "^0.8.8",
+    "turndown": "^7.1.2",
     "urlcat": "^2.0.4",
     "use-long-press": "^1.2.0",
     "uuid": "^9.0.1",
