@@ -526,8 +526,9 @@ public class NodeController {
                                            @RequestBody @Valid NodeUpdateOpRo nodeOpRo) {
         ExceptionUtil.isTrue(
             StrUtil.isNotBlank(nodeOpRo.getNodeName()) || ObjectUtil.isNotNull(nodeOpRo.getIcon())
-                || ObjectUtil.isNotNull(nodeOpRo.getCover()) || ObjectUtil.isNotNull(
-                nodeOpRo.getShowRecordHistory()), ParameterException.NO_ARG);
+                || ObjectUtil.isNotNull(nodeOpRo.getCover())
+                || ObjectUtil.isNotNull(nodeOpRo.getShowRecordHistory())
+                || ObjectUtil.isNotNull(nodeOpRo.getEmbedPage()), ParameterException.NO_ARG);
         Long userId = SessionContext.getUserId();
         // The method includes determining whether a node exists.
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
