@@ -24,6 +24,7 @@ import { useMemo } from 'react';
 import styled from 'styled-components';
 import {
   Box,
+  Divider,
   Dropdown,
   IconButton,
   IOverLayProps,
@@ -54,6 +55,8 @@ interface IRobotListItemCardProps {
   index?: number;
 }
 
+const StyledDivider = styled(Divider)``;
+
 const StyledMenu = styled(Box)`
   &:hover {
     background: var(--bgBglessHover, rgba(255, 255, 255, 0.08));
@@ -64,8 +67,7 @@ const StyledMenu = styled(Box)`
   border-radius: 4px;
 `;
 
-const StyledBox = styled(Box)`
-`;
+const StyledBox = styled(Box)``;
 
 interface INodeStep {
   item?: IRobotNodeTypeInfo;
@@ -135,10 +137,10 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
   const theme = useTheme();
   const readonlyStyle: React.CSSProperties = readonly
     ? {
-      cursor: 'not-allowed',
-      pointerEvents: 'none',
-      opacity: 0.5,
-    }
+        cursor: 'not-allowed',
+        pointerEvents: 'none',
+        opacity: 0.5,
+      }
     : { cursor: 'default' };
 
   const colors = useThemeColors();
@@ -246,7 +248,7 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
                         resourceId: robotCardInfo.resourceId,
                         scenario: AutomationScenario.node,
                         // @ts-ignore
-                        robot: robotCardInfo
+                        robot: robotCardInfo,
                       });
                     }}
                   >
@@ -254,6 +256,10 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
                       {t(Strings.check_run_history)}
                     </Typography>
                   </StyledMenu>
+
+                  <Box padding={'0 8px'}>
+                    <StyledDivider></StyledDivider>
+                  </Box>
 
                   <StyledMenu padding={'8px'} display={'inline-flex'} alignItems={'center'} onClick={handleDelete}>
                     <Typography variant={'body4'} color={'var(--textCommonPrimary)'}>
@@ -265,7 +271,6 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
             );
           }}
         </Dropdown>
-
       </Box>
 
       <Box display="flex" alignItems="center" margin={'0 8px'}>
@@ -285,7 +290,6 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
             </Tooltip>
           )}
         </Box>
-
       </Box>
 
       {historyDialog.dialogVisible && (
