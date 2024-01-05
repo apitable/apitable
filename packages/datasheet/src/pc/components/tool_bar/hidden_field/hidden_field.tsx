@@ -135,7 +135,7 @@ const FieldItem = ({
           <div className={styles.fieldIconAndTitle}>
             <div className={styles.iconType}>{getFieldTypeIcon(type)}</div>
             <div className={styles.fieldName}>
-              <HighlightWords keyword={keyword} words={name} />
+              <HighlightWords keyword={keyword} words={name} showTip />
             </div>
           </div>
           {fieldRole && <FieldPermissionLock isLock />}
