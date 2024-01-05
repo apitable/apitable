@@ -21,9 +21,9 @@ import React from 'react';
 import { makeIcon, IIconProps } from '../utils/icon';
 
 export const SelectSingleOutlined: React.FC<IIconProps> = makeIcon({
-    Path: ({ colors }) => <>
+  Path: ({ colors }) => <>
     <path d="M6.05144 7.125L7.56699 9.75C7.75944 10.0833 8.24056 10.0833 8.43301 9.75L9.94856 7.125C10.141 6.79167 9.90044 6.375 9.51554 6.375L6.48446 6.375C6.09956 6.375 5.85899 6.79167 6.05144 7.125Z" fill={ colors[0] }/>
-<path d="M8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1ZM2.5 8C2.5 4.96243 4.96243 2.5 8 2.5C11.0376 2.5 13.5 4.96243 13.5 8C13.5 11.0376 11.0376 13.5 8 13.5C4.96243 13.5 2.5 11.0376 2.5 8Z" fill={ colors[0] } fillRule="evenodd" clipRule="evenodd"/>
+    <path d="M8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1ZM2.5 8C2.5 4.96243 4.96243 2.5 8 2.5C11.0376 2.5 13.5 4.96243 13.5 8C13.5 11.0376 11.0376 13.5 8 13.5C4.96243 13.5 2.5 11.0376 2.5 8Z" fill={ colors[0] } fillRule="evenodd" clipRule="evenodd"/>
 
   </>,
   name: 'select_single_outlined',

@@ -17,11 +17,11 @@
  */
 // @ts-ignore
 import { IWizardsConfig, Player, SystemConfig } from '@apitable/core';
+import { modifyWizardConfig } from 'pc/common/wizard';
 import { startActions, TriggerCommands } from '../apphook/trigger_commands';
 import { isEventStateMatch, isRulesPassed, isTimeRulePassed } from './rules';
 // @ts-ignore
 import { getPlayerHooks, updatePlayerConfig } from 'enterprise/guide/utils';
-import { modifyWizardConfig } from 'pc/common/wizard';
 
 // const Triggers = SystemConfig.player.trigger;
 
@@ -73,13 +73,6 @@ export function init() {
       const validTriggers = allTriggerIds.filter((triggerId) => {
         const curTrigger = triggers.find((item: any) => item.id === triggerId);
         if (!curTrigger) return;
-
-        if (
-          triggerId ===
-          'workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_aitable],[open_guide_wizards([105, 115, 104])]'
-        ) {
-          debugger;
-        }
         const eventMatch = isEventStateMatch(args, curTrigger.eventState);
         const timeRulePassed = isTimeRulePassed((curTrigger as any).startTime, (curTrigger as any).endTime);
         const rulesPassed = isRulesPassed(config?.player.rule, curTrigger.rules);

@@ -21,7 +21,7 @@ import React from 'react';
 import { makeIcon, IIconProps } from '../utils/icon';
 
 export const DescriptionFilled: React.FC<IIconProps> = makeIcon({
-    Path: ({ colors }) => <>
+  Path: ({ colors }) => <>
     <path d="M2.75 1.5C2.05964 1.5 1.5 2.05964 1.5 2.75V13.25C1.5 13.9404 2.05964 14.5 2.75 14.5H13.25C13.9404 14.5 14.5 13.9404 14.5 13.25V2.75C14.5 2.05964 13.9404 1.5 13.25 1.5H2.75ZM4 6C4 5.58579 4.33579 5.25 4.75 5.25H9.375C9.78921 5.25 10.125 5.58579 10.125 6C10.125 6.41421 9.78921 6.75 9.375 6.75H4.75C4.33579 6.75 4 6.41421 4 6ZM4 10C4 9.58579 4.33579 9.25 4.75 9.25H11.25C11.6642 9.25 12 9.58579 12 10C12 10.4142 11.6642 10.75 11.25 10.75H4.75C4.33579 10.75 4 10.4142 4 10Z" fill={ colors[0] } fillRule="evenodd" clipRule="evenodd"/>
 
   </>,

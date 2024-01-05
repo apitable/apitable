@@ -1,3 +1,7 @@
+export { EmbedFilled } from './embed_filled';
+export { EmbedOutlined } from './embed_outlined';
+export { CursorButtonFilled } from './cursor_button_filled';
+export { CursorButtonOutlined } from './cursor_button_outlined';
 export { PlaceholderFilled } from './placeholder_filled';
 export { PlaceholderOutlined } from './placeholder_outlined';
 export { OneWayLinkFilled } from './one_way_link_filled';
@@ -89,6 +93,7 @@ export { Headline2Filled } from './headline_2_filled';
 export { SubtractCircleColorFilled } from './subtract_circle_color_filled';
 export { InfoCircleColorFilled } from './info_circle_color_filled';
 export { WarnCircleColorFilled } from './warn_circle_color_filled';
+export { DangerCircleColorFilled } from './danger_circle_color_filled';
 export { CheckCircleColorFilled } from './check_circle_color_filled';
 export { LivechatFilled } from './liveChat_filled';
 export { SilverDarkFilled } from './silver_dark_filled';
@@ -135,11 +140,7 @@ export { WechatpayColorFilled } from './wechatpay_color_filled';
 export { WechatpayFilled } from './wechatpay_filled';
 export { WechatFilled } from './wechat_filled';
 export { WecomFilled } from './wecom_filled';
-export {
-  EmailfeedbackOutlined,
-  EmailfeedbackOutlined as ColumnEmailFilled,
-  EmailfeedbackOutlined as ColumnEmailNonzeroFilled,
-} from './emailfeedback_outlined';
+export { EmailfeedbackOutlined, EmailfeedbackOutlined as ColumnEmailFilled, EmailfeedbackOutlined as ColumnEmailNonzeroFilled } from './emailfeedback_outlined';
 export { CommentBgFilled } from './comment_bg_filled';
 export { SelectMarkFilled } from './select_mark_filled';
 export { LogoTextFilled } from './logo_text_filled';
@@ -166,4 +167,3 @@ export { LogoPurpleFilled } from './logo_purple_filled';
 export { FitviewOutlined } from './fitview_outlined';
 export { VikabyFilled } from './vikaby_filled';
 export { VikabyOutlined } from './vikaby_outlined';
-export { CursorButtonOutlined } from './cursor_button_outlined';

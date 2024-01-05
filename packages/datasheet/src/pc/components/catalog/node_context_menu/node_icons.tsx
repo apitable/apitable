@@ -54,8 +54,8 @@ import {
   FolderRightOutlined,
   RobotOutlined,
   RefreshOutlined,
+  EmbedOutlined,
 } from '@apitable/icons';
-
 /**
  * Node icon type, external use of this enumeration as configuration
  *
@@ -101,6 +101,7 @@ export enum NodeIcon {
   Ai = 'Ai',
   AddAutomation = 'add_automation',
   CreateBackup = 'CreateBackup',
+  AddEmbed = 'add_embed',
 }
 
 // Enumeration and Resource Location Matching Table
@@ -146,6 +147,7 @@ export const nodeIconImportMap: {
   [NodeIcon.MoveTo]: FolderRightOutlined,
   [NodeIcon.Ai]: RobotOutlined,
   [NodeIcon.CreateBackup]: RefreshOutlined,
+  [NodeIcon.AddEmbed]: EmbedOutlined,
 };
 
 /**

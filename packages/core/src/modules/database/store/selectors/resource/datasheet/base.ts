@@ -143,49 +143,51 @@ export const getFieldPermissionMapBase = (state: IReduxState, id?: string | void
   return datasheetPack?.fieldPermissionMap;
 };
 
-export const getFieldPermissionMap = createCachedSelector<IReduxState,
+export const getFieldPermissionMap = createCachedSelector<
+  IReduxState,
   string | undefined | void,
   IFieldPermissionMap | undefined,
   IViewProperty | undefined,
   string | undefined | void,
-  IFieldPermissionMap | undefined>(
-    [
-      getFieldPermissionMapBase,
-      state => {
-        const snapshot = getSnapshot(state)!;
-        return getViewById(snapshot, state.pageParams?.viewId || '');
-      },
-      state => state.pageParams?.mirrorId,
-    ],
+  IFieldPermissionMap | undefined
+>(
+  [
+    getFieldPermissionMapBase,
+    (state) => {
+      const snapshot = getSnapshot(state)!;
+      return getViewById(snapshot, state.pageParams?.viewId || '');
+    },
+    (state) => state.pageParams?.mirrorId,
+  ],
 
-    (fieldPermissionMap: IFieldPermissionMap | undefined, view: IViewProperty | undefined, mirrorId?: string | void) => {
-      if (!mirrorId) {
-        return fieldPermissionMap;
-      }
-      if (mirrorId && view && typeof view.displayHiddenColumnWithinMirror === 'boolean' && !view.displayHiddenColumnWithinMirror) {
-        const _fieldPermissionMap = {};
-        for (const v of view.columns) {
-          if (!v.hidden) continue;
-          _fieldPermissionMap[v.fieldId] = {
-            role: Role.None,
-            setting: {
-              formSheetAccessible: true,
-            },
-            permission: {
-              editable: false,
-              readable: false
-            },
-            manageable: false
-          };
-        }
-        return {
-          ...fieldPermissionMap,
-          ..._fieldPermissionMap
-        };
-      }
+  (fieldPermissionMap: IFieldPermissionMap | undefined, view: IViewProperty | undefined, mirrorId?: string | void) => {
+    if (!mirrorId) {
       return fieldPermissionMap;
     }
-  )(defaultKeySelector);
+    if (mirrorId && view && typeof view.displayHiddenColumnWithinMirror === 'boolean' && !view.displayHiddenColumnWithinMirror) {
+      const _fieldPermissionMap = {};
+      for (const v of view.columns) {
+        if (!v.hidden) continue;
+        _fieldPermissionMap[v.fieldId] = {
+          role: Role.None,
+          setting: {
+            formSheetAccessible: true,
+          },
+          permission: {
+            editable: false,
+            readable: false,
+          },
+          manageable: false,
+        };
+      }
+      return {
+        ...fieldPermissionMap,
+        ..._fieldPermissionMap,
+      };
+    }
+    return fieldPermissionMap;
+  }
+)(defaultKeySelector);
 
 export const getFieldRoleByFieldId = (fieldPermissionMap: IFieldPermissionMap | undefined, fieldId: string): null | Role => {
   if (!fieldPermissionMap || !fieldPermissionMap[fieldId]) {
@@ -276,7 +278,7 @@ export const getNodeDesc = (state: IReduxState, dsId?: string): null | INodeDesc
   }
   try {
     return JSON.parse(datasheet.description);
-  }catch (e) {
+  } catch (e) {
     return null;
   }
 };
@@ -308,30 +310,13 @@ export const getViewsList = (state: IReduxState, dsId?: string) => {
 };
 
 export const getNodeId = (state: IReduxState) => {
-  const { datasheetId, automationId, folderId, formId, dashboardId, mirrorId,aiId } = state.pageParams;
+  const { mirrorId, nodeId } = state.pageParams;
   // mirror is special,  url will contain mirrorId and datasheetId at the same time, so mirrorId need to be judged first
   if (mirrorId) {
     return mirrorId;
   }
-  if (automationId) {
-    return automationId;
-  }
-  if (datasheetId) {
-    return datasheetId;
-  }
-  if (folderId) {
-    return folderId;
-  }
-  if (formId) {
-    return formId;
-  }
-  if (dashboardId) {
-    return dashboardId;
-  }
-  if (aiId) {
-    return aiId;
-  }
-  return '';
+
+  return nodeId || '';
 };
 
 export const getToolbarMenuCardState = (state: IReduxState) => {
@@ -391,7 +376,7 @@ export const getActiveViewId = (state: IReduxState, id?: string | void) => {
   if (!views) {
     return pageViewId;
   }
-  if (!views.find(item => item.id === pageViewId)) {
+  if (!views.find((item) => item.id === pageViewId)) {
     return views[0]?.id;
   }
   return pageViewId;
@@ -402,7 +387,7 @@ export const getActiveView = (state: IReduxState, id?: string | void) => {
   const views = datasheet?.snapshot.meta.views;
   const pageViewId = state.pageParams.viewId;
   if (views) {
-    const view = views.find(item => item.id === pageViewId);
+    const view = views.find((item) => item.id === pageViewId);
     if (view) {
       return view;
     }
@@ -437,7 +422,7 @@ export const getViewInNode = (state: IReduxState, datasheetId: string, viewId?: 
 };
 
 export const getViewById = (snapshot: ISnapshot, viewId: string) => {
-  return snapshot?.meta.views.find(view => view.id === viewId);
+  return snapshot?.meta.views.find((view) => view.id === viewId);
 };
 
 export const getCloseSyncViewIds = (state: IReduxState, dsId: string) => {
@@ -468,6 +453,6 @@ export const getNodeViewWithoutFilterInfo = (snapshot: ISnapshot, viewId: string
     type: originView!.type,
     rows: originView!.rows,
     ...temporaryView,
-    filterInfo: originView?.filterInfo
+    filterInfo: originView?.filterInfo,
   } as IViewProperty;
 };

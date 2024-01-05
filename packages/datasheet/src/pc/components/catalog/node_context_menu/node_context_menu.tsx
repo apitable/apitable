@@ -266,6 +266,25 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
           Player.applyFilters(Events.get_context_menu_file_more, data);
           break;
         }
+        case ConfigConstant.ContextMenuType.EMBED_PAGE: {
+          data = [
+            [
+              contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
+              contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
+              contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
+              contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
+            ],
+            [
+              contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+              contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
+              contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
+              contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
+            ],
+            [contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable)],
+          ];
+          Player.applyFilters(Events.get_context_menu_file_more, data);
+          break;
+        }
         case ConfigConstant.ContextMenuType.MIRROR: {
           data = [
             [
@@ -358,6 +377,9 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
 
               contextItemMap.get(ContextItemKey.AddAutomation)(() => {
                 addTreeNode(targetId, ConfigConstant.NodeType.AUTOMATION);
+              }),
+              contextItemMap.get(ContextItemKey.AddEmbed)(() => {
+                addTreeNode(targetId, ConfigConstant.NodeType.EMBED_PAGE);
               }),
             ],
             [

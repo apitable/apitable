@@ -58,3 +58,4 @@ export const NEW_CHAT_BOT = PREFIX + 'NEW_CHAT_BOT';
 export const NEW_FORM_TEMPLATE = PREFIX + 'NEW_FORM_TEMPLATE';
 export const NEW_DASHBOARD = PREFIX + 'NEW_DASHBOARD';
 export const NODE_INFO = PREFIX + 'NODE_INFO';
+export const NEW_EMBED = PREFIX + 'NEW_EMBED';
