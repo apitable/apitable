@@ -205,7 +205,7 @@
     "styled-components": "5.3.6",
     "swr": "2.2.0",
     "tiptap-markdown": "^0.8.8",
-    "ts-pattern": "^5.0.6",
+    "ts-pattern": "4.3.0",
     "turndown": "^7.1.2",
     "urlcat": "^2.0.4",
     "use-long-press": "^1.2.0",

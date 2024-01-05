@@ -1692,8 +1692,8 @@ importers:
         specifier: ^0.8.8
         version: 0.8.8(@tiptap/core@2.1.11)
       ts-pattern:
-        specifier: ^5.0.6
-        version: 5.0.6
+        specifier: 4.3.0
+        version: 4.3.0
       turndown:
         specifier: ^7.1.2
         version: 7.1.2
@@ -35824,8 +35824,8 @@ packages:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
 
-  /ts-pattern@5.0.6:
-    resolution: {integrity: sha512-Y+jOjihlFriWzcBjncPCf2/am+Hgz7LtsWs77pWg5vQQKLQj07oNrJryo/wK2G0ndNaoVn2ownFMeoeAuReu3Q==}
+  /ts-pattern@4.3.0:
+    resolution: {integrity: sha512-pefrkcd4lmIVR0LA49Imjf9DYLK8vtWhqBPA3Ya1ir8xCW0O2yjL9dsCVvI7pCodLC5q7smNpEtDR2yVulQxOg==}
     dev: false
 
   /ts-pnp@1.2.0(typescript@4.8.2):
