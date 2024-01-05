@@ -95,7 +95,7 @@ public class NodeInfoVo extends BaseNodeInfo {
     private NodePermissionView permissions;
 
 
-    @Schema(description = "Node Permissions")
+    @Schema(description = "Node extra")
     private String extra;
 
     /**

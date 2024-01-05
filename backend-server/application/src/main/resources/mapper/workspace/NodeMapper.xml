@@ -332,7 +332,7 @@
     </select>
 
     <select id="selectShareTree" resultType="com.apitable.workspace.vo.NodeShareTree">
-        SELECT vn.node_id, vn.node_name, vn.icon, vn.parent_id, vn.pre_node_id, vn.type, vn.cover
+        SELECT vn.node_id, vn.node_name, vn.icon, vn.parent_id, vn.pre_node_id, vn.type, vn.cover, vn.extra
         FROM ${tablePrefix}node vn
         WHERE vn.is_rubbish = 0 AND vn.node_id IN
         <foreach item="item" index="index" collection="nodeIds" open="(" separator="," close=")">

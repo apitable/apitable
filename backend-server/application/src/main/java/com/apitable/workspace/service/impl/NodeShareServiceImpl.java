@@ -367,6 +367,7 @@ public class NodeShareServiceImpl implements INodeShareService {
         nodeTree.setType(node.getType());
         nodeTree.setIcon(node.getIcon());
         nodeTree.setChildren(treeList);
+        nodeTree.setExtra(node.getExtra());
         nodeShareInfoVo.setShareNodeTree(nodeTree);
         return nodeShareInfoVo;
     }
