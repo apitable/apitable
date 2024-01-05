@@ -103,5 +103,5 @@ const VIKA_CONFIG = [
 ];
 
 export const getConfig = () => {
-  return !getEnvVariables().IS_AITABLE ? AI_TABLE_CONFIG : VIKA_CONFIG;
+  return getEnvVariables().IS_AITABLE ? AI_TABLE_CONFIG : VIKA_CONFIG;
 };
