@@ -18,6 +18,7 @@
 
 import { useMount } from 'ahooks';
 import constate from 'constate';
+import dayjs from 'dayjs';
 import produce from 'immer';
 import { useSetAtom } from 'jotai';
 import { nanoid } from 'nanoid';
@@ -51,18 +52,36 @@ export const useButtonJobTask = () => {
     if (taskQueue.length > 0) {
       const { jobId, task } = taskQueue[0];
       runningRef.current = true;
+      const start = new Date();
       task()
         .then((resp) => {
           setTaskQueue((prevQueue) => prevQueue.slice(1));
-          setAutomationTaskMap((d) =>
-            produce(d, (draft) => {
-              if (resp.success) {
-                draft.set(jobId, 'success');
-              } else {
-                draft.set(jobId, 'initial');
-              }
-            }),
-          );
+          const current = new Date();
+          const timeCost = dayjs(current).diff(dayjs(start), 'second');
+          if (timeCost > 3) {
+            setAutomationTaskMap((d) =>
+              produce(d, (draft) => {
+                if (resp.success) {
+                  draft.set(jobId, 'success');
+                } else {
+                  draft.set(jobId, 'initial');
+                }
+              }),
+            );
+          } else {
+            const delta = (3 - timeCost) * 800;
+            setTimeout(() => {
+              setAutomationTaskMap((d) =>
+                produce(d, (draft) => {
+                  if (resp.success) {
+                    draft.set(jobId, 'success');
+                  } else {
+                    draft.set(jobId, 'initial');
+                  }
+                }),
+              );
+            }, delta);
+          }
           runningRef.current = false;
           if (resp.success) {
             setTimeout(() => {

@@ -201,6 +201,7 @@ export const CellButton: React.FC<React.PropsWithChildren<IButtonCellProps>> = (
     setHover(false);
   };
 
+  const textColorBg = isMouseActive ? getColorValue(bg, CONST_ACTIVE_OPACITY) : isHover ? getColorValue(bg, CONST_HOVER_OPACITY) : bg;
   const itemLoadingX1 = (columnWidth - 22) / 2;
   if (field.property.style.type === ButtonStyleType.OnlyText) {
     // @ts-ignore
@@ -251,7 +252,7 @@ export const CellButton: React.FC<React.PropsWithChildren<IButtonCellProps>> = (
             height={GRID_OPTION_ITEM_HEIGHT}
             text={renderText}
             fontSize={textFontSize}
-            fill={isValid ? bg : colors.textCommonTertiary}
+            fill={isValid ? textColorBg : colors.textCommonTertiary}
           />
         )}
       </CellScrollContainer>

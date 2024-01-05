@@ -21,8 +21,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useMemo } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
+  applyDefaultTheme,
   Box,
   Divider,
   Dropdown,
@@ -57,10 +58,15 @@ interface IRobotListItemCardProps {
 
 const StyledDivider = styled(Divider)``;
 
-const StyledMenu = styled(Box)`
+const StyledMenu = styled(Box).attrs(applyDefaultTheme)`
   &:hover {
     background: var(--bgBglessHover, rgba(255, 255, 255, 0.08));
   }
+  ${(props) => css`
+    &:active {
+      background: ${props.theme.color.fill1};
+    }
+  `}
 
   cursor: pointer;
   margin: 0 8px;

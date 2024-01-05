@@ -48,6 +48,10 @@ const StyledFloatUiTooltip = styled(FloatUiTooltip)`
   padding: 0 !important;
 `;
 
+const StyledTooltipBase = styled(TooltipBase)`
+  background: var(--bgCommonHighest);
+`;
+
 export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props) => {
   const { colorGroup, options, option, onChange, style, disabled, itemStyle } = props;
   const [colorIdx, setColorIdx] = useState<number>();
@@ -101,7 +105,7 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props)
               <StyledFloatUiTooltip
                 placement={'top'}
                 content={
-                  <TooltipBase>
+                  <StyledTooltipBase>
                     {options?.style === ButtonStyleType.Background ? (
                       <Box backgroundColor={colorList[colorIndex]} padding={'6px 12px'} borderRadius={'4px'}>
                         <Typography variant={'body4'} color={textColor}>
@@ -121,7 +125,7 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props)
                         </Typography>
                       </Box>
                     )}
-                  </TooltipBase>
+                  </StyledTooltipBase>
                 }
               >
                 <div
