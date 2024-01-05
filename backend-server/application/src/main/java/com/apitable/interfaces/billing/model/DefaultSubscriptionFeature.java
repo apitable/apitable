@@ -43,6 +43,7 @@ import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatu
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowCopyData;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowDownload;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowEmbed;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.ControlFormBrandLogo;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowExport;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowInvitation;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowOrgApi;
@@ -193,6 +194,11 @@ public class DefaultSubscriptionFeature implements SubscriptionFeature {
     @Override
     public AllowEmbed getAllowEmbed() {
         return new AllowEmbed(false);
+    }
+
+    @Override
+    public ControlFormBrandLogo getControlFormBrandLogo() {
+        return new ControlFormBrandLogo(false);
     }
 
     @Override

@@ -441,6 +441,15 @@ public class SubscriptionFeatures {
                 super(value);
             }
         }
+
+        /**
+         * Billing form brand log feature.
+         */
+        public static class ControlFormBrandLogo extends BooleanPlanFeature {
+            public ControlFormBrandLogo(Boolean value) {
+                super(value);
+            }
+        }
     }
 
     /**
@@ -668,5 +677,9 @@ public class SubscriptionFeatures {
 
     public static SubscribeFeatures.AuditQuery buildAuditQuery(Boolean value) {
         return new SubscribeFeatures.AuditQuery(value);
+    }
+
+    public static SubscribeFeatures.ControlFormBrandLogo buildControlFormBrandLogo(Boolean value) {
+        return new SubscribeFeatures.ControlFormBrandLogo(value);
     }
 }

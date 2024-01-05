@@ -51,6 +51,7 @@ import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatu
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowCopyData;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowDownload;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowEmbed;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.ControlFormBrandLogo;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowExport;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowInvitation;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowOrgApi;
@@ -145,6 +146,8 @@ public interface SubscriptionFeature {
     AllowCopyData getAllowCopyData();
 
     AllowEmbed getAllowEmbed();
+
+    ControlFormBrandLogo getControlFormBrandLogo();
 
     ShowMobileNumber getShowMobileNumber();
 
