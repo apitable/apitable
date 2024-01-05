@@ -67,6 +67,8 @@ export interface ISubscription extends ISubscribeResponseData {
 
   // ai
   maxMessageCredits: number
+  // form
+  controlFormBrandLogo?: boolean;
 }
 
 export interface IBillingCatalog {
