@@ -338,11 +338,9 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
                   if (!spaceInfo?.isEnableChatbot) {
                     const version = getReleaseVersion();
                     const env = getEnvVariables();
-                    if (!env.ENV.includes('apitable')) {
-                      if (version !== 'development') {
-                        window.open(getAIOpenFormUrl());
-                        return;
-                      }
+                    if (env.IS_ENTERPRISE && version !== 'development') {
+                      window.open(getAIOpenFormUrl());
+                      return;
                     }
                   }
                   const result = triggerUsageAlert?.(
