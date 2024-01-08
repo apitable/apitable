@@ -49,7 +49,6 @@ const StyledFloatUiTooltip = styled(FloatUiTooltip)`
 `;
 
 const StyledTooltipBase = styled(TooltipBase)`
-  background: var(--bgCommonHighest);
 `;
 
 export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props) => {
@@ -115,8 +114,6 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props)
                     ) : (
                       <Box
                         backgroundColor={colors.bgCommonDefault}
-                        boxShadow={'0px 12px 24px 0px rgba(0, 0, 0, 0.16), 0px 3px 6px 0px rgba(0, 0, 0, 0.12)'}
-                        border={`1px solid ${colors.borderCommonDefault}`}
                         padding={'6px 12px'}
                         borderRadius={'4px'}
                       >
