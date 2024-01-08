@@ -22,6 +22,7 @@ import { startActions, TriggerCommands } from '../apphook/trigger_commands';
 import { isEventStateMatch, isRulesPassed, isTimeRulePassed } from './rules';
 // @ts-ignore
 import { getPlayerHooks, updatePlayerConfig } from 'enterprise/guide/utils';
+import { modifyWizardConfig } from 'pc/common/wizard';
 
 // const Triggers = SystemConfig.player.trigger;
 
