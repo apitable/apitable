@@ -2,7 +2,6 @@
 
 ## [v1.8.0-beta](https://github.com/apitable/apitable/releases/tag/v1.8.0-beta) (2024-01-02)
 
-
 ### Bug fixes
 
 * fix: func undefined check ([#1542](https://github.com/apitable/apitable/pull/1542)) @wangkailang 

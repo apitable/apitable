@@ -79,7 +79,7 @@ export interface IRightClickInfo {
    */
   module: ConfigConstant.Modules;
   /**
-   * indicates which type of menu to call 
+   * indicates which type of menu to call
    */
   contextMenuType: ConfigConstant.ContextMenuType;
   // current node's level
@@ -104,6 +104,7 @@ export interface INode {
   nodePermitSet: boolean;
   nodeFavorite: boolean;
   preFavoriteNodeId?: string;
+  extra?: any;
 }
 
 export interface INodePermissions {
@@ -610,7 +611,7 @@ export interface ISetPermissionCommitRemindParameterAction {
 
 export interface ISetNoPermissionMembersAction {
   type: typeof actions.SET_NO_PERMISSION_MEMBERS;
-  payload: string[]
+  payload: string[];
 }
 
 export interface IUpdateMoveToNodeIdsAction {

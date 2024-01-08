@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.organization.ro;
+package com.apitable.space.ro;
 
 import com.apitable.shared.constants.PatternConstants;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,12 +27,12 @@ import lombok.Data;
 
 /**
  * <p>
- * Send an email again to invite member request parameters.
+ * Email Invitation Resend request parameters.
  * </p>
  */
 @Data
-@Schema(description = "Send an email again to invite member request parameters")
-public class InviteMemberAgainRo {
+@Schema(description = "Email Invitation Resend request parameters")
+public class EmailInvitationResendRo {
 
     @NotNull(message = "The mailbox does not exist, and the invitation cannot be sent again")
     @Schema(description = "Email address, strictly checked",

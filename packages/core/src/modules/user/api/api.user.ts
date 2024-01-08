@@ -52,16 +52,6 @@ export function getUserCanLogout() {
 
 /**
  *
- * Space - check if the user's email is the same as the specified email
- * @param email
- * @returns
- */
-export function validateEmail(email: string) {
-  return axios.post(Url.EMAIL_VALIDATE, { email });
-}
-
-/**
- *
  * Space - binding the invited email
  *
  * @param spaceId

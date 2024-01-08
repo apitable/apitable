@@ -16,20 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.base.service;
+package com.apitable.space.service;
 
-import com.apitable.organization.vo.InviteInfoVo;
+import com.apitable.space.vo.EmailInvitationValidateVO;
 
 /**
- * action service.
+ * Space Invitation Service.
  */
-public interface IActionService {
+public interface ISpaceInvitationService {
 
     /**
-     * Activate invited users.
+     * Valid Email Invitation.
      *
      * @param inviteToken invitation token
      * @return Invitation related information view
      */
-    InviteInfoVo inviteValidate(String inviteToken);
+    EmailInvitationValidateVO validEmailInvitation(String inviteToken);
+
+    /**
+     * Accept Email Invitation.
+     *
+     * @param userId        user id
+     * @param inviteToken   invitation token
+     * @return member id
+     * @author Chambers
+     */
+    Long acceptEmailInvitation(Long userId, String inviteToken);
 }

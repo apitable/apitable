@@ -30,6 +30,7 @@ import lombok.Data;
  * </p>
  */
 @Data
+@Deprecated(since = "v1.10.0")
 @Schema(description = "User verification and comparison of invited mailbox parameters")
 public class CheckUserEmailRo {
 

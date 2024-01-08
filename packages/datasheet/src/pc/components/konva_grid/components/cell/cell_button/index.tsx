@@ -50,6 +50,8 @@ import { TextEllipsisEngine } from './text_ellipsis_engine';
 
 const GRID_OPTION_ITEM_HEIGHT = 22;
 
+const CONST_ACTIVE_OPACITY = 0.6;
+const CONST_HOVER_OPACITY = 0.8;
 const RotatingLoading = dynamic(() => import('pc/components/konva_grid/components/cell/cell_button/rotating_loading'), { ssr: false });
 
 type ACellProps = Pick<ICellProps, 'field' | 'recordId'> & {
@@ -60,7 +62,7 @@ export const CellButtonItem: React.FC<React.PropsWithChildren<ACellProps>> = (pr
   const record = useAppSelector((state) => Selectors.getRecord(state, props.recordId, props.datasheetId));
   if (!record) return null;
   return (
-    <Box flex={'1'} padding={'0 10px'} height={'22px'}>
+    <Box flex={'1'} padding={'0'} height={'22px'}>
       <span>
         <ButtonFieldItem field={props.field as IButtonField} recordId={props.recordId} record={record} />
       </span>
@@ -88,6 +90,7 @@ export const CellButton: React.FC<React.PropsWithChildren<IButtonCellProps>> = (
   const datasheetId = useAppSelector(Selectors.getActiveDatasheetId);
   const record = useAppSelector((state) => Selectors.getRecord(state, recordId, datasheetId));
 
+  const GRID_CELL_VALUE_PADDING = 0;
   const [automationTaskMapData, setAutomationTaskMap] = useAtom(automationTaskMap);
 
   const key = `${recordId}-${field.id}`;
@@ -174,6 +177,7 @@ export const CellButton: React.FC<React.PropsWithChildren<IButtonCellProps>> = (
   const itemY = currentY - 2;
 
   const [isHover, setHover] = useState(false);
+  const [isMouseActive, setIsActive] = useState(false);
 
   const handleMouseEnter = (e: KonvaEventObject<MouseEvent>) => {
     // @ts-ignore
@@ -182,6 +186,14 @@ export const CellButton: React.FC<React.PropsWithChildren<IButtonCellProps>> = (
     setHover(true);
   };
 
+  const handleMouseDown = useCallback(() => {
+    setIsActive(true);
+  }, []);
+
+  const handleMouseUp = useCallback(() => {
+    setIsActive(false);
+  }, []);
+
   const handleMouseLeave = (e: KonvaEventObject<MouseEvent>) => {
     // @ts-ignore
     const container = e.target.getStage().container();
@@ -189,6 +201,7 @@ export const CellButton: React.FC<React.PropsWithChildren<IButtonCellProps>> = (
     setHover(false);
   };
 
+  const textColorBg = isMouseActive ? getColorValue(bg, CONST_ACTIVE_OPACITY) : isHover ? getColorValue(bg, CONST_HOVER_OPACITY) : bg;
   const itemLoadingX1 = (columnWidth - 22) / 2;
   if (field.property.style.type === ButtonStyleType.OnlyText) {
     // @ts-ignore
@@ -211,6 +224,8 @@ export const CellButton: React.FC<React.PropsWithChildren<IButtonCellProps>> = (
           onClick={onClickStart}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
           y={itemY}
           width={itemWidth}
           height={GRID_OPTION_ITEM_HEIGHT}
@@ -237,7 +252,7 @@ export const CellButton: React.FC<React.PropsWithChildren<IButtonCellProps>> = (
             height={GRID_OPTION_ITEM_HEIGHT}
             text={renderText}
             fontSize={textFontSize}
-            fill={isValid ? bg : colors.textCommonTertiary}
+            fill={isValid ? textColorBg : colors.textCommonTertiary}
           />
         )}
       </CellScrollContainer>
@@ -266,7 +281,9 @@ export const CellButton: React.FC<React.PropsWithChildren<IButtonCellProps>> = (
         y={itemY}
         width={itemWidth}
         height={GRID_OPTION_ITEM_HEIGHT}
-        fill={isHover ? getColorValue(bg, 0.8) : bg}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        fill={isMouseActive ? getColorValue(bg, CONST_ACTIVE_OPACITY) : isHover ? getColorValue(bg, CONST_HOVER_OPACITY) : bg}
         cornerRadius={2}
         listening
       />

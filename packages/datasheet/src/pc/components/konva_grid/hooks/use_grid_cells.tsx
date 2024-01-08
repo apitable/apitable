@@ -101,7 +101,6 @@ export const useCells = (props: IUseGridBaseProps) => {
       if (field == null) continue;
       const columnWidth = instance.getColumnWidth(columnIndex);
       const x = instance.getColumnOffset(columnIndex) + 0.5;
-      const isFirstColumn = columnIndex === 0;
       const isLastColumn = columnIndex === visibleColumns.length - 1;
       const editable = getCellEditable(field, _editable);
 
@@ -269,7 +268,7 @@ export const useCells = (props: IUseGridBaseProps) => {
             });
             const realX = x + offset - 0.5;
             const realY = y - 0.5;
-            const style = { fontWeight: isFirstColumn ? 'bold' : 'normal' };
+            const style = { fontWeight: 'normal' };
             const cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldId);
 
             const permissions = Selectors.getDatasheet(state)?.permissions || {};

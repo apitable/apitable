@@ -69,9 +69,8 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
     dispatch(StoreActions.setExpandedKeys(nodeIds, ConfigConstant.Modules.FAVORITE));
   };
 
-  const { getFavoriteNodeListReq, getChildNodeListReq } = useCatalogTreeRequest();
+  const { getFavoriteNodeListReq } = useCatalogTreeRequest();
   const { run: getFavoriteNodeList } = useRequest(getFavoriteNodeListReq, { manual: true });
-  const { run: getChildNodeList } = useRequest(getChildNodeListReq, { manual: true });
 
   useEffect(() => {
     if (spaceId) {
@@ -79,23 +78,6 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [spaceId]);
-
-  const fetchNodeList = async (folderId: string) => {
-    const result = await getChildNodeList(folderId);
-    if (result) {
-      dispatch(StoreActions.addNodeToMap(result, false));
-    }
-  };
-
-  useEffect(() => {
-    if (favoriteExpandedKeys.length) {
-      favoriteExpandedKeys.forEach((nodeId) => {
-        if (treeNodesMap[nodeId]?.hasChildren && !treeNodesMap[nodeId]?.children?.length) {
-          fetchNodeList(nodeId);
-        }
-      });
-    }
-  }, [favoriteExpandedKeys, fetchNodeList, treeNodesMap]);
 
   const onContextMenu = (e: React.SyntheticEvent) => {
     e.stopPropagation();
@@ -110,6 +92,7 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
       ConfigConstant.NodeType.DASHBOARD,
       ConfigConstant.NodeType.MIRROR,
       ConfigConstant.NodeType.AI,
+      ConfigConstant.NodeType.EMBED_PAGE,
     ]);
     return children.map((nodeId, index) => {
       const nodeInfo = treeNodesMap[nodeId];
@@ -195,6 +178,15 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
     }
     return dispatch(StoreActions.getChildNode(nodeId));
   };
+
+  useEffect(() => {
+    if (favoriteExpandedKeys.length) {
+      favoriteExpandedKeys.forEach((nodeId) => {
+        loadData(nodeId);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [favoriteExpandedKeys]);
 
   const rightClickHandler = (e: React.MouseEvent<Element, MouseEvent>, data: any) => {
     e.preventDefault();

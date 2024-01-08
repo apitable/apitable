@@ -9,7 +9,6 @@ dependencies {
     implementation libs.spring.web
 
     implementation libs.jackson
-    implementation libs.annotation.api
     // used for javax.annotation.Nonnull
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 }

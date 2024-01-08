@@ -268,7 +268,7 @@ export const KonvaGridView: FC<React.PropsWithChildren<IGridViewProps>> = memo((
   // Height of field header
   const fieldHeadHeight = useMemo(() => {
     if (!autoHeadHeight) return GRID_FIELD_HEAD_HEIGHT;
-    textSizer.current.setFont({ fontWeight: 'bold', fontSize: 13 });
+    textSizer.current.setFont({ fontSize: 13 });
     const fieldHeight = visibleColumns.reduce((prev, cur, index) => {
       const { fieldId } = cur;
       const field = fieldMap[fieldId];

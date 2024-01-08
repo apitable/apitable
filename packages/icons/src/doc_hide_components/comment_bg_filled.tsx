@@ -21,7 +21,7 @@ import React from 'react';
 import { makeIcon, IIconProps } from '../utils/icon';
 
 export const CommentBgFilled: React.FC<IIconProps> = makeIcon({
-    Path: ({ colors }) => <>
+  Path: ({ colors }) => <>
     <path d="M13.3349 13.3323C10.4016 13.3323 8.00156 15.7323 8.00156 18.6656V45.3323C8.00156 48.2656 10.4016 50.6656 13.3349 50.6656H18.6682V54.6656C18.6682 56.5323 20.5349 57.8656 22.4016 57.0656L39.4682 50.3989H50.6682C53.6016 50.3989 56.0016 47.9989 56.0016 45.0656V18.6656C56.0016 15.7323 53.6016 13.3323 50.6682 13.3323H13.3349Z" fill={ colors[0] } fillRule="evenodd" clipRule="evenodd"/>
 
   </>,

@@ -123,7 +123,7 @@ export const FieldHead: FC<React.PropsWithChildren<IFieldHeadProps>> = memo((pro
   }
 
   const textData = useMemo(() => {
-    textSizer.current.setFont({ fontWeight: 'bold', fontSize: 13 });
+    textSizer.current.setFont({ fontSize: 13 });
     if (autoHeadHeight) {
       const { height, lastLineWidth } = textSizer.current.measureText(fieldName, Math.max(availableTextWidth, FIELD_HEAD_TEXT_MIN_WIDTH));
       return {
@@ -218,7 +218,7 @@ export const FieldHead: FC<React.PropsWithChildren<IFieldHeadProps>> = memo((pro
         height={isGanttNoWrap ? GRID_FIELD_HEAD_HEIGHT : headHeight + 2}
         text={fieldName}
         wrap={autoHeadHeight ? 'char' : 'none'}
-        fontStyle={'bold'}
+        fontStyle={'normal'}
         lineHeight={1.84}
         verticalAlign={autoHeadHeight ? 'top' : 'middle'}
         fill={isHighlight ? colors.primaryColor : colors.firstLevelText}

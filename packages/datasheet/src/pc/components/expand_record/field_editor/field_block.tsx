@@ -303,21 +303,13 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = (
         <ExpandCascader {...commonProps} isFocus={isFocus} cellValue={cellValue} field={commonProps.field as ILinkField} style={mobileEditorWidth} />
       );
     case FieldType.Button:
-
       return (
-        <Box paddingLeft={'16px'} height={'22px'}>
+        <Box paddingLeft={'10px'} height={'22px'}>
           <ButtonFieldItem recordId={record.id} field={field} record={record} />
         </Box>
       );
     case FieldType.WorkDoc:
-      return (
-        <ExpandWorkdoc
-          {...commonProps}
-          cellValue={cellValue}
-          datasheetId={datasheetId}
-          recordId={record.id}
-        />
-      );
+      return <ExpandWorkdoc {...commonProps} cellValue={cellValue} datasheetId={datasheetId} recordId={record.id} />;
     default:
       return <div />;
   }

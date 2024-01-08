@@ -68,6 +68,8 @@ public class IdUtil {
                 + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
             case AIRAGENT -> IdRulePrefixEnum.AIRAGENT.getIdRulePrefixEnum()
                 + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
+            case EMBED_PAGE -> IdRulePrefixEnum.EMBED_PAGE.getIdRulePrefixEnum()
+                + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
             default -> IdRulePrefixEnum.FOD.getIdRulePrefixEnum()
                 + RandomExtendUtil.randomString(ID_FIXED_LENGTH);
         };

@@ -24,13 +24,13 @@ import { InfoCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Message, Popconfirm, Tooltip } from 'pc/components/common';
 import { Identity } from '../../identity';
-import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
-export const Reinvite: FC<React.PropsWithChildren<{ record: IMemberInfoInSpace }>> = ({ record }) => {
-  const reSendEmail = (record: IMemberInfoInSpace) => {
-    Api.reSendInvite(record.email).then((res) => {
+export const Reinvite: FC<React.PropsWithChildren<{ spaceId: string, record: IMemberInfoInSpace }>> = ({ spaceId, record }) => {
+  const reSendEmail = (spaceId, record: IMemberInfoInSpace) => {
+    Api.reSendInvite(spaceId, record.email).then((res) => {
       const { success, message } = res.data;
       if (success) {
         Message.success({ content: t(Strings.operate_success) });
@@ -44,13 +44,13 @@ export const Reinvite: FC<React.PropsWithChildren<{ record: IMemberInfoInSpace }
     return null;
   }
   return (
-    <Popconfirm type="warning" content={t(Strings.send_again_toast)} onOk={() => reSendEmail(record)} trigger="click">
+    <Popconfirm type="warning" content={t(Strings.send_again_toast)} onOk={() => reSendEmail(spaceId, record)} trigger="click">
       <InfoCircleOutlined />
     </Popconfirm>
   );
 };
 
-export const nameColRender = (value: string, record: IMemberInfoInSpace, spaceInfo: ISpaceBasicInfo | null) => {
+export const nameColRender = (value: string, record: IMemberInfoInSpace, spaceInfo: ISpaceBasicInfo | null, spaceId?: string) => {
   const { isPrimary, isSubAdmin, isActive, isMemberNameModified } = record;
   const name =
     getSocialWecomUnitName?.({
@@ -62,7 +62,7 @@ export const nameColRender = (value: string, record: IMemberInfoInSpace, spaceIn
     return (
       <span>
         {name || t(Strings.record_unnamed)}
-        <Reinvite record={record} />
+        <Reinvite spaceId={spaceId!} record={record} />
       </span>
     );
   }

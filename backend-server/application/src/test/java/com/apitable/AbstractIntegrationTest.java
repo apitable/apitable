@@ -50,6 +50,7 @@ import com.apitable.shared.config.properties.SystemProperties;
 import com.apitable.shared.holder.UserHolder;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.space.service.IInvitationService;
+import com.apitable.space.service.ISpaceInvitationService;
 import com.apitable.space.service.ISpaceInviteLinkService;
 import com.apitable.space.service.ISpaceMemberRoleRelService;
 import com.apitable.space.service.ISpaceRoleResourceRelService;
@@ -76,6 +77,7 @@ import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.service.IResourceMetaService;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import jakarta.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -184,6 +186,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected ISpaceInviteLinkService iSpaceInviteLinkService;
+
+    @Autowired
+    protected ISpaceInvitationService iSpaceInvitationService;
 
     @Autowired
     protected IControlRoleService iControlRoleService;

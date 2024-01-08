@@ -32,11 +32,11 @@ import com.apitable.user.service.IUserHistoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.apache.commons.compress.utils.Lists;
 import org.springframework.stereotype.Service;
 
 /**
@@ -126,7 +126,7 @@ public class UserHistoryServiceImpl extends ServiceImpl<UserHistoryMapper, UserH
     public List<PausedUserHistoryDto> getUserHistoryDtos(LocalDateTime createdAtBefore,
                                                          LocalDateTime createdAtAfter,
                                                          UserOperationType userOperationType) {
-        List<PausedUserHistoryDto> userLatestHistoryDtos = Lists.newArrayList();
+        List<PausedUserHistoryDto> userLatestHistoryDtos = new ArrayList<>();
         List<PausedUserHistoryDto> historyDtos =
             userHistoryMapper.selectUserHistoryDtos(createdAtBefore, createdAtAfter,
                 userOperationType.getStatusCode());

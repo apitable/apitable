@@ -249,12 +249,56 @@
         where id = #{id}
     </select>
 
-    <select id="selectDtoByUserIdAndSpaceId" resultType="com.apitable.organization.dto.MemberDTO">
-        SELECT id, member_name
+    <select id="selectIdByUserIdAndSpaceId" resultType="java.lang.Long">
+        SELECT id
         FROM ${tablePrefix}unit_member
         WHERE user_id = #{userId}
           AND space_id = #{spaceId}
-          AND is_deleted = 0 LIMIT 0,1
+          AND is_deleted = 0
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectMemberNameByUserIdAndSpaceId"
+            resultType="java.lang.String">
+        SELECT member_name
+        FROM ${tablePrefix}unit_member
+        WHERE user_id = #{userId}
+          AND space_id = #{spaceId}
+          AND is_deleted = 0
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectByUserIdAndSpaceId"
+            resultType="com.apitable.organization.entity.MemberEntity">
+        SELECT *
+        FROM ${tablePrefix}unit_member
+        WHERE user_id = #{userId}
+          AND space_id = #{spaceId}
+          AND is_deleted = 0
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectMemberIdByUserIdAndSpaceIdIncludeDeleted"
+            resultType="java.lang.Long">
+        select id
+        from ${tablePrefix}unit_member
+        where user_id = #{userId}
+          and space_id = #{spaceId}
+        ORDER BY is_deleted ASC, id DESC
+        LIMIT 0,1
+    </select>
+
+    <select id="selectByUserIdAndSpaceIdIncludeDeleted"
+            resultType="com.apitable.organization.entity.MemberEntity">
+        SELECT *
+        FROM ${tablePrefix}unit_member
+        WHERE user_id = #{userId}
+          AND space_id = #{spaceId}
+        ORDER BY is_deleted ASC, id DESC
+        LIMIT 1
     </select>
 
     <select id="selectDtoByMemberId" resultType="com.apitable.organization.dto.MemberDTO">
@@ -342,19 +386,6 @@
         limit 0,1
     </select>
 
-    <select id="selectIdByUserIdAndSpaceId" resultType="java.lang.Long">
-        select id
-        from ${tablePrefix}unit_member
-        where user_id = #{userId} and space_id = #{spaceId} and is_deleted = 0 LIMIT 0,1
-    </select>
-
-    <select id="selectIdByUserIdAndSpaceIdExcludeDelete" resultType="com.apitable.workspace.dto.MemberInfoDTO">
-        select id, is_deleted
-        from ${tablePrefix}unit_member
-        where user_id = #{userId} and space_id = #{spaceId}
-        ORDER BY is_deleted asc, id desc limit 1
-    </select>
-
     <select id="selectMemberInfoDTOByIds"
             resultType="com.apitable.workspace.dto.MemberInfoDTO">
         SELECT um.id, u.uuid
@@ -365,14 +396,6 @@
                  separator="," close=")">
             #{item}
         </foreach>
-    </select>
-
-    <select id="selectMemberIdByUserIdAndSpaceIdExcludeDelete" resultType="java.lang.Long">
-        select id
-        from ${tablePrefix}unit_member
-        where user_id = #{userId} and space_id = #{spaceId}
-        ORDER BY updated_at desc
-        LIMIT 0,1
     </select>
 
     <select id="selectBySpaceIdAndEmail"
@@ -693,16 +716,19 @@
         AND is_admin = 1
         AND is_deleted = 0
     </select>
-    <select id="selectIdsByEmailsAndSpaceId" resultType="java.lang.Long">
-        SELECT id
+
+    <select id="selectEmailBySpaceIdAndEmails" resultType="java.lang.String">
+        SELECT email
         FROM ${tablePrefix}unit_member
         WHERE space_id = #{spaceId}
-        AND email IN
-        <foreach item="item" index="index" collection="emails" open="(" separator="," close=")">
+          AND email IN
+        <foreach item="item" index="index" collection="emails" open="("
+                 separator="," close=")">
             #{item}
         </foreach>
         AND is_deleted = 0
     </select>
+
     <select id="selectUserIdBySpaceIdAndIds" resultType="long">
         SELECT user_id
         FROM ${tablePrefix}unit_member
@@ -747,13 +773,6 @@
             #{item}
         </foreach>
         GROUP BY user_id
-    </select>
-
-    <select id="selectByUserIdAndSpaceIdIgnoreDelete" resultType="com.apitable.organization.entity.MemberEntity">
-        SELECT *
-        FROM ${tablePrefix}unit_member
-        WHERE user_id = #{userId} AND space_id = #{spaceId}
-        ORDER BY id DESC LIMIT 0,1
     </select>
 
     <select id="selectByMemberIdsIgnoreDelete" resultType="com.apitable.organization.entity.MemberEntity">
@@ -932,13 +951,6 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectByUserIdAndSpaceId" resultType="com.apitable.organization.entity.MemberEntity">
-        SELECT *
-        FROM ${tablePrefix}unit_member
-        WHERE user_id = #{userId} AND space_id = #{spaceId} AND is_deleted = 0
-        ORDER BY id DESC LIMIT 0,1
-    </select>
-
     <select id="selectByUserIdsAndSpaceId" resultType="com.apitable.organization.entity.MemberEntity">
         SELECT *
         FROM ${tablePrefix}unit_member
@@ -1044,15 +1056,6 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectMemberNameByUserIdAndSpaceId" resultType="java.lang.String">
-        SELECT member_name
-        FROM ${tablePrefix}unit_member
-        WHERE user_id = #{userId}
-        AND space_id = #{spaceId}
-        AND is_deleted = 0
-        LIMIT 1
-    </select>
-
     <select id="selectCountByUserId" resultType="java.lang.Integer">
         SELECT COUNT(1)
         FROM ${tablePrefix}unit_member
@@ -1092,17 +1095,6 @@
         SELECT team_id
         FROM ${tablePrefix}unit_team_member_rel
         WHERE member_id = #{memberId}
-    </select>
-
-    <select id="selectMemberIdsByUserIdAndSpaceIds" resultType="com.apitable.organization.dto.SpaceMemberIdDTO">
-        SELECT id, space_id
-        FROM ${tablePrefix}unit_member
-        WHERE user_id = #{userId}
-        AND space_id IN
-        <foreach item="item" index="index" collection="spaceIds" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-        AND is_deleted = 0
     </select>
 
     <select id="selectIdsBySpaceIdAndEmailKeyword" resultType="java.lang.Long">

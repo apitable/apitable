@@ -160,8 +160,10 @@
 
     .fieldName {
       flex: 1;
-      width: 0;
-      .ellipsis();
+      width: 140px;
+      :global(.typography) {
+        color: inherit;
+      }
     }
   }
 

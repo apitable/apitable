@@ -20,6 +20,7 @@ import * as React from 'react';
 import { ButtonActionType, evaluate, IButtonField, ICellValue, IReduxState, OpenLinkType, Strings, t, IRecord } from '@apitable/core';
 import { reqDatasheetButtonTrigger } from 'pc/components/robot/api';
 import { IBaseEditorProps, IEditor } from '../interface';
+import { executeWithMinimumTime } from 'pc/components/editors/button_editor/buton_item';
 
 export interface IButtonEditorProps extends IBaseEditorProps {
   editable: boolean;
@@ -76,11 +77,13 @@ export const runAutomationButton = async (
     };
   }
   try {
-    const respTrigger = (await reqDatasheetButtonTrigger({
-      dstId: datasheetId,
-      recordId,
-      fieldId,
-    })) as unknown as { data: { success: boolean; code: number; message: string } };
+    const respTrigger = (await executeWithMinimumTime(
+      reqDatasheetButtonTrigger({
+        dstId: datasheetId,
+        recordId,
+        fieldId,
+      }),
+    )) as unknown as { data: { success: boolean; code: number; message: string } };
     const success = respTrigger?.data?.success ?? false;
     callback(success, respTrigger?.data?.code, respTrigger?.data?.message);
     return respTrigger?.data;

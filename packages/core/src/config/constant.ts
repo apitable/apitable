@@ -49,6 +49,7 @@ export enum NodeType {
   AI = 9,
   AUTOMATION = 10,
   VIEW = 11,
+  EMBED_PAGE = 12,
   ASSET_FILE = 98,
   TRASH = 99,
 }
@@ -206,6 +207,15 @@ export const nodePermissionMap = new Map<NodeType, { [key: string]: string }>([
       [permission.updater]: '在「只可阅读」基础上，还可以编辑小程序和分享仪表盘',
     },
   ],
+  [
+    NodeType.EMBED_PAGE,
+    {
+      [permission.manager]: t(Strings.embed_page_node_permission_manager),
+      [permission.editor]: t(Strings.embed_page_node_permission_editor),
+      [permission.reader]: t(Strings.embed_page_node_permission_reader),
+      [permission.updater]: t(Strings.embed_page_node_permission_updater),
+    },
+  ],
 ]);
 
 export const permissionText = {
@@ -294,6 +304,7 @@ export enum ContextMenuType {
   FORM_FIELD_OP = 'FORM_FIELD_OP', // Magical form field operation menu
   EXPAND_RECORD_FIELD = 'EXPAND_RECORD_FIELD', // Expand the operation field configuration in the card
   AI = 'AI',
+  EMBED_PAGE = 'EMBED_PAGE',
 }
 
 export const NODE_DESCRIPTION_EDITOR_ID = 'folderDescribeEditor';

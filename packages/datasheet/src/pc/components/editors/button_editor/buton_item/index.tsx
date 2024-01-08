@@ -28,6 +28,26 @@ const ERROR_CODE_TRIGGER_NOT_EXISTS_1107 = 1107;
 const ERROR_CODE_TRIGGER_INVALID_1108 = 1108;
 const CONST_AUTOMATION_ERROR = [444, 445, ERROR_CODE_NOT_ACTIVATED_1106, ERROR_CODE_TRIGGER_NOT_EXISTS_1107, ERROR_CODE_TRIGGER_INVALID_1108];
 
+export function executeWithMinimumTime<T>(businessPromise: Promise<T>): Promise<T> {
+  const start = Date.now();
+
+  return new Promise<T>((resolve) => {
+    const execute = () => {
+      const elapsedTime = Date.now() - start;
+
+      if (elapsedTime >= 3000) {
+        businessPromise.then((result) => {
+          resolve(result);
+        });
+      } else {
+        setTimeout(execute, 3000 - elapsedTime);
+      }
+    };
+
+    execute();
+  });
+}
+
 export const handleStart = (
   datasheetId: string,
   record: IRecord,
