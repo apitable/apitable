@@ -76,7 +76,7 @@ export const TooltipBase = styled.div.attrs(applyDefaultTheme)`
     const color = props.theme.color;
     return css`
       z-index: ${CONST_TOOLTIP_INDEX};
-      background: ${color.bgCommonHighest};
+      background: ${color.bgReverseDefault};
       border-radius: 4px;
       padding: 8px;
       font-size: 12px;
