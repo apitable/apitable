@@ -250,6 +250,11 @@ a {
   z-index: 1003 !important;
 }
 
+.rc-virtual-list-holder {
+  overflow-y: auto !important;
+  .default-scroll-bar(true);
+}
+
 .rc-virtual-list-scrollbar {
   background: transparent;
   width: 14px !important;
@@ -260,8 +265,6 @@ a {
   background-clip: padding-box;
 
   .rc-virtual-list-scrollbar-thumb {
-    background: var(--bgScrollbarDefault) !important;
-    min-height: 36px;
-    border-radius: 7px !important;
+    background-color: transparent !important;
   }
 }

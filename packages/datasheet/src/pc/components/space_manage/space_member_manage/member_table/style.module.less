@@ -6,7 +6,7 @@
   overflow-y: hidden;
   margin-top: 24px;
   display: flex;
-  .light-scroll-bar();
+  .default-scroll-bar();
   :global {
     .ant-table-wrapper {
       flex: 1;
@@ -18,7 +18,7 @@
       .antdTable();
       .ant-table-body {
         overflow-y: hidden !important;
-        .light-scroll-bar();
+        .default-scroll-bar();
         &:hover {
           overflow-y: auto !important; // Firefox compatible, the second overflow in chrome can override the first overflow
           overflow-y: overlay !important;
