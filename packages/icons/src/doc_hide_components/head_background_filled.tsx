@@ -21,10 +21,10 @@ import React from 'react';
 import { makeIcon, IIconProps } from '../utils/icon';
 
 export const HeadBackgroundFilled: React.FC<IIconProps> = makeIcon({
-    Path: ({ colors }) => <>
+  Path: ({ colors }) => <>
     <path d="M30 61C46.5685 61 60 47.5685 60 31C60 14.4315 46.5685 1 30 1C13.4315 1 0 14.4315 0 31C0 47.5685 13.4315 61 30 61Z" fill={ colors[0] } fillRule="evenodd" clipRule="evenodd"/>
-<path d="M50.6338 52.7778C45.2567 57.874 37.9937 61 30.0005 61C22.0073 61 14.7443 57.874 9.36719 52.7778C9.5364 41.5368 18.7094 33 30.0005 33C41.2915 33 50.4646 41.5368 50.6338 52.7778Z" fill={ colors[1] } fillRule="evenodd" clipRule="evenodd"/>
-<path d="M30 35C36.0751 35 41 30.0751 41 24C41 17.9249 36.0751 13 30 13C23.9249 13 19 17.9249 19 24C19 30.0751 23.9249 35 30 35Z" fill={ colors[1] } fillRule="evenodd" clipRule="evenodd"/>
+    <path d="M50.6338 52.7778C45.2567 57.874 37.9937 61 30.0005 61C22.0073 61 14.7443 57.874 9.36719 52.7778C9.5364 41.5368 18.7094 33 30.0005 33C41.2915 33 50.4646 41.5368 50.6338 52.7778Z" fill={ colors[1] } fillRule="evenodd" clipRule="evenodd"/>
+    <path d="M30 35C36.0751 35 41 30.0751 41 24C41 17.9249 36.0751 13 30 13C23.9249 13 19 17.9249 19 24C19 30.0751 23.9249 35 30 35Z" fill={ colors[1] } fillRule="evenodd" clipRule="evenodd"/>
 
   </>,
   name: 'head_background_filled',

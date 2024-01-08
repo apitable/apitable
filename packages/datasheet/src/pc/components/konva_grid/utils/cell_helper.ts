@@ -322,6 +322,7 @@ export class CellHelper extends KonvaDrawer {
     const buttonField = renderProps.field as IButtonField;
     const cellValue = [1];
     const isOperating = isActive;
+    const GRID_CELL_VALUE_PADDING = 0;
     let currentX = GRID_CELL_VALUE_PADDING;
     let currentY = GRID_CELL_MULTI_PADDING_TOP;
     const isShortHeight = rowHeightLevel === RowHeightLevel.Short;

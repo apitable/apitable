@@ -16,17 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.organization.dto;
+package com.apitable.space.vo;
 
+import com.apitable.shared.support.serializer.NullArraySerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import lombok.Builder;
 import lombok.Data;
 
 /**
- * space member id dto.
+ * <p>
+ * Email Invitation Result View.
+ * </p>
  */
 @Data
-public class SpaceMemberIdDTO {
+@Builder(toBuilder = true)
+@Schema(description = "Email Invitation Result View")
+public class EmailInvitationResultVO {
 
-    private Long id;
-
-    private String spaceId;
+    @Schema(description = "Email for successful invitation", example = "[\"aaa\", \"bbb\"]")
+    @JsonSerialize(nullsUsing = NullArraySerializer.class)
+    private List<String> emails;
 }

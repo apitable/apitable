@@ -3,6 +3,7 @@ package com.apitable.starter.databus.client.api;
 import com.apitable.starter.databus.client.ApiClient;
 import com.apitable.starter.databus.client.model.ApiResponseRecordDTOs;
 import com.apitable.starter.databus.client.model.CellFormatEnum;
+import com.apitable.starter.databus.client.model.FieldCreateRo;
 import com.apitable.starter.databus.client.model.FieldKeyEnum;
 import com.apitable.starter.databus.client.model.ListVO;
 import com.apitable.starter.databus.client.model.RecordUpdateRO;
@@ -23,7 +24,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
+@jakarta.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen")
 public class FusionApiApi {
     private ApiClient apiClient;
 
@@ -171,90 +172,72 @@ public class FusionApiApi {
      * @param spaceId space_id (required)
      * @param dstId dst_id (required)
      * @param authorization Current csrf token of user (required)
-     * @param body  (required)
+     * @param fieldCreateRo  (required)
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public void createFields(String spaceId, String dstId, String authorization, Object body)
-        throws RestClientException {
-        createFieldsWithHttpInfo(spaceId, dstId, authorization, body);
+    public void createFields(String spaceId, String dstId, String authorization, FieldCreateRo fieldCreateRo) throws RestClientException {
+        createFieldsWithHttpInfo(spaceId, dstId, authorization, fieldCreateRo);
     }
 
     /**
      * create_fields
      * create_fields  create_fields
      * <p><b>200</b> - Get Datasheet Fields
-     *
-     * @param spaceId       space_id (required)
-     * @param dstId         dst_id (required)
+     * @param spaceId space_id (required)
+     * @param dstId dst_id (required)
      * @param authorization Current csrf token of user (required)
-     * @param body          (required)
+     * @param fieldCreateRo  (required)
      * @return ResponseEntity&lt;Void&gt;
      * @throws RestClientException if an error occurs while attempting to invoke the API
      */
-    public ResponseEntity<Void> createFieldsWithHttpInfo(String spaceId, String dstId,
-                                                         String authorization, Object body)
-        throws RestClientException {
-        Object localVarPostBody = body;
-
+    public ResponseEntity<Void> createFieldsWithHttpInfo(String spaceId, String dstId, String authorization, FieldCreateRo fieldCreateRo) throws RestClientException {
+        Object localVarPostBody = fieldCreateRo;
+        
         // verify the required parameter 'spaceId' is set
         if (spaceId == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST,
-                "Missing the required parameter 'spaceId' when calling createFields");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'spaceId' when calling createFields");
         }
-
+        
         // verify the required parameter 'dstId' is set
         if (dstId == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST,
-                "Missing the required parameter 'dstId' when calling createFields");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'dstId' when calling createFields");
         }
-
+        
         // verify the required parameter 'authorization' is set
         if (authorization == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST,
-                "Missing the required parameter 'authorization' when calling createFields");
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'authorization' when calling createFields");
         }
-
-        // verify the required parameter 'body' is set
-        if (body == null) {
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST,
-                "Missing the required parameter 'body' when calling createFields");
+        
+        // verify the required parameter 'fieldCreateRo' is set
+        if (fieldCreateRo == null) {
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Missing the required parameter 'fieldCreateRo' when calling createFields");
         }
-
+        
         // create path and map variables
         final Map<String, Object> uriVariables = new HashMap<String, Object>();
         uriVariables.put("space_id", spaceId);
         uriVariables.put("dst_id", dstId);
 
-        final MultiValueMap<String, String> localVarQueryParams =
-            new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, String> localVarQueryParams = new LinkedMultiValueMap<String, String>();
         final HttpHeaders localVarHeaderParams = new HttpHeaders();
-        final MultiValueMap<String, String> localVarCookieParams =
-            new LinkedMultiValueMap<String, String>();
-        final MultiValueMap<String, Object> localVarFormParams =
-            new LinkedMultiValueMap<String, Object>();
+        final MultiValueMap<String, String> localVarCookieParams = new LinkedMultiValueMap<String, String>();
+        final MultiValueMap<String, Object> localVarFormParams = new LinkedMultiValueMap<String, Object>();
 
-        if (authorization != null) {
-            localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
-        }
+        if (authorization != null)
+        localVarHeaderParams.add("Authorization", apiClient.parameterToString(authorization));
 
-        final String[] localVarAccepts = {};
+        final String[] localVarAccepts = {  };
         final List<MediaType> localVarAccept = apiClient.selectHeaderAccept(localVarAccepts);
-        final String[] localVarContentTypes = {
+        final String[] localVarContentTypes = { 
             "application/json"
-        };
-        final MediaType localVarContentType =
-            apiClient.selectHeaderContentType(localVarContentTypes);
+         };
+        final MediaType localVarContentType = apiClient.selectHeaderContentType(localVarContentTypes);
 
-        String[] localVarAuthNames = new String[] {};
+        String[] localVarAuthNames = new String[] {  };
 
-        ParameterizedTypeReference<Void> localReturnType = new ParameterizedTypeReference<Void>() {
-        };
-        return apiClient.invokeAPI("/fusion/v3/spaces/{space_id}/datasheets/{dst_id}/fields",
-            HttpMethod.POST, uriVariables, localVarQueryParams, localVarPostBody,
-            localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAccept,
-            localVarContentType, localVarAuthNames, localReturnType);
+        ParameterizedTypeReference<Void> localReturnType = new ParameterizedTypeReference<Void>() {};
+        return apiClient.invokeAPI("/fusion/v3/spaces/{space_id}/datasheets/{dst_id}/fields", HttpMethod.POST, uriVariables, localVarQueryParams, localVarPostBody, localVarHeaderParams, localVarCookieParams, localVarFormParams, localVarAccept, localVarContentType, localVarAuthNames, localReturnType);
     }
-
     /**
      * Delete field
      * Delete field  Delete field

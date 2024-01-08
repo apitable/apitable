@@ -19,21 +19,11 @@
 import { IRemoteChangeset } from 'engine/ot';
 import { StatType } from 'model/field/stat';
 import { ICellValue } from 'model/record';
-import { FillDirection, ICell,IFieldRanges, IRange, IRecordRanges } from 'model/view/range';
+import { FillDirection, ICell, IFieldRanges, IRange, IRecordRanges } from 'model/view/range';
 import { IField, IStandardValue } from 'types/field_types';
 import { IFilterInfo, IGroupInfo, ISortedField, ISortInfo } from 'types/view_types';
-import {
-  IUnitValue,
-  IUserValue,
-} from 'exports/store/interfaces';
-import {
-  CellType,
-  GalleryStyleKeyType,
-  LayoutType,
-  RowHeightLevel,
-  ViewType,
-  WhyRecordMoveType,
-} from 'modules/shared/store/constants';
+import { IUnitValue, IUserValue } from 'exports/store/interfaces';
+import { CellType, GalleryStyleKeyType, LayoutType, RowHeightLevel, ViewType, WhyRecordMoveType } from 'modules/shared/store/constants';
 
 import * as actions from '../../../../../shared/store/action_constants';
 import {
@@ -829,6 +819,7 @@ export interface IPageParams {
   mirrorId?: string;
   embedId?: string;
   aiId?: string;
+  embedPageId?: string;
 }
 
 export interface ICollaboratorParams {

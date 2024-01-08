@@ -55,7 +55,7 @@ public class NodeShareTree implements Tree {
     @JsonIgnore
     private String cover;
 
-    @JsonIgnore
+    @Schema(description = "Node extra")
     private String extra;
 
     @Schema(description = "Node Type[1:Folder,2:Datasheet]", example = "1")

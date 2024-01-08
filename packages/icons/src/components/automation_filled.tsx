@@ -21,7 +21,7 @@ import React from 'react';
 import { makeIcon, IIconProps } from '../utils/icon';
 
 export const AutomationFilled: React.FC<IIconProps> = makeIcon({
-    Path: ({ colors }) => <>
+  Path: ({ colors }) => <>
     <path d="M9.63393 2.49017C9.63398 1.24516 8.01253 0.765406 7.33514 1.81002L4.08643 6.81989C3.54716 7.65152 4.14402 8.74996 5.13519 8.74999L6.63392 8.75003L6.63376 13.4957C6.63372 14.7917 8.36297 15.2314 8.98196 14.0928L12.4917 7.63694C12.9445 6.80401 12.3416 5.7899 11.3935 5.7899L9.63379 5.7899L9.63393 2.49017Z" fill={ colors[0] }/>
 
   </>,

@@ -343,6 +343,7 @@ public class UserController {
      * @param data CheckUserEmailRo
      * @return {@link ResponseData}
      */
+    @Deprecated(since = "v1.10.0")
     @PostResource(path = "/validate/email", requiredPermission = false)
     @Operation(summary = "Query whether the user is consistent with the "
         + "specified mail", description = "Query whether the user is consistent "

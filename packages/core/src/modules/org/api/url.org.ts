@@ -50,10 +50,6 @@ export const TEAM_ADD_MEMBER = '/org/member/addMember';
 export const GET_ADD_MEMBERS = '/org/search/unit';
 // Space station - determine whether member mailboxes exist in the space
 export const EXIST_EMAIL = '/org/member/checkEmail';
-// Space Station - Mail invites external members for the first time
-export const SEND_INVITE = '/org/member/sendInvite';
-// space station-mail invites external members again
-export const RESEND_INVITE = '/org/member/sendInviteSingle';
 // Space station - download employee information form template
 export const DOWNLOAD_MEMBER_FILE = '/org/member/downloadTemplate';
 // space station - upload employee information form

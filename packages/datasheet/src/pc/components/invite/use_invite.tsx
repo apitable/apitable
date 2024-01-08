@@ -145,7 +145,7 @@ export const useEmailInviteInModal = (spaceId: string, invite: IInviteMemberList
 
   const request = useCallback(
     (nvcVal?: string) => {
-      Api.sendInvite(invite, shareId, nvcVal).then((res) => {
+      Api.sendInvite(spaceId, invite, nvcVal).then((res) => {
         const { success, message, code } = res.data;
         setIsInvited(true);
         if (success) {
@@ -164,7 +164,7 @@ export const useEmailInviteInModal = (spaceId: string, invite: IInviteMemberList
         }
       });
     },
-    [invite, shareId],
+    [spaceId, invite],
   );
 
   useEffect(() => {

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.organization.ro;
+package com.apitable.space.ro;
 
 import com.apitable.core.support.deserializer.StringToLongDeserializer;
 import com.apitable.shared.constants.PatternConstants;
@@ -28,12 +28,12 @@ import lombok.Data;
 
 /**
  * <p>
- * Invite Member Parameters.
+ * Email Invitation Member Request Parameters.
  * </p>
  */
 @Data
-@Schema(description = "Invite Member Parameters")
-public class InviteMemberRo {
+@Schema(description = "Email Invitation Member Request Parameters")
+public class EmailInvitationMemberRo {
 
     @Schema(description = "Email address, strictly checked",
         requiredMode = RequiredMode.REQUIRED, example = "123456@qq.com")

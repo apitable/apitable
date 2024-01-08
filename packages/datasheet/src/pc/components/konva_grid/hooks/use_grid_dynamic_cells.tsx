@@ -183,7 +183,6 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
             const y = instance.getRowOffset(rowIndex);
             const columnWidth = instance.getColumnWidth(columnIndex);
             const cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldId);
-            const isFirstColumn = columnIndex === 0;
             const isFrozenColumn = columnIndex < frozenColumnCount;
             const { offset, width } = getCellHorizontalPosition({
               depth,
@@ -197,7 +196,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
               isCurrentSearchCell = searchRecordId === recordId && searchFieldId === fieldId;
             }
             const editable = getCellEditable(activeField, _editable);
-            const fontWeight = isFirstColumn ? 'bold' : 'normal';
+            const fontWeight = 'normal';
             const permissions = Selectors.getDatasheet(state)?.permissions || {};
             const renderProps = {
               x: x + offset,

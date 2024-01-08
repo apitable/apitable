@@ -61,7 +61,7 @@ export const usePaymentReminder = () => {
       return;
     }
 
-    usageWarnModal?.({
+    usageWarnModal({
       title: t(Strings.payment_reminder_modal_title),
       alertContent: t(Strings.payment_reminder_modal_content),
     });

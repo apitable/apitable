@@ -336,7 +336,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             // and has not been bound to other accounts,
             // activate the space members of the invited mail
             List<MemberDTO> inactiveMembers =
-                iMemberService.getInactiveMemberByEmails(email);
+                iMemberService.getInactiveMemberByEmail(email);
             inactiveMemberProcess(user.getId(), inactiveMembers);
         } else {
             String spaceName = user.getNickName();
@@ -417,7 +417,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             // and has not been bound to other accounts,
             // activate the space members of the invited mailbox
             List<MemberDTO> inactiveMembers =
-                iMemberService.getInactiveMemberByEmails(email);
+                iMemberService.getInactiveMemberByEmail(email);
             hasSpace = this.inactiveMemberProcess(entity.getId(),
                 inactiveMembers);
         }
@@ -567,7 +567,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         // and has not been bound to other accounts,
         // activate the space members of the invited email
         List<MemberDTO> inactiveMembers =
-            iMemberService.getInactiveMemberByEmails(email);
+            iMemberService.getInactiveMemberByEmail(email);
         this.inactiveMemberProcess(userId, inactiveMembers);
         // Delete Cache
         loginUserCacheService.delete(userId);
@@ -606,7 +606,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         // and no other account has been bound,
         // activate the invited space member
         List<MemberDTO> inactiveMembers =
-            iMemberService.getInactiveMemberByEmails(mobile);
+            iMemberService.getInactiveMemberDtoByMobile(mobile);
         this.inactiveMemberProcess(userId, inactiveMembers);
 
         // Delete Cache

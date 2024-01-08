@@ -1,7 +1,12 @@
 # APITable CHANGELOG
 
-## [v1.8.0-beta](https://github.com/apitable/apitable/releases/tag/v1.8.0-beta) (2024-01-02)
+## [v1.8.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.8.0-beta.1) (2024-01-08)
 
+
+### What's more
+
+* sync: hosted cloud ([#1561](https://github.com/apitable/apitable/pull/1561)) @robot518 
+## [v1.8.0-beta](https://github.com/apitable/apitable/releases/tag/v1.8.0-beta) (2024-01-02)
 
 ### Bug fixes
 

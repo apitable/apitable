@@ -222,7 +222,7 @@ public class AuthServiceImpl implements IAuthService {
             iUserService.updateLoginTime(userId);
             // Query whether there is a space member corresponding to the mailbox,
             // only new registration will have this operation
-            List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(email);
+            List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberByEmail(email);
             iMemberService.activeIfExistInvitationSpace(userId,
                 inactiveMembers.stream().map(MemberDTO::getId).collect(Collectors.toList()));
         } else {
@@ -258,7 +258,7 @@ public class AuthServiceImpl implements IAuthService {
         UserEntity user = iUserService.createUserByEmail(email, password, lang);
         // Query whether there is a space member corresponding to the mailbox, only new
         // registration will have this operation
-        List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberDtoByEmail(email);
+        List<MemberDTO> inactiveMembers = iMemberService.getInactiveMemberByEmail(email);
         // Invite new users to join the space station to reward attachment capacity,
         // asynchronous operation
         if (spaceId != null) {

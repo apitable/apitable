@@ -24,7 +24,6 @@ import static com.apitable.shared.constants.NotificationConstants.INVOLVE_MEMBER
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.text.CharSequenceUtil;
@@ -58,7 +57,6 @@ import jakarta.annotation.Resource;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -206,7 +204,7 @@ public class NotificationFactory implements INotificationFactory {
             nodeIds.add(dto.getNodeId());
             if (dto.getFromUser() != 0) {
                 Long memberId =
-                    memberMapper.selectMemberIdByUserIdAndSpaceIdExcludeDelete(dto.getFromUser(),
+                    memberMapper.selectMemberIdByUserIdAndSpaceIdIncludeDeleted(dto.getFromUser(),
                         dto.getSpaceId());
                 if (ObjectUtil.isNotNull(memberId)) {
                     memberIds.add(memberId);

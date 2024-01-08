@@ -78,6 +78,8 @@ public enum OrganizationException implements BaseException {
 
     INVITE_EMAIL_HAS_ACTIVE(518, "This email has been activated, please do not send it again"),
 
+    INVITE_EMAIL_NOT_MATCH(518, "Invited email does not match"),
+
     INVITE_EMAIL_NOT_EXIT(518, "Invited email does not exist"),
 
     INVITE_EMAIL_HAS_LINK(518,

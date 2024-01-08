@@ -115,9 +115,9 @@ export function getTeamInfo(_spaceId: string, teamId: string) {
  * Space - invite member by email
  * invite member by email
  */
-export function sendInviteEmail(_spaceId: string, invite: IInviteMemberList[]) {
+export function sendInviteEmail(spaceId: string, invite: IInviteMemberList[]) {
   return (dispatch: any) => {
-    Api.sendInvite(invite).then(res => {
+    Api.sendInvite(spaceId, invite).then(res => {
       const { success } = res.data;
       dispatch(updateInviteStatus(true));
       if (success) {
