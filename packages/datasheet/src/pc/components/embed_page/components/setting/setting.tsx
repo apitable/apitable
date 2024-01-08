@@ -17,7 +17,7 @@ const Title = ({ onClose }) => {
   return (
     <div className={'vk-flex vk-items-center vk-justify-between'}>
       <div className={'vk-flex vk-items-center'}>
-        <span style={{ marginRight: 8 }}>Add a custom page</span>
+        <span style={{ marginRight: 8 }}>{t(Strings.embed_page_setting_title)}</span>
         <a href={t(Strings.embed_page_doc_url)} className={'vk-flex vk-items-center'} target={'_blank'} rel="noreferrer">
           <QuestionCircleOutlined />
         </a>

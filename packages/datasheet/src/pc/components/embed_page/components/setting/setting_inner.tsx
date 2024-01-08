@@ -6,6 +6,7 @@ import { Button, LinkButton, Message, TextInput, ThemeName, Typography, useTheme
 import { Strings, t } from '@apitable/core';
 import { useCatalogTreeRequest } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
+import { getEnvVariables } from 'pc/utils/env';
 import { getConfig } from '../../config/config';
 import { embedPageAtom } from '../../store/embed_page_desc_atom';
 import { convertFigmaUrl, convertYoutubeUrl } from '../../utils/convert-url';
@@ -127,7 +128,7 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
   return (
     <div className="vk-text-white vk-rounded-lg vk-h-full vk-relative" style={{ backgroundColor: colors.bgCommonDefault }}>
       <Typography variant="body4" color={colors.textCommonTertiary}>
-        {t(Strings.embed_page_function_desc)}
+        {t(Strings.embed_page_function_desc, { edition: getEnvVariables().IS_AITABLE ? 'AITable' : t(Strings.vikadata) })}
       </Typography>
       <div className="vk-grid vk-mt-4 vk-gap-2 vk-grid-cols-5">
         {getConfig().map((item, index) => {

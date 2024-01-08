@@ -6013,7 +6013,7 @@
   "schedule_start_month": "Starting from January each year, every",
   "payment_reminder_modal_content": "You can try the advanced version to enjoy more file nodes, enterprise permissions, attachment capacity, data volume, AI and other advanced features and privileges.",
   "embed_page_add_url": "Add Url",
-  "embed_page_function_desc": "Embed web pages into AlTable for easy access to third-party website documents, videos, and more. You can embed recommended website links or any custom links.",
+  "embed_page_function_desc": "Embed web pages into ${edition} for easy access to third-party website documents, videos, and more. You can embed recommended website links or any custom links.",
   "embed_page": "Embed Page",
   "embed_page_node_permission_manager": "On the basis of \"read-only\", embedded links can be modified.",
   "embed_page_node_permission_editor": "On the basis of \"read-only\", only viewable.",

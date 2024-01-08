@@ -6017,7 +6017,7 @@
   "schedule_year_tips": "周期计算从每年的 1 月份开始算，假设设置为每隔 3 个月的 1 日，则每年的 1 月，4 月，7 月，10 月的第一天会触发",
   "payment_reminder_modal_content": "可以试试看高级版本，享受更多文件节点、企业权限、附件容量、数据量、AI等高级功能和特权。",
   "embed_page_add_url": "添加网址",
-  "embed_page_function_desc": "Embed web pages into AlTable for easy access to third-party website documents, videos, and more. You can embed recommended website links or any custom links.",
+  "embed_page_function_desc": "将网页嵌入 ${edition}，以便轻松访问第三方网站的文档、视频等内容。您可以嵌入推荐的网站链接或任何自定义链接。",
   "embed_page": "网页嵌入",
   "embed_page_node_permission_manager": "在「只可阅读」基础上，可以修改嵌入链接",
   "embed_page_node_permission_editor": "在「只可阅读」基础上，只可查看",
@@ -6026,5 +6026,6 @@
   "embed_success": "嵌入成功",
   "embed_page_url_invalid": "请输入正确的网址",
   "embed_page_doc_url": "https://help.vika.cn/docs/guide/embedded-page#wps",
-  "new_ebmed_page":"新建网页嵌入"
+  "new_ebmed_page": "新建网页嵌入",
+  "embed_page_setting_title": "添加自定义页面"
 }
