@@ -10,10 +10,9 @@ export const useGetInfo = () => {
   const [embedPage, setEmbedPage] = useAtom(embedPageAtom);
 
   useEffect(() => {
-    if (!node?.permissions) return;
     setEmbedPage((pre) => ({
       ...pre,
-      permission: node.permissions,
+      permission: node?.permissions || {},
       url: node?.extra ? JSON.parse(node?.extra).embedPage.url : '',
     }));
   }, [setEmbedPage, node?.permissions, node?.extra]);
