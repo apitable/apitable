@@ -18,7 +18,6 @@
 
 import { configResponsive, useResponsive, useScroll } from 'ahooks';
 import classNames from 'classnames';
-import Image from 'next/image';
 import { FC, useRef } from 'react';
 import { useThemeMode } from '@apitable/components';
 import BgPng from 'static/icon/space/space_img_bj.png';
@@ -40,7 +39,7 @@ export const Wrapper: FC<React.PropsWithChildren<IWrapper>> = ({ children, class
   const theme = useThemeMode();
   return (
     <div className={classNames(styles.wrapper, className)} style={{ position: 'relative' }}>
-      <Image src={BgPng} objectFit={'cover'} layout={'fill'} alt="" />
+      <img className={styles.bg} src={BgPng.src} alt=""/>
       <div className={classNames(styles.logoWrapper, { [styles.shadow]: scroll?.top })}>
         {!hiddenLogo && <Logo theme={theme} size={responsive.large ? 'large' : 'small'} />}
       </div>
