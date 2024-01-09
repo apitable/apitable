@@ -55,13 +55,4 @@ public interface LabsApplicantMapper extends BaseMapper<LabsApplicantEntity> {
      */
     LabsApplicantEntity selectApplicantAndFeatureKey(@Param("applicant") String applicant,
                                                      @Param("featureKey") String featureKey);
-
-    /**
-     * Soft deletion of experimental function application record.
-     *
-     * @param id        ID of the experimental function application form
-     * @param isDeleted Delete Record
-     * @return Number of affected record lines
-     */
-    int updateIsDeletedById(@Param("id") Long id, @Param("isDeleted") Boolean isDeleted);
 }
