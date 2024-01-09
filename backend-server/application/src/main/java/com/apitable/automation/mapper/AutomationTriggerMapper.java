@@ -77,4 +77,22 @@ public interface AutomationTriggerMapper extends BaseMapper<AutomationTriggerEnt
     void updateTriggerInputByRobotIdsAndTriggerType(@Param("robotIds") List<String> robotIds,
                                                     @Param("triggerTypeId") String triggerTypeId,
                                                     @Param("input") String input);
+
+    /**
+     * get count by trigger id.
+     *
+     * @param robotId robot id
+     * @return total amount
+     */
+    Integer selectCountByRobotId(@Param("robotId") String robotId);
+
+    /**
+     * query trigger.
+     *
+     * @param triggerId trigger
+     * @return AutomationTriggerEntity
+     */
+    AutomationTriggerEntity selectByTriggerId(
+        @Param("triggerId") String triggerId);
+
 }

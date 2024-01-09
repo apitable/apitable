@@ -16,15 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.automation.service;
+package com.apitable.automation.mapper;
 
-import com.apitable.automation.entity.AutomationTriggerTypeEntity;
-import com.baomidou.mybatisplus.extension.service.IService;
+import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * IAutomationTriggerTypeService.
- */
-public interface IAutomationTriggerTypeService extends IService<AutomationTriggerTypeEntity> {
+import com.apitable.AbstractMyBatisMapperTest;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-    String getTriggerTypeByEndpoint(String endpoint);
+public class AutomationTriggerMapperTest extends AbstractMyBatisMapperTest {
+
+    @Autowired
+    private AutomationTriggerMapper automationTriggerMapper;
+
+    @Test
+    void testSelectCountByRobotIdWithZero() {
+        Integer count = automationTriggerMapper.selectCountByRobotId("test_robot_id");
+        assertThat(count).isNotNull();
+    }
 }

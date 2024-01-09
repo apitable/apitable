@@ -24,6 +24,9 @@ import com.apitable.asset.service.IAssetService;
 import com.apitable.asset.service.IAssetUploadTokenService;
 import com.apitable.asset.task.AssetTask;
 import com.apitable.auth.service.IAuthService;
+import com.apitable.automation.service.IAutomationRobotService;
+import com.apitable.automation.service.IAutomationTriggerService;
+import com.apitable.automation.service.IAutomationTriggerTypeService;
 import com.apitable.client.task.ClientTasks;
 import com.apitable.control.service.IControlRoleService;
 import com.apitable.control.service.IControlService;
@@ -49,6 +52,7 @@ import com.apitable.shared.component.notification.queue.NotificationConsumer;
 import com.apitable.shared.config.properties.SystemProperties;
 import com.apitable.shared.holder.UserHolder;
 import com.apitable.shared.util.IdUtil;
+import com.apitable.shared.util.RandomExtendUtil;
 import com.apitable.space.service.IInvitationService;
 import com.apitable.space.service.ISpaceInvitationService;
 import com.apitable.space.service.ISpaceInviteLinkService;
@@ -57,6 +61,7 @@ import com.apitable.space.service.ISpaceRoleResourceRelService;
 import com.apitable.space.service.ISpaceRoleService;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.space.service.IStaticsService;
+import com.apitable.starter.amqp.core.RabbitSenderService;
 import com.apitable.starter.mail.autoconfigure.MailTemplate;
 import com.apitable.starter.oss.core.OssClientTemplate;
 import com.apitable.template.service.ITemplateAlbumRelService;
@@ -77,7 +82,6 @@ import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.service.IResourceMetaService;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import jakarta.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -241,6 +245,15 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     @Autowired
     protected IAssetService iAssetService;
 
+    @Autowired
+    protected IAutomationTriggerService iAutomationTriggerService;
+
+    @Autowired
+    protected IAutomationRobotService iAutomationRobotService;
+
+    @Autowired
+    protected IAutomationTriggerTypeService iAutomationTriggerTypeService;
+
     @Value("#{'${exclude}'.split(',')}")
     private List<String> excludeTables;
 
@@ -255,6 +268,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @MockBean
     protected OssClientTemplate ossTemplate;
+
+    @MockBean
+    protected RabbitSenderService rabbitSenderService;
 
     @BeforeEach
     public void beforeMethod() {
@@ -310,7 +326,10 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     }
 
     protected MockUserSpace createSingleUserAndSpace() {
-        UserEntity user = iUserService.createUserByEmail("test_user@apitable.com", "123456");
+        UserEntity user =
+            iUserService.createUserByEmail(
+                "test_user" + RandomExtendUtil.randomString(10) + "@apitable.com",
+                "123456");
         String spaceId = createSpaceWithoutName(user);
 
         // init context

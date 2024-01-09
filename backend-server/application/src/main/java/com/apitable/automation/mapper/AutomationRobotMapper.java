@@ -104,4 +104,22 @@ public interface AutomationRobotMapper extends BaseMapper<AutomationRobotEntity>
      */
     List<RobotTriggerDto> getRobotTriggers(@Param("seqId") String seqId,
                                            @Param("resourceId") String resourceId);
+
+    /**
+     * query count by robot id.
+     *
+     * @param robotId robot id
+     * @return Integer
+     */
+    Integer selectCountByRobotId(@Param("robotId") String robotId);
+
+    /**
+     * update robot info.
+     *
+     * @param robotId   robot id
+     * @param updatedBy updater
+     * @return rows
+     */
+    int updateUpdatedByRobotId(@Param("robotId") String robotId,
+                               @Param("updatedBy") Long updatedBy);
 }
