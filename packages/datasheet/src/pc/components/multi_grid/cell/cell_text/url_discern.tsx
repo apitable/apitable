@@ -21,11 +21,9 @@ import { FieldType, ISegment, string2Segment, SegmentType } from '@apitable/core
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
 import { stopPropagation } from 'pc/utils';
 import styles from './style.module.less';
-import { Typography } from '@apitable/components';
 
 interface IUrlDiscernProp {
   value?: string | null;
-  isTitle?: boolean;
 }
 /**
  *
@@ -35,7 +33,7 @@ interface IUrlDiscernProp {
  * Splitting strings to add clickable functionality to URLs
  */
 export const UrlDiscern: React.FC<React.PropsWithChildren<IUrlDiscernProp>> = (props) => {
-  const { value = '', isTitle } = props;
+  const { value = '' } = props;
   const getValidValue = (originValue: string | null) => {
     if (originValue) {
       let segment: ISegment[] = [];
@@ -53,7 +51,7 @@ export const UrlDiscern: React.FC<React.PropsWithChildren<IUrlDiscernProp>> = (p
   };
 
   return (
-    <div className={styles.readOnlyTextCell}>
+    <>
       {getValidValue(value)?.map((segment, index) => {
         switch (segment.type) {
           case SegmentType.Url:
@@ -68,14 +66,9 @@ export const UrlDiscern: React.FC<React.PropsWithChildren<IUrlDiscernProp>> = (p
               </span>
             );
           default:
-            return <Typography
-              key={`${segment.text}-${index}`}
-              variant={isTitle ? 'h7' : 'body3'}
-              ellipsis={{ rows: isTitle ? 1 : 4 }}>
-              {segment.text}
-            </Typography>;
+            return <span key={`${segment.text}-${index}`}>{segment.text}</span>;
         }
       })}
-    </div>
+    </>
   );
 };

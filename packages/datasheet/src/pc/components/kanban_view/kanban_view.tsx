@@ -44,6 +44,7 @@ import {
 import { GroupHeadMenu } from 'pc/components/kanban_view/group_header/head_more_option';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage/storage';
 import { stopPropagation } from '../../utils/dom';
 import { ScreenSize } from '../common/component_display';
@@ -55,8 +56,6 @@ import { KanbanFieldSettingModal } from './kanban_field_setting';
 import { KanbanGroup } from './kanban_group/kanban_group';
 import { KanbanSkeleton } from './kanban_skeleton';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IKanbanViewProps {
   height: number;
