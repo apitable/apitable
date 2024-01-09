@@ -224,17 +224,17 @@ export const useCells = (props: IUseGridBaseProps) => {
             } else if (isCellInFillSelection) {
               background = colors.warnLight;
             } else if (isCheckedRow) {
-              background = colors.cellSelectedColorSolid;
+              background = colors.bgBrandLightDefaultSolid;
             } else if (isThisCellWillMove) {
               background = colors.warnLight;
             } else if (isCellInSelection) {
-              background = colors.cellSelectedColorSolid;
+              background = colors.bgBrandLightDefaultSolid;
             } else if (hasFoundMark) {
               background = colors.primaryLightSolid;
             } else if (isActiveRow) {
-              background = colors.rowSelectedBgSolid;
+              background = colors.bgBrandLightDefaultSolid;
             } else if (isHoverRow) {
-              background = colors.rowSelectedBgSolid;
+              background = colors.bgBglessHoverSolid;
             }
 
             recordRowLayout.init({
