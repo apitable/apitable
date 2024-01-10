@@ -247,21 +247,21 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     });
   };
 
-  format2StandardDate = (dateStr: string): ITimestamp | null => str2timestamp(dateStr);
+  format2StandardDate = (dateStr: string, dateFormat: string): ITimestamp | null => str2timestamp(dateStr, dateFormat);
 
   getInputValue() {
     const { field, userTimeZone } = this.props;
     const { property } = field;
     const { dateValue } = this.state;
     let { timeValue } = this.state;
-    const { timeFormat, timeZone = userTimeZone } = Field.bindModel(this.props.field);
+    const { timeFormat, timeZone = userTimeZone, dateFormat } = Field.bindModel(this.props.field);
     if (!dateValue && !timeValue) {
       return null;
     }
     const { autoFill } = property;
     let dateTimestamp = new Date(getToday()).getTime();
     if (dateValue) {
-      const timestamp = this.format2StandardDate(dateValue);
+      const timestamp = this.format2StandardDate(dateValue, dateFormat);
       if (timestamp == null || notInTimestampRange(timestamp)) {
         return null;
       }

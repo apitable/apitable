@@ -27,11 +27,12 @@ dayjs.extend(customParseFormat);
 
 export function str2timestamp(
   value: string | null,
+  dateFormat?: string,
 ): ITimestamp | null {
   if (!value) {
     return null;
   }
-  const dateTime = dayjs(value);
+  const dateTime = dayjs(value, dateFormat);
 
   return dateTime.isValid() ? dateTime.valueOf() : null;
 }
