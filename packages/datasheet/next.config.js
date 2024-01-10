@@ -19,32 +19,37 @@
 /* eslint no-undef: 0 */
 const withLess = require('next-with-less');
 const path = require('path');
-const withPlugins = require('next-compose-plugins');
 const withTM = require('next-transpile-modules');
 const withBundleAnalyzer = require('@next/bundle-analyzer');
 const isProd = process.env.NODE_ENV === 'production';
 const getWebpackConfig = require('./webpack.config');
+const { withSentryConfig } = require('@sentry/nextjs');
 
-const plugins = [
-  [
-    withLess,
-    {
-      lessLoaderOptions: {
-        lessOptions: {
-          paths: [path.resolve(__dirname, './src')],
-        },
-      },
-    },
-  ],
-  [withTM(['antd', 'antd-mobile', 'rc-util', 'rc-picker', 'rc-notification', 'rc-calendar'])],
-  [withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' })],
-];
-/** @type {import('next').NextConfig} */
-module.exports = withPlugins(plugins, {
+const sentryWebpackPluginOptions = {
+  disableServerWebpackPlugin: false,
+  widenClientFileUpload: true,
+  disableClientWebpackPlugin: false,
+  org: process.env.SENTRY_ORG ??  'sentry',
+  project: process.env.SENTRY_PROJECT  ?? 'web-server',
+  url: process.env.SENTRY_URL  ??  'https://sentry.vika.ltd',
+  // An auth token is required for uploading source maps.
+  authToken: process.env.SENTRY_AUTH_TOKEN ?? 'b8d7afa51f464492904b368cb17fa121e7333a2183a4425abec0e6bebd42b8bb',
+  dsn: process.env.SENTRY_CONFIG_DSN ?? 'https://51c44e606db14f34963bd4ba64d86410@sentry.vika.ltd/3',
+  release: process.env.BUILD_VERSION,
+  silent: false, // Suppresses all logs
+  hideSourceMaps: true,
+  debug: true,
+
+  // For all available options, see:
+  // https://github.com/getsentry/sentry-webpack-plugin#options.
+};
+
+const nextConfig = {
   // Use the CDN in production and localhost for development.
   assetPrefix: isProd ? process.env.NEXT_ASSET_PREFIX : '',
   // Possible fix for  timeout error in static page generation
   staticPageGenerationTimeout: 120,
+  webpack: getWebpackConfig,
   images: {
     unoptimized: true,
     domains: ['s4.vika.cn', 's1.vika.cn', 'mp.weixin.qq.com', 'localhost', 's1.apitable.com'],
@@ -81,18 +86,35 @@ module.exports = withPlugins(plugins, {
       return isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : '';
     },
   },
-  webpack: getWebpackConfig,
+  sentry: {
+    disableServerWebpackPlugin: false,
+    disableClientWebpackPlugin: false,
+  },
   distDir: 'web_build',
   output: 'standalone',
   experimental: {
+    // runtime: 'nodejs', // 'node.js' (default) | experimental-edge
     esmExternals: true,
     // this includes files from the monorepo base two directories up
     outputFileTracingRoot: path.join(__dirname, '../../'),
   },
-  // eslint: {
-  //   ignoreDuringBuilds: true,
-  // },
-  // typescript: {
-  //   ignoreBuildErrors: true,
-  // }
-});
+};
+
+/** @type {import('next').NextConfig} */
+const plugins = [
+  (nextConfigonfig) =>
+    withLess({
+      ...nextConfigonfig,
+      lessLoaderOptions: {
+        lessOptions: {
+          paths: [path.resolve(__dirname, './src')],
+        },
+      },
+    }),
+
+  withTM(['antd', 'antd-mobile', 'rc-util', 'rc-picker', 'rc-notification', 'rc-calendar']),
+  withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' }),
+];
+
+const config = () => plugins.reduce((acc, next) => next(acc), nextConfig);
+module.exports = isProd ? withSentryConfig(config, sentryWebpackPluginOptions, sentryWebpackPluginOptions) : config;
