@@ -26,11 +26,10 @@ import { ChevronDownOutlined } from '@apitable/icons';
 import { BaseModal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalogTreeRequest, useRequest, useRootManageable, useTemplateRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { transformNodeTreeData, ISelectTreeNode } from 'pc/utils';
 import { dispatch } from 'pc/worker/store';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IUsingTemplateModalProps {
   onCancel: React.Dispatch<React.SetStateAction<string>>;
@@ -69,7 +68,6 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
     posthog?.capture(TrackEvents.TemplateConfirmUse);
     const result = await usingTemplate(templateId, nodeId, isContainData);
     if (result && spaceId) {
-      dispatch(StoreActions.getSpaceInfo(spaceId!, true));
       Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: result.nodeId } });
     }
   };

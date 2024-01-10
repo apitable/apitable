@@ -202,6 +202,9 @@ export const catalogTree = produce((draftCatalogTree: ICatalogTree = defaultStat
     }
     case actions.REFRESH_TREE: {
       const childNodeIds = action.payload.map(item => item.nodeId);
+      if (!draftCatalogTree.treeNodesMap[action.payload[0]!.parentId]) {
+        return draftCatalogTree;
+      }
       draftCatalogTree.treeNodesMap[action.payload[0]!.parentId]!.children = childNodeIds;
       const parentNode = draftCatalogTree.treeNodesMap[action.payload[0]!.parentId]!;
       if (!parentNode.hasChildren && action.payload.length) {
