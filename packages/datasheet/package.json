@@ -8,7 +8,7 @@
     "next:start": "next start",
     "next:build-again": "next build",
     "dev": "NODE_ENV=development node --max-old-space-size=10000 server.js",
-    "build": "rm -rf ./web_build &&  NODE_OPTIONS=--max-old-space-size=4096 next build",
+    "build": "rm -rf ./web_build &&  NODE_OPTIONS=--max-old-space-size=10240 next build",
     "test": "next test",
     "check:lint": "rm -rf ./web_build && tsc --noEmit && pnpm lint",
     "check": "tsc --noEmit",

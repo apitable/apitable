@@ -33,9 +33,9 @@ const sentryWebpackPluginOptions = {
   project: process.env.SENTRY_PROJECT  ?? 'web-server',
   url: process.env.SENTRY_URL  ??  'https://sentry.vika.ltd',
   // An auth token is required for uploading source maps.
-  authToken: process.env.SENTRY_AUTH_TOKEN ?? 'b8d7afa51f464492904b368cb17fa121e7333a2183a4425abec0e6bebd42b8bb',
   dsn: process.env.SENTRY_CONFIG_DSN ?? 'https://51c44e606db14f34963bd4ba64d86410@sentry.vika.ltd/3',
-  release: process.env.WEB_CLIENT_VERSION,
+  authToken: process.env.SENTRY_AUTH_TOKEN_VIKA ?? '',
+  release: process.env.WEB_CLIENT_VERSION ?? '',
   silent: false, // Suppresses all logs
   hideSourceMaps: true,
   debug: true,
@@ -48,6 +48,9 @@ const nextConfig = {
   // Use the CDN in production and localhost for development.
   assetPrefix: isProd ? process.env.NEXT_ASSET_PREFIX : '',
   // Possible fix for  timeout error in static page generation
+  env: {
+      SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN_VIKA,
+  },
   staticPageGenerationTimeout: 120,
   webpack: getWebpackConfig,
   images: {
