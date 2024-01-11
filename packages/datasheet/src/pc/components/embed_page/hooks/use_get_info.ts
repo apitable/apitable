@@ -9,16 +9,18 @@ export const useGetInfo = () => {
   const node = treeNodesMap[embedPageId!];
   const [embedPage, setEmbedPage] = useAtom(embedPageAtom);
 
+  const _url = node?.extra ? JSON.parse(node?.extra).embedPage.url : '';
+
   useEffect(() => {
     setEmbedPage((pre) => ({
       ...pre,
       permission: node?.permissions || {},
-      url: node?.extra ? JSON.parse(node?.extra).embedPage.url : '',
+      url: _url,
     }));
-  }, [setEmbedPage, node?.permissions, node?.extra]);
+  }, [setEmbedPage, node?.permissions, _url]);
 
   return {
-    url: embedPage?.url || '',
+    url: embedPage?.url || _url || '',
     ...node,
   };
 };
