@@ -851,7 +851,8 @@ export class DatasheetActions {
       recordIds: string[];
       getFieldByFieldId(fieldId: string): IField;
       state: IReduxState;
-    }
+    },
+    isArchive?: boolean
   ): IJOTAction[] {
     const recordMap = snapshot.recordMap;
     const recordSize = Object.keys(recordMap).length;
@@ -1968,6 +1969,18 @@ export class DatasheetActions {
         });
       });
 
+      const archivedRecordIds = snapshot.meta.archivedRecordIds || [];
+      recordsData.forEach((record: any) => {
+        const index = archivedRecordIds.findIndex((id) => id === record.id);
+        if (index >= 0) {
+          rlt.push({
+            n: OTActionName.ListDelete,
+            p: ['meta', 'archivedRecordIds', index],
+            ld: record.id,
+          });
+        }
+      });
+
       rlt.push({
         n: OTActionName.ObjectInsert,
         p: ['recordMap', recordsData[i].id],
@@ -1975,6 +1988,29 @@ export class DatasheetActions {
       });
     }
 
+    return rlt;
+  }
+
+  /**
+   * add archieve RecordIds
+   * @param snapshot
+   * @param payload
+   */
+  static addArchiveRecordIdsToAction(snapshot: ISnapshot, payload: { recordIds: string[] }): IJOTAction[] | null {
+    const { recordIds } = payload;
+    const archivedRecordIds = snapshot.meta.archivedRecordIds || [];
+
+    if (!recordIds || !recordIds.length) return null;
+
+    const rlt: IJOTAction[] = [];
+    recordIds.forEach((recordId, index) => {
+      if (archivedRecordIds.includes(recordId)) return;
+      rlt.push({
+        n: OTActionName.ListInsert,
+        p: ['meta', 'archivedRecordIds', archivedRecordIds.length + index],
+        li: recordId,
+      });
+    });
     return rlt;
   }
 
@@ -1994,6 +2030,18 @@ export class DatasheetActions {
         od: recordsData[i],
       });
     }
+
+    const archivedRecordIds = snapshot.meta.archivedRecordIds || [];
+    recordsData.forEach((record: any) => {
+      const index = archivedRecordIds.findIndex((id) => id === record.id);
+      if (index >= 0) {
+        rlt.push({
+          n: OTActionName.ListDelete,
+          p: ['meta', 'archivedRecordIds', index],
+          ld: record.id,
+        });
+      }
+    });
 
     return rlt;
   }

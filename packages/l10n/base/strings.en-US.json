@@ -3705,6 +3705,7 @@
   "record_comment": "Comments only",
   "record_comments": "comments",
   "record_fail_data": "data error",
+  "record_archived_data": "archived record",
   "record_filter_tips": "This record has been filtered",
   "record_functions": "Record Function",
   "record_history": "Revision history only",

@@ -3972,6 +3972,7 @@
   "record_comment": "仅评论",
   "record_comments": "评论",
   "record_fail_data": "数据已失效",
+  "record_archived_data": "已归档数据",
   "record_filter_tips": "此记录已被筛选条件过滤",
   "record_functions": "记录（行）函数",
   "record_history": "仅修改历史",

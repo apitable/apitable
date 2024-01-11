@@ -4133,6 +4133,7 @@
   "reconciled_data": "Les données sont en cours de rapprochement",
   "record": "Enregistrements",
   "record_activity_experience_tips": "Vous pouvez afficher l'activité d'enregistrement de ${day} jours",
+  "record_archived_data": "archived record",
   "record_comment": "Commentaires uniquement",
   "record_comments": "commenté",
   "record_fail_data": "erreur de données",

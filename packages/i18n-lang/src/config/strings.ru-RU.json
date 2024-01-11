@@ -4133,6 +4133,7 @@
   "reconciled_data": "Данные проверяются.",
   "record": "Запись",
   "record_activity_experience_tips": "Вы можете просматривать записи об активности за ${day} дней.",
+  "record_archived_data": "archived record",
   "record_comment": "Только примечания",
   "record_comments": "Замечания",
   "record_fail_data": "Ошибка данных",

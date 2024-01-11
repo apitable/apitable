@@ -4133,6 +4133,7 @@
   "reconciled_data": "Daten werden abgeglichen",
   "record": "Aufzeichnung",
   "record_activity_experience_tips": "Sie können Aufzeichnungsaktivitäten von ${day} Tagen anzeigen",
+  "record_archived_data": "archived record",
   "record_comment": "Nur Kommentare",
   "record_comments": "Kommentare",
   "record_fail_data": "Datenfehler",

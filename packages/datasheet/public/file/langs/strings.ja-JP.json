@@ -4133,6 +4133,7 @@
   "reconciled_data": "データの照合",
   "record": "レコード破り",
   "record_activity_experience_tips": "${day} 日間のアクティビティの記録を表示できます",
+  "record_archived_data": "archived record",
   "record_comment": "コメントのみ",
   "record_comments": "コメント",
   "record_fail_data": "データエラー",

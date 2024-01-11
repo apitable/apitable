@@ -4133,6 +4133,7 @@
   "reconciled_data": "正在核對數據……",
   "record": "記錄",
   "record_activity_experience_tips": "可查看  ${day}  天的修改歷史",
+  "record_archived_data": "archived record",
   "record_comment": "僅評論",
   "record_comments": "評論",
   "record_fail_data": "數據已失效",
