@@ -48,6 +48,7 @@ import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatu
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowOrgApi;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.AllowShare;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.ContactIsolation;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.ControlFormBrandLogo;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.ForbidCreateOnCatalog;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.RainbowLabel;
 import com.apitable.interfaces.billing.model.SubscriptionFeatures.SubscribeFeatures.ShowMobileNumber;
@@ -193,6 +194,11 @@ public class DefaultSubscriptionFeature implements SubscriptionFeature {
     @Override
     public AllowEmbed getAllowEmbed() {
         return new AllowEmbed(false);
+    }
+
+    @Override
+    public ControlFormBrandLogo getControlFormBrandLogo() {
+        return new ControlFormBrandLogo(false);
     }
 
     @Override

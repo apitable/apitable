@@ -248,4 +248,8 @@ public class SpaceSubscribeVo {
     @Schema(description = "max mirror nums(unit: mirror)", example = "5")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxMirrorNums;
+
+    @Schema(description = "whether can control form brand log", example = "false")
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean controlFormBrandLogo;
 }

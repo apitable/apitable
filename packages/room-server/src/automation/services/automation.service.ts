@@ -262,7 +262,7 @@ export class AutomationService {
     await this.createRunHistory(robotId, taskId, spaceId);
     try {
       // 2. execute the robot
-      await this.robotRunner. run({
+      await this.robotRunner.run({
         robotId,
         triggerId: trigger.triggerId,
         triggerInput: trigger.input,
@@ -380,7 +380,7 @@ export class AutomationService {
 
   async analysisStatus(taskId: string | void): Promise<string | void> {
     if (!taskId) {
-      return ;
+      return;
     }
     const status = await this.automationRunHistoryRepository.selectStatusByTaskId(taskId);
     if (RunHistoryStatusEnum.FAILED === status) {
@@ -529,5 +529,4 @@ export class AutomationService {
       await redisClient.incr(spaceTaskRunCountKey);
     }
   }
-
 }
