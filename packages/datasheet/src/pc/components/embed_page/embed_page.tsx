@@ -5,6 +5,7 @@ import { SettingOutlined } from '@apitable/icons';
 import { useAppSelector } from 'pc/store/react-redux';
 import AutomationEmptyDark from 'static/icon/datasheet/automation_empty_dark.png';
 import { Share } from '../catalog/share';
+import { NoPermission } from '../no_permission';
 import { Setting } from './components/setting/setting';
 import { Tab } from './components/tab/tab';
 import { useGetDesc } from './hooks/use_get_desc';
@@ -21,6 +22,10 @@ export const EmbedPage = () => {
   const isManager = role === ConfigConstant.Role.Manager;
 
   useGetDesc();
+
+  if (!role) {
+    return <NoPermission />;
+  }
 
   return (
     <div className={'vk-w-full vk-h-screen vk-flex vk-flex-col'}>
