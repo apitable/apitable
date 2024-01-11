@@ -72,7 +72,7 @@ import { TimePicker } from './time_picker_only';
 // @ts-ignore
 import DateTimeAlarm from 'enterprise/alarm/date_time_alarm/date_time_alarm';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -182,7 +182,8 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     let curTimeValue = timeValue;
     if (date && !ignoreSetTime) {
       if (timeZone) {
-        curTimeValue = dayjs.tz(date?.format('YYYY-MM-DD HH:mm'))
+        curTimeValue = dayjs
+          .tz(date?.format('YYYY-MM-DD HH:mm'))
           .tz(timeZone)
           .format('HH:mm');
       } else {
@@ -190,10 +191,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
       }
     } else if (date === null) {
       curTimeValue = '';
-    }
-
-    if (timeZone && !curTimeValue) {
-      curTimeValue = dayjs.tz(dayjs.tz(), timeZone).format('HH:mm');
     }
 
     return this.setState({
@@ -247,21 +244,21 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     });
   };
 
-  format2StandardDate = (dateStr: string): ITimestamp | null => str2timestamp(dateStr);
+  format2StandardDate = (dateStr: string, dateFormat: string): ITimestamp | null => str2timestamp(dateStr, dateFormat);
 
   getInputValue() {
     const { field, userTimeZone } = this.props;
     const { property } = field;
-    const { dateValue } = this.state;
+    const { dateValue, displayDateStr } = this.state;
     let { timeValue } = this.state;
-    const { timeFormat, timeZone = userTimeZone } = Field.bindModel(this.props.field);
+    const { timeFormat, timeZone = userTimeZone, dateFormat } = Field.bindModel(this.props.field);
     if (!dateValue && !timeValue) {
       return null;
     }
     const { autoFill } = property;
     let dateTimestamp = new Date(getToday()).getTime();
     if (dateValue) {
-      const timestamp = this.format2StandardDate(dateValue);
+      const timestamp = this.format2StandardDate(displayDateStr, dateFormat);
       if (timestamp == null || notInTimestampRange(timestamp)) {
         return null;
       }

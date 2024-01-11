@@ -4570,7 +4570,8 @@
       },
       "64": {
         "repeat": true,
-        "completeIndex": -1
+        "completeIndex": -1,
+        "steps": "[[198]]"
       },
       "65": {
         "completeIndex": -1,
@@ -6588,7 +6589,23 @@
         ],
         "next": "查看详情",
         "nextId": "check_detail",
-        "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/12/28/36139bb2556a4c68b267dd5c29739087\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-12-29-updates\",\n    \"children\": \"<h3>🚀 自动化支持定时触发，工作提醒再无担忧</h3>\\n<p>你可以按小时、天、周甚至是月份运行周期性执行任务，只要满足所设定的时间条件，它就会自动启动，如发送邮件、提醒或调用业务接口，都可以轻松实现。</p>\"\n}",
+        "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/12/28/36139bb2556a4c68b267dd5c29739087\",\n    \"readMoreUrl\": \"https://meeting.tencent.com/dw/2XYzYvyVHtqH\",\n    \"children\": \"<h3>🚀 实现定时触发的自动化支持，无需担心工作提醒问题</h3>\\n<p>你可以根据小时、天、周或月份设定周期性任务，满足时间条件后自动启动，例如发送邮件、提醒或调用业务接口，轻松实现。</p>\\n<p>重要通知：周三上午11点，将举办新用户产品培训会。培训旨在帮助新用户了解和使用vika维格云。如果你是新用户，请点击链接报名参加。</p>\"\n}",
+        "onClose": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ]
+      },
+      "198": {
+        "uiConfigId": "player_step_ui_config_97",
+        "uiType": "contactUs",
+        "onNext": [
+          "clear_guide_all_ui()",
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_vikaby({\"defaultExpandMenu\": true, \"visible\": true})"
+        ],
+        "next": "已完成添加",
+        "nextId": "player_contact_us_confirm_btn",
+        "uiConfig": "{\n\t\"vikaby\": {\n\t\t\"title\": \"你好\",\n\t\t\"description\": \"如果在使用过程中遇到问题，请扫描右侧二维码联系我解决\",\n\t\t\"list\": \"<ul><li>刚注册维格表，不知道怎么用</li><li>维格表可以实现我想要的效果吗</li><li>使用过程出现异常问题</li><li>后续支持的功能有哪些</li><li>获取官方邀请码</li></ul>\",\n\t\t\"tip\": \"扫码添加客服\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"您好，我是维格表数字化顾问\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Bug 吐槽\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"需求反馈\\\", \\\"icon\\\": \\\"AdviseSmallOutlined\\\"}, {\\\"title\\\": \\\"服务支持\\\", \\\"icon\\\": \\\"ServeOutlined\\\"}, {\\\"title\\\": \\\"案例推荐\\\", \\\"icon\\\": \\\"ZanOutlined\\\"}, {\\\"title\\\": \\\"解决方案\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"产品答疑\\\", \\\"icon\\\": \\\"InformationLargeOutlined\\\"}]\",\n\t\t\"tip\": \"扫码添加微信，获得更多专属服务\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/59f4cc8e0b2b4395bf0fcd133d208e63\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/defbf55d1e9646eb929f9f5d11d5c119\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/04/27/2c617a16afd9408ba48392e337fbbd7f?attname=20230427_dingtalk_questionnaire.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/04/27/2c617a16afd9408ba48392e337fbbd7f?attname=20230427_dingtalk_vikaby.png\",\n\"tip\": \"请使用钉钉扫码，加入交流群\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/1346d5efbd5043efb2bfcba0075c0ee9\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/09401a8f2d8e491a9097b9bac8b5a4e4\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"扫码添加客服\",\n\t\t\"tip\": \"请使用飞书扫码，添加客服号备用\",\n\t\t\"description\": \"以便使用过程中遇到问题，可以随时获得服务和解答\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}",
         "onClose": [
           "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
