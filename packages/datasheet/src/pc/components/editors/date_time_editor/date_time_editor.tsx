@@ -192,10 +192,6 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
       curTimeValue = '';
     }
 
-    if (timeZone && !curTimeValue) {
-      curTimeValue = dayjs.tz(dayjs.tz(), timeZone).format('HH:mm');
-    }
-
     return this.setState({
       dateValue,
       displayDateStr,
@@ -252,7 +248,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
   getInputValue() {
     const { field, userTimeZone } = this.props;
     const { property } = field;
-    const { dateValue } = this.state;
+    const { dateValue, displayDateStr } = this.state;
     let { timeValue } = this.state;
     const { timeFormat, timeZone = userTimeZone, dateFormat } = Field.bindModel(this.props.field);
     if (!dateValue && !timeValue) {
@@ -261,7 +257,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     const { autoFill } = property;
     let dateTimestamp = new Date(getToday()).getTime();
     if (dateValue) {
-      const timestamp = this.format2StandardDate(dateValue, dateFormat);
+      const timestamp = this.format2StandardDate(displayDateStr, dateFormat);
       if (timestamp == null || notInTimestampRange(timestamp)) {
         return null;
       }
