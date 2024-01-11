@@ -66,7 +66,10 @@ const VIKA_CONFIG = [
     linkText: t(Strings.embed_link_default_link_text),
     linkUrl: t(Strings.embed_link_default_link_url),
     tip: t(Strings.embed_paste_link_default_placeholder),
-    icon: CodeOutlined,
+    icon: {
+      dark: AnythingDarkPng.src,
+      light: AnythingLightPng.src,
+    },
   },
   {
     name: t(Strings.embed_link_wps),

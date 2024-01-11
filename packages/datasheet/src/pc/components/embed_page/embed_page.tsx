@@ -11,11 +11,11 @@ import { useGetDesc } from './hooks/use_get_desc';
 import { useGetInfo } from './hooks/use_get_info';
 
 export const EmbedPage = () => {
-  const [openSetting, setOpenSetting] = useState(false);
+  const { url, role } = useGetInfo();
+  const [openSetting, setOpenSetting] = useState(!Boolean(url));
   const [nodeId, setNodeId] = useState('');
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { url, role } = useGetInfo();
   const { shareId } = useAppSelector((state) => state.pageParams);
 
   const isManager = role === ConfigConstant.Role.Manager;
@@ -29,7 +29,7 @@ export const EmbedPage = () => {
         {url ? (
           <iframe src={url} width={'100%'} height={'100%'} frameBorder="0" />
         ) : (
-          <div className={'vk-flex vk-flex-col vk-justify-center vk-h-full vk-items-center vk-space-y-4'}>
+          <div className={'vk-flex vk-flex-col vk-justify-center vk-h-full vk-items-center vk-space-y-4 vk-bg-bgCommonDefault'}>
             <img src={AutomationEmptyDark.src} alt="" width={200} height={150} />
             {!shareId && isManager && (
               <Button prefixIcon={<SettingOutlined />} className={'vk-block vk-w-max'} onClick={() => setOpenSetting(true)}>
