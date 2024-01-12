@@ -472,9 +472,9 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
                 const transformedValue =
                   value == null || isEqual(value, EmptyNullOperand)
                     ? {
-                      operator: OperatorEnums.And,
-                      operands: [],
-                    }
+                        operator: OperatorEnums.And,
+                        operands: [],
+                      }
                     : value.value;
                 return (
                   <RecordMatchesConditionsFilter
@@ -583,9 +583,9 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
           const transformedValue =
             value == null || isEqual(value, EmptyNullOperand)
               ? {
-                operator: OperatorEnums.And,
-                operands: [],
-              }
+                  operator: OperatorEnums.And,
+                  operands: [],
+                }
               : value.value;
           const dstId = getDstIdItem ?? triggerDatasheetValue?.id;
 
@@ -784,7 +784,7 @@ export const RobotTriggerBase = memo((props: IRobotTriggerBase) => {
         if (fieldId != null && shareInfo?.shareId == null) {
           if (fieldMap?.[fieldId] != null) {
             const field = fieldMap?.[fieldId] as IButtonField;
-            const automationNotSame = field.property.action.automation?.automationId !== automationState?.resourceId;
+            const automationNotSame = field.property?.action?.automation?.automationId !== automationState?.resourceId;
             if (
               (automationNotSame || field.property.action?.type !== ButtonActionType.TriggerAutomation) &&
               !e.some((error) => error.dataPath === '.fieldId')
