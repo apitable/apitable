@@ -434,7 +434,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     if (!this.shouldUseOriginTime && this.timestamp != null) {
       value = dayjs.tz(this.timestamp);
     } else if (dateFormat) {
-      const val = str2timestamp(dateValue);
+      const val = str2timestamp(displayDateStr, dateFormat);
       value = val ? dayjs.tz(val) : dayjs.tz();
     }
     // 'YYYY/MM/DD', dateInputSplitBySlash
