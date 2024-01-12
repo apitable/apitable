@@ -158,7 +158,7 @@ function filterAdvanceGroup(fieldType: FieldType) {
 }
 
 export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = (props) => {
-  const { IS_ENTERPRISE } = getEnvVariables();
+  const { IS_ENTERPRISE, ENABLE_WORKDOC_FIELD, IS_SELFHOST } = getEnvVariables();
   const colors = useThemeColors();
   const divRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -201,7 +201,7 @@ export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = (p
 
   function filterPrimaryType(fieldType: FieldType) {
     if (fieldType === FieldType.WorkDoc) {
-      return IS_ENTERPRISE && getEnvVariables().ENABLE_WORKDOC_FIELD && props.fieldIndex !== 0;
+      return IS_ENTERPRISE && (ENABLE_WORKDOC_FIELD || IS_SELFHOST) && props.fieldIndex !== 0;
     }
     if (props.fieldIndex !== 0) return true;
     return FieldTypeDescriptionMap[fieldType] && FieldTypeDescriptionMap[fieldType].canBePrimaryField;
