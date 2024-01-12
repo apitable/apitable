@@ -3116,7 +3116,7 @@
   "mail_invite_fail": "메일 초대가 성공했습니다.",
   "mail_invite_success": "메일 초대가 성공했습니다.",
   "main_admin_name": "관리자 이름",
-  "main_admin_page_desc": "관리자는 하위 관리자 및 이전 공간의 소유권과 같은 공간에 완전히 액세스할 수 있습니다.",
+  "main_admin_page_desc": "관리자는 구성원 관리, 공간 설정 관리 등 공간에 대한 모든 액세스 권한을 갖습니다.",
   "main_contain": "주요 내용",
   "malawi": "말라위",
   "malaysia": "말레이시아",

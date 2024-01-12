@@ -3121,7 +3121,7 @@
   "mail_invite_fail": "邀请成员失败",
   "mail_invite_success": "邀请成员成功",
   "main_admin_name": "主管理员名称",
-  "main_admin_page_desc": "拥有空间站的最高管理权限，可以分配子管理员或转让空间站",
+  "main_admin_page_desc": "主管理员具有完整的访问权限，可以分配子管理员，或调整空间站设置",
   "main_contain": "主要包含内容",
   "malawi": "马拉维",
   "malaysia": "马来西亚",

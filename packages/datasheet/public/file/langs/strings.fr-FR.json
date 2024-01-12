@@ -3116,7 +3116,7 @@
   "mail_invite_fail": "Invitation par e-mail réussie.",
   "mail_invite_success": "Invitation par e-mail réussie.",
   "main_admin_name": "Nom de l'administrateur",
-  "main_admin_page_desc": "Les administrateurs ont un accès complet à l'espace, comme l'assignation de sous-administrateurs et le transfert de la propriété de l'espace",
+  "main_admin_page_desc": "L'administrateur a un accès complet à l'espace, comme la gestion des membres et la gestion des paramètres de l'espace.",
   "main_contain": "Contenu principal",
   "malawi": "Malawi",
   "malaysia": "Malaisie",
