@@ -81,7 +81,7 @@ export class RecordRowLayout extends GridLayout {
         fill = colors.lowestBg;
       } else if (isThisCellWillMove) {
         fill = colors.warnLight;
-      } else if (isCheckedRow) {
+      } else if (isCheckedRow || isActiveRow) {
         fill = colors.bgBrandLightDefaultSolid;
       }
       return this.rect({
