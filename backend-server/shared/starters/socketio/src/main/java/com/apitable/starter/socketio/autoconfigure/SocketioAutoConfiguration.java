@@ -86,10 +86,6 @@ public class SocketioAutoConfiguration {
             // Unified connection parameters for connection authentication
             options.query = "userId=java_" + InetAddress.getLocalHost();
             socket = IO.socket(client.getUrl(), options);
-            socket.on(Socket.EVENT_CONNECTING,
-                objects -> LOGGER.info("connecting {}", client.getUrl()));
-            socket.on(Socket.EVENT_CONNECT_TIMEOUT,
-                objects -> LOGGER.info("connect timeout :{}", client.getUrl()));
             socket.on(Socket.EVENT_CONNECT_ERROR,
                 objects -> LOGGER.info("connect fail: {}", client.getUrl()));
             socket.on(Socket.EVENT_CONNECT,

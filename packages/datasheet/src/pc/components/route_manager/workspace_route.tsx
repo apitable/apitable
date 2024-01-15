@@ -55,8 +55,8 @@ const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
   };
 
   const MainComponent = (): React.ReactElement => {
-    if(embedPageId){
-      return <EmbedPage />;
+    if (embedPageId) {
+      return <EmbedPage key={embedPageId} />;
     }
     if (automationId) {
       return <AutomationPanelWrapper automationId={automationId} />;

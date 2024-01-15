@@ -3060,7 +3060,7 @@
   "mail_invite_fail": "La posta invita il successo.",
   "mail_invite_success": "La posta invita il successo.",
   "main_admin_name": "Nome amministratore",
-  "main_admin_page_desc": "L'amministratore ha pieno accesso allo Spazio, ad esempio assegnando sotto-amministratori e trasferendo la proprietà dello Spazio",
+  "main_admin_page_desc": "L'amministratore ha accesso completo allo spazio, ad esempio alla gestione dei membri e alle impostazioni dello spazio.",
   "main_contain": "Contenuti principali",
   "malawi": "Malawi",
   "malaysia": "Malaysia",

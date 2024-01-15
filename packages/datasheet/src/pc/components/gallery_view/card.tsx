@@ -30,16 +30,15 @@ import { AddOutlined, TriangleDownFilled } from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { GRID_RECORD_MENU } from 'pc/components/multi_grid/context_menu/record_menu';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getIsColNameVisible } from 'pc/utils/datasheet';
 import { StorageName, setStorage } from 'pc/utils/storage/storage';
 import { RecordCard } from '../record_card/card';
 import { GalleryGroupItemType, ItemTypes } from './constant';
 import { GroupCardTitle } from './group_card_title';
 import { IDragItem } from './interface';
-import styles from './style.module.less';
 import { getAddValue, getGroupTitlePaddingTip } from './utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 interface IGalleryItemCardBase {
   columnIndex: number;

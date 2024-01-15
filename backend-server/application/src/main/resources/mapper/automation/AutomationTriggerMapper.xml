@@ -79,4 +79,25 @@
         AND  trigger_type_id = #{triggerTypeId}
         AND is_deleted = 0
     </update>
+
+    <select id="selectCountByRobotId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}automation_trigger
+        WHERE robot_id = #{robotId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectIdByTriggerId" resultType="java.math.BigInteger">
+        SELECT id
+        FROM ${tablePrefix}automation_trigger
+        WHERE trigger_id = #{triggerId}
+        AND is_deleted = 0
+    </select>
+
+    <select id="selectByTriggerId" resultType="com.apitable.automation.entity.AutomationTriggerEntity">
+        SELECT id, trigger_type_id, trigger_id, robot_id, prev_trigger_id, resource_id, `input`
+        FROM ${tablePrefix}automation_trigger
+        WHERE trigger_id = #{triggerId}
+        AND is_deleted = 0
+    </select>
 </mapper>

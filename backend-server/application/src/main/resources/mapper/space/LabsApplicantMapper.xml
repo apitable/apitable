@@ -19,32 +19,30 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.apitable.space.mapper.LabsApplicantMapper">
-
     <select id="selectUserFeaturesByApplicant" resultType="java.lang.String">
-        SELECT feature_key FROM ${tablePrefix}labs_applicant vla
-        WHERE vla.applicant IN
-        <foreach collection="applicants" index="index" item="item" open="(" separator=","
-                 close=")">
+        SELECT feature_key
+        FROM ${tablePrefix}labs_applicant
+        WHERE applicant IN
+        <foreach collection="applicants" index="index" item="item" open="("
+                 separator="," close=")">
             #{item}
         </foreach>
-        AND vla.is_deleted = 0
+        AND is_deleted = 0
     </select>
 
     <select id="selectFeatureKeyByType" resultType="java.lang.String">
         SELECT feature_key
         FROM ${tablePrefix}labs_features
-        WHERE type = #{type} AND is_deleted = 0
+        WHERE type = #{type}
+          AND is_deleted = 0
     </select>
 
-    <select id="selectApplicantAndFeatureKey" resultType="com.apitable.space.entity.LabsApplicantEntity">
-        SELECT * FROM ${tablePrefix}labs_applicant vla WHERE
-        vla.applicant = #{applicant} AND
-        vla.feature_key = #{featureKey} AND
-        vla.is_deleted = 0
+    <select id="selectApplicantAndFeatureKey"
+            resultType="com.apitable.space.entity.LabsApplicantEntity">
+        SELECT *
+        FROM ${tablePrefix}labs_applicant
+        WHERE applicant = #{applicant}
+          AND feature_key = #{featureKey}
+          AND is_deleted = 0
     </select>
-
-    <update id="updateIsDeletedById">
-        UPDATE ${tablePrefix}labs_applicant vla SET vla.is_deleted = #{isDeleted}
-        WHERE vla.id = #{id}
-    </update>
 </mapper>

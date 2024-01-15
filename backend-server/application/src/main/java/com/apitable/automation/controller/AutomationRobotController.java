@@ -272,7 +272,7 @@ public class AutomationRobotController {
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
         return ResponseData.success(
-            iAutomationTriggerService.createByDatabus(userId, spaceId, data));
+            iAutomationTriggerService.create(userId, spaceId, data));
 
     }
 
@@ -303,7 +303,7 @@ public class AutomationRobotController {
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
         return ResponseData.success(
-            iAutomationTriggerService.updateByDatabus(triggerId, userId, spaceId, data));
+            iAutomationTriggerService.update(userId, triggerId, spaceId, data));
     }
 
     /**

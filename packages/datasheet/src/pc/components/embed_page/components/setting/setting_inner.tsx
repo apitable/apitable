@@ -1,9 +1,10 @@
 import { useAtom } from 'jotai';
 import React, { useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { P, match } from 'ts-pattern';
 import { Button, LinkButton, Message, TextInput, ThemeName, Typography, useThemeColors } from '@apitable/components';
-import { Strings, t } from '@apitable/core';
+import { StoreActions, Strings, t } from '@apitable/core';
 import { useCatalogTreeRequest } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
@@ -13,8 +14,8 @@ import { convertFigmaUrl, convertYoutubeUrl } from '../../utils/convert-url';
 
 function isValidUrl(url: string) {
   try {
-    new URL(url);
-    return true;
+    const newURL = new URL(url);
+    return newURL.protocol === 'http:' || newURL.protocol === 'https:';
   } catch (error) {
     return false;
   }
@@ -52,8 +53,10 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const activeConfig = getConfig()[activeTabIndex];
   const { embedPageId } = useAppSelector((state) => state.pageParams);
+
   const [embedPage, setEmbedPage] = useAtom(embedPageAtom);
   const { updateNodeReq } = useCatalogTreeRequest();
+  const dispatch = useDispatch();
 
   const checkInputValue = (val: string) => {
     if (!isValidUrl(val)) {
@@ -73,6 +76,7 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
         ...pre,
         url: data?.extra ? JSON.parse(data?.extra).embedPage.url : '',
       }));
+      dispatch(StoreActions.updateTreeNodesMap(embedPageId!, { extra: JSON.stringify({ embedPage: { url } }) }));
       Message.success({
         content: t(Strings.embed_success),
       });
@@ -89,7 +93,7 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
     control,
     handleSubmit,
     formState: { errors, isDirty, isValid },
-  } = useForm<{ url: string }>({ mode: 'onBlur', defaultValues: { url: embedPage?.url } });
+  } = useForm<{ url: string }>({ mode: 'onChange', defaultValues: { url: embedPage?.url } });
 
   const isDisabledSubmit = useMemo(() => {
     if (!isValid) {
@@ -169,7 +173,7 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
             name="url"
             rules={{ validate: checkInputValue }}
             control={control}
-            render={({ field }) => <TextInput block {...field} onBlur={field.onBlur} onPaste={onPaster} />}
+            render={({ field }) => <TextInput block {...field} onPaste={onPaster} />}
           />
           {errors.url && (
             <Typography variant="body4" color={colors.textDangerDefault} className={'!vk-mt-1'}>

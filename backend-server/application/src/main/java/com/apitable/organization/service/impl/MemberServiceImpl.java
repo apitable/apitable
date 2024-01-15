@@ -520,6 +520,8 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         if (emailsNotInSpace.isEmpty()) {
             return new ArrayList<>();
         }
+        // create member
+        this.createInvitationMember(inviteUserId, spaceId, emailsNotInSpace);
         // send email
         invitationServiceFacade.sendInvitationEmail(
             new MultiInvitationMetadata(inviteUserId, spaceId, emailsNotInSpace));

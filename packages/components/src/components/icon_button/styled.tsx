@@ -75,7 +75,7 @@ export const IconButtonStyle = styled.div.attrs(applyDefaultTheme) <IIconButtonW
       case 'default':
         let defaultVariant = css`
             color: ${color.textCommonTertiary};
-            background: ${props.active ? color.bgBglessSolidActive : 'unset'};
+            background: ${props.active ? color.bgBglessActiveSolid : 'unset'};
           `;
         if (!props.active && !props.disabled) {
           defaultVariant = [
@@ -103,10 +103,10 @@ export const IconButtonStyle = styled.div.attrs(applyDefaultTheme) <IIconButtonW
             ...bgVariant,
             css`
               &:hover {
-                background: ${props.disabled ? 'inherit' : color.bgBglessSolidHover};
+                background: ${props.disabled ? 'inherit' : color.bgBglessHoverSolid};
               }
               &:active {
-                background: ${props.disabled ? 'inherit' : color.bgBglessSolidActive};
+                background: ${props.disabled ? 'inherit' : color.bgBglessActiveSolid};
               }
             `
           ];
@@ -127,12 +127,12 @@ export const IconButtonStyle = styled.div.attrs(applyDefaultTheme) <IIconButtonW
             ...blurVariant,
             css`
               &:hover {
-                background: ${color.bgBglessSolidHover};
+                background: ${color.bgBglessHoverSolid};
                 opacity: 1;
               }
               &:active {
                 transform: scale(0.5, 0.5);
-                background: ${color.bgBglessSolidActive};
+                background: ${color.bgBglessActiveSolid};
               }
             `
           ];

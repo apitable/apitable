@@ -111,7 +111,7 @@ export const RowHeadOperation: FC<React.PropsWithChildren<IRowHeadOperationProps
             x={6}
             y={iconOffsetY}
             data={DragOutlinedPath}
-            fill={isChecked ? colors.textStaticTertiary : colors.thirdLevelText}
+            fill={isChecked ? colors.primaryColor : colors.thirdLevelText}
             onMouseEnter={onDragMouseEnter}
             onMouseOut={clearTooltipInfo}
           />

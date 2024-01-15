@@ -52,7 +52,7 @@ export class AddRowLayout extends GridLayout {
     const x = this.x;
     const y = this.y;
     const rowHeight = this.rowHeight;
-    const fill = isHoverRow && rowCreatable ? colors.rowSelectedBgSolid : colors.defaultBg;
+    const fill = isHoverRow && rowCreatable ? colors.bgBglessHoverSolid : colors.defaultBg;
     this.rect({
       x,
       y: y + 0.5,
@@ -76,7 +76,7 @@ export class AddRowLayout extends GridLayout {
     const columnWidth = this.columnWidth;
     if (depth) this.renderIndentFront(depth - 1);
     const frozenOffset = !depth ? 0.5 : (depth - 1) * GRID_GROUP_OFFSET + 0.5;
-    const fill = isHoverRow && rowCreatable ? colors.rowSelectedBgSolid : colors.defaultBg;
+    const fill = isHoverRow && rowCreatable ? colors.bgBglessHoverSolid : colors.defaultBg;
     this.rect({
       x: frozenOffset,
       y: y + 0.5,

@@ -31,17 +31,19 @@ interface IWebhookRequest {
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   headers: IHeader[];
   url: string;
-  body?: {
-    type: 'form-data';
-    formData: {
-      key: string;
-      value: any;
-    }[];
-  } | {
-    format: 'json' | 'text';
-    type: 'json' | 'raw'; // TODO: remove json
-    data: any;
-  }
+  body?:
+    | {
+        type: 'form-data';
+        formData: {
+          key: string;
+          value: any;
+        }[];
+      }
+    | {
+        format: 'json' | 'text';
+        type: 'json' | 'raw'; // TODO: remove json
+        data: any;
+      };
 }
 interface IWebhookResponse {
   status: number;
@@ -64,13 +66,13 @@ function parserHeader(headers: IHeader[]) {
 export async function sendRequest(request: IWebhookRequest): Promise<IActionResponse<any>> {
   const { method, headers, url, body } = request;
   let contentType;
-  let bodyData = {};
+  let bodyData;
   const formData = new FormData();
   if (body) {
     switch (body.type) {
       case 'form-data':
         contentType = 'application/x-www-form-urlencoded';
-        body.formData.forEach(item => {
+        body.formData.forEach((item) => {
           formData.append(item.key, item.value);
         });
         bodyData = formData;
@@ -107,40 +109,44 @@ export async function sendRequest(request: IWebhookRequest): Promise<IActionResp
     } catch (error) {
       console.log('error', error);
     }
-    if(res.status >= 200 && res.status < 300) {
+    if (res.status >= 200 && res.status < 300) {
       const data: ISuccessResponse<IWebhookResponse> = {
         data: {
           status: res.status,
-          json: respJson
-        }
+          json: respJson,
+        },
       };
       return {
         success: true,
         code: ResponseStatusCodeEnums.Success,
-        data: data
+        data: data,
       };
     }
     const data: IErrorResponse = {
-      errors: [{
-        message: `${res.status} ${res.statusText}`
-      }]
+      errors: [
+        {
+          message: `${res.status} ${res.statusText}`,
+        },
+      ],
     };
     return {
       success: false,
       data,
-      code: res.status
+      code: res.status,
     };
   } catch (error: any) {
     // network error
     const res: IErrorResponse = {
-      errors: [{
-        message: error.message
-      }]
+      errors: [
+        {
+          message: error.message,
+        },
+      ],
     };
     return {
       success: false,
       data: res,
-      code: ResponseStatusCodeEnums.ServerError
+      code: ResponseStatusCodeEnums.ServerError,
     };
   }
 }

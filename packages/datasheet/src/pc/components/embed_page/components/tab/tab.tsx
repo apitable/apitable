@@ -49,6 +49,7 @@ export const Tab: React.FC<ITabProps> = ({ setOpenSetting, isMobile, setNodeId }
       className={'vk-w-full vk-px-4 vk-flex vk-justify-between'}
       style={{
         backgroundColor: colors.bgCommonDefault,
+        borderBottom:'1px solid var(--borderCommonDefault)'
       }}
     >
       <div className={'vk-w-max'}>
@@ -71,7 +72,7 @@ export const Tab: React.FC<ITabProps> = ({ setOpenSetting, isMobile, setNodeId }
       </div>
       {isManager && !shareId && (
         <div className={'vk-flex vk-items-center'}>
-          <div className={'vk-w-[1px] vk-h-[20px] vk-mr-4'} style={{ backgroundColor: colors.borderCommonDefault }} />
+          {/* <div className={'vk-w-[1px] vk-h-[20px] vk-mr-4'} style={{ backgroundColor: colors.borderCommonDefault }} /> */}
           <TextButton prefixIcon={<SettingOutlined />} size="small" onClick={() => setOpenSetting(true)}>
             {t(Strings.form_tab_setting)}
           </TextButton>

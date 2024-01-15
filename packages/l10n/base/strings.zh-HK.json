@@ -3060,7 +3060,7 @@
   "mail_invite_fail": "邀請成員失敗",
   "mail_invite_success": "邀請成員成功",
   "main_admin_name": "主管理員名稱",
-  "main_admin_page_desc": "擁有空間站的最高管理權限，可以分配子管理員或轉讓空間站",
+  "main_admin_page_desc": "主管理员具有完整的訪問權限，可以分配子管理員，或調整空間站設置。",
   "main_contain": "主要內容",
   "malawi": "馬拉維",
   "malaysia": "馬來西亞",

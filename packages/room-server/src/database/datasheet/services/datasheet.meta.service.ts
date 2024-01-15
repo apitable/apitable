@@ -22,14 +22,15 @@ import { Injectable } from '@nestjs/common';
 import { DatasheetMetaRepository } from 'database/datasheet/repositories/datasheet.meta.repository';
 import { PermissionException, ServerException } from 'shared/exception';
 import { IBaseException } from 'shared/exception/base.exception';
+import { DatasheetMetaEntity } from '../entities/datasheet.meta.entity';
 
 @Injectable()
 export class DatasheetMetaService {
-  public constructor(private repository: DatasheetMetaRepository) {
-  }
+  public constructor(private repository: DatasheetMetaRepository) {}
 
   async getMetaDataMaybeNull(dstId: string): Promise<IMeta | undefined> {
     const metaEntity = await this.repository.selectMetaByDstId(dstId);
+    await this.checkAndInitMeta(metaEntity, dstId);
     return metaEntity?.metaData;
   }
 
@@ -37,9 +38,19 @@ export class DatasheetMetaService {
   async getMetaDataByDstId(dstId: string, exception?: IBaseException, ignoreDeleted = false): Promise<IMeta> {
     const metaEntity = ignoreDeleted ? await this.repository.selectMetaByDstIdIgnoreDeleted(dstId) : await this.repository.selectMetaByDstId(dstId);
     if (metaEntity?.metaData) {
+      await this.checkAndInitMeta(metaEntity, dstId);
       return metaEntity.metaData;
     }
     throw new ServerException(exception ? exception : PermissionException.NODE_NOT_EXIST);
+  }
+
+  async checkAndInitMeta(metaEntity: DatasheetMetaEntity | undefined, dstId: string) {
+    if (metaEntity?.metaData) {
+      if (metaEntity.metaData.archivedRecordIds === undefined) {
+        metaEntity.metaData.archivedRecordIds = [];
+        await this.repository.update({ dstId: dstId }, metaEntity);
+      }
+    }
   }
 
   /**
@@ -73,11 +84,7 @@ export class DatasheetMetaService {
   }
 
   async batchSave(metas: any[]) {
-    return await this.repository
-      .createQueryBuilder()
-      .insert()
-      .values(metas)
-      .execute();
+    return await this.repository.createQueryBuilder().insert().values(metas).execute();
   }
 
   @Span()

@@ -24,11 +24,10 @@ import { IKanbanViewProperty, IRecord, Selectors } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { GRID_RECORD_MENU } from 'pc/components/multi_grid/context_menu/record_menu';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getIsColNameVisible } from 'pc/utils/datasheet';
 import { RecordCard } from '../../../record_card/card';
 import styles from '../styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 // Spacing between top and bottom cards
 export const MARGIN_DISTANCE = 8;
@@ -101,7 +100,7 @@ export const Card: React.FC<React.PropsWithChildren<ICardProps>> = (props) => {
         showEmptyCover={false}
         coverFieldId={activeView.style.coverFieldId}
         showEmptyField={false}
-        multiTextMaxLine={4}
+        multiTextMaxLine={3}
         coverHeight={140}
         cardWidth={240}
         isCoverFit={activeView.style.isCoverFit}

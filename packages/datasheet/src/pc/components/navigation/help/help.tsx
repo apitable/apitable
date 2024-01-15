@@ -125,7 +125,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
         if (getEnvVariables().IS_AITABLE) {
           handleEmailClick('support@aitable.ai');
         } else {
-          navigationToUrl(getEnvVariables().USER_FEEDBACK_FORM_URL)
+          navigationToUrl(getEnvVariables().USER_FEEDBACK_FORM_URL);
         }
       },
       hidden: isPrivateDeployment(),

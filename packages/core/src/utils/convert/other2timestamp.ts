@@ -25,13 +25,11 @@ import { getTimeZoneOffsetByUtc, getTimeZone } from '../../config';
 dayjs.extend(duration);
 dayjs.extend(customParseFormat);
 
-export function str2timestamp(
-  value: string | null,
-): ITimestamp | null {
+export function str2timestamp(value: string | null, dateFormat?: string): ITimestamp | null {
   if (!value) {
     return null;
   }
-  const dateTime = dayjs(value);
+  const dateTime = dayjs(value, dateFormat);
 
   return dateTime.isValid() ? dateTime.valueOf() : null;
 }
@@ -63,12 +61,14 @@ export function str2time(value: string, _field?: IDateTimeField) {
   if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
     return;
   }
-  return dayjs.duration({
-    hours,
-    minutes,
-    // seconds: parseInt(s, 10),
-    // milliseconds: dateTime.millisecond(),
-  }).asMilliseconds();
+  return dayjs
+    .duration({
+      hours,
+      minutes,
+      // seconds: parseInt(s, 10),
+      // milliseconds: dateTime.millisecond(),
+    })
+    .asMilliseconds();
 }
 
 export const diffTimeZone = (timeZone?: string) => {
@@ -76,7 +76,9 @@ export const diffTimeZone = (timeZone?: string) => {
   const tzOffset = getTimeZoneOffsetByUtc(timeZone)!;
   const clientTimeZone = getTimeZone();
   const clientTzOffset = getTimeZoneOffsetByUtc(clientTimeZone)!;
-  return dayjs.duration({
-    hours: clientTzOffset - tzOffset
-  }).asMilliseconds();
+  return dayjs
+    .duration({
+      hours: clientTzOffset - tzOffset,
+    })
+    .asMilliseconds();
 };

@@ -3060,7 +3060,7 @@
   "mail_invite_fail": "メール招待に成功しました。",
   "mail_invite_success": "メール招待に成功しました。",
   "main_admin_name": "管理者名",
-  "main_admin_page_desc": "管理者は、サブ管理者の割り当てやスペースの所有権の移転など、スペースに完全にアクセスできます。",
+  "main_admin_page_desc": "管理者は、メンバーの管理、スペース設定の管理など、スペースへの完全なアクセス権を持ちます。",
   "main_contain": "主な内容",
   "malawi": "マラウイ.",
   "malaysia": "マレーシア.",

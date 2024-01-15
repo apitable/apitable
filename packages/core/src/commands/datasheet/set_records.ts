@@ -27,7 +27,9 @@ import { handleEmptyCellValue } from 'model/utils/index';
 import { Field } from 'model/field';
 import { DatasheetActions } from 'commands_actions/datasheet';
 import { IRecordAlarm } from '../../exports/store/interfaces';
-import { getFieldRoleByFieldId,getFieldPermissionMap,getFieldMap, getDateTimeCellAlarm, getCellValue, getActiveDatasheetId, getSnapshot } from 'modules/database/store/selectors/resource/datasheet';
+import {
+  getFieldRoleByFieldId,getFieldPermissionMap,getFieldMap, getDateTimeCellAlarm, getCellValue, getActiveDatasheetId, getSnapshot
+} from 'modules/database/store/selectors/resource/datasheet';
 import { ResourceType, SegmentType, WithOptional } from 'types';
 import { FieldType, IField, IUnitIds } from 'types/field_types';
 import { getNewId, IDPrefix, num2number, str2number } from 'utils';

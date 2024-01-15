@@ -20,14 +20,52 @@ import { ConfigConstant } from 'config';
 import { produce } from 'immer';
 import { collectProperty, findNode, getUniqName } from 'utils';
 import {
-  IAddNodeToFavoriteTreeAction, IAddNodeToMapAction, ICatalogTree, IClearNodeAction, ICoLayerMoveNodeAction, IDeleteNodeAction,
-  IDeleteNodeFromFavoriteTreeAction, IInitCatalogTreeAction, IInitFavoriteTreeNodesAction, IMoveFavoriteNodeAction, IMoveNodeToFolderAction,
-  IMoveToAction, INode, INodesMapItem, IOptNode, IRefreshTreeAction, IRemoveFavoriteNodeAction, ISetActiveNodeErrorAction, ISetAllVisibleAction,
-  ISetCopyNodeIdAction, ISetDelNodeIdAction, ISetEditNodeIdAction, ISetErrAction, ISetExpandedKeysActions, ISetIsCopyAllAction, ISetLoadedAction,
-  ISetLoadedKeysAction, ISetNodeErrorTypeAction, ISetNodeNameAction, ISetNoPermissionMembersAction, ISetOptNodeAction,
-  ISetPermissionCommitRemindParameterAction, ISetPermissionModalMessageStatusAction, ISetRootIdAction, ISetTreeRootIdAction, ITreeNode, ITreeNodesMap,
-  IUpdateHasChildren, IUpdateImportModalNodeIdAction, IUpdateIsPermissionAction, IUpdateMoveToNodeIdsAction, IUpdatePermissionModalNodeIdAction,
-  IUpdateSaveAsTemplateModalNodeIdAction, IUpdateShareModalNodeIdAction, IUpdateSocketDataAction, IUpdateTreeNodesMapAction,
+  IAddNodeToFavoriteTreeAction,
+  IAddNodeToMapAction,
+  ICatalogTree,
+  IClearNodeAction,
+  ICoLayerMoveNodeAction,
+  IDeleteNodeAction,
+  IDeleteNodeFromFavoriteTreeAction,
+  IInitCatalogTreeAction,
+  IInitFavoriteTreeNodesAction,
+  IMoveFavoriteNodeAction,
+  IMoveNodeToFolderAction,
+  IMoveToAction,
+  INode,
+  INodesMapItem,
+  IOptNode,
+  IRefreshTreeAction,
+  IRemoveFavoriteNodeAction,
+  ISetActiveNodeErrorAction,
+  ISetAllVisibleAction,
+  ISetCopyNodeIdAction,
+  ISetDelNodeIdAction,
+  ISetEditNodeIdAction,
+  ISetErrAction,
+  ISetExpandedKeysActions,
+  ISetIsCopyAllAction,
+  ISetLoadedAction,
+  ISetLoadedKeysAction,
+  ISetNodeErrorTypeAction,
+  ISetNodeNameAction,
+  ISetNoPermissionMembersAction,
+  ISetOptNodeAction,
+  ISetPermissionCommitRemindParameterAction,
+  ISetPermissionModalMessageStatusAction,
+  ISetRootIdAction,
+  ISetTreeRootIdAction,
+  ITreeNode,
+  ITreeNodesMap,
+  IUpdateHasChildren,
+  IUpdateImportModalNodeIdAction,
+  IUpdateIsPermissionAction,
+  IUpdateMoveToNodeIdsAction,
+  IUpdatePermissionModalNodeIdAction,
+  IUpdateSaveAsTemplateModalNodeIdAction,
+  IUpdateShareModalNodeIdAction,
+  IUpdateSocketDataAction,
+  IUpdateTreeNodesMapAction,
 } from '../../../../exports/store/interfaces';
 import * as actions from '../../../shared/store/action_constants';
 import { uniq } from 'lodash';
@@ -131,17 +169,50 @@ const defaultState: ICatalogTree = {
   /**
    * the unit(member) ids that have no permission
    */
-  noPermissionMembers: []
+  noPermissionMembers: [],
 };
 
-type CatalogTreeActions = ISetNodeNameAction | ISetRootIdAction | ISetDelNodeIdAction | IDeleteNodeAction | IMoveNodeToFolderAction |
-  ICoLayerMoveNodeAction | ISetOptNodeAction | ISetErrAction | ISetEditNodeIdAction | IAddNodeToMapAction | ISetIsCopyAllAction |
-  ISetExpandedKeysActions | IInitCatalogTreeAction | ISetCopyNodeIdAction | ISetAllVisibleAction | ISetLoadedAction | IUpdateHasChildren |
-  IMoveToAction | IUpdateTreeNodesMapAction | IClearNodeAction | IUpdateIsPermissionAction | IUpdateSocketDataAction | IRefreshTreeAction |
-  IAddNodeToFavoriteTreeAction | IRemoveFavoriteNodeAction | IDeleteNodeFromFavoriteTreeAction | IMoveFavoriteNodeAction |
-  IInitFavoriteTreeNodesAction | ISetActiveNodeErrorAction | IUpdatePermissionModalNodeIdAction | IUpdateShareModalNodeIdAction |
-  IUpdateSaveAsTemplateModalNodeIdAction | IUpdateImportModalNodeIdAction | ISetTreeRootIdAction | ISetLoadedKeysAction | ISetNodeErrorTypeAction |
-  ISetPermissionModalMessageStatusAction | ISetPermissionCommitRemindParameterAction | ISetNoPermissionMembersAction | IUpdateMoveToNodeIdsAction;
+type CatalogTreeActions =
+  | ISetNodeNameAction
+  | ISetRootIdAction
+  | ISetDelNodeIdAction
+  | IDeleteNodeAction
+  | IMoveNodeToFolderAction
+  | ICoLayerMoveNodeAction
+  | ISetOptNodeAction
+  | ISetErrAction
+  | ISetEditNodeIdAction
+  | IAddNodeToMapAction
+  | ISetIsCopyAllAction
+  | ISetExpandedKeysActions
+  | IInitCatalogTreeAction
+  | ISetCopyNodeIdAction
+  | ISetAllVisibleAction
+  | ISetLoadedAction
+  | IUpdateHasChildren
+  | IMoveToAction
+  | IUpdateTreeNodesMapAction
+  | IClearNodeAction
+  | IUpdateIsPermissionAction
+  | IUpdateSocketDataAction
+  | IRefreshTreeAction
+  | IAddNodeToFavoriteTreeAction
+  | IRemoveFavoriteNodeAction
+  | IDeleteNodeFromFavoriteTreeAction
+  | IMoveFavoriteNodeAction
+  | IInitFavoriteTreeNodesAction
+  | ISetActiveNodeErrorAction
+  | IUpdatePermissionModalNodeIdAction
+  | IUpdateShareModalNodeIdAction
+  | IUpdateSaveAsTemplateModalNodeIdAction
+  | IUpdateImportModalNodeIdAction
+  | ISetTreeRootIdAction
+  | ISetLoadedKeysAction
+  | ISetNodeErrorTypeAction
+  | ISetPermissionModalMessageStatusAction
+  | ISetPermissionCommitRemindParameterAction
+  | ISetNoPermissionMembersAction
+  | IUpdateMoveToNodeIdsAction;
 
 export const catalogTree = produce((draftCatalogTree: ICatalogTree = defaultState, action: CatalogTreeActions) => {
   switch (action.type) {
@@ -201,7 +272,10 @@ export const catalogTree = produce((draftCatalogTree: ICatalogTree = defaultStat
       return draftCatalogTree;
     }
     case actions.REFRESH_TREE: {
-      const childNodeIds = action.payload.map(item => item.nodeId);
+      const childNodeIds = action.payload.map((item) => item.nodeId);
+      if (!draftCatalogTree.treeNodesMap[action.payload[0]!.parentId]) {
+        return draftCatalogTree;
+      }
       draftCatalogTree.treeNodesMap[action.payload[0]!.parentId]!.children = childNodeIds;
       const parentNode = draftCatalogTree.treeNodesMap[action.payload[0]!.parentId]!;
       if (!parentNode.hasChildren && action.payload.length) {
@@ -300,8 +374,8 @@ export const catalogTree = produce((draftCatalogTree: ICatalogTree = defaultStat
     }
     case actions.DELETE_NODE_FROM_FAVORITE_LIST: {
       const deleteNodeId = action.payload.nodeId;
-      if (draftCatalogTree.favoriteTreeNodeIds.findIndex(id => id === deleteNodeId) !== -1) {
-        draftCatalogTree.favoriteTreeNodeIds = draftCatalogTree.favoriteTreeNodeIds.filter(id => id !== deleteNodeId);
+      if (draftCatalogTree.favoriteTreeNodeIds.findIndex((id) => id === deleteNodeId) !== -1) {
+        draftCatalogTree.favoriteTreeNodeIds = draftCatalogTree.favoriteTreeNodeIds.filter((id) => id !== deleteNodeId);
       }
       return draftCatalogTree;
     }
@@ -367,23 +441,41 @@ export const catalogTree = produce((draftCatalogTree: ICatalogTree = defaultStat
  */
 const deleteNode = (catalogTree: ICatalogTree, optNode: IOptNode) => {
   const {
-    treeNodesMap, favoriteTreeNodeIds, delNodeId, editNodeId, favoriteEditNodeId, favoriteDelNodeId,
-    permissionModalNodeId, shareModalNodeId, saveAsTemplateModalNodeId, importModalNodeId, expandedKeys, loadedKeys
+    treeNodesMap,
+    favoriteTreeNodeIds,
+    delNodeId,
+    editNodeId,
+    favoriteEditNodeId,
+    favoriteDelNodeId,
+    permissionModalNodeId,
+    shareModalNodeId,
+    saveAsTemplateModalNodeId,
+    importModalNodeId,
+    expandedKeys,
+    loadedKeys,
   } = catalogTree;
   // the nodeIDs collection that is operating
-  const operationsIdArr = [delNodeId, editNodeId, favoriteEditNodeId, favoriteDelNodeId, permissionModalNodeId,
-    shareModalNodeId, saveAsTemplateModalNodeId, importModalNodeId];
+  const operationsIdArr = [
+    delNodeId,
+    editNodeId,
+    favoriteEditNodeId,
+    favoriteDelNodeId,
+    permissionModalNodeId,
+    shareModalNodeId,
+    saveAsTemplateModalNodeId,
+    importModalNodeId,
+  ];
   const { nodeId, parentId } = optNode;
   const parentNode = treeNodesMap[parentId];
 
   const deleteIds = collectProperty(treeNodesMap, nodeId);
   if (parentNode) {
-    const nextNodeId = parentNode.children[parentNode.children.findIndex(item => item === nodeId) + 1]!;
+    const nextNodeId = parentNode.children[parentNode.children.findIndex((item) => item === nodeId) + 1]!;
     const nextNode = treeNodesMap[nextNodeId];
     if (nextNode && nextNode.preNodeId === nodeId) {
       nextNode.preNodeId = treeNodesMap[nodeId]!.preNodeId;
     }
-    parentNode.children = parentNode.children.filter(id => id !== nodeId);
+    parentNode.children = parentNode.children.filter((id) => id !== nodeId);
   }
 
   for (const nodeId of deleteIds) {
@@ -398,14 +490,14 @@ const deleteNode = (catalogTree: ICatalogTree, optNode: IOptNode) => {
       catalogTree.importModalNodeId = '';
     }
     if (loadedKeys.includes(nodeId)) {
-      catalogTree.loadedKeys = loadedKeys.filter(item => item !== nodeId);
+      catalogTree.loadedKeys = loadedKeys.filter((item) => item !== nodeId);
     }
-    if (favoriteTreeNodeIds.findIndex(id => id === nodeId) !== -1) {
+    if (favoriteTreeNodeIds.findIndex((id) => id === nodeId) !== -1) {
       removeFavoriteNode(catalogTree, nodeId);
     }
     // remove the deleted node from expanded collection
     if (expandedKeys.includes(nodeId)) {
-      catalogTree.expandedKeys = expandedKeys.filter(item => item !== nodeId);
+      catalogTree.expandedKeys = expandedKeys.filter((item) => item !== nodeId);
     }
     delete treeNodesMap[nodeId];
   }
@@ -419,7 +511,7 @@ const deleteNode = (catalogTree: ICatalogTree, optNode: IOptNode) => {
  */
 const addNodeToMap = (catalogTree: ICatalogTree, data: (Omit<INodesMapItem, 'children'> & { children?: string[] })[], isCoverChildren: boolean) => {
   const { treeNodesMap } = catalogTree;
-  data.forEach(node => {
+  data.forEach((node) => {
     const { nodeId, parentId } = node;
     const parentNode = treeNodesMap[parentId];
 
@@ -534,7 +626,7 @@ const sameLevelMove = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeId
   if (!parentNode || !dragNode) {
     return;
   }
-  const nextNodeId = parentNode.children[parentNode.children.findIndex(id => id === nodeId) + 1];
+  const nextNodeId = parentNode.children[parentNode.children.findIndex((id) => id === nodeId) + 1];
   // whether affect the preNodeId of the next node of the moved node
   if (nextNodeId && treeNodesMap[nextNodeId]!.preNodeId === nodeId) {
     treeNodesMap[nextNodeId]!.preNodeId = dragNode.preNodeId;
@@ -546,7 +638,7 @@ const sameLevelMove = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeId
   }
   if (pos === 1) {
     dragNode.preNodeId = targetNodeId;
-    const nextNodeIdOfTargetNode = targetParentNode.children[targetParentNode.children.findIndex(id => id === targetNodeId) + 1];
+    const nextNodeIdOfTargetNode = targetParentNode.children[targetParentNode.children.findIndex((id) => id === targetNodeId) + 1];
     if (nextNodeIdOfTargetNode && treeNodesMap[nextNodeIdOfTargetNode]!.preNodeId === targetNodeId) {
       treeNodesMap[nextNodeIdOfTargetNode]!.preNodeId = nodeId;
     }
@@ -587,7 +679,7 @@ const crossLevelMove = (treeNodesMap: ITreeNodesMap, nodeId: string, targetNodeI
     return;
   }
 
-  parentNode.children = parentNode.children.filter(id => id !== nodeId);
+  parentNode.children = parentNode.children.filter((id) => id !== nodeId);
   if (pos === 0) {
     targetParentNode.children.unshift(nodeId);
   } else {
@@ -632,7 +724,7 @@ export const getPropertyByTree = (treeNodesMap: ITreeNodesMap, nodeId: string, e
 };
 
 export const mergeObj = (oldTree: ITreeNode[], newTree: ITreeNode[], treeNodesMap: ITreeNodesMap) => {
-  oldTree.forEach(item => {
+  oldTree.forEach((item) => {
     const node = findNode(newTree, item.nodeId);
     if (item.children.length === 0 && node && node.children.length) {
       item.children = node.children;
@@ -677,7 +769,7 @@ export const addSingleNodeToTree = (tree: ITreeNode[], newNode: INode) => {
     parentNode.children.unshift({ nodeId, children: [] });
     return;
   }
-  const index = parentNode.children.findIndex(item => item.nodeId === preNodeId);
+  const index = parentNode.children.findIndex((item) => item.nodeId === preNodeId);
   if (index !== -1) {
     parentNode.children.splice(index + 1, 0, { nodeId, children: [] });
   }
@@ -696,11 +788,11 @@ export const addMultiNodeToTree = (tree: ITreeNode[], newNodes: INode[]) => {
   if (!parentNode) {
     return;
   }
-  const formatNodes = newNodes.map(item => ({ nodeId: item.nodeId, children: [] }));
+  const formatNodes = newNodes.map((item) => ({ nodeId: item.nodeId, children: [] }));
   parentNode.children = formatNodes;
 };
 
-export const moveFavoriteNode = (draftCatalogTree: ICatalogTree, data: { nodeId: string, preNodeId: string }) => {
+export const moveFavoriteNode = (draftCatalogTree: ICatalogTree, data: { nodeId: string; preNodeId: string }) => {
   const { favoriteTreeNodeIds } = draftCatalogTree;
   const { nodeId, preNodeId } = data;
 
@@ -730,7 +822,7 @@ export const moveFavoriteNode = (draftCatalogTree: ICatalogTree, data: { nodeId:
  */
 export const removeFavoriteNode = (catalogTree: ICatalogTree, removeNodeId: string) => {
   const { favoriteTreeNodeIds, treeNodesMap } = catalogTree;
-  const removeIndex = favoriteTreeNodeIds.findIndex(id => id === removeNodeId);
+  const removeIndex = favoriteTreeNodeIds.findIndex((id) => id === removeNodeId);
 
   if (favoriteTreeNodeIds.length > 1 && removeIndex !== favoriteTreeNodeIds.length - 1) {
     const nextNodeId = favoriteTreeNodeIds[removeIndex + 1]!;
@@ -738,6 +830,6 @@ export const removeFavoriteNode = (catalogTree: ICatalogTree, removeNodeId: stri
     treeNodesMap[nextNodeId]!.preFavoriteNodeId = removeIndex === 0 ? '' : treeNodesMap[removeNodeId]!.preFavoriteNodeId;
   }
 
-  catalogTree.favoriteTreeNodeIds = favoriteTreeNodeIds.filter(id => id !== removeNodeId);
+  catalogTree.favoriteTreeNodeIds = favoriteTreeNodeIds.filter((id) => id !== removeNodeId);
   delete treeNodesMap[removeNodeId]!.preFavoriteNodeId;
 };

@@ -27,10 +27,14 @@ export interface IRegisterOption {
 
 export class IO {
   private abort = false; // abort link
-  callbackCache: Map<string, ((arg: any) => any)> = new Map();
+  callbackCache: Map<string, (arg: any) => any> = new Map();
 
-  constructor(public roomId: string, public socket: SocketIOClient.Socket) {
-  }
+  watchRoomRetryInterval: NodeJS.Timeout | undefined;
+
+  constructor(
+    public roomId: string,
+    public socket: SocketIOClient.Socket
+  ) {}
 
   async waitToConnect() {
     this.abort = false;
@@ -52,11 +56,15 @@ export class IO {
         resolve();
         return;
       }
-      let retryTimes = 3;
+      let retryTimes = 5;
 
-      const emit = (interval: NodeJS.Timeout) => {
+      const emit = (interval: NodeJS.Timeout | undefined) => {
         this.socket.emit(SyncRequestTypes.WATCH_ROOM, { ...params, roomId, shareId, embedLinkId: embedId }, (msg: T) => {
-          interval && clearInterval(interval as any);
+          clearInterval(interval);
+          if (interval !== this.watchRoomRetryInterval) {
+            resolve();
+            return;
+          }
 
           if ('success' in msg && msg.success) {
             // console.log('watched in ', roomId, this.socket.id, 'msg:', msg);
@@ -65,7 +73,7 @@ export class IO {
             Player.doTrigger(Events.app_error_logger, {
               error: new Error(`watchRoom failed: ${msg.message}`),
               metaData: {
-                socketConnected: this.socket.connected
+                socketConnected: this.socket.connected,
               },
             });
             reject(msg);
@@ -76,20 +84,22 @@ export class IO {
       const interval = setInterval(() => {
         if (retryTimes < 0) {
           clearInterval(interval);
-          reject('The link with the server has not been established successfully, please refresh and try again. \
-                  If you have any questions, please scan the QR code on the right to add customer service, and let us help you solve');
+          reject(
+            'The link with the server has not been established successfully, please refresh and try again. \
+                  If you have any questions, please scan the QR code on the right to add customer service, and let us help you solve'
+          );
         }
         retryTimes--;
         emit(interval);
-      }, 5 * 1000);
-
+      }, 3 * 1000);
+      this.watchRoomRetryInterval = interval;
       emit(interval);
     });
   }
 
   request<T, P extends { type: string }>(params: P): Promise<T> {
     if (!this.socket) {
-      throw new Error('socket didn\'t prepared');
+      throw new Error("socket didn't prepared");
     }
 
     // console.log('Send data:', params);
@@ -102,6 +112,9 @@ export class IO {
 
   unWatch() {
     this.abort = true;
+    clearInterval(this.watchRoomRetryInterval);
+    this.watchRoomRetryInterval = undefined;
+
     return new Promise((resolve) => {
       this.socket.emit(SyncRequestTypes.LEAVE_ROOM, { roomId: this.roomId }, (msg: any) => {
         console.log('unwatch: ', this.roomId, 'msg:', msg);
