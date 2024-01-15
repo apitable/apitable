@@ -286,6 +286,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
       store.dispatch(batchActions(_batchActions, LOGIN_SUCCESS));
       window.__initialization_data__.userInfo = userInfo;
+      if (userInfo?.locale) {
+        window.__initialization_data__.lang = userInfo.locale;
+        window.__initialization_data__.locale = userInfo.locale;
+      }
       window.__initialization_data__.wizards = {
         guide: SystemConfig.guide,
         player: SystemConfig.player,
