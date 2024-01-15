@@ -43,7 +43,7 @@ const MailInvite: FC<React.PropsWithChildren<unknown>> = () => {
         });
         return;
       }
-      const { isBound, isLogin, inviteEmail, spaceId } = data;
+      const { isBound, isLogin, isMatch, spaceId } = data;
       if (!isBound) {
         Router.push(Navigation.INVITE, {
           params: { invitePath: 'mail/bindphone' },
@@ -59,18 +59,18 @@ const MailInvite: FC<React.PropsWithChildren<unknown>> = () => {
         return;
       }
       if (isBound && isLogin) {
-        Api.validateEmail(inviteEmail).then((res) => {
-          const { success, data } = res.data;
-          if (success && data) {
-            Router.push(Navigation.WORKBENCH, { params: { spaceId }, clearQuery: true });
-            return;
-          }
-          Router.push(Navigation.INVITE, {
-            params: { invitePath: 'mail/mismatch' },
-            query: { inviteMailToken },
-          });
+        if (isMatch) {
+          //TODO Staying on the invitation page,
+          // the user clicks the button and triggers the API before actually joining the space station.
+          // API.acceptEmailInvitation(spaceId, inviteMailToken)
+          Router.push(Navigation.WORKBENCH, { params: { spaceId }, clearQuery: true });
           return;
+        }
+        Router.push(Navigation.INVITE, {
+          params: { invitePath: 'mail/mismatch' },
+          query: { inviteMailToken },
         });
+        return;
       }
     },
     manual: true,

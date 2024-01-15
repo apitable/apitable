@@ -231,14 +231,15 @@ export const useCatalogTreeRequest = () => {
       icon?: string;
       cover?: string;
       showRecordHistory?: ConfigConstant.ShowRecordHistory;
+      embedPage?: { url: string };
     },
   ) => {
     return Api.editNode(nodeId, data).then((res) => {
-      const { success, data } = res.data;
+      const { success, data, message } = res.data;
       if (success) {
         return data;
       }
-      return null;
+      throw new Error(message);
     });
   };
 

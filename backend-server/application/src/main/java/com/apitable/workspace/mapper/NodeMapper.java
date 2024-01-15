@@ -529,6 +529,16 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
     int updateExtraShowRecordHistoryByNodeId(@Param("nodeId") String nodeId,
                                              @Param("showRecordHistory") int showRecordHistory);
 
+
+    /**
+     * update node extra.
+     *
+     * @param nodeId node id
+     * @param extra  embed page
+     * @return affected rows
+     */
+    int updateExtraByNodeId(@Param("nodeId") String nodeId, @Param("extra") String extra);
+
     /**
      * update node extra.
      *
@@ -536,7 +546,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @param extra  node's extra
      * @return affected rows
      */
-    int updateExtraByNodeId(@Param("nodeId") String nodeId, @Param("extra") String extra);
+    int insertExtraByNodeId(@Param("nodeId") String nodeId, @Param("extra") String extra);
 
     /**
      * modify node --The DingTalk status of the template transfer.

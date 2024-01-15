@@ -36,13 +36,12 @@ import { getValidSelection } from 'pc/components/slate_editor/helpers/utils';
 import { fixImeInputBug } from 'pc/components/slate_editor/slate_editor';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ActivityContext } from '../expand_record/activity_pane/activity_context';
 import styles from './styles/style.module.less';
 import { draft2slate, EMPTY_CONTENT } from './utils/draft_slate';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const withLastSelection = (editor: ReactEditor) => {
   const { onChange } = editor;
@@ -158,6 +157,7 @@ const SlateEditor = (props: any, ref: React.Ref<unknown>) => {
     const point = { path: [0, 0], offset: 0 };
     editor.selection = { anchor: point, focus: point }; // clean up selection
     editor.history = { redos: [], undos: [] }; // clean up history
+    editor.children = EMPTY_CONTENT; // reset to empty state
     setValue(EMPTY_CONTENT); // reset to empty state
     syncContent && syncContent(EMPTY_CONTENT);
   }, [editor, syncContent]);

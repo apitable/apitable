@@ -1,4 +1,4 @@
-@import "~pc/styles/lib_mixins.less";
+@import '~pc/styles/lib_mixins.less';
 
 .main {
   height: 100%;
@@ -35,33 +35,7 @@
   }
 }
 
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-::-webkit-scrollbar-button {
-  display: none;
-  height: 0;
-  width: 0;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: transparent;
-  background-clip: padding-box;
-  border: 3px solid rgba(0, 0, 0, 0);
-  border-radius: 6px;
-  min-height: 36px;
-}
-
-:hover::-webkit-scrollbar-thumb {
-  background-color: rgba(191, 193, 203, 0.5);
-}
+.l-scroll-bar();
 
 .emptyPlaceholder {
   text-align: center;
@@ -98,4 +72,3 @@
 .rc-trigger-popup {
   z-index: 1000;
 }
-

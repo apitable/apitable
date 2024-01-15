@@ -21,7 +21,7 @@ import React from 'react';
 import { makeIcon, IIconProps } from '../utils/icon';
 
 export const FreezeOutlined: React.FC<IIconProps> = makeIcon({
-    Path: ({ colors }) => <>
+  Path: ({ colors }) => <>
     <path d="M1.5 2.75C1.5 2.05964 2.05964 1.5 2.75 1.5H13.25C13.9404 1.5 14.5 2.05964 14.5 2.75V13.25C14.5 13.9404 13.9404 14.5 13.25 14.5H2.75C2.05964 14.5 1.5 13.9404 1.5 13.25V2.75ZM3 10.8091V12.9365L6.25 9.45436V7.38219L3.04446 10.7658C3.03011 10.781 3.01527 10.7954 3 10.8091ZM6.25 13H4.99258L6.25 11.6528V13ZM3 8.6317L6.25 5.20115V3.06375L3.0496 6.51034C3.03366 6.5275 3.0171 6.54375 3 6.55908V8.6317ZM3 4.35933L4.26223 3H3V4.35933ZM7.75 13H13V3H7.75V13Z" fill={ colors[0] } fillRule="evenodd" clipRule="evenodd"/>
 
   </>,

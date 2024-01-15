@@ -34,6 +34,7 @@ export const FIELD_HEIGHT_MAP = {
   [FieldType.Link]: 20,
 
   [FieldType.WorkDoc]: 24,
+  [FieldType.Button]: 16,
 };
 
 // The height of the field corresponding to the virtual card is calculated
@@ -56,7 +57,8 @@ export const FIELD_HEIGHT_VIRTUAL_MAP = {
   [FieldType.CreatedBy]: 24,
   [FieldType.LastModifiedBy]: 24,
 
-  [FieldType.WorkDoc]: 24,
+  [FieldType.WorkDoc]: 16,
+  [FieldType.Button]: 16,
   [FieldType.OneWayLink]: 20,
 };
 
@@ -81,6 +83,7 @@ export const FIELD_HEIGHT_MAP_MOBILE = {
   [FieldType.LastModifiedBy]: 27,
 
   [FieldType.WorkDoc]: 27,
+  [FieldType.Button]: 22,
 };
 
 // Fields that are not in FIELD_HEIGHT_MAP are displayed as a single line of text height.

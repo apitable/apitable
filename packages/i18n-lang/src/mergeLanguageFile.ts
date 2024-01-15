@@ -37,6 +37,11 @@ const readFolder = (folderPath: string): Record<string, any> => {
     if (file.endsWith('.json') && file.startsWith(sourceName)) {
       const filePath = path.join(folderPath, file);
       const fileContent = fs.readFileSync(filePath, 'utf-8');
+      try {
+        JSON.parse(fileContent);
+      } catch (error) {
+        console.log(error);
+      }
       const fileJson = JSON.parse(fileContent);
       const locale = file.replace(sourceName, '')
         .replace('.', '')

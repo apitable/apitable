@@ -29,9 +29,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public class MultiInvitationMetadata {
 
-    private String spaceId;
-
     private Long inviteUserId;
+
+    private String spaceId;
 
     private List<String> emails;
 }

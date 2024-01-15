@@ -1,8 +1,7 @@
 // @import "~antd/dist/antd.less";
 // @import "custom_antd_style.less";
-@import "~pc/styles/lib_screen.less";
-@import "~pc/styles/lib_mixins.less";
-
+@import '~pc/styles/lib_screen.less';
+@import '~pc/styles/lib_mixins.less';
 
 .treeViewRoot {
   /* Clean up default styles */
@@ -20,7 +19,6 @@
 @node-drag-line-color: var(--primaryColor);
 @node-drag-line-size: 2px;
 @node-drag-dot-size: 6px;
-
 
 .treeItemRoot {
   &,
@@ -84,7 +82,7 @@
     // Line when dragging and dropping
     .label::before {
       display: none;
-      content: "\0020";
+      content: '\0020';
       position: absolute;
       left: @node-drag-dot-size - 1;
       right: 0;
@@ -96,7 +94,7 @@
     // Point when dragging and dropping
     .label::after {
       display: none;
-      content: "\0020";
+      content: '\0020';
       position: absolute;
       width: @node-drag-dot-size;
       height: @node-drag-dot-size;
@@ -210,9 +208,8 @@ a {
   background-color: transparent;
   outline: none;
   cursor: pointer;
-  transition: color .3s;
+  transition: color 0.3s;
 }
-
 
 .ant-tabs-tab-btn:focus,
 .ant-tabs-tab-remove:focus,
@@ -220,7 +217,6 @@ a {
 .ant-tabs-tab-remove:active {
   color: var(--black_900);
 }
-
 
 #dingtalk_qrcode {
   width: 100%;
@@ -252,4 +248,23 @@ a {
 
 #chat-widget-container {
   z-index: 1003 !important;
+}
+
+.rc-virtual-list-holder {
+  overflow-y: auto !important;
+  .default-scroll-bar(true);
+}
+
+.rc-virtual-list-scrollbar {
+  background: transparent;
+  width: 14px !important;
+  display: flex;
+  justify-content: center;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  background-clip: padding-box;
+
+  .rc-virtual-list-scrollbar-thumb {
+    background-color: transparent !important;
+  }
 }

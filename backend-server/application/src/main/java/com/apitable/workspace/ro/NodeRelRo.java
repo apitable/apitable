@@ -43,6 +43,9 @@ public class NodeRelRo {
     @Schema(description = "View Name")
     private String viewName;
 
+    @Schema(description = "Embed page info", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private NodeEmbedPageRo embedPage;
+
     public NodeRelRo(String viewId) {
         this.viewId = viewId;
     }

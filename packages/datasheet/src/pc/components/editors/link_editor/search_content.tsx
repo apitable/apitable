@@ -91,6 +91,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
   const hasLimitToView = Boolean(field.property.limitToView && foreignView?.id === field.property.limitToView);
   const { recordMap, meta } = foreignDatasheet.snapshot;
   const fieldMap = meta.fieldMap;
+  const archivedRecordIds = meta.archivedRecordIds || [];
   const recordListRef = useRef<FixedSizeList>(null);
   const dispatch = useDispatch();
   const searchValue = useDebounce(_searchValue, { wait: 300 });
@@ -100,8 +101,9 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
 
   const foreignDataMap = useMemo(() => {
     if (hasLimitToView && !foreignDatasheet.isPartOfData) {
+      const state = store.getState();
       return {
-        foreignRows: new ViewDerivateBase(store.getState(), foreignDatasheetId).getViewDerivation(foreignView).rowsWithoutSearch,
+        foreignRows: new ViewDerivateBase(state, foreignDatasheetId).getViewDerivation(foreignView).rowsWithoutSearch,
         foreignColumns: Selectors.getVisibleColumnsBase(foreignView),
       };
     }
@@ -130,7 +132,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
 
       // filter one way link record
       const filterCellValue = field.type === FieldType.Link ? cellValue : cellValue?.filter((id) => {
-        return foreignRows.some(row => row.recordId === id);
+        return foreignRows.some(row => row.recordId === id) || archivedRecordIds.includes(id);
       });
 
       if (filterCellValue && filterCellValue.includes(recordId)) {
@@ -140,7 +142,8 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
       }
       onChange(value.length ? value : null);
     },
-    [cellValue, onChange, field],
+
+    [cellValue, onChange, field, archivedRecordIds],
   );
 
   const addNewRecord = () => {

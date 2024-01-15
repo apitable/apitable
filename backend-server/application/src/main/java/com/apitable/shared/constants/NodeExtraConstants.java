@@ -48,4 +48,9 @@ public class NodeExtraConstants {
      * source template id.
      */
     public static final String SOURCE_TEMPLATE_ID = "sourceTemplateId";
+
+    /**
+     * node extra embedPage.
+     */
+    public static final String EMBED_PAGE = "embedPage";
 }

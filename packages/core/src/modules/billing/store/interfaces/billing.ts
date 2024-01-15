@@ -66,7 +66,7 @@ export interface ISubscription extends ISubscribeResponseData {
   onTrial: boolean;
 
   // ai
-  maxMessageCredits: number
+  maxMessageCredits: number;
   // form
   controlFormBrandLogo?: boolean;
 }

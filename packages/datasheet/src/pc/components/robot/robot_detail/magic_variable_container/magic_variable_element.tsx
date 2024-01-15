@@ -17,6 +17,7 @@
  */
 
 // Define a React component renderer for our code blocks.
+import styled from 'styled-components';
 import { Box, useTheme, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { FormOutlined } from '@apitable/icons';
@@ -24,8 +25,11 @@ import { TriggerDataSheetMap } from 'pc/components/robot/robot_detail/magic_vari
 import { IJsonSchema, INodeOutputSchema } from '../../interface';
 import { getExpressionChainList, IExpressionChainNode } from './helper';
 
-export const MagicVariableElement = (props: { nodeOutputSchemaList?: INodeOutputSchema[]; element?: any; children?: any,
-  triggerDataSheetMap: TriggerDataSheetMap
+export const MagicVariableElement = (props: {
+  nodeOutputSchemaList?: INodeOutputSchema[];
+  element?: any;
+  children?: any;
+  triggerDataSheetMap: TriggerDataSheetMap;
 }) => {
   const { element, children, triggerDataSheetMap } = props;
   const stringfyElement = btoa(JSON.stringify(element));
@@ -36,10 +40,10 @@ export const MagicVariableElement = (props: { nodeOutputSchemaList?: INodeOutput
   const chainList = getExpressionChainList(element.data).reverse();
 
   const nodeSchemaIndex = nodeOutputSchemaList.findIndex((item) => {
-    if(chainList[0].value.startsWith('dst')) {
+    if (chainList[0].value.startsWith('dst')) {
       return item.id === chainList[0].value;
     }
-    if(chainList[0].value.startsWith('atr')) {
+    if (chainList[0].value.startsWith('atr')) {
       const dst = triggerDataSheetMap[chainList?.[0]?.value];
       return item.id === dst;
     }
@@ -51,11 +55,11 @@ export const MagicVariableElement = (props: { nodeOutputSchemaList?: INodeOutput
   const stepIndexOriginal = nodeSchemaIndex + 1;
   let stepIndex = nodeSchemaIndex + 1;
 
-  if(nodeSchema?.id?.startsWith('dst')) {
-    stepIndex=1;
+  if (nodeSchema?.id?.startsWith('dst')) {
+    stepIndex = 1;
   }
 
-  if(stepIndexOriginal===0) {
+  if (stepIndexOriginal === 0) {
     stepIndex = 1;
   }
 
@@ -68,8 +72,8 @@ export const MagicVariableElement = (props: { nodeOutputSchemaList?: INodeOutput
       }),
     },
   ];
-  if(stepIndexOriginal===0) {
-    hasError=true;
+  if (stepIndexOriginal === 0) {
+    hasError = true;
     nodeList.push({
       type: 'property',
       title: t(Strings.robot_inserted_variable_invalid),
@@ -132,6 +136,7 @@ export const MagicVariableElement = (props: { nodeOutputSchemaList?: INodeOutput
       display="inline-flex"
       margin="0 2px"
       verticalAlign="middle"
+      style={{ userSelect: 'none', contentEditable: false }}
       data-magic-variable-entity={stringfyElement}
       flexWrap="wrap"
       // border='1px solid transparent'

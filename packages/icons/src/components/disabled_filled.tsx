@@ -21,7 +21,7 @@ import React from 'react';
 import { makeIcon, IIconProps } from '../utils/icon';
 
 export const DisabledFilled: React.FC<IIconProps> = makeIcon({
-    Path: ({ colors }) => <>
+  Path: ({ colors }) => <>
     <path d="M8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15ZM11.0303 6.03033C11.3232 5.73744 11.3232 5.26256 11.0303 4.96967C10.7374 4.67678 10.2626 4.67678 9.96967 4.96967L4.96967 9.96967C4.67678 10.2626 4.67678 10.7374 4.96967 11.0303C5.26256 11.3232 5.73744 11.3232 6.03033 11.0303L11.0303 6.03033Z" fill={ colors[0] } fillRule="evenodd" clipRule="evenodd"/>
 
   </>,

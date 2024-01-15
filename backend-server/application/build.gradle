@@ -69,9 +69,11 @@ dependencies {
     // utilities dependencies
     implementation libs.p6spy
     implementation libs.semver
-    implementation libs.javax.ws
     implementation libs.jsoup
-    implementation libs.bundles.easyexcel
+    implementation(libs.bundles.easyexcel) {
+        exclude(group: 'org.apache.commons', module: 'commons-compress')
+    }
+    implementation(libs.commons.compress)
     implementation libs.bundles.hutool
     implementation(libs.bundles.pdfbox) {
         exclude(group: 'commons-logging', module: 'commons-logging')
@@ -79,8 +81,13 @@ dependencies {
     implementation libs.bundles.shedlock
 
     // for enterprise module
-    implementation libs.bundles.social
-    implementation libs.v.client
+    implementation(libs.bundles.social) {
+        exclude(group: 'com.thoughtworks.xstream', module: 'xstream')
+    }
+    implementation(libs.xstream)
+    implementation(libs.v.client) {
+        exclude(group: 'log4j', module: 'log4j')
+    }
     implementation libs.auth0
     implementation libs.pingpp
     implementation libs.stripe
@@ -90,7 +97,6 @@ dependencies {
     implementation libs.aliyun.afs
     implementation libs.nimbus
     implementation libs.jose4j
-    implementation files('lib/aegis-java-sdk-2.3.3.jar')
     implementation libs.wx.open
     implementation libs.sensors
     implementation libs.posthog

@@ -1,4 +1,4 @@
-/*
+/**
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,20 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.base.service;
-
-import com.apitable.organization.vo.InviteInfoVo;
-
-/**
- * action service.
- */
-public interface IActionService {
-
-    /**
-     * Activate invited users.
-     *
-     * @param inviteToken invitation token
-     * @return Invitation related information view
-     */
-    InviteInfoVo inviteValidate(String inviteToken);
+export interface IAvatarGroup {
+  /**
+   * maximum number of avatars displayed
+   */
+  max?: number;
+  /** avatar size xxs(20px)、xs(24px)、s(32px)、m(40px)、l(64px)、xl(80px) */
+  size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
+  /**
+   * avatar inline style
+   */
+  maxStyle?: React.CSSProperties;
+  /**
+   * popover
+   */
+  popoverContent?: React.ReactNode;
 }

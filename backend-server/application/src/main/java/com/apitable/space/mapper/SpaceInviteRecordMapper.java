@@ -21,7 +21,6 @@ package com.apitable.space.mapper;
 import com.apitable.space.entity.SpaceInviteRecordEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import java.util.Collection;
-import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -30,24 +29,39 @@ import org.apache.ibatis.annotations.Param;
 public interface SpaceInviteRecordMapper extends BaseMapper<SpaceInviteRecordEntity> {
 
     /**
-     * All the specified invitation email links in the spaces have expired.
-     *
-     * @param spaceIds space ids
-     * @param email    email
-     * @return affected rows
-     */
-    int expireBySpaceIdAndEmail(@Param("spaceIds") List<String> spaceIds,
-                                @Param("email") String email);
-
-    /**
      * All the specified invitation email links in the space have expired.
      *
      * @param spaceId space id
      * @param emails  emails
+     * @param statusDesc status description
      * @return affected rows
      */
     int expireBySpaceIdAndEmails(@Param("spaceId") String spaceId,
-                                 @Param("emails") Collection<String> emails);
+                                 @Param("emails") Collection<String> emails,
+                                 @Param("statusDesc") String statusDesc);
+
+    /**
+     * Expire by space id and invite member ids.
+     *
+     * @param spaceId       space id
+     * @param memberIds     invite member ids
+     * @param statusDesc    status description
+     * @return affected rows
+     */
+    int expireBySpaceIdAndInviteMemberId(@Param("spaceId") String spaceId,
+                                         @Param("memberIds") Collection<Long> memberIds,
+                                         @Param("statusDesc") String statusDesc);
+
+    /**
+     * Expire by invite token.
+     *
+     * @param inviteToken   invite token
+     * @param statusDesc    status description
+     * @return affected rows
+     * @author Chambers
+     */
+    int expireByInviteToken(@Param("inviteToken") String inviteToken,
+                            @Param("statusDesc") String statusDesc);
 
     /**
      * Query invite record.

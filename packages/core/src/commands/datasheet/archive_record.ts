@@ -41,6 +41,13 @@ export const archiveRecord: ICollaCommandDef<IArchiveRecordOptions> = {
       state,
     });
 
+    const addArchivedRecordIdsActions = DatasheetActions.addArchiveRecordIdsToAction(snapshot, { recordIds: data });
+    if(addArchivedRecordIdsActions) {
+      addArchivedRecordIdsActions.forEach(action => {
+        actions.push(action);
+      });
+
+    }
     /**
      * According to the self-association field, generate a map, the key is recordId,
      * and the value is the id array of those records associated with this recordId.

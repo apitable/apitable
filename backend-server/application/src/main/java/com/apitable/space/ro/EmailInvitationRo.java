@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.organization.ro;
+package com.apitable.space.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
@@ -28,18 +28,18 @@ import lombok.Data;
 
 /**
  * <p>
- * Email invitation member request parameters.
+ * Email Invitation Request Parameters.
  * </p>
  */
 @Data
-@Schema(description = "Email invitation member request parameters")
-public class InviteRo {
+@Schema(description = "Email Invitation Request Parameters")
+public class EmailInvitationRo {
 
     @Valid
     @NotEmpty
     @Size(max = 50, message = "Invite up to 50 members")
     @Schema(description = "Invite Member List", requiredMode = RequiredMode.REQUIRED)
-    private List<InviteMemberRo> invite;
+    private List<EmailInvitationMemberRo> invite;
 
     @Schema(description = "Password login for human-machine verification, and the front end "
         + "obtains the value of get NVC Val function (human-machine verification will be "

@@ -72,7 +72,7 @@ import { TimePicker } from './time_picker_only';
 // @ts-ignore
 import DateTimeAlarm from 'enterprise/alarm/date_time_alarm/date_time_alarm';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -182,7 +182,8 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     let curTimeValue = timeValue;
     if (date && !ignoreSetTime) {
       if (timeZone) {
-        curTimeValue = dayjs.tz(date?.format('YYYY-MM-DD HH:mm'))
+        curTimeValue = dayjs
+          .tz(date?.format('YYYY-MM-DD HH:mm'))
           .tz(timeZone)
           .format('HH:mm');
       } else {

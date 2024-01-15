@@ -16,17 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.organization.dto;
+package com.apitable.space.service;
 
-import lombok.Data;
+import com.apitable.space.vo.EmailInvitationValidateVO;
 
 /**
- * space member id dto.
+ * Space Invitation Service.
  */
-@Data
-public class SpaceMemberIdDTO {
+public interface ISpaceInvitationService {
 
-    private Long id;
+    /**
+     * Valid Email Invitation.
+     *
+     * @param inviteToken invitation token
+     * @return Invitation related information view
+     */
+    EmailInvitationValidateVO validEmailInvitation(String inviteToken);
 
-    private String spaceId;
+    /**
+     * Accept Email Invitation.
+     *
+     * @param userId        user id
+     * @param inviteToken   invitation token
+     * @return member id
+     * @author Chambers
+     */
+    Long acceptEmailInvitation(Long userId, String inviteToken);
 }

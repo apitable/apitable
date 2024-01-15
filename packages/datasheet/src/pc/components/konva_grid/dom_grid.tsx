@@ -49,6 +49,7 @@ import {
 import { useDispatch, useMemorizePreviousValue } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ButtonOperateType, checkPointInContainer, getParentNodeByClass, GHOST_RECORD_ID, isTouchDevice } from 'pc/utils';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 
@@ -68,8 +69,6 @@ import { StatMenu } from './components/stat_menu';
 import { StatRightClickMenu } from './components/stat_right_click_menu';
 import { UrlActionContainer } from './components/url_action_container';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IDomGridBaseProps {
   datasheetId: string;
@@ -641,7 +640,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
 
   const onFrozenColumn = (fieldId: string, reset: boolean = false) => {
     let columnIndex = view.columns.findIndex((column) => column.fieldId === fieldId);
-    if(reset) {
+    if (reset) {
       columnIndex = 0;
     }
     if (columnIndex === -1) return;
@@ -730,7 +729,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
             {scrollPosition != null && (
               <div
                 ref={cellVerticalBarRef}
-                className={classNames(styles.verticalScrollBarWrapper, styles.cellVerticalScrollBarWrapper)}
+                className={classNames(styles.verticalScrollBarWrapper)}
                 style={{
                   pointerEvents: 'auto',
                   height: activeCellBound.height,

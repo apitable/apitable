@@ -1,5 +1,5 @@
-@import "~pc/styles/lib_var.less";
-@import "~pc/styles/lib_mixins.less";
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
 
 .ganttView {
   width: 100%;
@@ -37,13 +37,7 @@
   will-change: transform;
   cursor: pointer;
 
-  &::-webkit-scrollbar-thumb {
-    background-clip: padding-box;
-    border-radius: 8px;
-    min-height: 36px;
-// FIXME:THEME
-    background-color: var(--shadowColor);
-  }
+  .lx-scroll-bar(true);
 
   .verticalScrollBarInner,
   .horizontalScrollBarInner {
@@ -54,29 +48,13 @@
 .verticalScrollBarWrapper {
   overflow-x: hidden;
   overflow-y: scroll;
-  width: 15px;
+  width: 18px;
   right: 0;
-
-  &.cellVerticalScrollBarWrapper {
-    width: 10px;
-
-    &::-webkit-scrollbar {
-      width: 10px;
-    }
-  }
-
-  &::-webkit-scrollbar {
-    width: 15px;
-  }
 }
 
 .horizontalScrollBarWrapper {
   overflow-x: scroll;
   overflow-y: hidden;
-  height: 15px;
+  height: 18px;
   bottom: 0;
-
-  &::-webkit-scrollbar {
-    height: 15px;
-  }
 }

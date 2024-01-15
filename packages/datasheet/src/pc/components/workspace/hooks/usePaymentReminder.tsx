@@ -1,8 +1,8 @@
 import dayjs from 'dayjs';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { useEffect } from 'react';
 import store from 'store2';
 import { ConfigConstant, Strings, t } from '@apitable/core';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 // @ts-ignore

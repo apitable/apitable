@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,16 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-export interface IAvatarGroup {
-  /**
-   * maximum number of avatars displayed
-   */
-  max?: number;
-  /** avatar size xxs(20px)、xs(24px)、s(32px)、m(40px)、l(64px)、xl(80px) */
-  size?: 'xxs' | 'xs' | 's' | 'm' | 'l' | 'xl';
-  /**
-   * avatar inline style
-   */
-  maxStyle?: React.CSSProperties;
-  moreClick?: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+package com.apitable.space.vo;
+
+import com.apitable.shared.support.serializer.NullArraySerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
+import lombok.Builder;
+import lombok.Data;
+
+/**
+ * <p>
+ * Email Invitation Result View.
+ * </p>
+ */
+@Data
+@Builder(toBuilder = true)
+@Schema(description = "Email Invitation Result View")
+public class EmailInvitationResultVO {
+
+    @Schema(description = "Email for successful invitation", example = "[\"aaa\", \"bbb\"]")
+    @JsonSerialize(nullsUsing = NullArraySerializer.class)
+    private List<String> emails;
 }

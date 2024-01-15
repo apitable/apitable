@@ -85,6 +85,13 @@ public interface IAutomationRobotService {
     void updateByRobotId(AutomationRobotEntity robot);
 
     /**
+     * Update by robot id.
+     *
+     * @param robotId robot id
+     */
+    void updateUpdaterByRobotId(String robotId, Long updatedBy);
+
+    /**
      * update automation robot by robot id.
      *
      * @param userId      user id
@@ -140,4 +147,11 @@ public interface IAutomationRobotService {
      * @return robot runs count
      */
     long getRobotRunsCountBySpaceId(String spaceId);
+
+    /**
+     * check robot exists.
+     *
+     * @param robotId robot id
+     */
+    void checkRobotExists(String robotId);
 }

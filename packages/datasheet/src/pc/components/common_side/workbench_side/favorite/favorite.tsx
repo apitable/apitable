@@ -71,6 +71,7 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
 
   const { getFavoriteNodeListReq } = useCatalogTreeRequest();
   const { run: getFavoriteNodeList } = useRequest(getFavoriteNodeListReq, { manual: true });
+
   useEffect(() => {
     if (spaceId) {
       getFavoriteNodeList();
@@ -91,6 +92,7 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
       ConfigConstant.NodeType.DASHBOARD,
       ConfigConstant.NodeType.MIRROR,
       ConfigConstant.NodeType.AI,
+      ConfigConstant.NodeType.EMBED_PAGE,
     ]);
     return children.map((nodeId, index) => {
       const nodeInfo = treeNodesMap[nodeId];
@@ -176,6 +178,15 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
     }
     return dispatch(StoreActions.getChildNode(nodeId));
   };
+
+  useEffect(() => {
+    if (favoriteExpandedKeys.length) {
+      favoriteExpandedKeys.forEach((nodeId) => {
+        loadData(nodeId);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [favoriteExpandedKeys]);
 
   const rightClickHandler = (e: React.MouseEvent<Element, MouseEvent>, data: any) => {
     e.preventDefault();
