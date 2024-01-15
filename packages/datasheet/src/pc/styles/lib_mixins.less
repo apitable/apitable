@@ -809,3 +809,41 @@
 .px2vw(@px) {
   @res: @px / @view-width * 100vw;
 }
+
+//unite scroll bar style
+.scroll-bar(@size:auto;) {
+  &::-webkit-scrollbar {
+    background: transparent;
+    width: @size !important;
+    height: @size !important;
+  }
+}
+
+.scroll-bar-thumb(@radius:7px; @border:4px;@background:0) {
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    background: if((@background = 0), transparent, var(--bgScrollbarDefault));
+    background-clip: padding-box;
+    min-height: 36px;
+    border-radius: @radius;
+    border: @border solid transparent;
+  }
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: var(--bgScrollbarDefault);
+  }
+}
+
+.scroll-bar-default {
+  .scroll-bar(14px);
+  .scroll-bar-thumb(7px,4px);
+}
+
+.scroll-bar-small {
+  .scroll-bar(8px);
+  .scroll-bar-thumb(4px,2px);
+}
+
+.scroll-bar-large(@showBackground:0) {
+  .scroll-bar(18px);
+  .scroll-bar-thumb(10px,4px,@showBackground);
+}
