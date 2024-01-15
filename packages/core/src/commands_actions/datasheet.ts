@@ -851,7 +851,7 @@ export class DatasheetActions {
       recordIds: string[];
       getFieldByFieldId(fieldId: string): IField;
       state: IReduxState;
-    },
+    }
   ): IJOTAction[] {
     const recordMap = snapshot.recordMap;
     const recordSize = Object.keys(recordMap).length;
