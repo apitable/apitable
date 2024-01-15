@@ -324,13 +324,13 @@ importers:
         version: 2.11.8
       '@sentry/integrations':
         specifier: ^7.18.0
-        version: 7.64.0
+        version: 7.68.0
       '@sentry/nextjs':
         specifier: ^7.18.0
-        version: 7.64.0(next@12.3.4)(react@18.2.0)(webpack@5.89.0)
+        version: 7.68.0(next@12.3.4)(react@18.2.0)(webpack@5.89.0)
       '@sentry/tracing':
         specifier: ^7.18.0
-        version: 7.64.0
+        version: 7.68.0
       ahooks:
         specifier: ^3.5.0
         version: 3.7.8(react@18.2.0)
