@@ -21,6 +21,7 @@ import type { IDateTimeField, ITimestamp } from 'types/field_types';
 import duration from 'dayjs/plugin/duration';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { getTimeZoneOffsetByUtc, getTimeZone } from '../../config';
+import moment from 'moment-timezone';
 
 dayjs.extend(duration);
 dayjs.extend(customParseFormat);
@@ -72,11 +73,16 @@ export function str2time(value: string, _field?: IDateTimeField) {
   }).asMilliseconds();
 }
 
-export const diffTimeZone = (timeZone?: string) => {
+export const isDstDate = (date: string, timeZone?: string) => {
+  if (!timeZone) return false;
+  return moment(date).tz(timeZone).isDST();
+};
+
+export const diffTimeZone = (timeZone?: string, isdstDate?: boolean) => {
   if (!timeZone) return 0;
-  const tzOffset = getTimeZoneOffsetByUtc(timeZone)!;
+  const tzOffset = getTimeZoneOffsetByUtc(timeZone, isdstDate)!;
   const clientTimeZone = getTimeZone();
-  const clientTzOffset = getTimeZoneOffsetByUtc(clientTimeZone)!;
+  const clientTzOffset = getTimeZoneOffsetByUtc(clientTimeZone, isdstDate)!;
   return dayjs.duration({
     hours: clientTzOffset - tzOffset
   }).asMilliseconds();
