@@ -324,7 +324,9 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
         max: null,
       };
       if (recordMaxIndex != null && !isNaN(recordMaxIndex) && fieldMaxIndex != null && !isNaN(fieldMaxIndex)) {
-        const { fieldId } = visibleColumns[fieldMaxIndex];
+        const maxIndexColumn = visibleColumns[fieldMaxIndex];
+        if (!maxIndexColumn) return;
+        const { fieldId } = maxIndexColumn;
         const maxIndexField = fieldMap[fieldId];
         // Computed fields do not render drag handler
         if (getCellEditable(maxIndexField, _editable)) {
