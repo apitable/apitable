@@ -119,6 +119,7 @@ export const Card: FC<React.PropsWithChildren<ICardProps>> = (props) => {
             <span className={classNames(!unLimited && styles.totalNum, { [styles.unlimited]: unLimited })}>
               /{unLimited ? t(Strings.unlimited) : totalText}
             </span>
+            &nbsp;
             <span className={styles.totalUnit}>{unit}</span>
             {valueIntro && <span className={styles.numIntro}>({valueIntro})</span>}
           </>

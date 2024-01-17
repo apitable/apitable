@@ -383,7 +383,7 @@ export const getVisibleColumns = createCachedSelector<IReduxState,
   })(defaultKeySelector);
 
 export const getVisibleColumnsMap = createSelector([getVisibleColumns], columns => {
-  return new Map(columns.map((item, index) => [item.fieldId, index]));
+  return new Map(columns?.map((item, index) => [item.fieldId, index]));
 });
 
 export const findColumnIndexById = (state: IReduxState, id: string): number => {
