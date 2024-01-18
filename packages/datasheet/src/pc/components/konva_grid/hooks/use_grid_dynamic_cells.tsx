@@ -323,7 +323,9 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
         max: null,
       };
       if (recordMaxIndex != null && !isNaN(recordMaxIndex) && fieldMaxIndex != null && !isNaN(fieldMaxIndex)) {
-        const { fieldId } = visibleColumns[fieldMaxIndex];
+        const maxIndexColumn = visibleColumns[fieldMaxIndex];
+        if (!maxIndexColumn) return;
+        const { fieldId } = maxIndexColumn;
         const maxIndexField = fieldMap[fieldId];
         // Computed fields do not render drag handler
         if (getCellEditable(maxIndexField, _editable)) {
@@ -361,7 +363,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
           );
           // select section with workdoc field cannot be filled
           let selectWithWorkdocField = false;
-          for(let idx = fieldMinIndex; idx <= fieldMaxIndex; idx++) {
+          for (let idx = fieldMinIndex; idx <= fieldMaxIndex; idx++) {
             const { fieldId } = visibleColumns[idx];
             const field = fieldMap[fieldId];
             if (field.type === FieldType.WorkDoc) {
