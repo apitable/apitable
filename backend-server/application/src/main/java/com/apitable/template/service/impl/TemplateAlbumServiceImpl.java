@@ -56,6 +56,9 @@ public class TemplateAlbumServiceImpl extends ServiceImpl<TemplateAlbumMapper, T
 
     @Override
     public List<AlbumVo> getAlbumVosByAlbumIds(List<String> albumIds) {
+        if (albumIds.isEmpty()) {
+            return new ArrayList<>();
+        }
         return baseMapper.selectAlbumVosByAlbumIds(albumIds);
     }
 
