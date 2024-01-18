@@ -20,6 +20,7 @@ import { ErrorBoundary } from '@sentry/nextjs';
 import { useLocalStorageState, useMount, useToggle, useUpdateEffect } from 'ahooks';
 import classNames from 'classnames';
 import { last } from 'lodash';
+import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -74,7 +75,6 @@ import { dispatch } from 'pc/worker/store';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { IModalReturn } from '../common/modal/modal/modal.interface';
 import { JobTaskProvider } from '../editors/button_editor/job_task';
-import { ActivityPane } from './activity_pane';
 import { ICacheType } from './activity_pane/interface';
 import { EditorContainer } from './editor_container';
 import EditorTitleContext from './editor_title_context';
@@ -84,6 +84,8 @@ import { IFieldDescCollapseStatus } from './field_editor';
 import { MoreTool } from './more_tool';
 import { RecordOperationArea } from './record_opeation_area';
 import styles from './style.module.less';
+
+const ActivityPaneNoSSR = dynamic(() => import('./activity_pane/activity_pane'), { ssr: false });
 
 const CommentButton = ({ active, onClick }: IPaneIconProps): JSX.Element => {
   const colors = useThemeColors();
@@ -741,7 +743,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
               </main>
             </div>
             {commentPaneShow && isEmbedShowCommentPane && (
-              <ActivityPane
+              <ActivityPaneNoSSR
                 fromCurrentDatasheet={fromCurrentDatasheet}
                 datasheetId={datasheetId}
                 mirrorId={mirrorId}
@@ -755,13 +757,12 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
                 style={
                   isColumnLayout
                     ? {
-                        height: 150,
-                        width: '100%',
-                        maxWidth: '100%',
-                        borderTop: '1px solid var(--fc5)',
-
-                        flexGrow: 1,
-                      }
+                      height: 150,
+                      width: '100%',
+                      maxWidth: '100%',
+                      borderTop: '1px solid var(--fc5)',
+                      flexGrow: 1,
+                    }
                     : undefined
                 }
               />
@@ -822,7 +823,7 @@ const ExpandRecordComponentBase: React.FC<React.PropsWithChildren<IExpandRecordC
                 isMobile={isMobile}
               />
             </div>
-            {commentPaneShow && <ActivityPane datasheetId={datasheetId} mirrorId={mirrorId} expandRecordId={activeRecordId} viewId={viewId} />}
+            {commentPaneShow && <ActivityPaneNoSSR datasheetId={datasheetId} mirrorId={mirrorId} expandRecordId={activeRecordId} viewId={viewId} />}
           </div>
         </ComponentDisplay>
       </div>

@@ -20,7 +20,7 @@ import { useClickAway, useMount } from 'ahooks';
 import { Input, Spin } from 'antd';
 import classNames from 'classnames';
 import dd from 'dingtalk-jsapi';
-import { AnimationItem } from 'lottie-web';
+import { AnimationItem } from 'lottie-web/index';
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useRef, useState } from 'react';
