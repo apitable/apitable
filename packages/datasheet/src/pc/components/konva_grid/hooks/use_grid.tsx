@@ -52,10 +52,9 @@ import {
   useStats,
 } from 'pc/components/konva_grid';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { GroupTab } from '../components/cell/cell_other/group_tab';
 import { RowHeadOperation } from '../components/operation_area';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 const ORIGIN_HEIGHT_SET = new Set([FieldType.Number, FieldType.Percent, FieldType.Currency, FieldType.AutoNumber]);
@@ -164,7 +163,7 @@ export const useGrid = (props: IUseGridProps) => {
     columnStartIndex,
     columnStopIndex,
     scrollState,
-  });
+  }) as any;
 
   /**
    * Group tab and statistics column at the bottom of the group
