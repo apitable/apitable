@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, ScreenSize, useResponsive } from '@apitable/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
 import { SettingOutlined } from '@apitable/icons';
@@ -13,11 +13,21 @@ import { useGetInfo } from './hooks/use_get_info';
 
 export const EmbedPage = () => {
   const { url, role } = useGetInfo();
-  const [openSetting, setOpenSetting] = useState(!Boolean(url));
+  const [openSetting, setOpenSetting] = useState(false);
   const [nodeId, setNodeId] = useState('');
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { shareId } = useAppSelector((state) => state.pageParams);
+  const { shareId, embedPageId } = useAppSelector((state) => state.pageParams);
+  const treeNodesMap = useAppSelector((state) => state.catalogTree.treeNodesMap);
+
+  const node = treeNodesMap[embedPageId!];
+
+  useEffect(() => {
+    if (!node) return;
+    const _url = node?.extra ? JSON.parse(node?.extra).embedPage.url : '';
+
+    setOpenSetting(!Boolean(_url));
+  }, [node]);
 
   const isManager = role === ConfigConstant.Role.Manager;
 
