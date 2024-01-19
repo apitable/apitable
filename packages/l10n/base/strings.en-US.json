@@ -5965,5 +5965,6 @@
 
   "schedule_start_month": "Starting from January each year, every",
 
-  "payment_reminder_modal_content": "You can try the advanced version to enjoy more file nodes, enterprise permissions, attachment capacity, data volume, AI and other advanced features and privileges."
+  "payment_reminder_modal_content": "You can try the advanced version to enjoy more file nodes, enterprise permissions, attachment capacity, data volume, AI and other advanced features and privileges.",
+  "exclusive_limit_plan_desc": "Exclusive Limited Tier"
 }

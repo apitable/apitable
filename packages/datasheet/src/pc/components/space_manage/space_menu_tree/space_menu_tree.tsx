@@ -39,6 +39,7 @@ import {
 import { ScreenSize } from 'pc/components/common/component_display';
 import { SpaceInfo } from 'pc/components/common_side/workbench_side/space-info';
 import { Router } from 'pc/components/route_manager/router';
+import { isExclusiveLimitedProduct } from 'pc/components/space_manage/space_info/utils';
 import { useResponsive } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
@@ -200,7 +201,13 @@ export const SpaceMenuTree: React.FC<React.PropsWithChildren<unknown>> = () => {
       return;
     }
     const { mainAdmin, permissions } = spaceResource;
-    const navList = getSpaceNavList(mainAdmin, permissions, !SPACE_INTEGRATION_PAGE_VISIBLE, appType == null, Boolean(product?.includes('appsumo')));
+    const navList = getSpaceNavList(
+      mainAdmin,
+      permissions,
+      !SPACE_INTEGRATION_PAGE_VISIBLE,
+      appType == null,
+      Boolean(product?.includes('appsumo') || isExclusiveLimitedProduct(product)),
+    );
     if (isMobile) {
       setMenuTree(navList.slice(0, 1));
       return;

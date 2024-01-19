@@ -74,7 +74,12 @@ export type ISpaceLevelType =
   | 'appsumo_tier2'
   | 'appsumo_tier3'
   | 'appsumo_tier4'
-  | 'appsumo_tier5';
+  | 'appsumo_tier5'
+  | 'exclusive limited tier 1'
+  | 'exclusive limited tier 2'
+  | 'exclusive limited tier 3'
+  | 'exclusive limited tier 4'
+  | 'exclusive limited tier 5';
 
 export interface ISpaceLevelTagInfo {
   label: React.ReactNode;
