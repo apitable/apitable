@@ -185,7 +185,7 @@
   "ai_credit_time_dimension_year": "올해",
   "ai_credit_usage_tooltip": "메시지 크레딧은 AI 에이전트 조회에 사용할 수 있습니다. 메시지 크레딧은 스페이스의 좌석 수에 비례합니다.",
   "ai_data_source_required": "없는",
-  "ai_data_source_rows": "${row}행 데이터",
+  "ai_data_source_rows": "${rows}행 데이터",
   "ai_data_source_update": "사용 가능한 업데이트",
   "ai_datasheet_panel_create_btn_text": "AI 에이전트 만들기",
   "ai_default_idk": "잘 모르겠어요",

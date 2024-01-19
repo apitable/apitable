@@ -230,7 +230,7 @@
   "ai_prompt_title": "Promover",
   "ai_prompt_wrong_content": "Por favor, incluya el {context} y las {question} en el texto.",
   "ai_query_of_number": "Uso",
-  "ai_remain_credit_label": "Mensaje restante: ${crédito}",
+  "ai_remain_credit_label": "Mensaje restante: ${credit}",
   "ai_retrain": "Reciclaje",
   "ai_robot_data_source_title": "Colección de conjuntos de datos",
   "ai_robot_type_QA_desc": "Un agente de preguntas y respuestas basado en PNL y aprendizaje automático responde de forma rápida y precisa varias preguntas y proporciona información en tiempo real y consejos útiles a los usuarios.",

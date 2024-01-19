@@ -185,7 +185,7 @@
   "ai_credit_time_dimension_year": "Quest'anno",
   "ai_credit_usage_tooltip": "I crediti di messaggio possono essere utilizzati per le domande di agente AI. I crediti del messaggio sono proporzionali al numero di posti sul vostro spazio.",
   "ai_data_source_required": "nullo",
-  "ai_data_source_rows": "${righe} righe di dati",
+  "ai_data_source_rows": "${rows} righe di dati",
   "ai_data_source_update": "Aggiornamento disponibile",
   "ai_datasheet_panel_create_btn_text": "Crea AI Agent",
   "ai_default_idk": "Non so",

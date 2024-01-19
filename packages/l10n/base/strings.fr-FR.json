@@ -230,7 +230,7 @@
   "ai_prompt_title": "Prompt",
   "ai_prompt_wrong_content": "Veuillez inclure {context} et {question} dans votre texte.",
   "ai_query_of_number": "Utilisation",
-  "ai_remain_credit_label": "Message laissé : ${crédit}",
+  "ai_remain_credit_label": "Message laissé : ${credit}",
   "ai_retrain": "Retrain",
   "ai_robot_data_source_title": "Collection d'ensembles de données",
   "ai_robot_type_QA_desc": "Un agent de questions-réponses basé sur le PNL et l'apprentissage automatique répond rapidement et précisément à diverses questions et fournit des informations en temps réel et des conseils utiles aux utilisateurs.",

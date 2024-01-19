@@ -185,7 +185,7 @@
   "ai_credit_time_dimension_year": "今年．",
   "ai_credit_usage_tooltip": "メッセージクレジットは、AIエージェントクエリのために使用することができます。メッセージクレジットは、あなたの空間上の座席数に比例します。",
   "ai_data_source_required": "ヌル",
-  "ai_data_source_rows": "${row}行データ",
+  "ai_data_source_rows": "${rows}行データ",
   "ai_data_source_update": "使用可能性を更新する",
   "ai_datasheet_panel_create_btn_text": "AIエージェントの作成",
   "ai_default_idk": "私は知らない",
