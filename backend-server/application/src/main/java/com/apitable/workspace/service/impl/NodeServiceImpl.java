@@ -1170,6 +1170,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     Collections.singletonList(opRo.getNodeId()),
                     automationCopyOptions, newNodeMap);
                 return copyEffect;
+            case CUSTOM_PAGE:
+                return copyEffect;
             default:
                 break;
         }
