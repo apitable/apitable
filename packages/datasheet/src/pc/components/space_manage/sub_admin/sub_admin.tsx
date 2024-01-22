@@ -27,15 +27,14 @@ import { ConfigConstant, Events, IReduxState, ISubAdminList, Player, StoreAction
 import { InfoCard, Modal } from 'pc/components/common';
 import { useNotificationCreate } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { AddAdminModal, ModalType } from './add_admin_modal';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 // @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert'
-
-import {useAppSelector} from "pc/store/react-redux";
 
 // Some permissions that are no longer used, but because the old space will still return the corresponding data,
 // the front-end to do the filtering of these permissions
@@ -69,8 +68,6 @@ export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   const [pageNo, setPageNo] = useState(1);
   const [scrollHeight, setScrollHeight] = useState(0);
   const { delSubAdminAndNotice } = useNotificationCreate({ fromUserId: user!.uuid, spaceId: user!.spaceId });
-
-  const subAdminMax = subscription ? Math.max(subscription.maxAdminNums - 1, 0) : 0;
 
   useMount(() => {
     Player.doTrigger(Events.space_setting_sub_admin_shown);
@@ -210,10 +207,12 @@ export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   return (
     <div className={styles.subAdmin}>
       <Typography variant={'h6'}>{t(Strings.sub_admin)}</Typography>
-      <Typography variant={'body4'} color={colors.thirdLevelText} className={styles.describe}>
-        {t(Strings.space_admin_info, { count: subAdminMax })}
-      </Typography>
-      <div>
+      {subscription?.maxAdminNums && subscription.maxAdminNums > 0 && (
+        <Typography variant={'body4'} color={colors.thirdLevelText} className={styles.describe}>
+          {t(Strings.space_admin_info, { count: subscription.maxAdminNums })}
+        </Typography>
+      )}
+      <div className={'vk-mt-4'}>
         <Button onClick={addAdminBtnClick} variant="jelly">
           {t(Strings.add_sub_admin)}
         </Button>

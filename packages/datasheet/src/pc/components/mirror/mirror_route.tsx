@@ -26,7 +26,7 @@ import styles from 'pc/components/mirror/style.module.less';
 import { NoPermission } from 'pc/components/no_permission';
 import { Router } from 'pc/components/route_manager/router';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const MirrorRoute = () => {
   const { mirrorId, shareId, datasheetId, templateId, categoryId } = useAppSelector((state) => state.pageParams)!;

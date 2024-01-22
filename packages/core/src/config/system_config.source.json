@@ -3636,7 +3636,7 @@
           "url_EXCLUDES_shareId",
           "edition_IS_aitable"
         ],
-        "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_aitable],[open_guide_wizards([105, 115])]",
+        "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 115])]",
         "event": [
           "workbench_shown"
         ]
