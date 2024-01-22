@@ -239,13 +239,3 @@ export const setRecords: ICollaCommandDef<ISetRecordsOptions> = {
     };
   },
 };
-
-/*
-
- declare module 'command_manager/command_manager' {
- interface CollaCommandManager {
- execute(options: ISetRecordsOptions & { cmd: 'SetRecords' });
- }
- }
-
- */
