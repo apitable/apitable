@@ -275,7 +275,8 @@
         IF(vnss.id IS NULL, 0, 1) node_shared,
         IF(vc.id IS NULL, 0, 1) node_permit_set,
         vn.created_at,
-        vn.updated_at
+        vn.updated_at,
+        vn.extra
         FROM ${tablePrefix}node vn
         JOIN ${tablePrefix}space vs on vn.space_id = vs.space_id
         LEFT JOIN ${tablePrefix}node leaf on leaf.parent_id = vn.node_id and leaf.is_rubbish = 0
