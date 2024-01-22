@@ -76,7 +76,7 @@ public class NodeOpRo {
         }
         NodeType nodeType = NodeType.toEnum(type);
         return switch (nodeType) { // The name of the magic form is transmitted from the front end
-            case FOLDER, DATASHEET, FORM, DASHBOARD, MIRROR, AI_CHAT_BOT, AUTOMATION ->
+            case FOLDER, DATASHEET, FORM, DASHBOARD, MIRROR, AI_CHAT_BOT, AUTOMATION, CUSTOM_PAGE ->
                 // The image name is transmitted from the front end
                 // default_create_'key' Configure in the strings table
                 I18nStringsUtil.t("default_create_" + nodeType.name().toLowerCase());

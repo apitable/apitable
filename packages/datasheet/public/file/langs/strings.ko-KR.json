@@ -1460,6 +1460,7 @@
   "default": "위약",
   "default_create_ai_chat_bot": "새로운 AI 에이전트",
   "default_create_automation": "새로운 자동화",
+  "default_create_custom_page": "New Custom Page",
   "default_create_dashboard": "새 대시보드",
   "default_create_datasheet": "새 데이터 테이블",
   "default_create_file": "새 파일",

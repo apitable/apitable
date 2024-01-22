@@ -1460,6 +1460,7 @@
   "default": "默認",
   "default_create_ai_chat_bot": "新建 AI 助手",
   "default_create_automation": "新自動化",
+  "default_create_custom_page": "新建自定義頁面",
   "default_create_dashboard": "新建儀錶盤",
   "default_create_datasheet": "新建維格表",
   "default_create_file": "新建節點",

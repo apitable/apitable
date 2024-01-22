@@ -1457,6 +1457,7 @@
   "default": "Default",
   "default_create_ai_chat_bot": "New AI agent",
   "default_create_automation": "New automation",
+  "default_create_custom_page": "New Custom Page",
   "default_create_dashboard": "New dashboard",
   "default_create_datasheet": "New datasheet",
   "default_create_file": "New file",

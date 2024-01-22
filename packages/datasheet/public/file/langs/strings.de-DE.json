@@ -1460,6 +1460,7 @@
   "default": "Standard",
   "default_create_ai_chat_bot": "Neuer AI-Agent",
   "default_create_automation": "Neue Automatisierung",
+  "default_create_custom_page": "New Custom Page",
   "default_create_dashboard": "Neues Dashboard",
   "default_create_datasheet": "Neues Datenblatt",
   "default_create_file": "Neue Datei",

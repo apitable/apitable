@@ -1956,7 +1956,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             extra.set(NodeExtraConstants.SHOW_RECORD_HISTORY, showRecordHistory);
         }
         // embed page info
-        if (ObjectUtil.isNotNull(embedPage) && NodeType.EMBED_PAGE.equals(nodeType)) {
+        if (ObjectUtil.isNotNull(embedPage) && NodeType.CUSTOM_PAGE.equals(nodeType)) {
             extra.set(NodeExtraConstants.EMBED_PAGE, embedPage);
         }
         if (null == oldExtra) {

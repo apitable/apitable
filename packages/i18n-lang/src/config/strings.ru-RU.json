@@ -1460,6 +1460,7 @@
   "default": "Нарушение обязательств",
   "default_create_ai_chat_bot": "новый агент ИИ",
   "default_create_automation": "Новая автоматизация",
+  "default_create_custom_page": "New Custom Page",
   "default_create_dashboard": "Новые приборные панели",
   "default_create_datasheet": "Новая таблица данных",
   "default_create_file": "Новый файл",

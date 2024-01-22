@@ -1460,6 +1460,7 @@
   "default": "Incumplimiento de contrato",
   "default_create_ai_chat_bot": "Nuevo AI agent",
   "default_create_automation": "Nueva automatización",
+  "default_create_custom_page": "New Custom Page",
   "default_create_dashboard": "Nuevo salpicadero",
   "default_create_datasheet": "Nouvelle fiche technique",
   "default_create_file": "Nuevos archivos",

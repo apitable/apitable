@@ -1460,6 +1460,7 @@
   "default": "約束を破る",
   "default_create_ai_chat_bot": "新しいAIエージェント",
   "default_create_automation": "新しい自動化",
+  "default_create_custom_page": "New Custom Page",
   "default_create_dashboard": "新規ダッシュボード",
   "default_create_datasheet": "新規データテーブル",
   "default_create_file": "新規ファイル",

@@ -84,9 +84,9 @@ public enum NodeType {
     AIRAGENT(11),
 
     /**
-     * embed page.
+     * custom page.
      */
-    EMBED_PAGE(12),
+    CUSTOM_PAGE(12),
 
     /**
      * static resource file.

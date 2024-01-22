@@ -1461,6 +1461,7 @@
   "default_create_ai_chat_bot": "新建 AI 助手",
   "default_create_airagent": "新建Agent",
   "default_create_automation": "新建自动化",
+  "default_create_custom_page": "新建自定义页面",
   "default_create_dashboard": "新建仪表盘",
   "default_create_datasheet": "新建表格",
   "default_create_file": "新建节点",
