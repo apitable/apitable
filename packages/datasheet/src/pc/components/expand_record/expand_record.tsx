@@ -45,10 +45,9 @@ import {
 import { AttentionOutlined, CommentOutlined, NarrowOutlined } from '@apitable/icons';
 import { expandRecordManager } from 'modules/database/expand_record_manager';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-
-// eslint-disable-next-line no-restricted-imports
 import { Message } from 'pc/components/common/message';
 import { Modal as CustomModal } from 'pc/components/common/modal/modal/modal';
+// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { EXPAND_RECORD, RecordType } from 'pc/components/expand_record/expand_record.enum';
 import {
@@ -62,7 +61,6 @@ import { RecordPageTurn } from 'pc/components/expand_record/record_page_turn';
 import { clearExpandModal, expandRecordIdNavigate, getRecordName, recordModalCloseFns } from 'pc/components/expand_record/utils';
 import { FieldDesc } from 'pc/components/multi_grid/field_desc';
 import { FieldSetting } from 'pc/components/multi_grid/field_setting/field_setting';
-
 import { Router } from 'pc/components/route_manager/router';
 import { useGetViewByIdWithDefault, useQuery, useRequest, useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
