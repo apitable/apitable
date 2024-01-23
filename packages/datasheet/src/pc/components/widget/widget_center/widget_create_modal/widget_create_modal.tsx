@@ -64,9 +64,9 @@ import { dispatch } from 'pc/worker/store';
 import { simpleEmitter } from '../..';
 import { installedWidgetHandle } from '../../widget_panel/widget_panel_header';
 import { Steps } from './steps';
+// @ts-ignore
 import { clearWizardsData } from 'enterprise/guide/utils';
 import styles from './styles.module.less';
-// @ts-ignore
 
 const WIDGET_CMD = {
   publish: 'widget-cli release',
@@ -275,7 +275,7 @@ export const expandWidgetCreateSteps = (props: IExpandWidgetCreateStepsProps) =>
 const WidgetCretInvalidError = () => (
   <div className={styles.widgetCretInvalidError}>
     <div className={styles.title}>
-      <WarnCircleFilled size={24} />
+      <WarnCircleFilled size={20} />
       <span>{t(Strings.widget_cret_invalid_error_title)}</span>
     </div>
     <div className={styles.content}>{parser(t(Strings.widget_cret_invalid_error_content))}</div>
