@@ -17,10 +17,13 @@
  */
 
 import { useMount } from 'ahooks';
+import { createWidget } from 'api/widget/api';
 import classNames from 'classnames';
 import filenamify from 'filenamify';
 import parser from 'html-react-parser';
 import { trim } from 'lodash';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
+import { EmitterEventName } from 'modules/shared/simple_emitter';
 import Image from 'next/image';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -42,9 +45,6 @@ import {
 } from '@apitable/core';
 import { CopyOutlined, WarnCircleFilled, BulbOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { loadWidgetCheck, WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
-import { createWidget } from 'api/widget/api';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { EmitterEventName } from 'modules/shared/simple_emitter';
 import { Loading } from 'pc/components/common/loading';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';

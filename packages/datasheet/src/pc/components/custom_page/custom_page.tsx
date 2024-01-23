@@ -17,7 +17,7 @@ export const CustomPage = () => {
   const [nodeId, setNodeId] = useState('');
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { shareId, embedPageId } = useAppSelector((state) => state.pageParams);
+  const { shareId, embedPageId, templateId } = useAppSelector((state) => state.pageParams);
   const treeNodesMap = useAppSelector((state) => state.catalogTree.treeNodesMap);
 
   const node = treeNodesMap[embedPageId!];
@@ -33,7 +33,7 @@ export const CustomPage = () => {
 
   useGetDesc();
 
-  if (!role && !shareId) {
+  if (!role && !shareId && !templateId) {
     return <NoPermission />;
   }
 
