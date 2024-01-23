@@ -376,6 +376,36 @@ export const SpaceLevelInfo: ISpaceLevelInfo = {
     buttonText: t(Strings.renew),
     tagText: t(Strings.paid_edition),
   }),
+  'exclusive limited tier 1': getSpaceConfig('enterprise', {
+    title: 'Exclusive Limited Tier 1',
+    titleTip: t(Strings.exclusive_limit_plan_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  'exclusive limited tier 2': getSpaceConfig('enterprise', {
+    title: 'Exclusive Limited Tier 2',
+    titleTip: t(Strings.exclusive_limit_plan_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  'exclusive limited tier 3': getSpaceConfig('enterprise', {
+    title: 'Exclusive Limited Tier 3',
+    titleTip: t(Strings.exclusive_limit_plan_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  'exclusive limited tier 4': getSpaceConfig('enterprise', {
+    title: 'Exclusive Limited Tier 4',
+    titleTip: t(Strings.exclusive_limit_plan_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
+  'exclusive limited tier 5': getSpaceConfig('enterprise', {
+    title: 'Exclusive Limited Tier 5',
+    titleTip: t(Strings.exclusive_limit_plan_desc),
+    buttonText: t(Strings.renew),
+    tagText: t(Strings.paid_edition),
+  }),
   atlas: getSpaceConfig('golden', {
     title: t(Strings.atlas),
     titleTip: t(Strings.atlas_grade_desc),
@@ -391,4 +421,9 @@ export const useLevelInfo = (level: ISpaceLevelType, expiration?: string | null)
     info.levelCard.expiration = expiration || -1;
     return info;
   }, [level, expiration]);
+};
+
+export const isExclusiveLimitedProduct = (plan: string | undefined) => {
+  if (typeof plan !== 'string') return false;
+  return plan.toLowerCase().includes('exclusive limited tier');
 };

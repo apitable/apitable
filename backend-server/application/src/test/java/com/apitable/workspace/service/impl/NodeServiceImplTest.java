@@ -590,7 +590,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         nodeRelRo.setEmbedPage(nodeEmbedPageRo);
         NodeOpRo op = new NodeOpRo().toBuilder()
             .parentId(rootNodeId)
-            .type(NodeType.EMBED_PAGE.getNodeType())
+            .type(NodeType.CUSTOM_PAGE.getNodeType())
             .nodeName("embed_page")
             .extra(nodeRelRo)
             .build();
@@ -603,7 +603,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
             userSpace.getSpaceId());
         List<NodeInfoVo> nodes =
             iNodeService.getChildNodesByNodeId(userSpace.getSpaceId(), memberId, rootNodeId,
-                NodeType.EMBED_PAGE);
+                NodeType.CUSTOM_PAGE);
         List<String> childNodeIds =
             nodes.stream().map(NodeInfoVo::getNodeId).toList();
         assertThat(childNodeIds.contains(nodeId)).isTrue();
@@ -621,7 +621,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
             .getSpaceSubscription(userSpace.getSpaceId());
         NodeOpRo createRo = new NodeOpRo().toBuilder()
             .parentId(rootNodeId)
-            .type(NodeType.EMBED_PAGE.getNodeType())
+            .type(NodeType.CUSTOM_PAGE.getNodeType())
             .nodeName("embed_page")
             .build();
         String nodeId =
@@ -650,7 +650,7 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
             .getSpaceSubscription(userSpace.getSpaceId());
         NodeOpRo createRo = new NodeOpRo().toBuilder()
             .parentId(rootNodeId)
-            .type(NodeType.EMBED_PAGE.getNodeType())
+            .type(NodeType.CUSTOM_PAGE.getNodeType())
             .nodeName("embed_page")
             .build();
         String nodeId =

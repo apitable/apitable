@@ -15,7 +15,7 @@ export const archiveRecord: ICollaCommandDef<IArchiveRecordOptions> = {
   undoable: false,
 
   execute: (context, options) => {
-    const { state: state, ldcMaintainer } = context;
+    const { state: state } = context;
     const { data } = options;
     const datasheetId = options.datasheetId || getActiveDatasheetId(state)!;
     const snapshot = getSnapshot(state, datasheetId);
@@ -41,6 +41,13 @@ export const archiveRecord: ICollaCommandDef<IArchiveRecordOptions> = {
       state,
     });
 
+    const addArchivedRecordIdsActions = DatasheetActions.addArchiveRecordIdsToAction(snapshot, { recordIds: data });
+    if(addArchivedRecordIdsActions) {
+      addArchivedRecordIdsActions.forEach(action => {
+        actions.push(action);
+      });
+
+    }
     /**
      * According to the self-association field, generate a map, the key is recordId,
      * and the value is the id array of those records associated with this recordId.
@@ -97,10 +104,9 @@ export const archiveRecord: ICollaCommandDef<IArchiveRecordOptions> = {
             metaData: { foreignDatasheetId: field.property.foreignDatasheetId },
           });
         }
-        ldcMaintainer.insert(state, linkedSnapshot, record.id, field, null, oldValue);
       });
     }, []);
-
+    
     return {
       result: ExecuteResult.Success,
       resourceId: datasheetId,

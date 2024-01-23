@@ -13,7 +13,6 @@
 
   .describe {
     margin-top: 4px;
-    margin-bottom: 16px;
   }
 
   .gradeInfo {
@@ -30,10 +29,9 @@
 
   .tableWrapper {
     margin-top: 30px;
-    flex: 1;
     overflow-x: auto;
     overflow-y: hidden;
-    .light-scroll-bar();
+    .default-scroll-bar();
   }
 
   .pagination {
@@ -69,7 +67,7 @@
 
       .ant-table-body {
         overflow-y: hidden !important;
-        .light-scroll-bar();
+        .default-scroll-bar();
 
         &:hover {
           overflow-y: overlay !important;
@@ -85,7 +83,7 @@
       }
 
       .ant-table-hide-scrollbar::-webkit-scrollbar {
-        background-color: var(--lowestBg);
+        background-color: var(--bgScrollbarDefault);
       }
     }
   }

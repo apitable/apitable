@@ -16,12 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { message } from 'antd';
-import { useEffect, useRef, useState } from 'react';
-import { shallowEqual } from 'react-redux';
-import { ResourceType, Selectors, Strings, t } from '@apitable/core';
-import { Message } from 'pc/components/common';
+import { ResourceType, Selectors } from '@apitable/core';
 import { Network } from 'pc/components/network_status';
+import { useEffect, useState } from 'react';
+import { shallowEqual } from 'react-redux';
 
 import { useAppSelector } from 'pc/store/react-redux';
 
@@ -42,9 +40,6 @@ export const useNetwork = (automatic = true, resourceId: string, resourceType: R
     };
   }, shallowEqual);
   const { reconnecting: IOConnecting } = useAppSelector((state) => state.space);
-  const hideMsgRef = useRef<() => void>(() => {
-    return;
-  });
 
   useEffect(() => {
     window.parent.postMessage(
@@ -60,29 +55,15 @@ export const useNetwork = (automatic = true, resourceId: string, resourceType: R
   }, [status, nodeId]);
 
   useEffect(() => {
-    return () => {
-      hideMsgRef.current();
-      message.destroy();
-    };
-  }, []);
-
-  useEffect(() => {
     if (!automatic) {
       return;
     }
-    hideMsgRef.current();
-    message.destroy();
+
     if (!connected) {
-      if (!templateId) {
-        hideMsgRef.current = Message.loading({ content: t(Strings.long_time_not_editor) });
-      }
       setStatus(Network.Offline);
       return;
     }
     if (IOConnecting) {
-      if (!templateId) {
-        hideMsgRef.current = Message.warning({ content: t(Strings.network_state_disconnection), maxCount: 1 });
-      }
       setStatus(Network.Loading);
       return;
     }

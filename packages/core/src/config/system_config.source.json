@@ -183,7 +183,7 @@
       "value": "https://bbs.vika.cn"
     },
     "help_user_feedback_url": {
-      "value": "https://vika.cn/share/shrzw0miJVmSkJ7eBBa9k/fomx5qPX0JGPFvfEEP"
+      "value": "https://vika.cn/share/shrCvbFC53xc3kl00B4Pg"
     },
     "help_video_tutorials_url": {
       "value": "https://edu.vika.cn"
@@ -506,714 +506,989 @@
       "show": true,
       "key": "cmd+z",
       "winKey": "ctrl+z",
-      "name": [],
+      "name": [
+        "undo"
+      ],
       "when": "!isGlobalEditing",
       "id": "cmd+z",
       "command": "Undo",
       "description": "撤销",
-      "type": []
+      "type": [
+        "global_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+shift+z",
       "winKey": "ctrl+shift+z",
-      "name": [],
+      "name": [
+        "redo"
+      ],
       "when": "!isGlobalEditing",
       "id": "cmd+shift+z",
       "command": "Redo",
       "description": "重做",
-      "type": []
+      "type": [
+        "global_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+y",
       "winKey": "ctrl+y",
-      "name": [],
+      "name": [
+        "redo"
+      ],
       "when": "!isGlobalEditing",
       "id": "cmd+y",
       "command": "Redo",
       "description": "重做",
-      "type": []
+      "type": [
+        "global_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+f",
       "winKey": "ctrl+f",
-      "name": [],
+      "name": [
+        "find"
+      ],
       "when": "!isRecordExpanding",
       "id": "cmd+f",
       "command": "ToggleFindPanel",
       "description": "查找",
-      "type": []
+      "type": [
+        "global_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+shift+p",
       "winKey": "ctrl+shift+p",
-      "name": [],
+      "name": [
+        "open_api_panel"
+      ],
       "when": "true ",
       "id": "cmd+shift+p",
       "command": "ToggleApiPanel",
       "description": "打开 API 示例面板",
-      "type": []
+      "type": [
+        "global_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+/",
       "winKey": "ctrl+/",
-      "name": [],
+      "name": [
+        "open_keyboard_shortcuts_panel"
+      ],
       "when": "!isGlobalEditing && !isRecordExpanding",
       "id": "cmd+/",
       "command": "Help",
       "description": "打开快捷键面板",
-      "type": []
+      "type": [
+        "global_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+up",
       "winKey": "ctrl+up",
-      "name": [],
+      "name": [
+        "previous_record"
+      ],
       "when": "isRecordExpanding",
       "id": "cmd+up",
       "command": "PreviousRecord",
       "description": "卡片翻到上一条记录",
-      "type": []
+      "type": [
+        "global_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+shift+,",
       "winKey": "ctrl+shift+,",
-      "name": [],
+      "name": [
+        "previous_record"
+      ],
       "when": "isRecordExpanding",
       "id": "cmd+shift+,",
       "command": "PreviousRecord",
       "description": "卡片翻到上一条记录",
-      "type": []
+      "type": [
+        "global_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+down",
       "winKey": "ctrl+down",
-      "name": [],
+      "name": [
+        "next_record"
+      ],
       "when": "isRecordExpanding",
       "id": "cmd+down",
       "command": "NextRecord",
       "description": "卡片翻到下一条记录",
-      "type": []
+      "type": [
+        "global_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+shift+.",
       "winKey": "ctrl+shift+.",
-      "name": [],
+      "name": [
+        "next_record"
+      ],
       "when": "isRecordExpanding",
       "id": "cmd+shift+.",
       "command": "NextRecord",
       "description": "卡片翻到下一条记录",
-      "type": []
+      "type": [
+        "global_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+shift+,",
       "winKey": "ctrl+shift+,",
-      "name": [],
+      "name": [
+        "switch_view_prev"
+      ],
       "when": "!isRecordExpanding",
       "id": "cmd+shift+,",
       "command": "ViewPrev",
       "description": "视图标签向前切换视图",
-      "type": []
+      "type": [
+        "global_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+shift+.",
       "winKey": "ctrl+shift+.",
-      "name": [],
+      "name": [
+        "switch_view_next"
+      ],
       "when": "!isRecordExpanding",
       "id": "cmd+shift+.",
       "command": "ViewNext",
       "description": "视图标签向后切换视图",
-      "type": []
+      "type": [
+        "global_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+c",
       "winKey": "ctrl+c",
-      "name": [],
+      "name": [
+        "duplicate_cell_data"
+      ],
       "when": "hasActiveCell",
       "id": "cmd+c",
       "command": "Copy",
       "description": "复制",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+v",
       "winKey": "ctrl+v",
-      "name": [],
+      "name": [
+        "paste_cell_data"
+      ],
       "when": "hasActiveCell",
       "id": "cmd+v",
       "command": "Paste",
       "description": "粘贴",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+x",
       "winKey": "ctrl+x",
-      "name": [],
+      "name": [
+        "cut_cell_data"
+      ],
       "id": "cmd+x",
       "command": "None",
       "description": "剪切",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "space",
       "winKey": "space",
-      "name": [],
+      "name": [
+        "expand_record"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding && !isEditing",
       "id": "space",
       "command": "ExpandRecord",
       "description": "展开行",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "escape",
       "winKey": "escape",
-      "name": [],
+      "name": [
+        "escape"
+      ],
       "when": "isEditing",
       "id": "escape",
       "command": "ExitEditing",
       "description": "退出编辑或关闭窗口",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "shift+enter",
       "winKey": "shift+enter",
-      "name": [],
+      "name": [
+        "insert_record_below"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding && recordEditable",
       "id": "shift+enter",
       "command": "AppendRow",
       "description": "向下插入行",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+shift+enter",
       "winKey": "ctrl+shift+enter",
-      "name": [],
+      "name": [
+        "insert_record_above"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding && recordEditable",
       "id": "cmd+shift+enter",
       "command": "PrependRow",
       "description": "向上插入行",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "enter",
       "winKey": "enter",
-      "name": [],
+      "name": [
+        "edit_cell_data"
+      ],
       "when": "isFocusing && !isRecordExpanding",
       "id": "enter",
       "command": "ToggleNextEditing",
       "description": "激活单元格编辑状态",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "F2",
       "winKey": "F2",
-      "name": [],
+      "name": [
+        "edit_cell_data"
+      ],
       "when": "isFocusing && !isRecordExpanding",
       "id": "F2",
       "command": "ToggleNextEditing",
       "description": "激活单元格编辑状态",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "backspace",
       "winKey": "backspace",
-      "name": [],
+      "name": [
+        "clear_record"
+      ],
       "when": "!isGlobalEditing && !isRecordExpanding",
       "id": "backspace",
       "command": "Clear",
       "description": "清除单元格内容",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "delete",
       "winKey": "delete",
-      "name": [],
+      "name": [
+        "clear_record"
+      ],
       "when": "!isGlobalEditing && !isRecordExpanding",
       "id": "delete",
       "command": "Clear",
       "description": "清除单元格内容",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "tab",
       "winKey": "tab",
-      "name": [],
+      "name": [
+        "finish_editing_cell_right"
+      ],
       "when": "(isEditing || hasActiveCell) && !isRecordExpanding && !isMenuOpening",
       "id": "tab",
       "command": "CellTab",
       "description": "完成编辑并向右一个单元格",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "shift+tab",
       "winKey": "shift+tab",
-      "name": [],
+      "name": [
+        "finish_editing_cell_left"
+      ],
       "when": "(isEditing || hasActiveCell) && !isRecordExpanding&& !isMenuOpening",
       "id": "shift+tab",
       "command": "CellShiftTab",
       "description": "完成编辑并向左一个单元格",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "up",
       "winKey": "up",
-      "name": [],
+      "name": [
+        "up"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening && !modalVisible",
       "id": "up",
       "command": "CellUp",
       "description": "向上移动一个单元格",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "down",
       "winKey": "down",
-      "name": [],
+      "name": [
+        "down"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening && !modalVisible",
       "id": "down",
       "command": "CellDown",
       "description": "向下移动一个单元格",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "left",
       "winKey": "left",
-      "name": [],
+      "name": [
+        "left"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding && !isMenuOpening && !modalVisible",
       "id": "left",
       "command": "CellLeft",
       "description": "向左移动一个单元格",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "right",
       "winKey": "right",
-      "name": [],
+      "name": [
+        "right"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening && !modalVisible",
       "id": "right",
       "command": "CellRight",
       "description": "向右移动一个单元格",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+up",
       "winKey": "ctrl+up",
-      "name": [],
+      "name": [
+        "cell_to_up_edge"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "cmd+up",
       "command": "CellUpEdge",
       "description": "移动到顶部单元格",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+down",
       "winKey": "ctrl+down",
-      "name": [],
+      "name": [
+        "cell_to_down_edge"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "cmd+down",
       "command": "CellDownEdge",
       "description": "移动到底部单元格",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+left",
       "winKey": "ctrl+left",
-      "name": [],
+      "name": [
+        "cell_to_left_edge"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "cmd+left",
       "command": "CellLeftEdge",
       "description": "移动到最左侧单元格",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+right",
       "winKey": "ctrl+right",
-      "name": [],
+      "name": [
+        "cell_to_right_edge"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "cmd+right",
       "command": "CellRightEdge",
       "description": "移动到最右侧单元格",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "fn+↑",
       "winKey": "fn+↑",
-      "name": [],
+      "name": [
+        "scroll_screen_up"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "fn+↑",
       "command": "None",
       "description": "向上滚动一屏",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "pageup",
       "winKey": "pageup",
-      "name": [],
+      "name": [
+        "scroll_screen_up"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "pageup",
       "command": "PageUp",
       "description": "向上滚动一屏",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "fn+↓",
       "winKey": "fn+↓",
-      "name": [],
+      "name": [
+        "scroll_screen_down"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "fn+↓",
       "command": "None",
       "description": "向下滚动一屏",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "pagedown",
       "winKey": "pagedown",
-      "name": [],
+      "name": [
+        "scroll_screen_down"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "pagedown",
       "command": "PageDown",
       "description": "向下滚动一屏",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "fn+←",
       "winKey": "fn+←",
-      "name": [],
+      "name": [
+        "scroll_screen_left"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "fn+←",
       "command": "None",
       "description": "向左滚动一屏",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "home",
       "winKey": "home",
-      "name": [],
+      "name": [
+        "scroll_screen_left"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "home",
       "command": "PageLeft",
       "description": "向左滚动一屏",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "fn+→",
       "winKey": "fn+→",
-      "name": [],
+      "name": [
+        "scroll_screen_right"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "fn+→",
       "command": "None",
       "description": "向右滚动一屏",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "end",
       "winKey": "end",
-      "name": [],
+      "name": [
+        "scroll_screen_right"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "end",
       "command": "PageRight",
       "description": "向右滚动一屏",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+a",
       "winKey": "ctrl+a",
-      "name": [],
+      "name": [
+        "select_all"
+      ],
       "when": "!isGlobalEditing && !isRecordExpanding",
       "id": "cmd+a",
       "command": "SelectionAll",
       "description": "全选",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "shift+up",
       "winKey": "shift+up",
-      "name": [],
+      "name": [
+        "selection_to_up"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "shift+up",
       "command": "SelectionUp",
       "description": "单元格选区向上",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "shift+down",
       "winKey": "shift+down",
-      "name": [],
+      "name": [
+        "selection_to_down"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "shift+down",
       "command": "SelectionDown",
       "description": "单元格选区向下",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "shift+left",
       "winKey": "shift+left",
-      "name": [],
+      "name": [
+        "selection_to_left"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "shift+left",
       "command": "SelectionLeft",
       "description": "单元格选区向左",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "shift+right",
       "winKey": "shift+right",
-      "name": [],
+      "name": [
+        "selection_to_right"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "shift+right",
       "command": "SelectionRight",
       "description": "单元格选区向右",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+shift+up",
       "winKey": "ctrl+shift+up",
-      "name": [],
+      "name": [
+        "selection_to_up_edge"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "cmd+shift+up",
       "command": "SelectionUpEdge",
       "description": "单元格选区向上至顶部",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+shift+down",
       "winKey": "ctrl+shift+down",
-      "name": [],
+      "name": [
+        "selection_to_down_edge"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "cmd+shift+down",
       "command": "SelectionDownEdge",
       "description": "单元格选区向下至底部",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+shift+left",
       "winKey": "ctrl+shift+left",
-      "name": [],
+      "name": [
+        "selection_to_left_edge"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "cmd+shift+left",
       "command": "SelectionLeftEdge",
       "description": "单元格选区向左到边缘",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+shift+right",
       "winKey": "ctrl+shift+right",
-      "name": [],
+      "name": [
+        "selection_to_right_edge"
+      ],
       "when": "hasActiveCell && !isGlobalEditing && !isRecordExpanding&& !isMenuOpening",
       "id": "cmd+shift+right",
       "command": "SelectionRightEdge",
       "description": "单元格选区向右至边缘",
-      "type": []
+      "type": [
+        "gird_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "fn+↑",
       "winKey": "fn+↑",
-      "name": [],
+      "name": [
+        "scroll_screen_up"
+      ],
       "when": "!isRecordExpanding",
       "id": "fn+↑",
       "command": "None",
       "description": "向上滚动一屏",
-      "type": []
+      "type": [
+        "gallery_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "pageup",
       "winKey": "pageup",
-      "name": [],
+      "name": [
+        "scroll_screen_up"
+      ],
       "when": "!isRecordExpanding",
       "id": "pageup",
       "command": "PageUp",
       "description": "向上滚动一屏",
-      "type": []
+      "type": [
+        "gallery_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "fn+↓",
       "winKey": "fn+↓",
-      "name": [],
+      "name": [
+        "scroll_screen_down"
+      ],
       "when": "!isRecordExpanding",
       "id": "fn+↓",
       "command": "None",
       "description": "向下滚动一屏",
-      "type": []
+      "type": [
+        "gallery_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "pagedown",
       "winKey": "pagedown",
-      "name": [],
+      "name": [
+        "scroll_screen_down"
+      ],
       "when": "!isRecordExpanding",
       "id": "pagedown",
       "command": "PageDown",
       "description": "向下滚动一屏",
-      "type": []
+      "type": [
+        "gallery_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+up",
       "winKey": "ctrl+up",
-      "name": [],
+      "name": [
+        "page_to_up_edge"
+      ],
       "when": "!isRecordExpanding",
       "id": "cmd+up",
       "command": "PageUpEdge",
       "description": "滚动到页面顶部",
-      "type": []
+      "type": [
+        "gallery_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+down",
       "winKey": "ctrl+down",
-      "name": [],
+      "name": [
+        "page_to_down_edge"
+      ],
       "when": "!isRecordExpanding",
       "id": "cmd+down",
       "command": "PageDownEdge",
       "description": "滚动到页面底部",
-      "type": []
+      "type": [
+        "gallery_view_shortcuts"
+      ]
     },
     {
       "key": "cmd+s",
       "winKey": "ctrl+s",
-      "name": [],
+      "name": [
+        "toast_ctrl_s"
+      ],
       "when": "true",
       "id": "cmd+s",
       "command": "ToastForSave",
       "description": "你的修改数据会实时保存到云端，无需手动保存",
-      "type": []
+      "type": [
+        "gallery_view_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+k",
       "winKey": "ctrl+k",
-      "name": [],
+      "name": [
+        "open_quickgo_panel"
+      ],
       "when": "!isRecordExpanding",
       "id": "cmd+k",
       "command": "SearchNode",
       "description": "打开工作台的搜索栏",
-      "type": []
+      "type": [
+        "workbenck_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "ctrl+n",
       "winKey": "alt+n",
-      "name": [],
+      "name": [
+        "new_datasheet"
+      ],
       "when": "!isRecordExpanding",
       "id": "ctrl+n",
       "command": "NewDatasheet",
       "description": "新建维格表",
-      "type": []
+      "type": [
+        "workbenck_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "ctrl+shift+n",
       "winKey": "alt+shift+n",
-      "name": [],
+      "name": [
+        "new_folder"
+      ],
       "when": "!isRecordExpanding",
       "id": "ctrl+shift+n",
       "command": "NewFolder",
       "description": "新建文件夹",
-      "type": []
+      "type": [
+        "workbenck_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "f2",
       "winKey": "f2 ",
-      "name": [],
+      "name": [
+        "rename"
+      ],
       "when": "!isRecordExpanding",
       "id": "f2",
       "command": "RenameNode",
       "description": "重命名",
-      "type": []
+      "type": [
+        "workbenck_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "ctrl+s",
       "winKey": "alt+s",
-      "name": [],
+      "name": [
+        "share"
+      ],
       "when": "!isRecordExpanding",
       "id": "ctrl+s",
       "command": "Share",
       "description": "分享",
-      "type": []
+      "type": [
+        "workbenck_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "ctrl+p",
       "winKey": "alt+p",
-      "name": [],
+      "name": [
+        "permission_setting"
+      ],
       "when": "!isRecordExpanding",
       "id": "ctrl+p",
       "command": "Permission",
       "description": "设置权限",
-      "type": []
+      "type": [
+        "workbenck_shortcuts"
+      ]
+    },
+    {
+      "show": true,
+      "key": "cmd+shift+s",
+      "winKey": "ctrl+shift+s",
+      "name": [
+        "backup_create"
+      ],
+      "when": "!isRecordExpanding",
+      "id": "cmd+shift+S",
+      "command": "CreateBackup",
+      "description": "创建历史备份",
+      "type": [
+        "workbenck_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "ctrl+t",
       "winKey": "alt+t",
-      "name": [],
+      "name": [
+        "save_as_template"
+      ],
       "when": "!isRecordExpanding",
       "id": "ctrl+t",
       "command": "SaveAsTemplate",
       "description": "保存为模板",
-      "type": []
+      "type": [
+        "workbenck_shortcuts"
+      ]
     },
     {
       "show": true,
       "key": "cmd+b",
       "winKey": "ctrl+b",
-      "name": [],
+      "name": [
+        "toggle_catalog_panel"
+      ],
       "when": "!isRecordExpanding && !modalVisible",
       "id": "cmd+b",
       "command": "ToggleCatalogPanel",
       "description": "展开折叠目录面板",
-      "type": []
+      "type": [
+        "workbenck_shortcuts"
+      ]
     },
     {
       "key": "space",
@@ -1240,12 +1515,16 @@
       "show": true,
       "key": "cmd+shift+o",
       "winKey": "ctrl+shift+o",
-      "name": [],
+      "name": [
+        "toggle_widget_panel"
+      ],
       "when": "!isRecordExpanding",
       "id": "cmd+shift+o",
       "command": "ToggleWidgetPanel",
       "description": "展开小程序",
-      "type": []
+      "type": [
+        "global_shortcuts"
+      ]
     },
     {
       "key": "cmd+shift+d",
@@ -3357,7 +3636,7 @@
           "url_EXCLUDES_shareId",
           "edition_IS_aitable"
         ],
-        "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_aitable],[open_guide_wizards([105, 115])]",
+        "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 115])]",
         "event": [
           "workbench_shown"
         ]
@@ -4570,7 +4849,8 @@
       },
       "64": {
         "repeat": true,
-        "completeIndex": -1
+        "completeIndex": -1,
+        "steps": "[[198]]"
       },
       "65": {
         "completeIndex": -1,
@@ -6588,7 +6868,23 @@
         ],
         "next": "查看详情",
         "nextId": "check_detail",
-        "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/12/28/36139bb2556a4c68b267dd5c29739087\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/23-12-29-updates\",\n    \"children\": \"<h3>🚀 自动化支持定时触发，工作提醒再无担忧</h3>\\n<p>你可以按小时、天、周甚至是月份运行周期性执行任务，只要满足所设定的时间条件，它就会自动启动，如发送邮件、提醒或调用业务接口，都可以轻松实现。</p>\"\n}",
+        "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2023/12/28/36139bb2556a4c68b267dd5c29739087\",\n    \"readMoreUrl\": \"https://meeting.tencent.com/dw/2XYzYvyVHtqH\",\n    \"children\": \"<h3>🚀 实现定时触发的自动化支持，无需担心工作提醒问题</h3>\\n<p>你可以根据小时、天、周或月份设定周期性任务，满足时间条件后自动启动，例如发送邮件、提醒或调用业务接口，轻松实现。</p>\\n<p>重要通知：周三上午11点，将举办新用户产品培训会。培训旨在帮助新用户了解和使用vika维格云。如果你是新用户，请点击链接报名参加。</p>\"\n}",
+        "onClose": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ]
+      },
+      "198": {
+        "uiConfigId": "player_step_ui_config_97",
+        "uiType": "contactUs",
+        "onNext": [
+          "clear_guide_all_ui()",
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_vikaby({\"defaultExpandMenu\": true, \"visible\": true})"
+        ],
+        "next": "已完成添加",
+        "nextId": "player_contact_us_confirm_btn",
+        "uiConfig": "{\n\t\"vikaby\": {\n\t\t\"title\": \"你好\",\n\t\t\"description\": \"如果在使用过程中遇到问题，请扫描右侧二维码联系我解决\",\n\t\t\"list\": \"<ul><li>刚注册维格表，不知道怎么用</li><li>维格表可以实现我想要的效果吗</li><li>使用过程出现异常问题</li><li>后续支持的功能有哪些</li><li>获取官方邀请码</li></ul>\",\n\t\t\"tip\": \"扫码添加客服\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"您好，我是维格表数字化顾问\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Bug 吐槽\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"需求反馈\\\", \\\"icon\\\": \\\"AdviseSmallOutlined\\\"}, {\\\"title\\\": \\\"服务支持\\\", \\\"icon\\\": \\\"ServeOutlined\\\"}, {\\\"title\\\": \\\"案例推荐\\\", \\\"icon\\\": \\\"ZanOutlined\\\"}, {\\\"title\\\": \\\"解决方案\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"产品答疑\\\", \\\"icon\\\": \\\"InformationLargeOutlined\\\"}]\",\n\t\t\"tip\": \"扫码添加微信，获得更多专属服务\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/59f4cc8e0b2b4395bf0fcd133d208e63\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/defbf55d1e9646eb929f9f5d11d5c119\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/04/27/2c617a16afd9408ba48392e337fbbd7f?attname=20230427_dingtalk_questionnaire.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/04/27/2c617a16afd9408ba48392e337fbbd7f?attname=20230427_dingtalk_vikaby.png\",\n\"tip\": \"请使用钉钉扫码，加入交流群\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/1346d5efbd5043efb2bfcba0075c0ee9\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/09401a8f2d8e491a9097b9bac8b5a4e4\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"扫码添加客服\",\n\t\t\"tip\": \"请使用飞书扫码，添加客服号备用\",\n\t\t\"description\": \"以便使用过程中遇到问题，可以随时获得服务和解答\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}",
         "onClose": [
           "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"

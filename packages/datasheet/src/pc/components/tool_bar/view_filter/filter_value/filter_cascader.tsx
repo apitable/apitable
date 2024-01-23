@@ -1,11 +1,21 @@
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { DatasheetApi, ICascaderField, ICascaderNode, ILinkField, ILinkedField, Selectors } from '@apitable/core';
+import {
+  DatasheetApi,
+  Field,
+  FieldType,
+  ICascaderField,
+  ICascaderNode,
+  IField,
+  ILinkedField,
+  ILinkField,
+  LookUpField,
+  Selectors
+} from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ICascaderOption, mapTreeNodesRecursively } from '../../../../utils';
 import { Cascader } from '../../../cascader';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFilterCascader {
   field: ICascaderField;
@@ -13,13 +23,17 @@ interface IFilterCascader {
   value: string[];
   disabled?: boolean;
   linkedFieldId?: string;
+  primaryField: IField;
 }
 
 export const FilterCascader = (props: IFilterCascader) => {
   const datasheetId = useAppSelector((state) => Selectors.getActiveDatasheetId(state))!;
   const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId));
-  const { field, disabled, onChange, value, linkedFieldId } = props;
-  const linkedDatasheetId = linkedFieldId ? (fieldMap?.[linkedFieldId] as ILinkField)?.property.foreignDatasheetId : '';
+  const { field, disabled, onChange, value, linkedFieldId, primaryField } = props;
+  const lookUpFieldInfo = primaryField.type === FieldType.LookUp ?
+    (Field.bindModel(primaryField) as any as LookUpField).getLookUpEntityFieldInfo() : null;
+  const linkedDatasheetId = lookUpFieldInfo?.field.type === FieldType.Cascader ? lookUpFieldInfo.datasheetId :
+    linkedFieldId ? (fieldMap?.[linkedFieldId] as ILinkField)?.property.foreignDatasheetId : '';
   const [options, setOptions] = useState<ICascaderOption[]>([]);
   const [loading, setLoading] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);

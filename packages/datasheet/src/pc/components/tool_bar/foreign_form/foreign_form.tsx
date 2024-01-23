@@ -24,11 +24,11 @@ import { useThemeColors } from '@apitable/components';
 import { Strings, t, Selectors, DATASHEET_ID, StoreActions } from '@apitable/core';
 import { FormOutlined } from '@apitable/icons';
 import { TComponent } from 'pc/components/common/t_component';
+import { useAppSelector } from 'pc/store/react-redux';
+import { isEmbedPage } from '../../../../../utils/utils';
 import { ToolItem } from '../tool_item';
 import { FormListPanel, IFormNodeItem } from './form_list_panel';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IForeignFormProps {
   className: string;
@@ -69,6 +69,9 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
   const uniqueId = `${datasheetId}-${viewId}`;
 
   const fetchForeignFormList = async () => {
+    if (isEmbedPage()) {
+      return;
+    }
     setLoading(true);
     const formList = await StoreActions.fetchForeignFormList(datasheetId, viewId);
     setFormList(formList || []);

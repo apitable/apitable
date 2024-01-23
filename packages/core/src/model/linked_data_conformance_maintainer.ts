@@ -175,7 +175,7 @@ export class LinkedDataConformanceMaintainer {
             // Make sure that the cell is populated only when the foreign key field is indeed the relation field type.
             const cellValueInLinkedCell = (fieldType === FieldType.Link || fieldType === FieldType.OneWayLink) ?
               getCellValue(state, snapshot, recordId, fieldId, undefined, undefined, true) as string[] || [] : [];
-            let newLinkedCellValue: string[] | null = without(cellValueInLinkedCell, ...changeIds.del);
+            let newLinkedCellValue: string[] | null = without(cellValueInLinkedCell, ...changeIds.del, ...changeIds.add);
             newLinkedCellValue.push(...changeIds.add);
             newLinkedCellValue = handleEmptyCellValue(newLinkedCellValue, BasicValueType.Array);
             const action = DatasheetActions.setRecord2Action(

@@ -23,10 +23,8 @@ import * as Sentry from '@sentry/nextjs';
 import axios from 'axios';
 import classNames from 'classnames';
 import elementClosest from 'element-closest';
-import ErrorPage from 'error_page';
 import * as immer from 'immer';
 import { enableMapSet } from 'immer';
-import { init as initPlayer } from 'modules/shared/player/init';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
@@ -35,6 +33,8 @@ import Script from 'next/script';
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
 import React, { useEffect, useState } from 'react';
+import ErrorPage from 'error_page';
+import { init as initPlayer } from 'modules/shared/player/init';
 import { Provider } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import reportWebVitals from 'reportWebVitals';
@@ -286,6 +286,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
       store.dispatch(batchActions(_batchActions, LOGIN_SUCCESS));
       window.__initialization_data__.userInfo = userInfo;
+      if (userInfo?.locale) {
+        window.__initialization_data__.lang = userInfo.locale;
+        window.__initialization_data__.locale = userInfo.locale;
+      }
       window.__initialization_data__.wizards = {
         guide: SystemConfig.guide,
         player: SystemConfig.player,

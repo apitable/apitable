@@ -30,7 +30,7 @@ import {
   Selectors,
   Strings,
   t,
-  ThemeName
+  ThemeName,
 } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import { AreaType, generateTargetName, IScrollState, PointPosition } from 'pc/components/gantt_view';
@@ -52,10 +52,9 @@ import {
   useStats,
 } from 'pc/components/konva_grid';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { GroupTab } from '../components/cell/cell_other/group_tab';
 import { RowHeadOperation } from '../components/operation_area';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 const ORIGIN_HEIGHT_SET = new Set([FieldType.Number, FieldType.Percent, FieldType.Currency, FieldType.AutoNumber]);
@@ -164,7 +163,7 @@ export const useGrid = (props: IUseGridProps) => {
     columnStartIndex,
     columnStopIndex,
     scrollState,
-  });
+  }) as any;
 
   /**
    * Group tab and statistics column at the bottom of the group
@@ -409,22 +408,26 @@ export const useGrid = (props: IUseGridProps) => {
     };
     const shadowProps = frozenShadowVisible
       ? {
-        shadowColor:  themeName === ThemeName.Light ? '#E7E8EC' : '#191919',
-        shadowBlur: 4,
-        shadowOffsetX: 2,
-        shadowForStrokeEnabled: true,
-      }
+          shadowColor: themeName === ThemeName.Light ? '#E7E8EC' : '#191919',
+          shadowBlur: 4,
+          shadowOffsetX: 2,
+          shadowForStrokeEnabled: true,
+        }
       : {};
 
     const top = <Line points={[0, 0, 0, rowInitSize]} {...commonProps} {...shadowProps} />;
-    const middle = <Group x={0} y={0}>
-      <Line points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]} {...baseProps} />
-      <Line points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]} {...commonProps} {...shadowProps} />
-    </Group>;
-    const bottom = <Group x={0} y={0}>
-      <Line points={[0, containerHeight - GRID_BOTTOM_STAT_HEIGHT, 0, containerHeight]} {...baseProps} {...shadowProps} />
-      <Line points={[0, containerHeight - GRID_BOTTOM_STAT_HEIGHT, 0, containerHeight]} {...commonProps} {...shadowProps} />
-    </Group>;
+    const middle = (
+      <Group x={0} y={0}>
+        <Line points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]} {...baseProps} />
+        <Line points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]} {...commonProps} {...shadowProps} />
+      </Group>
+    );
+    const bottom = (
+      <Group x={0} y={0}>
+        <Line points={[0, containerHeight - GRID_BOTTOM_STAT_HEIGHT, 0, containerHeight]} {...baseProps} {...shadowProps} />
+        <Line points={[0, containerHeight - GRID_BOTTOM_STAT_HEIGHT, 0, containerHeight]} {...commonProps} {...shadowProps} />
+      </Group>
+    );
     const generatePlaceholder = (y: number, height: number) => (
       <Rect
         name={KONVA_DATASHEET_ID.GRID_FROZEN_SHADOW_LINE}
@@ -474,7 +477,7 @@ export const useGrid = (props: IUseGridProps) => {
     rowInitSize,
     colors.borderCommonHover,
     colors.borderGridVertical,
-    themeName
+    themeName,
   ]);
 
   return {

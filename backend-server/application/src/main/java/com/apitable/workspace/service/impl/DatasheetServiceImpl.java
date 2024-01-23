@@ -898,7 +898,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         Map<Long, List<Long>> roleUnitIdToRoleMemberUnitIds = getRoleMemberUnits(units);
         // self don't need to send notifications, filter
         Long memberId =
-            userId == null ? -2L : iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
+            null == userId ? null : iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
         // Gets the organizational unit of the member type, the corresponding member.
         Map<Long, Long> unitIdToMemberIdMap = units.stream()
             .filter(unit -> unit.getUnitType().equals(UnitType.MEMBER.getType())

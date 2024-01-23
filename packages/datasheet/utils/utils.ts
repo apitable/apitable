@@ -66,3 +66,7 @@ export const setClientCookie = (cookies: string[], ctx: NextPageContext) => {
     setCookie(key, value, { req: ctx.req, res: ctx.res, ...optional });
   });
 };
+
+export const isEmbedPage = () => {
+  return window.location.href.indexOf('embed') > -1;
+};

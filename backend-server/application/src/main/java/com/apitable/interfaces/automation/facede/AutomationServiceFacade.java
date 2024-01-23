@@ -37,4 +37,21 @@ public interface AutomationServiceFacade {
      * @param newTriggerMap old triggerId -> new triggerId
      */
     void copy(Map<String, String> newTriggerMap);
+
+    /**
+     * create schedule.
+     *
+     * @param spaceId        space id
+     * @param triggerId      trigger id
+     * @param scheduleConfig config
+     */
+    void createSchedule(String spaceId, String triggerId, String scheduleConfig);
+
+    /**
+     * update schedule.
+     *
+     * @param triggerId      trigger id
+     * @param scheduleConfig config
+     */
+    void updateSchedule(String triggerId, String scheduleConfig);
 }

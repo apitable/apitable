@@ -27,6 +27,7 @@ import { createRoot } from 'react-dom/client';
 import { Provider, shallowEqual, useDispatch } from 'react-redux';
 import { Api, INodeDescription, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { CloseCircleOutlined, CloseOutlined } from '@apitable/icons';
+import { useGetDesc } from 'pc/components/embed_page/hooks/use_get_desc';
 import { embedPageAtom } from 'pc/components/embed_page/store/embed_page_desc_atom';
 import { Deserializer, IEditorData, Serializer, SlateEditor } from 'pc/components/slate_editor';
 import { useImageUpload } from 'pc/hooks';
@@ -74,7 +75,7 @@ const useGetPermission = (nodeId: string) => {
     return permissionAutomations;
   }
 
-  if (nodeId.startsWith('emp') && embedPage?.permission) {
+  if (nodeId.startsWith('cup') && embedPage?.permission) {
     return embedPage.permission;
   }
 
@@ -92,7 +93,7 @@ const useGetNodeDesc = (nodeId: string) => {
     return getJsonValue(automationState?.robot?.description);
   }
 
-  if (nodeId.startsWith('emp') && embedPage?.desc) {
+  if (nodeId.startsWith('cup') && embedPage?.desc) {
     return getJsonValue(embedPage.desc);
   }
 
@@ -110,6 +111,7 @@ const RenderModalBase: React.FC<React.PropsWithChildren<IRenderModalBase>> = (pr
   const { uploadImage } = useImageUpload();
   // This ref is mainly used to prevent cursor changes from triggering repeated submissions of the same data
   const editorHtml = useRef('');
+  const { mutate } = useGetDesc(false);
 
   const onCancel = (e: any, isButton?: boolean) => {
     stopPropagation(e);
@@ -166,6 +168,7 @@ const RenderModalBase: React.FC<React.PropsWithChildren<IRenderModalBase>> = (pr
         // Node description saved successfully
         dispatch(StoreActions.recordNodeDesc(datasheetId, JSON.stringify(descStruct)));
         onChange?.(JSON.stringify(descStruct));
+        mutate();
       } else {
         // Node description failed to save, error message, but does not change edit status
         errModal(message);

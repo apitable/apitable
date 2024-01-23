@@ -76,13 +76,13 @@ export class RecordRowLayout extends GridLayout {
       fill: fill || 'transparent',
     });
     if (isHoverRow || isCheckedRow || isActiveRow || isThisCellWillMove) {
-      let fill = colors.rowSelectedBgSolid;
+      let fill: string = colors.bgBglessHoverSolid;
       if (isDraggingRow) {
         fill = colors.lowestBg;
       } else if (isThisCellWillMove) {
         fill = colors.warnLight;
-      } else if (isCheckedRow) {
-        fill = colors.cellSelectedColorSolid;
+      } else if (isCheckedRow || isActiveRow) {
+        fill = colors.bgBrandLightDefaultSolid;
       }
       return this.rect({
         x: groupOffset + 0.5,

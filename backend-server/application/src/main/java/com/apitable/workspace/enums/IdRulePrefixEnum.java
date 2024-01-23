@@ -81,7 +81,7 @@ public enum IdRulePrefixEnum {
 
     AIRAGENT("ag_"),
 
-    EMBED_PAGE("emp"),
+    CUSTOM_PAGE("cup"),
 
     ;
 

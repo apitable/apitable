@@ -38,8 +38,9 @@ export enum LangType {
  * ```
  */
 export function getLanguage(): LangType {
+  const defaultLang = window.__initialization_data__?.envVars?.IS_APITABLE ? LangType.EnUS : LangType.ZhCN;
   const language = typeof window == 'object' &&
     window.__initialization_data__ &&
     window.__initialization_data__.lang;
-  return language || LangType.ZhCN;
+  return language || defaultLang;
 }

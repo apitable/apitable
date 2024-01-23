@@ -69,18 +69,26 @@
   }
 }
 
-.light-scroll-bar() {
-  .custom-scroll-bar(12px, 12px);
+.s-scroll-bar(@bg: flase) {
+  .custom-scroll-bar(8px, @bg);
 }
 
-.mini-scroll-bar() {
-  .custom-scroll-bar(8px, 8px);
+.default-scroll-bar(@bg: flase) {
+  .custom-scroll-bar(12px, @bg);
 }
 
-.custom-scroll-bar(@width: auto, @height: auto, @color: @scrollbar-thumb) {
+.l-scroll-bar(@bg: flase) {
+  .custom-scroll-bar(14px, @bg);
+}
+
+.lx-scroll-bar(@bg: flase) {
+  .custom-scroll-bar(18px, @bg);
+}
+
+.custom-scroll-bar(@size: auto, @bg: false, @color: @scrollbar-thumb) {
   &::-webkit-scrollbar {
-    width: @width;
-    height: @height;
+    width: @size;
+    height: @size;
     position: absolute;
     top: 0;
     left: 0;
@@ -95,10 +103,10 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: transparent;
+    background-color: if(@bg, @scrollbar-thumb, transparent);
     background-clip: padding-box;
-    border: 3px solid rgba(0, 0, 0, 0);
-    border-radius: 6px;
+    border: calc(@size / 4) solid rgba(0, 0, 0, 0);
+    border-radius: calc(@size / 2);
     min-height: 36px;
   }
 
@@ -118,7 +126,7 @@
 
 .ant-select-option-common {
   ul {
-    .light-scroll-bar();
+    .default-scroll-bar();
   }
 
   li {

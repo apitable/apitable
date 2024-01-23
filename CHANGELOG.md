@@ -1,5 +1,21 @@
 # APITable CHANGELOG
 
+## [v1.8.0-beta.3](https://github.com/apitable/apitable/releases/tag/v1.8.0-beta.3) (2024-01-23)
+
+
+### What's more
+
+* Sync/hosted ([#1581](https://github.com/apitable/apitable/pull/1581)) @jeremyyin2012 
+## [v1.8.0-beta.2](https://github.com/apitable/apitable/releases/tag/v1.8.0-beta.2) (2024-01-15)
+
+
+### Bug fixes
+
+* fix: usage warn func ([#1573](https://github.com/apitable/apitable/pull/1573)) @wangkailang 
+
+### What's more
+
+* sync: hosted cloud ([#1571](https://github.com/apitable/apitable/pull/1571)) @chalme 
 ## [v1.8.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.8.0-beta.1) (2024-01-08)
 
 
@@ -10,15 +26,16 @@
 
 ### Bug fixes
 
-* fix: func undefined check ([#1542](https://github.com/apitable/apitable/pull/1542)) @wangkailang 
-* fix: usage warn func check ([#1555](https://github.com/apitable/apitable/pull/1555)) @wangkailang
+- fix: func undefined check ([#1542](https://github.com/apitable/apitable/pull/1542)) @wangkailang
+- fix: usage warn func check ([#1555](https://github.com/apitable/apitable/pull/1555)) @wangkailang
 
 ### What's more
 
-* refactor: use_responsive hook ([#1419](https://github.com/apitable/apitable/pull/1419)) @liaoliao666 
-* sync: hosted cloud ([#1540](https://github.com/apitable/apitable/pull/1540)) @ChambersChan 
-* docs: changelog for v1.7.0 ([#1544](https://github.com/apitable/apitable/pull/1544)) @ChambersChan 
-* sync: hosted cloud ([#1553](https://github.com/apitable/apitable/pull/1553)) @zoe-icu 
+- refactor: use_responsive hook ([#1419](https://github.com/apitable/apitable/pull/1419)) @liaoliao666
+- sync: hosted cloud ([#1540](https://github.com/apitable/apitable/pull/1540)) @ChambersChan
+- docs: changelog for v1.7.0 ([#1544](https://github.com/apitable/apitable/pull/1544)) @ChambersChan
+- sync: hosted cloud ([#1553](https://github.com/apitable/apitable/pull/1553)) @zoe-icu
+
 ## [v1.7.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.7.0-beta.1) (2023-12-25)
 
 ### Bug fixes

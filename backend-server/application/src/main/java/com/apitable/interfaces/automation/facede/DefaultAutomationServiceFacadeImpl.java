@@ -32,6 +32,15 @@ public class DefaultAutomationServiceFacadeImpl implements AutomationServiceFaca
 
     @Override
     public void copy(Map<String, String> newTriggerMap) {
+
+    }
+
+    @Override
+    public void createSchedule(String spaceId, String triggerId, String scheduleConfig) {
+    }
+
+    @Override
+    public void updateSchedule(String triggerId, String scheduleConfig) {
         
     }
 }

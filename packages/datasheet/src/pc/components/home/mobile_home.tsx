@@ -17,10 +17,13 @@
  */
 
 import { useMount } from 'ahooks';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Space, ThemeName, useTheme } from '@apitable/components';
 import { integrateCdnHost, IReduxState, t, Strings } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
+import { ActiveAppSumo } from './components/active_app_sumo';
 import { ForgetPassword } from './components/forget_password';
 import { GithubButton } from './components/github_button';
 import { Login } from './components/login';
@@ -29,19 +32,22 @@ import { SignUp } from './components/sign_up';
 import { ActionType } from './pc_home';
 import styles from './style.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
-
 export const MobileHome: React.FC<React.PropsWithChildren<unknown>> = () => {
   const inviteLinkInfo = useAppSelector((state: IReduxState) => state.invite.inviteLinkInfo);
   const inviteEmailInfo = useAppSelector((state: IReduxState) => state.invite.inviteEmailInfo);
   const [action, setAction] = useState<ActionType>(ActionType.SignUp);
   const [email, setEmail] = useState<string>('');
+  const router = useRouter();
 
   const switchActionType = (actionType: ActionType) => {
     setAction(actionType);
   };
   const loginAction = localStorage.getItem('loginAction');
   useMount(() => {
+    if (router.asPath.includes('sumo')) {
+      setAction(ActionType.BindAppSumo);
+      return;
+    }
     if (loginAction === ActionType.SignIn) {
       setAction(ActionType.SignIn);
       localStorage.removeItem('loginAction');
@@ -54,6 +60,7 @@ export const MobileHome: React.FC<React.PropsWithChildren<unknown>> = () => {
         return <Login switchClick={switchActionType} email={email} setEmail={setEmail} />;
         break;
       case ActionType.BindAppSumo:
+        return <ActiveAppSumo />;
       case ActionType.SignUp:
         return <SignUp switchClick={switchActionType} />;
         break;
@@ -75,7 +82,7 @@ export const MobileHome: React.FC<React.PropsWithChildren<unknown>> = () => {
         return 'Reset Password';
         break;
       case ActionType.BindAppSumo:
-        return 'APP SUMO';
+        return 'Welcome Sumo-ling!';
     }
   };
 
@@ -102,7 +109,7 @@ export const MobileHome: React.FC<React.PropsWithChildren<unknown>> = () => {
       <div className={styles.content}>{homeModal(action)}</div>
       <Space size={41} vertical>
         <GithubButton />
-        <NavBar />
+        <NavBar action={action} />
       </Space>
     </div>
   );

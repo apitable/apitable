@@ -10,5 +10,3 @@ function check_forbidden_folder() {
   fi
 }
 
-npx git-format-staged -f 'prettier --ignore-unknown --stdin-filepath "{}"' "**"
-

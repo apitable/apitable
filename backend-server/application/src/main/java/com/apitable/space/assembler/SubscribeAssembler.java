@@ -77,6 +77,7 @@ public class SubscribeAssembler {
         result.setMaxMessageCredits(feature.getMessageCreditNums().getValue());
         result.setMaxAutomationRunNums(feature.getAutomationRunNumsPerMonth().getValue());
         result.setMaxWidgetNums(feature.getWidgetNums().getValue());
+        result.setControlFormBrandLogo(feature.getControlFormBrandLogo().getValue());
 
         result.setIntegrationFeishu(feature.getSocialConnect().getValue());
         result.setIntegrationDingtalk(feature.getSocialConnect().getValue());
