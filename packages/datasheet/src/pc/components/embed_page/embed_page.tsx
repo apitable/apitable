@@ -33,7 +33,7 @@ export const EmbedPage = () => {
 
   useGetDesc();
 
-  if (!role) {
+  if (!role && !shareId) {
     return <NoPermission />;
   }
 
