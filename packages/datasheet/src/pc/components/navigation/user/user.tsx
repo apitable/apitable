@@ -23,13 +23,12 @@ import { IReduxState } from '@apitable/core';
 import { Avatar, AvatarSize } from 'pc/components/common';
 import { ScreenSize, ComponentDisplay } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { AccountCenterModal } from '../account_center_modal';
 import { InviteCodeModal } from '../invite_code_modal';
 import { UserMenu } from '../user_menu';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const User: FC<React.PropsWithChildren<unknown>> = () => {
   const { user } = useAppSelector(

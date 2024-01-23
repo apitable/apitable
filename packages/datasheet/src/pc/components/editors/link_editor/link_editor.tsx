@@ -30,6 +30,7 @@ import { JumpIconMode, LinkJump } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation, KeyCode } from 'pc/utils';
 import { SearchControl } from '../../common/search_control/search_control';
 import { TComponent } from '../../common/t_component/t_component';
@@ -38,8 +39,6 @@ import { useCellEditorVisibleStyle } from '../hooks';
 import { IBaseEditorProps, IEditor } from '../interface';
 import { SearchContent } from './search_content';
 import style from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export enum LinkEditorModalLayout {
   Center = 'Center',

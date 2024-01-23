@@ -37,13 +37,12 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { DisplayFile } from 'pc/components/display_file';
 import { useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { isSupportImage, renderFileIconUrl } from 'pc/utils';
 import NoImage from 'static/icon/datasheet/gallery/emptystates_img_datasheet.png';
 import { hasCover } from '../gallery_view/utils';
 import { ImageBox, ImageShowType } from './image_box';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const getImageSrc = (value: IAttachmentValue, height: number): string => {
   const file = { name: value.name, type: value.mimeType };

@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import { RecordMoveType, Selectors } from '@apitable/core';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const useIsRecordWillMove = (recordId: string) => {
   const { activeRecordId, recordMoveType } = useAppSelector((state) => {

@@ -21,10 +21,10 @@ import { useState } from 'react';
 import { Box, IconButton, Typography, useTheme } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { CheckCircleFilled, ChevronDownOutlined, PauseFilled, WarnCircleFilled } from '@apitable/icons';
+import styles from 'style.module.less';
 import { timeFormatter } from 'pc/utils';
 import { IRobotRunHistoryItem, RobotRunStatusEnums } from '../../interface';
 import { RobotRunHistoryItemDetail } from './robot_run_history_item_detail';
-import styles from 'style.module.less';
 
 export interface IRobotRunHistoryItemProps {
   item: IRobotRunHistoryItem;

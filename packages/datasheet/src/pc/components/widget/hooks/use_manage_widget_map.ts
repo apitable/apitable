@@ -24,9 +24,8 @@ import { ResourceType, Selectors, StoreActions, IWidgetPanelStatus } from '@apit
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const useManageWidgetMap = () => {
   const dispatch = useAppDispatch();

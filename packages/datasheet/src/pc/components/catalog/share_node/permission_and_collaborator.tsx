@@ -23,6 +23,7 @@ import { Skeleton, IOption, Typography, LinkButton } from '@apitable/components'
 import { Api, INodeRoleMap, IReduxState, IUnitValue, StoreActions, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, QuestionCircleOutlined, UserAddOutlined, LinkOutlined } from '@apitable/icons';
 import { useCatalogTreeRequest, useRequest, NodeChangeInfoType } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard, permissionMenuData } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { Avatar, AvatarSize, Message, Tooltip } from '../../common';
@@ -31,13 +32,11 @@ import { expandInviteModal } from '../../invite';
 import { IMemberList } from '../permission_settings_plus/permission';
 import { MembersDetail } from '../permission_settings_plus/permission/members_detail';
 import { IShareContentProps } from './interface';
-import styles from './style.module.less';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
 // @ts-ignore
 import { isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export const PermissionAndCollaborator: React.FC<IShareContentProps> = ({ data }) => {
   const [detailModalVisible, setDetailModalVisible] = useState(false);

@@ -21,10 +21,9 @@ import * as React from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List, Align } from 'react-window';
 import { Selectors, IViewProperty } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { Row } from './row';
 import style from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IRecordListProps {
   datasheetId: string;

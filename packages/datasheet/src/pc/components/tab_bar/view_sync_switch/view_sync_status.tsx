@@ -26,9 +26,8 @@ import { Selectors, Strings, t } from '@apitable/core';
 import { AutoSaveLottie } from 'pc/components/tab_bar/view_sync_switch/auto_save_lottie';
 import { ManualSaveLottie } from 'pc/components/tab_bar/view_sync_switch/manual_save_lottie';
 import { PopupContent } from 'pc/components/tab_bar/view_sync_switch/popup_content/pc';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const CONST_VIEW_PROPERTY_CONFIGURATION_POPUP = 'view_property_manually_save_popup';
 

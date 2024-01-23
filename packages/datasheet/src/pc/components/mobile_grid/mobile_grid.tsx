@@ -26,6 +26,7 @@ import { DATASHEET_ID, Field, FieldOperateType, IReduxState, Selectors, StoreAct
 import { browser } from 'modules/shared/browser';
 import { useDispatch } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass } from 'pc/utils';
 import { expandRecordIdNavigate } from '../expand_record';
 import { FieldSetting } from '../multi_grid/field_setting';
@@ -34,7 +35,6 @@ import { Cell, CellTitle, CellHead } from './cell';
 import { FieldMenu } from './field_menu';
 import styles from './styles.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
 const COLUMN_WIDTH = 134;
 const ROW_HEIGHT = 80 + 16 + 14;
 const FIXED_TITLE_HEIGHT = 32;

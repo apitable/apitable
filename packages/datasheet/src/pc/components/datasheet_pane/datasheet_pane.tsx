@@ -20,7 +20,6 @@ import { useToggle } from 'ahooks';
 import classNames from 'classnames';
 import { useAtom } from 'jotai';
 import { get } from 'lodash';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
@@ -40,6 +39,7 @@ import {
   SystemConfig,
   t,
 } from '@apitable/core';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ApiPanel } from 'pc/components/api_panel';
 import { automationHistoryAtom } from 'pc/components/automation/controller';
 import AutomationHistoryPanel from 'pc/components/automation/run_history/modal/modal';

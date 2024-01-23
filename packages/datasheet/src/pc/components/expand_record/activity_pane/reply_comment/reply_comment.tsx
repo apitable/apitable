@@ -23,9 +23,8 @@ import { Typography, IconButton, useThemeColors } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
 import { serialize, ITextNode } from 'pc/components/draft_editor/utils';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IReplyComment {
   reply: any;

@@ -22,7 +22,7 @@ export default function DefaultErrorList(props: IErrorListProps) {
   const { errors } = props;
   const newErrors = Array.from(new Set(errors.map(r => r.stack)));
   console.log(errors);
-    console.log(newErrors);
+  console.log(newErrors);
   return (
     <div className="panel panel-danger errors">
       <div className="panel-heading">

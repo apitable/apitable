@@ -46,7 +46,6 @@ import { ShareQrCode } from '../share_qr_code';
 import { WidgetEmbed } from 'enterprise/chat/widget_embed';
 import styles from './style.module.less';
 
-
 export interface IPublicShareLinkProps {
   nodeId: string;
 }

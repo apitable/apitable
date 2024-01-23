@@ -348,14 +348,14 @@ export const useUserRequest = () => {
       }
       if (languageMap[userLanguage]) {
         return userLanguage;
-      } else {
-        const langArr = Object.keys(languageMap);
-        for (let i = 0; i < langArr.length; i++) {
-          if (langArr[i].indexOf(userLanguage) > -1) {
-            return langArr[i];
-          }
+      } 
+      const langArr = Object.keys(languageMap);
+      for (let i = 0; i < langArr.length; i++) {
+        if (langArr[i].indexOf(userLanguage) > -1) {
+          return langArr[i];
         }
       }
+      
       return 'en-US';
     };
     return Api.register(username, credential, defaultLang()).then((res) => {

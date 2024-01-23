@@ -36,16 +36,15 @@ import { Message } from 'pc/components/common/message/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
 import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { permissionMenuData } from 'pc/utils';
 import { dispatch } from 'pc/worker/store';
 import { MembersDetail } from './members_detail';
 import { PermissionInfoSetting } from './permission_info_setting';
-import styles from './style.module.less';
 import { UnitList } from './unit_list';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export interface IPermissionSettingProps {
   data: INodePermissionData;

@@ -21,12 +21,11 @@ import { FC, useEffect, useMemo, useState } from 'react';
 import { Button, Typography, useThemeColors } from '@apitable/components';
 import { Events, IReduxState, Player, StoreActions, Strings, t } from '@apitable/core';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { AdminInfo } from './admin_info';
 import { MainAdminModal } from './main_admin_modal';
 import styles from './style.module.less';
-
-import { useAppSelector } from 'pc/store/react-redux';
 
 export const MainAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();

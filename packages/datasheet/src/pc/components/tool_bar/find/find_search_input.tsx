@@ -25,11 +25,10 @@ import { getArrayLoopIndex, Selectors, StoreActions, Strings, t, ViewType } from
 import { ChevronDownOutlined, ChevronUpOutlined, CloseCircleFilled, SearchOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { ButtonPlus, Tooltip } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
 import { KeyCode } from 'pc/utils';
 import { dispatch } from 'pc/worker/store';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ISearchPanelProps {
   setVisible(visible: boolean): void;

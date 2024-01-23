@@ -33,7 +33,7 @@ import {
   GRID_GROUP_ADD_FIELD_BUTTON_WIDTH,
 } from 'pc/components/konva_grid';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const getRowIndicesMap = (linearRows: ILinearRow[], rowHeight: number, viewType: ViewType = ViewType.Grid) => {
   const rowIndicesMap: IndicesMap = {};

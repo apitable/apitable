@@ -9,7 +9,7 @@ import { useCatalogTreeRequest } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { getConfig } from '../../config/config';
-import { embedPageAtom } from '../../store/embed_page_desc_atom';
+import { CustomPageAtom } from '../../store/custon_page_desc_atom';
 import { convertBilibiliUrl, convertFigmaUrl, convertYoutubeUrl } from '../../utils/convert-url';
 
 function isValidUrl(url: string) {
@@ -54,7 +54,7 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
   const activeConfig = getConfig()[activeTabIndex];
   const { embedPageId } = useAppSelector((state) => state.pageParams);
 
-  const [embedPage, setEmbedPage] = useAtom(embedPageAtom);
+  const [embedPage, setEmbedPage] = useAtom(CustomPageAtom);
   const { updateNodeReq } = useCatalogTreeRequest();
   const dispatch = useDispatch();
 

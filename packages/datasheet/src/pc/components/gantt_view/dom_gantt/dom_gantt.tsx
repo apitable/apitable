@@ -28,10 +28,9 @@ import { ButtonPlus } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { KonvaGridContext } from 'pc/components/konva_grid';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IDomGanttBaseProps {
   containerWidth: number;

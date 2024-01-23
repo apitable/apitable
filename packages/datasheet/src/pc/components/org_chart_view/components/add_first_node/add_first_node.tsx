@@ -23,6 +23,7 @@ import { Button, Typography, ThemeName } from '@apitable/components';
 import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import { OnLoadParams, useStoreState } from '@apitable/react-flow';
+import { useAppSelector } from 'pc/store/react-redux';
 import ArchitectureEmptyDark from 'static/icon/datasheet/architecture_empty_dark.png';
 import ArchitectureEmptyLight from 'static/icon/datasheet/architecture_empty_light.png';
 import { CARD_WIDTH } from '../../constants';
@@ -30,7 +31,6 @@ import { FlowContext } from '../../context/flow_context';
 import { NodeHandleState } from '../../interfaces';
 import styles from './styles.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
 interface IAddFirstNodeProps {
   mode: 'none' | 'add';
   onAdd: () => Promise<string>;

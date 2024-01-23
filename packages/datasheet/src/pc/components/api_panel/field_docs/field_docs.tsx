@@ -21,10 +21,9 @@ import { useThemeColors } from '@apitable/components';
 import { Field, FieldType, FieldTypeDescriptionMap, Selectors, Strings, t } from '@apitable/core';
 import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getFieldDocs } from './api_panel_config';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFieldDocs {
   recordId?: string;

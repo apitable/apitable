@@ -22,10 +22,9 @@ import { Strings, t } from '@apitable/core';
 import { UserAddOutlined } from '@apitable/icons';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { expandInviteModal } from 'pc/components/invite';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ISelectUnitLeftProps, SelectUnitLeft } from './select_unit_left';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ISelectPopupProps extends ISelectUnitLeftProps {
   onCancel(): void;

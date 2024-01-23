@@ -44,13 +44,12 @@ import { FieldPermissionLock } from 'pc/components/field_permission';
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import { GROUP_OFFSET } from 'pc/components/multi_grid/enum';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
 import { dispatch } from 'pc/worker/store';
 import { StatOption } from '../../../stat_option';
 import styles from '../../../styles.module.less';
 import { GROUP_HEIGHT } from '../constant';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IGroupTab {
   row: ILinearRowGroupTab;

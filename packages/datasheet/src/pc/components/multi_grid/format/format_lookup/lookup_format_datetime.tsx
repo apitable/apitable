@@ -36,10 +36,9 @@ import {
 import { MobileSelect } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Divider } from 'pc/components/common/divider';
+import { useAppSelector } from 'pc/store/react-redux';
 import settingStyles from '../../field_setting/styles.module.less';
 import styles from '../styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFormatDateTime {
   currentField: IField;

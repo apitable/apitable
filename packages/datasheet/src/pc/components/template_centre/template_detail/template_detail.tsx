@@ -36,13 +36,12 @@ import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useResponsive, useSideBarVisible, useTemplateRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { AutomationPanel } from '../../automation/panel';
+import { isDingtalkSkuPage } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
 // @ts-ignore
-import { isDingtalkSkuPage } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const _SplitPane: any = SplitPane;
 

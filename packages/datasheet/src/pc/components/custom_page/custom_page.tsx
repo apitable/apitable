@@ -11,7 +11,7 @@ import { Tab } from './components/tab/tab';
 import { useGetDesc } from './hooks/use_get_desc';
 import { useGetInfo } from './hooks/use_get_info';
 
-export const EmbedPage = () => {
+export const CustomPage = () => {
   const { url, role } = useGetInfo();
   const [openSetting, setOpenSetting] = useState(false);
   const [nodeId, setNodeId] = useState('');

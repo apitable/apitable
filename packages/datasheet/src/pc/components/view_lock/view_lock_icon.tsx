@@ -23,7 +23,7 @@ import { IReduxState, IViewProperty, Selectors, Strings, t } from '@apitable/cor
 import { LockOutlined } from '@apitable/icons';
 import { ViewSyncStatus } from 'pc/components/tab_bar/view_sync_switch';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const ViewLockIcon: React.FC<
   React.PropsWithChildren<{

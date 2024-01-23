@@ -21,7 +21,7 @@ import { shallowEqual } from 'react-redux';
 import ReactJson from 'react18-json-view';
 import styled from 'styled-components';
 import useSWR from 'swr';
-import {Box, ICronSchema, Timing, Typography, useTheme, useThemeColors} from '@apitable/components';
+import { Box, ICronSchema, Timing, Typography, useTheme, useThemeColors } from '@apitable/components';
 import { Selectors, t, Strings, data2Operand } from '@apitable/core';
 import { getTriggerDstId } from 'pc/components/automation/controller/hooks/use_robot_fields';
 import { useAppSelector } from 'pc/store/react-redux';

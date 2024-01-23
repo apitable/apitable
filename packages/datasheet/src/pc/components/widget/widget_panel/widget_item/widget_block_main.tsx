@@ -16,14 +16,13 @@ import { WidgetLoader } from 'widget-stage/main/widget/widget_loader';
 import { dashboardReg } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getDependenceByDstIdsByGlobalResource } from 'pc/utils/dependence_dst';
 import { useCloudStorage } from '../../hooks/use_cloud_storage';
 import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
 import { patchDatasheet } from './utils';
 import { IWidgetBlockRefs } from './widget_block';
 import { WidgetLoading } from './widget_loading';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const WidgetBlockMainBase: React.ForwardRefRenderFunction<
   IWidgetBlockRefs,

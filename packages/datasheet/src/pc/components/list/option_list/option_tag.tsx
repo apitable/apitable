@@ -23,10 +23,9 @@ import { ISelectFieldOption, Selectors, ThemeName } from '@apitable/core';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { setColor } from 'pc/components/multi_grid/format';
+import { useAppSelector } from 'pc/store/react-redux';
 import { COLOR_INDEX_THRESHOLD } from 'pc/utils';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IOptionTagProps {
   option: ISelectFieldOption;

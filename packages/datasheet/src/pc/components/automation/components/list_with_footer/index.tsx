@@ -6,7 +6,7 @@ export const ListWithFooter: FC<{
   padding?: string;
   footer: ReactElement;
   children: ReactElement;
-}> = ({ footer, children, className ,padding}) => {
+}> = ({ footer, children, className, padding }) => {
   return (
     <>
       <Box overflow={'auto'} height={'100%'} flex={'1 1 auto'} className={className} padding={padding}>

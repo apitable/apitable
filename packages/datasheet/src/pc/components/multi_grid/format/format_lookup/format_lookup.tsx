@@ -51,6 +51,7 @@ import { TComponent } from 'pc/components/common/t_component';
 import { FilterModal } from 'pc/components/multi_grid/format/format_lookup/filter_modal/filter_modal';
 import { LinkFieldPanel } from 'pc/components/multi_grid/format/format_lookup/link_field_panel';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import settingStyles from '../../field_setting/styles.module.less';
 import styles from '../styles.module.less';
 import { MyTrigger } from '../trigger';
@@ -58,8 +59,6 @@ import { LookUpFormatDateTime } from './lookup_format_datetime';
 import { LookUpFormatNumber } from './lookup_format_number';
 import { SearchSelectField } from './search_select_field';
 import lookupStyles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const Option = Select.Option;
 

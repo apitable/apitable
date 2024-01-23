@@ -173,9 +173,9 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   const activeCellRef = useRef<ICell | null>(
     field && record
       ? {
-          recordId: record.id,
-          fieldId: field.id,
-        }
+        recordId: record.id,
+        fieldId: field.id,
+      }
       : null,
   );
   const dispatch = useDispatch();

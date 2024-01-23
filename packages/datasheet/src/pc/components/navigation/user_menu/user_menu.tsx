@@ -36,12 +36,14 @@ import { useRequest, useUserRequest } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { NotificationStore } from 'pc/notification_store';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard } from 'pc/utils';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import Vikaji from 'static/icon/common/vikaji.png';
 import AnimationJson from 'static/json/invite_box_filled.json';
 import { defaultAvatars } from '../account_center_modal/basic_setting/default_avatar';
-import styles from './style.module.less';
+import { getDingtalkConfig } from 'enterprise/dingtalk/utils/index';
+import { clearWizardsData } from 'enterprise/guide/utils';
 import {
   getSocialWecomUnitName,
   inSocialApp,
@@ -52,11 +54,9 @@ import {
   isWecomFunc,
   // @ts-ignore
 } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 // @ts-ignore
-import { clearWizardsData } from 'enterprise/guide/utils';
 // @ts-ignore
-import { getDingtalkConfig } from 'enterprise/dingtalk/utils/index';
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IUserMenuProps {
   setShowUserMenu: React.Dispatch<React.SetStateAction<boolean>>;

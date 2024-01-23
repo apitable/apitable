@@ -22,11 +22,10 @@ import { getThemeColors } from '@apitable/components';
 import { IUnitValue, IUserValue, MemberType, t, Strings } from '@apitable/core';
 import { UserOutlined } from '@apitable/icons';
 import { Avatar, AvatarSize, AvatarType } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './styles.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IMemberItemProps {
   unitInfo: IUnitValue | IUserValue;

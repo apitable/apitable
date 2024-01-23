@@ -1,10 +1,10 @@
 import { atom } from 'jotai';
 import { IPermissions } from '@apitable/core';
 
-interface IEmbedPageAtom {
+interface ICustomPageAtom {
   desc?: string;
   permission?: IPermissions;
   url?: string;
 }
 
-export const embedPageAtom = atom<IEmbedPageAtom | null>(null);
+export const CustomPageAtom = atom<ICustomPageAtom | null>(null);

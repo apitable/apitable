@@ -27,7 +27,6 @@ import { useAppSelector } from 'pc/store/react-redux';
 import { SpaceInfoPopover } from './space-info-popover';
 import styles from './style.module.less';
 
-
 const Content: FC<React.PropsWithChildren<unknown>> = () => {
   const subscription = useAppSelector((state) => state.billing?.subscription, shallowEqual);
   const level = (subscription ? subscription.product.toLowerCase() : LevelType.Bronze) as ISpaceLevelType;

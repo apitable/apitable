@@ -25,9 +25,8 @@ import { IconButton, LinkButton, useThemeColors } from '@apitable/components';
 import { StoreActions, Strings, t } from '@apitable/core';
 import { CloseCircleFilled, SearchOutlined } from '@apitable/icons';
 import { useDispatch } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFind {
   datasheetId: string;

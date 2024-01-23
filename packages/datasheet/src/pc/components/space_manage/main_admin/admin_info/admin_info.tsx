@@ -20,11 +20,10 @@ import { FC } from 'react';
 import { useThemeColors, Typography } from '@apitable/components';
 import { IReduxState } from '@apitable/core';
 import { Avatar, AvatarSize } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const AdminInfo: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();

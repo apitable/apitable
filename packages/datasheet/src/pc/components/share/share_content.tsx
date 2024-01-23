@@ -4,7 +4,7 @@ import { findNode } from '@apitable/core';
 import { useAppSelector } from 'pc/store/react-redux';
 import { AutomationPanelContent } from '../automation/content';
 import { AutomationPanel } from '../automation/panel';
-import { EmbedPage } from '../embed_page/embed_page';
+import { CustomPage } from '../custom_page/custom_page';
 import { INodeTree } from './interface';
 
 const MirrorRoute = dynamic(() => import('../mirror/mirror_route').then((module) => module.MirrorRoute));
@@ -41,7 +41,7 @@ export const ShareContent: React.FC<IShareContentProps> = (props) => {
   } else if (aiId) {
     return <AIPanel />;
   } else if (embedPageId) {
-    return <EmbedPage />;
+    return <CustomPage />;
   } else if (folderId) {
     const parentNode = findNode([nodeTree], folderId);
     const childNodes = (parentNode && parentNode.children) ?? [];

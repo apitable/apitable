@@ -18,9 +18,8 @@
 
 import { Selectors, StoreActions, ToolBarMenuCardOpenState } from '@apitable/core';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ToolHandleType } from './interface';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const ToolbarMap = {
   [ToolBarMenuCardOpenState.RowHeight]: ToolHandleType.ChangeRowHeight,

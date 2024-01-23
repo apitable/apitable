@@ -18,9 +18,9 @@
 
 import * as React from 'react';
 import { ButtonActionType, evaluate, IButtonField, ICellValue, IReduxState, OpenLinkType, Strings, t, IRecord } from '@apitable/core';
+import { executeWithMinimumTime } from 'pc/components/editors/button_editor/buton_item';
 import { reqDatasheetButtonTrigger } from 'pc/components/robot/api';
 import { IBaseEditorProps, IEditor } from '../interface';
-import { executeWithMinimumTime } from 'pc/components/editors/button_editor/buton_item';
 
 export interface IButtonEditorProps extends IBaseEditorProps {
   editable: boolean;

@@ -27,16 +27,15 @@ import { Avatar } from 'pc/components/common/avatar';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useEditMember, useMemberManage } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { isPrimaryOrOwnFunc } from '../../utils';
 import { ChangeMemberTeam } from '../change_member_team';
-import styles from './style.module.less';
 // @ts-ignore
 import { isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise/home/social_platform/utils';
 // @ts-ignore
 import { WecomOpenData } from 'enterprise/wecom/wecom_open_data/wecom_open_data';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 interface IModalProps {
   cancelModalVisible: () => void;

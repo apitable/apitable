@@ -29,14 +29,13 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { InstallPosition } from 'pc/components/widget/widget_center/enum';
 import { installToDashboard, installToPanel, installWidget } from 'pc/components/widget/widget_center/install_utils';
 import { IWidgetPackageItemBase } from 'pc/components/widget/widget_center/interface';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 
 import { useResourceManageable } from '../hooks';
 import { WrapperTooltip } from '../widget_panel/widget_panel_header';
 import { expandReviewInfo } from './review_info';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 type IWidgetPackageItemProps = IWidgetPackage & IWidgetPackageItemBase;
 

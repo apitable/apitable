@@ -17,11 +17,11 @@
  */
 
 import classNames from 'classnames';
-import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import RcTextArea from 'rc-textarea';
 import { ChangeEvent, forwardRef, memo, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import * as React from 'react';
 import { FieldType, getTextFieldType, ISegment, string2Segment, Strings, t } from '@apitable/core';
+import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { CellText } from 'pc/components/multi_grid/cell/cell_text';
 import { stopPropagation } from 'pc/utils/dom';
 import { IBaseEditorProps, IEditor } from '../interface';

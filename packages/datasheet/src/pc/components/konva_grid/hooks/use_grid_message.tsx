@@ -23,11 +23,10 @@ import { CollaCommandName, Selectors, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { GRID_ROW_HEAD_WIDTH } from '../constant';
 import styles from '../style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IUseGridMessageProps {
   text?: string;

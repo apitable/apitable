@@ -17,8 +17,8 @@
  */
 
 import axios from 'axios';
+import { IApiWrapper, IWidget, WidgetPackageType, WidgetReleaseType } from '@apitable/core';
 import * as Url from './const';
-import {IApiWrapper, IWidget, WidgetPackageType, WidgetReleaseType} from '@apitable/core';
 
 // const baseURL = '/nest/v1';
 /**
@@ -53,5 +53,4 @@ export const installWidget = (nodeId: string, packageId: string, name?: string) 
     name
   });
 };
-
 

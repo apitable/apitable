@@ -10,9 +10,8 @@ import { GET_CREDIT_STATISTICS, SELECT_LIST, TimeDimension } from 'pc/components
 import { convertDate } from 'pc/components/space_manage/space_info/components/credit_cost_card/utils/convert_date';
 import { getCreditStatisticsFetcher } from 'pc/components/space_manage/space_info/components/credit_cost_card/utils/fetcher';
 import { CardTitle } from 'pc/components/space_manage/space_info/ui';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ICreditCostCardProps {
   minHeight?: string | number;

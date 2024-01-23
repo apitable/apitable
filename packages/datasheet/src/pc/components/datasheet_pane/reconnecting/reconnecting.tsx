@@ -21,9 +21,8 @@ import * as React from 'react';
 import { useThemeColors } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
 import { WarnCircleFilled } from '@apitable/icons';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const Reconnecting: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();

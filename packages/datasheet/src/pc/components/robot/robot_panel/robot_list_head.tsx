@@ -21,11 +21,10 @@ import { Box, FloatUiTooltip, IconButton, Typography, useTheme } from '@apitable
 import { Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import { useAppSelector } from 'pc/store/react-redux';
 import { useAutomationNavigateController } from '../../automation/controller/controller';
 import { OrTooltip } from '../../common/or_tooltip';
 import { useAddNewRobot } from '../hooks';
-
-import { useAppSelector } from 'pc/store/react-redux';
 
 export const Beta = () => {
   const theme = useTheme();

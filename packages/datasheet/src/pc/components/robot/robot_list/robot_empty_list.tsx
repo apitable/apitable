@@ -21,6 +21,7 @@ import { Box, Button, Typography, useTheme, ThemeName } from '@apitable/componen
 import { Api, Selectors, Strings, SystemConfig, t } from '@apitable/core';
 import { useApplyOpenFunction } from 'pc/components/navigation/account_center_modal/test_function/hooks';
 import { useRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { WECOM_ROBOT_URL } from 'pc/utils';
 import ImageNoRecordDark from 'static/icon/datasheet/automation_empty_dark.png';
 import ImageNoRecordLight from 'static/icon/datasheet/automation_empty_light.png';
@@ -29,8 +30,6 @@ import { useAutomationNavigateController } from '../../automation/controller/con
 import { useAddNewRobot, useShowRobot } from '../hooks';
 // @ts-ignore
 import { isWecomFunc } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const RobotEmptyList = () => {
   const theme = useTheme();

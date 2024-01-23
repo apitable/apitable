@@ -23,10 +23,9 @@ import { IDateTimeField, Selectors } from '@apitable/core';
 import { CheckboxEditor } from 'pc/components/editors/checkbox_editor';
 import { IEditor } from 'pc/components/editors/interface';
 import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
+import { useAppSelector } from 'pc/store/react-redux';
 import { IFilterCheckboxProps } from '../interface';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const FilterCheckbox: React.FC<React.PropsWithChildren<Omit<IFilterCheckboxProps, 'execute'>>> = (props) => {
   const { condition, onChange, field, disabled } = props;

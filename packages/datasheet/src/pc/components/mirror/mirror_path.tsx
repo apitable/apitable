@@ -25,10 +25,9 @@ import { InlineNodeName } from 'pc/components/common/inline_node_name';
 import { NodeInfoBar } from 'pc/components/common/node_info_bar';
 import { Router } from 'pc/components/route_manager/router';
 import { useSideBarVisible } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { gstMirrorIconByViewType } from './mirror_list/utils';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IMirrorPath {
   breadInfo: ISourceDatasheetInfo;

@@ -25,10 +25,9 @@ import { Message, Modal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { usePercent } from 'pc/hooks/use_percent';
+import { useAppSelector } from 'pc/store/react-redux';
 import { byte2Mb } from 'pc/utils';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const { Dragger } = Upload;
 

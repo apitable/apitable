@@ -23,12 +23,12 @@ import { StoreActions, Strings, t } from '@apitable/core';
 import { WithTipWrapper } from 'pc/components/common';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import { useContactUs } from 'pc/hooks/use_contact_us';
+import { useAppSelector } from 'pc/store/react-redux';
 import { dispatch } from 'pc/worker/store';
 import CreateSpaceIconDark from 'static/icon/space/space_add_name_dark.png';
 import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
 import styles from './style.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
 interface ISubmitInviteCode {
   submitAndSuccess: () => void;
   myInviteCode: string;

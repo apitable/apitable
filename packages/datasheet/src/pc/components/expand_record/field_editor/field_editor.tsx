@@ -28,12 +28,11 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { useFocusEffect } from 'pc/components/editors/hooks/use_focus_effect';
 import { IEditor } from 'pc/components/editors/interface';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { isTouchDevice } from 'pc/utils';
 import { FieldBlock, ICommonProps } from './field_block';
 import { FieldTitle } from './field_title';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFieldEditorProps {
   datasheetId: string;

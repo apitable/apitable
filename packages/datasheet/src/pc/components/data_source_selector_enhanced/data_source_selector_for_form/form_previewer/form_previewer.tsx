@@ -26,11 +26,10 @@ import { Events, Field, FieldType, IMeta, Player, Selectors, Strings, t, ViewTyp
 import { ScreenSize } from 'pc/components/common/component_display';
 import { FormFieldContainer } from 'pc/components/form_container/form_field_container';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFormPreviewerProps {
   datasheetId: string | undefined;

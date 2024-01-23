@@ -24,10 +24,9 @@ import { Selectors } from '@apitable/core';
 import { AutosaveOutlined } from '@apitable/icons';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { changeView } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { isInContainer } from 'pc/utils';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const ViewSwitcherHorizontal: React.FC<React.PropsWithChildren<unknown>> = () => {
   const snapshot = useAppSelector((state) => Selectors.getSnapshot(state));

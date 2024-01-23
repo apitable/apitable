@@ -23,11 +23,10 @@ import { shallowEqual } from 'react-redux';
 import { IGroupInfo, Selectors, ILinearRowRecord } from '@apitable/core';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { CommentCount, OperateColumn } from 'pc/components/multi_grid/operate_column';
+import { useAppSelector } from 'pc/store/react-redux';
 import { OPERATE_HEAD_CLASS } from 'pc/utils';
 import styles from '../../styles.module.less';
 import { GRAY_COLOR_BORDER } from '../cell_group_tab/cell_group_tab';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ICellRowHead {
   row: ILinearRowRecord;

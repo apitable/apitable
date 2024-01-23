@@ -4,9 +4,8 @@ import { useEffect, useMemo, useRef } from 'react';
 import { Api, ConfigConstant, INode } from '@apitable/core';
 import { IViewNode } from 'pc/components/data_source_selector/folder_content';
 import { useLoader } from 'pc/components/data_source_selector/hooks/use_loader';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ISearchPanelState } from '../store/interface/search_panel';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IParams {
   localDispatch: React.Dispatch<Partial<ISearchPanelState>>;

@@ -22,9 +22,8 @@ import { useThemeColors } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { ListOutlined } from '@apitable/icons';
 import { useSideBarVisible } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const MobileBar: React.FC<React.PropsWithChildren<{ title?: string }>> = ({ title }) => {
   const { datasheetId } = useAppSelector((state) => state.pageParams);

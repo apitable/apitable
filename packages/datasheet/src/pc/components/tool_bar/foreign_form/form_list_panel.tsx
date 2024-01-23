@@ -27,11 +27,10 @@ import { AddOutlined, FormOutlined, QuestionCircleOutlined } from '@apitable/ico
 import { Tooltip } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalog } from 'pc/hooks/use_catalog';
+import { useAppSelector } from 'pc/store/react-redux';
 import FormEmptyDark from 'static/icon/common/form_empty_dark.png';
 import FormEmptyLight from 'static/icon/common/form_empty_light.png';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IFormNodeItem {
   nodeId: string;

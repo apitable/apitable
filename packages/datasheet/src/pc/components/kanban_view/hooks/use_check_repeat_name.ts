@@ -19,7 +19,7 @@
 import { useState } from 'react';
 import { Selectors, Strings, t } from '@apitable/core';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const useCheckRepeatName = () => {
   const [errTip, setErrTip] = useState('');

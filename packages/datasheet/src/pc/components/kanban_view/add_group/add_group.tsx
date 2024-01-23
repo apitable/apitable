@@ -24,11 +24,10 @@ import * as React from 'react';
 import { useThemeColors } from '@apitable/components';
 import { Field, FieldType, IField, IMemberField, ISelectField, Selectors, SingleSelectField, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
+import { useAppSelector } from 'pc/store/react-redux';
 import { MemberFieldHead, OptionFieldHead } from '../group_header';
 import { useCommand } from '../hooks/use_command';
 import styles from '../styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IAddGroup {
   kanbanFieldId: string;

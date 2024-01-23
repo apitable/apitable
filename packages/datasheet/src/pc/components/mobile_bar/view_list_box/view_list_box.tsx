@@ -23,9 +23,8 @@ import { Selectors, t, Strings } from '@apitable/core';
 import { CheckCircleFilled } from '@apitable/icons';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { changeView } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IViewListBox {
   displayState: boolean;

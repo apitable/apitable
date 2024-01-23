@@ -20,11 +20,10 @@ import { isObject } from 'lodash';
 import { useState, useEffect } from 'react';
 import { Selectors } from '@apitable/core';
 // @ts-ignore
+import { useAppSelector } from 'pc/store/react-redux';
 import { isSocialWecom } from 'enterprise/home/social_platform/utils';
 // @ts-ignore
 import { WecomOpenDataType } from 'enterprise/wecom/wecom_open_data/wecom_open_data';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IWxTitleMap {
   userNames?: { name: string; unitId: string }[];

@@ -26,11 +26,10 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { Router } from 'pc/components/route_manager/router';
+import { useAppSelector } from 'pc/store/react-redux';
 import { SelectFolder } from './select_folder';
-import styles from './style.module.less';
 import { MobileFooter, MobileTitle, Title } from './title';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export const MoveTo: React.FC<
   React.PropsWithChildren<{

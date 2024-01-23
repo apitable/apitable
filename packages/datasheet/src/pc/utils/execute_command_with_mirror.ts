@@ -17,8 +17,8 @@
  */
 
 import { has, isEqual } from 'lodash';
-import { browser } from 'modules/shared/browser';
 import { Events, ITemporaryView, IViewProperty, Player, Selectors, StoreActions, ViewPropertyFilter } from '@apitable/core';
+import { browser } from 'modules/shared/browser';
 import { showViewManualSaveInMobile } from 'pc/components/tab_bar/view_sync_switch/show_view_manual_save_in_mobile';
 import { store } from 'pc/store';
 

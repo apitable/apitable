@@ -25,13 +25,12 @@ import { CollaCommandName, IGroupInfo, Selectors, Strings, t, ViewType } from '@
 import { PopUpTitle } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { SyncViewTip } from '../../sync_view_tip';
 import { CommonViewSet } from '../common_view_set';
 import styles from '../style.module.less';
 import { ViewFieldOptions } from '../view_field_options';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IViewSetting {
   close(e: React.MouseEvent): void;

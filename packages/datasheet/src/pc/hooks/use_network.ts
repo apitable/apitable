@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ResourceType, Selectors } from '@apitable/core';
-import { Network } from 'pc/components/network_status';
 import { useEffect, useState } from 'react';
 import { shallowEqual } from 'react-redux';
+import { ResourceType, Selectors } from '@apitable/core';
+import { Network } from 'pc/components/network_status';
 
 import { useAppSelector } from 'pc/store/react-redux';
 

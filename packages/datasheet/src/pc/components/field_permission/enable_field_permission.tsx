@@ -43,7 +43,7 @@ import styles from 'pc/components/field_permission/styles.module.less';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
 import { useRequest, useResponsive } from 'pc/hooks';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const EnableFieldPermission: React.FC<React.PropsWithChildren<IEnablePermission>> = (props) => {
   const colors = useThemeColors();

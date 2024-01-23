@@ -25,16 +25,15 @@ import { ResourceType, Selectors, ViewType } from '@apitable/core';
 import { ListOutlined } from '@apitable/icons';
 import { useResponsive, useSideBarVisible } from 'pc/hooks';
 import { useNetwork } from 'pc/hooks/use_network';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ScreenSize } from '../common/component_display';
 import { Toolbar } from '../tool_bar';
 import { Find } from './find';
 import { MoreTool } from './more_tool';
-import styles from './style.module.less';
 import { ViewMenu } from './view_menu/view_menu';
 import { ViewSwitcherHorizontal } from './view_switcher_horizontal';
 import { WidgetTool } from './widget_tool/widget_tool';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export interface IToolBarWrapperProps {
   hideToolBar?: boolean;

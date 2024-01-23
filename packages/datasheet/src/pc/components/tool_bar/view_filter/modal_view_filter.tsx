@@ -37,11 +37,10 @@ import {
 import { AddOutlined } from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import ConditionList from './condition_list';
 import { ExecuteFilterFn } from './interface';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const MIN_HEIGHT = 70;
 const MAX_HEIGHT = 260;

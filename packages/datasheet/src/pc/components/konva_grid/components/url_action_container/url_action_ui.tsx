@@ -12,11 +12,10 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils/dom';
-import styles from './styles.module.less';
 import { formatValue } from './util';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './styles.module.less';
 
 interface IUrlActionUI {
   activeUrlAction: boolean;

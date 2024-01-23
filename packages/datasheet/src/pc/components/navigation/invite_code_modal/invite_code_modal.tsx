@@ -21,12 +21,11 @@ import { FC } from 'react';
 import * as React from 'react';
 import { t, Strings } from '@apitable/core';
 import { Modal } from 'pc/components/common/modal/modal/modal';
+import { useAppSelector } from 'pc/store/react-redux';
 import { BubbleBox } from './bubble-box/bubble-box';
 import { MyInviteCode } from './my-invite-code';
-import styles from './style.module.less';
 import { SubmitInviteCode } from './submit-invite-code';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const { TabPane } = Tabs;
 

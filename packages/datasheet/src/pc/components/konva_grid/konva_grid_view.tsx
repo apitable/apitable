@@ -63,12 +63,11 @@ import {
 import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_item';
 import { useCacheScroll } from 'pc/context';
 import { useSetState, useDispatch } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { IContainerEdit } from '../editors/interface';
 import { getFieldLock } from '../field_permission';
 import { autoSizerCanvas } from '../konva_components';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IGridViewProps {
   height: number;

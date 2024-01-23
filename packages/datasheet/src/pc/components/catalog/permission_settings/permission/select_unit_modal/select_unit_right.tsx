@@ -18,14 +18,13 @@
 
 import * as React from 'react';
 import { MemberType, Strings, t, IMember, ISpaceInfo, ISpaceBasicInfo, UnitItem } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { generateUserInfo } from 'pc/utils';
-import styles from './style.module.less';
 import { UnitTag } from './unit_tag';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import { SelectUnitSource } from '.';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 interface ISelectUnitRightProps {
   source?: SelectUnitSource;

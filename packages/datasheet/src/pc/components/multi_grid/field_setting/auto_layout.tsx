@@ -18,10 +18,9 @@
 
 import * as React from 'react';
 import { Selectors } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { OPERATE_WIDTH } from '../field_setting';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IAutoLayoutProps {
   boxWidth: number;

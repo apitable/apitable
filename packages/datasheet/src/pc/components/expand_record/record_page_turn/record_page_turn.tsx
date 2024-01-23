@@ -17,11 +17,11 @@
  */
 
 import { useUpdateEffect } from 'ahooks';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
 import { Strings, t } from '@apitable/core';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { PageTurn, PageTurnMobile } from 'pc/components/expand_record/page_turn';
 import EditorTitleContext from '../editor_title_context';
 

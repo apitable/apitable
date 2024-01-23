@@ -17,13 +17,13 @@
  */
 
 import { Tooltip } from 'antd';
-import { ShortcutActionName } from 'modules/shared/shortcut_key';
-import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import * as React from 'react';
 import { shallowEqual } from 'react-redux';
 import { IconButton, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { RedoOutlined, UndoOutlined } from '@apitable/icons';
+import { ShortcutActionName } from 'modules/shared/shortcut_key';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { resourceService } from 'pc/resource_service';

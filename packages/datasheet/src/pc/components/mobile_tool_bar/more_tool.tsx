@@ -24,6 +24,7 @@ import { LinkButton, IconButton, useThemeColors } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { FolderNormalFilled, MoreStandOutlined, RedoOutlined, UndoOutlined } from '@apitable/icons';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import { Popover } from '../common/mobile/popover';
@@ -31,8 +32,6 @@ import { notify } from '../common/notify';
 import { NotifyKey } from '../common/notify/notify.interface';
 import { expandNodeDescription, elementHasChild } from '../tab_bar/description_modal';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const MoreTool: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();

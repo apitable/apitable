@@ -24,12 +24,11 @@ import { colorVars } from '@apitable/components';
 import { ISelectFieldOption, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import { CommonList } from 'pc/components/list/common_list';
+import { useAppSelector } from 'pc/store/react-redux';
 import { Check } from '../common_list/check';
 import { OptionItem } from './option_item';
 import { IOptionListProps } from './option_list.interface';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const SortableContainer: any = sortableContainer(({ children }: any) => {
   return <div className={styles.sortableContainer}>{children}</div>;

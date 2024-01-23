@@ -27,12 +27,11 @@ import { UndoFilled } from '@apitable/icons';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import SpaceDeleteDark from 'static/icon/common/space_delete_img_dark.png';
 import SpaceDeleteLight from 'static/icon/common/space_delete_img_light.png';
 import { DelSuccess } from '../del_success/del.success';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const RecoverSpace = () => {
   const spaceInfo = useAppSelector((state: IReduxState) => state.space.curSpaceInfo);

@@ -56,7 +56,7 @@ export const check = (dstId: string, button: IButtonField, buttonFieldTriggerId:
   }
 
   // @ts-ignore
-  const found = list?.find(item => getFieldId(item) === button.id && getDatasheetId(item) === dstId)
+  const found = list?.find(item => getFieldId(item) === button.id && getDatasheetId(item) === dstId);
 
   if(!found) {
     return {
@@ -64,7 +64,6 @@ export const check = (dstId: string, button: IButtonField, buttonFieldTriggerId:
       result: false
     };
   }
-
 
   return {
     fieldId: button.id,

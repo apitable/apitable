@@ -18,8 +18,8 @@
 
 import * as React from 'react';
 import { IFunction, IField, t, Strings } from '@apitable/core';
-import styles from './styles.module.less';
 import { ExpressionColorant } from './token_colorant';
+import styles from './styles.module.less';
 
 interface IFormulaGuiding {
   type: 'field' | 'func';

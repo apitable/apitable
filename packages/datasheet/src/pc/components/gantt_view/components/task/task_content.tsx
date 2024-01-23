@@ -18,7 +18,7 @@
 
 import dynamic from 'next/dynamic';
 import { FC, useContext } from 'react';
-import {FieldType, IPermissions, IReduxState, RowHeight, Selectors, Strings, t, ViewType} from '@apitable/core';
+import { FieldType, IPermissions, IReduxState, RowHeight, Selectors, Strings, t, ViewType } from '@apitable/core';
 import { getRecordName } from 'pc/components/expand_record';
 import { GanttCoordinate } from 'pc/components/gantt_view';
 import { cellHelper, konvaDrawer, KonvaGridViewContext } from 'pc/components/konva_grid';

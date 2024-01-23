@@ -17,10 +17,10 @@
  */
 
 import { values } from 'lodash';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { IReduxState, StoreActions } from '@apitable/core';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { MobileSideBar } from 'pc/components/mobile_side_bar';
 import { Navigation } from 'pc/components/navigation';

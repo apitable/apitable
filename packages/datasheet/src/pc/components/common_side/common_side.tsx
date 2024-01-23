@@ -21,12 +21,11 @@ import { FC } from 'react';
 import { SpaceMenuTree } from 'pc/components/space_manage/space_menu_tree';
 // import styles from './style.module.less';
 // import { SpaceMenuTree } from '../space_manage/space_menu_tree';
+import { useAppSelector } from 'pc/store/react-redux';
 import { AddressSide } from './address_side';
 import { TemplateCategorySide } from './template_category_side';
 import { TemplateDetailSide } from './template_detail_side/template_detail_side';
 import { WorkbenchSide } from './workbench_side';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const CommonSide: FC<React.PropsWithChildren<unknown>> = () => {
   const router = useRouter();

@@ -20,11 +20,10 @@ import Image from 'next/image';
 import { FC } from 'react';
 import { ThemeName } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const SearchEmpty: FC<React.PropsWithChildren<unknown>> = () => {
   const themeName = useAppSelector((state) => state.theme);

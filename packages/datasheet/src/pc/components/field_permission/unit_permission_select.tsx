@@ -30,11 +30,10 @@ import { Message } from 'pc/components/common/message/message';
 import { PopStructure } from 'pc/components/editors/pop_structure';
 import { MemberOptionList } from 'pc/components/list';
 import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { IUnitPermissionSelectProps } from './interface';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const UnitPermissionSelect: React.FC<React.PropsWithChildren<IUnitPermissionSelectProps>> = (props) => {
   const colors = useThemeColors();

@@ -26,9 +26,8 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFieldSelectModalProps {
   field: IDateTimeBaseField | ILastModifiedByField;

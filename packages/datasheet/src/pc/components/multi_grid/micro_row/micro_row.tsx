@@ -21,10 +21,10 @@ import * as React from 'react';
 import { shallowEqual } from 'react-redux';
 import { IGridViewColumn, Selectors, Strings, t, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { CellValue } from '../cell/cell_value';
 import styles from './styles.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
 const { getSnapshot, getVisibleColumns, getGridViewDragState } = Selectors;
 
 const MicroRowBase: React.FC<React.PropsWithChildren<unknown>> = () => {

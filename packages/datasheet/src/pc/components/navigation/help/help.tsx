@@ -43,9 +43,9 @@ import { useResponsive } from 'pc/hooks';
 
 import { useContactUs } from 'pc/hooks/use_contact_us';
 import { getEnvVariables } from 'pc/utils/env';
+import { inSocialApp } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
 // @ts-ignore
-import { inSocialApp } from 'enterprise/home/social_platform/utils';
 
 export interface IHelpProps {
   className?: string;

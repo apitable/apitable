@@ -37,12 +37,11 @@ import {
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { MemberItem } from '../cell_member/member_item';
 import { ICellComponentProps } from '../cell_value/interface';
 import { OptionalCellContainer } from '../optional_cell_container/optional_cell_container';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface ICellCreatedByProps extends ICellComponentProps {
   keyPrefix?: string;

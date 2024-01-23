@@ -1,1 +1,1 @@
-export * from './get_billing_info'
+export * from './get_billing_info';

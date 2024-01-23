@@ -33,6 +33,7 @@ import {
 } from '@apitable/core';
 import { AddOutlined, DeleteOutlined, WarnCircleFilled } from '@apitable/icons';
 import { useAllColumnsOrEmpty } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { Select } from '../select';
 import { FieldInput } from './field_input';
 import { FieldSelect } from './field_select';
@@ -45,8 +46,6 @@ import {
   op2fop
 } from './helper';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const transformNullFilter = (filter?: IExpression | null) => {
   return filter == null || isEqual(filter, EmptyNullOperand)

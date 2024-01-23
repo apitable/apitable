@@ -28,10 +28,9 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 import { useRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import DeleteIcon from 'static/icon/space/space_img_delete.png';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IDelConfirmModalProps {
   setIsDelSpaceModal: React.Dispatch<React.SetStateAction<boolean>>;

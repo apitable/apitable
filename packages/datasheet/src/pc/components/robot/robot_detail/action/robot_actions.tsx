@@ -18,8 +18,8 @@
 
 import { useSetAtom, useAtomValue } from 'jotai';
 import React, { useEffect, useMemo } from 'react';
-import useSWR from 'swr';
 import { useSelector } from 'react-redux';
+import useSWR from 'swr';
 import { Box } from '@apitable/components';
 import { IReduxState, Selectors, Strings, t } from '@apitable/core';
 import { IFetchDatasheet } from '@apitable/widget-sdk/dist/message/interface';

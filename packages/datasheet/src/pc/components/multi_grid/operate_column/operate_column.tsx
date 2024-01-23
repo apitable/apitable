@@ -27,9 +27,8 @@ import { CheckboxFilled, CommentBgFilled, DragOutlined, ExpandOutlined, Unchecke
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IOperateColumnOwnProperty {
   isHeader: boolean;

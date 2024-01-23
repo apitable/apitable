@@ -23,11 +23,10 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect } from 'react';
 import { useQuery, useSideBarVisible } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { CommonSide } from '../common_side';
 import { Navigation } from '../navigation';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const MobileSideBar: React.FC<React.PropsWithChildren<unknown>> = () => {
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();

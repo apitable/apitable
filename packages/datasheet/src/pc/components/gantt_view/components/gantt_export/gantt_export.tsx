@@ -33,7 +33,7 @@ import {
 } from 'pc/components/konva_grid';
 import { store } from 'pc/store';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 const getUnitType = (dateUnitType: DateUnitType) => {
   switch (dateUnitType) {

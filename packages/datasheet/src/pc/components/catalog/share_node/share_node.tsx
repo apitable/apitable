@@ -23,10 +23,9 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 // import HeaderPng from 'static/icon/datasheet/share/datasheet_img_share.png';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ShareContent } from './share_content';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IShareNodeProps {
   /** Information about the node being operated on */

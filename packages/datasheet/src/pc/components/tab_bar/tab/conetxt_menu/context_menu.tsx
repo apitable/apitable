@@ -47,11 +47,10 @@ import { changeView } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { exportDatasheet, flatContextData } from 'pc/utils';
 import { isMobileApp } from 'pc/utils/env';
 import { confirmViewAutoSave } from '../../view_sync_switch/popup_content/pc';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IContextMenuProps {
   activeViewId: string | undefined;

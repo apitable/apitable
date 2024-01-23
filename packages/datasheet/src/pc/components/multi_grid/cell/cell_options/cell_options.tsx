@@ -25,6 +25,7 @@ import { FieldType, IField, IMultiSelectedIds, RowHeightLevel, Selectors, ThemeN
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import { ButtonPlus } from 'pc/components/common';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { COLOR_INDEX_THRESHOLD, stopPropagation } from 'pc/utils';
 import { MouseDownType } from '../../enum';
 import { setColor } from '../../format';
@@ -32,8 +33,6 @@ import { ICellComponentProps } from '../cell_value/interface';
 import { OptionalCellContainer } from '../optional_cell_container/optional_cell_container';
 import optionalStyle from '../optional_cell_container/style.module.less';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export function inquiryValueByKey(key: 'name' | 'color', id: string, field: IField, theme: ThemeName) {
   const item = field.property.options.find((item: { id: string }) => item.id === id);

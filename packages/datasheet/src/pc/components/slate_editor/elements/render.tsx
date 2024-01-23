@@ -36,10 +36,10 @@ import Paragraph from './paragraph';
 import Quote from './quote';
 import QuoteItem from './quote_item';
 import Section from './section';
-import styles from './style.module.less';
 import Task from './task';
 import TaskItem from './task_item';
 import UnorderedList from './unordered_list';
+import styles from './style.module.less';
 
 export const ElementRender = (props: IElementRenderProps<IElement>) => {
   const { element } = props;

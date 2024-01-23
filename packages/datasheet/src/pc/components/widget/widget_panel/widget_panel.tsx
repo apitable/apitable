@@ -17,12 +17,12 @@
  */
 
 import { useMount } from 'ahooks';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import Image from 'next/image';
 import { shallowEqual } from 'react-redux';
 import { Button, IconButton, Skeleton, ThemeName } from '@apitable/components';
 import { Events, IWidgetPanelStatus, Player, ResourceType, Selectors, Strings, t, PermissionType } from '@apitable/core';
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { InstallPosition } from 'pc/components/widget/widget_center/enum';
 import { useResponsive } from 'pc/hooks';

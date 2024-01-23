@@ -32,14 +32,13 @@ import { NumberEditor } from 'pc/components/editors/number_editor';
 import { DateRangePickerMobile } from 'pc/components/tool_bar/view_filter/filter_value/filter_date/date_range_picker_mobile';
 import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { IFilterDateProps } from '../../interface';
 import styles from '../style.module.less';
 import { DatePicker } from './date_picker';
 import { DateDuration, FilterDateDuration } from './filter_date_duration';
 import { LocalFormat } from './local_format';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const { RangePicker } = DatePicker;
 

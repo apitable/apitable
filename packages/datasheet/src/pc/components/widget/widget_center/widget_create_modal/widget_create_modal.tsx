@@ -42,6 +42,7 @@ import {
 } from '@apitable/core';
 import { CopyOutlined, WarnCircleFilled, BulbOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { loadWidgetCheck, WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
+import { createWidget } from 'api/widget/api';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { EmitterEventName } from 'modules/shared/simple_emitter';
 import { Loading } from 'pc/components/common/loading';
@@ -56,18 +57,16 @@ import { installToDashboard, installToPanel, installWidget } from 'pc/components
 import { useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard, getUrlWithHost } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { dispatch } from 'pc/worker/store';
 import { simpleEmitter } from '../..';
 import { installedWidgetHandle } from '../../widget_panel/widget_panel_header';
 import { Steps } from './steps';
+import { clearWizardsData } from 'enterprise/guide/utils';
 import styles from './styles.module.less';
 // @ts-ignore
-import { clearWizardsData } from 'enterprise/guide/utils';
-import { createWidget } from 'api/widget/api';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const WIDGET_CMD = {
   publish: 'widget-cli release',

@@ -40,6 +40,7 @@ import {
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { getIsColNameVisible } from 'pc/utils/datasheet';
 import { ScreenSize } from '../common/component_display';
@@ -59,10 +60,8 @@ import {
   PADDING_BOTTOM,
 } from './constant';
 import { ICommitDragDropState } from './interface';
-import styles from './style.module.less';
 import { getColumnWidthAndCount, getGalleryLinearRows, getGroupLinearRows, getGroupTitlePaddingTip, getSearchItemIndex } from './utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 interface IGalleryViewProps {
   height?: number;

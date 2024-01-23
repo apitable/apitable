@@ -35,6 +35,7 @@ import { useNavigatorName } from 'pc/hooks';
 import { useBlackSpace } from 'pc/hooks/use_black_space';
 import { ResourceContext, resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getCookie } from 'pc/utils';
 import { dndH5Manager, dndTouchManager } from 'pc/utils/dnd_manager';
 import { getEnvVariables } from 'pc/utils/env';
@@ -43,8 +44,6 @@ import { getStorage, StorageName } from 'pc/utils/storage';
 import { comlinkStore } from 'pc/worker';
 import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 message.config({
   maxCount: 1,

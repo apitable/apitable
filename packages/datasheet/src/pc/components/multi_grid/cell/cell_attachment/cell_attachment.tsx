@@ -33,13 +33,12 @@ import { UploadItem } from 'pc/components/upload_modal/upload_item';
 import { IUploadZoneItem, UploadZone } from 'pc/components/upload_modal/upload_zone';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getCellValueThumbSrc, showOriginImageThumbnail, UploadManager, UploadStatus } from 'pc/utils';
 import { MouseDownType } from '../../enum';
 import { ICellComponentProps } from '../cell_value/interface';
 import optionalStyle from '../optional_cell_container/style.module.less';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ICellAttachmentProps extends ICellComponentProps {
   field: IAttacheField;

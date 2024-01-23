@@ -24,11 +24,10 @@ import { IReduxState, Navigation, Strings, t } from '@apitable/core';
 import { CheckCircleFilled } from '@apitable/icons';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Router } from 'pc/components/route_manager/router';
+import { useAppSelector } from 'pc/store/react-redux';
 import { SelectAdmin } from '../select_admin';
 import { VerifyAdmin } from '../verify_admin';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const { Step } = Steps;
 

@@ -19,7 +19,6 @@
 import { useMount, useSize, useThrottleFn } from 'ahooks';
 import classNames from 'classnames';
 import { get } from 'lodash';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
@@ -66,6 +65,7 @@ import {
   StyleOutlined,
   WidgetOutlined,
 } from '@apitable/icons';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ArchivedRecords } from 'pc/components/archive_record';
 import { closeAllExpandRecord } from 'pc/components/expand_record/utils';
 import { MirrorList } from 'pc/components/mirror/mirror_list';

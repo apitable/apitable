@@ -45,13 +45,12 @@ import { InsertPlace, useAddNewCard } from 'pc/components/kanban_view/kanban_gro
 import { inquiryValueByKey } from 'pc/components/multi_grid/cell/cell_options';
 import { store } from 'pc/store';
 
+import { useAppSelector } from 'pc/store/react-redux';
 import { useCommand } from '../hooks/use_command';
 import { IGroupHeaderProps } from './interface';
 import { MemberFieldHead } from './member_field_head';
 import { OptionFieldHead } from './option_field_head';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ICollapseWrapper {
   isCollapse?: boolean;

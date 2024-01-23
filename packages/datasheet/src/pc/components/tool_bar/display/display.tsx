@@ -31,6 +31,7 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { closeAllExpandRecord } from 'pc/components/expand_record';
 import { useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ChangeRowHeight } from '../change_row_height';
 import { HiddenField } from '../hidden_field';
 import { HiddenKanbanGroup } from '../hidden_kanban_group';
@@ -42,8 +43,6 @@ import { ViewFilter } from '../view_filter';
 import { ViewGroup, ViewSort } from '../view_sort_and_group';
 import { ViewSwitcher } from '../view_switcher';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IDisplay extends Partial<TriggerProps> {
   style?: React.CSSProperties;

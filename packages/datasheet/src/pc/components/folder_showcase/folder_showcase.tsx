@@ -53,6 +53,7 @@ import { Router } from 'pc/components/route_manager/router';
 import { Deserializer, SlateEditor } from 'pc/components/slate_editor';
 import { sanitized } from 'pc/components/tab_bar/description_modal';
 import { useCatalogTreeRequest, usePrevious, useRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
@@ -64,13 +65,11 @@ import { MobileBar } from '../mobile_bar';
 import { NoPermission } from '../no_permission';
 import { DescriptionModal } from './description_modal';
 import { DingTalkDa } from './dingtalk_da';
-import styles from './style.module.less';
 // @ts-ignore
 import { inSocialApp } from 'enterprise/home/social_platform/utils';
 // @ts-ignore
 import { WeixinShareWrapper } from 'enterprise/wechat/weixin_share_wrapper/weixin_share_wrapper';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const _ContextMenuTrigger: any = ContextMenuTrigger;
 

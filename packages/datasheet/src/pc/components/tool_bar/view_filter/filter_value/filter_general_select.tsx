@@ -29,10 +29,9 @@ import { OptionList } from 'pc/components/list';
 import { MemberOptionList } from 'pc/components/list/member_option_list';
 import { CellCreatedBy } from 'pc/components/multi_grid/cell/cell_created_by';
 import { CellMember } from 'pc/components/multi_grid/cell/cell_member';
+import { useAppSelector } from 'pc/store/react-redux';
 import { CellOptions } from '../../../multi_grid/cell/cell_options/cell_options';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFilterGeneralSelectProps {
   placeholder?: string;

@@ -23,11 +23,11 @@ import { Switch } from '@apitable/components';
 import { IField, IMemberField, Strings, t } from '@apitable/core';
 import { QuestionCircleOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import settingStyles from '../field_setting/styles.module.less';
 import styles from './styles.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
 interface IFormatmember {
   currentField: IMemberField;
   setCurrentField: Dispatch<SetStateAction<IField>>;

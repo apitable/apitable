@@ -194,9 +194,9 @@ const FormatSelectBase = (props: IFormatSelect) => {
             onChange={(val) => {
               const property: ISelectFieldProperty = val
                 ? {
-                    ...currentField.property,
-                    defaultValue: val,
-                  }
+                  ...currentField.property,
+                  defaultValue: val,
+                }
                 : omit(currentField.property, 'defaultValue');
               setCurrentField({
                 ...currentField,

@@ -9,7 +9,6 @@ import { Box, Switch, Typography, useThemeColors, useThemeMode } from '@apitable
 import { IReduxState, Strings, t } from '@apitable/core';
 import { InfoCircleOutlined } from '@apitable/icons';
 // @ts-ignore
-import { goToUpgrade } from 'enterprise/subscribe_system/upgrade_method';
 import { VikaSplitPanel } from 'pc/components/common';
 import { useAppSelector } from 'pc/store/react-redux';
 import { useResponsive, useSideBarVisible } from '../../../hooks';
@@ -20,6 +19,7 @@ import { ListWithFooter } from '../components/list_with_footer';
 import { automationPanelAtom, PanelName } from '../controller/atoms';
 import { useAutomationResourcePermission } from '../controller/use_automation_permission';
 import { Side } from './side';
+import { goToUpgrade } from 'enterprise/subscribe_system/upgrade_method';
 import styles from './styles.module.less';
 
 export const ConstAutomationContentLeft = 'automation-content-left';

@@ -24,9 +24,8 @@ import { FC, useMemo } from 'react';
 import { useThemeColors } from '@apitable/components';
 import { DateRange, getTimeZoneAbbrByUtc, IRecordAlarmClient, Strings, t, WithOptional, diffTimeZone, getTimeZone, Selectors } from '@apitable/core';
 import { ChevronDownOutlined, NotificationOutlined } from '@apitable/icons';
+import { useAppSelector } from 'pc/store/react-redux';
 import style from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IPickerContentProps {
   value: Date | undefined;

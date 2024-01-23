@@ -23,11 +23,10 @@ import { Strings, t, ViewType, IViewColumn } from '@apitable/core';
 import { TriangleDownFilled, TriangleRightFilled } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useGetViewByIdWithDefault } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
 import { FieldEditor } from './field_editor';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFieldEditorContainer {
   fields: IViewColumn[];

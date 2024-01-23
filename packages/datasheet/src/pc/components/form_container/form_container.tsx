@@ -68,6 +68,7 @@ import { FieldSetting } from 'pc/components/multi_grid/field_setting';
 import { Router } from 'pc/components/route_manager/router';
 import { useDispatch, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData, IURLMeta } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
@@ -81,14 +82,12 @@ import { ShareContext } from '../share';
 import { FormContext } from './form_context';
 import { FormFieldContainer } from './form_field_container';
 import { FormPropContainer } from './form_prop_container';
-import styles from './style.module.less';
 import { query2formData, string2Query } from './util';
 // @ts-ignore
 import { triggerUsageAlert, SubscribeUsageTipType } from 'enterprise/billing/trigger_usage_alert';
 // @ts-ignore
 import { PreFillPanel } from 'enterprise/pre_fill_panel/pre_fill_panel';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 enum IFormContentType {
   Form = 'Form',
@@ -421,7 +420,7 @@ export const FormContainer: React.FC<
         .catch(() => networkErrorTip())
         .finally(() => {
           setLoading(false);
-          setAnimationLoading(false)
+          setAnimationLoading(false);
         });
     }
     return FormApi.addFormRecord(id, postData)
@@ -435,7 +434,7 @@ export const FormContainer: React.FC<
       .catch(() => networkErrorTip())
       .finally(() => {
         setLoading(false);
-        setAnimationLoading(false)
+        setAnimationLoading(false);
       });
   };
 

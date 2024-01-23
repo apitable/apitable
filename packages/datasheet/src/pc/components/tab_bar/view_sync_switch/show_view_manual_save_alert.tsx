@@ -25,10 +25,9 @@ import { Provider } from 'react-redux';
 import { ThemeProvider } from '@apitable/components';
 import { Selectors } from '@apitable/core';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { PopupContent } from './popup_content/pc';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const VIEW_MANUAL_SAVE_ALERT = 'VIEW_MANUAL_SAVE_ALERT';
 

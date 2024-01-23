@@ -18,7 +18,6 @@
 
 import { useLocalStorageState } from 'ahooks';
 import { Modal, Radio } from 'antd';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import Image from 'next/image';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -26,6 +25,7 @@ import { Provider } from 'react-redux';
 import { Button, TextButton, ThemeProvider } from '@apitable/components';
 import { CollaCommandName, ILinkField, Selectors, Strings, t, ThemeName } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { LinkJump } from 'pc/components/common/link_jump/link_jump';
 import { Modal as CustomModal } from 'pc/components/common/modal/modal/modal';
 import { resourceService } from 'pc/resource_service';

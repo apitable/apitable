@@ -27,7 +27,7 @@ import { Router } from 'pc/components/route_manager/router';
 import { INodeTree } from 'pc/components/share/interface';
 import { useResponsive, useSideBarVisible } from 'pc/hooks';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 const { DirectoryTree, TreeNode } = Tree;
 

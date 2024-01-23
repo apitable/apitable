@@ -25,13 +25,12 @@ import { DATASHEET_ID, ICell, Selectors, StoreActions, Strings, t } from '@apita
 import { Message } from 'pc/components/common/message';
 import { useMemorizePreviousValue } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { CELL_CLASS, FIELD_HEAD_CLASS, isTouchDevice, OPACITY_LINE_CLASS, OPERATE_HEAD_CLASS } from 'pc/utils';
 import { getClickCellId, getElementDataset, getParentNodeByClass } from 'pc/utils/dom';
 import { expandRecordIdNavigate } from '../expand_record';
 import { useAttachEvent } from '../konva_grid';
 import { IContainerEdit } from './interface';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IScrollToItem {
   align?: 'auto' | 'smart' | 'center' | 'end' | 'start';

@@ -46,10 +46,9 @@ import { CellOptions, inquiryValueByKey } from 'pc/components/multi_grid/cell/ce
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { usePlatform } from 'pc/hooks/use_platform';
 
+import { useAppSelector } from 'pc/store/react-redux';
 import { SyncViewTip } from '../sync_view_tip';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 340;

@@ -26,10 +26,9 @@ import { MirrorOutlined } from '@apitable/icons';
 import { TComponent } from 'pc/components/common/t_component';
 import { MirrorListInner } from 'pc/components/mirror/mirror_list/mirror_list_inner';
 import { ToolItem } from 'pc/components/tool_bar/tool_item';
+import { useAppSelector } from 'pc/store/react-redux';
 import { IForeignFormProps, IMirrorItem } from './interface';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const MirrorList: FC<React.PropsWithChildren<IForeignFormProps>> = (props) => {
   const colors = useThemeColors();

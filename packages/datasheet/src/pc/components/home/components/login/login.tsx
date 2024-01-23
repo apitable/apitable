@@ -24,12 +24,11 @@ import { Strings, t, isEmail, ConfigConstant, StatusCode, api, IReduxState } fro
 import { EmailFilled, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
 import { WithTipWrapper } from 'pc/components/common';
 import { useRequest, useUserRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
 import { clearStorage } from 'pc/utils/storage';
 import { ActionType } from '../../pc_home';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ILoginErrorMsg {
   username?: string;

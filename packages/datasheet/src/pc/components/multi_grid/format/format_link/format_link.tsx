@@ -23,12 +23,11 @@ import { FieldType, IField, ILinkField, IOneWayLinkField, NotSupportFieldInstanc
 import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { LinkJump } from 'pc/components/common';
 import { SearchPanel } from 'pc/components/datasheet_search_panel';
+import { useAppSelector } from 'pc/store/react-redux';
 import IconArrow from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
 import settingStyles from '../../field_setting/styles.module.less';
-import styles from './styles.module.less';
 import { ViewSelect } from './view_select';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './styles.module.less';
 
 interface IFormateLinkProps {
   currentField: ILinkField | IOneWayLinkField;

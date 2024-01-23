@@ -70,12 +70,11 @@ import { KonvaGridContext } from 'pc/components/konva_grid';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const Option = Select.Option;
 const MultiOption = MultiSelect.Option;

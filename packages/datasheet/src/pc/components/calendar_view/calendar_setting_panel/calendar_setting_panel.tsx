@@ -52,13 +52,12 @@ import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { setColor } from 'pc/components/multi_grid/format';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { setStorage, StorageName } from 'pc/utils/storage';
 import { CalendarContext } from '../calendar_context';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const UNUSED_END_DATE = 'unusedEndDate';
 

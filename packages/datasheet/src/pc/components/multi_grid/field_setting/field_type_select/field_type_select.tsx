@@ -43,11 +43,10 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { Popup } from 'pc/components/common/mobile/popup';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { TypeSelect } from '../../type_select';
 import { AutoLayout } from '../auto_layout';
 import styles from '../styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFieldTypeSelectProps {
   currentField: IField;

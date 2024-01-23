@@ -20,13 +20,12 @@ import template from 'lodash/template';
 import * as React from 'react';
 import { ModalType, Strings, t } from '@apitable/core';
 import { Modal } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import { CodeLanguage } from './enum';
 import { getDoc } from './examples';
 import mdStyles from './markdown.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IDocInnerHtmlProps {
   language: CodeLanguage;

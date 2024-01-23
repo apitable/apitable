@@ -92,7 +92,7 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
       ConfigConstant.NodeType.DASHBOARD,
       ConfigConstant.NodeType.MIRROR,
       ConfigConstant.NodeType.AI,
-      ConfigConstant.NodeType.EMBED_PAGE,
+      ConfigConstant.NodeType.CUSTOM_PAGE,
     ]);
     return children.map((nodeId, index) => {
       const nodeInfo = treeNodesMap[nodeId];

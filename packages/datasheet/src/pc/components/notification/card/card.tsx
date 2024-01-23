@@ -31,6 +31,7 @@ import { Method } from 'pc/components/route_manager/const';
 import { IQuery } from 'pc/components/route_manager/interface';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { timeFormatter } from 'pc/utils';
 import { NOTIFICATION_ITEM_RECORD } from 'pc/utils/test_id_constant';
 import { navigationToConfigUrl } from '../publish';
@@ -39,8 +40,6 @@ import { BottomMsgAvatar, OfficialAvatar } from './card_avatar';
 import { HandleMsg } from './handle_msg';
 import { canJumpWhenClickCard, commentContentFormat, getNoticeUrlParams, isAskForJoiningMsg, NotifyType, renderNoticeBody } from './utils';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ICard {
   data: INoticeDetail;

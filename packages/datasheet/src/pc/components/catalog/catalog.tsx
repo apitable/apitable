@@ -26,13 +26,12 @@ import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortc
 import { useRootManageable } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getContextTypeByNodeType } from 'pc/utils';
 import { dndH5Manager } from 'pc/utils/dnd_manager';
 import { WorkbenchSideContext } from '../common_side/workbench_side/workbench_side_context';
-import styles from './style.module.less';
 import { Tree } from './tree';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export const CatalogBase: React.FC<React.PropsWithChildren<unknown>> = () => {
   // Whether the node is loaded or not (expand the node)

@@ -17,13 +17,13 @@
  */
 
 import { ShapeConfig } from 'konva/lib/Shape';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { FC, memo } from 'react';
 import { CollaCommandName, FieldType, ICellValue, IField } from '@apitable/core';
-import { CellButton } from './cell_button';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { resourceService } from 'pc/resource_service';
 import { CellScrollContainer } from '../cell_scroll_container';
 import { CellAttachment } from './cell_attachment';
+import { CellButton } from './cell_button';
 import { CellCheckbox } from './cell_checkbox';
 import { CellFormula } from './cell_formula';
 import { CellLink } from './cell_link';

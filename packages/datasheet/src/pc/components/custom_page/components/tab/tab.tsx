@@ -58,7 +58,7 @@ export const Tab: React.FC<ITabProps> = ({ setOpenSetting, isMobile, setNodeId }
             nodeId: embedPageId!,
             icon: icon,
             name: nodeName,
-            type: ConfigConstant.NodeType.EMBED_PAGE,
+            type: ConfigConstant.NodeType.CUSTOM_PAGE,
             role: role,
             favoriteEnabled: nodeFavorite,
             nameEditable: nodePermissions?.renamable,

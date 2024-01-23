@@ -29,10 +29,9 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { useRequest, useCatalogTreeRequest, useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ShareLink } from './share_link';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IShareProps {
   shareSettings: IShareSettings;

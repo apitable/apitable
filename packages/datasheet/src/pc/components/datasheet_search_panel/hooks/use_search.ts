@@ -4,9 +4,8 @@ import { useEffect, useMemo } from 'react';
 import * as React from 'react';
 import { Api, ConfigConstant, INode } from '@apitable/core';
 import { ISearchPanelState } from 'pc/components/datasheet_search_panel/store/interface/search_panel';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ISearchShowOption } from '../datasheet_search_panel';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IParams {
   folderId: string;

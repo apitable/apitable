@@ -42,14 +42,13 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { useSelectIndex } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { KeyCode } from 'pc/utils';
 import { getFieldTypeIcon } from '../../field_setting';
 import { FormulaGuiding } from './formula_guiding';
-import styles from './styles.module.less';
 import { ExpressionColorant } from './token_colorant';
 import { ValueTypeIcon } from './value_type_icon';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './styles.module.less';
 
 const FORMULA_TEXTAREA_ELEMENT = 'FORMULA_TEXTAREA_ELEMENT';
 const FORMULA_COLORANT_ELEMENT = 'FORMULA_COLORANT_ELEMENT';

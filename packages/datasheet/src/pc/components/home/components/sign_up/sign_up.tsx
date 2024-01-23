@@ -5,12 +5,11 @@ import { Typography, useThemeColors, Button, TextInput, LinkButton } from '@apit
 import { Strings, t, isEmail, IReduxState, Api } from '@apitable/core';
 import { EmailFilled, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
 import { WithTipWrapper, Message } from 'pc/components/common';
+import { SignUpBase } from 'pc/components/home/components/sign_up/sign_up_base';
 import { useRequest, useUserRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ActionType } from '../../pc_home';
 import styles from './style.module.less';
-
-import { useAppSelector } from 'pc/store/react-redux';
-import { SignUpBase } from 'pc/components/home/components/sign_up/sign_up_base';
 
 interface ILoginErrorMsg {
   username?: string;

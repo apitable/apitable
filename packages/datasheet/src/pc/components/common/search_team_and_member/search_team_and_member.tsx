@@ -21,12 +21,11 @@ import classNames from 'classnames';
 import { FC, useState, useRef, useEffect } from 'react';
 import { IReduxState, Api, ITeamsInSearch, IMembersInSearch } from '@apitable/core';
 import { useRequest, useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ScreenSize } from '../component_display';
 import { SearchInput, SearchEmpty } from '../index';
 import { SearchList, ListType } from './search_list';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ISearchTeamAndMemberProps {
   setInSearch: (inSearch: boolean) => void;

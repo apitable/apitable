@@ -21,8 +21,8 @@ import { FC } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { Skeleton } from '@apitable/components';
 import { DATASHEET_ID /* , Selectors, ViewType */ } from '@apitable/core';
-import styles from './style.module.less';
 import { Tab } from './tab';
+import styles from './style.module.less';
 // import { useAppSelector } from 'react-redux';
 
 export const TabBar: FC<React.PropsWithChildren<{ loading: boolean }>> = ({ loading }) => {

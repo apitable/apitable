@@ -19,11 +19,10 @@
 import { useMount } from 'ahooks';
 import { FC } from 'react';
 import { IReduxState } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { UrlInvalid } from '../components/url_invalid';
 import { useInvitePageRefreshed } from '../use_invite';
 import { getInvalidReason } from '../utils';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const MailInvalid: FC<React.PropsWithChildren<unknown>> = () => {
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'mailInvite' });

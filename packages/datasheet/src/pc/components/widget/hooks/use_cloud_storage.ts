@@ -20,7 +20,7 @@ import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { CollaCommandName, ResourceType } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 /**
  * Widget data storage.

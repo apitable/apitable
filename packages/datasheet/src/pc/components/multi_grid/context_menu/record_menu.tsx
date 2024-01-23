@@ -20,9 +20,6 @@ import { useMount } from 'ahooks';
 import parser from 'html-react-parser';
 import { isInteger } from 'lodash';
 import difference from 'lodash/difference';
-import { ShortcutActionName } from 'modules/shared/shortcut_key';
-import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
-import { appendRow, Direction } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import path from 'path-browserify';
 import * as React from 'react';
 import { KeyboardEvent, useRef, useCallback } from 'react';
@@ -53,6 +50,9 @@ import {
   ExpandOutlined,
   ArchiveOutlined
 } from '@apitable/icons';
+import { ShortcutActionName } from 'modules/shared/shortcut_key';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
+import { appendRow, Direction } from 'modules/shared/shortcut_key/shortcut_actions/append_row';
 import { Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { notifyWithUndo } from 'pc/components/common/notify';
@@ -61,14 +61,13 @@ import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { useDispatch, useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData, isNumberKey, printableKey } from 'pc/utils';
 import { EDITOR_CONTAINER } from 'pc/utils/constant';
 import { getEnvVariables } from 'pc/utils/env';
 import { isWindowsOS } from 'pc/utils/os';
 import { copy2clipBoard } from '../../../utils/dom';
 import { IInputEditor, InputMenuItem } from './input_menu_item';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const GRID_RECORD_MENU = 'GRID_RECORD_MENU';
 
