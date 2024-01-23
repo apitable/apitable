@@ -78,7 +78,7 @@ public class NodeShareTree implements Tree {
 
     @JsonIgnore
     @Override
-    public List getChildrenNodes() {
+    public List<NodeShareTree> getChildrenNodes() {
         return this.children;
     }
 
