@@ -20,10 +20,12 @@ package com.apitable.automation.service.impl;
 
 import static com.apitable.automation.enums.AutomationException.AUTOMATION_ROBOT_NOT_EXIST;
 import static com.apitable.automation.enums.AutomationException.AUTOMATION_TRIGGER_LIMIT;
+import static com.apitable.automation.enums.AutomationException.AUTOMATION_TRIGGER_NOT_EXIST;
 import static com.apitable.automation.model.TriggerSimpleVO.triggerComparator;
 import static java.util.stream.Collectors.toList;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -36,6 +38,7 @@ import com.apitable.automation.model.CreateTriggerRO;
 import com.apitable.automation.model.TriggerCopyResultDto;
 import com.apitable.automation.model.TriggerVO;
 import com.apitable.automation.model.UpdateTriggerRO;
+import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.automation.service.IAutomationTriggerService;
 import com.apitable.automation.service.IAutomationTriggerTypeService;
 import com.apitable.core.util.ExceptionUtil;
@@ -56,6 +59,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClientException;
 
 /**
@@ -64,7 +68,7 @@ import org.springframework.web.client.RestClientException;
 @Slf4j
 @Service
 public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
-    
+
     @Resource
     private AutomationDaoApiApi automationDaoApiApi;
 
@@ -80,6 +84,9 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
     @Resource
     private AutomationServiceFacade automationServiceFacade;
 
+    @Resource
+    private IAutomationRobotService iAutomationRobotService;
+
     @Override
     public List<AutomationTriggerDto> getTriggersByRobotIds(List<String> robotIds) {
         return triggerMapper.selectTriggersByRobotIds(robotIds);
@@ -91,67 +98,71 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
     }
 
     @Override
-    public List<TriggerVO> createByDatabus(Long userId, String spaceId, CreateTriggerRO data) {
-        AutomationRobotTriggerRO ro = new AutomationRobotTriggerRO();
-        ro.setResourceId(data.getRelatedResourceId());
-        ro.setUserId(userId);
-        ro.setInput(JSONUtil.toJsonStr(data.getInput()));
-        ro.setPrevTriggerId(data.getPrevTriggerId());
-        ro.setTriggerTypeId(data.getTriggerTypeId());
-        ro.setSpaceId(spaceId);
-        ro.setLimitCount(Long.valueOf(limitProperties.getAutomationTriggerCount()));
-        if (null != data.getScheduleConfig()) {
-            ro.setScheduleConf(JSONUtil.toJsonStr(data.getScheduleConfig()));
-        } else {
-            String triggerTypeId = iAutomationTriggerTypeService.getTriggerTypeByEndpoint(
-                AutomationTriggerType.SCHEDULED_TIME_ARRIVE.getType());
-            // if is a schedule should create schedule job
-            if (ObjectUtil.equals(triggerTypeId, data.getTriggerTypeId())) {
-                ro.setScheduleConf(JSONUtil.toJsonStr(JSONUtil.createObj()));
-            }
+    @Transactional(rollbackFor = Exception.class)
+    public List<TriggerVO> create(Long userId, String spaceId, CreateTriggerRO data) {
+        iAutomationRobotService.checkRobotExists(data.getRobotId());
+        checkTriggerLimitation(data.getRobotId());
+        String scheduleTriggerTypeId = iAutomationTriggerTypeService.getTriggerTypeByEndpoint(
+            AutomationTriggerType.SCHEDULED_TIME_ARRIVE.getType());
+        AutomationTriggerEntity entity = AutomationTriggerEntity.builder()
+            .robotId(data.getRobotId())
+            .triggerTypeId(data.getTriggerTypeId())
+            .prevTriggerId(data.getPrevTriggerId())
+            .resourceId(data.getRelatedResourceId())
+            .input(JSONUtil.toJsonStr(data.getInput()))
+            .triggerId(IdUtil.createAutomationTriggerId())
+            .build();
+        create(entity);
+        iAutomationRobotService.updateUpdaterByRobotId(data.getRobotId(), userId);
+        if (StrUtil.equals(scheduleTriggerTypeId, data.getTriggerTypeId())) {
+            automationServiceFacade.createSchedule(spaceId, entity.getTriggerId(),
+                JSONUtil.toJsonStr(
+                    ObjectUtil.defaultIfNull(data.getScheduleConfig(), JSONUtil.createObj())));
         }
-        try {
-            ApiResponseAutomationTriggerSO response =
-                automationDaoApiApi.daoCreateOrUpdateAutomationRobotTrigger(data.getRobotId(), ro);
-            ExceptionUtil.isFalse(
-                AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
-                AUTOMATION_ROBOT_NOT_EXIST);
-            ExceptionUtil.isFalse(
-                AUTOMATION_TRIGGER_LIMIT.getCode().equals(response.getCode()),
-                AUTOMATION_TRIGGER_LIMIT);
-            if (null == response.getData()) {
-                log.error("CreateTriggerEmpty:{}", data.getRobotId());
-            }
-            return handleTriggerResponse(response.getData());
-        } catch (RestClientException e) {
-            log.error("Robot create trigger: {}", data.getRobotId(), e);
-        }
-        return new ArrayList<>();
+        return formatVoFromEntities(ListUtil.of(entity));
     }
 
     @Override
-    public List<TriggerVO> updateByDatabus(String triggerId, Long userId, String spaceId,
-                                           UpdateTriggerRO data) {
-        AutomationRobotTriggerRO ro = new AutomationRobotTriggerRO();
-        ro.setResourceId(data.getRelatedResourceId());
-        ro.setUserId(userId);
-        ro.setInput(JSONUtil.toJsonStr(data.getInput()));
-        ro.setPrevTriggerId(data.getPrevTriggerId());
-        ro.setTriggerTypeId(data.getTriggerTypeId());
-        ro.setTriggerId(triggerId);
-        ro.setSpaceId(spaceId);
-        ro.setScheduleConf(JSONUtil.toJsonStr(data.getScheduleConfig()));
-        try {
-            ApiResponseAutomationTriggerSO response =
-                automationDaoApiApi.daoCreateOrUpdateAutomationRobotTrigger(data.getRobotId(), ro);
-            ExceptionUtil.isFalse(
-                AUTOMATION_ROBOT_NOT_EXIST.getCode().equals(response.getCode()),
-                AUTOMATION_ROBOT_NOT_EXIST);
-            return handleTriggerResponse(response.getData());
-        } catch (RestClientException e) {
-            log.error("Robot update trigger: {}", data.getRobotId(), e);
+    @Transactional(rollbackFor = Exception.class)
+    public List<TriggerVO> update(Long userId, String triggerId, String spaceId,
+                                  UpdateTriggerRO data) {
+        iAutomationRobotService.checkRobotExists(data.getRobotId());
+        AutomationTriggerEntity trigger =
+            triggerMapper.selectByTriggerId(triggerId);
+        ExceptionUtil.isNotNull(trigger, AUTOMATION_TRIGGER_NOT_EXIST);
+        String scheduleTriggerTypeId = iAutomationTriggerTypeService.getTriggerTypeByEndpoint(
+            AutomationTriggerType.SCHEDULED_TIME_ARRIVE.getType());
+        if (StrUtil.isNotBlank(data.getTriggerTypeId())) {
+            // change trigger type to schedule should create schedule
+            if (!trigger.getTriggerId().equals(scheduleTriggerTypeId)
+                && data.getTriggerTypeId().equals(scheduleTriggerTypeId)) {
+                automationServiceFacade.createSchedule(spaceId, triggerId,
+                    JSONUtil.toJsonStr(JSONUtil.createObj()));
+            }
+            // change schedule to another type
+            if (trigger.getTriggerId().equals(scheduleTriggerTypeId)
+                && !data.getTriggerTypeId().equals(scheduleTriggerTypeId)) {
+                automationServiceFacade.updateSchedule(triggerId,
+                    JSONUtil.toJsonStr(JSONUtil.createObj()));
+            }
+            trigger.setTriggerTypeId(data.getTriggerTypeId());
         }
-        return new ArrayList<>();
+        if (StrUtil.isNotBlank(data.getPrevTriggerId())) {
+            trigger.setPrevTriggerId(data.getPrevTriggerId());
+        }
+        if (ObjectUtil.isNotNull(data.getInput())) {
+            trigger.setInput(JSONUtil.toJsonStr(data.getInput()));
+        }
+        if (StrUtil.isNotBlank(data.getRelatedResourceId())) {
+            trigger.setResourceId(data.getRelatedResourceId());
+        }
+        if (ObjectUtil.isNotNull(data.getScheduleConfig())) {
+            automationServiceFacade.updateSchedule(triggerId,
+                JSONUtil.toJsonStr(data.getScheduleConfig()));
+        }
+        iAutomationRobotService.updateUpdaterByRobotId(data.getRobotId(), userId);
+        triggerMapper.updateById(trigger);
+        return formatVoFromEntities(ListUtil.of(trigger));
     }
 
     @Override
@@ -256,5 +267,26 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
             }).sorted(triggerComparator).collect(toList());
         }
         return new ArrayList<>();
+    }
+
+    private List<TriggerVO> formatVoFromEntities(List<AutomationTriggerEntity> entities) {
+        if (null != entities) {
+            return entities.stream().map(i -> {
+                TriggerVO vo = new TriggerVO();
+                vo.setTriggerId(i.getTriggerId());
+                vo.setTriggerTypeId(i.getTriggerTypeId());
+                vo.setRelatedResourceId(i.getResourceId());
+                vo.setPrevTriggerId(i.getPrevTriggerId());
+                vo.setInput(i.getInput());
+                return vo;
+            }).sorted(triggerComparator).collect(toList());
+        }
+        return new ArrayList<>();
+    }
+
+    private void checkTriggerLimitation(String robotId) {
+        Integer triggerCount = triggerMapper.selectCountByRobotId(robotId);
+        ExceptionUtil.isFalse(triggerCount >= limitProperties.getAutomationTriggerCount(),
+            AUTOMATION_TRIGGER_LIMIT);
     }
 }

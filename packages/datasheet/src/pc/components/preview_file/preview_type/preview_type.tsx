@@ -68,10 +68,10 @@ export const PreviewType: React.FC<React.PropsWithChildren<IPreviewTypeBase>> = 
       file={file}
       icon={<Image {...commonImgProps} alt={file.name} />}
       previewEnable={officePreviewEnable}
-      userInfo={userInfo}
+      userInfo={userInfo!}
       spaceId={spaceId}
       onClose={onClose}
-      previewUrl={previewUrl}
+      previewUrl={previewUrl!}
       disabledDownload={disabledDownload}
     />
   );

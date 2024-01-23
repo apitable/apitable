@@ -84,6 +84,11 @@ export const nodeConfigData = [
     icon: NodeIcon.AddAutomation,
     name: t(Strings.automation),
   },
+  {
+    type: ConfigConstant.NodeType.EMBED_PAGE,
+    icon: NodeIcon.AddEmbed,
+    name: t(Strings.embed_page),
+  },
 ];
 
 // Check if the url belongs to this site
@@ -432,6 +437,8 @@ export const getContextTypeByNodeType = (type: ConfigConstant.NodeType) => {
       return ConfigConstant.ContextMenuType.MIRROR;
     case ConfigConstant.NodeType.AI:
       return ConfigConstant.ContextMenuType.AI;
+    case ConfigConstant.NodeType.EMBED_PAGE:
+      return ConfigConstant.ContextMenuType.EMBED_PAGE;
     default:
       return ConfigConstant.ContextMenuType.DEFAULT;
   }

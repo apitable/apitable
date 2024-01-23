@@ -121,7 +121,7 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
   if (!realField) {
     return null;
   }
-
+  
   const { limitToView, foreignDatasheetId } = realField.property;
   const addBtnVisible = !realField.property.limitSingleRecord || renderContent == null;
 
@@ -146,8 +146,7 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
       {isActive &&
         renderContent != null &&
         (renderContent as IRenderContentBase[]).map((item, index) => {
-          const { x, y, width, height, text, style, id } = item;
-          const isError = text === t(Strings.record_fail_data);
+          const { x, y, width, height, text, style, id, disabled } = item;
           const renderText = text.replace(/\n|\r/g, ' ');
           let iconBg = 'transparent';
           if (closeIconHoverId === id) {
@@ -159,13 +158,13 @@ export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
           return (
             <Group x={x} y={y} listening={isActive} key={index}>
               <Rect
-                name={name}
+                name={disabled ? '' : name}
                 width={width}
                 height={height}
                 fill={colors.shadowColor}
                 cornerRadius={4}
-                onClick={() => !isError && expand(id)}
-                onTap={() => !isError && expand(id)}
+                onClick={() => !disabled && expand(id)}
+                onTap={() => !disabled && expand(id)}
               />
               <Text x={GRID_OPTION_ITEM_PADDING} height={height} text={renderText} fill={style.color} fontSize={12} />
               {operatingEnable && (

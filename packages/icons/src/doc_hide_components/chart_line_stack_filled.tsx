@@ -21,9 +21,9 @@ import React from 'react';
 import { makeIcon, IIconProps } from '../utils/icon';
 
 export const ChartLineStackFilled: React.FC<IIconProps> = makeIcon({
-    Path: ({ colors }) => <>
+  Path: ({ colors }) => <>
     <path d="M15.5 57L31.5 42.5L53 51.5L68.5 38" stroke={ colors[1] } strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-<path d="M12 40L28 25.5L49.5 34.5L65 21" stroke={ colors[0] } strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+    <path d="M12 40L28 25.5L49.5 34.5L65 21" stroke={ colors[0] } strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
 
   </>,
   name: 'chart_line_stack_filled',

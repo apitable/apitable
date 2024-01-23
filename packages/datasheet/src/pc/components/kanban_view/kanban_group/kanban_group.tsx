@@ -29,14 +29,13 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { useCardHeight } from 'pc/components/common/hooks/use_card_height';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getIsColNameVisible } from 'pc/utils/datasheet';
 import { GroupHeader } from '../group_header';
 import { useCommand } from '../hooks/use_command';
 import { Card, Row } from './rows';
 import { MARGIN_DISTANCE } from './rows/rows';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IKanbanGroupProps {
   groupId: string;
@@ -119,7 +118,7 @@ export const KanbanGroup: React.FC<React.PropsWithChildren<IKanbanGroupProps>> =
   const getCardHeight = useCardHeight({
     cardCoverHeight: 140,
     coverFieldId,
-    multiTextMaxLine: 4,
+    multiTextMaxLine: 3,
     showEmptyCover: false,
     showEmptyField: false,
     isColNameVisible,

@@ -18,7 +18,7 @@
 
 import styled, { css } from 'styled-components';
 import { AvatarSizeConfig } from '../styled';
-import { IAvatarGroup } from './intarface';
+import { IAvatarGroup } from './interface';
 
 export const AvatarGroupStyled = styled.div<Pick<IAvatarGroup, 'size'>>`
   display: inline-flex;
@@ -29,12 +29,11 @@ export const AvatarGroupStyled = styled.div<Pick<IAvatarGroup, 'size'>>`
     }
     box-sizing: content-box;
     ${(props) => {
-    const sizeKey = props.size || 'm';
-    const { size, borderWidth } = AvatarSizeConfig[sizeKey];
-    return css`
+      const sizeKey = props.size || 'm';
+      const { size, borderWidth } = AvatarSizeConfig[sizeKey];
+      return css`
         margin-left: -${size / 4}px;
         border: ${borderWidth}px solid #fff;
-    `;
-  }
-}
+      `;
+    }}
 `;

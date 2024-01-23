@@ -94,8 +94,8 @@ export const useInviteRequest = () => {
   /**
    * Send an email to invite members
    */
-  const sendInviteReq = (invite: IInviteMemberList[], nodeId?: string, nvcVal?: string) => {
-    return Api.sendInvite(invite, nodeId, nvcVal).then((res) => {
+  const sendInviteReq = (spaceId: string, invite: IInviteMemberList[], nvcVal?: string) => {
+    return Api.sendInvite(spaceId, invite, nvcVal).then((res) => {
       const { success, message, code, data } = res.data;
       if (!success) {
         Message.error({ content: message });

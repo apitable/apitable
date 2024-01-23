@@ -21,15 +21,7 @@ import { IJOTAction, IObjectInsertAction, IObjectReplaceAction, OTActionName } f
 import { ViewPropertyFilter } from 'engine/view_property_filter';
 import { findIndex, isEqual, omit, unionWith } from 'lodash';
 import { getMaxViewCountPerSheet } from 'model/utils';
-import {
-  IComments,
-  IMirrorSnapshot,
-  IRecordAlarm,
-  IReduxState,
-  ITemporaryView,
-  IUserInfo,
-  IViewLockInfo,
-} from '../exports/store/interfaces';
+import { IComments, IMirrorSnapshot, IRecordAlarm, IReduxState, ITemporaryView, IUserInfo, IViewLockInfo } from '../exports/store/interfaces';
 import { RowHeightLevel } from 'modules/shared/store/constants';
 import { ViewType } from 'modules/shared/store/constants';
 import { getDateTimeCellAlarm } from 'modules/database/store/selectors/resource/datasheet/calc';
@@ -48,11 +40,8 @@ import {
 import { getCellValue } from 'modules/database/store/selectors/resource/datasheet/cell_calc';
 
 import { getViewById } from 'modules/database/store/selectors/resource/datasheet/base';
-import { getFilterInfo,sortRowsBySortInfo } from 'modules/database/store/selectors/resource/datasheet/rows_calc';
-import {
-  getResourceActiveWidgetPanel,
-  getResourceWidgetPanels,
-} from 'modules/database/store/selectors/resource';
+import { getFilterInfo, sortRowsBySortInfo } from 'modules/database/store/selectors/resource/datasheet/rows_calc';
+import { getResourceActiveWidgetPanel, getResourceWidgetPanels } from 'modules/database/store/selectors/resource';
 import {
   getActiveViewGroupInfo,
   getFieldMap,
@@ -105,7 +94,7 @@ function getDefaultNewRecordDataByFilter(
   datasheetId: string,
   filterInfo: IFilterInfo,
   fieldMap: { [id: string]: IField },
-  userInfo?: IUserInfo,
+  userInfo?: IUserInfo
 ): { [fieldId: string]: ICellValue } {
   const { conditions } = filterInfo;
   const recordData: { [fieldId: string]: ICellValue } = {};
@@ -119,15 +108,18 @@ function getDefaultNewRecordDataByFilter(
   // And combination
 
   // 1. Group filter conditions by fieldId
-  const conditionGroups = conditions.reduce((prev, condition) => {
-    const { fieldId } = condition;
-    let group = prev[fieldId];
-    if (!group) {
-      group = prev[fieldId] = [];
-    }
-    group.push(condition);
-    return prev;
-  }, {} as { [fieldId: string]: IFilterCondition[] });
+  const conditionGroups = conditions.reduce(
+    (prev, condition) => {
+      const { fieldId } = condition;
+      let group = prev[fieldId];
+      if (!group) {
+        group = prev[fieldId] = [];
+      }
+      group.push(condition);
+      return prev;
+    },
+    {} as { [fieldId: string]: IFilterCondition[] }
+  );
 
   // 2. Determine the final `And` fill value, for each field corresponding to the filter condition
   for (const fieldId in conditionGroups) {
@@ -158,7 +150,7 @@ function getDefaultNewRecordDataByFilter(
       // TODO: currently multi-value type field is basic type, so use "Set".
       // In the future, if reference type, optimize this
       if (isMultiValueField && Array.isArray(currentValue)) {
-        currentValue.forEach(v => {
+        currentValue.forEach((v) => {
           if (field.type === FieldType.Member && v === OtherTypeUnitId.Self) {
             userInfo && candidate.add(userInfo!.unitId);
             return;
@@ -194,7 +186,7 @@ function getDefaultNewRecordDataByFilter(
      * and 1 cannot pass =1 and <0, default fill in this value does not meet user expectations.
      */
     const viewFilterDerivate = new ViewFilterDerivate(state, datasheetId);
-    const pass = conditionGroup.every(condition => viewFilterDerivate.doFilter(condition, field, result));
+    const pass = conditionGroup.every((condition) => viewFilterDerivate.doFilter(condition, field, result));
     if (pass) {
       // different fields of `And`, only need to assign the values that have values to them.
       recordData[fieldId] = result;
@@ -215,7 +207,7 @@ export class DatasheetActions {
       return null;
     }
 
-    if (!views.every(viw => viw.id !== view.id)) {
+    if (!views.every((viw) => viw.id !== view.id)) {
       return null;
     }
 
@@ -285,7 +277,7 @@ export class DatasheetActions {
     const views = snapshot.meta.views;
     const viewId = payload.viewId;
     // check whether current is activeView
-    const viewIndex = findIndex(views, viw => viw.id === viewId);
+    const viewIndex = findIndex(views, (viw) => viw.id === viewId);
     if (viewIndex < 0) {
       return null;
     }
@@ -303,24 +295,24 @@ export class DatasheetActions {
    */
   static modifyView2Action(
     snapshot: ISnapshot,
-    payload: { viewId: string; key: 'name' | 'description' | 'columns' | 'displayHiddenColumnWithinMirror'; value: string | IViewColumn[] | boolean },
+    payload: { viewId: string; key: 'name' | 'description' | 'columns' | 'displayHiddenColumnWithinMirror'; value: string | IViewColumn[] | boolean }
   ): IJOTAction[] | null {
     const views = snapshot.meta.views;
     const { viewId, key, value } = payload;
 
     // check whether current is activeView
-    const viewIndex = findIndex(views, viw => viw.id === viewId);
+    const viewIndex = findIndex(views, (viw) => viw.id === viewId);
     if (viewIndex < 0) {
       return null;
     }
 
     if (key === 'columns' && Array.isArray(value)) {
       const rlt: IJOTAction[] = [];
-      value.forEach(item => {
+      value.forEach((item) => {
         const fieldId = item.fieldId;
         const view = views[viewIndex]!;
         const columns = view['columns'];
-        const modifyColumnIndex = columns.findIndex(column => column.fieldId === fieldId);
+        const modifyColumnIndex = columns.findIndex((column) => column.fieldId === fieldId);
         const oldItem = columns[modifyColumnIndex];
         if (!isEqual(oldItem, item)) {
           rlt.push({
@@ -349,7 +341,15 @@ export class DatasheetActions {
    */
   static addField2Action(
     snapshot: ISnapshot,
-    payload: { field: IField; viewId?: string; index?: number; fieldId?: string; offset?: number; hiddenColumn?: boolean, forceColumnVisible?:boolean },
+    payload: {
+      field: IField;
+      viewId?: string;
+      index?: number;
+      fieldId?: string;
+      offset?: number;
+      hiddenColumn?: boolean;
+      forceColumnVisible?: boolean;
+    }
   ): IJOTAction[] | null {
     const fieldMap = snapshot.meta.fieldMap;
     const views = snapshot.meta.views;
@@ -357,7 +357,7 @@ export class DatasheetActions {
 
     const actions = views.reduce<IJOTAction[]>((pre, cur, viewIndex) => {
       let columnIndex = cur.columns.length;
-      if (cur.columns.some(column => column.fieldId === field.id)) {
+      if (cur.columns.some((column) => column.fieldId === field.id)) {
         return pre;
       }
       // as new columns with duplicate operation, pass in `index` to take precedence
@@ -367,7 +367,7 @@ export class DatasheetActions {
 
       // only under specified view, if fieldId exists, calc index by every view's fieldId
       if (fieldId) {
-        const fieldIdIndex = cur.columns.findIndex(column => column.fieldId === fieldId);
+        const fieldIdIndex = cur.columns.findIndex((column) => column.fieldId === fieldId);
         columnIndex = fieldIdIndex + (offset ?? 0);
       }
 
@@ -380,8 +380,8 @@ export class DatasheetActions {
 
       // handler of new column in view
       function viewColumnHandler() {
-        if(payload.forceColumnVisible != null) {
-          newColumn.hidden = payload.forceColumnVisible===true;
+        if (payload.forceColumnVisible != null) {
+          newColumn.hidden = !payload.forceColumnVisible;
           return;
         }
         let hiddenKey = 'hidden';
@@ -397,7 +397,7 @@ export class DatasheetActions {
             break;
           default:
             // current view default display or view has no hidden column
-            if ((viewId && viewId === cur.id) || cur.columns.every(column => !column.hidden)) {
+            if ((viewId && viewId === cur.id) || cur.columns.every((column) => !column.hidden)) {
               newColumn.hidden = Boolean(hiddenColumn);
               return;
             }
@@ -440,7 +440,7 @@ export class DatasheetActions {
 
     // delete all columns related attributes in all view
     const actions = views.reduce<IJOTAction[]>((action, view, index) => {
-      const columnIndex = view.columns.findIndex(column => column.fieldId === fieldId);
+      const columnIndex = view.columns.findIndex((column) => column.fieldId === fieldId);
 
       if (columnIndex < 0) {
         return action;
@@ -449,7 +449,7 @@ export class DatasheetActions {
       const deleteGroupOrSortInfo = (type: 'groupInfo' | 'sortInfo') => {
         const info = type === 'groupInfo' ? view.groupInfo : view.sortInfo?.rules;
         if (info) {
-          const infoIndex = info.findIndex(gp => gp.fieldId === fieldId);
+          const infoIndex = info.findIndex((gp) => gp.fieldId === fieldId);
           if (infoIndex > -1 && info.length > 1) {
             if (type === 'groupInfo') {
               action.push({
@@ -530,7 +530,7 @@ export class DatasheetActions {
 
         // the dependencies in filter's field, also need to be deleted
         if (view.filterInfo) {
-          const newConditions = view.filterInfo.conditions.filter(condition => {
+          const newConditions = view.filterInfo.conditions.filter((condition) => {
             if (condition.fieldId === fieldId) {
               return false;
             }
@@ -573,7 +573,7 @@ export class DatasheetActions {
     if (field) {
       // when delete date column, remove alarm
       const recordMap = snapshot.recordMap;
-      Object.keys(recordMap).forEach(recordId => {
+      Object.keys(recordMap).forEach((recordId) => {
         const alarm = getDateTimeCellAlarm(snapshot, recordId, field.id);
         if (alarm) {
           const alarmActions = DatasheetActions.setDateTimeCellAlarm(snapshot, {
@@ -605,7 +605,7 @@ export class DatasheetActions {
     }
 
     const view = snapshot.meta.views[viewIndex] as IGridViewProperty;
-    const columnIndex = view.columns.findIndex(column => column.fieldId === fieldId);
+    const columnIndex = view.columns.findIndex((column) => column.fieldId === fieldId);
     const column = view.columns[columnIndex]!;
     if (columnIndex < 0 || ![ViewType.Grid, ViewType.Gantt].includes(view.type) || column.width === width) {
       return null;
@@ -628,7 +628,7 @@ export class DatasheetActions {
     }
 
     const view = snapshot.meta.views[viewIndex]!;
-    const columnIndex = view.columns.findIndex(column => column.fieldId === fieldId);
+    const columnIndex = view.columns.findIndex((column) => column.fieldId === fieldId);
     if (columnIndex < 0 || columnIndex === target) {
       return null;
     }
@@ -645,7 +645,7 @@ export class DatasheetActions {
    */
   static setColumnStatType2Action = (
     snapshot: ISnapshot,
-    payload: { viewId: string; fieldId: string; statType?: StatType | null },
+    payload: { viewId: string; fieldId: string; statType?: StatType | null }
   ): IJOTAction | null => {
     const { fieldId, statType, viewId } = payload;
 
@@ -655,7 +655,7 @@ export class DatasheetActions {
     }
 
     const view = snapshot.meta.views[viewIndex] as IGridViewProperty;
-    const columnIndex = view.columns.findIndex(column => column.fieldId === fieldId);
+    const columnIndex = view.columns.findIndex((column) => column.fieldId === fieldId);
     const column = view.columns[columnIndex]!;
     if (columnIndex < 0 || ![ViewType.Grid, ViewType.Gantt].includes(view.type) || column.statType === statType) {
       return null;
@@ -748,7 +748,10 @@ export class DatasheetActions {
   /**
    * add record to table
    */
-  static addRecord2Action(snapshot: ISnapshot, payload: { viewId: string; record: IRecord; index: number, newRecordIndex: number }): IJOTAction[] | null {
+  static addRecord2Action(
+    snapshot: ISnapshot,
+    payload: { viewId: string; record: IRecord; index: number; newRecordIndex: number }
+  ): IJOTAction[] | null {
     const recordMap = snapshot.recordMap;
     const views = snapshot.meta.views;
     const { record, index, viewId, newRecordIndex } = payload;
@@ -756,7 +759,7 @@ export class DatasheetActions {
     const actions = views.reduce<IJOTAction[]>((pre, cur, viewIndex) => {
       // multi add rows length no change
       let rowIndex = cur.rows.length + newRecordIndex;
-      if (cur.rows.some(row => row.recordId === record.id)) {
+      if (cur.rows.some((row) => row.recordId === record.id)) {
         return pre;
       }
 
@@ -794,7 +797,7 @@ export class DatasheetActions {
       recordId: string;
       fieldId: string;
       value: ICellValue;
-    },
+    }
   ): IJOTAction | null {
     const { recordId, fieldId, value } = payload;
 
@@ -848,7 +851,7 @@ export class DatasheetActions {
       recordIds: string[];
       getFieldByFieldId(fieldId: string): IField;
       state: IReduxState;
-    },
+    }
   ): IJOTAction[] {
     const recordMap = snapshot.recordMap;
     const recordSize = Object.keys(recordMap).length;
@@ -917,7 +920,7 @@ export class DatasheetActions {
       }, []);
     }
 
-    recordIds.forEach(recordId => {
+    recordIds.forEach((recordId) => {
       const record = recordMap[recordId];
       if (record) {
         const data = {};
@@ -934,7 +937,7 @@ export class DatasheetActions {
 
         // when delete date, remove alarm
         // TODO(kailang) ObjectDelete has did this
-        Object.keys(fieldMap).forEach(fieldId => {
+        Object.keys(fieldMap).forEach((fieldId) => {
           if (fieldMap[fieldId]!.type === FieldType.DateTime) {
             const alarm = getDateTimeCellAlarm(snapshot, recordId, fieldId);
             if (alarm) {
@@ -970,7 +973,7 @@ export class DatasheetActions {
       recordId: string;
       fieldId: string;
       alarm: IRecordAlarm | null;
-    },
+    }
   ): IJOTAction[] | null {
     const { recordId, fieldId, alarm } = payload;
     const oldAlarm = getDateTimeCellAlarm(snapshot, recordId, fieldId);
@@ -1045,7 +1048,7 @@ export class DatasheetActions {
     }
 
     const view = snapshot.meta.views[viewIndex]!;
-    const recordIndex = view.rows.findIndex(row => row.recordId === recordId);
+    const recordIndex = view.rows.findIndex((row) => row.recordId === recordId);
     if (recordIndex < 0) {
       return null;
     }
@@ -1060,7 +1063,7 @@ export class DatasheetActions {
   static setViewSort2Action(
     state: IReduxState,
     snapshot: ISnapshot,
-    payload: { viewId: string; sortInfo?: ISortInfo; applySort?: boolean },
+    payload: { viewId: string; sortInfo?: ISortInfo; applySort?: boolean }
   ): IJOTAction[] | null {
     const { viewId, sortInfo, applySort } = payload;
     const viewIndex = getViewIndex(snapshot, viewId);
@@ -1235,7 +1238,7 @@ export class DatasheetActions {
   static getNewViewId(views: IViewProperty[]): string {
     return getNewId(
       IDPrefix.View,
-      views.map(view => view.id),
+      views.map((view) => view.id)
     );
   }
 
@@ -1266,7 +1269,7 @@ export class DatasheetActions {
     recordId: string,
     viewId?: string,
     groupCellValues?: ICellValue[],
-    userInfo?: IUserInfo,
+    userInfo?: IUserInfo
   ): IRecord {
     const fieldMap = getFieldMap(state, snapshot.datasheetId);
     const record: IRecord = {
@@ -1380,7 +1383,7 @@ export class DatasheetActions {
     }
     return getUniqName(
       prefix,
-      views.map(view => view.name),
+      views.map((view) => view.name)
     );
   }
 
@@ -1414,7 +1417,7 @@ export class DatasheetActions {
       switch (view.type) {
         case ViewType.Grid:
         case ViewType.Gantt: {
-          recordIds = view.rows.map(view => view.recordId);
+          recordIds = view.rows.map((view) => view.recordId);
         }
       }
     }
@@ -1436,7 +1439,7 @@ export class DatasheetActions {
       datasheetId: string;
       recordId: string;
       insertComments?: Omit<IComments, 'revision'>[];
-    },
+    }
   ): IJOTAction[] | null {
     const { recordId, datasheetId, insertComments } = options;
     const recordMap = getSnapshot(state, datasheetId)!.recordMap;
@@ -1504,7 +1507,7 @@ export class DatasheetActions {
         n: OTActionName.NumberAdd,
         p: ['recordMap', recordId, 'commentCount'],
         na: -1,
-      },
+      }
     );
 
     return actions;
@@ -1514,13 +1517,13 @@ export class DatasheetActions {
     _state: IReduxState,
     panelId: string,
     widgetPanels: IWidgetPanel[],
-    resourceType: ResourceType.Mirror | ResourceType.Datasheet,
+    resourceType: ResourceType.Mirror | ResourceType.Datasheet
   ): IJOTAction[] | null {
     if (!widgetPanels) {
       return null;
     }
 
-    const index = widgetPanels.findIndex(item => {
+    const index = widgetPanels.findIndex((item) => {
       return item.id === panelId;
     });
 
@@ -1614,13 +1617,13 @@ export class DatasheetActions {
     _state: IReduxState,
     newPanel: IWidgetPanel,
     widgetPanels: IWidgetPanel[],
-    resourceType: ResourceType.Mirror | ResourceType.Datasheet,
+    resourceType: ResourceType.Mirror | ResourceType.Datasheet
   ): IJOTAction[] | null {
     if (!widgetPanels) {
       return null;
     }
 
-    const index = widgetPanels.findIndex(item => {
+    const index = widgetPanels.findIndex((item) => {
       return item.id === newPanel.id;
     });
 
@@ -1651,7 +1654,7 @@ export class DatasheetActions {
 
   static addWidgetToPanel2Action(
     _state: IReduxState,
-    { installationIndex, panelIndex, widgetId }: { installationIndex: number; panelIndex: number; widgetId: string },
+    { installationIndex, panelIndex, widgetId }: { installationIndex: number; panelIndex: number; widgetId: string }
   ): IJOTAction[] | null {
     const newWidget = {
       id: widgetId,
@@ -1670,7 +1673,7 @@ export class DatasheetActions {
 
   static addWidgetToPanelWithMirror2Action(
     _state: IReduxState,
-    { installationIndex, panelIndex, widgetId }: { installationIndex: number; panelIndex: number; widgetId: string },
+    { installationIndex, panelIndex, widgetId }: { installationIndex: number; panelIndex: number; widgetId: string }
   ): IJOTAction[] | null {
     const newWidget = {
       id: widgetId,
@@ -1693,7 +1696,7 @@ export class DatasheetActions {
       widgetPanelIndex: number;
       widget: IWidgetInPanel;
       widgetIndex: number;
-    },
+    }
   ): IJOTAction[] {
     const { widgetPanelIndex, widgetIndex, widget } = options;
     return [
@@ -1711,7 +1714,7 @@ export class DatasheetActions {
       widgetPanelIndex: number;
       widget: IWidgetInPanel;
       widgetIndex: number;
-    },
+    }
   ): IJOTAction[] {
     const { widgetPanelIndex, widgetIndex, widget } = options;
     return [
@@ -1737,7 +1740,7 @@ export class DatasheetActions {
       widgetHeight: number;
       resourceId: string;
       resourceType: ResourceType;
-    },
+    }
   ): IJOTAction[] | null {
     const activeWidgetPanel = getResourceActiveWidgetPanel(state, resourceId, resourceType)!;
     const widget = activeWidgetPanel.widgets[widgetIndex]!;
@@ -1762,7 +1765,7 @@ export class DatasheetActions {
       layout,
       resourceType,
       resourceId,
-    }: { widgetPanelIndex: number; layout: any[]; resourceType: ResourceType; resourceId: string },
+    }: { widgetPanelIndex: number; layout: any[]; resourceType: ResourceType; resourceId: string }
   ): IJOTAction[] | null {
     const widgetPanel = getResourceWidgetPanels(state, resourceId, resourceType);
     const oldLayout = widgetPanel?.[widgetPanelIndex]?.widgets;
@@ -1805,7 +1808,7 @@ export class DatasheetActions {
 
   static manualSaveView2Action(snapshot: ISnapshot, payload: { viewId: string; viewProperty: ITemporaryView }): IJOTAction[] | null {
     const { viewId, viewProperty: serverView } = payload;
-    const viewIndex = snapshot.meta.views.findIndex(view => view.id === viewId);
+    const viewIndex = snapshot.meta.views.findIndex((view) => view.id === viewId);
 
     if (viewIndex == null) {
       return null;
@@ -1848,7 +1851,7 @@ export class DatasheetActions {
 
   static resetView2Action(snapshot: ISnapshot, payload: { viewId: string; viewProperty: ITemporaryView }): IJOTAction[] | null {
     const { viewId, viewProperty: serverView } = payload;
-    const viewIndex = snapshot.meta.views.findIndex(view => view.id === viewId);
+    const viewIndex = snapshot.meta.views.findIndex((view) => view.id === viewId);
 
     if (viewIndex == null) {
       return null;
@@ -1890,7 +1893,7 @@ export class DatasheetActions {
 
   static setViewAutoSave2Action(snapshot: ISnapshot, { viewId, autoSave }: { viewId: string; autoSave: boolean }): IJOTAction | null {
     const views = snapshot.meta.views;
-    const viewIndex = views.findIndex(view => view.id === viewId);
+    const viewIndex = views.findIndex((view) => view.id === viewId);
 
     if (viewIndex == null) {
       return null;
@@ -1940,7 +1943,7 @@ export class DatasheetActions {
    * @param payload
    */
 
-  static unarchivedRecords2Action(snapshot: ISnapshot, payload: { recordsData: any, linkFields: string[] }): IJOTAction[] | null {
+  static unarchivedRecords2Action(snapshot: ISnapshot, payload: { recordsData: any; linkFields: string[] }): IJOTAction[] | null {
     const { recordsData, linkFields } = payload;
 
     if (!recordsData || !recordsData.length || !snapshot) return null;
@@ -1949,8 +1952,7 @@ export class DatasheetActions {
     const rlt: IJOTAction[] = [];
 
     for (let i = 0; i < recordsData.length; i++) {
-
-      for(let j = 0; j < views.length; j++) {
+      for (let j = 0; j < views.length; j++) {
         rlt.push({
           n: OTActionName.ListInsert,
           p: ['meta', 'views', j, 'rows', rows.length],
@@ -1959,11 +1961,23 @@ export class DatasheetActions {
       }
 
       const newRecord = produce(recordsData[i], (draft: any) => {
-        Object.keys(draft.data).forEach(key => {
-          if(linkFields.includes(key)) {
+        Object.keys(draft.data).forEach((key) => {
+          if (linkFields.includes(key)) {
             draft.data[key] = [];
           }
         });
+      });
+
+      const archivedRecordIds = snapshot.meta.archivedRecordIds || [];
+      recordsData.forEach((record: any) => {
+        const index = archivedRecordIds.findIndex((id) => id === record.id);
+        if (index >= 0) {
+          rlt.push({
+            n: OTActionName.ListDelete,
+            p: ['meta', 'archivedRecordIds', index],
+            ld: record.id,
+          });
+        }
       });
 
       rlt.push({
@@ -1971,9 +1985,31 @@ export class DatasheetActions {
         p: ['recordMap', recordsData[i].id],
         oi: newRecord,
       });
-
     }
 
+    return rlt;
+  }
+
+  /**
+   * add archieve RecordIds
+   * @param snapshot
+   * @param payload
+   */
+  static addArchiveRecordIdsToAction(snapshot: ISnapshot, payload: { recordIds: string[] }): IJOTAction[] | null {
+    const { recordIds } = payload;
+    const archivedRecordIds = snapshot.meta.archivedRecordIds || [];
+
+    if (!recordIds || !recordIds.length) return null;
+
+    const rlt: IJOTAction[] = [];
+    recordIds.forEach((recordId, index) => {
+      if (archivedRecordIds.includes(recordId)) return;
+      rlt.push({
+        n: OTActionName.ListInsert,
+        p: ['meta', 'archivedRecordIds', archivedRecordIds.length + index],
+        li: recordId,
+      });
+    });
     return rlt;
   }
 
@@ -1993,6 +2029,18 @@ export class DatasheetActions {
         od: recordsData[i],
       });
     }
+
+    const archivedRecordIds = snapshot.meta.archivedRecordIds || [];
+    recordsData.forEach((record: any) => {
+      const index = archivedRecordIds.findIndex((id) => id === record.id);
+      if (index >= 0) {
+        rlt.push({
+          n: OTActionName.ListDelete,
+          p: ['meta', 'archivedRecordIds', index],
+          ld: record.id,
+        });
+      }
+    });
 
     return rlt;
   }

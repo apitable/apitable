@@ -39,7 +39,7 @@ export class CascaderDataStorageProvider implements databus.IDataStorageProvider
     for (const dstId of dstIds) {
       const basePack = await this.datasheetService.getBasePacks(dstId, {
         // if all linked datasheet is included. Default to true
-        includeLink: false,
+        includeLink: true,
       });
       packs.push(...basePack);
     }

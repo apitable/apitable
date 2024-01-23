@@ -22,7 +22,7 @@ import classnames from 'classnames';
 import produce from 'immer';
 import { debounce, isArray } from 'lodash';
 import _map from 'lodash/map';
-import { AnimationItem } from 'lottie-web';
+import { AnimationItem } from 'lottie-web/index';
 import Head from 'next/head';
 import Image from 'next/image';
 import * as React from 'react';

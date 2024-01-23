@@ -1,4 +1,4 @@
-@import "./lib_var.less";
+@import './lib_var.less';
 
 .ellipsis() {
   overflow: hidden;
@@ -69,18 +69,26 @@
   }
 }
 
-.light-scroll-bar() {
-  .custom-scroll-bar(12px, 12px);
+.s-scroll-bar(@bg: flase) {
+  .custom-scroll-bar(8px, @bg);
 }
 
-.mini-scroll-bar() {
-  .custom-scroll-bar(8px, 8px);
+.default-scroll-bar(@bg: flase) {
+  .custom-scroll-bar(12px, @bg);
 }
 
-.custom-scroll-bar(@width: auto, @height: auto, @color: @scrollbar-thumb) {
+.l-scroll-bar(@bg: flase) {
+  .custom-scroll-bar(14px, @bg);
+}
+
+.lx-scroll-bar(@bg: flase) {
+  .custom-scroll-bar(18px, @bg);
+}
+
+.custom-scroll-bar(@size: auto, @bg: false, @color: @scrollbar-thumb) {
   &::-webkit-scrollbar {
-    width: @width;
-    height: @height;
+    width: @size;
+    height: @size;
     position: absolute;
     top: 0;
     left: 0;
@@ -95,10 +103,10 @@
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: transparent;
+    background-color: if(@bg, @scrollbar-thumb, transparent);
     background-clip: padding-box;
-    border: 3px solid rgba(0, 0, 0, 0);
-    border-radius: 6px;
+    border: calc(@size / 4) solid rgba(0, 0, 0, 0);
+    border-radius: calc(@size / 2);
     min-height: 36px;
   }
 
@@ -118,7 +126,7 @@
 
 .ant-select-option-common {
   ul {
-    .light-scroll-bar();
+    .default-scroll-bar();
   }
 
   li {
@@ -164,7 +172,7 @@
 
     &::before {
       position: absolute;
-      content: " ";
+      content: ' ';
       display: table;
       width: 100%;
       height: 1.5px;
@@ -464,7 +472,7 @@
     .drag-over-gap-bottom > .ant-tree-node-content-wrapper::after {
       position: absolute;
       display: flex;
-      content: "";
+      content: '';
       width: 6px;
       height: 6px;
       border: 2px solid var(--primaryColor);
@@ -800,4 +808,42 @@
 
 .px2vw(@px) {
   @res: @px / @view-width * 100vw;
+}
+
+//unite scroll bar style
+.scroll-bar(@size:auto;) {
+  &::-webkit-scrollbar {
+    background: transparent;
+    width: @size !important;
+    height: @size !important;
+  }
+}
+
+.scroll-bar-thumb(@radius:7px; @border:4px;@background:0) {
+  &::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    background: if((@background = 0), transparent, var(--bgScrollbarDefault));
+    background-clip: padding-box;
+    min-height: 36px;
+    border-radius: @radius;
+    border: @border solid transparent;
+  }
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: var(--bgScrollbarDefault);
+  }
+}
+
+.scroll-bar-default {
+  .scroll-bar(14px);
+  .scroll-bar-thumb(7px,4px);
+}
+
+.scroll-bar-small {
+  .scroll-bar(8px);
+  .scroll-bar-thumb(4px,2px);
+}
+
+.scroll-bar-large(@showBackground:0) {
+  .scroll-bar(18px);
+  .scroll-bar-thumb(10px,4px,@showBackground);
 }

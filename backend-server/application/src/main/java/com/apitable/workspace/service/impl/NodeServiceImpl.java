@@ -112,6 +112,7 @@ import com.apitable.workspace.mapper.NodeShareSettingMapper;
 import com.apitable.workspace.model.DatasheetCreateObject;
 import com.apitable.workspace.ro.CreateDatasheetRo;
 import com.apitable.workspace.ro.NodeCopyOpRo;
+import com.apitable.workspace.ro.NodeEmbedPageRo;
 import com.apitable.workspace.ro.NodeMoveOpRo;
 import com.apitable.workspace.ro.NodeOpRo;
 import com.apitable.workspace.ro.NodeRelRo;
@@ -728,6 +729,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             .preNodeId(preNodeId)
             .nodeName(name)
             .type(nodeOpRo.getType())
+            .extra(JSONUtil.toJsonStr(nodeOpRo.getExtra()))
             .nodeId(nodeId)
             .build();
         // Change the front node ID of the next node to the new node ID(A <- C => B <- C)
@@ -811,19 +813,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         this.updateNodeCover(userId, nodeId, opRo.getCover(), nodeEntity.getCover());
 
         // Modify whether to display the history of the record
-        if (ObjectUtil.isNotNull(opRo.getShowRecordHistory())
-            && nodeEntity.getType() == NodeType.DATASHEET.getNodeType()) {
-            boolean flag;
-            String newValue = JSONUtil.toJsonStr(Dict.create()
-                .set(NodeExtraConstants.SHOW_RECORD_HISTORY, opRo.getShowRecordHistory()));
-            if (ObjectUtil.isNotNull(nodeEntity.getExtra())) {
-                flag = SqlHelper.retBool(baseMapper.updateExtraShowRecordHistoryByNodeId(nodeId,
-                    opRo.getShowRecordHistory()));
-            } else {
-                flag = SqlHelper.retBool(baseMapper.updateExtraByNodeId(nodeId, newValue));
-            }
-            ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
-        }
+        this.updateExtra(nodeId, NodeType.toEnum(nodeEntity.getType()), nodeEntity.getExtra(),
+            opRo.getShowRecordHistory(), opRo.getEmbedPage());
     }
 
     private void updateNodeName(Long userId, String nodeId, String name, NodeEntity entity) {
@@ -1179,6 +1170,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                     Collections.singletonList(opRo.getNodeId()),
                     automationCopyOptions, newNodeMap);
                 return copyEffect;
+            case CUSTOM_PAGE:
+                return copyEffect;
             default:
                 break;
         }
@@ -1375,6 +1368,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             node.setParentId(newNodeMap.get(shareTree.getParentId()));
             node.setNodeId(newNodeMap.get(shareTree.getNodeId()));
             node.setNodeName(shareTree.getNodeName());
+            if (StrUtil.isNotBlank(shareTree.getExtra())) {
+                node.setExtra(shareTree.getExtra());
+            }
             if (shareTree.getPreNodeId() != null) {
                 // The original pre-node ID, if it is in the filter column,
                 // recursively until the transferred node is found or ends in the first place.
@@ -1950,6 +1946,31 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             results.add(result);
         });
         return results;
+    }
+
+    private boolean updateExtra(String nodeId, NodeType nodeType, String oldExtra,
+                                Integer showRecordHistory,
+                                NodeEmbedPageRo embedPage) {
+        if (null == showRecordHistory && null == embedPage) {
+            // dont need to update
+            return true;
+        }
+        Dict extra = Dict.create();
+        // Modify whether to display the history of the record
+        if (ObjectUtil.isNotNull(showRecordHistory) && NodeType.DATASHEET.equals(nodeType)) {
+            extra.set(NodeExtraConstants.SHOW_RECORD_HISTORY, showRecordHistory);
+        }
+        // embed page info
+        if (ObjectUtil.isNotNull(embedPage) && NodeType.CUSTOM_PAGE.equals(nodeType)) {
+            extra.set(NodeExtraConstants.EMBED_PAGE, embedPage);
+        }
+        if (null == oldExtra) {
+            return SqlHelper.retBool(
+                baseMapper.insertExtraByNodeId(nodeId, JSONUtil.toJsonStr(extra)));
+        } else {
+            return SqlHelper.retBool(
+                baseMapper.updateExtraByNodeId(nodeId, JSONUtil.toJsonStr(extra)));
+        }
     }
 
 }

@@ -21,7 +21,7 @@ import React from 'react';
 import { makeIcon, IIconProps } from '../utils/icon';
 
 export const FolderNormalOutlined: React.FC<IIconProps> = makeIcon({
-    Path: ({ colors }) => <>
+  Path: ({ colors }) => <>
     <path d="M5.39064 1.99988C5.67642 1.99988 5.95358 2.0978 6.17592 2.27734L7.38038 3.24988H14.25C14.9404 3.24988 15.5 3.80952 15.5 4.49988L15.5 12.7499C15.5 13.4402 14.9404 13.9999 14.25 13.9999H2.75C2.05964 13.9999 1.5 13.4402 1.5 12.7499V3.24988C1.5 2.55952 2.05964 1.99988 2.75 1.99988H5.39064ZM6.50677 4.47242L5.30231 3.49988H3V6H14V4.74988H7.29205C7.00627 4.74988 6.72912 4.65195 6.50677 4.47242ZM14 7.5H3V12.4999H14L14 7.5Z" fill={ colors[0] } fillRule="evenodd" clipRule="evenodd"/>
 
   </>,

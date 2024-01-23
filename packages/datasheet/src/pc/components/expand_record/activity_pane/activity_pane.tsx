@@ -31,6 +31,7 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ACTIVITY_SELECT_MAP, ActivitySelectType } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { ActivityContext } from './activity_context';
@@ -39,8 +40,6 @@ import { ActivityList } from './activity_list/activity_list';
 import { CommentEditor } from './comment_editor';
 import { IActivityPaneProps, ICacheType, IChooseComment } from './interface';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const ActivityPaneBase: React.FC<React.PropsWithChildren<IActivityPaneProps>> = (props) => {
   const { expandRecordId, datasheetId, viewId, mirrorId, fromCurrentDatasheet, style, closable, onClose } = props;
@@ -224,4 +223,6 @@ export const ActivityPaneBase: React.FC<React.PropsWithChildren<IActivityPanePro
   );
 };
 
-export const ActivityPane = React.memo(ActivityPaneBase);
+const ActivityPane = React.memo(ActivityPaneBase);
+
+export default ActivityPane;

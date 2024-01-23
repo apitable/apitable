@@ -95,14 +95,7 @@ export const Card: FC<React.PropsWithChildren<ICardProps>> = (props) => {
 
   const detail = (
     <>
-      <Desc
-        color={_strokeColor}
-        label={t(Strings.used)}
-        text={usedText}
-        unit={unit}
-        showPercent={showPercent}
-        usedPercent={usedPercent}
-      />
+      <Desc color={_strokeColor} label={t(Strings.used)} text={usedText} unit={unit} showPercent={showPercent} usedPercent={usedPercent} />
       {!unLimited && (
         <Desc color={trailColor} label={t(Strings.remain)} text={remainText} unit={unit} showPercent={showPercent} usedPercent={remainPercent} />
       )}

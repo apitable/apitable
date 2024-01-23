@@ -20,8 +20,19 @@ import { isNull } from 'util';
 import classNames from 'classnames';
 import * as React from 'react';
 import { shallowEqual } from 'react-redux';
-import { useThemeColors, Typography } from '@apitable/components';
-import { BasicValueType, Field, FieldType, getTextFieldType, ICellValue, IField, IViewColumn, Selectors, Strings, t } from '@apitable/core';
+import { Typography, useThemeColors } from '@apitable/components';
+import {
+  BasicValueType,
+  Field,
+  FieldType,
+  getTextFieldType,
+  ICellValue,
+  IField,
+  IViewColumn,
+  Selectors,
+  Strings,
+  t
+} from '@apitable/core';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
@@ -50,7 +61,7 @@ interface IGalleryCardBodyProps {
   isGallery?: boolean;
 }
 
-const SINGLE_TEXT_TYPE = [FieldType.Formula, FieldType.Number, FieldType.Currency, FieldType.Percent, FieldType.DateTime];
+const SINGLE_TEXT_TYPE = [FieldType.Formula, FieldType.Number, FieldType.Currency, FieldType.Percent, FieldType.DateTime, FieldType.Button];
 
 export const CardBody: React.FC<React.PropsWithChildren<IGalleryCardBodyProps>> = (props) => {
   const { visibleFields, recordId, showEmptyField, multiTextMaxLine, isColNameVisible, className, isVirtual, isGallery, datasheetId } = props;

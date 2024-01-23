@@ -46,7 +46,6 @@ export const Typography: FC<React.PropsWithChildren<ITypographyProps>> = (props)
     color = '',
     children,
     ellipsis = false,
-    tooltipsZIndex,
     ...rest
   } = props;
   const typographyRef = useRef<HTMLDivElement>();

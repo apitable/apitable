@@ -27,11 +27,10 @@ import { TComponent } from 'pc/components/common/t_component';
 import { ITreeViewRef, TreeItem, TreeView } from 'pc/components/common/tree_view';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { isTouchDevice, shouldOpenInNewTab } from 'pc/utils';
 import { NodeItem } from './node_item';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const EMOJI_SIZE = 20;
 
@@ -69,6 +68,7 @@ const TreeBase: FC<React.PropsWithChildren<ITreeProps>> = ({ rightClick }) => {
     ConfigConstant.NodeType.DASHBOARD,
     ConfigConstant.NodeType.MIRROR,
     ConfigConstant.NodeType.AI,
+    ConfigConstant.NodeType.EMBED_PAGE,
   ]);
 
   const onContextMenu = (e: React.MouseEvent) => {

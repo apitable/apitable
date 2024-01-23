@@ -45,7 +45,7 @@
     overflow-wrap: break-word;
     -webkit-text-fill-color: transparent;
     -webkit-user-modify: read-write-plaintext-only;
-    .light-scroll-bar();
+    .default-scroll-bar();
 
     &:focus {
       box-shadow: none;
@@ -76,7 +76,7 @@
     font-variant: tabular-nums;
     list-style: none;
 
-    .light-scroll-bar();
+    .default-scroll-bar();
 
     @media (any-hover: hover) {
       &:hover::-webkit-scrollbar-thumb {
@@ -120,7 +120,7 @@
       flex-grow: 1;
       overflow-x: hidden;
       overflow-y: scroll;
-      .light-scroll-bar();
+      .default-scroll-bar();
 
       .summary {
         display: flex;

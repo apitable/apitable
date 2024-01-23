@@ -27,7 +27,6 @@ import com.apitable.organization.dto.MemberDTO;
 import com.apitable.organization.dto.MemberTeamInfoDTO;
 import com.apitable.organization.dto.SearchMemberDTO;
 import com.apitable.organization.dto.SpaceMemberDTO;
-import com.apitable.organization.dto.SpaceMemberIdDTO;
 import com.apitable.organization.dto.TenantMemberDto;
 import com.apitable.organization.entity.MemberEntity;
 import com.apitable.organization.vo.MemberInfoVo;
@@ -35,10 +34,8 @@ import com.apitable.organization.vo.SearchMemberVo;
 import com.apitable.organization.vo.UnitMemberVo;
 import com.apitable.player.dto.PlayerBaseDTO;
 import com.apitable.space.vo.MainAdminInfoVo;
-import com.apitable.workspace.dto.MemberInfoDTO;
 import com.apitable.workspace.vo.FieldRoleMemberVo;
 import com.apitable.workspace.vo.NodeRoleMemberVo;
-import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,13 +119,6 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/sql/unit-member-data.sql")
-    void testSelectDtoByUserIdAndSpaceId() {
-        MemberDTO entity = memberMapper.selectDtoByUserIdAndSpaceId(41L, "spc41");
-        assertThat(entity).isNotNull();
-    }
-
-    @Test
     @Sql({"/sql/unit-member-data.sql", "/sql/user-data.sql"})
     void testSelectDtoByMemberId() {
         MemberDTO entity = memberMapper.selectDtoByMemberId(41L);
@@ -158,8 +148,15 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
 
     @Test
     @Sql("/sql/unit-member-data.sql")
-    void testSelectMemberIdByUserIdAndSpaceIdExcludeDelete() {
-        Long id = memberMapper.selectMemberIdByUserIdAndSpaceIdExcludeDelete(41L, "spc41");
+    void testSelectIdByUserIdAndSpaceIdIsNull() {
+        Long id = memberMapper.selectIdByUserIdAndSpaceId(40L, "spc41");
+        assertThat(id).isEqualTo(null);
+    }
+
+    @Test
+    @Sql("/sql/unit-member-data.sql")
+    void testSelectMemberIdByUserIdAndSpaceIdIncludeDeleted() {
+        Long id = memberMapper.selectMemberIdByUserIdAndSpaceIdIncludeDeleted(41L, "spc41");
         assertThat(id).isEqualTo(41L);
     }
 
@@ -300,10 +297,10 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
 
     @Test
     @Sql("/sql/unit-member-data.sql")
-    void testSelectIdsByEmailsAndSpaceId() {
-        List<Long> entities =
-            memberMapper.selectIdsByEmailsAndSpaceId(CollUtil.newArrayList("41@apitable.com"),
-                "spc41");
+    void testSelectEmailBySpaceIdAndEmails() {
+        List<String> entities =
+            memberMapper.selectEmailBySpaceIdAndEmails("spc41",
+                CollUtil.newArrayList("41@apitable.com"));
         assertThat(entities).isNotEmpty();
     }
 
@@ -340,9 +337,11 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
 
     @Test
     @Sql("/sql/unit-member-data.sql")
-    void testSelectByUserIdAndSpaceIdIgnoreDelete() {
-        MemberEntity entity = memberMapper.selectByUserIdAndSpaceIdIgnoreDelete(41L, "spc41");
+    void testSelectByUserIdAndSpaceIdIncludeDeleted() {
+        MemberEntity entity = memberMapper.selectByUserIdAndSpaceIdIncludeDeleted(41L, "spc41");
         assertThat(entity).isNotNull();
+        assertThat(entity.getId()).isEqualTo(41L);
+        assertThat(entity.getIsDeleted()).isFalse();
     }
 
     @Test
@@ -504,14 +503,6 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
     }
 
     @Test
-    @Sql("/sql/unit-member-data.sql")
-    void testSelectMemberIdsByUserIdAndSpaceIds() {
-        List<SpaceMemberIdDTO> dtos = memberMapper.selectMemberIdsByUserIdAndSpaceIds(45L,
-            Collections.singletonList("spc45"));
-        assertThat(dtos.size()).isEqualTo(1);
-    }
-
-    @Test
     @Sql("/sql/unit-team-member-rel-data.sql")
     void testSelectTeamIdsByMemberIds() {
         List<Long> memberIds = CollUtil.newArrayList(41L, 45L);
@@ -521,15 +512,6 @@ public class MemberMapperTest extends AbstractMyBatisMapperTest {
         assertThat(memberTeamInfoDTOS.get(0).getTeamId()).isEqualTo(41);
         assertThat(memberTeamInfoDTOS.get(1).getMemberId()).isEqualTo(45);
         assertThat(memberTeamInfoDTOS.get(1).getTeamId()).isEqualTo(45);
-    }
-
-    @Test
-    @Sql("/sql/unit-member-data.sql")
-    void testSelectIdByUserIdAndSpaceIdExcludeDelete() {
-        MemberInfoDTO memberInfoDTO =
-            memberMapper.selectIdByUserIdAndSpaceIdExcludeDelete(41L, "spc41");
-        assertThat(memberInfoDTO.getId()).isEqualTo(41L);
-        assertThat(memberInfoDTO.getIsDeleted()).isFalse();
     }
 }
 

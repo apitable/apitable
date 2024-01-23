@@ -288,8 +288,8 @@
   --shadowColor: rgba(61, 61, 61, 1);
   --rowSelectedBg: rgba(255, 255, 255, 0.08);
   --lowestBg: rgba(13, 13, 13, 1);
-  --bgBglessSolidActive: rgba(62, 62, 62, 1);
-  --bgBglessSolidHover: rgba(43, 43, 43, 1);
+  --bgBglessActiveSolid: rgba(62, 62, 62, 1);
+  --bgBglessHoverSolid: rgba(43, 43, 43, 1);
   --bgStaticLightDisabled: rgba(255, 255, 255, 0.5);
   --bgStaticLightActive: rgba(255, 255, 255, 0.68);
   --bgStaticLightHover: rgba(255, 255, 255, 0.84);
@@ -423,8 +423,8 @@
   --bgTagHover: rgba(255, 255, 255, 0.24);
   --bgTagActive: rgba(255, 255, 255, 0.32);
   --bgTagDisabled: rgba(255, 255, 255, 0.08);
-  --bgScrollbarDefault: rgba(255, 255, 255, 0.16);
-  --bgScrollbarHover: rgba(255, 255, 255, 0.24);
+  --bgScrollbarDefault: rgba(88, 89, 89, 1);
+  --bgScrollbarHover: rgba(114,114,115,1);
   --bgScrollbarActive: rgba(255, 255, 255, 0.32);
   --bgMaskDefault: rgba(0, 0, 0, 0.72);
   --bgBrandDefault: rgba(144, 127, 240, 1);
@@ -715,8 +715,8 @@
   --rowSelectedBg-rgb: 245, 247, 250;
   --lowestBg: #F5F7FA;
   --lowestBg-rgb: 245, 247, 250;
-  --bgBglessSolidActive: rgba(230, 230, 230, 1);
-  --bgBglessSolidHover: rgba(243, 243, 243, 1);
+  --bgBglessActiveSolid: rgba(230, 230, 230, 1);
+  --bgBglessHoverSolid: rgba(243, 243, 243, 1);
   --bgStaticLightDisabled: rgba(255, 255, 255, 0.5);
   --bgStaticLightActive: rgba(255, 255, 255, 0.68);
   --bgStaticLightHover: rgba(255, 255, 255, 0.84);
@@ -850,8 +850,8 @@
   --bgTagHover: rgba(51, 51, 51, 0.18);
   --bgTagActive: rgba(51, 51, 51, 0.24);
   --bgTagDisabled: rgba(51, 51, 51, 0.06);
-  --bgScrollbarDefault: rgba(219, 219, 219, 1);
-  --bgScrollbarHover: rgba(207, 207, 207, 1);
+  --bgScrollbarDefault: rgba(192, 193,194, 1);
+  --bgScrollbarHover: rgba(172, 173,173, 1);
   --bgScrollbarActive: rgba(194, 194, 194, 1);
   --bgMaskDefault: rgba(0, 0, 0, 0.5);
   --bgBrandDefault: rgba(123, 103, 238, 1);

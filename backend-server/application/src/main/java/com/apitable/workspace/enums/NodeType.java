@@ -84,6 +84,11 @@ public enum NodeType {
     AIRAGENT(11),
 
     /**
+     * custom page.
+     */
+    CUSTOM_PAGE(12),
+
+    /**
      * static resource file.
      */
     ASSET_FILE(98),

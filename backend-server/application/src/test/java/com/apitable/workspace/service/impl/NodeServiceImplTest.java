@@ -24,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.util.Lists.list;
 
+import cn.hutool.json.JSONUtil;
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
@@ -39,7 +40,9 @@ import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.NodeTreeDTO;
 import com.apitable.workspace.entity.NodeEntity;
 import com.apitable.workspace.enums.NodeType;
+import com.apitable.workspace.ro.NodeEmbedPageRo;
 import com.apitable.workspace.ro.NodeOpRo;
+import com.apitable.workspace.ro.NodeRelRo;
 import com.apitable.workspace.ro.NodeUpdateOpRo;
 import com.apitable.workspace.vo.NodeInfoTreeVo;
 import com.apitable.workspace.vo.NodeInfoVo;
@@ -574,6 +577,98 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         List<String> childNodeIds =
             nodes.stream().map(NodeInfoVo::getNodeId).collect(Collectors.toList());
         assertThat(childNodeIds.contains(nodeId)).isTrue();
+    }
+
+    @Test
+    void testCreateEmbedPageNode() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeRelRo nodeRelRo = new NodeRelRo();
+        NodeEmbedPageRo nodeEmbedPageRo = new NodeEmbedPageRo();
+        nodeEmbedPageRo.setType("figma");
+        nodeEmbedPageRo.setUrl("test");
+        nodeRelRo.setEmbedPage(nodeEmbedPageRo);
+        NodeOpRo op = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.CUSTOM_PAGE.getNodeType())
+            .nodeName("embed_page")
+            .extra(nodeRelRo)
+            .build();
+        DefaultSubscriptionFeature feature = new DefaultSubscriptionFeature();
+        SubscriptionInfo subscriptionInfo = new MockSubscriptionInfo(feature);
+        Mockito.doReturn(subscriptionInfo).when(entitlementServiceFacade)
+            .getSpaceSubscription(userSpace.getSpaceId());
+        String nodeId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), op);
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(),
+            userSpace.getSpaceId());
+        List<NodeInfoVo> nodes =
+            iNodeService.getChildNodesByNodeId(userSpace.getSpaceId(), memberId, rootNodeId,
+                NodeType.CUSTOM_PAGE);
+        List<String> childNodeIds =
+            nodes.stream().map(NodeInfoVo::getNodeId).toList();
+        assertThat(childNodeIds.contains(nodeId)).isTrue();
+    }
+
+    @Test
+    void testUpdateNodeEmbedPageWithNullExtra() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        MockSubscriptionFeature feature = new MockSubscriptionFeature();
+        feature.setAiAgentNums(-1L);
+        feature.setFileNodeNums(-1L);
+        SubscriptionInfo subscriptionInfo = new MockSubscriptionInfo(feature);
+        Mockito.doReturn(subscriptionInfo).when(entitlementServiceFacade)
+            .getSpaceSubscription(userSpace.getSpaceId());
+        NodeOpRo createRo = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.CUSTOM_PAGE.getNodeType())
+            .nodeName("embed_page")
+            .build();
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), createRo);
+        NodeUpdateOpRo updateOpRo = new NodeUpdateOpRo();
+        NodeEmbedPageRo nodeEmbedPageRo = new NodeEmbedPageRo();
+        nodeEmbedPageRo.setType("figma");
+        nodeEmbedPageRo.setUrl("test");
+        updateOpRo.setEmbedPage(nodeEmbedPageRo);
+        iNodeService.edit(userSpace.getUserId(), nodeId, updateOpRo);
+
+        NodeEntity nodeEntity = iNodeService.getByNodeId(nodeId);
+        assertThat(JSONUtil.toBean(nodeEntity.getExtra(), NodeUpdateOpRo.class))
+            .isEqualTo(updateOpRo);
+    }
+
+    @Test
+    void testUpdateNodeEmbedPageWithNotNullExtra() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        MockSubscriptionFeature feature = new MockSubscriptionFeature();
+        feature.setAiAgentNums(-1L);
+        feature.setFileNodeNums(-1L);
+        SubscriptionInfo subscriptionInfo = new MockSubscriptionInfo(feature);
+        Mockito.doReturn(subscriptionInfo).when(entitlementServiceFacade)
+            .getSpaceSubscription(userSpace.getSpaceId());
+        NodeOpRo createRo = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.CUSTOM_PAGE.getNodeType())
+            .nodeName("embed_page")
+            .build();
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), createRo);
+        NodeUpdateOpRo updateOpRo = new NodeUpdateOpRo();
+        NodeEmbedPageRo nodeEmbedPageRo = new NodeEmbedPageRo();
+        nodeEmbedPageRo.setType("figma");
+        nodeEmbedPageRo.setUrl("test");
+        updateOpRo.setEmbedPage(nodeEmbedPageRo);
+        iNodeService.edit(userSpace.getUserId(), nodeId, updateOpRo);
+        NodeEmbedPageRo nodeEmbedPageRo2 = new NodeEmbedPageRo();
+        nodeEmbedPageRo2.setType("document");
+        nodeEmbedPageRo2.setUrl("test");
+        updateOpRo.setEmbedPage(nodeEmbedPageRo2);
+        iNodeService.edit(userSpace.getUserId(), nodeId, updateOpRo);
+        NodeEntity nodeEntity = iNodeService.getByNodeId(nodeId);
+        assertThat(JSONUtil.toBean(nodeEntity.getExtra(), NodeUpdateOpRo.class)).isEqualTo(
+            updateOpRo);
     }
 
 }

@@ -22,7 +22,8 @@ import { BaseEditor, Selection, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
 import {
   ACTION_INPUT_PARSER_BASE_FUNCTIONS,
-  EmptyNullOperand, FieldType,
+  EmptyNullOperand,
+  FieldType,
   IExpression,
   IExpressionOperand,
   IField,
@@ -51,7 +52,7 @@ const functionNameMap = {
 export interface ISchemaPropertyListItem {
   key: string;
   label?: string;
-  icon ?: string | Element|undefined;
+  icon?: string | Element | undefined;
 
   schema?: IJsonSchema;
   uiSchema?: any;
@@ -270,7 +271,6 @@ export const getCurrentVariableList = (props: {
   const { schemaExpressionList, nodeOutputSchemaList, isJSONField = false } = props;
 
   if (schemaExpressionList.length === 0) {
-
     // The selection list of the first layer is the output of all the predecessor nodes.
     return nodeOutputSchemaList.map(({ id, title, schema, description, icon, uiSchema }) => {
       const expression: IExpression = {
@@ -329,7 +329,7 @@ export const getGroupedVariableList = (props: { variableList: ISchemaPropertyLis
       if (listItem) {
         resList.push({
           ...listItem,
-          icon:listItem.icon ?? listItem?.schema?.icon
+          icon: listItem.icon ?? listItem?.schema?.icon,
         });
       }
       return resList;
@@ -546,18 +546,35 @@ export const insertMagicVariable = (data: any, editor: BaseEditor, callback: () 
     };
     const { lastSelection } = editor as any;
     if (lastSelection) {
-      ReactEditor.focus(editor as any);
+      try {
+        ReactEditor.focus(editor as any);
+      } catch (e) {
+        console.error('ReactEditor.focus', e);
+      }
       Transforms.select(editor, lastSelection);
       if (!isSafari) {
         // Delete / , insert magic variable
-        Transforms.delete(editor, { distance: 1, unit: 'character', reverse: true });
+        try {
+          Transforms.delete(editor, { distance: 1, unit: 'character', reverse: true });
+        } catch (e) {
+          console.error('Transforms.delete', e);
+        }
       }
-      Transforms.insertNodes(editor, [mv]);
-      // slate transform moves the cursor to the newly inserted position
-      Transforms.move(editor, {
-        distance: 1,
-        unit: 'offset',
-      });
+      try {
+        Transforms.insertNodes(editor, [mv]);
+      } catch (e) {
+        console.error('Transforms.insertNodes', e);
+      }
+
+      try {
+        // slate transform moves the cursor to the newly inserted position
+        Transforms.move(editor, {
+          distance: 1,
+          unit: 'offset',
+        });
+      } catch (e) {
+        console.error('Transforms.move', e);
+      }
     }
     callback();
   }, 0);

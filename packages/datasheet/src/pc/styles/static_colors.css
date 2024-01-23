@@ -25,7 +25,6 @@
   --static-delete-bg: var(--red_200);
   --static-delete-bg-rgb: 255, 180, 175;
   --static-add-bg: var(--teal_200);
-  --static-add-bg-rgb: 139, 221, 190;
 }
 
 :root[data-theme="light"] {

@@ -18,6 +18,7 @@
 
 package com.apitable.automation.service.impl;
 
+import static com.apitable.automation.enums.AutomationException.AUTOMATION_ROBOT_NOT_EXIST;
 import static com.apitable.automation.model.ActionSimpleVO.actionComparator;
 import static com.apitable.automation.model.TriggerSimpleVO.triggerComparator;
 import static java.util.stream.Collectors.groupingBy;
@@ -46,6 +47,7 @@ import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.automation.service.IAutomationTriggerService;
 import com.apitable.automation.service.IAutomationTriggerTypeService;
 import com.apitable.core.exception.BusinessException;
+import com.apitable.core.util.ExceptionUtil;
 import com.apitable.internal.service.impl.InternalSpaceServiceImpl;
 import com.apitable.internal.vo.InternalSpaceAutomationRunMessageV0;
 import com.apitable.shared.util.IdUtil;
@@ -66,6 +68,7 @@ import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.NodeInfo;
 import com.apitable.workspace.vo.NodeSimpleVO;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import jakarta.annotation.Resource;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -439,6 +442,17 @@ public class AutomationRobotServiceImpl implements IAutomationRobotService {
             log.error("Get robot runs count by spaceId error", e);
             return 0L;
         }
+    }
+
+    @Override
+    public void checkRobotExists(String robotId) {
+        ExceptionUtil.isTrue(SqlHelper.retBool(robotMapper.selectCountByRobotId(robotId)),
+            AUTOMATION_ROBOT_NOT_EXIST);
+    }
+
+    @Override
+    public void updateUpdaterByRobotId(String robotId, Long updatedBy) {
+        robotMapper.updateUpdatedByRobotId(robotId, updatedBy);
     }
 
     private AutomationRobotIntroductionSO getRobotsByResourceIdFromDatabus(String resourceId) {

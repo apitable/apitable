@@ -48,7 +48,8 @@ import {
   getTimeZoneAbbrByUtc,
   getToday,
   IDateTimeField,
-  IRecordAlarmClient, isDstDate,
+  IRecordAlarmClient,
+  isDstDate,
   ITimestamp,
   notInTimestampRange,
   Selectors,
@@ -181,7 +182,8 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     let curTimeValue = timeValue;
     if (date && !ignoreSetTime) {
       if (timeZone) {
-        curTimeValue = dayjs.tz(date?.format('YYYY-MM-DD HH:mm'))
+        curTimeValue = dayjs
+          .tz(date?.format('YYYY-MM-DD HH:mm'))
           .tz(timeZone)
           .format('HH:mm');
       } else {

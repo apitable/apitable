@@ -26,10 +26,7 @@ import moment from 'moment-timezone';
 dayjs.extend(duration);
 dayjs.extend(customParseFormat);
 
-export function str2timestamp(
-  value: string | null,
-  dateFormat?: string,
-): ITimestamp | null {
+export function str2timestamp(value: string | null, dateFormat?: string): ITimestamp | null {
   if (!value) {
     return null;
   }
@@ -65,12 +62,14 @@ export function str2time(value: string, _field?: IDateTimeField) {
   if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
     return;
   }
-  return dayjs.duration({
-    hours,
-    minutes,
-    // seconds: parseInt(s, 10),
-    // milliseconds: dateTime.millisecond(),
-  }).asMilliseconds();
+  return dayjs
+    .duration({
+      hours,
+      minutes,
+      // seconds: parseInt(s, 10),
+      // milliseconds: dateTime.millisecond(),
+    })
+    .asMilliseconds();
 }
 
 export const isDstDate = (date: string, timeZone?: string) => {
@@ -83,7 +82,9 @@ export const diffTimeZone = (timeZone?: string, isdstDate?: boolean) => {
   const tzOffset = getTimeZoneOffsetByUtc(timeZone, isdstDate)!;
   const clientTimeZone = getTimeZone();
   const clientTzOffset = getTimeZoneOffsetByUtc(clientTimeZone, isdstDate)!;
-  return dayjs.duration({
-    hours: clientTzOffset - tzOffset
-  }).asMilliseconds();
+  return dayjs
+    .duration({
+      hours: clientTzOffset - tzOffset,
+    })
+    .asMilliseconds();
 };

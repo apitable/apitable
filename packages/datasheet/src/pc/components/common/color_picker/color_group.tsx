@@ -21,7 +21,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { FC, useState } from 'react';
 import styled from 'styled-components';
-import { Box, FloatUiTooltip, Typography } from '@apitable/components';
+import { Box, FloatUiTooltip, Typography, TooltipBase } from '@apitable/components';
 import { ButtonStyleType, ISelectFieldOption, Selectors, Strings, t } from '@apitable/core';
 import { AutomationConstant } from 'pc/components/automation/config';
 import { setColor, useColorColorWheel } from 'pc/components/multi_grid/format';
@@ -39,13 +39,16 @@ export interface IColorGroupProps {
   disabled?: boolean;
   itemStyle?: React.CSSProperties;
   options?: {
-    style?: ButtonStyleType,
+    style?: ButtonStyleType;
     content?: string;
   };
 }
 
 const StyledFloatUiTooltip = styled(FloatUiTooltip)`
   padding: 0 !important;
+`;
+
+const StyledTooltipBase = styled(TooltipBase)`
 `;
 
 export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props) => {
@@ -55,10 +58,10 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props)
   const cacheTheme = useAppSelector(Selectors.getTheme);
 
   const colorList = useColorColorWheel(cacheTheme);
-  const getTextColor=(color: number) => {
-    let textColor : string= colors.textStaticPrimary;
-    if(cacheTheme === 'dark') {
-      if(color === AutomationConstant.whiteColor) {
+  const getTextColor = (color: number) => {
+    let textColor: string = colors.textStaticPrimary;
+    if (cacheTheme === 'dark') {
+      if (color === AutomationConstant.whiteColor) {
         textColor = colors.textReverseDefault;
       }
     }
@@ -101,25 +104,25 @@ export const ColorGroup: FC<React.PropsWithChildren<IColorGroupProps>> = (props)
               <StyledFloatUiTooltip
                 placement={'top'}
                 content={
-                  <>
-                    {
-                      options?.style === ButtonStyleType.Background ? (
-                        <Box backgroundColor={colorList[colorIndex]} padding={'6px 12px'} borderRadius={'4px'}>
-                          <Typography variant={'body4'} color={textColor}>
-                            {props?.options?.content}
-                          </Typography>
-                        </Box>
-                      ): (
-                        <Box backgroundColor={colors.bgCommonDefault}
-                          boxShadow={'0px 12px 24px 0px rgba(0, 0, 0, 0.16), 0px 3px 6px 0px rgba(0, 0, 0, 0.12)'}
-                          border={`1px solid ${colors.borderCommonDefault}`} padding={'6px 12px'} borderRadius={'4px'}>
-                          <Typography variant={'body4'} color={colorList[colorIndex]}>
-                            {props?.options?.content}
-                          </Typography>
-                        </Box>
-                      )
-                    }
-                  </>
+                  <StyledTooltipBase>
+                    {options?.style === ButtonStyleType.Background ? (
+                      <Box backgroundColor={colorList[colorIndex]} padding={'6px 12px'} borderRadius={'4px'}>
+                        <Typography variant={'body4'} color={textColor}>
+                          {props?.options?.content}
+                        </Typography>
+                      </Box>
+                    ) : (
+                      <Box
+                        backgroundColor={colors.bgCommonDefault}
+                        padding={'6px 12px'}
+                        borderRadius={'4px'}
+                      >
+                        <Typography variant={'body4'} color={colorList[colorIndex]}>
+                          {props?.options?.content}
+                        </Typography>
+                      </Box>
+                    )}
+                  </StyledTooltipBase>
                 }
               >
                 <div

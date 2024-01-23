@@ -22,14 +22,12 @@ import com.apitable.base.enums.EmailCodeType;
 import com.apitable.base.enums.SmsCodeType;
 import com.apitable.base.ro.EmailOpRo;
 import com.apitable.base.ro.SmsOpRo;
-import com.apitable.base.service.IActionService;
 import com.apitable.core.support.ResponseData;
 import com.apitable.interfaces.eventbus.facade.EventBusFacade;
 import com.apitable.interfaces.eventbus.model.CaptchaEvent;
 import com.apitable.interfaces.security.facade.HumanVerificationServiceFacade;
 import com.apitable.interfaces.security.model.NonRobotMetadata;
 import com.apitable.organization.ro.InviteValidRo;
-import com.apitable.organization.vo.InviteInfoVo;
 import com.apitable.shared.captcha.CodeValidateScope;
 import com.apitable.shared.captcha.ValidateCodeProcessor;
 import com.apitable.shared.captcha.ValidateCodeProcessorManage;
@@ -39,6 +37,8 @@ import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
 import com.apitable.shared.util.information.ClientOriginInfo;
 import com.apitable.shared.util.information.InformationUtil;
+import com.apitable.space.service.ISpaceInvitationService;
+import com.apitable.space.vo.EmailInvitationValidateVO;
 import com.apitable.user.ro.EmailCodeValidateRo;
 import com.apitable.user.ro.SmsCodeValidateRo;
 import com.apitable.user.service.IUserService;
@@ -59,7 +59,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ActionController {
 
     @Resource
-    private IActionService iActionService;
+    private ISpaceInvitationService iSpaceInvitationService;
 
     @Resource
     private IUserService userService;
@@ -163,13 +163,17 @@ public class ActionController {
     /**
      * Invitation temporary code verification.
      */
+    @Deprecated(since = "v1.10.0")
     @PostResource(path = "/invite/valid", requiredLogin = false)
     @Operation(summary = "Invitation temporary code verification",
         description = "Invitation link token verification, the relevant invitation"
             + " information can be obtained after the verification is successful")
-    public ResponseData<InviteInfoVo> inviteTokenValid(@RequestBody @Valid InviteValidRo data) {
+    public ResponseData<EmailInvitationValidateVO> inviteTokenValid(
+        @RequestBody @Valid InviteValidRo data
+    ) {
         // Invitation code verification
-        InviteInfoVo inviteInfoVo = iActionService.inviteValidate(data.getToken());
+        EmailInvitationValidateVO inviteInfoVo =
+            iSpaceInvitationService.validEmailInvitation(data.getToken());
         return ResponseData.success(inviteInfoVo);
     }
 }

@@ -99,6 +99,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
   const { insertDirection = 'vertical', hideInsert, menuId, extraData } = props;
   const recordRanges = useAppSelector((state) => Selectors.getSelectionRecordRanges(state));
   const view = useAppSelector((state) => Selectors.getCurrentView(state))!;
+  const permission = useAppSelector((state) => Selectors.getPermissions(state, datasheetId));
   const isOrgChart = view.type === ViewType.OrgChart;
   const isCalendar = view.type === ViewType.Calendar;
   const isGallery = view.type === ViewType.Gallery;
@@ -496,7 +497,7 @@ export const RecordMenu: React.FC<React.PropsWithChildren<IRecordMenuProps>> = (
         icon: <CopyOutlined color={colors.thirdLevelText} />,
         text: t(Strings.copy_from_cell),
         shortcutKey: getShortcutKeyString(ShortcutActionName.Copy),
-        hidden: isCalendar || isGallery || isKanban,
+        hidden: isCalendar || isGallery || isKanban || !permission.copyable,
         onClick: onCopy,
       },
       // TODO: paste because of browser security restrictions,

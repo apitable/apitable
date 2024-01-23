@@ -24,6 +24,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.io.RandomAccessReadBuffer;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.slf4j.Logger;
@@ -51,13 +53,13 @@ public class PdfToImageUtil {
     public static InputStream convert(InputStream pdfIn) {
         PDDocument document = null;
         try {
-            document = PDDocument.load(pdfIn);
+            document = Loader.loadPDF(new RandomAccessReadBuffer(pdfIn));
             PDFRenderer renderer = new PDFRenderer(document);
             BufferedImage image = renderer.renderImage(0, 0.5f);
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             ImageIO.write(image, "JPEG", os);
             return new ByteArrayInputStream(os.toByteArray());
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOG.error("unable to load pdf", e);
             return null;
         } finally {

@@ -225,6 +225,7 @@ test-ut-backend-run:
 	RABBITMQ_PORT=5672 \
 	RABBITMQ_USERNAME=apitable \
 	RABBITMQ_PASSWORD=password \
+	BACKEND_GRPC_PORT=-1 \
 	./gradlew testCodeCoverageReport --stacktrace
 
 ###### 【backend server unit test】 ######
@@ -509,6 +510,9 @@ _l10n: ## l10n apitable-ce
 	bash ./scripts/language-generate.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base ./packages/i18n-lang/src ./
 	bash ./scripts/l10n.sh ./packages/i18n-lang/src ./packages/l10n/gen ./packages/l10n/base ./packages/l10n/base ./
 	pnpm run build
+
+wizard: ## wizard update
+	npx ts-node ./scripts/enterprise/wizard-update.ts
 
 ### help
 .PHONY: search

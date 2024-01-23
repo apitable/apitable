@@ -66,7 +66,7 @@ const setResolveAlias = (config, options) => {
     static: path.resolve(__dirname, './public/static'),
     enterprise: process.env.IS_ENTERPRISE === 'true' ? path.resolve(__dirname, './src/modules/enterprise') : false,
     // JSON cannot use tree shaking, it needs to be configured here
-    '@apitable/i18n-lang/src/config/strings.json': options.isServer ? '@apitable/i18n-lang/src/config/strings.json' : false
+    '@apitable/i18n-lang/src/config/strings.json': options.isServer ? '@apitable/i18n-lang/src/config/strings.json' : false,
   };
 };
 
@@ -130,7 +130,7 @@ module.exports = (config, options) => {
   // if (process.env.IS_ENTERPRISE === 'true') {
   //   config.resolve.symlinks = false
   // }
-  config.entry = compatibleIE11(config);
+  // config.entry = compatibleIE11(config);
 
   // if (!options.isServer) {
   //     config.externals = config.externals.concat(...[

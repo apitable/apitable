@@ -18,13 +18,20 @@
 
 import React, { useRef, useEffect, useState, FC, MouseEvent, useMemo, memo } from 'react';
 import { createPortal } from 'react-dom';
-import { StyledMenuContainer, StyledSubMenu, StyledMenuItem, StyledMenuItemContent, StyledMenuItemArrow,
-  StyledMenuShadow, StyledMenuItemExtra } from './styled';
+import {
+  StyledMenuContainer,
+  StyledSubMenu,
+  StyledMenuItem,
+  StyledMenuItemContent,
+  StyledMenuItemArrow,
+  StyledMenuShadow,
+  StyledMenuItemExtra,
+} from './styled';
 import { ICacheOverlay, IContextMenuClickState, IContextMenuItemProps, IContextMenuProps } from './interface';
 import { manager } from './event_manager';
 import { IMenuConfig } from './interface';
 import { EVENT_TYPE } from './const';
-import { Tooltip } from 'antd';
+import { FloatUiTooltip as Tooltip } from '../tooltip';
 import { omit } from 'lodash';
 
 const DEFAULT_MENU_WIDTH = 240;
@@ -57,15 +64,18 @@ const ContextMenuWrapper: FC<React.PropsWithChildren<IContextMenuProps>> = (prop
     return info;
   };
 
-  const getHidden = React.useCallback((hidden: any) => {
-    if (!offset) {
-      return;
-    }
-    if (typeof hidden === 'function') {
-      return hidden(getExtraInfo(extraInfo));
-    }
-    return Boolean(hidden);
-  }, [extraInfo, offset]);
+  const getHidden = React.useCallback(
+    (hidden: any) => {
+      if (!offset) {
+        return;
+      }
+      if (typeof hidden === 'function') {
+        return hidden(getExtraInfo(extraInfo));
+      }
+      return Boolean(hidden);
+    },
+    [extraInfo, offset]
+  );
 
   // Cache the current level and index of the menu item at the current level to locate the current parent element
   const cacheOverlay: { [key: string]: ICacheOverlay } | null = useMemo(() => {
@@ -123,21 +133,21 @@ const ContextMenuWrapper: FC<React.PropsWithChildren<IContextMenuProps>> = (prop
   };
 
   // out menu click listen function
-  const handleOuterClick = React.useCallback((e: any) => {
-    const menu = menuRef.current;
-    if (!menu) return;
+  const handleOuterClick = React.useCallback(
+    (e: any) => {
+      const menu = menuRef.current;
+      if (!menu) return;
 
-    if (!menu.contains(e.target)) {
-      cancelContextMenu();
-    }
-  }, [menuRef, cancelContextMenu]);
+      if (!menu.contains(e.target)) {
+        cancelContextMenu();
+      }
+    },
+    [menuRef, cancelContextMenu]
+  );
 
   // menu Item click event
   const handleClick = (item: IContextMenuItemProps, keyPath: string[], e: MouseEvent<HTMLElement>) => {
-    if (
-      (typeof item.disabled === 'function' && item.disabled(getExtraInfo(extraInfo))) ||
-      (typeof item.disabled === 'boolean' && item.disabled)
-    ) {
+    if ((typeof item.disabled === 'function' && item.disabled(getExtraInfo(extraInfo))) || (typeof item.disabled === 'boolean' && item.disabled)) {
       return;
     }
 
@@ -168,7 +178,7 @@ const ContextMenuWrapper: FC<React.PropsWithChildren<IContextMenuProps>> = (prop
   };
 
   // recursion
-  const dfs = (source: IContextMenuItemProps[], results: { key: string, label: JSX.Element }[][], index = 0) => {
+  const dfs = (source: IContextMenuItemProps[], results: { key: string; label: JSX.Element }[][], index = 0) => {
     if (!results[index]) {
       results[index] = [];
     }
@@ -201,7 +211,7 @@ const ContextMenuWrapper: FC<React.PropsWithChildren<IContextMenuProps>> = (prop
         >
           {icon}
           <StyledMenuItemContent variant="body2" ellipsis>
-            {typeof label === 'function' ? label(getExtraInfo(extraInfo)): label}
+            {typeof label === 'function' ? label(getExtraInfo(extraInfo)) : label}
           </StyledMenuItemContent>
           {extraElement && <StyledMenuItemExtra>{extraElement}</StyledMenuItemExtra>}
           {!extraElement && arrow && <StyledMenuItemArrow>{arrow}</StyledMenuItemArrow>}
@@ -209,11 +219,7 @@ const ContextMenuWrapper: FC<React.PropsWithChildren<IContextMenuProps>> = (prop
       );
 
       if (isDisabled && disabledTip) {
-        labelElement = (
-          <Tooltip title={disabledTip}>
-            {labelElement}
-          </Tooltip>
-        );
+        labelElement = <Tooltip content={disabledTip}>{labelElement}</Tooltip>;
       }
 
       results[index]!.push({
@@ -227,17 +233,20 @@ const ContextMenuWrapper: FC<React.PropsWithChildren<IContextMenuProps>> = (prop
   };
 
   // Compatible with the usage of menuId and show
-  const handler = React.useCallback((configs?: IMenuConfig) => {
-    if (!configs) return;
-    const { e, extraInfo } = configs;
-    setContextMenuState({
-      offset: [e.clientX, e.clientY],
-      extraInfo,
-    });
-    if (onShown) {
-      onShown(getExtraInfo(extraInfo));
-    }
-  }, [onShown]);
+  const handler = React.useCallback(
+    (configs?: IMenuConfig) => {
+      if (!configs) return;
+      const { e, extraInfo } = configs;
+      setContextMenuState({
+        offset: [e.clientX, e.clientY],
+        extraInfo,
+      });
+      if (onShown) {
+        onShown(getExtraInfo(extraInfo));
+      }
+    },
+    [onShown]
+  );
 
   const renderChildren = () => {
     if (children) {
@@ -330,11 +339,13 @@ const ContextMenuWrapper: FC<React.PropsWithChildren<IContextMenuProps>> = (prop
           width: ${width}px;
         `;
         child.style.cssText = cssText;
-        lastElement.style.cssText = isOver ? `
+        lastElement.style.cssText = isOver
+          ? `
           left: ${offset[0]! + menuOffset[0]! - subX}px;
           top: ${curTop + innerHeight - (menuSubSpaceHeight + SYADOW_HEIGHT) + menuOffset[1]!}px;
           width: ${width}px;
-        ` : '';
+        `
+          : '';
         calcScroll(child);
         continue;
       }
@@ -363,7 +374,7 @@ const ContextMenuWrapper: FC<React.PropsWithChildren<IContextMenuProps>> = (prop
       // Calculate the left and right offsets. When the remaining space is not enough for placement, take the parent as a reference
       let childStartX = (childList[0] as HTMLElement).offsetLeft + preParentWidthSum + menuOffset[0]!;
       if (childStartX + width > innerWidth) {
-        childStartX -= (preParentWidthSum + width * i);
+        childStartX -= preParentWidthSum + width * i;
       }
 
       let childCssText = `opacity: 1; width: ${width}px;`;
@@ -373,11 +384,13 @@ const ContextMenuWrapper: FC<React.PropsWithChildren<IContextMenuProps>> = (prop
       `;
       childCssText += isOverChild ? `height: ${innerHeight - menuSubSpaceHeight}px; overflow: auto;` : '';
       child.style.cssText = childCssText;
-      lastElement.style.cssText = isOverChild ? `
+      lastElement.style.cssText = isOverChild
+        ? `
         left: ${childStartX}px;
         top: ${childTop + innerHeight - (menuSubSpaceHeight + SYADOW_HEIGHT) + menuOffset[1]!}px;
         width: ${width}px;
-      ` : '';
+      `
+        : '';
       calcScroll(child);
     }
   }, [offset, paths, menuRef, menuOffset, cacheOverlay, menuSubSpaceHeight, width, setContextMenuState, onShown]);

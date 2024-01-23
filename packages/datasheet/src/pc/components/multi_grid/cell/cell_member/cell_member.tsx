@@ -49,7 +49,7 @@ import optionalStyle from '../optional_cell_container/style.module.less';
 import { MemberItem } from './member_item';
 import styles from './styles.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 interface ICellMember extends ICellComponentProps {
   field: IMemberField;
@@ -148,13 +148,13 @@ export const CellMember: React.FC<React.PropsWithChildren<ICellMember>> = (props
 
             // The current user flag appears when filtering only
             if (item === OtherTypeUnitId.Self) {
-              const { uuid, unitId, memberName, nickName } = userInfo;
+              const { uuid, unitId } = userInfo;
               unitInfo = {
                 type: MemberType.Member,
                 userId: uuid,
                 unitId,
                 avatar: '',
-                name: `${t(Strings.add_sort_current_user)}（${memberName || nickName}）`,
+                name: `${t(Strings.add_sort_current_user)}（${t(Strings.add_sort_current_user_tips)}）`,
                 isActive: true,
                 isDeleted: false,
                 isSelf: true,
