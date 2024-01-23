@@ -1,11 +1,21 @@
 # APITable CHANGELOG
 
-## [v1.8.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.8.0-beta.1) (2024-01-08)
+## [v1.8.0-beta.2](https://github.com/apitable/apitable/releases/tag/v1.8.0-beta.2) (2024-01-15)
+
+
+### Bug fixes
+
+* fix: usage warn func ([#1573](https://github.com/apitable/apitable/pull/1573)) @wangkailang 
 
 ### What's more
 
-- sync: hosted cloud ([#1561](https://github.com/apitable/apitable/pull/1561)) @robot518
+* sync: hosted cloud ([#1571](https://github.com/apitable/apitable/pull/1571)) @chalme 
+## [v1.8.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.8.0-beta.1) (2024-01-08)
 
+
+### What's more
+
+* sync: hosted cloud ([#1561](https://github.com/apitable/apitable/pull/1561)) @robot518 
 ## [v1.8.0-beta](https://github.com/apitable/apitable/releases/tag/v1.8.0-beta) (2024-01-02)
 
 ### Bug fixes
