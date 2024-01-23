@@ -21,7 +21,7 @@
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
     "module": "ESNext",
-    "target": "ES2020",
+    "target": "ES2018",
     "outDir": "dist",
     "rootDir": "src",
     "baseUrl": "src",
