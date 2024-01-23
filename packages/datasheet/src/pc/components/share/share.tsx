@@ -79,6 +79,8 @@ const Share: React.FC<React.PropsWithChildren<IShareProps>> = ({ shareInfo }) =>
 
     const { nodeId, viewId, recordId, widgetId } = getPageParams(router.asPath);
 
+    if (nodeId?.startsWith('mir')) return;
+
     setTimeout(() => {
       /**
        * This redirect page should not be recorded in the browsing history.

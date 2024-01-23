@@ -62,13 +62,7 @@ import {
 
 import { getMirror, getMirrorNetworking } from 'modules/database/store/selectors/resource/mirror';
 
-import {
-  FieldType,
-  IField,
-  IFilterInfo,
-  IGroupInfo,
-  IMemberField,
-} from 'types';
+import { FieldType, IField, IFilterInfo, IGroupInfo, IMemberField } from 'types';
 
 import {
   getActiveDatasheetId,
@@ -94,7 +88,7 @@ const defaultKeySelector = (state: IReduxState, datasheetId: string | undefined 
 
 export const getDatasheetIds = createDeepEqualSelector(
   (state: IReduxState) => Object.keys(state.datasheetMap),
-  keys => keys,
+  (keys) => keys
 );
 
 /**
@@ -139,15 +133,15 @@ export const getVisibleColumnsBase = (view?: IViewProperty) => {
 export const getColumnWidth = (column: IGridViewColumn) => (!column || column.width == null ? DEFAULT_COLUMN_WIDTH : column.width);
 
 export const getView = (snapshot: ISnapshot, viewId: string) => {
-  return snapshot.meta.views.find(view => view.id === viewId);
+  return snapshot.meta.views.find((view) => view.id === viewId);
 };
 
 export const getViewIndex = (snapshot: ISnapshot, viewId: string) => {
-  return snapshot.meta.views.findIndex(view => view.id === viewId);
+  return snapshot.meta.views.findIndex((view) => view.id === viewId);
 };
 
 const filterColumnsByPermission = (columns: IViewColumn[], fieldPermissionMap: IFieldPermissionMap | undefined) => {
-  return columns.filter(column => {
+  return columns.filter((column) => {
     // TODO: column permission delete this logic (2nd phase)
     const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, column.fieldId);
     return fieldRole !== Role.None;
@@ -159,7 +153,7 @@ export const getCurrentViewBase = (
   viewId: string | undefined,
   datasheetId?: string,
   fieldPermissionMap?: IFieldPermissionMap | undefined,
-  mirror?: IMirror | null,
+  mirror?: IMirror | null
 ) => {
   if (!viewId) {
     return;
@@ -176,7 +170,7 @@ export const getCurrentViewBase = (
     // we need to update the frozenColumnCount in mirror view when the permissionColumns is changed
     if (mirror?.id && (view.type === ViewType.Grid || view.type === ViewType.Gantt)) {
       let frozenColumnCount = view.frozenColumnCount;
-      view.columns.slice(0, view.frozenColumnCount).forEach(column => {
+      view.columns.slice(0, view.frozenColumnCount).forEach((column) => {
         const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, column.fieldId);
         if (fieldRole === Role.None) {
           frozenColumnCount--;
@@ -195,26 +189,28 @@ export const getCurrentViewBase = (
   }
   return view;
 };
-export const getCurrentView = createCachedSelector<IReduxState,
+export const getCurrentView = createCachedSelector<
+  IReduxState,
   string | undefined | void,
   ISnapshot | undefined,
   string | undefined,
   string | undefined,
   IFieldPermissionMap | undefined,
   IMirror | undefined | null,
-  IViewProperty | undefined>(
-    [
-      getSnapshot,
-      getActiveViewId,
-      (state, datasheetId) => datasheetId || getActiveDatasheetId(state),
-      getFieldPermissionMap,
-      (state: IReduxState) => getMirror(state),
-    ],
-    getCurrentViewBase,
-  )({
+  IViewProperty | undefined
+>(
+  [
+    getSnapshot,
+    getActiveViewId,
+    (state, datasheetId) => datasheetId || getActiveDatasheetId(state),
+    getFieldPermissionMap,
+    (state: IReduxState) => getMirror(state),
+  ],
+  getCurrentViewBase
+)({
   // keySelector: (state, datasheetId) => state.pageParams.mirrorId || datasheetId || getActiveDatasheetId(state),
-    keySelector: defaultKeySelector,
-  });
+  keySelector: defaultKeySelector,
+});
 
 export const getViewByIdWithDefault = (state: IReduxState, datasheetId: string, viewId?: string) => {
   const snapshot = getSnapshot(state, datasheetId);
@@ -268,7 +264,7 @@ export const getFilterInfoExceptInvalid = (state: IReduxState, datasheetId?: str
 
   return {
     ...filterInfo,
-    conditions: filterInfo.conditions.filter(condition => {
+    conditions: filterInfo.conditions.filter((condition) => {
       const fieldMap = snapshot.meta.fieldMap;
       const field = fieldMap[condition.fieldId]!;
 
@@ -298,7 +294,7 @@ export const getGroupInfoWithPermission = (state: IReduxState, groupInfo: IGroup
   if (!groupInfo || !fieldPermissionMap) {
     return groupInfo;
   }
-  return groupInfo.filter(group => {
+  return groupInfo.filter((group) => {
     const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, group.fieldId);
 
     if (fieldRole === Role.None) {
@@ -334,26 +330,30 @@ export const getFieldMapBase = (datasheet: IDatasheetState | null | undefined, f
   return _fieldMap;
 };
 
-export const getFieldMap = createCachedSelector<IReduxState,
+export const getFieldMap = createCachedSelector<
+  IReduxState,
   string | undefined | void,
   undefined | IDatasheetState | null,
   IFieldPermissionMap | undefined,
-  IFieldMap | null | undefined>(
-    [getDatasheet, getFieldPermissionMap],
-    getFieldMapBase,
-  )(defaultKeySelector);
+  IFieldMap | null | undefined
+>(
+  [getDatasheet, getFieldPermissionMap],
+  getFieldMapBase
+)(defaultKeySelector);
 
-export const getFieldMapIgnorePermission = createCachedSelector<IReduxState,
+export const getFieldMapIgnorePermission = createCachedSelector<
+  IReduxState,
   string | undefined | void,
   IDatasheetState | undefined | null,
-  IFieldMap | null | undefined>(
-    [getDatasheet],
-    getFieldMapBase,
-  )(defaultKeySelector);
+  IFieldMap | null | undefined
+>(
+  [getDatasheet],
+  getFieldMapBase
+)(defaultKeySelector);
 
 export const getColumnIndexMap = createSelector<IReduxState, string | undefined, IViewProperty | undefined, { [id: string]: number }>(
   [getCurrentView],
-  view => {
+  (view) => {
     const columnsMap: { [id: string]: number } = {};
     if (!view) {
       return columnsMap;
@@ -362,28 +362,30 @@ export const getColumnIndexMap = createSelector<IReduxState, string | undefined,
       columnsMap[v.fieldId] = k;
     }
     return columnsMap;
-  },
+  }
 );
 
-export const getVisibleColumns = createCachedSelector<IReduxState,
+export const getVisibleColumns = createCachedSelector<
+  IReduxState,
   string | undefined | void,
   IViewProperty | undefined,
   IFieldPermissionMap | undefined,
-  IViewColumn[]>([getCurrentView, getFieldPermissionMap], (view?: IViewProperty, fieldPermissionMap?) => {
+  IViewColumn[]
+>([getCurrentView, getFieldPermissionMap], (view?: IViewProperty, fieldPermissionMap?) => {
   // ignore the first column as hidden
-    return view
-      ? view.columns.filter((item, i) => {
+  return view
+    ? view.columns.filter((item, i) => {
         const fieldRole = getFieldRoleByFieldId(fieldPermissionMap, item.fieldId);
         if (fieldRole === Role.None) {
           return false;
         }
         return !(item.hidden && i !== 0);
       })
-      : [];
-  })(defaultKeySelector);
+    : [];
+})(defaultKeySelector);
 
-export const getVisibleColumnsMap = createSelector([getVisibleColumns], columns => {
-  return new Map(columns.map((item, index) => [item.fieldId, index]));
+export const getVisibleColumnsMap = createSelector([getVisibleColumns], (columns) => {
+  return new Map(columns?.map((item, index) => [item.fieldId, index]));
 });
 
 export const findColumnIndexById = (state: IReduxState, id: string): number => {
@@ -393,7 +395,7 @@ export const findColumnIndexById = (state: IReduxState, id: string): number => {
     throw new Error(
       t(Strings.error_not_exist_id, {
         id,
-      }),
+      })
     );
   }
   return index;
@@ -437,7 +439,7 @@ export const getRangeFields = (state: IReduxState, range: IRange, datasheetId: s
   }
   const columnSlice = [rangeIndex.field.min, rangeIndex.field.max + 1];
   const columns = getVisibleColumns(state);
-  return columns.slice(...columnSlice).map(col => getField(state, col.fieldId, datasheetId));
+  return columns.slice(...columnSlice).map((col) => getField(state, col.fieldId, datasheetId));
 };
 
 export const getRecordSnapshot = (state: IReduxState, datasheetId: string, recordId: string): IRecordSnapshot | null => {
@@ -486,14 +488,14 @@ export const getEffectConditionCount = (state: IReduxState) => {
 
 export const getColumnByFieldId = (state: IReduxState, fieldId: string) => {
   const columns = getVisibleColumns(state);
-  return columns.find(column => column.fieldId === fieldId);
+  return columns.find((column) => column.fieldId === fieldId);
 };
 
 export const getRowHeightFromLevel = (level?: RowHeightLevel): number => {
   return level == null ? RowHeight.Short : RowHeight[RowHeightLevel[level]!];
 };
 
-export const getGroupLevel = createSelector([getActiveViewGroupInfo], groupInfo => {
+export const getGroupLevel = createSelector([getActiveViewGroupInfo], (groupInfo) => {
   return groupInfo.length;
 });
 
@@ -506,7 +508,7 @@ export const getCurrentGalleryViewStyle = createSelector([getCurrentView], (view
 
 const getIntegratePermissionWithFieldBase = (
   _state: IReduxState,
-  { permission, fieldId, fieldPermissionMap }: { permission: IPermissions; fieldId?: string; fieldPermissionMap?: IFieldPermissionMap },
+  { permission, fieldId, fieldPermissionMap }: { permission: IPermissions; fieldId?: string; fieldPermissionMap?: IFieldPermissionMap }
 ) => {
   const fieldPermission = fieldPermissionMap && fieldId ? fieldPermissionMap[fieldId] : undefined;
 
@@ -521,7 +523,8 @@ const getIntegratePermissionWithFieldBase = (
   };
 };
 
-const getIntegratePermissionWithField = createCachedSelector<IReduxState,
+const getIntegratePermissionWithField = createCachedSelector<
+  IReduxState,
   {
     permission: IPermissions;
     datasheetId?: string;
@@ -530,12 +533,13 @@ const getIntegratePermissionWithField = createCachedSelector<IReduxState,
     fieldPermissionMap?: IFieldPermissionMap;
   },
   IPermissions,
-  IPermissions>(getIntegratePermissionWithFieldBase, permission => {
-    return permission;
-  })({
-    keySelector: (state, { datasheetId, mirrorId }) => mirrorId || datasheetId || getActiveDatasheetId(state),
-    selectorCreator: createDeepEqualSelector,
-  });
+  IPermissions
+>(getIntegratePermissionWithFieldBase, (permission) => {
+  return permission;
+})({
+  keySelector: (state, { datasheetId, mirrorId }) => mirrorId || datasheetId || getActiveDatasheetId(state),
+  selectorCreator: createDeepEqualSelector,
+});
 
 export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId?: string, sourceMirrorId?: string): IPermissions => {
   const datasheet = getDatasheet(state, datasheetId);
@@ -561,12 +565,12 @@ export const getPermissions = (state: IReduxState, datasheetId?: string, fieldId
     // TODO: mobile will support edit in the future
     const permission = datasheet
       ? getIntegratePermissionWithField(state, {
-        permission: getReaderRolePermission(state, datasheet.id, nodePermission)!,
-        datasheetId,
-        fieldPermissionMap,
-        fieldId: fieldId,
-        mirrorId,
-      })
+          permission: getReaderRolePermission(state, datasheet.id, nodePermission)!,
+          datasheetId,
+          fieldPermissionMap,
+          fieldId: fieldId,
+          mirrorId,
+        })
       : {};
     return {
       ...DEFAULT_PERMISSION,
@@ -633,7 +637,7 @@ export const getFilterConditionValue = (state: IReduxState, conditionId: string)
   const filterInfo = getCurrentView(state)!.filterInfo;
 
   if (filterInfo) {
-    const result = filterInfo.conditions.find(item => {
+    const result = filterInfo.conditions.find((item) => {
       return item.conditionId === conditionId;
     });
     return result && result.value ? result.value : null;
@@ -656,27 +660,27 @@ export const getKanbanGroupMapIds = createSelector(
       return [];
     }
     if (field.type === FieldType.SingleSelect) {
-      return field.property.options.map(item => item.id);
+      return field.property.options.map((item) => item.id);
     }
     return (field as IMemberField).property.unitIds;
-  },
+  }
 );
 
 export const getQueryMeta = createSelector(
   [getVisibleColumns, getActiveDatasheetId, getActiveViewFilterInfo, getActiveViewGroupInfo, getActiveViewSortInfo],
   (selectFields, fromDstId, filterInfo, groupInfo, sortInfo) => {
-    let q = `select ${selectFields.map(field => field.fieldId).join(',')} from ${fromDstId}\n`;
+    let q = `select ${selectFields.map((field) => field.fieldId).join(',')} from ${fromDstId}\n`;
     if (filterInfo) {
-      q += `where ${filterInfo.conditions.map(cond => `${cond.fieldId} ${cond.operator} ${cond.value}`).join(` ${filterInfo.conjunction} `)}\n`;
+      q += `where ${filterInfo.conditions.map((cond) => `${cond.fieldId} ${cond.operator} ${cond.value}`).join(` ${filterInfo.conjunction} `)}\n`;
     }
     if (groupInfo && groupInfo.length) {
-      q += `group by ${groupInfo.map(gInfo => gInfo.fieldId).join(',')}\n`;
+      q += `group by ${groupInfo.map((gInfo) => gInfo.fieldId).join(',')}\n`;
     }
     if (sortInfo) {
-      q += `order by ${sortInfo.rules.map(rule => `${rule.fieldId} ${rule.desc ? 'desc' : ''}`).join(',')}\n`;
+      q += `order by ${sortInfo.rules.map((rule) => `${rule.fieldId} ${rule.desc ? 'desc' : ''}`).join(',')}\n`;
     }
     return q;
-  },
+  }
 );
 
 export const getCalendarStyle = (state: IReduxState) => {
@@ -714,14 +718,14 @@ export const getCalendarVisibleColumns = createCachedSelector<IReduxState, strin
   [getCurrentView],
   (view?: IViewProperty) => {
     return view ? (view as ICalendarViewProperty).columns.filter((item, i) => !(item.hiddenInCalendar && i !== 0)) : [];
-  },
+  }
 )(defaultKeySelector);
 
 export const getOrgChartVisibleColumns = createCachedSelector<IReduxState, string | void, IViewProperty | undefined, IOrgChartViewColumn[]>(
   [getCurrentView],
   (view?: IViewProperty) => {
     return view ? (view as IOrgChartViewProperty).columns.filter((item: IOrgChartViewColumn, i) => !(item.hiddenInOrgChart && i !== 0)) : [];
-  },
+  }
 )(defaultKeySelector);
 
 export const getCalendarVisibleColumnCount = (state: IReduxState) => {
@@ -743,8 +747,8 @@ export const getGanttStyle = (state: IReduxState) => {
 export const getGanttVisibleColumns = createCachedSelector<IReduxState, string | void, IViewProperty | undefined, IGanttViewColumn[]>(
   [getCurrentView],
   (view?: IViewProperty) => {
-    return view ? (view as IGanttViewProperty).columns.filter(item => !item.hiddenInGantt) : [];
-  },
+    return view ? (view as IGanttViewProperty).columns.filter((item) => !item.hiddenInGantt) : [];
+  }
 )(defaultKeySelector);
 
 export const getGanttVisibleColumnCount = (state: IReduxState) => {
@@ -802,12 +806,12 @@ export const getDateTimeCellAlarmForClient = (snapshot: IRecordSnapshot, recordI
     return {
       ...alarm,
       target: AlarmUsersType.Field,
-      alarmUsers: alarm.alarmUsers.map(item => item.data).filter(fieldId => fieldMap[fieldId] && fieldMap[fieldId]!.type === FieldType.Member),
+      alarmUsers: alarm.alarmUsers.map((item) => item.data).filter((fieldId) => fieldMap[fieldId] && fieldMap[fieldId]!.type === FieldType.Member),
     };
   }
   return {
     ...alarm,
     target: AlarmUsersType.Member,
-    alarmUsers: alarm.alarmUsers.map(item => item.data),
+    alarmUsers: alarm.alarmUsers.map((item) => item.data),
   };
 };

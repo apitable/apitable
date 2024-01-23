@@ -1,3 +1,4 @@
+import FileSaver from 'file-saver';
 import * as React from 'react';
 import { useCallback } from 'react';
 import { createPortal } from 'react-dom';
@@ -8,6 +9,7 @@ import {
   MAX_SCALE,
   MIN_SCALE
 } from 'pc/components/preview_file/preview_main/constant';
+import { getFile } from 'pc/components/preview_file/preview_main/util';
 import useFrameSetState from 'pc/components/preview_file/preview_type/preview_image/hooks/use_frame_state';
 import { PreviewImage } from 'pc/components/preview_file/preview_type/preview_image/preview_image';
 import { ToolBar } from 'pc/components/preview_file/tool_bar';
@@ -82,6 +84,10 @@ export const WorkdocImage = ({ onClose, file, onDelete }: IWorkdocImage) => {
           fileInfo={file}
           onClose={onClose}
           onDelete={onDelete}
+          onDownload={async () => {
+            const blob = await getFile(file.token);
+            FileSaver.saveAs(blob, file.name);
+          }}
           readonly={false}
           onRotate={onRotate}
           previewEnable

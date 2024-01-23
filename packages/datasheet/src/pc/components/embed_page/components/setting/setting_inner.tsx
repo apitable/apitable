@@ -10,7 +10,7 @@ import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { getConfig } from '../../config/config';
 import { embedPageAtom } from '../../store/embed_page_desc_atom';
-import { convertFigmaUrl, convertYoutubeUrl } from '../../utils/convert-url';
+import { convertBilibiliUrl, convertFigmaUrl, convertYoutubeUrl } from '../../utils/convert-url';
 
 function isValidUrl(url: string) {
   try {
@@ -126,6 +126,12 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
       document.execCommand('insertText', false, convertFigmaUrl(pastedData));
       return;
     }
+
+    if (pastedData.includes('bilibili') && activeConfig.name === t(Strings.embed_link_bilibili)) {
+      document.execCommand('insertText', false, convertBilibiliUrl(pastedData));
+      return;
+    }
+    
     document.execCommand('insertText', false, pastedData);
   };
 

@@ -75,7 +75,7 @@ const useGetPermission = (nodeId: string) => {
     return permissionAutomations;
   }
 
-  if (nodeId.startsWith('emp') && embedPage?.permission) {
+  if (nodeId.startsWith('cup') && embedPage?.permission) {
     return embedPage.permission;
   }
 
@@ -93,7 +93,7 @@ const useGetNodeDesc = (nodeId: string) => {
     return getJsonValue(automationState?.robot?.description);
   }
 
-  if (nodeId.startsWith('emp') && embedPage?.desc) {
+  if (nodeId.startsWith('cup') && embedPage?.desc) {
     return getJsonValue(embedPage.desc);
   }
 

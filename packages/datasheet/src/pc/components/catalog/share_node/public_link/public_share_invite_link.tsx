@@ -232,8 +232,6 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
       },
     ];
   }
-  console.log('automationId', automationId);
-  console.log('Permission', Permission);
 
   let value = '';
   if (shareSettings) {
@@ -297,10 +295,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
 
   if (!spaceFeatures?.fileSharable) {
     return (
-      <>
-        {renderShareSwitchButton()}
-        <DisabledShareFile style={{ marginBottom: 16 }} />
-      </>
+      <DisabledShareFile style={{ marginBottom: 16 }} />
     );
   }
 
@@ -321,7 +316,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
       </div>
     );
   }
-
+  
   return (
     <div className={styles.publish}>
       {renderShareSwitchButton()}

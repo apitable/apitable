@@ -40,7 +40,7 @@ export const automationReg = /\/(aut\w+)/;
 export const resourceReg = /\/((dsb|dst)\w+)/;
 export const mirrorIdReg = /\/((mir)\w+)/;
 export const embedIdReg = /\/(emb\w{8,})/;
-export const embedPageIdReg = /\/(emp\w{8,})/;
+export const customPageReg = /\/(cup\w{8,})/;
 
 export const getRegResult = (path: string, reg: RegExp) => {
   const r = path.match(reg);
@@ -65,7 +65,7 @@ export const getPageParams = (path: string) => {
   const resourceId = getRegResult(path, resourceReg);
   const mirrorId = getRegResult(path, mirrorIdReg);
   const embedId = getRegResult(path, embedIdReg);
-  const embedPageId = getRegResult(path, embedPageIdReg);
+  const embedPageId = getRegResult(path, customPageReg);
   const aiId = getRegResult(path, aiIdReg);
   const nodeId = mirrorId || datasheetId || folderId || dashboardId || formId || aiId || automationId || embedPageId;
 

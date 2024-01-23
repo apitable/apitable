@@ -64,6 +64,7 @@ interface IToolBar {
   disabledDownload?: boolean;
   isFullScreen: boolean;
   toggleIsFullScreen?: () => void;
+  onDownload?: () => void;
 }
 
 interface IPreviewToolBar {
@@ -132,6 +133,7 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBar>> = (props) => {
     disabledDownload,
     isFullScreen,
     toggleIsFullScreen,
+    onDownload,
   } = props;
   const colors = useThemeColors();
   const { scale, initActualScale } = transformInfo;
@@ -220,6 +222,10 @@ export const ToolBar: React.FC<React.PropsWithChildren<IToolBar>> = (props) => {
         icon: DownloadOutlined,
         tip: t(Strings.download),
         onClick: () => {
+          if (onDownload) {
+            onDownload();
+            return;
+          }
           download(fileInfo);
         },
       },

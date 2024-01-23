@@ -1,6 +1,5 @@
-// @ts-ignore
-import { SystemConfigInterfaceGuide, SystemConfigInterfacePlayer, t, Strings, SystemConfig } from '@apitable/core';
 import produce from 'immer';
+import { SystemConfigInterfaceGuide, SystemConfigInterfacePlayer, t, Strings } from '@apitable/core';
 
 interface IWizardsConfig {
   player: SystemConfigInterfacePlayer;
@@ -13,7 +12,7 @@ class WizardBuilder {
 
   trigger: IWizardTrigger | null = null;
 
-  private steps: { id: number; item: GuideItem }[] = [];
+  private steps: { id: number; item: any }[] = [];
 
   wizardId: number | null = null;
   wizard: IWizardItem | null = null;
@@ -48,7 +47,7 @@ class WizardBuilder {
     return this;
   }
 
-  public addStep(id: number, guide: GuideItem) {
+  public addStep(id: number, guide: any) {
     this.steps = [
       ...this.steps,
       {
@@ -144,21 +143,22 @@ const CONST_MODIFYED_WIZARDS = [
     }),
 ];
 
-interface UIConfig {
+interface IUIConfig {
   element?: string;
   description?: string;
   title?: string;
   placement: 'bottomLeft' | string;
 }
 
-const uiConfig: UIConfig = {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const uiConfig: IUIConfig = {
   element: '#NODE_FORM_ACTIVE',
   title: t(Strings.export),
   placement: 'bottomLeft',
   description: t(Strings.export),
 };
 
-interface GuideItem {
+interface IGuideItem {
   description?: string;
   next?: string;
   nextId?: string;
@@ -173,8 +173,10 @@ interface GuideItem {
   uiType: 'popover' | string;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const stepId = 179;
-const stepItem: GuideItem = {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const stepItem: IGuideItem = {
   description: 'ui dialog for use button field first time for node actived status ',
   next: '下一步',
   nextId: 'next_step',
@@ -214,6 +216,7 @@ export interface IWizardTrigger {
   event: string[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const action: IWizardTrigger = {
   actions: ['open_guide_wizard(118)'],
   rules: ['device_IS_pc', 'url_EXCLUDES_templateId', 'url_EXCLUDES_shareId'],
@@ -221,6 +224,7 @@ const action: IWizardTrigger = {
   event: ['guide_use_button_column_first_time'],
 };
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export interface WizardEvent {
   module: string;
   name: string;

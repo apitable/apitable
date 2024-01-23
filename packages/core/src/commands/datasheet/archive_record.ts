@@ -15,7 +15,7 @@ export const archiveRecord: ICollaCommandDef<IArchiveRecordOptions> = {
   undoable: false,
 
   execute: (context, options) => {
-    const { state: state, ldcMaintainer } = context;
+    const { state: state } = context;
     const { data } = options;
     const datasheetId = options.datasheetId || getActiveDatasheetId(state)!;
     const snapshot = getSnapshot(state, datasheetId);
@@ -104,10 +104,9 @@ export const archiveRecord: ICollaCommandDef<IArchiveRecordOptions> = {
             metaData: { foreignDatasheetId: field.property.foreignDatasheetId },
           });
         }
-        ldcMaintainer.insert(state, linkedSnapshot, record.id, field, null, oldValue);
       });
     }, []);
-
+    
     return {
       result: ExecuteResult.Success,
       resourceId: datasheetId,

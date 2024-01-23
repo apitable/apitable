@@ -128,6 +128,7 @@ export const FilterValue: React.FC<React.PropsWithChildren<IFilterValueProps>> =
               disabled={isViewLock || disabled}
               field={field}
               linkedFieldId={linkedFieldId}
+              primaryField={props.field}
               onChange={(value) => {
                 setValue(value ? value.join('/') : '');
                 submitFilterValue(value ? [value.join('/')] : null);

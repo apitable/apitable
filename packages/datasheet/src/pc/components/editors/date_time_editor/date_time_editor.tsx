@@ -49,6 +49,7 @@ import {
   getToday,
   IDateTimeField,
   IRecordAlarmClient,
+  isDstDate,
   ITimestamp,
   notInTimestampRange,
   Selectors,
@@ -62,17 +63,16 @@ import { NotificationOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { useAppSelector } from 'pc/store/react-redux';
 import { printableKey, stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { isLegalDateKey } from '../../../utils/keycode';
 import { IBaseEditorProps, IEditor } from '../interface';
 import { DatePickerMobile } from './mobile';
-import style from './style.module.less';
 import { TimePicker } from './time_picker_only';
 // @ts-ignore
 import DateTimeAlarm from 'enterprise/alarm/date_time_alarm/date_time_alarm';
-
-import { useAppSelector } from 'pc/store/react-redux';
+import style from './style.module.less';
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
@@ -280,7 +280,8 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
       }
     }
     const time = str2time(timeValue, field) || 0;
-    return dateTimestamp + time + diffTimeZone(timeZone);
+    const isdst = isDstDate(`${dateValue} ${timeValue}`, timeZone);
+    return dateTimestamp + time + diffTimeZone(timeZone, isdst);
   }
 
   onEndEdit(cancel: boolean, clear = true) {

@@ -29,7 +29,7 @@ import { Router } from 'pc/components/route_manager/router';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { ISpaceLevelType, LevelType, Position } from '../../interface';
-import { useLevelInfo } from '../../utils';
+import { isExclusiveLimitedProduct, useLevelInfo } from '../../utils';
 // @ts-ignore
 import { SubscribePageType } from 'enterprise/subscribe_system/config';
 // @ts-ignore
@@ -211,7 +211,7 @@ export const LevelCard: FC<React.PropsWithChildren<ILevelCard>> = ({ type, minHe
             </span>
           )}
         </div>
-        {IS_ENTERPRISE && !product?.includes('appsumo') && operateButton}
+        {IS_ENTERPRISE && !product?.includes('appsumo') && !isExclusiveLimitedProduct(product) && operateButton}
       </div>
     </div>
   );

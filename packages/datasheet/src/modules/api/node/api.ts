@@ -1,5 +1,5 @@
-import { javaApi } from 'api/java_api';
 import urlcat from 'urlcat';
+import { javaApi } from 'api/java_api';
 import { GET_NODE_DESCRIPTION } from './const';
 
 export const getNodeDescription = (nodeId) => {

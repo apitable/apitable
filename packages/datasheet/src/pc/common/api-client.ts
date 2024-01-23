@@ -1,4 +1,3 @@
-import { apiErrorManager, redirectIfUserApplyLogout } from 'api/utils';
 import axios from 'axios';
 import {
   createConfiguration,
@@ -7,6 +6,7 @@ import {
   ServerConfiguration, WorkbenchNodeApiApi
 } from '@apitable/api-client';
 import { isServer } from '@apitable/core/dist/utils/env';
+import { apiErrorManager, redirectIfUserApplyLogout } from 'api/utils';
 import { getCookie } from 'pc/utils';
 import { getReleaseVersion, getSpaceIdFormTemplate } from 'pc/utils/env';
 
