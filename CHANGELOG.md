@@ -1,5 +1,11 @@
 # APITable CHANGELOG
 
+## [v1.8.0-beta.3](https://github.com/apitable/apitable/releases/tag/v1.8.0-beta.3) (2024-01-23)
+
+
+### What's more
+
+* Sync/hosted ([#1581](https://github.com/apitable/apitable/pull/1581)) @jeremyyin2012 
 ## [v1.8.0-beta.2](https://github.com/apitable/apitable/releases/tag/v1.8.0-beta.2) (2024-01-15)
 
 
