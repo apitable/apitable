@@ -49,7 +49,6 @@ import {
   ACTIVE_OPERATE_VIEW_ID,
   ADD_DATASHEET,
   CHANGE_VIEW,
-  CHANGE_WIDGET_PANEL_WIDTH,
   CLEAR_ACTIVE_ROW_INFO,
   CLEAR_FIELD_INFO,
   DATAPACK_LOADED,
@@ -138,7 +137,7 @@ function ensureInnerConsistency(payload: IServerDatasheetPack, getState?: () => 
   // @su
   // the check of data consistency
   // datasheet is the only object that should be attention
-  // if if all the permission of datasheet is ok, no need to check more
+  // if all the permission of datasheet is ok, no need to check more
   if (!datasheet.permissions?.editable) {
     // when the permission of datasheet is not ok, then check other factors
     const pageParams = getState ? getState().pageParams : {};
@@ -809,16 +808,6 @@ export const toggleArchivedRecordsPanel = (datasheetId: string, visible?: boolea
 export interface IToggleWidgetPanel {
   type: typeof TOGGLE_WIDGET_PANEL;
 }
-
-// export interface IChangeWidgetPanelWidth {
-//   type: typeof CHANGE_WIDGET_PANEL_WIDTH;
-//   payload: number;
-// }
-
-// export interface ISwitchActivePanel {
-//   type: typeof SWITCH_ACTIVE_PANEL;
-//   payload: string;
-// }
 
 export interface ISetGridViewHoverFieldIdAction {
   type: typeof SET_GRID_VIEW_HOVER_FIELD_ID;

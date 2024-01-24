@@ -26,7 +26,7 @@ export function checkLinkConsistency(state: IReduxState, _loadedForeignDstId: st
 
   // the check of data consistency
   // datasheet is the only object that should be attention
-  // if if all the permission of datasheet is ok, no need to check more
+  // if all the permission of datasheet is ok, no need to check more
   if (!datasheet.permissions?.editable) {
     // when the permission of datasheet is not ok, then check other factors
     if (!state.pageParams.mirrorId) {
@@ -118,7 +118,10 @@ export function checkLinkConsistency(state: IReduxState, _loadedForeignDstId: st
   for (const fieldId of linkFieldIds) {
     const { foreignDatasheetId, brotherFieldId } = fieldMap[fieldId]!.property as ILinkFieldProperty;
     const {
-      snapshot: { recordMap: foreignRecordMap },
+      snapshot: {
+        recordMap: foreignRecordMap,
+        meta: { archivedRecordIds }
+      },
     } = getDatasheet(state, foreignDatasheetId)!;
 
     // check recordIds that are missing in link cells in foreign datasheet
@@ -130,7 +133,11 @@ export function checkLinkConsistency(state: IReduxState, _loadedForeignDstId: st
       }
       for (const linkedRecordId of cellValue) {
         const foreignRecord = foreignRecordMap[linkedRecordId];
-
+        const isArchivedRecord = archivedRecordIds?.includes(linkedRecordId);
+        // ignore archived records
+        if (isArchivedRecord) {
+          continue;
+        }
         if (!foreignRecord) {
           addRedundantRecordId(mainDstId, recordId, fieldId, linkedRecordId);
         } else if (!(foreignRecord.data[brotherFieldId!] as ILinkIds | undefined)?.includes(recordId)) {
