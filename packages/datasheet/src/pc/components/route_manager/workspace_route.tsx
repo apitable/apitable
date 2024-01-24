@@ -36,7 +36,7 @@ import { ChatPage } from 'enterprise/chat/chat_page';
 const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
   const nodeId = useAppSelector((state) => Selectors.getNodeId(state));
   const activeNodeError = useAppSelector((state) => state.catalogTree.activeNodeError);
-  const { datasheetId, folderId, automationId, formId, dashboardId, mirrorId, aiId, embedPageId } = useAppSelector(
+  const { datasheetId, folderId, automationId, formId, dashboardId, mirrorId, aiId, customPageId } = useAppSelector(
     (state: IReduxState) => state.pageParams,
   );
   const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
@@ -55,8 +55,8 @@ const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
   };
 
   const MainComponent = (): React.ReactElement => {
-    if (embedPageId) {
-      return <CustomPage key={embedPageId} />;
+    if (customPageId) {
+      return <CustomPage key={customPageId} />;
     }
     if (automationId) {
       return <AutomationPanelWrapper automationId={automationId} />;

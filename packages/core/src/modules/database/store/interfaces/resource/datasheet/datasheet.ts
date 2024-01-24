@@ -820,7 +820,7 @@ export interface IPageParams {
   mirrorId?: string;
   embedId?: string;
   aiId?: string;
-  embedPageId?: string;
+  customPageId?: string;
 }
 
 export interface ICollaboratorParams {

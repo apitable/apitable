@@ -65,9 +65,9 @@ export const getPageParams = (path: string) => {
   const resourceId = getRegResult(path, resourceReg);
   const mirrorId = getRegResult(path, mirrorIdReg);
   const embedId = getRegResult(path, embedIdReg);
-  const embedPageId = getRegResult(path, customPageReg);
+  const customPageId = getRegResult(path, customPageReg);
   const aiId = getRegResult(path, aiIdReg);
-  const nodeId = mirrorId || datasheetId || folderId || dashboardId || formId || aiId || automationId || embedPageId;
+  const nodeId = mirrorId || datasheetId || folderId || dashboardId || formId || aiId || automationId || customPageId;
 
   return {
     datasheetId,
@@ -87,7 +87,7 @@ export const getPageParams = (path: string) => {
     nodeId,
     mirrorId,
     embedId,
-    embedPageId,
+    customPageId,
     aiId,
   };
 };

@@ -52,7 +52,7 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
   const colors = useThemeColors();
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   const activeConfig = getConfig()[activeTabIndex];
-  const { embedPageId } = useAppSelector((state) => state.pageParams);
+  const { customPageId } = useAppSelector((state) => state.pageParams);
 
   const [embedPage, setEmbedPage] = useAtom(CustomPageAtom);
   const { updateNodeReq } = useCatalogTreeRequest();
@@ -67,7 +67,7 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
 
   const onSubmit = async ({ url }) => {
     try {
-      const data = await updateNodeReq(embedPageId!, {
+      const data = await updateNodeReq(customPageId!, {
         embedPage: {
           url,
         },
@@ -76,7 +76,7 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
         ...pre,
         url: data?.extra ? JSON.parse(data?.extra).embedPage.url : '',
       }));
-      dispatch(StoreActions.updateTreeNodesMap(embedPageId!, { extra: JSON.stringify({ embedPage: { url } }) }));
+      dispatch(StoreActions.updateTreeNodesMap(customPageId!, { extra: JSON.stringify({ embedPage: { url } }) }));
       Message.success({
         content: t(Strings.embed_success),
       });

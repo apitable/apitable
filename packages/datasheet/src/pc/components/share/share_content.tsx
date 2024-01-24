@@ -22,7 +22,7 @@ interface IShareContentProps {
 
 export const ShareContent: React.FC<IShareContentProps> = (props) => {
   const { nodeTree, loading } = props;
-  const { datasheetId, folderId, formId, automationId, dashboardId, mirrorId, aiId, embedPageId } = useAppSelector((state) => state.pageParams);
+  const { datasheetId, folderId, formId, automationId, dashboardId, mirrorId, aiId, customPageId } = useAppSelector((state) => state.pageParams);
   const treeNodesMap = useAppSelector((state) => state.catalogTree.treeNodesMap);
 
   if (!nodeTree) {
@@ -40,7 +40,7 @@ export const ShareContent: React.FC<IShareContentProps> = (props) => {
     return <DashboardPanel />;
   } else if (aiId) {
     return <AIPanel />;
-  } else if (embedPageId) {
+  } else if (customPageId) {
     return <CustomPage />;
   } else if (folderId) {
     const parentNode = findNode([nodeTree], folderId);

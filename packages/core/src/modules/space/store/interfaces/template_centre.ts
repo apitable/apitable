@@ -70,6 +70,7 @@ export interface ITemplateTree {
   nodeName: string;
   icon: string;
   type: number;
+  extra: string;
   children: ITemplateTree[];
 }
 
