@@ -21,14 +21,13 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { usePostHog } from 'posthog-js/react';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { Api, IReduxState, Navigation, StoreActions, Strings, t, TEMPLATE_CENTER_ID, TrackEvents } from '@apitable/core';
+import { Api, IReduxState, Navigation, Strings, t, TEMPLATE_CENTER_ID, TrackEvents } from '@apitable/core';
 import { ChevronDownOutlined } from '@apitable/icons';
 import { BaseModal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalogTreeRequest, useRequest, useRootManageable, useTemplateRequest } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
 import { transformNodeTreeData, ISelectTreeNode } from 'pc/utils';
-import { dispatch } from 'pc/worker/store';
 import styles from './style.module.less';
 
 export interface IUsingTemplateModalProps {
@@ -120,6 +119,7 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
               onChange={onChange}
               treeData={treeData}
               loadData={onLoadData}
+              popupClassName="usingTemplate"
               treeDefaultExpandedKeys={[NodeTreeData.nodeId]}
             />
           )}

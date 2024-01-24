@@ -223,7 +223,7 @@ export const LinkInvite = () => {
               treeIcon
               switcherIcon={<TriangleRightFilled size={12} />}
               showSearch={false}
-              dropdownClassName="dropdownInvite"
+              popupClassName="dropdownInvite"
               treeDefaultExpandedKeys={[firstTeamId]}
               listHeight={200}
               onTreeExpand={onExpand}

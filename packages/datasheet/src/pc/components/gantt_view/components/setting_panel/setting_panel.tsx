@@ -617,7 +617,7 @@ export const SettingPanel: FC<React.PropsWithChildren<ISettingPanelProps>> = mem
               showSearch={false}
               className={classNames(styles.workDaySelect, { [styles.disabled]: isViewLock })}
               style={{ width: '100%' }}
-              dropdownClassName={styles.workDaySelectDropdown}
+              popupClassName={styles.workDaySelectDropdown}
               virtual={false}
               tagRender={({ label }) => <span className={styles.workDayTag}>{label}</span>}
               onChange={onWorkDayChange}
