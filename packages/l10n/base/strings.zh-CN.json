@@ -3977,7 +3977,7 @@
   "record_filter_tips": "此记录已被筛选条件过滤",
   "record_functions": "记录（行）函数",
   "record_history": "仅修改历史",
-  "record_history_help_url": "https://help.aitable.ai/docs/guide/manual-record-history",
+  "record_history_help_url": "https://help.aitable.ai/docs/guide/manual-record-activity",
   "record_history_title": "修改历史",
   "record_pre_filtered": "此记录已被筛选过滤，点击本记录以外区域它将被隐藏",
   "record_pre_move": "此记录不属于当前位置，点击本记录以外区域它将被移动",

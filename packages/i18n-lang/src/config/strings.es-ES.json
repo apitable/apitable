@@ -4143,7 +4143,7 @@
   "record_filter_tips": "Este registro ha sido filtrado",
   "record_functions": "Función de registro",
   "record_history": "Solo se revisan los registros históricos",
-  "record_history_help_url": "https://help.aitable.ai/docs/guide/manual-record-history",
+  "record_history_help_url": "https://help.aitable.ai/docs/guide/manual-record-activity",
   "record_history_title": "Registrar registros históricos",
   "record_pre_filtered": "Este registro ha sido filtrado y se ocultará al hacer clic en el exterior del registro",
   "record_pre_move": "Después de hacer clic en el exterior del registro, este registro se moverá a otra posición",

@@ -4141,7 +4141,7 @@
   "record_filter_tips": "Dieser Datensatz wurde gefiltert",
   "record_functions": "Aufzeichnungsfunktion",
   "record_history": "Nur Revisionsverlauf",
-  "record_history_help_url": "https://help.aitable.ai/docs/guide/manual-record-history",
+  "record_history_help_url": "https://help.aitable.ai/docs/guide/manual-record-activity",
   "record_history_title": "Aufzeichnungsverlauf",
   "record_pre_filtered": "Dieser Datensatz wurde gefiltert und wird ausgeblendet, sobald Sie außerhalb des Datensatzes klicken",
   "record_pre_move": "Dieser Datensatz wird an eine andere Stelle verschoben, sobald Sie außerhalb des Datensatzes klicken",
