@@ -30,7 +30,7 @@ export const CustomPage = () => {
     setOpenSetting(!Boolean(_url));
   }, [node]);
 
-  const isManager = role === ConfigConstant.Role.Manager;
+  const canAddUrl = role !== ConfigConstant.Role.Reader;
 
   useGetDesc();
 
@@ -47,7 +47,7 @@ export const CustomPage = () => {
         ) : (
           <div className={'vk-flex vk-flex-col vk-justify-center vk-h-full vk-items-center vk-space-y-4 vk-bg-bgCommonDefault'}>
             <img src={AutomationEmptyDark.src} alt="" width={200} height={150} />
-            {!shareId && isManager && (
+            {!shareId && canAddUrl && (
               <Button prefixIcon={<SettingOutlined />} className={'vk-block vk-w-max'} onClick={() => setOpenSetting(true)}>
                 {t(Strings.embed_page_add_url)}
               </Button>
