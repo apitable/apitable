@@ -83,12 +83,12 @@ export interface Audit {
 export interface ActualDeleteSpace {
     content?: string;
     online?:  boolean;
-    type:     Type;
+    type:     NotificationsTypeElement;
     category: string;
     name:     string;
 }
 
-export enum Type {
+export enum NotificationsTypeElement {
     Member = "member",
     Space = "space",
     System = "system",
@@ -97,7 +97,7 @@ export enum Type {
 export interface AddNodeRole {
     content:           string;
     online:            boolean;
-    type:              Type;
+    type:              NotificationsTypeElement;
     sort:              string;
     show_in_audit_log: boolean;
     category:          CategoryElement;
@@ -111,7 +111,7 @@ export enum CategoryElement {
 }
 
 export interface AddSubAdmin {
-    type:     Type;
+    type:     NotificationsTypeElement;
     category: AddSubAdminCategory;
 }
 
@@ -124,7 +124,7 @@ export enum AddSubAdminCategory {
 export interface StoreShareNode {
     content:           string;
     online:            boolean;
-    type:              Type[];
+    type:              NotificationsTypeElement[];
     sort:              string;
     show_in_audit_log: boolean;
     category:          CategoryElement[];
@@ -152,7 +152,7 @@ export interface SystemConfigInterfaceGuide {
 
 export interface Step {
     uiConfigId: string;
-    uiType:     UIType;
+    uiType:     string;
     prev?:      string;
     backdrop?:  Backdrop;
     onPlay?:    string[];
@@ -176,6 +176,7 @@ export enum Backdrop {
 export enum Next {
     下一步 = "下一步",
     好的 = "好的",
+    已完成添加 = "已完成添加",
     我知道了 = "我知道了",
     查看更多 = "查看更多",
     查看详情 = "查看详情",
@@ -192,6 +193,7 @@ export enum NextID {
     Known = "known",
     NextStep = "next_step",
     Okay = "okay",
+    PlayerContactUsConfirmBtn = "player_contact_us_confirm_btn",
     SeeMore = "see_more",
 }
 
@@ -200,25 +202,11 @@ export enum On {
     ClearGuideUisPopover = "clear_guide_uis([\"popover\"])",
     OpenGuideNextStep = "open_guide_next_step()",
     OpenGuideNextStepClearAllPrevUITrue = "open_guide_next_step({\"clearAllPrevUi\":true})",
+    OpenVikabyDefaultExpandMenuTrueVisibleTrue = "open_vikaby({\"defaultExpandMenu\": true, \"visible\": true})",
     SetWizardCompletedCurWizardTrue = "set_wizard_completed({\"curWizard\": true})",
     SkipAllWizards = "skip_all_wizards()",
     SkipCurrentWizard = "skip_current_wizard()",
     SkipCurrentWizardCurWizardCompletedTrue = "skip_current_wizard({\"curWizardCompleted\": true})",
-}
-
-export enum UIType {
-    AfterSignNPS = "afterSignNPS",
-    BillingStrip = "billingStrip",
-    Breath = "breath",
-    CustomQuestionnaire = "customQuestionnaire",
-    CustomTemplate = "customTemplate",
-    Modal = "modal",
-    Notice = "notice",
-    Popover = "popover",
-    PrivacyModal = "privacyModal",
-    Questionnaire = "questionnaire",
-    Slideout = "slideout",
-    TaskList = "taskList",
 }
 
 export interface Wizard {
@@ -449,7 +437,7 @@ export interface Templates {
 
 export interface ActivityIntegralIncomeNotify {
     to_tag:                 ToTag;
-    notifications_type:     Type;
+    notifications_type:     NotificationsTypeElement;
     is_notification:        boolean;
     format_string:          string;
     notification_type:      NotificationType;
@@ -479,7 +467,7 @@ export enum ToTag {
 export interface AddRecordOutOfLimit {
     can_jump?:              boolean;
     to_tag:                 ToTag;
-    notifications_type:     Type;
+    notifications_type:     NotificationsTypeElement;
     is_notification:        boolean;
     is_mail?:               boolean;
     mail_template_subject?: string;
@@ -502,7 +490,7 @@ export enum URL {
 
 export interface Notify {
     to_tag:             ToTag;
-    notifications_type: Type;
+    notifications_type: NotificationsTypeElement;
     is_notification:    boolean;
     is_mail?:           boolean;
     is_browser:         boolean;
@@ -539,7 +527,7 @@ export interface CommentMentioned {
 
 export interface CommonSystemNotifyWeb {
     to_tag:             ToTag;
-    notifications_type: Type;
+    notifications_type: NotificationsTypeElement;
     format_string:      string;
     is_component:       boolean;
     is_mobile?:         boolean;
@@ -867,12 +855,19 @@ export interface ShortcutKey {
     show?:        boolean;
     key:          string;
     winKey:       string;
-    name?:        any[];
+    name?:        string[];
     when?:        string;
     id:           string;
     command:      string;
     description?: string;
-    type?:        any[];
+    type?:        ShortcutKeyType[];
+}
+
+export enum ShortcutKeyType {
+    GalleryViewShortcuts = "gallery_view_shortcuts",
+    GirdViewShortcuts = "gird_view_shortcuts",
+    GlobalShortcuts = "global_shortcuts",
+    WorkbenckShortcuts = "workbenck_shortcuts",
 }
 
 export interface TestFunction {
