@@ -17443,7 +17443,7 @@ packages:
       is-binary-path: 1.0.1
       is-glob: 4.0.3
       normalize-path: 3.0.0
-      path-is-absolute: registry.npmmirror.com/path-is-absolute@1.0.1
+      path-is-absolute: 1.0.1
       readdirp: 2.2.1
       upath: 1.2.0
     optionalDependencies:
@@ -37779,7 +37779,7 @@ packages:
       yjs: ^13.0.0
     dependencies:
       lib0: 0.2.85
-      yjs: 13.6.8
+      yjs: registry.npmmirror.com/yjs@13.6.8
     dev: false
 
   /y18n@4.0.3:
@@ -38595,15 +38595,6 @@ packages:
     dependencies:
       isobject: registry.npmmirror.com/isobject@3.0.1
     dev: false
-
-  registry.npmmirror.com/path-is-absolute@1.0.1:
-    resolution: {integrity: sha512-AVbw3UJ2e9bq64vSaS9Am0fje1Pa8pbGqTTsmXfaIiMpnr5DlDhfJOuLj9Sf95ZPVDAUerDfEk88MPmPe7UCQg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/path-is-absolute/-/path-is-absolute-1.0.1.tgz}
-    name: path-is-absolute
-    version: 1.0.1
-    engines: {node: '>=0.10.0'}
-    requiresBuild: true
-    dev: true
-    optional: true
 
   registry.npmmirror.com/prosemirror-changeset@2.2.1:
     resolution: {integrity: sha512-J7msc6wbxB4ekDFj+n9gTW/jav/p53kdlivvuppHsrZXCaQdVgRghoZbSS3kwrRyAstRVQ4/+u5k7YfLgkkQvQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/prosemirror-changeset/-/prosemirror-changeset-2.2.1.tgz}
