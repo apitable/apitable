@@ -205,6 +205,12 @@ export enum KeyCode {
   ABNT_C2 = 111, // Brazilian (ABNT) Keyboard
 
   /**
+   * VK_PACKET, 0xE7, Used to pass Unicode characters as if they were keystrokes.
+   * The VK_PACKET key is the low word of a 32-bit Virtual Key value used for non-keyboard input methods.
+   */
+  PACKET = 112,
+
+  /**
    * Placed last to cover the length of the enum.
    * Please do not depend on this value!
    */
