@@ -4141,7 +4141,7 @@
   "record_filter_tips": "このレコードはフィルタされました",
   "record_functions": "ロギング機能",
   "record_history": "改訂履歴のみ",
-  "record_history_help_url": "https://help.aitable.ai/docs/guide/manual-record-history",
+  "record_history_help_url": "https://help.aitable.ai/docs/guide/manual-record-activity",
   "record_history_title": "レコード履歴",
   "record_pre_filtered": "このレコードはフィルタされており、レコードの外部をクリックすると非表示になります",
   "record_pre_move": "レコードの外部をクリックすると、このレコードは別の場所に移動されます",

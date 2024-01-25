@@ -4143,7 +4143,7 @@
   "record_filter_tips": "Эта запись была просмотрена.",
   "record_functions": "Функция записи",
   "record_history": "Пересмотр только исторических записей",
-  "record_history_help_url": "https://help.aitable.ai/docs/guide/manual-record-history",
+  "record_history_help_url": "https://help.aitable.ai/docs/guide/manual-record-activity",
   "record_history_title": "История записей",
   "record_pre_filtered": "Эта запись была отфильтрована и будет скрыта при щелчке на внешней стороне записи",
   "record_pre_move": "После щелчка на внешней стороне записи запись будет перемещена в другое место",

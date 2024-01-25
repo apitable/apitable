@@ -3667,7 +3667,7 @@
   "record_filter_tips": "تم تصفية هذا السجل",
   "record_functions": "وظيفة تسجيل",
   "record_history": "مراجعة التاريخ فقط",
-  "record_history_help_url": "https://help.apitable.com/docs/guide/manual-record-history",
+  "record_history_help_url": "https://help.apitable.com/docs/guide/manual-record-activity",
   "record_history_title": "سجل التاريخ",
   "record_pre_filtered": "هذا السجل قد تم تصفيتها ، وسوف تكون مخفية عند النقر فوق خارج السجل .",
   "record_pre_move": "بعد النقر فوق خارج السجل ، سيتم نقل هذا السجل إلى موقع آخر",

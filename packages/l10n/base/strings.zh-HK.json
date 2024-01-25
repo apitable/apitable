@@ -4142,7 +4142,7 @@
   "record_filter_tips": "記錄已被篩選條件過濾",
   "record_functions": "記錄（行）函數",
   "record_history": "僅修改歷史",
-  "record_history_help_url": "https://help.aitable.ai/docs/guide/manual-record-history",
+  "record_history_help_url": "https://help.aitable.ai/docs/guide/manual-record-activity",
   "record_history_title": "修改歷史",
   "record_pre_filtered": "此記錄已被篩選過濾，點擊本記錄以外區域它將被隱藏",
   "record_pre_move": "此記錄不屬於當前位置，點擊本記錄以外區域它將被移動",

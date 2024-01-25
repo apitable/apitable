@@ -4141,7 +4141,7 @@
   "record_filter_tips": "이 레코드는 필터링됨",
   "record_functions": "레코드 기능",
   "record_history": "개정 히스토리만",
-  "record_history_help_url": "https://help.aitable.ai/docs/guide/manual-record-history",
+  "record_history_help_url": "https://help.aitable.ai/docs/guide/manual-record-activity",
   "record_history_title": "기록 기록",
   "record_pre_filtered": "이 레코드는 필터링되었으며 레코드 외부를 클릭하면 숨겨집니다.",
   "record_pre_move": "레코드 외부를 클릭하면 레코드가 다른 위치로 이동됩니다.",
