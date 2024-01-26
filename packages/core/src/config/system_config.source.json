@@ -3603,16 +3603,16 @@
           "device_IS_pc",
           "url_EXCLUDES_templateId",
           "url_EXCLUDES_shareId",
-          "edition_IS_aitable"
+          "edition_IS_apitable"
         ],
-        "id": "workbench_show_trial_tip,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_aitable],[open_guide_wizards([105, 104])]",
+        "id": "workbench_show_trial_tip,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 104])]",
         "event": [
           "workbench_show_trial_tip"
         ]
       },
       {
         "actions": [
-          "open_guide_wizards([29, 76, 136])"
+          "open_guide_wizards([29, 76, 138])"
         ],
         "rules": [
           "device_IS_pc",
@@ -3621,7 +3621,7 @@
           "url_EXCLUDES_shareId",
           "edition_IS_vika"
         ],
-        "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2024-12-31 23:59, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([29, 76, 136])]",
+        "id": "workbench_shown,[device_IS_pc, sign_up_time_IS_BEFORE_2024-12-31 23:59, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([29, 76, 138])]",
         "event": [
           "workbench_shown"
         ]
@@ -3634,7 +3634,7 @@
           "device_IS_pc",
           "url_EXCLUDES_templateId",
           "url_EXCLUDES_shareId",
-          "edition_IS_aitable"
+          "edition_IS_apitable"
         ],
         "id": "workbench_shown,[device_IS_pc, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_apitable],[open_guide_wizards([105, 115])]",
         "event": [
@@ -3659,7 +3659,7 @@
       },
       {
         "actions": [
-          "open_guide_wizards([76, 136])"
+          "open_guide_wizards([76, 138])"
         ],
         "rules": [
           "sign_up_time_IS_BEFORE_2024-12-31 23:59",
@@ -3668,7 +3668,7 @@
           "url_EXCLUDES_shareId",
           "edition_IS_vika"
         ],
-        "id": "workbench_shown,[sign_up_time_IS_BEFORE_2024-12-31 23:59, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([76, 136])]",
+        "id": "workbench_shown,[sign_up_time_IS_BEFORE_2024-12-31 23:59, device_IS_mobile, url_EXCLUDES_templateId, url_EXCLUDES_shareId, edition_IS_vika],[open_guide_wizards([76, 138])]",
         "event": [
           "workbench_shown"
         ]
@@ -3991,8 +3991,8 @@
       {
         "operator": "IS",
         "condition": "edition",
-        "id": "edition_IS_aitable",
-        "conditionArgs": "aitable"
+        "id": "edition_IS_apitable",
+        "conditionArgs": "apitable"
       },
       {
         "operator": "IS",
@@ -4358,9 +4358,9 @@
         "commandArgs": "[21]"
       },
       {
-        "id": "open_guide_wizards([29, 76, 136])",
+        "id": "open_guide_wizards([29, 76, 138])",
         "command": "open_guide_wizards",
-        "commandArgs": "[29, 76, 136]"
+        "commandArgs": "[29, 76, 138]"
       },
       {
         "id": "open_guide_wizards([31])",
@@ -4373,9 +4373,9 @@
         "commandArgs": "[4]"
       },
       {
-        "id": "open_guide_wizards([76, 136])",
+        "id": "open_guide_wizards([76, 138])",
         "command": "open_guide_wizards",
-        "commandArgs": "[76, 136]"
+        "commandArgs": "[76, 138]"
       },
       {
         "id": "open_guide_wizards([76])",
@@ -5139,14 +5139,19 @@
       },
       "136": {
         "completeIndex": -1,
+        "endTime": 1704420420000,
+        "steps": "[[196]]"
+      },
+      "138": {
+        "completeIndex": -1,
         "player": {
           "action": [
             "recEIcl9v4jzr",
             "recBtbbzXDolQ"
           ]
         },
-        "endTime": 1704420420000,
-        "steps": "[[196]]"
+        "endTime": 1708596000000,
+        "steps": "[[199]]"
       }
     },
     "step": {
@@ -6885,6 +6890,20 @@
         "next": "已完成添加",
         "nextId": "player_contact_us_confirm_btn",
         "uiConfig": "{\n\t\"vikaby\": {\n\t\t\"title\": \"你好\",\n\t\t\"description\": \"如果在使用过程中遇到问题，请扫描右侧二维码联系我解决\",\n\t\t\"list\": \"<ul><li>刚注册维格表，不知道怎么用</li><li>维格表可以实现我想要的效果吗</li><li>使用过程出现异常问题</li><li>后续支持的功能有哪些</li><li>获取官方邀请码</li></ul>\",\n\t\t\"tip\": \"扫码添加客服\"\n\t},\n\t\"questionnaire\": {\n\t\t\"title\": \"您好，我是维格表数字化顾问\",\n\t\t\"list\": \"[{\\\"title\\\": \\\"Bug 吐槽\\\", \\\"icon\\\": \\\"BugOutlined\\\"}, {\\\"title\\\": \\\"需求反馈\\\", \\\"icon\\\": \\\"AdviseSmallOutlined\\\"}, {\\\"title\\\": \\\"服务支持\\\", \\\"icon\\\": \\\"ServeOutlined\\\"}, {\\\"title\\\": \\\"案例推荐\\\", \\\"icon\\\": \\\"ZanOutlined\\\"}, {\\\"title\\\": \\\"解决方案\\\", \\\"icon\\\": \\\"SolutionSmallOutlined\\\"}, {\\\"title\\\": \\\"产品答疑\\\", \\\"icon\\\": \\\"InformationLargeOutlined\\\"}]\",\n\t\t\"tip\": \"扫码添加微信，获得更多专属服务\"\n\t},\n\t\"website\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/59f4cc8e0b2b4395bf0fcd133d208e63\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/defbf55d1e9646eb929f9f5d11d5c119\"\n\t},\n\t\"dingtalk\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/04/27/2c617a16afd9408ba48392e337fbbd7f?attname=20230427_dingtalk_questionnaire.png\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/04/27/2c617a16afd9408ba48392e337fbbd7f?attname=20230427_dingtalk_vikaby.png\",\n\"tip\": \"请使用钉钉扫码，加入交流群\"\n\t},\n\t\"wecom\": {\n\t\t\"questionnaire\": \"https://s1.vika.cn/space/2023/03/02/1346d5efbd5043efb2bfcba0075c0ee9\",\n\t\t\"vikaby\": \"https://s1.vika.cn/space/2023/03/02/09401a8f2d8e491a9097b9bac8b5a4e4\"\n\t},\n\t\"feishu\": {\n\t\t\"title\": \"扫码添加客服\",\n\t\t\"tip\": \"请使用飞书扫码，添加客服号备用\",\n\t\t\"description\": \"以便使用过程中遇到问题，可以随时获得服务和解答\",\n\t\t\"originUrl\": \"https://u.vika.cn/z9ygm\"\n\t}\n}",
+        "onClose": [
+          "set_wizard_completed({\"curWizard\": true})",
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ]
+      },
+      "199": {
+        "uiConfigId": "player_step_ui_config_199·",
+        "uiType": "notice",
+        "onNext": [
+          "open_guide_next_step({\"clearAllPrevUi\":true})"
+        ],
+        "next": "查看详情",
+        "nextId": "check_detail",
+        "uiConfig": "{\n    \"headerImg\": \"https://s1.vika.cn/space/2024/01/24/3aa9d045e1504ab7a4f0d1ebb01af1c6\",\n    \"readMoreUrl\": \"https://help.vika.cn/changelog/24-01-25-updates\",\n    \"children\": \"<h3>🚀 本次更新内容</h3><ul><li>归档记录功能升级：归档记录后，保留双向关联关系</li><li>自定义页面上线，一站式管理所有网页资源</li><li>轻文档功能升级：图片组件完善、支持上传视频、导出文件到本地</li></ul>\"\n}",
         "onClose": [
           "set_wizard_completed({\"curWizard\": true})",
           "open_guide_next_step({\"clearAllPrevUi\":true})"
