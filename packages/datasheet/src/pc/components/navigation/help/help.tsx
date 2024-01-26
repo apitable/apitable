@@ -17,7 +17,6 @@
  */
 
 import classnames from 'classnames';
-
 import RcTrigger from 'rc-trigger';
 import { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -40,27 +39,16 @@ import { ContextmenuItem, MobileContextMenu, Tooltip } from 'pc/components/commo
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useResponsive } from 'pc/hooks';
-
 import { useContactUs } from 'pc/hooks/use_contact_us';
 import { getEnvVariables } from 'pc/utils/env';
+// @ts-ignore
 import { inSocialApp } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 export interface IHelpProps {
   className?: string;
   templateActived: boolean;
 }
-
-const handleEmailClick = (email: string) => {
-  const url = `mailto:${email}`;
-  try {
-    const newWindow = window.open(url, '_blank', 'noopener=yes,noreferrer=yes');
-    newWindow && ((newWindow as any).opener = null);
-  } catch (error) {
-    console.log('error', error);
-  }
-};
 
 export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templateActived }) => {
   const colors = useThemeColors();
@@ -122,11 +110,7 @@ export const Help: FC<React.PropsWithChildren<IHelpProps>> = ({ className, templ
       icon: <AdviseOutlined />,
       text: t(Strings.vomit_a_slot),
       onClick: () => {
-        if (getEnvVariables().IS_AITABLE) {
-          handleEmailClick('support@aitable.ai');
-        } else {
-          navigationToUrl(getEnvVariables().USER_FEEDBACK_FORM_URL);
-        }
+        navigationToUrl(getEnvVariables().USER_FEEDBACK_FORM_URL);
       },
       hidden: isPrivateDeployment(),
     },
