@@ -23,7 +23,6 @@
     "build:room-server": "nx run @apitable/room-server:build",
     "build:datasheet": "nx run @apitable/datasheet:build",
     "build:api-client": "nx run @apitable/api-client:build",
-    "build:ai-components": "node build.js",
     "build:dst:pre": "nx run-many -t build -p @apitable/i18n-lang @apitable/core @apitable/icons @apitable/components @apitable/ai @apitable/widget-sdk --parallel=5 && pnpm build:api-client",
     "build:dst": "nx run --verbose @apitable/datasheet:build",
     "build:air-agent:pre": "nx run-many -t build -p @apitable/i18n-lang @apitable/icons @apitable/core @apitable/components @apitable/ai --parallel=5",

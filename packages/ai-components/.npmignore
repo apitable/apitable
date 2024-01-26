@@ -1,0 +1,20 @@
+# The current package will be released to npm, 
+# and only d.ts will be kept in npm without source code, 
+# and all unnecessary sensitive information will be discharged in
+.yarn
+src
+dist/**/*.d.ts.map
+tsconfig*.json
+docs/
+READ.dev.md
+setup.ts
+styleguide/
+styleguide.config.js
+typings.json
+typings/
+.storybook
+.env
+.gitignore
+jest.config.js
+sonar-project.properties
+README.md
