@@ -137,8 +137,9 @@ export class OneWayLinkField extends ArrayValueField {
     if (!snapshot) {
       return [];
     }
+    const archivedRecordIds = snapshot.meta.archivedRecordIds || [];
     if (Array.isArray(value)) {
-      return value.filter(recordId => snapshot.recordMap[recordId]);
+      return value.filter(recordId => snapshot.recordMap[recordId] || archivedRecordIds.includes(recordId));
     }
     return [];
   }
@@ -151,10 +152,8 @@ export class OneWayLinkField extends ArrayValueField {
     const archivedRecordIds = snapshot.meta.archivedRecordIds || [];
     if (Array.isArray(value)) {
       return value.every(recordId => {
-        if (snapshot.recordMap[recordId] || archivedRecordIds.includes(recordId)) {
-          return true;
-        }
-        return false;
+        return !!(snapshot.recordMap[recordId] || archivedRecordIds.includes(recordId));
+
       });
     }
     return false;

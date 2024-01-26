@@ -137,6 +137,15 @@ export class OPEventCellUpdated extends IAtomEventType<ICellUpdatedContext> {
               const brotherFieldId = (relatedLinkField as ILinkField).property?.brotherFieldId!;
               // 3. The recordIds affected by this cell update
               triggerRecIds = getCellValue(state, snapshot, recordId, brotherFieldId);
+              if (relatedLinkField.type === FieldType.OneWayLink) {
+                const _snapshot = getSnapshot(state, _datasheetId)!;
+                const _records = Object.values(_snapshot.recordMap);
+                const filterRecords = _records.filter(record => {
+                  const recordData = record?.data[relatedLinkField.id] as string[] | undefined;
+                  return recordData && recordData.includes(recordId);
+                });
+                triggerRecIds = filterRecords.map(record => record.id);
+              }
             }
             // TODO: The value of the link field cell must be null or an array.
             // Due to the existence of dirty data, we first judge whether it is an array type before processing it. Delete data after cleaning?

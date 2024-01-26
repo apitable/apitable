@@ -80,6 +80,10 @@ dayjs.extend(timezone);
 
 const DEFAULT_FORMAT = 'YYYY-MM-DD';
 
+const formatDateNoYear = (dateFormat?: string) => {
+  return dateFormat === DateFormat[4] || dateFormat === DateFormat[6] || dateFormat === DateFormat[7];
+};
+
 const DatePicker = React.lazy(() => import('./date_picker'));
 
 export interface IDateTimeEditorState {
@@ -244,7 +248,7 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     });
   };
 
-  format2StandardDate = (dateStr: string, dateFormat: string): ITimestamp | null => str2timestamp(dateStr, dateFormat);
+  format2StandardDate = (dateStr: string, dateFormat?: string): ITimestamp | null => str2timestamp(dateStr, dateFormat);
 
   getInputValue() {
     const { field, userTimeZone } = this.props;
@@ -258,7 +262,8 @@ export class DateTimeEditorBase extends React.PureComponent<IDateTimeEditorProps
     const { autoFill } = property;
     let dateTimestamp = new Date(getToday()).getTime();
     if (dateValue) {
-      const timestamp = this.format2StandardDate(displayDateStr, dateFormat);
+      const timestamp = formatDateNoYear(dateFormat) ? this.format2StandardDate(dateValue):
+        this.format2StandardDate(displayDateStr, dateFormat);
       if (timestamp == null || notInTimestampRange(timestamp)) {
         return null;
       }

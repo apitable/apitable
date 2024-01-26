@@ -25,13 +25,19 @@ import { Field } from 'model/field';
 import { ICellValue } from 'model/record';
 import produce from 'immer';
 import { FieldType, IField } from 'types';
+import { OneWayLinkField } from '../model/field/one_way_link_field';
 
 export class CellFormatChecker {
   constructor(private store: Store<IReduxState, AnyAction>) {}
 
   static checkValueValid(cellValue: any, field: IField, state: IReduxState) {
-    if (Field.bindContext(field, state).validate(cellValue)) {
+    const isValid = Field.bindContext(field, state).validate(cellValue);
+    if (isValid) {
       return cellValue;
+    }
+    // One-way link invalid data needs to be filtered out
+    if (field.type === FieldType.OneWayLink) {
+      return (Field.bindContext(field, state) as OneWayLinkField).filterRecordIds(cellValue);
     }
     return null;
   }

@@ -15,21 +15,22 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Events, Player } from '@apitable/core';
 import AutoSaveJson from 'static/json/autosave.json';
 
 const AUTO_SAVE_SVG_ID = 'AUTO_SAVE_SVG_ID';
 export const AutoSaveLottie = () => {
+  const ref = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    const handle = document.getElementById(AUTO_SAVE_SVG_ID);
-    if (!handle) {
+    if (!ref.current) {
       return;
     }
     import('lottie-web/build/player/lottie_svg').then((module) => {
       const lottie = module.default;
       lottie.loadAnimation({
-        container: handle,
+        // @ts-ignore
+        container: ref.current,
         renderer: 'svg',
         loop: false,
         autoplay: true,
@@ -37,7 +38,7 @@ export const AutoSaveLottie = () => {
       });
       Player.doTrigger(Events.view_notice_auto_save_true);
     });
-  }, []);
+  }, [ref]);
 
-  return <div id={AUTO_SAVE_SVG_ID} style={{ display: 'flex' }} />;
+  return <div ref={ref} id={AUTO_SAVE_SVG_ID} style={{ display: 'flex' }} />;
 };
