@@ -4,7 +4,7 @@ import { forwardRef, memo, useImperativeHandle } from 'react';
 import { ICellValue } from '@apitable/core';
 import { IBaseEditorProps, IEditor } from '../interface';
 // @ts-ignore
-import { Workdoc } from 'enterprise/editor/workdoc/workdoc';
+import { Workdoc } from 'enterprise/editor/workdoc';
 
 export interface IWorkdocEditorProps extends IBaseEditorProps {
   editable: boolean;
