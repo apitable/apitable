@@ -52,7 +52,6 @@ const triggerBase = {
 export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const dispatch = useAppDispatch();
-  const tableRef = useRef<HTMLDivElement>(null);
   const { subAdminList, subAdminListData, user, subscription, spaceInfo } = useAppSelector(
     (state: IReduxState) => ({
       subAdminList: state.spacePermissionManage.subAdminListData ? state.spacePermissionManage.subAdminListData.records : [],
@@ -75,21 +74,6 @@ export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   useEffect(() => {
     dispatch(StoreActions.getSubAdminList(pageNo));
   }, [dispatch, pageNo]);
-  const updateScroll = useCallback(() => {
-    if (tableRef.current) {
-      const height = tableRef.current.clientHeight - 45;
-      setScrollHeight(height);
-    }
-  }, [tableRef]);
-  useLayoutEffect(() => {
-    updateScroll();
-  }, [updateScroll]);
-  useEffect(() => {
-    window.addEventListener('resize', updateScroll);
-    return () => {
-      window.removeEventListener('resize', updateScroll);
-    };
-  }, [updateScroll]);
 
   const getPermissionContent = (arr: Array<string>) => {
     const i18nStrings = arr
@@ -218,8 +202,8 @@ export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
         </Button>
       </div>
 
-      <div className={styles.tableWrapper} ref={tableRef}>
-        <Table columns={columns} dataSource={subAdminList} pagination={false} rowKey={(record) => record.memberId} scroll={{ y: scrollHeight }} />
+      <div className={styles.tableWrapper}>
+        <Table columns={columns} dataSource={subAdminList} pagination={false} rowKey={(record) => record.memberId} />
       </div>
       {subAdminListData && subAdminListData.total > ConfigConstant.SUB_ADMIN_LIST_PAGE_SIZE && (
         <div className={styles.pagination}>
