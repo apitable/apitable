@@ -49,9 +49,9 @@ import { stopPropagation } from '../../../utils/dom';
 import { expandUnitModal, SelectUnitSource } from '../../catalog/permission_settings/permission/select_unit_modal';
 import { Check } from '../common_list/check';
 import { IMemberOptionListProps } from './member_option_list.interface';
+// @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './styles.module.less';
-// @ts-ignore
 
 const triggerBase = {
   action: ['hover'],

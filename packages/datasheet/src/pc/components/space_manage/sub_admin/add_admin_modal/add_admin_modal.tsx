@@ -28,11 +28,11 @@ import { useEditSubAdmin, useNotificationCreate } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
 import { generateUserInfo } from 'pc/utils';
 import { PermissionCard } from '../permission_card';
+// @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
+// @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
-// @ts-ignore
 
 const modalTitle = {
   read: t(Strings.sub_admin_view),

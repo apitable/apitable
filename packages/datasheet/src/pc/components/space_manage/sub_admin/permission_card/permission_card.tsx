@@ -23,9 +23,9 @@ import { QuestionCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { useAppSelector } from 'pc/store/react-redux';
+// @ts-ignore
 import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 interface IPermissionCardProps {
   defaultChecked?: string[];

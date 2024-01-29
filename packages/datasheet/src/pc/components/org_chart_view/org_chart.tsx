@@ -41,9 +41,9 @@ import { ScrollBar } from './components/scroll_bar';
 import { DEFAULT_ZOOM, MAX_ZOOM, MIN_ZOOM, ORG_NODE_MENU, ORG_EDGE_MENU, DragNodeType, NodeType } from './constants';
 import { FlowContext } from './context/flow_context';
 import { IDragItem, NodeHandleState, ScrollBarType } from './interfaces';
+// @ts-ignore
 import { getWizardRunCount } from 'enterprise/guide/utils';
 import styles from './styles.module.less';
-// @ts-ignore
 
 export const OrgChart: FC<React.PropsWithChildren<unknown>> = () => {
   const {

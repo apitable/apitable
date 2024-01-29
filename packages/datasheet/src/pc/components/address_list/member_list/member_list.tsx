@@ -31,9 +31,9 @@ import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useAppSelector } from 'pc/store/react-redux';
 import { expandMemberInfo } from '../expand_member_info';
 import { getIdentity } from '../member_info';
+// @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 export interface IMemberList {
   memberList: IMemberInfoInAddressList[];

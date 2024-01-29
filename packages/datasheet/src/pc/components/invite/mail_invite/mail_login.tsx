@@ -29,9 +29,9 @@ import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { InviteTitle } from '../components';
 import { useInvitePageRefreshed } from '../use_invite';
+// @ts-ignore
 import { LoginWithoutOther } from 'enterprise/home/login/login_without_other';
 import styles from './style.module.less';
-// @ts-ignore
 
 const MailLogin: FC<React.PropsWithChildren<unknown>> = () => {
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'mailInvite' });

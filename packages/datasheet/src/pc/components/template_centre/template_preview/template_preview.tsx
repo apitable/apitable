@@ -30,9 +30,9 @@ import { isRenderServer } from 'pc/utils';
 import { TemplateCategoryDetail } from '../template_category_detail';
 import { TemplateChoice } from '../template_choice';
 import { UsingTemplateModal } from '../using_template_modal';
+// @ts-ignore
 import { LoginModal } from 'enterprise/home/login_modal/login_modal';
 import styles from './style.module.less';
-// @ts-ignore
 
 export const TemplatePreview: FC<React.PropsWithChildren<unknown>> = () => {
   // Template ID to use

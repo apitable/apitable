@@ -35,9 +35,9 @@ import { getEnvVariables } from 'pc/utils/env';
 import { ImportFile } from './import_file';
 import { InputEmail } from './input_email';
 import { LinkInvite } from './link_invite';
+// @ts-ignore
 import { checkSocialInvite } from 'enterprise/home/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 const { TabPane } = Tabs;
 

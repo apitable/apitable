@@ -26,9 +26,9 @@ import { WithTipWrapper, IdentifyingCodeInput } from 'pc/components/common';
 import { getVerifyData, IChangeMainAdminConfig, VerifyTypes } from 'pc/components/navigation/account_center_modal/utils';
 import { useRequest, useSetState } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
+// @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 interface IVerifyAdminProps {
   setCurrent: React.Dispatch<React.SetStateAction<number>>;

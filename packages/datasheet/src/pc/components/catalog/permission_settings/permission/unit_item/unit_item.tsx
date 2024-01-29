@@ -27,9 +27,9 @@ import { PermissionSelect } from 'pc/components/catalog/permission_settings/perm
 import { AvatarType, InfoCard, Tooltip } from 'pc/components/common';
 import { useAppSelector } from 'pc/store/react-redux';
 import { IRoleOption, IUnitItemProps } from './interface';
+// @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 const DEFAULT_ROLE: IRoleOption[] = [
   {

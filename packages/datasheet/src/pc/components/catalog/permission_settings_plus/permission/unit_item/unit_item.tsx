@@ -30,9 +30,9 @@ import { useAppSelector } from 'pc/store/react-redux';
 import { Menu, MenuItem } from '../menu';
 import { IRoleOption, IUnitItemProps } from './interface';
 import { PermissionSelectMobile } from './permission_select_mobile';
+// @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 export const DEFAULT_ROLE: IRoleOption[] = [
   {

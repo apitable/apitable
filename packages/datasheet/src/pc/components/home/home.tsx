@@ -26,9 +26,9 @@ import { getSearchParams } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { MobileHome } from './mobile_home';
 import { PcHome } from './pc_home';
+//@ts-ignore
 import { Home as EnterpriseHome } from 'enterprise/home/home';
 import styles from './style.module.less';
-//@ts-ignore
 
 configResponsive({
   large: 1023.98,

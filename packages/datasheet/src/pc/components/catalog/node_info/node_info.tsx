@@ -30,9 +30,9 @@ import { useRequest, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getNodeIcon } from '../tree/node_icon';
+// @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './styles.module.less';
-// @ts-ignore
 
 interface INodeInfoProps {
   nodeId: string;

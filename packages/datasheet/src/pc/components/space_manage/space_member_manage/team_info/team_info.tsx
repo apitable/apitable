@@ -28,9 +28,9 @@ import { useAppSelector } from 'pc/store/react-redux';
 import { MemberTable } from '../member_table';
 import { EditMemberModal, ChangeMemberTeam, AddMember } from '../modal';
 import { isPrimaryOrOwnFunc, socialPlatPreOperateCheck } from '../utils';
+// @ts-ignore
 import { isSocialPlatformEnabled, isSocialDingTalk, isSocialWecom, isContactSyncing } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 interface ITeamInfo {
   searchMemberRes: IMemberInfoInSpace[];

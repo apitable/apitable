@@ -31,11 +31,11 @@ import { ScreenSize } from '../component_display/enum';
 import { Modal } from '../mobile/modal';
 import { ColorGroup } from './color_group';
 import { OptionSetting } from './enum';
+// @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
+// @ts-ignore
 import { SubscribeGrade, SubscribeLabel } from 'enterprise/subscribe_system/subscribe_label/subscribe_label';
 import styles from './style.module.less';
-// @ts-ignore
-// @ts-ignore
 
 export interface IColorPickerPane {
   option: ISelectFieldOption;

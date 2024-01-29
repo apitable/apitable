@@ -57,9 +57,9 @@ import IconNoListLight from 'static/icon/datasheet/activity/activity_empty_light
 import { ActivityContext, ICommentReplyMap } from '../activity_context';
 import { ChangesetItem } from '../activity_item';
 import { IActivityPaneProps, IChooseComment } from '../interface';
+// @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing';
 import styles from './style.module.less';
-// @ts-ignore
 
 const PAGE_SIZE = 10;
 const LIMIT_DAY = 90;

@@ -54,9 +54,9 @@ import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import EditorTitleContext from '../editor_title_context';
 import { FieldDescWithTitle } from './field_desc_with_title';
+// @ts-ignore
 import { MobileAlarm } from 'enterprise/alarm/mobile_alarm/mobile_alarm';
 import styles from './style.module.less';
-// @ts-ignore
 
 interface IFieldTitleProps {
   isFocus?: boolean;

@@ -32,9 +32,9 @@ import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_h
 import { usePrevious, useQuery, useSideBarVisible } from 'pc/hooks';
 import { useNetwork } from 'pc/hooks/use_network';
 import { useAppSelector } from 'pc/store/react-redux';
+// @ts-ignore
 import { isDingtalkSkuPage } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 interface ITabBarProps {
   dashboardId: string;

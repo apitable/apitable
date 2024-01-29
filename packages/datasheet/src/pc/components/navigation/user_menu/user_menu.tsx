@@ -42,7 +42,9 @@ import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import Vikaji from 'static/icon/common/vikaji.png';
 import AnimationJson from 'static/json/invite_box_filled.json';
 import { defaultAvatars } from '../account_center_modal/basic_setting/default_avatar';
+// @ts-ignore
 import { getDingtalkConfig } from 'enterprise/dingtalk/utils/index';
+// @ts-ignore
 import { clearWizardsData } from 'enterprise/guide/utils';
 import {
   getSocialWecomUnitName,
@@ -55,8 +57,6 @@ import {
   // @ts-ignore
 } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
-// @ts-ignore
 
 export interface IUserMenuProps {
   setShowUserMenu: React.Dispatch<React.SetStateAction<boolean>>;

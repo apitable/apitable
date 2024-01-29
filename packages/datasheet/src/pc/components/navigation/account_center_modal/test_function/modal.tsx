@@ -30,9 +30,9 @@ import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
 import { useApplyOpenFunction } from './hooks';
 import { FunctionType } from './interface';
+// @ts-ignore
 import { isWecomFunc } from 'enterprise/home/social_platform/utils';
 import style from './style.module.less';
-// @ts-ignore
 
 interface IModalProps {
   onClose: () => void;

@@ -29,9 +29,9 @@ import { ISpaceLevelType, LevelType } from 'pc/components/space_manage/space_inf
 import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
 import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard } from 'pc/utils';
+// @ts-ignore
 import { getSocialWecomUnitName, isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 export const SpaceInfoPopover: FC<React.PropsWithChildren<unknown>> = () => {
   const { spaceInfo, spaceId, userInfo, subscription, spaceFeatures } = useAppSelector(
