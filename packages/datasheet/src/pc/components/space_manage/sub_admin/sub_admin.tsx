@@ -19,7 +19,7 @@
 import { useMount } from 'ahooks';
 import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';
-import { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { shallowEqual } from 'react-redux';
 import { Button, TextButton, Typography, useThemeColors, Pagination } from '@apitable/components';
@@ -30,11 +30,11 @@ import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { AddAdminModal, ModalType } from './add_admin_modal';
+// @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
+// @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
-// @ts-ignore
 
 // Some permissions that are no longer used, but because the old space will still return the corresponding data,
 // the front-end to do the filtering of these permissions
@@ -65,7 +65,6 @@ export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   const [modalType, setModalType] = useState<string | null>(null);
   const [editOrReadSubMainInfo, setEditOrReadSubMainInfo] = useState<ISubAdminList | null>(null);
   const [pageNo, setPageNo] = useState(1);
-  const [scrollHeight, setScrollHeight] = useState(0);
   const { delSubAdminAndNotice } = useNotificationCreate({ fromUserId: user!.uuid, spaceId: user!.spaceId });
 
   useMount(() => {
