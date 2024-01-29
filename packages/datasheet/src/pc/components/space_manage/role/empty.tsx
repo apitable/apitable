@@ -20,12 +20,11 @@ import Image from 'next/image';
 import { useContext } from 'react';
 import { Box, Button, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t, ThemeName } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import RoleEmptyDark from 'static/icon/common/role_empty_dark.png';
 import RoleEmptyLight from 'static/icon/common/role_empty_light.png';
 import { RoleContext } from './context';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const Empty: React.FC<React.PropsWithChildren<{ onClick: () => void }>> = (props) => {
   const colors = useThemeColors();

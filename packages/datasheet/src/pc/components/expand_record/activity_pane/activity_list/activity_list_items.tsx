@@ -50,17 +50,16 @@ import { Message } from 'pc/components/common';
 import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ACTIVITY_SELECT_MAP, ActivitySelectType } from 'pc/utils';
 import IconNoListDark from 'static/icon/datasheet/activity/activity_empty_dark.png';
 import IconNoListLight from 'static/icon/datasheet/activity/activity_empty_light.png';
 import { ActivityContext, ICommentReplyMap } from '../activity_context';
 import { ChangesetItem } from '../activity_item';
 import { IActivityPaneProps, IChooseComment } from '../interface';
-import styles from './style.module.less';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const PAGE_SIZE = 10;
 const LIMIT_DAY = 90;

@@ -21,7 +21,7 @@ import React from 'react';
 import { ThemeProvider } from '@apitable/components';
 import { Selectors } from '@apitable/core';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const ModalWithTheme = (props: any) => {
   const cacheTheme = useAppSelector(Selectors.getTheme);

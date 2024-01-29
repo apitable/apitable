@@ -13,10 +13,9 @@ import { Message, Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { filterCommonGroup } from 'pc/components/multi_grid/type_select';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ButtonOperateType } from 'pc/utils';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ICascaderRulesModalProps {
   visible: boolean;

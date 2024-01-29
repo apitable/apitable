@@ -1,12 +1,12 @@
-import { DataSourceSelectorWrapper } from '../../data_source_selector/data_source_selector_wrapper';
-import { DataSourceSelectorBase } from '../../data_source_selector/data_source_selector';
-import styles from './style.module.less';
-import { Strings, t } from '@apitable/core';
 import { useState } from 'react';
-import { IOnChange, IOnChangeParams, ISearchPanelProps } from '../../data_source_selector/interface';
+import { Strings, t } from '@apitable/core';
 import { useResponsive } from '../../../hooks';
 import { ScreenSize } from '../../common/component_display';
+import { DataSourceSelectorBase } from '../../data_source_selector/data_source_selector';
+import { DataSourceSelectorWrapper } from '../../data_source_selector/data_source_selector_wrapper';
+import { IOnChange, IOnChangeParams, ISearchPanelProps } from '../../data_source_selector/interface';
 import { WidgetPreview } from './widget_preview/widget_preview';
+import styles from './style.module.less';
 
 interface IDataSourceSelectorForAIProps {
   onChange: IOnChange<IOnChangeParams>;

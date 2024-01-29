@@ -20,9 +20,8 @@ import { FC, useCallback, useMemo } from 'react';
 import { IWidget, Strings, t, WidgetInstallEnv, WidgetRuntimeEnv } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ErrorWidget } from '../error_widget';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 enum PreLoadErrorCode {
   NotSupportMobile,

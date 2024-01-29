@@ -27,12 +27,11 @@ import { EditOutlined } from '@apitable/icons';
 import { Avatar, AvatarSize, ButtonBase, Emoji, ImageCropUpload, ISelectInfo, IUploadType, Wrapper } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useUserRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { isLocalSite } from 'pc/utils';
 import { useQuery } from '../../hooks/use_home';
 import { defaultAvatars } from '../navigation/account_center_modal/basic_setting/default_avatar';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const customTips = {
   cropDesc: t(Strings.support_image_formats_limits, { number: 2 }),

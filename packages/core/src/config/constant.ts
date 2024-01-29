@@ -49,7 +49,7 @@ export enum NodeType {
   AI = 9,
   AUTOMATION = 10,
   VIEW = 11,
-  EMBED_PAGE = 12,
+  CUSTOM_PAGE = 12,
   ASSET_FILE = 98,
   TRASH = 99,
 }
@@ -208,7 +208,7 @@ export const nodePermissionMap = new Map<NodeType, { [key: string]: string }>([
     },
   ],
   [
-    NodeType.EMBED_PAGE,
+    NodeType.CUSTOM_PAGE,
     {
       [permission.manager]: t(Strings.embed_page_node_permission_manager),
       [permission.editor]: t(Strings.embed_page_node_permission_editor),
@@ -304,7 +304,7 @@ export enum ContextMenuType {
   FORM_FIELD_OP = 'FORM_FIELD_OP', // Magical form field operation menu
   EXPAND_RECORD_FIELD = 'EXPAND_RECORD_FIELD', // Expand the operation field configuration in the card
   AI = 'AI',
-  EMBED_PAGE = 'EMBED_PAGE',
+  CUSTOM_PAGE = 'CUSTOM_PAGE',
 }
 
 export const NODE_DESCRIPTION_EDITOR_ID = 'folderDescribeEditor';

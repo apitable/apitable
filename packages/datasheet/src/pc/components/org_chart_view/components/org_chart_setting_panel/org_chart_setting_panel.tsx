@@ -39,12 +39,11 @@ import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { FlowContext } from '../../context/flow_context';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IOrgChartSettingPanelProps {
   onClose: () => void;

@@ -23,10 +23,9 @@ import { RecordVision, StoreActions, Strings, t } from '@apitable/core';
 import { IIconProps, MiddlescreenOutlined, SidescreenOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
 import { setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IIconButtonProps {
   active: boolean;

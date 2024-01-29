@@ -22,10 +22,9 @@ import { shallowEqual } from 'react-redux';
 import { CellType, FieldType, Selectors } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { UploadManager } from 'pc/utils';
 import { GRID_ROW_HEAD_WIDTH } from '../constant';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IAttachmentEvent {
   instance: any;

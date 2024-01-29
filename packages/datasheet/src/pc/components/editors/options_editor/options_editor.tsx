@@ -38,12 +38,11 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { OptionList } from 'pc/components/list';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { useFocusEffect } from '../hooks/use_focus_effect';
 import { IBaseEditorProps, IEditor } from '../interface';
 import { PopStructure } from '../pop_structure';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IEditorProps extends IBaseEditorProps {
   style?: React.CSSProperties;

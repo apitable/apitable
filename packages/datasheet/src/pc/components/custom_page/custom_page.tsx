@@ -10,17 +10,18 @@ import { Setting } from './components/setting/setting';
 import { Tab } from './components/tab/tab';
 import { useGetDesc } from './hooks/use_get_desc';
 import { useGetInfo } from './hooks/use_get_info';
+import { useGetTreeNodeMap } from './hooks/use_get_tree_node_map';
 
-export const EmbedPage = () => {
+export const CustomPage = () => {
   const { url, role } = useGetInfo();
   const [openSetting, setOpenSetting] = useState(false);
   const [nodeId, setNodeId] = useState('');
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { shareId, embedPageId } = useAppSelector((state) => state.pageParams);
-  const treeNodesMap = useAppSelector((state) => state.catalogTree.treeNodesMap);
+  const { shareId, customPageId, templateId } = useAppSelector((state) => state.pageParams);
+  const treeNodesMap = useGetTreeNodeMap();
 
-  const node = treeNodesMap[embedPageId!];
+  const node = treeNodesMap[customPageId!];
 
   useEffect(() => {
     if (!node) return;
@@ -29,11 +30,11 @@ export const EmbedPage = () => {
     setOpenSetting(!Boolean(_url));
   }, [node]);
 
-  const isManager = role === ConfigConstant.Role.Manager;
+  const canAddUrl = role !== ConfigConstant.Role.Reader;
 
   useGetDesc();
 
-  if (!role) {
+  if (!role && !shareId && !templateId) {
     return <NoPermission />;
   }
 
@@ -46,7 +47,7 @@ export const EmbedPage = () => {
         ) : (
           <div className={'vk-flex vk-flex-col vk-justify-center vk-h-full vk-items-center vk-space-y-4 vk-bg-bgCommonDefault'}>
             <img src={AutomationEmptyDark.src} alt="" width={200} height={150} />
-            {!shareId && isManager && (
+            {!shareId && canAddUrl && (
               <Button prefixIcon={<SettingOutlined />} className={'vk-block vk-w-max'} onClick={() => setOpenSetting(true)}>
                 {t(Strings.embed_page_add_url)}
               </Button>

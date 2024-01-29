@@ -2,14 +2,12 @@ import { Tabs } from 'antd';
 import TabPane from 'antd/es/tabs/TabPane';
 import { useAtom } from 'jotai';
 import * as React from 'react';
-import { FunctionComponent, memo, useEffect } from 'react';
+import { FunctionComponent, memo } from 'react';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import styled, { css } from 'styled-components';
 import { Box, Switch, Typography, useThemeColors, useThemeMode } from '@apitable/components';
 import { IReduxState, Strings, t } from '@apitable/core';
 import { InfoCircleOutlined } from '@apitable/icons';
-// @ts-ignore
-import { goToUpgrade } from 'enterprise/subscribe_system/upgrade_method';
 import { VikaSplitPanel } from 'pc/components/common';
 import { useAppSelector } from 'pc/store/react-redux';
 import { useResponsive, useSideBarVisible } from '../../../hooks';
@@ -20,6 +18,8 @@ import { ListWithFooter } from '../components/list_with_footer';
 import { automationPanelAtom, PanelName } from '../controller/atoms';
 import { useAutomationResourcePermission } from '../controller/use_automation_permission';
 import { Side } from './side';
+// @ts-ignore
+import { goToUpgrade } from 'enterprise/subscribe_system/upgrade_method';
 import styles from './styles.module.less';
 
 export const ConstAutomationContentLeft = 'automation-content-left';

@@ -58,7 +58,7 @@ type IMagicTextFieldProps = IWidgetProps & {
   triggerDataSheetMap: TriggerDataSheetMap
 };
 
-export type TriggerDataSheetMap = Record<string, string>
+export type TriggerDataSheetMap = Record<string, string>;
 
 export const MagicTextField = memo((props: IMagicTextFieldProps) => {
   const { onChange, schema, triggerDataSheetMap } = props;

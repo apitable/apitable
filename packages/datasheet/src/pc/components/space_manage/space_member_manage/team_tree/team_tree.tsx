@@ -42,11 +42,13 @@ import { Message, Modal, SearchTeamAndMember, Tooltip } from 'pc/components/comm
 import { expandInviteModal } from 'pc/components/invite';
 import { useSelectTeamChange } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { CreateTeamModal } from '../modal/create_team_modal/create_team_modal';
 import { RenameTeamModal } from '../modal/rename_team_modal';
 import { socialPlatPreOperateCheck } from '../utils';
-import styles from './style.module.less';
+// @ts-ignore
+import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise/home/social_platform/utils';
 import {
   freshDingtalkOrg,
   freshWecomOrg,
@@ -54,10 +56,7 @@ import {
   freshIdaasOrg,
   // @ts-ignore
 } from 'enterprise/organization/utils/index';
-// @ts-ignore
-import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise/home/social_platform/utils'
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const _ContextMenu: any = ContextMenu;
 const _MenuItem: any = MenuItem;

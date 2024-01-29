@@ -27,11 +27,10 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { Popup } from 'pc/components/common/mobile/popup';
 import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
 import { ModalViewFilter } from 'pc/components/tool_bar/view_filter';
+import { useAppSelector } from 'pc/store/react-redux';
 import { CommonViewSet } from '../common_view_set';
 import { SortFieldOptions } from '../sort_field_options';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFilterModalProps extends IModalProps {
   title?: React.ReactNode;

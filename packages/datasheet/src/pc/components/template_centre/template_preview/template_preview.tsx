@@ -25,15 +25,14 @@ import { CommonSide } from 'pc/components/common_side';
 import { MobileBar } from 'pc/components/mobile_bar';
 import { Router } from 'pc/components/route_manager/router';
 import { useUserRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { isRenderServer } from 'pc/utils';
 import { TemplateCategoryDetail } from '../template_category_detail';
 import { TemplateChoice } from '../template_choice';
 import { UsingTemplateModal } from '../using_template_modal';
-import styles from './style.module.less';
 // @ts-ignore
 import { LoginModal } from 'enterprise/home/login_modal/login_modal';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export const TemplatePreview: FC<React.PropsWithChildren<unknown>> = () => {
   // Template ID to use

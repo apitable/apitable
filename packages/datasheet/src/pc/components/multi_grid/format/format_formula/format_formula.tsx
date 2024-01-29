@@ -23,14 +23,13 @@ import * as React from 'react';
 import { Dispatch, SetStateAction, useEffect, useMemo, useRef } from 'react';
 import { BasicValueType, expressionTransform, IField, IFormulaField, parse, Selectors, Strings, t } from '@apitable/core';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { assignDefaultFormatting } from '../format_lookup';
 import { LookUpFormatDateTime } from '../format_lookup/lookup_format_datetime';
 import { LookUpFormatNumber } from '../format_lookup/lookup_format_number';
 import formatStyles from '../styles.module.less';
 import { openFormulaModal } from './open_formula_modal';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFormatFormulaProps {
   from?: string;

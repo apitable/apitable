@@ -18,7 +18,7 @@
 
 import { CellType, ILinearRow, Selectors } from '@apitable/core';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const useIsGroupCollapsing = (row: ILinearRow) => {
   const groupingCollapseIds = useAppSelector(Selectors.getGroupingCollapseIds);

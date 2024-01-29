@@ -19,10 +19,9 @@
 import * as React from 'react';
 import { useThemeColors } from '@apitable/components';
 import { IViewColumn, Selectors } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { CardBody } from './card_body';
 import { CardHeader } from './card_header';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 //  Common card component for Gallery and Kanban views
 interface IRecordCardProps {

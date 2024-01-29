@@ -25,9 +25,9 @@ import { getFieldLock } from 'pc/components/field_permission';
 import { AreaType, IScrollState, PointPosition } from 'pc/components/gantt_view';
 import { Icon, IconType, Line, Rect } from 'pc/components/konva_components';
 import { GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH, GridCoordinate, KonvaGridContext, KonvaGridViewContext } from 'pc/components/konva_grid';
+import { useAppSelector } from 'pc/store/react-redux';
 import { FieldHead } from '../components';
 
-import {useAppSelector} from "pc/store/react-redux";
 interface IUseHeadsProps {
   instance: GridCoordinate;
   columnStartIndex: number;

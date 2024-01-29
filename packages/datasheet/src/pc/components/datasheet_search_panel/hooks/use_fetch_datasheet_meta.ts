@@ -1,9 +1,9 @@
-import { getDatasheetMeta } from '../api';
-import { Url } from '@apitable/core';
-import { ISearchPanelState } from '../store/interface/search_panel';
-import urlcat from 'urlcat';
-import useSWR from 'swr';
 import { useEffect } from 'react';
+import useSWR from 'swr';
+import urlcat from 'urlcat';
+import { Url } from '@apitable/core';
+import { getDatasheetMeta } from '../api';
+import { ISearchPanelState } from '../store/interface/search_panel';
 
 const getApiKey = (datasheetId: string, needFetchDatasheetMeta: boolean) => {
   if (!needFetchDatasheetMeta || !datasheetId) return;
@@ -39,7 +39,7 @@ export const useFetchDatasheetMeta = ({ localState, needFetchDatasheetMeta, loca
       });
     }
 
-  }, [data,localDispatch]);
+  }, [data, localDispatch]);
 
   return { data, mutate, isValidating };
 };

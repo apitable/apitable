@@ -41,15 +41,14 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { changeView, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { useViewAction } from './action';
-import styles from './style.module.less';
 import { ViewFilter } from './view_filter';
 import { ViewIcon } from './view_icon';
 import { ViewItem } from './view_item';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 interface IViewSwitcherProperty {
   close: (e: React.MouseEvent) => void;

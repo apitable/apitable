@@ -52,13 +52,12 @@ import { expandPreviewModalClose } from 'pc/components/preview_file';
 import { useDispatch, useGetViewByIdWithDefault } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 
 import { RecordList } from './record_list';
 import style from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ISearchContentProps {
   field: ILinkField | IOneWayLinkField

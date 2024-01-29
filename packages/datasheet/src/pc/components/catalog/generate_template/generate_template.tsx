@@ -24,9 +24,8 @@ import { ConfigConstant, IReduxState, Navigation, Selectors, Strings, t } from '
 import { BaseModal, Message, Modal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useTemplateRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IGenerateTemplateProps {
   nodeId?: string;

@@ -22,7 +22,7 @@ import { IReduxState, Api, IAddIsActivedMemberInfo, UnitItem, ITeam, IMember } f
 import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { useMemberManage } from 'pc/hooks';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 interface IAddMember {
   onCancel: () => void;

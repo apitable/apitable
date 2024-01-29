@@ -22,12 +22,11 @@ import * as React from 'react';
 import { Switch } from '@apitable/components';
 import { IField, ICreatedByField, Strings, t } from '@apitable/core';
 import { QuestionCircleOutlined } from '@apitable/icons';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { Message } from '../../common';
 import settingStyles from '../field_setting/styles.module.less';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFormatCreatedBy {
   currentField: ICreatedByField;

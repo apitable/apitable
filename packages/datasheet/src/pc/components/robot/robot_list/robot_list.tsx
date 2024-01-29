@@ -21,6 +21,7 @@ import * as React from 'react';
 import { memo, useEffect } from 'react';
 import { Skeleton } from '@apitable/components';
 import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { automationDrawerVisibleAtom } from '../../automation/controller';
 import { useAutomationNavigateController } from '../../automation/controller/controller';
 import { useAutomationList } from '../../automation/controller/use_robot_list';
@@ -29,8 +30,6 @@ import { useActionTypes, useAddNewRobot, useTriggerTypes } from '../hooks';
 import { RobotListItemCard } from '../robot_list_item';
 import { NewItem } from './new_item';
 import { RobotEmptyList } from './robot_empty_list';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const RobotList = memo(() => {
   const permissions = useAppSelector(Selectors.getPermissions);

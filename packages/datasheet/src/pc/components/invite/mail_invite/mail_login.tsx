@@ -25,14 +25,13 @@ import { Wrapper } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { PcHome } from 'pc/components/home/pc_home';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { InviteTitle } from '../components';
 import { useInvitePageRefreshed } from '../use_invite';
-import styles from './style.module.less';
 // @ts-ignore
 import { LoginWithoutOther } from 'enterprise/home/login/login_without_other';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const MailLogin: FC<React.PropsWithChildren<unknown>> = () => {
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'mailInvite' });

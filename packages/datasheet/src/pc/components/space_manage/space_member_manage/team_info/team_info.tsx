@@ -24,14 +24,14 @@ import { IReduxState, StoreActions, IMemberInfoInSpace, ConfigConstant, t, Strin
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip, Modal } from 'pc/components/common';
 import { useMemberManage } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { MemberTable } from '../member_table';
 import { EditMemberModal, ChangeMemberTeam, AddMember } from '../modal';
 import { isPrimaryOrOwnFunc, socialPlatPreOperateCheck } from '../utils';
-import styles from './style.module.less';
 // @ts-ignore
 import { isSocialPlatformEnabled, isSocialDingTalk, isSocialWecom, isContactSyncing } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
 interface ITeamInfo {
   searchMemberRes: IMemberInfoInSpace[];
   setSearchMemberRes: React.Dispatch<React.SetStateAction<IMemberInfoInSpace[]>>;

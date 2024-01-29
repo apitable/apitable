@@ -45,6 +45,7 @@ import {
 import { ReactFlowProvider } from '@apitable/react-flow';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import { VikaSplitPanel } from '../common';
@@ -62,11 +63,9 @@ import { FlowContext, IFlowContext } from './context/flow_context';
 import { useElements } from './hooks/use_elements';
 import { IGhostNodesRef, INodeStateMap, IViewNodeStateMap } from './interfaces';
 import { OrgChart } from './org_chart';
-import styles from './styles.module.less';
 // @ts-ignore
 import { getWizardRunCount } from 'enterprise/guide/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './styles.module.less';
 
 const _ReactFlowProvider: any = ReactFlowProvider;
 

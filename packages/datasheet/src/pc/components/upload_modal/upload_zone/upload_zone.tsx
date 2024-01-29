@@ -17,13 +17,13 @@
  */
 
 import classNames from 'classnames';
-import { browser } from 'modules/shared/browser';
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import * as React from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useThemeColors } from '@apitable/components';
 import { IAttachmentValue, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
+import { browser } from 'modules/shared/browser';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';

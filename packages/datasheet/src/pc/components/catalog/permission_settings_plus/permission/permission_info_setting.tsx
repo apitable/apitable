@@ -26,9 +26,9 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { Popconfirm } from 'pc/components/common/popconfirm';
 import { useResponsive } from 'pc/hooks';
 import { Menu, MenuItem } from './menu';
-import styles from './style.module.less';
 import { IRoleOption } from './unit_item/interface';
 import { PermissionSelectMobile } from './unit_item/permission_select_mobile';
+import styles from './style.module.less';
 
 export const PermissionInfoSetting: React.FC<
   React.PropsWithChildren<{

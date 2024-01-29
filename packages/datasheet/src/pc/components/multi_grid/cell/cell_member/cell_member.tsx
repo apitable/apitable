@@ -41,6 +41,7 @@ import {
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import { ButtonPlus } from 'pc/components/common';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { MouseDownType } from '../../enum';
 import { ICellComponentProps } from '../cell_value/interface';
@@ -48,8 +49,6 @@ import { OptionalCellContainer } from '../optional_cell_container/optional_cell_
 import optionalStyle from '../optional_cell_container/style.module.less';
 import { MemberItem } from './member_item';
 import styles from './styles.module.less';
-
-import { useAppSelector } from 'pc/store/react-redux';
 
 interface ICellMember extends ICellComponentProps {
   field: IMemberField;

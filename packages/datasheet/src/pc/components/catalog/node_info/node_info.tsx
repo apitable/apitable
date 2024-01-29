@@ -28,12 +28,11 @@ import { ScreenSize } from 'pc/components/common/component_display/enum';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useRequest, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getNodeIcon } from '../tree/node_icon';
-import styles from './styles.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './styles.module.less';
 
 interface INodeInfoProps {
   nodeId: string;

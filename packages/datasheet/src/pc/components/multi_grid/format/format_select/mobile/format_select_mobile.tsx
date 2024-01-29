@@ -29,10 +29,9 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { usePrevious } from 'pc/components/common/hooks/use_previous';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from '../../styles.module.less';
 import { FormatSelectItem } from './format_select_item';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFormatSelect {
   currentField: ISelectField;

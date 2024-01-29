@@ -21,12 +21,13 @@
 <mapper namespace="com.apitable.workspace.mapper.NodeMapper">
     <insert id="insertBatch">
         INSERT INTO ${tablePrefix}node(id, space_id, parent_id, pre_node_id, node_id, node_name, icon, type, cover, is_template,
-        created_by, updated_by)
+        created_by, updated_by, extra)
         VALUES
         <foreach item="item" index="index" collection="entities" separator=",">
             <trim prefix="(" suffix=")">
                 #{item.id},#{item.spaceId},#{item.parentId},#{item.preNodeId},#{item.nodeId},#{item.nodeName},
-                #{item.icon},#{item.type},#{item.cover},#{item.isTemplate},#{item.createdBy},#{item.updatedBy}
+                #{item.icon},#{item.type},#{item.cover},#{item.isTemplate},#{item.createdBy},#{item.updatedBy},
+                #{item.extra}
             </trim>
         </foreach>
     </insert>

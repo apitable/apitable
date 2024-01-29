@@ -28,6 +28,7 @@ import { AutoTestID, Events, findNode, IReduxState, ITemplateDirectory, Navigati
 import { Loading } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { CommonSide } from 'pc/components/common_side';
+import { CustomPage } from 'pc/components/custom_page/custom_page';
 import { DashboardPanel } from 'pc/components/dashboard_panel';
 import { DataSheetPane } from 'pc/components/datasheet_pane';
 import { FolderShowcase } from 'pc/components/folder_showcase';
@@ -36,13 +37,12 @@ import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useResponsive, useSideBarVisible, useTemplateRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { AutomationPanel } from '../../automation/panel';
-import styles from './style.module.less';
 // @ts-ignore
 import { isDingtalkSkuPage } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const _SplitPane: any = SplitPane;
 
@@ -52,7 +52,7 @@ export const TemplateDetail: FC<React.PropsWithChildren<unknown>> = () => {
   const router = useRouter();
   const { sideBarVisible: _sideBarVisible } = useSideBarVisible();
   const pageParams = useAppSelector((state: IReduxState) => state.pageParams);
-  const { datasheetId, automationId, folderId, templateId, categoryId, formId, dashboardId, mirrorId } = pageParams;
+  const { datasheetId, automationId, folderId, templateId, categoryId, formId, dashboardId, mirrorId, customPageId } = pageParams;
 
   const spaceId = useAppSelector((state) => state.space.activeId);
   const activeNodeId = useAppSelector((state: IReduxState) => Selectors.getNodeId(state));
@@ -120,6 +120,8 @@ export const TemplateDetail: FC<React.PropsWithChildren<unknown>> = () => {
     }
     if (automationId) {
       return <AutomationPanel resourceId={automationId} />;
+    } else if (customPageId) {
+      return <CustomPage key={customPageId} />;
     } else if (mirrorId) {
       return <MirrorRoute />;
     } else if (datasheetId) {

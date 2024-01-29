@@ -26,11 +26,11 @@ import { useRequest, useSetState, useUserRequest } from 'pc/hooks';
 import { execNoTraceVerification } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { PasswordInput, WithTipWrapper, Wrapper } from '../common';
-import styles from './style.module.less';
-// @ts-ignore
-import { IdentifyingCodeModes } from 'enterprise/home/login/identifying_code_login/identifying_code_modes/identifying_code_modes';
 // @ts-ignore
 import { initMode } from 'enterprise/home/login/identifying_code_login/identifying_code_login';
+// @ts-ignore
+import { IdentifyingCodeModes } from 'enterprise/home/login/identifying_code_login/identifying_code_modes/identifying_code_modes';
+import styles from './style.module.less';
 
 interface IState {
   areaCode: string;

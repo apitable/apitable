@@ -26,15 +26,14 @@ import { Avatar, AvatarSize, AvatarType, Message, Tooltip } from 'pc/components/
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Router } from 'pc/components/route_manager/router';
 import { useSideBarVisible, useSpaceInfo } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { NodeTree } from '../../template_centre/template_detail';
 import { TemplateUseButton } from '../../template_centre/template_use_button';
-import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export const TemplateDetailSide: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();

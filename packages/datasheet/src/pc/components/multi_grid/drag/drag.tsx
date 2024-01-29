@@ -39,6 +39,7 @@ import {
 } from '@apitable/core';
 import { useCacheScroll } from 'pc/context';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { CELL_CLASS, FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass, OPACITY_LINE_CLASS, OPERATE_HEAD_CLASS } from 'pc/utils';
 import { getMoveColumnsResult } from 'pc/utils/datasheet';
 import { getClickCellId, getGroupHeadRecordId } from 'pc/utils/dom';
@@ -47,8 +48,6 @@ import { getCellValuesForGroupRecord } from '../../../../modules/shared/shortcut
 import { HoverLine } from '../hover_line/hover_line';
 import { MicroComponent } from '../micro_component';
 import { IDragOption, IDragProps, IGlobalRef } from './interface';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const dependsGroup2ChangeData = (
   dragData: { recordId: string }[],

@@ -23,14 +23,13 @@ import React, { memo } from 'react';
 import { SWRConfig } from 'swr';
 import { Box, ThemeProvider, useTheme } from '@apitable/components';
 import { Selectors } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { automationStateAtom } from '../../automation/controller';
 import { AutomationScenario } from '../interface';
 import { FormEditProvider } from '../robot_detail/form_edit';
 import { RobotList } from '../robot_list';
 import { AutomationDrawer } from './automation_modal';
 import { RobotListHead } from './robot_list_head';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const RobotBase = () => {
   const cachedTheme = useAppSelector(Selectors.getTheme);

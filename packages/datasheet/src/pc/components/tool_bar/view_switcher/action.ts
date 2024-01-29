@@ -22,7 +22,7 @@ import { changeView, useDispatch } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const useViewAction = () => {
   const views = useAppSelector((state) => {

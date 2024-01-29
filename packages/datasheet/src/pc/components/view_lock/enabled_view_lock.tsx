@@ -26,7 +26,7 @@ import { IViewLockProps } from 'pc/components/view_lock/interface';
 import styles from 'pc/components/view_lock/style.module.less';
 import { resourceService } from 'pc/resource_service';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 type IEnabledViewLockProps = {
   view: IViewProperty;

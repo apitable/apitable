@@ -12,6 +12,7 @@ import {
   TimeOutlined,
   UserEditOutlined
 } from '@apitable/icons';
+import EllipsisText from 'pc/components/ellipsis_text';
 import { getNodeTypeByNodeId } from '../../../../utils';
 import { NodeIcon } from '../../../catalog/tree/node_icon';
 import { Avatar, AvatarType } from '../../../common';
@@ -24,7 +25,6 @@ import { automationHistoryAtom, automationStateAtom } from '../../controller/ato
 import { useAutomationResourcePermission } from '../../controller/use_automation_permission';
 import { TaskList } from '../../run_history/list/task';
 import style from './styles.module.less';
-import EllipsisText from "pc/components/ellipsis_text";
 
 const StyledGrip = styled(Box)`
   gap: 16px;

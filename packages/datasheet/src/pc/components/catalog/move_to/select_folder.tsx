@@ -25,12 +25,11 @@ import { Api, ApiInterface, ConfigConstant, INode, INodesMapItem, IParent, Strin
 import { ChevronRightOutlined, SearchOutlined } from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { FolderItem } from './folder_item';
 import { SelectFolderTips } from './select_folder_tips';
 
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const SelectFolder: React.FC<
   React.PropsWithChildren<{

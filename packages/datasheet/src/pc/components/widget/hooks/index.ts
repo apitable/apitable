@@ -21,9 +21,8 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ResourceType, Selectors } from '@apitable/core';
 import { loadWidgetCheck, WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
 import { useUrlQuery } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { closeWidgetRoute, expandWidgetRoute, IWidgetFullScreenType } from '../expand_widget';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export * from './use_manage_widget_map';
 

@@ -70,14 +70,13 @@ import { useCacheScroll } from 'pc/context';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 
 import { FIELD_HEAD_CLASS } from '../../../utils/constant';
 import { useActiveFieldSetting, useFilterField, useGroupField, useHideField, useSortField } from '../hooks';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFieldMenuProps {
   fieldId: string;

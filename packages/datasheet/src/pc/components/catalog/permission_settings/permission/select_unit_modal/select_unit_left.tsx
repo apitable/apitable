@@ -30,14 +30,13 @@ import { AvatarType, ButtonPlus, HorizontalScroll, InfoCard, SearchInput } from 
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
 import { IRoleItem, useRoleRequest } from 'pc/hooks/use_role';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { SearchResult } from '../search_result';
-import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import { SelectUnitSource } from '.';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export interface ISelectUnitLeftProps {
   isSingleSelect?: boolean;

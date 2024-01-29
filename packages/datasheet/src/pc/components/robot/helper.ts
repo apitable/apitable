@@ -127,16 +127,16 @@ export const getNodeOutputSchemaList = (props: {
             description:
               itemMap.length === 1
                 ? t(Strings.automation_variable_trigger_one, {
-                    Trigger_Name: triggerType?.name ?? '',
-                  })
+                  Trigger_Name: triggerType?.name ?? '',
+                })
                 : t(Strings.automation_variable_trigger_many, {
-                    Trigger_Multiple: arrayName
-                      .slice(0, arrayName.length - 1)
-                      .map((item) => item?.name)
-                      .filter(Boolean)
-                      .join(','),
-                    Trigger_Last: arrayName[arrayName.length - 1]?.name ?? '',
-                  }),
+                  Trigger_Multiple: arrayName
+                    .slice(0, arrayName.length - 1)
+                    .map((item) => item?.name)
+                    .filter(Boolean)
+                    .join(','),
+                  Trigger_Last: arrayName[arrayName.length - 1]?.name ?? '',
+                }),
             // @ts-ignore
             icon: integrateCdnHost(getEnvVariables().ROBOT_TRIGGER_ICON ? getEnvVariables().ROBOT_TRIGGER_ICON! : triggerType?.service?.logo),
             schema: {

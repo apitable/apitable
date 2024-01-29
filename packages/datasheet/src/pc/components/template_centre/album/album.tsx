@@ -27,13 +27,12 @@ import { ChevronLeftOutlined, DescriptionOutlined, ShareOutlined } from '@apitab
 import { Message } from 'pc/components/common/message/message';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { Router } from 'pc/components/route_manager/router';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import albumTemplateEnPng from 'static/icon/template/album_template_en.png';
 import albumTemplateZhPng from 'static/icon/template/album_template_zh.png';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const md = new MarkdownIt({
   html: true,

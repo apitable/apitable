@@ -20,10 +20,9 @@ import { useMount } from 'ahooks';
 import { FC } from 'react';
 import { Events, IReduxState, Player } from '@apitable/core';
 import { Loading } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
 import { RecoverSpace } from './components/recover_space/recover_space';
 import { SpaceInfo } from './space_info';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const SpaceCockpit: FC<React.PropsWithChildren<unknown>> = () => {
   const spaceInfo = useAppSelector((state: IReduxState) => state.space.curSpaceInfo);

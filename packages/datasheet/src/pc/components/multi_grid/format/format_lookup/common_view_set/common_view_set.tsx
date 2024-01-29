@@ -27,12 +27,11 @@ import { ButtonPlus } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { InvalidValue } from 'pc/components/tool_bar/view_filter/invalid_value';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
+import { useAppSelector } from 'pc/store/react-redux';
 import { SortFieldOptions } from '../sort_field_options';
 import { ViewFieldOptionsMobile } from '../sort_field_options/view_field_options_mobile';
 import { ViewRules } from '../view_rules';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ICommonViewSetProps {
   onDragEnd(result: DropResult, provided: ResponderProvided): void;

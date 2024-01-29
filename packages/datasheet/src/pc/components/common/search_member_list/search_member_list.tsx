@@ -23,16 +23,15 @@ import { FC, useEffect, useState } from 'react';
 import { TextInput, ThemeName } from '@apitable/components';
 import { ISearchMemberData, Strings, t } from '@apitable/core';
 import { SearchOutlined } from '@apitable/icons';
+import { useAppSelector } from 'pc/store/react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { InfoCard } from '../index';
-import styles from './style.module.less';
-// @ts-ignore
-import { WecomOpenData } from 'enterprise/wecom/wecom_open_data/wecom_open_data';
 // @ts-ignore
 import { getSocialWecomUnitName, isSocialWecom } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+// @ts-ignore
+import { WecomOpenData } from 'enterprise/wecom/wecom_open_data/wecom_open_data';
+import styles from './style.module.less';
 
 interface ISearchMemberListProps {
   onChange: (value: string) => void;

@@ -221,7 +221,7 @@ export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRec
       </Menu.Item>
 
       {rowRemovable && <Menu.Divider />}
-      {rowRemovable && !mirrorId && permissions.manageable && (
+      {fromCurrentDatasheet && rowRemovable && !mirrorId && permissions.manageable && (
         <Menu.Item
           key="archive"
           icon={<ArchiveOutlined color={colors.thirdLevelText} />}

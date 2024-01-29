@@ -7,6 +7,7 @@ import { NarrowOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { useNodeClick } from 'pc/components/datasheet_search_panel/hooks/use_node_click';
 import { useSearch } from 'pc/components/datasheet_search_panel/hooks/use_search';
 import { insertViewNode } from 'pc/components/datasheet_search_panel/utils/insert_view_nodes';
+import { useAppSelector } from 'pc/store/react-redux';
 import { useResponsive } from '../../hooks';
 import { ButtonPlus, Loading, Tooltip } from '../common';
 import { ScreenSize } from '../common/component_display';
@@ -16,10 +17,8 @@ import { FolderBreadcrumb } from './folder_breadcrumb';
 import { FolderContent } from './folder_content';
 import { ISearchPanelProps, SecondConfirmType } from './interface';
 import { SearchResult } from './search_result';
-import styles from './style.module.less';
 import { getModalTitle, getPlaceholder } from './utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
   const { hidePanel, noCheckPermission, options, onNodeSelect, directClickMode, showMirrorNode, localState, localDispatch, secondConfirmType } = props;

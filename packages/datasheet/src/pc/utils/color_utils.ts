@@ -111,19 +111,19 @@ export function createRainbowColorsArr(theme: ThemeName) {
 
   const baseColor = isLightTheme
     ? [100, 200].reduce((prev: string[], cur: number) => {
-        return prev.concat(createRainbowColorArrByShade(baseHueArr, cur));
-      }, [])
+      return prev.concat(createRainbowColorArrByShade(baseHueArr, cur));
+    }, [])
     : [0.2, 0.4].reduce((prev: string[], cur: number) => {
-        return prev.concat(createRainbowColorArrByOpacity(baseHueArr, cur));
-      }, []);
+      return prev.concat(createRainbowColorArrByOpacity(baseHueArr, cur));
+    }, []);
 
   const vipColor = isLightTheme
     ? [300, 400, 500].reduce((prev: string[], cur: number) => {
-        return prev.concat(createRainbowColorArrByShade(baseHueArr, cur));
-      }, [])
+      return prev.concat(createRainbowColorArrByShade(baseHueArr, cur));
+    }, [])
     : [0.6, 0.8, 1].reduce((prev: string[], cur: number) => {
-        return prev.concat(createRainbowColorArrByOpacity(baseHueArr, cur));
-      }, []);
+      return prev.concat(createRainbowColorArrByOpacity(baseHueArr, cur));
+    }, []);
 
   const whiteBgColor = bgReverseDefault;
   // The main consideration here is that the base color and vip color may have to be used separately in the future

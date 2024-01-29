@@ -25,9 +25,8 @@ import { IViewLockProps } from 'pc/components/view_lock/interface';
 import styles from 'pc/components/view_lock/style.module.less';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { requestServerView } from '../tab_bar/view_sync_switch/popup_content/request_server_view';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const { TextArea } = Input;
 

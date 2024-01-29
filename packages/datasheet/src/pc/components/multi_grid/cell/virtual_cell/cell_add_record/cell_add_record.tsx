@@ -22,12 +22,11 @@ import { useThemeColors } from '@apitable/components';
 import { IGroupInfo, IPermissions, ILinearRowAdd, RowHeight, Selectors, ILinearRowRecord } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import { GROUP_OFFSET } from 'pc/components/multi_grid/enum';
+import { useAppSelector } from 'pc/store/react-redux';
 import { OPERATE_BUTTON_CLASS, ButtonOperateType } from 'pc/utils';
 import { useShowKeepSortBorder } from '../../hooks/use_show_keep_sort_border';
 import styles from '../../styles.module.less';
 import { PRIMARY_COLOR_BORDER, GRAY_COLOR_BORDER } from '../cell_group_tab/cell_group_tab';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ICellAddRecord {
   row: ILinearRowAdd;

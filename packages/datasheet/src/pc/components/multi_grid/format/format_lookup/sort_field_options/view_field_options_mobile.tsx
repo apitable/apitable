@@ -28,9 +28,8 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { renderComputeFieldError } from 'pc/components/multi_grid/header';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IViewFieldOptionsMobile {
   onChange: (targetId: string) => void;

@@ -18,9 +18,8 @@
 
 import { FC } from 'react';
 import { IReduxState } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ShareNode } from '../share_node';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IShareProps {
   nodeId: string;

@@ -25,8 +25,8 @@ import { INoticeDetail, Strings, t } from '@apitable/core';
 import { NotificationOutlined } from '@apitable/icons';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import AnimationJson from 'static/json/notification_motion_white(1).json';
-import styles from './style.module.less';
 import { isAskForJoiningMsg, JoinMsgApplyStatus } from './utils';
+import styles from './style.module.less';
 
 interface ICard {
   data: INoticeDetail;

@@ -46,6 +46,7 @@ import { RecordMenu } from 'pc/components/multi_grid/context_menu/record_menu';
 import { setColor } from 'pc/components/multi_grid/format';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import { VikaSplitPanel } from '../common';
 import { ScreenSize } from '../common/component_display/enum';
@@ -59,8 +60,6 @@ import { Drag } from './drag';
 import { Drop } from './drop';
 import { RecordList } from './record_list';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ICalendarViewProps {
   height: number;

@@ -23,10 +23,9 @@ import { colorVars, IconButton, LinkButton } from '@apitable/components';
 import { StoreActions, Strings, t } from '@apitable/core';
 import { CloseOutlined, ExpandOutlined, GotoOutlined, NarrowOutlined } from '@apitable/icons';
 
+import { useAppSelector } from 'pc/store/react-redux';
 import { RecordPageTurn } from './record_page_turn/record_page_turn';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IRecordOperationArea {
   datasheetId: string;

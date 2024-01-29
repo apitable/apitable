@@ -22,10 +22,9 @@ import { WidgetOutlined } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { WidgetPanel } from 'pc/components/widget';
 import { useMountWidgetPanelShortKeys } from 'pc/components/widget/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { Popup } from '../../common/mobile/popup';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const WidgetTool = () => {
   const isOpenPanel = useAppSelector((state) => {

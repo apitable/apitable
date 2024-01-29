@@ -25,8 +25,8 @@ import { TriangleRightFilled } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-import {useAppSelector} from "pc/store/react-redux";
 
 const { TreeNode, DirectoryTree } = Tree;
 

@@ -43,16 +43,15 @@ import { InfoCard } from 'pc/components/common/info_card';
 import { expandInviteModal } from 'pc/components/invite';
 import { CommonList } from 'pc/components/list/common_list';
 import { useRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { stopPropagation } from '../../../utils/dom';
 import { expandUnitModal, SelectUnitSource } from '../../catalog/permission_settings/permission/select_unit_modal';
 import { Check } from '../common_list/check';
 import { IMemberOptionListProps } from './member_option_list.interface';
-import styles from './styles.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './styles.module.less';
 
 const triggerBase = {
   action: ['hover'],

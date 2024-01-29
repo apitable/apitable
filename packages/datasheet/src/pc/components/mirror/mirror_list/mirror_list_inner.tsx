@@ -25,14 +25,13 @@ import { PopUpTitle } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import MirrorEmptyDark from 'static/icon/common/mirror_empty_dark.png';
 import MirrorEmptyLight from 'static/icon/common/mirror_empty_light.png';
 import { IMirrorItem } from './interface';
-import styles from './style.module.less';
 import { gstMirrorIconByViewType } from './utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 interface IMirrorListInner {
   mirrorList: IMirrorItem[];

@@ -20,7 +20,6 @@ import { useKeyPress } from 'ahooks';
 import type { InputRef } from 'antd';
 import { Input, message } from 'antd';
 import produce from 'immer';
-import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState, FC, PropsWithChildren } from 'react';
 import { shallowEqual, useDispatch } from 'react-redux';
@@ -47,6 +46,7 @@ import {
   DatasheetApi,
 } from '@apitable/core';
 import { QuestionCircleOutlined, WarnCircleFilled } from '@apitable/icons';
+import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Divider } from 'pc/components/common/divider';
 import { Message } from 'pc/components/common/message';

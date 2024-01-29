@@ -1,12 +1,12 @@
 const { exec } = require('child_process');
 const fs = require('fs');
 
-const configFile = 'rollup.config.js';
+const dir = 'src';
 
 // Check if the file exists
-fs.access(configFile, fs.constants.F_OK, (err) => {
+fs.access(dir, fs.constants.F_OK, (err) => {
   if (err) {
-    console.error(`${configFile} does not exist, no compilation will be performed.`);
+    console.error(`${dir} does not exist, no compilation will be performed.`);
   } else {
     // File exists, execute the rollup -c command
     exec('rm -rf ./dist && rollup -c --bundleConfigAsCjs && tsc-alias', (error, stdout, stderr) => {

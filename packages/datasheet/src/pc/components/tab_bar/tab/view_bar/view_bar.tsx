@@ -29,6 +29,7 @@ import { Collapse, ICollapseFunc } from 'pc/components/common/collapse';
 import { ToolHandleType } from 'pc/components/tool_bar/interface';
 import { changeView } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getElementDataset, isPcDevice, KeyCode, stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { Display } from '../../../tool_bar/display/display';
@@ -36,7 +37,6 @@ import { TabItem } from '../../tab_item';
 import { ContextMenu } from '../conetxt_menu';
 import styles from './style.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
 // import ReactDOM from 'react-dom';
 
 interface IViewBarProps {

@@ -41,9 +41,8 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { Divider } from 'pc/components/common/divider';
 import { IEditor } from 'pc/components/editors/interface';
 import { NumberEditor } from 'pc/components/editors/number_editor';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFormateNumberProps {
   currentField: INumberField | IPercentField | ICurrencyField;

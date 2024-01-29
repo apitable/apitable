@@ -27,9 +27,9 @@ import { useResponsive } from 'pc/hooks';
 import { FileType } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { directDownload } from '../tool_bar';
-import styles from './style.module.less';
 // @ts-ignore
 import { Marketing } from 'enterprise/marketing/marketing';
+import styles from './style.module.less';
 
 interface INoSupportProps {
   icon?: React.ReactNode;

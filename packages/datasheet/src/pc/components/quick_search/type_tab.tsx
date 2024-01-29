@@ -42,7 +42,7 @@ export const nodeTypeList = [
   },
   {
     name: t(Strings.embed_page),
-    type: ConfigConstant.NodeType.EMBED_PAGE,
+    type: ConfigConstant.NodeType.CUSTOM_PAGE,
   },
 ];
 

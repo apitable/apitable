@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Selectors, StoreActions } from '@apitable/core';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const useFetchExtraData = () => {
   const [process, setProcess] = useState<{

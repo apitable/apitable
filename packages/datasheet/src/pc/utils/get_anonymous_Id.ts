@@ -1,4 +1,4 @@
-import { generateRandomNumber, IDPrefix } from "@apitable/core";
+import { generateRandomNumber, IDPrefix } from '@apitable/core';
 
 const ANONYMOUS_ID = 'ANONYMOUS_ID';
 
@@ -10,4 +10,4 @@ export const getAnonymousId = (prefix?: IDPrefix) => {
     return id;
   }
   return anonymousId;
-}
+};

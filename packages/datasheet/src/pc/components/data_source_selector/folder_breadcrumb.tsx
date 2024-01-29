@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IParent } from '@apitable/core';
 import { Breadcrumb } from 'antd';
+import * as React from 'react';
+import { useThemeColors } from '@apitable/components';
+import { IParent } from '@apitable/core';
+import { ChevronRightOutlined } from '@apitable/icons';
 import { HorizontalScroll } from 'pc/components/common';
 import styles from './style.module.less';
-import { useThemeColors } from '@apitable/components';
-import * as React from 'react';
-import { ChevronRightOutlined } from '@apitable/icons';
 
 interface IFolderBreadcrumbProps {
   parents: IParent[];

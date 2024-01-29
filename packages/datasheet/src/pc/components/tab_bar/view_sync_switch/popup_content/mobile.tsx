@@ -3,10 +3,9 @@ import { FC } from 'react';
 import { Button, Typography } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { InfoCircleOutlined } from '@apitable/icons';
+import { useAppSelector } from 'pc/store/react-redux';
 import { cancelModification, modifyViewProperty } from '../request_view_property_change';
 import styles from '../style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IProps {
   onClose: () => void;

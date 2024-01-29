@@ -25,12 +25,11 @@ import { EditOutlined } from '@apitable/icons';
 import { MobileSelect } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
+import { useAppSelector } from 'pc/store/react-redux';
 import IconArrow from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
 import { AutoLayout } from '../../field_setting/auto_layout';
 import settingStyles from '../../field_setting/styles.module.less';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ICollectTypeSelectProps {
   field: ILastModifiedTimeField | ILastModifiedByField;

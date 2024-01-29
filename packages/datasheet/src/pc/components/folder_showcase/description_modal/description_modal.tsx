@@ -27,9 +27,8 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { Network } from 'pc/components/network_status';
 import { SlateEditor, Deserializer, EditorValue, IEditorData, Serializer } from 'pc/components/slate_editor';
 import { useRequest, useCatalogTreeRequest, useImageUpload, useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IDescriptionModalProps {
   onCancel: () => void;

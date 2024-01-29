@@ -20,10 +20,9 @@ import classNames from 'classnames';
 import { FC } from 'react';
 import * as React from 'react';
 import { INode } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getNodeIcon } from '../../catalog/tree/node_icon';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export type ISearchNode = INode & { superiorPath: string };
 

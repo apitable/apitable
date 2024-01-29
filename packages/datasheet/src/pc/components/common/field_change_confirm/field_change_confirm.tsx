@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { Selectors, FieldType, CollaCommandName, t, Strings, ExecuteResult } from '@apitable/core';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { notify } from 'pc/components/common/notify';
 import { resourceService } from 'pc/resource_service';

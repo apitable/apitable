@@ -18,10 +18,9 @@
 
 import classnames from 'classnames';
 import * as React from 'react';
+import { useAppSelector } from 'pc/store/react-redux';
 import { Tooltip } from '../common/tooltip';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IOrganizationHeadProps {
   className?: string;

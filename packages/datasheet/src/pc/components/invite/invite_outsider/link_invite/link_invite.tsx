@@ -28,11 +28,10 @@ import { Message, Popconfirm, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard } from 'pc/utils';
 import { InviteAlert } from '../components/invite-alert';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const { TreeNode } = TreeSelect;
 
@@ -224,7 +223,7 @@ export const LinkInvite = () => {
               treeIcon
               switcherIcon={<TriangleRightFilled size={12} />}
               showSearch={false}
-              dropdownClassName="dropdownInvite"
+              popupClassName="dropdownInvite"
               treeDefaultExpandedKeys={[firstTeamId]}
               listHeight={200}
               onTreeExpand={onExpand}

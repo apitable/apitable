@@ -22,7 +22,7 @@ import { isEmpty, isEqual, noop, omit } from 'lodash';
 import * as React from 'react';
 import { ClipboardEvent, forwardRef, KeyboardEvent, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { shallowEqual } from 'react-redux';
-import { Button, Message } from '@apitable/components';
+import { Message } from '@apitable/components';
 import {
   Cell,
   CellDirection,
@@ -32,7 +32,6 @@ import {
   Field,
   FieldType,
   Group,
-  IButtonField,
   ICell,
   ICellValue,
   IDateTimeField,
@@ -173,9 +172,9 @@ const EditorContainerBase: React.ForwardRefRenderFunction<IContainerEdit, Editor
   const activeCellRef = useRef<ICell | null>(
     field && record
       ? {
-          recordId: record.id,
-          fieldId: field.id,
-        }
+        recordId: record.id,
+        fieldId: field.id,
+      }
       : null,
   );
   const dispatch = useDispatch();

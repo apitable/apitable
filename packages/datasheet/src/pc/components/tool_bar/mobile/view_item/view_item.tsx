@@ -25,11 +25,10 @@ import { DragOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { changeView } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { ViewIcon } from '../../view_switcher/view_icon';
 import style from '../style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const _SwipeOut: any = SwipeOut;
 

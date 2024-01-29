@@ -27,12 +27,12 @@ import { SettingOutlined, ShareOutlined } from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ToolItem } from '../../../tool_bar/tool_item';
 import { SettingPanel } from './setting_panel';
 import { ShareModal } from './share_modal';
 import styles from './style.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
 interface IToolBarProps {
   nodeShared: boolean;
   showLabel?: boolean;

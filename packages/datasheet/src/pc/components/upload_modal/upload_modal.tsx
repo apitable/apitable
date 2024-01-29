@@ -17,12 +17,12 @@
  */
 
 import { Modal } from 'antd';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useState } from 'react';
 import * as React from 'react';
 import { useThemeColors } from '@apitable/components';
 import { IAttachmentValue, IAttacheField, RowHeightLevel, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_item';
 import { useAppSelector } from 'pc/store/react-redux';
 import { BulkDownload } from '../preview_file/preview_main/bulk_download';

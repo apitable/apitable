@@ -20,15 +20,15 @@ import { Modal } from 'antd';
 import classNames from 'classnames';
 import { useAtom } from 'jotai';
 import { debounce } from 'lodash';
-import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider, shallowEqual, useDispatch } from 'react-redux';
 import { Api, INodeDescription, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { CloseCircleOutlined, CloseOutlined } from '@apitable/icons';
-import { useGetDesc } from 'pc/components/embed_page/hooks/use_get_desc';
-import { embedPageAtom } from 'pc/components/embed_page/store/embed_page_desc_atom';
+import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
+import { useGetDesc } from 'pc/components/custom_page/hooks/use_get_desc';
+import { CustomPageAtom } from 'pc/components/custom_page/store/custon_page_desc_atom';
 import { Deserializer, IEditorData, Serializer, SlateEditor } from 'pc/components/slate_editor';
 import { useImageUpload } from 'pc/hooks';
 import { store } from 'pc/store';
@@ -69,7 +69,7 @@ const getJsonValue = (value?: string) => {
 const useGetPermission = (nodeId: string) => {
   const permissionsOrigin = useAppSelector((state) => Selectors.getPermissions(state));
   const permissionAutomations = useAutomationResourcePermission();
-  const [embedPage] = useAtom(embedPageAtom);
+  const [embedPage] = useAtom(CustomPageAtom);
 
   if (nodeId.startsWith('aut')) {
     return permissionAutomations;
@@ -87,7 +87,7 @@ const useGetNodeDesc = (nodeId: string) => {
     return Selectors.getNodeDesc(state);
   }, shallowEqual);
   const [automationState] = useAtom(automationStateAtom);
-  const [embedPage] = useAtom(embedPageAtom);
+  const [embedPage] = useAtom(CustomPageAtom);
 
   if (nodeId.startsWith('aut')) {
     return getJsonValue(automationState?.robot?.description);

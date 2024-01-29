@@ -34,13 +34,12 @@ import { verificationPermission } from 'pc/events/notification_verification';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { COMMENT_SUBMIT_BUTTON, EXPAND_RECORD_COMMENT_WRAPPER } from 'pc/utils/test_id_constant';
 import { ActivityContext } from '../activity_context';
 import { IActivityPaneProps } from '../interface';
 import { ReplyComment } from '../reply_comment';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const MAX_COMMENT_LENGTH = 1000;
 

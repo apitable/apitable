@@ -23,11 +23,10 @@ import { DatasheetApi, Selectors, Strings, t } from '@apitable/core';
 import { Modal } from 'pc/components/common';
 import { IDisabledPermission } from 'pc/components/field_permission/interface';
 import styles from 'pc/components/field_permission/styles.module.less';
+import { useAppSelector } from 'pc/store/react-redux';
 import permissionImage from 'static/icon/datasheet/datasheet_img_field_permission.png';
 // @ts-ignore
 import { triggerUsageAlert } from 'enterprise/billing';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const DisabledFieldPermission: React.FC<React.PropsWithChildren<IDisabledPermission>> = (props) => {
   const { setPermissionStatus, field } = props;

@@ -26,13 +26,12 @@ import { Modal } from 'pc/components/common/mobile/modal';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { changeView } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { AddNewViewList } from '../../view_switcher';
 import { useViewAction } from '../../view_switcher/action';
 import style from '../style.module.less';
 import { ActionType, ViewItem } from '../view_item';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IViewSwitcherProps {
   onClose: () => void;

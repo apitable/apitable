@@ -1,7 +1,7 @@
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { KeyCode, stopPropagation } from '../../utils';
 import styles from './style.module.less';
-import * as React from 'react';
 
 export const PcWrapper: React.FC<React.PropsWithChildren<{ hidePanel(e: any): void }>> = ({ children, hidePanel }) => {
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {

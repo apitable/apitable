@@ -21,7 +21,7 @@ import isNumber from 'lodash/isNumber';
 import * as React from 'react';
 // @ts-ignore
 import Clamp from 'react-multiline-clamp';
-import {colorVars, IconButton, LinkButton, useContextMenu} from '@apitable/components';
+import { colorVars, IconButton, LinkButton, useContextMenu } from '@apitable/components';
 import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined, MoreOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports

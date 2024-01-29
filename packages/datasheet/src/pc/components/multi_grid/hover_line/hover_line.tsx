@@ -20,11 +20,10 @@ import { useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
 import { useThemeColors } from '@apitable/components';
 import { DATASHEET_ID, DropDirectionType, Selectors } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { CELL_CLASS, FIELD_DOT, FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass, OPACITY_LINE_CLASS, OPERATE_HEAD_CLASS } from 'pc/utils';
 import { IDragOption, IDragProps } from '../drag/interface';
 import { IElementRectProps, MoveType } from './interface';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IHoverLineOwnProps {
   isChangeColumnsWidth: boolean;

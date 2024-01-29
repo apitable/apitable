@@ -21,14 +21,13 @@ import { useEffect, useRef, useState } from 'react';
 import { Loading, Message } from '@apitable/components';
 import { ConfigConstant, Api } from '@apitable/core';
 import { useRoleRequest } from 'pc/hooks/use_role';
+import { useAppSelector } from 'pc/store/react-redux';
 import { Left } from './content/left';
 import { IRightRefs, Right } from './content/right';
 import { RoleContext } from './context';
 import { Empty } from './empty';
 import { Header } from './header';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const Role = () => {
   const [activeRoleId, setActiveRoleId] = useState<string>();

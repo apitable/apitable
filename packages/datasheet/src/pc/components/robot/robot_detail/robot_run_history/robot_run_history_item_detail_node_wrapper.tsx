@@ -28,10 +28,10 @@ import {
   ChevronRightOutlined,
   ChevronDownOutlined
 } from '@apitable/icons';
+import styles from 'style.module.less';
 import { ItemStatus } from 'pc/components/automation/run_history/list/item_status';
 import { INodeType, IRobotRunHistoryDetail } from '../../interface';
 import { useCssColors } from '../trigger/use_css_colors';
-import styles from 'style.module.less';
 
 interface IRobotRunHistoryNodeDetail {
   index: number;

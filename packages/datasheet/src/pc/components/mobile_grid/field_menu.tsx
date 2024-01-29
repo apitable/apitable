@@ -59,12 +59,11 @@ import { expandFieldPermission } from 'pc/components/field_permission';
 import { getShowFieldName } from 'pc/components/multi_grid/context_menu/utils';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 
 import { useActiveFieldSetting, useDeleteField, useFilterField, useHideField, useSortField } from '../multi_grid/hooks';
 import { expandFieldDescEditorMobile } from './field_desc_editor';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IFieldMenu {
   onClose(): void;

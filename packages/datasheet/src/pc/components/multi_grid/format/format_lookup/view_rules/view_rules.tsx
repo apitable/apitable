@@ -22,9 +22,8 @@ import { useThemeColors } from '@apitable/components';
 import { BasicValueType, Field, IField, isSelectField, Selectors, Strings, t } from '@apitable/core';
 import { ArrowRightOutlined, CheckboxFilled, CheckboxOutlined } from '@apitable/icons';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IViewRules {
   index: number;

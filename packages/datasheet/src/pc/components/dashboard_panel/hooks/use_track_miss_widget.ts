@@ -23,7 +23,7 @@ import { IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const useTrackMissWidgetAndDep = () => {
   const installedWidgetIds = useAppSelector(Selectors.getInstalledWidgetInDashboard)!;

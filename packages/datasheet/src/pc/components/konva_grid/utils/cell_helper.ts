@@ -23,7 +23,6 @@ import {
   Api,
   ArrayValueField,
   BasicValueType,
-  ButtonActionType,
   ButtonStyleType,
   ConfigConstant,
   DatasheetApi,

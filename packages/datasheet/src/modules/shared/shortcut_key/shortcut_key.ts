@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ContextName, ShortcutActionName } from 'modules/shared/shortcut_key/enum';
+import { isEmpty } from 'lodash';
 import {
   CollaCommandName,
   ConfigConstant,
@@ -29,11 +29,13 @@ import {
   Strings,
   t,
 } from '@apitable/core';
+import { ContextName, ShortcutActionName } from 'modules/shared/shortcut_key/enum';
 import { Message } from 'pc/components/common/message/message';
 import { notify } from 'pc/components/common/notify/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { EXPAND_RECORD } from 'pc/components/expand_record/expand_record.enum';
 import { expandRecordIdNavigate } from 'pc/components/expand_record/utils';
+import { string2Query } from 'pc/components/form_container/util';
 import { EXPAND_SEARCH } from 'pc/components/quick_search/const';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -263,7 +265,20 @@ const getUndoManager = () => {
 };
 
 export function clear() {
+  const query = string2Query();
   const state = store.getState();
+  const recordId = query.recordId as string | undefined;
+  const fieldId = query.fieldId as string | undefined;
+  if (recordId && fieldId) {
+    const snapshot = Selectors.getSnapshot(state)!;
+    const fieldMap = snapshot.meta?.fieldMap;
+    const fieldType = fieldMap[fieldId]?.type;
+    const cv = Selectors.getCellValue(state, snapshot, recordId, fieldId);
+    if (fieldType === FieldType.WorkDoc && !isEmpty(cv)) {
+      return;
+    }
+  }
+  console.log('query', query);
   const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!);
   const uploadManager = resourceService.instance!.uploadManager;
   const data: ISetRecordOptions[] = [];

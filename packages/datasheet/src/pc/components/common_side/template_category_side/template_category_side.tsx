@@ -31,13 +31,12 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { SearchInput } from 'pc/components/common/search_input';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest, useResponsive, useSideBarVisible, useTemplateRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { KeyCode } from 'pc/utils/keycode';
 import TemplateIcon from 'static/icon/datasheet/datasheet_icon_template_folder.svg';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const TemplateCategorySide: FC<React.PropsWithChildren<unknown>> = () => {
   const posthog = usePostHog();

@@ -23,6 +23,7 @@ import * as React from 'react';
 import ReactDOM from 'react-dom';
 import { Selectors } from '@apitable/core';
 import { setColor } from 'pc/components/multi_grid/format';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from '../../../utils/dom';
 import { ComponentDisplay } from '../component_display';
 import { ScreenSize } from '../component_display/enum';
@@ -30,8 +31,6 @@ import { ColorPickerMobile } from './color_picker_mobile';
 import { ColorPickerPane } from './color_picker_pane';
 import { IColorPicker } from './interface';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IColorPickerRef {
   open(): void;

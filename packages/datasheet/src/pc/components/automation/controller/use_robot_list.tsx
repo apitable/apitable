@@ -1,9 +1,8 @@
 import { useMemo } from 'react';
 import useSWR from 'swr';
 import { Selectors } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getResourceAutomations } from '../../robot/api';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const useAutomationList = () => {
   const datasheetId = useAppSelector(Selectors.getActiveDatasheetId);

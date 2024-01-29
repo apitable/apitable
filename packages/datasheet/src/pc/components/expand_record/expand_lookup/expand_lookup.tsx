@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { memo } from 'react';
 import {
   assertNever,
   BasicValueType,
@@ -42,7 +43,6 @@ import { CellMember } from 'pc/components/multi_grid/cell/cell_member';
 import { CellOptions } from 'pc/components/multi_grid/cell/cell_options';
 import { CellText } from 'pc/components/multi_grid/cell/cell_text';
 import { useComputeCellValue } from 'pc/hooks/use_cellvalue';
-import { memo } from 'react';
 import { ExpandAttachment } from '../expand_attachment';
 import { ExpandLink } from '../expand_link';
 import styles from '../field_editor/style.module.less';

@@ -5,10 +5,9 @@ import { Field, FieldType, IFieldMap, IViewColumn, IViewRow, Selectors, t, Strin
 import { DisplayFile } from 'pc/components/display_file';
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import EmptyImage from 'static/icon/datasheet/gallery/emptystates_img_datasheet.png';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IRecordCardProps {
   datasheetId: string;

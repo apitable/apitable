@@ -26,14 +26,13 @@ import { ChevronDownOutlined, ChevronUpOutlined } from '@apitable/icons';
 import { AvatarType, InfoCard } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { Menu, MenuItem } from '../menu';
 import { IRoleOption, IUnitItemProps } from './interface';
 import { PermissionSelectMobile } from './permission_select_mobile';
-import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export const DEFAULT_ROLE: IRoleOption[] = [
   {

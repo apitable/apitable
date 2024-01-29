@@ -50,14 +50,13 @@ import { useDeleteField, useHideField } from 'pc/components/multi_grid/hooks';
 import { BulkDownload } from 'pc/components/preview_file/preview_main/bulk_download';
 import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_item';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import EditorTitleContext from '../editor_title_context';
 import { FieldDescWithTitle } from './field_desc_with_title';
-import styles from './style.module.less';
 // @ts-ignore
 import { MobileAlarm } from 'enterprise/alarm/mobile_alarm/mobile_alarm';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 interface IFieldTitleProps {
   isFocus?: boolean;

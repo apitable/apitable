@@ -23,6 +23,7 @@ import { useContextMenu } from '@apitable/components';
 import { DATASHEET_ID, Selectors, StoreActions } from '@apitable/core';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import {
   CELL_CLASS,
   GHOST_RECORD_ID,
@@ -36,8 +37,6 @@ import {
 import { stopPropagation } from 'pc/utils/dom';
 import { FieldMenu } from './field_menu';
 import { GRID_RECORD_MENU, RecordMenu } from './record_menu';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 type IdMap = {
   recordId?: string | null;

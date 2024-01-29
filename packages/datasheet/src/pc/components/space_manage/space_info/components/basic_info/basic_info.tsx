@@ -23,12 +23,11 @@ import { Skeleton, Typography } from '@apitable/components';
 import { IReduxState, Strings, t } from '@apitable/core';
 import { CopyOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard } from 'pc/utils';
-import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export const BasicInfo = () => {
   const { spaceInfo, spaceId } = useAppSelector((state: IReduxState) => {

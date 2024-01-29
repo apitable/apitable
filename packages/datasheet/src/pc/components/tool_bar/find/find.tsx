@@ -26,13 +26,13 @@ import { SearchOutlined } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
 import { dispatch } from 'pc/worker/store';
 import { ToolItem } from '../tool_item';
 import { FindSearchInput } from './find_search_input';
 import styles from './styles.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
 interface ISearchInputRef {
   select(): void;
 }

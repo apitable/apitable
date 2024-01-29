@@ -25,9 +25,8 @@ import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { DisplayFile } from 'pc/components/display_file';
 import { download } from 'pc/components/preview_file/tool_bar';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IPreviewItemProps {
   datasheetId: string;
@@ -47,7 +46,7 @@ interface IPreviewItemProps {
 }
 
 const useGetRole = (currentDatasheetId: string | undefined) => {
-  const {mirrorId, datasheetId} = useAppSelector(state => state.pageParams)
+  const { mirrorId, datasheetId } = useAppSelector(state => state.pageParams);
   const datasheetRole = useAppSelector((state) => Selectors.getDatasheet(state, currentDatasheetId))?.role;
   const mirrorRole = useAppSelector((state) => Selectors.getMirror(state, mirrorId))?.role;
 
@@ -66,7 +65,7 @@ export const useAllowDownloadAttachment = (fieldId: string, datasheetId?: string
     return Boolean(_allowDownloadAttachment);
   });
 
-  const role = useGetRole(datasheetId)
+  const role = useGetRole(datasheetId);
   const fieldPermissionMap = useAppSelector((state) => Selectors.getFieldPermissionMap(state));
   const fieldRole = useAppSelector(() => Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId));
 

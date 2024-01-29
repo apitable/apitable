@@ -25,12 +25,11 @@ import { UserAdminFilled, UserAdminOutlined } from '@apitable/icons';
 import { PermissionSelect } from 'pc/components/catalog/permission_settings/permission/unit_item/permission_select';
 // eslint-disable-next-line no-restricted-imports
 import { AvatarType, InfoCard, Tooltip } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
 import { IRoleOption, IUnitItemProps } from './interface';
-import styles from './style.module.less';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const DEFAULT_ROLE: IRoleOption[] = [
   {

@@ -19,7 +19,6 @@
 import { useKeyPress, useMount, useToggle, useUnmount } from 'ahooks';
 import classNames from 'classnames';
 
-import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import * as React from 'react';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -27,6 +26,7 @@ import { Provider, shallowEqual } from 'react-redux';
 import { stopPropagation, ThemeProvider } from '@apitable/components';
 import { FieldType, handleNullArray, IAttachmentValue, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
+import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { useResponsive } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';

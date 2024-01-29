@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { usePostHog } from 'posthog-js/react';
 import * as React from 'react';
 import { FC, useEffect, useMemo, useState } from 'react';
@@ -36,6 +35,8 @@ import {
   WORKBENCH_SIDE_ID,
 } from '@apitable/core';
 import { AddOutlined, DeleteOutlined, FolderAddOutlined, ImportOutlined, PlanetOutlined, SearchOutlined, UserAddOutlined } from '@apitable/icons';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { GenerateTemplate } from 'pc/components/catalog/generate_template';
 import { ImportFile } from 'pc/components/catalog/import_file';
 import { MoveTo } from 'pc/components/catalog/move_to';
@@ -63,7 +64,6 @@ import { Favorite } from './favorite';
 import { SpaceInfo } from './space-info';
 import { WorkbenchSideContext } from './workbench_side_context';
 import styles from './style.module.less';
-import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 
 export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();

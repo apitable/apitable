@@ -5,6 +5,7 @@ import { ListOutlined, SettingOutlined, ShareOutlined } from '@apitable/icons';
 import { NodeInfoBar } from 'pc/components/common/node_info_bar';
 import { useSideBarVisible } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
+import { getPermission } from 'pc/utils';
 import { useGetInfo } from '../../hooks/use_get_info';
 
 interface ITabProps {
@@ -16,10 +17,12 @@ interface ITabProps {
 export const Tab: React.FC<ITabProps> = ({ setOpenSetting, isMobile, setNodeId }) => {
   const colors = useThemeColors();
   const { setSideBarVisible } = useSideBarVisible();
-  const { embedPageId, shareId } = useAppSelector((state) => state.pageParams);
+  const { customPageId, shareId, templateId } = useAppSelector((state) => state.pageParams);
   const { nodeFavorite, permissions: nodePermissions, icon, nodeName, role } = useGetInfo();
 
-  const isManager = role === ConfigConstant.Role.Manager;
+  const canShare = getPermission(role) === 'editor' || getPermission(role) === 'manager';
+  const canSetting = canShare || getPermission(role) === 'updater';
+
   if (isMobile) {
     return (
       <div
@@ -30,14 +33,18 @@ export const Tab: React.FC<ITabProps> = ({ setOpenSetting, isMobile, setNodeId }
         <div className={'vk-flex vk-items-center vk-bg-bgBrandDefault vk-rounded vk-p-1'} onClick={() => setSideBarVisible(true)}>
           <ListOutlined />
         </div>
-        {isManager && !shareId && (
+        {!shareId && (
           <div>
-            <TextButton prefixIcon={<SettingOutlined />} size="x-small" onClick={() => setOpenSetting(true)} className={'!vk-collapsevk-px-1'}>
-              {t(Strings.form_tab_setting)}
-            </TextButton>
-            <TextButton prefixIcon={<ShareOutlined />} size="x-small" className={'!vk-px-1'} onClick={() => setNodeId(embedPageId!)}>
-              {t(Strings.form_tab_share)}
-            </TextButton>
+            {canSetting && (
+              <TextButton prefixIcon={<SettingOutlined />} size="x-small" onClick={() => setOpenSetting(true)} className={'!vk-collapsevk-px-1'}>
+                {t(Strings.form_tab_setting)}
+              </TextButton>
+            )}
+            {canShare && (
+              <TextButton prefixIcon={<ShareOutlined />} size="x-small" className={'!vk-px-1'} onClick={() => setNodeId(customPageId!)}>
+                {t(Strings.form_tab_share)}
+              </TextButton>
+            )}
           </div>
         )}
       </div>
@@ -49,16 +56,16 @@ export const Tab: React.FC<ITabProps> = ({ setOpenSetting, isMobile, setNodeId }
       className={'vk-w-full vk-px-4 vk-flex vk-justify-between'}
       style={{
         backgroundColor: colors.bgCommonDefault,
-        borderBottom:'1px solid var(--borderCommonDefault)'
+        borderBottom: '1px solid var(--borderCommonDefault)',
       }}
     >
       <div className={'vk-w-max'}>
         <NodeInfoBar
           data={{
-            nodeId: embedPageId!,
+            nodeId: customPageId!,
             icon: icon,
             name: nodeName,
-            type: ConfigConstant.NodeType.EMBED_PAGE,
+            type: ConfigConstant.NodeType.CUSTOM_PAGE,
             role: role,
             favoriteEnabled: nodeFavorite,
             nameEditable: nodePermissions?.renamable,
@@ -66,19 +73,23 @@ export const Tab: React.FC<ITabProps> = ({ setOpenSetting, isMobile, setNodeId }
             subscribeEnabled: true,
           }}
           hiddenModule={{
-            favorite: Boolean(shareId),
+            favorite: Boolean(shareId || templateId),
           }}
         />
       </div>
-      {isManager && !shareId && (
+      {!shareId && (
         <div className={'vk-flex vk-items-center'}>
           {/* <div className={'vk-w-[1px] vk-h-[20px] vk-mr-4'} style={{ backgroundColor: colors.borderCommonDefault }} /> */}
-          <TextButton prefixIcon={<SettingOutlined />} size="small" onClick={() => setOpenSetting(true)}>
-            {t(Strings.form_tab_setting)}
-          </TextButton>
-          <TextButton prefixIcon={<ShareOutlined />} size="small" onClick={() => setNodeId(embedPageId!)}>
-            {t(Strings.form_tab_share)}
-          </TextButton>
+          {canSetting && (
+            <TextButton prefixIcon={<SettingOutlined />} size="small" onClick={() => setOpenSetting(true)}>
+              {t(Strings.form_tab_setting)}
+            </TextButton>
+          )}
+          {canShare && (
+            <TextButton prefixIcon={<ShareOutlined />} size="small" onClick={() => setNodeId(customPageId!)}>
+              {t(Strings.form_tab_share)}
+            </TextButton>
+          )}
         </div>
       )}
     </div>

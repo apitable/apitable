@@ -19,8 +19,6 @@
 import { useLocalStorageState } from 'ahooks';
 import classNames from 'classnames';
 import { keyBy } from 'lodash';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { EmitterEventName } from 'modules/shared/simple_emitter';
 import { useEffect, useState } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
@@ -44,6 +42,8 @@ import {
   QuestionCircleOutlined,
   SettingOutlined,
 } from '@apitable/icons';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
+import { EmitterEventName } from 'modules/shared/simple_emitter';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { simpleEmitter as panelSimpleEmitter } from 'pc/components/common/vika_split_panel';

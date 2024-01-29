@@ -4,7 +4,7 @@ import { findNode } from '@apitable/core';
 import { useAppSelector } from 'pc/store/react-redux';
 import { AutomationPanelContent } from '../automation/content';
 import { AutomationPanel } from '../automation/panel';
-import { EmbedPage } from '../embed_page/embed_page';
+import { CustomPage } from '../custom_page/custom_page';
 import { INodeTree } from './interface';
 
 const MirrorRoute = dynamic(() => import('../mirror/mirror_route').then((module) => module.MirrorRoute));
@@ -22,7 +22,7 @@ interface IShareContentProps {
 
 export const ShareContent: React.FC<IShareContentProps> = (props) => {
   const { nodeTree, loading } = props;
-  const { datasheetId, folderId, formId, automationId, dashboardId, mirrorId, aiId, embedPageId } = useAppSelector((state) => state.pageParams);
+  const { datasheetId, folderId, formId, automationId, dashboardId, mirrorId, aiId, customPageId } = useAppSelector((state) => state.pageParams);
   const treeNodesMap = useAppSelector((state) => state.catalogTree.treeNodesMap);
 
   if (!nodeTree) {
@@ -40,8 +40,8 @@ export const ShareContent: React.FC<IShareContentProps> = (props) => {
     return <DashboardPanel />;
   } else if (aiId) {
     return <AIPanel />;
-  } else if (embedPageId) {
-    return <EmbedPage />;
+  } else if (customPageId) {
+    return <CustomPage />;
   } else if (folderId) {
     const parentNode = findNode([nodeTree], folderId);
     const childNodes = (parentNode && parentNode.children) ?? [];

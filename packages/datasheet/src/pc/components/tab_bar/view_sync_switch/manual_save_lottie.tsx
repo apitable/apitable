@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import SyncJson from 'static/json/sync.json';
 
 const MANUAL_SAVE_SVG_ID = 'MANUAL_SAVE_SVG_ID';
 export const ManualSaveLottie = () => {
+  const ref = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const handle = document.getElementById(MANUAL_SAVE_SVG_ID);
     if (!handle) {
@@ -29,7 +30,8 @@ export const ManualSaveLottie = () => {
     import('lottie-web/build/player/lottie_svg').then((module) => {
       const lottie = module.default;
       lottie.loadAnimation({
-        container: handle,
+        // @ts-ignore
+        container: ref.current,
         renderer: 'svg',
         loop: false,
         autoplay: true,

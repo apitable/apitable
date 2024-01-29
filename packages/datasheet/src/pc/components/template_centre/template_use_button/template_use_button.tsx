@@ -25,14 +25,13 @@ import { ArrowRightOutlined } from '@apitable/icons';
 import { Modal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useUserRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { UsingTemplateModal } from '../using_template_modal';
-import styles from './style.module.less';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
 // @ts-ignore
 import { LoginModal } from 'enterprise/home/login_modal/login_modal';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 interface ITemplateUseButtonProps {
   style?: React.CSSProperties;

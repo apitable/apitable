@@ -36,14 +36,13 @@ import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData } from 'pc/utils';
 import { copyLink, copyRecord } from '../../../multi_grid/context_menu/record_menu';
 import { ORG_NODE_MENU } from '../../constants';
 import { FlowContext } from '../../context/flow_context';
 import { INode } from '../../interfaces';
 import { addRecord } from '../record_list';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const NodeContextMenu: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();

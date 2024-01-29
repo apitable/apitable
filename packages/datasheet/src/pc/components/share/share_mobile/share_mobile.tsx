@@ -22,6 +22,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import { findNode, Selectors, Strings, t } from '@apitable/core';
 import { AutomationPanel } from 'pc/components/automation';
+import { CustomPage } from 'pc/components/custom_page/custom_page';
 import { DashboardPanel } from 'pc/components/dashboard_panel';
 import { DataSheetPane } from 'pc/components/datasheet_pane';
 import { FolderShowcase } from 'pc/components/folder_showcase';
@@ -45,7 +46,9 @@ export interface IShareMobileProps extends IShareMenu {
 }
 
 export const ShareMobile: React.FC<React.PropsWithChildren<IShareMobileProps>> = (props) => {
-  const { shareId, datasheetId, folderId, formId, dashboardId, mirrorId, automationId, aiId } = useAppSelector((state) => state.pageParams);
+  const { shareId, datasheetId, folderId, formId, dashboardId, mirrorId, automationId, aiId, customPageId } = useAppSelector(
+    (state) => state.pageParams,
+  );
   const [viewListStatus, setViewListStatus] = useState(false);
   const [shareGuideStatus, setShareGuideStatus] = useState(false);
   const [descModalStatus, setDescModal] = useState(false);
@@ -75,7 +78,7 @@ export const ShareMobile: React.FC<React.PropsWithChildren<IShareMobileProps>> =
       return;
     }
     if (automationId) {
-      return <AutomationPanel resourceId={automationId}/>;
+      return <AutomationPanel resourceId={automationId} />;
     } else if (mirrorId) {
       return <MirrorRoute />;
     } else if (datasheetId) {
@@ -84,6 +87,8 @@ export const ShareMobile: React.FC<React.PropsWithChildren<IShareMobileProps>> =
       return <FormPanel loading={props.loading} />;
     } else if (dashboardId) {
       return <DashboardPanel />;
+    } else if (customPageId) {
+      return <CustomPage />;
     } else if (aiId) {
       return <AIPanel />;
     } else if (folderId) {

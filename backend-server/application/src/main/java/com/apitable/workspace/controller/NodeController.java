@@ -535,8 +535,12 @@ public class NodeController {
         SpaceHolder.set(spaceId);
         // The method includes determining whether the user is in this space.
         Long memberId = LoginContext.me().getMemberId(userId, spaceId);
+        NodePermission nodePermission =
+            NodeType.CUSTOM_PAGE.equals(iNodeService.getTypeByNodeId(nodeId))
+                ? NodePermission.EDIT_CELL
+                : NodePermission.MANAGE_NODE;
         // check whether the node has the specified operation permission
-        controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.MANAGE_NODE,
+        controlTemplate.checkNodePermission(memberId, nodeId, nodePermission,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         iNodeService.edit(userId, nodeId, nodeOpRo);
         return ResponseData.success(

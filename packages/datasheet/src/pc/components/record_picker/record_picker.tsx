@@ -5,13 +5,12 @@ import { Align } from 'react-window';
 import { stopPropagation, useTheme } from '@apitable/components';
 import { IReduxState, IViewRow, Selectors, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
+import { useAppSelector } from 'pc/store/react-redux';
 import { KeyCode } from 'pc/utils';
 import { SearchControl } from '../common/search_control';
 import { TComponent } from '../common/t_component';
 import { SearchContent } from './search_content';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IRecordPickerProps {
   datasheetId: string;

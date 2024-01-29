@@ -20,9 +20,8 @@ import * as React from 'react';
 import { Typography } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const SyncViewTip: React.FC<React.PropsWithChildren<{ style?: React.CSSProperties; content?: string }>> = ({ style, content }) => {
   const mirrorId = useAppSelector((state) => state.pageParams.mirrorId);

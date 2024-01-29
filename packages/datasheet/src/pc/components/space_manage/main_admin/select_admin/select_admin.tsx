@@ -22,9 +22,8 @@ import * as React from 'react';
 import { TextInput, Button, LinkButton } from '@apitable/components';
 import { t, Strings, Api, ISearchMemberData, IReduxState, hiddenMobile } from '@apitable/core';
 import { SearchMemberList, Message } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IVerifyAdminProps {
   setCurrent: React.Dispatch<React.SetStateAction<number>>;

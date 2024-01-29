@@ -26,12 +26,11 @@ import { ConicalDownFilled, ConicalRightFilled, CopyOutlined, TriangleDownFilled
 import { ExpandType } from 'pc/components/multi_grid/cell/virtual_cell/cell_group_tab/group_tab/group_tab';
 import { useDispatch } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard, flatContextData } from 'pc/utils';
 import { setStorage, StorageName } from 'pc/utils/storage';
 import { KonvaGridContext } from '../..';
 import { MouseDownType } from '../../../multi_grid';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IStatMenuProps {
   parentRef: React.RefObject<HTMLDivElement> | undefined;

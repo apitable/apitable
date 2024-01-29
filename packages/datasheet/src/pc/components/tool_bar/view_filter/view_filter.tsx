@@ -41,13 +41,12 @@ import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filte
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { SyncViewTip } from '../sync_view_tip';
 import ConditionList from './condition_list';
 import { ExecuteFilterFn } from './interface';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IViewFilter {
   triggerInfo?: IUseListenTriggerInfo;

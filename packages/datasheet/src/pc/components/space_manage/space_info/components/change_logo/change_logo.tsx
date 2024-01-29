@@ -28,10 +28,9 @@ import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
 import { Avatar, AvatarSize, AvatarType, IImageCropUploadRef, ImageCropUpload } from 'pc/components/common';
 import { ISelectInfo } from 'pc/components/common/image_crop_upload';
 import { useChangeLogo } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import AvatarBgImg from 'static/icon/space/space_img_avatarsbj.png';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const customTips = {
   cropDesc: t(Strings.support_image_formats_limits, { number: 2 }),

@@ -25,12 +25,11 @@ import { SettingOutlined, InfoCircleOutlined } from '@apitable/icons';
 import { Avatar } from 'pc/components/common/avatar';
 import { IAvatarProps } from 'pc/components/common/avatar/avatar';
 import { Loading } from 'pc/components/common/loading';
-import { Tag } from 'pc/components/common/tag';
+import { Tag, TagColors } from 'pc/components/common/tag';
 import { useCatalogTreeRequest } from 'pc/hooks/use_catalogtree_request';
 import { useRequest } from 'pc/hooks/use_request';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
-import { TagColors } from '../tag';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';

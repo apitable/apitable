@@ -40,6 +40,10 @@ spring:
       simple:
         acknowledge-mode: manual
         prefetch: 5
+        auto-startup: true
+        retry:
+          enabled: true
+
     virtual-host: ${RABBITMQ_VHOST:/}
   mail:
     host: ${MAIL_HOST:smtp.apitable.com}

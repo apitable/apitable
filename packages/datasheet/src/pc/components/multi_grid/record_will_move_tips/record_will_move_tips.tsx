@@ -23,7 +23,7 @@ import { useThemeColors } from '@apitable/components';
 import { CellType, DATASHEET_ID, RecordMoveType, Selectors, Strings, t } from '@apitable/core';
 import { FilterOutlined, RankOutlined } from '@apitable/icons';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const RecordWillMoveTips = (props: { rowHeight: number; y?: number }) => {
   const { rowHeight, y: _y } = props;

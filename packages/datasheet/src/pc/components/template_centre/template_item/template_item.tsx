@@ -27,10 +27,9 @@ import { ButtonBase } from 'pc/components/common/button_base/button_base';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Tag } from 'pc/components/common/tag/tag';
 import { MyTrigger } from 'pc/components/multi_grid/format/trigger';
+import { useAppSelector } from 'pc/store/react-redux';
 import AvatarBgIcon from 'static/icon/template/template_img_cardbg.svg';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 enum Types {
   BANNER = 'banner',

@@ -34,10 +34,9 @@ import { Popconfirm } from 'pc/components/common/popconfirm';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import HeaderCover from 'static/icon/datasheet/share/datasheet_img_share.png';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IShareModalProps {
   formId: string;

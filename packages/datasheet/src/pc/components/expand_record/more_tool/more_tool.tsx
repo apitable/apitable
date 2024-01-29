@@ -30,12 +30,11 @@ import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard } from 'pc/utils';
 
 import EditorTitleContext from '../editor_title_context';
 import style from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IMoreToolProps {
   recordId: string;

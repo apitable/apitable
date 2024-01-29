@@ -1,12 +1,12 @@
 import { useMount } from 'ahooks';
 import { useEffect, useState } from 'react';
 import { ConfigConstant, IShareInfo, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { getEnvVariables } from 'pc/utils/env';
 import { useRequest, useSpaceRequest, useUserRequest } from '../../hooks';
 import { useAppDispatch } from '../../hooks/use_app_dispatch';
 import { deleteStorageByKey, getStorage, StorageName } from '../../utils/storage';
 import { Message } from '../common';
 import { INodeTree, IShareSpaceInfo } from './interface';
-import { getEnvVariables } from 'pc/utils/env';
 
 export const useMountShare = (shareInfo: Required<IShareInfo> | undefined) => {
   const [nodeTree, setNodeTree] = useState<INodeTree>();

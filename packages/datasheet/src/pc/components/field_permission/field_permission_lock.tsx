@@ -21,7 +21,7 @@ import { Tooltip, useThemeColors } from '@apitable/components';
 import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { EditOutlined, EyeOpenOutlined, LockOutlined } from '@apitable/icons';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const FieldPermissionLock = (props: {
   fieldId?: string;

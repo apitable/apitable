@@ -24,10 +24,9 @@ import { File, Folder } from 'pc/components/datasheet_search_panel/components';
 import { ISearchOptions } from 'pc/components/datasheet_search_panel/interface';
 import styles from 'pc/components/datasheet_search_panel/style.module.less';
 import { checkNodeDisable } from 'pc/components/datasheet_search_panel/utils/check_node_disabled';
+import { useAppSelector } from 'pc/store/react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ISearchResultProps {
   searchResult: { folders: INode[]; files: INode[] } | string;

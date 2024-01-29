@@ -23,9 +23,9 @@ import { Events, IReduxState, Player, Selectors } from '@apitable/core';
 import { AutomationPanelWrapper } from 'pc/components/automation/modal/automation_panel_wrapper';
 import { MirrorRoute } from 'pc/components/mirror/mirror_route';
 import { useAppSelector } from 'pc/store/react-redux';
+import { CustomPage } from '../custom_page/custom_page';
 import { DashboardPanel } from '../dashboard_panel';
 import { DataSheetPane } from '../datasheet_pane';
-import { EmbedPage } from '../embed_page/embed_page';
 import { FolderShowcase } from '../folder_showcase';
 import { FormPanel } from '../form_panel';
 import { NoPermission } from '../no_permission';
@@ -36,7 +36,7 @@ import { ChatPage } from 'enterprise/chat/chat_page';
 const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
   const nodeId = useAppSelector((state) => Selectors.getNodeId(state));
   const activeNodeError = useAppSelector((state) => state.catalogTree.activeNodeError);
-  const { datasheetId, folderId, automationId, formId, dashboardId, mirrorId, aiId, embedPageId } = useAppSelector(
+  const { datasheetId, folderId, automationId, formId, dashboardId, mirrorId, aiId, customPageId } = useAppSelector(
     (state: IReduxState) => state.pageParams,
   );
   const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
@@ -55,8 +55,8 @@ const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
   };
 
   const MainComponent = (): React.ReactElement => {
-    if (embedPageId) {
-      return <EmbedPage key={embedPageId} />;
+    if (customPageId) {
+      return <CustomPage key={customPageId} />;
     }
     if (automationId) {
       return <AutomationPanelWrapper automationId={automationId} />;

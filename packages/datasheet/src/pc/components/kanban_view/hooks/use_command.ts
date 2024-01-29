@@ -29,9 +29,8 @@ import {
 } from '@apitable/core';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ISetRecordData {
   recordId: string;

@@ -21,15 +21,14 @@ import * as React from 'react';
 import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Field, IField, IGridViewColumn, IGroupInfo, ILinearRowRecord, Range, RecordMoveType, RowHeightLevel, Selectors } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { CELL_CLASS } from 'pc/utils';
 import { GROUP_OFFSET } from '../enum';
 import { CollaboratorMark, getCollaboratorColor, renderFillHandle } from './cell_other';
 import { CellValue } from './cell_value';
-import styles from './styles.module.less';
 import { GRAY_COLOR_BORDER, PRIMARY_COLOR_BORDER } from './virtual_cell/cell_group_tab/cell_group_tab';
 import { CellRowHead } from './virtual_cell/cell_row_head/cell_row_head';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './styles.module.less';
 
 interface ICellValueContainer {
   style: React.CSSProperties;

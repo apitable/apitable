@@ -20,7 +20,6 @@ import { useToggle } from 'ahooks';
 import { Badge } from 'antd';
 import classNames from 'classnames';
 import { AnimationItem } from 'lottie-web/index';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -38,6 +37,7 @@ import {
   WorkbenchOutlined,
   LivechatFilled,
 } from '@apitable/icons';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 // eslint-disable-next-line no-restricted-imports
 import { Avatar, AvatarSize, AvatarType, Message, Tooltip } from 'pc/components/common';
 import {

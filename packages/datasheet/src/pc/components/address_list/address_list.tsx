@@ -26,6 +26,7 @@ import { IReduxState, StoreActions, Strings, t } from '@apitable/core';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import OrgImageDark from 'static/icon/organization/contacts_empty_dark.png';
 import OrgImageLight from 'static/icon/organization/contacts_empty_light.png';
 import { ComponentDisplay } from '../common/component_display';
@@ -34,11 +35,9 @@ import { CommonSide } from '../common_side';
 import { MobileBar } from '../mobile_bar';
 import { MemberInfo } from './member_info';
 import { MemberList } from './member_list';
-import styles from './style.module.less';
 // @ts-ignore
 import { isContactSyncing, isSocialDingTalk } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const _SplitPane: any = SplitPane;
 

@@ -23,7 +23,7 @@ import { Selectors } from '@apitable/core';
 import { ViewLock } from 'pc/components/view_lock/view_lock';
 import { store } from 'pc/store';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const expandViewLock = (viewId: string, unlockHandle?: () => void) => {
   const container = document.createElement('div');

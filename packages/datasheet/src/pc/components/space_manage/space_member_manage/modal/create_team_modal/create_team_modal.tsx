@@ -23,9 +23,8 @@ import { t, Strings, IReduxState, MAX_NAME_STRING_LENGTH, ConfigConstant } from 
 import { WithTipTextInput } from 'pc/components/common/input/with_tip_input';
 import { NormalModal } from 'pc/components/common/modal/normal_modal';
 import { useCreateSubTeam } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { verifyTeamName } from '../../utils';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IModalProps {
   setModalVisible: React.Dispatch<React.SetStateAction<boolean>>;

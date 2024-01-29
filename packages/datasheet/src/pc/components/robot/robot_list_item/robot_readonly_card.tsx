@@ -143,10 +143,10 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
   const theme = useTheme();
   const readonlyStyle: React.CSSProperties = readonly
     ? {
-        cursor: 'not-allowed',
-        pointerEvents: 'none',
-        opacity: 0.5,
-      }
+      cursor: 'not-allowed',
+      pointerEvents: 'none',
+      opacity: 0.5,
+    }
     : { cursor: 'default' };
 
   const colors = useThemeColors();
@@ -264,7 +264,7 @@ export const RobotListItemCardReadOnly: React.FC<React.PropsWithChildren<IRobotL
                   </StyledMenu>
 
                   <Box padding={'0 8px'}>
-                    <StyledDivider></StyledDivider>
+                    <StyledDivider />
                   </Box>
 
                   <StyledMenu padding={'8px'} display={'inline-flex'} alignItems={'center'} onClick={handleDelete}>

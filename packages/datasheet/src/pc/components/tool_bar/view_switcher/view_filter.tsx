@@ -18,8 +18,8 @@
 
 import { FC } from 'react';
 import { IViewProperty, t, Strings } from '@apitable/core';
-import styles from './style.module.less';
 import { ViewItem } from './view_item';
+import styles from './style.module.less';
 
 interface IViewFilterProps {
   viewsList: IViewProperty[];

@@ -26,16 +26,16 @@ import { ISelectFieldOption, Strings, t } from '@apitable/core';
 import { DeleteOutlined } from '@apitable/icons';
 import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { ScreenSize } from '../component_display/enum';
 import { Modal } from '../mobile/modal';
 import { ColorGroup } from './color_group';
 import { OptionSetting } from './enum';
-import styles from './style.module.less';
-import { getEnvVariables } from 'pc/utils/env';
-// @ts-ignore
-import { SubscribeGrade, SubscribeLabel } from 'enterprise/subscribe_system/subscribe_label/subscribe_label';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
+// @ts-ignore
+import { SubscribeGrade, SubscribeLabel } from 'enterprise/subscribe_system/subscribe_label/subscribe_label';
+import styles from './style.module.less';
 
 export interface IColorPickerPane {
   option: ISelectFieldOption;

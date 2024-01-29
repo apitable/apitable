@@ -42,14 +42,13 @@ import { changeView, usePrevious, useSideBarVisible } from 'pc/hooks';
 import { useNetwork } from 'pc/hooks/use_network';
 import { useViewNameChecker } from 'pc/hooks/use_view_name_checker';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { KeyCode, stopPropagation } from 'pc/utils';
 // import { Display } from '../../tool_bar/display/display';
 // import { DescriptionModal } from '../description_modal';
 import { TabAddView } from '../tab_add_view';
-import styles from './style.module.less';
 import { ViewBar } from './view_bar';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 export interface ITabStateProps {
   width: number;

@@ -29,16 +29,15 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { initNoTraceVerification, stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { ImportFile } from './import_file';
 import { InputEmail } from './input_email';
 import { LinkInvite } from './link_invite';
-import styles from './style.module.less';
 // @ts-ignore
 import { checkSocialInvite } from 'enterprise/home/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const { TabPane } = Tabs;
 

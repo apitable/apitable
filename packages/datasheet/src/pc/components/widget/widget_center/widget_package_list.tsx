@@ -9,7 +9,7 @@ import { expandWidgetCreate } from 'pc/components/widget/widget_center/widget_cr
 import { WidgetPackageItem } from 'pc/components/widget/widget_center/widget_package_item';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 type IWidgetPackageListProps = IWidgetPackageItemBase & {
   needPlaceholder: boolean;

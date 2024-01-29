@@ -24,11 +24,10 @@ import { File, Folder, FormSearchItem, View } from 'pc/components/datasheet_sear
 import styles from 'pc/components/datasheet_search_panel/style.module.less';
 import { checkNodeDisable } from 'pc/components/datasheet_search_panel/utils/check_node_disabled';
 import { ScrollBar } from 'pc/components/scroll_bar';
+import { useAppSelector } from 'pc/store/react-redux';
 import EmptyPngDark from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyPngLight from 'static/icon/datasheet/empty_state_light.png';
 import { SecondConfirmType } from './interface';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IViewNode {
   nodeId: string;

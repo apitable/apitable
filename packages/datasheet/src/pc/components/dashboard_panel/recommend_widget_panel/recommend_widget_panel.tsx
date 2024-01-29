@@ -25,14 +25,13 @@ import { ChevronRightOutlined, CloseOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Message, Tooltip } from 'pc/components/common';
 import { SearchPanel, SecondConfirmType } from 'pc/components/datasheet_search_panel';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getUrlWithHost } from 'pc/utils';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { ScrollBar } from '../../scroll_bar';
 import { createWidgetByExistWidgetId } from '../utils';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IRecommendWidgetPanelProps {
   setVisibleRecommend: React.Dispatch<React.SetStateAction<boolean>>;

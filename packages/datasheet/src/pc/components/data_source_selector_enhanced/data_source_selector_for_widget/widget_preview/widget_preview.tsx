@@ -16,21 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { integrateCdnHost, Settings, Strings, t, WidgetApi } from '@apitable/core';
-import { Button, ThemeName, useThemeColors } from '@apitable/components';
-import { CheckOutlined } from '@apitable/icons';
 import classNames from 'classnames';
 import { difference } from 'lodash';
 import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
+import { Button, ThemeName, useThemeColors } from '@apitable/components';
+import { integrateCdnHost, Settings, Strings, t, WidgetApi } from '@apitable/core';
+import { CheckOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
-import React, { useEffect, useState } from 'react';
+import { useAppSelector } from 'pc/store/react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
-
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IWidgetPreviewProps {
   onChange(result: { datasheetId?: string; viewId?: string; widgetIds?: string[] }): void;

@@ -3,10 +3,9 @@ import { IOption, Select, useThemeColors } from '@apitable/components';
 import { IReduxState, Selectors, Strings, t } from '@apitable/core';
 import { GridOutlined } from '@apitable/icons';
 
+import { useAppSelector } from 'pc/store/react-redux';
 import { IFormatCascaderProps } from '../format_cascader_select';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const CascaderDatasourceViewSelect = ({
   currentField,

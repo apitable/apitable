@@ -22,11 +22,10 @@ import { forwardRef, memo, useImperativeHandle, useRef } from 'react';
 import { Switch } from '@apitable/components';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from '../../../utils/dom';
 import { ScreenSize } from '../component_display';
 import style from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ISearchControlProps {
   onValueChange?: (searchValue: string) => void;

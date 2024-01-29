@@ -29,9 +29,8 @@ import { EnableFieldPermission } from 'pc/components/field_permission/enable_fie
 import { IFieldPermissionProps } from 'pc/components/field_permission/interface';
 import styles from 'pc/components/field_permission/styles.module.less';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
+import { useAppSelector } from 'pc/store/react-redux';
 import { PermissionModalHeader } from './permission_modal_header';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const FieldPermission: React.FC<React.PropsWithChildren<IFieldPermissionProps>> = (props) => {
   const colors = useThemeColors();

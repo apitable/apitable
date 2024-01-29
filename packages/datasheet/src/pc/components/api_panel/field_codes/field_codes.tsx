@@ -23,13 +23,12 @@ import { LinkButton } from '@apitable/components';
 import { Field, FieldType, Selectors, Strings, t } from '@apitable/core';
 import { Loading } from 'pc/components/common';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import githubIcon from 'static/icon/common/github_octopus.png';
 import { getFieldDocs } from '../field_docs/api_panel_config';
 import { CodeLanguage, CodeType } from './enum';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const DocInnerHtml = dynamic(() => import('./doc_inner_html'), {
   ssr: false,

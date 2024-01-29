@@ -25,11 +25,10 @@ import { getFieldStatType } from 'pc/components/multi_grid/cell/stat_option';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 // import styles from './style.module.less';
+import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData, isTouchDevice } from 'pc/utils';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { MouseDownType } from '../../../multi_grid';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IFieldBoundary {
   x: number;

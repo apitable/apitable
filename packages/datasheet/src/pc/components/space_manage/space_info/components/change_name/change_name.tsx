@@ -25,9 +25,9 @@ import { EditOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip, NormalModal, WithTipTextInput } from 'pc/components/common';
 import { useNotificationCreate } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
 
-import {useAppSelector} from "pc/store/react-redux";
 export const ChangeName = () => {
   const { spaceInfo, spaceResource, spaceId, userInfo } = useAppSelector(
     (state: IReduxState) => ({

@@ -23,8 +23,8 @@ import { Typography, LinkButton, Box, useThemeColors, Pagination } from '@apitab
 import { Strings, t } from '@apitable/core';
 import { RoleContext } from '../context';
 import { IMemberItem } from '../interface';
-import styles from './style.module.less';
 import { UnitItem } from './unit_item';
+import styles from './style.module.less';
 
 export interface IPageParams {
   total: number;

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {Box, Button } from '@apitable/components';
+import { Box, Button } from '@apitable/components';
 import { ConfigConstant, INode, IPermissions, Strings, t } from '@apitable/core';
 import { Loading } from 'pc/components/common';
 import { LoaderContext } from 'pc/components/data_source_selector/context/loader_context';

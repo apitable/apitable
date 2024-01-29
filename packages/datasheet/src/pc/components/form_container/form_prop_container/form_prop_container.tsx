@@ -23,13 +23,12 @@ import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { DescEditor } from './desc_editor';
 import { CoverImgUploader, LogoImgUploader } from './img_uploader';
 import { IModeEnum } from './interface';
-import styles from './style.module.less';
 import { TitleEditor } from './title_editor';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 interface IFormPropContainerProps {
   formId: string;

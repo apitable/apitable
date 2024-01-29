@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import semver from 'semver';
 import { integrateCdnHost, Strings, SystemConfig, t } from '@apitable/core';
 import { Notifications, Templates, Types } from '@apitable/core/src/config/system_config.interface';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { getEnvVariables, getInitializationData } from 'pc/utils/env';
 
 const jsonToObject = (object: any) => {

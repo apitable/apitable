@@ -26,14 +26,13 @@ import { NotificationOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
+import { INNER_DAY_ALARM_SUBTRACT } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { ICellComponentProps } from '../cell_value/interface';
-import styles from './styles.module.less';
 // @ts-ignore
 import { AlarmTipText } from 'enterprise/alarm/alarm_tip_text';
-import { INNER_DAY_ALARM_SUBTRACT } from 'pc/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './styles.module.less';
 
 interface ICellDateTime extends ICellComponentProps {
   field: IDateTimeField;

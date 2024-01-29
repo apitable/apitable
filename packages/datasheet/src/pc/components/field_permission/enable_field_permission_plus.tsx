@@ -28,13 +28,12 @@ import { IEnablePermissionPlus } from 'pc/components/field_permission/interface'
 import styles from 'pc/components/field_permission/styles.module.less';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
 import { useRequest, useCatalogTreeRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { dispatch } from 'pc/worker/store';
 import { IMemberList } from '../catalog/permission_settings_plus/permission/permission';
 import { PermissionInfoSetting } from '../catalog/permission_settings_plus/permission/permission_info_setting';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const defaultSetting = { formSheetAccessible: false };
 

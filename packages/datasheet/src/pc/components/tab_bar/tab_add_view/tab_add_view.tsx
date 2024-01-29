@@ -51,11 +51,10 @@ import {
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from '../../../utils/dom';
-import styles from './style.module.less';
 import { ViewIntroduceList } from './view_introduce_list';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 // const ReactIconAddTag = () => <IconAddTag width={16} height={16} />;
 

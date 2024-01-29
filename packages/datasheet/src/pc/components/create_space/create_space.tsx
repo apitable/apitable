@@ -26,11 +26,10 @@ import { IReduxState, Navigation, StoreActions, Strings, t, Selectors } from '@a
 import { Logo } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useSpaceRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import CreateSpaceIconDark from 'static/icon/space/space_add_name_dark.png';
 import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface ICreateSpace {
   isShare?: boolean;

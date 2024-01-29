@@ -26,11 +26,10 @@ import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
 import { MemberEditor } from 'pc/components/editors/member_editor/member_editor';
 import { IExpandFieldEditRef } from 'pc/components/expand_record/field_editor';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { printableKey, KeyCode } from 'pc/utils';
 import { CellMember } from './cell_member';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IMemberFieldEditorProps extends IBaseEditorProps {
   style: React.CSSProperties;

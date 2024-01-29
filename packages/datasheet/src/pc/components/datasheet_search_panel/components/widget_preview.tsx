@@ -26,12 +26,11 @@ import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { CheckOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { INodeInstalledWidget } from '../interface';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 interface IWidgetPreviewProps {
   onChange(result: { datasheetId?: string; viewId?: string; widgetIds?: string[] }): void;

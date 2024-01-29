@@ -27,9 +27,8 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { TComponent } from 'pc/components/common/t_component';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useResponsive, useSpaceRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export interface IApplicationJoinSpaceAlertProps {
   spaceId: string;

@@ -25,15 +25,14 @@ import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permiss
 import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useEditSubAdmin, useNotificationCreate } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { generateUserInfo } from 'pc/utils';
 import { PermissionCard } from '../permission_card';
-import styles from './style.module.less';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
 // @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
-// @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert'
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 const modalTitle = {
   read: t(Strings.sub_admin_view),

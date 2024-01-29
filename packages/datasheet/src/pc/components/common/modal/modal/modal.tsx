@@ -18,11 +18,11 @@
 
 import classNames from 'classnames';
 import parser from 'html-react-parser';
-import { getBillingInfo } from 'modules/billing';
 import React, { FC } from 'react';
 import { Provider } from 'react-redux';
 import { Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
+import { getBillingInfo } from 'modules/billing';
 import { FooterBtnInModal } from 'pc/components/common/modal/components/footer_btn';
 import { IDingTalkModalType, showModalInDingTalk } from 'pc/components/economy/upgrade_modal';
 import { store } from 'pc/store';

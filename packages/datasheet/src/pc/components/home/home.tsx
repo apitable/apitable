@@ -21,15 +21,14 @@ import { FC } from 'react';
 import { shallowEqual } from 'react-redux';
 import { IReduxState, Navigation } from '@apitable/core';
 import { Router } from 'pc/components/route_manager/router';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getSearchParams } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { MobileHome } from './mobile_home';
 import { PcHome } from './pc_home';
-import styles from './style.module.less';
 //@ts-ignore
 import { Home as EnterpriseHome } from 'enterprise/home/home';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 configResponsive({
   large: 1023.98,

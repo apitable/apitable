@@ -408,11 +408,11 @@ export const useGrid = (props: IUseGridProps) => {
     };
     const shadowProps = frozenShadowVisible
       ? {
-          shadowColor: themeName === ThemeName.Light ? '#E7E8EC' : '#191919',
-          shadowBlur: 4,
-          shadowOffsetX: 2,
-          shadowForStrokeEnabled: true,
-        }
+        shadowColor: themeName === ThemeName.Light ? '#E7E8EC' : '#191919',
+        shadowBlur: 4,
+        shadowOffsetX: 2,
+        shadowForStrokeEnabled: true,
+      }
       : {};
 
     const top = <Line points={[0, 0, 0, rowInitSize]} {...commonProps} {...shadowProps} />;

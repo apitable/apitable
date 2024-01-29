@@ -3,12 +3,12 @@ import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import useSWR from 'swr';
 import { useAppSelector } from 'pc/store/react-redux';
-import { embedPageAtom } from '../store/embed_page_desc_atom';
+import { CustomPageAtom } from '../store/custon_page_desc_atom';
 
 export const useGetDesc = (fetch: boolean = true) => {
-  const { embedPageId } = useAppSelector((state) => state.pageParams);
-  const { data, mutate } = useSWR(embedPageId, () => getNodeDescription(embedPageId));
-  const [, setEmbedPage] = useAtom(embedPageAtom);
+  const { customPageId } = useAppSelector((state) => state.pageParams);
+  const { data, mutate } = useSWR(customPageId, () => getNodeDescription(customPageId));
+  const [, setEmbedPage] = useAtom(CustomPageAtom);
 
   useEffect(() => {
     if (!fetch) return;
@@ -19,6 +19,6 @@ export const useGetDesc = (fetch: boolean = true) => {
   }, [data, setEmbedPage, fetch]);
 
   return {
-    mutate: embedPageId ? mutate : () => {},
+    mutate: customPageId ? mutate : () => {},
   };
 };

@@ -1,6 +1,6 @@
 import { ConfigConstant, ResourceType, Selectors } from '@apitable/core';
 
-import {useAppSelector} from "pc/store/react-redux";
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const useJudgeReachInstalledCount = () => {
   const activeWidgetPanel = useAppSelector((state) => {

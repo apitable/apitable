@@ -31,11 +31,10 @@ import { expandWidgetCenter, InstallPosition } from 'pc/components/widget/widget
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
 import { usePrevious, useQuery, useSideBarVisible } from 'pc/hooks';
 import { useNetwork } from 'pc/hooks/use_network';
-import styles from './style.module.less';
+import { useAppSelector } from 'pc/store/react-redux';
 // @ts-ignore
 import { isDingtalkSkuPage } from 'enterprise/home/social_platform/utils';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './style.module.less';
 
 interface ITabBarProps {
   dashboardId: string;

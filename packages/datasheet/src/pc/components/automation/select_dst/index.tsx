@@ -8,11 +8,10 @@ import {
   DataSourceSelectorForNode
 } from 'pc/components/data_source_selector_enhanced/data_source_selector_for_node/data_source_selector_for_node';
 import { SearchPanel } from 'pc/components/datasheet_search_panel';
+import { useAppSelector } from 'pc/store/react-redux';
 import { RelatedResource } from '../../robot/robot_context';
 import { automationStateAtom, loadableFormItemAtom } from '../controller';
 import { SelectTrigger } from './select_trigger';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const SelectDst: FC<{ value: string; onChange: (dstId: string | undefined) => void }> = memo(({
   value,

@@ -1,11 +1,10 @@
 import Image from 'next/image';
 import { Box, ThemeName, Typography } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import quicksearchDark from 'static/icon/common/quicksearch_default_dark.png';
 import quicksearchLight from 'static/icon/common/quicksearch_default_light.png';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 export const DefaultContent = () => {
   const theme = useAppSelector((state) => state.theme);

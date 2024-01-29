@@ -17,6 +17,7 @@ import {
 import { Strings, t, ThemeName } from '@apitable/core';
 import { DownloadOutlined, LoadingOutlined, RefreshOutlined } from '@apitable/icons';
 import { RobotRunHistoryItemDetail, useRunTaskDetail } from 'pc/components/robot/robot_detail/robot_run_history/robot_run_history_item_detail';
+import { useAppSelector } from 'pc/store/react-redux';
 import EmptyStateDarkImg from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyStateLightImg from 'static/icon/datasheet/empty_state_light.png';
 import { getAutomationRunHistoryDetail } from '../../../robot/api';
@@ -27,7 +28,6 @@ import { CONST_DATETIME_FORMAT } from '../list';
 import { TaskList } from '../list/task';
 import { handleDownload } from '../list/util';
 
-import {useAppSelector} from "pc/store/react-redux";
 dayjs.extend(duration);
 
 const CONST_STATUS_SUCCESS = 1;

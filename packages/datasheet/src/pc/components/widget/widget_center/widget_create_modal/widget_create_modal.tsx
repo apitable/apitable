@@ -17,10 +17,13 @@
  */
 
 import { useMount } from 'ahooks';
+import { createWidget } from 'api/widget/api';
 import classNames from 'classnames';
 import filenamify from 'filenamify';
 import parser from 'html-react-parser';
 import { trim } from 'lodash';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
+import { EmitterEventName } from 'modules/shared/simple_emitter';
 import Image from 'next/image';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -42,8 +45,6 @@ import {
 } from '@apitable/core';
 import { CopyOutlined, WarnCircleFilled, BulbOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { loadWidgetCheck, WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { EmitterEventName } from 'modules/shared/simple_emitter';
 import { Loading } from 'pc/components/common/loading';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -56,18 +57,16 @@ import { installToDashboard, installToPanel, installWidget } from 'pc/components
 import { useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard, getUrlWithHost } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { dispatch } from 'pc/worker/store';
 import { simpleEmitter } from '../..';
 import { installedWidgetHandle } from '../../widget_panel/widget_panel_header';
 import { Steps } from './steps';
-import styles from './styles.module.less';
 // @ts-ignore
 import { clearWizardsData } from 'enterprise/guide/utils';
-import { createWidget } from 'api/widget/api';
-
-import {useAppSelector} from "pc/store/react-redux";
+import styles from './styles.module.less';
 
 const WIDGET_CMD = {
   publish: 'widget-cli release',
@@ -276,7 +275,7 @@ export const expandWidgetCreateSteps = (props: IExpandWidgetCreateStepsProps) =>
 const WidgetCretInvalidError = () => (
   <div className={styles.widgetCretInvalidError}>
     <div className={styles.title}>
-      <WarnCircleFilled size={24} />
+      <WarnCircleFilled size={20} />
       <span>{t(Strings.widget_cret_invalid_error_title)}</span>
     </div>
     <div className={styles.content}>{parser(t(Strings.widget_cret_invalid_error_content))}</div>

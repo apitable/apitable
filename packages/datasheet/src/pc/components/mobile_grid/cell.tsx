@@ -25,12 +25,11 @@ import { useThemeColors } from '@apitable/components';
 import { BasicValueType, Field, Selectors } from '@apitable/core';
 import { MoreStandOutlined } from '@apitable/icons';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { FIELD_HEAD_CLASS } from 'pc/utils';
 import { FieldTitle } from '../expand_record/field_editor/field_title';
 import { CellValue } from '../multi_grid/cell/cell_value';
 import styles from './styles.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 enum CellType {
   HEAD,

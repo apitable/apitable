@@ -22,10 +22,10 @@ import { FC, useState } from 'react';
 import { IAttachmentValue, Strings, t } from '@apitable/core';
 import { DownloadOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
-import styles from './style.module.less';
 import { bulkDownload } from './util';
 // @ts-ignore
 import { SubscribeGrade, SubscribeLabel } from 'enterprise/subscribe_system/subscribe_label/subscribe_label';
+import styles from './style.module.less';
 
 interface IBulkDownloadProps {
   files: IAttachmentValue[];

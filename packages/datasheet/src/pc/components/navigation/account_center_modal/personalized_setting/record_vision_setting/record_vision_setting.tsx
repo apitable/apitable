@@ -21,10 +21,9 @@ import { useDispatch } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { Select, Typography } from '@apitable/components';
 import { RecordVision, StoreActions, Strings, t } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { setStorage, StorageMethod, StorageName } from 'pc/utils/storage';
 import styles from './style.module.less';
-
-import {useAppSelector} from "pc/store/react-redux";
 
 const options = [
   {
