@@ -34,11 +34,11 @@ import { NavigationContext } from 'pc/components/navigation/navigation_context';
 import { Router } from 'pc/components/route_manager/router';
 import { useNotificationCreate, useResponsive } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
+// @ts-ignore
 import { SocialPlatformMap } from 'enterprise/home/social_platform/config';
+// @ts-ignore
 import { isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
-// @ts-ignore
 
 export interface ISpaceListItemProps {
   spaceInfo: ISpaceInfo;

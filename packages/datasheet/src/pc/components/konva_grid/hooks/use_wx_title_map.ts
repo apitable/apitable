@@ -19,8 +19,8 @@
 import { isObject } from 'lodash';
 import { useState, useEffect } from 'react';
 import { Selectors } from '@apitable/core';
-// @ts-ignore
 import { useAppSelector } from 'pc/store/react-redux';
+// @ts-ignore
 import { isSocialWecom } from 'enterprise/home/social_platform/utils';
 // @ts-ignore
 import { WecomOpenDataType } from 'enterprise/wecom/wecom_open_data/wecom_open_data';

@@ -25,9 +25,9 @@ import { CopyOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard } from 'pc/utils';
+// @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 export const BasicInfo = () => {
   const { spaceInfo, spaceId } = useAppSelector((state: IReduxState) => {

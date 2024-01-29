@@ -30,9 +30,9 @@ import { useAppSelector } from 'pc/store/react-redux';
 import { INNER_DAY_ALARM_SUBTRACT } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { ICellComponentProps } from '../cell_value/interface';
+// @ts-ignore
 import { AlarmTipText } from 'enterprise/alarm/alarm_tip_text';
 import styles from './styles.module.less';
-// @ts-ignore
 
 interface ICellDateTime extends ICellComponentProps {
   field: IDateTimeField;

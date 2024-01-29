@@ -35,9 +35,9 @@ import { CommonSide } from '../common_side';
 import { MobileBar } from '../mobile_bar';
 import { MemberInfo } from './member_info';
 import { MemberList } from './member_list';
+// @ts-ignore
 import { isContactSyncing, isSocialDingTalk } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 const _SplitPane: any = SplitPane;
 

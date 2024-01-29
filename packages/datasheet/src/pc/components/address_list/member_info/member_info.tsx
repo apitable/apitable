@@ -29,9 +29,9 @@ import { Identity } from 'pc/components/space_manage/identity';
 import { useAddressRequest } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
+// @ts-ignore
 import { getSocialWecomUnitName, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 export const getIdentity = (memberInfo: IMemberInfoInAddressList) => {
   if (!memberInfo.isActive) return 'inactive';

@@ -63,9 +63,9 @@ import { FlowContext, IFlowContext } from './context/flow_context';
 import { useElements } from './hooks/use_elements';
 import { IGhostNodesRef, INodeStateMap, IViewNodeStateMap } from './interfaces';
 import { OrgChart } from './org_chart';
+// @ts-ignore
 import { getWizardRunCount } from 'enterprise/guide/utils';
 import styles from './styles.module.less';
-// @ts-ignore
 
 const _ReactFlowProvider: any = ReactFlowProvider;
 

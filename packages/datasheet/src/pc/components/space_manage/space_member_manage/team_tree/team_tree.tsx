@@ -47,6 +47,7 @@ import { stopPropagation } from 'pc/utils';
 import { CreateTeamModal } from '../modal/create_team_modal/create_team_modal';
 import { RenameTeamModal } from '../modal/rename_team_modal';
 import { socialPlatPreOperateCheck } from '../utils';
+// @ts-ignore
 import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise/home/social_platform/utils';
 import {
   freshDingtalkOrg,
@@ -56,7 +57,6 @@ import {
   // @ts-ignore
 } from 'enterprise/organization/utils/index';
 import styles from './style.module.less';
-// @ts-ignore
 
 const _ContextMenu: any = ContextMenu;
 const _MenuItem: any = MenuItem;

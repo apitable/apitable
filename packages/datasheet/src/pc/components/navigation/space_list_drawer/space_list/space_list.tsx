@@ -35,9 +35,9 @@ import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
 import AddIcon from 'static/icon/space/space_icon_add@2x.png';
 import { NavigationContext } from '../../navigation_context';
 import { SpaceListItem } from './space_list_item';
+// @ts-ignore
 import { isSocialWecom } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 enum TabPaneKeys {
   MANAGABLE = 'MANAGABLE',

@@ -27,11 +27,11 @@ import { useAppSelector } from 'pc/store/react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { InfoCard } from '../index';
+// @ts-ignore
 import { getSocialWecomUnitName, isSocialWecom } from 'enterprise/home/social_platform/utils';
+// @ts-ignore
 import { WecomOpenData } from 'enterprise/wecom/wecom_open_data/wecom_open_data';
 import styles from './style.module.less';
-// @ts-ignore
-// @ts-ignore
 
 interface ISearchMemberListProps {
   onChange: (value: string) => void;

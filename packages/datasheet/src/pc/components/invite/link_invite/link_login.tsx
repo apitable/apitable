@@ -26,10 +26,9 @@ import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { InviteTitle } from '../components';
 import { useInvitePageRefreshed } from '../use_invite';
+// @ts-ignore
 import { LoginToggle } from 'enterprise/home/login_toggle/login_toggle';
 import styles from './style.module.less';
-// import '../invite.common.less';
-// @ts-ignore
 
 const LinkLogin: FC<React.PropsWithChildren<unknown>> = () => {
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'linkInvite' });

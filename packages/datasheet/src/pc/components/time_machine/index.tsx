@@ -42,8 +42,6 @@ import {
   ThemeName,
 } from '@apitable/core';
 import { CloseOutlined, QuestionCircleOutlined } from '@apitable/icons';
-// @ts-ignore
-// @ts-ignore
 import { Avatar, Modal } from 'pc/components/common';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
@@ -55,11 +53,11 @@ import { store } from 'pc/store';
 import { useAppSelector } from 'pc/store/react-redux';
 import DataEmptyDark from 'static/icon/common/time_machine_empty_dark.png';
 import DataEmptyLight from 'static/icon/common/time_machine_empty_light.png';
-
 import { TabPaneKeys } from './interface';
 import { getForeignDatasheetIdsByOp, getOperationInfo } from './utils';
-
+// @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+// @ts-ignore
 import { Backup } from 'enterprise/time_machine/backup/backup';
 import styles from './style.module.less';
 

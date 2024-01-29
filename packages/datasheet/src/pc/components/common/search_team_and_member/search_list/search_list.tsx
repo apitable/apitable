@@ -22,9 +22,9 @@ import { ITeamsInSearch, IMembersInSearch, t, Strings } from '@apitable/core';
 import { InfoCard } from 'pc/components/common';
 import { useAppSelector } from 'pc/store/react-redux';
 import { AvatarType } from '../../avatar';
+// @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
 
 export enum ListType {
   MemberList = 'MEMBER_LIST',
