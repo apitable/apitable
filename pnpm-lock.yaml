@@ -299,6 +299,376 @@ importers:
         specifier: 4.8.2
         version: 4.8.2
 
+  packages/air-agent:
+    dependencies:
+      '@apitable/ai':
+        specifier: ../ai-components
+        version: link:../ai-components
+      '@apitable/components':
+        specifier: workspace:*
+        version: link:../components
+      '@apitable/core':
+        specifier: workspace:*
+        version: link:../core
+      '@apitable/i18n-lang':
+        specifier: workspace:*
+        version: link:../i18n-lang
+      '@apitable/icons':
+        specifier: workspace:*
+        version: link:../icons
+      '@microsoft/fetch-event-source':
+        specifier: ^2.0.1
+        version: 2.0.1
+      '@popperjs/core':
+        specifier: ^2.11.8
+        version: 2.11.8
+      '@sentry/integrations':
+        specifier: 7.92.0
+        version: 7.92.0
+      '@sentry/nextjs':
+        specifier: 7.92.0
+        version: 7.92.0(next@12.3.4)(react@18.2.0)(webpack@5.89.0)
+      '@sentry/tracing':
+        specifier: 7.92.0
+        version: 7.92.0
+      ahooks:
+        specifier: ^3.5.0
+        version: 3.7.8(react@18.2.0)
+      ajv-i18n:
+        specifier: 4.2.0
+        version: 4.2.0(ajv@8.12.0)
+      antd:
+        specifier: 4.23.5
+        version: 4.23.5(react-dom@18.2.0)(react@18.2.0)
+      axios:
+        specifier: 0.21.2
+        version: 0.21.2
+      bowser:
+        specifier: ^2.11.0
+        version: 2.11.0
+      classnames:
+        specifier: 2.2.6
+        version: 2.2.6
+      clipboard:
+        specifier: ^2.0.11
+        version: 2.0.11
+      color:
+        specifier: ^3.1.3
+        version: 3.2.1
+      cookies-next:
+        specifier: ^2.1.1
+        version: 2.1.2
+      dayjs:
+        specifier: ^1.11.7
+        version: 1.11.10
+      decimal.js:
+        specifier: ^10.4.3
+        version: 10.4.3
+      dom-to-image:
+        specifier: ^2.6.0
+        version: 2.6.0
+      emoji-mart:
+        specifier: ^3.0.0
+        version: 3.0.1(react@18.2.0)
+      hoist-non-react-statics:
+        specifier: ^3.3.2
+        version: 3.3.2
+      immer:
+        specifier: 9.0.16
+        version: 9.0.16
+      lodash:
+        specifier: 4.17.21
+        version: 4.17.21
+      lru-cache:
+        specifier: ^6.0.0
+        version: 6.0.0
+      markdown-it:
+        specifier: ^12.3.2
+        version: 12.3.2
+      next-transpile-modules:
+        specifier: ^9.0.0
+        version: 9.1.0
+      next-with-less:
+        specifier: ^2.0.5
+        version: 2.0.5(less-loader@11.0.0)(less@4.1.3)(next@12.3.4)
+      normalize.css:
+        specifier: 8.0.1
+        version: 8.0.1
+      path-browserify:
+        specifier: ^1.0.1
+        version: 1.0.1
+      prettier:
+        specifier: ^3.0.3
+        version: 3.0.3
+      prettier-plugin-tailwindcss:
+        specifier: ^0.4.1
+        version: 0.4.1(prettier@3.0.3)
+      prismjs:
+        specifier: ^1.29.0
+        version: 1.29.0
+      qrcode:
+        specifier: ^1.4.4
+        version: 1.5.3
+      rc-textarea:
+        specifier: ^0.4.5
+        version: 0.4.7(react-dom@18.2.0)(react@18.2.0)
+      react:
+        specifier: 18.2.0
+        version: 18.2.0
+      react-dom:
+        specifier: 18.2.0
+        version: 18.2.0(react@18.2.0)
+      react-icons:
+        specifier: ^4.11.0
+        version: 4.12.0(react@18.2.0)
+      react-popper:
+        specifier: ^2.3.0
+        version: 2.3.0(@popperjs/core@2.11.8)(react-dom@18.2.0)(react@18.2.0)
+      react-redux:
+        specifier: 8.0.4
+        version: 8.0.4(@types/react-dom@18.2.7)(@types/react@18.0.2)(react-dom@18.2.0)(react@18.2.0)(redux@4.2.0)
+      sass:
+        specifier: ^1.68.0
+        version: 1.70.0
+      store2:
+        specifier: ^2.12.0
+        version: 2.14.2
+      swr:
+        specifier: ^2.2.0
+        version: 2.2.0(react@18.2.0)
+      urlcat:
+        specifier: ^3.1.0
+        version: 3.1.0
+    devDependencies:
+      '@next/bundle-analyzer':
+        specifier: ^12.2.2
+        version: 12.3.4
+      '@svgr/webpack':
+        specifier: ^6.2.1
+        version: 6.5.1
+      '@tailwindcss/typography':
+        specifier: ^0.5.9
+        version: 0.5.10(tailwindcss@3.3.3)
+      '@types/classnames':
+        specifier: 2.2.10
+        version: 2.2.10
+      '@types/color':
+        specifier: ^3.0.1
+        version: 3.0.4
+      '@types/dagre':
+        specifier: ^0
+        version: 0.7.49
+      '@types/dom-to-image':
+        specifier: ^2.6.2
+        version: 2.6.4
+      '@types/dot-object':
+        specifier: ^2.1.2
+        version: 2.1.2
+      '@types/element-closest':
+        specifier: ^3
+        version: 3.0.0
+      '@types/exceljs':
+        specifier: ^1.3.0
+        version: 1.3.0
+      '@types/express':
+        specifier: ^4
+        version: 4.17.17
+      '@types/file-saver':
+        specifier: ^2.0.3
+        version: 2.0.5
+      '@types/hbs':
+        specifier: ^4
+        version: 4.0.1
+      '@types/is-url':
+        specifier: ^1.2.30
+        version: 1.2.30
+      '@types/jest':
+        specifier: 24.0.18
+        version: 24.0.18
+      '@types/lodash':
+        specifier: 4.14.161
+        version: 4.14.161
+      '@types/markdown-it':
+        specifier: 12.2.3
+        version: 12.2.3
+      '@types/mime-types':
+        specifier: ^2.1.1
+        version: 2.1.1
+      '@types/node':
+        specifier: 12.7.3
+        version: 12.7.3
+      '@types/numeral':
+        specifier: ^0.0.28
+        version: 0.0.28
+      '@types/path-browserify':
+        specifier: ^1.0.0
+        version: 1.0.0
+      '@types/prismjs':
+        specifier: ^1.16.1
+        version: 1.26.0
+      '@types/qr-image':
+        specifier: ^3
+        version: 3.2.7
+      '@types/qrcode':
+        specifier: ^1.3.5
+        version: 1.5.2
+      '@types/quill':
+        specifier: 1.3.6
+        version: 1.3.6
+      '@types/react':
+        specifier: ^18.0.2
+        version: 18.0.2
+      '@types/react-beautiful-dnd':
+        specifier: ^13.1.2
+        version: 13.1.4
+      '@types/react-custom-scrollbars':
+        specifier: ^4.0.10
+        version: 4.0.10
+      '@types/react-dom':
+        specifier: ^18.0.2
+        version: 18.2.7
+      '@types/react-dropzone':
+        specifier: ^5.1.0
+        version: 5.1.0(react@18.2.0)
+      '@types/react-grid-layout':
+        specifier: ^1.1.1
+        version: 1.3.2
+      '@types/react-pdf':
+        specifier: ^5
+        version: 5.7.4(worker-loader@3.0.8)
+      '@types/react-redux':
+        specifier: ^7.1.24
+        version: 7.1.26
+      '@types/react-transition-group':
+        specifier: ^4.4.4
+        version: 4.4.6
+      '@types/react-virtualized-auto-sizer':
+        specifier: 1.0.0
+        version: 1.0.0
+      '@types/semver':
+        specifier: ^7
+        version: 7.5.1
+      '@types/socket.io-client':
+        specifier: ^1.4.36
+        version: 1.4.36
+      '@types/uuid':
+        specifier: ^9.0.6
+        version: 9.0.6
+      '@types/worker-plugin':
+        specifier: ^5
+        version: 5.0.1
+      '@webcomponents/shadydom':
+        specifier: ^1.9.0
+        version: 1.11.0
+      autoprefixer:
+        specifier: ^10.4.14
+        version: 10.4.15(postcss@8.4.31)
+      babel-jest:
+        specifier: ^26.6.0
+        version: 26.6.3(@babel/core@7.22.20)
+      babel-loader:
+        specifier: 8.1.0
+        version: 8.1.0(@babel/core@7.22.20)(webpack@5.89.0)
+      babel-plugin-import:
+        specifier: 1.13.5
+        version: 1.13.5
+      babel-preset-react-app:
+        specifier: ^10.0.1
+        version: 10.0.1
+      case-sensitive-paths-webpack-plugin:
+        specifier: 2.2.0
+        version: 2.2.0
+      customize-cra:
+        specifier: ^1.0.0
+        version: 1.0.0
+      eslint:
+        specifier: 8.49.0
+        version: 8.49.0
+      eslint-config-next:
+        specifier: ^12.2.2
+        version: 12.3.4(eslint@8.49.0)(typescript@4.8.2)
+      eslint-webpack-plugin:
+        specifier: ^3.2.0
+        version: 3.2.0(eslint@8.49.0)(webpack@5.89.0)
+      express:
+        specifier: ^4.18.1
+        version: 4.18.1
+      filenamify:
+        specifier: ^5.0.2
+        version: 5.1.1
+      fork-ts-checker-webpack-plugin:
+        specifier: ^7.2.13
+        version: 7.3.0(typescript@4.8.2)(webpack@5.89.0)
+      http-proxy-middleware:
+        specifier: ^2.0.6
+        version: 2.0.6(@types/express@4.17.17)
+      is-wsl:
+        specifier: 1.1.0
+        version: 1.1.0
+      less:
+        specifier: 4.1.3
+        version: 4.1.3
+      less-loader:
+        specifier: 11.0.0
+        version: 11.0.0(less@4.1.3)(webpack@5.89.0)
+      naming-style:
+        specifier: ^1.0.1
+        version: 1.0.1
+      next:
+        specifier: ^12.3.1
+        version: 12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)(sass@1.70.0)
+      next-compose-plugins:
+        specifier: ^2.2.1
+        version: 2.2.1
+      next-global-css:
+        specifier: ^1.3.1
+        version: 1.3.1
+      next-http-proxy-middleware:
+        specifier: ^1.2.4
+        version: 1.2.5
+      postcss:
+        specifier: ^8.4.27
+        version: 8.4.31
+      raw-loader:
+        specifier: ^4.0.2
+        version: 4.0.2(webpack@5.89.0)
+      react-app-rewire-postcss:
+        specifier: ^3.0.2
+        version: 3.0.2
+      react-dev-utils:
+        specifier: ^11.0.3
+        version: 11.0.4(eslint@8.49.0)(typescript@4.8.2)(webpack@5.89.0)
+      slate-serializers:
+        specifier: ^0.4.1
+        version: 0.4.1(@types/react@18.0.2)(react-dom@18.2.0)(react@18.2.0)
+      svgo-loader:
+        specifier: 3.0.0
+        version: 3.0.0
+      tailwindcss:
+        specifier: ^3.3.3
+        version: 3.3.3(ts-node@10.9.1)
+      typescript:
+        specifier: 4.8.2
+        version: 4.8.2
+      web-vitals:
+        specifier: ^1.0.1
+        version: 1.1.2
+      webpack-bundle-analyzer:
+        specifier: ^3.9.0
+        version: 3.9.0
+      webpack-node-externals:
+        specifier: ^3.0.0
+        version: 3.0.0
+      webpack-sources:
+        specifier: ^3.2.3
+        version: 3.2.3
+      webpackbar:
+        specifier: ^5.0.2
+        version: 5.0.2(webpack@5.89.0)
+      worker-plugin:
+        specifier: ^5.0.1
+        version: 5.0.1(webpack@5.89.0)
+
   packages/api-client:
     dependencies:
       es6-promise:
@@ -1531,7 +1901,7 @@ importers:
         version: 4.1.3
       next:
         specifier: ^12.3.1
-        version: 12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)
+        version: 12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)(sass@1.70.0)
       next-compose-plugins:
         specifier: ^2.2.1
         version: 2.2.1
@@ -10062,7 +10432,7 @@ packages:
       '@sentry/vercel-edge': 7.92.0
       '@sentry/webpack-plugin': 1.21.0
       chalk: 3.0.0
-      next: 12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)
+      next: 12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)(sass@1.70.0)
       react: 18.2.0
       resolve: 1.22.8
       rollup: 2.78.0
@@ -13075,6 +13445,19 @@ packages:
     dependencies:
       '@types/istanbul-lib-report': 3.0.0
 
+  /@types/jest-diff@24.3.0:
+    resolution: {integrity: sha512-vx1CRDeDUwQ0Pc7v+hS61O1ETA81kD04IMEC0hS1kPyVtHDdZrokAvpF7MT9VI/fVSzicelUZNCepDvhRV1PeA==}
+    deprecated: This is a stub types definition. jest-diff provides its own type definitions, so you do not need this installed.
+    dependencies:
+      jest-diff: 29.7.0
+    dev: true
+
+  /@types/jest@24.0.18:
+    resolution: {integrity: sha512-jcDDXdjTcrQzdN06+TSVsPPqxvsZA/5QkYfIZlq1JMw7FdP5AZylbOc+6B/cuDurctRe+MziUMtQ3xQdrbjqyQ==}
+    dependencies:
+      '@types/jest-diff': 24.3.0
+    dev: true
+
   /@types/jest@25.2.3:
     resolution: {integrity: sha512-JXc1nK/tXHiDhV55dvfzqtmP4S3sy3T3ouV2tkViZgxY/zeUkcpQcQPGRlgF4KmWzWW5oiWYSZwtCB+2RsE4Fw==}
     dependencies:
@@ -13183,6 +13566,10 @@ packages:
       localforage: 1.10.0
     dev: true
 
+  /@types/lodash@4.14.161:
+    resolution: {integrity: sha512-EP6O3Jkr7bXvZZSZYlsgt5DIjiGr0dXP1/jVEwVLTFgg0d+3lWVQkRavYVQszV7dYUwvg0B8R0MBDpcmXg7XIA==}
+    dev: true
+
   /@types/lodash@4.14.198:
     resolution: {integrity: sha512-trNJ/vtMZYMLhfN45uLq4ShQSw0/S7xCTLLVM+WM1rmFpba/VS42jVUgaO3w/NOLiWR/09lnYk0yMaA/atdIsg==}
 
@@ -13285,6 +13672,10 @@ packages:
 
   /@types/node@12.20.55:
     resolution: {integrity: sha512-J8xLz7q2OFulZ2cyGTLE1TbbZcjpno7FaN6zdJNrgAdrJ+DZzh/uFR6YrTb4C+nXakvud8Q4+rbhoIWlYQbUFQ==}
+    dev: true
+
+  /@types/node@12.7.3:
+    resolution: {integrity: sha512-3SiLAIBkDWDg6vFo0+5YJyHPWU9uwu40Qe+v+0MH8wRKYBimHvvAOyk3EzMrD/TrIlLYfXrqDqrg913PynrMJQ==}
     dev: true
 
   /@types/node@14.18.58:
@@ -13709,7 +14100,6 @@ packages:
 
   /@types/uuid@9.0.6:
     resolution: {integrity: sha512-BT2Krtx4xaO6iwzwMFUYvWBWkV2pr37zD68Vmp1CDV196MzczBRxuEpD6Pr395HAgebC/co7hOphs53r8V7jew==}
-    dev: false
 
   /@types/validator@13.11.1:
     resolution: {integrity: sha512-d/MUkJYdOeKycmm75Arql4M5+UuXmf4cHdHKsyw1GcvnNgL6s77UkgSgJ8TE/rI5PYsnwYq5jkcWBLuN/MpQ1A==}
@@ -15068,7 +15458,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       delegates: 1.0.0
-      readable-stream: registry.npmmirror.com/readable-stream@3.6.2
+      readable-stream: 3.6.2
 
   /arg@4.1.3:
     resolution: {integrity: sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==}
@@ -15449,6 +15839,22 @@ packages:
       normalize-range: 0.1.2
       picocolors: 1.0.0
       postcss: 8.4.29
+      postcss-value-parser: 4.2.0
+    dev: true
+
+  /autoprefixer@10.4.15(postcss@8.4.31):
+    resolution: {integrity: sha512-KCuPB8ZCIqFdA4HwKXsvz7j6gvSDNhDP7WnUjBleRkKjPdvCmHFuQ77ocavI8FT6NdvlBnE2UFr2H4Mycn8Vew==}
+    engines: {node: ^10 || ^12 || >=14}
+    hasBin: true
+    peerDependencies:
+      postcss: ^8.1.0
+    dependencies:
+      browserslist: 4.22.1
+      caniuse-lite: 1.0.30001563
+      fraction.js: 4.3.6
+      normalize-range: 0.1.2
+      picocolors: 1.0.0
+      postcss: 8.4.31
       postcss-value-parser: 4.2.0
     dev: true
 
@@ -16344,7 +16750,7 @@ packages:
       create-hash: 1.2.0
       evp_bytestokey: 1.0.3
       inherits: 2.0.4
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.2.1
+      safe-buffer: 5.2.1
 
   /browserify-cipher@1.0.1:
     resolution: {integrity: sha512-sPhkz0ARKbf4rRQt2hTpAHqn47X3llLkUGn+xEJzLjwY8LRs2p0v7ljvI5EyoRO/mexrNunNECisZs+gw2zz1w==}
@@ -16359,7 +16765,7 @@ packages:
       cipher-base: 1.0.4
       des.js: 1.1.0
       inherits: 2.0.4
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.2.1
+      safe-buffer: 5.2.1
 
   /browserify-rsa@4.1.0:
     resolution: {integrity: sha512-AdEER0Hkspgno2aR97SAf6vi0y0k8NuOpGnVH3O99rcA5Q6sh8QxcngtHuJ6uXwnfAXNM4Gn1Gb7/MV1+Ymbog==}
@@ -16378,7 +16784,7 @@ packages:
       inherits: 2.0.4
       parse-asn1: 5.1.6
       readable-stream: 3.6.2
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.2.1
+      safe-buffer: 5.2.1
 
   /browserify-zlib@0.2.0:
     resolution: {integrity: sha512-Z942RysHXmJrhqk88FmKBVq/v5tqmSkDz7p54G/MGyjMnCFFnC79XWNbg+Vta8W6Wb2qtSZTSxIGkJrRpCFEiA==}
@@ -17151,7 +17557,7 @@ packages:
     resolution: {integrity: sha512-Kkht5ye6ZGmwv40uUDZztayT2ThLQGfnj/T71N/XzeZeo3nf8foyW7zGTsPYkEya3m5f3cAypH+qe7YOrM1U2Q==}
     dependencies:
       inherits: 2.0.4
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.2.1
+      safe-buffer: 5.2.1
 
   /cjs-module-lexer@1.2.3:
     resolution: {integrity: sha512-0TNiGstbQmCFwt4akjjBg5pLRTSyj/PkWQ1ZoO2zntmg9yLqSRxwEa4iCfQLGjqhiqBfOJa7W/E8wfGrTDmlZQ==}
@@ -17672,7 +18078,7 @@ packages:
       compressible: 2.0.18
       debug: 2.6.9
       on-headers: 1.0.2
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.1.2
+      safe-buffer: 5.1.2
       vary: 1.1.2
     transitivePeerDependencies:
       - supports-color
@@ -18073,7 +18479,7 @@ packages:
       create-hash: 1.2.0
       inherits: 2.0.4
       ripemd160: 2.0.2
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.2.1
+      safe-buffer: 5.2.1
       sha.js: 2.4.11
 
   /create-jest@29.7.0(@types/node@14.18.58)(ts-node@10.9.1):
@@ -18101,7 +18507,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
     dev: false
-    bundledDependencies: false
 
   /create-react-context@0.3.0(prop-types@15.8.1)(react@16.14.0):
     resolution: {integrity: sha512-dNldIoSuNSvlTJ7slIKC/ZFGKexBMBrrcc+TTe1NdmROnaASuLPvqpwj9v4XS4uXZ8+YPu0sNmShX2rXI5LNsw==}
@@ -20692,7 +21097,7 @@ packages:
     resolution: {integrity: sha512-/f2Go4TognH/KvCISP7OUsHn85hT9nUkxxA9BEWxFn+Oj9o8ZNLm/40hdlgSLyuOimsrTKLUMEorQexp/aPQeA==}
     dependencies:
       md5.js: 1.3.5
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.2.1
+      safe-buffer: 5.2.1
 
   /exceljs@4.1.1:
     resolution: {integrity: sha512-DWdCXInpk69qY+Xf7VLiQJulg5B6VpcbSidsgLl92Pu0v9/sh83VLkAsaWbw58Ap8gfhH2sVoGyxHMqRKnyAPA==}
@@ -22509,7 +22914,7 @@ packages:
     dependencies:
       inherits: 2.0.4
       readable-stream: 3.6.2
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.2.1
+      safe-buffer: 5.2.1
 
   /hash.js@1.1.7:
     resolution: {integrity: sha512-taOaskGt4z4SOANNseOviYDvjEJinIkRgmp7LbKP2YTTmVxWBl87s/uzK9r+44BclBSp2X7K1hqeNfz9JbBeXA==}
@@ -23035,7 +23440,6 @@ packages:
 
   /immutable@4.3.4:
     resolution: {integrity: sha512-fsXeu4J4i6WNWSikpI88v/PcVflZz+6kMhUfIwc5SY+poQRPnaf5V7qds6SUyUN3cVxEzuCab7QIoLOQ+DQ1wA==}
-    dev: false
 
   /import-cwd@2.1.0:
     resolution: {integrity: sha512-Ew5AZzJQFqrOV5BTW3EIoHAnoie1LojZLXKcCQ/yTRyVZosBhK1x1ViYjHGf5pAFOq8ZyChZp6m/fSN7pJyZtg==}
@@ -25993,7 +26397,7 @@ packages:
     resolution: {integrity: sha512-b94GiNHQNy6JNTrt5w6zNyffMrNkXZb3KTkCZJb2V1xaEGCk093vkZ2jk3tpaeP33/OiXC+WvK9AxUebnf5nbw==}
     engines: {node: '>= 0.6.3'}
     dependencies:
-      readable-stream: registry.npmmirror.com/readable-stream@2.3.8
+      readable-stream: 2.3.8
 
   /less-loader@11.0.0(less@4.1.3)(webpack@5.89.0):
     resolution: {integrity: sha512-9+LOWWjuoectIEx3zrfN83NAGxSUB5pWEabbbidVQVgZhN+wN68pOvuyirVlH1IK4VT1f3TmlyvAnCXh8O5KEw==}
@@ -26005,7 +26409,6 @@ packages:
       klona: 2.0.6
       less: 4.1.3
       webpack: 5.89.0(@swc/core@1.3.86)
-    dev: false
 
   /less@4.1.3:
     resolution: {integrity: sha512-w16Xk/Ta9Hhyei0Gpz9m7VS8F28nieJaL/VyShID7cYvP6IL5oHeL6p4TXSDJqZE/lNv0oJ2pGVjJsRkfwm5FA==}
@@ -26808,7 +27211,7 @@ packages:
     dependencies:
       hash-base: 3.1.0
       inherits: 2.0.4
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.2.1
+      safe-buffer: 5.2.1
 
   /md5js@1.0.7:
     resolution: {integrity: sha512-97fZ6+8JijezAk/n37Lnswo4aJ67utCeCXlIsDid3uZ/khIeof0hWpIYeSvf0kiyqB0i9XfQvOyZPuBSR7g2Ng==}
@@ -26904,7 +27307,7 @@ packages:
     resolution: {integrity: sha512-cda4JKCxReDXFXRqOHPQscuIYg1PvxbE2S2GP45rnwfEK+vZaXC8C1OFvdHIbgw0DLzowXGVoxLaAmlgRy14GQ==}
     dependencies:
       errno: 0.1.8
-      readable-stream: registry.npmmirror.com/readable-stream@2.3.8
+      readable-stream: 2.3.8
     dev: true
 
   /memory-fs@0.5.0:
@@ -27508,7 +27911,6 @@ packages:
 
   /naming-style@1.0.1:
     resolution: {integrity: sha512-0TReXPuxU6ebUmDQmfDjkCwvhhJ86Gg02/Pliti1+ClkLKFOYBL6CJn+MEPT3nX35tGpyaUl+IwFGmh562TvKA==}
-    dev: false
 
   /nan@2.17.0:
     resolution: {integrity: sha512-2ZTgtl0nJsO0KQCjEpxcIr5D+Yv90plTitZt9JBfQvVJDS5seMl3FOvsh3+9CoYWXf/1l5OaZzzF6nDm4cagaQ==}
@@ -27746,10 +28148,10 @@ packages:
       clone-deep: 4.0.1
       less: 4.1.3
       less-loader: 11.0.0(less@4.1.3)(webpack@5.89.0)
-      next: 12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)
+      next: 12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)(sass@1.70.0)
     dev: false
 
-  /next@12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0):
+  /next@12.3.4(@babel/core@7.22.20)(react-dom@18.2.0)(react@18.2.0)(sass@1.70.0):
     resolution: {integrity: sha512-VcyMJUtLZBGzLKo3oMxrEF0stxh8HwuW976pAzlHhI3t8qJ4SROjCrSh1T24bhrbjw55wfZXAbXPGwPt5FLRfQ==}
     engines: {node: '>=12.22.0'}
     hasBin: true
@@ -27773,6 +28175,7 @@ packages:
       postcss: 8.4.14
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
+      sass: 1.70.0
       styled-jsx: 5.0.7(@babel/core@7.22.20)(react@18.2.0)
       use-sync-external-store: 1.2.0(react@18.2.0)
     optionalDependencies:
@@ -27921,7 +28324,7 @@ packages:
       process: 0.11.10
       punycode: 1.4.1
       querystring-es3: 0.2.1
-      readable-stream: registry.npmmirror.com/readable-stream@2.3.8
+      readable-stream: 2.3.8
       stream-browserify: 2.0.2
       stream-http: 2.8.3
       string_decoder: 1.3.0
@@ -28820,7 +29223,7 @@ packages:
       browserify-aes: 1.2.0
       evp_bytestokey: 1.0.3
       pbkdf2: 3.1.2
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.2.1
+      safe-buffer: 5.2.1
 
   /parse-entities@1.2.2:
     resolution: {integrity: sha512-NzfpbxW/NPrzZ/yYSoQxyqUZMZXIdCfE0OIN4ESsnptHJECoUk3FZktxNuzQf4tjt5UEopnxpYJbvYuxIFDdsg==}
@@ -29028,7 +29431,7 @@ packages:
       create-hash: 1.2.0
       create-hmac: 1.1.7
       ripemd160: 2.0.2
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.2.1
+      safe-buffer: 5.2.1
       sha.js: 2.4.11
 
   /pdfjs-dist@2.16.105(worker-loader@3.0.8):
@@ -30351,7 +30754,7 @@ packages:
       create-hash: 1.2.0
       parse-asn1: 5.1.6
       randombytes: 2.1.0
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.2.1
+      safe-buffer: 5.2.1
 
   /pump@2.0.1:
     resolution: {integrity: sha512-ruPMNRkN3MHP1cWJc9OWr+T/xDP0jhXYCLfJcBuX54hhfIBnaQmAUMfDcG4DM5UMWByBbJY69QSphm3jtDKIkA==}
@@ -30595,13 +30998,13 @@ packages:
   /randombytes@2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
     dependencies:
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.2.1
+      safe-buffer: 5.2.1
 
   /randomfill@1.0.4:
     resolution: {integrity: sha512-87lcbR8+MhcWcUiQ+9e+Rwx8MyR2P7qnt15ynUlbm3TU/fjbgz4GsvfSUDTemtCCtVCqb4ZcEFlyPNTh9bBTLw==}
     dependencies:
       randombytes: 2.1.0
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.2.1
+      safe-buffer: 5.2.1
 
   /range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
@@ -31728,6 +32131,14 @@ packages:
       react: 18.2.0
     dev: false
 
+  /react-icons@4.12.0(react@18.2.0):
+    resolution: {integrity: sha512-IBaDuHiShdZqmfc/TwHu6+d6k2ltNCf3AszxNmjJc1KUfXdEeRJOKyNvLmAHaarhzGmTSVygNdyu8/opXv2gaw==}
+    peerDependencies:
+      react: '*'
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /react-image-crop@8.6.12(react@18.2.0):
     resolution: {integrity: sha512-3CNz1xfsRRSH/iH023IDMXxzsb1M6RTHHUVsVcb8uFPcjGiA9WisvQ24G1eRDf2j4NlybupOEEdfK2vT0etN6A==}
     peerDependencies:
@@ -32152,7 +32563,6 @@ packages:
       object-assign: 4.1.1
       prop-types: 15.8.1
     dev: true
-    bundledDependencies: false
 
   /react@18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
@@ -32928,6 +33338,10 @@ packages:
       has-symbols: 1.0.3
       isarray: 2.0.5
 
+  /safe-buffer@5.1.1:
+    resolution: {integrity: sha512-kKvNJn6Mm93gAczWVJg7wH+wGYWNrDHdWvpUmHyEsgCtIwwo3bqPtV4tR5tuPaUhTOo/kvhVwd8XwwOllGYkbg==}
+    dev: true
+
   /safe-buffer@5.1.2:
     resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
 
@@ -32983,6 +33397,15 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /sass@1.70.0:
+    resolution: {integrity: sha512-uUxNQ3zAHeAx5nRFskBnrWzDUJrrvpCPD5FNAoRvTi0WwremlheES3tg+56PaVtCs5QDRX5CBLxxKMDJMEa1WQ==}
+    engines: {node: '>=14.0.0'}
+    hasBin: true
+    dependencies:
+      chokidar: 3.5.3
+      immutable: 4.3.4
+      source-map-js: 1.0.2
 
   /sax@1.2.4:
     resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
@@ -33205,7 +33628,7 @@ packages:
       fresh: 0.5.2
       ms: 2.1.1
       parseurl: 1.3.3
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.1.1
+      safe-buffer: 5.1.1
     dev: true
 
   /serve-static@1.15.0:
@@ -33992,7 +34415,7 @@ packages:
     resolution: {integrity: sha512-3PnJbYgS56AeWgtKF5jtJRT6uFJe56Z0Hc5Ngg/6sI6rIt8iiMBTa9cvdyFfpMQjaVHr8dusbNeFGIIonxOvKw==}
     dependencies:
       duplexer2: 0.1.4
-      readable-stream: registry.npmmirror.com/readable-stream@2.3.8
+      readable-stream: 2.3.8
 
   /stream-each@1.2.3:
     resolution: {integrity: sha512-vlMC2f8I2u/bZGqkdfLQW/13Zihpej/7PmSiMQsbYddxuTsJp8vRe2x2FvVExZg7FaOds43ROAuFJwPR4MTZLw==}
@@ -38393,41 +38816,15 @@ packages:
       inherits: 2.0.4
       isarray: 1.0.0
       process-nextick-args: 2.0.1
-      safe-buffer: registry.npmmirror.com/safe-buffer@5.1.2
+      safe-buffer: 5.1.2
       string_decoder: 1.1.1
-      util-deprecate: registry.npmmirror.com/util-deprecate@1.0.2
-
-  registry.npmmirror.com/readable-stream@3.6.2:
-    resolution: {integrity: sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/readable-stream/-/readable-stream-3.6.2.tgz}
-    name: readable-stream
-    version: 3.6.2
-    engines: {node: '>= 6'}
-    dependencies:
-      inherits: 2.0.4
-      string_decoder: 1.3.0
-      util-deprecate: registry.npmmirror.com/util-deprecate@1.0.2
+      util-deprecate: 1.0.2
 
   registry.npmmirror.com/rope-sequence@1.3.4:
     resolution: {integrity: sha512-UT5EDe2cu2E/6O4igUr5PSFs23nvvukicWHx6GnOPlHAiiYbzNuCRQCuiUdHJQcqKalLKlrYJnjY0ySGsXNQXQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/rope-sequence/-/rope-sequence-1.3.4.tgz}
     name: rope-sequence
     version: 1.3.4
     dev: false
-
-  registry.npmmirror.com/safe-buffer@5.1.1:
-    resolution: {integrity: sha512-kKvNJn6Mm93gAczWVJg7wH+wGYWNrDHdWvpUmHyEsgCtIwwo3bqPtV4tR5tuPaUhTOo/kvhVwd8XwwOllGYkbg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/safe-buffer/-/safe-buffer-5.1.1.tgz}
-    name: safe-buffer
-    version: 5.1.1
-    dev: true
-
-  registry.npmmirror.com/safe-buffer@5.1.2:
-    resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/safe-buffer/-/safe-buffer-5.1.2.tgz}
-    name: safe-buffer
-    version: 5.1.2
-
-  registry.npmmirror.com/safe-buffer@5.2.1:
-    resolution: {integrity: sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/safe-buffer/-/safe-buffer-5.2.1.tgz}
-    name: safe-buffer
-    version: 5.2.1
 
   registry.npmmirror.com/throttle-debounce@3.0.1:
     resolution: {integrity: sha512-dTEWWNu6JmeVXY0ZYoPuH5cRIwc0MeGbJwah9KUNYSJwommQpCzTySTpEe8Gs1J23aeWEuAobe4Ag7EHVt/LOg==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/throttle-debounce/-/throttle-debounce-3.0.1.tgz}
@@ -38442,11 +38839,6 @@ packages:
     dependencies:
       '@popperjs/core': 2.11.8
     dev: false
-
-  registry.npmmirror.com/util-deprecate@1.0.2:
-    resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/util-deprecate/-/util-deprecate-1.0.2.tgz}
-    name: util-deprecate
-    version: 1.0.2
 
   registry.npmmirror.com/w3c-keyname@2.2.8:
     resolution: {integrity: sha512-dpojBhNsCNN7T82Tm7k26A6G9ML3NkhDsnw9n/eoxSRlVBB4CEtIQ/KTCLI2Fwf3ataSXRhYFkQi3SlnFwPvPQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/w3c-keyname/-/w3c-keyname-2.2.8.tgz}
