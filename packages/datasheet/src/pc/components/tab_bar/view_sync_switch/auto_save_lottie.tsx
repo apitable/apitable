@@ -23,7 +23,8 @@ const AUTO_SAVE_SVG_ID = 'AUTO_SAVE_SVG_ID';
 export const AutoSaveLottie = () => {
   const ref = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    if (!ref.current) {
+    const handle = document.getElementById(AUTO_SAVE_SVG_ID);
+    if (!handle) {
       return;
     }
     import('lottie-web/build/player/lottie_svg').then((module) => {
@@ -40,5 +41,5 @@ export const AutoSaveLottie = () => {
     });
   }, [ref]);
 
-  return <div ref={ref} id={AUTO_SAVE_SVG_ID} style={{ display: 'flex' }} />;
+  return <div id={AUTO_SAVE_SVG_ID} style={{ display: 'flex' }} />;
 };

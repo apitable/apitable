@@ -1368,6 +1368,9 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             node.setParentId(newNodeMap.get(shareTree.getParentId()));
             node.setNodeId(newNodeMap.get(shareTree.getNodeId()));
             node.setNodeName(shareTree.getNodeName());
+            if (StrUtil.isNotBlank(shareTree.getExtra())) {
+                node.setExtra(shareTree.getExtra());
+            }
             if (shareTree.getPreNodeId() != null) {
                 // The original pre-node ID, if it is in the filter column,
                 // recursively until the transferred node is found or ends in the first place.

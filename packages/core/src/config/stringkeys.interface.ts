@@ -6033,5 +6033,5 @@ export type StringKeysMapType = {
 };
 
 export type StringKeysType = {
-          [K in keyof StringKeysMapType]: K;
-        } & { [key: string]: unknown };
+  [K in keyof StringKeysMapType]: K;
+} & { [key: string]: unknown };
