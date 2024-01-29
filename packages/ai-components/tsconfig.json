@@ -19,7 +19,6 @@
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": false,
-    //    "noUncheckedIndexedAccess": true,
     "noUnusedParameters": false,
     "strictBindCallApply": true,
     "strictFunctionTypes": true,
