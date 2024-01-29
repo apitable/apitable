@@ -19,7 +19,7 @@
 import { useMount } from 'ahooks';
 import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';
-import { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { shallowEqual } from 'react-redux';
 import { Button, TextButton, Typography, useThemeColors, Pagination } from '@apitable/components';
@@ -30,11 +30,11 @@ import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { AddAdminModal, ModalType } from './add_admin_modal';
+// @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
+// @ts-ignore
 import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import styles from './style.module.less';
-// @ts-ignore
-// @ts-ignore
 
 // Some permissions that are no longer used, but because the old space will still return the corresponding data,
 // the front-end to do the filtering of these permissions
@@ -52,7 +52,6 @@ const triggerBase = {
 export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const dispatch = useAppDispatch();
-  const tableRef = useRef<HTMLDivElement>(null);
   const { subAdminList, subAdminListData, user, subscription, spaceInfo } = useAppSelector(
     (state: IReduxState) => ({
       subAdminList: state.spacePermissionManage.subAdminListData ? state.spacePermissionManage.subAdminListData.records : [],
@@ -66,7 +65,6 @@ export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   const [modalType, setModalType] = useState<string | null>(null);
   const [editOrReadSubMainInfo, setEditOrReadSubMainInfo] = useState<ISubAdminList | null>(null);
   const [pageNo, setPageNo] = useState(1);
-  const [scrollHeight, setScrollHeight] = useState(0);
   const { delSubAdminAndNotice } = useNotificationCreate({ fromUserId: user!.uuid, spaceId: user!.spaceId });
 
   useMount(() => {
@@ -75,21 +73,6 @@ export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   useEffect(() => {
     dispatch(StoreActions.getSubAdminList(pageNo));
   }, [dispatch, pageNo]);
-  const updateScroll = useCallback(() => {
-    if (tableRef.current) {
-      const height = tableRef.current.clientHeight - 45;
-      setScrollHeight(height);
-    }
-  }, [tableRef]);
-  useLayoutEffect(() => {
-    updateScroll();
-  }, [updateScroll]);
-  useEffect(() => {
-    window.addEventListener('resize', updateScroll);
-    return () => {
-      window.removeEventListener('resize', updateScroll);
-    };
-  }, [updateScroll]);
 
   const getPermissionContent = (arr: Array<string>) => {
     const i18nStrings = arr
@@ -218,8 +201,8 @@ export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
         </Button>
       </div>
 
-      <div className={styles.tableWrapper} ref={tableRef}>
-        <Table columns={columns} dataSource={subAdminList} pagination={false} rowKey={(record) => record.memberId} scroll={{ y: scrollHeight }} />
+      <div className={styles.tableWrapper}>
+        <Table columns={columns} dataSource={subAdminList} pagination={false} rowKey={(record) => record.memberId} />
       </div>
       {subAdminListData && subAdminListData.total > ConfigConstant.SUB_ADMIN_LIST_PAGE_SIZE && (
         <div className={styles.pagination}>
