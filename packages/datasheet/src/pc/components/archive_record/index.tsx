@@ -201,7 +201,7 @@ export const ArchivedRecords: React.FC<React.PropsWithChildren<IArchivedRecordsP
         return cellValue?.map((item) => `${item.name} (${getEnvVariables()[item.bucket] + item.token})`).join(', ');
       case FieldType.Link:
       case FieldType.OneWayLink:
-        return cellValue?.map((item) => item).join(', ');
+        return Array.isArray(cellValue) ? cellValue.map((item) => item).join(', ') : cellValue;
       case FieldType.Currency:
       case FieldType.Percent:
       case FieldType.AutoNumber:
