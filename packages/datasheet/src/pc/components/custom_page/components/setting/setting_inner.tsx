@@ -117,17 +117,23 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
       return;
     }
 
-    if (pastedData.includes('youtube') && activeConfig.name === t(Strings.embed_link_youtube)) {
+    if (
+      pastedData.includes('youtube') &&
+      (activeConfig.name === t(Strings.embed_link_youtube) || activeConfig.name === t(Strings.embed_link_default))
+    ) {
       document.execCommand('insertText', false, convertYoutubeUrl(pastedData));
       return;
     }
 
-    if (pastedData.includes('figma') && activeConfig.name === t(Strings.embed_link_figma)) {
+    if (pastedData.includes('figma') && (activeConfig.name === t(Strings.embed_link_figma) || activeConfig.name === t(Strings.embed_link_default))) {
       document.execCommand('insertText', false, convertFigmaUrl(pastedData));
       return;
     }
 
-    if (pastedData.includes('bilibili') && activeConfig.name === t(Strings.embed_link_bilibili)) {
+    if (
+      pastedData.includes('bilibili') &&
+      (activeConfig.name === t(Strings.embed_link_bilibili) || activeConfig.name === t(Strings.embed_link_default))
+    ) {
       document.execCommand('insertText', false, convertBilibiliUrl(pastedData));
       return;
     }
