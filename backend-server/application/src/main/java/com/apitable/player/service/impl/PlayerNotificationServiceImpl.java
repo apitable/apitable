@@ -681,13 +681,12 @@ public class PlayerNotificationServiceImpl
             dict.set(EMAIL_SPACE_NAME,
                 StrUtil.blankToDefault(iSpaceService.getNameBySpaceId(ro.getSpaceId()), ""));
         }
-        long fromUserId = Long.parseLong(ro.getFromUserId());
-        if (fromUserId > 0) {
-            String memberName =
-                StrUtil.blankToDefault(iMemberService.getMemberNameByUserIdAndSpaceId(fromUserId,
-                    ro.getSpaceId()), I18nStringsUtil.t("unnamed"));
-            dict.set(EMAIL_MEMBER_NAME, memberName);
-        }
+        String memberName = null != ro.getFromUserId()
+            ? StrUtil.blankToDefault(
+            iMemberService.getMemberNameByUserIdAndSpaceId(Long.parseLong(ro.getFromUserId()),
+                ro.getSpaceId()), I18nStringsUtil.t("unnamed"))
+            : I18nStringsUtil.t("unnamed");
+        dict.set(EMAIL_MEMBER_NAME, memberName);
         if (ObjectUtil.isNotNull(ro.getBody())) {
             JSONObject extras = NotificationHelper.getExtrasFromNotifyBody(ro.getBody());
             if (extras != null) {
