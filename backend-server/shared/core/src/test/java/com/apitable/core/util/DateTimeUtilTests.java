@@ -133,14 +133,14 @@ class DateTimeUtilTests {
             ).map(differenceTime -> DynamicTest.dynamicTest(String.format("%s natural time difference between %s and %s", differenceTime.expectDifferenceNaturalTime, startDateTime, differenceTime.endDateTime()),
                 () -> Assertions.assertEquals(differenceTime.expectDifferenceNaturalTime(), DateTimeUtil.between(startDateTime, differenceTime.endDateTime(), ChronoField.EPOCH_DAY))));
         }
-    }
 
-    private record DifferenceTime(int expectDifferenceNaturalTime, int year, int month, int dayOfMonth, int hour,
-                                  int minute, int second) {
-        LocalDateTime endDateTime(){
-            return LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
+        private record DifferenceTime(int expectDifferenceNaturalTime, int year, int month, int dayOfMonth, int hour,
+                                      int minute, int second) {
+            LocalDateTime endDateTime(){
+                return LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
+            }
+
         }
-
     }
 
     @Test
