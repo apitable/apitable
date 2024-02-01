@@ -104,9 +104,9 @@ export const Dashboard = () => {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
   const dashboard = dashboardPack?.dashboard;
-  const isMobile = screenIsAtMost(ScreenSize.md) || disabledDraggle;
+  const isMobile = screenIsAtMost(ScreenSize.md);
   const hideReadonlyEmbedItem = !!(embedInfo && embedInfo.permissionType === PermissionType.READONLY);
-  const readonly = isMobile || !editable || hideReadonlyEmbedItem;
+  const readonly = isMobile || !editable || hideReadonlyEmbedItem || disabledDraggle;
   const connect = dashboardPack?.connected;
   const hasOpenRecommend = useRef(false);
   const purchaseToken = query.get('purchaseToken') || '';
