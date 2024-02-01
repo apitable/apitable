@@ -34,22 +34,19 @@ import { getModalTitle } from './utils';
 import styles from './style.module.less';
 
 export interface ISearchShowOption {
-  showForm: boolean
-  showDatasheet: boolean
-  needPermission?: 'manageable' | 'editable'
-  showMirror: boolean
-  showView: boolean
+  showForm: boolean;
+  showDatasheet: boolean;
+  needPermission?: 'manageable' | 'editable';
+  showMirror: boolean;
+  showView: boolean;
 }
 interface ISearchPanelProps {
   folderId: string;
   formId?: string;
   activeDatasheetId?: string;
-  options?: ISearchShowOption,
+  options?: ISearchShowOption;
   setSearchPanelVisible: (v: boolean) => void;
-  onNodeSelect?: (data: {
-                   datasheetId?: string;
-  formId?: string;
-                }) => void;
+  onNodeSelect?: (data: { datasheetId?: string; formId?: string }) => void;
   onChange: (result: {
     datasheetId?: string;
     formId?: string;
@@ -63,7 +60,7 @@ interface ISearchPanelProps {
   noCheckPermission?: boolean;
   secondConfirmType?: SecondConfirmType;
   showMirrorNode?: boolean;
-  directClickMode?: boolean
+  directClickMode?: boolean;
 }
 
 export interface ISearchChangeProps {
@@ -74,7 +71,18 @@ export interface ISearchChangeProps {
 }
 
 const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = (props) => {
-  const { activeDatasheetId = '', formId, options, onNodeSelect, directClickMode, noCheckPermission, folderId, secondConfirmType, showMirrorNode, onChange } = props;
+  const {
+    activeDatasheetId = '',
+    formId,
+    options,
+    onNodeSelect,
+    directClickMode,
+    noCheckPermission,
+    folderId,
+    secondConfirmType,
+    showMirrorNode,
+    onChange,
+  } = props;
   const [loading, setLoading] = React.useState(false);
   const [state, updateState] = useReducer(searchPanelReducer, {
     currentMeta: null,
@@ -185,7 +193,20 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = (p
         )}
       </div>
     );
-  }, [_SearchPanel, hidePanel, isMobile, loading, onChange, props, secondConfirmType, state.currentDatasheetId, state.currentMeta, state.currentViewId, state.nodes, viewDataLoaded]);
+  }, [
+    _SearchPanel,
+    hidePanel,
+    isMobile,
+    loading,
+    onChange,
+    props,
+    secondConfirmType,
+    state.currentDatasheetId,
+    state.currentMeta,
+    state.currentViewId,
+    state.nodes,
+    viewDataLoaded,
+  ]);
 
   return (
     <>

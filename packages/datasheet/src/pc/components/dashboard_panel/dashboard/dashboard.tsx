@@ -20,6 +20,7 @@ import { useLocalStorageState, useMount, useUpdateEffect } from 'ahooks';
 import { Drawer } from 'antd';
 import classNames from 'classnames';
 import { keyBy } from 'lodash';
+import { EmitterEventName } from 'modules/shared/simple_emitter';
 import React, { useEffect, useRef, useState } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
@@ -39,7 +40,6 @@ import {
   WidgetReleaseType,
 } from '@apitable/core';
 import { AddOutlined, CodeFilled, DeleteOutlined, DuplicateOutlined, EditOutlined, GotoOutlined, SettingOutlined } from '@apitable/icons';
-import { EmitterEventName } from 'modules/shared/simple_emitter';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { simpleEmitter as panelSimpleEmitter } from 'pc/components/common/vika_split_panel';
@@ -77,6 +77,7 @@ export const Dashboard = () => {
   const [allowChangeLayout, setAllowChangeLayout] = useState(false);
   const [activeMenuWidget, setActiveMenuWidget] = useState<IWidget>();
   const [dragging, setDragging] = useState<boolean>(false);
+  const [disabledDraggle, setDisabledDraggle] = useState<boolean>(false);
 
   const dashboardPack = useAppSelector(Selectors.getDashboardPack);
   const dashboardLayout = useAppSelector(Selectors.getDashboardLayout);
@@ -88,6 +89,8 @@ export const Dashboard = () => {
   const linkId = useAppSelector(Selectors.getLinkId);
   const installedWidgetIds = useAppSelector(Selectors.getInstalledWidgetInDashboard);
   const reachInstalledLimit = installedWidgetIds && installedWidgetIds.length >= Number(getEnvVariables().DASHBOARD_WIDGET_MAX_NUM);
+
+  const dashboardLayoutContainer = useRef<null | HTMLDivElement>(null);
 
   // Custom hooks start
   const colors = useThemeColors();
@@ -101,7 +104,7 @@ export const Dashboard = () => {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
   const dashboard = dashboardPack?.dashboard;
-  const isMobile = screenIsAtMost(ScreenSize.md);
+  const isMobile = screenIsAtMost(ScreenSize.md) || disabledDraggle;
   const hideReadonlyEmbedItem = !!(embedInfo && embedInfo.permissionType === PermissionType.READONLY);
   const readonly = isMobile || !editable || hideReadonlyEmbedItem;
   const connect = dashboardPack?.connected;
@@ -168,6 +171,24 @@ export const Dashboard = () => {
     }
     decisionOpenRecommend();
   }, [connect]);
+
+  useEffect(() => {
+    const dom = dashboardLayoutContainer.current;
+
+    if (!dom) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      const { width } = entries[0].contentRect;
+
+      if (width <= 576) {
+        setDisabledDraggle(true);
+      } else {
+        setDisabledDraggle(false);
+      }
+    });
+
+    resizeObserver.observe(dom);
+  }, []);
 
   const renameWidget = (arg: any) => {
     const {
@@ -409,7 +430,11 @@ export const Dashboard = () => {
           />
         )}
         <WidgetContextProvider>
-          <div className={styles.widgetArea} style={{ pointerEvents: 'auto', height: !embedId || embedInfo.viewControl?.tabBar ? '' : '100%' }}>
+          <div
+            className={styles.widgetArea}
+            ref={dashboardLayoutContainer}
+            style={{ pointerEvents: 'auto', height: !embedId || embedInfo.viewControl?.tabBar ? '' : '100%' }}
+          >
             {installedWidgetInDashboard && (
               <ResponsiveGridLayout
                 isDroppable={!readonly}

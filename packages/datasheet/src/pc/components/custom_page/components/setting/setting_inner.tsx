@@ -131,7 +131,7 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
       document.execCommand('insertText', false, convertBilibiliUrl(pastedData));
       return;
     }
-    
+
     document.execCommand('insertText', false, pastedData);
   };
 
@@ -162,7 +162,7 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
       </div>
       <Typography variant="body4" color={colors.textCommonTertiary} className={'!vk-mt-2'}>
         {activeConfig.desc}
-        <LinkButton href={activeConfig.linkUrl} className={'!vk-text-[12px] [&>span]:vk-text-[12px] !vk-inline'}>
+        <LinkButton href={activeConfig.linkUrl} className={'!vk-text-[12px] [&>span]:vk-text-[12px] !vk-inline'} target={'_blank'} rel="noreferrer">
           {activeConfig.linkText}
         </LinkButton>
       </Typography>

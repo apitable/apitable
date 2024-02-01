@@ -11,16 +11,16 @@ const getApiKey = (datasheetId: string, needFetchDatasheetMeta: boolean) => {
 };
 
 interface IParams {
-  localState: ISearchPanelState
-  localDispatch: React.Dispatch<Partial<ISearchPanelState>>
-  needFetchDatasheetMeta: boolean
+  localState: ISearchPanelState;
+  localDispatch: React.Dispatch<Partial<ISearchPanelState>>;
+  needFetchDatasheetMeta: boolean;
 }
 
 export const useFetchDatasheetMeta = ({ localState, needFetchDatasheetMeta, localDispatch }: IParams) => {
   const { data, mutate, isValidating } = useSWR(
     getApiKey(localState.currentDatasheetId, needFetchDatasheetMeta),
     () => getDatasheetMeta(localState.currentDatasheetId),
-    { revalidateOnFocus: false }
+    { revalidateOnFocus: false },
   );
 
   useEffect(() => {
@@ -38,7 +38,6 @@ export const useFetchDatasheetMeta = ({ localState, needFetchDatasheetMeta, loca
         currentViewId: data.views[0].id,
       });
     }
-
   }, [data, localDispatch]);
 
   return { data, mutate, isValidating };
