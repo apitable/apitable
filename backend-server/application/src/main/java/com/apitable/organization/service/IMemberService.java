@@ -752,4 +752,12 @@ public interface IMemberService extends IService<MemberEntity> {
      * @return space ids
      */
     List<String> getUserOwnSpaceIds(Long userId);
+
+    /**
+     * check space invited record.
+     *
+     * @param spaceId space id
+     * @return boolean
+     */
+    boolean shouldPreventInvitation(String spaceId);
 }

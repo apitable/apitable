@@ -25,28 +25,37 @@ import static org.mockito.Mockito.doNothing;
 
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.mock.bean.MockUserSpace;
+import com.apitable.space.entity.SpaceInviteRecordEntity;
+import com.apitable.space.mapper.SpaceInviteRecordMapper;
 import com.apitable.starter.mail.autoconfigure.EmailMessage;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * member service test
+ *
  * @author Shawn Deng
  */
 public class MemberServiceImplTest extends AbstractIntegrationTest {
+
+    @Autowired
+    private SpaceInviteRecordMapper spaceInviteRecordMapper;
 
     @Test
     public void testInvitationWithoutExistUser() {
         MockUserSpace mockUserSpace = createSingleUserAndSpace();
         doNothing().when(mailTemplate).send(any(EmailMessage.class));
         List<String> emails = list("test@apitable.com");
-        iMemberService.emailInvitation(mockUserSpace.getUserId(), mockUserSpace.getSpaceId(), emails);
+        iMemberService.emailInvitation(mockUserSpace.getUserId(), mockUserSpace.getSpaceId(),
+            emails);
     }
 
     @Test
     void testGetTotalActiveMemberCountBySpaceId() {
         MockUserSpace mockUserSpace = createSingleUserAndSpace();
-        long memberCount = iMemberService.getTotalActiveMemberCountBySpaceId(mockUserSpace.getSpaceId());
+        long memberCount =
+            iMemberService.getTotalActiveMemberCountBySpaceId(mockUserSpace.getSpaceId());
         assertThat(memberCount).isEqualTo(1L);
     }
 
@@ -57,5 +66,29 @@ public class MemberServiceImplTest extends AbstractIntegrationTest {
         Long memberId =
             iMemberService.getMemberIdByUserIdAndSpaceId(mockUserSpace.getUserId(), "");
         assertThat(memberId).isEqualTo(null);
+    }
+
+    @Test
+    void testShouldPreventInvitationForFreeSpace() {
+        MockUserSpace mockUserSpace = createSingleUserAndSpace();
+        for (int i = 0; i < 10; i++) {
+            SpaceInviteRecordEntity entity = new SpaceInviteRecordEntity();
+            entity.setInviteSpaceId(mockUserSpace.getSpaceId());
+            spaceInviteRecordMapper.insert(entity);
+        }
+        boolean prevent = iMemberService.shouldPreventInvitation(mockUserSpace.getSpaceId());
+        assertThat(prevent).isTrue();
+    }
+
+    @Test
+    void testShouldNotPreventInvitationForFreeSpace() {
+        MockUserSpace mockUserSpace = createSingleUserAndSpace();
+        for (int i = 0; i < 9; i++) {
+            SpaceInviteRecordEntity entity = new SpaceInviteRecordEntity();
+            entity.setInviteSpaceId(mockUserSpace.getSpaceId());
+            spaceInviteRecordMapper.insert(entity);
+        }
+        boolean prevent = iMemberService.shouldPreventInvitation(mockUserSpace.getSpaceId());
+        assertThat(prevent).isFalse();
     }
 }
