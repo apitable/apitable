@@ -365,4 +365,13 @@ public class RedisConstants {
         return StrUtil.format(SPACE_AUTOMATION_RUN_COUNT_KEY, spaceId,
             StrUtil.format("{}-{}", year, month));
     }
+
+    /**
+     * get space api usage statistics concurrent lock key.
+     *
+     * @return String
+     */
+    public static String getSpaceApiUsageConcurrentKey() {
+        return StrUtil.format(GENERAL_LOCKED, "space", "api_usage");
+    }
 }
