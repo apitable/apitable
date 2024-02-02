@@ -962,6 +962,9 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         if (!mailNotify) {
             return;
         }
+        if (needSendEmailMemberIds.isEmpty()) {
+            return;
+        }
         String spaceName = iSpaceService.getNameBySpaceId(spaceId);
         final List<String> emails = this.getEmailsByMemberIds(needSendEmailMemberIds);
         Dict dict = Dict.create();
