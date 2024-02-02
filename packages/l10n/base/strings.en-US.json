@@ -6028,5 +6028,6 @@
   "embed_page_doc_url": "https://help.aitable.ai/docs/guide/manual-custom-page",
   "new_ebmed_page": "New custom page",
   "embed_page_setting_title": "Add a custom page",
-  "exclusive_limit_plan_desc": "Exclusive Limited Tier"
+  "exclusive_limit_plan_desc": "Exclusive Limited Tier",
+  "custome_page_title": "Custom Web"
 }

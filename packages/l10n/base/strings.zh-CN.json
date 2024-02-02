@@ -6031,5 +6031,6 @@
   "embed_page_url_invalid": "请输入正确的网址",
   "embed_page_doc_url": "https://help.aitable.ai/docs/guide/manual-custom-page",
   "new_ebmed_page": "新建自定义页面",
-  "embed_page_setting_title": "添加自定义页面"
+  "embed_page_setting_title": "添加自定义页面",
+  "custome_page_title": "自定义网页"
 }
