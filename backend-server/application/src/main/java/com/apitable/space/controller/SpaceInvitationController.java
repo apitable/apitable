@@ -162,7 +162,6 @@ public class SpaceInvitationController {
         // whether in black list
         blackListServiceFacade.checkSpace(spaceId);
         iSpaceService.checkSeatOverLimit(spaceId, data.getInvite().size());
-        Long userId = SessionContext.getUserId();
         // check whether space can invite user
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
         List<EmailInvitationMemberRo> inviteMembers = data.getInvite();
@@ -181,6 +180,7 @@ public class SpaceInvitationController {
             return ResponseData.success(view);
         }
         // invite new members
+        Long userId = SessionContext.getUserId();
         List<String> emails = iMemberService.emailInvitation(userId, spaceId, inviteEmails);
         view.setEmails(emails);
         return ResponseData.success(view);

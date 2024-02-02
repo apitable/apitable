@@ -73,7 +73,7 @@ public interface SpaceInviteRecordMapper extends BaseMapper<SpaceInviteRecordEnt
     SpaceInviteRecordEntity selectByInviteToken(@Param("inviteToken") String inviteToken);
 
     /**
-     * query sapce invite record within the specified time
+     * query space invite record within the specified time.
      *
      * @param spaceId space id
      * @param startAt start time
