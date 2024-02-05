@@ -20,6 +20,7 @@ package com.apitable.space.mapper;
 
 import com.apitable.space.entity.SpaceInviteRecordEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,8 +32,8 @@ public interface SpaceInviteRecordMapper extends BaseMapper<SpaceInviteRecordEnt
     /**
      * All the specified invitation email links in the space have expired.
      *
-     * @param spaceId space id
-     * @param emails  emails
+     * @param spaceId    space id
+     * @param emails     emails
      * @param statusDesc status description
      * @return affected rows
      */
@@ -43,9 +44,9 @@ public interface SpaceInviteRecordMapper extends BaseMapper<SpaceInviteRecordEnt
     /**
      * Expire by space id and invite member ids.
      *
-     * @param spaceId       space id
-     * @param memberIds     invite member ids
-     * @param statusDesc    status description
+     * @param spaceId    space id
+     * @param memberIds  invite member ids
+     * @param statusDesc status description
      * @return affected rows
      */
     int expireBySpaceIdAndInviteMemberId(@Param("spaceId") String spaceId,
@@ -55,8 +56,8 @@ public interface SpaceInviteRecordMapper extends BaseMapper<SpaceInviteRecordEnt
     /**
      * Expire by invite token.
      *
-     * @param inviteToken   invite token
-     * @param statusDesc    status description
+     * @param inviteToken invite token
+     * @param statusDesc  status description
      * @return affected rows
      * @author Chambers
      */
@@ -70,5 +71,17 @@ public interface SpaceInviteRecordMapper extends BaseMapper<SpaceInviteRecordEnt
      * @return invite records
      */
     SpaceInviteRecordEntity selectByInviteToken(@Param("inviteToken") String inviteToken);
+
+    /**
+     * query space invite record within the specified time.
+     *
+     * @param spaceId space id
+     * @param startAt start time
+     * @param endAt   end time
+     * @return count
+     */
+    Integer selectCountBySpaceIdAndBetween(@Param("spaceId") String spaceId,
+                                           @Param("startAt") LocalDateTime startAt,
+                                           @Param("endAt") LocalDateTime endAt);
 
 }

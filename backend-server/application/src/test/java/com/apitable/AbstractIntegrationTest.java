@@ -82,7 +82,6 @@ import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.service.IResourceMetaService;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import jakarta.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;

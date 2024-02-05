@@ -18,7 +18,9 @@
 
 import axios from 'axios';
 import * as Url from '../../shared/api/url';
-import { IAddIsActivedMemberInfo, IApiWrapper, IInviteMemberList, IMemberInfoInAddressList, IUpdateMemberInfo } from '../../../exports/store/interfaces';
+import {
+  IAddIsActivedMemberInfo, IApiWrapper, IInviteMemberList, IMemberInfoInAddressList, IUpdateMemberInfo
+} from '../../../exports/store/interfaces';
 import urlcat from 'urlcat';
 
 const CancelToken = axios.CancelToken;
@@ -274,10 +276,10 @@ export function reSendInvite(spaceId: string, email: string) {
 
 /**
  * Invite Email Verify
- * @param token one-time invite token
+ * @param inviteToken one-time invite token
  */
-export function inviteEmailVerify(token: string) {
-  return axios.post(urlcat(Url.VALID_EMAIL_INVITATION, { token }));
+export function inviteEmailVerify(inviteToken: string) {
+  return axios.get(urlcat(Url.VALID_EMAIL_INVITATION, { inviteToken }));
 }
 
 /**
