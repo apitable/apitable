@@ -27,6 +27,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
+import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
+import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.security.facade.BlackListServiceFacade;
 import com.apitable.interfaces.security.facade.HumanVerificationServiceFacade;
 import com.apitable.interfaces.security.model.NonRobotMetadata;
@@ -93,6 +95,9 @@ public class SpaceInvitationController {
     @Resource
     private RedisTemplate<String, String> redisTemplate;
 
+    @Resource
+    private EntitlementServiceFacade entitlementServiceFacade;
+
     /**
      * Valid email invitation.
      */
@@ -157,7 +162,6 @@ public class SpaceInvitationController {
         // whether in black list
         blackListServiceFacade.checkSpace(spaceId);
         iSpaceService.checkSeatOverLimit(spaceId, data.getInvite().size());
-        Long userId = SessionContext.getUserId();
         // check whether space can invite user
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
         List<EmailInvitationMemberRo> inviteMembers = data.getInvite();
@@ -170,7 +174,13 @@ public class SpaceInvitationController {
             // without email, response success directly
             return ResponseData.success(view);
         }
+        SubscriptionInfo subscriptionInfo =
+            entitlementServiceFacade.getSpaceSubscription(spaceId);
+        if (subscriptionInfo.isFree() && iMemberService.shouldPreventInvitation(spaceId)) {
+            return ResponseData.success(view);
+        }
         // invite new members
+        Long userId = SessionContext.getUserId();
         List<String> emails = iMemberService.emailInvitation(userId, spaceId, inviteEmails);
         view.setEmails(emails);
         return ResponseData.success(view);

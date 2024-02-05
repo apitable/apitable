@@ -18,7 +18,7 @@
 
 import { IReduxState } from 'exports/store';
 import Joi from 'joi';
-import { difference, isString, keyBy, memoize, range } from 'lodash';
+import { difference, has, isString, keyBy, memoize, range } from 'lodash';
 import { getFieldOptionColor } from 'model/color';
 import { IAPIMetaSingleSelectFieldProperty } from 'types/field_api_property_types';
 import { FieldType, IMultiSelectedIds, ISelectField, ISelectFieldOption, ISelectFieldProperty, IStandardValue } from 'types/field_types';
@@ -271,7 +271,7 @@ export abstract class SelectField extends Field {
 
   validateWriteOpenOptionsEffect(updateProperty: IWriteOpenSelectBaseFieldProperty, effectOption?: IEffectOption): Joi.ValidationResult {
     // Not allowed to pass option parameter with ID but no color
-    if (updateProperty.options.some(option => option.id && !option.color)) {
+    if (updateProperty.options.some(option => option.id && !has(option, 'color'))) {
       return joiErrorResult('Option object is not supported. It has id but no color');
     }
     // Check if this update removes options
@@ -290,7 +290,7 @@ export abstract class SelectField extends Field {
     let transformedDefaultValue = defaultValue;
     const transformedOptions = options.map(option => {
       if (!option.id || !option.color) {
-        const color = option.color ? this.getOptionColorNumberByName(option.color) : undefined;
+        const color = option.color ? (typeof option.color === 'number' ? option.color : this.getOptionColorNumberByName(option.color)) : undefined;
         // prevent duplicate option IDs
         const newOption = SelectField._createNewOption({ name: option.name, color }, [...this.field.property.options, ...newOptions]);
         transformedDefaultValue = this.transformDefaultValue(newOption, transformedDefaultValue);
@@ -300,7 +300,7 @@ export abstract class SelectField extends Field {
       return {
         id: option.id,
         name: option.name,
-        color: this.getOptionColorNumberByName(option.color)!
+        color: typeof option.color === 'number' ? option.color : this.getOptionColorNumberByName(option.color)!,
       };
     });
     return {

@@ -167,3 +167,5 @@ export { LogoPurpleFilled } from './logo_purple_filled';
 export { FitviewOutlined } from './fitview_outlined';
 export { VikabyFilled } from './vikaby_filled';
 export { VikabyOutlined } from './vikaby_outlined';
+export { SpeechFilled } from './speech_filled';
+export { SpeechOutlined } from './speech_outlined';

@@ -95,8 +95,7 @@ export interface IWriteOpenSelectBaseFieldProperty {
   options: {
     id?: string;
     name: string;
-    /** color name */
-    color?: string;
+    color?: string | number;
   }[];
 }
 

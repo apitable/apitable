@@ -15,7 +15,7 @@ interface IParams {
 export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaData, secondConfirmType }: IParams) => {
   const dispatch = useDispatch();
 
-  const onNodeClick = (nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string,) => {
+  const onNodeClick = (nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string) => {
     switch (nodeType) {
       case 'Form': {
         if (localState.currentFormId === id) {
@@ -64,21 +64,21 @@ export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaDat
 
         if (childNodeListRes.data.success) {
           const nodes = childNodeListRes.data.data || [];
-          if(options) {
-            const filteredNodes = nodes.filter(item => {
-              if(item.type === ConfigConstant.NodeType.DATASHEET) {
+          if (options) {
+            const filteredNodes = nodes.filter((item) => {
+              if (item.type === ConfigConstant.NodeType.DATASHEET) {
                 return options.showDatasheet;
               }
-              if(item.type === ConfigConstant.NodeType.FORM) {
+              if (item.type === ConfigConstant.NodeType.FORM) {
                 return options.showForm;
               }
-              if(item.type === ConfigConstant.NodeType.MIRROR) {
+              if (item.type === ConfigConstant.NodeType.MIRROR) {
                 return options.showMirror;
               }
-              if(item.type === ConfigConstant.NodeType.VIEW) {
+              if (item.type === ConfigConstant.NodeType.VIEW) {
                 return options.showView;
               }
-              if(item.type === ConfigConstant.NodeType.FOLDER) {
+              if (item.type === ConfigConstant.NodeType.FOLDER) {
                 return true;
               }
               return false;
@@ -86,7 +86,6 @@ export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaDat
             localDispatch({ nodes: filteredNodes, showSearch: false });
           }
           localDispatch({ nodes, showSearch: false });
-
         }
       })
       .catch()

@@ -22,7 +22,6 @@ import { getColorNames } from 'model/color';
 import type { IBindFieldContext, IBindFieldModel } from 'model/field';
 import { getFieldTypeString } from 'model/utils';
 import { getViewsList } from 'modules/database/store/selectors/resource/datasheet/base';
-// import { IReduxState } from 'exports/store/interfaces';
 import { getPermissions } from 'modules/database/store/selectors/resource/datasheet/calc';
 import type { IAPIMetaFieldProperty } from 'types/field_api_property_types';
 import type { IAPIMetaField } from 'types/field_api_types';

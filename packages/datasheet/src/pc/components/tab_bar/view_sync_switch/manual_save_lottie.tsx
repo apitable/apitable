@@ -23,8 +23,7 @@ const MANUAL_SAVE_SVG_ID = 'MANUAL_SAVE_SVG_ID';
 export const ManualSaveLottie = () => {
   const ref = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
-    const handle = document.getElementById(MANUAL_SAVE_SVG_ID);
-    if (!handle) {
+    if (!ref.current) {
       return;
     }
     import('lottie-web/build/player/lottie_svg').then((module) => {
@@ -38,7 +37,7 @@ export const ManualSaveLottie = () => {
         animationData: SyncJson,
       });
     });
-  }, []);
+  }, [ref]);
 
-  return <div id={MANUAL_SAVE_SVG_ID} style={{ display: 'flex' }} />;
+  return <div ref={ref} id={MANUAL_SAVE_SVG_ID} style={{ display: 'flex' }} />;
 };

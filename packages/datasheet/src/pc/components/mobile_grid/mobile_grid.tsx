@@ -182,7 +182,7 @@ export const MobileGrid: React.FC<React.PropsWithChildren<IMobileGridProps>> = (
         // Jitter processing when rowing vertically to the bottom
         scrollTop <= GRID_INNER_DIV_HEIGHT - GRID_HEIGHT
       ) {
-        syncScroll(gridOuterRef.current!.scrollLeft, scrollTop);
+        syncScroll(gridOuterRef.current?.scrollLeft || 0, scrollTop);
       }
     },
     [GRID_HEIGHT, GRID_INNER_DIV_HEIGHT, syncScroll],

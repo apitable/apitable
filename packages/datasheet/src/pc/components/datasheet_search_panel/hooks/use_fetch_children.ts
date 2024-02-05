@@ -7,7 +7,7 @@ const getApiKey = (folderId: string) => {
 };
 
 interface IParams {
-  folderId: string
+  folderId: string;
 }
 
 export const useFetchChildren = ({ folderId }: IParams) => {

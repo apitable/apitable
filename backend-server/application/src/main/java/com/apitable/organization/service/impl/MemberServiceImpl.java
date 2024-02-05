@@ -114,6 +114,7 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import jakarta.annotation.Resource;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -504,28 +505,6 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     public void restoreMember(MemberEntity member) {
         baseMapper.restoreMember(member);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public List<String> emailInvitation(Long inviteUserId, String spaceId, List<String> emails) {
-        // remove empty string or null element in collection, then make it distinct
-        final List<String> distinctEmails =
-            CollectionUtil.distinctIgnoreCase(CollUtil.removeBlank(emails));
-        if (distinctEmails.isEmpty()) {
-            return new ArrayList<>();
-        }
-        List<String> emailsInSpace = memberMapper.selectEmailBySpaceIdAndEmails(spaceId, emails);
-        List<String> emailsNotInSpace = CollUtil.subtractToList(distinctEmails, emailsInSpace);
-        if (emailsNotInSpace.isEmpty()) {
-            return new ArrayList<>();
-        }
-        // create member
-        this.createInvitationMember(inviteUserId, spaceId, emailsNotInSpace);
-        // send email
-        invitationServiceFacade.sendInvitationEmail(
-            new MultiInvitationMetadata(inviteUserId, spaceId, emailsNotInSpace));
-        return emailsNotInSpace;
     }
 
     @Override
@@ -951,10 +930,14 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             }
         }
         List<MemberEntity> memberEntities = baseMapper.selectBatchIds(memberIds);
+        List<Long> needSendEmailMemberIds = new ArrayList<>();
         // The invitation link is invalid and the public link it created is deleted
         if (CollUtil.isNotEmpty(memberEntities)) {
             List<String> deleteMails = new ArrayList<>();
             for (MemberEntity filter : memberEntities) {
+                if (filter.getIsActive()) {
+                    needSendEmailMemberIds.add(filter.getId());
+                }
                 if (StrUtil.isNotBlank(filter.getEmail())) {
                     deleteMails.add(filter.getEmail());
                 }
@@ -979,8 +962,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         if (!mailNotify) {
             return;
         }
+        if (needSendEmailMemberIds.isEmpty()) {
+            return;
+        }
         String spaceName = iSpaceService.getNameBySpaceId(spaceId);
-        final List<String> emails = this.getEmailsByMemberIds(memberIds);
+        final List<String> emails = this.getEmailsByMemberIds(needSendEmailMemberIds);
         Dict dict = Dict.create();
         dict.set("SPACE_NAME", spaceName);
         Dict mapDict = Dict.create();
@@ -1028,61 +1014,24 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public UploadParseResultVO parseExcelFile(String spaceId, MultipartFile multipartFile) {
-        // subscribe to the limit
-        // iSubscriptionService.checkSeat(spaceId);
-        // manipulate user information in space
-        UserSpaceDto userSpaceDto = LoginContext.me().getUserSpaceDto(spaceId);
-        UploadParseResultVO resultVo = new UploadParseResultVO();
-        try {
-            // obtaining statistics
-            int currentMemberCount =
-                (int) SqlTool.retCount(staticsMapper.countMemberBySpaceId(spaceId));
-            SubscriptionInfo subscriptionInfo =
-                entitlementServiceFacade.getSpaceSubscription(spaceId);
-            long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
-            // long defaultMaxMemberCount = iSubscriptionService.getPlanSeats(spaceId);
-            // Use the object to read data row by row,
-            // set the number of rows in the table header,
-            // and start reading data at line 4, asynchronous reading.
-            UploadDataListener listener =
-                new UploadDataListener(spaceId, this, maxSeatNums, currentMemberCount)
-                    .resources(userSpaceDto.getResourceCodes());
-            EasyExcel.read(multipartFile.getInputStream(), listener).sheet().headRowNumber(3)
-                .doRead();
-            // gets the parse store record
-            resultVo.setRowCount(listener.getRowCount());
-            resultVo.setSuccessCount(listener.getSuccessCount());
-            resultVo.setErrorCount(listener.getErrorCount());
-            resultVo.setErrorList(listener.getErrorList());
-            // save the error message to the database
-            AuditUploadParseRecordEntity record = new AuditUploadParseRecordEntity();
-            record.setSpaceId(spaceId);
-            record.setRowSize(listener.getRowCount());
-            record.setSuccessCount(listener.getSuccessCount());
-            record.setErrorCount(listener.getErrorCount());
-            record.setErrorMsg(JSONUtil.toJsonStr(listener.getErrorList()));
-            auditUploadParseRecordMapper.insert(record);
-            // send an invitation email
-            this.batchSendInviteEmailOnUpload(spaceId, userSpaceDto.getMemberId(),
-                listener.getSendInviteEmails());
-            this.batchSendInviteNotifyEmailOnUpload(spaceId, userSpaceDto.getMemberId(),
-                listener.getSendNotifyEmails());
-            Long userId = userSpaceDto.getUserId();
-            TaskManager.me().execute(
-                () -> this.sendInviteNotification(userId, listener.getMemberIds(), spaceId, false));
-        } catch (IOException e) {
-            log.error("file cannot be read", e);
-            throw new BusinessException(OrganizationException.EXCEL_CAN_READ_ERROR);
-        } catch (BusinessException e) {
-            log.error("exceed over limit");
-            throw new BusinessException(LimitException.SEATS_OVER_LIMIT);
-        } catch (Exception e) {
-            log.error("fail to parse file", e);
-            throw new BusinessException(
-                "Failed to parse the file. Download the template and import it");
+    public List<String> emailInvitation(Long inviteUserId, String spaceId, List<String> emails) {
+        // remove empty string or null element in collection, then make it distinct
+        final List<String> distinctEmails =
+            CollectionUtil.distinctIgnoreCase(CollUtil.removeBlank(emails));
+        if (distinctEmails.isEmpty()) {
+            return new ArrayList<>();
         }
-        return resultVo;
+        List<String> emailsInSpace = memberMapper.selectEmailBySpaceIdAndEmails(spaceId, emails);
+        List<String> emailsNotInSpace = CollUtil.subtractToList(distinctEmails, emailsInSpace);
+        if (emailsNotInSpace.isEmpty()) {
+            return new ArrayList<>();
+        }
+        // create member
+        this.createInvitationMember(inviteUserId, spaceId, emailsNotInSpace);
+        // send email
+        invitationServiceFacade.sendInvitationEmail(
+            new MultiInvitationMetadata(inviteUserId, spaceId, emailsNotInSpace));
+        return emailsNotInSpace;
     }
 
     /**
@@ -1488,5 +1437,80 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Override
     public List<String> getUserOwnSpaceIds(Long userId) {
         return baseMapper.selectSpaceIdsByUserIdAndIsAdmin(userId, true);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public UploadParseResultVO parseExcelFile(String spaceId, MultipartFile multipartFile) {
+        // subscribe to the limit
+        // iSubscriptionService.checkSeat(spaceId);
+        // manipulate user information in space
+        UserSpaceDto userSpaceDto = LoginContext.me().getUserSpaceDto(spaceId);
+        UploadParseResultVO resultVo = new UploadParseResultVO();
+        try {
+            // obtaining statistics
+            int currentMemberCount =
+                (int) SqlTool.retCount(staticsMapper.countMemberBySpaceId(spaceId));
+            SubscriptionInfo subscriptionInfo =
+                entitlementServiceFacade.getSpaceSubscription(spaceId);
+            long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
+            // long defaultMaxMemberCount = iSubscriptionService.getPlanSeats(spaceId);
+            // Use the object to read data row by row,
+            // set the number of rows in the table header,
+            // and start reading data at line 4, asynchronous reading.
+            UploadDataListener listener =
+                new UploadDataListener(spaceId, this, maxSeatNums, currentMemberCount)
+                    .resources(userSpaceDto.getResourceCodes());
+            EasyExcel.read(multipartFile.getInputStream(), listener).sheet().headRowNumber(3)
+                .doRead();
+            // gets the parse store record
+            resultVo.setRowCount(listener.getRowCount());
+            resultVo.setSuccessCount(listener.getSuccessCount());
+            resultVo.setErrorCount(listener.getErrorCount());
+            resultVo.setErrorList(listener.getErrorList());
+            // save the error message to the database
+            AuditUploadParseRecordEntity record = new AuditUploadParseRecordEntity();
+            record.setSpaceId(spaceId);
+            record.setRowSize(listener.getRowCount());
+            record.setSuccessCount(listener.getSuccessCount());
+            record.setErrorCount(listener.getErrorCount());
+            record.setErrorMsg(JSONUtil.toJsonStr(listener.getErrorList()));
+            auditUploadParseRecordMapper.insert(record);
+            // send an invitation email
+            this.batchSendInviteEmailOnUpload(spaceId, userSpaceDto.getMemberId(),
+                listener.getSendInviteEmails());
+            this.batchSendInviteNotifyEmailOnUpload(spaceId, userSpaceDto.getMemberId(),
+                listener.getSendNotifyEmails());
+            Long userId = userSpaceDto.getUserId();
+            TaskManager.me().execute(
+                () -> this.sendInviteNotification(userId, listener.getMemberIds(), spaceId, false));
+        } catch (IOException e) {
+            log.error("file cannot be read", e);
+            throw new BusinessException(OrganizationException.EXCEL_CAN_READ_ERROR);
+        } catch (BusinessException e) {
+            log.error("exceed over limit");
+            throw new BusinessException(LimitException.SEATS_OVER_LIMIT);
+        } catch (Exception e) {
+            log.error("fail to parse file", e);
+            throw new BusinessException(
+                "Failed to parse the file. Download the template and import it");
+        }
+        return resultVo;
+    }
+
+    /**
+     * check space invited record.
+     *
+     * @param spaceId space id
+     * @return boolean
+     */
+    @Override
+    public boolean shouldPreventInvitation(String spaceId) {
+        LocalDateTime startAt = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime endAt =
+            LocalDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0);
+        Integer count =
+            spaceInviteRecordMapper.selectCountBySpaceIdAndBetween(spaceId, startAt, endAt);
+        return count >= constProperties.getMaxInviteCountForFree();
     }
 }

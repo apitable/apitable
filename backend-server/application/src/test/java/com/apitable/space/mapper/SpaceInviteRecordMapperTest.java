@@ -18,15 +18,14 @@
 
 package com.apitable.space.mapper;
 
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.apitable.AbstractMyBatisMapperTest;
 import com.apitable.space.entity.SpaceInviteRecordEntity;
-
+import java.time.LocalDateTime;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author wuyitao
@@ -44,4 +43,15 @@ public class SpaceInviteRecordMapperTest extends AbstractMyBatisMapperTest {
         assertThat(entity).isNotNull();
     }
 
+
+    @Test
+    @Sql("/sql/space-invite-record-data.sql")
+    void testSelectCountBySpaceIdAndBetween() {
+        LocalDateTime startAt = LocalDateTime.now().withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime endAt =
+            LocalDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0);
+        Integer count =
+            spaceInviteRecordMapper.selectCountBySpaceIdAndBetween("spc41", startAt, endAt);
+        assertThat(count).isEqualTo(1);
+    }
 }

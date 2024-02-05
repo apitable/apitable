@@ -88,7 +88,7 @@ const writeOpenPropertyDelete: IUpdateOpenSingleSelectFieldProperty = {
   options: [{
     id: 'opt000',
     name: 'Test Label 1',
-    color: getFieldOptionColor(1).name
+    color: 1
   }]
 };
 
@@ -96,17 +96,17 @@ const writeOpenProperty: IUpdateOpenSingleSelectFieldProperty = {
   options: [{
     id: 'opt000',
     name: 'Test Label 1',
-    color: getFieldOptionColor(1).name
+    color: 1
   }, {
     id: 'opt001',
     name: 'Test Label 2',
-    color: getFieldOptionColor(2).name
+    color: 2
   }]
 };
 
 describe('Radio field read property format check', () => {
   const valid = getOpenFieldProperty(singleSelectField);
-  it('correct property', function() {
+  it('correct property', function () {
     const [expectValue, receiveValue] = valid(openSingleSelectField.property);
     expect(receiveValue).toEqual(expectValue);
   });

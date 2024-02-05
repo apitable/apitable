@@ -77,6 +77,7 @@ export const Dashboard = () => {
   const [allowChangeLayout, setAllowChangeLayout] = useState(false);
   const [activeMenuWidget, setActiveMenuWidget] = useState<IWidget>();
   const [dragging, setDragging] = useState<boolean>(false);
+  const [disabledDraggle, setDisabledDraggle] = useState<boolean>(false);
 
   const dashboardPack = useAppSelector(Selectors.getDashboardPack);
   const dashboardLayout = useAppSelector(Selectors.getDashboardLayout);
@@ -88,6 +89,8 @@ export const Dashboard = () => {
   const linkId = useAppSelector(Selectors.getLinkId);
   const installedWidgetIds = useAppSelector(Selectors.getInstalledWidgetInDashboard);
   const reachInstalledLimit = installedWidgetIds && installedWidgetIds.length >= Number(getEnvVariables().DASHBOARD_WIDGET_MAX_NUM);
+
+  const dashboardLayoutContainer = useRef<null | HTMLDivElement>(null);
 
   // Custom hooks start
   const colors = useThemeColors();
@@ -103,7 +106,7 @@ export const Dashboard = () => {
   const dashboard = dashboardPack?.dashboard;
   const isMobile = screenIsAtMost(ScreenSize.md);
   const hideReadonlyEmbedItem = !!(embedInfo && embedInfo.permissionType === PermissionType.READONLY);
-  const readonly = isMobile || !editable || hideReadonlyEmbedItem;
+  const readonly = isMobile || !editable || hideReadonlyEmbedItem || disabledDraggle;
   const connect = dashboardPack?.connected;
   const hasOpenRecommend = useRef(false);
   const purchaseToken = query.get('purchaseToken') || '';
@@ -168,6 +171,24 @@ export const Dashboard = () => {
     }
     decisionOpenRecommend();
   }, [connect]);
+
+  useEffect(() => {
+    const dom = dashboardLayoutContainer.current;
+
+    if (!dom) return;
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      const { width } = entries[0].contentRect;
+
+      if (width <= 576) {
+        setDisabledDraggle(true);
+      } else {
+        setDisabledDraggle(false);
+      }
+    });
+
+    resizeObserver.observe(dom);
+  }, []);
 
   const renameWidget = (arg: any) => {
     const {
@@ -409,7 +430,11 @@ export const Dashboard = () => {
           />
         )}
         <WidgetContextProvider>
-          <div className={styles.widgetArea} style={{ pointerEvents: 'auto', height: !embedId || embedInfo.viewControl?.tabBar ? '' : '100%' }}>
+          <div
+            className={styles.widgetArea}
+            ref={dashboardLayoutContainer}
+            style={{ pointerEvents: 'auto', height: !embedId || embedInfo.viewControl?.tabBar ? '' : '100%' }}
+          >
             {installedWidgetInDashboard && (
               <ResponsiveGridLayout
                 isDroppable={!readonly}

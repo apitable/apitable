@@ -129,7 +129,8 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
         return;
       }
 
-      const filterCellValue = cellValue?.filter((id) => {
+      // filter one way link record
+      const filterCellValue = field.type === FieldType.Link ? cellValue : cellValue?.filter((id) => {
         return foreignRows.some(row => row.recordId === id) || archivedRecordIds.includes(id);
       });
 
@@ -310,12 +311,12 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
     }
     // Theoretically fuse will not be null, but here is a compatibility
     if (!searchValue || fuse == null) {
-      return rows;
+      return rows.filter(row => !archivedRecordIds.includes(row.recordId));
     }
 
     return fuse.search(searchValue).map((result) => {
       return { recordId: (result as any).item.recordId }; // FIXME:TYPE
-    });
+    }).filter(row => !archivedRecordIds.includes(row.recordId));
 
     // If the records of the associated table are not added or subtracted, the query results are only updated when the searchValue changes
     // eslint-disable-next-line

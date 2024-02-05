@@ -234,7 +234,7 @@ export const contextItemMap = new Map<ContextItemKey, any>([
     ContextItemKey.AddEmbed,
     (onClick: () => void, hidden: boolean) => ({
       icon: makeNodeIconComponent(NodeIcon.AddEmbed),
-      text: t(Strings.new_ebmed_page),
+      text: t(Strings.new_custom_page),
       onClick,
       hidden,
       id: WORKBENCH_SIDE_ID.NEW_EMBED,

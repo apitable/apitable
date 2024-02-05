@@ -117,21 +117,27 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
       return;
     }
 
-    if (pastedData.includes('youtube') && activeConfig.name === t(Strings.embed_link_youtube)) {
+    if (
+      pastedData.includes('youtube') &&
+      (activeConfig.name === t(Strings.embed_link_youtube) || activeConfig.name === t(Strings.embed_link_default))
+    ) {
       document.execCommand('insertText', false, convertYoutubeUrl(pastedData));
       return;
     }
 
-    if (pastedData.includes('figma') && activeConfig.name === t(Strings.embed_link_figma)) {
+    if (pastedData.includes('figma') && (activeConfig.name === t(Strings.embed_link_figma) || activeConfig.name === t(Strings.embed_link_default))) {
       document.execCommand('insertText', false, convertFigmaUrl(pastedData));
       return;
     }
 
-    if (pastedData.includes('bilibili') && activeConfig.name === t(Strings.embed_link_bilibili)) {
+    if (
+      pastedData.includes('bilibili') &&
+      (activeConfig.name === t(Strings.embed_link_bilibili) || activeConfig.name === t(Strings.embed_link_default))
+    ) {
       document.execCommand('insertText', false, convertBilibiliUrl(pastedData));
       return;
     }
-    
+
     document.execCommand('insertText', false, pastedData);
   };
 
@@ -162,7 +168,7 @@ export const SettingInner: React.FC<ISettingInnerProps> = ({ onClose, isMobile }
       </div>
       <Typography variant="body4" color={colors.textCommonTertiary} className={'!vk-mt-2'}>
         {activeConfig.desc}
-        <LinkButton href={activeConfig.linkUrl} className={'!vk-text-[12px] [&>span]:vk-text-[12px] !vk-inline'}>
+        <LinkButton href={activeConfig.linkUrl} className={'!vk-text-[12px] [&>span]:vk-text-[12px] !vk-inline'} target={'_blank'} rel="noreferrer">
           {activeConfig.linkText}
         </LinkButton>
       </Typography>
