@@ -1403,10 +1403,12 @@ export type StringKeysMapType = {
   'custom_enterprise': 'custom_enterprise',
   'custom_function_development': 'custom_function_development',
   'custom_grade_desc': 'custom_grade_desc',
+  'custom_page_setting_title': 'custom_page_setting_title',
   'custom_picture': 'custom_picture',
   'custom_style': 'custom_style',
   'custom_upload': 'custom_upload',
   'custom_upload_tip': 'custom_upload_tip',
+  'custome_page_title': 'custome_page_title',
   'cut_cell_data': 'cut_cell_data',
   'cyprus': 'cyprus',
   'czech': 'czech',
@@ -1719,7 +1721,6 @@ export type StringKeysMapType = {
   'embed_page_node_permission_manager': 'embed_page_node_permission_manager',
   'embed_page_node_permission_reader': 'embed_page_node_permission_reader',
   'embed_page_node_permission_updater': 'embed_page_node_permission_updater',
-  'embed_page_setting_title': 'embed_page_setting_title',
   'embed_page_url_invalid': 'embed_page_url_invalid',
   'embed_paste_link_bilibili_placeholder': 'embed_paste_link_bilibili_placeholder',
   'embed_paste_link_default_placeholder': 'embed_paste_link_default_placeholder',
@@ -3370,8 +3371,8 @@ export type StringKeysMapType = {
   'new_a_line': 'new_a_line',
   'new_automation': 'new_automation',
   'new_caledonia': 'new_caledonia',
+  'new_custom_page': 'new_custom_page',
   'new_datasheet': 'new_datasheet',
-  'new_ebmed_page': 'new_ebmed_page',
   'new_folder': 'new_folder',
   'new_folder_btn_title': 'new_folder_btn_title',
   'new_folder_tooltip': 'new_folder_tooltip',
@@ -6033,5 +6034,5 @@ export type StringKeysMapType = {
 };
 
 export type StringKeysType = {
-  [K in keyof StringKeysMapType]: K;
-} & { [key: string]: unknown };
+          [K in keyof StringKeysMapType]: K;
+        } & { [key: string]: unknown };

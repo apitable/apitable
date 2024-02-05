@@ -24,7 +24,6 @@ import { getEnvVariables } from 'pc/utils/env';
 import styles from './style.module.less';
 
 export const SliderVerification: FC<React.PropsWithChildren<any>> = () => {
-
   useMount(() => {
     const env = getEnvVariables();
     if (!env.IS_SELFHOST) {
@@ -48,7 +47,7 @@ export const openSliderVerificationModal = () => {
     icon: '',
     title: t(Strings.safety_verification),
     content: (
-      <div>
+      <div className={'vk-pb-6'}>
         <Typography variant="body2" color={colorVars.fc1} className={styles.tip}>
           {t(Strings.safety_verification_tip)}
         </Typography>

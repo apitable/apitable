@@ -36,6 +36,8 @@ import cn.hutool.core.util.StrUtil;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
+import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
+import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.security.facade.BlackListServiceFacade;
 import com.apitable.interfaces.security.facade.HumanVerificationServiceFacade;
 import com.apitable.interfaces.security.model.NonRobotMetadata;
@@ -147,6 +149,9 @@ public class MemberController {
 
     @Resource
     private HumanVerificationServiceFacade humanVerificationServiceFacade;
+
+    @Resource
+    private EntitlementServiceFacade entitlementServiceFacade;
 
     /**
      * Fuzzy Search Members.
@@ -508,6 +513,11 @@ public class MemberController {
         // check black space
         blackListServiceFacade.checkSpace(spaceId);
         iSpaceService.checkCanOperateSpaceUpdate(spaceId);
+        SubscriptionInfo subscriptionInfo =
+            entitlementServiceFacade.getSpaceSubscription(spaceId);
+        if (subscriptionInfo.isFree() && iMemberService.shouldPreventInvitation(spaceId)) {
+            return ResponseData.success(new UploadParseResultVO());
+        }
         UploadParseResultVO resultVo = iMemberService.parseExcelFile(spaceId, data.getFile());
         return ResponseData.success(resultVo);
     }

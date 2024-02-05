@@ -338,7 +338,7 @@ export class MultiSelectField extends SelectField {
     options: Joi.array().items(Joi.object({
       id: Joi.string(),
       name: Joi.string().required(),
-      color: Joi.string(),
+      color: Joi.number(),
     })).required(),
     defaultValue: Joi.array().items(Joi.string())
   }).required();

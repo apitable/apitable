@@ -86,12 +86,12 @@ export const FolderContent: React.FC<React.PropsWithChildren<IFolderContentProps
 
   const showDatasheet = options?.showDatasheet ?? true;
   let showMirror = options?.showMirror ?? false;
-  if(showMirrorNode != null && options?.showMirror !=null) {
-    showMirror =showMirrorNode;
+  if (showMirrorNode != null && options?.showMirror != null) {
+    showMirror = showMirrorNode;
   }
 
   let showView = options?.showView ?? false;
-  if(hideViewNode !=null && options?.showView != null) {
+  if (hideViewNode != null && options?.showView != null) {
     showView = !hideViewNode;
   }
 

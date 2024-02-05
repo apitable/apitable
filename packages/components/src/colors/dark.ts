@@ -1,4 +1,3 @@
-
 export const rc07 = '#FFAB00';
 export const rc11 = '#6E382D';
 export const rc00 = '#B35FF5';
@@ -21,9 +20,9 @@ export const bgControlsDegradeDefault = 'rgba(0, 0, 0, 0.12)';
 export const bgControlsDefaultSolid = 'rgba(43, 43, 43, 1)';
 export const bgControlsHoverSolid = 'rgba(62, 62, 62, 1)';
 export const bgControlsActiveSolid = 'rgba(80, 80, 80, 1)';
-export const bgBrandLightActiveSolid = 'rgba(63, 58, 94, 1)';
-export const bgBrandLightHoverSolid = 'rgba(54, 49, 77, 1)';
-export const bgBrandLightDefaultSolid = 'rgba(44, 41, 59, 1)';
+export const bgBrandLightActiveSolid = 'rgba(120, 107, 197, 1)';
+export const bgBrandLightHoverSolid = 'rgba(97, 87, 154, 1)';
+export const bgBrandLightDefaultSolid = 'rgba(73, 66, 111, 1)';
 export const bgLogoText = 'rgba(255, 255, 255, 0.85)';
 export const bgLogoIcon = 'rgba(255, 255, 255, 0.85)';
 export const rainbowGray4 = 'rgba(181, 181, 181, 0.8)';

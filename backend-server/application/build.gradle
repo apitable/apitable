@@ -90,6 +90,8 @@ dependencies {
     }
     implementation libs.auth0
     implementation libs.pingpp
+    implementation libs.alipay.easy
+    implementation libs.wechatpay
     implementation libs.stripe
     implementation(libs.aliyun.core) {
         exclude(group: 'commons-logging', module: 'commons-logging')

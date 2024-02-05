@@ -99,7 +99,8 @@ public class StaticsServiceImpl implements IStaticsService {
             return 0;
         }
         // Get the API usage of this month up to yesterday
-        Long apiUsageUntilYesterday = this.getCurrentMonthApiUsageUntilYesterday(spaceId, currentMonth);
+        Long apiUsageUntilYesterday =
+            this.getCurrentMonthApiUsageUntilYesterday(spaceId, currentMonth);
         // If it is NULL, it indicates that the daily API usage statistics table is empty, and the old method is adopted
         if (apiUsageUntilYesterday == null) {
             return this.getCurrentMonthApiUsageWithCache(spaceId, currentMonth);
@@ -188,6 +189,14 @@ public class StaticsServiceImpl implements IStaticsService {
     }
 
     private Long getApiUsageTableMinId(LocalDate now) {
+        // concurrent lock
+        if (!Boolean.TRUE.equals(
+            redisTemplate.opsForValue()
+                .setIfAbsent(RedisConstants.getSpaceApiUsageConcurrentKey(), 0L, 5,
+                    TimeUnit.MINUTES))) {
+            return null;
+        }
+
         // Get the minimum ID of the API consumption table this month
         String key = StrUtil.format(GENERAL_STATICS, "api-usage-min-id",
             DateHelper.formatFullTime(now, YEARS_MONTH_PATTERN));

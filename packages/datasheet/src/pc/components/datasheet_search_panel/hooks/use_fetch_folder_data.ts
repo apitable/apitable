@@ -4,8 +4,8 @@ import { useFetchChildren } from './use_fetch_children';
 import { useFetchParent } from './use_fetch_parents';
 
 interface IParams {
-  localState: ISearchPanelState
-  localDispatch: React.Dispatch<Partial<ISearchPanelState>>
+  localState: ISearchPanelState;
+  localDispatch: React.Dispatch<Partial<ISearchPanelState>>;
 }
 
 export const useFetchFolderData = ({ localState, localDispatch }: IParams) => {
@@ -22,6 +22,6 @@ export const useFetchFolderData = ({ localState, localDispatch }: IParams) => {
   }, [childrenData, localDispatch]);
 
   return {
-    isValidating: isParentVlidating || isChildrenValidating
+    isValidating: isParentVlidating || isChildrenValidating,
   };
 };

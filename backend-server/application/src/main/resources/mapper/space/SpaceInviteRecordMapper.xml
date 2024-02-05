@@ -57,4 +57,11 @@
         FROM ${tablePrefix}space_invite_record
         WHERE invite_token = #{inviteToken} and send_status = 1
     </select>
+
+    <select id="selectCountBySpaceIdAndBetween" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}space_invite_record
+        WHERE invite_space_id = #{spaceId}
+        AND created_at BETWEEN #{startAt} AND #{endAt}
+    </select>
 </mapper>

@@ -35,4 +35,5 @@ export default {
       entries: [{ find: 'static', replacement: path.resolve(path.resolve(__dirname), 'src/static') }],
     }),
   ],
+  external: ['tslib']
 };

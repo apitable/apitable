@@ -92,6 +92,12 @@ public class ConstProperties {
 
     private String emailVerificationUrl = "/user/email_verification";
 
+    /**
+     * max invited record for a single day.
+     */
+    private Integer maxInviteCountForFree = 10;
+
+
     public OssBucketInfo getOssBucketByAsset() {
         return Optional.ofNullable(ossBuckets).orElseGet(HashMap::new)
             .getOrDefault(BucketKey.ASSETS, new OssBucketInfo());

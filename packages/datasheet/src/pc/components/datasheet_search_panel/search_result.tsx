@@ -34,7 +34,7 @@ interface ISearchResultProps {
 
   onNodeClick(nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string): void;
 
-  options?: ISearchOptions,
+  options?: ISearchOptions;
   noCheckPermission?: boolean;
 }
 

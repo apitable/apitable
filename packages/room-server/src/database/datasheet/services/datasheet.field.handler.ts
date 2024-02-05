@@ -34,7 +34,7 @@ import {
 } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { isEmpty } from 'class-validator';
+import { isArray, isEmpty } from 'class-validator';
 import { RoomResourceRelService } from 'database/resource/services/room.resource.rel.service';
 import { difference } from 'lodash';
 import { NodeService } from 'node/services/node.service';
@@ -465,10 +465,9 @@ export class DatasheetFieldHandler {
       const recordData = record!.data;
       for (const [fieldId, foreignDstId] of fieldLinkDstMap) {
         let linkedRecordIds = recordData[fieldId];
-        if (!linkedRecordIds) {
+        if (!linkedRecordIds || !isArray(linkedRecordIds)) {
           continue;
         }
-
         linkedRecordIds = (linkedRecordIds as ILinkIds).filter((recId) => typeof recId === 'string');
         if (linkedRecordIds.length) {
           let foreignRecIds = foreignDstIdRecordIdsMap[foreignDstId];

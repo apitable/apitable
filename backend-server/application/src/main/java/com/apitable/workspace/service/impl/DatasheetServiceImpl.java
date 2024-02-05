@@ -982,7 +982,9 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             // send notification
             NotificationCreateRo notifyRo = new NotificationCreateRo();
             notifyRo.setToMemberId(ListUtil.toList(Convert.toStrArray(toMemberIds)));
-            notifyRo.setFromUserId(userId == null ? "-2" : userId.toString());
+            if (null != userId) {
+                notifyRo.setFromUserId(userId.toString());
+            }
             notifyRo.setNodeId(ro.getNodeId());
             notifyRo.setSpaceId(spaceId);
             // used to mark message jump read

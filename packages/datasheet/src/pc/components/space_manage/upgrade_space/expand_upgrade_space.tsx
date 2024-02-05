@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { colorVars, Typography } from '@apitable/components';
+import { Button, colorVars, IconButton, Typography } from '@apitable/components';
 import { Navigation, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -28,7 +28,8 @@ export const UpdateSpaceModal: React.FC<IUpgradeSpaceProps> = ({ onCancel, ...pr
     >
       <div className={styles.header}>
         <Typography variant="h6">{t(Strings.upgrade)}</Typography>
-        <CloseOutlined color={colorVars.fc3} size={16} onClick={() => (onCancel as any)()} />
+        <Button />
+        <IconButton icon={CloseOutlined} color={colorVars.fc3} onClick={() => (onCancel as any)()} />
       </div>
       <UpgradeSpace hideDetail />
     </Modal>

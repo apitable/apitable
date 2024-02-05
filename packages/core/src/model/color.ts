@@ -47,7 +47,7 @@ export const getColorValue = (color: string, alpha: number) => {
  * 0 => deepPurple_1
  * 10 => deepPurple_2
  * 11 => indigo_2
- * @param index option.color
+ * @param index option.color
  */
 export function getFieldOptionColor(index: number) {
   const hue = COLOR_INDEX_NAME[index % COLOR_INDEX_NAME.length]!;
