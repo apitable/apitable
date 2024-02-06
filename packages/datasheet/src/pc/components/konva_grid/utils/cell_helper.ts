@@ -1239,7 +1239,7 @@ export class CellHelper extends KonvaDrawer {
      * Then if it's a directly rendered associated field, pageParams.nodeId === currentResourceId
      */
     const { x, y, field, cellValue, rowHeight, columnWidth, rowHeightLevel, isActive, editable, callback, currentResourceId } = renderProps;
-    const linkRecordIds = cellValue ? (cellValue as string[]).slice(0, MAX_SHOW_LINK_IDS_COUNT) : null;
+    const linkRecordIds = Array.isArray(cellValue) ? (cellValue as string[]).slice(0, MAX_SHOW_LINK_IDS_COUNT) : [];
     const state = store.getState();
     const NO_DATA = Symbol('NO_DATA');
     const ERROR_DATA = Symbol('ERROR_DATA');
