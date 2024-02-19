@@ -18,6 +18,8 @@
 
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
@@ -25,8 +27,6 @@ import { useDispatch } from 'react-redux';
 import { LinkButton, useTheme } from '@apitable/components';
 import { Api, AutoTestID, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
 import { CollapseOpenOutlined, CollapseOutlined } from '@apitable/icons';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { TComponent } from 'pc/components/common/t_component';
 import { Navigation as SiderNavigation } from 'pc/components/navigation';
 import { Router } from 'pc/components/route_manager/router';
