@@ -21,13 +21,13 @@
 <mapper namespace="com.apitable.workspace.mapper.NodeMapper">
     <insert id="insertBatch">
         INSERT INTO ${tablePrefix}node(id, space_id, parent_id, pre_node_id, node_id, node_name, icon, type, cover, is_template,
-        created_by, updated_by, extra)
+        created_by, updated_by, extra,unit_id)
         VALUES
         <foreach item="item" index="index" collection="entities" separator=",">
             <trim prefix="(" suffix=")">
                 #{item.id},#{item.spaceId},#{item.parentId},#{item.preNodeId},#{item.nodeId},#{item.nodeName},
                 #{item.icon},#{item.type},#{item.cover},#{item.isTemplate},#{item.createdBy},#{item.updatedBy},
-                #{item.extra}
+                #{item.extra},#{item.unitId}
             </trim>
         </foreach>
     </insert>
@@ -50,6 +50,9 @@
         where parent_id = #{parentId} and type = #{nodeType} and is_rubbish = 0
         <if test="nodeId">
             and node_id != #{nodeId}
+        </if>
+        <if test="unitId != null">
+            and unit_id = #{unitId}
         </if>
     </select>
 
@@ -142,7 +145,15 @@
                  separator="," close=")">
             #{item}
         </foreach>
+        <if test="unitIds.size() > 0">
+            AND unit_id in
+            <foreach item="item" index="index" collection="unitIds" open="("
+                     separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
         AND is_rubbish = #{isRubbish}
+        AND is_deleted = 0
     </select>
 
     <select id="selectSubNodeIds" resultType="java.lang.String">
@@ -354,6 +365,7 @@
         SET pre_node_id = #{preNodeId},
         parent_id = #{parentId},
         node_name = #{name},
+        unit_id = #{unitId},
         is_rubbish = 0
         WHERE node_id = #{nodeId}
     </update>
@@ -548,9 +560,10 @@
         SELECT node_id
         FROM ${tablePrefix}node
         WHERE space_id = #{spaceId}
-          AND parent_id = '-1'
-          AND is_rubbish = 1
-          AND is_deleted = 0
+        AND parent_id = '-1'
+        AND unit_id = 0
+        AND is_rubbish = 1
+        AND is_deleted = 0
         <if test="beginTime != null">
             AND updated_at > #{beginTime}
         </if>
@@ -663,4 +676,20 @@
         SET extra = JSON_MERGE_PATCH(`extra`, #{extra})
         WHERE node_id = #{nodeId} AND is_rubbish = 0
     </update>
+
+    <update id="updateIsDeletedByUnitIds">
+        UPDATE ${tablePrefix}node
+        SET is_deleted = #{isDeleted}
+        WHERE unit_id IN
+        <foreach collection="unitIds" item="unitId" index="index" open="(" close=")" separator=",">
+            #{unitId}
+        </foreach>
+        AND is_rubbish = 0
+    </update>
+
+    <select id="selectSpaceIdByNodeIdAndUnitId" resultType="java.lang.String">
+        select space_id
+        from ${tablePrefix}node
+        where node_id = #{nodeId} and unit_id = #{unitId} and is_rubbish = 0
+    </select>
 </mapper>

@@ -207,10 +207,12 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      *
      * @param parentIds parent node ids
      * @param isRubbish rubbish status
+     * @param unitIds unit ids
      * @return List of NodeTreeDTO
      */
     List<NodeTreeDTO> selectNodeTreeDTOByParentIdIn(
-        @Param("parentIds") Collection<String> parentIds, @Param("isRubbish") Boolean isRubbish);
+        @Param("parentIds") Collection<String> parentIds, @Param("isRubbish") Boolean isRubbish,
+        @Param("unitIds") List<Long> unitIds);
 
     /**
      * Query the ID of the direct child node.
@@ -242,11 +244,13 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @param parentId parent node id
      * @param nodeType node type
      * @param nodeId   retired nodes (itself when modified)
+     * @param unitId unit id
      * @return node names
      */
     List<String> selectNameList(@Param("parentId") String parentId,
                                 @Param("nodeType") Integer nodeType,
-                                @Param("nodeId") String nodeId);
+                                @Param("nodeId") String nodeId,
+                                @Param("unitId") Long unitId);
 
     /**
      * Query the number of non-root nodes and non-logically deleted nodes.
@@ -263,6 +267,17 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return space id
      */
     String selectSpaceIdByNodeId(@Param("nodeId") String nodeId);
+
+
+    /**
+     * query space id.
+     *
+     * @param nodeId node id
+     * @param unitId unit id
+     * @return space id
+     */
+    String selectSpaceIdByNodeIdAndUnitId(@Param("nodeId") String nodeId,
+                                          @Param("unitId") Long unitId);
 
     /**
      * query space id list.
@@ -311,10 +326,12 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @param parentId  parent node id
      * @param preNodeId pre node id
      * @param name      node name
+     * @param  unitId   unit id
      * @return affected rows
      */
     int updateInfoByNodeId(@Param("nodeId") String nodeId, @Param("parentId") String parentId,
-                           @Param("preNodeId") String preNodeId, @Param("name") String name);
+                           @Param("preNodeId") String preNodeId, @Param("name") String name,
+                           @Param("unitId") Long unitId);
 
     /**
      * （working directory delete node/rubbish recovery node）.
@@ -623,4 +640,13 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return NodeEntity List
      */
     List<NodeEntity> selectByParentId(@Param("parentId") String parentId);
+
+    /**
+     * update is deleted.
+     *
+     * @param unitIds unit id list
+     * @return affected rows
+     */
+    int updateIsDeletedByUnitIds(@Param("unitIds") List<Long> unitIds,
+                                 @Param("isDeleted") boolean isDeleted);
 }

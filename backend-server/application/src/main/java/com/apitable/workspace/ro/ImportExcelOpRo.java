@@ -46,4 +46,7 @@ public class ImportExcelOpRo {
 
     @Schema(description = "View Name", example = "nod10")
     private String viewName;
+
+    @Schema(description = "Unit id", example = "234566")
+    private String unitId;
 }

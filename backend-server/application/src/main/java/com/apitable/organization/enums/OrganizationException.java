@@ -114,7 +114,10 @@ public enum OrganizationException implements BaseException {
 
     DUPLICATION_TEAM_NAME(533, "The team name already exists"),
 
-    GET_PARENT_TEAM_ERROR(534, "Parent department does not exist, please try again");
+    GET_PARENT_TEAM_ERROR(534, "Parent department does not exist, please try again"),
+
+    ILLEGAL_UNIT_ID(535, "Illegal unit id");
+
 
 
     private final Integer code;

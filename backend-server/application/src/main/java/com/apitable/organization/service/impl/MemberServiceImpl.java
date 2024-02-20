@@ -109,6 +109,7 @@ import com.apitable.user.dto.UserLangDTO;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
 import com.apitable.workspace.enums.PermissionException;
+import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.NodeRoleMemberVo;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
@@ -211,6 +212,9 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Resource
     private IRoleMemberService iRoleMemberService;
+
+    @Resource
+    private INodeService iNodeService;
 
 
     @Override
@@ -897,8 +901,12 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Transactional(rollbackFor = Exception.class)
     public void removeByMemberIds(List<Long> memberIds) {
         baseMapper.deleteBatchByIds(memberIds);
+        // remove member's private workspace nodes
+        List<Long> unitIds = iUnitService.getUnitIdsByRefIds(memberIds);
+        iNodeService.deleteMembersNodes(unitIds);
         // Logically deletes a member unit from an organizational unit
         iUnitService.removeByMemberId(memberIds);
+
     }
 
     @Override

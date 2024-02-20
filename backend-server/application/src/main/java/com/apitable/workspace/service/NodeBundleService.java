@@ -42,7 +42,8 @@ public interface NodeBundleService {
      * @param parentId  parentId
      * @param preNodeId preNodeId
      * @param userId    user id
+     * @param unitId    unitId
      */
     void analyze(MultipartFile file, String password, String parentId, String preNodeId,
-                 Long userId);
+                 Long userId, Long unitId);
 }

@@ -23,9 +23,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.util.Lists.list;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.json.JSONUtil;
 import com.apitable.AbstractIntegrationTest;
+import com.apitable.FileHelper;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.DefaultSubscriptionFeature;
@@ -33,20 +37,29 @@ import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.mock.bean.MockSubscriptionFeature;
 import com.apitable.mock.bean.MockSubscriptionInfo;
 import com.apitable.mock.bean.MockUserSpace;
+import com.apitable.organization.enums.UnitType;
 import com.apitable.space.vo.SpaceGlobalFeature;
+import com.apitable.template.ro.CreateTemplateRo;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.workspace.dto.NodeBaseInfoDTO;
+import com.apitable.workspace.dto.NodeCopyEffectDTO;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.NodeTreeDTO;
 import com.apitable.workspace.entity.NodeEntity;
 import com.apitable.workspace.enums.NodeType;
+import com.apitable.workspace.ro.NodeCopyOpRo;
 import com.apitable.workspace.ro.NodeEmbedPageRo;
+import com.apitable.workspace.ro.NodeMoveOpRo;
 import com.apitable.workspace.ro.NodeOpRo;
 import com.apitable.workspace.ro.NodeRelRo;
 import com.apitable.workspace.ro.NodeUpdateOpRo;
+import com.apitable.workspace.vo.BaseNodeInfo;
 import com.apitable.workspace.vo.NodeInfoTreeVo;
 import com.apitable.workspace.vo.NodeInfoVo;
 import com.apitable.workspace.vo.NodePathVo;
+import com.apitable.workspace.vo.RubbishNodeVo;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -55,6 +68,8 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 public class NodeServiceImplTest extends AbstractIntegrationTest {
 
@@ -669,6 +684,544 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         NodeEntity nodeEntity = iNodeService.getByNodeId(nodeId);
         assertThat(JSONUtil.toBean(nodeEntity.getExtra(), NodeUpdateOpRo.class)).isEqualTo(
             updateOpRo);
+    }
+
+    @Test
+    void testCreateEmptyWorkSpace() {
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        List<String> spaceNodeIds = iNodeService.getNodeIdsInNodeTree(rootNodeId, 1);
+        List<String> privateNodeIds = iNodeService.getNodeIdsInNodeTree(rootNodeId, 1, false,
+            Collections.singletonList(unitId));
+        assertThat(spaceNodeIds.size()).isEqualTo(1);
+        assertThat(spaceNodeIds).contains(rootNodeId);
+        assertThat(privateNodeIds.size()).isEqualTo(1);
+        assertThat(privateNodeIds).contains(rootNodeId);
+    }
+
+    @Test
+    void testCreatePrivateFolder() {
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo createRo = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .unitId(unitId.toString())
+            .type(NodeType.FOLDER.getNodeType())
+            .build();
+        // create private node parameters
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), createRo);
+        NodeEntity node = iNodeService.getByNodeId(nodeId);
+        assertThat(node.getUnitId()).isEqualTo(unitId);
+    }
+
+    @Test
+    void testCreatePrivateDatasheet() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .unitId(unitId.toString())
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        NodeEntity node = iNodeService.getByNodeId(nodeId);
+        assertThat(node.getUnitId()).isEqualTo(unitId);
+    }
+
+    @Test
+    void testCreatePrivateDatasheetNotInPrivateFolder() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .build();
+        String spaceFolderId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        ro.setType(NodeType.DATAPAGE.getNodeType());
+        ro.setUnitId(unitId.toString());
+        ro.setParentId(spaceFolderId);
+        BusinessException exception =
+            assertThrows(BusinessException.class,
+                () -> iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro));
+        assertEquals(600, exception.getCode());
+    }
+
+    @Test
+    void testCreateWorkspaceDatasheet() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        NodeEntity node = iNodeService.getByNodeId(nodeId);
+        assertThat(node.getUnitId()).isEqualTo(0L);
+    }
+
+    @Test
+    void testCreateWorkspaceDatasheetWithWrongFolder() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId("wrong")
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        BusinessException exception =
+            assertThrows(BusinessException.class,
+                () -> iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro));
+        assertEquals(600, exception.getCode());
+    }
+
+    @Test
+    void testCreatePrivateNodeFromExcel() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        String uuid = iUserService.getUuidByUserId(userSpace.getUserId());
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        InputStream inputStream = FileHelper.getInputStreamFromResource("file/demo.xlsx");
+        String nodeId =
+            iNodeService.parseExcel(userSpace.getUserId(), uuid, userSpace.getSpaceId(),
+                userSpace.getMemberId(), rootNodeId, unitId, "new view", "new node", "test",
+                inputStream);
+        NodeEntity node = iNodeService.getByNodeId(nodeId);
+        assertThat(node.getUnitId()).isEqualTo(unitId);
+    }
+
+    @Test
+    void testCreateSpaceWorkspaceNodeFromExcel() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        String uuid = iUserService.getUuidByUserId(userSpace.getUserId());
+        InputStream inputStream = FileHelper.getInputStreamFromResource("file/demo.xlsx");
+        String nodeId =
+            iNodeService.parseExcel(userSpace.getUserId(), uuid, userSpace.getSpaceId(),
+                userSpace.getMemberId(), rootNodeId, NumberUtil.parseLong(null), "new view",
+                "new node", "test",
+                inputStream);
+        NodeEntity node = iNodeService.getByNodeId(nodeId);
+        assertThat(node.getUnitId()).isEqualTo(0L);
+    }
+
+    @Test
+    void testCreatePrivateNodeFromCsv() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        String uuid = iUserService.getUuidByUserId(userSpace.getUserId());
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        InputStream inputStream = FileHelper.getInputStreamFromResource("file/demo.csv");
+        String nodeId =
+            iNodeService.parseCsv(userSpace.getUserId(), uuid, userSpace.getSpaceId(),
+                userSpace.getMemberId(), rootNodeId, unitId, "new view", "new node", inputStream);
+        NodeEntity node = iNodeService.getByNodeId(nodeId);
+        assertThat(node.getUnitId()).isEqualTo(unitId);
+    }
+
+    @Test
+    void testCreateSpaceWorkspaceNodeFromCsv() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        String uuid = iUserService.getUuidByUserId(userSpace.getUserId());
+        InputStream inputStream = FileHelper.getInputStreamFromResource("file/demo.csv");
+        String nodeId =
+            iNodeService.parseCsv(userSpace.getUserId(), uuid, userSpace.getSpaceId(),
+                userSpace.getMemberId(), rootNodeId, NumberUtil.parseLong(null), "new view",
+                "new node", inputStream);
+        NodeEntity node = iNodeService.getByNodeId(nodeId);
+        assertThat(node.getUnitId()).isEqualTo(0L);
+    }
+
+
+    @Test
+    void testCreatePrivateNodeFromBundle() throws IOException {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        InputStream inputStream = FileHelper.getInputStreamFromResource("file/demo.apitable");
+        MultipartFile multipartFile = new MockMultipartFile("demo.apitable", inputStream);
+        nodeBundleService.analyze(multipartFile, "", rootNodeId, null,
+            userSpace.getUserId(), unitId);
+        List<String> results =
+            iNodeService.getNodeIdsInNodeTree(rootNodeId, 1, false,
+                Collections.singletonList(unitId));
+        String nodeId = results.get(1);
+        NodeEntity node = iNodeService.getByNodeId(nodeId);
+        assertThat(node.getUnitId()).isEqualTo(unitId);
+
+    }
+
+    @Test
+    void testCreateSpaceWorkspaceNodeFromBundle() throws IOException {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        InputStream inputStream = FileHelper.getInputStreamFromResource("file/demo.apitable");
+        MultipartFile multipartFile = new MockMultipartFile("demo.apitable", inputStream);
+        nodeBundleService.analyze(multipartFile, "", rootNodeId, null,
+            userSpace.getUserId(), NumberUtil.parseLong(null));
+        List<String> results =
+            iNodeService.getNodeIdsInNodeTree(rootNodeId, 2);
+        String nodeId = results.get(1);
+        NodeEntity node = iNodeService.getByNodeId(nodeId);
+        assertThat(node.getUnitId()).isEqualTo(0L);
+    }
+
+    @Test
+    void testEditPrivateNodeName() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        // create private node
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .unitId(unitId.toString())
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        NodeUpdateOpRo updateOpRo = new NodeUpdateOpRo();
+        updateOpRo.setNodeName("test");
+        iNodeService.edit(userSpace.getUserId(), nodeId, updateOpRo);
+        String nodeName = iNodeService.getNodeNameByNodeId(nodeId);
+        assertThat(nodeName).isEqualTo("test");
+    }
+
+    @Test
+    void testMovePrivateNodeToSpaceWorkspace() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        // create private node
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .unitId(unitId.toString())
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        NodeMoveOpRo moveOpRo = new NodeMoveOpRo();
+        moveOpRo.setParentId(rootNodeId);
+        moveOpRo.setNodeId(nodeId);
+        iNodeService.move(userSpace.getUserId(), moveOpRo);
+        NodeEntity node = iNodeService.getByNodeId(nodeId);
+        assertThat(node.getUnitId()).isEqualTo(0L);
+    }
+
+    @Test
+    void testMovePrivateNodeToPrivate() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        // create private node
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .unitId(unitId.toString())
+            .type(NodeType.FOLDER.getNodeType())
+            .build();
+        String folderId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        ro.setType(NodeType.DATASHEET.getNodeType());
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        NodeMoveOpRo moveOpRo = new NodeMoveOpRo();
+        moveOpRo.setParentId(folderId);
+        moveOpRo.setNodeId(nodeId);
+        moveOpRo.setUnitId(unitId.toString());
+        iNodeService.move(userSpace.getUserId(), moveOpRo);
+        NodeEntity node = iNodeService.getByNodeId(nodeId);
+        assertThat(node.getUnitId()).isEqualTo(unitId);
+        assertThat(node.getParentId()).isEqualTo(folderId);
+    }
+
+    @Test
+    void testMoveNodeToSpaceWorkspace() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        // create node
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .build();
+        String folderId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        ro.setType(NodeType.DATASHEET.getNodeType());
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        NodeMoveOpRo moveOpRo = new NodeMoveOpRo();
+        moveOpRo.setParentId(folderId);
+        moveOpRo.setNodeId(nodeId);
+        iNodeService.move(userSpace.getUserId(), moveOpRo);
+        NodeEntity node = iNodeService.getByNodeId(nodeId);
+        assertThat(node.getParentId()).isEqualTo(folderId);
+    }
+
+    @Test
+    void testCopyPrivateNode() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        // create private node
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .unitId(unitId.toString())
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        NodeCopyOpRo copyOpRo = new NodeCopyOpRo();
+        copyOpRo.setNodeId(nodeId);
+        copyOpRo.setData(true);
+        NodeCopyEffectDTO dto = iNodeService.copy(userSpace.getUserId(), copyOpRo);
+        List<String> results = iNodeService.getNodeIdsInNodeTree(rootNodeId, 1, false,
+            Collections.singletonList(unitId));
+        assertThat(results).contains(dto.getCopyNodeId());
+    }
+
+    @Test
+    void testRecoveryNodeFromTrash() {
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        String nodeId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        iNodeService.deleteById(userSpace.getSpaceId(), userSpace.getMemberId(), nodeId);
+        iNodeRubbishService.recoverRubbishNode(userSpace.getUserId(), nodeId, rootNodeId);
+        List<String> results = iNodeService.getNodeIdsInNodeTree(rootNodeId, 1);
+        assertThat(results).contains(nodeId);
+    }
+
+    @Test
+    void testDeleteNodeFromTrash() {
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        String nodeId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        iNodeService.deleteById(userSpace.getSpaceId(), userSpace.getMemberId(), nodeId);
+        iNodeRubbishService.delRubbishNode(userSpace.getUserId(), nodeId);
+        List<RubbishNodeVo> results =
+            iNodeRubbishService.getRubbishNodeList(userSpace.getSpaceId(), userSpace.getMemberId(),
+                100, null);
+        assertThat(results).isEmpty();
+    }
+
+
+    @Test
+    void testGetTrashNodeList() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        // create private node
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .unitId(unitId.toString())
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        iNodeService.deleteById(userSpace.getSpaceId(), userSpace.getMemberId(), nodeId);
+        List<RubbishNodeVo> trash =
+            iNodeRubbishService.getRubbishNodeList(userSpace.getSpaceId(), userSpace.getMemberId(),
+                100,
+                null);
+        List<String> trashNodes = trash.stream().map(BaseNodeInfo::getNodeId).toList();
+        assertThat(trashNodes).doesNotContain(nodeId);
+    }
+
+    @Test
+    void testGetPrivateNodeTree() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        // invite a user to workspace
+        MockUserSpace newUser = createUserSpaceForFreeSubscription();
+        String email = iUserService.getEmailByUserId(newUser.getUserId());
+        iMemberService.createInvitationMember(userSpace.getUserId(), userSpace.getSpaceId(),
+            Collections.singletonList(email));
+        // create private node
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .unitId(unitId.toString())
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        ro.setUnitId(null);
+        String spaceNodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        NodeInfoTreeVo adminPrivateTree =
+            iNodeService.getNodeTree(userSpace.getSpaceId(), rootNodeId, userSpace.getMemberId(), 1,
+                UnitType.MEMBER);
+        NodeInfoTreeVo userPrivateTree =
+            iNodeService.getNodeTree(userSpace.getSpaceId(), rootNodeId, newUser.getMemberId(), 1,
+                UnitType.MEMBER);
+        List<String> childNodeIds =
+            adminPrivateTree.getChildrenNodes().stream().map(BaseNodeInfo::getNodeId).toList();
+        assertThat(childNodeIds).contains(nodeId);
+        assertThat(childNodeIds).doesNotContain(spaceNodeId);
+        // could not see the node in other person private area
+        assertThat(userPrivateTree.getChildrenNodes()).isEmpty();
+
+
+    }
+
+    @Test
+    void testGetNewUserPrivateArea() {
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeInfoTreeVo privateTree =
+            iNodeService.getNodeTree(userSpace.getSpaceId(), rootNodeId, userSpace.getMemberId(), 1,
+                UnitType.MEMBER);
+        NodeInfoTreeVo workspaceTree =
+            iNodeService.getNodeTree(userSpace.getSpaceId(), rootNodeId, userSpace.getMemberId(),
+                1);
+        assertThat(privateTree).isNull();
+        assertThat(workspaceTree).isNotNull();
+    }
+
+    @Test
+    void testGetNewUserPrivateAreaWithTwoMember() {
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        // invite a user to workspace
+        MockUserSpace newUser = createUserSpaceForFreeSubscription();
+        String email = iUserService.getEmailByUserId(newUser.getUserId());
+        iMemberService.createInvitationMember(userSpace.getUserId(), userSpace.getSpaceId(),
+            Collections.singletonList(email));
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeInfoTreeVo privateTree =
+            iNodeService.getNodeTree(userSpace.getSpaceId(), rootNodeId, userSpace.getMemberId(), 1,
+                UnitType.MEMBER);
+        NodeInfoTreeVo workspaceTree =
+            iNodeService.getNodeTree(userSpace.getSpaceId(), rootNodeId, userSpace.getMemberId(),
+                1);
+        assertThat(privateTree).isNotNull();
+        assertThat(workspaceTree).isNotNull();
+    }
+
+
+    @Test
+    void testGetWorkspaceNodeTree() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        // create space workspace
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        String spaceNodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        ro.setUnitId(unitId.toString());
+        String privateNodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        NodeInfoTreeVo vo =
+            iNodeService.getNodeTree(userSpace.getSpaceId(), rootNodeId, userSpace.getMemberId(),
+                1);
+        List<String> childNodeIds =
+            vo.getChildrenNodes().stream().map(BaseNodeInfo::getNodeId).toList();
+        assertThat(childNodeIds).contains(spaceNodeId);
+        assertThat(childNodeIds).doesNotContain(privateNodeId);
+    }
+
+    @Test
+    void testCreateTemplateFromPrivateDatasheet() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        // create private node
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .unitId(unitId.toString())
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        String nodeId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        CreateTemplateRo createTemplateRo = new CreateTemplateRo();
+        createTemplateRo.setName("test template");
+        createTemplateRo.setData(true);
+        createTemplateRo.setNodeId(nodeId);
+        String templateId = iTemplateService.create(userSpace.getUserId(), userSpace.getSpaceId(),
+            createTemplateRo);
+        NodeCopyOptions copyOptions = NodeCopyOptions.builder().copyData(true).verifyNodeCount(true)
+            .sourceTemplateId(templateId).unitId(unitId.toString()).build();
+        String newNodeId =
+            iNodeService.copyNodeToSpace(userSpace.getUserId(), userSpace.getSpaceId(), rootNodeId,
+                nodeId, copyOptions);
+        assertThat(newNodeId).isNotNull();
+    }
+
+    @Test
+    void testQuoteTemplateToPrivateFolder() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        // create private node
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .unitId(unitId.toString())
+            .type(NodeType.FOLDER.getNodeType())
+            .build();
+        String folderId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        ro.setType(NodeType.DATASHEET.getNodeType());
+        String nodeId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        // create template
+        CreateTemplateRo createTemplateRo = new CreateTemplateRo();
+        createTemplateRo.setName("test template");
+        createTemplateRo.setData(true);
+        createTemplateRo.setNodeId(nodeId);
+        String templateId = iTemplateService.create(userSpace.getUserId(), userSpace.getSpaceId(),
+            createTemplateRo);
+        // Copy the node to the specified space directory
+        String quoteNodeId =
+            iNodeService.copyNodeToSpace(userSpace.getUserId(), userSpace.getSpaceId(),
+                folderId, nodeId,
+                NodeCopyOptions.builder().copyData(true).verifyNodeCount(true).template(true)
+                    .sourceTemplateId(templateId).unitId(unitId.toString()).build());
+        List<String> results = iNodeService.getNodeIdsInNodeTree(rootNodeId, 2, false,
+            Collections.singletonList(unitId));
+        assertThat(results).contains(quoteNodeId);
+    }
+
+    private MockUserSpace createUserSpaceForFreeSubscription() {
+        // mock user
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        // mock subscription
+        DefaultSubscriptionFeature feature = new DefaultSubscriptionFeature();
+        SubscriptionInfo subscriptionInfo = new MockSubscriptionInfo(feature);
+        Mockito.doReturn(subscriptionInfo).when(entitlementServiceFacade)
+            .getSpaceSubscription(userSpace.getSpaceId());
+        return userSpace;
     }
 
 }

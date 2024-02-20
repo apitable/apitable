@@ -104,6 +104,11 @@ public class NodeCopyOptions implements Serializable {
      */
     private Map<String, String> newTriggerMap = new HashMap<>();
 
+    /**
+     * unit id.
+     */
+    private String unitId;
+
     public NodeCopyOptions() {
         this.copyData = true;
     }

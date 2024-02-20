@@ -225,7 +225,7 @@ public class NodeBundleServiceImpl implements NodeBundleService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void analyze(MultipartFile file, String password, String parentId, String preNodeId,
-                        Long userId) {
+                        Long userId, Long unitId) {
         log.info("parse bundle file");
         ExceptionUtil.isNotNull(file, ActionException.FILE_EMPTY);
         ExceptionUtil.isTrue(StrUtil.isNotBlank(parentId) || StrUtil.isNotBlank(preNodeId),
@@ -289,10 +289,10 @@ public class NodeBundleServiceImpl implements NodeBundleService {
             // duplicate name modification at the same level
             String name =
                 iNodeService.duplicateNameModify(parentId, root.getType(), root.getNodeName(),
-                    null);
+                    null, unitId);
             root.setNodeName(name);
-            this.processNode(userId, spaceId, parentId, preNodeId, root, nodeList, newNodeIdMap,
-                fileNameToNodeMap);
+            this.processNode(userId, spaceId, parentId, preNodeId, unitId, root, nodeList,
+                newNodeIdMap, fileNameToNodeMap);
             // processing data files
             if (MapUtil.isNotEmpty(fileNameToNodeMap)) {
                 ExceptionUtil.isTrue(fileNameToNodeMap.size() == fileNameToContentMap.size(),
@@ -348,7 +348,7 @@ public class NodeBundleServiceImpl implements NodeBundleService {
     }
 
     private void processNode(Long userId, String spaceId, String parentId, String preNodeId,
-                             NodeFileTree node, List<NodeEntity> nodeList,
+                             Long unitId, NodeFileTree node, List<NodeEntity> nodeList,
                              Map<String, String> newNodeIdMap,
                              Map<String, List<DataSheetCreateRo>> fileNameToNodeMap) {
         boolean isDst = node.getType() == NodeType.DATASHEET.getNodeType();
@@ -366,6 +366,7 @@ public class NodeBundleServiceImpl implements NodeBundleService {
             .cover(node.getCover())
             .createdBy(userId)
             .updatedBy(userId)
+            .unitId(unitId)
             .build();
         nodeList.add(nodeEntity);
         newNodeIdMap.put(node.getNodeId(), nodeId);
@@ -383,19 +384,19 @@ public class NodeBundleServiceImpl implements NodeBundleService {
         }
         if (!isDst && CollUtil.isNotEmpty(node.getChild())) {
             // processing child nodes
-            this.processChildList(userId, spaceId, nodeId, node.getChild(), nodeList, newNodeIdMap,
-                fileNameToNodeMap);
+            this.processChildList(userId, spaceId, nodeId, unitId, node.getChild(), nodeList,
+                newNodeIdMap, fileNameToNodeMap);
         }
     }
 
-    private void processChildList(Long userId, String spaceId, String parentId,
+    private void processChildList(Long userId, String spaceId, String parentId, Long unitId,
                                   List<NodeFileTree> child, List<NodeEntity> nodeList,
                                   Map<String, String> newNodeIdMap,
                                   Map<String, List<DataSheetCreateRo>> fileNameToNodeMap) {
         String preNodeId = null;
         for (NodeFileTree node : child) {
-            this.processNode(userId, spaceId, parentId, preNodeId, node, nodeList, newNodeIdMap,
-                fileNameToNodeMap);
+            this.processNode(userId, spaceId, parentId, preNodeId, unitId, node, nodeList,
+                newNodeIdMap, fileNameToNodeMap);
             preNodeId = newNodeIdMap.get(node.getNodeId());
         }
     }

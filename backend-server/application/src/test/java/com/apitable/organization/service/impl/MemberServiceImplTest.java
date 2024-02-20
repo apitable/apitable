@@ -28,6 +28,9 @@ import com.apitable.mock.bean.MockUserSpace;
 import com.apitable.space.entity.SpaceInviteRecordEntity;
 import com.apitable.space.mapper.SpaceInviteRecordMapper;
 import com.apitable.starter.mail.autoconfigure.EmailMessage;
+import com.apitable.workspace.enums.NodeType;
+import com.apitable.workspace.ro.NodeOpRo;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,5 +93,85 @@ public class MemberServiceImplTest extends AbstractIntegrationTest {
         }
         boolean prevent = iMemberService.shouldPreventInvitation(mockUserSpace.getSpaceId());
         assertThat(prevent).isFalse();
+    }
+
+    @Test
+    void testRemoveMemberFromSpaceAndDeletePrivateNode() {
+        MockUserSpace mockUserAdmin = createSingleUserAndSpace();
+        MockUserSpace mockUser = createSingleUserAndSpace();
+        String email = iUserService.getEmailByUserId(mockUser.getUserId());
+        iMemberService.createInvitationMember(mockUserAdmin.getUserId(), mockUserAdmin.getSpaceId(),
+            Collections.singletonList(email));
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(mockUser.getUserId(),
+            mockUserAdmin.getSpaceId());
+        Long unitId = iUnitService.getUnitIdByRefId(memberId);
+        // create private node
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(mockUserAdmin.getSpaceId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .unitId(unitId.toString())
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        String nodeId =
+            iNodeService.createNode(mockUser.getUserId(), mockUserAdmin.getSpaceId(), ro);
+        iMemberService.batchDeleteMemberFromSpace(mockUserAdmin.getSpaceId(),
+            Collections.singletonList(memberId), false);
+        List<String> nodeIds = iNodeService.getNodeIdsInNodeTree(rootNodeId, 1, false,
+            Collections.singletonList(unitId));
+        assertThat(nodeIds).doesNotContain(nodeId);
+    }
+
+    @Test
+    void testRemoveMemberFromSpace() {
+        MockUserSpace mockUserAdmin = createSingleUserAndSpace();
+        MockUserSpace mockUser = createSingleUserAndSpace();
+        String email = iUserService.getEmailByUserId(mockUser.getUserId());
+        iMemberService.createInvitationMember(mockUserAdmin.getUserId(), mockUserAdmin.getSpaceId(),
+            Collections.singletonList(email));
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(mockUser.getUserId(),
+            mockUserAdmin.getSpaceId());
+        // create node
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(mockUserAdmin.getSpaceId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        String nodeId =
+            iNodeService.createNode(mockUser.getUserId(), mockUserAdmin.getSpaceId(), ro);
+        iMemberService.batchDeleteMemberFromSpace(mockUserAdmin.getSpaceId(),
+            Collections.singletonList(memberId), false);
+        List<String> nodeIds = iNodeService.getNodeIdsInNodeTree(rootNodeId, 1);
+        assertThat(nodeIds).contains(nodeId);
+    }
+
+
+    @Test
+    void testInviteRemovedMemberToSpaceAgainShouldRestorePrivateNodes() {
+        MockUserSpace mockUserAdmin = createSingleUserAndSpace();
+        MockUserSpace mockUser = createSingleUserAndSpace();
+        String email = iUserService.getEmailByUserId(mockUser.getUserId());
+        iMemberService.createInvitationMember(mockUserAdmin.getUserId(), mockUserAdmin.getSpaceId(),
+            Collections.singletonList(email));
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(mockUser.getUserId(),
+            mockUserAdmin.getSpaceId());
+        Long unitId = iUnitService.getUnitIdByRefId(memberId);
+        // create node
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(mockUserAdmin.getSpaceId());
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .unitId(unitId.toString())
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        String nodeId =
+            iNodeService.createNode(mockUser.getUserId(), mockUserAdmin.getSpaceId(), ro);
+        // remove from space
+        iMemberService.batchDeleteMemberFromSpace(mockUserAdmin.getSpaceId(),
+            Collections.singletonList(memberId), false);
+        // invite again
+        iMemberService.createInvitationMember(mockUserAdmin.getUserId(), mockUserAdmin.getSpaceId(),
+            Collections.singletonList(email));
+        List<String> nodeIds = iNodeService.getNodeIdsInNodeTree(rootNodeId, 1, false,
+            Collections.singletonList(unitId));
+        assertThat(nodeIds).contains(nodeId);
     }
 }

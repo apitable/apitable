@@ -44,4 +44,7 @@ public class NodeBundleOpRo {
 
     @Schema(description = "Password", example = "***")
     private String password;
+
+    @Schema(description = "unit id", example = "111")
+    private String unitId;
 }

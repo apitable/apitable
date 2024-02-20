@@ -449,4 +449,6 @@ public class SpaceController {
             iSpaceService.getCreditUsagesChart(spaceId, timeDimensionOfChart);
         return ResponseData.success(creditUsages);
     }
+
+
 }

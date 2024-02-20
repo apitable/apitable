@@ -46,7 +46,7 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
         String nodeId = iNodeService.createChildNode(userSpace.getUserId(), CreateNodeDto.builder()
             .spaceId(spaceId)
             .newNodeId(IdUtil.createNodeId())
-            .type(NodeType.ROOT.getNodeType())
+            .type(NodeType.DATASHEET.getNodeType())
             .build());
         Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(userSpace.getUserId(),
             userSpace.getSpaceId());
@@ -66,7 +66,7 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
         String nodeId = iNodeService.createChildNode(userSpace.getUserId(), CreateNodeDto.builder()
             .spaceId(spaceId)
             .newNodeId(IdUtil.createNodeId())
-            .type(NodeType.ROOT.getNodeType())
+            .type(NodeType.DATASHEET.getNodeType())
             .build());
         invitationService.createMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);
         invitationService.closeMemberInvitationBySpaceId(userSpace.getSpaceId());
@@ -84,7 +84,7 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
         String nodeId = iNodeService.createChildNode(userId, CreateNodeDto.builder()
             .spaceId(spaceId)
             .newNodeId(IdUtil.createNodeId())
-            .type(NodeType.ROOT.getNodeType())
+            .type(NodeType.DATASHEET.getNodeType())
             .build());
         iSpaceService.switchSpacePros(userId, spaceId,
             SpaceGlobalFeature.builder().invitable(false).build());
@@ -119,7 +119,7 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
         String nodeId = iNodeService.createChildNode(userId, CreateNodeDto.builder()
             .spaceId(IdUtil.createSpaceId())
             .newNodeId(IdUtil.createNodeId())
-            .type(NodeType.ROOT.getNodeType())
+            .type(NodeType.DATASHEET.getNodeType())
             .build());
         BusinessException exception =
             assertThrows(BusinessException.class,
@@ -137,7 +137,7 @@ public class InvitationServiceImplTest extends AbstractIntegrationTest {
         String nodeId = iNodeService.createChildNode(userId, CreateNodeDto.builder()
             .spaceId(spaceId)
             .newNodeId(IdUtil.createNodeId())
-            .type(NodeType.ROOT.getNodeType())
+            .type(NodeType.DATASHEET.getNodeType())
             .build());
         String token =
             invitationService.createMemberInvitationTokenByNodeId(memberId, spaceId, nodeId);

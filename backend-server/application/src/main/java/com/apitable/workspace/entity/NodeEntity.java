@@ -63,6 +63,11 @@ public class NodeEntity implements Serializable {
     private String spaceId;
 
     /**
+     * unit id(link#xxxx_unit#id).
+     */
+    private Long unitId;
+
+    /**
      * Parent Node Id.
      */
     private String parentId;

@@ -49,4 +49,6 @@ public class CreateNodeDto {
     private String cover;
 
     private String extra;
+
+    private Long unitId;
 }

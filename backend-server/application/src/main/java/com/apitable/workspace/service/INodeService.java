@@ -19,6 +19,7 @@
 package com.apitable.workspace.service;
 
 import com.apitable.control.infrastructure.role.ControlRole;
+import com.apitable.organization.enums.UnitType;
 import com.apitable.workspace.dto.CreateNodeDto;
 import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import com.apitable.workspace.dto.NodeCopyEffectDTO;
@@ -228,6 +229,17 @@ public interface INodeService extends IService<NodeEntity> {
      */
     String checkNodeIfExist(String spaceId, String nodeId);
 
+
+    /**
+     * whether node exist on the specific space.
+     *
+     * @param spaceId space id
+     * @param nodeId  node id
+     * @param unitId  unit id
+     * @return spaceId
+     */
+    String checkNodeIfExist(String spaceId, String nodeId, String unitId);
+
     /**
      * check the source table.
      *
@@ -269,6 +281,19 @@ public interface INodeService extends IService<NodeEntity> {
     NodeInfoTreeVo getNodeTree(String spaceId, String nodeId, Long memberId, int depth);
 
     /**
+     * query node tree.
+     *
+     * @param spaceId  space id
+     * @param memberId member id
+     * @param nodeId   node id
+     * @param depth    recursive depth, min 1
+     * @param unitType unit type
+     * @return NodeInfoTreeVo
+     */
+    NodeInfoTreeVo getNodeTree(String spaceId, String nodeId, Long memberId, int depth,
+                               UnitType unitType);
+
+    /**
      * Get sub nodes.
      *
      * @param nodeId node id
@@ -293,10 +318,12 @@ public interface INodeService extends IService<NodeEntity> {
      * @param nodeId    node id
      * @param depth     recursive depth starting with 1
      * @param isRubbish rubbish status
+     * @param unitIds list of unit ids
      * @return NodeInfoTreeVo
      * @author Chambers
      */
-    List<String> getNodeIdsInNodeTree(String nodeId, Integer depth, Boolean isRubbish);
+    List<String> getNodeIdsInNodeTree(String nodeId, Integer depth, Boolean isRubbish,
+                                      List<Long> unitIds);
 
     /**
      * Sort node.
@@ -368,6 +395,7 @@ public interface INodeService extends IService<NodeEntity> {
      * @return node id
      */
     String createNode(Long userId, String spaceId, NodeOpRo nodeOpRo);
+
 
     /**
      * Create forms and add pictures (if needed).
@@ -469,9 +497,11 @@ public interface INodeService extends IService<NodeEntity> {
      * @param nodeType nodeType
      * @param nodeName original node name
      * @param nodeId   eliminate nodes（when modifying itself）
+     * @param unitId   unit id
      * @return modified name
      */
-    String duplicateNameModify(String parentId, int nodeType, String nodeName, String nodeId);
+    String duplicateNameModify(String parentId, int nodeType, String nodeName, String nodeId,
+                               Long unitId);
 
     /**
      * Verify the permissions of all child and descendant nodes.
@@ -507,6 +537,7 @@ public interface INodeService extends IService<NodeEntity> {
      * @param spaceId      space id
      * @param memberId     member id
      * @param parentNodeId parentNodeId
+     * @param unitId       unit id
      * @param viewName     view name
      * @param fileName     filename
      * @param fileSuffix   file name suffix
@@ -514,7 +545,8 @@ public interface INodeService extends IService<NodeEntity> {
      * @return node id
      */
     String parseExcel(Long userId, String uuid, String spaceId, Long memberId, String parentNodeId,
-                      String viewName, String fileName, String fileSuffix, InputStream inputStream);
+                      Long unitId, String viewName, String fileName, String fileSuffix,
+                      InputStream inputStream);
 
     /**
      * parse csv.
@@ -524,13 +556,14 @@ public interface INodeService extends IService<NodeEntity> {
      * @param spaceId      space id
      * @param memberId     member id
      * @param parentNodeId parentNodeId
+     * @param unitId       unit id
      * @param viewName     view name
      * @param fileName     file name
      * @param inputStream  file
      * @return node id
      */
     String parseCsv(Long userId, String uuid, String spaceId, Long memberId, String parentNodeId,
-                    String viewName, String fileName, InputStream inputStream);
+                    Long unitId, String viewName, String fileName, InputStream inputStream);
 
     /**
      * special batch save operation
@@ -642,5 +675,19 @@ public interface INodeService extends IService<NodeEntity> {
      * @return optional
      */
     Optional<NodeEntity> findSameNameInSameLevel(String parentNodeId, String nodeName);
+
+    /**
+     * delete member's private node.
+     *
+     * @param unitIds unit id list
+     */
+    void deleteMembersNodes(List<Long> unitIds);
+
+    /**
+     * restore member's private node.
+     *
+     * @param unitIds unit id list
+     */
+    void restoreMembersNodes(List<Long> unitIds);
 
 }

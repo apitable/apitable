@@ -171,7 +171,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
             userId, nodeId, parentId);
         // Obtain the node ID of the node and its child descendants.
         List<String> subNodeIds =
-            iNodeService.getNodeIdsInNodeTree(nodeId, -1, true);
+            iNodeService.getNodeIdsInNodeTree(nodeId, -1, true, new ArrayList<>());
         if (CollUtil.isNotEmpty(subNodeIds)) {
             // recovery datasheet
             iDatasheetService.updateIsDeletedStatus(userId, subNodeIds, false);
@@ -193,10 +193,10 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
         BaseNodeInfo nodeInfo = nodeMapper.selectBaseNodeInfoByNodeId(nodeId);
         String name =
             iNodeService.duplicateNameModify(parentId, nodeInfo.getType(), nodeInfo.getNodeName(),
-                null);
+                null, null);
         // modify the information of the recovery node
         boolean flag =
-            SqlHelper.retBool(nodeMapper.updateInfoByNodeId(nodeId, parentId, null, name));
+            SqlHelper.retBool(nodeMapper.updateInfoByNodeId(nodeId, parentId, null, name, null));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
     }
 
@@ -205,7 +205,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
         log.info("User [{}] completely delete the node of the rubbish [{}]", userId, nodeId);
         // Obtain the node ID of the node and its child descendants.
         List<String> subNodeIds =
-            iNodeService.getNodeIdsInNodeTree(nodeId, -1, true);
+            iNodeService.getNodeIdsInNodeTree(nodeId, -1, true, new ArrayList<>());
         // logical delete node
         boolean flag = SqlHelper.retBool(nodeMapper.updateIsDeletedByNodeId(userId, nodeId));
         ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
