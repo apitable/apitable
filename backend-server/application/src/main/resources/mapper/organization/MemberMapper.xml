@@ -766,7 +766,7 @@
     </select>
 
     <select id="selectDtoBySpaceIdAndUserIds" resultType="com.apitable.organization.dto.MemberDTO">
-        SELECT max(id) AS id, user_id
+        SELECT max(id) as id, user_id, member_name, open_id, is_deleted
         FROM ${tablePrefix}unit_member
         WHERE space_id = #{spaceId} AND user_id IN
         <foreach collection="userIds" item="item" open="(" separator="," close=")">

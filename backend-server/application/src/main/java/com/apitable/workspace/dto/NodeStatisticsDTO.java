@@ -16,37 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.organization.dto;
+package com.apitable.workspace.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
- * member dto.
+ * node statistics dto.
  */
 @Data
-public class MemberDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+public class NodeStatisticsDTO {
 
-    private Long id;
+    private Integer nodeCount;
 
-    private String spaceId;
-
-    private Long userId;
+    private Long createdBy;
 
     private Long unitId;
-
-    private String memberName;
-
-    private String openId;
-
-    private String avatar;
-
-    private Integer color;
-
-    private String nickName;
-
-    private Boolean isActive;
-
-    private Boolean isDeleted;
-
-    private Integer isSocialNameModified;
 }

@@ -406,4 +406,12 @@ public interface IUserService extends IService<UserEntity> {
      * @return a map with userId as key
      */
     Map<Long, UserSimpleVO> getUserSimpleInfoMap(String spaceId, List<Long> userIds);
+
+    /**
+     * get user simple info.
+     *
+     * @param userIds user id list
+     * @return list<UserEntity>
+     */
+    List<UserEntity> getByIds(List<Long> userIds);
 }

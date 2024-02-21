@@ -245,7 +245,7 @@ public class NodeController {
     })
     public ResponseData<NodeInfoTreeVo> getTree(
         @RequestParam(name = "depth", defaultValue = "2") @Valid @Min(0) @Max(2) Integer depth,
-        @RequestParam(name = "unitType") Integer unitType) {
+        @RequestParam(name = "unitType", required = false) Integer unitType) {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
         String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);

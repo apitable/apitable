@@ -26,6 +26,7 @@ import static org.assertj.core.util.Lists.list;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.json.JSONUtil;
 import com.apitable.AbstractIntegrationTest;
@@ -38,6 +39,8 @@ import com.apitable.mock.bean.MockSubscriptionFeature;
 import com.apitable.mock.bean.MockSubscriptionInfo;
 import com.apitable.mock.bean.MockUserSpace;
 import com.apitable.organization.enums.UnitType;
+import com.apitable.shared.util.page.PageHelper;
+import com.apitable.shared.util.page.PageInfo;
 import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.template.ro.CreateTemplateRo;
 import com.apitable.user.entity.UserEntity;
@@ -57,6 +60,7 @@ import com.apitable.workspace.vo.BaseNodeInfo;
 import com.apitable.workspace.vo.NodeInfoTreeVo;
 import com.apitable.workspace.vo.NodeInfoVo;
 import com.apitable.workspace.vo.NodePathVo;
+import com.apitable.workspace.vo.NodeStatisticsVo;
 import com.apitable.workspace.vo.RubbishNodeVo;
 import java.io.IOException;
 import java.io.InputStream;
@@ -1211,6 +1215,115 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         List<String> results = iNodeService.getNodeIdsInNodeTree(rootNodeId, 2, false,
             Collections.singletonList(unitId));
         assertThat(results).contains(quoteNodeId);
+    }
+
+    @Test
+    void testGetNodeStatistics() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        // create node
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        // invite a user to workspace
+        MockUserSpace newUser = createUserSpaceForFreeSubscription();
+        String email = iUserService.getEmailByUserId(newUser.getUserId());
+        iMemberService.createInvitationMember(userSpace.getUserId(), userSpace.getSpaceId(),
+            Collections.singletonList(email));
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(newUser.getUserId(),
+            userSpace.getSpaceId());
+        Long unitId = iUnitService.getUnitIdByRefId(memberId);
+        ro.setUnitId(unitId.toString());
+        iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        Dict page = new Dict();
+        page.set("pageSize", 10);
+        page.set("pageNo", 1);
+        PageInfo<NodeStatisticsVo> nodes = iStaticsService.getNodeStatistics(userSpace.getSpaceId(),
+            PageHelper.convert(JSONUtil.toJsonStr(page)));
+        assertThat(nodes.getTotal()).isEqualTo(2);
+        assertThat(nodes.getRecords().get(0).getTotalNodeCount()).isEqualTo(1);
+        assertThat(nodes.getRecords().get(0).getTotalNodeCount()).isEqualTo(1);
+        assertThat(nodes.getRecords().get(0).getPrivateNodeCount()).isEqualTo(0);
+        assertThat(nodes.getRecords().get(1).getTeamNodeCount()).isEqualTo(0);
+        assertThat(nodes.getRecords().get(1).getPrivateNodeCount()).isEqualTo(1);
+        assertThat(nodes.getRecords().get(1).getTotalNodeCount()).isEqualTo(1);
+    }
+
+    @Test
+    void testGetNodeStatisticsWithMemberDeleted() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        // create node
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        // invite a user to workspace
+        MockUserSpace newUser = createUserSpaceForFreeSubscription();
+        String email = iUserService.getEmailByUserId(newUser.getUserId());
+        iMemberService.createInvitationMember(userSpace.getUserId(), userSpace.getSpaceId(),
+            Collections.singletonList(email));
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(newUser.getUserId(),
+            userSpace.getSpaceId());
+        Long unitId = iUnitService.getUnitIdByRefId(memberId);
+        ro.setUnitId(unitId.toString());
+        iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        // delete member
+        iMemberService.batchDeleteMemberFromSpace(userSpace.getSpaceId(),
+            Collections.singletonList(memberId), false);
+        // get node statistics
+        Dict page = new Dict();
+        page.set("pageSize", 10);
+        page.set("pageNo", 1);
+        PageInfo<NodeStatisticsVo> nodes = iStaticsService.getNodeStatistics(userSpace.getSpaceId(),
+            PageHelper.convert(JSONUtil.toJsonStr(page)));
+        assertThat(nodes.getTotal()).isEqualTo(1);
+        assertThat(nodes.getRecords().get(0).getTotalNodeCount()).isEqualTo(1);
+        assertThat(nodes.getRecords().get(0).getTotalNodeCount()).isEqualTo(1);
+        assertThat(nodes.getRecords().get(0).getPrivateNodeCount()).isEqualTo(0);
+    }
+
+    @Test
+    void testGetNodeStatisticsWithUserDeleted() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        // create node
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        // invite a user to workspace
+        MockUserSpace newUser = createUserSpaceForFreeSubscription();
+        String email = iUserService.getEmailByUserId(newUser.getUserId());
+        iMemberService.createInvitationMember(userSpace.getUserId(), userSpace.getSpaceId(),
+            Collections.singletonList(email));
+        Long memberId = iMemberService.getMemberIdByUserIdAndSpaceId(newUser.getUserId(),
+            userSpace.getSpaceId());
+        Long unitId = iUnitService.getUnitIdByRefId(memberId);
+        ro.setUnitId(unitId.toString());
+        iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        // delete member
+        iMemberService.batchDeleteMemberFromSpace(userSpace.getSpaceId(),
+            Collections.singletonList(memberId), false);
+        // delete user
+        iUserService.closeAccount(iUserService.getById(newUser.getUserId()));
+        // get node statistics
+        Dict page = new Dict();
+        page.set("pageSize", 10);
+        page.set("pageNo", 1);
+        PageInfo<NodeStatisticsVo> nodes = iStaticsService.getNodeStatistics(userSpace.getSpaceId(),
+            PageHelper.convert(JSONUtil.toJsonStr(page)));
+        assertThat(nodes.getTotal()).isEqualTo(1);
+        assertThat(nodes.getRecords().get(0).getTotalNodeCount()).isEqualTo(1);
+        assertThat(nodes.getRecords().get(0).getTotalNodeCount()).isEqualTo(1);
+        assertThat(nodes.getRecords().get(0).getPrivateNodeCount()).isEqualTo(0);
     }
 
     private MockUserSpace createUserSpaceForFreeSubscription() {

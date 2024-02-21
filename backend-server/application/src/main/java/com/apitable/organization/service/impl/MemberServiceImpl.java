@@ -48,6 +48,8 @@ import com.apitable.organization.dto.MemberBaseInfoDTO;
 import com.apitable.organization.dto.MemberDTO;
 import com.apitable.organization.dto.TeamBaseInfoDTO;
 import com.apitable.organization.dto.TenantMemberDto;
+import com.apitable.organization.dto.UnitBaseInfoDTO;
+import com.apitable.organization.dto.UnitMemberTeamDTO;
 import com.apitable.organization.dto.UploadDataDTO;
 import com.apitable.organization.entity.AuditUploadParseRecordEntity;
 import com.apitable.organization.entity.MemberEntity;
@@ -1520,5 +1522,35 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         Integer count =
             spaceInviteRecordMapper.selectCountBySpaceIdAndBetween(spaceId, startAt, endAt);
         return count >= constProperties.getMaxInviteCountForFree();
+    }
+
+    @Override
+    public List<UnitMemberTeamDTO> getMemberBySpaceIdAndUserIds(String spaceId,
+                                                                List<Long> userIds) {
+        List<UnitMemberTeamDTO> unitMembers = new ArrayList<>();
+        List<MemberDTO> members = baseMapper.selectDtoBySpaceIdAndUserIds(spaceId, userIds);
+        List<Long> memberIds = members.stream().map(MemberDTO::getId).toList();
+        Map<Long, List<String>> memberTeamMap = iTeamService.getMembersTeamName(memberIds);
+        Map<Long, UserEntity> users = iUserService.getByIds(userIds).stream()
+            .collect(Collectors.toMap(UserEntity::getId, i -> i));
+        Map<Long, Long> memberUnitMap =
+            iUnitService.getUnitBaseInfoByRefIds(memberIds).stream().collect(
+                Collectors.toMap(UnitBaseInfoDTO::getUnitRefId, UnitBaseInfoDTO::getId));
+        for (MemberDTO member : members) {
+            UnitMemberTeamDTO unitMember = new UnitMemberTeamDTO();
+            unitMember.setOpenId(member.getOpenId());
+            unitMember.setIsDeleted(member.getIsDeleted());
+            unitMember.setMemberId(member.getId());
+            unitMember.setMemberName(member.getMemberName());
+            unitMember.setUnitId(memberUnitMap.get(member.getId()));
+            String teamName = StrUtil.join(" & ", memberTeamMap.get(member.getId()));
+            unitMember.setTeamName(teamName);
+            UserEntity user = users.get(member.getUserId());
+            unitMember.setUserId(member.getUserId());
+            unitMember.setAvatar(user.getAvatar());
+            unitMember.setAvatarColor(user.getColor());
+            unitMembers.add(unitMember);
+        }
+        return unitMembers;
     }
 }

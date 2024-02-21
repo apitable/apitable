@@ -692,4 +692,31 @@
         from ${tablePrefix}node
         where node_id = #{nodeId} and unit_id = #{unitId} and is_rubbish = 0
     </select>
+
+    <select id="selectCountBySpaceIdWithPage" resultType="com.apitable.workspace.dto.NodeStatisticsDTO">
+        SELECT count(*) as node_count, created_by
+        FROM ${tablePrefix}node
+        WHERE space_id = #{spaceId}
+        AND is_rubbish = 0
+        AND is_deleted = 0
+        AND type not in (0, 1)
+        AND created_by is not null
+        GROUP BY created_by
+        ORDER BY node_count desc
+    </select>
+
+    <select id="selectCountByUnitIds" resultType="com.apitable.workspace.dto.NodeStatisticsDTO">
+        SELECT count(*) as node_count, unit_id
+        FROM ${tablePrefix}node
+        WHERE unit_id IN
+        <foreach collection="unitIds" item="unitId" index="index" open="(" close=")" separator=",">
+            #{unitId}
+        </foreach>
+        AND is_rubbish = 0
+        AND is_deleted = 0
+        AND type not in (0, 1)
+        AND created_by is not null
+        GROUP BY unit_id
+    </select>
+
 </mapper>

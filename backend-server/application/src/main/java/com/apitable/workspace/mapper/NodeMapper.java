@@ -19,6 +19,7 @@
 package com.apitable.workspace.mapper;
 
 import com.apitable.workspace.dto.NodeBaseInfoDTO;
+import com.apitable.workspace.dto.NodeStatisticsDTO;
 import com.apitable.workspace.dto.NodeTreeDTO;
 import com.apitable.workspace.dto.SimpleNodeInfo;
 import com.apitable.workspace.dto.UrlNodeInfoDTO;
@@ -30,6 +31,8 @@ import com.apitable.workspace.vo.NodeInfoVo;
 import com.apitable.workspace.vo.NodeShareTree;
 import com.apitable.workspace.vo.RubbishNodeVo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -649,4 +652,23 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      */
     int updateIsDeletedByUnitIds(@Param("unitIds") List<Long> unitIds,
                                  @Param("isDeleted") boolean isDeleted);
+
+    /**
+     * query count by space id.
+     *
+     * @param spaceId space id
+     * @param page    page
+     * @return IPage<NodeStatisticsDTO>
+     */
+    IPage<NodeStatisticsDTO> selectCountBySpaceIdWithPage(@Param("spaceId") String spaceId,
+                                                          Page<Void> page);
+
+    /**
+     * query count by unitRefIds.
+     *
+     * @param unitIds unit id list
+     * @return List<NodeStatisticsDTO
+     */
+    List<NodeStatisticsDTO> selectCountByUnitIds(@Param("unitIds") List<Long> unitIds);
+
 }

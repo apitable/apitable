@@ -20,6 +20,7 @@ package com.apitable.organization.service;
 
 import com.apitable.organization.dto.MemberDTO;
 import com.apitable.organization.dto.TenantMemberDto;
+import com.apitable.organization.dto.UnitMemberTeamDTO;
 import com.apitable.organization.dto.UploadDataDTO;
 import com.apitable.organization.entity.MemberEntity;
 import com.apitable.organization.ro.TeamAddMemberRo;
@@ -760,4 +761,13 @@ public interface IMemberService extends IService<MemberEntity> {
      * @return boolean
      */
     boolean shouldPreventInvitation(String spaceId);
+
+    /**
+     * get member base info.
+     *
+     * @param spaceId space id
+     * @param userIds user id
+     * @return List<UnitMemberTeamDTO>
+     */
+    List<UnitMemberTeamDTO> getMemberBySpaceIdAndUserIds(String spaceId, List<Long> userIds);
 }

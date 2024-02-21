@@ -96,6 +96,7 @@ import com.apitable.workspace.dto.NodeCopyEffectDTO;
 import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.NodeData;
 import com.apitable.workspace.dto.NodeExtraDTO;
+import com.apitable.workspace.dto.NodeStatisticsDTO;
 import com.apitable.workspace.dto.NodeTreeDTO;
 import com.apitable.workspace.dto.UrlNodeInfoDTO;
 import com.apitable.workspace.entity.DatasheetEntity;
@@ -1998,6 +1999,16 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public void restoreMembersNodes(List<Long> unitIds) {
         baseMapper.updateIsDeletedByUnitIds(unitIds, false);
+    }
+
+    @Override
+    public Map<Long, Integer> getCountByUnitIds(List<Long> unitIds) {
+        if (unitIds.isEmpty()) {
+            return new HashMap<>(0);
+        }
+        List<NodeStatisticsDTO> privateNodes = baseMapper.selectCountByUnitIds(unitIds);
+        return privateNodes.stream().collect(
+            Collectors.toMap(NodeStatisticsDTO::getUnitId, NodeStatisticsDTO::getNodeCount));
     }
 
     private List<NodeSearchResult> formatNodeSearchResults(List<NodeInfoVo> nodeInfoList) {

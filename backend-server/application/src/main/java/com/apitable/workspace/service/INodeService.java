@@ -51,6 +51,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -689,5 +690,13 @@ public interface INodeService extends IService<NodeEntity> {
      * @param unitIds unit id list
      */
     void restoreMembersNodes(List<Long> unitIds);
+
+    /**
+     * get units node count.
+     *
+     * @param unitIds unit id list
+     * @return Map<String, Integer>
+     */
+    Map<Long, Integer> getCountByUnitIds(List<Long> unitIds);
 
 }

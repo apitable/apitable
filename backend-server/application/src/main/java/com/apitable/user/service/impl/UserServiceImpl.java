@@ -1205,4 +1205,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
                 return vo;
             }));
     }
+
+    @Override
+    public List<UserEntity> getByIds(List<Long> userIds) {
+        return baseMapper.selectByIds(userIds);
+    }
 }

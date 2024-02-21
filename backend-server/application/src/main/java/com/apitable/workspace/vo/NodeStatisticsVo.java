@@ -16,37 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.apitable.organization.dto;
+package com.apitable.workspace.vo;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
- * member dto.
+ * Node Statistics View.
  */
 @Data
-public class MemberDTO {
+@Schema(description = "Node Statistics View")
+public class NodeStatisticsVo {
 
-    private Long id;
-
-    private String spaceId;
-
-    private Long userId;
-
-    private Long unitId;
-
+    @Schema(description = "Member name")
     private String memberName;
 
-    private String openId;
+    @Schema(description = "Member id")
+    private String memberId;
 
+    @Schema(description = "avatar")
     private String avatar;
 
-    private Integer color;
+    @Schema(description = "avatar color, used for empty avatar")
+    private Integer avatarColor;
 
-    private String nickName;
+    @Schema(description = "team name, contact with & ")
+    private String teamName;
 
-    private Boolean isActive;
+    @Schema(description = "user's total Node counts")
+    private Integer totalNodeCount;
 
-    private Boolean isDeleted;
+    @Schema(description = "user's private node counts")
+    private Integer privateNodeCount;
 
-    private Integer isSocialNameModified;
+    @Schema(description = "team node counts, teamNodeCount = totalNodeCount - privateNodeCount")
+    private Integer teamNodeCount;
 }
