@@ -197,7 +197,7 @@ const SearchContentBase: React.ForwardRefRenderFunction<{ getFilteredRows(): { [
   }, [filteredRecordIdMap, recordMap]);
 
   useEffect(() => {
-    if (cellValue?.length) {
+    if (cellValue?.length && Array.isArray(cellValue)) {
       const currentSelectedRecordIds: IViewRow[] = cellValue.map((recordId) => ({ recordId }));
       return setSelectedRecordIds(currentSelectedRecordIds);
     }

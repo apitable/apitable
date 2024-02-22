@@ -86,7 +86,7 @@ export const NO_PERMISSION_MEMBER = '/node/remind/units/noPermission';
 export const CAPACITY_REWARD_LIST = '/space/capacity/detail';
 // email invitation
 export const SEND_EMAIL_INVITATION = '/spaces/:spaceId/email-invitations';
-export const RESEND_EMAIL_INVITATION = '/spaces/:spaceId/email-invitations/resend';
+export const RESEND_EMAIL_INVITATION = '/spaces/:spaceId/email-invitation/resend';
 export const VALID_EMAIL_INVITATION = '/email-invitations/:inviteToken/valid';
 export const ACCEPT_EMAIL_INVITATION = '/spaces/:spaceId/email-invitations/:inviteToken/accept';
 // link invite
