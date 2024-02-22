@@ -179,7 +179,7 @@ public interface IStaticsService {
      *
      * @param spaceId space id
      * @param page    query page
-     * @return IPage<MemberPageVo>
+     * @return IPage MemberPageVo
      */
     PageInfo<NodeStatisticsVo> getNodeStatistics(String spaceId, Page<Void> page);
 }

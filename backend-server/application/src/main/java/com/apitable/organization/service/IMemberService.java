@@ -767,7 +767,7 @@ public interface IMemberService extends IService<MemberEntity> {
      *
      * @param spaceId space id
      * @param userIds user id
-     * @return List<UnitMemberTeamDTO>
+     * @return List UnitMemberTeamDTO
      */
     List<UnitMemberTeamDTO> getMemberBySpaceIdAndUserIds(String spaceId, List<Long> userIds);
 }

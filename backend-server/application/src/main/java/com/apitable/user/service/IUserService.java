@@ -411,7 +411,7 @@ public interface IUserService extends IService<UserEntity> {
      * get user simple info.
      *
      * @param userIds user id list
-     * @return list<UserEntity>
+     * @return list UserEntity
      */
     List<UserEntity> getByIds(List<Long> userIds);
 }

@@ -22,7 +22,7 @@ public class UnitMemberTeamDTO {
 
     private String memberName;
     /**
-     * used for cp isv user
+     * used for cp isv user.
      */
     private String openId;
 

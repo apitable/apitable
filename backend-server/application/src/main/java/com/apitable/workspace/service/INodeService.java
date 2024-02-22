@@ -695,7 +695,7 @@ public interface INodeService extends IService<NodeEntity> {
      * get units node count.
      *
      * @param unitIds unit id list
-     * @return Map<String, Integer>
+     * @return Map String, Integer
      */
     Map<Long, Integer> getCountByUnitIds(List<Long> unitIds);
 

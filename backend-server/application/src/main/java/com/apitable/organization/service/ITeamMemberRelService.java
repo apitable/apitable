@@ -99,7 +99,7 @@ public interface ITeamMemberRelService extends IService<TeamMemberRelEntity> {
      * get member's team relationship.
      *
      * @param memberIds member ids
-     * @return List<TeamMemberRelEntity>
+     * @return List TeamMemberRelEntity
      */
     List<TeamMemberRelEntity> getByMemberIds(List<Long> memberIds);
 }

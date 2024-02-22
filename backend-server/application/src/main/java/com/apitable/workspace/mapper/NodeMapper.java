@@ -658,7 +658,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      *
      * @param spaceId space id
      * @param page    page
-     * @return IPage<NodeStatisticsDTO>
+     * @return IPage NodeStatisticsDTO
      */
     IPage<NodeStatisticsDTO> selectCountBySpaceIdWithPage(@Param("spaceId") String spaceId,
                                                           Page<Void> page);
@@ -667,7 +667,7 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * query count by unitRefIds.
      *
      * @param unitIds unit id list
-     * @return List<NodeStatisticsDTO
+     * @return List NodeStatisticsDTO
      */
     List<NodeStatisticsDTO> selectCountByUnitIds(@Param("unitIds") List<Long> unitIds);
 
