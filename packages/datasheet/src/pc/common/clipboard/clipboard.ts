@@ -23,7 +23,8 @@ import {
   ExecuteResult,
   FieldType,
   IAttachmentValue,
-  ICollaCommandExecuteResult, IField,
+  ICollaCommandExecuteResult,
+  IField,
   IGridViewColumn,
   IGridViewProperty,
   IRange,
@@ -235,11 +236,13 @@ export class Clipboard {
       // select section with workdoc field cannot be
       const visibleColumns = Selectors.getVisibleColumns(state);
       const fieldMap = Selectors.getFieldMap(state)!;
-      if (tableHeader) { // paste
+      if (tableHeader) {
+        // paste
         // loop tableHeader to check if there is workdoc field
         _selectWithWorkdocField = tableHeader.some((field) => field.type === FieldType.WorkDoc);
-      } else { // copy
-        for(let idx = fieldMinIndex; idx <= fieldMaxIndex; idx++) {
+      } else {
+        // copy
+        for (let idx = fieldMinIndex; idx <= fieldMaxIndex; idx++) {
           const { fieldId } = visibleColumns[idx];
           const field = fieldMap[fieldId];
           if (field.type === FieldType.WorkDoc) {
@@ -427,11 +430,50 @@ export class Clipboard {
       if (!stdValueTable) {
         return pre;
       }
+
+      const allowCopyDataToExternal = state.space.spaceFeatures?.allowCopyDataToExternal || state.share.allowCopyDataToExternal;
+      const fieldPermissionMap = Selectors.getFieldPermissionMap(state);
+      const noPermissionCopyFieldIndex: number[] = [];
+
+      stdValueTable.header = stdValueTable.header.filter((field, index) => {
+        const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, field.id);
+
+        if (!allowCopyDataToExternal && fieldRole && fieldRole !== ConfigConstant.Role.Editor) {
+          noPermissionCopyFieldIndex.push(index);
+          return false;
+        }
+
+        return true;
+      });
+
+      if (!stdValueTable.header.length) {
+        // 如果经过权限筛选后，选区内的所有列都没有权限 copy 数据，这里直接返回
+        return pre;
+      }
+
+      let _body = stdValueTable.body;
+
+      if (noPermissionCopyFieldIndex.length) {
+        /**
+         * 这里 stdValueTable.body 的数据格式为一个二维数组，
+         * 第一个纬度是选区的每一行，
+         * 第二个纬度是每一行中，选区从左往右对应每一列的单元格数据
+         * 
+         * 因此这里的逻辑就是删除第二层数组中，对应位置的数据
+         */
+        _body = _body.map((row) => {
+          return row.filter((_, index) => !noPermissionCopyFieldIndex.includes(index));
+        });
+      }
+
       return {
         ...stdValueTable,
-        body: pre.body ? [...pre.body, ...stdValueTable.body] : stdValueTable.body,
+        body: pre.body ? [...pre.body, ..._body] : _body,
       };
     }, {} as IStandardValueTable);
+
+    if (!Object.keys(stdValueTable).length) return;
+
     const text = Serializer.csv.serialize(stdValueTable);
     const ie = browser?.satisfies({ ie: '*' });
     let html = '';
