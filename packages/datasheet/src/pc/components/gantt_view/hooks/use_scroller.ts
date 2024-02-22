@@ -35,11 +35,12 @@ interface IUseScrollerProps {
   pointAreaType?: AreaType;
 }
 
+const emptyRef = { current: null };
 export const useScroller = (props: IUseScrollerProps) => {
   const {
     containerRef,
     gridHorizontalBarRef,
-    ganttHorizontalBarRef = { current: null },
+    ganttHorizontalBarRef = emptyRef,
     verticalBarRef,
     isCellScrolling,
     cellVerticalBarRef,
