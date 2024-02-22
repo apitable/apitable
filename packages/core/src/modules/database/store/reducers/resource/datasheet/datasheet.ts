@@ -95,6 +95,7 @@ export const datasheet = produce((
     if (state && action.payload.isPartOfData && state.isPartOfData) {
       if (action.payload.revision === state.revision) {
         state.snapshot.recordMap = Object.assign({}, action.payload.snapshot.recordMap, state.snapshot.recordMap);
+        state.snapshot.meta.views = action.payload.snapshot.meta.views;
       } else {
         Player.doTrigger(Events.app_error_logger, {
           error: new Error(t(Strings.error_the_version_is_inconsistent_while_preparing_to_merge)),
