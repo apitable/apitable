@@ -44,7 +44,7 @@ import com.apitable.shared.cache.service.UserSpaceRemindRecordCacheService;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.util.DBUtil;
 import com.apitable.shared.util.information.InformationUtil;
-import com.apitable.workspace.service.impl.NodeRoleServiceImpl;
+import com.apitable.workspace.service.INodeRoleService;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import jakarta.annotation.Resource;
 import java.util.ArrayList;
@@ -99,7 +99,7 @@ public class OrganizationServiceImpl implements IOrganizationService {
     private IRoleService iRoleService;
 
     @Resource
-    private NodeRoleServiceImpl nodeRoleService;
+    private INodeRoleService nodeRoleService;
 
     @Resource
     private SocialServiceFacade socialServiceFacade;

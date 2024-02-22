@@ -157,7 +157,7 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
     @Autowired
     protected INodeService iNodeService;
 
-    @Resource
+    @Autowired
     protected INodeRubbishService iNodeRubbishService;
 
     @Autowired
