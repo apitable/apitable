@@ -698,10 +698,20 @@ export class LookUpField extends ArrayValueField {
     if (!snapshot) {
       return [];
     }
-    const rows = snapshot?.meta?.views[0]?.rows!.filter((row) => recordIds.includes(row.recordId));
+
+    let rows = snapshot?.meta?.views[0]?.rows!.filter((row) => recordIds.includes(row.recordId));
+
+    // If the view is not found, the recordMap is used to find the rows
+    if (isEmpty(rows)) {
+      rows = Object.keys(snapshot.recordMap)
+        .filter((recordId) => recordIds.includes(recordId))
+        .map(recordId => ({ recordId }) as IViewRow);
+    }
+
     if (!rows) {
       return [];
     }
+
     return sortInfo ? sortRowsBySortInfo(this.state, rows, sortInfo.rules, snapshot) : rows;
   }
 
