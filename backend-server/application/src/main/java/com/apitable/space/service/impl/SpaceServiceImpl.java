@@ -675,40 +675,40 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     public boolean checkSeatOverLimitAndSendNotify(List<Long> userIds, String spaceId,
                                                    long addedSeatNums, boolean isAllMember,
                                                    boolean sendNotify) {
-        // get subscription max seat nums
-        SubscriptionInfo subscriptionInfo =
-            entitlementServiceFacade.getSpaceSubscription(spaceId);
-        var seat = subscriptionInfo.getFeature().getSeat();
-        if (!subscriptionInfo.isFree() && seat.isUnlimited()) {
-            // apitable billing mode, paid space，skip validation
-            return true;
-        }
-        SeatUsage seatUsage = getSeatUsageForIM(spaceId);
-        long totalSeatNums = seatUsage.getTotal() + addedSeatNums;
-        if (isAllMember) {
-            totalSeatNums = addedSeatNums;
-        }
-        if (!seat.isUnlimited() && (totalSeatNums > seat.getValue())) {
-            log.info("spaceId:{}, current num:{}, max seats:{}", spaceId, totalSeatNums,
-                seat.getValue());
-            if (sendNotify) {
-                // Send space station notifications
-                try {
-                    String spaceName = getNameBySpaceId(spaceId);
-                    long finalTotalSeatNums = totalSeatNums;
-                    TaskManager.me().execute(() -> NotificationManager.me()
-                        .playerNotify(NotificationTemplateId.SPACE_REFRESH_CONTACT_SEATS_LIMIT,
-                            userIds, 0L, spaceId,
-                            Dict.create().set("spaceName", spaceName)
-                                .set("specification", seat.getValue())
-                                .set("usage", finalTotalSeatNums)));
-                } catch (Exception e) {
-                    log.error("send space station notifications error", e);
-                }
+            // get subscription max seat nums
+            SubscriptionInfo subscriptionInfo =
+                entitlementServiceFacade.getSpaceSubscription(spaceId);
+            var seat = subscriptionInfo.getFeature().getSeat();
+            if (!subscriptionInfo.isFree() && seat.isUnlimited()) {
+                // apitable billing mode, paid space，skip validation
+                return true;
             }
-            log.warn("{} seats over limit", spaceId);
-            return true;
-        }
+            SeatUsage seatUsage = getSeatUsageForIM(spaceId);
+            long totalSeatNums = seatUsage.getTotal() + addedSeatNums;
+            if (isAllMember) {
+                totalSeatNums = addedSeatNums;
+            }
+            if (!seat.isUnlimited() && (totalSeatNums > seat.getValue())) {
+                log.info("spaceId:{}, current num:{}, max seats:{}", spaceId, totalSeatNums,
+                    seat.getValue());
+                if (sendNotify) {
+                    // Send space station notifications
+                    try {
+                        String spaceName = getNameBySpaceId(spaceId);
+                        long finalTotalSeatNums = totalSeatNums;
+                        TaskManager.me().execute(() -> NotificationManager.me()
+                            .playerNotify(NotificationTemplateId.SPACE_REFRESH_CONTACT_SEATS_LIMIT,
+                                userIds, 0L, spaceId,
+                                Dict.create().set("spaceName", spaceName)
+                                    .set("specification", seat.getValue())
+                                    .set("usage", finalTotalSeatNums)));
+                    } catch (Exception e) {
+                        log.error("send space station notifications error", e);
+                    }
+                }
+                log.warn("{} seats over limit", spaceId);
+                return true;
+            }
         return true;
     }
 
