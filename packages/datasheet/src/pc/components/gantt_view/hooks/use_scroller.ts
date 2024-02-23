@@ -35,7 +35,7 @@ interface IUseScrollerProps {
   pointAreaType?: AreaType;
 }
 
-const emptyRef = { current: null };
+const emptyRef = Object.freeze({ current: null });
 export const useScroller = (props: IUseScrollerProps) => {
   const {
     containerRef,
