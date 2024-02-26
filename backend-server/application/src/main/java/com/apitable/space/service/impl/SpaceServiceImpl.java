@@ -1247,8 +1247,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     @Override
     public void checkWidgetOverLimit(String spaceId) {
         // get subscription max widget nums
-        SubscriptionInfo subscriptionInfo =
-            entitlementServiceFacade.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = getSpaceSubscription(spaceId);
         // Only the free version requires verification
         if (!subscriptionInfo.isFree()) {
             return;
@@ -1260,5 +1259,10 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         if (!widgetNums.isUnlimited() && count >= widgetNums.getValue()) {
             throw new BusinessException(LimitException.WIDGET_OVER_LIMIT);
         }
+    }
+
+    @Override
+    public SubscriptionInfo getSpaceSubscription(String spaceId) {
+        return entitlementServiceFacade.getSpaceSubscription(spaceId);
     }
 }

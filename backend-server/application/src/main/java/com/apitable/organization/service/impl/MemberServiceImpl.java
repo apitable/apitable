@@ -39,7 +39,6 @@ import com.apitable.base.enums.DatabaseException;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
-import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.social.enums.SocialNameModified;
 import com.apitable.interfaces.user.facade.InvitationServiceFacade;
@@ -197,9 +196,6 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Resource
     private MemberMapper memberMapper;
-
-    @Resource
-    private EntitlementServiceFacade entitlementServiceFacade;
 
     @Resource
     private InvitationServiceFacade invitationServiceFacade;
@@ -1451,8 +1447,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             // obtaining statistics
             int currentMemberCount =
                 (int) SqlTool.retCount(staticsMapper.countMemberBySpaceId(spaceId));
-            SubscriptionInfo subscriptionInfo =
-                entitlementServiceFacade.getSpaceSubscription(spaceId);
+            SubscriptionInfo subscriptionInfo = iSpaceService.getSpaceSubscription(spaceId);
             long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
             // long defaultMaxMemberCount = iSubscriptionService.getPlanSeats(spaceId);
             // Use the object to read data row by row,
