@@ -710,6 +710,7 @@
       "is_mail": true,
       "is_mobile": true,
       "is_notification": true,
+      "mail_template_subject": "remindComment",
       "notifications_type": "record",
       "to_tag": "members",
       "url": "/workbench"

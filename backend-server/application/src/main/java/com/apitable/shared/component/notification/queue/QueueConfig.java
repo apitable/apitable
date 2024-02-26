@@ -26,7 +26,7 @@ public class QueueConfig {
     /**
      * notification exchange.
      */
-    private static final String NOTIFICATION_EXCHANGE = "apitable.notification.exchange";
+    public static final String NOTIFICATION_EXCHANGE = "apitable.notification.exchange";
 
     /**
      * notification queue.

@@ -18,13 +18,13 @@
 
 package com.apitable.workspace.service.impl;
 
+import static com.apitable.shared.component.notification.queue.QueueConfig.NOTIFICATION_EXCHANGE;
 import static com.apitable.shared.constants.NotificationConstants.BODY_EXTRAS;
 import static java.util.stream.Collectors.toList;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -39,10 +39,6 @@ import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.SpringContextHolder;
-import com.apitable.interfaces.social.event.NotificationEvent;
-import com.apitable.interfaces.social.facade.SocialServiceFacade;
-import com.apitable.interfaces.social.model.SocialConnectInfo;
 import com.apitable.internal.dto.SimpleDatasheetMetaDTO;
 import com.apitable.organization.entity.TeamMemberRelEntity;
 import com.apitable.organization.entity.UnitEntity;
@@ -55,11 +51,11 @@ import com.apitable.player.ro.NotificationCreateRo;
 import com.apitable.player.service.IPlayerNotificationService;
 import com.apitable.shared.cache.service.UserSpaceRemindRecordCacheService;
 import com.apitable.shared.component.notification.NotificationTemplateId;
-import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.shared.util.IdUtil;
+import com.apitable.starter.amqp.core.RabbitSenderService;
 import com.apitable.starter.beetl.autoconfigure.BeetlTemplate;
 import com.apitable.user.mapper.UserMapper;
 import com.apitable.widget.service.IWidgetService;
@@ -78,9 +74,6 @@ import com.apitable.workspace.mapper.DatasheetMapper;
 import com.apitable.workspace.mapper.NodeMapper;
 import com.apitable.workspace.model.DatasheetObject;
 import com.apitable.workspace.observer.DatasheetRemindObserver;
-import com.apitable.workspace.observer.RemindMemberOpSubject;
-import com.apitable.workspace.observer.remind.MailRemind;
-import com.apitable.workspace.observer.remind.NotifyDataSheetMeta;
 import com.apitable.workspace.observer.remind.RemindType;
 import com.apitable.workspace.ro.ButtonFieldProperty;
 import com.apitable.workspace.ro.FieldMapRo;
@@ -100,8 +93,6 @@ import com.apitable.workspace.vo.DatasheetRecordMapVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import jakarta.annotation.Resource;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -115,6 +106,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -169,8 +161,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     @Resource
     private IRoleService iRoleService;
 
-    @Resource
-    private SocialServiceFacade socialServiceFacade;
+    @Autowired(required = false)
+    private RabbitSenderService rabbitSenderService;
 
     @Resource
     private IWidgetService iWidgetService;
@@ -988,57 +980,12 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             // used to mark message jump read
             String notifyId = cn.hutool.core.util.IdUtil.simpleUUID();
             notifyRo.setNotifyId(notifyId);
-            String templateId;
-            if (RemindType.MEMBER.getRemindType() == ro.getType()
-                && remindUnitRecRo.getRecordIds().size() == 1) {
-                templateId = NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue();
-            } else if (RemindType.MEMBER.getRemindType() == ro.getType()) {
-                templateId = NotificationTemplateId.USER_FIELD.getValue();
-            } else {
-                templateId =
-                    NotificationTemplateId.SINGLE_RECORD_COMMENT_MENTIONED.getValue();
-            }
+            String templateId = RemindType.MEMBER.getRemindType() == ro.getType()
+                ? NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue()
+                : NotificationTemplateId.SINGLE_RECORD_COMMENT_MENTIONED.getValue();
             notifyRo.setTemplateId(templateId);
             notifyRo.setBody(body);
-            // save notification record
-            playerNotificationService.batchCreateNotify(CollUtil.newArrayList(notifyRo));
-            NotifyDataSheetMeta meta = new NotifyDataSheetMeta()
-                .setRemindType(RemindType.of(ro.getType()))
-                .setSpaceId(spaceId)
-                .setNodeId(ro.getNodeId())
-                .setViewId(ro.getViewId())
-                .setRecordId(remindUnitRecRo.getRecordIds().get(0))
-                .setFieldName(remindUnitRecRo.getFieldName())
-                .setCreatedAt(LocalDateTime.now().format(
-                    DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_MINUTE_PATTERN)))
-                .setExtra(ro.getExtra())
-                .setFromMemberId(memberId)
-                .setToMemberIds(toMemberIds)
-                .setNotifyId(notifyId)
-                .setFromUserId(ObjectUtil.defaultIfNull(userId, -2L))
-                .setRecordTitle(recordTitle);
-            if (userId != null) {
-                String avatar = SpringContextHolder.getBean(ConstProperties.class)
-                    .spliceAssetUrl(userMapper.selectAvatarById(userId));
-                meta.setFromUserAvatar(avatar);
-            }
-
-            RemindMemberOpSubject remindMemberOpSubject = new RemindMemberOpSubject();
-            // Default-Subscribe to Mail Notifications
-            if (!templateId.equals(
-                NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue())) {
-                remindMemberOpSubject.registerObserver(datasheetRemindObservers.get(
-                    StrUtil.lowerFirst(MailRemind.class.getSimpleName())));
-            }
-            // Check whether the space is bound to third-party integration
-            SocialConnectInfo connectInfo = socialServiceFacade.getConnectInfo(spaceId);
-            if (connectInfo != null && connectInfo.isEnabled()
-                && StrUtil.isNotBlank(connectInfo.getAppId())) {
-                // transform social connect app type, register remind observer
-                socialServiceFacade.eventCall(new NotificationEvent(notifyRo));
-            }
-            // message pushed to observer
-            remindMemberOpSubject.sendNotify(meta);
+            rabbitSenderService.topicSend(NOTIFICATION_EXCHANGE, "notification.#", notifyRo);
         }
     }
 
