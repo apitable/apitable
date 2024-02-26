@@ -450,4 +450,12 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @author Chambers
      */
     boolean getSpaceSeatAvailableStatus(String spaceId);
+
+
+    /**
+     * check widget whether over limit.
+     *
+     * @param spaceId space id
+     */
+    void checkWidgetOverLimit(String spaceId);
 }
