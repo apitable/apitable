@@ -305,7 +305,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
                 iRoleMemberService.getByUnitRefIdsAndUnitType(teamIds, UnitType.TEAM);
             refRoles.stream()
                 .map(RoleMemberDTO::getUnitRefId)
-                .filter(tId -> !teamIds.contains(tId))
+                .filter(tid -> !teamIds.contains(tid))
                 .forEach(teamIds::add);
             List<Long> allParentTeamIds = teamFacade.getAllParentTeamIds(teamIds);
             unitRefIds.addAll(allParentTeamIds);
