@@ -435,7 +435,6 @@ export const FormContainer: React.FC<
       .finally(() => {
         setLoading(false);
         setAnimationLoading(false);
-        window.location.reload();
       });
   };
 
