@@ -556,6 +556,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     @Transactional(rollbackFor = Exception.class)
     public void updateEmailByUserId(final Long userId, final String email) {
         log.info("Modify User [{}] email [{}]", userId, email);
+        String oldEmail = baseMapper.selectEmailById(userId);
         UserEntity updateUser = new UserEntity();
         updateUser.setId(userId);
         updateUser.setEmail(email);
@@ -571,7 +572,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         this.inactiveMemberProcess(userId, inactiveMembers);
         // Delete Cache
         loginUserCacheService.delete(userId);
-        userServiceFacade.onUserChangeEmailAction(userId, email);
+        userServiceFacade.onUserChangeEmailAction(userId, email, oldEmail);
     }
 
     @Override

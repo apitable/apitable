@@ -450,4 +450,12 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @author Chambers
      */
     boolean getSpaceSeatAvailableStatus(String spaceId);
+
+    /**
+     * get space ids by created by.
+     *
+     * @param userId user id
+     * @return space ids
+     */
+    List<String> getSpaceIdsByCreatedBy(Long userId);
 }

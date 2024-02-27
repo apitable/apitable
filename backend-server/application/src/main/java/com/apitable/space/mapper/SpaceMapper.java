@@ -194,4 +194,12 @@ public interface SpaceMapper extends BaseMapper<SpaceEntity> {
      */
     @InterceptorIgnore(illegalSql = "true")
     List<SpaceEntity> selectByUserId(@Param("userId") Long userId);
+
+    /**
+     * query space ids by created_by.
+     *
+     * @param userId user id
+     * @return space ids
+     */
+    List<String> selectSpaceIdsByUserId(@Param("userId") Long userId);
 }
