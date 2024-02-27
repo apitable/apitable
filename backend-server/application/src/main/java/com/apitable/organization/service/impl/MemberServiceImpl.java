@@ -45,6 +45,7 @@ import com.apitable.interfaces.user.facade.InvitationServiceFacade;
 import com.apitable.interfaces.user.model.MultiInvitationMetadata;
 import com.apitable.organization.dto.MemberBaseInfoDTO;
 import com.apitable.organization.dto.MemberDTO;
+import com.apitable.organization.dto.RoleMemberDTO;
 import com.apitable.organization.dto.TeamBaseInfoDTO;
 import com.apitable.organization.dto.TenantMemberDto;
 import com.apitable.organization.dto.UploadDataDTO;
@@ -300,6 +301,12 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         List<Long> unitRefIds = CollUtil.newArrayList(memberId);
         List<Long> teamIds = iTeamMemberRelService.getTeamByMemberId(memberId);
         if (!teamIds.isEmpty()) {
+            List<RoleMemberDTO> refRoles =
+                iRoleMemberService.getByUnitRefIdsAndUnitType(teamIds, UnitType.TEAM);
+            refRoles.stream()
+                .map(RoleMemberDTO::getUnitRefId)
+                .filter(tId -> !teamIds.contains(tId))
+                .forEach(teamIds::add);
             List<Long> allParentTeamIds = teamFacade.getAllParentTeamIds(teamIds);
             unitRefIds.addAll(allParentTeamIds);
         }
