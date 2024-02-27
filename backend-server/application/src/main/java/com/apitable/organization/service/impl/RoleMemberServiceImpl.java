@@ -75,13 +75,13 @@ public class RoleMemberServiceImpl extends ServiceImpl<RoleMemberMapper, RoleMem
     implements IRoleMemberService {
 
     @Resource
-    IOrganizationService iOrganizationService;
+    private IOrganizationService iOrganizationService;
 
     @Resource
-    ITeamService iTeamService;
+    private ITeamService iTeamService;
 
     @Resource
-    ISpaceService iSpaceService;
+    private ISpaceService iSpaceService;
 
     @Resource
     private IRoleService iRoleService;

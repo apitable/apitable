@@ -301,14 +301,11 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         List<Long> unitRefIds = CollUtil.newArrayList(memberId);
         List<Long> teamIds = iTeamMemberRelService.getTeamByMemberId(memberId);
         if (!teamIds.isEmpty()) {
-            List<RoleMemberDTO> refRoles =
-                iRoleMemberService.getByUnitRefIdsAndUnitType(teamIds, UnitType.TEAM);
-            refRoles.stream()
-                .map(RoleMemberDTO::getUnitRefId)
-                .filter(tid -> !teamIds.contains(tid))
-                .forEach(teamIds::add);
             List<Long> allParentTeamIds = teamFacade.getAllParentTeamIds(teamIds);
             unitRefIds.addAll(allParentTeamIds);
+            List<RoleMemberDTO> refRoles =
+                iRoleMemberService.getByUnitRefIdsAndUnitType(allParentTeamIds, UnitType.TEAM);
+            refRoles.stream().map(RoleMemberDTO::getRoleId).forEach(unitRefIds::add);
         }
         List<Long> roleIds = iRoleMemberService.getRoleIdsByRoleMemberId(memberId);
         unitRefIds.addAll(roleIds);

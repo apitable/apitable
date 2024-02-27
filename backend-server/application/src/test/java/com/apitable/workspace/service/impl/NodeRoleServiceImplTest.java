@@ -23,20 +23,30 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import cn.hutool.core.collection.CollUtil;
 import com.apitable.AbstractIntegrationTest;
+import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.control.infrastructure.ControlType;
+import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.control.infrastructure.role.RoleConstants.Node;
+import com.apitable.core.util.ExceptionUtil;
 import com.apitable.mock.bean.MockUserSpace;
+import com.apitable.organization.enums.UnitType;
+import com.apitable.organization.ro.RoleMemberUnitRo;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.workspace.dto.ControlRoleInfo;
 import com.apitable.workspace.dto.SimpleNodeInfo;
 import com.apitable.workspace.enums.NodeType;
+import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.ro.NodeOpRo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class NodeRoleServiceImplTest extends AbstractIntegrationTest {
+
+    @Autowired
+    private ControlTemplate controlTemplate;
 
     @Test
     void givenNoExtendWhenAddExtendNodeRoleThenAddRootTeamRole() {
@@ -206,5 +216,44 @@ public class NodeRoleServiceImplTest extends AbstractIntegrationTest {
             iNodeRoleService.getMinimumRequiredRole(nodePermissions);
         }).isInstanceOf(RuntimeException.class)
             .hasMessage("unknown node permission");
+    }
+
+    @Test
+    void testRole() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        Long rootTeamId = iTeamService.getRootTeamId(userSpace.getSpaceId());
+        // create team
+        Long teamId = iTeamService.createSubTeam(userSpace.getSpaceId(), "sub team", rootTeamId);
+        // create role
+        Long roleId = iRoleService.createRole(userSpace.getUserId(), userSpace.getSpaceId(),
+            "test role");
+        Long roleUnitId = iUnitService.getUnitIdByRefId(roleId);
+        RoleMemberUnitRo teamUnit = new RoleMemberUnitRo();
+        teamUnit.setId(teamId);
+        teamUnit.setType(UnitType.TEAM.getType());
+        iRoleMemberService.addRoleMembers(roleId, CollUtil.newArrayList(teamUnit));
+
+        // add users to the space station sub department (user => sub team => test role
+        UserEntity user = iUserService.createUserByEmail("test2@apitable.com");
+        Long newMemberId = iMemberService.createMember(user.getId(), userSpace.getSpaceId(),
+            teamId);
+
+        // create node
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        NodeOpRo firstOp = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .nodeName("folder")
+            .build();
+        String nodeId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), firstOp);
+        // open the control permission of the node
+        iNodeRoleService.enableNodeRole(userSpace.getUserId(), userSpace.getSpaceId(), nodeId,
+            false);
+        iNodeRoleService.addNodeRole(userSpace.getUserId(), nodeId, Node.EDITOR,
+            CollUtil.newArrayList(roleUnitId));
+        // check node permissions
+        controlTemplate.checkNodePermission(newMemberId, nodeId, NodePermission.EDIT_NODE,
+            status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
     }
 }
