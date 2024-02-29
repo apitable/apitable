@@ -125,10 +125,10 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
       const value = event.target.value;
       if (field.type === FieldType.Phone) {
         const newValue = value
-          .replace(/[^+0-9]/g, '')
+          .replace(/[^+0-9-]/g, '')
           .replace(/^([+])/, '$1')
           .replace(/\+{2,}/g, '+')
-          .replace(/^([+][0-9]*){0,1}([0-9]*)/, '$1$2');
+          .replace(/^([+][0-9-]*){0,1}([0-9-]*)/, '$1$2');
 
         setValue(newValue);
         propsOnChange && propsOnChange(getValidValue(newValue));

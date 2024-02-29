@@ -39,5 +39,9 @@ export const HighlightWords: React.FC<React.PropsWithChildren<IHighlightWords>> 
     }
     return <>{words}</>;
   }
-  return <Highlighter highlightClassName={styles.hightLight} searchWords={[keyword]} autoEscape textToHighlight={words} />;
+  return (
+    <Typography variant="body3" ellipsis={{ rows: 1, tooltip: words }} component="div">
+      <Highlighter highlightClassName={styles.hightLight} searchWords={[keyword]} autoEscape textToHighlight={words} />;
+    </Typography>
+  );
 };
