@@ -22,11 +22,10 @@ import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
 import axios from 'axios';
 import classNames from 'classnames';
+import dayjs from 'dayjs';
 import elementClosest from 'element-closest';
-import ErrorPage from 'error_page';
 import * as immer from 'immer';
 import { enableMapSet } from 'immer';
-import { init as initPlayer } from 'modules/shared/player/init';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
@@ -37,7 +36,6 @@ import { PostHogProvider } from 'posthog-js/react';
 import React, { useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
-import reportWebVitals from 'reportWebVitals';
 import {
   Api,
   getTimeZone,
@@ -52,8 +50,11 @@ import {
   t,
   WasmApi,
 } from '@apitable/core';
-import 'antd/es/date-picker/style/index';
 import { getBrowserDatabusApiEnabled } from '@apitable/core/dist/modules/database/api/wasm';
+import ErrorPage from 'error_page';
+import { init as initPlayer } from 'modules/shared/player/init';
+import reportWebVitals from 'reportWebVitals';
+import 'antd/es/date-picker/style/index';
 import 'normalize.css';
 import { initializer } from 'pc/common/initializer';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -83,7 +84,6 @@ import '../src/main.less';
 import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
 import { getInitialProps } from '../utils/get_initial_props';
-import dayjs from 'dayjs';
 
 enableMapSet();
 
@@ -390,7 +390,6 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   return (
     <>
       <Head>
-        <title>{env.DEFAULT_TITLE_NAME || (env.IS_AITABLE ? 'AITable' : env.IS_APITABLE ? 'APITable' : 'vikadata')}</title>
         <meta name="description" content="" />
         <meta
           name="keywords"
