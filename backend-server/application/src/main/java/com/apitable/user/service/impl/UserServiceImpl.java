@@ -549,14 +549,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         ExceptionUtil.isBlank(userEmail, LINK_EMAIL_ERROR);
         // Bind as user email, and the email
         // will be activated by invited space members together
-        updateEmailByUserId(userId, email);
+        updateEmailByUserId(userId, email, null);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateEmailByUserId(final Long userId, final String email) {
+    public void updateEmailByUserId(final Long userId, final String email, final String oldEmail) {
         log.info("Modify User [{}] email [{}]", userId, email);
-        String oldEmail = baseMapper.selectEmailById(userId);
         UserEntity updateUser = new UserEntity();
         updateUser.setId(userId);
         updateUser.setEmail(email);

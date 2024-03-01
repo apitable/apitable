@@ -395,7 +395,8 @@ public class UserController {
         boolean exist = iUserService.checkByEmail(param.getEmail());
         ExceptionUtil.isFalse(exist, EMAIL_HAS_BIND);
         Long userId = SessionContext.getUserId();
-        iUserService.updateEmailByUserId(userId, param.getEmail());
+        String oldEmail = LoginContext.me().getLoginUser().getEmail();
+        iUserService.updateEmailByUserId(userId, param.getEmail(), oldEmail);
         return ResponseData.success();
     }
 

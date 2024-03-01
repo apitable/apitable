@@ -206,8 +206,9 @@ public interface IUserService extends IService<UserEntity> {
      *
      * @param userId User ID
      * @param email  email
+     * @param oldEmail old email
      */
-    void updateEmailByUserId(Long userId, String email);
+    void updateEmailByUserId(Long userId, String email, String oldEmail);
 
     /**
      * User Unbind Email.
