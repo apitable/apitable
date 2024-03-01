@@ -31,12 +31,12 @@ import com.apitable.control.infrastructure.role.ControlRoleManager;
 import com.apitable.control.infrastructure.role.RoleConstants.Node;
 import com.apitable.control.service.IControlService;
 import com.apitable.core.util.ExceptionUtil;
-import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.document.facade.DocumentServiceFacade;
 import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.shared.component.TaskManager;
 import com.apitable.space.service.ISpaceAssetService;
+import com.apitable.space.service.ISpaceService;
 import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.enums.PermissionException;
@@ -96,7 +96,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
     private INodeRoleService iNodeRoleService;
 
     @Resource
-    private EntitlementServiceFacade entitlementServiceFacade;
+    private ISpaceService iSpaceService;
 
 
     @Override
@@ -107,7 +107,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
             memberId, spaceId, lastNodeId);
 
         // Obtain the maximum storage days of the rubbish corresponding to the space subscription plan.
-        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceService.getSpaceSubscription(spaceId);
         long retainDay = subscriptionInfo.getFeature().getRemainTrashDays().getValue();
         // Push back start time (not included)
         LocalDate dateNow = ClockManager.me().getLocalDateNow();
@@ -242,7 +242,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
         ExceptionUtil.isNotNull(rubbishUpdatedAt, RUBBISH_NODE_NOT_EXIST);
 
         // Obtain the maximum storage days of the rubbish corresponding to the space subscription plan.
-        long retainDay = entitlementServiceFacade.getSpaceSubscription(spaceId)
+        long retainDay = iSpaceService.getSpaceSubscription(spaceId)
             .getFeature().getRemainTrashDays().getValue();
         // Subscription function restriction check
         ExceptionUtil.isTrue(retainDay < 0

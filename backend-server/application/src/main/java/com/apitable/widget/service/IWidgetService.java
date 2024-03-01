@@ -137,11 +137,4 @@ public interface IWidgetService {
      * @param widgetIds  widget id list
      */
     void checkWidgetReference(List<String> subNodeIds, List<String> widgetIds);
-
-    /**
-     * check widget whether over limit.
-     *
-     * @param spaceId space id
-     */
-    void checkWidgetOverLimit(String spaceId);
 }

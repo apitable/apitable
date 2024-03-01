@@ -112,7 +112,8 @@ public class WebSecurityConfig<S extends Session> {
                         "/idaas/**",
                         "/ai/**",
                         "/airagent/**",
-                        "/appsumo/**"
+                        "/appsumo/**",
+                        "/invitation/**"
                     )
             )
             .addFilterBefore(new CsrfBeforeFilter(), CsrfFilter.class);

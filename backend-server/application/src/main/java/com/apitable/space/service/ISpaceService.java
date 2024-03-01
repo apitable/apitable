@@ -20,6 +20,7 @@ package com.apitable.space.service;
 
 import com.apitable.interfaces.ai.model.ChartTimeDimension;
 import com.apitable.interfaces.ai.model.CreditInfo;
+import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
 import com.apitable.internal.vo.InternalSpaceUsageVo;
 import com.apitable.space.dto.GetSpaceListFilterCondition;
@@ -458,4 +459,19 @@ public interface ISpaceService extends IService<SpaceEntity> {
      * @return space ids
      */
     List<String> getSpaceIdsByCreatedBy(Long userId);
+
+    /**
+     * check widget whether over limit.
+     *
+     * @param spaceId space id
+     */
+    void checkWidgetOverLimit(String spaceId);
+
+    /**
+     * get space subscription.
+     *
+     * @param spaceId space id
+     * @return SubscriptionInfo
+     */
+    SubscriptionInfo getSpaceSubscription(String spaceId);
 }

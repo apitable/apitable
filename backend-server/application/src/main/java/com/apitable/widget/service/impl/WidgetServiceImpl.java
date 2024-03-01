@@ -29,14 +29,10 @@ import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
-import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
-import com.apitable.interfaces.billing.model.SubscriptionFeatures;
-import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.widget.facade.WidgetServiceAuditFacade;
 import com.apitable.shared.component.TaskManager;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.context.LoginContext;
-import com.apitable.shared.exception.LimitException;
 import com.apitable.shared.util.IdUtil;
 import com.apitable.template.enums.TemplateException;
 import com.apitable.widget.dto.NodeWidgetDto;
@@ -85,7 +81,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -128,9 +123,6 @@ public class WidgetServiceImpl implements IWidgetService {
 
     @Resource
     private ObjectMapper objectMapper;
-
-    @Autowired(required = false)
-    private EntitlementServiceFacade entitlementServiceFacade;
 
     @Override
     public Long getSpaceWidgetCount(String spaceId) {
@@ -490,24 +482,6 @@ public class WidgetServiceImpl implements IWidgetService {
                         TemplateException.FOLDER_DASHBOARD_LINK_FOREIGN_NODE, foreignMap);
                 }
             }
-        }
-    }
-
-    @Override
-    public void checkWidgetOverLimit(String spaceId) {
-        // get subscription max widget nums
-        SubscriptionInfo subscriptionInfo =
-            entitlementServiceFacade.getSpaceSubscription(spaceId);
-        // Only the free version requires verification
-        if (!subscriptionInfo.isFree()) {
-            return;
-        }
-        SubscriptionFeatures.ConsumeFeatures.WidgetNums widgetNums =
-            subscriptionInfo.getFeature().getWidgetNums();
-        // check the number of components in the space
-        Long count = this.getSpaceWidgetCount(spaceId);
-        if (!widgetNums.isUnlimited() && count >= widgetNums.getValue()) {
-            throw new BusinessException(LimitException.WIDGET_OVER_LIMIT);
         }
     }
 }
