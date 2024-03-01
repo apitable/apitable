@@ -75,6 +75,19 @@
         }
       }
     }
+    .catalogItem {
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      &:hover {
+        background: var(--bgBglessHover);
+      }
+      &:active {
+        background: var(--bgBglessActive);
+      }
+
+    }
     .folderList {
       flex: 1;
       overflow-y: auto;

@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useState } from 'react';
 import * as React from 'react';
+import { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { t, Strings, StoreActions, INodesMapItem, ConfigConstant } from '@apitable/core';
+import { ConfigConstant, INodesMapItem, StoreActions, Strings, t } from '@apitable/core';
 import { RenameInput } from 'pc/components/common';
 import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
@@ -31,15 +31,18 @@ export const NODE_NAME_MAX_LEN = 100;
 
 export interface IEditingNodeProps {
   node: INodesMapItem;
+  isPrivate?: boolean;
 }
 
-export const EditingNode: FC<React.PropsWithChildren<IEditingNodeProps>> = ({ node }) => {
+export const EditingNode: FC<React.PropsWithChildren<IEditingNodeProps>> = ({ node, isPrivate }) => {
   const [errMsg, setErrMsg] = useState('');
   const { checkRepeat } = useCatalog();
   const dispatch = useDispatch();
   const { renameNodeReq } = useCatalogTreeRequest();
   const [value, setValue] = useState(node.nodeName);
-  const { run: renameNode } = useRequest(renameNodeReq, { manual: true });
+  const { run: renameNode } = useRequest((nodeId: string, nodeName: string) =>
+    renameNodeReq(nodeId, nodeName, isPrivate ? ConfigConstant.Modules.PRIVATE : undefined), { manual: true }
+  );
 
   const blurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
     const inputValue = e.target.value.trim();
@@ -51,7 +54,7 @@ export const EditingNode: FC<React.PropsWithChildren<IEditingNodeProps>> = ({ no
   };
 
   const cancelEdit = () => {
-    dispatch(StoreActions.setEditNodeId(''));
+    dispatch(StoreActions.setEditNodeId('', isPrivate ? ConfigConstant.Modules.PRIVATE : undefined));
     dispatch(StoreActions.setEditNodeId('', ConfigConstant.Modules.FAVORITE));
   };
 

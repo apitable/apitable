@@ -22,7 +22,6 @@ import { forwardRef, memo, ReactNode, useCallback, useEffect, useImperativeHandl
 import { Button, Typography } from '@apitable/components';
 import { ConfigConstant, Navigation, t, Strings } from '@apitable/core';
 import { AddOutlined, TriangleRightFilled } from '@apitable/icons';
-
 import { Router } from '../../../route_manager/router';
 import { TreeItem } from '../tree_item';
 import TreeViewContext from '../tree_view_context';
@@ -246,7 +245,9 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
           renderTree(treeData)
         ) : isEmpty(children) ? (
           <div className={styles.empty}>
-            <Typography variant="body2">{t(Strings.catalog_empty_tips)}</Typography>
+            <Typography variant="body2">
+              {module === ConfigConstant.Modules.PRIVATE ? '个人或者临时类的草稿文件可以在这里创建' : t(Strings.catalog_empty_tips)}
+            </Typography>
             <Button
               color="primary"
               prefixIcon={<AddOutlined />}

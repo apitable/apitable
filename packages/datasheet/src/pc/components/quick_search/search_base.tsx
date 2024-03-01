@@ -6,12 +6,13 @@ import Image from 'next/image';
 import * as React from 'react';
 import { FC, useEffect, useRef, useState } from 'react';
 import { useThemeColors, ThemeName, TextInput, Typography } from '@apitable/components';
-import { Api, getArrayLoopIndex, Navigation, Strings, t } from '@apitable/core';
+import { Api, getArrayLoopIndex, Navigation, StoreActions, Strings, t, ConfigConstant } from '@apitable/core';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Router } from 'pc/components/route_manager/router';
 import { useResponsive } from 'pc/hooks';
+import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getElementDataset, KeyCode } from 'pc/utils';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
@@ -37,6 +38,7 @@ export interface ISearchProps {
 
 export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ className, closeSearch }) => {
   const colors = useThemeColors();
+  const dispatch = useAppDispatch();
   const [keyword, setKeyword] = useState('');
   const [dataNodeList, setDataNodeList] = useState<ISearchNode[]>([]);
   const [tabType, setTabType] = useState<TabNodeType>(TabNodeType.ALL_TYPE);
@@ -176,12 +178,12 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
     }
   };
 
-  const handleNodeClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleNodeClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, nodePrivate?: boolean) => {
     const nodeId = getElementDataset(e.currentTarget, 'nodeId');
-    jumpNode(nodeId, shouldOpenInNewTab(e));
+    jumpNode(nodeId, shouldOpenInNewTab(e), nodePrivate);
   };
 
-  const jumpNode = (nodeId?: string | null, openInNewTab?: boolean) => {
+  const jumpNode = (nodeId?: string | null, openInNewTab?: boolean, nodePrivate?: boolean) => {
     if (!nodeId) {
       return;
     }
@@ -189,6 +191,7 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
     openInNewTab ? Router.newTab(Navigation.WORKBENCH, { params }) : Router.push(Navigation.WORKBENCH, { params });
     setKeyword('');
     closeSearch();
+    dispatch(StoreActions.setActiveTreeType(nodePrivate ? ConfigConstant.Modules.PRIVATE : ConfigConstant.Modules.CATALOG));
   };
 
   const Empty = () => (
@@ -259,7 +262,7 @@ export const SearchBase: FC<React.PropsWithChildren<ISearchProps>> = ({ classNam
                   <div className={styles.nodeList} onClick={handleNodeClick} style={{ background: 'transparent' }} ref={listContainerRef}>
                     {nodeList.map((node) => {
                       const nodeClasses = nodeList[currentIndex]?.nodeId === node.nodeId ? `${styles.hover} active` : '';
-                      return <Node key={node.nodeId} node={node} onMouseDown={handleNodeClick} className={nodeClasses} />;
+                      return <Node key={node.nodeId} node={node} onMouseDown={(e) => handleNodeClick(e, node.nodePrivate)} className={nodeClasses} />;
                     })}
                   </div>
                 )}

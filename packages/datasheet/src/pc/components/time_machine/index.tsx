@@ -69,6 +69,7 @@ const DATEFORMAT = 'YYYY-MM-DD HH:mm:ss';
 export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: boolean) => void }>> = ({ onClose }) => {
   const datasheetId = useAppSelector(Selectors.getActiveDatasheetId)!;
   const curDatasheet = useAppSelector((state) => Selectors.getDatasheet(state, datasheetId));
+  const activeNodePrivate = useAppSelector((state) => Selectors.getActiveNodePrivate(state));
   const [curPreview, setCurPreview] = useState<number | string>();
   const [changesetList, setChangesetList] = useState<IRemoteChangeset[]>([]);
   const [fetching, setFetching] = useState(false);
@@ -329,7 +330,7 @@ export const TimeMachine: React.FC<React.PropsWithChildren<{ onClose: (visible: 
             {!isEmpty && <div className={styles.bottomTip}>{noMore ? t(Strings.no_more) : t(Strings.data_loading)}</div>}
           </div>
         </TabPane>
-        {Boolean(Backup) && (
+        {Boolean(Backup) && !activeNodePrivate && (
           <TabPane tab={t(Strings.backup_title)} key={TabPaneKeys.BACKUP}>
             <Backup datasheetId={datasheetId} setCurPreview={setCurPreview} curPreview={curPreview!} />
           </TabPane>

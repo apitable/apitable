@@ -43,7 +43,7 @@ import {
   t,
   ToolBarMenuCardOpenState,
   ViewType,
-  IGridViewProperty
+  IGridViewProperty, ConfigConstant
 } from '@apitable/core';
 import {
   ArrowDownOutlined,
@@ -91,6 +91,8 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
     const datasheetId = useAppSelector(Selectors.getActiveDatasheetId)!;
     const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
     const view = useAppSelector(Selectors.getCurrentView)!;
+    const catalogTreeActiveType = useAppSelector((state) => state.catalogTree.activeType);
+    const isPrivate = catalogTreeActiveType === ConfigConstant.Modules.PRIVATE;
     const frozenColumnCount = (view as IGridViewProperty)?.frozenColumnCount;
     const dispatch = useAppDispatch();
     const handleHideField = useHideField(view);
@@ -362,7 +364,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
           disabled: !Boolean(fieldPermissionManageable),
           disabledTip: t(Strings.set_field_permission_no_access),
           hidden(arg: any) {
-            if (!getEnvVariables().FIELD_PERMISSION_VISIBLE || isEmbedHiddenFieldPermission) {
+            if (!getEnvVariables().FIELD_PERMISSION_VISIBLE || isEmbedHiddenFieldPermission || isPrivate) {
               return true;
             }
             if (!arg['props']) {

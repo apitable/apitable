@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { compact } from 'lodash';
 import { FC, memo, useContext, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import { ContextMenu, IContextMenuClickState } from '@apitable/components';
@@ -52,24 +53,26 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
     const dispatch = useDispatch();
     const { rightClickInfo } = useContext(WorkbenchSideContext);
     const { setNewTdbId } = useContext(SideBarContext);
-    const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-    const rootId = useAppSelector((state: IReduxState) => state.catalogTree.rootId);
     const spaceId = useAppSelector((state) => state.space.activeId);
+    const catalogTreeActiveType = useAppSelector((state) => state.catalogTree.activeType);
+    const isPrivate = catalogTreeActiveType === ConfigConstant.Modules.PRIVATE;
+    const nodesMap = useAppSelector((state: IReduxState) => isPrivate ? state.catalogTree.privateTreeNodesMap : state.catalogTree.treeNodesMap);
+    const rootId = useAppSelector((state: IReduxState) => isPrivate ? state.catalogTree.privateRootId : state.catalogTree.rootId);
     const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
     const { updateNodeFavoriteStatusReq, copyNodeReq } = useCatalogTreeRequest();
     const { run: updateNodeFavoriteStatus } = useRequest(updateNodeFavoriteStatusReq, { manual: true });
-    const { run: copyNode } = useRequest(copyNodeReq, { manual: true });
+    const { run: copyNode } = useRequest((nodeId: string) => copyNodeReq(nodeId, true, catalogTreeActiveType), { manual: true });
     const { setSideBarVisible } = useSideBarVisible();
     const { screenIsAtMost } = useResponsive();
     const isMobile = screenIsAtMost(ScreenSize.md);
 
     const rename = (nodeId: string, level: string, module: ConfigConstant.Modules) => {
-      const editNodeId = module === ConfigConstant.Modules.CATALOG ? nodeId : `${level},${nodeId}`;
+      const editNodeId = module !== ConfigConstant.Modules.FAVORITE ? nodeId : `${level},${nodeId}`;
       dispatch(StoreActions.setEditNodeId(editNodeId, module));
     };
 
     const deleteNode = (nodeId: string, level: string, module: ConfigConstant.Modules) => {
-      const delNodeId = module === ConfigConstant.Modules.CATALOG ? nodeId : `${level},${nodeId}`;
+      const delNodeId = module !== ConfigConstant.Modules.FAVORITE ? nodeId : `${level},${nodeId}`;
       dispatch(StoreActions.setDelNodeId(delNodeId, module));
     };
 
@@ -146,17 +149,17 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
         return [];
       }
       const { contextMenuType, module, id, level } = rightClickInfo;
-      const { nodeId, permissions, nodeFavorite, parentId, type } = treeNodesMap[id];
+      const { nodeId, permissions, nodeFavorite, parentId, type, nodePrivate } = nodesMap[id];
       const targetId = nodeId || rootId;
       const targetManageable = rootManageable || !isRootNodeId(targetId);
       const { exportable, nodeAssignable, templateCreatable, sharable, editable } = permissions;
       const renamable = permissions.renamable && targetManageable;
       const removable = permissions.removable && targetManageable;
       const movable = permissions.movable && targetManageable;
-      const parentPermissions = treeNodesMap[parentId]?.permissions;
+      const parentPermissions = nodesMap[parentId]?.permissions;
       const backupcreatAble = permissions.manageable && Boolean(createBackupSnapshot);
       const copyable =
-        parentPermissions && parentPermissions.manageable && permissions.manageable && module === ConfigConstant.Modules.CATALOG && targetManageable;
+        parentPermissions && parentPermissions.manageable && permissions.manageable && module !== ConfigConstant.Modules.FAVORITE && targetManageable;
       const nodeUrl = `${window.location.protocol}//${window.location.host}/workbench/${nodeId}`;
       let data: any = [];
       switch (contextMenuType) {
@@ -165,18 +168,18 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
             [
               contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
               contextItemMap.get(ContextItemKey.Favorite)(() => {
-                updateNodeFavoriteStatus(nodeId);
+                updateNodeFavoriteStatus(nodeId, nodePrivate);
               }, nodeFavorite),
-              contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
+              contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable, module),
               contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
             ],
-            [
-              contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+            compact([
+              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
               contextItemMap.get(ContextItemKey.SaveAsTemplate)(() => openSaveAsTemplateModal(nodeId), !templateCreatable),
-            ],
+            ]),
             [contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable)],
           ];
           Player.applyFilters(Events.get_context_menu_file_more, data);
@@ -187,7 +190,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
             [
               contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
               contextItemMap.get(ContextItemKey.Favorite)(() => {
-                updateNodeFavoriteStatus(nodeId);
+                updateNodeFavoriteStatus(nodeId, nodePrivate);
               }, nodeFavorite),
               contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
               contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
@@ -199,14 +202,14 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
                 !exportable || isMobileApp(),
               ),
             ],
-            [
-              contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
-              contextItemMap.get(ContextItemKey.CreateBackup)(() => _createBackupSnapshot(nodeId), !backupcreatAble),
+            compact([
+              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+              !isPrivate && contextItemMap.get(ContextItemKey.CreateBackup)(() => _createBackupSnapshot(nodeId), !backupcreatAble),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
               contextItemMap.get(ContextItemKey.SaveAsTemplate)(() => openSaveAsTemplateModal(nodeId), !templateCreatable),
-            ],
+            ]),
             [contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable)],
           ];
           Player.applyFilters(Events.get_context_menu_file_more, data);
@@ -215,15 +218,15 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
         case ConfigConstant.ContextMenuType.FOLDER: {
           data = [
             [contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable)],
-            [
-              contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
+            compact([
+              contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId, nodePrivate), nodeFavorite),
               contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
-              contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
               contextItemMap.get(ContextItemKey.SaveAsTemplate)(() => openSaveAsTemplateModal(nodeId), !templateCreatable),
-            ],
+            ]),
             [contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable)],
           ];
           Player.applyFilters(Events.get_context_menu_folder_more, data);
@@ -233,16 +236,16 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
           data = [
             [
               contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
-              contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
+              contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId, nodePrivate), nodeFavorite),
               contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
               contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
             ],
-            [
-              contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+            compact([
+              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
-            ],
+            ]),
             [contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable)],
           ];
           Player.applyFilters(Events.get_context_menu_file_more, data);
@@ -252,15 +255,15 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
           data = [
             [
               contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
-              contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
+              contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId, nodePrivate), nodeFavorite),
               contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
               contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
             ],
-            [
-              contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+            compact([
+              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
-            ],
+            ]),
             [contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable)],
           ];
           Player.applyFilters(Events.get_context_menu_file_more, data);
@@ -274,12 +277,12 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
               contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
               contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
             ],
-            [
-              contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+            compact([
+              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
-            ],
+            ]),
             [contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable)],
           ];
           Player.applyFilters(Events.get_context_menu_file_more, data);
@@ -300,12 +303,12 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
                 !exportable || isMobileApp(),
               ),
             ],
-            [
-              contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+            compact([
+              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
-            ],
+            ]),
             [contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable)],
           ];
           Player.applyFilters(Events.get_context_menu_file_more, data);
@@ -318,12 +321,12 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
               contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
               contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
             ],
-            [
-              contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+            compact([
+              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
-            ],
+            ]),
             [contextItemMap.get(ContextItemKey.Delete)(() => deleteNode(nodeId, level, module), !removable)],
           ];
           Player.applyFilters(Events.get_context_menu_file_more, data);
@@ -385,7 +388,10 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
             [
               contextItemMap.get(ContextItemKey.AddFolder)(() => {
                 openCatalog();
-                addTreeNode(targetId, ConfigConstant.NodeType.FOLDER);
+                addTreeNode(
+                  targetId,
+                  ConfigConstant.NodeType.FOLDER,
+                ) ;
               }),
             ],
             [
@@ -422,7 +428,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
         case ConfigConstant.ContextMenuType.DEFAULT:
           return t(Strings.new_something);
         default:
-          return <MobileNodeContextMenuTitle node={treeNodesMap[rightClickInfo.id]} />;
+          return <MobileNodeContextMenuTitle node={nodesMap[rightClickInfo.id]} />;
       }
     };
 

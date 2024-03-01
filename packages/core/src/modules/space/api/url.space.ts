@@ -84,6 +84,8 @@ export const SPACE_RESOURCE = '/space/resource';
 export const NO_PERMISSION_MEMBER = '/node/remind/units/noPermission';
 // Give attachment space capacity details
 export const CAPACITY_REWARD_LIST = '/space/capacity/detail';
+// Give node capacity details
+export const CAPACITY_NODE_LIST = '/space/:spaceId/node/statistics';
 // email invitation
 export const SEND_EMAIL_INVITATION = '/spaces/:spaceId/email-invitations';
 export const RESEND_EMAIL_INVITATION = '/spaces/:spaceId/email-invitation/resend';

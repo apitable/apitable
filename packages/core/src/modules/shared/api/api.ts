@@ -57,7 +57,7 @@ const nestBaseURL = process.env.NEXT_PUBLIC_NEXT_API;
 /**
  * Upload Attachment
  *
- * @param formData attachment data
+ * @param file
  */
 export function uploadAttach(file: any) {
   return axios.post(Url.UPLOAD_ATTACH, file, {
@@ -68,7 +68,9 @@ export function uploadAttach(file: any) {
 /**
  * Get attachment's preview url
  *
+ * @param spaceId
  * @param token cloud file token
+ * @param attname
  */
 export function getAttachPreviewUrl(spaceId: string, token: string, attname: string) {
   return axios.post(urlcat(Url.OFFICE_PREVIEW, { spaceId }), {
@@ -98,8 +100,8 @@ export function getNotificationStatistics() {
 
 /**
  * notification list with pagination
- * @param pageObjectParams pagination params
  * @param isRead 1:read 2:unread, if empty, get all
+ * @param rowNo
  */
 export function getNotificationPage(isRead?: boolean, rowNo?: number) {
   return axios.get(Url.NOTIFICATION_PAGE, {
@@ -282,13 +284,15 @@ export const templateDirectory = (templateId: string, isPrivate: boolean, catego
  * @param templateId
  * @param parentId
  * @param data
+ * @param unitId
  * @returns
  */
-export const useTemplate = (templateId: string, parentId: string, data?: boolean) => {
+export const useTemplate = (templateId: string, parentId: string, data?: boolean, unitId?: string) => {
   return axios.post(Url.USE_TEMPLATE, {
     templateId,
     parentId,
     data,
+    unitId
   });
 };
 

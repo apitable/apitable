@@ -40,6 +40,7 @@ export interface INodeItemProps {
   deleting: boolean;
   from: ConfigConstant.Modules;
   level: string;
+  isPrivate?: boolean;
 }
 
 let mobileModalClose: () => void;
@@ -53,6 +54,7 @@ const NodeItemBase: FC<React.PropsWithChildren<INodeItemProps>> = ({
   deleting,
   from,
   level,
+  isPrivate,
 }) => {
   const { deleteNodeReq } = useCatalogTreeRequest();
   const { run: deleteNode } = useRequest(deleteNodeReq, { manual: true });
@@ -62,6 +64,7 @@ const NodeItemBase: FC<React.PropsWithChildren<INodeItemProps>> = ({
   const isMobile = screenIsAtMost(ScreenSize.md);
   const currentLevel = level.split('-').length - 1;
   const childCreatable = node.type === ConfigConstant.NodeType.FOLDER && node.permissions.childCreatable && currentLevel < 5;
+  const moduleType = isPrivate ? ConfigConstant.Modules.PRIVATE : undefined;
   useEffect(() => {
     if (actived) {
       const activeElem = document.getElementById(`${ConfigConstant.Modules.CATALOG}${node.nodeId}`);
@@ -91,13 +94,13 @@ const NodeItemBase: FC<React.PropsWithChildren<INodeItemProps>> = ({
 
   const cancelDeleteModalHandler = () => {
     mobileModalClose?.();
-    dispatch(StoreActions.setDelNodeId(''));
+    dispatch(StoreActions.setDelNodeId('', moduleType));
     dispatch(StoreActions.setDelNodeId('', ConfigConstant.Modules.FAVORITE));
   };
 
   const deleteNodeHandler = () => {
     const { nodeId, parentId } = node;
-    deleteNode({ nodeId, parentId });
+    deleteNode({ nodeId, parentId, module: moduleType });
     cancelDeleteModalHandler();
   };
 
@@ -105,7 +108,7 @@ const NodeItemBase: FC<React.PropsWithChildren<INodeItemProps>> = ({
     <div className={styles.deleteTitle}>
       {
         <TComponent
-          tkey={t(Strings.confirm_delete_node_name_as)}
+          tkey={isPrivate ? t(Strings.confirm_delete_private_node_name_as) : t(Strings.confirm_delete_node_name_as)}
           params={{
             nodeNameDiv: <div className={styles.deleteNodeName}>{node.nodeName}</div>,
           }}
@@ -148,6 +151,7 @@ const NodeItemBase: FC<React.PropsWithChildren<INodeItemProps>> = ({
         expanded={expanded}
         hasChildren={hasChildren}
         node={node}
+        isPrivate={isPrivate}
       />
     </Popconfirm>
   ) : (
@@ -163,6 +167,7 @@ const NodeItemBase: FC<React.PropsWithChildren<INodeItemProps>> = ({
       expanded={expanded}
       hasChildren={hasChildren}
       node={node}
+      isPrivate={isPrivate}
     />
   );
 };

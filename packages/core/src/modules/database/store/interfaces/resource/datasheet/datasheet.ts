@@ -295,6 +295,7 @@ export interface INodeMeta {
   nodeShared: boolean;
   nodePermitSet: boolean;
   nodeFavorite?: boolean;
+  nodePrivate?: boolean;
   spaceId: string;
   role: Role;
   permissions: IPermissions;

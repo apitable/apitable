@@ -67,7 +67,6 @@ import {
 } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ArchivedRecords } from 'pc/components/archive_record';
-import { closeAllExpandRecord } from 'pc/components/expand_record/utils';
 import { MirrorList } from 'pc/components/mirror/mirror_list';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { SideBarClickType, SideBarType, useSideBar } from 'pc/context';
@@ -140,7 +139,7 @@ const ToolbarBase = () => {
 
   const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
   const spaceId = useAppSelector((state) => state.space.activeId);
-  const treeNodesMap = useAppSelector((state) => state.catalogTree.treeNodesMap);
+  const { treeNodesMap, privateTreeNodesMap } = useAppSelector((state) => state.catalogTree);
   const activeView: IViewProperty = useAppSelector((state) => Selectors.getCurrentView(state))!;
   const actualColumnCount = activeView.columns.length;
   const ganttViewStatus = useAppSelector((state) => Selectors.getGanttViewStatus(state));
@@ -161,6 +160,8 @@ const ToolbarBase = () => {
   const isExitGroup = 'groupInfo' in activeView && activeView.groupInfo?.length;
   const permissions = useAppSelector((state) => Selectors.getPermissions(state, datasheetId));
   const activeNodeId = useAppSelector((state) => Selectors.getNodeId(state));
+  const activeNodePrivate = useAppSelector((state) => Selectors.getActiveNodePrivate(state));
+  const activeNode = activeNodePrivate ? privateTreeNodesMap[activeNodeId] : treeNodesMap[activeNodeId];
   const isApiPanelOpen = useAppSelector((state) => state.space.isApiPanelOpen);
   const isWidgetPanel = useAppSelector((state) => {
     const { mirrorId, datasheetId } = state.pageParams;
@@ -396,8 +397,6 @@ const ToolbarBase = () => {
     onSetClickType && onSetClickType(SideBarClickType.ToolBar);
     await ShortcutActionManager.trigger(toggleKey);
   };
-
-  const handleToggleSideDrawer = async (toggleKey: ShortcutActionName) => {};
 
   const embedSetting = useMemo(() => {
     const defaultValue = {
@@ -726,7 +725,7 @@ const ToolbarBase = () => {
             />
           </Display>
         )}
-        {!shareId && !templateId && activeNodeId && treeNodesMap[activeNodeId] && !embedId && !isIframe() && (
+        {!shareId && !templateId && Boolean(activeNode) && !embedId && !isIframe() && (
           <Display type={ToolHandleType.Share}>
             <ToolItem
               showLabel={showIconBarLabel}

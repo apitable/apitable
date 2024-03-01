@@ -288,6 +288,7 @@ export enum Modules {
   CATALOG = 'CATALOG',
   SHARE = 'SHARE',
   TEAM_TREE = 'TEAM_TREE',
+  PRIVATE = 'PRIVATE',
 }
 
 /** Indicates the type of menu, each different type of menu corresponds to a different menu list */

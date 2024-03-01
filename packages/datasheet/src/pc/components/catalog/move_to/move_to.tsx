@@ -19,7 +19,7 @@
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Api, IParent, Navigation, StoreActions, Strings, t } from '@apitable/core';
+import { Api, ConfigConstant, IParent, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Message } from 'pc/components/common/message/message';
 import { Popup } from 'pc/components/common/mobile/popup';
@@ -35,16 +35,22 @@ export const MoveTo: React.FC<
   React.PropsWithChildren<{
     nodeIds: string[];
     onClose?: () => void;
+    isPrivate?: boolean;
   }>
 > = (props) => {
-  const { nodeIds, onClose } = props;
+  const { nodeIds, onClose, isPrivate } = props;
   const [selectedNodeId, setSelectedNodeId] = useState<string>();
+  const [catalog, setCatalog] = useState<ConfigConstant.Modules>();
   const [parentList, setParentList] = useState<IParent[]>([]);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const { nodeName, parentId, nodePermitSet } = useAppSelector((state) => {
-    const { nodeName, parentId, nodePermitSet } = state.catalogTree.treeNodesMap[nodeIds[0]];
-    return { nodeName, parentId, nodePermitSet };
+  const { nodeName, nodePermitSet } = useAppSelector((state) => {
+    const nodeMapKey = isPrivate ? 'privateTreeNodesMap' : 'treeNodesMap';
+    const { nodeName, nodePermitSet } = state.catalogTree[nodeMapKey][nodeIds[0]];
+    return { nodeName, nodePermitSet };
   });
+  const userUnitId = useAppSelector((state) => state.user.info?.unitId);
+  const rootId = useAppSelector((state) => state.catalogTree.rootId);
+  const rootName = useAppSelector((state) => state.catalogTree.treeNodesMap[rootId]?.nodeName);
   const currentNodeId = useAppSelector((state) => state.pageParams.nodeId);
 
   const dispatch = useDispatch();
@@ -60,7 +66,8 @@ export const MoveTo: React.FC<
         Message.error({ content: message });
         return;
       }
-      setParentList(data);
+      const _data = data.some((v) => v.nodeId === rootId) ? data : [{ nodeId: rootId, nodeName: rootName }, ...data];
+      setParentList(_data);
     });
   };
 
@@ -69,9 +76,18 @@ export const MoveTo: React.FC<
       return;
     }
     getParentList(selectedNodeId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedNodeId]);
 
-  const main = <SelectFolder selectedFolderId={selectedNodeId} selectedFolderParentList={parentList} onChange={setSelectedNodeId} />;
+  const main = (
+    <SelectFolder
+      selectedFolderId={selectedNodeId}
+      selectedFolderParentList={parentList}
+      onChange={setSelectedNodeId}
+      catalog={catalog}
+      setCatalog={setCatalog}
+    />
+  );
 
   const selectedNodeName = parentList.find((v) => v.nodeId === selectedNodeId)?.nodeName;
 
@@ -81,14 +97,15 @@ export const MoveTo: React.FC<
       return;
     }
     // selected nodeId is equal nodeId current parentId
-    if (selectedNodeId === parentId) {
-      Message.error({ content: t(Strings.move_to_error_equal_parent) });
-      return;
-    }
+    // if (selectedNodeId === parentId) {
+    //   Message.error({ content: t(Strings.move_to_error_equal_parent) });
+    //   return;
+    // }
 
     const move = () => {
       setConfirmLoading(true);
-      Api.nodeMove(nodeId, selectedNodeId).then((res) => {
+      const unitId = catalog === ConfigConstant.Modules.PRIVATE ? userUnitId : undefined;
+      Api.nodeMove(nodeId, selectedNodeId, undefined, unitId).then((res) => {
         setConfirmLoading(false);
         const { data, success, message } = res.data;
         if (!success) {
@@ -96,10 +113,16 @@ export const MoveTo: React.FC<
           dispatch(StoreActions.setErr(message));
           return;
         }
-        dispatch(StoreActions.moveTo(nodeId, selectedNodeId, 0));
-        dispatch(StoreActions.addNodeToMap(data));
-        onClose && onClose();
-        moveSuccess(nodeId);
+        // private => team should reload
+        if (isPrivate && catalog === ConfigConstant.Modules.CATALOG) {
+          moveSuccess(nodeId);
+          window.location.reload();
+        } else {
+          dispatch(StoreActions.moveTo(nodeId, selectedNodeId, 0, catalog));
+          dispatch(StoreActions.addNodeToMap(data, true, catalog));
+          onClose && onClose();
+          moveSuccess(nodeId);
+        }
       });
     };
     if (!nodePermitSet) {
@@ -163,7 +186,7 @@ export const MoveTo: React.FC<
         <Modal
           className={styles.moveTo}
           title={<Title nodeName={nodeName} />}
-          visible
+          open
           centered
           onCancel={onClose}
           okText={t(Strings.move)}

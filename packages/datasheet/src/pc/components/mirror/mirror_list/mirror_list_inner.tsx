@@ -63,6 +63,7 @@ const BlankInner = ({ createMirrorNode, mirrorCreatable }: IBlankInner) => {
 export const MirrorListInner: React.FC<React.PropsWithChildren<IMirrorListInner>> = (props) => {
   const colors = useThemeColors();
   const { mirrorList, loading } = props;
+  const catalogTreeActiveType = useAppSelector((state) => state.catalogTree.activeType);
   const { datasheetId, viewId } = useAppSelector((state) => state.pageParams)!;
   const folderId = useAppSelector((state) => {
     return Selectors.getDatasheetParentId(state, datasheetId);

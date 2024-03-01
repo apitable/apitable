@@ -1,3 +1,4 @@
+import { compact } from 'lodash';
 import { ConfigConstant, INode } from '@apitable/core';
 
 export interface ISelectTreeNode {
@@ -31,7 +32,7 @@ export const transformNodeTreeData = (data: INode[]) => {
     };
     let childrenResult: ISelectTreeNode[] = [];
     if (node.hasChildren && Array.isArray(node.children)) {
-      childrenResult = transformNodeTreeData(node.children);
+      childrenResult = transformNodeTreeData(compact(node.children));
     }
     return [...prev, newNode, ...childrenResult];
   }, [] as ISelectTreeNode[]);

@@ -17,12 +17,11 @@
  */
 
 import { FC } from 'react';
-import { ConfigConstant, IReduxState, Strings, t } from '@apitable/core';
+import { ConfigConstant, IReduxState, Selectors, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
-// import HeaderPng from 'static/icon/datasheet/share/datasheet_img_share.png';
 import { useAppSelector } from 'pc/store/react-redux';
 import { ShareContent } from './share_content';
 import styles from './style.module.less';
@@ -48,8 +47,10 @@ export enum ShareTab {
 }
 
 export const ShareNode: FC<React.PropsWithChildren<IShareNodeProps>> = ({ data, visible, onClose, isTriggerRender }) => {
-  const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-  const { nodeName } = treeNodesMap[data.nodeId];
+  const activeNodePrivate = useAppSelector((state) => Selectors.getActiveNodePrivate(state));
+  const nodeKey = activeNodePrivate ? 'privateTreeNodesMap' : 'treeNodesMap';
+  const nodesMap = useAppSelector((state: IReduxState) => state.catalogTree[nodeKey]);
+  const { nodeName } = nodesMap[data.nodeId];
 
   if (isTriggerRender) {
     return <ShareContent data={data} />;
@@ -61,7 +62,7 @@ export const ShareNode: FC<React.PropsWithChildren<IShareNodeProps>> = ({ data, 
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <Modal
           className={styles.shareNodeModal}
-          visible={visible}
+          open={visible}
           width={528}
           bodyStyle={{ padding: 0 }}
           onCancel={onClose}

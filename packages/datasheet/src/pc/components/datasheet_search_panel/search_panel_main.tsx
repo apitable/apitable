@@ -21,7 +21,10 @@ import { getModalTitle, getPlaceholder } from './utils';
 import styles from './style.module.less';
 
 export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
-  const { hidePanel, noCheckPermission, options, onNodeSelect, directClickMode, showMirrorNode, localState, localDispatch, secondConfirmType } = props;
+  const {
+    hidePanel, noCheckPermission, options, onNodeSelect,
+    directClickMode, showMirrorNode, localState, localDispatch, secondConfirmType
+  } = props;
 
   const colors = useThemeColors();
   const { embedId } = useAppSelector((state) => state.pageParams);
@@ -128,7 +131,12 @@ export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
       }
     }
   };
-  const { onNodeClick, fetchFolderData } = useNodeClick({ localDispatch, localState, searchDatasheetMetaData, secondConfirmType });
+  const { onNodeClick, fetchFolderData } = useNodeClick({
+    localDispatch,
+    localState,
+    searchDatasheetMetaData,
+    secondConfirmType,
+  });
 
   const isPc = !isMobile;
 

@@ -46,7 +46,6 @@ import { Share } from 'pc/components/catalog/share';
 import { Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 // eslint-disable-next-line no-restricted-imports
-// eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { SearchPanel } from 'pc/components/datasheet_search_panel';
 import { ShareModal as FormShare } from 'pc/components/form_panel/form_tab/tool_bar/share_modal';
@@ -54,12 +53,13 @@ import { expandInviteModal } from 'pc/components/invite/invite_outsider';
 import { expandSearch } from 'pc/components/quick_search';
 import { Router } from 'pc/components/route_manager/router';
 import { sendRemind } from 'pc/events/notification_verification';
-import { IPanelInfo, useCatalogTreeRequest, useRequest, useResponsive, useSearchPanel, useUserRequest, useWorkbenchSideSync } from 'pc/hooks';
+import { IPanelInfo, useCatalogTreeRequest, useRequest, useResponsive, useSearchPanel, useWorkbenchSideSync } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { Catalog } from '../../catalog';
+import { Private } from '../../private/private';
 import { Favorite } from './favorite';
 import { SpaceInfo } from './space-info';
 import { WorkbenchSideContext } from './workbench_side_context';
@@ -69,12 +69,13 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const [rightClickInfo, setRightClickInfo] = useState<IRightClickInfo | null>(null);
   const { contextMenu, onSetContextMenu, onCancelContextMenu } = useContextMenu();
-  const [activeKey, setActiveKey] = useState<string>('');
   const { panelVisible, panelInfo, onChange, setPanelInfo, setPanelVisible } = useSearchPanel();
   const { addTreeNode } = useCatalog();
   const {
     spaceId,
+    activeKey,
     treeNodesMap,
+    privateTreeNodesMap,
     rootId,
     activeNodeId,
     permissionModalNodeId,
@@ -87,7 +88,9 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   } = useAppSelector((state: IReduxState) => {
     return {
       spaceId: state.space.activeId,
+      activeKey: state.catalogTree.activeType || ConfigConstant.Modules.CATALOG,
       treeNodesMap: state.catalogTree.treeNodesMap,
+      privateTreeNodesMap: state.catalogTree.privateTreeNodesMap,
       rootId: state.catalogTree.rootId,
       activeNodeId: Selectors.getNodeId(state),
       permissionModalNodeId: state.catalogTree.permissionModalNodeId,
@@ -102,8 +105,10 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
 
   const isFormShare = /fom\w+/.test(shareModalNodeId);
   const activedNodeId = useAppSelector((state) => Selectors.getNodeId(state));
-  const { getTreeDataReq } = useCatalogTreeRequest();
+  const activedNodePrivate = useAppSelector((state) => Selectors.getActiveNodePrivate(state));
+  const { getTreeDataReq, getPrivateTreeDataReq } = useCatalogTreeRequest();
   const { run: getTreeData } = useRequest(getTreeDataReq, { manual: true });
+  const { run: getPrivateTreeData } = useRequest(getPrivateTreeDataReq, { manual: true });
   const { getPositionNodeReq } = useCatalogTreeRequest();
   const { run: getPositionNode } = useRequest(getPositionNodeReq, {
     manual: true,
@@ -119,6 +124,8 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   const isSpaceAdmin = spacePermissions && spacePermissions.includes('MANAGE_WORKBENCH');
   const rootManageable = userInfo?.isMainAdmin || isSpaceAdmin || spaceFeatures?.rootManageable;
   const inviteStatus = spaceFeatures?.invitable;
+
+  const [showPrivate, setShowPrivate] = useState(false);
 
   useWorkbenchSideSync();
 
@@ -177,15 +184,24 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
     if (!activeNodeId || !rootId) {
       return;
     }
-    const activeNode = treeNodesMap[activeNodeId];
-    if (activeNode && treeNodesMap[activeNode.parentId]) {
+    let isPrivate = false;
+    let nodeMaps = treeNodesMap;
+    let activeNode = treeNodesMap[activeNodeId];
+    if (!activeNode) {
+      activeNode = privateTreeNodesMap[activeNodeId];
+      nodeMaps = privateTreeNodesMap;
+      isPrivate = true;
+      activeNode && changeHandler(ConfigConstant.Modules.PRIVATE);
+    }
+    const _module = isPrivate ? ConfigConstant.Modules.PRIVATE : undefined;
+    if (activeNode && nodeMaps[activeNode.parentId]) {
       const parentNodeId = activeNode.parentId;
-      if (treeNodesMap[parentNodeId]?.children.length) {
-        dispatch(StoreActions.collectionNodeAndExpand(activeNodeId));
+      if (nodeMaps[parentNodeId]?.children.length) {
+        dispatch(StoreActions.collectionNodeAndExpand(activeNodeId, _module));
         return;
       }
     }
-    getPositionNode(activeNodeId);
+    getPositionNode(activeNodeId, _module);
     // eslint-disable-next-line
   }, [activeNodeId, rootId]);
 
@@ -196,17 +212,31 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
     // eslint-disable-next-line
   }, [loading, activeNodeId]);
 
-  const changeHandler = (key: string) => {
-    setActiveKey(key);
+  const changeHandler = (key: ConfigConstant.Modules) => {
+    dispatch(StoreActions.setActiveTreeType(key));
     updateActiveKey(key);
   };
+
+  useEffect(() => {
+    if (spaceId) {
+      getPrivateTreeData().then(rlt => {
+        if (rlt === null) {
+          changeHandler(ConfigConstant.Modules.CATALOG);
+          setShowPrivate(false);
+        } else {
+          setShowPrivate(true);
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [spaceId]);
 
   const updateActiveKey = React.useCallback(
     (key: string = 'get') => {
       const defaultActiveKeyString = localStorage.getItem('vika_workbench_active_key');
       let defaultActiveKey = defaultActiveKeyString ? JSON.parse(defaultActiveKeyString) : ConfigConstant.Modules.CATALOG;
       if ('get' === key) {
-        // Compatible with older versions, which is array
+        // Compatible with older versions, which is arrayed
         if (typeof defaultActiveKey[0] === 'string') defaultActiveKey = ConfigConstant.Modules.CATALOG;
         if (Array.isArray(defaultActiveKey)) {
           defaultActiveKey = defaultActiveKey.find((i: { spaceId: string }) => i.spaceId === spaceId);
@@ -232,8 +262,8 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   );
 
   useEffect(() => {
-    setActiveKey(updateActiveKey());
-  }, [updateActiveKey]);
+    dispatch(StoreActions.setActiveTreeType(updateActiveKey()));
+  }, [dispatch, updateActiveKey]);
 
   const jumpTrash = () => {
     Router.push(Navigation.TRASH, { params: { spaceId } });
@@ -265,9 +295,10 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   };
 
   const openCatalog = () => {
-    if (!activeKey.includes(ConfigConstant.Modules.CATALOG)) {
-      changeHandler(ConfigConstant.Modules.CATALOG);
-    }
+    // TODO
+    // if (!activeKey.includes(ConfigConstant.Modules.CATALOG)) {
+    //   changeHandler(ConfigConstant.Modules.CATALOG);
+    // }
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -298,8 +329,6 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
       dispatch(StoreActions.setPermissionCommitRemindStatus(false));
     }
   }
-
-  const PermissionSettingsMain = PermissionSettingsPlus;
 
   return (
     <WorkbenchSideContext.Provider value={providerValue}>
@@ -334,7 +363,8 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
           <div className={styles.mainContainer} id={WORKBENCH_SIDE_ID.NODE_WRAPPER}>
             <div className={styles.btnGroup}>
               <RadioGroup name="workbench-btn-group" isBtn block value={activeKey} onChange={(_e, value) => changeHandler(value)}>
-                <Radio value={ConfigConstant.Modules.CATALOG}>{t(Strings.catalog)}</Radio>
+                <Radio value={ConfigConstant.Modules.CATALOG}>{t(Strings.catalog_team)}</Radio>
+                {showPrivate && <Radio value={ConfigConstant.Modules.PRIVATE}>{t(Strings.catalog_private)}</Radio>}
                 <Radio value={ConfigConstant.Modules.FAVORITE}>{t(Strings.favorite)}</Radio>
               </RadioGroup>
             </div>
@@ -383,7 +413,8 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
                   )}
                 </div>
                 <div className={styles.scrollContainer}>
-                  <Catalog />
+                  {activeKey === ConfigConstant.Modules.CATALOG && <Catalog />}
+                  {showPrivate && activeKey === ConfigConstant.Modules.PRIVATE && <Private />}
                 </div>
               </>
             )}
@@ -428,7 +459,11 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
         {saveAsTemplateModalNodeId && (
           <GenerateTemplate nodeId={saveAsTemplateModalNodeId} onCancel={() => dispatch(StoreActions.updateSaveAsTemplateModalNodeId(''))} />
         )}
-        {importModalNodeId && <ImportFile parentId={importModalNodeId} onCancel={() => dispatch(StoreActions.updateImportModalNodeId(''))} />}
+        {importModalNodeId && <ImportFile
+          isPrivate={activeKey === ConfigConstant.Modules.PRIVATE}
+          parentId={importModalNodeId} 
+          onCancel={() => dispatch(StoreActions.updateImportModalNodeId(''))} 
+        />}
         {panelVisible && (
           <SearchPanel
             folderId={panelInfo!.folderId}
@@ -436,6 +471,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
             activeDatasheetId={panelInfo?.datasheetId || ''}
             setSearchPanelVisible={setPanelVisible}
             onChange={onChange}
+            isPrivate={activeKey === ConfigConstant.Modules.PRIVATE}
           />
         )}
         {isFormShare && (
@@ -446,18 +482,24 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
           />
         )}
         {!isFormShare && <Share nodeId={shareModalNodeId} onClose={() => dispatch(StoreActions.updateShareModalNodeId(''))} />}
-        <PermissionSettingsMain
-          data={{
-            nodeId: permissionModalNodeId,
-            type: treeNodesMap[permissionModalNodeId]?.type,
-            icon: treeNodesMap[permissionModalNodeId]?.icon,
-            name: treeNodesMap[permissionModalNodeId]?.nodeName,
-          }}
-          visible={Boolean(permissionModalNodeId)}
-          onClose={onClosePermissionSettingModal}
-        />
+        {!activedNodePrivate && (
+          <PermissionSettingsPlus
+            data={{
+              nodeId: permissionModalNodeId,
+              type: treeNodesMap[permissionModalNodeId]?.type,
+              icon: treeNodesMap[permissionModalNodeId]?.icon,
+              name: treeNodesMap[permissionModalNodeId]?.nodeName,
+            }}
+            visible={Boolean(permissionModalNodeId)}
+            onClose={onClosePermissionSettingModal}
+          />
+        )}
         {moveToNodeIds && moveToNodeIds.length > 0 && (
-          <MoveTo nodeIds={moveToNodeIds} onClose={() => dispatch(StoreActions.updateMoveToNodeIds([]))} />
+          <MoveTo
+            nodeIds={moveToNodeIds}
+            onClose={() => dispatch(StoreActions.updateMoveToNodeIds([]))}
+            isPrivate={activeKey === ConfigConstant.Modules.PRIVATE}
+          />
         )}
       </div>
     </WorkbenchSideContext.Provider>
