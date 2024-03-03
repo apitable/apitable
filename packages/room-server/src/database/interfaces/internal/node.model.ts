@@ -35,19 +35,20 @@ export class NodeInfo implements INodeMeta {
   nodeFavorite!: boolean;
   extra?: any;
   isGhostNode?: boolean;
+  nodePrivate!: boolean;
 }
 
 export class NodeBaseInfo {
   @ApiProperty()
-  id!: string;
+    id!: string;
   @ApiProperty()
-  nodeName!: string;
+    nodeName!: string;
   @ApiProperty()
-  icon!: string;
+    icon!: string;
   @ApiPropertyOptional()
-  revision?: number;
+    revision?: number;
   @ApiProperty()
-  parentId!: string;
+    parentId!: string;
 }
 
 export class NodeDetailInfo extends FieldPermissionMap {

@@ -149,10 +149,10 @@ public interface StaticsMapper {
     /**
      * Query the view statistics of all tables in the space.
      *
-     * @param spaceId space id
+     * @param dstIds dst ids
      * @return number
      */
-    List<String> selectDstViewStaticsBySpaceId(@Param("spaceId") String spaceId);
+    List<String> selectDstViewStaticsByDstIds(@Param("dstIds") List<String> dstIds);
 
     /**
      * Query the maximum API usage table ID of a day.

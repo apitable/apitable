@@ -241,7 +241,9 @@ public class NodeController {
         @Parameter(name = "depth", in = ParameterIn.QUERY,
             description = "tree depth, we can specify the query depth, maximum 2 layers depth.",
             schema = @Schema(type = "integer"), example = "2"),
-        @Parameter(name = "unitType", in = ParameterIn.QUERY, description = "unitType, 1: team, 3: member(private)", schema = @Schema(type = "integer"), example = "3"),
+        @Parameter(name = "unitType", in = ParameterIn.QUERY,
+            description = "unitType, 1: team, 3: member(private)",
+            schema = @Schema(type = "integer"), example = "3"),
     })
     public ResponseData<NodeInfoTreeVo> getTree(
         @RequestParam(name = "depth", defaultValue = "2") @Valid @Min(0) @Max(2) Integer depth,
@@ -430,11 +432,15 @@ public class NodeController {
         @Parameter(name = "nodeId", description = "node id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "nodRTGSy43DJ9"),
         @Parameter(name = "nodeType", description = "node type 1:folder,2:datasheet",
-            schema = @Schema(type = "integer"), in = ParameterIn.QUERY, example = "1")
+            schema = @Schema(type = "integer"), in = ParameterIn.QUERY, example = "1"),
+        @Parameter(name = "unitType", in = ParameterIn.QUERY,
+            description = "unitType, 3: member(private)",
+            schema = @Schema(type = "integer"), example = "3")
     })
     public ResponseData<List<NodeInfoVo>> getNodeChildrenList(
         @RequestParam(name = "nodeId") String nodeId,
-        @RequestParam(name = "nodeType", required = false) Integer nodeType) {
+        @RequestParam(name = "nodeType", required = false) Integer nodeType,
+        @RequestParam(name = "unitType", required = false) Integer unitType) {
         // get the space ID, the method includes judging whether the node exists
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         NodeType nodeTypeEnum = null;
@@ -445,6 +451,15 @@ public class NodeController {
         Long memberId = LoginContext.me().getUserSpaceDto(spaceId).getMemberId();
         List<NodeInfoVo> nodeInfos =
             iNodeService.getChildNodesByNodeId(spaceId, memberId, nodeId, nodeTypeEnum);
+        nodeInfos = nodeInfos.stream()
+            .filter(i -> {
+                if (UnitType.MEMBER.getType().equals(unitType)) {
+                    return i.getNodePrivate();
+                } else {
+                    return !i.getNodePrivate();
+                }
+            })
+            .collect(Collectors.toList());
         return ResponseData.success(nodeInfos);
     }
 
@@ -492,7 +507,7 @@ public class NodeController {
         // Check whether the source tables of form and mirror exist and whether they have the
         // specified operation permissions.
         iNodeService.checkSourceDatasheet(spaceId, memberId, nodeOpRo.getType(),
-            nodeOpRo.getExtra());
+            nodeOpRo.getUnitId(), nodeOpRo.getExtra());
         if (Boolean.TRUE.equals(nodeOpRo.getCheckDuplicateName())
             && StrUtil.isNotBlank(nodeOpRo.getNodeName())) {
             Optional<NodeEntity> nodeOptional = iNodeService.findSameNameInSameLevel(

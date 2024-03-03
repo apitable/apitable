@@ -179,6 +179,7 @@ export class NodeService {
         description: description || '{}',
         parentId: nodeInfo?.parentId || '',
         icon: nodeInfo?.icon || '',
+        nodePrivate: nodeInfo?.unitId != '0',
         nodeShared: nodeShared,
         nodePermitSet: nodePermitSet,
         revision: revision == null ? 0 : revision,

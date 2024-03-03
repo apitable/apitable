@@ -248,8 +248,11 @@ public interface INodeService extends IService<NodeEntity> {
      * @param memberId member id
      * @param type     node type
      * @param extra    node correlation parameters
+     * @param unitId unit id
      */
-    void checkSourceDatasheet(String spaceId, Long memberId, Integer type, NodeRelRo extra);
+    void checkSourceDatasheet(String spaceId, Long memberId, Integer type, String unitId,
+                              NodeRelRo extra
+    );
 
     /**
      * get member id by user  id and node id.
@@ -699,4 +702,11 @@ public interface INodeService extends IService<NodeEntity> {
      */
     Map<Long, Integer> getCountByUnitIds(List<Long> unitIds);
 
+    /**
+     * get unit id by node id.
+     *
+     * @param nodeId node id
+     * @return unit id
+     */
+    Long getUnitIdByNodeId(String nodeId);
 }

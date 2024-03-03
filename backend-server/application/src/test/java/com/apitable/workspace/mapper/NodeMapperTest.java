@@ -89,7 +89,8 @@ public class NodeMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/node-data.sql")
     void testSelectLikeNodeName() {
-        List<String> ids = nodeMapper.selectLikeNodeName("spczJrh2i3tLW", "1");
+        List<String> ids =
+            nodeMapper.selectLikeNodeName("spczJrh2i3tLW", Collections.singletonList(0L), "1");
         assertThat(ids).isNotEmpty();
     }
 

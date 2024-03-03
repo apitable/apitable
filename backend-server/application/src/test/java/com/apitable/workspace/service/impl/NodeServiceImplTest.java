@@ -44,6 +44,7 @@ import com.apitable.shared.util.page.PageInfo;
 import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.template.ro.CreateTemplateRo;
 import com.apitable.user.entity.UserEntity;
+import com.apitable.workspace.dto.DatasheetSnapshot;
 import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import com.apitable.workspace.dto.NodeCopyEffectDTO;
 import com.apitable.workspace.dto.NodeCopyOptions;
@@ -1324,6 +1325,93 @@ public class NodeServiceImplTest extends AbstractIntegrationTest {
         assertThat(nodes.getRecords().get(0).getTotalNodeCount()).isEqualTo(1);
         assertThat(nodes.getRecords().get(0).getTotalNodeCount()).isEqualTo(1);
         assertThat(nodes.getRecords().get(0).getPrivateNodeCount()).isEqualTo(0);
+    }
+
+    @Test
+    void testGetNodePositionInPrivate() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        // create node
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .build();
+        String folderId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        ro.setParentId(folderId);
+        ro.setType(NodeType.DATASHEET.getNodeType());
+        String dstId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        // create private folder
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        ro.setUnitId(unitId.toString());
+        ro.setParentId(rootNodeId);
+        ro.setType(NodeType.FOLDER.getNodeType());
+        String privateFolderId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        ro.setType(NodeType.DATASHEET.getNodeType());
+        ro.setParentId(privateFolderId);
+        String privateDstId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        NodeInfoTreeVo privateTreeVo =
+            iNodeService.position(userSpace.getSpaceId(), userSpace.getMemberId(), privateDstId);
+        assertThat(privateTreeVo.getChildrenNodes().size()).isEqualTo(1);
+
+        NodeInfoTreeVo treeVo =
+            iNodeService.position(userSpace.getSpaceId(), userSpace.getMemberId(), dstId);
+        assertThat(treeVo.getChildrenNodes().size()).isEqualTo(1);
+    }
+
+    @Test
+    void testCreatePrivateMirrorNode() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        // create node
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .unitId(unitId.toString())
+            .parentId(rootNodeId)
+            .type(NodeType.DATASHEET.getNodeType())
+            .build();
+        String dstId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        DatasheetSnapshot snapshot = iDatasheetMetaService.getMetaByDstId(dstId);
+        NodeRelRo relRo = new NodeRelRo();
+        relRo.setDatasheetId(dstId);
+        relRo.setViewId(snapshot.getMeta().getViews().get(0).getId());
+        ro.setExtra(relRo);
+        ro.setType(NodeType.MIRROR.getNodeType());
+        String mirrorId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        assertThat(mirrorId).isNotNull();
+    }
+
+    @Test
+    void testCreatePrivateMirrorNodeInPrivateFolder() {
+        // mock user
+        MockUserSpace userSpace = createUserSpaceForFreeSubscription();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        Long unitId = iUnitService.getUnitIdByRefId(userSpace.getMemberId());
+        // create node
+        NodeOpRo ro = new NodeOpRo().toBuilder()
+            .unitId(unitId.toString())
+            .parentId(rootNodeId)
+            .type(NodeType.FOLDER.getNodeType())
+            .build();
+        String folderId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        ro.setType(NodeType.DATASHEET.getNodeType());
+        ro.setParentId(folderId);
+        String dstId = iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        DatasheetSnapshot snapshot = iDatasheetMetaService.getMetaByDstId(dstId);
+        NodeRelRo relRo = new NodeRelRo();
+        relRo.setDatasheetId(dstId);
+        relRo.setViewId(snapshot.getMeta().getViews().get(0).getId());
+        ro.setExtra(relRo);
+        ro.setType(NodeType.MIRROR.getNodeType());
+        String mirrorId =
+            iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), ro);
+        assertThat(mirrorId).isNotNull();
     }
 
     private MockUserSpace createUserSpaceForFreeSubscription() {

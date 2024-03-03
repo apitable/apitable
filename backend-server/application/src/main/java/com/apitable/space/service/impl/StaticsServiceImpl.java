@@ -48,6 +48,7 @@ import com.apitable.space.dto.NodeTypeStaticsDTO;
 import com.apitable.space.mapper.StaticsMapper;
 import com.apitable.space.service.IStaticsService;
 import com.apitable.workspace.dto.NodeStatisticsDTO;
+import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.enums.ViewType;
 import com.apitable.workspace.mapper.DatasheetMapper;
 import com.apitable.workspace.mapper.NodeMapper;
@@ -377,7 +378,9 @@ public class StaticsServiceImpl implements IStaticsService {
             return viewCacheVo;
         }
         DatasheetStaticsDTO viewVO = new DatasheetStaticsDTO();
-        List<String> objects = staticsMapper.selectDstViewStaticsBySpaceId(spaceId);
+        List<String> dstIds =
+            nodeMapper.selectNodeIdBySpaceIdAndType(spaceId, NodeType.DATASHEET.getNodeType());
+        List<String> objects = staticsMapper.selectDstViewStaticsByDstIds(dstIds);
         if (CollUtil.isNotEmpty(objects)) {
             objects.stream()
                 .flatMap(o -> JSONUtil.parseArray(o).stream())

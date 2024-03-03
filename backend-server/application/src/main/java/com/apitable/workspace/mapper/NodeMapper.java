@@ -117,20 +117,25 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * Query first node id.
      *
      * @param parentId parent id
+     * @param preNodeId pre node id
+     * @param unitId unit id
      * @return node id
      * @author Chambers
      */
-    String selectNodeIdByParentIdAndPreNodeId(@Param("parentId") String parentId,
-                                              @Param("preNodeId") String preNodeId);
+    String selectNodeIdByParentIdAndPreNodeIdAndUnitId(@Param("parentId") String parentId,
+                                                       @Param("preNodeId") String preNodeId,
+                                                       @Param("unitId") Long unitId);
 
     /**
      * Fuzzy search node, return node ID the root node cannot be searched.
      *
      * @param spaceId  space id
+     * @param unitIds unit id
      * @param likeName keyword
      * @return node ids
      */
     List<String> selectLikeNodeName(@Param("spaceId") String spaceId,
+                                    @Param("unitIds") List<Long> unitIds,
                                     @Param("likeName") String likeName);
 
     /**
@@ -276,11 +281,9 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * query space id.
      *
      * @param nodeId node id
-     * @param unitId unit id
      * @return space id
      */
-    String selectSpaceIdByNodeIdAndUnitId(@Param("nodeId") String nodeId,
-                                          @Param("unitId") Long unitId);
+    NodeEntity selectSpaceIdAndUnitIdByNodeId(@Param("nodeId") String nodeId);
 
     /**
      * query space id list.
@@ -670,5 +673,13 @@ public interface NodeMapper extends BaseMapper<NodeEntity> {
      * @return List NodeStatisticsDTO
      */
     List<NodeStatisticsDTO> selectCountByUnitIds(@Param("unitIds") List<Long> unitIds);
+
+    /**
+     * query unitId.
+     *
+     * @param nodeId node id
+     * @return unit id
+     */
+    Long selectUnitIdByNodeId(@Param("nodeId") String nodeId);
 
 }

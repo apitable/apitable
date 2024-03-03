@@ -65,7 +65,7 @@ export class NodeRepository extends Repository<NodeEntity> {
 
   public async getNodeInfo(nodeId: string): Promise<NodeEntity | undefined> {
     return await this.findOne({
-      select: ['nodeId', 'nodeName', 'spaceId', 'parentId', 'icon', 'extra', 'type'],
+      select: ['nodeId', 'nodeName', 'spaceId', 'parentId', 'icon', 'extra', 'type', 'unitId'],
       where: [{ nodeId, isRubbish: false }],
     });
   }

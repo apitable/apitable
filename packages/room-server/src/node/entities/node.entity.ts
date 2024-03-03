@@ -32,7 +32,7 @@ export class NodeEntity extends BaseEntity {
     width: 2,
     type: 'tinyint',
   })
-  type!: number;
+    type!: number;
 
   @Column({
     name: 'space_id',
@@ -40,7 +40,16 @@ export class NodeEntity extends BaseEntity {
     comment: 'space ID(related#space#space_id)',
     length: 50,
   })
-  spaceId!: string;
+    spaceId!: string;
+
+  @Column({
+    name: 'unit_id',
+    type: 'bigint',
+    nullable: false,
+    comment: 'unit ID',
+    default: '0',
+  })
+    unitId!: string;
 
   @Column({
     name: 'parent_id',
@@ -48,7 +57,7 @@ export class NodeEntity extends BaseEntity {
     comment: 'parent node ID',
     length: 50,
   })
-  parentId!: string;
+    parentId!: string;
 
   @Column({
     name: 'pre_node_id',
@@ -56,7 +65,7 @@ export class NodeEntity extends BaseEntity {
     comment: 'previous node ID',
     length: 50,
   })
-  preNodeId?: string;
+    preNodeId?: string;
 
   @Column({
     name: 'node_id',
@@ -65,7 +74,7 @@ export class NodeEntity extends BaseEntity {
     comment: 'node Id(related#node#node_id)',
     length: 50,
   })
-  nodeId!: string;
+    nodeId!: string;
 
   @Column({
     name: 'node_name',
@@ -73,7 +82,7 @@ export class NodeEntity extends BaseEntity {
     comment: 'node name',
     length: 255,
   })
-  nodeName!: string;
+    nodeName!: string;
 
   @Column({
     name: 'icon',
@@ -81,7 +90,7 @@ export class NodeEntity extends BaseEntity {
     comment: 'node icon',
     length: 100,
   })
-  icon?: string;
+    icon?: string;
 
   @Column({
     name: 'cover',
@@ -89,7 +98,7 @@ export class NodeEntity extends BaseEntity {
     comment: 'Cover TOKEN',
     length: 255,
   })
-  cover?: string;
+    cover?: string;
 
   @Column({
     name: 'is_template',
@@ -97,14 +106,14 @@ export class NodeEntity extends BaseEntity {
     unsigned: true,
     default: () => false,
   })
-  isTemplate!: boolean;
+    isTemplate!: boolean;
 
   @Column('json', {
     name: 'extra',
     nullable: true,
-    comment: 'other information'
+    comment: 'other information',
   })
-  extra?: IFormProps;
+    extra?: IFormProps;
 
   @Column({
     name: 'deleted_path',
@@ -112,7 +121,7 @@ export class NodeEntity extends BaseEntity {
     comment: 'The path when deletes',
     length: 255,
   })
-  deletedPath?: string;
+    deletedPath?: string;
 
   @Column({
     name: 'is_rubbish',
@@ -120,7 +129,7 @@ export class NodeEntity extends BaseEntity {
     unsigned: true,
     default: () => false,
   })
-  isRubbish!: boolean;
+    isRubbish!: boolean;
 
   @Column({
     name: 'is_banned',
@@ -128,5 +137,5 @@ export class NodeEntity extends BaseEntity {
     unsigned: true,
     default: () => false,
   })
-  isBanned!: boolean;
+    isBanned!: boolean;
 }

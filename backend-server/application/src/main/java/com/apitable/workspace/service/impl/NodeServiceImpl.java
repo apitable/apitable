@@ -63,7 +63,6 @@ import com.apitable.organization.dto.MemberDTO;
 import com.apitable.organization.enums.UnitType;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.service.IMemberService;
-import com.apitable.organization.service.ITeamMemberRelService;
 import com.apitable.organization.service.IUnitService;
 import com.apitable.shared.cache.bean.LoginUserDto;
 import com.apitable.shared.component.adapter.MultiDatasourceAdapterTemplate;
@@ -262,9 +261,6 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Resource
     private IUnitService iUnitService;
 
-    @Resource
-    private ITeamMemberRelService iTeamMemberRelService;
-
     @Override
     public String getRootNodeIdBySpaceId(String spaceId) {
         log.info("The root node ID of the query space [{}]", spaceId);
@@ -434,17 +430,20 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             return spaceId;
         }
         // validate not root node
-        String nodeSpaceId =
-            baseMapper.selectSpaceIdByNodeIdAndUnitId(nodeId, NumberUtil.parseLong(unitId));
-        ExceptionUtil.isNotNull(nodeSpaceId, PermissionException.NODE_NOT_EXIST);
+        NodeEntity node = baseMapper.selectSpaceIdAndUnitIdByNodeId(nodeId);
+        ExceptionUtil.isNotNull(node, PermissionException.NODE_NOT_EXIST);
+        ExceptionUtil.isFalse(
+            null != unitId && !node.getUnitId().equals(NumberUtil.parseLong(unitId)),
+            PermissionException.NODE_NOT_EXIST);
         // When the space id is not empty, check whether the space is cross-space.
-        ExceptionUtil.isTrue(StrUtil.isBlank(spaceId) || nodeSpaceId.equals(spaceId),
+        ExceptionUtil.isTrue(StrUtil.isBlank(spaceId) || node.getSpaceId().equals(spaceId),
             SpaceException.NOT_IN_SPACE);
-        return nodeSpaceId;
+        return node.getNodeId();
     }
 
     @Override
-    public void checkSourceDatasheet(String spaceId, Long memberId, Integer type, NodeRelRo extra) {
+    public void checkSourceDatasheet(String spaceId, Long memberId, Integer type, String unitId,
+                                     NodeRelRo extra) {
         NodeType nodeType = NodeType.toEnum(type);
         switch (nodeType) {
             case FORM:
@@ -452,7 +451,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 ExceptionUtil.isTrue(extra != null && StrUtil.isNotBlank(extra.getDatasheetId())
                     && StrUtil.isNotBlank(extra.getViewId()), ParameterException.INCORRECT_ARG);
                 // Determine whether the datasheet does not exist or is accessed across space.
-                this.checkNodeIfExist(spaceId, extra.getDatasheetId());
+                this.checkNodeIfExist(spaceId, extra.getDatasheetId(), unitId);
                 // Check whether the specified view of the datasheet exists.
                 iDatasheetMetaService.checkViewIfExist(extra.getDatasheetId(), extra.getViewId());
                 // The form requires the editable permission of the source datasheet and the
@@ -486,8 +485,11 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         if (StrUtil.isBlank(StrUtil.trim(keyword))) {
             return new ArrayList<>();
         }
+        Long unitId = iUnitService.getUnitIdByRefId(memberId);
+        List<Long> unitIds = CollUtil.list(false, 0L, unitId);
         // fuzzy search results
-        List<String> nodeIds = baseMapper.selectLikeNodeName(spaceId, StrUtil.trim(keyword));
+        List<String> nodeIds =
+            baseMapper.selectLikeNodeName(spaceId, unitIds, StrUtil.trim(keyword));
         List<NodeInfoVo> nodeInfos = this.getNodeInfoByNodeIds(spaceId, memberId, nodeIds);
         return formatNodeSearchResults(nodeInfos);
     }
@@ -508,12 +510,6 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         List<Long> unitIds = new ArrayList<>();
         if (UnitType.MEMBER.equals(unitType)) {
             unitIds.add(iUnitService.getUnitIdByRefId(memberId));
-        }
-        if (UnitType.TEAM.equals(unitType)) {
-            List<Long> teamIds = iTeamMemberRelService.getTeamByMemberId(memberId);
-            if (!teamIds.isEmpty()) {
-                unitIds = iUnitService.getUnitIdsByRefIds(teamIds);
-            }
         }
         List<String> nodeIds = this.getNodeIdsInNodeTree(nodeId, depth, false, unitIds);
         if (UnitType.MEMBER.equals(unitType)) {
@@ -630,11 +626,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     @Override
     public List<NodeInfoVo> getChildNodesByNodeId(String spaceId, Long memberId, String nodeId,
                                                   NodeType nodeType) {
+        List<Long> unitIds = CollUtil.newArrayList(0L, iUnitService.getUnitIdByRefId(memberId));
         log.info("Query the list of child nodes ");
         // Get a direct child node
         List<NodeTreeDTO> subNode =
             baseMapper.selectNodeTreeDTOByParentIdIn(Collections.singleton(nodeId), false,
-                new ArrayList<>());
+                unitIds);
         if (subNode.isEmpty()) {
             return new ArrayList<>();
         }
@@ -666,9 +663,11 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         String rootNodeId = getRootNodeIdBySpaceId(spaceId);
         parentNodeIds.add(0, rootNodeId);
         parentNodeIds.remove(nodeId);
+        Long unitId = baseMapper.selectUnitIdByNodeId(nodeId);
         // The parent node supplements the tree node load.
         List<NodeTreeDTO> subNode =
-            baseMapper.selectNodeTreeDTOByParentIdIn(parentNodeIds, false, new ArrayList<>());
+            baseMapper.selectNodeTreeDTOByParentIdIn(parentNodeIds, false,
+                Collections.singletonList(unitId));
         Map<String, List<NodeTreeDTO>> parentIdToSubNodeMap =
             subNode.stream().collect(Collectors.groupingBy(NodeTreeDTO::getParentId));
         List<String> viewNodeIds = new ArrayList<>();
@@ -1032,7 +1031,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
                 // Update the sequence relationship of nodes before
                 // and after the move (D <- E => D <- X <- E)
                 String sufNodeId =
-                    baseMapper.selectNodeIdByParentIdAndPreNodeId(parentId, preNodeId);
+                    baseMapper.selectNodeIdByParentIdAndPreNodeIdAndUnitId(parentId, preNodeId,
+                        nodeEntity.getUnitId());
                 if (sufNodeId != null) {
                     nodeIds.add(sufNodeId);
                     baseMapper.updatePreNodeIdByNodeId(nodeEntity.getNodeId(), sufNodeId);
@@ -1428,6 +1428,7 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             NodeEntity node = new NodeEntity();
             node.setId(IdWorker.getId());
             node.setSpaceId(spaceId);
+            node.setUnitId(NumberUtil.parseLong(options.getUnitId()));
             node.setParentId(newNodeMap.get(shareTree.getParentId()));
             node.setNodeId(newNodeMap.get(shareTree.getNodeId()));
             node.setNodeName(shareTree.getNodeName());
@@ -1968,7 +1969,8 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
     public List<NodeSearchResult> recentList(String spaceId, Long memberId) {
         List<String> nodeIds =
             multiDatasourceAdapterTemplate.getRecentlyVisitNodeIds(memberId, NodeType.FOLDER);
-        List<NodeInfoVo> nodeInfos = this.getNodeInfoByNodeIds(spaceId, memberId, nodeIds);
+        List<NodeInfoVo> nodeInfos = this.getNodeInfoByNodeIds(spaceId, memberId, nodeIds).stream()
+            .filter(i -> !i.getNodePrivate()).toList();
         return formatNodeSearchResults(nodeInfos);
     }
 
@@ -2009,6 +2011,11 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         List<NodeStatisticsDTO> privateNodes = baseMapper.selectCountByUnitIds(unitIds);
         return privateNodes.stream().collect(
             Collectors.toMap(NodeStatisticsDTO::getUnitId, NodeStatisticsDTO::getNodeCount));
+    }
+
+    @Override
+    public Long getUnitIdByNodeId(String nodeId) {
+        return baseMapper.selectUnitIdByNodeId(nodeId);
     }
 
     private List<NodeSearchResult> formatNodeSearchResults(List<NodeInfoVo> nodeInfoList) {

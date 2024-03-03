@@ -143,8 +143,10 @@ public class NodeFavoriteServiceImpl implements INodeFavoriteService {
             ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
             return;
         }
+
         // check whether the node exists
-        iNodeService.checkNodeIfExist(spaceId, nodeId);
+        iNodeService.checkNodeIfExist(spaceId, nodeId,
+            StrUtil.toString(iNodeService.getUnitIdByNodeId(nodeId)));
         // Check whether the node has the specified operation permission
         controlTemplate.checkNodePermission(memberId, nodeId, NodePermission.READ_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));

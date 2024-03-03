@@ -60,7 +60,7 @@
         SELECT node_id FROM ${tablePrefix}node WHERE space_id = #{spaceId} AND type = 0 AND is_rubbish = 0
     </select>
 
-    <select id="selectNodeIdByParentIdAndPreNodeId"
+    <select id="selectNodeIdByParentIdAndPreNodeIdAndUnitId"
             resultType="java.lang.String">
         SELECT node_id
         FROM ${tablePrefix}node
@@ -73,6 +73,7 @@
                 AND pre_node_id IS NULL
             </otherwise>
         </choose>
+        AND unit_id = #{unitId}
         AND is_rubbish = 0
         LIMIT 1
     </select>
@@ -174,6 +175,10 @@
         FROM ${tablePrefix}node
         WHERE is_rubbish = 0
         and space_id = #{spaceId}
+        and unit_id in
+        <foreach item="item" index="index" collection="unitIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
         and node_name LIKE CONCAT('%', #{likeName}, '%')
         and parent_id != '0'
         and is_template = 0
@@ -226,6 +231,7 @@
         AND type = #{nodeType}
         AND is_rubbish = 0
         AND is_template = 0
+        AND is_deleted = 0
     </select>
 
     <select id="selectNodeIdsBySpaceIdAndTypeAndKeyword" resultType="java.lang.String">
@@ -301,7 +307,7 @@
 
     <select id="selectNodeInfoByNodeIds" resultMap="nodeInfoMap">
         SELECT vn.node_id, vn.space_id, IF(vn.parent_id = '0', vs.name, vn.node_name) AS node_name, vn.type, vn.extra,
-        vn.parent_id,
+        vn.parent_id, IF(vn.unit_id = 0, 0, 1) node_private,
         vn.pre_node_id, vn.icon, IF(leaf.id IS NULL, 0, 1) has_children,vdm.meta_data,
         vn.created_at, vn.updated_at, IF(vnss.id IS NULL, 0 ,1) AS node_shared,
         IF(vc.id IS NULL, 0 ,1) as node_permit_set, IF(vnf.id IS NULL, 0 ,1) as node_favorite
@@ -317,6 +323,7 @@
             #{item}
         </foreach>
         AND vn.is_rubbish = 0
+        AND vn.is_deleted = 0
         GROUP BY vn.node_id
     </select>
 
@@ -324,7 +331,7 @@
 
     <select id="selectNodeInfoTreeByNodeIds" resultMap="nodeInfoTree">
         SELECT vn.node_id, vn.space_id, IF(vn.parent_id = '0', vs.name, vn.node_name) AS node_name, vn.type, vn.extra,
-        vn.parent_id,
+        vn.parent_id, IF(vn.unit_id = 0, 0, 1) node_private,
         vn.pre_node_id, vn.icon, IF(leaf.id IS NULL, 0, 1) has_children,
         JSON_LENGTH(vdm.meta_data -> '$.fieldMap') AS md_field_map_size,
         vn.created_at, vn.updated_at, IF(vnss.id IS NULL, 0 ,1) as node_shared,
@@ -687,10 +694,10 @@
         AND is_rubbish = 0
     </update>
 
-    <select id="selectSpaceIdByNodeIdAndUnitId" resultType="java.lang.String">
-        select space_id
+    <select id="selectSpaceIdAndUnitIdByNodeId" resultType="com.apitable.workspace.entity.NodeEntity">
+        select space_id, unit_id
         from ${tablePrefix}node
-        where node_id = #{nodeId} and unit_id = #{unitId} and is_rubbish = 0
+        where node_id = #{nodeId} and is_rubbish = 0 and is_deleted = 0
     </select>
 
     <select id="selectCountBySpaceIdWithPage" resultType="com.apitable.workspace.dto.NodeStatisticsDTO">
@@ -719,4 +726,9 @@
         GROUP BY unit_id
     </select>
 
+    <select id="selectUnitIdByNodeId" resultType="java.lang.Long">
+        SELECT unit_id
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId}
+    </select>
 </mapper>
