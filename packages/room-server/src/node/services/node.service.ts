@@ -265,4 +265,8 @@ export class NodeService {
     }
     return nodeMap;
   }
+
+  async nodePrivate(nodeId: string): Promise<boolean> {
+    return (await this.nodeRepository.selectUnitCountByNodeId(nodeId)) > 0;
+  }
 }

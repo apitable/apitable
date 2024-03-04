@@ -648,7 +648,13 @@ public class NodeController {
         }
         Long userId = SessionContext.getUserId();
         List<String> nodeIds = iNodeService.move(userId, nodeOpRo);
-        return ResponseData.success(iNodeService.getNodeInfoByNodeIds(spaceId, memberId, nodeIds));
+        List<NodeInfoVo> nodes = iNodeService.getNodeInfoByNodeIds(spaceId, memberId, nodeIds);
+        if (null != nodeOpRo.getUnitId()) {
+            nodes = nodes.stream().filter(NodeInfoVo::getNodePrivate).toList();
+        } else {
+            nodes = nodes.stream().filter(i -> !i.getNodePrivate()).toList();
+        }
+        return ResponseData.success(nodes);
     }
 
     /**
@@ -907,6 +913,9 @@ public class NodeController {
             String shareSpaceId = nodeShareSettingMapper.selectSpaceIdByShareId(ro.getLinkId());
             ExceptionUtil.isNotNull(shareSpaceId, NodeException.SHARE_EXPIRE);
             ExceptionUtil.isTrue(shareSpaceId.equals(spaceId), SpaceException.NOT_IN_SPACE);
+        }
+        if (iNodeService.nodePrivate(ro.getNodeId())) {
+            return ResponseData.success();
         }
         datasheetService.remindMemberRecOp(userId, spaceId, ro);
         return ResponseData.success();

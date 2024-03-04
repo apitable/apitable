@@ -709,4 +709,12 @@ public interface INodeService extends IService<NodeEntity> {
      * @return unit id
      */
     Long getUnitIdByNodeId(String nodeId);
+
+    /**
+     * check node is private.
+     *
+     * @param nodeId node id
+     * @return boolean
+     */
+    boolean nodePrivate(String nodeId);
 }

@@ -380,6 +380,9 @@ public class StaticsServiceImpl implements IStaticsService {
         DatasheetStaticsDTO viewVO = new DatasheetStaticsDTO();
         List<String> dstIds =
             nodeMapper.selectNodeIdBySpaceIdAndType(spaceId, NodeType.DATASHEET.getNodeType());
+        if (CollUtil.isEmpty(dstIds)) {
+            return viewVO;
+        }
         List<String> objects = staticsMapper.selectDstViewStaticsByDstIds(dstIds);
         if (CollUtil.isNotEmpty(objects)) {
             objects.stream()

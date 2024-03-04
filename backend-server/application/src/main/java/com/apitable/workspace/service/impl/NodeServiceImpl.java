@@ -2018,6 +2018,12 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
         return baseMapper.selectUnitIdByNodeId(nodeId);
     }
 
+    @Override
+    public boolean nodePrivate(String nodeId) {
+        return null != getUnitIdByNodeId(nodeId);
+
+    }
+
     private List<NodeSearchResult> formatNodeSearchResults(List<NodeInfoVo> nodeInfoList) {
         if (CollUtil.isEmpty(nodeInfoList)) {
             return new ArrayList<>();

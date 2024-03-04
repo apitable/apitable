@@ -34,6 +34,7 @@ import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.automation.service.IAutomationRunHistoryService;
 import com.apitable.automation.service.IAutomationTriggerService;
 import com.apitable.control.infrastructure.permission.NodePermission;
+import com.apitable.core.exception.BusinessException;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.internal.service.IPermissionService;
@@ -60,7 +61,10 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.integration.redis.util.RedisLockRegistry;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -96,6 +100,9 @@ public class AutomationRobotController {
 
     @Resource
     private NodeDescMapper nodeDescMapper;
+
+    @Resource
+    private RedisLockRegistry redisLockRegistry;
 
     /**
      * Get automation robots.
@@ -302,8 +309,19 @@ public class AutomationRobotController {
             NodePermission.EDIT_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
-        return ResponseData.success(
-            iAutomationTriggerService.update(userId, triggerId, spaceId, data));
+        Lock lock = redisLockRegistry.obtain(triggerId);
+        try {
+            if (lock.tryLock(3, TimeUnit.SECONDS)) {
+                return ResponseData.success(
+                    iAutomationTriggerService.update(userId, triggerId, spaceId, data));
+            } else {
+                throw new BusinessException("operation is too frequent, please try again later");
+            }
+        } catch (InterruptedException e) {
+            throw new BusinessException("operation is too frequent, please try again later");
+        } finally {
+            lock.unlock();
+        }
     }
 
     /**
