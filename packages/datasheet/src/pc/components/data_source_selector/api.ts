@@ -9,8 +9,8 @@ export const getParentNode = (folderId: string) => {
   });
 };
 
-export const getChildrenNode = (folderId: string) => {
-  return Api.getChildNodeList(folderId).then(res => {
+export const getChildrenNode = (folderId: string, unitType?: number) => {
+  return Api.getChildNodeList(folderId, undefined, unitType).then(res => {
     if (!res.data.success) {
       throw new Error(res.data.message);
     }

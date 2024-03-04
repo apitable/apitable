@@ -23,7 +23,7 @@ import { useThemeColors } from '@apitable/components';
 
 import {
   BasicValueType,
-  CollaCommandName,
+  CollaCommandName, ConfigConstant,
   ExecuteResult,
   Field,
   FieldType,
@@ -90,6 +90,8 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = ({ onClo
       fieldIndex,
     };
   }, shallowEqual);
+  const catalogTreeActiveType = useAppSelector((state) => state.catalogTree.activeType);
+  const isPrivate = catalogTreeActiveType === ConfigConstant.Modules.PRIVATE;
   const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
   const mirrorId = useAppSelector((state) => state.pageParams.mirrorId);
   const dispatch = useAppDispatch();
@@ -261,7 +263,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = ({ onClo
             props: { fieldId },
           } = arg;
 
-          if (!fieldId || embedId) {
+          if (!fieldId || embedId || isPrivate) {
             return true;
           }
 

@@ -25,6 +25,7 @@ import com.apitable.space.dto.NodeStaticsDTO;
 import com.apitable.space.dto.NodeTypeStaticsDTO;
 import com.apitable.workspace.mapper.DatasheetMapper;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,7 +126,8 @@ public class StaticsMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql({"/sql/datasheet-meta-data.sql", "/sql/datasheet-data.sql"})
     void testSelectDstViewStaticsBySpaceId() {
-        List<String> entities = staticsMapper.selectDstViewStaticsBySpaceId("spc41");
+        List<String> entities =
+            staticsMapper.selectDstViewStaticsByDstIds(Collections.singletonList("ni41"));
         assertThat(entities).isNotEmpty();
     }
 

@@ -40,10 +40,11 @@ export interface IItemRender {
   expanded: boolean;
   hasChildren: boolean;
   node: INodesMapItem;
+  isPrivate?: boolean;
 }
 
 export const ItemRender: React.FC<React.PropsWithChildren<IItemRender>> = (props) => {
-  const { id, actived, isMobile, iconClassNames, editing, childCreatable, onClickMore, onNodeAdd, expanded, hasChildren, node } = props;
+  const { id, actived, isMobile, iconClassNames, editing, childCreatable, onClickMore, onNodeAdd, expanded, hasChildren, node, isPrivate } = props;
 
   const iconProps = {
     expanded,
@@ -79,7 +80,7 @@ export const ItemRender: React.FC<React.PropsWithChildren<IItemRender>> = (props
       </div>
       <div className={styles.content}>
         {editing ? (
-          <EditingNode node={node} />
+          <EditingNode node={node} isPrivate={isPrivate} />
         ) : (
           <Tooltip content={node.nodeName}>
             <Typography ellipsis variant="body3" className={styles.nodeName}>

@@ -51,6 +51,7 @@ import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.CycleDateRange;
 import com.apitable.interfaces.billing.model.DefaultSubscriptionInfo;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
@@ -676,8 +677,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
                                                    long addedSeatNums, boolean isAllMember,
                                                    boolean sendNotify) {
         // get subscription max seat nums
-        SubscriptionInfo subscriptionInfo =
-            entitlementServiceFacade.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
         var seat = subscriptionInfo.getFeature().getSeat();
         if (!subscriptionInfo.isFree() && seat.isUnlimited()) {
             // apitable billing mode, paid space，skip validation
@@ -698,8 +698,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
                     long finalTotalSeatNums = totalSeatNums;
                     TaskManager.me().execute(() -> NotificationManager.me()
                         .playerNotify(NotificationTemplateId.SPACE_REFRESH_CONTACT_SEATS_LIMIT,
-                            userIds, 0L, spaceId,
-                            Dict.create().set("spaceName", spaceName)
+                            userIds, 0L, spaceId, Dict.create().set("spaceName", spaceName)
                                 .set("specification", seat.getValue())
                                 .set("usage", finalTotalSeatNums)));
                 } catch (Exception e) {
@@ -1243,5 +1242,32 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
         long activeMemberTotalCount =
             iStaticsService.getActiveMemberTotalCountFromCache(spaceId);
         return seat - activeMemberTotalCount > 0;
+    }
+
+    @Override
+    public List<String> getSpaceIdsByCreatedBy(Long userId) {
+        return baseMapper.selectSpaceIdsByUserId(userId);
+    }
+
+    @Override
+    public void checkWidgetOverLimit(String spaceId) {
+        // get subscription max widget nums
+        SubscriptionInfo subscriptionInfo = getSpaceSubscription(spaceId);
+        // Only the free version requires verification
+        if (!subscriptionInfo.isFree()) {
+            return;
+        }
+        SubscriptionFeatures.ConsumeFeatures.WidgetNums widgetNums =
+            subscriptionInfo.getFeature().getWidgetNums();
+        // check the number of components in the space
+        Long count = iWidgetService.getSpaceWidgetCount(spaceId);
+        if (!widgetNums.isUnlimited() && count >= widgetNums.getValue()) {
+            throw new BusinessException(LimitException.WIDGET_OVER_LIMIT);
+        }
+    }
+
+    @Override
+    public SubscriptionInfo getSpaceSubscription(String spaceId) {
+        return entitlementServiceFacade.getSpaceSubscription(spaceId);
     }
 }

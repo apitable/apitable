@@ -32,7 +32,11 @@ public class MemberDTO {
 
     private Long userId;
 
+    private Long unitId;
+
     private String memberName;
+
+    private String openId;
 
     private String avatar;
 

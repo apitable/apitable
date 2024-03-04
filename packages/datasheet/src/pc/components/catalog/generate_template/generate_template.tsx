@@ -33,10 +33,12 @@ export interface IGenerateTemplateProps {
 }
 
 export const GenerateTemplate: FC<React.PropsWithChildren<IGenerateTemplateProps>> = ({ nodeId, onCancel }) => {
-  const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const catalogTreeActiveType = useAppSelector((state) => state.catalogTree.activeType);
+  const nodeKey = catalogTreeActiveType === ConfigConstant.Modules.PRIVATE ? 'privateTreeNodesMap' : 'treeNodesMap';
+  const nodesMap = useAppSelector((state: IReduxState) => state.catalogTree[nodeKey]);
   const activeNodeId = useAppSelector((state: IReduxState) => Selectors.getNodeId(state));
   nodeId = nodeId || activeNodeId;
-  const [name, setName] = useState(treeNodesMap[nodeId!].nodeName);
+  const [name, setName] = useState(nodesMap[nodeId!].nodeName);
   const [errorMsg, setErrorMsg] = useState('');
   const spaceId = useAppSelector((state) => state.space.activeId);
   const { createTemplateReq, templateNameValidateReq } = useTemplateRequest();

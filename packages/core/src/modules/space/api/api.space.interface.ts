@@ -4,6 +4,7 @@ export interface IAddNodeParams {
   nodeName?: string;
   preNodeId?: string;
   extra?: { [key: string]: any };
+  unitId?: string;
   aiCreateParams?: {
     datasheet: {
       id: string;

@@ -21,13 +21,13 @@
 <mapper namespace="com.apitable.workspace.mapper.NodeMapper">
     <insert id="insertBatch">
         INSERT INTO ${tablePrefix}node(id, space_id, parent_id, pre_node_id, node_id, node_name, icon, type, cover, is_template,
-        created_by, updated_by, extra)
+        created_by, updated_by, extra,unit_id)
         VALUES
         <foreach item="item" index="index" collection="entities" separator=",">
             <trim prefix="(" suffix=")">
                 #{item.id},#{item.spaceId},#{item.parentId},#{item.preNodeId},#{item.nodeId},#{item.nodeName},
                 #{item.icon},#{item.type},#{item.cover},#{item.isTemplate},#{item.createdBy},#{item.updatedBy},
-                #{item.extra}
+                #{item.extra},#{item.unitId}
             </trim>
         </foreach>
     </insert>
@@ -51,13 +51,16 @@
         <if test="nodeId">
             and node_id != #{nodeId}
         </if>
+        <if test="unitId != null">
+            and unit_id = #{unitId}
+        </if>
     </select>
 
     <select id="selectRootNodeIdBySpaceId" resultType="java.lang.String">
         SELECT node_id FROM ${tablePrefix}node WHERE space_id = #{spaceId} AND type = 0 AND is_rubbish = 0
     </select>
 
-    <select id="selectNodeIdByParentIdAndPreNodeId"
+    <select id="selectNodeIdByParentIdAndPreNodeIdAndUnitId"
             resultType="java.lang.String">
         SELECT node_id
         FROM ${tablePrefix}node
@@ -70,6 +73,7 @@
                 AND pre_node_id IS NULL
             </otherwise>
         </choose>
+        AND unit_id = #{unitId}
         AND is_rubbish = 0
         LIMIT 1
     </select>
@@ -142,7 +146,15 @@
                  separator="," close=")">
             #{item}
         </foreach>
+        <if test="unitIds.size() > 0">
+            AND unit_id in
+            <foreach item="item" index="index" collection="unitIds" open="("
+                     separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
         AND is_rubbish = #{isRubbish}
+        AND is_deleted = 0
     </select>
 
     <select id="selectSubNodeIds" resultType="java.lang.String">
@@ -163,6 +175,10 @@
         FROM ${tablePrefix}node
         WHERE is_rubbish = 0
         and space_id = #{spaceId}
+        and unit_id in
+        <foreach item="item" index="index" collection="unitIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
         and node_name LIKE CONCAT('%', #{likeName}, '%')
         and parent_id != '0'
         and is_template = 0
@@ -215,6 +231,7 @@
         AND type = #{nodeType}
         AND is_rubbish = 0
         AND is_template = 0
+        AND is_deleted = 0
     </select>
 
     <select id="selectNodeIdsBySpaceIdAndTypeAndKeyword" resultType="java.lang.String">
@@ -290,7 +307,7 @@
 
     <select id="selectNodeInfoByNodeIds" resultMap="nodeInfoMap">
         SELECT vn.node_id, vn.space_id, IF(vn.parent_id = '0', vs.name, vn.node_name) AS node_name, vn.type, vn.extra,
-        vn.parent_id,
+        vn.parent_id, IF(vn.unit_id = 0, 0, 1) node_private,
         vn.pre_node_id, vn.icon, IF(leaf.id IS NULL, 0, 1) has_children,vdm.meta_data,
         vn.created_at, vn.updated_at, IF(vnss.id IS NULL, 0 ,1) AS node_shared,
         IF(vc.id IS NULL, 0 ,1) as node_permit_set, IF(vnf.id IS NULL, 0 ,1) as node_favorite
@@ -306,6 +323,7 @@
             #{item}
         </foreach>
         AND vn.is_rubbish = 0
+        AND vn.is_deleted = 0
         GROUP BY vn.node_id
     </select>
 
@@ -313,7 +331,7 @@
 
     <select id="selectNodeInfoTreeByNodeIds" resultMap="nodeInfoTree">
         SELECT vn.node_id, vn.space_id, IF(vn.parent_id = '0', vs.name, vn.node_name) AS node_name, vn.type, vn.extra,
-        vn.parent_id,
+        vn.parent_id, IF(vn.unit_id = 0, 0, 1) node_private,
         vn.pre_node_id, vn.icon, IF(leaf.id IS NULL, 0, 1) has_children,
         JSON_LENGTH(vdm.meta_data -> '$.fieldMap') AS md_field_map_size,
         vn.created_at, vn.updated_at, IF(vnss.id IS NULL, 0 ,1) as node_shared,
@@ -354,6 +372,7 @@
         SET pre_node_id = #{preNodeId},
         parent_id = #{parentId},
         node_name = #{name},
+        unit_id = #{unitId},
         is_rubbish = 0
         WHERE node_id = #{nodeId}
     </update>
@@ -515,8 +534,8 @@
     <select id="selectAllParentNodeIds"
             resultType="com.apitable.workspace.dto.NodeBaseInfoDTO">
         WITH RECURSIVE parent_view ( node_id, parent_id, `type`, node_name,
-        icon, lvl ) AS (
-        SELECT node_id, parent_id, `type`, node_name, icon, 0 lvl
+        icon, lvl, unit_id ) AS (
+        SELECT node_id, parent_id, `type`, node_name, icon, 0 lvl, unit_id
         FROM ${tablePrefix}node
         WHERE node_id IN
         <foreach item="item" index="index" collection="nodeIds" open="("
@@ -525,9 +544,9 @@
         </foreach>
         AND is_rubbish = 0
         UNION ALL
-        SELECT n.node_id, n.parent_id, n.type, n.node_name, n.icon, pv.lvl + 1
+        SELECT n.node_id, n.parent_id, n.type, n.node_name, n.icon, pv.lvl + 1, pv.unit_id
         FROM parent_view AS pv
-        JOIN ${tablePrefix}node AS n ON pv.parent_id = n.node_id
+        JOIN ${tablePrefix}node AS n ON pv.parent_id = n.node_id AND pv.unit_id = n.unit_id
         AND n.is_rubbish = 0
         )
         SELECT DISTINCTROW node_id, parent_id, `type`, node_name, icon
@@ -548,9 +567,10 @@
         SELECT node_id
         FROM ${tablePrefix}node
         WHERE space_id = #{spaceId}
-          AND parent_id = '-1'
-          AND is_rubbish = 1
-          AND is_deleted = 0
+        AND parent_id = '-1'
+        AND unit_id = 0
+        AND is_rubbish = 1
+        AND is_deleted = 0
         <if test="beginTime != null">
             AND updated_at > #{beginTime}
         </if>
@@ -663,4 +683,52 @@
         SET extra = JSON_MERGE_PATCH(`extra`, #{extra})
         WHERE node_id = #{nodeId} AND is_rubbish = 0
     </update>
+
+    <update id="updateIsDeletedByUnitIds">
+        UPDATE ${tablePrefix}node
+        SET is_deleted = #{isDeleted}
+        WHERE unit_id IN
+        <foreach collection="unitIds" item="unitId" index="index" open="(" close=")" separator=",">
+            #{unitId}
+        </foreach>
+        AND is_rubbish = 0
+    </update>
+
+    <select id="selectSpaceIdAndUnitIdByNodeId" resultType="com.apitable.workspace.entity.NodeEntity">
+        select space_id, unit_id
+        from ${tablePrefix}node
+        where node_id = #{nodeId} and is_rubbish = 0 and is_deleted = 0
+    </select>
+
+    <select id="selectCountBySpaceIdWithPage" resultType="com.apitable.workspace.dto.NodeStatisticsDTO">
+        SELECT count(*) as node_count, created_by
+        FROM ${tablePrefix}node
+        WHERE space_id = #{spaceId}
+        AND is_rubbish = 0
+        AND is_deleted = 0
+        AND type not in (0, 1)
+        AND created_by is not null
+        GROUP BY created_by
+        ORDER BY node_count desc
+    </select>
+
+    <select id="selectCountByUnitIds" resultType="com.apitable.workspace.dto.NodeStatisticsDTO">
+        SELECT count(*) as node_count, unit_id
+        FROM ${tablePrefix}node
+        WHERE unit_id IN
+        <foreach collection="unitIds" item="unitId" index="index" open="(" close=")" separator=",">
+            #{unitId}
+        </foreach>
+        AND is_rubbish = 0
+        AND is_deleted = 0
+        AND type not in (0, 1)
+        AND created_by is not null
+        GROUP BY unit_id
+    </select>
+
+    <select id="selectUnitIdByNodeId" resultType="java.lang.Long">
+        SELECT unit_id
+        FROM ${tablePrefix}node
+        WHERE node_id = #{nodeId}
+    </select>
 </mapper>

@@ -9,6 +9,7 @@ import { DatasheetActions } from 'commands_actions/datasheet';
 import { IJOTAction } from 'engine/ot';
 import { FieldType, ResourceType } from 'types';
 import { getCellValue } from 'modules/database/store/selectors/resource';
+import { IDPrefix } from 'utils';
 
 export interface IUnarchiveRecordsOptions {
   cmd: CollaCommandName.UnarchiveRecords;
@@ -39,14 +40,18 @@ export const unarchiveRecords: ICollaCommandDef<IUnarchiveRecordsOptions> = {
           const value = record.data[fieldId];
           const oldValue = getCellValue(state, snapshot, recordId, fieldId) as string[] | null;
           const linkedSnapshot = getSnapshot(state, field.property.foreignDatasheetId)!;
-          ldcMaintainer.insert(
-            state,
-            linkedSnapshot,
-            recordId,
-            field,
-            value as string[] | null,
-            oldValue,
-          );
+          const isValueValid = value ? Array.isArray(value) && value.every(v => v.startsWith(IDPrefix.Record)) : true;
+          const isOldValueValid = oldValue ? Array.isArray(oldValue) && oldValue.every(v => v.startsWith(IDPrefix.Record)) : true;
+          if (isValueValid && isOldValueValid) {
+            ldcMaintainer.insert(
+              state,
+              linkedSnapshot,
+              recordId,
+              field,
+              value as string[] | null,
+              oldValue,
+            );
+          }
         });
       }
     }

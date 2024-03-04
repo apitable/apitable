@@ -24,6 +24,7 @@ import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { CapacityWithRewardCard, Card, Info, LevelCard, MultiLineCard } from '../components';
 import { buildSpaceCertSheetUrl } from '../components/basic_info/helper';
 import { expandCapacityRewardModal } from '../components/capacity-reward-modal/capacity-reward-modal';
+import { expandFileModal } from '../components/file-modal';
 import { useApi, useCapacity, useFile, useMember, useOthers, useRecord, useView } from '../hooks';
 import { ILayoutProps } from '../interface';
 import { Advert } from '../ui';
@@ -176,19 +177,31 @@ export const useCards = (props: ILayoutProps) => {
         );
       },
 
-      FileCard: (props: ICardProps) => (
-        <Card
-          {...props}
-          {...fileData}
-          isMobile={isMobile}
-          shape="circle"
-          unit={t(Strings.unit_ge)}
-          trailColor={trailColor}
-          strokeColor={strokeColor}
-          title={t(Strings.datasheet_count)}
-          titleTip={t(Strings.member_data_desc_of_field_number)}
-        />
-      ),
+      FileCard: (props: ICardProps) => {
+        const titleLink =
+          basicCert || isSocial || isMobileApp() || isMobile || getEnvVariables().IS_SELFHOST || getEnvVariables().IS_APITABLE
+            ? undefined
+            : {
+              text: t(Strings.attachment_capacity_details_entry),
+              onClick: () => {
+                expandFileModal(fileData.total);
+              },
+            };
+        return (
+          <Card
+            {...props}
+            {...fileData}
+            isMobile={isMobile}
+            shape="circle"
+            unit={t(Strings.unit_ge)}
+            trailColor={trailColor}
+            strokeColor={strokeColor}
+            title={t(Strings.datasheet_count)}
+            titleTip={t(Strings.member_data_desc_of_field_number)}
+            titleLink={titleLink}
+          />
+        );
+      },
 
       RecordCard: (props: ICardProps) => (
         <Card

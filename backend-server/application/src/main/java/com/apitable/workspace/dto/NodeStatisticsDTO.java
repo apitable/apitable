@@ -1,4 +1,4 @@
-/**
+/*
  * APITable <https://github.com/apitable/apitable>
  * Copyright (C) 2022 APITable Ltd. <https://apitable.com>
  *
@@ -16,18 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { Api } from '@apitable/core';
-import { Message } from 'pc/components/common';
+package com.apitable.workspace.dto;
 
-export const useCapacityRequest = () => {
-  const getCapacityListReq = (isExpire: boolean, pageNo: number) => {
-    return Api.getCapacityRewardList(isExpire, pageNo).then((res) => {
-      const { success, data, message } = res.data;
-      if (success) {
-        return data;
-      }
-      Message.error({ content: message });
-    });
-  };
-  return { getCapacityListReq };
-};
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+/**
+ * node statistics dto.
+ */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class NodeStatisticsDTO {
+
+    private Integer nodeCount;
+
+    private Long createdBy;
+
+    private Long unitId;
+}

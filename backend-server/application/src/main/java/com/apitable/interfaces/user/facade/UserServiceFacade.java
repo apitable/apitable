@@ -32,8 +32,9 @@ public interface UserServiceFacade {
      *
      * @param userId user id
      * @param email  email address
+     * @param oldEmail old email address
      */
-    void onUserChangeEmailAction(Long userId, String email);
+    void onUserChangeEmailAction(Long userId, String email, String oldEmail);
 
     /**
      * event on user change avatar.

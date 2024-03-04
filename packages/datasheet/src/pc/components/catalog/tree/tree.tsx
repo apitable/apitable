@@ -29,6 +29,7 @@ import { Router } from 'pc/components/route_manager/router';
 import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
 import { isTouchDevice, shouldOpenInNewTab } from 'pc/utils';
+import { LEAF_NODES } from './constants';
 import { NodeItem } from './node_item';
 import styles from './style.module.less';
 
@@ -61,16 +62,7 @@ const TreeBase: FC<React.PropsWithChildren<ITreeProps>> = ({ rightClick }) => {
     }
     rightClick(e, data);
   };
-  const leafNodes = new Set([
-    ConfigConstant.NodeType.DATASHEET,
-    ConfigConstant.NodeType.FORM,
-    ConfigConstant.NodeType.AUTOMATION,
-    ConfigConstant.NodeType.DASHBOARD,
-    ConfigConstant.NodeType.MIRROR,
-    ConfigConstant.NodeType.AI,
-    ConfigConstant.NodeType.CUSTOM_PAGE,
-  ]);
-
+  
   const onContextMenu = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
@@ -142,7 +134,7 @@ const TreeBase: FC<React.PropsWithChildren<ITreeProps>> = ({ rightClick }) => {
           className={classNames}
           data={nodeInfo}
           draggable={!operating}
-          isLeaf={leafNodes.has(type)}
+          isLeaf={LEAF_NODES.has(type)}
         />
       );
     });

@@ -43,4 +43,8 @@ public class QuoteTemplateRo {
 
     @Schema(description = "Whether to retain data", example = "true")
     private Boolean data = true;
+
+    @Schema(description = "where to quote", example = "23445")
+    private String unitId;
+
 }

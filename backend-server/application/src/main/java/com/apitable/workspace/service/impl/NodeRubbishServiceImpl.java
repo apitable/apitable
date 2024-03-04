@@ -31,12 +31,12 @@ import com.apitable.control.infrastructure.role.ControlRoleManager;
 import com.apitable.control.infrastructure.role.RoleConstants.Node;
 import com.apitable.control.service.IControlService;
 import com.apitable.core.util.ExceptionUtil;
-import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.document.facade.DocumentServiceFacade;
 import com.apitable.shared.clock.spring.ClockManager;
 import com.apitable.shared.component.TaskManager;
 import com.apitable.space.service.ISpaceAssetService;
+import com.apitable.space.service.ISpaceService;
 import com.apitable.workspace.dto.NodeBaseInfoDTO;
 import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.enums.PermissionException;
@@ -96,7 +96,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
     private INodeRoleService iNodeRoleService;
 
     @Resource
-    private EntitlementServiceFacade entitlementServiceFacade;
+    private ISpaceService iSpaceService;
 
 
     @Override
@@ -107,7 +107,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
             memberId, spaceId, lastNodeId);
 
         // Obtain the maximum storage days of the rubbish corresponding to the space subscription plan.
-        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceService.getSpaceSubscription(spaceId);
         long retainDay = subscriptionInfo.getFeature().getRemainTrashDays().getValue();
         // Push back start time (not included)
         LocalDate dateNow = ClockManager.me().getLocalDateNow();
@@ -171,7 +171,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
             userId, nodeId, parentId);
         // Obtain the node ID of the node and its child descendants.
         List<String> subNodeIds =
-            iNodeService.getNodeIdsInNodeTree(nodeId, -1, true);
+            iNodeService.getNodeIdsInNodeTree(nodeId, -1, true, new ArrayList<>());
         if (CollUtil.isNotEmpty(subNodeIds)) {
             // recovery datasheet
             iDatasheetService.updateIsDeletedStatus(userId, subNodeIds, false);
@@ -193,10 +193,10 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
         BaseNodeInfo nodeInfo = nodeMapper.selectBaseNodeInfoByNodeId(nodeId);
         String name =
             iNodeService.duplicateNameModify(parentId, nodeInfo.getType(), nodeInfo.getNodeName(),
-                null);
+                null, null);
         // modify the information of the recovery node
         boolean flag =
-            SqlHelper.retBool(nodeMapper.updateInfoByNodeId(nodeId, parentId, null, name));
+            SqlHelper.retBool(nodeMapper.updateInfoByNodeId(nodeId, parentId, null, name, null));
         ExceptionUtil.isTrue(flag, DatabaseException.EDIT_ERROR);
     }
 
@@ -205,7 +205,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
         log.info("User [{}] completely delete the node of the rubbish [{}]", userId, nodeId);
         // Obtain the node ID of the node and its child descendants.
         List<String> subNodeIds =
-            iNodeService.getNodeIdsInNodeTree(nodeId, -1, true);
+            iNodeService.getNodeIdsInNodeTree(nodeId, -1, true, new ArrayList<>());
         // logical delete node
         boolean flag = SqlHelper.retBool(nodeMapper.updateIsDeletedByNodeId(userId, nodeId));
         ExceptionUtil.isTrue(flag, DatabaseException.DELETE_ERROR);
@@ -242,7 +242,7 @@ public class NodeRubbishServiceImpl implements INodeRubbishService {
         ExceptionUtil.isNotNull(rubbishUpdatedAt, RUBBISH_NODE_NOT_EXIST);
 
         // Obtain the maximum storage days of the rubbish corresponding to the space subscription plan.
-        long retainDay = entitlementServiceFacade.getSpaceSubscription(spaceId)
+        long retainDay = iSpaceService.getSpaceSubscription(spaceId)
             .getFeature().getRemainTrashDays().getValue();
         // Subscription function restriction check
         ExceptionUtil.isTrue(retainDay < 0

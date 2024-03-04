@@ -39,15 +39,17 @@ import com.apitable.base.enums.DatabaseException;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
-import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.interfaces.social.enums.SocialNameModified;
 import com.apitable.interfaces.user.facade.InvitationServiceFacade;
 import com.apitable.interfaces.user.model.MultiInvitationMetadata;
 import com.apitable.organization.dto.MemberBaseInfoDTO;
 import com.apitable.organization.dto.MemberDTO;
+import com.apitable.organization.dto.RoleMemberDTO;
 import com.apitable.organization.dto.TeamBaseInfoDTO;
 import com.apitable.organization.dto.TenantMemberDto;
+import com.apitable.organization.dto.UnitBaseInfoDTO;
+import com.apitable.organization.dto.UnitMemberTeamDTO;
 import com.apitable.organization.dto.UploadDataDTO;
 import com.apitable.organization.entity.AuditUploadParseRecordEntity;
 import com.apitable.organization.entity.MemberEntity;
@@ -109,6 +111,7 @@ import com.apitable.user.dto.UserLangDTO;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
 import com.apitable.workspace.enums.PermissionException;
+import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.vo.NodeRoleMemberVo;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
@@ -199,9 +202,6 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     private MemberMapper memberMapper;
 
     @Resource
-    private EntitlementServiceFacade entitlementServiceFacade;
-
-    @Resource
     private InvitationServiceFacade invitationServiceFacade;
 
     @Override
@@ -211,6 +211,9 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
 
     @Resource
     private IRoleMemberService iRoleMemberService;
+
+    @Resource
+    private INodeService iNodeService;
 
 
     @Override
@@ -306,6 +309,9 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         if (!teamIds.isEmpty()) {
             List<Long> allParentTeamIds = teamFacade.getAllParentTeamIds(teamIds);
             unitRefIds.addAll(allParentTeamIds);
+            List<RoleMemberDTO> refRoles =
+                iRoleMemberService.getByUnitRefIdsAndUnitType(allParentTeamIds, UnitType.TEAM);
+            refRoles.stream().map(RoleMemberDTO::getRoleId).forEach(unitRefIds::add);
         }
         List<Long> roleIds = iRoleMemberService.getRoleIdsByRoleMemberId(memberId);
         unitRefIds.addAll(roleIds);
@@ -897,8 +903,12 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
     @Transactional(rollbackFor = Exception.class)
     public void removeByMemberIds(List<Long> memberIds) {
         baseMapper.deleteBatchByIds(memberIds);
+        // remove member's private workspace nodes
+        List<Long> unitIds = iUnitService.getUnitIdsByRefIds(memberIds);
+        iNodeService.deleteMembersNodes(unitIds);
         // Logically deletes a member unit from an organizational unit
         iUnitService.removeByMemberId(memberIds);
+
     }
 
     @Override
@@ -1451,8 +1461,7 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
             // obtaining statistics
             int currentMemberCount =
                 (int) SqlTool.retCount(staticsMapper.countMemberBySpaceId(spaceId));
-            SubscriptionInfo subscriptionInfo =
-                entitlementServiceFacade.getSpaceSubscription(spaceId);
+            SubscriptionInfo subscriptionInfo = iSpaceService.getSpaceSubscription(spaceId);
             long maxSeatNums = subscriptionInfo.getFeature().getSeat().getValue();
             // long defaultMaxMemberCount = iSubscriptionService.getPlanSeats(spaceId);
             // Use the object to read data row by row,
@@ -1512,5 +1521,35 @@ public class MemberServiceImpl extends ExpandServiceImpl<MemberMapper, MemberEnt
         Integer count =
             spaceInviteRecordMapper.selectCountBySpaceIdAndBetween(spaceId, startAt, endAt);
         return count >= constProperties.getMaxInviteCountForFree();
+    }
+
+    @Override
+    public List<UnitMemberTeamDTO> getMemberBySpaceIdAndUserIds(String spaceId,
+                                                                List<Long> userIds) {
+        List<UnitMemberTeamDTO> unitMembers = new ArrayList<>();
+        List<MemberDTO> members = baseMapper.selectDtoBySpaceIdAndUserIds(spaceId, userIds);
+        List<Long> memberIds = members.stream().map(MemberDTO::getId).toList();
+        Map<Long, List<String>> memberTeamMap = iTeamService.getMembersTeamName(memberIds);
+        Map<Long, UserEntity> users = iUserService.getByIds(userIds).stream()
+            .collect(Collectors.toMap(UserEntity::getId, i -> i));
+        Map<Long, Long> memberUnitMap =
+            iUnitService.getUnitBaseInfoByRefIds(memberIds).stream().collect(
+                Collectors.toMap(UnitBaseInfoDTO::getUnitRefId, UnitBaseInfoDTO::getId));
+        for (MemberDTO member : members) {
+            UnitMemberTeamDTO unitMember = new UnitMemberTeamDTO();
+            unitMember.setOpenId(member.getOpenId());
+            unitMember.setIsDeleted(member.getIsDeleted());
+            unitMember.setMemberId(member.getId());
+            unitMember.setMemberName(member.getMemberName());
+            unitMember.setUnitId(memberUnitMap.get(member.getId()));
+            String teamName = StrUtil.join(" & ", memberTeamMap.get(member.getId()));
+            unitMember.setTeamName(teamName);
+            UserEntity user = users.get(member.getUserId());
+            unitMember.setUserId(member.getUserId());
+            unitMember.setAvatar(user.getAvatar());
+            unitMember.setAvatarColor(user.getColor());
+            unitMembers.add(unitMember);
+        }
+        return unitMembers;
     }
 }

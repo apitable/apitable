@@ -116,4 +116,9 @@ public class TeamMemberRelServiceImpl
     public void removeByTeamIdsAndMemberId(Long memberId, List<Long> teamIds) {
         baseMapper.deleteByTeamIdsAndMemberId(memberId, teamIds);
     }
+
+    @Override
+    public List<TeamMemberRelEntity> getByMemberIds(List<Long> memberIds) {
+        return baseMapper.selectByMemberIds(memberIds);
+    }
 }

@@ -32,12 +32,15 @@ const CancelToken = axios.CancelToken;
  *
  * Query the node tree of the workbench, limit the query to two layers
  *
+ * @unitType 1: team, 3: member(private)
+ * @param unitType
  * @param depth
  * @returns
  */
-export function getNodeTree(depth?: number) {
+export function getNodeTree(unitType?: number, depth?: number) {
   return axios.get(Url.GET_NODE_TREE, {
     params: {
+      unitType,
       depth,
     },
   });
@@ -59,13 +62,15 @@ export function getRootNode() {
  *
  * @param nodeId
  * @param nodeType
+ * @param unitType
  * @returns
  */
-export function getChildNodeList(nodeId: string, nodeType?: NodeType) {
+export function getChildNodeList(nodeId: string, nodeType?: NodeType, unitType?: number) {
   return axios.get<IApiWrapper & { data: Omit<INodesMapItem, 'children'>[] }>(Url.GET_NODE_LIST, {
     params: {
       nodeId,
       nodeType,
+      unitType,
     },
   });
 }
@@ -143,12 +148,14 @@ export function createSpace(name: string) {
  * @param nodeId the node id that will be moved.
  * @param parentId the parent node id that will be placed here.
  * @param preNodeId
+ * @param unitId
  */
-export function nodeMove(nodeId: string, parentId: string, preNodeId?: string) {
+export function nodeMove(nodeId: string, parentId: string, preNodeId?: string, unitId?: string) {
   return axios.post(Url.MOVE_NODE, {
     nodeId,
     parentId,
     preNodeId,
+    unitId
   });
 }
 
@@ -253,6 +260,7 @@ export function quitSpace(spaceId: string) {
  * Find nodes
  *
  * @param keyword the keyword to search
+ * @param ctx
  */
 export function findNode(keyword: string, ctx: any) {
   return axios.get(Url.SEARCH_NODE, {
@@ -387,7 +395,6 @@ export function searchSpaceSize() {
 
 /**
  * Get the number of nodes(folders and files) in the specified space
- * @param spaceId
  */
 export function getSpaceNodeNumber() {
   return axios.get(Url.NODE_NUMBER);
@@ -395,7 +402,6 @@ export function getSpaceNodeNumber() {
 
 /**
  * Get the permissions resources of the specified space
- * @param spaceId
  */
 export function getSpaceResource() {
   return axios.get(Url.SPACE_RESOURCE);
@@ -443,6 +449,7 @@ export function subAdminPermission(memberId: string) {
  * fuzzy search members
  *
  * @param keyword the keyword to search
+ * @param filter
  */
 export function searchMember(keyword: string, filter: boolean) {
   return axios.get(Url.MEMBER_SEARCH, {
@@ -456,7 +463,7 @@ export function searchMember(keyword: string, filter: boolean) {
 /**
  * add sub-admin
  *
- * @param memberId member id
+ * @param memberIds
  * @param resourceCodes operation resources set, no orders, auto verify
  */
 export function addSubMember(memberIds: string[], resourceCodes: string[]) {
@@ -469,6 +476,7 @@ export function addSubMember(memberIds: string[], resourceCodes: string[]) {
 /**
  * edit sub-admin
  *
+ * @param id
  * @param memberId member id
  * @param resourceCodes operation resources set, no orders, auto verify
  */
@@ -484,6 +492,7 @@ export function editSubMember(id: string, memberId: string, resourceCodes: strin
  * search organization resource
  *
  * @param keyword keywords(tag/team)
+ * @param linkId
  */
 export function searchUnit(keyword: string, linkId?: string) {
   return axios.get(Url.SEARCH_UNIT, {
@@ -511,6 +520,7 @@ export function getAllVisibleStatus() {
 /**
  * get child teams and members
  * @param teamId Team ID
+ * @param linkId
  */
 export function getSubUnitList(teamId?: string, linkId?: string) {
   return axios.get(Url.GET_SUB_UNIT_LIST, {
@@ -569,6 +579,27 @@ export function getCapacityRewardList(isExpire: boolean, pageNo: number) {
     params: {
       pageObjectParams,
       isExpire,
+    },
+  });
+}
+
+/**
+ * Get Space node infos
+ *
+ * @param spaceId
+ * @param pageNo
+ * @returns
+ */
+export function getCapacityNodeList(spaceId: string, pageNo: number) {
+  const pageObjectParams = JSON.stringify({
+    pageSize: ConfigConstant.CAPACITY_REWARD_LIST_PAGE_SIZE,
+    order: 'createdAt',
+    sort: ConfigConstant.SORT_DESC,
+    pageNo,
+  });
+  return axios.get(urlcat(Url.CAPACITY_NODE_LIST, { spaceId }), {
+    params: {
+      pageObjectParams,
     },
   });
 }
@@ -662,6 +693,7 @@ export function updateShare(
  * folder node preview
  *
  * @param nodeId
+ * @param shareId
  */
 export function nodeShowcase(nodeId: string, shareId?: string) {
   return axios.get(Url.NODE_SHOWCASE, {

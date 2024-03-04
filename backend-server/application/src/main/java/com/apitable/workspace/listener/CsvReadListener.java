@@ -87,6 +87,8 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
 
     private final String fileName;
 
+    private final Long unitId;
+
     /**
      * constructor.
      *
@@ -98,9 +100,10 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
      * @param parentNodeId parent node id
      * @param viewName     view name
      * @param fileName     file name
+     * @param unitId       unit id
      */
-    public CsvReadListener(INodeService nodeService, Long userId, String uuid,
-                           String spaceId, Long memberId, String parentNodeId, String viewName,
+    public CsvReadListener(INodeService nodeService, Long userId, String uuid, String spaceId,
+                           Long memberId, String parentNodeId, Long unitId, String viewName,
                            String fileName) {
         this.iNodeService = nodeService;
         this.userId = userId;
@@ -109,7 +112,7 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
         this.parentNodeId = parentNodeId;
         this.viewName = viewName;
         this.fileName = fileName;
-
+        this.unitId = unitId;
         this.retNodeId = IdUtil.createDstId();
 
         fieldUpdatedInfo.set("createdAt",
@@ -266,6 +269,7 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
             .nodeName(fileName)
             .type(NodeType.DATASHEET.getNodeType())
             .isTemplate(false)
+            .unitId(unitId)
             .creator(memberId)
             .createdBy(userId)
             .updatedBy(userId).build());

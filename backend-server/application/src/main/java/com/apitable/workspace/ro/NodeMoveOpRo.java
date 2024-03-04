@@ -42,4 +42,7 @@ public class NodeMoveOpRo {
     @Schema(description = "The previous node of the target position moves to the first position "
         + "when it is empty", example = "nod10")
     private String preNodeId;
+
+    @Schema(description = "unit id, if is null means move to space workspace")
+    private String unitId;
 }

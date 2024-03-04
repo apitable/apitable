@@ -1182,6 +1182,7 @@
   "confirm_del_current_team": "确认是否删除当前小组",
   "confirm_delete": "确认删除",
   "confirm_delete_node_name_as": "确认要删除「${nodeNameDiv}」吗？",
+  "confirm_delete_private_node_name_as": "个人文件删除后无法进行恢复, 确认要删除「${nodeNameDiv}」吗？",
   "confirm_delete_space_btn": "了解并继续删除",
   "confirm_exit": "确认退出",
   "confirm_exit_space_with_name": "确认是否退出「${spaceNameDiv}」空间站\n",
@@ -4023,7 +4024,7 @@
   "remove_from_group": "<a class=\"memberName\"></a>将你移出空间站「<a class=\"spaceName\"></a>」的「<a class=\"teamName\"></a>」小组",
   "remove_from_role": "<a class=\"memberName\"></a>将你移出空间站「<a class=\"spaceName\"></a>」的「<a class=\"roleName\"></a>」小组",
   "remove_from_space": "移出空间",
-  "remove_from_space_confirm_tip": "确认是否将该成员彻底移出此空间",
+  "remove_from_space_confirm_tip": "确认是否将该成员彻底移出此工作区，移除后该成员存在个人工作区区的文件不会再占用工作区站的容量，并且也没有人能够访问他们的个人工作区的文件，该文件会 30天后自动清理",
   "remove_from_team": "移出小组",
   "remove_from_team_confirm_tip": "确认是否将该成员移出此小组",
   "remove_from_the_team": "移出小组",
@@ -6032,5 +6033,14 @@
   "embed_page_doc_url": "https://help.aitable.ai/docs/guide/manual-custom-page",
   "new_custome_page": "新建自定义页面",
   "custome_page_setting_title": "添加自定义页面",
-  "custome_page_title": "自定义网页"
+  "custome_page_title": "自定义网页",
+  "catalog_team": "团队",
+  "catalog_private": "个人",
+  "capacity_file_detail_title": "文件节点数量详情",
+  "capacity_file_detail_desc": "团队工作区的文件数量和个人文件数量会同时占用文件节点数量，数量不够？ 升级工作区站",
+  "capacity_file_member": "成员",
+  "capacity_file_member_team": "小组",
+  "capacity_file_member_team_node_count": "团队工作区的文件数",
+  "capacity_file_member_private_node_count": "个人文件数",
+  "capacity_file_member_private_percent": "占比"
 }

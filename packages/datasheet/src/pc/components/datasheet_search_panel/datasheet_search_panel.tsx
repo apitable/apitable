@@ -61,6 +61,7 @@ interface ISearchPanelProps {
   secondConfirmType?: SecondConfirmType;
   showMirrorNode?: boolean;
   directClickMode?: boolean;
+  isPrivate?: boolean;
 }
 
 export interface ISearchChangeProps {
@@ -82,6 +83,7 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = (p
     secondConfirmType,
     showMirrorNode,
     onChange,
+    isPrivate,
   } = props;
   const [loading, setLoading] = React.useState(false);
   const [state, updateState] = useReducer(searchPanelReducer, {
@@ -119,6 +121,7 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = (p
     }, 1000);
   }, [state.loading, secondConfirmType]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const hidePanel = (e: any) => {
     stopPropagation(e);
     props.setSearchPanelVisible(false);

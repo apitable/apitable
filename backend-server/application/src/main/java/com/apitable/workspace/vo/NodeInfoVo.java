@@ -60,6 +60,10 @@ public class NodeInfoVo extends BaseNodeInfo {
     @JsonIgnore
     private Boolean isTemplate;
 
+    @Schema(description = "Whether it belongs to the private area")
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean nodePrivate;
+
     @Schema(description = "Whether the node is shared")
     private Boolean nodeShared;
 

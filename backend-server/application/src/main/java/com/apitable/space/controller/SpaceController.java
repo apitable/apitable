@@ -18,6 +18,8 @@
 
 package com.apitable.space.controller;
 
+import static com.apitable.shared.constants.PageConstants.PAGE_PARAM;
+import static com.apitable.shared.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 import static com.apitable.space.enums.SpaceException.DELETE_SPACE_ERROR;
 
 import cn.hutool.core.bean.BeanUtil;
@@ -55,6 +57,8 @@ import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
 import com.apitable.shared.util.information.ClientOriginInfo;
 import com.apitable.shared.util.information.InformationUtil;
+import com.apitable.shared.util.page.PageInfo;
+import com.apitable.shared.util.page.PageObjectParam;
 import com.apitable.space.dto.GetSpaceListFilterCondition;
 import com.apitable.space.entity.SpaceEntity;
 import com.apitable.space.enums.AuditSpaceAction;
@@ -68,6 +72,7 @@ import com.apitable.space.ro.SpaceSecuritySettingRo;
 import com.apitable.space.ro.SpaceUpdateOpRo;
 import com.apitable.space.service.ILabsApplicantService;
 import com.apitable.space.service.ISpaceService;
+import com.apitable.space.service.IStaticsService;
 import com.apitable.space.vo.CreateSpaceResultVo;
 import com.apitable.space.vo.LabsFeatureVo;
 import com.apitable.space.vo.SpaceCapacityVO;
@@ -78,8 +83,11 @@ import com.apitable.space.vo.SpaceVO;
 import com.apitable.space.vo.UserSpaceVo;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
+import com.apitable.workspace.vo.NodeStatisticsVo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -124,6 +132,9 @@ public class SpaceController {
 
     @Resource
     private ILabsApplicantService iLabsApplicantService;
+
+    @Resource
+    private IStaticsService iStaticsService;
 
     /**
      * Get space capacity info.
@@ -448,5 +459,17 @@ public class SpaceController {
         CreditUsages creditUsages =
             iSpaceService.getCreditUsagesChart(spaceId, timeDimensionOfChart);
         return ResponseData.success(creditUsages);
+    }
+
+    @GetResource(path = "/space/{spaceId}/node/statistics", requiredPermission = false)
+    @Operation(summary = "Gets statistics for node")
+    @Parameters({
+        @Parameter(name = "spaceId", description = "space id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo"),
+        @Parameter(name = PAGE_PARAM, description = "page's parameter", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = PAGE_SIMPLE_EXAMPLE)
+    })
+    public ResponseData<PageInfo<NodeStatisticsVo>> getNodeStatistics(
+        @PathVariable("spaceId") String spaceId,
+        @PageObjectParam Page<Void> page) {
+        return ResponseData.success(iStaticsService.getNodeStatistics(spaceId, page));
     }
 }

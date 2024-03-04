@@ -20,6 +20,8 @@ package com.apitable.organization.service.impl;
 
 import static com.apitable.organization.enums.OrganizationException.DUPLICATION_TEAM_NAME;
 import static com.apitable.organization.enums.OrganizationException.GET_TEAM_ERROR;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.BooleanUtil;
@@ -36,6 +38,7 @@ import com.apitable.organization.dto.TeamMemberDTO;
 import com.apitable.organization.dto.TeamPathInfo;
 import com.apitable.organization.dto.UnitBaseInfoDTO;
 import com.apitable.organization.entity.TeamEntity;
+import com.apitable.organization.entity.TeamMemberRelEntity;
 import com.apitable.organization.entity.UnitEntity;
 import com.apitable.organization.enums.OrganizationException;
 import com.apitable.organization.enums.UnitType;
@@ -656,7 +659,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         // group by memberId
         Map<Long, List<Long>> memberTeamMap = memberTeamInfoList.stream()
             .collect(Collectors.groupingBy(MemberTeamInfoDTO::getMemberId,
-                Collectors.mapping(MemberTeamInfoDTO::getTeamId, Collectors.toList())));
+                mapping(MemberTeamInfoDTO::getTeamId, Collectors.toList())));
         // get member's each full hierarchy team name
         Map<Long, List<String>> teamIdToPathMap =
             this.getMemberEachTeamPathName(memberTeamMap, spaceId);
@@ -723,6 +726,32 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         TeamEntity department = getById(teamId);
         ExceptionUtil.isNotNull(department, GET_TEAM_ERROR);
         return department;
+    }
+
+    @Override
+    public Map<Long, List<String>> getMembersTeamName(List<Long> memberIds) {
+        List<TeamMemberRelEntity> memberTeamRel = iTeamMemberRelService.getByMemberIds(memberIds);
+        if (memberTeamRel.isEmpty()) {
+            return new HashMap<>(0);
+        }
+        List<Long> teamIds =
+            memberTeamRel.stream().map(TeamMemberRelEntity::getTeamId).distinct().toList();
+        Map<Long, List<Long>> memberTeamIdMap = memberTeamRel.stream().collect(
+            Collectors.groupingBy(TeamMemberRelEntity::getMemberId,
+                mapping(TeamMemberRelEntity::getTeamId, toList())));
+        Map<Long, String> teamNameMap = baseMapper.selectBaseInfoDTOByIds(teamIds)
+            .stream()
+            .collect(Collectors.toMap(TeamBaseInfoDTO::getId, TeamBaseInfoDTO::getTeamName));
+        Map<Long, List<String>> memberTeamMap = new HashMap<>();
+        for (Long memberId : memberIds) {
+            if (!memberTeamIdMap.containsKey(memberId)) {
+                continue;
+            }
+            List<String> teamNames =
+                memberTeamIdMap.get(memberId).stream().map(teamNameMap::get).toList();
+            memberTeamMap.put(memberId, teamNames);
+        }
+        return memberTeamMap;
     }
 
     @Override

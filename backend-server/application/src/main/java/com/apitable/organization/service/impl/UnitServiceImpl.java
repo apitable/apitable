@@ -23,6 +23,7 @@ import static com.apitable.shared.constants.SpaceConstants.SPACE_ROOT_TEAM_UNIT_
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.control.service.IControlRoleService;
@@ -42,6 +43,7 @@ import com.apitable.organization.entity.TeamEntity;
 import com.apitable.organization.entity.TeamMemberRelEntity;
 import com.apitable.organization.entity.UnitEntity;
 import com.apitable.organization.enums.MemberType;
+import com.apitable.organization.enums.OrganizationException;
 import com.apitable.organization.enums.UnitType;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.mapper.RoleMapper;
@@ -64,6 +66,7 @@ import com.apitable.shared.util.page.PageInfo;
 import com.apitable.user.dto.UserSensitiveDTO;
 import com.apitable.user.service.IUserService;
 import com.apitable.workspace.enums.PermissionException;
+import com.apitable.workspace.service.INodeService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -115,6 +118,9 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
 
     @Resource
     private IUserService iUserService;
+
+    @Resource
+    private INodeService iNodeService;
 
     @Override
     public Long getUnitRefIdById(Long id) {
@@ -177,6 +183,8 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
 
         if (CollUtil.isNotEmpty(restores)) {
             baseMapper.batchRestoreByIds(restores);
+            // restore private nodes
+            iNodeService.restoreMembersNodes(restores);
         }
     }
 
@@ -651,6 +659,24 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
             vo.setTeams(getUnitTeamByTeamIds(teamIds));
         }
         return vo;
+    }
+
+    @Override
+    public void checkUnit(Long memberId, String unitId) {
+        if (null == unitId) {
+            return;
+        }
+        UnitEntity unit = baseMapper.selectById(NumberUtil.parseLong(unitId));
+        ExceptionUtil.isFalse(null == unit, OrganizationException.ILLEGAL_UNIT_ID);
+        if (unit.getUnitType().equals(UnitType.MEMBER.getType())) {
+            ExceptionUtil.isTrue(unit.getUnitRefId().equals(memberId),
+                OrganizationException.ILLEGAL_UNIT_ID);
+        }
+        if (unit.getUnitType().equals(UnitType.TEAM.getType())) {
+            List<Long> memberIds = teamMemberRelMapper.selectMemberIdsByTeamId(unit.getUnitRefId());
+            ExceptionUtil.isTrue(memberIds.contains(memberId),
+                OrganizationException.ILLEGAL_UNIT_ID);
+        }
     }
 }
 

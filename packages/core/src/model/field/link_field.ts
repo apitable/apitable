@@ -304,7 +304,7 @@ export class LinkField extends ArrayValueField {
       data: [],
     };
 
-    if (recordIds) {
+    if (recordIds && Array.isArray(recordIds)) {
       stdVal.data = recordIds.map(recordId => {
         const text = this.getLinkedRecordCellString(recordId) || t(Strings.record_unnamed);
         return {

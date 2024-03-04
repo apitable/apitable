@@ -298,4 +298,12 @@ public interface IUnitService extends IService<UnitEntity> {
      */
     UnitRoleMemberVo getRoleMembers(String spaceId, Long roleId, Boolean sensitiveData);
 
+    /**
+     * check current member whether match unit.
+     *
+     * @param memberId current member id
+     * @param unitId   unit id
+     */
+    void checkUnit(Long memberId, String unitId);
+
 }

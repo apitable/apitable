@@ -22,6 +22,7 @@ import static com.apitable.workspace.enums.NodeException.DUPLICATE_NODE_NAME;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
@@ -40,6 +41,7 @@ import com.apitable.core.util.FileTool;
 import com.apitable.core.util.SpringContextHolder;
 import com.apitable.core.util.SqlTool;
 import com.apitable.organization.dto.MemberDTO;
+import com.apitable.organization.enums.UnitType;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.organization.service.IUnitService;
@@ -189,6 +191,9 @@ public class NodeController {
     @Resource
     private UserActiveSpaceCacheService userActiveSpaceCacheService;
 
+    @Resource
+    private IUnitService iUnitService;
+
     private static final String ROLE_DESC = "<br/>Role Type：<br/>"
         + "1.owner can add, edit, move, sort, delete, copy folders in the specified working "
         + "directory。<br/>"
@@ -235,14 +240,21 @@ public class NodeController {
             schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spcyQkKp9XJEl"),
         @Parameter(name = "depth", in = ParameterIn.QUERY,
             description = "tree depth, we can specify the query depth, maximum 2 layers depth.",
-            schema = @Schema(type = "integer"), example = "2")
+            schema = @Schema(type = "integer"), example = "2"),
+        @Parameter(name = "unitType", in = ParameterIn.QUERY,
+            description = "unitType, 1: team, 3: member(private)",
+            schema = @Schema(type = "integer"), example = "3"),
     })
     public ResponseData<NodeInfoTreeVo> getTree(
-        @RequestParam(name = "depth", defaultValue = "2") @Valid @Min(0) @Max(2) Integer depth) {
+        @RequestParam(name = "depth", defaultValue = "2") @Valid @Min(0) @Max(2) Integer depth,
+        @RequestParam(name = "unitType", required = false) Integer unitType) {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
         String rootNodeId = iNodeService.getRootNodeIdBySpaceId(spaceId);
-        NodeInfoTreeVo tree = iNodeService.getNodeTree(spaceId, rootNodeId, memberId, depth);
+        NodeInfoTreeVo tree =
+            null != unitType ? iNodeService.getNodeTree(spaceId, rootNodeId, memberId, depth,
+                UnitType.toEnum(unitType)) :
+                iNodeService.getNodeTree(spaceId, rootNodeId, memberId, depth);
         return ResponseData.success(tree);
     }
 
@@ -420,11 +432,15 @@ public class NodeController {
         @Parameter(name = "nodeId", description = "node id", required = true,
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "nodRTGSy43DJ9"),
         @Parameter(name = "nodeType", description = "node type 1:folder,2:datasheet",
-            schema = @Schema(type = "integer"), in = ParameterIn.QUERY, example = "1")
+            schema = @Schema(type = "integer"), in = ParameterIn.QUERY, example = "1"),
+        @Parameter(name = "unitType", in = ParameterIn.QUERY,
+            description = "unitType, 3: member(private)",
+            schema = @Schema(type = "integer"), example = "3")
     })
     public ResponseData<List<NodeInfoVo>> getNodeChildrenList(
         @RequestParam(name = "nodeId") String nodeId,
-        @RequestParam(name = "nodeType", required = false) Integer nodeType) {
+        @RequestParam(name = "nodeType", required = false) Integer nodeType,
+        @RequestParam(name = "unitType", required = false) Integer unitType) {
         // get the space ID, the method includes judging whether the node exists
         String spaceId = iNodeService.getSpaceIdByNodeId(nodeId);
         NodeType nodeTypeEnum = null;
@@ -435,6 +451,15 @@ public class NodeController {
         Long memberId = LoginContext.me().getUserSpaceDto(spaceId).getMemberId();
         List<NodeInfoVo> nodeInfos =
             iNodeService.getChildNodesByNodeId(spaceId, memberId, nodeId, nodeTypeEnum);
+        nodeInfos = nodeInfos.stream()
+            .filter(i -> {
+                if (UnitType.MEMBER.getType().equals(unitType)) {
+                    return i.getNodePrivate();
+                } else {
+                    return !i.getNodePrivate();
+                }
+            })
+            .collect(Collectors.toList());
         return ResponseData.success(nodeInfos);
     }
 
@@ -482,7 +507,7 @@ public class NodeController {
         // Check whether the source tables of form and mirror exist and whether they have the
         // specified operation permissions.
         iNodeService.checkSourceDatasheet(spaceId, memberId, nodeOpRo.getType(),
-            nodeOpRo.getExtra());
+            nodeOpRo.getUnitId(), nodeOpRo.getExtra());
         if (Boolean.TRUE.equals(nodeOpRo.getCheckDuplicateName())
             && StrUtil.isNotBlank(nodeOpRo.getNodeName())) {
             Optional<NodeEntity> nodeOptional = iNodeService.findSameNameInSameLevel(
@@ -494,6 +519,7 @@ public class NodeController {
                         role));
             }
         }
+        iUnitService.checkUnit(memberId, nodeOpRo.getUnitId());
         String nodeId = iNodeService.createNode(userId, spaceId, nodeOpRo);
         // publish space audit events
         ClientOriginInfo clientOriginInfo = InformationUtil
@@ -756,8 +782,9 @@ public class NodeController {
         if (StrUtil.isBlank(parentId) && StrUtil.isBlank(opRo.getPreNodeId())) {
             parentId = iNodeService.getRootNodeIdBySpaceId(spaceId);
         }
+        iUnitService.checkUnit(memberId, opRo.getUnitId());
         nodeBundleService.analyze(opRo.getFile(), opRo.getPassword(), parentId, opRo.getPreNodeId(),
-            userId);
+            userId, NumberUtil.parseLong(opRo.getUnitId()));
         return ResponseData.success();
     }
 
@@ -792,13 +819,14 @@ public class NodeController {
         }
         mainName =
             iNodeService.duplicateNameModify(data.getParentId(), NodeType.DATASHEET.getNodeType(),
-                mainName, null);
+                mainName, null, NumberUtil.parseLong(data.getUnitId()));
         // file type suffix
         String fileSuffix =
             cn.hutool.core.io.FileUtil.extName(data.getFile().getOriginalFilename());
         if (StrUtil.isBlank(fileSuffix)) {
             throw new BusinessException("file name suffix must not be empty");
         }
+        iUnitService.checkUnit(memberId, data.getUnitId());
         String createNodeId;
         if (FileSuffixConstants.CSV.equals(fileSuffix)) {
             // identification file code
@@ -809,12 +837,15 @@ public class NodeController {
                     IOUtils.toString(data.getFile().getInputStream(), encoding).getBytes());
             createNodeId =
                 iNodeService.parseCsv(userId, uuid, spaceId, memberId, data.getParentId(),
-                    data.getViewName(), mainName, targetInputStream);
+                    NumberUtil.parseLong(data.getUnitId()), data.getViewName(), mainName,
+                    targetInputStream);
         } else if (fileSuffix.equals(FileSuffixConstants.XLS)
             || fileSuffix.equals(FileSuffixConstants.XLSX)) {
             createNodeId =
                 iNodeService.parseExcel(userId, uuid, spaceId, memberId, data.getParentId(),
-                    data.getViewName(), mainName, fileSuffix, data.getFile().getInputStream());
+                    NumberUtil.parseLong(data.getUnitId()), data.getViewName(), mainName,
+                    fileSuffix,
+                    data.getFile().getInputStream());
         } else {
             throw new BusinessException(ActionException.FILE_ERROR_FORMAT);
         }

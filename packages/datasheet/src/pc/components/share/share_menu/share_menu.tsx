@@ -119,6 +119,7 @@ export const ShareMenu: React.FC<React.PropsWithChildren<IShareMenu>> = ({ share
   const userInfo = useAppSelector((state) => state.user.info);
   const { formId, viewId } = useAppSelector((state) => state.pageParams);
   const activedNodeId = useAppSelector((state) => Selectors.getNodeId(state));
+  const activeNodePrivate = useAppSelector((state) => Selectors.getActiveNodePrivate(state));
   const env = getEnvVariables();
   const themeName = useAppSelector((state) => state.theme);
   const EditPng = themeName === ThemeName.Light ? EditPngLight : EditPngDark;
@@ -178,7 +179,7 @@ export const ShareMenu: React.FC<React.PropsWithChildren<IShareMenu>> = ({ share
           {shareSpace.allowSaved && (
             <OperationCard img={SavePng} tipText={t(Strings.save_action_desc)} btnText={t(Strings.save_to_space)} onClick={saveToMySpace} />
           )}
-          {userInfo && userInfo.spaceId && shareSpace.allowEdit && !removedUserHiddenCard && (
+          {userInfo && userInfo.spaceId && shareSpace.allowEdit && !removedUserHiddenCard && !activeNodePrivate && (
             <OperationCard
               img={EditPng}
               tipText={t(Strings.support_access_to_editors)}

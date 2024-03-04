@@ -260,7 +260,8 @@ public class TemplateController {
         String nodeId =
             iNodeService.copyNodeToSpace(userId, spaceId, ro.getParentId(), info.getNodeId(),
                 NodeCopyOptions.builder().copyData(BooleanUtil.isTrue(ro.getData()))
-                    .verifyNodeCount(true).sourceTemplateId(ro.getTemplateId()).build());
+                    .verifyNodeCount(true).sourceTemplateId(ro.getTemplateId())
+                    .unitId(ro.getUnitId()).build());
         // Cumulative template usage times
         TaskManager.me()
             .execute(() -> templateMapper.updateUsedTimesByTempId(ro.getTemplateId(), 1));

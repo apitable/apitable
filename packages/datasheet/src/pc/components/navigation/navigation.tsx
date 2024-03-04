@@ -108,6 +108,14 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   const [clickCount, setClickCount] = useState(0);
   const contactUs = useContactUs();
   const env = getEnvVariables();
+  const sidebarCustomButtonList = React.useMemo(() => {
+    const list = env.SIDEBAR_CUSTOM_BUTTON_LIST;
+    if (!list) {
+      return [];
+    } 
+    return JSON.parse(list);
+    
+  }, []);
   useRequest(notificationStatistics);
 
   useEffect(() => {
@@ -416,6 +424,13 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
             </div>
           </Tooltip>
         )}
+        {sidebarCustomButtonList.map((item: any, index: number) => (
+          <Tooltip title={item.tooltip} placement="right" key={index}>
+            <a className={styles.iconWrap} href={item.link} target="_blank" rel="noreferrer">
+              <img className={styles.img} src={item.icon} alt={item.link} />
+            </a>
+          </Tooltip>
+        ))}
         <Tooltip title={t(Strings.quick_search_title)} placement="right">
           <div className={styles.iconWrap} onClick={() => expandSearch()}>
             <SearchOutlined className={styles.icon} size={24} />

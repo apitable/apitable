@@ -17,7 +17,7 @@
  */
 
 import { FC } from 'react';
-import { IReduxState } from '@apitable/core';
+import { IReduxState, Selectors } from '@apitable/core';
 import { useAppSelector } from 'pc/store/react-redux';
 import { ShareNode } from '../share_node';
 
@@ -28,7 +28,9 @@ export interface IShareProps {
 }
 
 export const Share: FC<React.PropsWithChildren<IShareProps>> = ({ nodeId, onClose, isTriggerRender }) => {
-  const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const activeNodePrivate = useAppSelector((state) => Selectors.getActiveNodePrivate(state));
+  const nodeKey = activeNodePrivate ? 'privateTreeNodesMap' : 'treeNodesMap';
+  const nodesMap = useAppSelector((state: IReduxState) => state.catalogTree[nodeKey]);
   if (!nodeId) {
     return null;
   }
@@ -36,9 +38,9 @@ export const Share: FC<React.PropsWithChildren<IShareProps>> = ({ nodeId, onClos
     <ShareNode
       data={{
         nodeId: nodeId,
-        type: treeNodesMap[nodeId]?.type,
-        icon: treeNodesMap[nodeId]?.icon,
-        name: treeNodesMap[nodeId]?.nodeName,
+        type: nodesMap[nodeId]?.type,
+        icon: nodesMap[nodeId]?.icon,
+        name: nodesMap[nodeId]?.nodeName,
       }}
       onClose={onClose}
       visible

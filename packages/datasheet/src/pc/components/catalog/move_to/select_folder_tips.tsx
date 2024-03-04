@@ -21,7 +21,6 @@ import { LinkButton, Typography, useThemeColors } from '@apitable/components';
 import { IParent, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined } from '@apitable/icons';
 import { HorizontalScroll } from 'pc/components/common/horizontal_scroll';
-
 import styles from './style.module.less';
 
 export const SelectFolderTips: React.FC<

@@ -319,6 +319,11 @@ export const getNodeId = (state: IReduxState) => {
   return nodeId || '';
 };
 
+export const getActiveNodePrivate = (state: IReduxState) => {
+  const nodeId = getNodeId(state);
+  return state.datasheetMap[nodeId]?.datasheet?.nodePrivate;
+};
+
 export const getToolbarMenuCardState = (state: IReduxState) => {
   return state.toolbar.menuCardState;
 };

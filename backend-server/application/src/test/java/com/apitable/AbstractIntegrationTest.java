@@ -78,8 +78,10 @@ import com.apitable.workspace.enums.NodeType;
 import com.apitable.workspace.service.IDatasheetMetaService;
 import com.apitable.workspace.service.IFieldRoleService;
 import com.apitable.workspace.service.INodeRoleService;
+import com.apitable.workspace.service.INodeRubbishService;
 import com.apitable.workspace.service.INodeService;
 import com.apitable.workspace.service.IResourceMetaService;
+import com.apitable.workspace.service.NodeBundleService;
 import com.baomidou.mybatisplus.autoconfigure.MybatisPlusProperties;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import java.util.Collections;
@@ -154,6 +156,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected INodeService iNodeService;
+
+    @Autowired
+    protected INodeRubbishService iNodeRubbishService;
 
     @Autowired
     protected PasswordEncoder passwordEncoder;
@@ -253,6 +258,9 @@ public abstract class AbstractIntegrationTest extends TestSuiteWithDB {
 
     @Autowired
     protected IAutomationTriggerTypeService iAutomationTriggerTypeService;
+
+    @Autowired
+    protected NodeBundleService nodeBundleService;
 
     @Value("#{'${exclude}'.split(',')}")
     private List<String> excludeTables;

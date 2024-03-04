@@ -18,10 +18,13 @@
 
 package com.apitable.space.service;
 
+import com.apitable.shared.util.page.PageInfo;
 import com.apitable.space.dto.ControlStaticsDTO;
 import com.apitable.space.dto.DatasheetStaticsDTO;
 import com.apitable.space.dto.NodeStaticsDTO;
 import com.apitable.space.dto.NodeTypeStaticsDTO;
+import com.apitable.workspace.vo.NodeStatisticsVo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -170,4 +173,13 @@ public interface IStaticsService {
      * @param spaceId space id.
      */
     void deleteDatasheetRecordCountStatistics(String spaceId);
+
+    /**
+     * get node statistics.
+     *
+     * @param spaceId space id
+     * @param page    query page
+     * @return IPage MemberPageVo
+     */
+    PageInfo<NodeStatisticsVo> getNodeStatistics(String spaceId, Page<Void> page);
 }

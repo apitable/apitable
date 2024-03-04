@@ -98,6 +98,8 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
 
     private final String fileName;
 
+    private final Long unitId;
+
     private final LimitProperties limitProperties = new LimitProperties();
 
     private NodeData retNodeData = null;
@@ -106,7 +108,7 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
      * Multi Sheet Read Listener.
      */
     public MultiSheetReadListener(INodeService nodeService, Long userId, String uuid,
-                                  String spaceId, Long memberId, String parentNodeId,
+                                  String spaceId, Long memberId, String parentNodeId, Long unitId,
                                   String viewName, String fileName) {
         this.iNodeService = nodeService;
         this.userId = userId;
@@ -115,6 +117,7 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
         this.parentNodeId = parentNodeId;
         this.viewName = viewName;
         this.fileName = fileName;
+        this.unitId = unitId;
 
         fieldUpdatedInfo.set("createdAt",
             Instant.now(Clock.system(ZoneId.of("+8"))).toEpochMilli());
@@ -361,6 +364,7 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
                 .isTemplate(false)
                 .creator(memberId)
                 .createdBy(userId)
+                .unitId(unitId)
                 .updatedBy(userId).build());
         }
 
@@ -378,6 +382,7 @@ public class MultiSheetReadListener extends AnalysisEventListener<Map<Integer, S
                 .isTemplate(false)
                 .creator(memberId)
                 .createdBy(userId)
+                .unitId(unitId)
                 .updatedBy(userId).build());
 
             DatasheetEntity datasheet = DatasheetEntity.builder()
