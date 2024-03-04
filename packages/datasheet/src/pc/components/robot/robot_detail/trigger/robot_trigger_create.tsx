@@ -17,8 +17,9 @@
  */
 
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
+import { debounce } from 'lodash';
 import * as React from 'react';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import styled, { css } from 'styled-components';
 import { applyDefaultTheme, SearchSelect } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
@@ -96,50 +97,48 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
     // }, 3000);
   }, []);
 
-  const createRobotTrigger = useMemo(() => {
-    return async (triggerTypeId: string) => {
-      const triggerType = triggerTypes.find((item) => item.triggerTypeId === triggerTypeId);
-      // When the trigger is created for a record, the default value needs to be filled in.
-      let input = triggerType?.endpoint === 'record_created' ? defaultFormData : undefined;
+  const createRobotTrigger = useCallback(async (triggerTypeId: string) => {
+    const triggerType = triggerTypes.find((item) => item.triggerTypeId === triggerTypeId);
+    // When the trigger is created for a record, the default value needs to be filled in.
+    let input = triggerType?.endpoint === 'record_created' ? defaultFormData : undefined;
 
-      let scheduleConfig: ICronSchemaTimeZone | undefined = undefined;
-      if (triggerType?.endpoint === 'scheduled_time_arrive') {
-        scheduleConfig = {
-          timeZone: userTimezone,
-        };
-        input = getDefaultSchema(userTimezone);
-      }
-      if (!state?.resourceId) {
-        console.error('.resourceId unfound ');
-        return;
-      }
-      if (!state?.currentRobotId) {
-        console.error('currentRobotId unfound ');
-        return;
-      }
-      const triggerRes = await createTrigger(state?.resourceId, {
-        robotId,
-        prevTriggerId: preTriggerId,
-        triggerTypeId,
-        input,
+    let scheduleConfig: ICronSchemaTimeZone | undefined = undefined;
+    if (triggerType?.endpoint === 'scheduled_time_arrive') {
+      scheduleConfig = {
+        timeZone: userTimezone,
+      };
+      input = getDefaultSchema(userTimezone);
+    }
+    if (!state?.resourceId) {
+      console.error('.resourceId unfound ');
+      return;
+    }
+    if (!state?.currentRobotId) {
+      console.error('currentRobotId unfound ');
+      return;
+    }
+    const triggerRes = await createTrigger(state?.resourceId, {
+      robotId,
+      prevTriggerId: preTriggerId,
+      triggerTypeId,
+      input,
+    });
+
+    if (triggerRes?.data?.data?.[0]) {
+      await refresh({
+        resourceId: state.resourceId,
+        robotId: state.currentRobotId,
       });
 
-      if (triggerRes?.data?.data?.[0]) {
-        await refresh({
-          resourceId: state.resourceId,
-          robotId: state.currentRobotId,
-        });
+      setAutomationCurrentTriggerId(triggerRes.data.data[0].triggerId);
+      setAutomationPanel({
+        panelName: PanelName.Trigger,
+        dataId: triggerRes.data.data?.[0]?.triggerId,
+        data: triggerRes.data.data,
+      });
 
-        setAutomationCurrentTriggerId(triggerRes.data.data[0].triggerId);
-        setAutomationPanel({
-          panelName: PanelName.Trigger,
-          dataId: triggerRes.data.data?.[0]?.triggerId,
-          data: triggerRes.data.data,
-        });
-
-        return triggerRes.data;
-      }
-    };
+      return triggerRes.data;
+    }
   }, [
     triggerTypes,
     defaultFormData,
@@ -153,6 +152,8 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
     setAutomationPanel,
   ]);
 
+  const debouncedCreateTrigger = debounce(createRobotTrigger, 1000);
+
   const { IS_ENTERPRISE } = getEnvVariables();
   if (!triggerTypes) {
     return null;
@@ -165,7 +166,7 @@ export const RobotTriggerCreateForm = ({ robotId, triggerTypes, preTriggerId }: 
     }
 
     if (triggerTypeId) {
-      createRobotTrigger(triggerTypeId);
+      debouncedCreateTrigger(triggerTypeId);
     }
   };
 

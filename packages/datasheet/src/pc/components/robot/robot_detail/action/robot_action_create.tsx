@@ -17,7 +17,7 @@
  */
 
 import { useAtomValue, useAtom } from 'jotai';
-import { ReactElement } from 'react';
+import { ReactElement, useCallback, useMemo } from 'react';
 import {
   SearchSelect,
 } from '@apitable/components';
@@ -30,6 +30,7 @@ import { IActionType, INodeOutputSchema, IRobotAction } from '../../interface';
 import { NewItem } from '../../robot_list/new_item';
 import { EditType } from '../trigger/robot_trigger';
 import itemStyle from '../trigger/select_styles.module.less';
+import { debounce } from 'lodash';
 
 export const getNextAction = (actionList: IRobotAction[], preActionId ?: string) => {
   const actionIndex = actionList.findIndex(action => action.actionId === preActionId);
@@ -47,7 +48,7 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
   const [, setAutomationPanel] = useAtom(automationPanelAtom);
   const automationState= useAtomValue(automationStateAtom);
   const { api: { refresh } } = useAutomationController();
-  const createNewAction = async (action: {
+  const createNewAction = useCallback(async (action: {
     actionTypeId: string;
     robotId: string;
     prevActionId?: string;
@@ -90,7 +91,9 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
       });
     }
     return res.data;
-  };
+  }, [automationState?.resourceId, nodeOutputSchemaList, prevActionId, refresh, robotId, setAutomationPanel]);
+
+  const debouncedCreateAction = debounce(createNewAction, 1000);
 
   return (
     <SearchSelect
@@ -109,7 +112,7 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
         value: item.actionTypeId,
         prefixIcon: <img src={integrateCdnHost(item.service.logo)} width={20} alt={''} style={{ marginRight: 4 }} />
       }))} onChange={(item) => {
-        createNewAction({
+      debouncedCreateAction({
           robotId,
           actionTypeId: String(item.value),
           prevActionId
