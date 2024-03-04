@@ -1,5 +1,19 @@
 # APITable CHANGELOG
 
+## [v1.9.0-beta](https://github.com/apitable/apitable/releases/tag/v1.9.0-beta) (2024-01-29)
+
+
+### Bug fixes
+
+* fix: usage warn func ([#1573](https://github.com/apitable/apitable/pull/1573)) @wangkailang 
+
+### What's more
+
+* sync: hosted cloud ([#1571](https://github.com/apitable/apitable/pull/1571)) @chalme 
+* chore: changelog update ([#1574](https://github.com/apitable/apitable/pull/1574)) @chalme 
+* Sync/hosted ([#1581](https://github.com/apitable/apitable/pull/1581)) @jeremyyin2012 
+* chore: changelog update ([#1583](https://github.com/apitable/apitable/pull/1583)) @jeremyyin2012 
+* sync: hosted cloud ([#1592](https://github.com/apitable/apitable/pull/1592)) @JoverZhang 
 ## [v1.8.0-beta.3](https://github.com/apitable/apitable/releases/tag/v1.8.0-beta.3) (2024-01-23)
 
 
