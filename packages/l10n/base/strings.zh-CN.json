@@ -4024,7 +4024,8 @@
   "remove_from_group": "<a class=\"memberName\"></a>将你移出空间站「<a class=\"spaceName\"></a>」的「<a class=\"teamName\"></a>」小组",
   "remove_from_role": "<a class=\"memberName\"></a>将你移出空间站「<a class=\"spaceName\"></a>」的「<a class=\"roleName\"></a>」小组",
   "remove_from_space": "移出空间",
-  "remove_from_space_confirm_tip": "确认是否将该成员彻底移出此工作区，移除后该成员存在个人工作区区的文件不会再占用工作区站的容量，并且也没有人能够访问他们的个人工作区的文件，该文件会 30天后自动清理",
+  "remove_from_space_confirm_tip": "确认是否将该成员彻底移出此工作区，移除后该成员存在个人工作区区的文件不会再占用工作区站的容量，并且也没有人能够访问他们的个人工作区的文件。",
+  "create_private_node_tip": "个人或者临时类的草稿文件可以在这里创建，${link}",
   "remove_from_team": "移出小组",
   "remove_from_team_confirm_tip": "确认是否将该成员移出此小组",
   "remove_from_the_team": "移出小组",
@@ -6042,5 +6043,6 @@
   "capacity_file_member_team": "小组",
   "capacity_file_member_team_node_count": "团队工作区的文件数",
   "capacity_file_member_private_node_count": "个人文件数",
-  "capacity_file_member_private_percent": "占比"
+  "capacity_file_member_private_percent": "占比",
+  "private_help_link": "https://help.aitable.ai/guide/private"
 }

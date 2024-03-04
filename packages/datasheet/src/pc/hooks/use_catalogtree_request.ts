@@ -568,7 +568,7 @@ export const useCatalogTreeRequest = () => {
       if (success) {
         dispatch(StoreActions.generateFavoriteTree(Selectors.flatNodeTree(data)));
         dispatch(StoreActions.setTreeLoading(false, ConfigConstant.Modules.FAVORITE));
-        return;
+        return data;
       }
       dispatch(StoreActions.setTreeLoading(false, ConfigConstant.Modules.FAVORITE));
       Message.error({ content: message });

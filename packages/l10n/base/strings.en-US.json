@@ -3755,7 +3755,8 @@
   "remove_from_group": "You were removed from the \"<a class=\"teamName\"></a>\" team of the \"<a class=\"spaceName\"></a>\" Space by <a class=\"memberName\"></a>.",
   "remove_from_role": "You were removed from the \"<a class=\"roleName\"></a>\" role of the \"<a class=\"spaceName\"></a>\" Space by <a class=\"memberName\"></a>.",
   "remove_from_space": "Remove from Space",
-  "remove_from_space_confirm_tip": "Confirm to completely remove the member from this workspace. After removal, the member's private workspace files will no longer occupy the capacity of the workspace station, and no one can access their private workspace files. The files will be automatically cleaned up after 30 days",
+  "remove_from_space_confirm_tip": "Confirm to completely remove the member from this workspace. After removal, the member's private workspace files will no longer occupy the capacity of the workspace station, and no one can access their private workspace files.",
+  "create_private_node_tip": "Personal or temporary draft documents can be created here, ${link}",
   "remove_from_team": "Remove from team",
   "remove_from_team_confirm_tip": "Confirm to remove the member from this team",
   "remove_from_the_team": "Remove",
@@ -6039,5 +6040,6 @@
   "capacity_file_member_team": "Team",
   "capacity_file_member_team_node_count": "Team file number",
   "capacity_file_member_private_node_count": "Personal file number",
-  "capacity_file_member_private_percent": "Percent"
+  "capacity_file_member_private_percent": "Percent",
+  "private_help_link": "https://help.aitable.ai/guide/private"
 }

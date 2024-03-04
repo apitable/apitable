@@ -179,7 +179,7 @@ const FavoriteBase: FC<React.PropsWithChildren<unknown>> = () => {
         resolve(false);
       });
     }
-    return dispatch(StoreActions.getChildNode(nodeId));
+    return dispatch(StoreActions.getChildNode(nodeId, nodeInfo.nodePrivate ? ConfigConstant.Modules.PRIVATE : undefined));
   };
 
   useEffect(() => {

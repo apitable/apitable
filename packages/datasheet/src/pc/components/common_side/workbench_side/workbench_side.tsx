@@ -320,11 +320,12 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
   );
 
   const permissionCommitRemindStatus = useAppSelector((state) => state.catalogTree.permissionCommitRemindStatus);
+  const activeNodePrivate = useAppSelector((state) => Selectors.getActiveNodePrivate(state));
 
   function onClosePermissionSettingModal() {
     dispatch(StoreActions.updatePermissionModalNodeId(''));
 
-    if (permissionCommitRemindStatus) {
+    if (permissionCommitRemindStatus && !activeNodePrivate) {
       sendRemind();
       dispatch(StoreActions.setPermissionCommitRemindStatus(false));
     }
