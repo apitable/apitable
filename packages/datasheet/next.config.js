@@ -115,7 +115,7 @@ const plugins = [
       },
     }),
 
-  withTM(['antd', 'antd-mobile', 'rc-util', 'rc-picker', 'rc-notification', 'rc-calendar']),
+  withTM(['antd', 'antd-mobile', 'rc-util', 'rc-picker', 'rc-notification', 'rc-calendar', 'purify-ts']),
   withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' }),
 ];
 
