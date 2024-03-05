@@ -1617,6 +1617,7 @@
   "direction_left": "Слева.",
   "direction_right": "Правильно.",
   "disable": "калечить",
+  "disable_jump_private": "Disable Jump to Private",
   "disabled_apply_join_space": "Запрещается подавать заявку на участие в общем пространстве",
   "disabled_crypto_field": "Права доступа установлены для текущего поля, конфигурация не может вступить в силу",
   "disabled_expand_link_record": "У вас нет прав на просмотр соответствующей таблицы данных, вы не можете развернуть запись",

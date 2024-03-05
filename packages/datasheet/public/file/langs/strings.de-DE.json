@@ -1617,6 +1617,7 @@
   "direction_left": "links",
   "direction_right": "rechts",
   "disable": "Deaktivieren",
+  "disable_jump_private": "Disable Jump to Private",
   "disabled_apply_join_space": "Verbot, dem Raum beizutreten",
   "disabled_crypto_field": "Berechtigungen werden für das aktuelle Feld festgelegt, und die Konfiguration kann nicht wirksam werden",
   "disabled_expand_link_record": "Sie haben nicht die Berechtigung, das zugehörige Datenblatt anzuzeigen, Sie können den Datensatz nicht erweitern",

@@ -26,28 +26,22 @@ import { withHistory, HistoryEditor } from 'slate-history';
 import { Editable, withReact, Slate, ReactEditor } from 'slate-react';
 import { IS_QQBROWSER } from 'pc/utils/env';
 import { isMac, isWxWork } from 'pc/utils/os';
-
 import * as API from './api';
 import { HoveringToolbar } from './components/hovering_toolbar';
 import { InsertPanel } from './components/insert_panel';
 import { MentionPanel } from './components/mention_panel';
 import { Toolbar } from './components/toolbar';
 import { EditorContext } from './context';
-
 import { LeafRender, ElementRender, GENERATOR } from './elements';
 import { IS_FIREFOX } from './helpers/browser';
 import { getValidSelection } from './helpers/utils';
 import { hotkeyHandle } from './hotkeys';
-
 import { ISlateEditorProps, EditorValue, IEditorData } from './interface/editor';
 import { normalize } from './normalize';
 import { withEventBus, BUILT_IN_EVENTS } from './plugins/withEventBus';
 import { withMeta } from './plugins/withMeta';
 import { withVika } from './plugins/withVika';
-// Temporarily hide the code highlighting feature
-// import { getDecorate } from './plugins/codeBlock';
 import i18nText from './strings';
-
 import styles from './styles/editor.module.less';
 
 export const fixImeInputBug = (e: React.CompositionEvent, editor: ReactEditor): boolean => {

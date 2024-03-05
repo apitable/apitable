@@ -1617,6 +1617,7 @@
   "direction_left": "gauche",
   "direction_right": "droite",
   "disable": "Désactiver",
+  "disable_jump_private": "Disable Jump to Private",
   "disabled_apply_join_space": "Interdire de postuler pour rejoindre l'espace",
   "disabled_crypto_field": "Les autorisations ont été définies pour le champ actuel, la configuration ne peut pas prendre effet",
   "disabled_expand_link_record": "Vous n'avez pas la permission de voir la fiche associée, vous ne pouvez pas étendre l'enregistrement",

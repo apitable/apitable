@@ -1619,6 +1619,7 @@
   "direction_left": "左边",
   "direction_right": "右边",
   "disable": "停用",
+  "disable_jump_private": "禁止跳转到个人工作区",
   "disabled_apply_join_space": "禁止申请加入空间站",
   "disabled_crypto_field": "已为当前字段设置权限，配置无法生效",
   "disabled_expand_link_record": "没有关联表的查看权限，无法展开标签",

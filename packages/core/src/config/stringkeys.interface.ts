@@ -1615,6 +1615,7 @@ export type StringKeysMapType = {
   'direction_left': 'direction_left',
   'direction_right': 'direction_right',
   'disable': 'disable',
+  'disable_jump_private': 'disable_jump_private',
   'disabled_apply_join_space': 'disabled_apply_join_space',
   'disabled_crypto_field': 'disabled_crypto_field',
   'disabled_expand_link_record': 'disabled_expand_link_record',

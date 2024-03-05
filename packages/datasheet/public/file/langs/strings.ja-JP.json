@@ -1617,6 +1617,7 @@
   "direction_left": "左揃え",
   "direction_right": "正しい",
   "disable": "だめに",
+  "disable_jump_private": "Disable Jump to Private",
   "disabled_apply_join_space": "共有スペースへの参加申請を禁止する",
   "disabled_crypto_field": "現在のフィールドに権限が設定されており、構成は有効になりません",
   "disabled_expand_link_record": "関連するデータテーブルを表示する権限がなく、レコードを展開できません",

@@ -17,6 +17,7 @@
  */
 
 import { Tooltip } from 'antd';
+import cls from 'classnames';
 import throttle from 'lodash/throttle';
 import * as React from 'react';
 import { Message, useThemeColors } from '@apitable/components';
@@ -47,6 +48,12 @@ export const MirrorPath: React.FC<React.PropsWithChildren<IMirrorPath>> = (props
     }
     return Selectors.getViewById(snapshot, breadInfo.viewId);
   });
+  const breadNodeInfo = useAppSelector(state =>
+    state.catalogTree.treeNodesMap[breadInfo.datasheetId!] || state.catalogTree.privateTreeNodesMap[breadInfo.datasheetId!]
+  );
+  const activeType = useAppSelector(state => state.catalogTree.activeType);
+  const isCatalog = !activeType || activeType === ConfigConstant.Modules.CATALOG;
+  const disableJump = breadNodeInfo?.nodePrivate && isCatalog;
   const isGhostNode = useAppSelector((state) => {
     return Selectors.getDatasheet(state, breadInfo.datasheetId)?.isGhostNode;
   });
@@ -56,6 +63,9 @@ export const MirrorPath: React.FC<React.PropsWithChildren<IMirrorPath>> = (props
 
   // Jump to source datasheet entry temporarily closed
   const jumpHandler = throttle(() => {
+    if (disableJump) {
+      return;
+    }
     // The original datasheet is a ghost node and should not be jumped
     if (isGhostNode) {
       return;
@@ -108,8 +118,12 @@ export const MirrorPath: React.FC<React.PropsWithChildren<IMirrorPath>> = (props
                 iconEditable={false}
               />
               <span style={{ margin: '0 4px' }}>/</span>
-              <Tooltip title={isGhostNode ? t(Strings.ghost_node_no_access) : t(Strings.form_to_datasheet_view)}>
-                <span className={styles.viewInfo} onClick={jumpHandler}>
+              <Tooltip
+                title={isGhostNode ? t(Strings.ghost_node_no_access) :
+                  disableJump ? t(Strings.disable_jump_private) : t(Strings.form_to_datasheet_view)
+                }
+              >
+                <span className={cls(styles.viewInfo, disableJump && styles.disabled)} onClick={jumpHandler}>
                   <span className={styles.viewIcon}>{gstMirrorIconByViewType(view!.type, colors.fourthLevelText)}</span>
                   <span className={styles.viewName}>{view?.name}</span>
                 </span>

@@ -1614,6 +1614,7 @@
   "direction_left": "left",
   "direction_right": "right",
   "disable": "Disable",
+  "disable_jump_private": "Disable Jump to Private",
   "disabled_apply_join_space": "Prohibit apply to join the space",
   "disabled_crypto_field": "Permissions are set for the current field, and the configuration cannot take effect",
   "disabled_expand_link_record": "You don't have the permission to view the related datasheet, you can't expand the record",

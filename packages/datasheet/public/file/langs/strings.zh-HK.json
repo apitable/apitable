@@ -1617,6 +1617,7 @@
   "direction_left": "左邊",
   "direction_right": "右邊",
   "disable": "停用",
+  "disable_jump_private": "Disable Jump to Private",
   "disabled_apply_join_space": "禁止申請加入空間站",
   "disabled_crypto_field": "為當前字段設置了權限，配置無法生效",
   "disabled_expand_link_record": "沒有關聯表的查看權限，無法展開標籤",

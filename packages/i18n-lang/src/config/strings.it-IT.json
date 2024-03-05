@@ -1617,6 +1617,7 @@
   "direction_left": "sinistra",
   "direction_right": "destra",
   "disable": "Disabilita",
+  "disable_jump_private": "Disable Jump to Private",
   "disabled_apply_join_space": "Dividi applicare per unirsi allo spazio",
   "disabled_crypto_field": "Le autorizzazioni sono impostate per il campo corrente e la configurazione non può avere effetto",
   "disabled_expand_link_record": "Non si dispone dell'autorizzazione per visualizzare il foglio dati correlato, non è possibile espandere il record",

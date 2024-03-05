@@ -1617,6 +1617,7 @@
   "direction_left": "왼쪽",
   "direction_right": "정확하다",
   "disable": "불구가 되다",
+  "disable_jump_private": "Disable Jump to Private",
   "disabled_apply_join_space": "공유 공간 가입 신청 금지",
   "disabled_crypto_field": "현재 필드에 대한 권한이 설정되어 있으며 구성이 유효하지 않습니다.",
   "disabled_expand_link_record": "관련 데이터 테이블을 볼 수 있는 권한이 없으므로 레코드를 확장할 수 없습니다.",
