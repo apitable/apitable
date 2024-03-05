@@ -4,7 +4,7 @@ import { Box } from '../../box';
 import { Typography } from '../../typography';
 import { useCssColors } from '../../../hooks/use_css_colors';
 import { InfoCircleOutlined } from '@apitable/icons';
-import { Maybe } from 'purify-ts';
+import { Maybe } from 'purify-ts/index';
 
 export const TimeTips: FC<{
   interval: 'day' | 'month' | 'week' | 'hour';

@@ -18,7 +18,7 @@
 
 import { ICronSchema } from './types';
 
-import { Just, Maybe, Nothing } from 'purify-ts';
+import { Just, Maybe, Nothing } from 'purify-ts/index';
 import parser from 'cron-parser';
 import dayjs from 'dayjs';
 import advancedFormat from 'dayjs/plugin/advancedFormat';

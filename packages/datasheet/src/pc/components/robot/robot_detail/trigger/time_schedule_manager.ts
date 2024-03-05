@@ -1,4 +1,4 @@
-import { Just, Maybe } from 'purify-ts';
+import { Just, Maybe } from 'purify-ts/index';
 import { CronConverter, ICronSchema } from '@apitable/components';
 import { AutomationInterval } from '@apitable/components/dist/components/time/utils';
 import { objectCombOperand } from '@apitable/core';

@@ -3755,7 +3755,7 @@
   "remove_from_group": "You were removed from the \"<a class=\"teamName\"></a>\" team of the \"<a class=\"spaceName\"></a>\" Space by <a class=\"memberName\"></a>.",
   "remove_from_role": "You were removed from the \"<a class=\"roleName\"></a>\" role of the \"<a class=\"spaceName\"></a>\" Space by <a class=\"memberName\"></a>.",
   "remove_from_space": "Remove from Space",
-  "remove_from_space_confirm_tip": "Confirm to completely remove the member from this workspace. After removal, the member's private workspace files will no longer occupy the capacity of the workspace station, and no one can access their private workspace files.",
+  "remove_from_space_confirm_tip": "Confirm to completely remove the member from this workspace. After removal, the member's private workspace files will no longer occupy the capacity of the workspace station.",
   "create_private_node_tip": "Personal or temporary draft documents can be created here, ${link}",
   "remove_from_team": "Remove from team",
   "remove_from_team_confirm_tip": "Confirm to remove the member from this team",

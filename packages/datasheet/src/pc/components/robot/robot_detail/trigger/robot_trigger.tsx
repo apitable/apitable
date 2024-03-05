@@ -20,7 +20,7 @@ import { useMount } from 'ahooks';
 import produce from 'immer';
 import { useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { identity, isEqual, isEqualWith, isNil, pickBy } from 'lodash';
-import { Just, Maybe } from 'purify-ts';
+import { Just, Maybe } from 'purify-ts/index';
 import * as React from 'react';
 import { memo, MutableRefObject, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
 import { shallowEqual } from 'react-redux';

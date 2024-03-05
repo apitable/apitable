@@ -38,7 +38,7 @@ const sentryWebpackPluginOptions = {
   release: process.env.WEB_CLIENT_VERSION ?? '',
   silent: false, // Suppresses all logs
   hideSourceMaps: true,
-  debug: true,
+  debug: true
 
   // For all available options, see:
   // https://github.com/getsentry/sentry-webpack-plugin#options.
@@ -49,7 +49,7 @@ const nextConfig = {
   assetPrefix: isProd ? process.env.NEXT_ASSET_PREFIX : '',
   // Possible fix for  timeout error in static page generation
   env: {
-      SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN_VIKA,
+      SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN_VIKA
   },
   staticPageGenerationTimeout: 120,
   webpack: getWebpackConfig,
@@ -60,24 +60,24 @@ const nextConfig = {
       {
         protocol: 'http',
         hostname: '**',
-        pathname: '/vk-assets-ltd/**',
+        pathname: '/vk-assets-ltd/**'
       },
       {
         protocol: 'https',
         hostname: '**',
-        pathname: '/vk-assets-ltd/**',
+        pathname: '/vk-assets-ltd/**'
       },
       {
         protocol: 'http',
         hostname: '**',
-        pathname: '/assets/**',
+        pathname: '/assets/**'
       },
       {
         protocol: 'https',
         hostname: '**',
-        pathname: '/assets/**',
-      },
-    ],
+        pathname: '/assets/**'
+      }
+    ]
   },
   swcMinify: true,
   poweredByHeader: false,
@@ -87,11 +87,11 @@ const nextConfig = {
       if (process.env.USE_CUSTOM_PUBLIC_FILES === 'true') return '';
 
       return isProd ? process.env.NEXT_PUBLIC_ASSET_PREFIX : '';
-    },
+    }
   },
   sentry: {
     disableServerWebpackPlugin: false,
-    disableClientWebpackPlugin: false,
+    disableClientWebpackPlugin: false
   },
   distDir: 'web_build',
   output: 'standalone',
@@ -99,8 +99,8 @@ const nextConfig = {
     // runtime: 'nodejs', // 'node.js' (default) | experimental-edge
     esmExternals: true,
     // this includes files from the monorepo base two directories up
-    outputFileTracingRoot: path.join(__dirname, '../../'),
-  },
+    outputFileTracingRoot: path.join(__dirname, '../../')
+  }
 };
 
 /** @type {import('next').NextConfig} */
@@ -110,13 +110,13 @@ const plugins = [
       ...nextConfigonfig,
       lessLoaderOptions: {
         lessOptions: {
-          paths: [path.resolve(__dirname, './src')],
-        },
-      },
+          paths: [path.resolve(__dirname, './src')]
+        }
+      }
     }),
 
-  withTM(['antd', 'antd-mobile', 'rc-util', 'rc-picker', 'rc-notification', 'rc-calendar']),
-  withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' }),
+  withTM(['antd', 'antd-mobile', 'rc-util', 'rc-picker', 'rc-notification', 'rc-calendar', 'purify-ts']),
+  withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' })
 ];
 
 const config = () => plugins.reduce((acc, next) => next(acc), nextConfig);
