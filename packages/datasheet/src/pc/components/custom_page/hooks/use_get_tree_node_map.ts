@@ -17,20 +17,22 @@ function transform(tree: ITemplateTree | undefined): any {
   return result;
 }
 
-export const useGetTreeNodeMap = () => {
-  const spaceTreeNodesMap = useAppSelector((state) => {
-    return state.catalogTree.treeNodesMap;
+export const useGetNodesMap = (customPageId: string) => {
+  const activeNodePrivate = useAppSelector((state) =>
+    state.catalogTree.treeNodesMap[customPageId]?.nodePrivate || state.catalogTree.privateTreeNodesMap[customPageId]?.nodePrivate
+  );
+
+  const spaceNodesMap = useAppSelector((state) => {
+    return state.catalogTree[activeNodePrivate ? 'privateTreeNodesMap' : 'treeNodesMap'];
   });
 
   const templateId = useAppSelector((state) => state.pageParams.templateId);
 
   const shareNodeTree = useAppSelector((state) => state.templateCentre.directory?.nodeTree);
 
-  const treeNodesMap = useMemo(() => {
-    if (!templateId) return spaceTreeNodesMap;
+  return useMemo(() => {
+    if (!templateId) return spaceNodesMap;
 
     return transform(shareNodeTree);
-  }, [spaceTreeNodesMap, templateId, shareNodeTree]);
-
-  return treeNodesMap;
+  }, [spaceNodesMap, templateId, shareNodeTree]);
 };

@@ -35,21 +35,25 @@ import { ChatPage } from 'enterprise/chat/chat_page';
 
 const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
   const nodeId = useAppSelector((state) => Selectors.getNodeId(state));
+  const activeNodePrivate = useAppSelector((state) =>
+    state.catalogTree.treeNodesMap[nodeId]?.nodePrivate || state.catalogTree.privateTreeNodesMap[nodeId]?.nodePrivate
+  );
+
   const activeNodeError = useAppSelector((state) => state.catalogTree.activeNodeError);
   const { datasheetId, folderId, automationId, formId, dashboardId, mirrorId, aiId, customPageId } = useAppSelector(
     (state: IReduxState) => state.pageParams,
   );
-  const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const nodesMap = useAppSelector((state: IReduxState) => state.catalogTree[activeNodePrivate ? 'privateTreeNodesMap' : 'treeNodesMap']);
 
   useMount(() => {
     Player.doTrigger(Events.questionnaire_shown);
   });
 
   const getChildList = (folderId: string) => {
-    const parentNode = treeNodesMap[folderId];
+    const parentNode = nodesMap[folderId];
     let childNodes: any[] = [];
-    if (parentNode && treeNodesMap[parentNode.nodeId].hasChildren && parentNode.children.length) {
-      childNodes = parentNode.children.map((nodeId) => treeNodesMap[nodeId]);
+    if (parentNode && nodesMap[parentNode.nodeId].hasChildren && parentNode.children.length) {
+      childNodes = parentNode.children.map((nodeId) => nodesMap[nodeId]);
     }
     return childNodes;
   };
@@ -78,11 +82,11 @@ const WorkspaceRoute: FC<React.PropsWithChildren<unknown>> = () => {
         <FolderShowcase
           nodeInfo={{
             id: nodeId!,
-            name: treeNodesMap[nodeId!] ? treeNodesMap[nodeId!].nodeName : '',
-            icon: treeNodesMap[nodeId!] ? treeNodesMap[nodeId!].icon : '',
-            role: treeNodesMap[nodeId!] ? treeNodesMap[nodeId!].role : '',
-            nodeFavorite: treeNodesMap[nodeId!] && treeNodesMap[nodeId!].nodeFavorite,
-            permissions: treeNodesMap[nodeId!] && treeNodesMap[nodeId!].permissions,
+            name: nodesMap[nodeId!] ? nodesMap[nodeId!].nodeName : '',
+            icon: nodesMap[nodeId!] ? nodesMap[nodeId!].icon : '',
+            role: nodesMap[nodeId!] ? nodesMap[nodeId!].role : '',
+            nodeFavorite: nodesMap[nodeId!] && nodesMap[nodeId!].nodeFavorite,
+            permissions: nodesMap[nodeId!] && nodesMap[nodeId!].permissions,
           }}
           childNodes={getChildList(folderId)}
         />

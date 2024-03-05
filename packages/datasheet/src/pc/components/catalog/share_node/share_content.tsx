@@ -19,7 +19,7 @@ import { Tabs, TabsProps } from 'antd';
 import cls from 'classnames';
 import { compact } from 'lodash';
 import { FC } from 'react';
-import { Selectors, Strings, t } from '@apitable/core';
+import { Strings, t } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
@@ -30,7 +30,10 @@ import styles from './style.module.less';
 
 export const ShareContent: FC<React.PropsWithChildren<IShareContentProps>> = ({ data, defaultActiveKey = 'Invite' }) => {
   const { screenIsAtMost } = useResponsive();
-  const activeNodePrivate = useAppSelector((state) => Selectors.getActiveNodePrivate(state));
+  const nodeId = data.nodeId;
+  const activeNodePrivate = useAppSelector((state) =>
+    state.catalogTree.treeNodesMap[nodeId]?.nodePrivate || state.catalogTree.privateTreeNodesMap[nodeId]?.nodePrivate
+  );
   const isMobile = screenIsAtMost(ScreenSize.md);
   const renderTabs = () => {
     const items: TabsProps['items'] = compact([

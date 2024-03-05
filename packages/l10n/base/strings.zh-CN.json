@@ -6045,6 +6045,6 @@
   "capacity_file_member_team_node_count": "团队文件数",
   "capacity_file_member_private_node_count": "个人文件数",
   "capacity_file_member_private_percent": "占比",
-  "private_help_link": "https://help.aitable.ai/guide/private",
+  "private_help_link": "https://help.aitable.ai/docs/guide/team-and-private-area#private-area",
   "disable_jump_private": "禁止跳转到个人工作区"
 }

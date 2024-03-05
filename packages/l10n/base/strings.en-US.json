@@ -6042,6 +6042,6 @@
   "capacity_file_member_team_node_count": "Team",
   "capacity_file_member_private_node_count": "Private",
   "capacity_file_member_private_percent": "Percent",
-  "private_help_link": "https://help.aitable.ai/guide/private",
+  "private_help_link": "https://help.aitable.ai/docs/guide/team-and-private-area#private-area",
   "disable_jump_private": "Disable Jump to Private"
 }
