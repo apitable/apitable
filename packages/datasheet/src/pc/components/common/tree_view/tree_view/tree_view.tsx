@@ -19,15 +19,14 @@
 import { isEmpty, isEqual, xor } from 'lodash';
 import * as React from 'react';
 import { forwardRef, memo, ReactNode, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import {Button, LinkButton, Typography} from '@apitable/components';
+import { Button, LinkButton, Typography } from '@apitable/components';
 import { ConfigConstant, Navigation, t, Strings } from '@apitable/core';
 import { AddOutlined, TriangleRightFilled } from '@apitable/icons';
+import { TComponent } from 'pc/components/common/t_component';
 import { Router } from '../../../route_manager/router';
 import { TreeItem } from '../tree_item';
 import TreeViewContext from '../tree_view_context';
 import styles from './style.module.less';
-import {SubscribePageType} from "enterprise/subscribe_system/config";
-import {TComponent} from "pc/components/common/t_component";
 
 export type ExpandAction = false | 'click';
 

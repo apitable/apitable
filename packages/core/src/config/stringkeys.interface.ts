@@ -1024,6 +1024,7 @@ export type StringKeysMapType = {
   'capacity_file_member_private_percent': 'capacity_file_member_private_percent',
   'capacity_file_member_team': 'capacity_file_member_team',
   'capacity_file_member_team_node_count': 'capacity_file_member_team_node_count',
+  'capacity_file_upgrade': 'capacity_file_upgrade',
   'capacity_from_official_gift': 'capacity_from_official_gift',
   'capacity_from_participation': 'capacity_from_participation',
   'capacity_from_purchase': 'capacity_from_purchase',

@@ -131,7 +131,13 @@ export const CapacityRewardModal: FC<React.PropsWithChildren<ICapacityRewardModa
   useEffect(() => {
     const isExpire = currTab === CapacityType.Expired;
     getCapacityRewardList(isExpire, pageNo).then((res) => {
-      setList(res.records);
+      const _list = res.records.map((item: any, index) => {
+        return {
+          ...item,
+          key: index,
+        };
+      });
+      setList(_list);
       setTotal(res.total);
     });
   }, [currTab, getCapacityRewardList, pageNo]);

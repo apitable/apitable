@@ -21,7 +21,7 @@ import { ColumnsType } from 'antd/lib/table';
 import React, { FC, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { ThemeProvider, Typography } from '@apitable/components';
+import { LinkButton, ThemeProvider, Typography } from '@apitable/components';
 import { ConfigConstant, decimalCeil, Strings, t } from '@apitable/core';
 import { UnitTag } from 'pc/components/catalog/permission_settings/permission/select_unit_modal/unit_tag';
 import { UserCardTrigger } from 'pc/components/common';
@@ -108,7 +108,13 @@ export const FileModal: FC<React.PropsWithChildren<IFileModalProps>> = ({ onCanc
 
   useEffect(() => {
     getCapacityNodeList(spaceId, pageNo).then((res) => {
-      setList(res.records);
+      const _list = res.records.map((item: any) => {
+        return {
+          ...item,
+          key: item.memberId,
+        };
+      });
+      setList(_list);
       setTotal(res.total);
     });
   }, [getCapacityNodeList, pageNo, spaceId]);
@@ -146,6 +152,11 @@ export const FileModal: FC<React.PropsWithChildren<IFileModalProps>> = ({ onCanc
       <div className={styles.content}>
         <Typography variant="body3">
           {t(Strings.capacity_file_detail_desc)}
+          <LinkButton
+            onClick={() => {
+              window.open(`/space/${spaceId}/upgrade`, '_blank', 'noopener,noreferrer');
+            }}
+          >{t(Strings.capacity_file_upgrade)}</LinkButton>
         </Typography>
         {TableEl}
       </div>
