@@ -213,14 +213,6 @@ public class StaticsServiceImpl implements IStaticsService {
     }
 
     private Long getApiUsageTableMinId(LocalDate now) {
-        // concurrent lock
-        if (!Boolean.TRUE.equals(
-            redisTemplate.opsForValue()
-                .setIfAbsent(RedisConstants.getSpaceApiUsageConcurrentKey(), 0L, 5,
-                    TimeUnit.MINUTES))) {
-            return null;
-        }
-
         // Get the minimum ID of the API consumption table this month
         String key = StrUtil.format(GENERAL_STATICS, "api-usage-min-id",
             DateHelper.formatFullTime(now, YEARS_MONTH_PATTERN));

@@ -34,6 +34,7 @@ import com.apitable.automation.service.IAutomationRobotService;
 import com.apitable.automation.service.IAutomationRunHistoryService;
 import com.apitable.automation.service.IAutomationTriggerService;
 import com.apitable.control.infrastructure.permission.NodePermission;
+import com.apitable.core.constants.RedisConstants;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
@@ -62,9 +63,8 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Lock;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.integration.redis.util.RedisLockRegistry;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -102,7 +102,7 @@ public class AutomationRobotController {
     private NodeDescMapper nodeDescMapper;
 
     @Resource
-    private RedisLockRegistry redisLockRegistry;
+    private RedisTemplate<String, String> redisTemplate;
 
     /**
      * Get automation robots.
@@ -309,18 +309,16 @@ public class AutomationRobotController {
             NodePermission.EDIT_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
-        Lock lock = redisLockRegistry.obtain(triggerId);
-        try {
-            if (lock.tryLock(3, TimeUnit.SECONDS)) {
-                return ResponseData.success(
-                    iAutomationTriggerService.update(userId, triggerId, spaceId, data));
-            } else {
-                throw new BusinessException("operation is too frequent, please try again later");
-            }
-        } catch (InterruptedException e) {
+        Boolean lock = redisTemplate.opsForValue()
+            .setIfAbsent(RedisConstants.triggerUpdateLockKey(triggerId), triggerId,
+                120 * 1000, TimeUnit.MILLISECONDS);
+        if (Boolean.TRUE.equals(lock)) {
+            List<TriggerVO> triggers =
+                iAutomationTriggerService.update(userId, triggerId, spaceId, data);
+            redisTemplate.delete(RedisConstants.triggerUpdateLockKey(triggerId));
+            return ResponseData.success(triggers);
+        } else {
             throw new BusinessException("operation is too frequent, please try again later");
-        } finally {
-            lock.unlock();
         }
     }
 

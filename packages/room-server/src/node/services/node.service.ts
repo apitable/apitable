@@ -269,4 +269,15 @@ export class NodeService {
   async nodePrivate(nodeId: string): Promise<boolean> {
     return (await this.nodeRepository.selectUnitCountByNodeId(nodeId)) > 0;
   }
+
+  async filterPrivateNode(nodeIds: string[]): Promise<string[]> {
+    if (!nodeIds.length) {
+      return [];
+    }
+    const nodes = await this.nodeRepository.selectTeamNodeByNodeIds(nodeIds);
+    if (!nodes || !nodes.length) {
+      return [];
+    }
+    return nodes.map((i) => i.nodeId);
+  }
 }

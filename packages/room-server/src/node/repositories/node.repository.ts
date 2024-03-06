@@ -108,4 +108,11 @@ export class NodeRepository extends Repository<NodeEntity> {
   public async selectUnitCountByNodeId(nodeId: string): Promise<number> {
     return await this.count({ where: { nodeId, unitId: Not(0), isRubbish: false, isDeleted: false } });
   }
+
+  public async selectTeamNodeByNodeIds(nodeIds: string[]): Promise<NodeEntity[]> {
+    return await this.find({
+      select: ['nodeId'],
+      where: { nodeId: In(nodeIds), unitId: Not(0), isDeleted: 0, isRubbish: 0 },
+    });
+  }
 }
