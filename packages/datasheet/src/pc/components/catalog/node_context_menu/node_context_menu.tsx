@@ -54,6 +54,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
     const { rightClickInfo } = useContext(WorkbenchSideContext);
     const { setNewTdbId } = useContext(SideBarContext);
     const spaceId = useAppSelector((state) => state.space.activeId);
+    const favoriteTreeNodeIds = useAppSelector((state: IReduxState) => state.catalogTree.favoriteTreeNodeIds);
     const catalogTreeActiveType = useAppSelector((state) => state.catalogTree.activeType);
     const clickNodeId = rightClickInfo?.id;
     const activeNodePrivate = useAppSelector((state) => {
@@ -157,8 +158,8 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
         return [];
       }
       const { contextMenuType, module, id, level } = rightClickInfo;
-      const { nodeId, permissions, nodeFavorite, parentId, type, nodePrivate } = nodesMap[id];
-      console.log('nodeFavorite', nodePrivate, nodesMap[id], id);
+      const { nodeId, permissions, parentId, type, nodePrivate } = nodesMap[id];
+      const nodeFavorite = nodesMap[id].nodeFavorite || favoriteTreeNodeIds.includes(id);
       const targetId = nodeId || rootId;
       const targetManageable = rootManageable || !isRootNodeId(targetId);
       const { exportable, nodeAssignable, templateCreatable, sharable, editable } = permissions;

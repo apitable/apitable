@@ -1,9 +1,10 @@
 import { memo, forwardRef, ForwardRefRenderFunction, useImperativeHandle, useState, useEffect, useCallback, useRef } from 'react';
-import { string2Segment, ILinkedField, DatasheetApi, ISegment, ICellValue, ICascaderNode } from '@apitable/core';
+import { string2Segment, ILinkedField, DatasheetApi, ISegment, ICellValue, ICascaderNode, Selectors } from '@apitable/core';
 import { Cascader } from 'pc/components/cascader';
 import { IEditor, IBaseEditorProps } from 'pc/components/editors/interface';
 import { mapTreeNodesRecursively, ICascaderOption } from 'pc/utils';
 import styles from './styles.module.less';
+import { useAppSelector } from 'pc/store/react-redux';
 
 interface IExpandCascaderProps extends IBaseEditorProps {
   isFocus: boolean;
@@ -27,6 +28,12 @@ const ExpandCascaderBase: ForwardRefRenderFunction<IEditor, IExpandCascaderProps
       saveValue: () => {},
     }),
   );
+
+  const activeNodePrivate = useAppSelector(Selectors.getActiveNodePrivate);
+  const foreignNodePrivate = useAppSelector((state) => Selectors.getDatasheet(state, field?.property.linkedDatasheetId)?.nodeFavorite);
+  // team datasheet can't link to private datasheet
+  const disableEdit = !activeNodePrivate && foreignNodePrivate;
+  const _editing = editing && !disableEdit;
 
   const [cascaderValue, setCascaderValue] = useState<string[]>([]);
   const [options, setOptions] = useState<ICascaderOption[]>([]);
@@ -64,14 +71,15 @@ const ExpandCascaderBase: ForwardRefRenderFunction<IEditor, IExpandCascaderProps
   };
 
   useEffect(() => {
-    if (editing) {
+    if (_editing) {
       loadTreeSnapshot();
     }
-  }, [loadTreeSnapshot, editing]);
+  }, [loadTreeSnapshot, _editing]);
 
   return (
     <div className={styles.expandCascader}>
       <Cascader
+        disabled={_editing}
         loading={loading}
         onChange={onChange}
         options={options}

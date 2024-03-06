@@ -59,6 +59,7 @@ export const useCatalogTreeRequest = () => {
   }, shallowEqual);
   const activedNodeId = useAppSelector((state) => Selectors.getNodeId(state));
   const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const favoriteTreeNodeIds = useAppSelector((state: IReduxState) => state.catalogTree.favoriteTreeNodeIds);
   const privateTreeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.privateTreeNodesMap);
   const expandedKeys = useAppSelector((state: IReduxState) => state.catalogTree.expandedKeys);
   const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo)!;
@@ -578,7 +579,7 @@ export const useCatalogTreeRequest = () => {
   // Set starred/unstarred
   const updateNodeFavoriteStatusReq = (nodeId: string, nodePrivate?: boolean) => {
     const nodesMap = nodePrivate ? privateTreeNodesMap : treeNodesMap;
-    const oldStatus = nodesMap[nodeId].nodeFavorite;
+    const oldStatus = nodesMap[nodeId].nodeFavorite || favoriteTreeNodeIds.includes(nodeId);
     return Api.updateNodeFavoriteStatus(nodeId).then((res) => {
       const { success } = res.data;
       const node = nodesMap[nodeId];

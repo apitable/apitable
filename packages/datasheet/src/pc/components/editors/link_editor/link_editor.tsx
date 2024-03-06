@@ -66,7 +66,6 @@ interface ISearchContentRefProps {
 
 const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> = (props, ref) => {
   const {
-    editing,
     datasheetId,
     recordId,
     field,
@@ -77,6 +76,12 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
     layout = LinkEditorModalLayout.Center,
   } = props;
   const colors = useThemeColors();
+  const activeNodePrivate = useAppSelector(Selectors.getActiveNodePrivate);
+  const foreignNodePrivate = useAppSelector((state) => Selectors.getDatasheet(state, field?.property.foreignDatasheetId)?.nodeFavorite);
+  // team datasheet can't link to private datasheet
+  const disableEdit = !activeNodePrivate && foreignNodePrivate;
+  const editing = props.editing && !disableEdit;
+
   useImperativeHandle(
     ref,
     (): IEditor => ({

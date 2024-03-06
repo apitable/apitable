@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import { memo, forwardRef, ForwardRefRenderFunction, useImperativeHandle, useState, useEffect, useCallback, useRef } from 'react';
 import * as React from 'react';
-import { string2Segment, ILinkedField, DatasheetApi, ISegment, ICascaderNode } from '@apitable/core';
+import { string2Segment, ILinkedField, DatasheetApi, ISegment, ICascaderNode, Selectors } from '@apitable/core';
 import { Cascader } from 'pc/components/cascader';
+import { useAppSelector } from 'pc/store/react-redux';
 import { mapTreeNodesRecursively, ICascaderOption } from 'pc/utils';
 import { IBaseEditorProps, IEditor } from '../interface';
 import { PopStructure } from '../pop_structure';
@@ -32,7 +33,10 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, ICascaderEditorProps
       saveValue: () => {},
     }),
   );
-
+  const activeNodePrivate = useAppSelector(Selectors.getActiveNodePrivate);
+  const foreignNodePrivate = useAppSelector((state) => Selectors.getDatasheet(state, field?.property.linkedDatasheetId)?.nodeFavorite);
+  // team datasheet can't link to private datasheet
+  const disableEdit = !activeNodePrivate && foreignNodePrivate;
   const [cascaderValue, setCascaderValue] = useState<string[]>([]);
   const [options, setOptions] = useState<ICascaderOption[]>([]);
   const [loading, setLoading] = useState(false);
@@ -97,7 +101,7 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, ICascaderEditorProps
           onChange={onChange}
           options={options}
           editing={editing}
-          disabled={!editable}
+          disabled={!editable || disableEdit}
           cascaderRef={cascaderRef}
           style={{
             height: `${height}px`,

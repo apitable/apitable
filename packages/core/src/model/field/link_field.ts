@@ -153,8 +153,12 @@ export class LinkField extends ArrayValueField {
   }
 
   validate(value: any): value is string[] {
-    const snapshot = getSnapshot(this.state, this.field.property.foreignDatasheetId);
-    if (!snapshot) {
+    const { foreignDatasheetId } = this.field.property;
+    const datasheetId = this.state.pageParams.datasheetId;
+    const snapshot = getSnapshot(this.state, foreignDatasheetId);
+    const nodePrivate = datasheetId && this.state.datasheetMap[datasheetId]?.datasheet?.nodePrivate;
+    const foreignNodePrivate = this.state.datasheetMap[foreignDatasheetId]?.datasheet?.nodePrivate;
+    if (!snapshot || (!nodePrivate && foreignNodePrivate)) {
       return false;
     }
     const archivedRecordIds = snapshot.meta.archivedRecordIds || [];

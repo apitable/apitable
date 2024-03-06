@@ -191,7 +191,7 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
       activeNode = privateTreeNodesMap[activeNodeId];
       nodeMaps = privateTreeNodesMap;
       isPrivate = true;
-      activeNode && changeHandler(ConfigConstant.Modules.PRIVATE);
+      activeNode && activeKey !== ConfigConstant.Modules.FAVORITE && changeHandler(ConfigConstant.Modules.PRIVATE);
     }
     const _module = isPrivate ? ConfigConstant.Modules.PRIVATE : undefined;
     if (activeNode && nodeMaps[activeNode.parentId]) {

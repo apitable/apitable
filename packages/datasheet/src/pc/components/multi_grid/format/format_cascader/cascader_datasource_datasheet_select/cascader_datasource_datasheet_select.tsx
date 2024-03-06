@@ -11,14 +11,11 @@ import settingStyles from '../../../field_setting/styles.module.less';
 import { IFormatCascaderProps } from '../format_cascader_select';
 import styles from './styles.module.less';
 
-export const CascaderDatasourceDatasheetSelect = ({ currentField, setCurrentField }: IFormatCascaderProps): JSX.Element => {
-  const propLinkedDatasheetId = currentField.property.linkedDatasheetId || undefined;
-
+export const CascaderDatasourceDatasheetSelect = ({ currentField, setCurrentField, linkedDatasheet }: IFormatCascaderProps): JSX.Element => {
   const colors = useThemeColors();
 
   const [searchPanelVisible, setSearchPanelVisible] = useState(false);
 
-  const linkedDatasheet = useAppSelector((state: IReduxState) => (propLinkedDatasheetId ? Selectors.getDatasheet(state, propLinkedDatasheetId) : null));
   const datasheetParentId = useAppSelector((state: IReduxState) => Selectors.getDatasheet(state)?.parentId) || '';
 
   const onSelectDatasource = ({ datasheetId }: ISearchChangeProps) => {
