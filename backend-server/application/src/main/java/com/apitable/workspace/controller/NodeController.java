@@ -215,15 +215,24 @@ public class NodeController {
         @Parameter(name = "className", description = "highlight style",
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight"),
         @Parameter(name = "keyword", description = "keyword", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "datasheet")
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "datasheet"),
+        @Parameter(name = "unitType", description = "unitType, 1: team, 3: member(private)",
+            in = ParameterIn.QUERY, schema = @Schema(type = "integer"), example = "1"),
     })
     public ResponseData<List<NodeSearchResult>> searchNode(
         @RequestParam(name = "keyword") String keyword,
         @RequestParam(value = "className", required = false, defaultValue = "keyword")
-        String className) {
+        String className,
+        @RequestParam(name = "unitType", required = false) Integer unitType) {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
         List<NodeSearchResult> nodeInfos = iNodeService.searchNode(spaceId, memberId, keyword);
+        if (UnitType.TEAM.getType().equals(unitType)) {
+            nodeInfos = nodeInfos.stream().filter(i -> !i.getNodePrivate()).toList();
+        }
+        if (UnitType.MEMBER.getType().equals(unitType)) {
+            nodeInfos = nodeInfos.stream().filter(NodeInfoVo::getNodePrivate).toList();
+        }
         nodeInfos.forEach(info -> info.setNodeName(
             InformationUtil.keywordHighlight(info.getNodeName(), keyword, className)));
         return ResponseData.success(nodeInfos);
