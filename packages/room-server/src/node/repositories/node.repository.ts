@@ -112,7 +112,7 @@ export class NodeRepository extends Repository<NodeEntity> {
   public async selectTeamNodeByNodeIds(nodeIds: string[]): Promise<NodeEntity[]> {
     return await this.find({
       select: ['nodeId'],
-      where: { nodeId: In(nodeIds), unitId: Not(0), isDeleted: 0, isRubbish: 0 },
+      where: { nodeId: In(nodeIds), unitId: 0, isDeleted: 0, isRubbish: 0 },
     });
   }
 }
