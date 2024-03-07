@@ -257,7 +257,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
                   recordId={recordId}
                   renderData={{
                     ...renderData,
-                    disabled: renderData?.disabled || disableEdit,
+                    disabled: (renderData as any)?.disabled || disableEdit,
                   } as any}
                   cellValue={cellValue}
                   field={activeField}

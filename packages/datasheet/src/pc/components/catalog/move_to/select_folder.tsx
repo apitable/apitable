@@ -175,6 +175,13 @@ export const SelectFolder: React.FC<
     },
   ] : [];
 
+  const folderCatalogTips = catalogList.length > 0 ? catalogList.filter(l => l.nodeId === catalog) : [
+    {
+      nodeId: ConfigConstant.Modules.CATALOG,
+      nodeName: t(Strings.catalog_team),
+    }
+  ];
+
   return (
     <div className={styles.selectFolder}>
       {/** the search is displayed when the data is complete on the web or mobile */}
@@ -196,7 +203,7 @@ export const SelectFolder: React.FC<
           setIsWhole={enterWhole}
           data={compact([
             firstParentList,
-            ...catalogList.filter(l => l.nodeId === catalog),
+            ...folderCatalogTips,
             ...restParentList
           ])}
           onClick={onClickItem}

@@ -48,12 +48,12 @@ export const MirrorPath: React.FC<React.PropsWithChildren<IMirrorPath>> = (props
     }
     return Selectors.getViewById(snapshot, breadInfo.viewId);
   });
-  const breadNodeInfo = useAppSelector(state =>
-    state.catalogTree.treeNodesMap[breadInfo.datasheetId!] || state.catalogTree.privateTreeNodesMap[breadInfo.datasheetId!]
-  );
+  const breadNodeInfo = useAppSelector(state => {
+    return state.catalogTree.treeNodesMap[breadInfo.datasheetId!] || state.catalogTree.privateTreeNodesMap[breadInfo.datasheetId!];
+  });
   const activeType = useAppSelector(state => state.catalogTree.activeType);
   const isCatalog = !activeType || activeType === ConfigConstant.Modules.CATALOG;
-  const disableJump = breadNodeInfo?.nodePrivate && isCatalog;
+  const disableJump = breadNodeInfo ? (breadNodeInfo.nodePrivate && isCatalog) : true;
   const isGhostNode = useAppSelector((state) => {
     return Selectors.getDatasheet(state, breadInfo.datasheetId)?.isGhostNode;
   });
