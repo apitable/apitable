@@ -278,9 +278,16 @@ public class AutomationRobotController {
             NodePermission.EDIT_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
-        return ResponseData.success(
-            iAutomationTriggerService.create(userId, spaceId, data));
-
+        Boolean unLock = redisTemplate.opsForValue()
+            .setIfAbsent(RedisConstants.triggerUpdateLockKey(resourceId), resourceId,
+                120 * 1000, TimeUnit.MILLISECONDS);
+        if (Boolean.TRUE.equals(unLock)) {
+            List<TriggerVO> triggers = iAutomationTriggerService.create(userId, spaceId, data);
+            redisTemplate.delete(RedisConstants.triggerUpdateLockKey(resourceId));
+            return ResponseData.success(triggers);
+        } else {
+            throw new BusinessException("operation is too frequent, please try again later");
+        }
     }
 
     /**
@@ -309,10 +316,10 @@ public class AutomationRobotController {
             NodePermission.EDIT_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
-        Boolean lock = redisTemplate.opsForValue()
+        Boolean unLock = redisTemplate.opsForValue()
             .setIfAbsent(RedisConstants.triggerUpdateLockKey(triggerId), triggerId,
                 120 * 1000, TimeUnit.MILLISECONDS);
-        if (Boolean.TRUE.equals(lock)) {
+        if (Boolean.TRUE.equals(unLock)) {
             List<TriggerVO> triggers =
                 iAutomationTriggerService.update(userId, triggerId, spaceId, data);
             redisTemplate.delete(RedisConstants.triggerUpdateLockKey(triggerId));
