@@ -121,10 +121,8 @@ export const ShareMenu: React.FC<React.PropsWithChildren<IShareMenu>> = ({ share
   const activedNodeId = useAppSelector((state) => Selectors.getNodeId(state));
   const nodeId = shareNode?.nodeId;
   const activeNodePrivate = useAppSelector((state) => {
-    if (!nodeId) {
-      return false;
-    }
-    return state.catalogTree.treeNodesMap[nodeId]?.nodePrivate || state.catalogTree.privateTreeNodesMap[nodeId]?.nodePrivate;
+    const shareNodeTree = state.share.shareNodeTree;
+    return shareNodeTree?.nodeId === nodeId && shareNodeTree?.nodePrivate;
   });
   const env = getEnvVariables();
   const themeName = useAppSelector((state) => state.theme);

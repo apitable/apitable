@@ -20,6 +20,7 @@ import { useLocalStorageState, useMount, useUpdateEffect } from 'ahooks';
 import { Drawer } from 'antd';
 import classNames from 'classnames';
 import { keyBy } from 'lodash';
+import { EmitterEventName } from 'modules/shared/simple_emitter';
 import React, { useEffect, useRef, useState } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import { ContextMenu, Message, useThemeColors } from '@apitable/components';
@@ -39,7 +40,6 @@ import {
   WidgetReleaseType,
 } from '@apitable/core';
 import { AddOutlined, CodeFilled, DeleteOutlined, DuplicateOutlined, EditOutlined, GotoOutlined, SettingOutlined } from '@apitable/icons';
-import { EmitterEventName } from 'modules/shared/simple_emitter';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { simpleEmitter as panelSimpleEmitter } from 'pc/components/common/vika_split_panel';
@@ -323,9 +323,15 @@ export const Dashboard = () => {
         hidden: embedId,
         disabled: (arg: any) => {
           const {
-            props: { widgetId },
+            props: { widgetId, widget: {
+              snapshot: { sourceId, datasheetId },
+            } },
           } = arg;
-          return !widgetHasBindDstId(widgetId);
+          const linkNodeId = sourceId || datasheetId;
+          const state = store.getState();
+          const nodePrivate = state.dashboardMap[dashboardId!]?.dashboard?.nodePrivate;
+          const linkNodePrivate = Selectors.getDatasheet(state, linkNodeId)?.nodePrivate;
+          return !widgetHasBindDstId(widgetId) || (!nodePrivate && linkNodePrivate);
         },
       },
       {

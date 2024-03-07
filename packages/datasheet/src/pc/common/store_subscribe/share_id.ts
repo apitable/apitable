@@ -38,6 +38,7 @@ store.subscribe(function shareIdChange() {
       store.dispatch(
         StoreActions.setShareInfo({
           spaceId: data.spaceId,
+          shareNodeTree: data.shareNodeTree,
         }),
       );
     }
