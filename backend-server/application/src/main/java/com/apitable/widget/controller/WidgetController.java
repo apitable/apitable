@@ -27,6 +27,7 @@ import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
+import com.apitable.organization.enums.UnitType;
 import com.apitable.organization.service.IMemberService;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
@@ -130,15 +131,24 @@ public class WidgetController {
             schema = @Schema(type = "string"), in = ParameterIn.PATH,
             example = "spczJrh2i3tLW"),
         @Parameter(name = "count", description = "load quantity",
-            schema = @Schema(type = "integer"), in = ParameterIn.QUERY, example = "10")
+            schema = @Schema(type = "integer"), in = ParameterIn.QUERY, example = "10"),
+        @Parameter(name = "unitType", description = "unitType, 3: member(private), 1: team",
+            schema = @Schema(type = "integer"), example = "3", in = ParameterIn.QUERY)
     })
     public ResponseData<List<WidgetInfo>> findWidgetInfoBySpaceId(
         @PathVariable("spaceId") final String spaceId,
-        @RequestParam(value = "count", required = false, defaultValue = "10") final Integer count) {
+        @RequestParam(value = "count", required = false, defaultValue = "10") final Integer count,
+        @RequestParam(name = "unitType", required = false) Integer unitType) {
         Long userId = SessionContext.getUserId();
         Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
         List<WidgetInfo> infos = iWidgetService.getWidgetInfoList(spaceId,
             memberId, count);
+        if (UnitType.MEMBER.getType().equals(unitType)) {
+            infos = infos.stream().filter(WidgetInfo::getNodePrivate).toList();
+        }
+        if (UnitType.TEAM.getType().equals(unitType)) {
+            infos = infos.stream().filter(i -> !i.getNodePrivate()).toList();
+        }
         return ResponseData.success(infos);
     }
 
