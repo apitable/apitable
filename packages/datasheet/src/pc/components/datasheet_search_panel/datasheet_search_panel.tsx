@@ -83,7 +83,6 @@ const SearchPanelBase: React.FC<React.PropsWithChildren<ISearchPanelProps>> = (p
     secondConfirmType,
     showMirrorNode,
     onChange,
-    isPrivate,
   } = props;
   const [loading, setLoading] = React.useState(false);
   const [state, updateState] = useReducer(searchPanelReducer, {

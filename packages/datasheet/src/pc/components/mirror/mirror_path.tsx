@@ -48,6 +48,7 @@ export const MirrorPath: React.FC<React.PropsWithChildren<IMirrorPath>> = (props
     }
     return Selectors.getViewById(snapshot, breadInfo.viewId);
   });
+  
   const breadNodeInfo = useAppSelector(state => {
     return state.catalogTree.treeNodesMap[breadInfo.datasheetId!] || state.catalogTree.privateTreeNodesMap[breadInfo.datasheetId!];
   });

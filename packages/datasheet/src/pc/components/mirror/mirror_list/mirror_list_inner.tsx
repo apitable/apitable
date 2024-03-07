@@ -63,7 +63,6 @@ const BlankInner = ({ createMirrorNode, mirrorCreatable }: IBlankInner) => {
 export const MirrorListInner: React.FC<React.PropsWithChildren<IMirrorListInner>> = (props) => {
   const colors = useThemeColors();
   const { mirrorList, loading } = props;
-  const catalogTreeActiveType = useAppSelector((state) => state.catalogTree.activeType);
   const { datasheetId, viewId } = useAppSelector((state) => state.pageParams)!;
   const folderId = useAppSelector((state) => {
     return Selectors.getDatasheetParentId(state, datasheetId);
@@ -75,7 +74,8 @@ export const MirrorListInner: React.FC<React.PropsWithChildren<IMirrorListInner>
 
   const mirrorCreatable = useAppSelector((state) => {
     const { manageable } = Selectors.getPermissions(state);
-    const { manageable: folderManageable } = state.catalogTree.treeNodesMap[folderId!]?.permissions || {};
+    const { manageable: folderManageable } = state.catalogTree.treeNodesMap[folderId!]?.permissions ||
+    state.catalogTree.privateTreeNodesMap[folderId!]?.permissions || {};
     return manageable && folderManageable;
   });
   const execute = (cmd: ICollaCommandOptions) => resourceService.instance!.commandManager.execute(cmd);
