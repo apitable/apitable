@@ -71,6 +71,7 @@ export interface IRenderProps {
   unitTitleMap?: object;
   cacheTheme: ThemeName;
   currentResourceId?: string;
+  disabled?: boolean;
 }
 
 export interface IRenderStyleProps {

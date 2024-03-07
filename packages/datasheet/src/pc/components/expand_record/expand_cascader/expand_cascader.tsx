@@ -2,9 +2,9 @@ import { memo, forwardRef, ForwardRefRenderFunction, useImperativeHandle, useSta
 import { string2Segment, ILinkedField, DatasheetApi, ISegment, ICellValue, ICascaderNode, Selectors } from '@apitable/core';
 import { Cascader } from 'pc/components/cascader';
 import { IEditor, IBaseEditorProps } from 'pc/components/editors/interface';
+import { useAppSelector } from 'pc/store/react-redux';
 import { mapTreeNodesRecursively, ICascaderOption } from 'pc/utils';
 import styles from './styles.module.less';
-import { useAppSelector } from 'pc/store/react-redux';
 
 interface IExpandCascaderProps extends IBaseEditorProps {
   isFocus: boolean;
@@ -30,7 +30,7 @@ const ExpandCascaderBase: ForwardRefRenderFunction<IEditor, IExpandCascaderProps
   );
 
   const activeNodePrivate = useAppSelector(Selectors.getActiveNodePrivate);
-  const foreignNodePrivate = useAppSelector((state) => Selectors.getDatasheet(state, field?.property.linkedDatasheetId)?.nodeFavorite);
+  const foreignNodePrivate = useAppSelector((state) => Selectors.getDatasheet(state, field?.property.linkedDatasheetId)?.nodePrivate);
   // team datasheet can't link to private datasheet
   const disableEdit = !activeNodePrivate && foreignNodePrivate;
   const _editing = editing && !disableEdit;

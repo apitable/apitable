@@ -24,7 +24,7 @@ import {
   getTextFieldType,
   ISegment,
   KONVA_DATASHEET_ID,
-  SegmentType, Selectors,
+  SegmentType,
   Strings,
   t
 } from '@apitable/core';
@@ -34,7 +34,6 @@ import { Icon, Image, Text } from 'pc/components/konva_components';
 import { Shape } from 'pc/components/konva_components/components/icon';
 import { ICellProps, KonvaGridContext } from 'pc/components/konva_grid';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
-import { useAppSelector } from 'pc/store/react-redux';
 import { GRID_CELL_VALUE_PADDING, GRID_ICON_COMMON_SIZE } from '../../../constant';
 import { CellScrollContainer } from '../../cell_scroll_container';
 import { IRenderContentBase } from '../interface';
@@ -52,14 +51,11 @@ const enhanceTextIconMap = {
 };
 
 export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
-  const { x, y, recordId, field, rowHeight, columnWidth, renderData, isActive, cellValue, toggleEdit } = props;
+  const { x, y, recordId, field, rowHeight, columnWidth, renderData, isActive, cellValue, toggleEdit, editable } = props;
   const [isAddIconHover, setAddIconHover] = useState(false);
   const [isHover, setHover] = useState(false);
-  const { theme, setTooltipInfo, clearTooltipInfo, setActiveUrlAction, activeNodePrivate } = useContext(KonvaGridContext);
-  const foreignNodePrivate = useAppSelector((state) => Selectors.getDatasheet(state, field?.property.linkedDatasheetId)?.nodeFavorite);
-  // team datasheet can't link to private datasheet
-  const disableEdit = !activeNodePrivate && foreignNodePrivate;
-  const editable = props.editable && !disableEdit;
+  const { theme, setTooltipInfo, clearTooltipInfo, setActiveUrlAction } = useContext(KonvaGridContext);
+  
   const colors = theme.color;
   const { type: fieldType, id: fieldId } = field;
   const { isEnhanceText } = getTextFieldType(fieldType);

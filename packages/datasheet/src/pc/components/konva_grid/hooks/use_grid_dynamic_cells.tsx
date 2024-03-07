@@ -137,7 +137,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
     cacheTheme,
   } = useContext(KonvaGridViewContext);
   const { isScrolling } = scrollState;
-  const { activeCellBound, setTooltipInfo, clearTooltipInfo, draggingOutlineInfo } = useContext(KonvaGridContext);
+  const { activeCellBound, setTooltipInfo, clearTooltipInfo, draggingOutlineInfo, activeNodePrivate } = useContext(KonvaGridContext);
   const state = store.getState();
   const { rowHeight, rowHeightLevel, columnCount, rowCount, frozenColumnCount, rowInitSize } = instance;
   const totalColumnCount = visibleColumns.length;
@@ -198,6 +198,15 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
             const editable = getCellEditable(activeField, _editable);
             const fontWeight = 'normal';
             const permissions = Selectors.getDatasheet(state)?.permissions || {};
+
+            const linkedDatasheetId = activeField.type === FieldType.Cascader ? 
+              activeField.property.linkedDatasheetId : (activeField.type === FieldType.Link || activeField.type === FieldType.OneWayLink) ?
+                activeField.property.foreignDatasheetId : undefined;
+            const foreignNodePrivate = linkedDatasheetId ? 
+              Selectors.getDatasheet(state, linkedDatasheetId)?.nodePrivate : false;
+            // team datasheet can't link to private datasheet
+            const disableEdit = !activeNodePrivate && foreignNodePrivate;
+
             const renderProps = {
               x: x + offset,
               y,
@@ -217,6 +226,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
               unitTitleMap,
               cacheTheme,
               colors,
+              disabled: disableEdit,
             };
 
             cellHelper.needDraw = false;
@@ -230,6 +240,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
               activeHeight: activeCellHeight,
               isActive: true,
             });
+
             const currentCell = (
               <>
                 {!(
@@ -244,11 +255,14 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
                   columnWidth={width}
                   rowHeight={rowHeight}
                   recordId={recordId}
-                  renderData={renderData as any}
+                  renderData={{
+                    ...renderData,
+                    disabled: renderData?.disabled || disableEdit,
+                  } as any}
                   cellValue={cellValue}
                   field={activeField}
                   isActive
-                  editable={editable}
+                  editable={editable && !disableEdit}
                   datasheetId={datasheetId}
                   disabledDownload={disabledDownload}
                   style={{

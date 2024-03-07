@@ -34,7 +34,6 @@ import {
 } from 'pc/components/konva_grid';
 import { KonvaGridViewContext } from 'pc/components/konva_grid/context';
 import { store } from 'pc/store';
-import { useAppSelector } from 'pc/store/react-redux';
 import { MouseDownType } from '../../../../multi_grid';
 import { CellScrollContainer } from '../../cell_scroll_container';
 import { ICellProps } from '../cell_value';
@@ -44,12 +43,8 @@ const AddOutlinedPath = AddOutlined.toString();
 const CloseSmallOutlinedPath = CloseOutlined.toString();
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
-  const { x, y, recordId, cellValue, field, rowHeight, columnWidth, renderData, isActive, toggleEdit, onChange } = props;
-  const { theme, activeNodePrivate } = useContext(KonvaGridContext);
-  const foreignNodePrivate = useAppSelector((state) => Selectors.getDatasheet(state, field?.property.foreignDatasheetId)?.nodeFavorite);
-  // team datasheet can't link to private datasheet
-  const disableEdit = !activeNodePrivate && foreignNodePrivate;
-  const editable = props.editable && !disableEdit;
+  const { x, y, recordId, cellValue, field, rowHeight, columnWidth, renderData, isActive, toggleEdit, onChange, editable } = props;
+  const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const state = store.getState();
   const realField = Selectors.findRealField(state, field);

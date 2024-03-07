@@ -77,7 +77,7 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
   } = props;
   const colors = useThemeColors();
   const activeNodePrivate = useAppSelector(Selectors.getActiveNodePrivate);
-  const foreignNodePrivate = useAppSelector((state) => Selectors.getDatasheet(state, field?.property.foreignDatasheetId)?.nodeFavorite);
+  const foreignNodePrivate = useAppSelector((state) => Selectors.getDatasheet(state, field?.property.foreignDatasheetId)?.nodePrivate);
   // team datasheet can't link to private datasheet
   const disableEdit = !activeNodePrivate && foreignNodePrivate;
   const editing = props.editing && !disableEdit;

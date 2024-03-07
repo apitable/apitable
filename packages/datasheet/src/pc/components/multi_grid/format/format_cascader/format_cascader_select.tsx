@@ -89,7 +89,16 @@ export const FormatCascader = ({ currentField, setCurrentField, optionErrMsg }: 
               <Typography variant="body3" className={styles.rulesText} ellipsis>
                 {linkedFields.map((lf) => lf.name).join('/')}
               </Typography>
-              <LinkButton className={styles.rulesButton} disabled={ruleBtnDisabled} onClick={() => setRulesModalVisible(true)} underline={false}>
+              <LinkButton
+                className={styles.rulesButton}
+                disabled={ruleBtnDisabled}
+                onClick={() => {
+                  if (!ruleBtnDisabled) {
+                    setRulesModalVisible(true);
+                  }
+                }}
+                underline={false}
+              >
                 <span className={styles.rulesButtonText}>{t(Strings.config)}</span>
               </LinkButton>
             </div>
