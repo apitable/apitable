@@ -12,6 +12,22 @@
     cursor: pointer;
     color: var(--fc3);
   }
+
+  :global {
+    .treeItem {
+      height: 40px;
+
+      &.operationBg {
+        background: var(--rowSelectedBg);
+        border-radius: 4px;
+      }
+
+      &.selected {
+        border-radius: 4px;
+      }
+    }
+  }
+  
 }
 .permissionSetBtn {
   cursor: pointer;

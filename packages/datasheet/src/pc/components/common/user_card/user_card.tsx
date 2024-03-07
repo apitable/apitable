@@ -70,7 +70,9 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
   const [tagType, setTagType] = useState('');
   const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const activeNodeId = useAppSelector((state) => Selectors.getNodeId(state));
-  const activedNodePrivate = useAppSelector((state) => Selectors.getActiveNodePrivate(state));
+  const activeNodePrivate = useAppSelector((state) =>
+    state.catalogTree.treeNodesMap[activeNodeId]?.nodePrivate || state.catalogTree.privateTreeNodesMap[activeNodeId]?.nodePrivate
+  );
   const { shareSettingsReq } = useCatalogTreeRequest();
   const { data: memberInfo, loading } = useRequest(getMemberInfo);
   const { run: getMemberRole, data: memberRole } = useRequest(getMemberRoleReq, { manual: true });
@@ -164,7 +166,7 @@ export const UserCard: FC<React.PropsWithChildren<IUserCard>> = ({
           <Loading />
         ) : (
           <div>
-            {permissionVisible && memberRole && memberInfo && getEnvVariables().FILE_PERMISSION_VISIBLE && !activedNodePrivate && (
+            {permissionVisible && memberRole && memberInfo && getEnvVariables().FILE_PERMISSION_VISIBLE && !activeNodePrivate && (
               <div className={styles.cardTool} onClick={openPermissionModal}>
                 <div className={styles.settingPermissionBtn}>
                   <SettingOutlined size={20} color={colors.textCommonPrimary} />

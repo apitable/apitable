@@ -28,7 +28,9 @@ export interface IShareProps {
 }
 
 export const Share: FC<React.PropsWithChildren<IShareProps>> = ({ nodeId, onClose, isTriggerRender }) => {
-  const activeNodePrivate = useAppSelector((state) => Selectors.getActiveNodePrivate(state));
+  const activeNodePrivate = useAppSelector((state) =>
+    state.catalogTree.treeNodesMap[nodeId]?.nodePrivate || state.catalogTree.privateTreeNodesMap[nodeId]?.nodePrivate
+  );
   const nodeKey = activeNodePrivate ? 'privateTreeNodesMap' : 'treeNodesMap';
   const nodesMap = useAppSelector((state: IReduxState) => state.catalogTree[nodeKey]);
   if (!nodeId) {
