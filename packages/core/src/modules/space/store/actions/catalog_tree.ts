@@ -254,7 +254,7 @@ export function getChildNode(nodeId: string, module?: ConfigConstant.Modules): a
     const state: IReduxState = getState();
     const { loadedKeys } = state.catalogTree;
     dispatch(setTreeLoading(true, module));
-    const nodeData = await getChildNodeList(nodeId);
+    const nodeData = await getChildNodeList(nodeId, module === ConfigConstant.Modules.PRIVATE ? 3 : undefined);
     if (nodeData === NodeErrorType.ChildNodes) {
       dispatch(setTreeLoading(false, module));
       dispatch(setNodeErrorType(nodeId, NodeErrorType.ChildNodes, module));
@@ -291,10 +291,11 @@ export function updateHasChildren(nodeId: string, module?: ConfigConstant.Module
 /**
  * get specified node's child nodes.
  * @param nodeId
+ * @param unitType
  * @returns
  */
-const getChildNodeList = (nodeId: string) => {
-  return Api.getChildNodeList(nodeId).then(res => {
+const getChildNodeList = (nodeId: string, unitType?: number) => {
+  return Api.getChildNodeList(nodeId, undefined, unitType).then(res => {
     const { success, data } = res.data;
     if (success) {
       return data;

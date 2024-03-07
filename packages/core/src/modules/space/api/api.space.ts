@@ -276,13 +276,15 @@ export function findNode(keyword: string, ctx: any) {
  *
  * @param spaceId
  * @param keyword
+ * @param unitType
  * @returns
  */
-export function searchNode(spaceId: string, keyword: string) {
+export function searchNode(spaceId: string, keyword: string, unitType?: number) {
   return axios.get<IApiWrapper & { data: INode[] }>(Url.SEARCH_NODE, {
     params: {
       spaceId,
       keyword,
+      unitType
     },
   });
 }

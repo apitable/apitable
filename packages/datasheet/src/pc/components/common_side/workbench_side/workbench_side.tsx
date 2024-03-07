@@ -189,9 +189,11 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
     let activeNode = treeNodesMap[activeNodeId];
     if (!activeNode) {
       activeNode = privateTreeNodesMap[activeNodeId];
-      nodeMaps = privateTreeNodesMap;
-      isPrivate = true;
-      activeNode && activeKey !== ConfigConstant.Modules.FAVORITE && changeHandler(ConfigConstant.Modules.PRIVATE);
+      if (activeNode) {
+        nodeMaps = privateTreeNodesMap;
+        isPrivate = true;
+        activeKey !== ConfigConstant.Modules.FAVORITE && changeHandler(ConfigConstant.Modules.PRIVATE);
+      }
     }
     const _module = isPrivate ? ConfigConstant.Modules.PRIVATE : undefined;
     if (activeNode && nodeMaps[activeNode.parentId]) {
@@ -201,7 +203,11 @@ export const WorkbenchSide: FC<React.PropsWithChildren<unknown>> = () => {
         return;
       }
     }
-    getPositionNode(activeNodeId, _module);
+    getPositionNode(activeNodeId).then((rlt) => {
+      if (rlt && rlt.nodePrivate) {
+        activeKey !== ConfigConstant.Modules.FAVORITE && changeHandler(ConfigConstant.Modules.PRIVATE);
+      }
+    });
     // eslint-disable-next-line
   }, [activeNodeId, rootId]);
 

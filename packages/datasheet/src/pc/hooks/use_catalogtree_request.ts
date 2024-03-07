@@ -458,19 +458,22 @@ export const useCatalogTreeRequest = () => {
   /**
    * Get location node data
    * @param nodeId
-   * @param module
    */
-  const getPositionNodeReq = (nodeId: string, module?: ConfigConstant.Modules) => {
+  const getPositionNodeReq = (nodeId: string) => {
     return Api.positionNode(nodeId).then((res) => {
       const { success, data } = res.data;
       if (success) {
         if (data) {
-          dispatch(StoreActions.addNodeToMap(Selectors.flatNodeTree([data]), false, module));
-          dispatch(StoreActions.collectionNodeAndExpand(nodeId, module));
+          const nodeTree = Selectors.flatNodeTree([data]);
+          const nodePrivate = nodeTree.some((node) => node.nodeId === nodeId && node.nodePrivate);
+          const _module = nodePrivate ? ConfigConstant.Modules.PRIVATE : undefined;
+          dispatch(StoreActions.addNodeToMap(nodeTree, false, _module));
+          dispatch(StoreActions.collectionNodeAndExpand(nodeId, _module));
+          return { nodePrivate };
         }
-        return true;
+        return { nodePrivate: false };
       }
-      return false;
+      return null;
     });
   };
 

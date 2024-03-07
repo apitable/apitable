@@ -86,6 +86,7 @@ export const MoveTo: React.FC<
       onChange={setSelectedNodeId}
       catalog={catalog}
       setCatalog={setCatalog}
+      isPrivate={isPrivate}
     />
   );
 
