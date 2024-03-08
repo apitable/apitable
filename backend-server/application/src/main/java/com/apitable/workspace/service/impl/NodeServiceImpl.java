@@ -57,7 +57,6 @@ import com.apitable.interfaces.ai.facade.AiServiceFacade;
 import com.apitable.interfaces.ai.model.AiCreateParam;
 import com.apitable.interfaces.ai.model.AiUpdateParam;
 import com.apitable.interfaces.document.facade.DocumentServiceFacade;
-import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
 import com.apitable.organization.dto.MemberDTO;
 import com.apitable.organization.enums.UnitType;
@@ -224,9 +223,6 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Resource
     private IGrpcClientService grpcClientService;
-
-    @Resource
-    private SocialServiceFacade socialServiceFacade;
 
     @Resource
     private RedisTemplate<String, String> redisTemplate;
@@ -1844,11 +1840,10 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
             extras = baseMapper.selectExtraByNodeId(nodeId);
         }
         NodeExtraDTO nodeExtraDTO = JSONUtil.toBean(extras, NodeExtraDTO.class);
-        SocialConnectInfo connectInfo = socialServiceFacade.getConnectInfo(spaceId);
+        SocialConnectInfo connectInfo = iSpaceService.getSocialConnectInfo(spaceId);
         if (connectInfo != null && connectInfo.getAppId() != null) {
             if (connectInfo.isEnabled()) {
-                String suiteKey =
-                    socialServiceFacade.getSuiteKeyByDingtalkSuiteId(connectInfo.getAppId());
+                String suiteKey = iSpaceService.getSocialSuiteKeyByAppId(connectInfo.getAppId());
                 if (suiteKey != null) {
                     extraVo.setDingTalkSuiteKey(suiteKey);
                     extraVo.setDingTalkDaStatus(nodeExtraDTO.getDingTalkDaStatus());

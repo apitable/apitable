@@ -1270,4 +1270,14 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     public SubscriptionInfo getSpaceSubscription(String spaceId) {
         return entitlementServiceFacade.getSpaceSubscription(spaceId);
     }
+
+    @Override
+    public SocialConnectInfo getSocialConnectInfo(String spaceId) {
+        return socialServiceFacade.getConnectInfo(spaceId);
+    }
+
+    @Override
+    public String getSocialSuiteKeyByAppId(String appId) {
+        return socialServiceFacade.getSuiteKeyByDingtalkSuiteId(appId);
+    }
 }
