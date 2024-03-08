@@ -69,6 +69,7 @@ import com.apitable.shared.util.information.ClientOriginInfo;
 import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.space.enums.SpaceException;
+import com.apitable.template.service.ITemplateService;
 import com.apitable.user.mapper.UserMapper;
 import com.apitable.workspace.dto.NodeCopyEffectDTO;
 import com.apitable.workspace.entity.NodeEntity;
@@ -190,6 +191,9 @@ public class NodeController {
 
     @Resource
     private UserActiveSpaceCacheService userActiveSpaceCacheService;
+
+    @Resource
+    private ITemplateService iTemplateService;
 
     @Resource
     private IUnitService iUnitService;
@@ -656,6 +660,10 @@ public class NodeController {
                 status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         }
         Long userId = SessionContext.getUserId();
+        // if node is private check foreign link
+        if (iNodeService.nodePrivate(nodeOpRo.getNodeId()) && null == nodeOpRo.getUnitId()) {
+            iTemplateService.checkTemplateForeignNode(memberId, nodeOpRo.getNodeId());
+        }
         List<String> nodeIds = iNodeService.move(userId, nodeOpRo);
         List<NodeInfoVo> nodes = iNodeService.getNodeInfoByNodeIds(spaceId, memberId, nodeIds);
         if (null != nodeOpRo.getUnitId()) {

@@ -2020,8 +2020,21 @@ public class NodeServiceImpl extends ServiceImpl<NodeMapper, NodeEntity> impleme
 
     @Override
     public boolean nodePrivate(String nodeId) {
-        return null != getUnitIdByNodeId(nodeId);
+        Long unitId = getUnitIdByNodeId(nodeId);
+        return !unitId.equals(0L);
+    }
 
+    @Override
+    public boolean privateNodeOperation(Long userId, String nodeId) {
+        Long nodeUnit = getUnitIdByNodeId(nodeId);
+        // not private node
+        if (nodeUnit.equals(0L)) {
+            return true;
+        }
+        // check private user equals
+        Long memberId = getMemberIdByUserIdAndNodeId(userId, nodeId);
+        Long unitId = iUnitService.getUnitIdByRefId(memberId);
+        return nodeUnit.equals(unitId);
     }
 
     private List<NodeSearchResult> formatNodeSearchResults(List<NodeInfoVo> nodeInfoList) {

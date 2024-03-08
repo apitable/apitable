@@ -717,4 +717,13 @@ public interface INodeService extends IService<NodeEntity> {
      * @return boolean
      */
     boolean nodePrivate(String nodeId);
+
+    /**
+     * whether the user can operate specified node.
+     *
+     * @param userId user id
+     * @param nodeId node id
+     * @return boolean
+     */
+    boolean privateNodeOperation(Long userId, String nodeId);
 }
