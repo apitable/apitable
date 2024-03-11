@@ -1,6 +1,6 @@
 {
   "name": "@apitable/icons",
-  "version": "1.8.0",
+  "version": "1.10.0",
   "main": "dist/index.js",
   "author": "APITable Ltd. <support@apitable.com>",
   "license": "AGPL-3.0",

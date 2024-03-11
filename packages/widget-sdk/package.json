@@ -1,6 +1,6 @@
 {
   "name": "@apitable/widget-sdk",
-  "version": "1.8.0",
+  "version": "1.10.0",
   "description": "apitable widget sdk",
   "sideEffects": false,
   "engines": {
