@@ -27,9 +27,7 @@ import { FieldManager } from '../field.manager';
 
 @Injectable()
 export class AttachmentField extends BaseField implements OnApplicationBootstrap {
-  constructor(
-    private readonly restService: RestService
-  ) {
+  constructor(private readonly restService: RestService) {
     super();
   }
 
@@ -37,6 +35,7 @@ export class AttachmentField extends BaseField implements OnApplicationBootstrap
     if (fieldValues === null) return;
     if (Array.isArray(fieldValues)) {
       fieldValues.forEach((value: any) => {
+        if (!value) this.throwException(field, ApiTipConstant.api_params_instance_attachment_token_error);
         // Validate the necessary parameters
         if (!value.token) this.throwException(field, ApiTipConstant.api_params_instance_attachment_token_error);
         if (!value.name) this.throwException(field, ApiTipConstant.api_params_instance_attachment_name_error);
