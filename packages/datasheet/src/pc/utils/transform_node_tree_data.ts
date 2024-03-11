@@ -17,6 +17,7 @@ export const transformNodeTreeData = (data: INode[]) => {
   }
 
   return data.reduce((prev, node) => {
+    if(!node) return prev
     if ((node.type !== ConfigConstant.NodeType.FOLDER && node.type !== ConfigConstant.NodeType.ROOT) || !node.permissions.childCreatable) {
       // Skip nodes that are not folders、roots or cannot have children
       return prev;
