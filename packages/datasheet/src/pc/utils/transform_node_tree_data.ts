@@ -9,7 +9,8 @@ export interface ISelectTreeNode {
   isLeaf: boolean;
 }
 
-export const transformNodeTreeData = (data: INode[]) => {
+export const transformNodeTreeData = (_data: INode[]) => {
+  const data = compact(_data);
   if (!Array.isArray(data)) {
     // Invalid data format, return empty array
     console.log('Invalid transform node tree data');
@@ -32,7 +33,7 @@ export const transformNodeTreeData = (data: INode[]) => {
     };
     let childrenResult: ISelectTreeNode[] = [];
     if (node.hasChildren && Array.isArray(node.children)) {
-      childrenResult = transformNodeTreeData(compact(node.children));
+      childrenResult = transformNodeTreeData(node.children);
     }
     return [...prev, newNode, ...childrenResult];
   }, [] as ISelectTreeNode[]);
