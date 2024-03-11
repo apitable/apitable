@@ -38,6 +38,7 @@ export const SelectFolder: React.FC<
     onChange: (_folderId: string) => void;
     catalog?: ConfigConstant.Modules;
     setCatalog: (_catalog?: ConfigConstant.Modules) => void;
+    isPrivate?: boolean;
   }>
 > = (props) => {
   const { selectedFolderId, selectedFolderParentList, onChange, catalog, setCatalog } = props;
@@ -100,7 +101,7 @@ export const SelectFolder: React.FC<
 
   const getSearchList = useMemo(() => {
     return throttle((spaceId: string, keyword: string) => {
-      Api.searchNode(spaceId, keyword).then((res) => {
+      Api.searchNode(spaceId, keyword, isPrivate ? undefined : 1).then((res) => {
         const { data, success, message } = res.data;
         if (!success) {
           Message.error({ content: message });
@@ -110,7 +111,7 @@ export const SelectFolder: React.FC<
         setSearchList(folders);
       });
     }, 500);
-  }, []);
+  }, [isPrivate]);
 
   useEffect(() => {
     if (!keyword || !spaceId) {
@@ -174,6 +175,13 @@ export const SelectFolder: React.FC<
     },
   ] : [];
 
+  const folderCatalogTips = catalogList.length > 0 ? catalogList.filter(l => l.nodeId === catalog) : [
+    {
+      nodeId: ConfigConstant.Modules.CATALOG,
+      nodeName: t(Strings.catalog_team),
+    }
+  ];
+
   return (
     <div className={styles.selectFolder}>
       {/** the search is displayed when the data is complete on the web or mobile */}
@@ -195,7 +203,7 @@ export const SelectFolder: React.FC<
           setIsWhole={enterWhole}
           data={compact([
             firstParentList,
-            ...catalogList.filter(l => l.nodeId === catalog),
+            ...folderCatalogTips,
             ...restParentList
           ])}
           onClick={onClickItem}

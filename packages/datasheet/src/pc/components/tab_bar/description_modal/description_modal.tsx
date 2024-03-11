@@ -19,7 +19,7 @@
 import { Modal } from 'antd';
 import classNames from 'classnames';
 import { useAtom } from 'jotai';
-import { debounce } from 'lodash';
+import { debounce, isEmpty } from 'lodash';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -52,7 +52,7 @@ interface IRenderModalBase {
 }
 
 const getDefaultValue = (desc: INodeDescription | null) => {
-  if (!desc) return '';
+  if (isEmpty(desc)) return '';
   if (desc.type === SLATE_EDITOR_TYPE) return desc.data;
   return Deserializer.html(desc.render);
 };
@@ -288,10 +288,6 @@ function polyfillData(oldData: string[] | { [key: string]: string[] } | null) {
   }
   return [];
 }
-
-const checkIfAutomationNode = (node: string) => {
-  return node.startsWith('aut');
-};
 
 /**
  * share description modal for datasheet and automation

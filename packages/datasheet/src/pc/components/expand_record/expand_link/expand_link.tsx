@@ -66,7 +66,6 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
     field,
     recordId,
     onClick,
-    editable,
     keyPrefix,
     addBtnText,
     rightLayout = true,
@@ -75,6 +74,7 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
     manualFetchForeignDatasheet,
     mirrorId,
   } = props;
+  const editable = props.editable;
   const colors = useThemeColors();
   const focusRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<IEditor>(null);

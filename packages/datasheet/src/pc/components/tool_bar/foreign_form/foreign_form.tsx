@@ -43,7 +43,7 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
   const spaceId = useAppSelector((state) => state.space.activeId);
   const [formList, setFormList] = useState<IFormNodeItem[]>([]);
   const colors = useThemeColors();
-  const { folderId, datasheetId, viewId, viewName } = useAppSelector((state) => {
+  const { folderId, datasheetId, viewId, nodePrivate, viewName } = useAppSelector((state) => {
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const datasheet = Selectors.getDatasheet(state, datasheetId);
     const activeView = Selectors.getActiveViewId(state)!;
@@ -53,11 +53,13 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
       folderId: Selectors.getDatasheetParentId(state)!,
       datasheetId,
       viewId: activeView,
+      nodePrivate: datasheet?.nodePrivate,
       viewName,
     };
   }, shallowEqual);
   const creatable = useAppSelector((state) => {
-    const { manageable } = state.catalogTree.treeNodesMap[folderId]?.permissions || {};
+    const nodesMap = state.catalogTree[nodePrivate ? 'privateTreeNodesMap' : 'treeNodesMap'];
+    const { manageable } = nodesMap[folderId]?.permissions || {};
     const { editable } = Selectors.getPermissions(state);
     return manageable && editable;
   });

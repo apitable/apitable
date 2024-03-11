@@ -27,6 +27,7 @@ const ExpandCascaderBase: ForwardRefRenderFunction<IEditor, IExpandCascaderProps
       saveValue: () => {},
     }),
   );
+  const _editing = editing;
 
   const [cascaderValue, setCascaderValue] = useState<string[]>([]);
   const [options, setOptions] = useState<ICascaderOption[]>([]);
@@ -64,14 +65,15 @@ const ExpandCascaderBase: ForwardRefRenderFunction<IEditor, IExpandCascaderProps
   };
 
   useEffect(() => {
-    if (editing) {
+    if (_editing) {
       loadTreeSnapshot();
     }
-  }, [loadTreeSnapshot, editing]);
+  }, [loadTreeSnapshot, _editing]);
 
   return (
     <div className={styles.expandCascader}>
       <Cascader
+        disabled={_editing}
         loading={loading}
         onChange={onChange}
         options={options}

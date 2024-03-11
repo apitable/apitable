@@ -69,6 +69,7 @@ import com.apitable.shared.util.information.ClientOriginInfo;
 import com.apitable.shared.util.information.InformationUtil;
 import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.space.enums.SpaceException;
+import com.apitable.template.service.ITemplateService;
 import com.apitable.user.mapper.UserMapper;
 import com.apitable.workspace.dto.NodeCopyEffectDTO;
 import com.apitable.workspace.entity.NodeEntity;
@@ -192,6 +193,9 @@ public class NodeController {
     private UserActiveSpaceCacheService userActiveSpaceCacheService;
 
     @Resource
+    private ITemplateService iTemplateService;
+
+    @Resource
     private IUnitService iUnitService;
 
     private static final String ROLE_DESC = "<br/>Role Type：<br/>"
@@ -215,15 +219,24 @@ public class NodeController {
         @Parameter(name = "className", description = "highlight style",
             schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "highLight"),
         @Parameter(name = "keyword", description = "keyword", required = true,
-            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "datasheet")
+            schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "datasheet"),
+        @Parameter(name = "unitType", description = "unitType, 1: team, 3: member(private)",
+            in = ParameterIn.QUERY, schema = @Schema(type = "integer"), example = "1"),
     })
     public ResponseData<List<NodeSearchResult>> searchNode(
         @RequestParam(name = "keyword") String keyword,
         @RequestParam(value = "className", required = false, defaultValue = "keyword")
-        String className) {
+        String className,
+        @RequestParam(name = "unitType", required = false) Integer unitType) {
         String spaceId = LoginContext.me().getSpaceId();
         Long memberId = LoginContext.me().getMemberId();
         List<NodeSearchResult> nodeInfos = iNodeService.searchNode(spaceId, memberId, keyword);
+        if (UnitType.TEAM.getType().equals(unitType)) {
+            nodeInfos = nodeInfos.stream().filter(i -> !i.getNodePrivate()).toList();
+        }
+        if (UnitType.MEMBER.getType().equals(unitType)) {
+            nodeInfos = nodeInfos.stream().filter(NodeInfoVo::getNodePrivate).toList();
+        }
         nodeInfos.forEach(info -> info.setNodeName(
             InformationUtil.keywordHighlight(info.getNodeName(), keyword, className)));
         return ResponseData.success(nodeInfos);
@@ -647,8 +660,18 @@ public class NodeController {
                 status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         }
         Long userId = SessionContext.getUserId();
+        // if node is private check foreign link
+        if (iNodeService.nodePrivate(nodeOpRo.getNodeId()) && null == nodeOpRo.getUnitId()) {
+            iTemplateService.checkTemplateForeignNode(memberId, nodeOpRo.getNodeId());
+        }
         List<String> nodeIds = iNodeService.move(userId, nodeOpRo);
-        return ResponseData.success(iNodeService.getNodeInfoByNodeIds(spaceId, memberId, nodeIds));
+        List<NodeInfoVo> nodes = iNodeService.getNodeInfoByNodeIds(spaceId, memberId, nodeIds);
+        if (null != nodeOpRo.getUnitId()) {
+            nodes = nodes.stream().filter(NodeInfoVo::getNodePrivate).toList();
+        } else {
+            nodes = nodes.stream().filter(i -> !i.getNodePrivate()).toList();
+        }
+        return ResponseData.success(nodes);
     }
 
     /**
@@ -907,6 +930,9 @@ public class NodeController {
             String shareSpaceId = nodeShareSettingMapper.selectSpaceIdByShareId(ro.getLinkId());
             ExceptionUtil.isNotNull(shareSpaceId, NodeException.SHARE_EXPIRE);
             ExceptionUtil.isTrue(shareSpaceId.equals(spaceId), SpaceException.NOT_IN_SPACE);
+        }
+        if (iNodeService.nodePrivate(ro.getNodeId())) {
+            return ResponseData.success();
         }
         datasheetService.remindMemberRecOp(userId, spaceId, ro);
         return ResponseData.success();

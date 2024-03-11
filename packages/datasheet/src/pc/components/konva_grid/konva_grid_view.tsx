@@ -589,10 +589,12 @@ export const KonvaGridView: FC<React.PropsWithChildren<IGridViewProps>> = memo((
 
   const { unitTitleMap } = useWxTitleMap();
   const theme = useTheme();
+  const activeNodePrivate = useAppSelector(Selectors.getActiveNodePrivate);
   const cacheTheme = useAppSelector(Selectors.getTheme);
 
   const konvaGridContext = {
     theme,
+    activeNodePrivate,
     tooltipInfo,
     setTooltipInfo,
     clearTooltipInfo,

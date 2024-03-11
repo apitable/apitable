@@ -19,7 +19,7 @@
 import { NodeBaseInfo } from 'database/interfaces';
 import { NodeEntity } from 'node/entities/node.entity';
 import { INodeExtra } from 'shared/interfaces';
-import { EntityRepository, In, Repository } from 'typeorm';
+import { EntityRepository, In, Not, Repository } from 'typeorm';
 
 @EntityRepository(NodeEntity)
 export class NodeRepository extends Repository<NodeEntity> {
@@ -99,6 +99,20 @@ export class NodeRepository extends Repository<NodeEntity> {
     return await this.find({
       select: ['nodeName', 'nodeId'],
       where: { nodeId: In(nodeIds), isDeleted: 0, isRubbish: 0 },
+    });
+  }
+
+  /**
+   * Obtain the number of unit with the given node ID
+   */
+  public async selectUnitCountByNodeId(nodeId: string): Promise<number> {
+    return await this.count({ where: { nodeId, unitId: Not(0), isRubbish: false, isDeleted: false } });
+  }
+
+  public async selectTeamNodeByNodeIds(nodeIds: string[]): Promise<NodeEntity[]> {
+    return await this.find({
+      select: ['nodeId'],
+      where: { nodeId: In(nodeIds), unitId: 0, isDeleted: 0, isRubbish: 0 },
     });
   }
 }

@@ -374,4 +374,18 @@ public class RedisConstants {
     public static String getSpaceApiUsageConcurrentKey() {
         return StrUtil.format(GENERAL_LOCKED, "space", "api_usage");
     }
+
+    public static String triggerUpdateLockKey(String triggerId) {
+        return StrUtil.format(GENERAL_LOCKED, "trigger_update", triggerId);
+    }
+
+    /**
+     * get api usage min id.
+     *
+     * @param date every day of begin time
+     * @return key
+     */
+    public static String getApiUsageTableDayMindIdCacheKey(String date) {
+        return StrUtil.format(GENERAL_STATICS, "api-usage-min-id-day", date);
+    }
 }

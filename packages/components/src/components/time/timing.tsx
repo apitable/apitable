@@ -27,7 +27,7 @@ import { CronConverter } from './utils';
 import { MultipleSelect } from '../select/dropdown/multiple';
 import { ScheduleOptions } from './ScheduleOptions';
 import { Box } from 'components/box';
-import { Maybe } from 'purify-ts';
+import { Maybe } from 'purify-ts/index';
 import { Strings, t } from '@apitable/core';
 import { Typography } from 'components/typography';
 import styled, { css } from 'styled-components';

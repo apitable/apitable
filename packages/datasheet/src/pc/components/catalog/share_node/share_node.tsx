@@ -17,7 +17,7 @@
  */
 
 import { FC } from 'react';
-import { ConfigConstant, IReduxState, Selectors, Strings, t } from '@apitable/core';
+import { ConfigConstant, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -47,10 +47,10 @@ export enum ShareTab {
 }
 
 export const ShareNode: FC<React.PropsWithChildren<IShareNodeProps>> = ({ data, visible, onClose, isTriggerRender }) => {
-  const activeNodePrivate = useAppSelector((state) => Selectors.getActiveNodePrivate(state));
-  const nodeKey = activeNodePrivate ? 'privateTreeNodesMap' : 'treeNodesMap';
-  const nodesMap = useAppSelector((state: IReduxState) => state.catalogTree[nodeKey]);
-  const { nodeName } = nodesMap[data.nodeId];
+  const nodeId = data.nodeId;
+  const nodeName = useAppSelector((state) =>
+    state.catalogTree.treeNodesMap[nodeId]?.nodeName || state.catalogTree.privateTreeNodesMap[nodeId]?.nodeName
+  );
 
   if (isTriggerRender) {
     return <ShareContent data={data} />;

@@ -86,6 +86,7 @@ export const MoveTo: React.FC<
       onChange={setSelectedNodeId}
       catalog={catalog}
       setCatalog={setCatalog}
+      isPrivate={isPrivate}
     />
   );
 
@@ -108,21 +109,30 @@ export const MoveTo: React.FC<
       Api.nodeMove(nodeId, selectedNodeId, undefined, unitId).then((res) => {
         setConfirmLoading(false);
         const { data, success, message } = res.data;
+        console.log('moveTo -> data', data, success, message);
         if (!success) {
-          Message.error({ content: message });
-          dispatch(StoreActions.setErr(message));
+          let content: string | React.ReactNode = '';
+          if (nodeId.startsWith(ConfigConstant.NodeTypeReg.DATASHEET)) {
+            content = t(Strings.move_datasheet_link_warn);
+          } else if (nodeId.startsWith(ConfigConstant.NodeTypeReg.FOLDER)) {
+            content = t(Strings.move_folder_link_warn);
+          } else {
+            const nodeType = ConfigConstant.nodePrefixNameMap.get(nodeId.slice(0, 3) as ConfigConstant.NodeTypeReg);
+            content = <TComponent
+              tkey={t(Strings.move_other_link_warn)}
+              params={{ nodeType }}
+            />;
+          }
+          Modal.warning({
+            title: t(Strings.please_note),
+            content,
+          });
           return;
         }
-        // private => team should reload
-        if (isPrivate && catalog === ConfigConstant.Modules.CATALOG) {
-          moveSuccess(nodeId);
-          window.location.reload();
-        } else {
-          dispatch(StoreActions.moveTo(nodeId, selectedNodeId, 0, catalog));
-          dispatch(StoreActions.addNodeToMap(data, true, catalog));
-          onClose && onClose();
-          moveSuccess(nodeId);
-        }
+        dispatch(StoreActions.moveTo(nodeId, selectedNodeId, 0, catalog));
+        dispatch(StoreActions.addNodeToMap(data, true, catalog));
+        onClose && onClose();
+        moveSuccess(nodeId);
       });
     };
     if (!nodePermitSet) {

@@ -4,22 +4,21 @@ import { useState } from 'react';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import { Button, LinkButton, useThemeColors, Typography, Switch } from '@apitable/components';
-import { ICascaderField, IField, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { ICascaderField, IDatasheetState, IField, IReduxState, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { SettingOutlined } from '@apitable/icons';
-
 import { useAppSelector } from 'pc/store/react-redux';
 import { IFieldCascaderErrors } from '../../field_setting/check_factory';
 import commonStyles from '../styles.module.less';
 import { CascaderDatasourceDatasheetSelect } from './cascader_datasource_datasheet_select';
 import { CascaderDatasourceViewSelect } from './cascader_datasource_view_select';
 import { CascaderRulesModal } from './cascader_rules_modal/cascader_rules_modal';
-
 import styles from './styles.module.less';
 
 export interface IFormatCascaderProps {
   currentField: ICascaderField;
   setCurrentField: React.Dispatch<React.SetStateAction<IField>>;
   optionErrMsg?: IFieldCascaderErrors;
+  linkedDatasheet?: IDatasheetState | null;
 }
 
 export const FormatCascader = ({ currentField, setCurrentField, optionErrMsg }: IFormatCascaderProps): JSX.Element => {
@@ -28,6 +27,12 @@ export const FormatCascader = ({ currentField, setCurrentField, optionErrMsg }: 
   const dispatch = useDispatch();
 
   const linkedDatasheetLoading = useAppSelector((state: IReduxState) => Selectors.getDatasheetLoading(state, linkedDatasheetId));
+  const activeNodePrivate = useAppSelector(Selectors.getActiveNodePrivate);
+  const linkedDatasheet = useAppSelector((state: IReduxState) => {
+    const _linkedDatasheetId = Selectors.getDatasheet(state, linkedDatasheetId);
+    if (!activeNodePrivate && _linkedDatasheetId?.nodePrivate) return null;
+    return linkedDatasheetId ? _linkedDatasheetId : null;
+  });
 
   const [rulesModalVisible, setRulesModalVisible] = useState(false);
 
@@ -49,7 +54,8 @@ export const FormatCascader = ({ currentField, setCurrentField, optionErrMsg }: 
     dispatch(StoreActions.fetchDatasheet(linkedDatasheetId) as any);
   });
 
-  const ruleBtnDisabled = !linkedDatasheetId || !linkedViewId || linkedDatasheetLoading === undefined || linkedDatasheetLoading;
+  const ruleBtnDisabled = !linkedDatasheetId || !linkedViewId || linkedDatasheetLoading === undefined
+    || linkedDatasheetLoading || !linkedDatasheet;
 
   return (
     <div className={commonStyles.section} style={{ marginBottom: 8 }}>
@@ -61,7 +67,7 @@ export const FormatCascader = ({ currentField, setCurrentField, optionErrMsg }: 
           </LinkButton>
         </div>
         <div className={styles.datasourceSelectRow}>
-          <CascaderDatasourceDatasheetSelect currentField={currentField} setCurrentField={setCurrentField} />
+          <CascaderDatasourceDatasheetSelect currentField={currentField} setCurrentField={setCurrentField} linkedDatasheet={linkedDatasheet} />
           {optionErrMsg?.errors?.linkedDatasheetId && <section className={styles.error}>{optionErrMsg?.errors?.linkedDatasheetId}</section>}
         </div>
         <div className={commonStyles.section}>
@@ -70,6 +76,7 @@ export const FormatCascader = ({ currentField, setCurrentField, optionErrMsg }: 
             currentField={currentField}
             linkedDatasheetLoading={linkedDatasheetLoading === undefined || linkedDatasheetLoading}
             setCurrentField={setCurrentField}
+            linkedDatasheet={linkedDatasheet}
           />
           {optionErrMsg?.errors?.linkedViewId && <section className={styles.error}>{optionErrMsg?.errors?.linkedViewId}</section>}
         </div>
@@ -82,7 +89,16 @@ export const FormatCascader = ({ currentField, setCurrentField, optionErrMsg }: 
               <Typography variant="body3" className={styles.rulesText} ellipsis>
                 {linkedFields.map((lf) => lf.name).join('/')}
               </Typography>
-              <LinkButton className={styles.rulesButton} disabled={ruleBtnDisabled} onClick={() => setRulesModalVisible(true)} underline={false}>
+              <LinkButton
+                className={styles.rulesButton}
+                disabled={ruleBtnDisabled}
+                onClick={() => {
+                  if (!ruleBtnDisabled) {
+                    setRulesModalVisible(true);
+                  }
+                }}
+                underline={false}
+              >
                 <span className={styles.rulesButtonText}>{t(Strings.config)}</span>
               </LinkButton>
             </div>

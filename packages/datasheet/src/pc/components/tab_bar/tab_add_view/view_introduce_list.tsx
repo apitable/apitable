@@ -99,7 +99,8 @@ export const ViewIntroduceList = (props: IViewIntroduceList) => {
   const formCreatable = useAppSelector((state) => {
     const folderId = Selectors.getDatasheetParentId(state)!;
     const { editable } = Selectors.getPermissions(state);
-    const { manageable } = state.catalogTree.treeNodesMap[folderId]?.permissions || {};
+    const node = state.catalogTree.treeNodesMap[folderId] || state.catalogTree.privateTreeNodesMap[folderId];
+    const { manageable } = node?.permissions || {};
     return manageable && editable;
   });
   const nodeTypeList = formCreatable ? [ConfigConstant.NodeType.FORM] : [];

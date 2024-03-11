@@ -857,6 +857,7 @@ export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo((pro
     }
   }, [clearTooltipInfo, isScrolling]);
   const theme = useTheme();
+  const activeNodePrivate = useAppSelector(Selectors.getActiveNodePrivate);
 
   const linkCycleEdges = useMemo(() => {
     if (!linkFieldId) {
@@ -951,6 +952,7 @@ export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo((pro
 
   const konvaGridContext = {
     theme,
+    activeNodePrivate,
     tooltipInfo,
     setTooltipInfo,
     clearTooltipInfo,

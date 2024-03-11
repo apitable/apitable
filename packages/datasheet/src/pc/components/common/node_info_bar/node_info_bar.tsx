@@ -20,7 +20,7 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { FC, useContext, useEffect, useRef, useState } from 'react';
 import { Typography } from '@apitable/components';
-import { ConfigConstant, FOLDER_SHOWCASE_ID, Strings, t } from '@apitable/core';
+import { ConfigConstant, FOLDER_SHOWCASE_ID, IReduxState, Strings, t } from '@apitable/core';
 import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { ShareContext } from 'pc/components/share/share';
 import { DescriptionModal } from 'pc/components/tab_bar/description_modal';
@@ -61,7 +61,6 @@ export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ da
     type,
     name,
     role = ConfigConstant.Role.Administrator,
-    favoriteEnabled = false,
     nameEditable = false,
     iconEditable = false,
     subscribeEnabled = false,
@@ -78,6 +77,8 @@ export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ da
   const isDatasheet = type === ConfigConstant.NodeType.DATASHEET;
   const embedId = useAppSelector((state) => state.pageParams.embedId);
   const _showDescription = isDatasheet || subscribeEnabled;
+  const favoriteTreeNodeIds = useAppSelector((state: IReduxState) => state.catalogTree.favoriteTreeNodeIds);
+  const favoriteEnabled = data.favoriteEnabled || favoriteTreeNodeIds.includes(nodeId);
 
   useEffect(() => {
     setNewName(name);

@@ -271,9 +271,7 @@ public class AutomationRobotController {
             NodePermission.EDIT_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
         String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
-        return ResponseData.success(
-            iAutomationTriggerService.create(userId, spaceId, data));
-
+        return ResponseData.success(iAutomationTriggerService.create(userId, spaceId, data));
     }
 
     /**

@@ -20,6 +20,7 @@ package com.apitable.workspace.vo;
 
 import com.apitable.core.support.tree.Tree;
 import com.apitable.shared.support.serializer.NullArraySerializer;
+import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -60,6 +61,10 @@ public class NodeShareTree implements Tree {
 
     @Schema(description = "Node Type[1:Folder,2:Datasheet]", example = "1")
     private Integer type;
+
+    @Schema(description = "node private", example = "false")
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean nodePrivate;
 
     @Schema(description = "Child node")
     @JsonSerialize(nullsUsing = NullArraySerializer.class)

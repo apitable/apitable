@@ -10,7 +10,7 @@ import { Setting } from './components/setting/setting';
 import { Tab } from './components/tab/tab';
 import { useGetDesc } from './hooks/use_get_desc';
 import { useGetInfo } from './hooks/use_get_info';
-import { useGetTreeNodeMap } from './hooks/use_get_tree_node_map';
+import { useGetNodesMap } from './hooks/use_get_tree_node_map';
 
 export const CustomPage = () => {
   const { url, role } = useGetInfo();
@@ -19,9 +19,9 @@ export const CustomPage = () => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { shareId, customPageId, templateId } = useAppSelector((state) => state.pageParams);
-  const treeNodesMap = useGetTreeNodeMap();
+  const nodesMap = useGetNodesMap(customPageId!);
 
-  const node = treeNodesMap[customPageId!];
+  const node = nodesMap[customPageId!];
 
   useEffect(() => {
     if (!node) return;

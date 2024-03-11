@@ -19,6 +19,7 @@
 package com.apitable.widget.vo;
 
 import com.apitable.shared.support.serializer.ImageSerializer;
+import com.apitable.shared.support.serializer.NullBooleanSerializer;
 import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -61,4 +62,8 @@ public class WidgetInfo {
     @Schema(description = "Package Icon", example = "https://apitable.com/space/2020/12/23/aqa")
     @JsonSerialize(nullsUsing = NullStringSerializer.class, using = ImageSerializer.class)
     private String widgetPackageIcon;
+
+    @Schema(description = "Whether it belongs to the private area")
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean nodePrivate;
 }

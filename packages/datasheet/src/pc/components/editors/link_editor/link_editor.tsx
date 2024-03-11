@@ -66,7 +66,6 @@ interface ISearchContentRefProps {
 
 const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> = (props, ref) => {
   const {
-    editing,
     datasheetId,
     recordId,
     field,
@@ -77,6 +76,8 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
     layout = LinkEditorModalLayout.Center,
   } = props;
   const colors = useThemeColors();
+  const editing = props.editing;
+
   useImperativeHandle(
     ref,
     (): IEditor => ({

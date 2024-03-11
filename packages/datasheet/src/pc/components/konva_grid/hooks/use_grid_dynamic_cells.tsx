@@ -137,7 +137,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
     cacheTheme,
   } = useContext(KonvaGridViewContext);
   const { isScrolling } = scrollState;
-  const { activeCellBound, setTooltipInfo, clearTooltipInfo, draggingOutlineInfo } = useContext(KonvaGridContext);
+  const { activeCellBound, setTooltipInfo, clearTooltipInfo, draggingOutlineInfo, activeNodePrivate } = useContext(KonvaGridContext);
   const state = store.getState();
   const { rowHeight, rowHeightLevel, columnCount, rowCount, frozenColumnCount, rowInitSize } = instance;
   const totalColumnCount = visibleColumns.length;
@@ -198,6 +198,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
             const editable = getCellEditable(activeField, _editable);
             const fontWeight = 'normal';
             const permissions = Selectors.getDatasheet(state)?.permissions || {};
+
             const renderProps = {
               x: x + offset,
               y,
@@ -230,6 +231,7 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
               activeHeight: activeCellHeight,
               isActive: true,
             });
+
             const currentCell = (
               <>
                 {!(

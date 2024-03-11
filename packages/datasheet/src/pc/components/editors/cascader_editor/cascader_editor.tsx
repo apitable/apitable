@@ -32,7 +32,6 @@ const CascaderEditorBase: ForwardRefRenderFunction<IEditor, ICascaderEditorProps
       saveValue: () => {},
     }),
   );
-
   const [cascaderValue, setCascaderValue] = useState<string[]>([]);
   const [options, setOptions] = useState<ICascaderOption[]>([]);
   const [loading, setLoading] = useState(false);

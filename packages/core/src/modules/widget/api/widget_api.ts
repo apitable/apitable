@@ -58,8 +58,8 @@ export const installWidget = (nodeId: string, packageId: string, name?: string) 
   });
 };
 
-export const getRecentInstalledWidgets = (spaceId: string) => {
-  return axios.get(urlcat(Url.RECENT_INSTALL_WIDGET, { spaceId }));
+export const getRecentInstalledWidgets = (spaceId: string, unitType?: number) => {
+  return axios.get(urlcat(Url.RECENT_INSTALL_WIDGET, { spaceId, unitType }));
 };
 
 export const getWidgetsInfoByNodeId = (nodeId: string) => {

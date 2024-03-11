@@ -74,6 +74,7 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string, pa
   const { initialize } = useAutomationNavigateController();
   const dispatch = useAppDispatch();
   const { templateId } = useAppSelector((state: IReduxState) => state.pageParams);
+  const favoriteTreeNodeIds = useAppSelector((state: IReduxState) => state.catalogTree.favoriteTreeNodeIds);
 
   const { screenIsAtMost } = useResponsive();
   const isLg = screenIsAtMost(ScreenSize.lg);
@@ -282,7 +283,10 @@ export const AutomationPanel: FC<{ onClose?: () => void; resourceId?: string, pa
                       {
                         nodeItem && (
                           <OrEmpty visible={shareInfo?.shareId == null}>
-                            <NodeFavoriteStatus nodeId={automationState?.resourceId ?? ''} enabled={nodeItem?.nodeFavorite} />
+                            <NodeFavoriteStatus
+                              nodeId={automationState?.resourceId ?? ''}
+                              enabled={nodeItem?.nodeFavorite || favoriteTreeNodeIds.includes(nodeItem.nodeId)}
+                            />
                           </OrEmpty>
                         )
                       }

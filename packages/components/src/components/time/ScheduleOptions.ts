@@ -7,7 +7,7 @@ import 'dayjs/locale/zh';
 import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/zh-hk';
 import 'dayjs/locale/zh-tw';
-import { Maybe } from 'purify-ts';
+import { Maybe } from 'purify-ts/index';
 
 export const ScheduleOptions = {
   getDayIntervalOptions: () => {

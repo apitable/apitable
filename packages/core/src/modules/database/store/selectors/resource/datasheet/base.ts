@@ -342,11 +342,12 @@ export const allowShowCommentPane = (state: IReduxState) => {
 };
 
 export const getDatasheetParentId = (state: IReduxState, id?: string) => {
-  const tree = state.catalogTree.treeNodesMap;
   const datasheet = getDatasheet(state, id);
   if (!datasheet) {
     return;
   }
+  const nodePrivate = datasheet.nodePrivate;
+  const tree = state.catalogTree[nodePrivate ? 'privateTreeNodesMap' : 'treeNodesMap'];
   return tree[datasheet.id]?.parentId || datasheet.parentId;
 };
 

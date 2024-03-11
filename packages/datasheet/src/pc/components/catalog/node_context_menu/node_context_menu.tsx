@@ -54,10 +54,19 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
     const { rightClickInfo } = useContext(WorkbenchSideContext);
     const { setNewTdbId } = useContext(SideBarContext);
     const spaceId = useAppSelector((state) => state.space.activeId);
+    const favoriteTreeNodeIds = useAppSelector((state: IReduxState) => state.catalogTree.favoriteTreeNodeIds);
     const catalogTreeActiveType = useAppSelector((state) => state.catalogTree.activeType);
-    const isPrivate = catalogTreeActiveType === ConfigConstant.Modules.PRIVATE;
-    const nodesMap = useAppSelector((state: IReduxState) => isPrivate ? state.catalogTree.privateTreeNodesMap : state.catalogTree.treeNodesMap);
-    const rootId = useAppSelector((state: IReduxState) => isPrivate ? state.catalogTree.privateRootId : state.catalogTree.rootId);
+    const clickNodeId = rightClickInfo?.id;
+    const activeNodePrivate = useAppSelector((state) => {
+      if (!clickNodeId) {
+        return false;
+      }
+      return state.catalogTree.treeNodesMap[clickNodeId]?.nodePrivate || state.catalogTree.privateTreeNodesMap[clickNodeId]?.nodePrivate;
+    });
+    const nodesMap = useAppSelector((state: IReduxState) =>
+      activeNodePrivate ? state.catalogTree.privateTreeNodesMap : state.catalogTree.treeNodesMap
+    );
+    const rootId = useAppSelector((state: IReduxState) => activeNodePrivate ? state.catalogTree.privateRootId : state.catalogTree.rootId);
     const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
     const { updateNodeFavoriteStatusReq, copyNodeReq } = useCatalogTreeRequest();
     const { run: updateNodeFavoriteStatus } = useRequest(updateNodeFavoriteStatusReq, { manual: true });
@@ -149,7 +158,8 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
         return [];
       }
       const { contextMenuType, module, id, level } = rightClickInfo;
-      const { nodeId, permissions, nodeFavorite, parentId, type, nodePrivate } = nodesMap[id];
+      const { nodeId, permissions, parentId, type, nodePrivate } = nodesMap[id];
+      const nodeFavorite = nodesMap[id].nodeFavorite || favoriteTreeNodeIds.includes(id);
       const targetId = nodeId || rootId;
       const targetManageable = rootManageable || !isRootNodeId(targetId);
       const { exportable, nodeAssignable, templateCreatable, sharable, editable } = permissions;
@@ -174,7 +184,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
               contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
             ],
             compact([
-              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+              !activeNodePrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
@@ -203,8 +213,8 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
               ),
             ],
             compact([
-              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
-              !isPrivate && contextItemMap.get(ContextItemKey.CreateBackup)(() => _createBackupSnapshot(nodeId), !backupcreatAble),
+              !activeNodePrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+              !activeNodePrivate && contextItemMap.get(ContextItemKey.CreateBackup)(() => _createBackupSnapshot(nodeId), !backupcreatAble),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
@@ -221,7 +231,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
             compact([
               contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId, nodePrivate), nodeFavorite),
               contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
-              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+              !activeNodePrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
@@ -241,7 +251,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
               contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
             ],
             compact([
-              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+              !activeNodePrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
@@ -255,12 +265,12 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
           data = [
             [
               contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
-              contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId, nodePrivate), nodeFavorite),
+              contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId, nodePrivate), nodePrivate),
               contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
               contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
             ],
             compact([
-              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+              !activeNodePrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
             ]),
@@ -273,12 +283,12 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
           data = [
             [
               contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
-              contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
+              contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId, nodePrivate), nodeFavorite),
               contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
               contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
             ],
             compact([
-              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+              !activeNodePrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
@@ -292,7 +302,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
           data = [
             [
               contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
-              contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
+              contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId, nodePrivate), nodeFavorite),
               contextItemMap.get(ContextItemKey.Copy)(() => copyNode(nodeId), !copyable),
               contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
             ],
@@ -304,7 +314,7 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
               ),
             ],
             compact([
-              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+              !activeNodePrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),
@@ -318,11 +328,11 @@ export const NodeContextMenu: FC<React.PropsWithChildren<INodeContextMenuProps>>
           data = [
             [
               contextItemMap.get(ContextItemKey.Rename)(() => rename(nodeId, level, module), !renamable),
-              contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId), nodeFavorite),
+              contextItemMap.get(ContextItemKey.Favorite)(() => updateNodeFavoriteStatus(nodeId, nodePrivate), nodeFavorite),
               contextItemMap.get(ContextItemKey.CopyUrl)(() => copyUrl(nodeUrl), type),
             ],
             compact([
-              !isPrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
+              !activeNodePrivate && contextItemMap.get(ContextItemKey.Permission)(() => openPermissionSetting(nodeId), nodeAssignable),
               contextItemMap.get(ContextItemKey.NodeInfo)(() => openNodeInfo(nodeId)),
               contextItemMap.get(ContextItemKey.Share)(() => openShareModal(nodeId), !sharable),
               contextItemMap.get(ContextItemKey.MoveTo)(() => openMoveTo(nodeId), !movable),

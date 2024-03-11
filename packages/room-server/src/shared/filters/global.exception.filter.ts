@@ -36,8 +36,7 @@ import { IHttpErrorResponse } from 'shared/interfaces/http.interfaces';
 export class GlobalExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(GlobalExceptionFilter.name);
 
-  constructor(private readonly i18n: I18nService) {
-  }
+  constructor(private readonly i18n: I18nService) {}
 
   async catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -120,20 +119,24 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       message: errMsg,
     };
 
-    this.logger.error({
-      message: `request error: ${exception?.message || ''}`,
-      response: exception?.response || ''
-    },
-    exception?.stack || errMsg);
+    this.logger.error(
+      {
+        message: `request error: ${exception?.message || ''}`,
+        response: exception?.response || '',
+      },
+      exception?.stack || errMsg,
+    );
 
-    // set header, status code and error response data
-    if (response instanceof ServerResponse) {
-      response.setHeader('Content-Type', 'application/json');
-      response.statusCode = httpStatusCode;
-      response.write(JSON.stringify(errorResponse));
-      response.end();
-    } else {
-      await response.status(httpStatusCode).send(errorResponse);
-    }
+    try {
+      // set header, status code and error response data
+      if (response instanceof ServerResponse) {
+        response.setHeader('Content-Type', 'application/json');
+        response.statusCode = httpStatusCode;
+        response.write(JSON.stringify(errorResponse));
+        response.end();
+      } else {
+        await response.status(httpStatusCode).send(errorResponse);
+      }
+    } catch (e) {}
   }
 }

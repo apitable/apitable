@@ -16,9 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { FC, useContext, useState } from 'react';
 import * as React from 'react';
-import { Field, FieldType, getTextFieldType, KONVA_DATASHEET_ID, SegmentType, ISegment, t, Strings } from '@apitable/core';
+import { FC, useContext, useState } from 'react';
+import {
+  Field,
+  FieldType,
+  getTextFieldType,
+  ISegment,
+  KONVA_DATASHEET_ID,
+  SegmentType,
+  Strings,
+  t
+} from '@apitable/core';
 import { AddOutlined, EditOutlined, EmailOutlined, TelephoneOutlined, WebOutlined } from '@apitable/icons';
 import { generateTargetName } from 'pc/components/gantt_view';
 import { Icon, Image, Text } from 'pc/components/konva_components';
@@ -42,10 +51,11 @@ const enhanceTextIconMap = {
 };
 
 export const CellText: FC<React.PropsWithChildren<ICellProps>> = (props) => {
-  const { x, y, recordId, field, rowHeight, columnWidth, renderData, isActive, cellValue, editable, toggleEdit } = props;
+  const { x, y, recordId, field, rowHeight, columnWidth, renderData, isActive, cellValue, toggleEdit, editable } = props;
   const [isAddIconHover, setAddIconHover] = useState(false);
   const [isHover, setHover] = useState(false);
   const { theme, setTooltipInfo, clearTooltipInfo, setActiveUrlAction } = useContext(KonvaGridContext);
+  
   const colors = theme.color;
   const { type: fieldType, id: fieldId } = field;
   const { isEnhanceText } = getTextFieldType(fieldType);

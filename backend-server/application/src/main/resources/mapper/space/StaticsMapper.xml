@@ -136,19 +136,11 @@
         AND is_deleted = 0
     </select>
 
-    <select id="selectMaxIdByTime" resultType="java.lang.Long">
-        SELECT id
-        FROM ${tablePrefix}api_usage
-        WHERE DATE_FORMAT(created_at, '%Y-%m-%d') = #{time}
-        ORDER BY id DESC
-        LIMIT 1
-    </select>
-
     <select id="countByIdGreaterThanAndSpaceId" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM ${tablePrefix}api_usage
         WHERE id > #{id}
-          AND space_id = #{spaceId}
+        AND space_id = #{spaceId}
     </select>
 
     <select id="selectTotalSumBySpaceIdAndTimeBetween" resultType="java.lang.Long">
@@ -167,4 +159,13 @@
         </foreach>
         AND is_deleted = 0
     </select>
+
+    <select id="countByIdGreaterThanAndSpaceIdAndCreatedAt" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}api_usage
+        WHERE id > #{id}
+        AND space_id = #{spaceId}
+        AND created_at >= #{startTime}
+    </select>
+
 </mapper>

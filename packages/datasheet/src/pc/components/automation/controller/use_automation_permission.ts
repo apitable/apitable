@@ -10,7 +10,7 @@ export const useAutomationResourceNode = (): INodesMapItem=> {
   const stateValue = useAtomValue(automationStateAtom);
 
   return useAppSelector((state: IReduxState) => {
-    return state.catalogTree.treeNodesMap[stateValue?.resourceId!];
+    return state.catalogTree.treeNodesMap[stateValue?.resourceId!] || state.catalogTree.privateTreeNodesMap[stateValue?.resourceId!];
   });
 };
 
@@ -20,7 +20,9 @@ export const useAutomationResourcePermission = (): INodePermissions => {
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.lg);
   const mirrorCreatable = useAppSelector((state: IReduxState) => {
-    const defaultValue= state.catalogTree.treeNodesMap[stateValue?.resourceId!]?.permissions || {
+    const resourceId = stateValue?.resourceId!;
+    const defaultValue= state.catalogTree.treeNodesMap[resourceId]?.permissions ||
+      state.catalogTree.privateTreeNodesMap[resourceId]?.permissions || {
       manageable: false,
       editable: false,
       readable: true,

@@ -43,7 +43,7 @@ const AddOutlinedPath = AddOutlined.toString();
 const CloseSmallOutlinedPath = CloseOutlined.toString();
 const Group = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/group'), { ssr: false });
 export const CellLink: FC<React.PropsWithChildren<ICellProps>> = (props) => {
-  const { x, y, recordId, cellValue, field, rowHeight, columnWidth, renderData, isActive, editable, toggleEdit, onChange } = props;
+  const { x, y, recordId, cellValue, field, rowHeight, columnWidth, renderData, isActive, toggleEdit, onChange, editable } = props;
   const { theme } = useContext(KonvaGridContext);
   const colors = theme.color;
   const state = store.getState();
