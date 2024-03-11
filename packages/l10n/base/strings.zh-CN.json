@@ -6045,5 +6045,8 @@
   "capacity_file_member_team_node_count": "团队文件数",
   "capacity_file_member_private_node_count": "个人文件数",
   "capacity_file_member_private_percent": "占比",
-  "private_help_link": "https://help.aitable.ai/docs/guide/team-and-private-area#private-area"
+  "private_help_link": "https://help.aitable.ai/docs/guide/team-and-private-area#private-area",
+  "move_datasheet_link_warn": "无法单独移到团队工作区，因为当前表存在关联关系，建议将关联的所有表放在一个文件夹里进行移动",
+  "move_folder_link_warn": "无法移到团队工作区，因为当前文件夹内的文件与文件夹外的文件有连接关系（可能是关联关系或者被表单等所连接）建议将它们放在一个文件夹里再进行移动",
+  "move_other_link_warn": "无法单独将${nodeType}移动至团队工作区，因为它连接了个人工作区的表，建议将它们放在一个文件夹里进行移动"
 }

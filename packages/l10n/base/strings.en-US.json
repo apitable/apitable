@@ -6042,5 +6042,8 @@
   "capacity_file_member_team_node_count": "Team",
   "capacity_file_member_private_node_count": "Private",
   "capacity_file_member_private_percent": "Percent",
-  "private_help_link": "https://help.aitable.ai/docs/guide/team-and-private-area#private-area"
+  "private_help_link": "https://help.aitable.ai/docs/guide/team-and-private-area#private-area",
+  "move_datasheet_link_warn": "Cannot be moved to Team Area alone, because there is a two-way link from the current datasheet to another datasheet, it is recommended to put them in a folder and then move them",
+  "move_folder_link_warn": "Cannot be moved to Team Area because the files in the current folder are linked to files outside the folder (may be two-way links or linked by forms, etc.) We recommend that they be placed in a folder before moving",
+  "move_other_link_warn": "It is not allowed to move ${node type} to Team Area alone, because it connects to the datasheet of Private Area, it is recommended to put them in a folder before moving them"
 }

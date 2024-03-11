@@ -96,7 +96,18 @@ export enum NodeTypeReg {
   AUTOMATION = 'aut',
   MIRROR = 'mir',
   WIDGET = 'wdt',
+  AI = 'ai_',
 }
+
+export const nodePrefixNameMap = new Map<NodeTypeReg, string>([
+  [NodeTypeReg.FOLDER, t(Strings.folder)],
+  [NodeTypeReg.DATASHEET, t(Strings.datasheet)],
+  [NodeTypeReg.FORM, t(Strings.form)],
+  [NodeTypeReg.AUTOMATION, t(Strings.automation)],
+  [NodeTypeReg.MIRROR, t(Strings.mirror)],
+  [NodeTypeReg.DASHBOARD, t(Strings.dashboard)],
+  [NodeTypeReg.AI, t(Strings.ai_chat)],
+]);
 
 export enum SocialType {
   WECOM = 1,
