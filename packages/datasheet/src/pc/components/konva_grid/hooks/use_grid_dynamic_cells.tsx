@@ -199,14 +199,6 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
             const fontWeight = 'normal';
             const permissions = Selectors.getDatasheet(state)?.permissions || {};
 
-            const linkedDatasheetId = activeField.type === FieldType.Cascader ? 
-              activeField.property.linkedDatasheetId : (activeField.type === FieldType.Link || activeField.type === FieldType.OneWayLink) ?
-                activeField.property.foreignDatasheetId : undefined;
-            const foreignNodePrivate = linkedDatasheetId ? 
-              Selectors.getDatasheet(state, linkedDatasheetId)?.nodePrivate : false;
-            // team datasheet can't link to private datasheet
-            const disableEdit = !activeNodePrivate && foreignNodePrivate;
-
             const renderProps = {
               x: x + offset,
               y,
@@ -226,7 +218,6 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
               unitTitleMap,
               cacheTheme,
               colors,
-              disabled: disableEdit,
             };
 
             cellHelper.needDraw = false;
@@ -255,14 +246,11 @@ export const useDynamicCells = (props: IUseDynamicCellsProps) => {
                   columnWidth={width}
                   rowHeight={rowHeight}
                   recordId={recordId}
-                  renderData={{
-                    ...renderData,
-                    disabled: (renderData as any)?.disabled || disableEdit,
-                  } as any}
+                  renderData={renderData as any}
                   cellValue={cellValue}
                   field={activeField}
                   isActive
-                  editable={editable && !disableEdit}
+                  editable={editable}
                   datasheetId={datasheetId}
                   disabledDownload={disabledDownload}
                   style={{

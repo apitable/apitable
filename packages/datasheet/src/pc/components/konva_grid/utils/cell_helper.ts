@@ -1238,7 +1238,7 @@ export class CellHelper extends KonvaDrawer {
      * currentDatasheetId is the id of the table (or mirror) that is acting as a springboard at this time
      * Then if it's a directly rendered associated field, pageParams.nodeId === currentResourceId
      */
-    const { x, y, field, cellValue, rowHeight, columnWidth, rowHeightLevel, isActive, editable, callback, currentResourceId, disabled } = renderProps;
+    const { x, y, field, cellValue, rowHeight, columnWidth, rowHeightLevel, isActive, editable, callback, currentResourceId } = renderProps;
     const linkRecordIds = Array.isArray(cellValue) ? (cellValue as string[]).slice(0, MAX_SHOW_LINK_IDS_COUNT) : [];
     const state = store.getState();
     const NO_DATA = Symbol('NO_DATA');
@@ -1288,7 +1288,6 @@ export class CellHelper extends KonvaDrawer {
       return {
         recordId,
         text: (Field.bindModel(field) as LinkField).getLinkedRecordCellString(recordId),
-        disabled,
       };
     });
 

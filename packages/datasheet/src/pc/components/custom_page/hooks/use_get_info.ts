@@ -6,8 +6,8 @@ import { useGetNodesMap } from './use_get_tree_node_map';
 
 export const useGetInfo = () => {
   const { customPageId } = useAppSelector((state) => state.pageParams);
-  const nodesMap = useGetNodesMap(customPageId!);
-  const node = nodesMap[customPageId!];
+  const nodeMap = useGetNodesMap(customPageId!);
+  const node = nodeMap[customPageId!];
   const [embedPage, setEmbedPage] = useAtom(CustomPageAtom);
 
   const _url = node?.extra ? JSON.parse(node?.extra).embedPage.url : '';

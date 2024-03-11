@@ -45,18 +45,7 @@ export const FormateLink: React.FC<React.PropsWithChildren<IFormateLinkProps>> =
   const foreignDatasheetId = currentField.property.foreignDatasheetId;
   const [searchPanelVisible, setSearchPanelVisible] = useState(false);
   const activeDatasheetId = useAppSelector((state) => propDatasheetId || Selectors.getActiveDatasheetId(state))!;
-  const activeNodePrivate = useAppSelector((state) => Selectors.getActiveNodePrivate(state));
-  const foreignDatasheet = useAppSelector((state) => {
-    if (foreignDatasheetId) {
-      const _foreignDatasheet = Selectors.getDatasheet(state, foreignDatasheetId);
-      // team datasheet can't link to private datasheet
-      if (!activeNodePrivate && _foreignDatasheet?.nodePrivate) {
-        return null;
-      }
-      return _foreignDatasheet;
-    }
-    return null;
-  });
+  const foreignDatasheet = useAppSelector((state) => (foreignDatasheetId ? Selectors.getDatasheet(state, foreignDatasheetId) : null));
   const datasheetParentId = useAppSelector((state) => Selectors.getDatasheet(state, propDatasheetId)!.parentId);
   const _foreignFiledName = useAppSelector((state) =>
     isLinkType ? Selectors.getField(state, currentField.property.brotherFieldId!, foreignDatasheetId).name : '',

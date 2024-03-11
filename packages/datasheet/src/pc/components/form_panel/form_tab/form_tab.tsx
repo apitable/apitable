@@ -106,22 +106,12 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
     };
   }, shallowEqual);
   const spaceId = useAppSelector((state) => state.space.activeId);
-  const formPrivate = useAppSelector(state => {
-    return state.catalogTree.treeNodesMap[formId!]?.nodePrivate || state.catalogTree.privateTreeNodesMap[formId!]?.nodePrivate;
-  });
-  const linkNodePrivate = useAppSelector(state => {
-    return state.catalogTree.treeNodesMap[datasheetId!]?.nodePrivate || state.catalogTree.privateTreeNodesMap[datasheetId!]?.nodePrivate;
-  });
-  const disableJump = !formPrivate && linkNodePrivate;
 
   const tabSize = useSize(tabRef);
 
   const showLabel = tabSize?.width! > HIDDEN_TOOLBAR_RIGHT_LABEL_WIDTH;
 
   const jumpHandler = () => {
-    if (disableJump) {
-      return;
-    }
     Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: datasheetId, viewId } });
   };
 
@@ -181,8 +171,8 @@ const FormTabBase = ({ setPreFill, preFill }: { setPreFill: Dispatch<SetStateAct
                   iconEditable={false}
                 />
                 /
-                <Tooltip title={disableJump ? t(Strings.disable_jump_private) : t(Strings.form_to_datasheet_view)}>
-                  <span className={classNames(styles.viewInfo, disableJump && styles.disabled)} onClick={jumpHandler}>
+                <Tooltip title={t(Strings.form_to_datasheet_view)}>
+                  <span className={styles.viewInfo} onClick={jumpHandler}>
                     <span className={styles.viewIcon}>
                       <ViewIcon size={16} viewType={viewType} color={colors.primaryColor} />
                     </span>

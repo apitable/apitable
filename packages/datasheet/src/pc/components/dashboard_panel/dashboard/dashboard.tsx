@@ -323,15 +323,10 @@ export const Dashboard = () => {
         hidden: embedId,
         disabled: (arg: any) => {
           const {
-            props: { widgetId, widget: {
-              snapshot: { sourceId, datasheetId },
-            } },
+            props: { widgetId }
           } = arg;
-          const linkNodeId = sourceId || datasheetId;
-          const state = store.getState();
-          const nodePrivate = state.dashboardMap[dashboardId!]?.dashboard?.nodePrivate;
-          const linkNodePrivate = Selectors.getDatasheet(state, linkNodeId)?.nodePrivate;
-          return !widgetHasBindDstId(widgetId) || (!nodePrivate && linkNodePrivate);
+
+          return !widgetHasBindDstId(widgetId);
         },
       },
       {

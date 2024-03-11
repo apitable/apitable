@@ -18,12 +18,12 @@ function transform(tree: ITemplateTree | undefined): any {
 }
 
 export const useGetNodesMap = (customPageId: string) => {
-  const activeNodePrivate = useAppSelector((state) =>
-    state.catalogTree.treeNodesMap[customPageId]?.nodePrivate || state.catalogTree.privateTreeNodesMap[customPageId]?.nodePrivate
-  );
 
   const spaceNodesMap = useAppSelector((state) => {
-    return state.catalogTree[activeNodePrivate ? 'privateTreeNodesMap' : 'treeNodesMap'];
+    const nodeItem = state.catalogTree.treeNodesMap[customPageId] || state.catalogTree.privateTreeNodesMap[customPageId];
+    return {
+      [customPageId]: nodeItem
+    };
   });
 
   const templateId = useAppSelector((state) => state.pageParams.templateId);

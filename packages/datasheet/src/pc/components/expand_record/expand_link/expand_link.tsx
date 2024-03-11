@@ -74,11 +74,7 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
     manualFetchForeignDatasheet,
     mirrorId,
   } = props;
-  const activeNodePrivate = useAppSelector((state) => Selectors.getActiveNodePrivate(state));
-  const foreignNodePrivate = useAppSelector((state) => Selectors.getDatasheet(state, field?.property.foreignDatasheetId)?.nodePrivate);
-  // team datasheet can't link to private datasheet
-  const disableEdit = !activeNodePrivate && foreignNodePrivate;
-  const editable = props.editable && !disableEdit;
+  const editable = props.editable;
   const colors = useThemeColors();
   const focusRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<IEditor>(null);
@@ -204,7 +200,7 @@ const ExpandLinkBase: React.ForwardRefRenderFunction<IExpandFieldEditRef, IExpan
     // Determining Related Table Permissions
     const state = store.getState();
     const readable = Selectors.getPermissions(state, field.property.foreignDatasheetId).readable;
-    if (!readable && field.property.foreignDatasheetId || disableEdit) {
+    if (!readable && field.property.foreignDatasheetId) {
       Message.warning({
         content: t(Strings.disabled_expand_link_record),
       });
