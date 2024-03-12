@@ -328,7 +328,7 @@ public class AutomationRobotController {
         iPermissionService.checkPermissionBySessionOrShare(resourceId, null,
             NodePermission.EDIT_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
-        iAutomationTriggerService.deleteByDatabus(robotId, triggerId, userId);
+        iAutomationTriggerService.deleteByTriggerId(robotId, triggerId, userId);
         return ResponseData.success();
     }
 
