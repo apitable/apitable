@@ -109,6 +109,7 @@ starter:
       reconnection-attempts: ${SOCKET_RECONNECTION_ATTEMPTS:2}
       reconnection-delay: ${SOCKET_RECONNECTION_DELAY:1000}
       timeout: ${SOCKET_TIMEOUT:1000}
+      transports: ${SOCKET_TRANSPORTS:websocket}
   oss:
     enabled: ${OSS_ENABLED:true}
     type: ${OSS_CLIENT_TYPE:aws}
