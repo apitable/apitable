@@ -22,6 +22,8 @@ import static com.apitable.shared.constants.SpaceConstants.SPACE_ROOT_TEAM_UNIT_
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.IdUtil;
+import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.control.service.IControlRoleService;
@@ -41,6 +43,7 @@ import com.apitable.organization.entity.TeamEntity;
 import com.apitable.organization.entity.TeamMemberRelEntity;
 import com.apitable.organization.entity.UnitEntity;
 import com.apitable.organization.enums.MemberType;
+import com.apitable.organization.enums.OrganizationException;
 import com.apitable.organization.enums.UnitType;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.mapper.RoleMapper;
@@ -63,9 +66,11 @@ import com.apitable.shared.util.page.PageInfo;
 import com.apitable.user.dto.UserSensitiveDTO;
 import com.apitable.user.service.IUserService;
 import com.apitable.workspace.enums.PermissionException;
+import com.apitable.workspace.service.INodeService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -75,11 +80,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * unit service implementation.
+ */
 @Slf4j
 @Service
 public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
@@ -111,6 +118,9 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
 
     @Resource
     private IUserService iUserService;
+
+    @Resource
+    private INodeService iNodeService;
 
     @Override
     public Long getUnitRefIdById(Long id) {
@@ -145,16 +155,18 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
     public UnitEntity create(String spaceId, UnitType unitType, Long unitRefId) {
         log.info("create unit，unit type:{}, unit id:{}", unitType, unitRefId);
         UnitEntity unit = new UnitEntity();
+        unit.setId(IdWorker.getId());
         unit.setSpaceId(spaceId);
         unit.setUnitType(unitType.getType());
         unit.setUnitRefId(unitRefId);
-        unit.setUnitId(IdWorker.get32UUID());
+        unit.setUnitId(IdUtil.fastSimpleUUID());
         boolean flag = save(unit);
         ExceptionUtil.isTrue(flag, DatabaseException.INSERT_ERROR);
         return unit;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean createBatch(List<UnitEntity> unitEntities) {
         log.info("Batch create unit.");
         return saveBatch(unitEntities);
@@ -171,6 +183,8 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
 
         if (CollUtil.isNotEmpty(restores)) {
             baseMapper.batchRestoreByIds(restores);
+            // restore private nodes
+            iNodeService.restoreMembersNodes(restores);
         }
     }
 
@@ -337,6 +351,7 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
                     List<Long> roleMemberIds =
                         iRoleMemberService.getMemberIdsByRoleIds(entry.getValue());
                     memberIds.addAll(roleMemberIds);
+                    break;
                 default:
                     break;
             }
@@ -574,12 +589,12 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
         IPage<Long> teamIds =
             teamMapper.selectTeamIdsBySpaceIdAndParentIdAndPage(page, spaceId, parentTeamId);
         if (teamIds.getSize() == 0) {
-            return PageHelper.build((int) teamIds.getCurrent(), (int) teamIds.getSize(),
-                (int) teamIds.getTotal(), new ArrayList<>());
+            return PageHelper.build(teamIds.getCurrent(), teamIds.getSize(),
+                teamIds.getTotal(), new ArrayList<>());
         }
         List<UnitTeamInfoVo> units = getUnitTeamByTeamIds(teamIds.getRecords());
-        return PageHelper.build((int) teamIds.getCurrent(), (int) teamIds.getSize(),
-            (int) teamIds.getTotal(), units);
+        return PageHelper.build(teamIds.getCurrent(), teamIds.getSize(),
+            teamIds.getTotal(), units);
     }
 
     @Override
@@ -587,8 +602,8 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
                                                          Page<RoleBaseInfoDto> page) {
         IPage<RoleBaseInfoDto> roles = roleMapper.selectBySpaceIdAndPage(page, spaceId);
         if (roles.getSize() == 0) {
-            return PageHelper.build((int) roles.getCurrent(), (int) roles.getSize(),
-                (int) roles.getTotal(), new ArrayList<>());
+            return PageHelper.build(roles.getCurrent(), roles.getSize(),
+                roles.getTotal(), new ArrayList<>());
         }
         List<Long> roleIds =
             roles.getRecords().stream().map(RoleBaseInfoDto::getId).collect(Collectors.toList());
@@ -596,8 +611,8 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
             .collect(Collectors.toMap(UnitBaseInfoDTO::getUnitRefId,
                 UnitBaseInfoDTO::getUnitId));
         if (roleUnits.keySet().isEmpty()) {
-            return PageHelper.build((int) roles.getCurrent(), (int) roles.getSize(),
-                (int) roles.getTotal(), new ArrayList<>());
+            return PageHelper.build(roles.getCurrent(), roles.getSize(),
+                roles.getTotal(), new ArrayList<>());
         }
         List<UnitRoleInfoVo> units = new ArrayList<>();
         roles.getRecords().forEach(r -> {
@@ -607,8 +622,8 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
                 .build();
             units.add(unit);
         });
-        return PageHelper.build((int) roles.getCurrent(), (int) roles.getSize(),
-            (int) roles.getTotal(), units);
+        return PageHelper.build(roles.getCurrent(), roles.getSize(),
+            roles.getTotal(), units);
     }
 
     @Override
@@ -616,14 +631,14 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
                                                          boolean sensitiveData, Page<Long> page) {
         IPage<Long> memberIds =
             teamMemberRelMapper.selectMemberIdsByTeamIdAndPage(page, parentTeamId);
-        if (memberIds.getRecords().size() == 0) {
-            return PageHelper.build((int) memberIds.getCurrent(), (int) memberIds.getSize(),
-                (int) memberIds.getTotal(), new ArrayList<>());
+        if (memberIds.getRecords().isEmpty()) {
+            return PageHelper.build(memberIds.getCurrent(), memberIds.getSize(),
+                memberIds.getTotal(), new ArrayList<>());
         }
         List<UnitMemberInfoVo> members =
             getUnitMemberByMemberIds(memberIds.getRecords(), sensitiveData);
-        return PageHelper.build((int) memberIds.getCurrent(), (int) memberIds.getSize(),
-            (int) memberIds.getTotal(), members);
+        return PageHelper.build(memberIds.getCurrent(), memberIds.getSize(),
+            memberIds.getTotal(), members);
     }
 
     @Override
@@ -644,6 +659,24 @@ public class UnitServiceImpl extends ExpandServiceImpl<UnitMapper, UnitEntity>
             vo.setTeams(getUnitTeamByTeamIds(teamIds));
         }
         return vo;
+    }
+
+    @Override
+    public void checkUnit(Long memberId, String unitId) {
+        if (null == unitId) {
+            return;
+        }
+        UnitEntity unit = baseMapper.selectById(NumberUtil.parseLong(unitId));
+        ExceptionUtil.isFalse(null == unit, OrganizationException.ILLEGAL_UNIT_ID);
+        if (unit.getUnitType().equals(UnitType.MEMBER.getType())) {
+            ExceptionUtil.isTrue(unit.getUnitRefId().equals(memberId),
+                OrganizationException.ILLEGAL_UNIT_ID);
+        }
+        if (unit.getUnitType().equals(UnitType.TEAM.getType())) {
+            List<Long> memberIds = teamMemberRelMapper.selectMemberIdsByTeamId(unit.getUnitRefId());
+            ExceptionUtil.isTrue(memberIds.contains(memberId),
+                OrganizationException.ILLEGAL_UNIT_ID);
+        }
     }
 }
 

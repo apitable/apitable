@@ -19,15 +19,15 @@
 import { IFormProps, IPermissions, Role } from '@apitable/core';
 import { Span } from '@metinseylan/nestjs-opentelemetry';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { NodeBaseInfo, NodeDetailInfo, NodeRelInfo } from 'database/interfaces';
 import { MetaService } from 'database/resource/services/meta.service';
-import { get, omit } from 'lodash';
+import { get, keyBy, omit } from 'lodash';
 import { NodeDescriptionService } from 'node/services/node.description.service';
 import { NodeExtraConstant } from 'shared/common';
 import { DatasheetException, PermissionException, ServerException } from 'shared/exception';
 import { IBaseException } from 'shared/exception/base.exception';
 import { IAuthHeader, IFetchDataOriginOptions } from 'shared/interfaces';
 import { UnitMemberService } from 'unit/services/unit.member.service';
-import { NodeBaseInfo, NodeDetailInfo, NodeRelInfo } from 'database/interfaces';
 import { NodeRelRepository } from '../repositories/node.rel.repository';
 import { NodeRepository } from '../repositories/node.repository';
 import { NodePermissionService } from './node.permission.service';
@@ -35,7 +35,6 @@ import { NodeShareSettingService } from './node.share.setting.service';
 
 @Injectable()
 export class NodeService {
-
   constructor(
     private readonly memberService: UnitMemberService,
     private readonly nodeDescService: NodeDescriptionService,
@@ -58,17 +57,17 @@ export class NodeService {
   async getFolderLastChildren(fldId: string): Promise<string> {
     const nodes = await this.nodeRepository.find({
       where: {
-        parentId: fldId
+        parentId: fldId,
       },
     });
-    if (!nodes){
+    if (!nodes) {
       return '';
     }
     const nodeIdSet = new Map<string, boolean>();
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       nodeIdSet.set(node.nodeId, false);
     });
-    nodes.forEach(node => {
+    nodes.forEach((node) => {
       if (node.preNodeId && nodeIdSet.has(node.preNodeId)) {
         nodeIdSet.set(node.preNodeId, true);
       }
@@ -84,7 +83,7 @@ export class NodeService {
   async getNodeIcon(nodeId: string): Promise<string | undefined> {
     const node = await this.nodeRepository.findOne({
       where: {
-        nodeId
+        nodeId,
       },
     });
     if (!node) {
@@ -93,12 +92,8 @@ export class NodeService {
     return node.icon;
   }
 
-  async batchSave(nodes: any[]){
-    return await this.nodeRepository
-      .createQueryBuilder()
-      .insert()
-      .values(nodes)
-      .execute();
+  async batchSave(nodes: any[]) {
+    return await this.nodeRepository.createQueryBuilder().insert().values(nodes).execute();
   }
 
   @Span()
@@ -184,6 +179,7 @@ export class NodeService {
         description: description || '{}',
         parentId: nodeInfo?.parentId || '',
         icon: nodeInfo?.icon || '',
+        nodePrivate: nodeInfo?.unitId != '0',
         nodeShared: nodeShared,
         nodePermitSet: nodePermitSet,
         revision: revision == null ? 0 : revision,
@@ -250,5 +246,38 @@ export class NodeService {
 
   async getRelNodeIdsByMainNodeIds(mainNodeIds: string[]): Promise<string[]> {
     return await this.nodeRelRepository.selectRelNodeIdsByMainNodeIds(mainNodeIds);
+  }
+
+  async getNodeInfoMapByNodeIds(nodeIds: string[]): Promise<Map<string, { nodeName: string; relNodeId?: string }>> {
+    const nodeMap: Map<string, any> = new Map<string, any>();
+    if (!nodeIds.length) {
+      return nodeMap;
+    }
+    const nodes = await this.nodeRepository.selectNodeNameByNodeIds(nodeIds);
+    const nodeRel = await this.nodeRelRepository.selectRelNodeInfoByMainNodeIds(nodeIds);
+    const nodeRelMap = keyBy(nodeRel, 'mainNodeId');
+    for (const node of nodes) {
+      const info = {
+        nodeName: node.nodeName,
+        relNodeId: nodeRelMap[node.nodeId]?.relNodeId,
+      };
+      nodeMap.set(node.nodeId, info);
+    }
+    return nodeMap;
+  }
+
+  async nodePrivate(nodeId: string): Promise<boolean> {
+    return (await this.nodeRepository.selectUnitCountByNodeId(nodeId)) > 0;
+  }
+
+  async filterPrivateNode(nodeIds: string[]): Promise<string[]> {
+    if (!nodeIds.length) {
+      return [];
+    }
+    const nodes = await this.nodeRepository.selectTeamNodeByNodeIds(nodeIds);
+    if (!nodes || !nodes.length) {
+      return [];
+    }
+    return nodes.map((i) => i.nodeId);
   }
 }

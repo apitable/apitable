@@ -19,7 +19,7 @@
 import { Modal as ModalComponent, Spin } from 'antd';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { black, ContextMenu as ContextMenuList, deepPurple, IContextMenuClickState, Switch } from '@apitable/components';
 import {
   Api,
@@ -47,6 +47,7 @@ import { changeView } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { exportDatasheet, flatContextData } from 'pc/utils';
 import { isMobileApp } from 'pc/utils/env';
 import { confirmViewAutoSave } from '../../view_sync_switch/popup_content/pc';
@@ -74,17 +75,17 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
   } = props;
   const { addTreeNode } = useCatalog();
   const dispatch = useDispatch();
-  const formCreatable = useSelector((state) => {
+  const formCreatable = useAppSelector((state) => {
     const { editable } = permissions;
     const { manageable } = state.catalogTree.treeNodesMap[folderId!]?.permissions || {};
 
     return manageable && editable;
   });
   const [showDeleteTip, setShowDeleteTip] = useState(false);
-  const shareId = useSelector((state) => state.pageParams.shareId);
-  const currentViewId = useSelector((state) => Selectors.getActiveViewId(state));
+  const shareId = useAppSelector((state) => state.pageParams.shareId);
+  const currentViewId = useAppSelector((state) => Selectors.getActiveViewId(state));
   const { manageable: viewSyncManageable } = permissions;
-  const mirrorCreatable = useSelector((state) => {
+  const mirrorCreatable = useAppSelector((state) => {
     const { manageable } = permissions;
     const { manageable: folderManageable } = state.catalogTree.treeNodesMap[folderId!]?.permissions || {};
     return manageable && folderManageable;
@@ -97,7 +98,7 @@ export const ContextMenu: React.FC<React.PropsWithChildren<IContextMenuProps>> =
     return view.type === ViewType.Grid;
   }, [view]);
   const { deleteView } = useViewAction();
-  const spaceManualSaveViewIsOpen = useSelector((state) => {
+  const spaceManualSaveViewIsOpen = useAppSelector((state) => {
     return state.labs.includes('view_manual_save');
   });
 

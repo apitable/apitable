@@ -19,7 +19,6 @@
 import produce from 'immer';
 import { isEqual, PropertyPath, set } from 'lodash';
 import React, { Fragment, useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Box, Button, IconButton, Typography, useTheme } from '@apitable/components';
 import {
   ConfigConstant,
@@ -34,6 +33,7 @@ import {
 } from '@apitable/core';
 import { AddOutlined, DeleteOutlined, WarnCircleFilled } from '@apitable/icons';
 import { useAllColumnsOrEmpty } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { Select } from '../select';
 import { FieldInput } from './field_input';
 import { FieldSelect } from './field_select';
@@ -152,10 +152,10 @@ export const RecordMatchesConditionsFilter = (props: IRecordMatchesConditionsFil
 
   const columns = useAllColumnsOrEmpty(datasheetId);
 
-  const snapshot = useSelector((state) => {
+  const snapshot = useAppSelector((state) => {
     return Selectors.getSnapshot(state, datasheetId)!;
   });
-  const fieldPermissionMap = useSelector((state) => {
+  const fieldPermissionMap = useAppSelector((state) => {
     return Selectors.getFieldPermissionMap(state, datasheetId);
   });
 

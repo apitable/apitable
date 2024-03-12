@@ -19,7 +19,6 @@
 import { Tooltip } from 'antd';
 import * as React from 'react';
 import { useContext, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { IconButton, IOption, Select, Switch, Typography, useThemeColors } from '@apitable/components';
 import {
@@ -40,6 +39,7 @@ import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { FlowContext } from '../../context/flow_context';
@@ -62,9 +62,9 @@ export const OrgChartSettingPanel: React.FC<React.PropsWithChildren<IOrgChartSet
   } = useContext(FlowContext);
   const colors = useThemeColors();
   const noRequiredField = !linkFieldId;
-  const activeView = useSelector((state) => Selectors.getCurrentView(state)) as IOrgChartViewProperty;
-  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state));
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state))!;
+  const activeView = useAppSelector((state) => Selectors.getCurrentView(state)) as IOrgChartViewProperty;
+  const datasheetId = useAppSelector((state) => Selectors.getActiveDatasheetId(state));
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state))!;
   const isViewLock = useShowViewLockModal();
 
   const options = useMemo(() => {

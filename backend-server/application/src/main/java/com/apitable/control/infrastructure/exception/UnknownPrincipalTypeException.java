@@ -20,6 +20,9 @@ package com.apitable.control.infrastructure.exception;
 
 import com.apitable.control.infrastructure.PrincipalType;
 
+/**
+ * unknown principal type exception.
+ */
 public class UnknownPrincipalTypeException extends RuntimeException {
 
     private final PrincipalType principalType;

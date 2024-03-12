@@ -19,7 +19,7 @@
 import { useMount } from 'ahooks';
 import * as React from 'react';
 import { memo, useMemo, useRef } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { ContextMenu, useThemeColors } from '@apitable/components';
 import {
   BasicValueType,
@@ -43,7 +43,7 @@ import {
   t,
   ToolBarMenuCardOpenState,
   ViewType,
-  IGridViewProperty
+  IGridViewProperty, ConfigConstant
 } from '@apitable/core';
 import {
   ArrowDownOutlined,
@@ -70,6 +70,7 @@ import { useCacheScroll } from 'pc/context';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
@@ -87,9 +88,11 @@ interface IFieldMenuProps {
 export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = memo(
   ({ fieldId, editFieldSetting: _editFieldSetting, editFieldDesc: _editFieldDesc, onFrozenColumn }) => {
     const colors = useThemeColors();
-    const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-    const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
-    const view = useSelector(Selectors.getCurrentView)!;
+    const datasheetId = useAppSelector(Selectors.getActiveDatasheetId)!;
+    const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
+    const view = useAppSelector(Selectors.getCurrentView)!;
+    const catalogTreeActiveType = useAppSelector((state) => state.catalogTree.activeType);
+    const isPrivate = catalogTreeActiveType === ConfigConstant.Modules.PRIVATE;
     const frozenColumnCount = (view as IGridViewProperty)?.frozenColumnCount;
     const dispatch = useAppDispatch();
     const handleHideField = useHideField(view);
@@ -102,10 +105,10 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
       return view.columns.findIndex((item) => item.fieldId === fieldId);
     }, [fieldId, view]);
     const isGanttView = view.type === ViewType.Gantt;
-    const mirrorId = useSelector((state) => state.pageParams.mirrorId);
+    const mirrorId = useAppSelector((state) => state.pageParams.mirrorId);
 
     const wrapperRef = useRef<HTMLDivElement>(null);
-    const { permissions, fieldRanges, visibleColumns } = useSelector((state) => {
+    const { permissions, fieldRanges, visibleColumns } = useAppSelector((state) => {
       return {
         visibleColumns: Selectors.getVisibleColumns(state),
         permissions: Selectors.getPermissions(state, undefined, field?.id),
@@ -113,10 +116,10 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
       };
     }, shallowEqual);
     const hasChosenMulti = fieldRanges && fieldRanges.length > 1;
-    const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
+    const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
     const isViewLock = Boolean(view.lockInfo);
-    const embedId = useSelector((state) => state.pageParams.embedId);
-    const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
+    const embedId = useAppSelector((state) => state.pageParams.embedId);
+    const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
     const isEmbedHiddenFieldPermission = embedId && embedInfo?.permissionType !== PermissionType.PRIVATEEDIT;
     const chosenCount = fieldRanges ? fieldRanges.filter((id) => id !== visibleColumns[0].fieldId).length : 1;
 
@@ -135,7 +138,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
       wrapperRef.current && wrapperRef.current.focus();
     });
 
-    const { fieldError, fieldCanGroup, showFieldName, linkedFieldError } = useMemo(() => {
+    const { fieldError, fieldCanGroup, showFieldName, canFilter, linkedFieldError } = useMemo(() => {
       if (!field) {
         return {
           fieldError: true,
@@ -145,8 +148,10 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
         };
       }
       const fieldError = Boolean(Field.bindModel(field).validateProperty().error);
+      const fieldModel = Field.bindModel(field);
       return {
         fieldError,
+        canFilter: fieldModel.canFilter,
         fieldCanGroup: Field.bindModel(field).canGroup && canGroup,
         showFieldName: getShowFieldName(field.name),
         linkedFieldError: field.type === FieldType.Link && fieldError,
@@ -359,7 +364,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
           disabled: !Boolean(fieldPermissionManageable),
           disabledTip: t(Strings.set_field_permission_no_access),
           hidden(arg: any) {
-            if (!getEnvVariables().FIELD_PERMISSION_VISIBLE || isEmbedHiddenFieldPermission) {
+            if (!getEnvVariables().FIELD_PERMISSION_VISIBLE || isEmbedHiddenFieldPermission || isPrivate) {
               return true;
             }
             if (!arg['props']) {
@@ -409,7 +414,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
             }
             return false;
           },
-          hidden: !fieldCreatable || fieldError || !fieldPropertyEditable || hasChosenMulti,
+          hidden: !fieldCreatable || fieldError || !fieldPropertyEditable || hasChosenMulti || field.type === FieldType.WorkDoc,
           onClick: () => {
             copyField(fieldIndex + 1, fieldId, 1);
           },
@@ -455,7 +460,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
         {
           icon: <FilterOutlined color={colors.thirdLevelText} />,
           text: t(Strings.filter_fields, { field_name: showFieldName }),
-          hidden: !editable || hasChosenMulti || Boolean(mirrorId),
+          hidden: !editable || hasChosenMulti || Boolean(mirrorId) || !canFilter,
           onClick: filterField,
           disabled: () => isViewLock,
           id: 'filter_fields',

@@ -18,63 +18,7 @@
 
 import { ITheme, DropdownSelect as Select, useTheme } from '@apitable/components';
 import { FieldType, IField } from '@apitable/core';
-import {
-  UserOutlined,
-  AttachmentOutlined,
-  AutonumberOutlined,
-  CalendarOutlined,
-  CheckboxOutlined,
-  UserAddOutlined,
-  TimeOutlined,
-  CurrencyUsdOutlined,
-  EmailOutlined,
-  NumberOutlined,
-  FormulaOutlined,
-  UserEditOutlined,
-  HistoryFilled,
-  TwoWayLinkOutlined,
-  OneWayLinkOutlined,
-  LongtextOutlined,
-  LookupOutlined,
-  SelectMultipleOutlined,
-  PercentOutlined,
-  TelephoneOutlined,
-  StarOutlined,
-  SelectSingleOutlined,
-  TextOutlined,
-  LinkOutlined,
-  LockFilled,
-  CascadeOutlined,
-} from '@apitable/icons';
-
-const FieldIconMap = {
-  [FieldType.DeniedField]: LockFilled,
-  [FieldType.Text]: LongtextOutlined,
-  [FieldType.Number]: NumberOutlined,
-  [FieldType.SingleSelect]: SelectSingleOutlined,
-  [FieldType.MultiSelect]: SelectMultipleOutlined,
-  [FieldType.DateTime]: CalendarOutlined,
-  [FieldType.Attachment]: AttachmentOutlined,
-  [FieldType.Link]: TwoWayLinkOutlined,
-  [FieldType.OneWayLink]: OneWayLinkOutlined,
-  [FieldType.URL]: LinkOutlined,
-  [FieldType.Email]: EmailOutlined,
-  [FieldType.Phone]: TelephoneOutlined,
-  [FieldType.Checkbox]: CheckboxOutlined,
-  [FieldType.Rating]: StarOutlined,
-  [FieldType.Member]: UserOutlined,
-  [FieldType.LookUp]: LookupOutlined,
-  [FieldType.Formula]: FormulaOutlined,
-  [FieldType.Currency]: CurrencyUsdOutlined,
-  [FieldType.Percent]: PercentOutlined,
-  [FieldType.SingleText]: TextOutlined,
-  [FieldType.AutoNumber]: AutonumberOutlined,
-  [FieldType.CreatedTime]: TimeOutlined,
-  [FieldType.LastModifiedTime]: HistoryFilled,
-  [FieldType.CreatedBy]: UserAddOutlined,
-  [FieldType.LastModifiedBy]: UserEditOutlined,
-  [FieldType.Cascader]: CascadeOutlined,
-};
+import { FieldIconMapFieldType as FieldIconMap } from '@apitable/widget-sdk';
 
 const transformOptions = (fields: IField[], theme: ITheme) => {
   return fields.map((field) => {

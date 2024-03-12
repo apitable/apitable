@@ -20,13 +20,13 @@ import { useClickAway } from 'ahooks';
 import classNames from 'classnames';
 import { useImperativeHandle, useRef, useState, useMemo, useLayoutEffect, useEffect } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { ICellValue, Selectors } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { IBaseEditorProps, IEditor } from 'pc/components/editors/interface';
 import { MemberEditor } from 'pc/components/editors/member_editor/member_editor';
 import { IExpandFieldEditRef } from 'pc/components/expand_record/field_editor';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { printableKey, KeyCode } from 'pc/utils';
 import { CellMember } from './cell_member';
 import styles from './style.module.less';
@@ -48,8 +48,8 @@ export const MemberFieldEditor: React.FC<React.PropsWithChildren<IMemberFieldEdi
   const [height, setHeight] = useState(0);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const unitMap = useSelector((state) => Selectors.getUnitMap(state));
-  const { shareId } = useSelector((state) => state.pageParams);
+  const unitMap = useAppSelector((state) => Selectors.getUnitMap(state));
+  const { shareId } = useAppSelector((state) => state.pageParams);
 
   const setEditing = (status: boolean) => {
     if (!editable) {

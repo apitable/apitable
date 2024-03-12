@@ -18,7 +18,7 @@
 
 import { ICurrencyField } from '../../../types/field_types';
 import { commonTestSuit, getValidCellValue, validProperty } from './common';
-import { CurrencyField } from '../index';
+import { CurrencyField } from 'model/field/currency_field';
 
 const currencyField: ICurrencyField = {
   name: 'Currency Field',
@@ -32,27 +32,27 @@ describe('Format check for currency fields', () => {
 
   commonTestSuit(valid);
 
-  it('input humber', function() {
+  it('input humber', function () {
     const [expectValue, receiveValue] = valid(12312312);
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('input text', function() {
+  it('input text', function () {
     const [expectValue, receiveValue] = valid([{ text: '123', type: 1 }]);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('input multi choices', function() {
+  it('input multi choices', function () {
     const [expectValue, receiveValue] = valid(['optxxxxx']);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('input single choice', function() {
+  it('input single choice', function () {
     const [expectValue, receiveValue] = valid('optxxxxx');
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('input attachment', function() {
+  it('input attachment', function () {
     const [expectValue, receiveValue] = valid({
       id: 'xxxx',
       name: 'xxxx',
@@ -64,50 +64,50 @@ describe('Format check for currency fields', () => {
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('nput 1', function() {
+  it('nput 1', function () {
     const [expectValue, receiveValue] = valid(1);
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('input 0', function() {
+  it('input 0', function () {
     const [expectValue, receiveValue] = valid(0);
     expect(receiveValue).toEqual(expectValue);
   });
 
-  it('input true', function() {
+  it('input true', function () {
     const [expectValue, receiveValue] = valid(true);
     expect(receiveValue).not.toEqual(expectValue);
   });
 
-  it('input false', function() {
+  it('input false', function () {
     const [expectValue, receiveValue] = valid(false);
     expect(receiveValue).not.toEqual(expectValue);
   });
 });
 
 describe('Check currency field property format', () => {
-  it('property = undefined', function() {
+  it('property = undefined', function () {
     expect(validProperty({
       ...currencyField,
       property: undefined
     } as any)).toEqual(false);
   });
 
-  it('property = null', function() {
+  it('property = null', function () {
     expect(validProperty({
       ...currencyField,
       property: null
     } as any)).toEqual(false);
   });
 
-  it('property = {}', function() {
+  it('property = {}', function () {
     expect(validProperty({
       ...currencyField,
       property: {}
     } as any)).toEqual(false);
   });
 
-  it('property only required', function() {
+  it('property only required', function () {
     expect(validProperty({
       ...currencyField,
       property: {
@@ -117,7 +117,7 @@ describe('Check currency field property format', () => {
     } as any)).toEqual(true);
   });
 
-  it('property precision is missing', function() {
+  it('property precision is missing', function () {
     expect(validProperty({
       ...currencyField,
       property: {
@@ -126,7 +126,7 @@ describe('Check currency field property format', () => {
     } as any)).toEqual(false);
   });
 
-  it('property symbol is an empty string', function() {
+  it('property symbol is an empty string', function () {
     expect(validProperty({
       ...currencyField,
       property: {
@@ -136,7 +136,7 @@ describe('Check currency field property format', () => {
     } as any)).toEqual(true);
   });
 
-  it('property.symbolAlign = 2', function() {
+  it('property.symbolAlign = 2', function () {
     expect(validProperty({
       ...currencyField,
       property: {
@@ -146,7 +146,7 @@ describe('Check currency field property format', () => {
     } as any)).toEqual(true);
   });
 
-  it('property.symbolAlign = 3', function() {
+  it('property.symbolAlign = 3', function () {
     expect(validProperty({
       ...currencyField,
       property: {
@@ -156,13 +156,13 @@ describe('Check currency field property format', () => {
     } as any)).toEqual(false);
   });
 
-  it('property attribute is correct', function() {
+  it('property attribute is correct', function () {
     expect(validProperty({
       ...currencyField
     } as any)).toEqual(true);
   });
 
-  it('property has redundant properties', function() {
+  it('property has redundant properties', function () {
     expect(validProperty({
       ...currencyField,
       property: {

@@ -19,7 +19,6 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { useCallback, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { IUseListenTriggerInfo, useListenVisualHeight, useThemeColors, WrapperTooltip } from '@apitable/components';
 import {
   BasicValueType,
@@ -42,6 +41,7 @@ import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filte
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { SyncViewTip } from '../sync_view_tip';
 import ConditionList from './condition_list';
@@ -61,10 +61,10 @@ const ViewFilterBase = (props: IViewFilter) => {
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const view = useSelector((state) => Selectors.getCurrentView(state))! as IGridViewProperty;
+  const view = useAppSelector((state) => Selectors.getCurrentView(state))! as IGridViewProperty;
   const columns = view.columns;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
-  const activeViewFilter = useSelector((state) => Selectors.getFilterInfo(state))!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const activeViewFilter = useAppSelector((state) => Selectors.getFilterInfo(state))!;
   const scrollShadowRef = useRef<HTMLDivElement>(null);
   const isViewLock = useShowViewLockModal();
 

@@ -18,11 +18,11 @@
 
 import classNames from 'classnames';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { BasicValueType, Field, IField, isSelectField, Selectors, Strings, t } from '@apitable/core';
 import { ArrowRightOutlined, CheckboxFilled, CheckboxOutlined } from '@apitable/icons';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
 
 interface IViewRules {
@@ -37,7 +37,7 @@ interface IViewRules {
 export const ViewRules: React.FC<React.PropsWithChildren<IViewRules>> = (props) => {
   const colors = useThemeColors();
   const { onChange, rulesItem, datasheetId } = props;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
   const field = fieldMap[rulesItem.fieldId];
   const isViewLock = useShowViewLockModal();
 

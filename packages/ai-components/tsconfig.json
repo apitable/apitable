@@ -1,0 +1,47 @@
+{
+  "extends": "../../common-tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "ES2017",
+    "allowJs": true,
+    "strict": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "incremental": false,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "declaration": true,
+    "declarationMap": true,
+    "alwaysStrict": true,
+    "strictNullChecks": false,
+    "noUnusedLocals": false,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "useUnknownInCatchVariables": false,
+    "noUnusedParameters": false,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "module": "ESNext",
+    "jsx": "react-jsx",
+    "outDir": "dist",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    }
+  },
+  "include": [
+    "src/*",
+    "dist/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

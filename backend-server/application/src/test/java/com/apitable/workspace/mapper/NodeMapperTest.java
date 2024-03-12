@@ -89,7 +89,8 @@ public class NodeMapperTest extends AbstractMyBatisMapperTest {
     @Test
     @Sql("/sql/node-data.sql")
     void testSelectLikeNodeName() {
-        List<String> ids = nodeMapper.selectLikeNodeName("spczJrh2i3tLW", "1");
+        List<String> ids =
+            nodeMapper.selectLikeNodeName("spczJrh2i3tLW", Collections.singletonList(0L), "1");
         assertThat(ids).isNotEmpty();
     }
 
@@ -147,251 +148,10 @@ public class NodeMapperTest extends AbstractMyBatisMapperTest {
 
     @Test
     @Sql("/sql/node-data.sql")
-    void testSelectSubNodesByOrder() {
-        // nodeMapper.selectSubNodesByOrder();
-        // assertThat();
-    }
-
-
-    @Test
-    @Sql("/sql/node-data.sql")
-    void testSelectParentNodesByOrder() {
-        // nodeMapper.selectParentNodesByOrder();
-        // assertThat();
-    }
-
-
-    @Test
-    @Sql("/sql/node-data.sql")
     void testSelectSubNodeIds() {
         List<String> ids = nodeMapper.selectSubNodeIds("0");
         assertThat(ids).isNotEmpty();
     }
-
-
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectOrderSubNodeIds() {
-    //     nodeMapper.selectOrderSubNodeIds();
-    //     assertThat();
-    // }
-    //
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectShareTreeByNodeId() {
-    //     nodeMapper.selectShareTreeByNodeId();
-    //     assertThat();
-    // }
-    //
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectShareTree() {
-    //     nodeMapper.selectShareTree();
-    //     assertThat();
-    // }
-    //
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectHasChildren() {
-    //     nodeMapper.selectHasChildren();
-    //     assertThat();
-    // }
-    //
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectAllSubNodeIds() {
-    //     nodeMapper.selectAllSubNodeIds();
-    //     assertThat();
-    // }
-    //
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectAllSubNodeIdsByNodeType() {
-    //     nodeMapper.selectAllSubNodeIdsByNodeType();
-    //     assertThat();
-    // }
-    //
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectNameList() {
-    //     nodeMapper.selectNameList();
-    //     assertThat();
-    // }
-    //
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectBatchAllSubNodeIds() {
-    //     nodeMapper.selectBatchAllSubNodeIds();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testCountBySpaceIdAndType() {
-    //     nodeMapper.countBySpaceIdAndType();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testCountByNodeIds() {
-    //     nodeMapper.countByNodeIds();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectSpaceIdByNodeId() {
-    //     nodeMapper.selectSpaceIdByNodeId();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectSpaceIdsByNodeIds() {
-    //     nodeMapper.selectSpaceIdsByNodeIds();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectSpaceIdByNodeIdAndType() {
-    //     nodeMapper.selectSpaceIdByNodeIdAndType();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectByNodeId() {
-    //     nodeMapper.selectByNodeId();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectByNodeIds() {
-    //     nodeMapper.selectByNodeIds();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectParentNodePath() {
-    //     nodeMapper.selectParentNodePath();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectParentNodeListByNodeId() {
-    //     nodeMapper.selectParentNodeListByNodeId();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectParentNodeByNodeIds() {
-    //     nodeMapper.selectParentNodeByNodeIds();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectParentIdByNodeId() {
-    //     nodeMapper.selectParentIdByNodeId();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectNodeTypeByNodeId() {
-    //     nodeMapper.selectNodeTypeByNodeId();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectNodeIdByPreNodeIdIn() {
-    //     nodeMapper.selectNodeIdByPreNodeIdIn();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectAllParentNodeIdsByNodeIds() {
-    //     nodeMapper.selectAllParentNodeIdsByNodeIds();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectIsTemplateByNodeId() {
-    //     nodeMapper.selectIsTemplateByNodeId();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectBaseNodeInfoByNodeIdsIncludeDelete() {
-    //     nodeMapper.selectBaseNodeInfoByNodeIdsIncludeDelete();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectRubbishUpdatedAtByNodeId() {
-    //     nodeMapper.selectRubbishUpdatedAtByNodeId();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectRubbishNodeIds() {
-    //     nodeMapper.selectRubbishNodeIds();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectRubbishNodeInfo() {
-    //     nodeMapper.selectRubbishNodeInfo();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectNodeBaseInfoByNodeId() {
-    //     nodeMapper.selectNodeBaseInfoByNodeId();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectDingTalkDaStatusByNodeId() {
-    //     nodeMapper.selectDingTalkDaStatusByNodeId();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectExtraByNodeId() {
-    //     nodeMapper.selectExtraByNodeId();
-    //     assertThat();
-    // }
-    //
-    // @Test
-    // @Sql("/sql/node-data.sql")
-    // void testSelectNodeIdByNodeIds() {
-    //     nodeMapper.selectNodeIdByNodeIds();
-    //     assertThat();
-    // }
 
     @Test
     @Sql("/sql/node-data.sql")
@@ -410,7 +170,7 @@ public class NodeMapperTest extends AbstractMyBatisMapperTest {
 
     @Test
     @Sql("/sql/node-data.sql")
-    void test() {
+    void testNodeIdsBySpaceIdAndTypeAndKeyword() {
         List<String> nodeIds =
             nodeMapper.selectNodeIdsBySpaceIdAndTypeAndKeyword("spczJrh2i3tLW", 1, "A2");
         assertThat(nodeIds).contains("fodBa5JGDQZbQ");

@@ -117,9 +117,13 @@ export const PreviewImage: React.FC<React.PropsWithChildren<IPreviewTypeBase>> =
     );
   }
 
-  const src = !isSupportImage(file.mimeType)
+  let src = !isSupportImage(file.mimeType)
     ? renderFileIconUrl(fileLikeProps).src
     : cellValueToImageSrc(file, transformWebpIfNeeded ? { formatToJPG: true } : undefined);
+
+  if (!src && file.token.includes('http')) {
+    src = file.token;
+  }
 
   return (
     <div

@@ -39,12 +39,12 @@ import {
 import { browser } from 'modules/shared/browser';
 import { NodeIcon } from 'pc/components/catalog/node_context_menu/node_icons';
 import { Message } from 'pc/components/common/message';
-import { Modal } from 'pc/components/common/modal';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { IShareSpaceInfo } from 'pc/components/share/interface';
 import { store } from 'pc/store';
 import { runInTimeSlicing } from './utils';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 
 export const nodeConfigData = [
   {
@@ -83,6 +83,11 @@ export const nodeConfigData = [
     type: ConfigConstant.NodeType.AUTOMATION,
     icon: NodeIcon.AddAutomation,
     name: t(Strings.automation),
+  },
+  {
+    type: ConfigConstant.NodeType.CUSTOM_PAGE,
+    icon: NodeIcon.AddEmbed,
+    name: t(Strings.embed_page),
   },
 ];
 
@@ -432,6 +437,8 @@ export const getContextTypeByNodeType = (type: ConfigConstant.NodeType) => {
       return ConfigConstant.ContextMenuType.MIRROR;
     case ConfigConstant.NodeType.AI:
       return ConfigConstant.ContextMenuType.AI;
+    case ConfigConstant.NodeType.CUSTOM_PAGE:
+      return ConfigConstant.ContextMenuType.CUSTOM_PAGE;
     default:
       return ConfigConstant.ContextMenuType.DEFAULT;
   }

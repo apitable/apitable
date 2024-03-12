@@ -17,7 +17,7 @@
  */
 
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { Box } from '@apitable/components';
 import {
   CollaCommandName,
   FieldType,
@@ -38,6 +38,7 @@ import {
   ViewType,
 } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
+import { ButtonFieldItem } from 'pc/components/editors/button_editor/buton_item';
 import { CheckboxEditor } from 'pc/components/editors/checkbox_editor';
 import { FocusHolder } from 'pc/components/editors/focus_holder';
 import { IEditor } from 'pc/components/editors/interface';
@@ -47,6 +48,7 @@ import { CellAutoNumber } from 'pc/components/multi_grid/cell/cell_auto_number';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { IURLMeta, recognizeURLAndSetTitle } from 'pc/utils';
 import { dispatch } from 'pc/worker/store';
 import { EnhanceTextEditor } from '../../editors/enhance_text_editor';
@@ -63,8 +65,9 @@ import { ExpandLink } from '../expand_link';
 import { ExpandLookUp } from '../expand_lookup';
 import { ExpandNumber } from '../expand_number';
 import { ExpandSelect } from '../expand_select';
+import { ExpandWorkdoc } from '../expand_work_doc';
 // @ts-ignore
-import { convertAlarmStructure } from 'enterprise';
+import { convertAlarmStructure } from 'enterprise/alarm/date_time_alarm/utils';
 
 export interface ICommonProps {
   style: React.CSSProperties;
@@ -98,8 +101,8 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = (
   const mobileEditorWidth: React.CSSProperties = isMobile ? { width: '100%' } : {};
 
   const state = store.getState();
-  const activeView = useSelector((state) => Selectors.getCurrentView(state));
-  const visibleRows = useSelector((state) => Selectors.getVisibleRows(state));
+  const activeView = useAppSelector((state) => Selectors.getCurrentView(state));
+  const visibleRows = useAppSelector((state) => Selectors.getVisibleRows(state));
 
   const onSave = (value: ICellValue, curAlarm?: Omit<IRecordAlarmClient, 'id'>) => {
     const isUrlWithRecogURLFlag = field.type === FieldType.URL && field.property?.isRecogURLFlag && Array.isArray(value);
@@ -299,6 +302,14 @@ export const FieldBlock: React.FC<React.PropsWithChildren<IFieldBlockProps>> = (
       return (
         <ExpandCascader {...commonProps} isFocus={isFocus} cellValue={cellValue} field={commonProps.field as ILinkField} style={mobileEditorWidth} />
       );
+    case FieldType.Button:
+      return (
+        <Box paddingLeft={'10px'} height={'22px'}>
+          <ButtonFieldItem recordId={record.id} field={field} record={record} />
+        </Box>
+      );
+    case FieldType.WorkDoc:
+      return <ExpandWorkdoc {...commonProps} cellValue={cellValue} datasheetId={datasheetId} recordId={record.id} />;
     default:
       return <div />;
   }

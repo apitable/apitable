@@ -18,20 +18,18 @@
 
 package com.apitable.workspace.ro;
 
+import com.apitable.shared.listener.enums.FieldPermissionChangeEvent;
+import com.apitable.workspace.vo.FieldPermission;
+import com.apitable.workspace.vo.FieldRoleSetting;
 import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.apitable.shared.listener.enums.FieldPermissionChangeEvent;
-import com.apitable.workspace.vo.FieldRoleSetting;
-import com.apitable.workspace.vo.FieldPermission;
-
 /**
  * <p>
- * Field Permission Change Notice Request Parameters
+ * Field Permission Change Notice Request Parameters.
  * </p>
  */
 @Data
@@ -54,6 +52,9 @@ public class FieldPermissionChangeNotifyRo {
 
     private List<ChangeObject> changes;
 
+    /**
+     * change object class.
+     */
     @Data
     @NoArgsConstructor
     @AllArgsConstructor

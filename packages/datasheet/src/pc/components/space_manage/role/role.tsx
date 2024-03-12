@@ -18,10 +18,10 @@
 
 import { useMount } from 'ahooks';
 import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Loading, Message } from '@apitable/components';
 import { ConfigConstant, Api } from '@apitable/core';
 import { useRoleRequest } from 'pc/hooks/use_role';
+import { useAppSelector } from 'pc/store/react-redux';
 import { Left } from './content/left';
 import { IRightRefs, Right } from './content/right';
 import { RoleContext } from './context';
@@ -33,7 +33,7 @@ const Role = () => {
   const [activeRoleId, setActiveRoleId] = useState<string>();
   const [activeRoleName, setActiveRoleName] = useState<string>();
   const rightRef = useRef<IRightRefs>(null);
-  const manageable = useSelector(
+  const manageable = useAppSelector(
     (state) => state.spacePermissionManage.spaceResource?.permissions.includes(ConfigConstant.PermissionCode.MANAGE_ROLE),
   );
   const { run: refreshRoleList, data } = useRoleRequest();

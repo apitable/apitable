@@ -99,12 +99,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.annotation.Resource;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -792,7 +792,8 @@ public class WidgetPackageServiceImpl
     }
 
     @SneakyThrows(JsonProcessingException.class)
-    private void sendUnpublishedWidgetNotify(WidgetPackageEntity wpk, String spaceId, Long opUserId) {
+    private void sendUnpublishedWidgetNotify(WidgetPackageEntity wpk, String spaceId,
+                                             Long opUserId) {
         String defaultLang = LocaleContextHolder.getLocale().toLanguageTag();
         // notify holder
         String widgetName = I18nField.toBean(wpk.getI18nName()).getString(defaultLang);

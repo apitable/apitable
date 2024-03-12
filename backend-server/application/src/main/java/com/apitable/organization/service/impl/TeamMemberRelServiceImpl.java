@@ -28,17 +28,23 @@ import com.apitable.organization.service.ITeamService;
 import com.apitable.shared.util.ibatis.ExpandServiceImpl;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * team member relationship service implementation.
+ */
 @Service
 @Slf4j
-public class TeamMemberRelServiceImpl extends ExpandServiceImpl<TeamMemberRelMapper, TeamMemberRelEntity> implements ITeamMemberRelService {
+public class TeamMemberRelServiceImpl
+    extends ExpandServiceImpl<TeamMemberRelMapper, TeamMemberRelEntity>
+    implements ITeamMemberRelService {
     @Resource
     private ITeamService iTeamService;
 
@@ -65,6 +71,7 @@ public class TeamMemberRelServiceImpl extends ExpandServiceImpl<TeamMemberRelMap
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void createBatch(List<TeamMemberRelEntity> entities) {
         if (CollUtil.isEmpty(entities)) {
             return;
@@ -108,5 +115,10 @@ public class TeamMemberRelServiceImpl extends ExpandServiceImpl<TeamMemberRelMap
     @Override
     public void removeByTeamIdsAndMemberId(Long memberId, List<Long> teamIds) {
         baseMapper.deleteByTeamIdsAndMemberId(memberId, teamIds);
+    }
+
+    @Override
+    public List<TeamMemberRelEntity> getByMemberIds(List<Long> memberIds) {
+        return baseMapper.selectByMemberIds(memberIds);
     }
 }

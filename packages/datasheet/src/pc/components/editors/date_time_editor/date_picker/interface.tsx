@@ -32,7 +32,6 @@ export interface IPickerProps {
   align?: any;
   onInputBlur?: () => void;
   suffixIcon?: React.ReactNode;
-  dropdownClassName?: string;
   disabledDate?: (current: dayjs.Dayjs) => boolean;
 }
 export interface IDatePickerProps extends IPickerProps {

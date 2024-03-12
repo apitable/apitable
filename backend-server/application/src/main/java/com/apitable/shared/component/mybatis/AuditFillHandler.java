@@ -18,17 +18,15 @@
 
 package com.apitable.shared.component.mybatis;
 
+import com.apitable.shared.holder.UserHolder;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
-
-import com.apitable.shared.holder.UserHolder;
-
 import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * Custom fill public fields, that is, fields that are not passed are automatically filled
+ * Custom fill public fields, that is, fields that are not passed are automatically filled.
  * </p>
  *
  * @author Kelly chen

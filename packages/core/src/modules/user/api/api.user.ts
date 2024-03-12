@@ -20,17 +20,17 @@ import axios from 'axios';
 import * as Url from '../../shared/api/url';
 import {
   IApiWrapper, ILocateIdMap,
-  IUserInfo, 
-} from '../../../exports/store';
+  IUserInfo,
+} from '../../../exports/store/interfaces';
 
 /**
- * 
+ *
  * Get My Info
- * 
- * @param locateIdMap 
- * @param filter 
- * @param headers 
- * @returns 
+ *
+ * @param locateIdMap
+ * @param filter
+ * @param headers
+ * @returns
  */
 export function getUserMe(locateIdMap: ILocateIdMap = { spaceId: '', nodeId: '' }, filter = false, headers?: Record<string, string>) {
   return axios.get<IApiWrapper & { data: IUserInfo }>(Url.USER_ME, {
@@ -44,29 +44,19 @@ export function getUserMe(locateIdMap: ILocateIdMap = { spaceId: '', nodeId: '' 
 
 /**
  * Check user can delete or close
- * @returns 
+ * @returns
  */
 export function getUserCanLogout() {
   return axios.get<IApiWrapper & { data: boolean }>(Url.USER_CAN_LOGOUT);
 }
 
 /**
- * 
- * Space - check if the user's email is the same as the specified email
- * @param email 
- * @returns 
- */
-export function validateEmail(email: string) {
-  return axios.post(Url.EMAIL_VALIDATE, { email });
-}
-
-/**
- * 
+ *
  * Space - binding the invited email
- * 
- * @param spaceId 
- * @param email 
- * @returns 
+ *
+ * @param spaceId
+ * @param email
+ * @returns
  */
 export function linkInviteEmail(spaceId: string, email: string) {
   return axios.post(Url.LINK_INVITE_EMAIL, { spaceId, email });
@@ -88,13 +78,13 @@ export function emailBind() {
 
 /**
  * Update (Edit) the user info
- * @param info 
+ * @param info
  */
-export function updateUser(info: { 
-  avatar?: string; 
-  avatarColor?: number | null; 
-  nickName?: string | null; 
-  locale?: string; 
+export function updateUser(info: {
+  avatar?: string;
+  avatarColor?: number | null;
+  nickName?: string | null;
+  locale?: string;
   init?: boolean;
   timeZone?: string;
 }) {

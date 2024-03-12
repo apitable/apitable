@@ -1,6 +1,5 @@
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
 import { Events, IWidgetPackage, Player, Strings, t, WidgetReleaseType } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import { useResourceManageable } from 'pc/components/widget/hooks';
@@ -9,6 +8,8 @@ import styles from 'pc/components/widget/widget_center/style.module.less';
 import { expandWidgetCreate } from 'pc/components/widget/widget_center/widget_create_modal';
 import { WidgetPackageItem } from 'pc/components/widget/widget_center/widget_package_item';
 import { WrapperTooltip } from 'pc/components/widget/widget_panel/widget_panel_header';
+
+import { useAppSelector } from 'pc/store/react-redux';
 
 type IWidgetPackageListProps = IWidgetPackageItemBase & {
   needPlaceholder: boolean;
@@ -19,7 +20,7 @@ type IWidgetPackageListProps = IWidgetPackageItemBase & {
 
 export const WidgetPackageList = (props: IWidgetPackageListProps) => {
   const { installPosition, onModalClose, needPlaceholder, data, releaseType, showMenu } = props;
-  const dashboardId = useSelector((state) => state.pageParams.dashboardId);
+  const dashboardId = useAppSelector((state) => state.pageParams.dashboardId);
   const manageable = useResourceManageable();
 
   useMount(() => {

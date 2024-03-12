@@ -1,13 +1,12 @@
 import { useMount } from 'ahooks';
 import { useEffect, useState } from 'react';
 import { ConfigConstant, IShareInfo, Selectors, StoreActions, Strings, t } from '@apitable/core';
+import { getEnvVariables } from 'pc/utils/env';
 import { useRequest, useSpaceRequest, useUserRequest } from '../../hooks';
 import { useAppDispatch } from '../../hooks/use_app_dispatch';
 import { deleteStorageByKey, getStorage, StorageName } from '../../utils/storage';
 import { Message } from '../common';
 import { INodeTree, IShareSpaceInfo } from './interface';
-// @ts-ignore
-import { isEnterprise } from 'enterprise';
 
 export const useMountShare = (shareInfo: Required<IShareInfo> | undefined) => {
   const [nodeTree, setNodeTree] = useState<INodeTree>();
@@ -17,6 +16,7 @@ export const useMountShare = (shareInfo: Required<IShareInfo> | undefined) => {
   const { data: spaceList = [], loading: spaceListLoading, run: getSpaceList } = useRequest(getSpaceListReq, { manual: true });
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus, loading } = useRequest(getLoginStatusReq, { manual: true });
+  const { IS_ENTERPRISE } = getEnvVariables();
 
   const dispatch = useAppDispatch();
   /**
@@ -34,7 +34,7 @@ export const useMountShare = (shareInfo: Required<IShareInfo> | undefined) => {
       return;
     }
     dispatch(StoreActions.addNodeToMap(Selectors.flatNodeTree([...shareNodeTree.children, shareNodeTree])));
-    isEnterprise && dispatch(StoreActions.fetchMarketplaceApps(shareSpaceInfo.spaceId as string));
+    IS_ENTERPRISE && dispatch(StoreActions.fetchMarketplaceApps(shareSpaceInfo.spaceId as string));
     dispatch(
       StoreActions.setShareInfo({
         spaceId: shareSpaceInfo.spaceId,

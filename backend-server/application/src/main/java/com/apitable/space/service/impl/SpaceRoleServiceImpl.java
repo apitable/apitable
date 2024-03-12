@@ -26,14 +26,13 @@ import static com.apitable.workspace.enums.PermissionException.MEMBER_NOT_IN_SPA
 import static com.apitable.workspace.enums.PermissionException.OP_MEMBER_IS_SUB_ADMIN;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.lang.Editor;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.interfaces.social.model.SocialConnectInfo;
 import com.apitable.organization.entity.MemberEntity;
-import com.apitable.organization.mapper.MemberMapper;
+import com.apitable.organization.service.IMemberService;
 import com.apitable.shared.cache.bean.SpaceMenuResourceGroupDto;
 import com.apitable.shared.cache.bean.SpaceResourceGroupDto;
 import com.apitable.shared.cache.service.SpaceResourceCacheService;
@@ -48,7 +47,6 @@ import com.apitable.space.entity.SpaceMemberRoleRelEntity;
 import com.apitable.space.entity.SpaceRoleEntity;
 import com.apitable.space.enums.SpaceException;
 import com.apitable.space.enums.SpaceResourceGroupCode;
-import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.space.mapper.SpaceMemberRoleRelMapper;
 import com.apitable.space.mapper.SpaceResourceMapper;
 import com.apitable.space.mapper.SpaceRoleMapper;
@@ -66,14 +64,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,6 +87,9 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
 
     @Resource
     private ISpaceService iSpaceService;
+
+    @Resource
+    private IMemberService iMemberService;
 
     @Resource
     private ISpaceMemberRoleRelService iSpaceMemberRoleRelService;
@@ -108,16 +110,10 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     private SpaceRoleResourceRelMapper spaceRoleResourceRelMapper;
 
     @Resource
-    private MemberMapper memberMapper;
-
-    @Resource
     private SpaceResourceCacheService spaceResourceFactory;
 
     @Resource
     private ISpaceInviteLinkService iSpaceInviteLinkService;
-
-    @Resource
-    private SpaceMapper spaceMapper;
 
     @Resource
     private SocialServiceFacade socialServiceFacade;
@@ -133,7 +129,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
         log.info(
             "Queries all space administrators who have workbench permission，including the main admin.");
         List<Long> admins = new ArrayList<>();
-        Long superAdmin = spaceMapper.selectSpaceMainAdmin(spaceId);
+        Long superAdmin = iSpaceService.getSpaceMainAdminMemberId(spaceId);
         if (superAdmin != null) {
             admins.add(superAdmin);
         }
@@ -147,12 +143,12 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     @Override
     public PageInfo<SpaceRoleVo> roleList(String spaceId, IPage<SpaceRoleVo> page) {
         IPage<SpaceRoleVo> pageResult = baseMapper.selectSpaceRolePage(page, spaceId);
-        CollUtil.filter(pageResult.getRecords(), (Editor<SpaceRoleVo>) spaceRoleVo -> {
+        CollUtil.edit(pageResult.getRecords(), spaceRoleVo -> {
             List<String> resourceGroupCodes =
                 StrUtil.split(spaceRoleVo.getTempResourceGroupCodes(), ',');
             List<SpaceMenuResourceGroupDto> menuResourceGroupDtos =
                 spaceResourceFactory.getMenuResourceGroup();
-            Map<String, List<String>> groups = CollUtil.newHashMap();
+            Map<String, List<String>> groups = new HashMap<>();
             for (SpaceMenuResourceGroupDto menuResourceGroupDto : menuResourceGroupDtos) {
                 for (SpaceResourceGroupDto groupResource : menuResourceGroupDto.getGroupResources()) {
                     if (CollUtil.contains(resourceGroupCodes, groupResource.getGroupCode())) {
@@ -234,14 +230,14 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
 
     @Override
     public void checkBeforeCreate(String spaceId, Long memberId) {
-        iSpaceService.checkMemberInSpace(spaceId, memberId);
+        iMemberService.checkMemberInSpace(spaceId, memberId);
         iSpaceService.checkMemberIsMainAdmin(spaceId, memberId,
             isMainAdmin -> ExceptionUtil.isFalse(isMainAdmin, CAN_OP_MAIN_ADMIN));
         this.checkIsNotSubAdmin(spaceId, memberId);
     }
 
     private void checkBeforeCreate(String spaceId, List<Long> memberIds) {
-        iSpaceService.checkMembersInSpace(spaceId, memberIds);
+        iMemberService.checkMembersInSpace(spaceId, memberIds);
         iSpaceService.checkMembersIsMainAdmin(spaceId, memberIds);
         this.checkIsNotSubAdmin(spaceId, memberIds);
     }
@@ -249,8 +245,9 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     @Override
     public SpaceRoleDetailVo getRoleDetail(String spaceId, Long memberId) {
         log.info("get admin info");
-        MemberEntity memberEntity = memberMapper.selectMemberIdAndSpaceId(spaceId, memberId);
-        ExceptionUtil.isNotNull(memberEntity, MEMBER_NOT_IN_SPACE);
+        MemberEntity memberEntity = iMemberService.getById(memberId);
+        ExceptionUtil.isTrue(memberEntity != null
+            && spaceId.equals(memberEntity.getSpaceId()), MEMBER_NOT_IN_SPACE);
         SpaceRoleDetailVo spaceRoleDetailVo = new SpaceRoleDetailVo();
         spaceRoleDetailVo.setMemberName(memberEntity.getMemberName());
 
@@ -319,7 +316,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     @Transactional(rollbackFor = Exception.class)
     public void deleteRole(String spaceId, Long memberId) {
         log.info("delete role");
-        String roleCode = spaceMemberRoleRelMapper.selectRoleCodeByMemberId(spaceId, memberId);
+        String roleCode = iSpaceMemberRoleRelService.getRoleCodeByMemberId(spaceId, memberId);
 
         // If a role is bound to someone else, you cannot delete the role
         List<Long> memberIds = spaceMemberRoleRelMapper.selectMemberIdBySpaceIdAndRoleCodes(spaceId,
@@ -351,8 +348,8 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
             if (roleCodes.size() == existRoleCodes.size()) {
                 return;
             }
-            List<String> delRoleCodes = existRoleCodes.size() == 0 ? roleCodes :
-                CollUtil.subtractToList(roleCodes, existRoleCodes);
+            List<String> delRoleCodes = existRoleCodes.isEmpty()
+                ? roleCodes : CollUtil.subtractToList(roleCodes, existRoleCodes);
             if (CollUtil.isNotEmpty(delRoleCodes)) {
                 baseMapper.batchDeleteByRoleCode(delRoleCodes);
                 spaceRoleResourceRelMapper.batchDeleteByRoleCodes(delRoleCodes);
@@ -363,7 +360,7 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteBySpaceId(String spaceId) {
-        List<String> roleCodes = spaceMemberRoleRelMapper.selectRoleCodesBySpaceId(spaceId);
+        List<String> roleCodes = iSpaceMemberRoleRelService.getRoleCodesBySpaceId(spaceId);
         if (CollUtil.isNotEmpty(roleCodes)) {
             baseMapper.batchDeleteByRoleCode(roleCodes);
             spaceRoleResourceRelMapper.batchDeleteByRoleCodes(roleCodes);
@@ -398,14 +395,14 @@ public class SpaceRoleServiceImpl extends ServiceImpl<SpaceRoleMapper, SpaceRole
     @Override
     public void checkCanOperate(String spaceId, Long memberId, List<String> resourceCodes,
                                 Consumer<Boolean> consumer) {
-        Long superAdmin = spaceMapper.selectSpaceMainAdmin(spaceId);
+        Long superAdmin = iSpaceService.getSpaceMainAdminMemberId(spaceId);
         if (memberId.equals(superAdmin)) {
             return;
         }
-        String roleCode = spaceMemberRoleRelMapper.selectRoleCodeByMemberId(spaceId, memberId);
+        String roleCode = iSpaceMemberRoleRelService.getRoleCodeByMemberId(spaceId, memberId);
         consumer.accept(null == roleCode);
         List<String> memberRoles =
-            spaceRoleResourceRelMapper.selectResourceCodesByRoleCode(roleCode);
+            iSpaceRoleResourceRelService.getResourceCodesByRoleCode(roleCode);
         consumer.accept(!new HashSet<>(memberRoles).containsAll(resourceCodes));
     }
 }

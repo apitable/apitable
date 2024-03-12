@@ -26,7 +26,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.task.TaskExecutorCustomizer;
+import org.springframework.boot.task.ThreadPoolTaskExecutorCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.i18n.LocaleContext;
@@ -47,7 +47,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 public class TaskExecutionConfig {
 
     @Bean
-    TaskExecutorCustomizer taskExecutorCustomizer() {
+    ThreadPoolTaskExecutorCustomizer taskExecutorCustomizer() {
         return executor -> {
             executor.setCorePoolSize(4);
             executor.setMaxPoolSize(50);

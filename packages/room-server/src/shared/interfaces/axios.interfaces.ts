@@ -129,6 +129,16 @@ export interface INotificationCreateRo {
 
 export interface IApiUsage {
   isAllowOverLimit?: boolean;
+
+  /**
+   * @deprecated This property is deprecated. Use the `apiCallUsedNumsCurrentMonth` instead.
+   */
   apiUsageUsedCount?: number;
+  apiCallUsedNumsCurrentMonth?: number;
+
+  /**
+   * @deprecated This property is deprecated. Use the `apiCallNumsPerMonth` instead.
+   */
   maxApiUsageCount?: number;
+  apiCallNumsPerMonth?: number;
 }

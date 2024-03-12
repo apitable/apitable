@@ -18,18 +18,20 @@
 
 import { FC, useEffect, useState } from 'react';
 import * as React from 'react';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { useDispatch, shallowEqual } from 'react-redux';
 import { Button, Alert } from '@apitable/components';
 import { IReduxState, StoreActions, IMemberInfoInSpace, ConfigConstant, t, Strings, isIdassPrivateDeployment } from '@apitable/core';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip, Modal } from 'pc/components/common';
 import { useMemberManage } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { MemberTable } from '../member_table';
 import { EditMemberModal, ChangeMemberTeam, AddMember } from '../modal';
 import { isPrimaryOrOwnFunc, socialPlatPreOperateCheck } from '../utils';
-import styles from './style.module.less';
 // @ts-ignore
-import { isSocialPlatformEnabled, isSocialDingTalk, isSocialWecom, isContactSyncing } from 'enterprise';
+import { isSocialPlatformEnabled, isSocialDingTalk, isSocialWecom, isContactSyncing } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
+
 interface ITeamInfo {
   searchMemberRes: IMemberInfoInSpace[];
   setSearchMemberRes: React.Dispatch<React.SetStateAction<IMemberInfoInSpace[]>>;
@@ -40,7 +42,7 @@ export const TeamInfo: FC<React.PropsWithChildren<ITeamInfo>> = (props) => {
   const [changeMemberTeamModalVisible, setChangeMemberTeamModalVisible] = useState(false);
   const [addMemberModalVisible, setAddMemberModalVisible] = useState(false);
   const dispatch = useDispatch();
-  const { teamListInSpace, selectedTeamInfoInSpace, selectMemberListInSpace, selectedRows, spaceResource, user, spaceInfo } = useSelector(
+  const { teamListInSpace, selectedTeamInfoInSpace, selectMemberListInSpace, selectedRows, spaceResource, user, spaceInfo } = useAppSelector(
     (state: IReduxState) => ({
       selectedTeamInfoInSpace: state.spaceMemberManage.selectedTeamInfoInSpace,
       selectMemberListInSpace: state.spaceMemberManage.selectMemberListInSpace,

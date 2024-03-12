@@ -18,23 +18,22 @@
 
 package com.apitable.shared.cache.service.impl;
 
+import static com.apitable.core.constants.RedisConstants.GENERAL_STATICS;
+
+import cn.hutool.core.util.StrUtil;
+import com.apitable.shared.cache.service.SpaceCapacityCacheService;
+import com.apitable.space.mapper.SpaceAssetMapper;
+import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-
-import javax.annotation.Resource;
-
-import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.shared.cache.service.SpaceCapacityCacheService;
-import com.apitable.space.mapper.SpaceAssetMapper;
-
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import static com.apitable.core.constants.RedisConstants.GENERAL_STATICS;
-
+/**
+ * space capacity cache in redis.
+ */
 @Slf4j
 @Service
 public class SpaceCapacityCacheInRedisServiceImpl implements SpaceCapacityCacheService {
@@ -55,7 +54,8 @@ public class SpaceCapacityCacheInRedisServiceImpl implements SpaceCapacityCacheS
             return number.longValue();
         }
         List<Integer> fileSizes = spaceAssetMapper.selectFileSizeBySpaceId(spaceId);
-        long statics = fileSizes.stream().filter(Objects::nonNull).mapToLong(Integer::intValue).sum();
+        long statics =
+            fileSizes.stream().filter(Objects::nonNull).mapToLong(Integer::intValue).sum();
         redisTemplate.opsForValue().set(key, statics, TIMEOUT, TimeUnit.MINUTES);
         return statics;
     }

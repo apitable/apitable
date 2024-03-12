@@ -21,7 +21,6 @@ package com.apitable.widget.vo;
 import com.apitable.shared.support.serializer.ImageSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -43,18 +42,18 @@ public class WidgetReleaseListVo {
     @Schema(description = "Status (0: to be approved, 1: approved, 2: rejected)", example = "1")
     private Integer status;
 
-    @Schema(description = "Code Address", example = "https://s1.vika.cn/code/2020/12/23/aqa")
+    @Schema(description = "Code Address", example = "https://aitable.ai/code/2020/12/23/aqa")
     @JsonSerialize(using = ImageSerializer.class)
     private String releaseCodeBundle;
 
-    @Schema(description = "Source code address", example = "https://s1.vika.cn/code/2020/12/23/aqa")
+    @Schema(description = "Source code address", example = "https://aitable.ai/code/2020/12/23/aqa")
     @JsonSerialize(using = ImageSerializer.class)
     private String sourceCodeBundle;
 
     @Schema(description = "Current release version")
     private Boolean currentVersion;
 
-    @ApiModelProperty(hidden = true)
+    @Schema(hidden = true)
     @JsonIgnore
     private Long releaseId;
 

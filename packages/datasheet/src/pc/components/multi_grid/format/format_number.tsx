@@ -21,7 +21,6 @@ import { SelectValue } from 'antd/lib/select';
 import debounce from 'lodash/debounce';
 import { SetStateAction, useEffect, useMemo, useRef, Dispatch } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { Select, Switch } from '@apitable/components';
 import {
@@ -42,6 +41,7 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { Divider } from 'pc/components/common/divider';
 import { IEditor } from 'pc/components/editors/interface';
 import { NumberEditor } from 'pc/components/editors/number_editor';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './styles.module.less';
 
 interface IFormateNumberProps {
@@ -65,7 +65,7 @@ const symbolAlignOptions = [
 ];
 
 export const FormateNumber: React.FC<React.PropsWithChildren<IFormateNumberProps>> = (props: IFormateNumberProps) => {
-  const datasheetId = useSelector((state) => props.datasheetId || Selectors.getActiveDatasheetId(state))!;
+  const datasheetId = useAppSelector((state) => props.datasheetId || Selectors.getActiveDatasheetId(state))!;
   const numberRef = useRef<IEditor | null>(null);
   const { currentField, setCurrentField } = props;
   const { property, type } = currentField;

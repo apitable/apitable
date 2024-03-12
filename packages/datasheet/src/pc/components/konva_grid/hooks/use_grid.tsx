@@ -19,7 +19,6 @@
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { useCallback, useContext, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import {
   CellType,
   FieldType,
@@ -31,7 +30,7 @@ import {
   Selectors,
   Strings,
   t,
-  ThemeName
+  ThemeName,
 } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import { AreaType, generateTargetName, IScrollState, PointPosition } from 'pc/components/gantt_view';
@@ -53,6 +52,7 @@ import {
   useStats,
 } from 'pc/components/konva_grid';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { GroupTab } from '../components/cell/cell_other/group_tab';
 import { RowHeadOperation } from '../components/operation_area';
 
@@ -116,7 +116,7 @@ export const useGrid = (props: IUseGridProps) => {
   const columnLength = visibleColumns.length;
   const { scrollLeft, isScrolling } = scrollState;
   const [shadowHover, setShadowHover] = useState(false);
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
 
   /**
    * Field header
@@ -163,7 +163,7 @@ export const useGrid = (props: IUseGridProps) => {
     columnStartIndex,
     columnStopIndex,
     scrollState,
-  });
+  }) as any;
 
   /**
    * Group tab and statistics column at the bottom of the group
@@ -251,7 +251,7 @@ export const useGrid = (props: IUseGridProps) => {
 
   // Row head toolbar
   const hoverRowHeadOperation: React.ReactNode[] = [];
-  const datasheet = useSelector((state) => Selectors.getDatasheet(state));
+  const datasheet = useAppSelector((state) => Selectors.getDatasheet(state));
   for (let rowIndex = rowStartIndex; rowIndex <= rowStopIndex; rowIndex++) {
     if (rowIndex > rowCount - 1) break;
     const row = linearRows[rowIndex];
@@ -283,8 +283,8 @@ export const useGrid = (props: IUseGridProps) => {
   /**
    * Add column button
    */
-  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
-  const { embedId } = useSelector((state) => state.pageParams);
+  const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
+  const { embedId } = useAppSelector((state) => state.pageParams);
   const isEmbedShow = embedId ? !embedInfo.isShowEmbedToolBar && !embedInfo.viewControl?.tabBar : false;
   const addFieldBtn = useMemo(() => {
     if (columnStopIndex !== columnLength - 1) return;
@@ -408,22 +408,26 @@ export const useGrid = (props: IUseGridProps) => {
     };
     const shadowProps = frozenShadowVisible
       ? {
-        shadowColor:  themeName === ThemeName.Light ? '#E7E8EC' : '#191919',
+        shadowColor: themeName === ThemeName.Light ? '#E7E8EC' : '#191919',
         shadowBlur: 4,
         shadowOffsetX: 2,
         shadowForStrokeEnabled: true,
-      } 
+      }
       : {};
-      
+
     const top = <Line points={[0, 0, 0, rowInitSize]} {...commonProps} {...shadowProps} />;
-    const middle = <Group x={0} y={0}>
-      <Line points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]} {...baseProps} />
-      <Line points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]} {...commonProps} {...shadowProps} />
-    </Group>;
-    const bottom = <Group x={0} y={0}>
-      <Line points={[0, containerHeight - GRID_BOTTOM_STAT_HEIGHT, 0, containerHeight]} {...baseProps} {...shadowProps} />
-      <Line points={[0, containerHeight - GRID_BOTTOM_STAT_HEIGHT, 0, containerHeight]} {...commonProps} {...shadowProps} />
-    </Group>;
+    const middle = (
+      <Group x={0} y={0}>
+        <Line points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]} {...baseProps} />
+        <Line points={[0, rowInitSize, 0, containerHeight - GRID_BOTTOM_STAT_HEIGHT]} {...commonProps} {...shadowProps} />
+      </Group>
+    );
+    const bottom = (
+      <Group x={0} y={0}>
+        <Line points={[0, containerHeight - GRID_BOTTOM_STAT_HEIGHT, 0, containerHeight]} {...baseProps} {...shadowProps} />
+        <Line points={[0, containerHeight - GRID_BOTTOM_STAT_HEIGHT, 0, containerHeight]} {...commonProps} {...shadowProps} />
+      </Group>
+    );
     const generatePlaceholder = (y: number, height: number) => (
       <Rect
         name={KONVA_DATASHEET_ID.GRID_FROZEN_SHADOW_LINE}
@@ -473,7 +477,7 @@ export const useGrid = (props: IUseGridProps) => {
     rowInitSize,
     colors.borderCommonHover,
     colors.borderGridVertical,
-    themeName
+    themeName,
   ]);
 
   return {

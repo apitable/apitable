@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 const DynamicComponentWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/email_verification').then((components) => {
       return components.EmailVerification;
     }),
   { ssr: false },

@@ -18,7 +18,6 @@
 
 import * as React from 'react';
 import { useCallback, useContext, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { indigo } from '@apitable/components';
 import { ConfigConstant, KONVA_DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
 import { TComponent } from 'pc/components/common/t_component';
@@ -26,7 +25,9 @@ import { getFieldLock } from 'pc/components/field_permission';
 import { AreaType, IScrollState, PointPosition } from 'pc/components/gantt_view';
 import { Icon, IconType, Line, Rect } from 'pc/components/konva_components';
 import { GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH, GridCoordinate, KonvaGridContext, KonvaGridViewContext } from 'pc/components/konva_grid';
+import { useAppSelector } from 'pc/store/react-redux';
 import { FieldHead } from '../components';
+
 interface IUseHeadsProps {
   instance: GridCoordinate;
   columnStartIndex: number;
@@ -49,8 +50,8 @@ export const useHeads = (props: IUseHeadsProps) => {
   const { editable } = permissions;
   const pointFieldId = visibleColumns[pointColumnIndex]?.fieldId;
 
-  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
-  const { embedId } = useSelector((state) => state.pageParams);
+  const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
+  const { embedId } = useAppSelector((state) => state.pageParams);
   const isEmbedShow = embedId ? !embedInfo.isShowEmbedToolBar && !embedInfo.viewControl?.tabBar : false;
   const getFieldHeadStatus = useCallback(
     (fieldId: string, columnIndex: number) => {

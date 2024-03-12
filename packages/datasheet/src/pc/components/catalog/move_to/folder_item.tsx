@@ -28,11 +28,12 @@ export const FolderItem: React.FC<
     folderId: string;
     folderName: string;
     icon: string;
-    onClick: (folderId: string) => void;
+    onClick: (folderId: string, nodePrivate?: boolean) => void;
     level?: string;
+    nodePrivate?: boolean;
   }>
 > = (props) => {
-  const { folderId, folderName, icon, onClick, level } = props;
+  const { folderId, folderName, icon, onClick, level, nodePrivate } = props;
   const colors = useThemeColors();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -45,7 +46,7 @@ export const FolderItem: React.FC<
     <FolderNormalFilled size={iconSize} className={styles.folderItemIcon} />
   );
   return (
-    <div className={styles.folderItem} onClick={() => onClick(folderId)}>
+    <div className={styles.folderItem} onClick={() => onClick(folderId, nodePrivate)}>
       <div className={styles.folderItemContent}>
         {Icon}
         <Typography className={styles.folderName} variant={fontVariant} ellipsis>

@@ -20,9 +20,11 @@ package com.apitable.starter.oss.core;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * oss client template.
+ */
 public class OssClientTemplate {
 
     private OssClientRequestFactory ossClientRequestFactory;
@@ -39,15 +41,16 @@ public class OssClientTemplate {
     }
 
     /**
-     * Upload network resources
+     * Upload network resources.
      *
      * @param bucketName Bucket name
-     * @param remoteUrl Network resource address
-     * @param keyPath The file name saved to the bucket. If it is empty, the address of the network resource will be retrieved
+     * @param remoteUrl  Network resource address
+     * @param keyPath    The file name saved to the bucket. If it is empty, the address of the network resource will be retrieved
      * @return UrlFetchResponse
      * @throws IOException io exception
      */
-    public UrlFetchResponse upload(String bucketName, String remoteUrl, String keyPath) throws IOException {
+    public UrlFetchResponse upload(String bucketName, String remoteUrl, String keyPath)
+        throws IOException {
         OssClientRequest request = getOssClientRequestFactory().createClient();
         return request.uploadRemoteUrl(bucketName, remoteUrl, keyPath);
     }
@@ -57,7 +60,8 @@ public class OssClientTemplate {
         request.uploadStreamForObject(bucketName, in, keyPath);
     }
 
-    public void upload(String bucketName, InputStream in, String path, String mimeType, String digest) throws IOException {
+    public void upload(String bucketName, InputStream in, String path, String mimeType,
+                       String digest) throws IOException {
         OssClientRequest request = getOssClientRequestFactory().createClient();
         request.uploadStreamForObject(bucketName, in, path, mimeType, digest);
     }
@@ -72,7 +76,8 @@ public class OssClientTemplate {
         return request.getStatObject(bucketName, key);
     }
 
-    public void executeStreamFunction(String bucketName, String key, Consumer<InputStream> function) {
+    public void executeStreamFunction(String bucketName, String key,
+                                      Consumer<InputStream> function) {
         OssClientRequest request = getOssClientRequestFactory().createClient();
         request.executeStreamFunction(bucketName, key, function);
     }
@@ -88,15 +93,16 @@ public class OssClientTemplate {
     }
 
     /**
-     *  this is the method that will be deleted
+     * this is the method that will be deleted.
      *
-     * @param bucket        bucket's name
-     * @param key           file position
-     * @param expires       expires time
-     * @param uploadPolicy  upload policy
-     * @return  token
+     * @param bucket       bucket's name
+     * @param key          file position
+     * @param expires      expires time
+     * @param uploadPolicy upload policy
+     * @return token
      */
-    public OssUploadAuth uploadToken(String bucket, String key, long expires, OssUploadPolicy uploadPolicy) {
+    public OssUploadAuth uploadToken(String bucket, String key, long expires,
+                                     OssUploadPolicy uploadPolicy) {
         OssClientRequest request = getOssClientRequestFactory().createClient();
         return request.uploadToken(bucket, key, expires, uploadPolicy);
     }
@@ -106,12 +112,13 @@ public class OssClientTemplate {
     }
 
 
-    public boolean isValidCallback(String originAuthorization, String url, byte[] body, String contentType) {
+    public boolean isValidCallback(String originAuthorization, String url, byte[] body,
+                                   String contentType) {
         OssClientRequest request = getOssClientRequestFactory().createClient();
         return request.isValidCallback(originAuthorization, url, body, contentType);
     }
 
-    public void migrationResources(String sourceBucket, String targetBucket, String resourceKey){
+    public void migrationResources(String sourceBucket, String targetBucket, String resourceKey) {
         OssClientRequest request = getOssClientRequestFactory().createClient();
         request.migrationResources(sourceBucket, targetBucket, resourceKey);
     }

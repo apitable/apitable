@@ -19,12 +19,12 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 import { useContextMenu } from '@apitable/components';
 import { IKanbanViewProperty, IRecord, Selectors } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { GRID_RECORD_MENU } from 'pc/components/multi_grid/context_menu/record_menu';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getIsColNameVisible } from 'pc/utils/datasheet';
 import { RecordCard } from '../../../record_card/card';
 import styles from '../styles.module.less';
@@ -45,10 +45,10 @@ interface ICardProps {
 
 export const Card: React.FC<React.PropsWithChildren<ICardProps>> = (props) => {
   const { provided, row, style, isDragging, cardHeight, groupId, className } = props;
-  const kanbanFieldId = useSelector(Selectors.getKanbanFieldId)!;
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId);
-  const activeView = useSelector((state) => Selectors.getCurrentView(state)) as IKanbanViewProperty;
-  const rowsIndexMap = useSelector(Selectors.getRowsIndexMap);
+  const kanbanFieldId = useAppSelector(Selectors.getKanbanFieldId)!;
+  const datasheetId = useAppSelector(Selectors.getActiveDatasheetId);
+  const activeView = useAppSelector((state) => Selectors.getCurrentView(state)) as IKanbanViewProperty;
+  const rowsIndexMap = useAppSelector(Selectors.getRowsIndexMap);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { show } = useContextMenu({
@@ -100,7 +100,7 @@ export const Card: React.FC<React.PropsWithChildren<ICardProps>> = (props) => {
         showEmptyCover={false}
         coverFieldId={activeView.style.coverFieldId}
         showEmptyField={false}
-        multiTextMaxLine={4}
+        multiTextMaxLine={3}
         coverHeight={140}
         cardWidth={240}
         isCoverFit={activeView.style.isCoverFit}
@@ -129,7 +129,7 @@ const RowBase: React.FC<React.PropsWithChildren<IRowBaseProps>> = (props) => {
   const { data: items, index, style } = props;
   const { rows, cardHeight, groupId, keepSort } = items;
   const row = rows[index];
-  const rowSortable = useSelector((state) => Selectors.getPermissions(state).rowSortable);
+  const rowSortable = useAppSelector((state) => Selectors.getPermissions(state).rowSortable);
   // Leave space for PlaceHolder rendering
   if (!row) {
     return null;

@@ -20,7 +20,7 @@ package com.apitable.shared.component.notification;
 
 /**
  * <p>
- * socket message event type
+ * socket message event type.
  * </p>
  *
  * @author zoe zheng

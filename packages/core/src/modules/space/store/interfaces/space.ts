@@ -17,6 +17,7 @@
  */
 
 import * as actions from '../../../shared/store/action_constants';
+import { ISpaceResource } from 'exports/store/interfaces';
 
 export interface ISpace {
   spaceList: ISpaceInfo[];
@@ -123,11 +124,13 @@ export interface ISpaceBasicInfo {
   capacityUsedSizes: number;
   currentBundleCapacityUsedSizes: number;
   giftCapacityUsedSizes: number;
+  feature: ISpaceFeatures;
   formViewNums: number;
   fieldRoleNums: number;
   galleryViewNums: number;
   ganttViewNums: number;
   kanbanViewNums: number;
+  labsKeys: string[];
   calendarViewNums: number;
   mirrorNums: number;
   nodeRoleNums: number;
@@ -143,6 +146,7 @@ export interface ISpaceBasicInfo {
   isCreatorNameModified?: boolean;
   isOwnerNameModified?: boolean;
   usedCredit: number;
+  userResource:ISpaceResource;
   seatUsage: {
     total: number;
     chatBotCount: number;

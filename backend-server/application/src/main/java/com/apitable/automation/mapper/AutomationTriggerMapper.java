@@ -25,20 +25,74 @@ import java.util.Collection;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
+/**
+ * automation trigger mapper.
+ */
 public interface AutomationTriggerMapper extends BaseMapper<AutomationTriggerEntity> {
 
+    /**
+     * query by robot id list.
+     *
+     * @param robotIds robot id list
+     * @return trigger list
+     */
     List<AutomationTriggerDto> selectTriggersByRobotIds(
         @Param("robotIds") Collection<String> robotIds);
 
+    /**
+     * query by robot id list.
+     *
+     * @param robotIds robot id list
+     * @return trigger list
+     */
     List<AutomationTriggerEntity> selectByRobotIds(
         @Param("robotIds") Collection<String> robotIds);
 
+    /**
+     * insert batch.
+     *
+     * @param entities entity list
+     * @return insert count
+     */
     int insertList(@Param("entities") Collection<AutomationTriggerEntity> entities);
 
     /**
-     * Update trigger.
+     * update by trigger id.
+     *
+     * @param triggerId     trigger id
+     * @param triggerTypeId trigger type id
+     * @param input         input
      */
     void updateByTriggerId(@Param("triggerId") String triggerId,
-        @Param("triggerTypeId") String triggerTypeId, @Param("input") String input);
+                           @Param("triggerTypeId") String triggerTypeId,
+                           @Param("input") String input);
+
+    /**
+     * update input.
+     *
+     * @param robotIds      robot ids
+     * @param triggerTypeId trigger type id
+     * @param input         input
+     */
+    void updateTriggerInputByRobotIdsAndTriggerType(@Param("robotIds") List<String> robotIds,
+                                                    @Param("triggerTypeId") String triggerTypeId,
+                                                    @Param("input") String input);
+
+    /**
+     * get count by trigger id.
+     *
+     * @param robotId robot id
+     * @return total amount
+     */
+    Integer selectCountByRobotId(@Param("robotId") String robotId);
+
+    /**
+     * query trigger.
+     *
+     * @param triggerId trigger
+     * @return AutomationTriggerEntity
+     */
+    AutomationTriggerEntity selectByTriggerId(
+        @Param("triggerId") String triggerId);
 
 }

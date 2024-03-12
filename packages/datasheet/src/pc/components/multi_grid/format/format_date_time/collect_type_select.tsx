@@ -19,13 +19,13 @@
 import { useClickAway } from 'ahooks';
 import RcTrigger from 'rc-trigger';
 import { memo, useState, useMemo, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { TextButton, useThemeColors } from '@apitable/components';
 import { CollectType, Selectors, Strings, t, ILastModifiedByField, ILastModifiedTimeField } from '@apitable/core';
 import { EditOutlined } from '@apitable/icons';
 import { MobileSelect } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
+import { useAppSelector } from 'pc/store/react-redux';
 import IconArrow from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
 import { AutoLayout } from '../../field_setting/auto_layout';
 import settingStyles from '../../field_setting/styles.module.less';
@@ -40,7 +40,7 @@ export const CollectTypeSelect = memo((props: ICollectTypeSelectProps) => {
   const colors = useThemeColors();
   const { onChange, field: currentField } = props;
   const { collectType, fieldIdCollection } = currentField.property;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
   const [visible, setVisible] = useState(false);
   const collectTypeOptions = useMemo(
     () => [

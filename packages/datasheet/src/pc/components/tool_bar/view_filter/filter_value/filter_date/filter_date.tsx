@@ -23,7 +23,6 @@ import { toString } from 'lodash';
 import debounce from 'lodash/debounce';
 import * as React from 'react';
 import { useContext, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { WrapperTooltip } from '@apitable/components';
 import { FieldType, FilterDuration, FOperator, getLanguage, IDateTimeField, ITimestamp, Selectors, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
@@ -33,6 +32,7 @@ import { NumberEditor } from 'pc/components/editors/number_editor';
 import { DateRangePickerMobile } from 'pc/components/tool_bar/view_filter/filter_value/filter_date/date_range_picker_mobile';
 import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { IFilterDateProps } from '../../interface';
 import styles from '../style.module.less';
@@ -44,7 +44,7 @@ const { RangePicker } = DatePicker;
 
 export const FilterDate: React.FC<React.PropsWithChildren<IFilterDateProps>> = (props) => {
   const { changeFilter, condition, disabled = false, field, conditionIndex, onChange } = props;
-  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state))!;
+  const datasheetId = useAppSelector((state) => Selectors.getActiveDatasheetId(state))!;
 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);

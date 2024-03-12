@@ -20,7 +20,6 @@ import { isNumber } from 'util';
 import classNames from 'classnames';
 import * as React from 'react';
 import { Dispatch, memo, SetStateAction, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { Radio, RadioGroup, Select, Switch, TextButton, useThemeColors } from '@apitable/components';
 import {
@@ -52,6 +51,7 @@ import { TComponent } from 'pc/components/common/t_component';
 import { FilterModal } from 'pc/components/multi_grid/format/format_lookup/filter_modal/filter_modal';
 import { LinkFieldPanel } from 'pc/components/multi_grid/format/format_lookup/link_field_panel';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import settingStyles from '../../field_setting/styles.module.less';
 import styles from '../styles.module.less';
 import { MyTrigger } from '../trigger';
@@ -126,22 +126,22 @@ export const assignDefaultFormatting = (showFormatType: BasicValueType, newCurre
 export const FormateLookUp: React.FC<React.PropsWithChildren<IFormateLookUpProps>> = memo((props: IFormateLookUpProps) => {
   const colors = useThemeColors();
   const { currentField, setCurrentField, datasheetId } = props;
-  const activeDstId = useSelector((state) => datasheetId || Selectors.getActiveDatasheetId(state))!;
+  const activeDstId = useAppSelector((state) => datasheetId || Selectors.getActiveDatasheetId(state))!;
   const { relatedLinkFieldId, lookUpTargetFieldId, rollUpType, filterInfo, openFilter = false, sortInfo, lookUpLimit } = currentField.property;
   const relatedLinkField = Field.bindModel(currentField).getRelatedLinkField();
   const { error: isFilterError, typeSwitch: isFilterTypeSwitch } = Field.bindModel(currentField).checkFilterInfo();
 
   const [filterModal, setFilterModal] = useState(false);
-  const foreignDatasheetFieldMap = useSelector(
+  const foreignDatasheetFieldMap = useAppSelector(
     (state) => relatedLinkField && Selectors.getFieldMap(state, relatedLinkField.property.foreignDatasheetId),
   );
   const [showDatasheetPanel, setShowDatasheetPanel] = useState(false);
   const linkFields = Field.bindModel(currentField).getLinkFields();
 
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, activeDstId));
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, activeDstId));
   const hasLinkField = Object.values(fieldMap!).some((field) => [FieldType.Link, FieldType.OneWayLink].includes(field.type)) || false;
 
-  const foreignDatasheetReadable = useSelector((state) => Selectors.getPermissions(state, relatedLinkField?.property.foreignDatasheetId).readable);
+  const foreignDatasheetReadable = useAppSelector((state) => Selectors.getPermissions(state, relatedLinkField?.property.foreignDatasheetId).readable);
 
   const lookUpField = foreignDatasheetFieldMap && foreignDatasheetFieldMap[lookUpTargetFieldId];
 

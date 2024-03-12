@@ -20,7 +20,7 @@ package com.apitable.template.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
@@ -43,4 +43,8 @@ public class QuoteTemplateRo {
 
     @Schema(description = "Whether to retain data", example = "true")
     private Boolean data = true;
+
+    @Schema(description = "where to quote", example = "23445")
+    private String unitId;
+
 }

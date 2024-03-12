@@ -23,6 +23,8 @@ import type { APIMetaFieldPropertyFormatEnums, APIMetaMemberType, TSymbolAlign }
 import type { IAPIMetaField } from './field_api_types';
 import type { BasicValueType, ILookUpSortInfo, LookUpLimitType, RollUpFuncType } from './field_types';
 import type { IOpenLookUpFilterInfo } from './open';
+import { ButtonFieldActionNameEnum, ButtonFieldActionOpenLinkNameEnum, ButtonFieldStyleNameEnum } from './open';
+
 /**
  * Field properties
  */
@@ -69,6 +71,25 @@ export interface IAPIMetaSelectOption {
 
 export interface IAPIMetaSingleSelectFieldProperty {
   options?: IAPIMetaSelectOption[];
+}
+
+export interface IAPIMetaButtonFieldProperty {
+  text: string;
+  style: {
+    type: ButtonFieldStyleNameEnum,
+    color: object
+  },
+  action: {
+    type?: ButtonFieldActionNameEnum,
+    openLink?: {
+      type: ButtonFieldActionOpenLinkNameEnum,
+      expression: string
+    },
+    automation?: {
+      automationId: string,
+      triggerId: string
+    }
+  }
 }
 
 export type IAPIMetaMultiSelectFieldProperty = IAPIMetaSingleSelectFieldProperty;
@@ -218,4 +239,5 @@ export type IAPIMetaFieldProperty =
   | IAPIMetaOneWayLinkFieldProperty
   | IAPIMetaLinkFieldProperty
   | IAPIMetaLookupFieldProperty
-  | IAPIMetaFormulaFieldProperty;
+  | IAPIMetaFormulaFieldProperty
+  | IAPIMetaButtonFieldProperty;

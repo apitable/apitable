@@ -1,0 +1,35 @@
+@import "~pc/styles/lib_mixins.less";
+.privateTree {
+  .emptyNodes {
+    height: 40px;
+    line-height: 40px;
+    font-size: 13px;
+    color: var(--fourthLevelText);
+    text-align: center;
+  }
+
+  .errorTip {
+    cursor: pointer;
+    color: var(--fc3);
+  }
+
+  :global {
+    .treeItem {
+      height: 40px;
+
+      &.operationBg {
+        background: var(--rowSelectedBg);
+        border-radius: 4px;
+      }
+
+      &.selected {
+        border-radius: 4px;
+      }
+    }
+  }
+  
+}
+.permissionSetBtn {
+  cursor: pointer;
+  text-decoration: underline;
+}

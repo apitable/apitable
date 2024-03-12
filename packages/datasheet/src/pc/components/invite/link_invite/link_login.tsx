@@ -19,21 +19,20 @@
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { IReduxState } from '@apitable/core';
 import { Wrapper } from 'pc/components/common';
 import { PcHome } from 'pc/components/home/pc_home';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { InviteTitle } from '../components';
 import { useInvitePageRefreshed } from '../use_invite';
-import styles from './style.module.less';
-// import '../invite.common.less';
 // @ts-ignore
-import { LoginToggle } from 'enterprise';
+import { LoginToggle } from 'enterprise/home/login_toggle/login_toggle';
+import styles from './style.module.less';
 
 const LinkLogin: FC<React.PropsWithChildren<unknown>> = () => {
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'linkInvite' });
-  const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
+  const inviteLinkInfo = useAppSelector((state: IReduxState) => state.invite.inviteLinkInfo);
   useMount(() => {
     whenPageRefreshed();
   });

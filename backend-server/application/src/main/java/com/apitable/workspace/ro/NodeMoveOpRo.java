@@ -20,7 +20,7 @@ package com.apitable.workspace.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
@@ -42,4 +42,7 @@ public class NodeMoveOpRo {
     @Schema(description = "The previous node of the target position moves to the first position "
         + "when it is empty", example = "nod10")
     private String preNodeId;
+
+    @Schema(description = "unit id, if is null means move to space workspace")
+    private String unitId;
 }

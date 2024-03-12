@@ -119,26 +119,8 @@
   max-height: 192px;
   padding: 0;
 }
-.cp-time-picker-panel-select-ul::-webkit-scrollbar {
-  width: 6px;
-  height: 12px;
-  position: absolute;
-  top: 0;
-  left: 0px;
-  right: 0;
-  bottom: 0;
-}
-.cp-time-picker-panel-select-ul::-webkit-scrollbar-button {
-  display: none;
-  height: 0;
-  width: 0;
-}
-.cp-time-picker-panel-select-ul::-webkit-scrollbar-thumb {
-  background-color: rgba(17, 34, 51, 0.1);
-  background-clip: padding-box;
-  border: 1px solid rgba(17, 34, 51, 0.1);
-  border-radius: 6px;
-  min-height: 36px;
+.cp-time-picker-panel-select-ul {
+  .s-scroll-bar();
 }
 .cp-time-picker-panel-select li {
   list-style: none;
@@ -232,15 +214,9 @@ li.cp-time-picker-panel-select-option-disabled:hover {
   font-size: 13px;
   .ellipsis();
 }
-.cp-time-picker-input::-moz-placeholder {
-  color: #7e8791;
+.cp-time-picker-input::placeholder {
+  color: var(--thirdLevelText);;
   opacity: 1;
-}
-.cp-time-picker-input:-ms-input-placeholder {
-  color: #7e8791;
-}
-.cp-time-picker-input::-webkit-input-placeholder {
-  color: #7e8791;
 }
 .cp-time-picker-input:focus {
   outline: 0;

@@ -21,40 +21,38 @@ import { IOption } from 'components/select/interface';
 import { applyDefaultTheme } from 'theme';
 import { Typography } from 'components/typography';
 
-export const StyledItemContainer = styled.div.attrs(applyDefaultTheme) <IOption & { height: number }>`
+export const StyledItemContainer = styled.div.attrs(applyDefaultTheme)<IOption & { height: number }>`
   position: relative;
   width: 100%;
-  height: ${props => props.height + 'px'};
+  height: ${(props) => props.height + 'px'};
 
-  ${props => {
+  ${(props) => {
     if (props.disabled) {
       return css`
         cursor: not-allowed;
-        color: ${props => props.theme.color.fc3};
+        color: ${(props) => props.theme.color.fc3};
 
         .svg {
           fill: currentColor;
         }
-      ;
       `;
     }
     return;
   }}
 
-  padding-left: ${props => {
+  padding-left: ${(props) => {
     if (props.prefixIcon) {
       return '20px';
     }
     return '';
   }};
 
-  padding-right: ${props => {
+  padding-right: ${(props) => {
     if (props.suffixIcon) {
       return '20px';
     }
     return '';
   }};
-
 
   &.paddingPreFixIcon {
     padding-left: 20px;
@@ -64,11 +62,9 @@ export const StyledItemContainer = styled.div.attrs(applyDefaultTheme) <IOption 
     padding-right: 20px;
   }
 
-
   svg {
     vertical-align: -0.225em;
   }
-
 
   .suffixIcon,
   .prefixIcon {
@@ -98,16 +94,16 @@ export const StyledItemContainer = styled.div.attrs(applyDefaultTheme) <IOption 
 
 export const WrapperDiv = styled.div.attrs(applyDefaultTheme)`
   &:focus {
-    outline: none
+    outline: none;
   }
-
 
   @media (any-hover: hover) {
     .hoverBg {
-      ${props => css`background: ${props.theme.color.highestBg};`}
+      ${(props) => css`
+        background: ${props.theme.color.highestBg};
+      `}
     }
   }
-
 
   @media screen and(max-width: 768) {
     box-shadow: none;
@@ -122,7 +118,9 @@ export const WrapperDiv = styled.div.attrs(applyDefaultTheme)`
     .optionItem {
       height: 48px;
       line-height: 48px;
-      ${props => css`border-bottom: 1px solid ${props.theme.color.blackBlue[200]};`}
+      ${(props) => css`
+        border-bottom: 1px solid ${props.theme.color.blackBlue[200]};
+      `}
     }
 
     .footerContainer {
@@ -169,7 +167,9 @@ export const StyledListWrapper = styled.div`
 
 export const FootWrapper = styled.div`
   &:hover {
-    ${props => css`background: ${props.theme.color.blackBlue[100]};`}
+    ${(props) => css`
+      background: ${props.theme.color.blackBlue[100]};
+    `}
   }
 
   @media screen and(max-width: 768px) {
@@ -177,32 +177,38 @@ export const FootWrapper = styled.div`
   }
 `;
 
-export const StyledListItem = styled(Typography).attrs(applyDefaultTheme)<{ disabled?: boolean, selected?:boolean, active?: boolean }>`
+export const StyledListItem = styled(Typography).attrs(applyDefaultTheme)<{ disabled?: boolean; selected?: boolean; active?: boolean }>`
   cursor: pointer;
   display: flex;
   align-items: center;
   height: 40px;
   padding: 0 8px;
 
-  ${props => !props.disabled && props.active && css`
-    background: ${props.theme.color.bgBglessHover};
-  `
-}
-
-  ${props => !props.disabled && props.selected && css`
-    background: ${props.theme.color.bgBrandLightDefault};
-  `
-}
-
-  ${props => !props.disabled && css`
-    border-radius: 8px;
-    &:hover {
+  ${(props) =>
+    !props.disabled &&
+    props.active &&
+    css`
       background: ${props.theme.color.bgBglessHover};
-    }
-    &:active {
-      background: ${props.theme.color.bgBglessActive};
-    }
-  `}
+    `}
+
+  ${(props) =>
+    !props.disabled &&
+    props.selected &&
+    css`
+      background: ${props.theme.color.bgBrandLightDefault};
+    `}
+
+  ${(props) =>
+    !props.disabled &&
+    css`
+      border-radius: 4px;
+      &:hover {
+        background: ${props.theme.color.bgBglessHover};
+      }
+      &:active {
+        background: ${props.theme.color.bgBglessActive};
+      }
+    `}
 
   @media screen and(max-width: 768px) {
     height: 48px;

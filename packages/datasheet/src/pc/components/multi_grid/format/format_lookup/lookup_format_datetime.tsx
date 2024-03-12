@@ -20,7 +20,6 @@ import classNames from 'classnames';
 import { omit } from 'lodash';
 import { Dispatch, SetStateAction } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { Checkbox, colorVars, Select, Switch } from '@apitable/components';
 import {
@@ -37,6 +36,7 @@ import {
 import { MobileSelect } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Divider } from 'pc/components/common/divider';
+import { useAppSelector } from 'pc/store/react-redux';
 import settingStyles from '../../field_setting/styles.module.less';
 import styles from '../styles.module.less';
 
@@ -64,7 +64,7 @@ const optionData4Time = [
 export const LookUpFormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> = (props: IFormatDateTime) => {
   const formatting = props.currentField.property.formatting as IDateTimeFieldProperty;
   const { includeTime, dateFormat, timeFormat, timeZone = '', includeTimeZone } = formatting || {};
-  const userTimeZone = useSelector(Selectors.getUserTimeZone)!;
+  const userTimeZone = useAppSelector(Selectors.getUserTimeZone)!;
 
   const handleDateFormatChange = (value: DateFormat) => {
     props.setCurrentField({

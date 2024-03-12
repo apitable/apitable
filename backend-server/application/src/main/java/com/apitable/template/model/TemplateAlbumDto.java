@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * Template Album DTO
+ * Template Album DTO.
  * </p>
  */
 @Data
@@ -33,22 +33,22 @@ import lombok.NoArgsConstructor;
 public class TemplateAlbumDto {
 
     /**
-     * Template Album Table ID
+     * Template Album Table ID.
      */
     private Long id;
 
     /**
-     * Template Album Custom ID
+     * Template Album Custom ID.
      */
     private String albumId;
 
     /**
-     * I18n Key Name
+     * I18n Key Name.
      */
     private String i18nName;
 
     /**
-     * Template Album Name
+     * Template Album Name.
      */
     private String name;
 }

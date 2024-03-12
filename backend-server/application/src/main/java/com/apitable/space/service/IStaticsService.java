@@ -18,10 +18,14 @@
 
 package com.apitable.space.service;
 
+import com.apitable.shared.util.page.PageInfo;
 import com.apitable.space.dto.ControlStaticsDTO;
 import com.apitable.space.dto.DatasheetStaticsDTO;
 import com.apitable.space.dto.NodeStaticsDTO;
 import com.apitable.space.dto.NodeTypeStaticsDTO;
+import com.apitable.workspace.vo.NodeStatisticsVo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -36,25 +40,10 @@ public interface IStaticsService {
      * Get the current month's API usage.
      *
      * @param spaceId space id
+     * @param currentMonth current month
      * @return amount
      */
-    long getCurrentMonthApiUsage(String spaceId);
-
-    /**
-     * Get today's API usage and update the cache.
-     *
-     * @param spaceId space id
-     * @return amount
-     */
-    Long getTodayApiUsage(String spaceId);
-
-    /**
-     * Get the API usage from this month to yesterday, and update the cache.
-     *
-     * @param spaceId space id
-     * @return amount
-     */
-    Long getCurrentMonthApiUsageUntilYesterday(String spaceId);
+    long getCurrentMonthApiUsage(String spaceId, LocalDate currentMonth);
 
     /**
      * Total number of people obtaining space.
@@ -184,4 +173,13 @@ public interface IStaticsService {
      * @param spaceId space id.
      */
     void deleteDatasheetRecordCountStatistics(String spaceId);
+
+    /**
+     * get node statistics.
+     *
+     * @param spaceId space id
+     * @param page    query page
+     * @return IPage MemberPageVo
+     */
+    PageInfo<NodeStatisticsVo> getNodeStatistics(String spaceId, Page<Void> page);
 }

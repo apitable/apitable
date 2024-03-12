@@ -20,29 +20,32 @@ import { IStoreOptions, IStoreProvider } from '../providers';
 import { Store, AnyAction, createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { batchDispatchMiddleware } from 'redux-batched-actions';
-import { IBaseDatasheetPack, IReduxState, IServerDashboardPack, Reducers, StoreActions } from 'exports/store';
+import { IBaseDatasheetPack, IReduxState, IServerDashboardPack } from 'exports/store/interfaces';
+import * as Reducers from 'exports/store/reducers';
+import { setDashboard,setDatasheetConnected,loadFieldPermissionMap,receiveDataPack } from 'modules/database/store/actions/resource';
+import { setPageParams } from 'modules/database/store/actions/page_params';
 
 export const fulfillDatasheetStore = (datasheetPack: IBaseDatasheetPack) => {
   const store = createStore<IReduxState, any, unknown, unknown>(Reducers.rootReducers, applyMiddleware(thunkMiddleware, batchDispatchMiddleware));
   store.dispatch(
-    StoreActions.setPageParams({
+    setPageParams({
       datasheetId: datasheetPack.datasheet.id,
       spaceId: datasheetPack.datasheet.spaceId,
     }),
   );
 
   if (datasheetPack.fieldPermissionMap) {
-    store.dispatch(StoreActions.loadFieldPermissionMap(datasheetPack.fieldPermissionMap, datasheetPack.datasheet.id));
+    store.dispatch(loadFieldPermissionMap(datasheetPack.fieldPermissionMap, datasheetPack.datasheet.id));
   }
-  store.dispatch(StoreActions.setDatasheetConnected(datasheetPack.datasheet.id));
-  store.dispatch(StoreActions.receiveDataPack(datasheetPack));
+  store.dispatch(setDatasheetConnected(datasheetPack.datasheet.id));
+  store.dispatch(receiveDataPack(datasheetPack));
   return store;
 };
 
 export const fulfillDashboardStore = (dashboardPack: IServerDashboardPack) => {
   const store = createStore<IReduxState, any, unknown, unknown>(Reducers.rootReducers, applyMiddleware(thunkMiddleware, batchDispatchMiddleware));
-  store.dispatch(StoreActions.setDashboard(dashboardPack.dashboard, dashboardPack.dashboard.id));
-  store.dispatch(StoreActions.setPageParams({ dashboardId: dashboardPack.dashboard.id }));
+  store.dispatch(setDashboard(dashboardPack.dashboard, dashboardPack.dashboard.id));
+  store.dispatch(setPageParams({ dashboardId: dashboardPack.dashboard.id }));
   return store;
 };
 

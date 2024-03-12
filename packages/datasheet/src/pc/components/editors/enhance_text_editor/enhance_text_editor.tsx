@@ -19,7 +19,6 @@
 import classNames from 'classnames';
 import { find, omit } from 'lodash';
 import { ChangeEvent, default as React, forwardRef, memo, useImperativeHandle, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { LinkButton, useThemeColors } from '@apitable/components';
 import { Field, FieldType, ICellValue, IField, ISegment, SegmentType, Selectors, Strings, t } from '@apitable/core';
 import { EditOutlined, EmailOutlined, NewtabOutlined, TelephoneOutlined, WebOutlined } from '@apitable/icons';
@@ -28,6 +27,7 @@ import { Tooltip } from 'pc/components/common';
 import { UrlActionUI } from 'pc/components/konva_grid/components/url_action_container/url_action_ui';
 import cellTextStyle from 'pc/components/multi_grid/cell/cell_text/style.module.less';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { IBaseEditorProps, IEditor } from '../interface';
 import style from './styles.module.less';
@@ -54,7 +54,7 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [focused, setFocused] = useState(false);
   const [activeUrlAction, setActiveUrlAction] = useState(false);
-  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state))!;
+  const datasheetId = useAppSelector((state) => Selectors.getActiveDatasheetId(state))!;
 
   useImperativeHandle(
     ref,
@@ -125,10 +125,10 @@ export const EnhanceTextEditorBase: React.ForwardRefRenderFunction<IEditor, IEnh
       const value = event.target.value;
       if (field.type === FieldType.Phone) {
         const newValue = value
-          .replace(/[^+0-9]/g, '')
+          .replace(/[^+0-9-]/g, '')
           .replace(/^([+])/, '$1')
           .replace(/\+{2,}/g, '+')
-          .replace(/^([+][0-9]*){0,1}([0-9]*)/, '$1$2');
+          .replace(/^([+][0-9-]*){0,1}([0-9-]*)/, '$1$2');
 
         setValue(newValue);
         propsOnChange && propsOnChange(getValidValue(newValue));

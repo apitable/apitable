@@ -3,14 +3,14 @@
   "collaborators": [
     "Kelly Peilin Chan <kelly@vikadata.com>"
   ],
-  "version": "1.4.0",
+  "version": "1.10.0",
   "files": [
     "databus_wasm_bg.wasm",
     "databus_wasm.js",
     "databus_wasm_bg.js",
     "databus_wasm.d.ts"
   ],
-  "main": "./cjs/databus_wasm.js",
+  "main": "./esm/databus_wasm.js",
   "module": "./esm/databus_wasm.js",
   "exports": {
     ".": {

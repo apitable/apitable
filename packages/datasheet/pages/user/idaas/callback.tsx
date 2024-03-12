@@ -23,7 +23,7 @@ import React from 'react';
 const IdassCallbackWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/home/idass_callback/idass_callback').then((components) => {
       return components.IdassCallback;
     }),
   { ssr: false },

@@ -18,12 +18,13 @@
 
 import * as React from 'react';
 import { Dispatch, FC, SetStateAction, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Api, ConfigConstant, IReduxState, MAX_NAME_STRING_LENGTH, StoreActions, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { WithTipTextInput } from 'pc/components/common/input/with_tip_input';
 import { NormalModal } from 'pc/components/common/modal/normal_modal';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import { verifyTeamName } from '../../utils';
 
 interface IModalProps {
@@ -33,7 +34,7 @@ interface IModalProps {
 export const RenameTeamModal: FC<React.PropsWithChildren<IModalProps>> = (props) => {
   const dispatch = useAppDispatch();
   const [err, setErr] = useState('');
-  const { spaceId, user, rightClickTeamInfoInSpace } = useSelector(
+  const { spaceId, user, rightClickTeamInfoInSpace } = useAppSelector(
     (state: IReduxState) => ({
       spaceId: state.space.activeId || '',
       rightClickTeamInfoInSpace: state.spaceMemberManage.rightClickTeamInfoInSpace,

@@ -1,6 +1,6 @@
-@import "~pc/styles/lib_var.less";
-@import "~pc/styles/lib_mixins.less";
-@import "~pc/styles/lib_screen.less";
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+@import '~pc/styles/lib_screen.less';
 
 .commentPopover {
   :global {
@@ -19,6 +19,17 @@
   padding-bottom: 4px;
 
   :global {
+    .workdocBtn {
+      margin: 4px 2px;
+      cursor: inherit;
+      & > svg {
+        fill: var(--secondLevelText);
+      }
+      & > div {
+        color: var(--secondLevelText) !important;
+        white-space: inherit !important;
+      }
+    }
     .optionCellContainer {
       .unitMember {
         margin: 4px 2px;
@@ -121,13 +132,12 @@
           margin-right: 8px !important;
         }
       }
-
     }
 
     &.old {
       :global {
         .img {
-          background-color: rgba(var(--static-delete-bg-rgb), 50%);
+          background-color: var(--rainbowRed1);
           opacity: 0.8;
           padding: 2px;
           margin-right: 8px !important;
@@ -138,7 +148,7 @@
     &.new {
       :global {
         .img {
-          background-color: rgba(var(--static-add-bg-rgb), 0.7);
+          background-color: var(--rainbowTeal1);
           padding: 2px;
           margin-right: 8px !important;
         }
@@ -203,6 +213,7 @@
         }
       }
 
+      .workdocBtn > div,
       .unitName,
       .time,
       .cellDateTimeDate,
@@ -218,7 +229,7 @@
 
         &::before {
           position: absolute;
-          content: "";
+          content: '';
           border-top: 1px solid var(--fc2);
           width: 100%;
           top: 8px;
@@ -228,7 +239,7 @@
     }
 
     > div {
-      background-color: rgba(var(--static-delete-bg-rgb), 0.5);
+      background-color: var(--rainbowRed1);
       color: var(--fc2);
       display: inline-flex;
       flex-wrap: wrap;
@@ -247,7 +258,7 @@
     margin-top: 4px;
 
     > div {
-      background-color: rgba(var(--static-add-bg-rgb), 0.7);
+      background-color: var(--rainbowTeal1);
       color: var(--fc2);
       display: inline-flex;
       flex-wrap: wrap;
@@ -294,7 +305,7 @@
       margin-right: 12px;
 
       &::after {
-        content: " ";
+        content: ' ';
         display: block;
         width: 1px;
         height: 20px;
@@ -333,10 +344,12 @@
     word-break: break-word;
     text-overflow: ellipsis;
     white-space: nowrap;
+    margin-right: 2px;
   }
 
   .op {
     white-space: pre-wrap;
+    margin-left: 2px;
   }
 
   .activityInfo {

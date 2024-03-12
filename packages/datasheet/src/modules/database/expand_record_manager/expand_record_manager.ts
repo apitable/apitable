@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { EXPAND_RECORD } from 'pc/components/expand_record';
+import { EXPAND_RECORD } from 'pc/components/expand_record/expand_record.enum';
 
 class ExpandRecordManager {
   focusHolderRefs: React.RefObject<HTMLInputElement>[];

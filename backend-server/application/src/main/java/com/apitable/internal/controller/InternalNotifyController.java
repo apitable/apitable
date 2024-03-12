@@ -26,9 +26,9 @@ import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import java.util.List;
-import javax.annotation.Resource;
-import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @ApiResource(path = "/internal/notification")
-@Tag(name = "Internal Service - Notification Interface")
+@Tag(name = "Internal")
 public class InternalNotifyController {
 
     @Resource
@@ -46,8 +46,8 @@ public class InternalNotifyController {
     /**
      * Send a message.
      */
-    @PostResource(name = "send a message", path = "/create", requiredLogin = false)
-    @Operation(summary = "send a message", description = "send a message")
+    @PostResource(path = "/create", requiredLogin = false)
+    @Operation(summary = "Notify Message", description = "send a message")
     public ResponseData<Void> create(
         @Valid @RequestBody List<NotificationCreateRo> notificationCreateRoList) {
         boolean bool = playerNotificationService.batchCreateNotify(notificationCreateRoList);

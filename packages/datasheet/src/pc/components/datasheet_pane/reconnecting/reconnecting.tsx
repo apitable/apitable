@@ -18,15 +18,15 @@
 
 import { Modal } from 'antd';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
 import { WarnCircleFilled } from '@apitable/icons';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './styles.module.less';
 
 export const Reconnecting: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
-  const reconnecting = useSelector((state) => {
+  const reconnecting = useAppSelector((state) => {
     return state.space.reconnecting;
   });
   return (

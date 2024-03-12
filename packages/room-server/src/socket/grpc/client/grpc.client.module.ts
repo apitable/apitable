@@ -18,22 +18,23 @@
 
 import { HttpModule, HttpService } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
-import { ClientGrpcProxy, ClientsModule } from '@nestjs/microservices';
+import { ClientsModule } from '@nestjs/microservices';
 import { PROJECT_DIR } from 'app.environment';
 import { protobufPackage } from 'grpc/generated/serving/RoomServingService';
 import { join } from 'path';
 import { BootstrapConstants } from 'shared/common/constants/bootstrap.constants';
-import { GatewayConstants, SocketConstants } from 'shared/common/constants/socket.module.constants';
+import { SocketConstants } from 'shared/common/constants/socket.module.constants';
 import { RedisModule } from 'socket/services/redis/redis.module';
 import { RedisService } from 'socket/services/redis/redis.service';
 import { GrpcClient } from './grpc.client';
 import { GrpcClientProxy } from './grpc.client.proxy';
+import { ROOM_GRPC_CLIENT } from 'shared/common';
 
 @Module({
   imports: [
     ClientsModule.registerAsync([
       {
-        name: GatewayConstants.ROOM_SERVICE,
+        name: ROOM_GRPC_CLIENT,
         imports: [RedisModule, HttpModule],
         inject: [RedisService, HttpService],
         useFactory: (redisService: RedisService, httpService: HttpService) => {
@@ -49,7 +50,7 @@ import { GrpcClientProxy } from './grpc.client.proxy';
               package: [protobufPackage],
               protoPath: [
                 join(PROJECT_DIR, 'grpc/generated/serving/RoomServingService.proto'),
-                join(PROJECT_DIR, 'grpc/generated/common/Core.proto')
+                join(PROJECT_DIR, 'grpc/generated/common/Core.proto'),
               ],
               loader: {
                 json: true,
@@ -60,32 +61,9 @@ import { GrpcClientProxy } from './grpc.client.proxy';
           };
         },
       },
-      {
-        name: GatewayConstants.BACKEND_SERVICE,
-        useFactory: () => {
-          const { maxSendMessageLength, maxReceiveMessageLength } = SocketConstants.GRPC_OPTIONS;
-          return {
-            customClass: ClientGrpcProxy,
-            options: {
-              url: BootstrapConstants.BACKEND_GRPC_URL,
-              maxSendMessageLength: maxSendMessageLength,
-              maxReceiveMessageLength: maxReceiveMessageLength,
-              package: [protobufPackage],
-              protoPath: [
-                join(PROJECT_DIR, 'grpc/generated/serving/BackendServingService.proto'),
-                join(PROJECT_DIR, 'grpc/generated/common/Core.proto')
-              ],
-              loader: {
-                json: true,
-              },
-            },
-          };
-        },
-      },
     ]),
   ],
   providers: [GrpcClient],
   exports: [GrpcClient],
 })
-export class GrpcClientModule {
-}
+export class GrpcClientModule {}

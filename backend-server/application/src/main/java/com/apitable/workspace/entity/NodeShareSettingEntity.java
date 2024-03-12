@@ -18,14 +18,13 @@
 
 package com.apitable.workspace.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,7 +34,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Workbench Node Share Setting Table
+ * Workbench Node Share Setting Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -52,65 +51,65 @@ public class NodeShareSettingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Node ID
+     * Node ID.
      */
     private String nodeId;
 
     /**
-     * Share View ID
+     * Share View ID.
      */
     private String viewId;
 
     /**
-     * Share unique ID
+     * Share unique ID.
      */
     private String shareId;
 
     /**
-     * Shareable status (0: off, 1: on)
+     * Shareable status (0: off, 1: on).
      */
     private Boolean isEnabled;
 
     /**
-     * Allow others to transfer (0: No, 1: Yes)
+     * Allow others to transfer (0: No, 1: Yes).
      */
     private Boolean allowSave;
 
     /**
-     * Allow others to edit (0: No, 1: Yes)
+     * Allow others to edit (0: No, 1: Yes).
      */
     private Boolean allowEdit;
 
     /**
-     * Share Option Properties
+     * Share Option Properties.
      */
     private String props;
 
     /**
-     * Creator
+     * Creator.
      */
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
 
     /**
-     * Last Update By
+     * Last Update By.
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updatedBy;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

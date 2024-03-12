@@ -1,15 +1,14 @@
 @import '~pc/styles/lib_mixins.less';
-@import "~pc/styles/lib_screen.less";
+@import '~pc/styles/lib_screen.less';
 
 .textEditor {
   width: 100%;
   position: relative;
   box-sizing: border-box;
-  box-shadow: 0px 0px 0px 2px var(--primaryColor);
-  box-sizing: border-box;
+  box-shadow: none !important;
   border-radius: 1px;
   background: transparent;
-  .light-scroll-bar();
+  .default-scroll-bar();
 
   input,
   textarea {
@@ -24,6 +23,7 @@
     box-sizing: border-box;
     padding: 3px 10px;
     font-size: 13px;
+    box-shadow: none !important;
   }
 
   textarea {

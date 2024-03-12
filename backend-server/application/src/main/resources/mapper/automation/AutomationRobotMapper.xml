@@ -104,4 +104,18 @@
           AND rbt.seq_id = #{seqId}
           AND rbt.is_active = 1
     </select>
+
+    <select id="selectCountByRobotId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}automation_robot
+        WHERE robot_id = #{robotId}
+        AND is_deleted = 0
+    </select>
+
+    <update id="updateUpdatedByRobotId">
+        UPDATE ${tablePrefix}automation_robot
+        SET updated_by = #{updatedBy}, updated_at = CURRENT_TIMESTAMP()
+        WHERE `robot_id` = #{robotId}
+        AND is_deleted = 0
+    </update>
 </mapper>

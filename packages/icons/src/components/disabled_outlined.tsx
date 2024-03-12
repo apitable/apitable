@@ -21,7 +21,7 @@ import React from 'react';
 import { makeIcon, IIconProps } from '../utils/icon';
 
 export const DisabledOutlined: React.FC<IIconProps> = makeIcon({
-    Path: ({ colors }) => <>
+  Path: ({ colors }) => <>
     <path d="M8 1C4.13401 1 1 4.13401 1 8C1 11.866 4.13401 15 8 15C11.866 15 15 11.866 15 8C15 4.13401 11.866 1 8 1ZM2.5 8C2.5 4.96243 4.96243 2.5 8 2.5C9.24835 2.5 10.3996 2.9159 11.3226 3.6167L3.6167 11.3226C2.9159 10.3996 2.5 9.24835 2.5 8ZM4.67736 12.3833C5.60043 13.0841 6.75165 13.5 8 13.5C11.0376 13.5 13.5 11.0376 13.5 8C13.5 6.75165 13.0841 5.60043 12.3833 4.67736L4.67736 12.3833Z" fill={ colors[0] } fillRule="evenodd" clipRule="evenodd"/>
 
   </>,

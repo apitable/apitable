@@ -18,16 +18,14 @@
 
 package com.apitable.asset.service;
 
-import java.io.InputStream;
-import java.util.List;
-
-import com.baomidou.mybatisplus.extension.service.IService;
-
 import com.apitable.asset.entity.AssetEntity;
 import com.apitable.asset.enums.AssetType;
 import com.apitable.asset.enums.DeveloperAssetType;
 import com.apitable.asset.ro.AttachUrlOpRo;
 import com.apitable.asset.vo.AssetUploadResult;
+import com.baomidou.mybatisplus.extension.service.IService;
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * Basics - Attachment Table Service Class.
@@ -37,8 +35,8 @@ public interface IAssetService extends IService<AssetEntity> {
     /**
      * upload pre check.
      *
-     * @param nodeId    Node ID
-     * @param secret    Human verification secret
+     * @param nodeId Node ID
+     * @param secret Human verification secret
      */
     void checkBeforeUpload(String nodeId, String secret);
 
@@ -54,10 +52,12 @@ public interface IAssetService extends IService<AssetEntity> {
      * @return AssetUploadResult
      */
     AssetUploadResult uploadFileInSpace(String nodeId, InputStream in,
-        String fileOriginalName, long fileSize, String mimeType, AssetType assetType);
+                                        String fileOriginalName, long fileSize, String mimeType,
+                                        AssetType assetType);
 
     /**
-     * upload remote url
+     * upload remote url.
+     *
      * @param url network resource address
      * @return AssetUploadResult
      */
@@ -76,18 +76,19 @@ public interface IAssetService extends IService<AssetEntity> {
     /**
      * Upload resource files to developer space and calculate capacity.
      *
-     * @param in                    resource file stream
-     * @param uploadPath            upload file full path
-     * @param fileOriginalName      file source name
-     * @param fileSize              file resource size
-     * @param contentType           file type
-     * @param createdBy             uploader
-     * @param developerAssetType    resource type
+     * @param in                 resource file stream
+     * @param uploadPath         upload file full path
+     * @param fileOriginalName   file source name
+     * @param fileSize           file resource size
+     * @param contentType        file type
+     * @param createdBy          uploader
+     * @param developerAssetType resource type
      * @return AssetUploadResult
      */
     AssetUploadResult uploadFileInDeveloper(InputStream in, String uploadPath,
-        String fileOriginalName, long fileSize, String contentType,
-        Long createdBy, DeveloperAssetType developerAssetType);
+                                            String fileOriginalName, long fileSize,
+                                            String contentType,
+                                            Long createdBy, DeveloperAssetType developerAssetType);
 
     /**
      * delete cloud s3 files.
@@ -115,8 +116,8 @@ public interface IAssetService extends IService<AssetEntity> {
     /**
      * modify the template state of resource.
      *
-     * @param assetIds      asset table ids
-     * @param isTemplate    whether it is a template attachment status
+     * @param assetIds   asset table ids
+     * @param isTemplate whether it is a template attachment status
      * @return real updated asset checksum list
      */
     List<String> updateAssetTemplateByIds(List<Long> assetIds, Boolean isTemplate);

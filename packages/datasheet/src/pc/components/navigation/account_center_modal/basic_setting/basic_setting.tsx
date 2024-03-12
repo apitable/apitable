@@ -20,7 +20,7 @@ import { Spin } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { Button, LinkButton, stopPropagation, Typography, useThemeColors } from '@apitable/components';
 import { hiddenMobile, IReduxState, isIdassPrivateDeployment, StatusCode, StoreActions, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined } from '@apitable/icons';
@@ -28,10 +28,12 @@ import { Avatar, AvatarSize } from 'pc/components/common/avatar';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { StatusIconFunc } from 'pc/components/common/icon';
 import { ImageCropUpload, IPreviewShape, ISelectInfo, IUploadType } from 'pc/components/common/image_crop_upload';
-import { Message } from 'pc/components/common/message';
+import { Message } from 'pc/components/common/message/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { IUnbindType, UnBindModal } from 'pc/components/navigation/account_center_modal/basic_setting/un_bind_modal';
-import { useRequest, useUserRequest } from 'pc/hooks';
+import { useRequest } from 'pc/hooks/use_request';
+import { useUserRequest } from 'pc/hooks/use_user_request';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { defaultAvatars } from './default_avatar';
 import { Logout } from './log_out';
@@ -39,9 +41,9 @@ import { StepStatus } from './log_out/enum';
 import { ModifyEmailModal } from './modify_email_modal';
 import { ModifyMobileModal } from './modify_mobile_modal';
 import { ModifyNameModal } from './modify_name_modal';
-import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName, isSocialWecom, isWecomFunc } from 'enterprise';
+import { getSocialWecomUnitName, isSocialWecom, isWecomFunc } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 const customTips = {
   cropDesc: t(Strings.support_image_formats_limits, {
@@ -50,7 +52,7 @@ const customTips = {
 };
 
 export const BasicSetting: FC<React.PropsWithChildren<unknown>> = () => {
-  const { user, spaceInfo } = useSelector(
+  const { user, spaceInfo } = useAppSelector(
     (state: IReduxState) => ({
       user: state.user.info,
       spaceInfo: state.space.curSpaceInfo,

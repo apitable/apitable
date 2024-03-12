@@ -19,9 +19,10 @@
 import produce from 'immer';
 import { AnyAction, combineReducers } from 'redux';
 import {
-  ActionConstants, IActiveCollaboratorAction, ICacheTemporaryView, IChangeMirrorWidgetPanelWidth, IDeActiveCollaborator, IMirror, IMirrorClient,
+  IActiveCollaboratorAction, ICacheTemporaryView, IChangeMirrorWidgetPanelWidth, IDeActiveCollaborator, IMirror, IMirrorClient,
   ISwitchMirrorActivePanel, IToggleMirrorWidgetPanel, IUpdateMirrorInfo, IWidgetPanelStatus
-} from '../../../../../../exports/store';
+} from '../../../../../../exports/store/interfaces';
+import * as ActionConstants from 'modules/shared/store/action_constants';
 import * as actions from '../../../../../shared/store/action_constants';
 import { CHANGE_WIDGET_PANEL_WIDTH, SWITCH_ACTIVE_PANEL, TOGGLE_WIDGET_PANEL } from '../../../../../shared/store/action_constants';
 import {

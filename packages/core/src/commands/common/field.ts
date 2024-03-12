@@ -20,20 +20,21 @@ import { ICollaCommandExecuteContext, ILinkedActions } from 'command_manager';
 import { IJOTAction } from 'engine';
 import { Strings, t } from '../../exports/i18n';
 import { isEqual, keyBy } from 'lodash';
-import {
-  CreatedByField,
-  DatasheetActions,
-  Field,
-  getFieldClass,
-  handleEmptyCellValue,
-  ICellValue,
-  StatType,
-  TextField
-} from 'model';
-import { IReduxState, ISnapshot, Selectors, ViewType } from '../../exports/store';
+import { Field } from 'model/field';
+import { DatasheetActions } from 'commands_actions/datasheet';
+import { CreatedByField } from 'model/field/created_by_field';
+import { StatType } from 'model/field/stat';
+import { TextField } from 'model/field/text_field';
+import { getFieldClass } from 'model/field';
+import { handleEmptyCellValue } from 'model/utils';
+import { ICellValue } from 'model/record';
+import { IReduxState, ISnapshot } from '../../exports/store/interfaces';
+import { ViewType } from 'modules/shared/store/constants';
+import { getDateTimeCellAlarm } from 'modules/database/store/selectors/resource/datasheet/calc';
+import { getCellValue } from 'modules/database/store/selectors/resource/datasheet/cell_calc';
 import { KanbanStyleKey } from '../../modules/shared/store/constants';
-import { getDatasheet, getSnapshot } from '../../exports/store/selectors';
-import {FieldType, IField, ILinkField, ISelectField, readonlyFields} from 'types';
+import { getDatasheet, getSnapshot } from 'modules/database/store/selectors/resource/datasheet/base';
+import { FieldType, IField, ILinkField, ISelectField, readonlyFields } from 'types';
 import { getNewId, getUniqName, IDPrefix, isSelectField } from 'utils';
 import { ViewAction } from 'commands_actions/view';
 
@@ -140,7 +141,7 @@ function switchFieldRecordData(
   }
 
   for (const recordId in snapshot.recordMap) {
-    const cellValue = Selectors.getCellValue(state, snapshot, recordId, newField.id);
+    const cellValue = getCellValue(state, snapshot, recordId, newField.id);
 
     function setValue(convertValue: ICellValue) {
       const action = DatasheetActions.setRecord2Action(snapshot, {
@@ -177,7 +178,7 @@ function switchFieldRecordData(
 
     // delete the alarm when modifying the date column type
     if (oldField.type === FieldType.DateTime) {
-      const alarm = Selectors.getDateTimeCellAlarm(snapshot, recordId, oldField.id);
+      const alarm = getDateTimeCellAlarm(snapshot, recordId, oldField.id);
       if (alarm) {
         const alarmActions = DatasheetActions.setDateTimeCellAlarm(snapshot, {
           recordId,
@@ -275,7 +276,7 @@ function clearViewAttribute(snapshot: ISnapshot, oldField: IField, newField: IFi
       action && actions.push(action);
     }
 
-    // The grouping field of the kanban board, if the type is converted, 
+    // The grouping field of the kanban board, if the type is converted,
     // or the multi-selection of the member field is turned on, the grouping field should be clear
     if (
       view.type === ViewType.Kanban &&
@@ -292,7 +293,7 @@ function clearViewAttribute(snapshot: ISnapshot, oldField: IField, newField: IFi
       action && actions.push(action);
     }
 
-    // The Grid view needs to consider the attachment field. 
+    // The Grid view needs to consider the attachment field.
     // The field that has been set as a grouping item should be deleted after being converted into an attachment field.
     if (
       view.type === ViewType.Grid &&
@@ -345,7 +346,7 @@ export function setField(
     });
     const property = Field.bindContext(newField, state).enrichProperty(stdVals);
     newField.property = property;
-    // Calculated fields need to determine their own datasheet through the field property, 
+    // Calculated fields need to determine their own datasheet through the field property,
     // here we force him to specify the datasheetId of the current command
     if (Field.bindContext(newField, state).isComputed) {
       newField.property = {
@@ -378,7 +379,7 @@ export function setField(
   actions.push(...converted.actions);
 
   /**
-   * After the field is converted/deleted, the corresponding functions on the view, 
+   * After the field is converted/deleted, the corresponding functions on the view,
    * such as filtering/grouping, need to be deleted or adjusted synchronously
    */
   actions.push(...clearViewAttribute(snapshot, oldField, newField));
@@ -392,9 +393,10 @@ export function setField(
 export function createNewField(
   snapshot: ISnapshot,
   field: IField,
-  options?: { viewId?: string; index?: number; fieldId?: string, offset?: number, hiddenColumn?: boolean }
+  options?: { viewId?: string; index?: number; fieldId?: string, offset?: number, hiddenColumn?: boolean, forceColumnVisible?: boolean }
 ) {
   if (!field.property) {
+    // @ts-ignore
     field.property = getFieldClass(field.type).defaultProperty();
   }
 
@@ -404,6 +406,7 @@ export function createNewField(
     fieldId: options && options.fieldId,
     offset: options && options.offset,
     hiddenColumn: options && options.hiddenColumn,
+    forceColumnVisible: options?.forceColumnVisible,
     field,
   });
 

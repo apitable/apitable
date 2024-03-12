@@ -18,29 +18,33 @@
 
 package com.apitable.organization.service;
 
+import com.apitable.organization.entity.TeamMemberRelEntity;
+import com.baomidou.mybatisplus.extension.service.IService;
 import java.util.Collection;
 import java.util.List;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-
-import com.apitable.organization.entity.TeamMemberRelEntity;
-
+/**
+ * team member relation service.
+ */
 public interface ITeamMemberRelService extends IService<TeamMemberRelEntity> {
 
     /**
-     * member associated team
+     * member associated team.
      *
      * @param memberIds member ids
-     * @param teamIds team ids
+     * @param teamIds   team ids
      */
     void addMemberTeams(List<Long> memberIds, List<Long> teamIds);
 
     /**
+     * create batch.
+     *
      * @param entities ref
      */
     void createBatch(List<TeamMemberRelEntity> entities);
 
     /**
+     * get team id list by member id.
      *
      * @param memberId member id
      * @return the member's teams id
@@ -48,6 +52,8 @@ public interface ITeamMemberRelService extends IService<TeamMemberRelEntity> {
     List<Long> getTeamByMemberId(Long memberId);
 
     /**
+     * get member id list by team id.
+     *
      * @param teamId team id
      * @return the team's member ids
      */
@@ -68,19 +74,32 @@ public interface ITeamMemberRelService extends IService<TeamMemberRelEntity> {
     void removeByMemberIds(List<Long> memberIds);
 
     /**
-     * @param teamId team id
+     * remove by team id.
+     *
+     * @param teamId team id.
      */
     void removeByTeamId(Long teamId);
 
     /**
+     * remove by team id list.
+     *
      * @param teamIds team ids
      */
     void removeByTeamIds(Collection<Long> teamIds);
 
     /**
-     * remove by member id and team id list
+     * remove by member id and team id list.
+     *
      * @param memberId member id
-     * @param teamIds team id list
+     * @param teamIds  team id list
      */
     void removeByTeamIdsAndMemberId(Long memberId, List<Long> teamIds);
+
+    /**
+     * get member's team relationship.
+     *
+     * @param memberIds member ids
+     * @return List TeamMemberRelEntity
+     */
+    List<TeamMemberRelEntity> getByMemberIds(List<Long> memberIds);
 }

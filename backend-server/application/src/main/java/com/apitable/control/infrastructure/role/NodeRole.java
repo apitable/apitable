@@ -20,7 +20,7 @@ package com.apitable.control.infrastructure.role;
 
 /**
  * <p>
- * base node role
+ * base node role.
  * </p>
  *
  * @author Chambers

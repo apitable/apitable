@@ -49,7 +49,7 @@ export class InternalSpaceCreditUsageView {
 export class InternalSpaceAutomationRunsMessageView {
   maxAutomationRunNums!: number;
   automationRunNums!: number; // The number of automation run in the space
-  allowOverLimit!: boolean;
+  allowRun!: boolean;
 }
 
 export class InternalCreateDatasheetVo {

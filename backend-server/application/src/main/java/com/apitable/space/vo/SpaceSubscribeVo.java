@@ -59,13 +59,18 @@ public class SpaceSubscribeVo {
     @JsonSerialize(nullsUsing = NullArraySerializer.class)
     private List<String> addOnPlans;
 
+    @Schema(description = "expire unix timestamp", example = "1703234649")
     private Long expireAt;
 
     @Schema(description = "subscription expiration time. if free, it is null.",
-        example = "2019-01-01")
+        example = "2019-01-01", deprecated = true)
     @JsonFormat(pattern = DatePattern.NORM_DATE_PATTERN)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate deadline;
+
+    @Schema(description = "cycle day of month", example = "21")
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    private Integer cycleDayOfMonth;
 
     @Schema(description = "seat(unit: people)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
@@ -87,9 +92,14 @@ public class SpaceSubscribeVo {
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxRowsInSpace;
 
-    @Schema(description = "api usage limit(unit: count)", example = "10")
+    @Schema(description = "api usage limit(unit: count)", example = "10", deprecated = true)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    @Deprecated(since = "1.8.0", forRemoval = true)
     private Long maxApiCall;
+
+    @Schema(description = "api call number per month", example = "10")
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    private Long apiCallNumsPerMonth;
 
     @Schema(description = "admin nums(unit: person)", example = "10")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
@@ -200,6 +210,11 @@ public class SpaceSubscribeVo {
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxAuditQueryDays;
 
+    @Schema(description = "Advance - whether to use audit log query",
+        example = "false")
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean auditQuery;
+
     @Schema(description = "the maximum credit number for ai query(unit: int)", example = "1000")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxMessageCredits;
@@ -233,4 +248,8 @@ public class SpaceSubscribeVo {
     @Schema(description = "max mirror nums(unit: mirror)", example = "5")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long maxMirrorNums;
+
+    @Schema(description = "whether can control form brand log", example = "false")
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean controlFormBrandLogo;
 }

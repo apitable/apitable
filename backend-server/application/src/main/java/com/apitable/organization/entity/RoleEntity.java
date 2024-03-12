@@ -18,13 +18,12 @@
 
 package com.apitable.organization.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +33,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Unit Role Table
+ * Unit Role Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -51,49 +50,49 @@ public class RoleEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary Key
+     * Primary Key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Space ID(link#xxxx_space#space_id)
+     * Space ID(link#xxxx_space#space_id).
      */
     private String spaceId;
 
     /**
-     * Role Name
+     * Role Name.
      */
     private String roleName;
 
     /**
-     * Role sorting position (the default is 2000. For new roles, this value is the maximum space position multiplied by 2)
+     * Role sorting position (the default is 2000. For new roles, this value is the maximum space position multiplied by 2).
      */
     private Integer position;
 
     /**
-     * Delete Tag(0: No, 1: Yes)
+     * Delete Tag(0: No, 1: Yes).
      */
     @TableLogic
     private Integer isDeleted;
 
     /**
-     * Creator
+     * Creator.
      */
     private Long createBy;
 
     /**
-     * Updater
+     * Updater.
      */
     private Long updateBy;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updateAt;
 

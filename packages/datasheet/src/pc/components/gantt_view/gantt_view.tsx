@@ -22,7 +22,7 @@ import dayjs from 'dayjs';
 import { isEqual } from 'lodash';
 import { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { isMobile as isTouchDevice } from 'react-device-detect';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { useTheme } from '@apitable/components';
 import {
@@ -80,6 +80,7 @@ import {
 import { useDispatch, useResponsive, useSetState } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage/storage';
 import { ScreenSize } from '../common/component_display/enum';
 import { IContainerEdit } from '../editors/interface';
@@ -103,8 +104,8 @@ import {
   ITaskLineSetting,
   ITargetTaskInfo,
 } from './interface';
-import styles from './style.module.less';
 import { getAllTaskLine, detectCyclesStack, autoTaskScheduling, getCollapsedLinearRows, getGanttViewStatusWithDefault } from './utils';
+import styles from './style.module.less';
 
 interface IGanttViewProps {
   height: number;
@@ -168,7 +169,7 @@ export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo((pro
     mirrorId,
     isViewLock,
     exportViewId,
-  } = useSelector((state) => {
+  } = useAppSelector((state) => {
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const view = Selectors.getCurrentView(state)! as IGanttViewProperty;
     const rowHeightLevel = view.rowHeightLevel || RowHeightLevel.Short;
@@ -811,7 +812,7 @@ export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo((pro
 
     // set gantt default timeZone to start field timeZone
     const startField = fieldMap[startFieldId];
-    const timeZone = startField?.property.timeZone;
+    const timeZone = startField?.property?.timeZone;
     if (timeZone) {
       dayjs.tz.setDefault(timeZone);
     }
@@ -856,6 +857,7 @@ export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo((pro
     }
   }, [clearTooltipInfo, isScrolling]);
   const theme = useTheme();
+  const activeNodePrivate = useAppSelector(Selectors.getActiveNodePrivate);
 
   const linkCycleEdges = useMemo(() => {
     if (!linkFieldId) {
@@ -950,6 +952,7 @@ export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo((pro
 
   const konvaGridContext = {
     theme,
+    activeNodePrivate,
     tooltipInfo,
     setTooltipInfo,
     clearTooltipInfo,
@@ -976,7 +979,7 @@ export const GanttView: FC<React.PropsWithChildren<IGanttViewProps>> = memo((pro
   };
 
   const { unitTitleMap } = useWxTitleMap();
-  const cacheTheme = useSelector(Selectors.getTheme);
+  const cacheTheme = useAppSelector(Selectors.getTheme);
 
   const gridViewContext = {
     snapshot,

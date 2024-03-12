@@ -25,9 +25,9 @@ import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toMap;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.vika.core.utils.StringUtil;
 import com.apitable.base.enums.DatabaseException;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SqlTool;
@@ -48,14 +48,13 @@ import com.apitable.organization.service.IUnitService;
 import com.apitable.organization.vo.RoleInfoVo;
 import com.apitable.organization.vo.RoleVo;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -128,7 +127,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         log.info("modify role's information");
         RoleEntity role = baseMapper.selectById(roleId);
         role.setUpdateBy(userId);
-        if (!StringUtil.isEmpty(roleName)) {
+        if (StrUtil.isNotEmpty(roleName)) {
             role.setRoleName(roleName);
         }
         if (null != position) {
@@ -151,7 +150,8 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
     }
 
     @Override
-    public void checkRoleExistBySpaceIdAndRoleId(String spaceId, Long roleId, Consumer<Boolean> consumer) {
+    public void checkRoleExistBySpaceIdAndRoleId(String spaceId, Long roleId,
+                                                 Consumer<Boolean> consumer) {
         int count = SqlTool.retCount(baseMapper.selectCountByIdAndSpaceId(roleId, spaceId));
         consumer.accept(count > 0);
     }
@@ -168,12 +168,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         roleInfos.forEach(roleInfo -> {
             // populate role information.
             RoleInfoVo role = RoleInfoVo.builder()
-                    .unitId(roleInfo.getUnitId())
-                    .roleId(roleInfo.getId())
-                    .roleName(roleInfo.getRoleName())
-                    .position(roleInfo.getPosition())
-                    .memberCount(0L)
-                    .build();
+                .unitId(roleInfo.getUnitId())
+                .roleId(roleInfo.getId())
+                .roleName(roleInfo.getRoleName())
+                .position(roleInfo.getPosition())
+                .memberCount(0L)
+                .build();
             roles.add(role);
         });
         // 3. the number of members in the roles.
@@ -194,11 +194,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         }
         List<RoleInfoDTO> roleInfos = baseMapper.selectRoleInfoDtoByIds(roleIds);
         return roleInfos.stream()
-                .map(roleInfo -> RoleVo.builder()
-                        .roleId(roleInfo.getId())
-                        .roleName(roleInfo.getRoleName())
-                        .build())
-                .collect(toList());
+            .map(roleInfo -> RoleVo.builder()
+                .roleId(roleInfo.getId())
+                .roleName(roleInfo.getRoleName())
+                .build())
+            .collect(toList());
     }
 
     @Override
@@ -218,22 +218,26 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         }
         List<RoleMemberInfoDTO> roleMembers = iRoleMemberService.getRoleMembersByRoleIds(roleIds);
         List<UnitEntity> roleUnits = iUnitService.getUnitEntitiesByUnitRefIds(roleIds);
-        Map<Long, List<Long>> roleIdToUnitIds = roleMembers.stream().collect(groupingBy(RoleMemberInfoDTO::getRoleId, mapping(RoleMemberInfoDTO::getUnitId, toList())));
-        return roleUnits.stream().collect(toMap(UnitEntity::getId, unit -> roleIdToUnitIds.getOrDefault(unit.getUnitRefId(), CollUtil.newArrayList())));
+        Map<Long, List<Long>> roleIdToUnitIds = roleMembers.stream().collect(
+            groupingBy(RoleMemberInfoDTO::getRoleId,
+                mapping(RoleMemberInfoDTO::getUnitId, toList())));
+        return roleUnits.stream().collect(toMap(UnitEntity::getId,
+            unit -> roleIdToUnitIds.getOrDefault(unit.getUnitRefId(), CollUtil.newArrayList())));
     }
 
     @Override
     public List<RoleInfoVo> getRoleVos(String spaceId, List<Long> roleIds) {
         // 1. query the space's roles.
-        List<RoleInfoDTO> roleInfoDtos = baseMapper.selectRoleInfoDtoByIdsAndSpaceId(roleIds, spaceId);
+        List<RoleInfoDTO> roleInfoDtos =
+            baseMapper.selectRoleInfoDtoByIdsAndSpaceId(roleIds, spaceId);
         List<RoleInfoVo> roleInfoVos = new ArrayList<>(roleInfoDtos.size());
         roleInfoDtos.forEach(roleInfoDTO -> {
             RoleInfoVo roleInfoVo = RoleInfoVo.builder()
-                    .unitId(roleInfoDTO.getUnitId())
-                    .roleId(roleInfoDTO.getId())
-                    .roleName(roleInfoDTO.getRoleName())
-                    .position(roleInfoDTO.getPosition())
-                    .build();
+                .unitId(roleInfoDTO.getUnitId())
+                .roleId(roleInfoDTO.getId())
+                .roleName(roleInfoDTO.getRoleName())
+                .position(roleInfoDTO.getPosition())
+                .build();
             roleInfoVos.add(roleInfoVo);
         });
         roleFillMemberCount(roleInfoVos, roleInfoDtos);
@@ -251,11 +255,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         for (int i = 0; i < roleNames.size(); i++) {
             String roleName = roleNames.get(i);
             RoleEntity role = RoleEntity.builder()
-                    .spaceId(spaceId)
-                    .roleName(roleName)
-                    .position(1000 * (2 << i))
-                    .createBy(userId)
-                    .build();
+                .spaceId(spaceId)
+                .roleName(roleName)
+                .position(1000 * (2 << i))
+                .createBy(userId)
+                .build();
             roles.add(role);
         }
         boolean flag = saveBatch(roles);
@@ -264,7 +268,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
         for (RoleEntity role : roles) {
             UnitEntity unit = UnitEntity.builder()
                 .spaceId(spaceId)
-                .unitId(IdWorker.get32UUID())
+                .unitId(IdUtil.fastSimpleUUID())
                 .unitRefId(role.getId())
                 .unitType(UnitType.ROLE.getType())
                 .build();
@@ -319,10 +323,10 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, RoleEntity> impleme
             // count the number of members in the role
             List<RoleMemberInfoDTO> roleMembers = roleIdToRoleMembers.get(role.getRoleId());
             Map<Integer, List<Long>> unitTypeToUnitRefIds = roleMembers.stream()
-                    .collect(groupingBy(RoleMemberInfoDTO::getUnitType,
-                            mapping(RoleMemberInfoDTO::getUnitRefId, toList())));
+                .collect(groupingBy(RoleMemberInfoDTO::getUnitType,
+                    mapping(RoleMemberInfoDTO::getUnitRefId, toList())));
             List<Long> memberIds = unitTypeToUnitRefIds
-                    .getOrDefault(UnitType.MEMBER.getType(), CollUtil.newArrayList());
+                .getOrDefault(UnitType.MEMBER.getType(), CollUtil.newArrayList());
             int memberCount;
             if (unitTypeToUnitRefIds.containsKey(UnitType.TEAM.getType())) {
                 List<Long> teamIds = unitTypeToUnitRefIds.get(UnitType.TEAM.getType());

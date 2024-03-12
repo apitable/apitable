@@ -20,7 +20,6 @@ import { useMount, useToggle } from 'ahooks';
 import { Switch } from 'antd';
 import { useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { IOption, LinkButton, Typography, useThemeColors } from '@apitable/components';
 import {
   DatasheetApi,
@@ -44,6 +43,8 @@ import styles from 'pc/components/field_permission/styles.module.less';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
 import { useRequest, useResponsive } from 'pc/hooks';
 
+import { useAppSelector } from 'pc/store/react-redux';
+
 export const EnableFieldPermission: React.FC<React.PropsWithChildren<IEnablePermission>> = (props) => {
   const colors = useThemeColors();
   const { permissionStatus, onClose, field } = props;
@@ -51,10 +52,10 @@ export const EnableFieldPermission: React.FC<React.PropsWithChildren<IEnablePerm
   const [roleList, setRoleList] = useState<IFieldPermissionRole[]>([]);
   const [memberList, setMemberList] = useState<IFieldPermissionMember[]>([]);
   const [setting, setSetting] = useState({ formSheetAccessible: false });
-  const datasheetId = useSelector((state) => state.pageParams.datasheetId)!;
+  const datasheetId = useAppSelector((state) => state.pageParams.datasheetId)!;
   const [isMemberDetail, { toggle: toggleIsMemberDetail }] = useToggle(false);
   const { screenIsAtLeast, screenIsAtMost } = useResponsive();
-  const fieldPermission = useSelector(Selectors.getFieldPermissionMap)!;
+  const fieldPermission = useAppSelector(Selectors.getFieldPermissionMap)!;
   const readonly = fieldPermission[field.id] && !fieldPermission[field.id].manageable;
   const { run } = useRequest(DatasheetApi.fetchFieldPermissionRoleList, {
     manual: true,

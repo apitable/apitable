@@ -18,7 +18,6 @@
 
 import Image from 'next/image';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Checkbox, Skeleton, Typography, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ConfigConstant, Events, ICollaCommandOptions, Navigation, Player, Selectors, Strings, t, ThemeName } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
@@ -26,12 +25,13 @@ import { PopUpTitle } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalog } from 'pc/hooks/use_catalog';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import MirrorEmptyDark from 'static/icon/common/mirror_empty_dark.png';
 import MirrorEmptyLight from 'static/icon/common/mirror_empty_light.png';
 import { IMirrorItem } from './interface';
-import styles from './style.module.less';
 import { gstMirrorIconByViewType } from './utils';
+import styles from './style.module.less';
 
 interface IMirrorListInner {
   mirrorList: IMirrorItem[];
@@ -45,7 +45,7 @@ interface IBlankInner {
 }
 
 const BlankInner = ({ createMirrorNode, mirrorCreatable }: IBlankInner) => {
-  const theme = useSelector((state) => state.theme);
+  const theme = useAppSelector((state) => state.theme);
   const MirrorEmpty = theme === ThemeName.Light ? MirrorEmptyLight : MirrorEmptyDark;
   return (
     <div className={styles.blackInner}>
@@ -63,22 +63,23 @@ const BlankInner = ({ createMirrorNode, mirrorCreatable }: IBlankInner) => {
 export const MirrorListInner: React.FC<React.PropsWithChildren<IMirrorListInner>> = (props) => {
   const colors = useThemeColors();
   const { mirrorList, loading } = props;
-  const { datasheetId, viewId } = useSelector((state) => state.pageParams)!;
-  const folderId = useSelector((state) => {
+  const { datasheetId, viewId } = useAppSelector((state) => state.pageParams)!;
+  const folderId = useAppSelector((state) => {
     return Selectors.getDatasheetParentId(state, datasheetId);
   });
-  const view = useSelector((state) => {
+  const view = useAppSelector((state) => {
     const snapshot = Selectors.getSnapshot(state, datasheetId)!;
     return Selectors.getViewById(snapshot, viewId!);
   });
 
-  const mirrorCreatable = useSelector((state) => {
+  const mirrorCreatable = useAppSelector((state) => {
     const { manageable } = Selectors.getPermissions(state);
-    const { manageable: folderManageable } = state.catalogTree.treeNodesMap[folderId!]?.permissions || {};
+    const { manageable: folderManageable } = state.catalogTree.treeNodesMap[folderId!]?.permissions ||
+    state.catalogTree.privateTreeNodesMap[folderId!]?.permissions || {};
     return manageable && folderManageable;
   });
   const execute = (cmd: ICollaCommandOptions) => resourceService.instance!.commandManager.execute(cmd);
-  const { editable } = useSelector((state) => Selectors.getPermissions(state));
+  const { editable } = useAppSelector((state) => Selectors.getPermissions(state));
 
   const { addTreeNode } = useCatalog();
 

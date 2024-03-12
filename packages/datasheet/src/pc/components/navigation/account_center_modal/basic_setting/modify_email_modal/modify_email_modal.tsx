@@ -22,13 +22,16 @@ import { FC, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { TextInput } from '@apitable/components';
 import { StoreActions, Api, ConfigConstant, Strings, t } from '@apitable/core';
-import { Message, NormalModal, WithTipWrapper, IdentifyingCodeInput } from 'pc/components/common';
-import { useSetState } from 'pc/hooks';
+import { IdentifyingCodeInput } from 'pc/components/common/input/identifying_code_input/identifying_code_input';
+import { WithTipWrapper } from 'pc/components/common/input/with_tip_wrapper/with_tip_wrapper';
+import { Message } from 'pc/components/common/message/message';
+import { NormalModal } from 'pc/components/common/modal/normal_modal/normal_modal';
 import { usePlatform } from 'pc/hooks/use_platform';
+import { useSetState } from 'pc/hooks/use_set_state';
 import { Verify } from '../modify_mobile_modal/verify';
-import styles from './style.module.less';
 // @ts-ignore
-import { addWizardNumberAndApiRun } from 'enterprise';
+import { addWizardNumberAndApiRun } from 'enterprise/guide/utils';
+import styles from './style.module.less';
 
 export interface IModifyEmailModalProps {
   setEmailModal: React.Dispatch<React.SetStateAction<boolean>>;

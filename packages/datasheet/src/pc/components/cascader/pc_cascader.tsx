@@ -1,3 +1,4 @@
+
 import { Cascader as AntCascader } from 'antd';
 import classNames from 'classnames';
 import React, { useState } from 'react';
@@ -30,7 +31,17 @@ export const PcCascader = (props: ICascader) => {
       options={options}
       placeholder={<AddOutlined color={colorVars.secondLevelText} size={16} />}
       clearIcon={<IconButton className={styles.closeBtn} icon={CloseOutlined} />}
+      onClear={() => {
+        setTimeout(() => {
+          cascaderRef?.current?.blur();
+        });
+      }}
       popupVisible={editing}
+      onPopupVisibleChange={(visible) => {
+        if (!visible) {
+          cascaderRef?.current?.blur();
+        }
+      }}
       popupClassName={classNames({
         [styles.search]: Boolean(search),
       })}

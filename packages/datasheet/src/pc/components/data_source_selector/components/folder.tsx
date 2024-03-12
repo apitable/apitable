@@ -17,10 +17,10 @@
  */
 
 import * as React from 'react';
-import styles from './style.module.less';
-import ArrowIcon from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
 import { useThemeColors } from '@apitable/components';
 import { FolderNormalFilled } from '@apitable/icons';
+import ArrowIcon from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
+import styles from './style.module.less';
 
 // richContent: Search results are returned as rich text tags for display highlighting
 export const Folder: React.FC<React.PropsWithChildren<{ id: string, onClick?: (id: string) => void, richContent?: boolean }>> = props => {

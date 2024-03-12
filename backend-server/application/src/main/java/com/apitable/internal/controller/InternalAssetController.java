@@ -24,35 +24,28 @@ import com.apitable.asset.service.IAssetUploadTokenService;
 import com.apitable.asset.vo.AssetUploadCertificateVO;
 import com.apitable.asset.vo.AssetUploadResult;
 import com.apitable.asset.vo.AssetUrlSignatureVo;
-import com.apitable.core.exception.BusinessException;
 import com.apitable.core.support.ResponseData;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
-import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.context.SessionContext;
-import com.apitable.starter.oss.core.OssSignatureTemplate;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
-import java.util.ArrayList;
+import jakarta.annotation.Resource;
 import java.util.Collections;
 import java.util.List;
-import javax.annotation.Resource;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Internal Server - Asset API.
+ * Internal - Asset API.
  */
 @RestController
 @ApiResource(path = "/internal/asset")
-@Tag(name = "Internal Server - Asset API")
+@Tag(name = "Internal")
 public class InternalAssetController {
 
     @Resource
@@ -60,12 +53,6 @@ public class InternalAssetController {
 
     @Resource
     private IAssetCallbackService iAssetCallbackService;
-
-    @Resource
-    private ConstProperties constProperties;
-
-    @Autowired(required = false)
-    private OssSignatureTemplate ossSignatureTemplate;
 
     /**
      * Get Upload PreSigned URL.
@@ -90,7 +77,7 @@ public class InternalAssetController {
     /**
      * Get Asset Info.
      */
-    @GetResource(name = "Get Asset Info", path = "/get", requiredLogin = false)
+    @GetResource(path = "/get", requiredLogin = false)
     @Operation(summary = "Get Asset Info", description = "scene：Fusion server query the "
         + "attachment field data before writing")
     @Parameter(name = "token", description = "resource key", required = true, schema = @Schema(type =
@@ -106,19 +93,7 @@ public class InternalAssetController {
     @GetResource(path = "/signatures", requiredLogin = false)
     @Operation(summary = "Batch get asset signature url")
     public ResponseData<List<AssetUrlSignatureVo>> getSignatureUrls(
-            @RequestParam("resourceKeys") final List<String> resourceKeys) {
-        if (ossSignatureTemplate == null) {
-            throw new BusinessException("Signature is not turned on.");
-        }
-        List<AssetUrlSignatureVo> vos = new ArrayList<>();
-        String host = constProperties.getOssBucketByAsset().getResourceUrl();
-        for (String resourceKey : resourceKeys) {
-            String signedUrl = ossSignatureTemplate.getSignatureUrl(host, resourceKey);
-            AssetUrlSignatureVo vo = new AssetUrlSignatureVo();
-            vo.setResourceKey(resourceKey);
-            vo.setUrl(signedUrl);
-            vos.add(vo);
-        }
-        return ResponseData.success(vos);
+        @RequestParam("resourceKeys") final List<String> resourceKeys) {
+        return ResponseData.success(iAssetUploadTokenService.getAssetUrlSignatureVos(resourceKeys));
     }
 }

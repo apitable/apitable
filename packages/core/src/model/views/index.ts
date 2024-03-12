@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ViewType } from '../../exports/store';
+import { ViewType } from 'modules/shared/store/constants';
 import { DATASHEET_ID } from '../../config/dom_id';
 import { CalendarView } from './calendar_view';
 import { FormView } from './form_view';
@@ -74,7 +74,7 @@ export function getViewClass(viewType: ViewType) {
   }
 }
 
-// sensor custom attributes 
+// sensor custom attributes
 export function getViewAnalyticsId(viewType: ViewType) {
   switch (viewType) {
     case ViewType.Kanban:

@@ -1,10 +1,11 @@
 import React, { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Align } from 'react-window';
 import { stopPropagation, useTheme } from '@apitable/components';
 import { IReduxState, IViewRow, Selectors, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
+import { useAppSelector } from 'pc/store/react-redux';
 import { KeyCode } from 'pc/utils';
 import { SearchControl } from '../common/search_control';
 import { TComponent } from '../common/t_component';
@@ -27,7 +28,7 @@ interface ISearchContentRefProps {
 export const RecordPicker: FC<React.PropsWithChildren<IRecordPickerProps>> = memo((props) => {
   const { datasheetId, onSave, onClose, children, isSingle } = props;
 
-  const { datasheet, view, fieldMap } = useSelector(
+  const { datasheet, view, fieldMap } = useAppSelector(
     (state: IReduxState) => ({
       datasheet: Selectors.getDatasheet(state, datasheetId)!,
       view: Selectors.getViewByIdWithDefault(state, datasheetId)!,

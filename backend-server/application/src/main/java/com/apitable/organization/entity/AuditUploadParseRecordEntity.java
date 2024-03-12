@@ -18,12 +18,11 @@
 
 package com.apitable.organization.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +32,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Address Book Upload Analysis Audit Table
+ * Address Book Upload Analysis Audit Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -50,43 +49,43 @@ public class AuditUploadParseRecordEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary key
+     * Primary key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Space ID
+     * Space ID.
      */
     private String spaceId;
 
     /**
-     * File save relative path
+     * File save relative path.
      */
     private String fileSaveUrl;
 
     /**
-     * Number of file lines
+     * Number of file lines.
      */
     private Integer rowSize;
 
     /**
-     * Number of lines successfully parsed
+     * Number of lines successfully parsed.
      */
     private Integer successCount;
 
     /**
-     * Number of lines failed to parse
+     * Number of lines failed to parse.
      */
     private Integer errorCount;
 
     /**
-     * Resolution failure details
+     * Resolution failure details.
      */
     private String errorMsg;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 

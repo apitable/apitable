@@ -20,13 +20,15 @@ import { uniqBy } from 'lodash';
 import mime from 'mime-types';
 import { Api, CollaCommandManager, CollaCommandName, getNewId, IAttachmentValue, IDPrefix, Selectors, StatusCode, Strings, t } from '@apitable/core';
 import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
-import { Message, Modal } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { IUploadResponse } from 'pc/components/upload_modal/upload_core';
 import { store } from 'pc/store';
-import { byte2Mb, execNoTraceVerification } from 'pc/utils';
+import { byte2Mb } from 'pc/utils/dom';
+import { execNoTraceVerification } from 'pc/utils/no_trace_verification';
 import { getEnvVariables } from './env';
 // @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
 
 interface IUploadMap {
   [key: string]: IUploadMapItem;

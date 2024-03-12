@@ -14,4 +14,5 @@ public class UnitBaseInfoDTO {
 
     private Long unitRefId;
 
+    private Long id;
 }

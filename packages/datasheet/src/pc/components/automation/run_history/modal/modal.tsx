@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { Box, IconButton, Modal, Typography, useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
-import style from './styles.module.less';
 import { HistoryModalContent } from './index';
+import style from './styles.module.less';
 
 const StyledModal = styled(Modal)`
   overflow: hidden;

@@ -20,12 +20,15 @@ import Joi from 'joi';
 import { Strings, t } from '../../exports/i18n';
 import { ICellValue } from 'model/record';
 import { createSelector } from 'reselect';
-import { IReduxState } from '../../exports/store';
-import { ISnapshot } from '../../exports/store/interfaces';
-import { getCellValue, getCurrentView, getDatasheet, getFieldMap, getRowsIndexMap, getSnapshot } from '../../exports/store/selectors';
+import { IReduxState, ISnapshot } from '../../exports/store/interfaces';
+import { getCellValue } from 'modules/database/store/selectors/resource/datasheet/cell_calc';
+import { getCurrentView, getFieldMap }from 'modules/database/store/selectors/resource/datasheet/calc';
+import { getDatasheet, getSnapshot } from 'modules/database/store/selectors/resource/datasheet/base';
+import { getRowsIndexMap }from 'modules/database/store/selectors/resource/datasheet/rows_calc';
 import { FOperator, IAPIMetaLinkFieldProperty, IFilterCondition, IFilterText } from 'types';
 import { BasicValueType, FieldType, ILinkField, ILinkFieldProperty, IStandardValue } from 'types/field_types';
-import { ArrayValueField, Field } from './field';
+import { Field } from './field';
+import { ArrayValueField } from './array_field';
 import { StatType } from './stat';
 import { ILinkFieldOpenValue } from 'types/field_types_open';
 import { isNullValue } from 'model/utils';
@@ -34,6 +37,7 @@ import { enumToArray } from './validate_schema';
 import { IOpenMagicLinkFieldProperty } from 'types/open/open_field_read_types';
 import { IOpenFilterValueString } from 'types/open/open_filter_types';
 import { TextBaseField } from './text_base_field';
+import { getFieldDefaultProperty } from './const';
 
 export const getTextRecordMap =
   createSelector<IReduxState, string | void, IReduxState | undefined, ISnapshot | undefined, { [text: string]: string }>(
@@ -87,7 +91,7 @@ export class LinkField extends ArrayValueField {
   }).allow(null).required();
 
   static defaultProperty(): Omit<ILinkFieldProperty, 'foreignDatasheetId'> {
-    return {};
+    return getFieldDefaultProperty(FieldType.Link) as Omit<ILinkFieldProperty, 'foreignDatasheetId'>;
   }
 
   get apiMetaProperty(): IAPIMetaLinkFieldProperty {
@@ -153,9 +157,10 @@ export class LinkField extends ArrayValueField {
     if (!snapshot) {
       return false;
     }
+    const archivedRecordIds = snapshot.meta.archivedRecordIds || [];
     if (Array.isArray(value)) {
       return value.every(recordId => {
-        if (snapshot.recordMap[recordId]) {
+        if (snapshot.recordMap[recordId] || archivedRecordIds.includes(recordId)) {
           return true;
         }
         return false;
@@ -165,7 +170,7 @@ export class LinkField extends ArrayValueField {
   }
 
   validateProperty() {
-    return LinkField.propertySchema.validate(this.field.property, { context: { reduxState: this.state }});
+    return LinkField.propertySchema.validate(this.field.property, { context: { reduxState: this.state } });
   }
 
   validateCellValue(cellValue: ICellValue) {
@@ -206,7 +211,7 @@ export class LinkField extends ArrayValueField {
   }
 
   /**
-   * @orderInCellValueSensitive {boolean} optional parameter, 
+   * @orderInCellValueSensitive {boolean} optional parameter,
    * to determine whether to only do normal sorting for the associated field, without preprocessing the cell content
    */
   override compare(
@@ -273,7 +278,7 @@ export class LinkField extends ArrayValueField {
     // Try to find the same value as the primary key text from the association table, if found, create the association.
     const textRecordMap = getTextRecordMap(this.state, this.field.property.foreignDatasheetId);
     let texts = [stdValue.data.map(d => d.text).join(', ')];
-    // Determine whether the current configuration item allows adding multiple associated records, 
+    // Determine whether the current configuration item allows adding multiple associated records,
     // and if it is allowed, cut it according to ","
     if (!this.field.property.limitSingleRecord) {
       const splitText = texts[0]!.split(/, ?/);
@@ -299,7 +304,7 @@ export class LinkField extends ArrayValueField {
       data: [],
     };
 
-    if (recordIds) {
+    if (recordIds && Array.isArray(recordIds)) {
       stdVal.data = recordIds.map(recordId => {
         const text = this.getLinkedRecordCellString(recordId) || t(Strings.record_unnamed);
         return {
@@ -314,7 +319,7 @@ export class LinkField extends ArrayValueField {
   }
 
   /**
-   * Obtains the content of the first column in the associated table through the `recordId` recorded in the associated field cell, 
+   * Obtains the content of the first column in the associated table through the `recordId` recorded in the associated field cell,
    * and the content is processed by cellValue2String.
    * @param {(string[] | null)} recordIds
    * @returns {(string[] | null)}

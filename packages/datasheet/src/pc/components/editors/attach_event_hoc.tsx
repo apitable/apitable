@@ -19,12 +19,13 @@
 import { useUpdateEffect } from 'ahooks';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { DATASHEET_ID, ICell, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common/message';
 import { useMemorizePreviousValue } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { CELL_CLASS, FIELD_HEAD_CLASS, isTouchDevice, OPACITY_LINE_CLASS, OPERATE_HEAD_CLASS } from 'pc/utils';
 import { getClickCellId, getElementDataset, getParentNodeByClass } from 'pc/utils/dom';
 import { expandRecordIdNavigate } from '../expand_record';
@@ -66,7 +67,7 @@ export const attachEventHoc = (WrapperComponent: any) => {
       isSearching,
       fieldRanges,
       fieldIndexMap,
-    } = useSelector((state) => {
+    } = useAppSelector((state) => {
       return {
         selection: Selectors.getSelection(state),
         activeCell: Selectors.getActiveCell(state),
@@ -85,7 +86,7 @@ export const attachEventHoc = (WrapperComponent: any) => {
       };
     }, shallowEqual);
 
-    const isSideRecordOpen = useSelector((state) => state.space.isSideRecordOpen);
+    const isSideRecordOpen = useAppSelector((state) => state.space.isSideRecordOpen);
 
     const { handleForCell, handleForFillBar, handleForHeader, handleForOperateColumn, handleForOtherArea } = useAttachEvent({
       datasheetId,

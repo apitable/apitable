@@ -19,7 +19,7 @@
 import { expressionTransform } from '../evaluate';
 import { FieldType, IField } from '../../types/field_types';
 import { mergeContext, evaluate } from './mock_state';
-import { ConfigConstant } from '../../';
+import { Role } from 'config/constant';
 import { SelfRefError } from 'formula_parser/errors/self_ref.error';
 
 // tslint:disable: max-line-length
@@ -179,7 +179,7 @@ describe('FormulaEvaluate', () => {
 
     const fieldPermissionMap = {
       fld66666: {
-        role: ConfigConstant.Role.None,
+        role: Role.None,
         setting: {
           formSheetAccessible: false,
         },

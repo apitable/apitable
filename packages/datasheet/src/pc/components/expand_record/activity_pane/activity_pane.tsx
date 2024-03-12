@@ -22,7 +22,6 @@ import classNames from 'classnames';
 import { pick } from 'lodash';
 import * as React from 'react';
 import { useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { IconButton, useThemeColors } from '@apitable/components';
 import { CollaCommandName, Selectors, Strings, t } from '@apitable/core';
 import { CloseOutlined, DeleteOutlined, QuestionCircleOutlined, ChevronDownOutlined } from '@apitable/icons';
@@ -32,6 +31,7 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ACTIVITY_SELECT_MAP, ActivitySelectType } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { ActivityContext } from './activity_context';
@@ -58,8 +58,8 @@ export const ActivityPaneBase: React.FC<React.PropsWithChildren<IActivityPanePro
   const [selectOpen, setSelectOpen] = useState(false);
 
   // Current operating mode
-  const unitMap = useSelector((state) => Selectors.getUnitMap(state));
-  const showRecordHistory = useSelector((state) => Selectors.getRecordHistoryStatus(state, datasheetId))!;
+  const unitMap = useAppSelector((state) => Selectors.getUnitMap(state));
+  const showRecordHistory = useAppSelector((state) => Selectors.getRecordHistoryStatus(state, datasheetId))!;
   const [cacheType, setCacheType] = useLocalStorageState<ICacheType>('vika_activity_type', { defaultValue: {} });
   const handleCacheType = useCallback(
     (type: ActivitySelectType) => {
@@ -223,4 +223,6 @@ export const ActivityPaneBase: React.FC<React.PropsWithChildren<IActivityPanePro
   );
 };
 
-export const ActivityPane = React.memo(ActivityPaneBase);
+const ActivityPane = React.memo(ActivityPaneBase);
+
+export default ActivityPane;

@@ -16,16 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { IReduxState } from 'exports/store';
 import Joi from 'joi';
-import { IReduxState } from '../../../exports/store';
-import { difference, isString, keyBy, memoize, range } from 'lodash';
-import { getNewId, IDPrefix, isSelectType } from 'utils';
-import { Field } from '../field';
-import { FieldType, IMultiSelectedIds, ISelectField, ISelectFieldOption, ISelectFieldProperty, IStandardValue } from 'types/field_types';
+import { difference, has, isString, keyBy, memoize, range } from 'lodash';
+import { getFieldOptionColor } from 'model/color';
 import { IAPIMetaSingleSelectFieldProperty } from 'types/field_api_property_types';
-import { getColorNames, getFieldOptionColor } from 'model/color';
-import { IWriteOpenSelectBaseFieldProperty, IEffectOption } from 'types/open/open_field_write_types';
+import { FieldType, IMultiSelectedIds, ISelectField, ISelectFieldOption, ISelectFieldProperty, IStandardValue } from 'types/field_types';
 import { IOpenSelectBaseFieldProperty } from 'types/open/open_field_read_types';
+import { IEffectOption, IWriteOpenSelectBaseFieldProperty } from 'types/open/open_field_write_types';
+import { getNewId, IDPrefix, isSelectType } from 'utils';
+import { getFieldDefaultProperty } from '../const';
+import { Field } from '../field';
 import { joiErrorResult } from '../validate_schema';
 
 const EFFECTIVE_OPTION_ID_LENGTH = 13;
@@ -54,7 +55,7 @@ export abstract class SelectField extends Field {
   }).required();
 
   static defaultProperty(): ISelectFieldProperty {
-    return { options: [] };
+    return getFieldDefaultProperty(FieldType.SingleSelect) as ISelectFieldProperty;
   }
 
   get apiMetaProperty(): IAPIMetaSingleSelectFieldProperty {
@@ -71,7 +72,7 @@ export abstract class SelectField extends Field {
   validateProperty(): Joi.ValidationResult {
     return SelectField.propertySchema.validate(this.field.property, { context: {
       fieldType: this.field.type,
-    }});
+    } });
   }
 
   static _createNewOption(option: { name: string, color?: number }, existOptions: ISelectFieldOption[]) {
@@ -119,7 +120,7 @@ export abstract class SelectField extends Field {
 
   /**
    * add new option to singleSelect
-   * 
+   *
    * @param {string} name
    * @memberof SingleSelectField
    */
@@ -193,9 +194,9 @@ export abstract class SelectField extends Field {
   // Modify the current property according to StandardValue
   override enrichProperty(stdVals: IStandardValue[]): ISelectFieldProperty {
     if (!this.propertyEditable()) {
-      // Filling non-existent values for single and multiple selection will be enriched by default, 
+      // Filling non-existent values for single and multiple selection will be enriched by default,
       // but if there is no manageable permission for the node, enrich will report an error
-      // In addition, considering the column permissions, if there is no column editing permission, 
+      // In addition, considering the column permissions, if there is no column editing permission,
       // the user must not be manageable by the node, so there is no need to check the column permissions.
       return this.field.property;
     }
@@ -270,7 +271,7 @@ export abstract class SelectField extends Field {
 
   validateWriteOpenOptionsEffect(updateProperty: IWriteOpenSelectBaseFieldProperty, effectOption?: IEffectOption): Joi.ValidationResult {
     // Not allowed to pass option parameter with ID but no color
-    if (updateProperty.options.some(option => option.id && !option.color)) {
+    if (updateProperty.options.some(option => option.id && !has(option, 'color'))) {
       return joiErrorResult('Option object is not supported. It has id but no color');
     }
     // Check if this update removes options
@@ -289,7 +290,7 @@ export abstract class SelectField extends Field {
     let transformedDefaultValue = defaultValue;
     const transformedOptions = options.map(option => {
       if (!option.id || !option.color) {
-        const color = option.color ? this.getOptionColorNumberByName(option.color) : undefined;
+        const color = option.color ? (typeof option.color === 'number' ? option.color : this.getOptionColorNumberByName(option.color)) : undefined;
         // prevent duplicate option IDs
         const newOption = SelectField._createNewOption({ name: option.name, color }, [...this.field.property.options, ...newOptions]);
         transformedDefaultValue = this.transformDefaultValue(newOption, transformedDefaultValue);
@@ -299,7 +300,7 @@ export abstract class SelectField extends Field {
       return {
         id: option.id,
         name: option.name,
-        color: this.getOptionColorNumberByName(option.color)!
+        color: typeof option.color === 'number' ? option.color : this.getOptionColorNumberByName(option.color)!,
       };
     });
     return {
@@ -314,7 +315,7 @@ export abstract class SelectField extends Field {
   private transformDefaultValue(option: ISelectFieldOption, defaultValue: string | IMultiSelectedIds | undefined) {
     if(this.matchSingleSelectName(option.name, defaultValue)) {
       return option.id;
-    } 
+    }
     if(typeof defaultValue === 'object'){ // for MultiSelect
       const idx = defaultValue.indexOf(option.name);
       if(idx > -1) {
@@ -325,18 +326,8 @@ export abstract class SelectField extends Field {
   }
 
   private matchSingleSelectName(name: string, defaultValue: any): boolean{
-    return typeof defaultValue === 'string' 
+    return typeof defaultValue === 'string'
       && name === defaultValue;
-  }
-
-  /**
-   * Convert the obtained color name to color number
-   * @param name color name
-   */
-  getOptionColorNumberByName(name: string) {
-    const colorNames = getColorNames();
-    const colorNum = colorNames.findIndex(colorName => colorName === name);
-    return colorNum > -1 ? colorNum : undefined;
   }
 }
 

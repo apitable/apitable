@@ -4,7 +4,6 @@ import { useAtom } from 'jotai';
 import Image from 'next/image';
 import React, { useEffect, useMemo } from 'react';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
-import { useSelector } from 'react-redux';
 import {
   Box,
   IconButton,
@@ -18,6 +17,7 @@ import {
 import { Strings, t, ThemeName } from '@apitable/core';
 import { DownloadOutlined, LoadingOutlined, RefreshOutlined } from '@apitable/icons';
 import { RobotRunHistoryItemDetail, useRunTaskDetail } from 'pc/components/robot/robot_detail/robot_run_history/robot_run_history_item_detail';
+import { useAppSelector } from 'pc/store/react-redux';
 import EmptyStateDarkImg from 'static/icon/datasheet/empty_state_dark.png';
 import EmptyStateLightImg from 'static/icon/datasheet/empty_state_light.png';
 import { getAutomationRunHistoryDetail } from '../../../robot/api';
@@ -27,6 +27,7 @@ import { automationHistoryAtom } from '../../controller/atoms';
 import { CONST_DATETIME_FORMAT } from '../list';
 import { TaskList } from '../list/task';
 import { handleDownload } from '../list/util';
+
 dayjs.extend(duration);
 
 const CONST_STATUS_SUCCESS = 1;
@@ -169,7 +170,7 @@ export const HistoryModalContent = () => {
     rootMargin: '0px 0px 32px 0px',
   });
 
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const EmptyResultImage = themeName === ThemeName.Light ? EmptyStateLightImg : EmptyStateDarkImg;
 
   const [currentHistoryState, setCurrentHistoryState] = useAtom(automationHistoryAtom);
@@ -193,7 +194,7 @@ export const HistoryModalContent = () => {
   return (
     <Box height={'calc(80vh - 58px)'}
       display={'flex'} flexDirection={'row'} ref={rootRef}>
-      <Box overflowY={'auto'} padding={'8px'} width={'256px'} flex={'0 0 256px'} backgroundColor={colors.bgCommonDefault}>
+      <Box overflowY={'auto'} padding={'8px'} width={'256px'} flex={'0 0 256px'} backgroundColor={colors.bgCommonDefault} alignSelf={isEmpty ? 'center': undefined}>
 
         <TaskList list={items} isSummary activeId={currentHistoryState.taskId}/>
 

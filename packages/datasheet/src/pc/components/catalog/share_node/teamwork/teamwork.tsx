@@ -20,7 +20,7 @@ import { useMount } from 'ahooks';
 import classnames from 'classnames';
 import { FC, useEffect, useState } from 'react';
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List } from 'react-window';
 import { Button, TextInput } from '@apitable/components';
@@ -32,14 +32,15 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { useCatalogTreeRequest, useResponsive, useSpaceRequest, useUserRequest, useRequest } from 'pc/hooks';
 import { NodeChangeInfoType } from 'pc/hooks/use_catalog';
 import { useInviteRequest } from 'pc/hooks/use_invite_request';
+import { useAppSelector } from 'pc/store/react-redux';
 import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { MembersDetail } from '../../permission_settings/permission/members_detail';
 import { UnitItem } from '../../permission_settings/permission/unit_item';
 import { TeamTreeSelect } from '../team_tree_select';
-import styles from './style.module.less';
 // @ts-ignore
-import { isSocialPlatformEnabled } from 'enterprise';
+import { isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 export interface ITeamworkProps {
   nodeId: string;
@@ -50,8 +51,8 @@ export const Teamwork: FC<React.PropsWithChildren<ITeamworkProps>> = ({ nodeId, 
   const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
   const [joinTeamId, setJoinTeamId] = useState('');
-  const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-  const socketData = useSelector((state: IReduxState) => state.catalogTree.socketData);
+  const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const socketData = useAppSelector((state: IReduxState) => state.catalogTree.socketData);
   const { getNodeRoleListReq } = useCatalogTreeRequest();
   const { sendInviteReq } = useInviteRequest();
   const { getInviteStatus } = useUserRequest();
@@ -65,7 +66,8 @@ export const Teamwork: FC<React.PropsWithChildren<ITeamworkProps>> = ({ nodeId, 
   const isMobile = screenIsAtMost(ScreenSize.md);
   const dispatch = useDispatch();
   const [secondVerify, setSecondVerify] = useState<null | string>(null);
-  const spaceInfo = useSelector((state: IReduxState) => state.space.curSpaceInfo)!;
+  const spaceInfo = useAppSelector((state: IReduxState) => state.space.curSpaceInfo)!;
+  const spaceId = useAppSelector((state) => state.space.activeId)!;
 
   useMount(() => {
     initNoTraceVerification(setSecondVerify, ConfigConstant.CaptchaIds.LOGIN);
@@ -92,7 +94,7 @@ export const Teamwork: FC<React.PropsWithChildren<ITeamworkProps>> = ({ nodeId, 
     if (secondVerify) {
       setSecondVerify(null);
     }
-    const success = await sendInvite([{ email: inviteEmail, teamId: joinTeamId }], nodeId, nvcVal);
+    const success = await sendInvite(spaceId, [{ email: inviteEmail, teamId: joinTeamId }], nvcVal);
     if (success) {
       Message.success({ content: t(Strings.invite_success) });
     }

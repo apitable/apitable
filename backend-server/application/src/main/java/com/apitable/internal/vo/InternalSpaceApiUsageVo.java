@@ -35,11 +35,21 @@ public class InternalSpaceApiUsageVo {
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean isAllowOverLimit;
 
-    @Schema(description = "api usage used", example = "10000")
+    @Schema(description = "api usage used", example = "10000", deprecated = true)
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    @Deprecated(since = "1.8.0", forRemoval = true)
     private Long apiUsageUsedCount;
+
+    @Schema(description = "api call nums used current month", example = "10000")
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    private Long apiCallUsedNumsCurrentMonth;
+
+    @Schema(description = "maximum api usage", example = "60000", deprecated = true)
+    @JsonSerialize(nullsUsing = NullNumberSerializer.class)
+    @Deprecated(since = "1.8.0", forRemoval = true)
+    private Long maxApiUsageCount;
 
     @Schema(description = "maximum api usage", example = "60000")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
-    private Long maxApiUsageCount;
+    private Long apiCallNumsPerMonth;
 }

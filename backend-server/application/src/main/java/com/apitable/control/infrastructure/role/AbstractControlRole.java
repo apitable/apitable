@@ -18,6 +18,12 @@
 
 package com.apitable.control.infrastructure.role;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.ObjectUtil;
+import com.apitable.control.infrastructure.ExportLevelEnum;
+import com.apitable.control.infrastructure.permission.NodePermission;
+import com.apitable.control.infrastructure.permission.PermissionDefinition;
+import com.apitable.space.vo.SpaceGlobalFeature;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -26,16 +32,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.ObjectUtil;
-
-import com.apitable.control.infrastructure.permission.NodePermission;
-import com.apitable.control.infrastructure.permission.PermissionDefinition;
-import com.apitable.control.infrastructure.ExportLevelEnum;
-import com.apitable.space.vo.SpaceGlobalFeature;
-
 /**
- * base control role
+ * base control role.
+ *
  * @author Shawn Deng
  */
 abstract class AbstractControlRole implements ControlRole {
@@ -116,14 +115,14 @@ abstract class AbstractControlRole implements ControlRole {
     @Override
     public <T> T permissionToBean(Class<T> beanClass) {
         Map<String, Boolean> map = getPermissions().stream()
-                .collect(HashMap::new, (m, v) -> m.put(v.getCode(), true), HashMap::putAll);
+            .collect(HashMap::new, (m, v) -> m.put(v.getCode(), true), HashMap::putAll);
         return BeanUtil.toBeanIgnoreError(map, beanClass);
     }
 
     @Override
     public <T> T permissionToBean(Class<T> beanClass, SpaceGlobalFeature feature) {
         Map<String, Boolean> map = getPermissions().stream()
-                .collect(HashMap::new, (m, v) -> m.put(v.getCode(), true), HashMap::putAll);
+            .collect(HashMap::new, (m, v) -> m.put(v.getCode(), true), HashMap::putAll);
         // For non-main admin, node export permissions are determined by the space global properties
         if (getPermissions().contains(NodePermission.EXPORT_NODE) && !isAdmin()) {
             // Comparison of space global attributes and individual permissions
@@ -137,7 +136,7 @@ abstract class AbstractControlRole implements ControlRole {
         Integer exportLevel = feature.exportLevelOrDefault();
         // Whether to allow node export
         boolean isDisallowedNodeExport = ObjectUtil.isNotNull(feature)
-                && ExportLevelEnum.LEVEL_CLOSED.getValue().equals(exportLevel);
+            && ExportLevelEnum.LEVEL_CLOSED.getValue().equals(exportLevel);
         if (ObjectUtil.isNull(feature) || isDisallowedNodeExport) {
             return false;
         }

@@ -19,11 +19,13 @@
 import classnames from 'classnames';
 import Trigger from 'rc-trigger';
 import { FC, useState, useEffect } from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Strings, t, Selectors, DATASHEET_ID, StoreActions } from '@apitable/core';
 import { FormOutlined } from '@apitable/icons';
 import { TComponent } from 'pc/components/common/t_component';
+import { useAppSelector } from 'pc/store/react-redux';
+import { isEmbedPage } from '../../../../../utils/utils';
 import { ToolItem } from '../tool_item';
 import { FormListPanel, IFormNodeItem } from './form_list_panel';
 import styles from './style.module.less';
@@ -38,10 +40,10 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
   const { className, showLabel = true, isHide } = props;
   const [loading, setLoading] = useState(false);
   const [panelVisible, setPanelVisible] = useState(false);
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const [formList, setFormList] = useState<IFormNodeItem[]>([]);
   const colors = useThemeColors();
-  const { folderId, datasheetId, viewId, viewName } = useSelector((state) => {
+  const { folderId, datasheetId, viewId, nodePrivate, viewName } = useAppSelector((state) => {
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const datasheet = Selectors.getDatasheet(state, datasheetId);
     const activeView = Selectors.getActiveViewId(state)!;
@@ -51,11 +53,13 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
       folderId: Selectors.getDatasheetParentId(state)!,
       datasheetId,
       viewId: activeView,
+      nodePrivate: datasheet?.nodePrivate,
       viewName,
     };
   }, shallowEqual);
-  const creatable = useSelector((state) => {
-    const { manageable } = state.catalogTree.treeNodesMap[folderId]?.permissions || {};
+  const creatable = useAppSelector((state) => {
+    const nodesMap = state.catalogTree[nodePrivate ? 'privateTreeNodesMap' : 'treeNodesMap'];
+    const { manageable } = nodesMap[folderId]?.permissions || {};
     const { editable } = Selectors.getPermissions(state);
     return manageable && editable;
   });
@@ -67,6 +71,9 @@ export const ForeignForm: FC<React.PropsWithChildren<IForeignFormProps>> = (prop
   const uniqueId = `${datasheetId}-${viewId}`;
 
   const fetchForeignFormList = async () => {
+    if (isEmbedPage()) {
+      return;
+    }
     setLoading(true);
     const formList = await StoreActions.fetchForeignFormList(datasheetId, viewId);
     setFormList(formList || []);

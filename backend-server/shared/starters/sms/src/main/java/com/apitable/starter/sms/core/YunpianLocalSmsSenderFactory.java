@@ -20,7 +20,7 @@ package com.apitable.starter.sms.core;
 
 /**
  * <p>
- * Cloud chip SMS transmitter factory
+ * Cloud chip SMS transmitter factory.
  * </p>
  *
  */

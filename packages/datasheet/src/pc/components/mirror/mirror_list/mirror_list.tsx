@@ -19,13 +19,14 @@
 import classnames from 'classnames';
 import Trigger from 'rc-trigger';
 import { FC, useEffect, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Api, ConfigConstant, DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
 import { MirrorOutlined } from '@apitable/icons';
 import { TComponent } from 'pc/components/common/t_component';
 import { MirrorListInner } from 'pc/components/mirror/mirror_list/mirror_list_inner';
 import { ToolItem } from 'pc/components/tool_bar/tool_item';
+import { useAppSelector } from 'pc/store/react-redux';
 import { IForeignFormProps, IMirrorItem } from './interface';
 import styles from './style.module.less';
 
@@ -35,13 +36,13 @@ export const MirrorList: FC<React.PropsWithChildren<IForeignFormProps>> = (props
   const [loading, setLoading] = useState(false);
   const [panelVisible, setPanelVisible] = useState(false);
   const [mirrorList, setMirrorList] = useState<IMirrorItem[]>([]);
-  // const spaceId = useSelector(state => state.space.activeId);
+  // const spaceId = useAppSelector(state => state.space.activeId);
   const {
     folderId,
     datasheetId,
     viewId,
     // viewName,
-  } = useSelector((state) => {
+  } = useAppSelector((state) => {
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const datasheet = Selectors.getDatasheet(state, datasheetId);
     const activeView = Selectors.getActiveViewId(state)!;
@@ -54,7 +55,7 @@ export const MirrorList: FC<React.PropsWithChildren<IForeignFormProps>> = (props
       viewName,
     };
   }, shallowEqual);
-  const creatable = useSelector((state) => {
+  const creatable = useAppSelector((state) => {
     const { manageable } = state.catalogTree.treeNodesMap[folderId]?.permissions || {};
     const { editable } = Selectors.getPermissions(state);
     return manageable && editable;

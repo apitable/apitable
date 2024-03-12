@@ -22,18 +22,23 @@ import com.apitable.control.infrastructure.permission.NodePermission;
 
 /**
  * <p>
- * Updater role of node
- * <p>
+ * Updater role of node.
+ * </p>
  *
  * @author liuzijing
  */
-public class NodeUpdaterRole extends NodeReaderRole{
+public class NodeUpdaterRole extends NodeReaderRole {
 
     public NodeUpdaterRole() {
         this(false);
     }
 
-    public NodeUpdaterRole(boolean inherit){
+    /**
+     * constructor.
+     *
+     * @param inherit inherit from parent
+     */
+    public NodeUpdaterRole(boolean inherit) {
         super(inherit);
 
         permissions.add(NodePermission.EDIT_CELL);
@@ -41,7 +46,7 @@ public class NodeUpdaterRole extends NodeReaderRole{
     }
 
     @Override
-    public String getRoleTag(){
+    public String getRoleTag() {
         return RoleConstants.Node.UPDATER;
     }
 }

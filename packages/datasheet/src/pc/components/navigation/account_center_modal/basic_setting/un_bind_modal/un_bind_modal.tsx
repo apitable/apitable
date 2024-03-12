@@ -21,10 +21,13 @@ import { useState } from 'react';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import { Api, ConfigConstant, hiddenMobile, StoreActions, Strings, t } from '@apitable/core';
-import { IdentifyingCodeInput, Message, NormalModal, WithTipWrapper } from 'pc/components/common';
+import { IdentifyingCodeInput } from 'pc/components/common/input/identifying_code_input/identifying_code_input';
+import { WithTipWrapper } from 'pc/components/common/input/with_tip_wrapper/with_tip_wrapper';
+import { Message } from 'pc/components/common/message/message';
+import { NormalModal } from 'pc/components/common/modal/normal_modal/normal_modal';
 import styles from 'pc/components/navigation/account_center_modal/basic_setting/modify_email_modal/style.module.less';
-import { useSetState } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
+import { useSetState } from 'pc/hooks/use_set_state';
 
 export type IUnbindType = 'mobile' | 'email';
 

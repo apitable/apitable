@@ -18,25 +18,24 @@
 
 package com.apitable.shared.cache.service.impl;
 
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.Resource;
-
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
-
+import com.apitable.core.constants.RedisConstants;
+import com.apitable.interfaces.social.enums.SocialNameModified;
 import com.apitable.shared.cache.bean.LoginUserDto;
 import com.apitable.shared.cache.service.LoginUserCacheService;
-import com.apitable.interfaces.social.enums.SocialNameModified;
-import com.apitable.user.mapper.UserMapper;
-import com.apitable.core.constants.RedisConstants;
 import com.apitable.user.entity.UserEntity;
-
+import com.apitable.user.mapper.UserMapper;
+import jakarta.annotation.Resource;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+/**
+ * login user cache service impl.
+ */
 @Service
 public class LoginUserCacheInRedisServiceImpl implements LoginUserCacheService {
 

@@ -18,15 +18,13 @@
 
 package com.apitable.starter.oss.core.minio;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-
 import cn.hutool.core.util.StrUtil;
+import com.apitable.starter.oss.core.AbstractOssClientRequest;
+import com.apitable.starter.oss.core.OssObject;
+import com.apitable.starter.oss.core.OssStatObject;
+import com.apitable.starter.oss.core.OssUploadAuth;
+import com.apitable.starter.oss.core.OssUploadPolicy;
+import com.apitable.starter.oss.core.UrlFetchResponse;
 import io.minio.BucketExistsArgs;
 import io.minio.GetObjectArgs;
 import io.minio.GetObjectResponse;
@@ -40,19 +38,23 @@ import io.minio.SetBucketPolicyArgs;
 import io.minio.StatObjectArgs;
 import io.minio.StatObjectResponse;
 import io.minio.http.Method;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 import okhttp3.Headers;
-
-import com.apitable.starter.oss.core.AbstractOssClientRequest;
-import com.apitable.starter.oss.core.OssObject;
-import com.apitable.starter.oss.core.OssStatObject;
-import com.apitable.starter.oss.core.OssUploadAuth;
-import com.apitable.starter.oss.core.OssUploadPolicy;
-import com.apitable.starter.oss.core.UrlFetchResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * minio client realization
+ * minio client realization.
  */
 public class MinioOssClientRequest extends AbstractOssClientRequest {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MinioOssClientRequest.class);
 
     private static final String CONTENT_MD5 = "Content-MD5";
 
@@ -75,82 +77,89 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
         this.autoCreateBucket = autoCreateBucket;
     }
 
-    public MinioOssClientRequest(MinioClient minioClient, boolean autoCreateBucket, String bucketPolicyJson) {
+    /**
+     * constructor.
+     *
+     * @param minioClient      minio client
+     * @param autoCreateBucket auto create bucket
+     * @param bucketPolicyJson bucket policy json
+     */
+    public MinioOssClientRequest(MinioClient minioClient, boolean autoCreateBucket,
+                                 String bucketPolicyJson) {
         this.minioClient = minioClient;
         this.autoCreateBucket = autoCreateBucket;
         this.bucketPolicyJson = bucketPolicyJson;
     }
 
     @Override
-    protected boolean isBucketExist(String bucketName) {
-        boolean found = false;
+    protected void isBucketExist(String bucketName) {
+        boolean found;
         try {
             found = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
             if (!found) {
                 if (autoCreateBucket) {
                     minioClient.makeBucket(
-                            MakeBucketArgs.builder()
-                                    .bucket(bucketName)
-                                    .build()
+                        MakeBucketArgs.builder()
+                            .bucket(bucketName)
+                            .build()
                     );
                     minioClient.setBucketPolicy(
-                            SetBucketPolicyArgs.builder()
-                                    .bucket(bucketName)
-                                    .config(bucketPolicyJson)
-                                    .build()
+                        SetBucketPolicyArgs.builder()
+                            .bucket(bucketName)
+                            .config(bucketPolicyJson)
+                            .build()
                     );
-                }
-                else {
-                    throw new UnsupportedOperationException("Your bucket does not exist and cannot be initialized");
+                } else {
+                    throw new UnsupportedOperationException(
+                        "Your bucket does not exist and cannot be initialized");
                 }
             }
+        } catch (Exception e) {
+            LOGGER.error("minio bucket not exist", e);
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return found;
     }
 
     @Override
-    public UrlFetchResponse uploadRemoteUrl(String bucketName, String remoteSrcUrl, String keyPath) throws IOException {
+    public UrlFetchResponse uploadRemoteUrl(String bucketName, String remoteSrcUrl, String keyPath)
+        throws IOException {
         isBucketExist(bucketName);
         try {
             ObjectWriteResponse response = minioClient.putObject(
-                    PutObjectArgs.builder()
-                            .bucket(bucketName)
-                            .object(keyPath)
-                            .stream(getStream(remoteSrcUrl), -1, 10485760)
-                            .build());
+                PutObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(keyPath)
+                    .stream(getStream(remoteSrcUrl), -1, 10485760)
+                    .build());
             String contentType = response.headers().get("Content-Type");
             String lengthString = response.headers().get("Content-Length");
-            long contentLength = StrUtil.isNotBlank(lengthString) ? Long.parseLong(lengthString) : 0L;
-            return new UrlFetchResponse(response.object(), response.etag(), contentLength, contentType);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+            long contentLength =
+                lengthString != null && !lengthString.isEmpty() ? Long.parseLong(lengthString) : 0L;
+            return new UrlFetchResponse(response.object(), response.etag(), contentLength,
+                contentType);
+        } catch (Exception e) {
             throw new IOException("upload failed", e);
         }
     }
 
     @Override
-    public void uploadStreamForObject(String bucketName, InputStream in, String keyPath) throws IOException {
+    public void uploadStreamForObject(String bucketName, InputStream in, String keyPath)
+        throws IOException {
         isBucketExist(bucketName);
         try {
             minioClient.putObject(
-                    PutObjectArgs.builder()
-                            .bucket(bucketName)
-                            .object(keyPath)
-                            .stream(in, -1, 10485760)
-                            .build());
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+                PutObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(keyPath)
+                    .stream(in, -1, 10485760)
+                    .build());
+        } catch (Exception e) {
             throw new IOException("upload failed", e);
         }
     }
 
     @Override
-    public void uploadStreamForObject(String bucketName, InputStream in, String path, String mimeType, String digest) throws IOException {
+    public void uploadStreamForObject(String bucketName, InputStream in, String path,
+                                      String mimeType, String digest) throws IOException {
         isBucketExist(bucketName);
         try {
             Map<String, String> userMetadata = new HashMap<>(16);
@@ -161,17 +170,15 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
                 userMetadata.put(CONTENT_MD5, digest);
             }
             minioClient.putObject(
-                    PutObjectArgs.builder()
-                            .bucket(bucketName)
-                            .object(path)
-                            // 10M slice upload
-                            .stream(in, -1, 10485760)
-                            .contentType(mimeType)
-                            .headers(userMetadata)
-                            .build());
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+                PutObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(path)
+                    // 10M slice upload
+                    .stream(in, -1, 10485760)
+                    .contentType(mimeType)
+                    .headers(userMetadata)
+                    .build());
+        } catch (Exception e) {
             throw new IOException("upload failed", e);
         }
     }
@@ -180,19 +187,19 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
     public OssObject getObject(String bucketName, String path) {
         isBucketExist(bucketName);
         try (GetObjectResponse response =
-                     minioClient.getObject(
-                             GetObjectArgs.builder()
-                                     .bucket(bucketName)
-                                     .object(path)
-                                     .build()
-                     )) {
+                 minioClient.getObject(
+                     GetObjectArgs.builder()
+                         .bucket(bucketName)
+                         .object(path)
+                         .build()
+                 )) {
             Headers headers = response.headers();
             return new OssObject(headers.get(CONTENT_MD5),
-                    Objects.isNull(headers.get(CONTENT_LENGTH)) ? 0 : Long.parseLong(Objects.requireNonNull(headers.get(CONTENT_LENGTH))),
-                    headers.get(CONTENT_TYPE), response);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+                Objects.isNull(headers.get(CONTENT_LENGTH)) ? 0 :
+                    Long.parseLong(Objects.requireNonNull(headers.get(CONTENT_LENGTH))),
+                headers.get(CONTENT_TYPE), response);
+        } catch (Exception e) {
+            LOGGER.error("minio get object failed", e);
             return null;
         }
     }
@@ -201,31 +208,31 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
     public OssStatObject getStatObject(String bucketName, String key) {
         try {
             StatObjectResponse stat = minioClient.statObject(
-                    StatObjectArgs.builder()
-                            .bucket(bucketName)
-                            .object(key)
-                            .build());
-            return new OssStatObject(stat.object(), stat.etag(), stat.size(), stat.headers().get(CONTENT_TYPE));
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+                StatObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(key)
+                    .build());
+            return new OssStatObject(stat.object(), stat.etag(), stat.size(),
+                stat.headers().get(CONTENT_TYPE));
+        } catch (Exception e) {
+            LOGGER.error("minio get stat object failed", e);
         }
         return null;
     }
 
     @Override
-    public void executeStreamFunction(String bucketName, String key, Consumer<InputStream> function) {
+    public void executeStreamFunction(String bucketName, String key,
+                                      Consumer<InputStream> function) {
         try (GetObjectResponse response =
-                     minioClient.getObject(
-                             GetObjectArgs.builder()
-                                     .bucket(bucketName)
-                                     .object(key)
-                                     .build()
-                     )) {
+                 minioClient.getObject(
+                     GetObjectArgs.builder()
+                         .bucket(bucketName)
+                         .object(key)
+                         .build()
+                 )) {
             function.accept(response);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error("execute stream function failed", e);
         }
     }
 
@@ -234,14 +241,13 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
         isBucketExist(bucketName);
         try {
             minioClient.removeObject(
-                    RemoveObjectArgs.builder()
-                            .bucket(bucketName)
-                            .object(key)
-                            .build());
+                RemoveObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(key)
+                    .build());
             return true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error("minio delete object failed", e);
             return false;
         }
     }
@@ -252,30 +258,31 @@ public class MinioOssClientRequest extends AbstractOssClientRequest {
     }
 
     @Override
-    public OssUploadAuth uploadToken(String bucket, String key, long expires, OssUploadPolicy uploadPolicy) {
+    public OssUploadAuth uploadToken(String bucket, String key, long expires,
+                                     OssUploadPolicy uploadPolicy) {
         isBucketExist(bucket);
         OssUploadAuth ossUploadAuth = new OssUploadAuth();
         Map<String, String> reqParams = new HashMap<>();
         try {
             String url = minioClient.getPresignedObjectUrl(
-                    GetPresignedObjectUrlArgs.builder()
-                            .method(Method.PUT)
-                            .bucket(bucket)
-                            .object(key)
-                            .expiry((int) expires, TimeUnit.SECONDS)
-                            .extraQueryParams(reqParams)
-                            .build());
+                GetPresignedObjectUrlArgs.builder()
+                    .method(Method.PUT)
+                    .bucket(bucket)
+                    .object(key)
+                    .expiry((int) expires, TimeUnit.SECONDS)
+                    .extraQueryParams(reqParams)
+                    .build());
             ossUploadAuth.setUploadUrl(url);
             ossUploadAuth.setUploadRequestMethod("PUT");
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOGGER.error("minio get upload token failed", e);
         }
         return ossUploadAuth;
     }
 
     @Override
-    public boolean isValidCallback(String originAuthorization, String url, byte[] body, String contentType) {
+    public boolean isValidCallback(String originAuthorization, String url, byte[] body,
+                                   String contentType) {
         // TODO minio support immediately
         return false;
     }

@@ -5,7 +5,7 @@ import React from 'react';
 const Auth0CallbackWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/auth0').then((components) => {
       return components.Auth0Callback;
     }),
   { ssr: false },

@@ -18,9 +18,7 @@
 
 package com.apitable.base.service.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
+import static com.apitable.core.constants.RedisConstants.GENERAL_CONFIG;
 
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
@@ -30,12 +28,11 @@ import com.apitable.base.mapper.SystemConfigMapper;
 import com.apitable.base.model.SystemConfigDTO;
 import com.apitable.base.service.ISystemConfigService;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import jakarta.annotation.Resource;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
-import static com.apitable.core.constants.RedisConstants.GENERAL_CONFIG;
 
 /**
  * System Config Service Implement Class.
@@ -46,11 +43,9 @@ import static com.apitable.core.constants.RedisConstants.GENERAL_CONFIG;
 @Slf4j
 public class SystemConfigServiceImpl implements ISystemConfigService {
 
-    /** */
     @Resource
     private SystemConfigMapper systemConfigMapper;
 
-    /** */
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
 
@@ -74,8 +69,8 @@ public class SystemConfigServiceImpl implements ISystemConfigService {
     /**
      * Find Config.
      *
-     * @param type  configuration type
-     * @param lang  configuration language (optional)
+     * @param type configuration type
+     * @param lang configuration language (optional)
      * @return config
      */
     @Override
@@ -86,8 +81,8 @@ public class SystemConfigServiceImpl implements ISystemConfigService {
     /**
      * Find System Config DTOs.
      *
-     * @param type  configuration type
-     * @return List<SystemConfigDTO>
+     * @param type configuration type
+     * @return List of SystemConfigDTO
      */
     @Override
     public List<SystemConfigDTO> findSystemConfigDTOs(
@@ -115,22 +110,22 @@ public class SystemConfigServiceImpl implements ISystemConfigService {
         // does not exist, create a new record
         if (ObjectUtil.isNull(id)) {
             SystemConfigEntity entity = SystemConfigEntity.builder()
-                    .id(IdWorker.getId())
-                    .type(type.getType())
-                    .i18nName(lang)
-                    .configMap(configVal)
-                    .createdBy(userId)
-                    .updatedBy(userId)
-                    .build();
+                .id(IdWorker.getId())
+                .type(type.getType())
+                .i18nName(lang)
+                .configMap(configVal)
+                .createdBy(userId)
+                .updatedBy(userId)
+                .build();
             systemConfigMapper.insert(entity);
             return;
         }
         // exist, update the record
         SystemConfigEntity entity = SystemConfigEntity.builder()
-                .id(id)
-                .configMap(configVal)
-                .updatedBy(userId)
-                .build();
+            .id(id)
+            .configMap(configVal)
+            .updatedBy(userId)
+            .build();
         systemConfigMapper.updateById(entity);
     }
 

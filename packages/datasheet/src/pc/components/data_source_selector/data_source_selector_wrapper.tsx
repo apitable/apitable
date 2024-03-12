@@ -1,8 +1,8 @@
-import { PcWrapper } from './pc_wrapper';
-import { Popup } from '../common/mobile/popup';
-import styles from './style.module.less';
 import { useResponsive } from '../../hooks';
 import { ScreenSize } from '../common/component_display';
+import { Popup } from '../common/mobile/popup';
+import { PcWrapper } from './pc_wrapper';
+import styles from './style.module.less';
 
 interface IDataSourceSelectorWrapperProps {
   title: string;

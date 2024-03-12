@@ -21,8 +21,8 @@ import React from 'react';
 import { Strings, t } from '@apitable/core';
 import { ButtonPlus } from 'pc/components/common/button_plus/button_plus';
 import { NotifyKey, ICustomNotifyConfig } from 'pc/components/common/notify/notify.interface';
-import { DASHBOARD_PANEL_ID } from 'pc/components/dashboard_panel';
-import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view';
+import { DASHBOARD_PANEL_ID } from 'pc/components/dashboard_panel/dashboard/id';
+import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view/id';
 import notification from './notification/index';
 
 notification.config({

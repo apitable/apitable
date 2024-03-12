@@ -111,13 +111,12 @@
     </select>
 
     <select id="selectByIds" resultType="com.apitable.user.entity.UserEntity">
-        SELECT vu.avatar, vu.email, vu.id, vu.nick_name, vu.uuid
+        SELECT vu.avatar, vu.email, vu.id, vu.nick_name, vu.uuid, vu.color
         FROM ${tablePrefix}user vu
         WHERE vu.id IN
         <foreach collection="userIds" index="index" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
-        AND is_deleted = 0
     </select>
 
     <select id="selectByUuIds" resultType="com.apitable.user.entity.UserEntity">

@@ -34,7 +34,6 @@ import com.apitable.space.vo.SpaceSubscribeVo;
 import com.apitable.space.vo.SpaceVO;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.workspace.enums.NodeType;
-import com.apitable.workspace.ro.NodeOpRo;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -128,6 +127,40 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void testGetNodeCountExcludeFolder() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        initNodeTreeMockData(userSpace.getSpaceId(), rootNodeId);
+        long count =
+            iSpaceService.getNodeCountBySpaceId(userSpace.getSpaceId(), NodeType::isFolder);
+        assertThat(count).isNotZero().isEqualTo(5L);
+    }
+
+    @Test
+    void testGetNodeCountExcludeFolderWhenNone() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        long count =
+            iSpaceService.getNodeCountBySpaceId(userSpace.getSpaceId(), NodeType::isFolder);
+        assertThat(count).isZero();
+    }
+
+    @Test
+    void testCheckFileNumOverLimitWithThrownException() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
+        initNodeTreeMockData(userSpace.getSpaceId(), rootNodeId);
+        assertThatThrownBy(() -> iSpaceService.checkFileNumOverLimit(userSpace.getSpaceId()))
+            .isInstanceOf(BusinessException.class);
+    }
+
+    @Test
+    void testCheckFileNumOverLimitWithoutException() {
+        MockUserSpace userSpace = createSingleUserAndSpace();
+        assertThatNoException().isThrownBy(
+            () -> iSpaceService.checkFileNumOverLimit(userSpace.getSpaceId()));
+    }
+
+    @Test
     void testGetSpaceSubscriptionInfo() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         SpaceSubscribeVo spaceSubscribeVo =
@@ -138,11 +171,11 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         assertThat(spaceSubscribeVo.getOnTrial()).isFalse();
         assertThat(spaceSubscribeVo.getExpireAt()).isNull();
         assertThat(spaceSubscribeVo.getDeadline()).isNull();
-        assertThat(spaceSubscribeVo.getMaxSeats()).isEqualTo(-1L);
-        assertThat(spaceSubscribeVo.getMaxCapacitySizeInBytes()).isEqualTo(-1L);
-        assertThat(spaceSubscribeVo.getMaxSheetNums()).isEqualTo(-1L);
-        assertThat(spaceSubscribeVo.getMaxRowsPerSheet()).isEqualTo(-1L);
-        assertThat(spaceSubscribeVo.getMaxRowsInSpace()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxSeats()).isEqualTo(2L);
+        assertThat(spaceSubscribeVo.getMaxCapacitySizeInBytes()).isEqualTo(1024 * 1024 * 1024L);
+        assertThat(spaceSubscribeVo.getMaxSheetNums()).isEqualTo(5L);
+        assertThat(spaceSubscribeVo.getMaxRowsPerSheet()).isEqualTo(100L);
+        assertThat(spaceSubscribeVo.getMaxRowsInSpace()).isEqualTo(250L);
         assertThat(spaceSubscribeVo.getMaxAdminNums()).isEqualTo(-1L);
         assertThat(spaceSubscribeVo.getMaxMirrorNums()).isEqualTo(-1L);
         assertThat(spaceSubscribeVo.getMaxApiCall()).isEqualTo(-1L);
@@ -156,7 +189,8 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
         assertThat(spaceSubscribeVo.getMaxMessageCredits()).isEqualTo(0L);
         assertThat(spaceSubscribeVo.getMaxRemainTimeMachineDays()).isEqualTo(-1L);
         assertThat(spaceSubscribeVo.getMaxRemainRecordActivityDays()).isEqualTo(-1L);
-        assertThat(spaceSubscribeVo.getMaxAuditQueryDays()).isEqualTo(-1L);
+        assertThat(spaceSubscribeVo.getMaxAuditQueryDays()).isEqualTo(0);
+        assertThat(spaceSubscribeVo.getAuditQuery()).isFalse();
         assertThat(spaceSubscribeVo.getRainbowLabel()).isEqualTo(false);
         assertThat(spaceSubscribeVo.getWatermark()).isEqualTo(false);
         assertThat(spaceSubscribeVo.getIntegrationFeishu()).isEqualTo(false);
@@ -178,17 +212,11 @@ public class SpaceServiceImplTest extends AbstractIntegrationTest {
     void testGetSeatUsage() {
         MockUserSpace userSpace = createSingleUserAndSpace();
         // create ai node
-        String rootNodeId = iNodeService.getRootNodeIdBySpaceId(userSpace.getSpaceId());
-        NodeOpRo nodeOpRo = NodeOpRo.builder()
-            .parentId(rootNodeId)
-            .type(NodeType.AI_CHAT_BOT.getNodeType())
-            .checkDuplicateName(false)
-            .build();
-        iNodeService.createNode(userSpace.getUserId(), userSpace.getSpaceId(), nodeOpRo);
         SeatUsage seatUsage = iSpaceService.getSeatUsage(userSpace.getSpaceId());
         assertThat(seatUsage).isNotNull();
-        assertThat(seatUsage.getChatBotCount()).isEqualTo(1L);
         assertThat(seatUsage.getMemberCount()).isEqualTo(1L);
-        assertThat(seatUsage.getTotal()).isEqualTo(2L);
+        assertThat(seatUsage.getTotal()).isEqualTo(1L);
     }
+
+
 }

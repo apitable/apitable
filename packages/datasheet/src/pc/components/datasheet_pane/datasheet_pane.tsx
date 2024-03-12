@@ -18,14 +18,13 @@
 
 import { useToggle } from 'ahooks';
 import classNames from 'classnames';
+import { useAtom } from 'jotai';
 import { get } from 'lodash';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
 import { FC, useCallback, useContext, useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import { Skeleton } from '@apitable/components';
+import { Alert, Button, Skeleton } from '@apitable/components';
 import {
   ConfigConstant,
   Events,
@@ -40,19 +39,22 @@ import {
   SystemConfig,
   t,
 } from '@apitable/core';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ApiPanel } from 'pc/components/api_panel';
-import { ArchivedRecords } from 'pc/components/archive_record';
+import { automationHistoryAtom } from 'pc/components/automation/controller';
+import AutomationHistoryPanel from 'pc/components/automation/run_history/modal/modal';
 import { Message, VikaSplitPanel } from 'pc/components/common';
+
+import { JobTaskProvider } from 'pc/components/editors/button_editor/job_task';
 import { TimeMachine } from 'pc/components/time_machine';
 import { useMountWidgetPanelShortKeys } from 'pc/components/widget/hooks';
 import { SideBarClickType, SideBarContext, SideBarType, useSideBar } from 'pc/context';
 import { useResponsive } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { exportDatasheetBase } from 'pc/utils';
-import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
-import styles from './style.module.less';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { DevToolsPanel } from '../development/dev_tools_panel';
 import { closeAllExpandRecord } from '../expand_record';
@@ -65,7 +67,12 @@ import { TabBar } from '../tab_bar';
 import { ViewContainer } from '../view_container';
 import { WidgetPanel } from '../widget';
 // @ts-ignore
-import { WeixinShareWrapper, createBackupSnapshot } from 'enterprise';
+import { Copilot } from 'enterprise/Copilot';
+// @ts-ignore
+import { createBackupSnapshot } from 'enterprise/time_machine/backup/backup';
+// @ts-ignore
+import { WeixinShareWrapper } from 'enterprise/wechat/weixin_share_wrapper/weixin_share_wrapper';
+import styles from './style.module.less';
 
 const RobotPanel = dynamic(() => import('pc/components/robot/robot_panel/robot_panel'), {
   ssr: false,
@@ -93,8 +100,8 @@ interface IDatasheetMain {
 
 const DatasheetMain = (props: IDatasheetMain) => {
   const { loading, datasheetErrorCode, isNoPermission, shareId, datasheetId, preview, testFunctions, handleExitTest, mirrorId, embedId } = props;
-  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
-  const previewDstType = useSelector((state) => {
+  const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
+  const previewDstType = useAppSelector((state) => {
     const datasheet = Selectors.getDatasheet(state);
     return datasheet && datasheet?.type;
   });
@@ -138,19 +145,23 @@ const DatasheetMain = (props: IDatasheetMain) => {
         )}
       </div>
       <SuspensionPanel shareId={shareId} datasheetId={datasheetId} />
-      {(preview || testFunctions) && previewDstType !== PREVIEW_DATASHEET_BACKUP && (
-        <div className={styles.previewing}>
-          <div className={styles.previewTip}>
-            {preview ? t(Strings.preview_time_machine, { version: preview }) : t(Strings.experience_test_function, { testFunctions })}
-            {testFunctions && <a onClick={handleExitTest}>{t(Strings.exist_experience)}</a>}
-            {preview && (
-              <span style={{ marginLeft: 14, cursor: 'pointer', textDecoration: 'underline' }} onClick={exportPreviewCsv}>
-                {t(Strings.export_current_preview_view_data)}
-              </span>
+      {(preview || testFunctions) && previewDstType !== PREVIEW_DATASHEET_BACKUP &&
+          <Alert
+            className={styles.previewing}
+            type="default"
+            content={(
+              <div className={styles.previewTip}>
+                <span>{preview ? t(Strings.preview_time_machine, { version: preview }) :
+                  t(Strings.experience_test_function, { testFunctions })}</span>
+                <Button
+                  size="small"
+                  color="primary"
+                  onClick={exportPreviewCsv}
+                >{t(Strings.export_current_preview_view_data)}</Button>
+              </div>
             )}
-          </div>
-        </div>
-      )}
+          />
+      }
     </div>
   );
 };
@@ -162,29 +173,31 @@ const DefaultPanelWidth = {
   Api: '50%',
   Robot: 360,
   SideRecord: 450,
+  Copilot: 480,
 } as const;
 
 const DISABLED_CLOSE_SIDEBAR_WIDTH = 1920;
 
 const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>> = (props) => {
-  const { shareId, datasheetId, templateId, mirrorId, embedId } = useSelector((state) => {
+  const { shareId, datasheetId, templateId, mirrorId, embedId } = useAppSelector((state) => {
     return state.pageParams;
   });
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const isLogin = useAppSelector((state) => state.user.isLogin);
 
   const isShareMode = shareId || templateId || (embedId && !isLogin);
   const { isMobile } = useResponsive();
-  const rightPanelWidth = useSelector((state) => state.rightPane.width);
-  const datasheetErrorCode = useSelector((state) => Selectors.getDatasheetErrorCode(state));
-  const loading = useSelector((state) => {
+  const rightPanelWidth = useAppSelector((state) => state.rightPane.width);
+  const datasheetErrorCode = useAppSelector((state) => Selectors.getDatasheetErrorCode(state));
+  const loading = useAppSelector((state) => {
     const datasheet = Selectors.getDatasheet(state);
     return Boolean(!datasheet || datasheet.isPartOfData || datasheet.sourceId);
   });
-  const preview = useSelector((state) => {
+  const preview = useAppSelector((state) => {
     const datasheet = Selectors.getDatasheet(state);
     return datasheet && datasheet.preview;
   });
-  const activeDatasheetId = useSelector(Selectors.getActiveDatasheetId);
+  const manageable = useAppSelector((state) => Selectors.getPermissions(state, datasheetId).manageable);
+  const activeDatasheetId = useAppSelector(Selectors.getActiveDatasheetId);
   const dispatch = useAppDispatch();
   const testFunctions = useMemo(() => {
     const funcs = getStorage(StorageName.TestFunctions) || {};
@@ -194,27 +207,31 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
       .join(' , ');
   }, []);
 
-  const widgetPanelStatus = useSelector((state) => {
+  const widgetPanelStatus = useAppSelector((state) => {
     const { mirrorId, datasheetId } = state.pageParams;
     const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;
     const resourceId = mirrorId || datasheetId || '';
     return Selectors.getResourceWidgetPanelStatus(state, resourceId, resourceType);
   })!;
-  const isApiPanelOpen = useSelector((state) => state.space.isApiPanelOpen);
-  const isSideRecordOpen = useSelector((state) => state.space.isSideRecordOpen);
-  const isTimeMachinePanelOpen = useSelector((state) => {
+  const isApiPanelOpen = useAppSelector((state) => state.space.isApiPanelOpen);
+  const isSideRecordOpen = useAppSelector((state) => state.space.isSideRecordOpen);
+  const isTimeMachinePanelOpen = useAppSelector((state) => {
     const clientState = Selectors.getDatasheetClient(state, datasheetId);
     return clientState && clientState.isTimeMachinePanelOpen;
   });
-  const isArchivedRecordsPanelOpen = useSelector((state) => {
+
+  const isArchivedRecordsPanelOpen = useAppSelector((state) => {
     const clientState = Selectors.getDatasheetClient(state, datasheetId);
     return clientState && clientState.isArchivedRecordsPanelOpen;
   });
 
   useMountWidgetPanelShortKeys();
 
+  const [historyDialog, setHistoryDialog] = useAtom(automationHistoryAtom);
   const [isDevToolsOpen, { toggle: toggleDevToolsOpen, set: setDevToolsOpen }] = useToggle();
   const [isRobotPanelOpen, { toggle: toggleRobotPanelOpen, set: setRobotPanelOpen }] = useToggle();
+  const [isCopilotPanelOpen, { toggle: toggleCopilotPanelOpen, set: setCopilotPanelOpen }] = useToggle();
+
   const toggleTimeMachineOpen = useCallback(
     (state?: boolean) => {
       if (activeDatasheetId) {
@@ -272,12 +289,16 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
   }, [toggleTimeMachineOpen]);
 
   useEffect(() => {
-    if (Boolean(createBackupSnapshot) && !getEnvVariables().IS_APITABLE) {
+    ShortcutActionManager.bind(ShortcutActionName.ToggleCopilotPanel, toggleCopilotPanelOpen);
+  }, [toggleCopilotPanelOpen]);
+
+  useEffect(() => {
+    if (manageable && Boolean(createBackupSnapshot)) {
       ShortcutActionManager.bind(ShortcutActionName.CreateBackup, () => {
         _createBackupSnapshot();
       });
     }
-  }, [_createBackupSnapshot]);
+  }, [_createBackupSnapshot, manageable]);
 
   useEffect(() => {
     if (!activeDatasheetId) {
@@ -285,6 +306,13 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
     }
     dispatch(StoreActions.setRobotPanelStatus(isRobotPanelOpen, activeDatasheetId));
   }, [isRobotPanelOpen, dispatch, activeDatasheetId]);
+
+  useEffect(() => {
+    if (!activeDatasheetId) {
+      return;
+    }
+    dispatch(StoreActions.setCoPilotPanelStatus(isCopilotPanelOpen, activeDatasheetId));
+  }, [isCopilotPanelOpen, dispatch, activeDatasheetId]);
 
   useEffect(() => {
     setDevToolsOpen(false);
@@ -372,6 +400,9 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
     if (isMobile || isNoPermission) {
       return DefaultPanelWidth.Empty;
     }
+    if (isCopilotPanelOpen) {
+      return DefaultPanelWidth.Copilot;
+    }
     if (isDevToolsOpen) {
       return DefaultPanelWidth.DevTool;
     }
@@ -428,29 +459,33 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
   }, [panelSize, sideBarVisible, rightPanelWidth, onSetSideBarVisibleByOhter, onSetPanelVisible, toggleType, clickType]);
 
   const datasheetMain = props.panelLeft || (
-    <DatasheetMain
-      loading={loading}
-      datasheetErrorCode={datasheetErrorCode}
-      isNoPermission={isNoPermission}
-      shareId={shareId}
-      datasheetId={datasheetId}
-      mirrorId={mirrorId}
-      preview={preview}
-      testFunctions={testFunctions}
-      handleExitTest={handleExitTest}
-      embedId={embedId}
-    />
+    <JobTaskProvider>
+      <DatasheetMain
+        loading={loading}
+        datasheetErrorCode={datasheetErrorCode}
+        isNoPermission={isNoPermission}
+        shareId={shareId}
+        datasheetId={datasheetId}
+        mirrorId={mirrorId}
+        preview={preview}
+        testFunctions={testFunctions}
+        handleExitTest={handleExitTest}
+        embedId={embedId}
+      />
+    </JobTaskProvider>
   );
-
   const childComponent = (
     <AutoSizer style={{ width: '100%', height: '100%' }}>
       {({ width }) =>
         panelSize ? (
           <VikaSplitPanel
-            panelLeft={datasheetMain}
+            panelLeft={
+              datasheetMain
+            }
             panelRight={
               <div style={{ width: '100%', height: '100%' }}>
                 {isSideRecordOpen && <ExpandRecordPanel />}
+                { isCopilotPanelOpen && <Copilot onClose={setCopilotPanelOpen} /> }
                 <WidgetPanel />
                 {!isShareMode && <ApiPanel />}
                 {isDevToolsOpen && <DevToolsPanel onClose={setDevToolsOpen} />}
@@ -476,7 +511,18 @@ const DataSheetPaneBase: FC<React.PropsWithChildren<{ panelLeft?: JSX.Element }>
     </AutoSizer>
   );
 
-  return <>{WeixinShareWrapper ? <WeixinShareWrapper>{childComponent}</WeixinShareWrapper> : childComponent}</>;
+  return <>
+    {historyDialog.dialogVisible && (
+      <AutomationHistoryPanel
+        onClose={() => {
+          setHistoryDialog((draft) => ({
+            ...draft,
+            dialogVisible: false,
+          }));
+        }}
+      />
+    )}
+    {WeixinShareWrapper ? <WeixinShareWrapper>{childComponent}</WeixinShareWrapper> : childComponent}</>;
 };
 
 export const DataSheetPane = React.memo(DataSheetPaneBase);

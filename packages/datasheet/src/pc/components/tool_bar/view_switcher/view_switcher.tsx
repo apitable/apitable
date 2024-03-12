@@ -21,7 +21,6 @@ import classNames from 'classnames';
 import * as React from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 import { Alert, Button, useThemeColors, IUseListenTriggerInfo, useListenVisualHeight } from '@apitable/components';
 import {
   Api,
@@ -42,13 +41,14 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { changeView, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { useViewAction } from './action';
-import styles from './style.module.less';
 import { ViewFilter } from './view_filter';
 import { ViewIcon } from './view_icon';
 import { ViewItem } from './view_item';
+import styles from './style.module.less';
 
 interface IViewSwitcherProperty {
   close: (e: React.MouseEvent) => void;
@@ -260,8 +260,8 @@ const MIN_HEIGHT = 60;
 const MAX_HEIGHT = 340;
 export const ViewSwitcher: React.FC<React.PropsWithChildren<IViewSwitcherProperty>> = (props) => {
   const { close, triggerInfo } = props;
-  const activityViewId = useSelector((state) => state.pageParams.viewId);
-  const { viewCreatable, viewRenamable, viewMovable, viewRemovable, views, datasheetId } = useSelector((state) => {
+  const activityViewId = useAppSelector((state) => state.pageParams.viewId);
+  const { viewCreatable, viewRenamable, viewMovable, viewRemovable, views, datasheetId } = useAppSelector((state) => {
     const { viewCreatable, viewRenamable, viewMovable, viewRemovable } = Selectors.getPermissions(state);
 
     return {

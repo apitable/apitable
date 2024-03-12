@@ -18,13 +18,14 @@
 
 import SwipeOut from 'rc-swipeout';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { IViewProperty, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { DragOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { changeView } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { ViewIcon } from '../../view_switcher/view_icon';
 import style from '../style.module.less';
@@ -51,7 +52,7 @@ export const ViewItem: React.FC<React.PropsWithChildren<IViewItemProps>> = (prop
   const colors = useThemeColors();
   const { onChange, draggable, activeViewId, view, validator } = props;
 
-  const { viewCreatable, viewRenamable, viewRemovable, datasheetId } = useSelector((state) => {
+  const { viewCreatable, viewRenamable, viewRemovable, datasheetId } = useAppSelector((state) => {
     const { viewCreatable, viewRenamable, viewRemovable } = Selectors.getPermissions(state);
 
     const { datasheetId } = state.pageParams;

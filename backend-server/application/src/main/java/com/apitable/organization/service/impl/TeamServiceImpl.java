@@ -20,9 +20,12 @@ package com.apitable.organization.service.impl;
 
 import static com.apitable.organization.enums.OrganizationException.DUPLICATION_TEAM_NAME;
 import static com.apitable.organization.enums.OrganizationException.GET_TEAM_ERROR;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.BooleanUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.core.support.tree.DefaultTreeBuildFactory;
 import com.apitable.core.util.ExceptionUtil;
@@ -35,9 +38,11 @@ import com.apitable.organization.dto.TeamMemberDTO;
 import com.apitable.organization.dto.TeamPathInfo;
 import com.apitable.organization.dto.UnitBaseInfoDTO;
 import com.apitable.organization.entity.TeamEntity;
+import com.apitable.organization.entity.TeamMemberRelEntity;
 import com.apitable.organization.entity.UnitEntity;
 import com.apitable.organization.enums.OrganizationException;
 import com.apitable.organization.enums.UnitType;
+import com.apitable.organization.facade.TeamFacade;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.organization.mapper.TeamMapper;
 import com.apitable.organization.mapper.TeamMemberRelMapper;
@@ -47,13 +52,13 @@ import com.apitable.organization.service.IRoleMemberService;
 import com.apitable.organization.service.ITeamMemberRelService;
 import com.apitable.organization.service.ITeamService;
 import com.apitable.organization.service.IUnitService;
-import com.apitable.organization.vo.MemberInfoVo;
 import com.apitable.organization.vo.MemberPageVo;
 import com.apitable.organization.vo.MemberTeamPathInfo;
 import com.apitable.organization.vo.TeamInfoVo;
 import com.apitable.organization.vo.TeamTreeVo;
 import com.apitable.organization.vo.TeamVo;
 import com.apitable.organization.vo.UnitTeamVo;
+import com.apitable.shared.util.DBUtil;
 import com.apitable.space.service.ISpaceInviteLinkService;
 import com.apitable.space.service.ISpaceRoleService;
 import com.apitable.space.service.ISpaceService;
@@ -63,6 +68,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -79,7 +85,6 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,6 +101,9 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
 
     @Resource
     private UnitMapper unitMapper;
+
+    @Resource
+    private TeamFacade teamFacade;
 
     @Resource
     private TeamMemberRelMapper teamMemberRelMapper;
@@ -122,6 +130,13 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     private IRoleMemberService iRoleMemberService;
 
     @Override
+    public String getSpaceIdByTeamId(Long teamId) {
+        String spaceId = teamMapper.selectSpaceIdById(teamId);
+        ExceptionUtil.isNotNull(spaceId, GET_TEAM_ERROR);
+        return spaceId;
+    }
+
+    @Override
     public List<TeamBaseInfoDTO> getTeamBaseInfo(List<Long> teamIds) {
         return teamMapper.selectBaseInfoDTOByIds(teamIds);
     }
@@ -135,7 +150,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
             List<Long> teamIds = memberIsolatedInfo.getTeamIds();
             List<TeamTreeVo> teamTreeVos = this.getTeamViewInTeamTree(teamIds, depth);
             List<Long> teamIdList =
-                teamTreeVos.stream().map(TeamTreeVo::getTeamId).collect(Collectors.toList());
+                teamTreeVos.stream().map(TeamTreeVo::getTeamId).toList();
             // Setting the id of the parent department to 0 is equivalent to raising
             // the level of the directly affiliated department to the first-level department
             for (TeamTreeVo teamVO : teamTreeVos) {
@@ -161,7 +176,8 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     private List<TeamTreeVo> getTeamViewInTeamTree(List<Long> teamIds, Integer depth) {
-        List<TeamTreeVo> teamTreeVos = teamMapper.selectTeamTreeVoByTeamIdIn(teamIds);
+        List<TeamTreeVo> teamTreeVos =
+            DBUtil.batchSelectByFieldIn(teamIds, teamMapper::selectTeamTreeVoByTeamIdIn);
         Map<Long, TeamTreeVo> teamIdToTeamInfoMap = teamTreeVos.stream()
             .collect(Collectors.toMap(TeamTreeVo::getTeamId, Function.identity(),
                 (k1, k2) -> k1, LinkedHashMap::new));
@@ -169,7 +185,8 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
             .filter(i -> BooleanUtil.isTrue(i.getHasChildren()))
             .map(TeamTreeVo::getTeamId).collect(Collectors.toSet());
         while (!parentIds.isEmpty() && depth > 0) {
-            List<TeamTreeVo> treeVos = teamMapper.selectTeamTreeVoByParentIdIn(parentIds);
+            List<TeamTreeVo> treeVos =
+                DBUtil.batchSelectByFieldIn(parentIds, teamMapper::selectTeamTreeVoByParentIdIn);
             if (treeVos.isEmpty()) {
                 return new ArrayList<>(teamIdToTeamInfoMap.values());
             }
@@ -286,7 +303,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     @Override
     public List<Long> getUnitsByTeam(Long teamId) {
         log.info("Gets the organizational unit for the team and all parent teams.");
-        List<Long> teamIds = baseMapper.selectAllParentTeamIds(teamId, true);
+        List<Long> teamIds = teamFacade.getAllParentTeamIds(teamId);
         List<Long> roleIds = iRoleMemberService.getRoleIdsByRoleMemberId(teamId);
         return iUnitService.getUnitIdsByRefIds(CollUtil.addAll(teamIds, roleIds));
     }
@@ -326,7 +343,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         entities.forEach(team -> {
             UnitEntity unit = new UnitEntity();
             unit.setId(IdWorker.getId());
-            unit.setUnitId(IdWorker.get32UUID());
+            unit.setUnitId(IdUtil.fastSimpleUUID());
             unit.setSpaceId(spaceId);
             unit.setUnitType(UnitType.TEAM.getType());
             unit.setUnitRefId(team.getId());
@@ -420,21 +437,35 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         if (StrUtil.isBlank(lastTeamName)) {
             return null;
         }
-        // query the department level path by department
-        List<TeamEntity> teamEntities = baseMapper.selectTreeByTeamName(spaceId, lastTeamName);
+        List<TeamPathInfo> teams = teamMapper.selectInfoByTeamName(spaceId, lastTeamName);
+        if (teams.isEmpty()) {
+            return null;
+        }
+        Map<Long, Long> teamIdToParentIdMap = teams.stream()
+            .filter(i -> !i.getParentId().equals(0L))
+            .collect(Collectors.toMap(TeamPathInfo::getId, TeamPathInfo::getParentId));
+        if (!teamIdToParentIdMap.isEmpty()) {
+            List<TeamPathInfo> parentTeams =
+                teamFacade.getAllParentTeam(teamIdToParentIdMap.values());
+            if (!parentTeams.isEmpty()) {
+                Set<Long> teamIds = teamIdToParentIdMap.keySet();
+                parentTeams.stream().filter(i -> !teamIds.contains(i.getId()))
+                    .forEach(teams::add);
+            }
+        }
         // The department name service is repeated, split into a tree, and searched using the tree
-        Map<String, Long> teamPathName = buildTreeTeamList(teamEntities, lastTeamName);
+        Map<String, Long> teamPathName = buildTreeTeamList(teams, lastTeamName);
         // Recombine department level strings.
         // To be on the safe side, remove the space between each department.
         String withoutBlankTeamNamePath = CollUtil.join(teamNames, "-");
         return teamPathName.getOrDefault(withoutBlankTeamNamePath, null);
     }
 
-    private Map<String, Long> buildTreeTeamList(List<TeamEntity> teamEntities, String teamName) {
+    private Map<String, Long> buildTreeTeamList(List<TeamPathInfo> teamEntities, String teamName) {
         Map<String, Long> teamPathMap = new HashMap<>();
         List<Long> teamIds = teamEntities.stream()
             .filter(e -> e.getTeamName().equals(teamName))
-            .map(TeamEntity::getId).collect(Collectors.toList());
+            .map(TeamPathInfo::getId).toList();
         teamIds.forEach(teamId -> {
             List<String> teamPath = new ArrayList<>();
             findParentTeam(teamEntities, teamId, teamPath::add);
@@ -444,12 +475,14 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         return teamPathMap;
     }
 
-    private void findParentTeam(List<TeamEntity> teamEntities, Long teamId,
+    private void findParentTeam(List<TeamPathInfo> teamEntities, Long teamId,
                                 Consumer<String> teamPath) {
-        for (TeamEntity teamEntity : teamEntities) {
-            if (teamEntity.getId().equals(teamId) && !teamEntity.getParentId().equals(0L)) {
+        for (TeamPathInfo teamEntity : teamEntities) {
+            if (teamEntity.getId().equals(teamId)
+                && !teamEntity.getParentId().equals(0L)) {
                 teamPath.accept(teamEntity.getTeamName());
                 findParentTeam(teamEntities, teamEntity.getParentId(), teamPath);
+                break;
             }
         }
     }
@@ -464,7 +497,8 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         teamInfo.setTeamName(team.getTeamName());
         if (team.getParentId() == 0L) {
             teamInfo.setTeamId(0L);
-            Long memberCount = SqlTool.retCount(memberMapper.selectCountBySpaceId(team.getSpaceId()));
+            Long memberCount =
+                SqlTool.retCount(memberMapper.selectCountBySpaceId(team.getSpaceId()));
             teamInfo.setMemberCount(memberCount);
             return teamInfo;
         }
@@ -525,7 +559,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         ExceptionUtil.isTrue(flag, OrganizationException.DELETE_TEAM_ERROR);
         iUnitService.removeByTeamId(teamId);
         // delete the department and remove the public link
-        iSpaceInviteLinkService.deleteByTeamId(teamId);
+        iSpaceInviteLinkService.deleteByTeamIds(Collections.singletonList(teamId));
     }
 
     @Override
@@ -593,63 +627,9 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     @Override
-    public List<TeamTreeVo> getMemberTeamTree(String spaceId, List<Long> teamIds) {
-        log.info("Builds the department organization tree to which a member belongs "
-            + "after being isolated");
-        // Gets a member's department and all sub-departments.
-        List<TeamTreeVo> allTeamsVO = this.getMemberAllTeamsVO(spaceId, teamIds);
-        //  Gets a member's department's and all sub-departments' id
-        List<Long> teamIdList =
-            allTeamsVO.stream().map(TeamTreeVo::getTeamId).collect(Collectors.toList());
-        // Setting the id of the parent department to 0 is equivalent to raising the level of the
-        // directly affiliated department to the first-level department
-        for (TeamTreeVo teamVO : allTeamsVO) {
-            if (teamIds.contains(teamVO.getTeamId()) && !teamIdList.contains(teamVO.getParentId())
-                && teamVO.getParentId() != 0) {
-                teamVO.setParentId(0L);
-            }
-        }
-        return new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(allTeamsVO);
-    }
-
-    @Override
-    public List<TeamTreeVo> getMemberAllTeamsVO(String spaceId, List<Long> teamIds) {
-        log.info("Gets a member's department and all sub-departments.");
-        // Gets a member's department's and all sub-departments' id
-        List<TeamCteInfo> allTeamIds =
-            teamMapper.selectChildTreeByTeamIds(spaceId, teamIds);
-        List<Long> filterTeamIds =
-            allTeamIds.stream().map(TeamCteInfo::getId).collect(Collectors.toList());
-        return this.buildTree(spaceId, filterTeamIds);
-    }
-
-    @Override
-    public List<TeamTreeVo> loadMemberTeamTree(String spaceId, Long memberId) {
-        log.info("load the organization tree of member departments");
-        // check whether members are isolated from contacts
-        MemberIsolatedInfo memberIsolatedInfo =
-            this.checkMemberIsolatedBySpaceId(spaceId, memberId);
-        if (Boolean.TRUE.equals(memberIsolatedInfo.isIsolated())) {
-            // get the department organization tree
-            return this.getMemberTeamTree(spaceId, memberIsolatedInfo.getTeamIds());
-        }
-        // statistical space under all departments
-        List<TeamTreeVo> treeList = this.build(spaceId, null);
-        // build the default loaded organization tree
-        List<TeamTreeVo> teamTreeVoList =
-            new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(treeList);
-        // root team id is deal with 0
-        for (TeamTreeVo teamTreeVo : teamTreeVoList) {
-            if (teamTreeVo.getParentId() == 0) {
-                teamTreeVo.setTeamId(0L);
-            }
-        }
-        return teamTreeVoList;
-    }
-
-    @Override
     public List<UnitTeamVo> getUnitTeamVo(String spaceId, List<Long> teamIds) {
-        return baseMapper.selectUnitTeamVoByTeamIds(spaceId, teamIds);
+        return DBUtil.batchSelectByFieldIn(teamIds,
+            (ids) -> teamMapper.selectUnitTeamVoByTeamIds(spaceId, ids));
     }
 
     @Override
@@ -668,21 +648,6 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     @Override
-    public void handleListMemberTeams(List<MemberInfoVo> memberInfoVos, String spaceId) {
-        // get all member's id
-        List<Long> memberIds =
-            memberInfoVos.stream().map(MemberInfoVo::getMemberId).collect(Collectors.toList());
-        // handle member's team name. get full hierarchy team name
-        Map<Long, List<MemberTeamPathInfo>> memberToTeamPathInfoMap =
-            this.batchGetFullHierarchyTeamNames(memberIds, spaceId);
-        for (MemberInfoVo memberInfoVo : memberInfoVos) {
-            if (memberToTeamPathInfoMap.containsKey(memberInfoVo.getMemberId())) {
-                memberInfoVo.setTeamData(memberToTeamPathInfoMap.get(memberInfoVo.getMemberId()));
-            }
-        }
-    }
-
-    @Override
     public Map<Long, List<MemberTeamPathInfo>> batchGetFullHierarchyTeamNames(List<Long> memberIds,
                                                                               String spaceId) {
         if (CollUtil.isEmpty(memberIds)) {
@@ -694,7 +659,7 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
         // group by memberId
         Map<Long, List<Long>> memberTeamMap = memberTeamInfoList.stream()
             .collect(Collectors.groupingBy(MemberTeamInfoDTO::getMemberId,
-                Collectors.mapping(MemberTeamInfoDTO::getTeamId, Collectors.toList())));
+                mapping(MemberTeamInfoDTO::getTeamId, Collectors.toList())));
         // get member's each full hierarchy team name
         Map<Long, List<String>> teamIdToPathMap =
             this.getMemberEachTeamPathName(memberTeamMap, spaceId);
@@ -764,6 +729,32 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
     }
 
     @Override
+    public Map<Long, List<String>> getMembersTeamName(List<Long> memberIds) {
+        List<TeamMemberRelEntity> memberTeamRel = iTeamMemberRelService.getByMemberIds(memberIds);
+        if (memberTeamRel.isEmpty()) {
+            return new HashMap<>(0);
+        }
+        List<Long> teamIds =
+            memberTeamRel.stream().map(TeamMemberRelEntity::getTeamId).distinct().toList();
+        Map<Long, List<Long>> memberTeamIdMap = memberTeamRel.stream().collect(
+            Collectors.groupingBy(TeamMemberRelEntity::getMemberId,
+                mapping(TeamMemberRelEntity::getTeamId, toList())));
+        Map<Long, String> teamNameMap = baseMapper.selectBaseInfoDTOByIds(teamIds)
+            .stream()
+            .collect(Collectors.toMap(TeamBaseInfoDTO::getId, TeamBaseInfoDTO::getTeamName));
+        Map<Long, List<String>> memberTeamMap = new HashMap<>();
+        for (Long memberId : memberIds) {
+            if (!memberTeamIdMap.containsKey(memberId)) {
+                continue;
+            }
+            List<String> teamNames =
+                memberTeamIdMap.get(memberId).stream().map(teamNameMap::get).toList();
+            memberTeamMap.put(memberId, teamNames);
+        }
+        return memberTeamMap;
+    }
+
+    @Override
     public Map<Long, List<String>> getMemberEachTeamPathName(Map<Long, List<Long>> memberTeamMap,
                                                              String spaceId) {
         // get all teamIds
@@ -775,10 +766,9 @@ public class TeamServiceImpl extends ServiceImpl<TeamMapper, TeamEntity> impleme
             return new HashMap<>();
         }
         // get member's team's all parent team, include itself
-        List<TeamPathInfo> teamPathInfos =
-            teamMapper.selectParentTreeByTeamIds(spaceId, new ArrayList<>(allTeamIds));
+        List<TeamPathInfo> teams = teamFacade.getAllParentTeam(allTeamIds);
         List<TeamTreeVo> teamTreeVos = this.buildTree(spaceId,
-            teamPathInfos.stream().map(TeamCteInfo::getId).collect(Collectors.toList()));
+            teams.stream().map(TeamCteInfo::getId).collect(Collectors.toList()));
         // build team tree
         List<TeamTreeVo> treeVos =
             new DefaultTreeBuildFactory<TeamTreeVo>().doTreeBuild(teamTreeVos);

@@ -19,26 +19,23 @@
 /*
  * Initialization functions, used for some non-constructor type things that need to be initialized and executed at startup again
  */
-import {RewriteFrames} from '@sentry/integrations';
+import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/nextjs';
-import {Integrations} from '@sentry/tracing';
+import { Integrations } from '@sentry/tracing';
 import dayjs from 'dayjs';
-import {getLanguage, injectStore, WasmApi,} from '@apitable/core';
-import {getBrowserDatabusApiEnabled} from '@apitable/core/dist/modules/database/api/wasm';
-import {getEnvVariables, getInitializationData, getReleaseVersion} from 'pc/utils/env';
+import { getLanguage, injectStore, WasmApi } from '@apitable/core';
+import { getBrowserDatabusApiEnabled } from '@apitable/core/dist/modules/database/api/wasm';
+import { handleResponse, initAxios } from 'api/utils/init_axios';
+import { getEnvVariables, getInitializationData, getReleaseVersion } from 'pc/utils/env';
 import '../../modules/shared/apphook/hook_bindings';
-import {APITable} from '../../modules/shared/apitable_lib';
-import {initCronjobs} from './cronjob';
+import { APITable } from '../../modules/shared/apitable_lib';
+import { initCronjobs } from './cronjob';
 import './store_subscribe';
-import {handleResponse, initAxios} from 'api/index';
-
 
 declare let window: any;
 if (!process.env.SSR && window !== undefined) {
   window.APITable = APITable;
 }
-
-
 
 function initBugTracker() {
   const dsn = getEnvVariables().SENTRY_DSN;
@@ -88,7 +85,6 @@ function initDayjs(comlink: any) {
   comlink.proxy?.initHook(lang);
 }
 
-
 export function initializer(comlink: any) {
   initAxios(comlink.store);
 
@@ -107,5 +103,4 @@ export function initializer(comlink: any) {
 
   initBugTracker();
 }
-
 

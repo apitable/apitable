@@ -17,7 +17,7 @@
  */
 
 import { useEffect, useState, FC, ChangeEvent } from 'react';
-import { shallowEqual, useSelector, useDispatch } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { TextInput, Button, TextButton, colorVars } from '@apitable/components';
 import { ConfigConstant, IReduxState, ITeamsInSpace, IUpdateMemberInfo, Strings, t, StoreActions, isIdassPrivateDeployment } from '@apitable/core';
 import { AddOutlined, CloseCircleOutlined } from '@apitable/icons';
@@ -27,12 +27,15 @@ import { Avatar } from 'pc/components/common/avatar';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useEditMember, useMemberManage } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { isPrimaryOrOwnFunc } from '../../utils';
 import { ChangeMemberTeam } from '../change_member_team';
-import styles from './style.module.less';
 // @ts-ignore
-import { WecomOpenData, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise';
+import { isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise/home/social_platform/utils';
+// @ts-ignore
+import { WecomOpenData } from 'enterprise/wecom/wecom_open_data/wecom_open_data';
+import styles from './style.module.less';
 
 interface IModalProps {
   cancelModalVisible: () => void;
@@ -42,7 +45,7 @@ interface IModalProps {
 }
 
 export const EditMemberModal: FC<React.PropsWithChildren<IModalProps>> = ({ cancelModalVisible, pageNo, removeCallback }) => {
-  const { spaceId, teamId, memberInfoInSpace, selectedTeamInfoInSpace, userInfo, selectMemberListInSpace, spaceInfo } = useSelector(
+  const { spaceId, teamId, memberInfoInSpace, selectedTeamInfoInSpace, userInfo, selectMemberListInSpace, spaceInfo } = useAppSelector(
     (state: IReduxState) => ({
       spaceId: state.space.activeId || '',
       teamId: state.spaceMemberManage.selectedTeamInfoInSpace ? state.spaceMemberManage.selectedTeamInfoInSpace.teamId : ConfigConstant.ROOT_TEAM_ID,

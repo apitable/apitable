@@ -20,7 +20,7 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { Button, TextButton, ThemeProvider } from '@apitable/components';
 import { IUnit, Selectors, Strings, t, UnitItem } from '@apitable/core';
 import { UserAddOutlined } from '@apitable/icons';
@@ -30,6 +30,7 @@ import { IModalProps } from 'pc/components/common/modal/modal/modal.interface';
 import { expandInviteModal } from 'pc/components/invite';
 import { useSpaceInfo } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { SelectUnitLeft } from './select_unit_left';
 import { SelectUnitPopup } from './select_unit_popup';
@@ -77,14 +78,14 @@ export const SelectUnitModal: FC<React.PropsWithChildren<ISelectUnitModalProps>>
   } = props;
 
   const { spaceInfo } = useSpaceInfo(spaceId);
-  const cacheTheme = useSelector(Selectors.getTheme);
+  const cacheTheme = useAppSelector(Selectors.getTheme);
 
   const [checkedList, setCheckedList] = useState<UnitItem[]>(propsCheckedList ? propsCheckedList : []);
 
   const [units, setUnits] = useState<IUnit | null>(null);
 
-  const linkId = useSelector(Selectors.getLinkId);
-  const formId = useSelector((state) => state.pageParams.formId);
+  const linkId = useAppSelector(Selectors.getLinkId);
+  const formId = useAppSelector((state) => state.pageParams.formId);
 
   const onCancel = () => {
     propsCancel('');

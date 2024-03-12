@@ -1928,12 +1928,12 @@ export const DocumentAssetStatisticResult_DocumentAssetStatisticData = {
   },
 };
 
-/**
- * room-server provided service
- * socket->room
- */
+/** room-server provided service */
 export interface RoomServingService {
-  /** user join datasheet room */
+  /**
+   * ============ socket->room ======================================
+   * user join datasheet room
+   */
   watchRoom(request: WatchRoomRo, metadata?: Metadata): Observable<WatchRoomVo>;
   /** user leave datasheet room */
   leaveRoom(request: LeaveRoomRo, metadata?: Metadata): Observable<BasicResult>;
@@ -1943,7 +1943,10 @@ export interface RoomServingService {
   getActiveCollaborators(request: WatchRoomRo, metadata?: Metadata): Observable<GetActiveCollaboratorsVo>;
   /** Server sends room Change event */
   serverRoomChange(request: ServerRoomChangeRo, metadata?: Metadata): Observable<BasicResult>;
-  /** copy datasheet effect ot */
+  /**
+   * ============ backend->room ======================================
+   * copy datasheet effect ot
+   */
   copyNodeEffectOt(request: NodeCopyRo, metadata?: Metadata): Observable<BasicResult>;
   /** delete datasheet effect ot */
   deleteNodeEffectOt(request: NodeDeleteRo, metadata?: Metadata): Observable<BasicResult>;

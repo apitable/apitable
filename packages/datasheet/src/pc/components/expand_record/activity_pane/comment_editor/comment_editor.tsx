@@ -22,7 +22,6 @@ import dayjs from 'dayjs';
 import { get, pick } from 'lodash';
 import * as React from 'react';
 import { useCallback, useContext, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Descendant } from 'slate';
 import { Button, LinkButton } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, IApi, Selectors, Strings, t } from '@apitable/core';
@@ -35,6 +34,7 @@ import { verificationPermission } from 'pc/events/notification_verification';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { COMMENT_SUBMIT_BUTTON, EXPAND_RECORD_COMMENT_WRAPPER } from 'pc/utils/test_id_constant';
 import { ActivityContext } from '../activity_context';
 import { IActivityPaneProps } from '../interface';
@@ -45,13 +45,13 @@ const MAX_COMMENT_LENGTH = 1000;
 
 export const CommentEditor: React.FC<React.PropsWithChildren<IActivityPaneProps>> = (props) => {
   const { datasheetId, expandRecordId, viewId } = props;
-  const unitId = useSelector((state) => state.user.info?.unitId)!;
-  const curViewId = useSelector((state) => viewId || state.pageParams.viewId);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const unitId = useAppSelector((state) => state.user.info?.unitId)!;
+  const curViewId = useAppSelector((state) => viewId || state.pageParams.viewId);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const editRef = useRef<any>(null);
   const borderRef = useRef<HTMLDivElement>(null);
   const commentEditRef = useRef<HTMLDivElement>(null);
-  const mirrorId = useSelector((state) => state.pageParams.datasheetId === datasheetId && state.pageParams.mirrorId);
+  const mirrorId = useAppSelector((state) => state.pageParams.datasheetId === datasheetId && state.pageParams.mirrorId);
 
   const { replyText, setReplyText, focus: focusStatus, setFocus, setReplyUnitId } = useContext(ActivityContext);
 
@@ -79,7 +79,7 @@ export const CommentEditor: React.FC<React.PropsWithChildren<IActivityPaneProps>
       return;
     }
     const recordTitle = getFirstColumnValue();
-
+    
     verificationPermission({
       isNotify: true,
       nodeId: mirrorId || datasheetId,
@@ -89,11 +89,12 @@ export const CommentEditor: React.FC<React.PropsWithChildren<IActivityPaneProps>
         {
           recordIds: [expandRecordId],
           unitIds: unitIds,
-          recordTitle: recordTitle,
+          recordTitle,
         },
       ],
       type: IApi.MindType.Comment,
       extra: {
+        recordTitle,
         content: serialize(content, spaceInfo, true).join(''),
         createdAt: dayjs.tz(Date.now()).format('YYYY-MM-DD HH:mm'),
       },
@@ -208,6 +209,7 @@ export const CommentEditor: React.FC<React.PropsWithChildren<IActivityPaneProps>
         >
           <div style={{ padding: '8px' }}>
             <SlateEditor
+              className={styles.commentSlateEditor}
               syncContent={contentChangeHandler}
               submit={slateSubmit}
               maxRow={4}

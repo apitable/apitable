@@ -20,7 +20,6 @@ import { Col, Row } from 'antd';
 import * as React from 'react';
 import { useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 import { useThemeColors, WrapperTooltip } from '@apitable/components';
 import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { DeleteOutlined } from '@apitable/icons';
@@ -28,6 +27,7 @@ import { ButtonPlus } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { InvalidValue } from 'pc/components/tool_bar/view_filter/invalid_value';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
+import { useAppSelector } from 'pc/store/react-redux';
 import { SortFieldOptions } from '../sort_field_options';
 import { ViewFieldOptionsMobile } from '../sort_field_options/view_field_options_mobile';
 import { ViewRules } from '../view_rules';
@@ -49,8 +49,8 @@ export const CommonViewSet: React.FC<React.PropsWithChildren<ICommonViewSetProps
   const colors = useThemeColors();
   const { onDragEnd: propDragEnd, dragData, setField, existFieldIds, setRules, deleteItem, invalidFieldIds = [], invalidTip, datasheetId } = props;
   const [disableDrag, setDisableDrag] = useState(true);
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId));
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId));
   const isViewLock = useShowViewLockModal();
 
   function onMouseOver() {

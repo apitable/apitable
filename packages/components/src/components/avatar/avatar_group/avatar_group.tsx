@@ -17,26 +17,33 @@
  */
 
 import React, { cloneElement, FC, ReactElement } from 'react';
-import { IAvatarGroup } from './intarface';
+import { IAvatarGroup } from './interface';
 import { AvatarGroupStyled } from './styled';
 import { Avatar } from '../index';
+import { Popover } from 'antd';
 
-export const AvatarGroup: FC<React.PropsWithChildren<IAvatarGroup>> = ({
-  max = 5, children, maxStyle, size
-}) => {
+export const AvatarGroup: FC<React.PropsWithChildren<IAvatarGroup>> = ({ max = 5, children, maxStyle, size, popoverContent }) => {
   const childrenArr = (Array.isArray(children) ? children : [children]).map((child, index) =>
-    cloneElement((child as ReactElement), {
+    cloneElement(child as ReactElement, {
       key: `avatar-key-${index}`,
       size,
-    }),
+    })
   );
+
   const numOfChildren = childrenArr.length;
-  const isHidden = numOfChildren > max;
-  const childrenShow = isHidden ? childrenArr.slice(0, max) : children;
+  const isOverMax = numOfChildren > max;
+  const childrenShow = isOverMax ? childrenArr.slice(0, max) : children;
+
   return (
     <AvatarGroupStyled size={size}>
       {childrenShow}
-      {isHidden && <Avatar style={maxStyle} size={size}>+{numOfChildren - max}</Avatar>}
+      {isOverMax && (
+        <Popover trigger="click" placement="bottomRight" content={popoverContent}>
+          <Avatar style={maxStyle} size={size}>
+            +{numOfChildren - max}
+          </Avatar>
+        </Popover>
+      )}
     </AvatarGroupStyled>
   );
 };

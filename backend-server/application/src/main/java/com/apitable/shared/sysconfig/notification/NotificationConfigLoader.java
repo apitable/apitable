@@ -18,14 +18,13 @@
 
 package com.apitable.shared.sysconfig.notification;
 
+import com.apitable.shared.sysconfig.Converter;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.apitable.shared.sysconfig.Converter;
-
 /**
  * <p>
- * System Config Manager
+ * System Config Manager.
  * </p>
  */
 public class NotificationConfigLoader {
@@ -41,13 +40,14 @@ public class NotificationConfigLoader {
 
         Singleton() {
             try {
-                InputStream resourceAsStream = NotificationConfigLoader.class.getResourceAsStream("/sysconfig/notification.json");
+                InputStream resourceAsStream = NotificationConfigLoader.class.getResourceAsStream(
+                    "/sysconfig/notification.json");
                 if (resourceAsStream == null) {
                     throw new IOException("System config file not found!");
                 }
-                singleton = Converter.getObjectMapper().readValue(resourceAsStream, NotificationConfig.class);
-            }
-            catch (IOException e) {
+                singleton = Converter.getObjectMapper()
+                    .readValue(resourceAsStream, NotificationConfig.class);
+            } catch (IOException e) {
                 throw new RuntimeException("Failed to load system configuration!", e);
             }
         }

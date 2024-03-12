@@ -33,7 +33,6 @@ export const Fail: FC<React.PropsWithChildren<IErrorContentProps>> = (props) => 
         <WarnOutlined />
       </span>
       <div className={styles.text}>
-        <span>{err || t(Strings.import_failed)}</span>
         <div className={styles.gray}>
           {t(Strings.please)}
           <span onClick={init} className={styles.reload}>

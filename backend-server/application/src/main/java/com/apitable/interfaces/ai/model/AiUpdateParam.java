@@ -1,5 +1,6 @@
 package com.apitable.interfaces.ai.model;
 
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +18,6 @@ import lombok.NoArgsConstructor;
 public class AiUpdateParam {
 
     private String name;
+
+    private Map<String, Object> setting;
 }

@@ -30,8 +30,9 @@ import {
   IViewProperty,
   Role,
 } from '../../../../../../exports/store/interfaces';
-import { gridViewActiveFieldStateDefault, gridViewDragStateDefault } from '../../../reducers/resource';
-import { getMirror } from '../mirror';
+import { gridViewDragStateDefault } from 'modules/database/store/reducers/resource/datasheet/grid_view_drag';
+import { gridViewActiveFieldStateDefault } from 'modules/database/store/reducers/resource/datasheet/grid_view_active_field';
+import { getMirror } from 'modules/database/store/selectors/resource/mirror';
 
 const defaultKeySelector = (state: IReduxState, datasheetId: string | undefined | void) => datasheetId || getNodeId(state);
 
@@ -142,49 +143,51 @@ export const getFieldPermissionMapBase = (state: IReduxState, id?: string | void
   return datasheetPack?.fieldPermissionMap;
 };
 
-export const getFieldPermissionMap = createCachedSelector<IReduxState,
+export const getFieldPermissionMap = createCachedSelector<
+  IReduxState,
   string | undefined | void,
   IFieldPermissionMap | undefined,
   IViewProperty | undefined,
   string | undefined | void,
-  IFieldPermissionMap | undefined>(
-    [
-      getFieldPermissionMapBase,
-      state => {
-        const snapshot = getSnapshot(state)!;
-        return getViewById(snapshot, state.pageParams?.viewId || '');
-      },
-      state => state.pageParams?.mirrorId,
-    ],
+  IFieldPermissionMap | undefined
+>(
+  [
+    getFieldPermissionMapBase,
+    (state) => {
+      const snapshot = getSnapshot(state)!;
+      return getViewById(snapshot, state.pageParams?.viewId || '');
+    },
+    (state) => state.pageParams?.mirrorId,
+  ],
 
-    (fieldPermissionMap: IFieldPermissionMap | undefined, view: IViewProperty | undefined, mirrorId?: string | void) => {
-      if (!mirrorId) {
-        return fieldPermissionMap;
-      }
-      if (mirrorId && view && typeof view.displayHiddenColumnWithinMirror === 'boolean' && !view.displayHiddenColumnWithinMirror) {
-        const _fieldPermissionMap = {};
-        for (const v of view.columns) {
-          if (!v.hidden) continue;
-          _fieldPermissionMap[v.fieldId] = {
-            role: Role.None,
-            setting: {
-              formSheetAccessible: true,
-            },
-            permission: {
-              editable: false,
-              readable: false
-            },
-            manageable: false
-          };
-        }
-        return {
-          ...fieldPermissionMap,
-          ..._fieldPermissionMap
-        };
-      }
+  (fieldPermissionMap: IFieldPermissionMap | undefined, view: IViewProperty | undefined, mirrorId?: string | void) => {
+    if (!mirrorId) {
       return fieldPermissionMap;
     }
-  )(defaultKeySelector);
+    if (mirrorId && view && typeof view.displayHiddenColumnWithinMirror === 'boolean' && !view.displayHiddenColumnWithinMirror) {
+      const _fieldPermissionMap = {};
+      for (const v of view.columns) {
+        if (!v.hidden) continue;
+        _fieldPermissionMap[v.fieldId] = {
+          role: Role.None,
+          setting: {
+            formSheetAccessible: true,
+          },
+          permission: {
+            editable: false,
+            readable: false,
+          },
+          manageable: false,
+        };
+      }
+      return {
+        ...fieldPermissionMap,
+        ..._fieldPermissionMap,
+      };
+    }
+    return fieldPermissionMap;
+  }
+)(defaultKeySelector);
 
 export const getFieldRoleByFieldId = (fieldPermissionMap: IFieldPermissionMap | undefined, fieldId: string): null | Role => {
   if (!fieldPermissionMap || !fieldPermissionMap[fieldId]) {
@@ -275,7 +278,7 @@ export const getNodeDesc = (state: IReduxState, dsId?: string): null | INodeDesc
   }
   try {
     return JSON.parse(datasheet.description);
-  }catch (e) {
+  } catch (e) {
     return null;
   }
 };
@@ -307,30 +310,18 @@ export const getViewsList = (state: IReduxState, dsId?: string) => {
 };
 
 export const getNodeId = (state: IReduxState) => {
-  const { datasheetId, automationId, folderId, formId, dashboardId, mirrorId,aiId } = state.pageParams;
+  const { mirrorId, nodeId } = state.pageParams;
   // mirror is special,  url will contain mirrorId and datasheetId at the same time, so mirrorId need to be judged first
   if (mirrorId) {
     return mirrorId;
   }
-  if (automationId) {
-    return automationId;
-  }
-  if (datasheetId) {
-    return datasheetId;
-  }
-  if (folderId) {
-    return folderId;
-  }
-  if (formId) {
-    return formId;
-  }
-  if (dashboardId) {
-    return dashboardId;
-  }
-  if (aiId) {
-    return aiId;
-  }
-  return '';
+
+  return nodeId || '';
+};
+
+export const getActiveNodePrivate = (state: IReduxState) => {
+  const nodeId = getNodeId(state);
+  return state.datasheetMap[nodeId]?.datasheet?.nodePrivate;
 };
 
 export const getToolbarMenuCardState = (state: IReduxState) => {
@@ -351,11 +342,12 @@ export const allowShowCommentPane = (state: IReduxState) => {
 };
 
 export const getDatasheetParentId = (state: IReduxState, id?: string) => {
-  const tree = state.catalogTree.treeNodesMap;
   const datasheet = getDatasheet(state, id);
   if (!datasheet) {
     return;
   }
+  const nodePrivate = datasheet.nodePrivate;
+  const tree = state.catalogTree[nodePrivate ? 'privateTreeNodesMap' : 'treeNodesMap'];
   return tree[datasheet.id]?.parentId || datasheet.parentId;
 };
 
@@ -390,10 +382,23 @@ export const getActiveViewId = (state: IReduxState, id?: string | void) => {
   if (!views) {
     return pageViewId;
   }
-  if (!views.find(item => item.id === pageViewId)) {
+  if (!views.find((item) => item.id === pageViewId)) {
     return views[0]?.id;
   }
   return pageViewId;
+};
+
+export const getActiveView = (state: IReduxState, id?: string | void) => {
+  const datasheet = getDatasheet(state, id);
+  const views = datasheet?.snapshot.meta.views;
+  const pageViewId = state.pageParams.viewId;
+  if (views) {
+    const view = views.find((item) => item.id === pageViewId);
+    if (view) {
+      return view;
+    }
+  }
+  return null;
 };
 
 export const getViewIdByNodeId = (state: IReduxState, datasheetId: string, viewId?: string, mirror?: IMirror) => {
@@ -423,7 +428,7 @@ export const getViewInNode = (state: IReduxState, datasheetId: string, viewId?: 
 };
 
 export const getViewById = (snapshot: ISnapshot, viewId: string) => {
-  return snapshot?.meta.views.find(view => view.id === viewId);
+  return snapshot?.meta.views.find((view) => view.id === viewId);
 };
 
 export const getCloseSyncViewIds = (state: IReduxState, dsId: string) => {
@@ -454,6 +459,6 @@ export const getNodeViewWithoutFilterInfo = (snapshot: ISnapshot, viewId: string
     type: originView!.type,
     rows: originView!.rows,
     ...temporaryView,
-    filterInfo: originView?.filterInfo
+    filterInfo: originView?.filterInfo,
   } as IViewProperty;
 };

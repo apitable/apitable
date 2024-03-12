@@ -19,7 +19,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { forwardRef, ForwardRefRenderFunction, memo, useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Message } from '@apitable/components';
 import {
   CollaCommandName,
@@ -49,6 +49,7 @@ import {
 import { useDispatch, useMemorizePreviousValue } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ButtonOperateType, checkPointInContainer, getParentNodeByClass, GHOST_RECORD_ID, isTouchDevice } from 'pc/utils';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 
@@ -125,7 +126,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
     activeFieldId,
     activeFieldOperateType,
     gridViewDragState,
-  } = useSelector((state) => {
+  } = useAppSelector((state) => {
     const { fieldId, operate } = Selectors.gridViewActiveFieldState(state);
     return {
       activeFieldId: fieldId,
@@ -639,7 +640,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
 
   const onFrozenColumn = (fieldId: string, reset: boolean = false) => {
     let columnIndex = view.columns.findIndex((column) => column.fieldId === fieldId);
-    if(reset) {
+    if (reset) {
       columnIndex = 0;
     }
     if (columnIndex === -1) return;
@@ -728,7 +729,7 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
             {scrollPosition != null && (
               <div
                 ref={cellVerticalBarRef}
-                className={classNames(styles.verticalScrollBarWrapper, styles.cellVerticalScrollBarWrapper)}
+                className={classNames(styles.verticalScrollBarWrapper)}
                 style={{
                   pointerEvents: 'auto',
                   height: activeCellBound.height,

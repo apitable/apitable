@@ -31,9 +31,9 @@ import com.apitable.space.service.ISpaceMemberRoleRelService;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -88,7 +88,8 @@ public class SpaceMemberRoleRelServiceImpl
     }
 
     @Override
-    public List<Long> getMemberIdListByResourceGroupCodes(String spaceId, List<String> resourceGroupCodes) {
+    public List<Long> getMemberIdListByResourceGroupCodes(String spaceId,
+                                                          List<String> resourceGroupCodes) {
         List<String> resourceCodes =
             spaceResourceMapper.selectResourceCodesByGroupCode(resourceGroupCodes);
         if (resourceCodes.isEmpty()) {
@@ -100,5 +101,15 @@ public class SpaceMemberRoleRelServiceImpl
             return new ArrayList<>();
         }
         return this.baseMapper.selectMemberIdBySpaceIdAndRoleCodes(spaceId, roleCodes);
+    }
+
+    @Override
+    public String getRoleCodeByMemberId(String spaceId, Long memberId) {
+        return baseMapper.selectRoleCodeByMemberId(spaceId, memberId);
+    }
+
+    @Override
+    public List<String> getRoleCodesBySpaceId(String spaceId) {
+        return baseMapper.selectRoleCodesBySpaceId(spaceId);
     }
 }

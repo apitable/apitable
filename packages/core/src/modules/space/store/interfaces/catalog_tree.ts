@@ -29,9 +29,7 @@ export interface ICatalogTree {
   node: INewNode | null;
   delNodeId: string;
   editNodeId: string;
-  favoriteEditNodeId: string;
   copyNodeId: string;
-  favoriteDelNodeId: string;
   isCopyAll: boolean;
   err: string;
   optNode: IOptNode | null;
@@ -43,6 +41,17 @@ export interface ICatalogTree {
   allVisible: boolean;
   isPermission: boolean;
   socketData: INodeChangeSocketData | null;
+  activeType?: ConfigConstant.Modules;
+  // private
+  privateRootId: string;
+  privateLoading: boolean;
+  privateEditNodeId: string;
+  privateDelNodeId: string;
+  privateTreeNodesMap: ITreeNodesMap;
+  privateExpandedKeys:string[];
+  // favorite
+  favoriteEditNodeId: string;
+  favoriteDelNodeId: string;
   favoriteTreeNodeIds: string[];
   favoriteLoading: boolean;
   favoriteExpandedKeys: string[];
@@ -79,7 +88,7 @@ export interface IRightClickInfo {
    */
   module: ConfigConstant.Modules;
   /**
-   * indicates which type of menu to call 
+   * indicates which type of menu to call
    */
   contextMenuType: ConfigConstant.ContextMenuType;
   // current node's level
@@ -104,6 +113,8 @@ export interface INode {
   nodePermitSet: boolean;
   nodeFavorite: boolean;
   preFavoriteNodeId?: string;
+  extra?: any;
+  nodePrivate: boolean;
 }
 
 export interface INodePermissions {
@@ -251,6 +262,7 @@ export interface ISetNodeNameAction {
   payload: {
     nodeId: string;
     nodeName: string;
+    module?: ConfigConstant.Modules;
   };
 }
 
@@ -259,12 +271,14 @@ export interface ISetNodeErrorTypeAction {
   payload: {
     nodeId: string;
     errType: NodeErrorType;
+    module?: ConfigConstant.Modules;
   };
 }
 
 export interface IOptNode {
   nodeId: string;
   parentId: string;
+  module?: ConfigConstant.Modules
 }
 
 export interface INewNode extends INode {
@@ -395,6 +409,11 @@ export interface ISetAllVisibleAction {
   payload: boolean;
 }
 
+export interface ISetActiveTreeType {
+  type: typeof actions.SET_ACTIVE_TREE_TYPE;
+  payload: ConfigConstant.Modules;
+}
+
 // Action
 export interface ISetDelNodeIdAction {
   type: typeof actions.SET_DEL_NODE_ID;
@@ -455,6 +474,7 @@ export interface IAddNodeToMapAction {
      * Whether to keep the old children or use the new children to replace the old children
      */
     isCoverChildren: boolean;
+    module: ConfigConstant.Modules;
   };
 }
 
@@ -490,7 +510,10 @@ export interface ISetLoadedAction {
 
 export interface IUpdateHasChildren {
   type: typeof actions.UPDATE_HAS_CHILDREN;
-  payload: string;
+  payload: {
+    nodeId: string;
+    module?: ConfigConstant.Modules;
+  };
 }
 
 export interface IMoveToAction {
@@ -499,6 +522,7 @@ export interface IMoveToAction {
     nodeId: string;
     targetNodeId: string;
     pos: number;
+    module?: ConfigConstant.Modules;
   };
 }
 
@@ -507,6 +531,7 @@ export interface IUpdateTreeNodesMapAction {
   payload: {
     nodeId: string;
     data: Partial<INodesMapItem>;
+    module?: ConfigConstant.Modules;
   };
 }
 
@@ -593,6 +618,11 @@ export interface ISetTreeRootIdAction {
   payload: string;
 }
 
+export interface ISetPrivateTreeRootIdAction {
+  type: typeof actions.SET_PRIVATE_TREE_ROOT_ID;
+  payload: string;
+}
+
 export interface ISetLoadedKeysAction {
   type: typeof actions.SET_LOADED_KEYS;
   payload: string[];
@@ -610,7 +640,7 @@ export interface ISetPermissionCommitRemindParameterAction {
 
 export interface ISetNoPermissionMembersAction {
   type: typeof actions.SET_NO_PERMISSION_MEMBERS;
-  payload: string[]
+  payload: string[];
 }
 
 export interface IUpdateMoveToNodeIdsAction {

@@ -40,6 +40,10 @@ export const nodeTypeList = [
     name: t(Strings.dashboard),
     type: ConfigConstant.NodeType.DASHBOARD,
   },
+  {
+    name: t(Strings.embed_page),
+    type: ConfigConstant.NodeType.CUSTOM_PAGE,
+  },
 ];
 
 interface ITypeTab {

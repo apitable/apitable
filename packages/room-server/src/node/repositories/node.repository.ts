@@ -19,7 +19,7 @@
 import { NodeBaseInfo } from 'database/interfaces';
 import { NodeEntity } from 'node/entities/node.entity';
 import { INodeExtra } from 'shared/interfaces';
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, In, Not, Repository } from 'typeorm';
 
 @EntityRepository(NodeEntity)
 export class NodeRepository extends Repository<NodeEntity> {
@@ -27,7 +27,7 @@ export class NodeRepository extends Repository<NodeEntity> {
    * Obtain the number of nodes with the given node ID
    */
   public async selectCountByNodeId(nodeId: string): Promise<number> {
-    return await this.count({ where: { nodeId, isRubbish: false }});
+    return await this.count({ where: { nodeId, isRubbish: false } });
   }
 
   public async selectNameByNodeId(nodeId: string): Promise<string> {
@@ -42,14 +42,14 @@ export class NodeRepository extends Repository<NodeEntity> {
    * Obtain the number of templates with the given node ID
    */
   public async selectTemplateCountByNodeId(nodeId: string): Promise<number> {
-    return await this.count({ where: { nodeId, isTemplate: true, isRubbish: false }});
+    return await this.count({ where: { nodeId, isTemplate: true, isRubbish: false } });
   }
 
   /**
    * Obtain the number of nodes with the given parent node ID
    */
   public async selectCountByParentId(parentId: string): Promise<number> {
-    return await this.count({ where: { parentId, isRubbish: false }});
+    return await this.count({ where: { parentId, isRubbish: false } });
   }
 
   /**
@@ -63,72 +63,9 @@ export class NodeRepository extends Repository<NodeEntity> {
       .getRawOne<{ spaceId: string }>();
   }
 
-  /**
-   * Obtain the children node list of a given node
-   */
-  public async selectAllSubNodeIds(nodeId: string): Promise<string[]> {
-    // todo(itou): replace dynamic sql
-    const raws = await this.query(
-      `
-          WITH RECURSIVE sub_ids (node_id) AS
-          (
-            SELECT node_id
-            FROM ${this.manager.connection.options.entityPrefix}node
-            WHERE parent_id = ? and is_rubbish = 0
-            UNION ALL
-            SELECT c.node_id
-            FROM sub_ids AS cp
-            JOIN ${this.manager.connection.options.entityPrefix}node AS c ON cp.node_id = c.parent_id and c.is_rubbish = 0
-          )
-          SELECT distinct node_id nodeId
-          FROM sub_ids;
-        `,
-      [nodeId],
-    );
-    return raws.reduce((pre: string[], cur: { nodeId: string }) => {
-      pre.push(cur.nodeId);
-      return pre;
-    }, []);
-  }
-
-  /**
-   * Obtain the path to the root node of a given node.
-   *
-   * The returned node ID array includes the given node and does not include the root node.
-   *
-   * Example: for a path of 3 nodes, the returned array is `[nodeId, parentId, grandparentId, great-grandparentId]`
-   */
-  async selectParentPathByNodeId(nodeId: string): Promise<string[]> {
-    // todo(itou): replace dynamic sql
-    // Query the path with recursive SQL, the result set includes the given node.
-    const raws = await this.query(
-      `
-          WITH RECURSIVE parent_view (node_id, node_name, parent_id, lvl) AS
-          (
-            SELECT n.node_id, n.node_name, n.parent_id, 0 lvl
-            FROM ${this.manager.connection.options.entityPrefix}node n
-            WHERE n.node_id = ? AND n.is_rubbish = 0
-            UNION ALL
-            SELECT c.node_id, c.node_name, c.parent_id, pv.lvl + 1
-            FROM parent_view AS pv
-            JOIN ${this.manager.connection.options.entityPrefix}node AS c ON pv.parent_id = c.node_id AND c.is_rubbish = 0
-          )
-          SELECT node_id nodeId
-          FROM parent_view
-          WHERE parent_id != '0'
-          ORDER BY lvl ASC
-        `,
-      [nodeId],
-    );
-    return raws.reduce((pre: string[], cur: { nodeId: string }) => {
-      pre.push(cur.nodeId);
-      return pre;
-    }, []);
-  }
-
   public async getNodeInfo(nodeId: string): Promise<NodeEntity | undefined> {
     return await this.findOne({
-      select: ['nodeId', 'nodeName', 'spaceId', 'parentId', 'icon', 'extra', 'type'],
+      select: ['nodeId', 'nodeName', 'spaceId', 'parentId', 'icon', 'extra', 'type', 'unitId'],
       where: [{ nodeId, isRubbish: false }],
     });
   }
@@ -155,6 +92,27 @@ export class NodeRepository extends Repository<NodeEntity> {
         };
       }
       return undefined;
+    });
+  }
+
+  public async selectNodeNameByNodeIds(nodeIds: string[]): Promise<NodeEntity[]> {
+    return await this.find({
+      select: ['nodeName', 'nodeId'],
+      where: { nodeId: In(nodeIds), isDeleted: 0, isRubbish: 0 },
+    });
+  }
+
+  /**
+   * Obtain the number of unit with the given node ID
+   */
+  public async selectUnitCountByNodeId(nodeId: string): Promise<number> {
+    return await this.count({ where: { nodeId, unitId: Not(0), isRubbish: false, isDeleted: false } });
+  }
+
+  public async selectTeamNodeByNodeIds(nodeIds: string[]): Promise<NodeEntity[]> {
+    return await this.find({
+      select: ['nodeId'],
+      where: { nodeId: In(nodeIds), unitId: 0, isDeleted: 0, isRubbish: 0 },
     });
   }
 }

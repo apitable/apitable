@@ -2,12 +2,16 @@ import Joi from 'joi';
 import { Strings, t } from '../../exports/i18n';
 import { ICellValue } from 'model/record';
 import { createSelector } from 'reselect';
-import { IReduxState } from '../../exports/store';
+import { IReduxState } from '../../exports/store/interfaces';
 import { ISnapshot } from '../../exports/store/interfaces';
-import { getCellValue, getCurrentView, getDatasheet, getFieldMap, getRowsIndexMap, getSnapshot } from '../../exports/store/selectors';
+import { getCellValue } from 'modules/database/store/selectors/resource/datasheet/cell_calc';
+import { getCurrentView, getFieldMap }from 'modules/database/store/selectors/resource/datasheet/calc';
+import { getDatasheet, getSnapshot } from 'modules/database/store/selectors/resource/datasheet/base';
+import { getRowsIndexMap }from 'modules/database/store/selectors/resource/datasheet/rows_calc';
 import { FOperator, IAPIMetaOneWayLinkFieldProperty, IFilterCondition, IFilterText } from 'types';
 import { BasicValueType, FieldType, IOneWayLinkField, IOneWayLinkFieldProperty, IStandardValue } from 'types/field_types';
-import { ArrayValueField, Field } from './field';
+import { ArrayValueField } from './array_field';
+import { Field } from './field';
 import { StatType } from './stat';
 import { ILinkFieldOpenValue } from 'types/field_types_open';
 import { isNullValue } from 'model/utils';
@@ -16,7 +20,7 @@ import { enumToArray } from './validate_schema';
 import { IOpenOneWayLinkFieldProperty } from 'types/open/open_field_read_types';
 import { IOpenFilterValueString } from 'types/open/open_filter_types';
 import { TextBaseField } from './text_base_field';
-
+import { getFieldDefaultProperty } from './const';
 export const getTextRecordMap =
   createSelector<IReduxState, string | void, IReduxState | undefined, ISnapshot | undefined, { [text: string]: string }>(
     [state => state, (state, datasheetId?: string | void) => getSnapshot(state, datasheetId)], (state, snapshot) => {
@@ -68,7 +72,7 @@ export class OneWayLinkField extends ArrayValueField {
   }).allow(null).required();
 
   static defaultProperty(): Omit<IOneWayLinkFieldProperty, 'foreignDatasheetId'> {
-    return {};
+    return getFieldDefaultProperty(FieldType.OneWayLink) as Omit<IOneWayLinkFieldProperty, 'foreignDatasheetId'>;
   }
 
   get apiMetaProperty(): IAPIMetaOneWayLinkFieldProperty {
@@ -133,8 +137,9 @@ export class OneWayLinkField extends ArrayValueField {
     if (!snapshot) {
       return [];
     }
+    const archivedRecordIds = snapshot.meta.archivedRecordIds || [];
     if (Array.isArray(value)) {
-      return value.filter(recordId => snapshot.recordMap[recordId]);
+      return value.filter(recordId => snapshot.recordMap[recordId] || archivedRecordIds.includes(recordId));
     }
     return [];
   }
@@ -144,19 +149,18 @@ export class OneWayLinkField extends ArrayValueField {
     if (!snapshot) {
       return false;
     }
+    const archivedRecordIds = snapshot.meta.archivedRecordIds || [];
     if (Array.isArray(value)) {
       return value.every(recordId => {
-        if (snapshot.recordMap[recordId]) {
-          return true;
-        }
-        return false;
+        return !!(snapshot.recordMap[recordId] || archivedRecordIds.includes(recordId));
+
       });
     }
     return false;
   }
 
   validateProperty() {
-    return OneWayLinkField.propertySchema.validate(this.field.property, { context: { reduxState: this.state }});
+    return OneWayLinkField.propertySchema.validate(this.field.property, { context: { reduxState: this.state } });
   }
 
   validateCellValue(cellValue: ICellValue) {

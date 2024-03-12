@@ -19,7 +19,7 @@
 import { uniqBy, isEqual } from 'lodash';
 import { IReduxState, ICollaboratorCursorMap } from '../../../../exports/store/interfaces';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
-import { getDatasheetClient, getActiveDatasheetId } from './resource';
+import { getDatasheetClient, getActiveDatasheetId } from './resource/datasheet/base';
 
 const createDeepEqualSelector = createSelectorCreator(
   defaultMemoize,
@@ -30,7 +30,6 @@ export const collaboratorSocketSelector = (state: IReduxState, datasheetId?: str
   const client = getDatasheetClient(state, datasheetId);
   return client && client.collaborators;
 };
-
 /**
  * display avatars on the status bar,
  * one user can use multiple client to connect to the same datasheet room.

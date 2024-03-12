@@ -25,8 +25,9 @@ import cn.hutool.core.util.StrUtil;
 import com.apitable.automation.service.impl.AutomationRobotServiceImpl;
 import com.apitable.core.constants.RedisConstants;
 import com.apitable.interfaces.ai.facade.AiServiceFacade;
-import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
+import com.apitable.interfaces.billing.model.CycleDateRange;
 import com.apitable.interfaces.billing.model.SubscriptionFeature;
+import com.apitable.interfaces.billing.model.SubscriptionFeatures;
 import com.apitable.interfaces.billing.model.SubscriptionInfo;
 import com.apitable.internal.assembler.BillingAssembler;
 import com.apitable.internal.ro.SpaceStatisticsRo;
@@ -37,17 +38,22 @@ import com.apitable.internal.vo.InternalSpaceApiUsageVo;
 import com.apitable.internal.vo.InternalSpaceAutomationRunMessageV0;
 import com.apitable.internal.vo.InternalSpaceInfoVo;
 import com.apitable.internal.vo.InternalSpaceSubscriptionVo;
+import com.apitable.shared.clock.spring.ClockManager;
+import com.apitable.shared.util.SubscriptionDateRange;
 import com.apitable.space.enums.LabsFeatureEnum;
 import com.apitable.space.service.ILabsApplicantService;
+import com.apitable.space.service.ISpaceService;
 import com.apitable.space.service.IStaticsService;
 import com.apitable.space.vo.LabsFeatureVo;
+import jakarta.annotation.Resource;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
-import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.integration.redis.util.RedisLockRegistry;
@@ -60,7 +66,7 @@ import org.springframework.stereotype.Service;
 public class InternalSpaceServiceImpl implements InternalSpaceService {
 
     @Resource
-    private EntitlementServiceFacade entitlementServiceFacade;
+    private ISpaceService iSpaceService;
 
     @Resource
     private IStaticsService iStaticsService;
@@ -80,26 +86,32 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
     @Resource
     RedisTemplate<String, Object> redisTemplate;
 
+    @Value("${SKIP_AUTOMATION_RUN_NUM_VALIDATE:false}")
+    private Boolean skipAutomationRunNumValidate;
+
     @Override
     public InternalSpaceSubscriptionVo getSpaceEntitlementVo(String spaceId) {
-        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceService.getSpaceSubscription(spaceId);
         BillingAssembler assembler = new BillingAssembler();
         return assembler.toVo(subscriptionInfo);
     }
 
     @Override
     public InternalCreditUsageVo getSpaceCreditUsageVo(String spaceId) {
-        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceService.getSpaceSubscription(spaceId);
         InternalCreditUsageVo vo = new InternalCreditUsageVo();
         vo.setAllowOverLimit(subscriptionInfo.getConfig().isAllowCreditOverLimit());
         vo.setMaxMessageCredits(subscriptionInfo.getFeature().getMessageCreditNums().getValue());
-        vo.setUsedCredit(aiServiceFacade.getUsedCreditCount(spaceId));
+        LocalDate now = ClockManager.me().getLocalDateNow();
+        CycleDateRange dateRange = SubscriptionDateRange.calculateCycleDate(subscriptionInfo, now);
+        vo.setUsedCredit(aiServiceFacade.getUsedCreditCount(spaceId, dateRange.getCycleStartDate(),
+            dateRange.getCycleEndDate()));
         return vo;
     }
 
     @Override
     public InternalSpaceAutomationRunMessageV0 getAutomationRunMessageV0(String spaceId) {
-        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceService.getSpaceSubscription(spaceId);
         InternalSpaceAutomationRunMessageV0 vo = new InternalSpaceAutomationRunMessageV0();
         String redisKey = RedisConstants.getSpaceAutomationRunCountKey(spaceId);
         long count;
@@ -110,26 +122,40 @@ public class InternalSpaceServiceImpl implements InternalSpaceService {
             count = automationRobotService.getRobotRunsCountBySpaceId(spaceId);
             redisTemplate.boundValueOps(redisKey).setIfAbsent(count, 31, TimeUnit.DAYS);
         }
-        vo.setMaxAutomationRunNums(subscriptionInfo.getFeature().getMessageAutomationRunNums().getValue());
+        SubscriptionFeatures.ConsumeFeatures.AutomationRunNumsPerMonth automationRunNumsPerMonth =
+            subscriptionInfo.getFeature().getAutomationRunNumsPerMonth();
+        vo.setMaxAutomationRunNums(automationRunNumsPerMonth.getValue());
         vo.setAutomationRunNums(count);
+        if (Boolean.TRUE.equals(skipAutomationRunNumValidate)) {
+            vo.setAllowRun(true);
+        } else {
+            vo.setAllowRun(
+                automationRunNumsPerMonth.isUnlimited()
+                    || count < automationRunNumsPerMonth.getValue());
+        }
         return vo;
     }
 
 
     @Override
     public InternalSpaceApiUsageVo getSpaceEntitlementApiUsageVo(String spaceId) {
-        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceService.getSpaceSubscription(spaceId);
         SubscriptionFeature planFeature = subscriptionInfo.getFeature();
         BillingAssembler assembler = new BillingAssembler();
         InternalSpaceApiUsageVo vo = assembler.toApiUsageVo(planFeature);
-        vo.setApiUsageUsedCount(iStaticsService.getCurrentMonthApiUsage(spaceId));
+        LocalDate now = ClockManager.me().getLocalDateNow();
+        CycleDateRange dateRange = SubscriptionDateRange.calculateCycleDate(subscriptionInfo, now);
+        vo.setApiUsageUsedCount(
+            iStaticsService.getCurrentMonthApiUsage(spaceId, dateRange.getCycleEndDate()));
+        vo.setApiCallUsedNumsCurrentMonth(
+            iStaticsService.getCurrentMonthApiUsage(spaceId, dateRange.getCycleEndDate()));
         vo.setIsAllowOverLimit(true);
         return vo;
     }
 
     @Override
     public InternalSpaceApiRateLimitVo getSpaceEntitlementApiRateLimitVo(String spaceId) {
-        SubscriptionInfo subscriptionInfo = entitlementServiceFacade.getSpaceSubscription(spaceId);
+        SubscriptionInfo subscriptionInfo = iSpaceService.getSpaceSubscription(spaceId);
         SubscriptionFeature planFeature = subscriptionInfo.getFeature();
         BillingAssembler assembler = new BillingAssembler();
         return assembler.toApiRateLimitVo(planFeature);

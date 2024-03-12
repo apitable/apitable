@@ -1,13 +1,13 @@
 
 import { Field } from 'model/field';
 import { ViewFilterDerivate } from './slice/view_filter_derivate';
-
 import {
   IReduxState, ISearchResult, IViewDerivation, IViewProperty, IViewRow,
 } from 'exports/store/interfaces';
 import {
   getCellValue, getCurrentView, getGroupFields, getSearchKeyword, getStringifyCellValue, sortRowsBySortInfo,
-} from 'exports/store/selectors';
+} from 'modules/database/store/selectors/resource/datasheet';
+import { FieldType } from 'types/field_types';
 
 export class ViewDerivateBase {
   viewFilterDerivate: ViewFilterDerivate;
@@ -95,7 +95,13 @@ export class ViewDerivateBase {
       const { recordId } = row;
       let isRecordDataMatchKeyword = false;
       visibleColumns.forEach(fieldId => {
-        const cellValue = getStringifyCellValue(this.state, snapshot, recordId, fieldId);
+        let cellValue = getStringifyCellValue(this.state, snapshot, recordId, fieldId);
+        const field = snapshot.meta.fieldMap[fieldId];
+        // currency and number fields ignore units when searching
+        if (field && (field.type === FieldType.Currency || field.type === FieldType.Number)) {
+          const cv = getCellValue(this.state, snapshot, row.recordId, fieldId);
+          cellValue = Field.bindContext(field, this.state).cellValueToString(cv, { hideUnit: true });
+        }
         if (cellValue && cellValue.toLowerCase().includes(lowerCaseSearchKeyword)) {
           searchResults.push([recordId, fieldId]);
           isRecordDataMatchKeyword = true;
@@ -124,8 +130,8 @@ export class ViewDerivateBase {
 
   /**
    * View Calculation of Derived Data
-   * 
-   * For views that do not require custom view-derived data, 
+   *
+   * For views that do not require custom view-derived data,
    * you can call this method directly to return it, otherwise you need to override it.
    */
   getViewDerivation(view?: IViewProperty): IViewDerivation {
@@ -145,7 +151,7 @@ export class ViewDerivateBase {
 
   /**
    * Get computationally derived data containing search results.
-   * 
+   *
    * Used to do calculations when searching for updates.
    */
   getViewDerivationWithSearch(view: IViewProperty, rowsWithoutSearch: IViewRow[]) {
@@ -166,7 +172,7 @@ export class ViewDerivateBase {
       // Map of the row-order data after view property calculation
       pureVisibleRowsIndexMap: visibleRowsIndexMap,
 
-      // Visible row data, including filtering sorting grouping search [pre-sorting], 
+      // Visible row data, including filtering sorting grouping search [pre-sorting],
       // Kanban view does not have pre-sorting, so it is the same as pureVisibleRows.
       visibleRows,
 

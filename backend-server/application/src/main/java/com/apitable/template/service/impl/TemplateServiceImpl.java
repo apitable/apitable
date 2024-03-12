@@ -83,6 +83,7 @@ import com.apitable.workspace.vo.BaseNodeInfo;
 import com.apitable.workspace.vo.FieldPermissionInfo;
 import com.apitable.workspace.vo.NodeShareTree;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -95,7 +96,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -112,55 +112,42 @@ public class TemplateServiceImpl
     extends ServiceImpl<TemplateMapper, TemplateEntity>
     implements ITemplateService {
 
-    /** */
     @Resource
     private ISystemConfigService systemConfigService;
 
-    /** */
     @Resource
     private INodeService iNodeService;
 
-    /** */
     @Resource
     private NodeMapper nodeMapper;
 
-    /** */
     @Resource
     private INodeDescService iNodeDescService;
 
-    /** */
     @Resource
     private IDatasheetService iDatasheetService;
 
-    /** */
     @Resource
     private LimitProperties limitProperties;
 
-    /** */
     @Resource
     private ConstProperties constProperties;
 
-    /** */
     @Resource
     private IFieldRoleService iFieldRoleService;
 
-    /** */
     @Resource
     private ITemplatePropertyService templatePropertyService;
 
-    /** */
     @Resource
     private ITemplateAlbumService iTemplateAlbumService;
 
-    /** */
     @Resource
     private TemplateConfigCacheService templateConfigCacheService;
 
-    /** */
     @Resource
     private INodeRelService iNodeRelService;
 
-    /** */
     @Resource
     private IWidgetService iWidgetService;
 
@@ -185,12 +172,12 @@ public class TemplateServiceImpl
     /**
      * Check Template Foreign Node.
      *
-     * @param memberId  memberId
-     * @param nodeId    nodeId
+     * @param memberId memberId
+     * @param nodeId   nodeId
      */
     @Override
     public void checkTemplateForeignNode(final Long memberId,
-        final String nodeId) {
+                                         final String nodeId) {
         NodeType nodeType = iNodeService.getTypeByNodeId(nodeId);
         List<String> singletonNodeIds = Collections.singletonList(nodeId);
         switch (nodeType) {
@@ -234,12 +221,12 @@ public class TemplateServiceImpl
     /**
      * Check Folder Template.
      *
-     * @param subNodeIds    subNodeIds
-     * @param memberId      memberId
+     * @param subNodeIds subNodeIds
+     * @param memberId   memberId
      */
     @Override
     public void checkFolderTemplate(final List<String> subNodeIds,
-        final Long memberId) {
+                                    final Long memberId) {
         // Requirements for various types of
         // nodes in the descendants of the syndrome
         List<BaseNodeInfo> nodeInfos =
@@ -317,10 +304,10 @@ public class TemplateServiceImpl
     /**
      * Check Form Or Mirror Is Foreign Node.
      *
-     * @param subNodeIds            subNodeIds
-     * @param nodeTypeToNodeIdsMap  nodeTypeToNodeIdsMap
-     * @param nodeType              nodeType
-     * @param templateException     templateException
+     * @param subNodeIds           subNodeIds
+     * @param nodeTypeToNodeIdsMap nodeTypeToNodeIdsMap
+     * @param nodeType             nodeType
+     * @param templateException    templateException
      */
     @Override
     public void checkFormOrMirrorIsForeignNode(
@@ -360,8 +347,8 @@ public class TemplateServiceImpl
     /**
      * Check Field Permission.
      *
-     * @param memberId  memberId
-     * @param nodeId    nodeId
+     * @param memberId memberId
+     * @param nodeId   nodeId
      */
     @Override
     public void checkFieldPermission(final Long memberId, final String nodeId) {
@@ -379,15 +366,15 @@ public class TemplateServiceImpl
     /**
      * Create.
      *
-     * @param userId    userId
-     * @param spaceId   spaceId
-     * @param ro        ro
+     * @param userId  userId
+     * @param spaceId spaceId
+     * @param ro      ro
      * @return template id
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String create(final Long userId, final String spaceId,
-        final CreateTemplateRo ro) {
+                         final CreateTemplateRo ro) {
         log.info("User「{}」create template「{}」in space「{}」", userId,
             ro.getName(), spaceId);
         // If there is a template with the same name, overwrite the old template
@@ -408,13 +395,7 @@ public class TemplateServiceImpl
         }
         String tempId;
         NodeType nodeType = iNodeService.getTypeByNodeId(ro.getNodeId());
-        String nodeId = IdUtil.createNodeId(nodeType.getNodeType());
-        NodeCopyOptions options = NodeCopyOptions.builder()
-            .copyData(BooleanUtil.isTrue(ro.getData()))
-            .nodeId(nodeId)
-            .template(true)
-            .retainRecordMeta(true)
-            .build();
+        String nodeId = IdUtil.createNodeId(nodeType);
         // Overwrite with the same name, delete the old map node
         if (id != null) {
             TemplateInfo info = baseMapper.selectInfoById(id);
@@ -431,6 +412,12 @@ public class TemplateServiceImpl
         // Dump node method, there is a GRPC call,
         // if it is not an asynchronous call,
         // you need to ensure that the last call
+        NodeCopyOptions options = NodeCopyOptions.builder()
+            .copyData(BooleanUtil.isTrue(ro.getData()))
+            .nodeId(nodeId)
+            .template(true)
+            .retainRecordMeta(true)
+            .build();
         iNodeService.copyNodeToSpace(userId, spaceId, "template",
             ro.getNodeId(), options);
         return tempId;
@@ -439,8 +426,8 @@ public class TemplateServiceImpl
     /**
      * Delete.
      *
-     * @param userId        userId
-     * @param templateId    templateId
+     * @param userId     userId
+     * @param templateId templateId
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -593,7 +580,7 @@ public class TemplateServiceImpl
      * Get Template Category List.
      *
      * @param lang language
-     * @return List<TemplateCategoryMenuVo>
+     * @return List of TemplateCategoryMenuVo
      */
     @Override
     public List<TemplateCategoryMenuVo> getTemplateCategoryList(
@@ -641,7 +628,7 @@ public class TemplateServiceImpl
      * @param categoryCode template category code(no require)
      * @param templateIds  template id list(no require)
      * @param isPrivate    whether it is a private template in the space station
-     * @return List<TemplateVo>
+     * @return List of TemplateVo
      */
     @Override
     public List<TemplateVo> getTemplateVoList(
@@ -713,7 +700,8 @@ public class TemplateServiceImpl
      */
     @Override
     public TemplateDirectoryVo getDirectoryVo(final String categoryCode,
-        final String templateId, final Boolean isPrivate, final String lang) {
+                                              final String templateId, final Boolean isPrivate,
+                                              final String lang) {
         log.info("Get template 「{}」 directory view", templateId);
         TemplateDto templateDto = baseMapper.selectDtoByTempId(templateId);
         ExceptionUtil.isNotNull(templateDto,
@@ -760,16 +748,32 @@ public class TemplateServiceImpl
      */
     @Override
     public String getDefaultTemplateNodeId() {
-        if (Locale.US.equals(LocaleContextHolder.getLocale())) {
-            String quoteEnTemplateId = constProperties.getQuoteEnTemplateId();
-            return baseMapper.selectNodeIdByTempId(quoteEnTemplateId);
-        }
         String quoteTemplateId = constProperties.getQuoteTemplateId();
+        try {
+            if (Locale.US.equals(LocaleContextHolder.getLocale())) {
+                quoteTemplateId = constProperties.getQuoteEnTemplateId();
+            }
+        } catch (Exception e) {
+            log.error("Get default en template id error", e);
+        }
         return baseMapper.selectNodeIdByTempId(quoteTemplateId);
     }
 
+    @Override
+    public List<String> getTemplateNodeIds(String spaceId, List<String> templateIds) {
+        List<TemplateInfo> templates =
+            baseMapper.selectInfoByTypeIdAndTemplateIds(spaceId, templateIds);
+        if (templates.isEmpty()) {
+            return new ArrayList<>();
+        }
+        CollectionUtil.customSequenceSort(templates, TemplateInfo::getTemplateId, templateIds);
+        return templates.stream()
+            .map(TemplateInfo::getNodeId)
+            .collect(Collectors.toList());
+    }
+
     private List<TemplateSearchResult> searchTemplate(final String keyword,
-        final String rawLang) {
+                                                      final String rawLang) {
         log.info("Fuzzy Search Template. keyword:{},lang:{}", keyword, rawLang);
         String lang =
             templatePropertyService.ifNotCategoryReturnDefaultElseRaw(rawLang);
@@ -823,14 +827,14 @@ public class TemplateServiceImpl
     /**
      * Global Search Template.
      *
-     * @param lang lang
-     * @param keyword keyword
+     * @param lang      lang
+     * @param keyword   keyword
      * @param className className
      * @return TemplateSearchDTO
      */
     @Override
     public TemplateSearchDTO globalSearchTemplate(final String lang,
-        final String keyword, final String className) {
+                                                  final String keyword, final String className) {
         TemplateSearchDTO result = new TemplateSearchDTO();
         // search template
         List<TemplateSearchResult> templates =

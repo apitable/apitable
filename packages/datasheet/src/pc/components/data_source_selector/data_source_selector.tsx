@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useEffect, useReducer, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { NarrowOutlined, QuestionCircleOutlined } from '@apitable/icons';
@@ -8,6 +7,7 @@ import { SearchResult } from 'pc/components/data_source_selector/components/sear
 import { useNodeClick } from 'pc/components/data_source_selector/hooks/use_node_click';
 import { useSearch } from 'pc/components/data_source_selector/hooks/use_search';
 import { ISearchPanelProps } from 'pc/components/data_source_selector/interface';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ButtonPlus, Loading, Tooltip } from '../common';
 import { SearchControl } from '../common/search_control';
 import { useFocusEffect } from '../editors/hooks/use_focus_effect';
@@ -30,6 +30,7 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
     currentDatasheetId: defaultNodeIds.datasheetId || '',
     currentFolderId: defaultNodeIds.folderId,
     currentMirrorId: '',
+    currentAutomationId: defaultNodeIds.automationId || '',
     currentViewId: '',
     currentFormId: defaultNodeIds.formId || '',
     showSearch: false,
@@ -40,11 +41,12 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
     searchResult: '',
   });
   const colors = useThemeColors();
-  const { embedId } = useSelector((state) => state.pageParams);
+  const { embedId } = useAppSelector((state) => state.pageParams);
   const editorRef = useRef<{
     focus: () => void;
       } | null>(null);
 
+  // detail
   const needNodeMetaData = requiredData.includes('viewId') || requiredData.includes('meta');
 
   const onCancelClick = () => {
@@ -70,10 +72,12 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
     const baseData = {
       viewId: localState.currentViewId,
       datasheetId: localState.currentDatasheetId,
+      automation: localState.currentAutomationId,
       meta: datasheetMetaData,
       nodeName: localState.nodes.find((node) => node.nodeId === localState.currentDatasheetId)?.nodeName,
       mirrorId: localState.currentMirrorId,
       formId: localState.currentFormId,
+      automationId: localState.currentAutomationId,
     };
 
     const result = {};
@@ -82,10 +86,15 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
       if (!baseData[v]) continue;
       result[v] = baseData[v];
     }
-
     onChange(result);
-    // eslint-disable-next-line
-  }, [localState.currentDatasheetId, localState.currentMirrorId, localState.currentViewId, localState.nodes, localState.currentFormId]);
+  }, [
+    localState.currentDatasheetId,
+    localState.currentMirrorId,
+    localState.currentViewId,
+    localState.nodes,
+    localState.currentFormId,
+    localState.currentAutomationId,
+  ]);
 
   const { onNodeClick } = useNodeClick({ localDispatch, localState, needFetchDatasheetMeta: !!needNodeMetaData });
 
@@ -130,6 +139,7 @@ export const DataSourceSelectorBase: React.FC<ISearchPanelProps> = ({
         <FolderContent
           nodes={localState.nodes}
           currentViewId={localState.currentViewId}
+          currentAutomationId={localState.currentAutomationId}
           currentMirrorId={localState.currentMirrorId}
           currentDatasheetId={localState.currentDatasheetId}
           currentFormId={localState.currentFormId}

@@ -172,13 +172,12 @@
     </select>
 
     <select id="selectByUnitRefIds" resultType="com.apitable.organization.dto.UnitBaseInfoDTO">
-        SELECT u.unit_id, u.unit_ref_id
+        SELECT u.unit_id, u.unit_ref_id, u.id
         FROM ${tablePrefix}unit u
         WHERE u.unit_ref_id IN
         <foreach item="item" index="index" collection="unitRefIds" open="(" separator="," close=")">
             #{item}
         </foreach>
-        AND is_deleted = 0
     </select>
 
     <select id="selectBySpaceIdAndUnitTypeAndUnitIds" resultType="com.apitable.organization.dto.UnitBaseInfoDTO">

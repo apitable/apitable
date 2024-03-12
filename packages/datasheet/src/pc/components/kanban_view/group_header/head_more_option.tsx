@@ -17,17 +17,17 @@
  */
 
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { ContextMenu, useThemeColors } from '@apitable/components';
 import { Selectors, Strings, t, UN_GROUP } from '@apitable/core';
 import { AddOutlined, EditOutlined, NarrowOutlined, DeleteOutlined, EyeOpenOutlined } from '@apitable/icons';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
+import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData } from 'pc/utils';
 
 export const KANBAN_GROUP_MORE = 'KANBAN_GROUP_MORE';
 
 export const GroupHeadMenu: React.FC<React.PropsWithChildren<unknown>> = () => {
-  const { rowCreatable, fieldPropertyEditable } = useSelector(Selectors.getPermissions);
+  const { rowCreatable, fieldPropertyEditable } = useAppSelector(Selectors.getPermissions);
   const colors = useThemeColors();
   const isViewLock = useShowViewLockModal();
 

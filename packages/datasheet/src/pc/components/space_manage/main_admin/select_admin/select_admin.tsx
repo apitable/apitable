@@ -19,17 +19,17 @@
 import { Form } from 'antd';
 import { FC, useState, useEffect } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { TextInput, Button, LinkButton } from '@apitable/components';
 import { t, Strings, Api, ISearchMemberData, IReduxState, hiddenMobile } from '@apitable/core';
 import { SearchMemberList, Message } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
 
 interface IVerifyAdminProps {
   setCurrent: React.Dispatch<React.SetStateAction<number>>;
 }
 export const SelectAdmin: FC<React.PropsWithChildren<IVerifyAdminProps>> = (props) => {
-  const userInfo = useSelector((state: IReduxState) => state.user.info);
+  const userInfo = useAppSelector((state: IReduxState) => state.user.info);
   const [keyword, setKeyword] = useState('');
   const [searchMember, setSearchMember] = useState<ISearchMemberData[]>([]);
   const [selectMemberInfo, setSelectMemberInfo] = useState<ISearchMemberData | null>(null);

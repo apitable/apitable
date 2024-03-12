@@ -18,33 +18,40 @@
 
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Api, IParent, Navigation, StoreActions, Strings, t } from '@apitable/core';
+import { useDispatch } from 'react-redux';
+import { Api, ConfigConstant, IParent, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Message } from 'pc/components/common/message/message';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { Router } from 'pc/components/route_manager/router';
+import { useAppSelector } from 'pc/store/react-redux';
 import { SelectFolder } from './select_folder';
-import styles from './style.module.less';
 import { MobileFooter, MobileTitle, Title } from './title';
+import styles from './style.module.less';
 
 export const MoveTo: React.FC<
   React.PropsWithChildren<{
     nodeIds: string[];
     onClose?: () => void;
+    isPrivate?: boolean;
   }>
 > = (props) => {
-  const { nodeIds, onClose } = props;
+  const { nodeIds, onClose, isPrivate } = props;
   const [selectedNodeId, setSelectedNodeId] = useState<string>();
+  const [catalog, setCatalog] = useState<ConfigConstant.Modules>();
   const [parentList, setParentList] = useState<IParent[]>([]);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const { nodeName, parentId, nodePermitSet } = useSelector((state) => {
-    const { nodeName, parentId, nodePermitSet } = state.catalogTree.treeNodesMap[nodeIds[0]];
-    return { nodeName, parentId, nodePermitSet };
+  const { nodeName, nodePermitSet } = useAppSelector((state) => {
+    const nodeMapKey = isPrivate ? 'privateTreeNodesMap' : 'treeNodesMap';
+    const { nodeName, nodePermitSet } = state.catalogTree[nodeMapKey][nodeIds[0]];
+    return { nodeName, nodePermitSet };
   });
-  const currentNodeId = useSelector((state) => state.pageParams.nodeId);
+  const userUnitId = useAppSelector((state) => state.user.info?.unitId);
+  const rootId = useAppSelector((state) => state.catalogTree.rootId);
+  const rootName = useAppSelector((state) => state.catalogTree.treeNodesMap[rootId]?.nodeName);
+  const currentNodeId = useAppSelector((state) => state.pageParams.nodeId);
 
   const dispatch = useDispatch();
 
@@ -59,7 +66,8 @@ export const MoveTo: React.FC<
         Message.error({ content: message });
         return;
       }
-      setParentList(data);
+      const _data = data.some((v) => v.nodeId === rootId) ? data : [{ nodeId: rootId, nodeName: rootName }, ...data];
+      setParentList(_data);
     });
   };
 
@@ -68,9 +76,19 @@ export const MoveTo: React.FC<
       return;
     }
     getParentList(selectedNodeId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedNodeId]);
 
-  const main = <SelectFolder selectedFolderId={selectedNodeId} selectedFolderParentList={parentList} onChange={setSelectedNodeId} />;
+  const main = (
+    <SelectFolder
+      selectedFolderId={selectedNodeId}
+      selectedFolderParentList={parentList}
+      onChange={setSelectedNodeId}
+      catalog={catalog}
+      setCatalog={setCatalog}
+      isPrivate={isPrivate}
+    />
+  );
 
   const selectedNodeName = parentList.find((v) => v.nodeId === selectedNodeId)?.nodeName;
 
@@ -80,23 +98,39 @@ export const MoveTo: React.FC<
       return;
     }
     // selected nodeId is equal nodeId current parentId
-    if (selectedNodeId === parentId) {
-      Message.error({ content: t(Strings.move_to_error_equal_parent) });
-      return;
-    }
+    // if (selectedNodeId === parentId) {
+    //   Message.error({ content: t(Strings.move_to_error_equal_parent) });
+    //   return;
+    // }
 
     const move = () => {
       setConfirmLoading(true);
-      Api.nodeMove(nodeId, selectedNodeId).then((res) => {
+      const unitId = catalog === ConfigConstant.Modules.PRIVATE ? userUnitId : undefined;
+      Api.nodeMove(nodeId, selectedNodeId, undefined, unitId).then((res) => {
         setConfirmLoading(false);
         const { data, success, message } = res.data;
+        console.log('moveTo -> data', data, success, message);
         if (!success) {
-          Message.error({ content: message });
-          dispatch(StoreActions.setErr(message));
+          let content: string | React.ReactNode = '';
+          if (nodeId.startsWith(ConfigConstant.NodeTypeReg.DATASHEET)) {
+            content = t(Strings.move_datasheet_link_warn);
+          } else if (nodeId.startsWith(ConfigConstant.NodeTypeReg.FOLDER)) {
+            content = t(Strings.move_folder_link_warn);
+          } else {
+            const nodeType = ConfigConstant.nodePrefixNameMap.get(nodeId.slice(0, 3) as ConfigConstant.NodeTypeReg);
+            content = <TComponent
+              tkey={t(Strings.move_other_link_warn)}
+              params={{ nodeType }}
+            />;
+          }
+          Modal.warning({
+            title: t(Strings.please_note),
+            content,
+          });
           return;
         }
-        dispatch(StoreActions.moveTo(nodeId, selectedNodeId, 0));
-        dispatch(StoreActions.addNodeToMap(data));
+        dispatch(StoreActions.moveTo(nodeId, selectedNodeId, 0, catalog));
+        dispatch(StoreActions.addNodeToMap(data, true, catalog));
         onClose && onClose();
         moveSuccess(nodeId);
       });
@@ -162,7 +196,7 @@ export const MoveTo: React.FC<
         <Modal
           className={styles.moveTo}
           title={<Title nodeName={nodeName} />}
-          visible
+          open
           centered
           onCancel={onClose}
           okText={t(Strings.move)}

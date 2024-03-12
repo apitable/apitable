@@ -24,13 +24,16 @@ import {
   IActionType,
   IRobot,
   IRobotTask,
+  IRobotTaskExtraTrigger,
   NoticeTemplatesConstant,
   Strings,
   validateMagicForm,
 } from '@apitable/core';
 import { RedisService } from '@apitable/nestjs-redis';
 import { Nack, RabbitSubscribe } from '@golevelup/nestjs-rabbitmq';
-import { Injectable, Logger } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
+import { TriggerEventHelper } from 'automation/events/helpers/trigger.event.helper';
+import { isEmpty } from 'class-validator';
 import { I18nService } from 'nestjs-i18n';
 import fetch from 'node-fetch';
 import { NodeService } from 'node/services/node.service';
@@ -79,15 +82,19 @@ export class AutomationService {
     private readonly automationActionRepository: AutomationActionRepository,
     private readonly automationTriggerRepository: AutomationTriggerRepository,
     private readonly robotService: RobotRobotService,
+    @Inject(forwardRef(() => NodeService))
     private readonly nodeService: NodeService,
     private readonly restService: RestService,
     private readonly queueSenderService: QueueSenderBaseService,
     private readonly i18n: I18nService,
     private readonly redisService: RedisService,
+    @Inject(forwardRef(() => TriggerEventHelper))
+    private readonly triggerEventHelper: TriggerEventHelper,
   ) {
     this.robotRunner = new AutomationRobotRunner({
       requestActionOutput: this.getActionOutput.bind(this),
       getRobotById: this.getRobotById.bind(this),
+      getRobotByRobotIdAndTriggerId: this.getRobotByRobotIdAndTriggerId.bind(this),
       reportResult: this.updateTaskRunHistory.bind(this),
     });
   }
@@ -159,6 +166,10 @@ export class AutomationService {
 
   async getRobotById(robotId: string) {
     return await this.robotService.getRobotById(robotId);
+  }
+
+  async getRobotByRobotIdAndTriggerId(robotId: string, triggerId: string) {
+    return await this.robotService.getRobotById(robotId, triggerId);
   }
 
   async saveTaskContext(robotTask: IRobotTask, robot: IRobot) {
@@ -239,22 +250,13 @@ export class AutomationService {
     }
   }
 
-  async handleTask(robotId: string, trigger: { input: any; output: any }) {
+  async handleTask(robotId: string, trigger: { triggerId: string; input: any; output: any }): Promise<string> {
     const spaceId = await this.getSpaceIdByRobotId(robotId);
-    // there is no billing plan yet, so there is no limit. self-hosted should not limit the call.
-    // there limit by billing plan
-    // const spaceRobotRunTimes = await this.getRobotRunTimesBySpaceId(spaceId);
-    // if (spaceRobotRunTimes >= 100000) {
-    //   return;
-    // }
-    const taskId = IdWorker.nextId().toString(); // TODO: use uuid
-    const automationRunsMessage = await this.restService.getSpaceAutomationRunsMessage(spaceId);
-    const maxAutomationRunsNums = automationRunsMessage.maxAutomationRunNums;
-    const automationRunNums = automationRunsMessage.automationRunNums;
-    if (maxAutomationRunsNums != -1 && automationRunNums > maxAutomationRunsNums) {
-      // The number of space station automation runs exceeds the limit and an excess record is generated.
+    const taskId = IdWorker.nextId().toString();
+    const isAutomationRunnableInSpace = await this.isAutomationRunnableInSpace(spaceId);
+    if (!isAutomationRunnableInSpace) {
       await this.createRunHistory(robotId, taskId, spaceId, RunHistoryStatusEnum.EXCESS);
-      return;
+      return taskId;
     }
     // 1. create run history
     await this.createRunHistory(robotId, taskId, spaceId);
@@ -262,10 +264,12 @@ export class AutomationService {
       // 2. execute the robot
       await this.robotRunner.run({
         robotId,
+        triggerId: trigger.triggerId,
         triggerInput: trigger.input,
         triggerOutput: trigger.output,
         taskId,
         status: RunHistoryStatusEnum.RUNNING,
+        extraTrigger: await this.getAutomationExtraTriggers(robotId, trigger),
       });
     } catch (error) {
       // 3. update run history when failed
@@ -273,6 +277,7 @@ export class AutomationService {
       await this.updateTaskRunHistory(taskId, false, null);
       this.logger.error(`RobotRuntimeError[${taskId}]`, (error as Error).message);
     }
+    return taskId;
   }
 
   @RabbitSubscribe({
@@ -307,6 +312,7 @@ export class AutomationService {
   async activeRobot(robotId: string, user: IUserBaseInfo) {
     const errorsByNodeId: any = {};
     try {
+      // todo validate resource ?
       const robot = await this.robotService.getRobotDetailById(robotId);
       const actions = Object.values(robot.actionsById);
       const { trigger, triggerType } = robot as any;
@@ -372,6 +378,58 @@ export class AutomationService {
     return false;
   }
 
+  async analysisStatus(taskId: string | void): Promise<string | void> {
+    if (!taskId) {
+      return;
+    }
+    const status = await this.automationRunHistoryRepository.selectStatusByTaskId(taskId);
+    if (RunHistoryStatusEnum.FAILED === status) {
+      return await this.i18n.translate(Strings.robot_run_history_fail);
+    }
+    if (RunHistoryStatusEnum.EXCESS === status) {
+      return await this.i18n.translate(Strings.automation_run_times_over_limit);
+    }
+  }
+
+  /**
+   * add on multi-trigger.
+   * @param robotId robot id
+   * @param trigger trigger
+   */
+  private async getAutomationExtraTriggers(
+    robotId: string,
+    trigger: {
+      triggerId: string;
+      input: any;
+      output: any;
+    },
+  ): Promise<IRobotTaskExtraTrigger[]> {
+    const triggers = await this.automationTriggerRepository.selectTriggerInfosByRobotId(robotId);
+    let currentTriggerResourceId = '';
+    const extraTriggers = [];
+    for (const item of triggers) {
+      if (item.triggerId != trigger.triggerId && !isEmpty(item.resourceId) && !isEmpty(item.triggerTypeId)) {
+        extraTriggers.push(item);
+      }
+      if (item.triggerId == trigger.triggerId) {
+        currentTriggerResourceId = item.resourceId!;
+      }
+    }
+    const resourceIds = extraTriggers.map<string>((i) => i.resourceId!);
+    const resources = await this.nodeService.getNodeInfoMapByNodeIds(resourceIds);
+    return extraTriggers.map<IRobotTaskExtraTrigger>((item) => {
+      const nodeInfo = resources.get(item.resourceId!);
+      return {
+        triggerId: item.triggerId,
+        triggerTypeId: item.triggerTypeId!,
+        triggerInput: item.input,
+        triggerOutput:
+          item.resourceId === currentTriggerResourceId || nodeInfo?.relNodeId === currentTriggerResourceId
+            ? trigger.output
+            : this.triggerEventHelper.getDefaultTriggerOutput(item.resourceId!, nodeInfo?.nodeName!),
+      };
+    });
+  }
   /**
    * create an execution record before the task is about to run
    * @param robotId
@@ -380,7 +438,7 @@ export class AutomationService {
    * @param status run status
    * @param data context
    */
-  private async createRunHistory(robotId: string, taskId: string, spaceId: string, status = RunHistoryStatusEnum.RUNNING, data?: any) {
+  public async createRunHistory(robotId: string, taskId: string, spaceId: string, status = RunHistoryStatusEnum.RUNNING, data?: any) {
     const newRunHistory = this.automationRunHistoryRepository.create({
       taskId,
       robotId,
@@ -414,13 +472,28 @@ export class AutomationService {
     return { success, data };
   }
 
-  private async getSpaceIdByRobotId(robotId: string) {
+  public async getSpaceIdByRobotId(robotId: string) {
     const resourceId = await this.automationRobotRepository.getResourceIdByRobotId(robotId);
     const rawResult = await this.nodeService.selectSpaceIdByNodeId(resourceId!);
     if (!rawResult?.spaceId) {
       throw new ServerException(PermissionException.NODE_NOT_EXIST);
     }
     return rawResult.spaceId;
+  }
+
+  public async isAutomationRunnableInSpace(spaceId: string): Promise<boolean> {
+    try {
+      const automationRunsMessage = await this.restService.getSpaceAutomationRunsMessage(spaceId);
+      const allowRun = automationRunsMessage?.allowRun;
+      if (!allowRun) {
+        // The number of space station automation runs exceeds the limit and an excess record is generated.
+        this.logger.log('Automation Subscription UsageExceeded', { spaceId });
+      }
+      return allowRun;
+    } catch (e) {
+      this.logger.error('Automation Subscription Error', { e });
+    }
+    return true;
   }
 
   private async sendFailureMessage(taskId: string) {

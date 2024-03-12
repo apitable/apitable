@@ -25,8 +25,8 @@ option java_package = "com.apitable.integration.grpc";
 option java_outer_classname = "GrpcSocketServingService";
 
 // socket-server provided service
-// room->socket
 service SocketService {
+  // ============ room->socket ======================================
   // Server sends room Change event
   rpc ServerRoomChange (grpc.common.ServerRoomChangeRo) returns (grpc.common.BasicResult);
 }

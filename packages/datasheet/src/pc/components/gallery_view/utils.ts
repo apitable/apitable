@@ -107,7 +107,7 @@ export const getFieldHeight = (field: IField, maxLine: number, isMobile?: boolea
 export const getVietualFieldHeight = (field: IField, maxLine: number, isMobile?: boolean) => {
   const showFieldType = getShowFieldType(field);
   if (showFieldType === FieldType.Text) {
-    return maxLine * (EACH_TEXT_LINE_HEIGHT - 1);
+    return maxLine * EACH_TEXT_LINE_HEIGHT;
   }
   if (isMobile) return FIELD_HEIGHT_VIRTUAL_MAP_MOBILE[showFieldType] || DEFAULT_SINGLE_TEXT_HEIGHT;
   return FIELD_HEIGHT_VIRTUAL_MAP[showFieldType] || DEFAULT_SINGLE_TEXT_HEIGHT;

@@ -22,7 +22,9 @@ import { Tooltip } from '../tooltip';
 import { StoryType } from '../../stories/constants';
 import { Story } from '@storybook/react';
 import { ISelectProps } from './interface';
+import { Box } from '../box';
 import { StarOutlined, WarnCircleFilled } from '@apitable/icons';
+import { MultipleSelect } from './dropdown/multiple';
 
 const COMPONENT_NAME = 'Select';
 
@@ -46,14 +48,125 @@ const data: {
   value: string;
 }[] = [];
 for (let i = 0; i < 20; i++) {
-  data.push({ label: 'Test data'+ i, value: 'opt' + i });
+  data.push({ label: 'Test data' + i, value: 'opt' + i });
 }
 
 export const Default = Template.bind({});
 
 export const WithData = Template.bind({});
 WithData.args = {
-  options: data
+  options: data,
+};
+
+export const MultipleSelectDemo = () => {
+  const [value, setValue] = React.useState(['value4', 'value5']);
+  return (
+    <MultipleSelect
+      placeholder={'请选择'}
+      value={value}
+      options={[
+        {
+          value: 'value1',
+          label: 'a1',
+        },
+        {
+          value: 'value2',
+          label: '3',
+        },
+        {
+          value: 'value5',
+          label: 'a5',
+        },
+        {
+          value: 'value1',
+          label: 'a',
+        },
+
+        {
+          value: 'value1',
+          label: 'a',
+        },
+
+        {
+          value: 'value1',
+          label: 'a',
+        },
+
+        {
+          value: 'value1',
+          label: 'a',
+        },
+
+        {
+          value: 'value1',
+          label: 'a',
+        },
+
+        {
+          value: 'value1',
+          label: 'a',
+        },
+
+        {
+          value: 'value1',
+          label: 'a',
+        },
+
+        {
+          value: 'value1',
+          label: 'a',
+        },
+
+        {
+          value: 'value1',
+          label: 'a',
+        },
+
+        {
+          value: 'value1',
+          label: 'a',
+        },
+
+        {
+          value: 'value1',
+          label: 'a',
+        },
+
+        {
+          value: 'value1',
+          label: 'a',
+        },
+
+        {
+          value: 'value1',
+          label: 'a',
+        },
+
+        {
+          value: 'value1',
+          label: 'a',
+        },
+
+        {
+          value: 'value1',
+          label: 'a',
+        },
+
+        {
+          value: 'value5',
+          label: 'a',
+        },
+        {
+          value: 'value4',
+          label: 'b',
+        },
+      ]}
+      onChange={(option) => {
+        console.log('options', option);
+        setValue(option as any);
+      }}
+    />
+  );
 };
 
 export const SearchSelectDemo = () => {
@@ -64,107 +177,105 @@ export const SearchSelectDemo = () => {
       list={[
         {
           value: 'value1',
-          label: 'a1'
+          label: 'a1',
         },
         {
           value: 'value2',
-          label: '3'
+          label: '3',
         },
         {
           value: 'value5',
-          label: 'a5'
+          label: 'a5',
         },
         {
           value: 'value1',
-          label: 'a'
-        },
-
-        {
-          value: 'value1',
-          label: 'a'
+          label: 'a',
         },
 
         {
           value: 'value1',
-          label: 'a'
+          label: 'a',
         },
 
         {
           value: 'value1',
-          label: 'a'
+          label: 'a',
         },
 
         {
           value: 'value1',
-          label: 'a'
+          label: 'a',
         },
 
         {
           value: 'value1',
-          label: 'a'
+          label: 'a',
         },
 
         {
           value: 'value1',
-          label: 'a'
+          label: 'a',
         },
 
         {
           value: 'value1',
-          label: 'a'
+          label: 'a',
         },
 
         {
           value: 'value1',
-          label: 'a'
+          label: 'a',
         },
 
         {
           value: 'value1',
-          label: 'a'
+          label: 'a',
         },
 
         {
           value: 'value1',
-          label: 'a'
+          label: 'a',
         },
 
         {
           value: 'value1',
-          label: 'a'
+          label: 'a',
         },
 
         {
           value: 'value1',
-          label: 'a'
+          label: 'a',
         },
 
         {
           value: 'value1',
-          label: 'a'
+          label: 'a',
         },
 
         {
           value: 'value1',
-          label: 'a'
+          label: 'a',
         },
 
         {
           value: 'value1',
-          label: 'a'
+          label: 'a',
+        },
+
+        {
+          value: 'value1',
+          label: 'a',
         },
         {
           value: 'value2',
-          label: 'b'
-        }
+          label: 'b',
+        },
       ]}
       onChange={(option) => {
         setValue(option.value as string);
       }}
     >
-      <div
-        tabIndex={-1}
-      >
+      <div tabIndex={-1}>
         <button>dddddddddddddddddddddddddddddddddddddddddddddddddd: {value}</button>
       </div>
     </SearchSelect>
@@ -182,6 +293,61 @@ export const DropdownSelectDisabled = () => {
         setValue(option.value as string);
       }}
     />
+  );
+};
+
+export const DropdownSelectMaxContent = () => {
+  const data: {
+    label: string;
+    value: string;
+  }[] = [];
+  for (let i = 0; i < 20; i++) {
+    data.push({
+      label:
+        'Test dataTest dataTest dataTest dataTest dataTest dataTest dataTest dataTest dataTest dataTest dataTest dataTest dataTest dataTest dataTest dataTest data' +
+        i,
+      value: 'opt' + i,
+    });
+  }
+  const data1: {
+    label: string;
+    value: string;
+  }[] = [];
+  for (let i = 0; i < 20; i++) {
+    data1.push({ label: 'Test ' + i, value: 'opt' + i });
+  }
+  const [value, setValue] = React.useState('opt15');
+  return (
+    <Box width={'80px'}>
+      <DropdownSelect
+        dropDownOptions={{
+          placement: 'bottom-start',
+        }}
+        panelOptions={{
+          maxWidth: '300px',
+        }}
+        dropdownMatchSelectWidth={false}
+        options={data}
+        value={value}
+        onSelected={(option) => {
+          setValue(option.value as string);
+        }}
+      />
+      <DropdownSelect
+        dropdownMatchSelectWidth={false}
+        panelOptions={{
+          maxWidth: '300px',
+        }}
+        dropDownOptions={{
+          placement: 'bottom-start',
+        }}
+        options={data1}
+        value={value}
+        onSelected={(option) => {
+          setValue(option.value as string);
+        }}
+      />
+    </Box>
   );
 };
 
@@ -233,7 +399,7 @@ export const NotMatchWidth = () => {
       options={[
         {
           label: 'Neither snow, nor rain, nor heat, nor gloom of night keeps these hackers from the swift completion of their code.',
-          value: 'opt'
+          value: 'opt',
         },
         ...data,
       ]}
@@ -345,14 +511,17 @@ export const DisabledSelect = () => {
       options={[
         {
           // eslint-disable-next-line max-len
-          label: 'The back still says the name of a different technology company, one that came before us,left as a reminder that if we fail, someday someone might replace us.',
+          label:
+            'The back still says the name of a different technology company, one that came before us,left as a reminder that if we fail, someday someone might replace us.',
           value: 'opt',
           prefixIcon: <StarOutlined />,
-          suffixIcon: <Tooltip content={'This icon also supports the display of additional information'}>
-            <span style={{ display: 'flex', alignItems: 'center' }}>
-              <WarnCircleFilled color="#FFAB00" />
-            </span>
-          </Tooltip>,
+          suffixIcon: (
+            <Tooltip content={'This icon also supports the display of additional information'}>
+              <span style={{ display: 'flex', alignItems: 'center' }}>
+                <WarnCircleFilled color="#FFAB00" />
+              </span>
+            </Tooltip>
+          ),
         },
       ]}
       value="opt"
@@ -417,7 +586,7 @@ export const SearchCustomHighlightStyle = () => {
       }}
       highlightStyle={{
         backgroundColor: '#7B67EE',
-        color: '#fff'
+        color: '#fff',
       }}
       dropdownMatchSelectWidth
       triggerStyle={{ width: 100 }}
@@ -479,11 +648,7 @@ export const SelectOption = () => {
     >
       {options.map((option, index) => {
         return (
-          <Select.Option
-            value={option.value}
-            disabled={option.disabled}
-            currentIndex={index}
-          >
+          <Select.Option value={option.value} disabled={option.disabled} currentIndex={index}>
             {option.label}
           </Select.Option>
         );
@@ -491,4 +656,3 @@ export const SelectOption = () => {
     </Select>
   );
 };
-

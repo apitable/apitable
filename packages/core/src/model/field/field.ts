@@ -15,30 +15,32 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+import { IReduxState } from 'exports/store';
 import Joi from 'joi';
 import { isEqual } from 'lodash';
-import { IReduxState, Selectors } from '../../exports/store';
-import { IAPIMetaFieldProperty } from 'types/field_api_property_types';
-import { IAPIMetaField } from 'types/field_api_types';
-import { IOpenField, IOpenFieldProperty } from 'types/open/open_field_read_types';
+import { getColorNames } from 'model/color';
+import type { IBindFieldContext, IBindFieldModel } from 'model/field';
+import { getFieldTypeString } from 'model/utils';
+import { getViewsList } from 'modules/database/store/selectors/resource/datasheet/base';
+import { getPermissions } from 'modules/database/store/selectors/resource/datasheet/calc';
+import type { IAPIMetaFieldProperty } from 'types/field_api_property_types';
+import type { IAPIMetaField } from 'types/field_api_types';
 import { BasicValueType, FieldType, IField, IFieldProperty, IStandardValue } from 'types/field_types';
 import { BasicOpenValueType } from 'types/field_types_open';
-import { IAddOpenFieldProperty, IEffectOption, IUpdateOpenFieldProperty } from 'types/open/open_field_write_types';
-import { IJsonSchema } from 'types/utils';
+import type { IOpenField, IOpenFieldProperty } from 'types/open/open_field_read_types';
+import type { IAddOpenFieldProperty, IEffectOption, IUpdateOpenFieldProperty } from 'types/open/open_field_write_types';
+import type { IOpenFilterValue } from 'types/open/open_filter_types';
+import type { IJsonSchema } from 'types/utils';
 import { FOperator, FOperatorDescMap, IFilterCondition } from 'types/view_types';
-import { getFieldTypeString, IBindFieldContext, IBindFieldModel } from '../index';
-import { ICellToStringOption, ICellValue } from '../record';
+import type { ICellToStringOption, ICellValue } from '../record';
 import { StatTranslate, StatType } from './stat';
 import { joiErrorResult } from './validate_schema';
-import { IOpenFilterValue } from 'types/open/open_filter_types';
 
 // China sensitive string comparison `collators` constructor.
-const zhIntlCollator = typeof Intl !== 'undefined' ? new Intl.Collator('zh-CN') : undefined;
-
+export const zhIntlCollator = typeof Intl !== 'undefined' ? new Intl.Collator('zh-CN') : undefined;
 /**
  * The business class should not become a complex container, it is better to be just a pipeline of data flow
- * Here we use the form of classes to build business calculation methods, 
+ * Here we use the form of classes to build business calculation methods,
  * but do not use new to initialize directly, but only bind the data that needs to be processed to the instance, and leave after use.
  * Suppose we want to call cellValueToString
  *
@@ -46,7 +48,7 @@ const zhIntlCollator = typeof Intl !== 'undefined' ? new Intl.Collator('zh-CN') 
  * const field: ITextField = // Assuming there is a column attribute data for a text column;
  * const value = Field.bindContext(field, state).cellValueToString();
  *
- * As you can see, every time you use the methods on the Field class, 
+ * As you can see, every time you use the methods on the Field class,
  * you only need bindContext for data binding, and then call the calculation method to get the desired return value.
  * No need to hold a concrete Field instance. This is very useful when we use it with redux immutable data.
  * Because immutable data is managed by reducer, it may be updated at any time, and we cannot hold data in our method class,
@@ -69,32 +71,32 @@ export abstract class Field {
 
   /**
     * Each field has its own openValue for use in the widget SDK, robot variables and subsequent open scenarios.
-    * This is open to developers and will do some processing on cellValue. 
+    * This is open to developers and will do some processing on cellValue.
     * This method describes the structure of the field openValue. Currently used in robot variables.
     */
   abstract get openValueJsonSchema(): IJsonSchema;
 
   /**
-   * cellValue is converted to the value used in the external call 
+   * cellValue is converted to the value used in the external call
    * (the event will contain the original value and the converted value, mainly exposed to external developers, automation, widget-sdk)
-   * @param cellValue 
+   * @param cellValue
    */
   abstract cellValueToOpenValue(cellValue: ICellValue): BasicOpenValueType | null;
 
   /**
    * openWriteValue is converted to cellValue (mainly exposed to external developers, automation, widget-sdk write data)
-   * @param openWriteValue 
+   * @param openWriteValue
    */
   abstract openWriteValueToCellValue(openWriteValue: any): ICellValue;
 
   /**
    * the meta information of API return fields
-   * 
-   * @param dstId 
-   * @returns 
+   *
+   * @param dstId
+   * @returns
    */
   getApiMeta(dstId?: string): IAPIMetaField {
-    const views = Selectors.getViewsList(this.state, dstId);
+    const views = getViewsList(this.state, dstId);
     const firstFieldId = views[0]!.columns[0]!.fieldId;
 
     const res: IAPIMetaField = {
@@ -145,6 +147,13 @@ export abstract class Field {
   }
 
   /**
+   * whether the field can be filter
+   */
+  get canFilter(): boolean {
+    return true;
+  }
+
+  /**
    * calc field exception info
    */
   get warnText(): string {
@@ -180,7 +189,7 @@ export abstract class Field {
 
   /**
    * The value of each cell is calculated through the field record relationship in the snapshot.
-   * But the calculation here refers to fields such as LookUp, RollUp, Formula, etc. 
+   * But the calculation here refers to fields such as LookUp, RollUp, Formula, etc.
    * The calculation of the cell value depends on the value of other basic cells.
    * Such fields are called "calculated fields" and need to override this method.
    * @readonly
@@ -228,11 +237,11 @@ export abstract class Field {
   /**
    * Whether the current field can be edited
    * Not all fields allow users to edit. If it is a calculated field, such as rollUp, lookup, formula fields, users are not allowed to edit
-   * In addition, related fields are only allowed to be edited 
+   * In addition, related fields are only allowed to be edited
    * if the user has the editing permission of the table associated with the current related field.
    */
   recordEditable(datasheetId?: string, mirrorId?: string): boolean {
-    return Selectors.getPermissions(this.state, datasheetId, this.field.id, mirrorId).cellEditable;
+    return getPermissions(this.state, datasheetId, this.field.id, mirrorId).cellEditable;
   }
 
   /**
@@ -240,16 +249,16 @@ export abstract class Field {
    * Here it is judged according to the permission factor, and the edit field is allowed to be true.
    */
   propertyEditable(): boolean {
-    return Selectors.getPermissions(this.state, undefined, this.field.id).fieldPropertyEditable;
+    return getPermissions(this.state, undefined, this.field.id).fieldPropertyEditable;
   }
 
   /**
    * compare two cell value whether equal
-   * by default, use deep comparison, 
+   * by default, use deep comparison,
    * complicated cell value need to override this method
-   * 
+   *
    * TODO: make the logic of `eq` and the logic of `compare` together, delete `eq`
-   * 
+   *
    */
   eq(cv1: ICellValue, cv2: ICellValue): boolean {
     return isEqual(cv1, cv2);
@@ -261,7 +270,7 @@ export abstract class Field {
    * @orderInCellValueSensitive {boolean}
    * when grouping, the sort of cells are insensitive, grouping them together.
    * when sorting, the sort of cells are sensitive.
-   * when testing, multiple-choices, members, relations keep same logic. 
+   * when testing, multiple-choices, members, relations keep same logic.
    * @returns {number} negative number => smaller than | 0 => equals | positive number => larger than
    */
   compare(cellValue1: ICellValue, cellValue2: ICellValue, orderInCellValueSensitive?: boolean): number {
@@ -297,11 +306,11 @@ export abstract class Field {
   }
 
   /**
-   * 
+   *
    * beside the operator calc function  that check whether empty,
    * other functions need to implement themselves
    * when no inheritance is needed, the default is true, which means no filtering
-   * 
+   *
    */
   isMeetFilter(operator: FOperator, cellValue: ICellValue, _: IFilterCondition['value']) {
     switch (operator) {
@@ -350,14 +359,14 @@ export abstract class Field {
   abstract validateProperty(): Joi.ValidationResult;
 
   /**
-   * Each column type corresponds to a data format. 
+   * Each column type corresponds to a data format.
    * By checking the data format, it is determined whether the data written to the cell is as expected
    * @returns {Joi.ValidationResult}
    */
   abstract validateCellValue(cellValue: ICellValue): Joi.ValidationResult;
 
   /**
-   * Each column type corresponds to a data format. 
+   * Each column type corresponds to a data format.
    * By checking the data format, it is determined whether the data written to the cell is as expected
    * @returns {Joi.ValidationResult}
    */
@@ -397,7 +406,7 @@ export abstract class Field {
   get openFieldProperty(): IOpenFieldProperty {
     return null;
   }
-  
+
   /**
    * Check update field property
    * @returns {Joi.ValidationResult}
@@ -408,10 +417,10 @@ export abstract class Field {
 
   /**
    * Return field information externally
-   * @param dstId 
+   * @param dstId
    */
   getOpenField(dstId?: string): IOpenField {
-    const views = Selectors.getViewsList(this.state, dstId);
+    const views = getViewsList(this.state, dstId);
     const firstFieldId = views[0]!.columns[0]!.fieldId;
     const { id, name, desc: description, type, required } = this.field;
     const res: IOpenField = {
@@ -448,13 +457,13 @@ export abstract class Field {
   }
 
   /**
-   * 
-   * For the time being, all fields are created and updated the same, 
+   *
+   * For the time being, all fields are created and updated the same,
    * except that there is an additional conversion when the associated field is updated, so the conversion at the time of update is used directly
    *
    * Add a new field to convert the incoming property into a structure that can be sent with cmd
    * Note: This step will not verify the incoming parameters, and the verification is passed by default
-   * @param openFieldProperty 
+   * @param openFieldProperty
    */
   addOpenFieldPropertyTransformProperty(addOpenFieldProperty: IAddOpenFieldProperty): IFieldProperty {
     return this.updateOpenFieldPropertyTransformProperty(addOpenFieldProperty);
@@ -463,7 +472,7 @@ export abstract class Field {
   /**
    * Update the field properties and convert the incoming property into a structure that can be sent with cmd
    * Note: This step will not verify the incoming parameters, and the verification is passed by default
-   * @param openFieldProperty 
+   * @param openFieldProperty
    */
   updateOpenFieldPropertyTransformProperty(openFieldProperty: IUpdateOpenFieldProperty): IFieldProperty {
     return openFieldProperty;
@@ -471,7 +480,7 @@ export abstract class Field {
 
   /**
    * Converting internal filter structures to external data structures.
-   * @param _value 
+   * @param _value
    */
   filterValueToOpenFilterValue(_value: any): IOpenFilterValue {
     throw new Error(`${getFieldTypeString(this.field.type)} not support filterValueToOpenFilterValue`);
@@ -479,7 +488,7 @@ export abstract class Field {
 
   /**
    * Converting external filter structures to internal data structures.
-   * @param value 
+   * @param value
    */
   openFilterValueToFilterValue(_value: IOpenFilterValue): any {
     throw new Error(`${getFieldTypeString(this.field.type)} not support filterValueToOpenFilterValue`);
@@ -492,28 +501,15 @@ export abstract class Field {
   validateOpenFilterValue(_value: IOpenFilterValue): Joi.ValidationResult {
     return joiErrorResult(`${getFieldTypeString(this.field.type)} not support validateOpenFilterValue`);
   }
-}
 
-export abstract class ArrayValueField extends Field {
-  // Who sets the value of the field need to specify the value type in the array
-  static _acceptFilterOperators = [
-    FOperator.Is,
-    FOperator.IsNot,
-    FOperator.Contains,
-    FOperator.DoesNotContain,
-    FOperator.IsEmpty,
-    FOperator.IsNotEmpty,
-    FOperator.IsRepeat,
-  ];
-
-  get acceptFilterOperators() {
-    return ArrayValueField._acceptFilterOperators;
+  /**
+   * Convert the obtained color name to color number
+   * @param name color name
+   */
+  getOptionColorNumberByName(name: string) {
+    const colorNames = getColorNames();
+    const colorNum = colorNames.findIndex(colorName => colorName === name);
+    return colorNum > -1 ? colorNum : undefined;
   }
-
-  // Convert the custom type value in the original cellValue array to the basic type, no custom data structure is allowed
-  abstract cellValueToArray(cellValue: any): (number | string | boolean)[] | null;
-
-  // Different from cellValueToString, here is to convert the value of the underlying type returned by cellValueToArray into a string.
-  // Most of the fields of arrayValueToString can be directly joined, and the format of number dataTime needs to be formatted first.
-  abstract arrayValueToString(cellValues: any[] | null): string | null;
 }
+

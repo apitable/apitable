@@ -23,6 +23,7 @@ import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortc
 import { resourceService } from 'pc/resource_service';
 import { CellScrollContainer } from '../cell_scroll_container';
 import { CellAttachment } from './cell_attachment';
+import { CellButton } from './cell_button';
 import { CellCheckbox } from './cell_checkbox';
 import { CellFormula } from './cell_formula';
 import { CellLink } from './cell_link';
@@ -32,6 +33,7 @@ import { CellMultiSelect } from './cell_multi_select';
 import { CellRating } from './cell_rating';
 import { CellSingleSelect } from './cell_single_select';
 import { CellText } from './cell_text';
+import { CellWorkdoc } from './cell_workdoc';
 import { IRenderData } from './interface';
 
 export interface ICellProps {
@@ -152,6 +154,10 @@ export const CellValue: FC<React.PropsWithChildren<ICellValueProps>> = memo((pro
       return <CellLookUp {...cellProps} />;
     case FieldType.Attachment:
       return <CellAttachment {...cellProps} />;
+    case FieldType.Button:
+      return <CellButton {...cellProps} field={field} />;
+    case FieldType.WorkDoc:
+      return <CellWorkdoc {...cellProps} />;
     default:
       return null;
   }

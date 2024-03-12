@@ -18,12 +18,13 @@
 
 import { Modal as AntdModal } from 'antd';
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { ThemeProvider } from '@apitable/components';
 import { Selectors } from '@apitable/core';
 
+import { useAppSelector } from 'pc/store/react-redux';
+
 export const ModalWithTheme = (props: any) => {
-  const cacheTheme = useSelector(Selectors.getTheme);
+  const cacheTheme = useAppSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>
       <div>

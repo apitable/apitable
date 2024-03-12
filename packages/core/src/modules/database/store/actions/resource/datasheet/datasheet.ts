@@ -18,8 +18,8 @@
 
 import { StatusCode } from 'config';
 import { Strings, t } from 'exports/i18n';
+import { DateUnitType } from 'modules/shared/store/constants';
 import {
-  DateUnitType,
   IActiveRowInfo,
   IApiWrapper,
   IDatasheetPack,
@@ -35,9 +35,13 @@ import {
   IViewDerivation,
   IViewProperty,
   ModalConfirmKey,
-} from 'exports/store';
-import { deleteNode, loadFieldPermissionMap, updateUnitMap, updateUserMap } from 'exports/store/actions';
-import { getDatasheet, getDatasheetLoading, getMirror, getSnapshot } from 'exports/store/selectors';
+} from 'exports/store/interfaces';
+import { updateUnitMap, updateUserMap } from 'modules/org/store/actions/unit_info';
+import { deleteNode } from 'modules/space/store/actions/catalog_tree';
+import { loadFieldPermissionMap } from 'modules/database/store/actions/resource';
+
+import { getDatasheet, getDatasheetLoading, getSnapshot } from 'modules/database/store/selectors/resource/datasheet/base';
+import { getMirror } from 'modules/database/store/selectors/resource/mirror';
 import produce from 'immer';
 import { Events, Player } from 'modules/shared/player';
 import {
@@ -45,7 +49,6 @@ import {
   ACTIVE_OPERATE_VIEW_ID,
   ADD_DATASHEET,
   CHANGE_VIEW,
-  CHANGE_WIDGET_PANEL_WIDTH,
   CLEAR_ACTIVE_ROW_INFO,
   CLEAR_FIELD_INFO,
   DATAPACK_LOADED,
@@ -83,6 +86,7 @@ import {
   SET_ORG_CHART_GRID_WIDTH as SET_ORG_CHART_GRID_PANEL_WIDTH,
   SET_ORG_CHART_SETTING_PANEL_WIDTH,
   SET_ROBOT_PANEL_STATUS,
+  SET_COPILOT_PANEL_STATUS,
   SET_SEARCH_KEYWORD,
   SET_SEARCH_RESULT_CURSOR_INDEX,
   SET_VIEW_DERIVATION,
@@ -133,7 +137,7 @@ function ensureInnerConsistency(payload: IServerDatasheetPack, getState?: () => 
   // @su
   // the check of data consistency
   // datasheet is the only object that should be attention
-  // if if all the permission of datasheet is ok, no need to check more
+  // if all the permission of datasheet is ok, no need to check more
   if (!datasheet.permissions?.editable) {
     // when the permission of datasheet is not ok, then check other factors
     const pageParams = getState ? getState().pageParams : {};
@@ -785,6 +789,14 @@ export const toggleTimeMachinePanel = (datasheetId: string, visible?: boolean) =
   };
 };
 
+export const setCoPilotPanelStatus = (status: boolean, datasheetId: string) => {
+  return {
+    type: SET_COPILOT_PANEL_STATUS,
+    payload: status,
+    datasheetId,
+  };
+};
+
 export const toggleArchivedRecordsPanel = (datasheetId: string, visible?: boolean) => {
   return {
     type: TOGGLE_ARCHIVED_RECORDS_PANEL,
@@ -795,16 +807,6 @@ export const toggleArchivedRecordsPanel = (datasheetId: string, visible?: boolea
 
 export interface IToggleWidgetPanel {
   type: typeof TOGGLE_WIDGET_PANEL;
-}
-
-export interface IChangeWidgetPanelWidth {
-  type: typeof CHANGE_WIDGET_PANEL_WIDTH;
-  payload: number;
-}
-
-export interface ISwitchActivePanel {
-  type: typeof SWITCH_ACTIVE_PANEL;
-  payload: string;
 }
 
 export interface ISetGridViewHoverFieldIdAction {

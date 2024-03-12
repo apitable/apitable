@@ -22,14 +22,14 @@ import { find, isEqual, values } from 'lodash';
 import uniqBy from 'lodash/uniqBy';
 import * as React from 'react';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { ICollaborator, integrateCdnHost, ResourceType, Selectors, Settings } from '@apitable/core';
 // eslint-disable-next-line no-restricted-imports
 import { Avatar, AvatarSize, Tooltip, UserCardTrigger } from 'pc/components/common';
 import { backCorrectAvatarName, backCorrectName, isAlien } from 'pc/components/multi_grid/cell/cell_other';
-import styles from './style.module.less';
+import { useAppSelector } from 'pc/store/react-redux';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 const MAX_SHOW_NUMBER = 3;
 
@@ -48,7 +48,7 @@ export const CollaboratorStatus: React.FC<
     style?: React.CSSProperties;
   }>
 > = (props) => {
-  const collaborators = useSelector((state) => {
+  const collaborators = useAppSelector((state) => {
     let collaborators = Selectors.getResourceCollaborator(state, props.resourceId, props.resourceType);
 
     if (!collaborators) {
@@ -71,10 +71,10 @@ export const CollaboratorStatus: React.FC<
     return [...collaborators, ...anonymous.sort(sortByCreateTime)];
   }, isEqual);
 
-  const unitMap = useSelector(Selectors.getUnitMap);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
-  const { embedId } = useSelector((state) => state.pageParams);
-  const embedInfo = useSelector((state) => state.embedInfo);
+  const unitMap = useAppSelector(Selectors.getUnitMap);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
+  const { embedId } = useAppSelector((state) => state.pageParams);
+  const embedInfo = useAppSelector((state) => state.embedInfo);
 
   const showSetting = embedId ? embedInfo.viewControl?.toolBar?.formSettingBtn : true;
 
@@ -92,6 +92,7 @@ export const CollaboratorStatus: React.FC<
             return {
               name: item.userName,
               avatar: item.avatar,
+              userId: item.userId,
             };
           }),
         },

@@ -20,7 +20,6 @@ import classNames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, IconButton, Tooltip, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IWidgetPackage, ResourceType, Strings, t, WidgetInstallEnv, WidgetPackageStatus, WidgetReleaseType } from '@apitable/core';
 import { AddOutlined, LinkOutlined, MoreOutlined } from '@apitable/icons';
@@ -30,6 +29,7 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { InstallPosition } from 'pc/components/widget/widget_center/enum';
 import { installToDashboard, installToPanel, installWidget } from 'pc/components/widget/widget_center/install_utils';
 import { IWidgetPackageItemBase } from 'pc/components/widget/widget_center/interface';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 
 import { useResourceManageable } from '../hooks';
@@ -60,9 +60,9 @@ const WidgetPackageItemBase = (props: IWidgetPackageItemProps) => {
     installEnv,
   } = props;
   const colors = useThemeColors();
-  const isOwner = useSelector((state) => state.user.info?.uuid === ownerUuid);
-  const { dashboardId, datasheetId, mirrorId } = useSelector((state) => state.pageParams);
-  const spacePermission = useSelector((state) => state.spacePermissionManage.spaceResource?.permissions || []);
+  const isOwner = useAppSelector((state) => state.user.info?.uuid === ownerUuid);
+  const { dashboardId, datasheetId, mirrorId } = useAppSelector((state) => state.pageParams);
+  const spacePermission = useAppSelector((state) => state.spacePermissionManage.spaceResource?.permissions || []);
   const [installing, setInstalling] = useState(false);
   const manageable = useResourceManageable();
   const cover = useGetSignatureAssertByToken(_cover);

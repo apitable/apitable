@@ -19,26 +19,29 @@
 package com.apitable.shared.cache.service;
 
 /**
- * template config service
+ * template config service.
+ *
  * @author tao
  */
 public interface TemplateConfigCacheService {
 
     /**
-     * Get the recommended configuration information of some language in the template center
+     * Get the recommended configuration information of some language in the template center.
+     *
      * @param lang locale
      * @return config info
      */
     String getRecommendConfigCacheByLang(String lang);
 
     /**
-     * delete recommend config cache
+     * delete recommend config cache.
+     *
      * @param lang locale
      */
     void deleteRecommendConfigCacheByLang(String lang);
 
     /**
-     * get template category
+     * get template category.
      *
      * @param lang locale
      * @return category info
@@ -46,7 +49,8 @@ public interface TemplateConfigCacheService {
     String getCategoriesListConfigCacheByLang(String lang);
 
     /**
-     * delete category cache
+     * delete category cache.
+     *
      * @param lang locale
      */
     void deleteCategoriesListConfigCacheByLang(String lang);

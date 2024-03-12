@@ -20,7 +20,7 @@ import { Radio, Space, RadioChangeEvent } from 'antd';
 import produce from 'immer';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { Button, Skeleton, Switch } from '@apitable/components';
 import { Api, FormApi, IFormProps, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
@@ -34,6 +34,7 @@ import { Popconfirm } from 'pc/components/common/popconfirm';
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common/tooltip';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import HeaderCover from 'static/icon/datasheet/share/datasheet_img_share.png';
 import styles from './style.module.less';
 
@@ -53,11 +54,11 @@ export const ShareModal: React.FC<React.PropsWithChildren<IShareModalProps>> = (
   const [isLoadingShow, setLoadingShow] = useState<boolean>(true);
   // Information about the node being shared
   const [shareSettings, setShareSettings] = useState<IShareSettings | null>(null);
-  const { userInfo } = useSelector((state: IReduxState) => ({ userInfo: state.user.info }), shallowEqual);
+  const { userInfo } = useAppSelector((state: IReduxState) => ({ userInfo: state.user.info }), shallowEqual);
   const dispatch = useDispatch();
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const fileSharable = useSelector((state) => state.space.spaceFeatures?.fileSharable);
+  const fileSharable = useAppSelector((state) => state.space.spaceFeatures?.fileSharable);
   // Update Properties
   const updateProps = (partProps: { fillAnonymous?: any; submitLimit?: any }) => {
     const finalFormProps = produce(formProps, (draft) => {

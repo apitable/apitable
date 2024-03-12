@@ -96,7 +96,18 @@ export const UploadZoneBase: React.ForwardRefRenderFunction<ICommonTabRef, IUplo
     setDragOver(false);
   }, [isFileDialogActive]);
 
-  const isMiniProgram = browser?.is('wechat') && browser?.is('android');
+  const isWechat = browser?.is('wechat');
+  const isAndroid = browser?.is('android');
+  const isIOS = browser?.is('ios');
+
+  const isMiniProgram = isWechat || isAndroid || isIOS;
+
+  const renderUploadText = () => {
+    if (isMobile) {
+      return isMiniProgram ? t(Strings.upload_on_your_phone) : t(Strings.take_photos_or_upload);
+    }
+    return t(Strings.select_local_file);
+  };
 
   return (
     <div
@@ -113,14 +124,13 @@ export const UploadZoneBase: React.ForwardRefRenderFunction<ICommonTabRef, IUplo
       }}
       defaultValue=""
     >
-      {/* WeChat applet input does not support multiple, widget side forced to set to false */}
-      <input {...getInputProps()} defaultValue="" {...(isMiniProgram && { multiple: false })} />
+      <input {...getInputProps()} defaultValue="" multiple />
       {!layoutOpacity && (
         <>
           <span onMouseDown={stopPropagation} style={{ display: 'flex', alignItems: 'center' }} ref={uploadRef}>
             <AddOutlined color={colors.fourthLevelText} />
           </span>
-          {isMobile ? (isMiniProgram ? t(Strings.upload_on_your_phone) : t(Strings.take_photos_or_upload)) : t(Strings.select_local_file)}
+          {renderUploadText()}
         </>
       )}
     </div>

@@ -377,7 +377,7 @@ public class UserInfoVo implements Serializable {
      * @param userLinkVos  UserLinkVo list
      */
     public void transferDataFromDto(final UserLinkInfo userLinkInfo,
-        final List<UserLinkVo> userLinkVos) {
+                                    final List<UserLinkVo> userLinkVos) {
         this.setWizards(JSONUtil.parseObj(userLinkInfo.getWizards()));
         this.setThirdPartyInformation(userLinkVos);
         this.setInviteCode(userLinkInfo.getInviteCode());

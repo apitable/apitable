@@ -55,11 +55,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import java.util.List;
-import javax.annotation.Resource;
-import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -107,7 +107,8 @@ public class AutomationRobotController {
     @Operation(summary = "Get automation robots")
     @Parameters({
         @Parameter(name = "resourceId", description = "node id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "aut****"),
-        @Parameter(name = "shareId", description = "share id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr****"),})
+        @Parameter(name = "shareId", description = "share id", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = "shr****")
+    })
     @ApiResponses(@ApiResponse(responseCode = "200", useReturnTypeSchema = true))
     public ResponseData<List<AutomationSimpleVO>> getResourceRobots(
         @RequestParam(name = "resourceId") String resourceId,
@@ -269,9 +270,8 @@ public class AutomationRobotController {
         iPermissionService.checkPermissionBySessionOrShare(resourceId, shareId,
             NodePermission.EDIT_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
-        return ResponseData.success(
-            iAutomationTriggerService.createByDatabus(userId, data));
-
+        String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
+        return ResponseData.success(iAutomationTriggerService.create(userId, spaceId, data));
     }
 
     /**
@@ -292,15 +292,16 @@ public class AutomationRobotController {
     public ResponseData<List<TriggerVO>> updateTrigger(
         @PathVariable String resourceId,
         @PathVariable String triggerId,
-        @RequestBody UpdateTriggerRO data,
+        @RequestBody @Valid UpdateTriggerRO data,
         @RequestParam(name = "shareId", required = false) String shareId
     ) {
         Long userId = SessionContext.getUserId();
         iPermissionService.checkPermissionBySessionOrShare(resourceId, shareId,
             NodePermission.EDIT_NODE,
             status -> ExceptionUtil.isTrue(status, PermissionException.NODE_OPERATION_DENIED));
+        String spaceId = iNodeService.getSpaceIdByNodeId(resourceId);
         return ResponseData.success(
-            iAutomationTriggerService.updateByDatabus(triggerId, userId, data));
+            iAutomationTriggerService.update(userId, triggerId, spaceId, data));
     }
 
     /**

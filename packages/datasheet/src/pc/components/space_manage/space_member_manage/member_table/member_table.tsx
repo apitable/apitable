@@ -20,7 +20,7 @@ import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';
 import * as React from 'react';
 import { FC, ReactText, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { lightColors, List, Pagination } from '@apitable/components';
 import { ConfigConstant, IMemberInfoInSpace, IReduxState, isIdassPrivateDeployment, StoreActions, Strings, t } from '@apitable/core';
 import { CheckOutlined, FilterOutlined } from '@apitable/icons';
@@ -28,13 +28,14 @@ import { CheckOutlined, FilterOutlined } from '@apitable/icons';
 import { Modal, Tooltip } from 'pc/components/common';
 import { useMemberManage, useUpdateMemberListInSpace } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { EditMemberModal } from '../modal';
 import { nameColRender, OperateCol } from '../ui';
 import { isPrimaryOrOwnFunc } from '../utils';
-import styles from './style.module.less';
 // @ts-ignore
-import { isSocialDingTalk, isSocialFeiShu, isSocialPlatformEnabled, isSocialWecom } from 'enterprise';
+import { isSocialDingTalk, isSocialFeiShu, isSocialPlatformEnabled, isSocialWecom } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 interface IMemberTable {
   searchMemberRes: IMemberInfoInSpace[];
@@ -46,7 +47,7 @@ export const MemberTable: FC<React.PropsWithChildren<IMemberTable>> = (props) =>
   const dispatch = useAppDispatch();
   const [pageNo, setPageNo] = useState(1);
   const [scrollHeight, setScrollHeight] = useState(0);
-  const { selectedTeamInfoInSpace, selectMemberListInSpace, memberListInSpace, selectedRows, user, spaceResource, spaceInfo } = useSelector(
+  const { spaceId, selectedTeamInfoInSpace, selectMemberListInSpace, memberListInSpace, selectedRows, user, spaceResource, spaceInfo } = useAppSelector(
     (state: IReduxState) => ({
       spaceId: state.space.activeId || '',
       selectedTeamInfoInSpace: state.spaceMemberManage.selectedTeamInfoInSpace,
@@ -154,7 +155,7 @@ export const MemberTable: FC<React.PropsWithChildren<IMemberTable>> = (props) =>
       dataIndex: 'memberName',
       key: 'memberName',
       align: 'center',
-      render: (value, record) => nameColRender(value, record, spaceInfo),
+      render: (value, record) => nameColRender(value, record, spaceInfo, spaceId),
       filterDropdown: () => (
         <List
           data={[

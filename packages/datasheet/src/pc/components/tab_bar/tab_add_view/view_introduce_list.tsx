@@ -21,7 +21,6 @@ import Image from 'next/image';
 import Trigger from 'rc-trigger';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { Alert, Typography, useListenVisualHeight, useThemeColors, IUseListenTriggerInfo } from '@apitable/components';
 import {
   ConfigConstant,
@@ -38,6 +37,7 @@ import {
 import { AddOutlined } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
+import { useAppSelector } from 'pc/store/react-redux';
 import DefaultViewPng from 'static/icon/datasheet/view/datasheet_img_view@4x.png';
 import { NodeIcon } from './node_icon';
 import styles from './style.module.less';
@@ -95,18 +95,19 @@ export const ViewIntroduceList = (props: IViewIntroduceList) => {
   const { addNewView, addNewNode, triggerInfo } = props;
   const containerRef = useRef<HTMLDivElement | null>(null);
   const viewTypeList = [ViewType.Grid, ViewType.Gallery, ViewType.Kanban, ViewType.Gantt, ViewType.Calendar, ViewType.OrgChart];
-  const embedId = useSelector((state) => state.pageParams.embedId);
-  const formCreatable = useSelector((state) => {
+  const embedId = useAppSelector((state) => state.pageParams.embedId);
+  const formCreatable = useAppSelector((state) => {
     const folderId = Selectors.getDatasheetParentId(state)!;
     const { editable } = Selectors.getPermissions(state);
-    const { manageable } = state.catalogTree.treeNodesMap[folderId]?.permissions || {};
+    const node = state.catalogTree.treeNodesMap[folderId] || state.catalogTree.privateTreeNodesMap[folderId];
+    const { manageable } = node?.permissions || {};
     return manageable && editable;
   });
   const nodeTypeList = formCreatable ? [ConfigConstant.NodeType.FORM] : [];
-  const isViewCountOverLimit = useSelector((state) => {
+  const isViewCountOverLimit = useAppSelector((state) => {
     return Selectors.getViewsList(state).length >= getMaxViewCountPerSheet();
   });
-  const permissions = useSelector(state => Selectors.getPermissions(state));
+  const permissions = useAppSelector(state => Selectors.getPermissions(state));
   const { style, onListenResize } = useListenVisualHeight({
     listenNode: containerRef,
     minHeight: MIN_HEIGHT,

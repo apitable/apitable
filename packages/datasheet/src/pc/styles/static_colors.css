@@ -25,13 +25,14 @@
   --static-delete-bg: var(--red_200);
   --static-delete-bg-rgb: 255, 180, 175;
   --static-add-bg: var(--teal_200);
-  --static-add-bg-rgb: 139, 221, 190;
 }
 
 :root[data-theme="light"] {
   --closeIconBg: rgba(38,38,38,0.5);
+  --workdocSelectionBg: rgba(123, 103, 238, 0.2);
 }
 
 :root[data-theme="dark"] {
   --closeIconBg: rgba(255,255,255,0.1);
+  --workdocSelectionBg: rgba(144, 127, 240, 0.16);
 }

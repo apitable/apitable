@@ -19,7 +19,7 @@
 import { compact } from 'lodash';
 import Image from 'next/image';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import {
   cellValueToImageSrc,
   CutMethod,
@@ -37,6 +37,7 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { DisplayFile } from 'pc/components/display_file';
 import { useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { isSupportImage, renderFileIconUrl } from 'pc/utils';
 import NoImage from 'static/icon/datasheet/gallery/emptystates_img_datasheet.png';
 import { hasCover } from '../gallery_view/utils';
@@ -69,7 +70,7 @@ interface ICardHeaderProps {
 export const CardHeader: React.FC<React.PropsWithChildren<ICardHeaderProps>> = (props) => {
   const { coverFieldId, recordId, width, height, isCoverFit, showEmptyCover, showOneImage, datasheetId } = props;
 
-  const { recordSnapshot, permissions } = useSelector((state) => {
+  const { recordSnapshot, permissions } = useAppSelector((state) => {
     return {
       recordSnapshot: Selectors.getRecordSnapshot(state, datasheetId, recordId),
       permissions: Selectors.getPermissions(state),

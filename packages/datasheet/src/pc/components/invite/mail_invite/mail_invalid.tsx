@@ -18,15 +18,15 @@
 
 import { useMount } from 'ahooks';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { IReduxState } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { UrlInvalid } from '../components/url_invalid';
 import { useInvitePageRefreshed } from '../use_invite';
 import { getInvalidReason } from '../utils';
 
 const MailInvalid: FC<React.PropsWithChildren<unknown>> = () => {
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'mailInvite' });
-  const inviteEmailInfo = useSelector((state: IReduxState) => state.invite.inviteEmailInfo);
+  const inviteEmailInfo = useAppSelector((state: IReduxState) => state.invite.inviteEmailInfo);
 
   useMount(() => {
     whenPageRefreshed();

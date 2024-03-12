@@ -16,9 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useClickOutside } from '@huse/click-outside';
-import { useAtomValue } from 'jotai/index';
-import RcTrigger from 'rc-trigger';
+import { useAtomValue } from 'jotai';
 import * as React from 'react';
 import { memo, MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -26,22 +24,17 @@ import { createEditor, Transforms } from 'slate';
 import { withHistory } from 'slate-history';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import useSWR from 'swr';
+import { Dropdown, IDropdownControl, IOverLayProps, Box } from '@apitable/components';
 import { Selectors } from '@apitable/core';
-import {
-  automationCurrentTriggerId,
-  automationStateAtom,
-  automationTriggerAtom
-} from 'pc/components/automation/controller';
+import { automationStateAtom } from 'pc/components/automation/controller';
 import { map2Text } from 'pc/components/robot/robot_detail/magic_variable_container/config';
 import { fixImeInputBug } from 'pc/components/slate_editor/slate_editor';
-import { useQuery } from 'pc/hooks';
 import {
-  getTriggerDatasheetId,
-  useAutomationFieldInfo,
-  useAutomationRobotFields,
-  useTriggerDatasheetId
+  getTriggerDatasheetId2,
+  IFetchedDatasheet,
+  useAutomationFieldInfo
 } from '../../../automation/controller/hooks/use_robot_fields';
-import { INodeOutputSchema, IRobotTrigger, ITriggerType } from '../../interface';
+import { AutomationScenario, INodeOutputSchema, ITriggerType } from '../../interface';
 import { IWidgetProps } from '../node_form/core/interface';
 import { enrichDatasheetTriggerOutputSchema, formData2SlateValue, insertMagicVariable, transformSlateValue, withMagicVariable } from './helper';
 import { MagicVariableContainer } from './magic_variable_container';
@@ -49,7 +42,11 @@ import { MagicVariableElement } from '.';
 import styles from './styles.module.less';
 
 const DefaultElement = (props: any) => {
-  return <p {...props.attributes}>{props.children}</p>;
+  return (
+    <p style={{ wordBreak: 'break-word', maxWidth: '100%' }} {...props.attributes}>
+      {props.children}
+    </p>
+  );
 };
 
 type IMagicTextFieldProps = IWidgetProps & {
@@ -58,17 +55,30 @@ type IMagicTextFieldProps = IWidgetProps & {
   onChange?: (value: any) => void;
   isOneLine?: boolean;
   triggerType: ITriggerType | null;
+  triggerDataSheetMap: TriggerDataSheetMap
 };
 
+export type TriggerDataSheetMap = Record<string, string>;
+
 export const MagicTextField = memo((props: IMagicTextFieldProps) => {
-  const { onChange, schema } = props;
+  const { onChange, schema, triggerDataSheetMap } = props;
   const isJSONField = (schema as any)?.format === 'json';
-  const [isOpen, setOpen] = useState(false);
+  const [isOpen, setOpenState] = useState(false);
   const ref = useRef(null);
-  const isOpenRef = useRef(false);
-  const inputRef = useRef<any>();
-  const triggerRef = useRef<any>(null);
-  const popupRef = useRef<any>(null);
+
+  const triggerControlRef = useRef<IDropdownControl | null>(null);
+
+  const setOpen = useCallback(
+    (isOpen: boolean) => {
+      setOpenState(isOpen);
+      if (isOpen) {
+        triggerControlRef?.current?.open();
+      } else {
+        triggerControlRef?.current?.close();
+      }
+    },
+    [setOpenState],
+  );
 
   const editor = useMemo(() => withHistory(withMagicVariable(withReact(createEditor() as ReactEditor))), []);
 
@@ -76,13 +86,8 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
   const slateValue = formData2SlateValue(props.value);
   const [value, setValue] = useState(slateValue);
 
-  const triggerList = state?.robot?.triggers ?? [];
   const refV: MutableRefObject<any> = useRef(null);
-  useClickOutside(popupRef, () => {
-
-    isOpenRef.current=false;
-    setOpen(false);
-  });
+  const insertCheckRef: MutableRefObject<boolean> = useRef(false);
 
   useEffect(() => {
     if (!isOpen) {
@@ -96,30 +101,26 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
 
   const updateFormValue = useCallback(
     (value: any) => {
-      if(isOpenRef.current) {
+      if (isOpen) {
         return;
       }
       const { value: transformedValue } = transformSlateValue(value);
       onChange && onChange(transformedValue);
     },
-    [onChange],
+    [isOpen, onChange],
   );
 
   const handleKeyDown = useCallback(
     (event: any) => {
-      inputRef.current && clearTimeout(inputRef.current);
       if (event.key === '/') {
         Transforms.insertText(editor, '/');
         event.preventDefault();
-        isOpenRef.current=true;
-        inputRef.current = setTimeout(() => {
-          setOpen(true);
-        }, 300);
+        setOpen(true);
         return true;
       }
       return false;
     },
-    [setOpen, editor],
+    [editor, setOpen],
   );
 
   const handleEditorChange = (value: any) => {
@@ -127,26 +128,23 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
     setValue(value);
   };
 
-  const automationCurrentTriggerIdValue = useAtomValue(automationCurrentTriggerId);
-
-  const activeDatasheetId = useSelector(Selectors.getActiveDatasheetId);
-
-  const datasheetId = useTriggerDatasheetId(activeDatasheetId);
-
-  const { fields, fieldPermissionMap } = useAutomationRobotFields(datasheetId!);
-
   const triggers = state?.robot?.triggers ?? [];
-  const { data: dataList } = useSWR(['getTriggersRelatedDatasheetId', triggers], () => getTriggerDatasheetId(triggers), {
-  });
 
-  const dataLis = dataList ?? [];
+  const { data: dataList2 } = useSWR(['getTriggersRelatedDatasheetId2', triggers], () => getTriggerDatasheetId2(props.nodeOutputSchemaList.map(r => r.id)), {});
 
-  const l = useAutomationFieldInfo(triggers, dataLis);
+  const activeDstId = useSelector(Selectors.getActiveDatasheetId);
+  const dataLis: IFetchedDatasheet[] =
+    state?.scenario === AutomationScenario?.datasheet
+      ? Array.from({ length: props.nodeOutputSchemaList.length }, () => activeDstId)
+      : ((dataList2 ?? []) as IFetchedDatasheet[]);
+
+  // @ts-ignore
+  const fieldInfoList = useAutomationFieldInfo(dataLis);
 
   const nodeOutputSchemaList = props.nodeOutputSchemaList.map((nodeOutputSchema, index) => {
-    const item = l[index];
+    const item = fieldInfoList[index];
 
-    if (nodeOutputSchema?.id.startsWith('atr') && item && item?.fields?.length && item.fieldPermissionMap) {
+    if (nodeOutputSchema?.id.startsWith('dst') && item && item?.fields?.length && item.fieldPermissionMap) {
       return enrichDatasheetTriggerOutputSchema(nodeOutputSchema, item.fields, item.fieldPermissionMap!);
     }
     return nodeOutputSchema;
@@ -155,7 +153,7 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
   const renderElement = (props: any) => {
     switch (props.element.type) {
       case 'magicVariable':
-        return <MagicVariableElement {...props} nodeOutputSchemaList={nodeOutputSchemaList} />;
+        return <MagicVariableElement {...props} nodeOutputSchemaList={nodeOutputSchemaList} triggerDataSheetMap={triggerDataSheetMap}/>;
       default:
         return <DefaultElement {...props} />;
     }
@@ -181,53 +179,69 @@ export const MagicTextField = memo((props: IMagicTextFieldProps) => {
           }
         }}
       >
-        <RcTrigger
-          ref={triggerRef}
-          getPopupContainer={() => ref.current!}
-          popupAlign={{
-            points: ['tl', 'bl'],
-            offset: [-4, 8],
-            overflow: { adjustX: true, adjustY: true },
+        <Dropdown
+          clazz={{
+            overlay: styles.overlayStyle,
           }}
-          popupStyle={{ width: '100%' }}
-          popup={
-            <MagicVariableContainer
-              ref={popupRef}
-              isJSONField={isJSONField}
-              insertMagicVariable={(data) => {
-                setOpen(false);
-                insertMagicVariable(data, editor, () => {
-                  setTimeout(() => {
-                    const { value: transformedValue } = transformSlateValue(refV.current);
-                    onChange && onChange(transformedValue);
-                  }, 20);
-                });
-              }}
-              nodeOutputSchemaList={nodeOutputSchemaList}
-              setOpen={(isOpen) => {
-                isOpenRef.current=isOpen;
-                setOpen(isOpen);
-              }}
-            />
+          ref={triggerControlRef}
+          options={{
+            offset: 12,
+            arrow: false,
+            disableClick: true,
+            autoWidth: true,
+            placement: 'bottom-end',
+            stopPropagation: true,
+          }}
+          onVisibleChange={(visible) => {
+            setOpenState(visible);
+            if (visible) {
+              insertCheckRef.current = true;
+            }
+            if (!visible && !insertCheckRef.current) {
+              const { value: transformedValue } = transformSlateValue(refV.current);
+              onChange && onChange(transformedValue);
+              insertCheckRef.current = true;
+            }
+          }}
+          trigger={
+            <Box width={'100%'} display={'block'}>
+              <Editable
+                className={styles.editor}
+                onBlur={() => {
+                  if (!isOpen) {
+                    updateFormValue(value);
+                  }
+                }}
+                renderElement={renderElement}
+                onKeyDown={handleKeyDown}
+                placeholder={map2Text[placeholderKey]}
+                onCompositionEnd={handleCompositionEnd}
+              />
+            </Box>
           }
-          popupVisible={isOpen}
-          autoDestroy
-          destroyPopupOnHide
         >
-          <Editable
-            className={styles.editor}
-            onBlur={() => {
-              if (!isOpen) {
-                updateFormValue(value);
-              }
-            }}
-            renderElement={renderElement}
-            onKeyDown={handleKeyDown}
-            placeholder={map2Text[placeholderKey]}
-            onCompositionEnd={handleCompositionEnd}
-            // placeholder={t(Strings.robot_enter_request_address_placeholder)}
-          />
-        </RcTrigger>
+          {({ toggle }: IOverLayProps) => {
+            return (
+              <MagicVariableContainer
+                isJSONField={isJSONField}
+                insertMagicVariable={(data) => {
+                  insertCheckRef.current = true;
+                  setOpen(false);
+                  insertMagicVariable(data, editor, () => {
+                    setTimeout(() => {
+                      const { value: transformedValue } = transformSlateValue(refV.current);
+                      onChange && onChange(transformedValue);
+                    }, 20);
+                  });
+                }}
+                nodeOutputSchemaList={nodeOutputSchemaList}
+                setOpen={(isOpen) => {
+                  toggle();
+                }}
+              />
+            );
+          }}
+        </Dropdown>
       </div>
     </Slate>
   );

@@ -18,25 +18,23 @@
 
 package com.apitable.player.mapper;
 
-import java.util.List;
-
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
-
 import com.apitable.player.dto.NotificationModelDTO;
+import com.apitable.player.entity.PlayerNotificationEntity;
 import com.apitable.player.ro.NotificationPageRo;
 import com.apitable.player.ro.NotificationRevokeRo;
-import com.apitable.player.entity.PlayerNotificationEntity;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
- * Player Notification Mapper
+ * Player Notification Mapper.
  * </p>
  */
 public interface PlayerNotificationMapper extends BaseMapper<PlayerNotificationEntity> {
 
     /**
-     * Get notification list
+     * Get notification list.
      *
      * @param notificationPageRo request params
      * @param toUser             user id
@@ -48,15 +46,16 @@ public interface PlayerNotificationMapper extends BaseMapper<PlayerNotificationE
         @Param("toUser") Long toUser, @Param("totalCount") Integer totalCount);
 
     /**
-     * Batch insert
+     * Batch insert.
      *
      * @param notificationEntities entities
      * @return number of execution results
      */
-    int insertBatch(@Param("notificationEntities") List<PlayerNotificationEntity> notificationEntities);
+    int insertBatch(
+        @Param("notificationEntities") List<PlayerNotificationEntity> notificationEntities);
 
     /**
-     * Update read status
+     * Update read status.
      *
      * @param ids id list
      * @return execute result
@@ -64,7 +63,7 @@ public interface PlayerNotificationMapper extends BaseMapper<PlayerNotificationE
     boolean updateReadIsTrueByIds(@Param("ids") String[] ids);
 
     /**
-     * Set all user's messages as read
+     * Set all user's messages as read.
      *
      * @param toUser user id
      * @return execute result
@@ -72,16 +71,17 @@ public interface PlayerNotificationMapper extends BaseMapper<PlayerNotificationE
     boolean updateReadIsTrueByUserId(@Param("toUser") Long toUser);
 
     /**
-     * Query the number of user notifications that have been read
+     * Query the number of user notifications that have been read.
      *
      * @param toUser user id
      * @param isRead read status
      * @return count
      */
-    Integer selectCountByUserIdAndIsRead(@Param("toUser") Long toUser, @Param("isRead") Integer isRead);
+    Integer selectCountByUserIdAndIsRead(@Param("toUser") Long toUser,
+                                         @Param("isRead") Integer isRead);
 
     /**
-     * Query user notification count
+     * Query user notification count.
      *
      * @param toUser user id
      * @return count
@@ -89,7 +89,7 @@ public interface PlayerNotificationMapper extends BaseMapper<PlayerNotificationE
     Integer selectTotalCountByUserId(@Param("toUser") Long toUser);
 
     /**
-     * Delete notication
+     * Delete notification.
      *
      * @param ids id list
      * @return execute result
@@ -97,7 +97,7 @@ public interface PlayerNotificationMapper extends BaseMapper<PlayerNotificationE
     boolean deleteNotificationByIds(@Param("ids") String[] ids);
 
     /**
-     * Query notification body
+     * Query notification body.
      *
      * @param id ID
      * @return body
@@ -105,7 +105,7 @@ public interface PlayerNotificationMapper extends BaseMapper<PlayerNotificationE
     String selectNotifyBodyById(@Param("id") Long id);
 
     /**
-     * Update notification body
+     * Update notification body.
      *
      * @param id   ID
      * @param body notification body
@@ -114,45 +114,48 @@ public interface PlayerNotificationMapper extends BaseMapper<PlayerNotificationE
     boolean updateNotifyBodyById(@Param("id") Long id, @Param("body") String body);
 
     /**
-     * Query total count by condition
+     * Query total count by condition.
      *
      * @param notificationPageRo request params
      * @param toUser             user id
      * @return count
      */
-    Integer selectTotalCountByRoAndToUser(@Param("notificationPageRo") NotificationPageRo notificationPageRo,
-            @Param("toUser") Long toUser);
+    Integer selectTotalCountByRoAndToUser(
+        @Param("notificationPageRo") NotificationPageRo notificationPageRo,
+        @Param("toUser") Long toUser);
 
     /**
-     * Modify the message body and replace the value corresponding to the specified key
+     * Modify the message body and replace the value corresponding to the specified key.
      *
      * @param id  ID
      * @param key key
      * @param val value
      * @return number of execution results
      */
-    Integer updateNotifyBodyByIdAndKey(@Param("id") Long id, @Param("key") String key, @Param("val") Integer val);
+    Integer updateNotifyBodyByIdAndKey(@Param("id") Long id, @Param("key") String key,
+                                       @Param("val") Integer val);
 
     /**
-     * Get notification list
+     * Get notification list.
      *
      * @param isRead read status
      * @param toUser user id
-     * @return List<NotificationModelDto>
+     * @return List of NotificationModelDto
      */
-    List<NotificationModelDTO> selectDtoByTypeAndIsRead(@Param("toUser") Long toUser, @Param("isRead") Integer isRead);
+    List<NotificationModelDTO> selectDtoByTypeAndIsRead(@Param("toUser") Long toUser,
+                                                        @Param("isRead") Boolean isRead);
 
     /**
-     * Batch delete by condition
+     * Batch delete by condition.
      *
-     * @param userIds       user id
-     * @param notifyType    notification type
-     * @param templateId    tempalte id
-     * @param revokeRo      extra params
+     * @param userIds    user id
+     * @param notifyType notification type
+     * @param templateId tempalte id
+     * @param revokeRo   extra params
      * @return int
      */
     int updateBatchByUserIdsAndTemplateId(@Param("userIds") List<Long> userIds,
-            @Param("notifyType") String notifyType,
-            @Param("templateId") String templateId,
-            @Param("revokeRo") NotificationRevokeRo revokeRo);
+                                          @Param("notifyType") String notifyType,
+                                          @Param("templateId") String templateId,
+                                          @Param("revokeRo") NotificationRevokeRo revokeRo);
 }

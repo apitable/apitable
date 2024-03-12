@@ -31,9 +31,9 @@ import com.apitable.shared.component.notification.observer.MessagingCenterNotify
 import com.apitable.shared.component.notification.subject.CenterNotifySubject;
 import com.apitable.shared.constants.NotificationConstants;
 import com.apitable.starter.socketio.core.SocketClientTemplate;
+import jakarta.annotation.Resource;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -97,10 +97,10 @@ public class NotificationManager {
      * space notification.
      *
      * @param requestStorage request parameter map
-     * @param templateId          notification template id
-     * @param userId              user id
-     * @param spaceId             space id
-     * @param result              response
+     * @param templateId     notification template id
+     * @param userId         user id
+     * @param spaceId        space id
+     * @param result         response
      */
     public void spaceNotify(RequestStorage requestStorage,
                             NotificationTemplateId templateId, Long userId, String spaceId,

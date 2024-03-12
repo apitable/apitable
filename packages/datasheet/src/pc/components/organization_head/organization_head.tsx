@@ -18,7 +18,7 @@
 
 import classnames from 'classnames';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from 'pc/store/react-redux';
 import { Tooltip } from '../common/tooltip';
 import styles from './style.module.less';
 
@@ -28,7 +28,7 @@ export interface IOrganizationHeadProps {
 }
 
 export const OrganizationHead: React.FC<React.PropsWithChildren<IOrganizationHeadProps>> = ({ className, hideTooltip = false }) => {
-  const spaceName = useSelector((state) => state.space.curSpaceInfo?.spaceName);
+  const spaceName = useAppSelector((state) => state.space.curSpaceInfo?.spaceName);
   return (
     <div className={classnames(styles.organization, className)}>
       {hideTooltip ? (

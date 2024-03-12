@@ -33,8 +33,8 @@ import { stopPropagation } from '../../../utils/dom';
 import { PreviewItem } from '../preview_item/preview_item';
 import { UploadItem } from '../upload_item';
 import { UploadTab } from '../upload_tab';
-import styles from './styles.module.less';
 import { IUploadFileList } from './upload_core.interface';
+import styles from './styles.module.less';
 
 const ScrollingComponent = withScrolling('div');
 

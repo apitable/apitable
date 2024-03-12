@@ -19,17 +19,17 @@
 import { Space } from 'antd';
 import classnames from 'classnames';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors, WrapperTooltip } from '@apitable/components';
 import { ConfigConstant, Strings, t } from '@apitable/core';
 import { UserAdminFilled, UserAdminOutlined } from '@apitable/icons';
 import { PermissionSelect } from 'pc/components/catalog/permission_settings/permission/unit_item/permission_select';
 // eslint-disable-next-line no-restricted-imports
 import { AvatarType, InfoCard, Tooltip } from 'pc/components/common';
+import { useAppSelector } from 'pc/store/react-redux';
 import { IRoleOption, IUnitItemProps } from './interface';
-import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 const DEFAULT_ROLE: IRoleOption[] = [
   {
@@ -56,7 +56,7 @@ export const UnitItem: FC<React.PropsWithChildren<IUnitItemProps>> = (props) => 
   const isAdmin = identity?.admin;
   const isOwner = identity?.permissionOpener;
 
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
 
   const title =
     getSocialWecomUnitName?.({

@@ -19,10 +19,10 @@
 import type { InputRef } from 'antd';
 import * as React from 'react';
 import { forwardRef, memo, useImperativeHandle, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { Switch } from '@apitable/components';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from '../../../utils/dom';
 import { ScreenSize } from '../component_display';
 import style from './style.module.less';
@@ -56,7 +56,7 @@ const SearchControlBase: React.ForwardRefRenderFunction<{ focus(): void }, ISear
 
   const editorRef = useRef<InputRef>(null);
 
-  const { embedId, dashboardId } = useSelector((state) => state.pageParams);
+  const { embedId, dashboardId } = useAppSelector((state) => state.pageParams);
 
   const hideSearchAndSwitch = Boolean(embedId && dashboardId);
 

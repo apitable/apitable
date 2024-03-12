@@ -20,6 +20,9 @@ package com.apitable.organization.dto;
 
 import lombok.Data;
 
+/**
+ * member base info dto.
+ */
 @Data
 public class MemberBaseInfoDTO {
 
@@ -44,12 +47,12 @@ public class MemberBaseInfoDTO {
     private Boolean isPaused = false;
 
     /**
-     * whether the nickname of the user has been changed
+     * whether the nickname of the user has been changed.
      */
     private Boolean isNickNameModified;
 
     /**
-     * Whether the nickname of the member has been changed
+     * Whether the nickname of the member has been changed.
      */
     private Boolean isMemberNameModified;
 

@@ -17,19 +17,14 @@
  */
 
 import { IRemoteChangeset } from 'engine/ot';
-import { FillDirection, ICell, ICellValue, IFieldRanges, IRange, IRecordRanges, StatType } from 'model';
+import { StatType } from 'model/field/stat';
+import { ICellValue } from 'model/record';
+import { FillDirection, ICell, IFieldRanges, IRange, IRecordRanges } from 'model/view/range';
 import { IField, IStandardValue } from 'types/field_types';
 import { IFilterInfo, IGroupInfo, ISortedField, ISortInfo } from 'types/view_types';
-import {
-  CellType,
-  GalleryStyleKeyType,
-  IUnitValue,
-  IUserValue,
-  LayoutType,
-  RowHeightLevel,
-  ViewType,
-  WhyRecordMoveType,
-} from '../../../../../../exports/store';
+import { IUnitValue, IUserValue } from 'exports/store/interfaces';
+import { CellType, GalleryStyleKeyType, LayoutType, RowHeightLevel, ViewType, WhyRecordMoveType } from 'modules/shared/store/constants';
+
 import * as actions from '../../../../../shared/store/action_constants';
 import {
   CalendarColorType,
@@ -95,6 +90,7 @@ export interface IMeta {
   fieldMap: IFieldMap;
   views: IViewProperty[];
   widgetPanels?: IWidgetPanel[];
+  archivedRecordIds?: string[];
 }
 
 export interface IRecordCellValue {
@@ -299,6 +295,7 @@ export interface INodeMeta {
   nodeShared: boolean;
   nodePermitSet: boolean;
   nodeFavorite?: boolean;
+  nodePrivate?: boolean;
   spaceId: string;
   role: Role;
   permissions: IPermissions;
@@ -474,6 +471,7 @@ export interface IDatasheetClientState {
   isRobotPanelOpen?: boolean;
   operateViewIds?: string[] | null;
   isTimeMachinePanelOpen?: boolean;
+  isCopilotPanelOpen?: boolean;
   isArchivedRecordsPanelOpen?: boolean;
   exportViewId?: string | null;
   // View-derived data, all content obtained by calculation, is uniformly maintained here.
@@ -823,6 +821,7 @@ export interface IPageParams {
   mirrorId?: string;
   embedId?: string;
   aiId?: string;
+  customPageId?: string;
 }
 
 export interface ICollaboratorParams {

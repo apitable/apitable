@@ -38,4 +38,8 @@ public class RegisterRO {
     @Schema(description = "Credential(password/verify code...)",
         example = "qwer1234 || 261527", requiredMode = RequiredMode.REQUIRED)
     private String credential;
+
+    @Schema(description = "Language",
+        example = "en-US", requiredMode = RequiredMode.NOT_REQUIRED)
+    private String lang;
 }

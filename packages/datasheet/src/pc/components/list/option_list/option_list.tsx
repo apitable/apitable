@@ -19,12 +19,12 @@
 import classNames from 'classnames';
 import { useCallback, useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { SortableElement as sortableElement, SortableContainer as sortableContainer } from 'react-sortable-hoc';
 import { colorVars } from '@apitable/components';
 import { ISelectFieldOption, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import { CommonList } from 'pc/components/list/common_list';
+import { useAppSelector } from 'pc/store/react-redux';
 import { Check } from '../common_list/check';
 import { OptionItem } from './option_item';
 import { IOptionListProps } from './option_list.interface';
@@ -51,8 +51,8 @@ export const OptionList: React.FC<React.PropsWithChildren<IOptionListProps>> = (
     placeholder,
   } = props;
   const [keyword, setKeyword] = useState('');
-  const manageable = useSelector((state) => Selectors.getPermissions(state, datasheetId).manageable);
-  const { formId } = useSelector((state) => state.pageParams);
+  const manageable = useAppSelector((state) => Selectors.getPermissions(state, datasheetId).manageable);
+  const { formId } = useAppSelector((state) => state.pageParams);
   const showNotAllowAddTip = Boolean(!manageable && keyword.length); // Does it prompt the user not to add new options
   const optionByFilter = optionList.filter(filterOptions);
   const allowAddNewItem = Boolean(onAddHandle) && manageable;

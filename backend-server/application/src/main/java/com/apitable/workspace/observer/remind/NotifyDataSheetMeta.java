@@ -18,20 +18,17 @@
 
 package com.apitable.workspace.observer.remind;
 
+import com.apitable.workspace.ro.RemindExtraRo;
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import java.util.List;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import com.apitable.workspace.ro.RemindExtraRo;
-
 /**
  * <p>
- *  datasheet operation notification source data
+ * datasheet operation notification source data.
  * </p>
  */
 @Getter
@@ -69,6 +66,9 @@ public class NotifyDataSheetMeta {
 
     RemindParameter remindParameter;
 
+    /**
+     * remind parameter.
+     */
     @Getter
     @Setter
     public static class RemindParameter {

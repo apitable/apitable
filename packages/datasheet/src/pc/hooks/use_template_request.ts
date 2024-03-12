@@ -73,8 +73,8 @@ export const useTemplateRequest = () => {
   /**
    * Get a list of templates
    * @param spaceId Space Station ID
-   * @param categoryName Template Category Name
-   * @param templateIds List of stencil IDs
+   * @param categoryCode
+   * @param isPrivate
    */
   function getTemplateListReq(spaceId: string, categoryCode?: string, isPrivate?: boolean) {
     return Api.getTemplateList(spaceId, categoryCode, isPrivate).then((res) => {
@@ -118,6 +118,8 @@ export const useTemplateRequest = () => {
   /**
    * Get template catalogue information
    * @param templateId
+   * @param isPrivate
+   * @param categoryCode
    */
   function getTemplateDirectoryReq(templateId: string, isPrivate: boolean, categoryCode?: string) {
     return Api.templateDirectory(templateId, isPrivate, categoryCode).then((res) => {
@@ -134,9 +136,9 @@ export const useTemplateRequest = () => {
   }
 
   // Use of templates
-  function usingTemplateReq(templateId: string, parentId: string, data?: boolean) {
+  function usingTemplateReq(templateId: string, parentId: string, data?: boolean, unitId?: string) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    return Api.useTemplate(templateId, parentId, data).then((res) => {
+    return Api.useTemplate(templateId, parentId, data, unitId).then((res) => {
       const { success, data, code } = res.data;
       if (success) {
         Message.success({

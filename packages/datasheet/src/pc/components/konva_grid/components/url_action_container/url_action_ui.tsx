@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { get } from 'lodash';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, colorVars, TextButton, TextInput, Typography } from '@apitable/components';
 import { CollaCommandName, Selectors, Strings, t, ICellValue, FieldType } from '@apitable/core';
 import { NewtabOutlined } from '@apitable/icons';
@@ -13,9 +12,10 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { useEnhanceTextClick } from 'pc/components/multi_grid/cell/hooks/use_enhance_text_click';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils/dom';
-import styles from './styles.module.less';
 import { formatValue } from './util';
+import styles from './styles.module.less';
 
 interface IUrlActionUI {
   activeUrlAction: boolean;
@@ -34,8 +34,8 @@ export const UrlActionUI = (props: IUrlActionUI) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<any>(null);
   const [mount, setMount] = useState(false);
-  const snapshot = useSelector((state) => Selectors.getSnapshot(state)!);
-  const cellValue = useSelector((state) => {
+  const snapshot = useAppSelector((state) => Selectors.getSnapshot(state)!);
+  const cellValue = useAppSelector((state) => {
     if (!fieldId || !recordId) return null;
     return Selectors.getCellValue(state, snapshot, recordId, fieldId);
   });

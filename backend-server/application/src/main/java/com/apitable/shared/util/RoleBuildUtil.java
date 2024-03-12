@@ -23,7 +23,7 @@ import cn.hutool.core.util.StrUtil;
 
 /**
  * <p>
- * Role util
+ * Role util.
  * </p>
  *
  * @author Shawn Deng
@@ -31,7 +31,8 @@ import cn.hutool.core.util.StrUtil;
 public class RoleBuildUtil {
 
     public static String createRoleCode(String spaceId) {
-        return StrUtil.join("_", "ROLE", spaceId.toUpperCase(), StrUtil.subWithLength(IdUtil.fastSimpleUUID(), 0, 6).toUpperCase());
+        return StrUtil.join("_", "ROLE", spaceId.toUpperCase(),
+            StrUtil.subWithLength(IdUtil.fastSimpleUUID(), 0, 6).toUpperCase());
     }
 
     public static String createRoleName(String spaceId) {

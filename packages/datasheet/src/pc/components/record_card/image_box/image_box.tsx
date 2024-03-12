@@ -20,9 +20,10 @@ import classNames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Field, IAttachmentValue, IField, Selectors, ViewType } from '@apitable/core';
 import { DisplayFile } from 'pc/components/display_file';
+import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_item';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
 
 export enum ImageShowType {
@@ -55,13 +56,15 @@ export const ImageBox: React.FC<React.PropsWithChildren<IImageBoxProps>> = ({
   recordId,
   field,
   showOneImage,
-                                                                              isCoverFit
+  isCoverFit,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const permissions = useSelector((state) => Selectors.getPermissions(state));
-  const currentView = useSelector(Selectors.getCurrentView);
+  const permissions = useAppSelector((state) => Selectors.getPermissions(state));
+  const currentView = useAppSelector(Selectors.getCurrentView);
   const isGalleryView = currentView!.type === ViewType.Gallery;
   const imgWidthDiff = isGalleryView ? 2 : 4;
+  const datasheetId = useAppSelector((state) => state.pageParams.datasheetId);
+  const allowDownload = useAllowDownloadAttachment(field.id, datasheetId);
 
   useEffect(() => {
     setCurrentIndex(0);
@@ -92,6 +95,7 @@ export const ImageBox: React.FC<React.PropsWithChildren<IImageBoxProps>> = ({
         field={field}
         editable={editable}
         isCoverFit={isCoverFit}
+        disabledDownload={!allowDownload}
       />
       <div className={styles.bottomWrapper} />
       {showImages.length > 1 && (

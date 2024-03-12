@@ -42,8 +42,10 @@ import {
   CalendarOutlined,
   TextOutlined,
   CascadeOutlined,
+  FileOutlined,
   OneWayLinkOutlined,
   TwoWayLinkOutlined,
+  CursorButtonOutlined,
 } from '@apitable/icons';
 import { Icon } from 'pc/components/konva_components';
 
@@ -72,6 +74,8 @@ const ColumnMemberFilledPath = UserOutlined.toString();
 const ColumnPercentFilledPath = PercentOutlined.toString();
 const ColumnRatingFilledPath = StarOutlined.toString();
 const ColumnCascadeOutlinedPath = CascadeOutlined.toString();
+const ColumnWorkdocPath = FileOutlined.toString();
+const CursorButtonOutlinedPath = CursorButtonOutlined.toString();
 
 interface IFieldIconProps {
   fieldType: FieldType;
@@ -136,6 +140,10 @@ export const FieldIcon: FC<React.PropsWithChildren<IFieldIconProps>> = memo((pro
       return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnLastmodifiedbyFilledPath} fill={fill} />;
     case FieldType.Cascader:
       return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnCascadeOutlinedPath} fill={fill} />;
+    case FieldType.Button:
+      return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={CursorButtonOutlinedPath} fill={fill} />;
+    case FieldType.WorkDoc:
+      return <Icon x={x} y={y} size={width} backgroundHeight={height} listening={false} data={ColumnWorkdocPath} fill={fill} />;
     default:
       return null;
   }

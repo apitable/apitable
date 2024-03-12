@@ -18,14 +18,14 @@
 
 import classNames from 'classnames';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { getThemeColors } from '@apitable/components';
 import { IUnitValue, IUserValue, MemberType, t, Strings } from '@apitable/core';
 import { UserOutlined } from '@apitable/icons';
 import { Avatar, AvatarSize, AvatarType } from 'pc/components/common';
-import styles from './styles.module.less';
+import { useAppSelector } from 'pc/store/react-redux';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+import styles from './styles.module.less';
 
 interface IMemberItemProps {
   unitInfo: IUnitValue | IUserValue;
@@ -45,7 +45,7 @@ export function isUnitLeave(unit: IUnitValue | IUserValue) {
 export const MemberItem: React.FC<React.PropsWithChildren<IMemberItemProps>> = (props) => {
   const { unitInfo, children, style, selected, showTeams } = props;
   const { unitId, avatar, avatarColor, nickName, name, type, userId, isSelf, desc, isMemberNameModified, team, email, isActive } = unitInfo as any;
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const colors = getThemeColors();
 
   const title =

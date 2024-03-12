@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * Node Collaborator View
+ * Node Collaborator View.
  * </p>
  *
  * @author Chambers

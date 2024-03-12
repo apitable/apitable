@@ -1,0 +1,52 @@
+@import '~pc/styles/lib_mixins.less';
+
+.capacityFileModal {
+  .content {
+    height: 510px;
+    a {
+      display: inline;
+    }
+  }
+
+  .unitTag {
+    margin: 2px 0;
+  }
+}
+
+.nodeTable {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  margin-top: 16px;
+  .default-scroll-bar();
+  :global {
+    .ant-table {
+      line-height: 1;
+      color: var(--secondLevelText);
+      .antdTable();
+      .ant-table-body {
+        overflow-y: auto !important;
+        .default-scroll-bar();
+      }
+      td,
+      th {
+        text-align: left !important;
+      }
+      .ant-table-hide-scrollbar {
+        overflow-y: overlay !important;
+        &:hover {
+          overflow-y: overlay !important;
+        }
+      }
+    }
+
+    .ant-table-placeholder {
+      &:hover {
+        td {
+          background-color: var(--primary) !important;
+        }
+      }
+    }
+  }
+}

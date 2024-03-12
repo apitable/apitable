@@ -108,7 +108,7 @@
   }
   .fieldDesc {
     margin-top: -12px;
-    margin-bottom: 16px;
+    margin-bottom: 4px;
     font-size: 13px;
     word-break: normal;
     word-wrap: break-word;
@@ -116,6 +116,13 @@
     line-height: 20px;
     white-space: pre-wrap;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  }
+  .showMore, .showLess {
+    margin-bottom: 8px;
+
+    & > span {
+      font-size: 12px;
+    }
   }
 }
 
@@ -227,6 +234,10 @@
   }
 }
 
+.formWorkdoc {
+  min-height: 40px;
+}
+
 .formLookup {
   & > div {
     line-height: 32px;
@@ -250,6 +261,10 @@
       flex-wrap: wrap;
       padding-top: 7px;
       padding-bottom: 7px;
+    }
+    .createWorkdoc {
+      height: 40px;
+      padding-top: 0;
     }
     .cascaderContainer {
       background: var(--lowestBg) !important;

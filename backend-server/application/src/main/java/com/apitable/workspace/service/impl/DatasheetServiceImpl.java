@@ -18,13 +18,13 @@
 
 package com.apitable.workspace.service.impl;
 
+import static com.apitable.shared.component.notification.queue.QueueConfig.NOTIFICATION_EXCHANGE;
 import static com.apitable.shared.constants.NotificationConstants.BODY_EXTRAS;
 import static java.util.stream.Collectors.toList;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -39,10 +39,6 @@ import com.apitable.control.infrastructure.ControlTemplate;
 import com.apitable.control.infrastructure.permission.NodePermission;
 import com.apitable.core.exception.BusinessException;
 import com.apitable.core.util.ExceptionUtil;
-import com.apitable.core.util.SpringContextHolder;
-import com.apitable.interfaces.social.event.NotificationEvent;
-import com.apitable.interfaces.social.facade.SocialServiceFacade;
-import com.apitable.interfaces.social.model.SocialConnectInfo;
 import com.apitable.internal.dto.SimpleDatasheetMetaDTO;
 import com.apitable.organization.entity.TeamMemberRelEntity;
 import com.apitable.organization.entity.UnitEntity;
@@ -54,14 +50,12 @@ import com.apitable.organization.service.IRoleService;
 import com.apitable.player.ro.NotificationCreateRo;
 import com.apitable.player.service.IPlayerNotificationService;
 import com.apitable.shared.cache.service.UserSpaceRemindRecordCacheService;
-import com.apitable.shared.component.LanguageManager;
 import com.apitable.shared.component.notification.NotificationTemplateId;
-import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.shared.config.properties.LimitProperties;
 import com.apitable.shared.context.LoginContext;
-import com.apitable.shared.holder.LoginUserHolder;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.shared.util.IdUtil;
+import com.apitable.starter.amqp.core.RabbitSenderService;
 import com.apitable.starter.beetl.autoconfigure.BeetlTemplate;
 import com.apitable.user.mapper.UserMapper;
 import com.apitable.widget.service.IWidgetService;
@@ -72,6 +66,7 @@ import com.apitable.workspace.dto.NodeCopyOptions;
 import com.apitable.workspace.dto.SnapshotDTO;
 import com.apitable.workspace.entity.DatasheetEntity;
 import com.apitable.workspace.entity.NodeEntity;
+import com.apitable.workspace.enums.ButtonFieldActionType;
 import com.apitable.workspace.enums.DataSheetException;
 import com.apitable.workspace.enums.FieldType;
 import com.apitable.workspace.enums.NodeException;
@@ -79,10 +74,8 @@ import com.apitable.workspace.mapper.DatasheetMapper;
 import com.apitable.workspace.mapper.NodeMapper;
 import com.apitable.workspace.model.DatasheetObject;
 import com.apitable.workspace.observer.DatasheetRemindObserver;
-import com.apitable.workspace.observer.RemindMemberOpSubject;
-import com.apitable.workspace.observer.remind.MailRemind;
-import com.apitable.workspace.observer.remind.NotifyDataSheetMeta;
 import com.apitable.workspace.observer.remind.RemindType;
+import com.apitable.workspace.ro.ButtonFieldProperty;
 import com.apitable.workspace.ro.FieldMapRo;
 import com.apitable.workspace.ro.LinkFieldProperty;
 import com.apitable.workspace.ro.MetaMapRo;
@@ -99,8 +92,7 @@ import com.apitable.workspace.vo.BaseNodeInfo;
 import com.apitable.workspace.vo.DatasheetRecordMapVo;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -113,8 +105,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -169,8 +161,8 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
     @Resource
     private IRoleService iRoleService;
 
-    @Resource
-    private SocialServiceFacade socialServiceFacade;
+    @Autowired(required = false)
+    private RabbitSenderService rabbitSenderService;
 
     @Resource
     private IWidgetService iWidgetService;
@@ -211,7 +203,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             datasheetObject.getMeta().toJsonString());
         // save records
         iDatasheetRecordService.createRecords(userId, datasheet.getDstId(),
-                datasheetObject.getRecords());
+            datasheetObject.getRecords());
 
     }
 
@@ -257,7 +249,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         // Save Meta information
         iDatasheetMetaService.create(userId, datasheet.getDstId(),
             JSONUtil.parseObj(metaMapRo).toString());
-        if (recordMap.size() > 0) {
+        if (!recordMap.isEmpty()) {
             // Save record information
             iDatasheetRecordService.saveBatch(userId, recordMap, datasheet.getDstId());
         }
@@ -389,6 +381,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                                     Map<String, String> newNodeMap) {
         List<String> delFieldIds = new ArrayList<>();
         List<String> autoNumberFieldIds = new ArrayList<>();
+
         // Obtain the information of the original node correspondence datasheet.
         SimpleDatasheetMetaDTO metaVo = iDatasheetMetaService.findByDstId(sourceDstId);
         MetaMapRo metaMapRo = metaVo.getMeta().toBean(MetaMapRo.class);
@@ -513,6 +506,14 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 case WORK_DOC:
                     delFieldIds.add(fieldMapRo.getId());
                     break;
+                case BUTTON:
+                    ButtonFieldProperty buttonProperty =
+                        fieldMapRo.getProperty().toBean(ButtonFieldProperty.class, true);
+                    ButtonFieldProperty.ButtonFieldAction action =
+                        getButtonFieldPropertyAction(buttonProperty.getAction(), newNodeMap,
+                            options.getNewTriggerMap());
+                    fieldMapRo.getProperty().set("action", action);
+                    break;
                 default:
                     break;
             }
@@ -552,7 +553,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 if (!JSONUtil.isNull(filterInfo)) {
                     JSONArray array = JSONUtil.parseArray(filterInfo.get("conditions").toString());
                     JSONArray conditions = delInfoIfExistFieldId(delFieldIdsInFilter, array);
-                    if (conditions.size() > 0) {
+                    if (!conditions.isEmpty()) {
                         filterInfo.set("conditions", conditions);
                         viewMapRo.setFilterInfo(filterInfo);
                     } else {
@@ -645,12 +646,12 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                                           Map<String, String> newWidgetIdMap) {
         // construct a new component panel
         JSONArray newWidgetPanels = JSONUtil.createArray();
-        if (widgetPanels == null || widgetPanels.size() == 0) {
+        if (widgetPanels == null || widgetPanels.isEmpty()) {
             return newWidgetPanels;
         }
         for (JSONObject widgetPanel : widgetPanels.jsonIter()) {
             JSONArray widgets = widgetPanel.getJSONArray("widgets");
-            if (widgets == null || widgets.size() == 0) {
+            if (widgets == null || widgets.isEmpty()) {
                 newWidgetPanels.add(widgetPanel);
                 continue;
             }
@@ -700,7 +701,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 metaMapRo.getFieldMap().values().forEach(field -> {
                     FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
                     if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())
-                    || fieldMapRo.getType().equals(FieldType.ONE_WAY_LINK.getFieldType())) {
+                        || fieldMapRo.getType().equals(FieldType.ONE_WAY_LINK.getFieldType())) {
                         LinkFieldProperty property =
                             fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                         // whether to filter dst id list
@@ -735,10 +736,10 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             // find the field id of the associated datasheet
             metaMapRo.getFieldMap().values().forEach(field -> {
                 FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
-                if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType()) ||
-                        fieldMapRo.getType().equals(FieldType.ONE_WAY_LINK.getFieldType())) {
+                if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())
+                    || fieldMapRo.getType().equals(FieldType.ONE_WAY_LINK.getFieldType())) {
                     LinkFieldProperty property =
-                            fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
+                        fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                     String foreignDstId = property.getForeignDatasheetId();
                     if (linkDstIds.contains(foreignDstId)) {
                         delFieldIds.add(fieldMapRo.getId());
@@ -807,10 +808,12 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         for (Object field : metaMapRo.getFieldMap().values()) {
             FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
             FieldType type = FieldType.create(fieldMapRo.getType());
-            Object originDstId = fieldMapRo.getProperty().get("datasheetId");
+            String originDstId = fieldMapRo.getProperty() != null
+                ? fieldMapRo.getProperty().getStr("datasheetId") : null;
             switch (type) {
                 case ONE_WAY_LINK:
                 case LINK:
+                    assert fieldMapRo.getProperty() != null;
                     LinkFieldProperty property =
                         fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                     String foreignDstId = property.getForeignDatasheetId();
@@ -830,22 +833,23 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 case LAST_MODIFIED_TIME:
                     if (originDstId != null) {
                         fieldMapRo.getProperty()
-                            .set("datasheetId", newNodeIdMap.get(originDstId.toString()));
+                            .set("datasheetId", newNodeIdMap.get(originDstId));
                     }
                     break;
                 case MEMBER:
                     if (!sameSpace) {
+                        assert fieldMapRo.getProperty() != null;
                         fieldMapRo.getProperty().set("unitIds", new ArrayList<>());
                         delFieldIds.add(fieldMapRo.getId());
                     }
                     break;
                 case CREATED_BY:
                 case LAST_MODIFIED_BY:
-                    originDstId = fieldMapRo.getProperty().get("datasheetId");
                     if (originDstId != null) {
                         fieldMapRo.getProperty()
-                            .set("datasheetId", newNodeIdMap.get(originDstId.toString()));
+                            .set("datasheetId", newNodeIdMap.get(originDstId));
                     }
+                    assert fieldMapRo.getProperty() != null;
                     fieldMapRo.getProperty().set("uuids", Collections.singletonList(uuid));
                     break;
                 default:
@@ -886,7 +890,7 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         Map<Long, List<Long>> roleUnitIdToRoleMemberUnitIds = getRoleMemberUnits(units);
         // self don't need to send notifications, filter
         Long memberId =
-            userId == null ? -2L : iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
+            null == userId ? null : iMemberService.getMemberIdByUserIdAndSpaceId(userId, spaceId);
         // Gets the organizational unit of the member type, the corresponding member.
         Map<Long, Long> unitIdToMemberIdMap = units.stream()
             .filter(unit -> unit.getUnitType().equals(UnitType.MEMBER.getType())
@@ -970,63 +974,20 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
             // send notification
             NotificationCreateRo notifyRo = new NotificationCreateRo();
             notifyRo.setToMemberId(ListUtil.toList(Convert.toStrArray(toMemberIds)));
-            notifyRo.setFromUserId(userId == null ? "-2" : userId.toString());
+            if (null != userId) {
+                notifyRo.setFromUserId(userId.toString());
+            }
             notifyRo.setNodeId(ro.getNodeId());
             notifyRo.setSpaceId(spaceId);
             // used to mark message jump read
             String notifyId = cn.hutool.core.util.IdUtil.simpleUUID();
             notifyRo.setNotifyId(notifyId);
-            String templateId;
-            if (RemindType.MEMBER.getRemindType() == ro.getType()
-                && remindUnitRecRo.getRecordIds().size() == 1) {
-                templateId = NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue();
-            } else if (RemindType.MEMBER.getRemindType() == ro.getType()) {
-                templateId = NotificationTemplateId.USER_FIELD.getValue();
-            } else {
-                templateId =
-                    NotificationTemplateId.SINGLE_RECORD_COMMENT_MENTIONED.getValue();
-            }
+            String templateId = RemindType.MEMBER.getRemindType() == ro.getType()
+                ? NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue()
+                : NotificationTemplateId.SINGLE_RECORD_COMMENT_MENTIONED.getValue();
             notifyRo.setTemplateId(templateId);
             notifyRo.setBody(body);
-            // save notification record
-            playerNotificationService.batchCreateNotify(CollUtil.newArrayList(notifyRo));
-            NotifyDataSheetMeta meta = new NotifyDataSheetMeta()
-                .setRemindType(RemindType.of(ro.getType()))
-                .setSpaceId(spaceId)
-                .setNodeId(ro.getNodeId())
-                .setViewId(ro.getViewId())
-                .setRecordId(remindUnitRecRo.getRecordIds().get(0))
-                .setFieldName(remindUnitRecRo.getFieldName())
-                .setCreatedAt(LocalDateTime.now().format(
-                    DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_MINUTE_PATTERN)))
-                .setExtra(ro.getExtra())
-                .setFromMemberId(memberId)
-                .setToMemberIds(toMemberIds)
-                .setNotifyId(notifyId)
-                .setFromUserId(ObjectUtil.defaultIfNull(userId, -2L))
-                .setRecordTitle(recordTitle);
-            if (userId != null) {
-                String avatar = SpringContextHolder.getBean(ConstProperties.class)
-                    .spliceAssetUrl(userMapper.selectAvatarById(userId));
-                meta.setFromUserAvatar(avatar);
-            }
-
-            RemindMemberOpSubject remindMemberOpSubject = new RemindMemberOpSubject();
-            // Default-Subscribe to Mail Notifications
-            if (!templateId.equals(
-                NotificationTemplateId.SINGLE_RECORD_MEMBER_MENTION.getValue())) {
-                remindMemberOpSubject.registerObserver(datasheetRemindObservers.get(
-                    StrUtil.lowerFirst(MailRemind.class.getSimpleName())));
-            }
-            // Check whether the space is bound to third-party integration
-            SocialConnectInfo connectInfo = socialServiceFacade.getConnectInfo(spaceId);
-            if (connectInfo != null && connectInfo.isEnabled()
-                && StrUtil.isNotBlank(connectInfo.getAppId())) {
-                // transform social connect app type, register remind observer
-                socialServiceFacade.eventCall(new NotificationEvent(notifyRo));
-            }
-            // message pushed to observer
-            remindMemberOpSubject.sendNotify(meta);
+            rabbitSenderService.topicSend(NOTIFICATION_EXCHANGE, "notification.#", notifyRo);
         }
     }
 
@@ -1077,11 +1038,10 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
                 for (Object field : metaMapRo.getFieldMap().values()) {
                     FieldMapRo fieldMapRo = JSONUtil.parseObj(field).toBean(FieldMapRo.class);
                     // determine if there is an associated field
-                    if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType()) ||
-                            fieldMapRo.getType().equals(FieldType.ONE_WAY_LINK.getFieldType())
-                    ) {
+                    if (fieldMapRo.getType().equals(FieldType.LINK.getFieldType())
+                        || fieldMapRo.getType().equals(FieldType.ONE_WAY_LINK.getFieldType())) {
                         LinkFieldProperty property =
-                                fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
+                            fieldMapRo.getProperty().toBean(LinkFieldProperty.class);
                         // Determine whether the associated field is associated with the appearance.
                         if (!dstIdList.contains(property.getForeignDatasheetId())) {
                             foreignFieldNames.add(fieldMapRo.getName());
@@ -1097,4 +1057,32 @@ public class DatasheetServiceImpl extends ServiceImpl<DatasheetMapper, Datasheet
         return null;
     }
 
+    private ButtonFieldProperty.ButtonFieldAction getButtonFieldPropertyAction(
+        ButtonFieldProperty.ButtonFieldAction action,
+        Map<String, String> newNodeMap,
+        Map<String, String> newTriggerMap) {
+        if (null == newTriggerMap) {
+            newTriggerMap = new HashMap<>();
+        }
+        if (ObjectUtil.equals(action.getType(),
+            ButtonFieldActionType.TRIGGER_AUTOMATION.getType())) {
+            if (null != action.getAutomation()) {
+                ButtonFieldProperty.ButtonFieldActionAutomation automation = action.getAutomation();
+                if (newTriggerMap.containsKey(automation.getTriggerId())) {
+                    ButtonFieldProperty.ButtonFieldActionAutomation newAutomation =
+                        ButtonFieldProperty.ButtonFieldActionAutomation.builder()
+                            .automationId(newNodeMap.get(automation.getAutomationId()))
+                            .triggerId(newTriggerMap.get(automation.getTriggerId()))
+                            .build();
+                    return ButtonFieldProperty.ButtonFieldAction.builder()
+                        .automation(newAutomation)
+                        .type(ButtonFieldActionType.TRIGGER_AUTOMATION.getType())
+                        .build();
+                }
+                return ButtonFieldProperty.ButtonFieldAction.builder().build();
+            }
+            return ButtonFieldProperty.ButtonFieldAction.builder().build();
+        }
+        return action;
+    }
 }

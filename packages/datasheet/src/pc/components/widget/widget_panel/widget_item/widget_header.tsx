@@ -3,7 +3,6 @@ import { Input } from 'antd';
 import classNames from 'classnames';
 import * as React from 'react';
 import { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Divider, IconButton, useContextMenu, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ResourceType, Selectors, Strings, t, WidgetPackageStatus, WidgetReleaseType } from '@apitable/core';
 import { CloseOutlined, DragOutlined, MoreOutlined, ReloadOutlined, SettingOutlined, ExpandOutlined, NarrowOutlined } from '@apitable/icons';
@@ -11,13 +10,14 @@ import { CloseOutlined, DragOutlined, MoreOutlined, ReloadOutlined, SettingOutli
 import { Tooltip } from 'pc/components/common';
 import { useCheckInput } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { closeWidgetRoute, expandWidgetRoute } from '../../expand_widget';
 import { useCloudStorage } from '../../hooks/use_cloud_storage';
 import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
 import { WIDGET_MENU } from '../widget_list';
 import { IWidgetPropsBase } from './interface';
-import styles from './style.module.less';
 import { IWidgetBlockRefs } from './widget_block';
+import styles from './style.module.less';
 
 interface IWidgetHeaderProps extends IWidgetPropsBase {
   widgetId: string;
@@ -62,8 +62,8 @@ export const WidgetHeader: React.FC<React.PropsWithChildren<IWidgetHeaderProps>>
   });
 
   const { show, hideAll } = useContextMenu({ id: WIDGET_MENU });
-  const widget = useSelector((state) => Selectors.getWidget(state, widgetId));
-  const isExpandWidget = useSelector((state) => state.pageParams.widgetId === widgetId);
+  const widget = useAppSelector((state) => Selectors.getWidget(state, widgetId));
+  const isExpandWidget = useAppSelector((state) => state.pageParams.widgetId === widgetId);
   const [pickerViewId] = useCloudStorage<string | undefined>('_picker_view_id', widgetId);
 
   const tooltipPlacement = isFullScreenWidget ? 'bottom' : undefined;

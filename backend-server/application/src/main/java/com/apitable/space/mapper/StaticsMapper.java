@@ -149,18 +149,10 @@ public interface StaticsMapper {
     /**
      * Query the view statistics of all tables in the space.
      *
-     * @param spaceId space id
+     * @param dstIds dst ids
      * @return number
      */
-    List<String> selectDstViewStaticsBySpaceId(@Param("spaceId") String spaceId);
-
-    /**
-     * Query the maximum API usage table ID of a day.
-     *
-     * @param time time
-     * @return id datasheet id
-     */
-    Long selectMaxIdByTime(@Param("time") String time);
+    List<String> selectDstViewStaticsByDstIds(@Param("dstIds") List<String> dstIds);
 
     /**
      * Query the API usage of the space station one day.
@@ -170,6 +162,18 @@ public interface StaticsMapper {
      * @return number
      */
     Long countByIdGreaterThanAndSpaceId(@Param("id") Long id, @Param("spaceId") String spaceId);
+
+    /**
+     * Query the API usage of the space station one day.
+     *
+     * @param id      datasheet id
+     * @param spaceId space id
+     * @param startTime start time - yesterday
+     * @return number
+     */
+    Long countByIdGreaterThanAndSpaceIdAndCreatedAt(@Param("id") Long id,
+                                                    @Param("spaceId") String spaceId,
+                                                    @Param("startTime") String startTime);
 
     /**
      * Query the API usage of the space station for a certain period of time.

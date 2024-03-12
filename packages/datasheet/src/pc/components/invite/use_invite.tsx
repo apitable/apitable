@@ -17,13 +17,14 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Api, IInviteEmailInfo, IInviteLinkInfo, IInviteMemberList, IReduxState, Navigation, StatusCode, StoreActions } from '@apitable/core';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { IParams } from 'pc/components/route_manager/interface';
 import { Router } from 'pc/components/route_manager/router';
 import { secondStepVerify } from 'pc/hooks/utils';
-import { getSearchParams } from 'pc/utils';
+import { useAppSelector } from 'pc/store/react-redux';
+import { getSearchParams } from 'pc/utils/dom';
 import { execNoTraceVerification } from 'pc/utils/no_trace_verification';
 
 // @ts-ignore
@@ -36,19 +37,20 @@ export const useLinkInvite = () => {
   const urlParams = getSearchParams();
   const dispatch = useDispatch();
   const inviteLinkTokenInUrl = urlParams.get('inviteLinkToken');
+  const inviteLinkData = urlParams.get('inviteLinkData');
   const inviteNodeIdInUrl = urlParams.get('nodeId');
-  const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
-  const inviteLinkTokenInStore = useSelector((state: IReduxState) => state.invite.linkToken);
-  const nodeId = useSelector((state: IReduxState) => state.invite.nodeId);
+  const inviteLinkInfo = useAppSelector((state: IReduxState) => state.invite.inviteLinkInfo);
+  const inviteLinkTokenInStore = useAppSelector((state: IReduxState) => state.invite);
+  const nodeId = useAppSelector((state: IReduxState) => state.invite.nodeId);
 
   // Retrieval of information
-  const reGetLinkInfo = (linkToken: string, nodeId?: string) => {
+  const reGetLinkInfo = (linkToken: string, nodeId: string, inviteLinkData?: string) => {
     Api.linkValid(linkToken, nodeId).then((res) => {
       const { success, data: info } = res.data;
       dispatch(StoreActions.updateInviteLinkInfo(res.data));
       dispatch(StoreActions.updateMailToken(linkToken));
       if (success) {
-        Api.joinViaSpace(linkToken, nodeId).then((res) => {
+        Api.joinViaSpace(linkToken, nodeId, inviteLinkData).then((res) => {
           if (res.data.success) {
             Router.redirect(Navigation.WORKBENCH, { query: { spaceId: info.spaceId }, clearQuery: true });
             return;
@@ -66,17 +68,17 @@ export const useLinkInvite = () => {
 
   const join = (props?: IJoinFuncProps) => {
     const fromLocalStorage = props ? Boolean(props.fromLocalStorage) : false;
-    const inviteLinkData = localStorage.getItem('invite_link_data');
+    const inviteLinkDataStorage = localStorage.getItem('invite_link_data');
     // Retrieval of information
-    if (fromLocalStorage && inviteLinkData) {
-      const { linkToken, nodeId } = JSON.parse(inviteLinkData);
-      reGetLinkInfo(linkToken, nodeId);
+    if (fromLocalStorage && inviteLinkDataStorage) {
+      const { linkToken, nodeId, inviteLinkData } = JSON.parse(inviteLinkDataStorage);
+      reGetLinkInfo(linkToken, nodeId, inviteLinkData);
       return;
     }
 
     // Get data from the store
     if (inviteLinkTokenInStore && inviteLinkInfo && nodeId) {
-      Api.joinViaSpace(inviteLinkTokenInStore, nodeId).then((res) => {
+      Api.joinViaSpace(inviteLinkTokenInStore.linkToken, nodeId, inviteLinkTokenInStore.inviteLinkData).then((res) => {
         if (res.data.success) {
           Router.redirect(Navigation.WORKBENCH, { query: { spaceId: inviteLinkInfo.data.spaceId }, clearQuery: true });
         } else {
@@ -87,7 +89,7 @@ export const useLinkInvite = () => {
     }
     // The user refreshes the page and re-fetches the data
     if (inviteLinkTokenInUrl) {
-      reGetLinkInfo(inviteLinkTokenInUrl, inviteNodeIdInUrl);
+      reGetLinkInfo(inviteLinkTokenInUrl, inviteNodeIdInUrl, inviteLinkData);
       return;
     }
   };
@@ -104,8 +106,8 @@ interface IInvitePageRefreshedProps {
 export const useInvitePageRefreshed = (data: IInvitePageRefreshedProps) => {
   const { type } = data;
   const urlParams = new URLSearchParams(window.location.search);
-  const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
-  const inviteEmailInfo = useSelector((state: IReduxState) => state.invite.inviteEmailInfo);
+  const inviteLinkInfo = useAppSelector((state: IReduxState) => state.invite.inviteLinkInfo);
+  const inviteEmailInfo = useAppSelector((state: IReduxState) => state.invite.inviteEmailInfo);
   let inviteTokenInUrl: string | null;
   let inviteInfo: IInviteLinkInfo | IInviteEmailInfo | null;
   let invitePath: IParams['invitePath'];
@@ -143,7 +145,7 @@ export const useEmailInviteInModal = (spaceId: string, invite: IInviteMemberList
 
   const request = useCallback(
     (nvcVal?: string) => {
-      Api.sendInvite(invite, shareId, nvcVal).then((res) => {
+      Api.sendInvite(spaceId, invite, nvcVal).then((res) => {
         const { success, message, code } = res.data;
         setIsInvited(true);
         if (success) {
@@ -162,7 +164,7 @@ export const useEmailInviteInModal = (spaceId: string, invite: IInviteMemberList
         }
       });
     },
-    [invite, shareId],
+    [spaceId, invite],
   );
 
   useEffect(() => {

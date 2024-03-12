@@ -21,7 +21,7 @@ import classNames from 'classnames';
 import { usePostHog } from 'posthog-js/react';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button } from '@apitable/components';
 import {
   ADDRESS_ID,
@@ -42,20 +42,23 @@ import { expandMemberInfo } from 'pc/components/address_list/expand_member_info'
 import { expandUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { SearchTeamAndMember } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { SpaceInfo } from 'pc/components/common_side/workbench_side/space-info';
 import { expandInviteModal } from 'pc/components/invite';
-import { OrganizationHead } from 'pc/components/organization_head';
 import { Router } from 'pc/components/route_manager/router';
 import { useRequest, useResponsive, useSideBarVisible, useUserRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { AddressTreeMenu } from '../../address_list/address_tree_menu';
-import styles from './style.module.less';
 // @ts-ignore
-import { isSocialPlatformEnabled, syncOrgMember } from 'enterprise';
+import { isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
+// @ts-ignore
+import { syncOrgMember } from 'enterprise/organization/utils/index';
+import styles from './style.module.less';
 
 export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
-  const { teamList, spaceId, userInfo } = useSelector(
+  const { teamList, spaceId, userInfo } = useAppSelector(
     (state: IReduxState) => ({
       teamList: state.addressList.teamList,
       spaceId: state.space.activeId,
@@ -73,7 +76,7 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
 
   const [inSearch, setInSearch] = useState<boolean>(false);
 
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
 
   useEffect(() => {
     if (spaceInfo && !isSocialPlatformEnabled?.(spaceInfo)) {
@@ -175,13 +178,15 @@ export const AddressSide: React.FC<React.PropsWithChildren<unknown>> = () => {
       );
     }
 
-    return <div className={styles.empty} />;
+    return <div />;
     // eslint-disable-next-line
   }, [loading, isMobile, teamClick, inviteRes, CUSTOM_SYNC_CONTACTS_LINKID, userInfo, isSyncingMembers, btnSize]);
 
   return (
     <div className={styles.leftContent}>
-      <OrganizationHead />
+      <div className={styles.header}>
+        <SpaceInfo />
+      </div>
       <ComponentDisplay minWidthCompatible={ScreenSize.md}>
         <div className={styles.searchItem}>
           {t(Strings.contacts)}

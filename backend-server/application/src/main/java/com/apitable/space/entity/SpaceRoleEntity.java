@@ -18,12 +18,11 @@
 
 package com.apitable.space.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,7 +32,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Workbench - Role Table
+ * Workbench - Role Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -50,43 +49,43 @@ public class SpaceRoleEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary key
+     * Primary key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Code
+     * Code.
      */
     private String roleCode;
 
     /**
-     * Name
+     * Name.
      */
     private String roleName;
 
     /**
-     * Description
+     * Description.
      */
     private String roleDesc;
 
     /**
-     * State(0:Disable,1:Enable)
+     * State(0:Disable,1:Enable).
      */
     private Boolean isEnabled;
 
     /**
-     * Creator ID
+     * Creator ID.
      */
     private Long creator;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

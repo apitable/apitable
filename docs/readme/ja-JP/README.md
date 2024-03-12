@@ -252,7 +252,7 @@ Docker Composeを使用してapitableをインストールするには、ター�
 curl https://apitable.github.io/install.sh | bash
 ```
 
-ブラウザで [https://localhost:80](https://localhost:80) を開きます。
+ブラウザで [http://localhost:80](http://localhost:80) を開きます。
 
 また、 [pm2](https://pm2.keymetrics.io/) をベースにしたオールインワンの画像をデモやテスト用に提供しています(企業や本番での使用には推奨されません)。
 

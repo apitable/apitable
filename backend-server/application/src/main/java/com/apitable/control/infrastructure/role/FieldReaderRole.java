@@ -22,7 +22,8 @@ import com.apitable.control.infrastructure.permission.FieldPermission;
 import com.apitable.control.infrastructure.role.RoleConstants.Field;
 
 /**
- * Reader role of field
+ * Reader role of field.
+ *
  * @author Shawn Deng
  */
 public class FieldReaderRole extends AbstractControlRole {
@@ -37,6 +38,12 @@ public class FieldReaderRole extends AbstractControlRole {
         this(inherit, false);
     }
 
+    /**
+     * constructor.
+     *
+     * @param inherit inherit
+     * @param isAdmin is admin
+     */
     public FieldReaderRole(boolean inherit, boolean isAdmin) {
         super(inherit);
         this.isAdmin = isAdmin;

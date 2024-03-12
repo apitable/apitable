@@ -20,22 +20,22 @@ import { DynamicModule, Module } from '@nestjs/common';
 import path from 'path';
 import * as fs from 'fs';
 
-@Module({
-})
+@Module({})
 export class AiDynamicModule {
-
   static forRoot(): DynamicModule {
-    const aiEnterpriseModulePath = path.join(__dirname, '../enterprise/ai');
-    const isEnterpriseLevel: boolean = fs.existsSync(aiEnterpriseModulePath);
+    const enterpriseModulePath = path.join(__dirname, '../enterprise/ai');
+    const isEnterpriseLevel: boolean = fs.existsSync(enterpriseModulePath);
     if (isEnterpriseLevel) {
-      const { AiEnterpriseModule } = require(`${aiEnterpriseModulePath}/ai.enterprise.module`);
+      const { AiEnterpriseModule } = require(`${enterpriseModulePath}/ai.enterprise.module`);
       return {
         module: AiEnterpriseModule,
       };
     }
-    return { 
-      module: AiDynamicModule,
-    }; 
+    return {
+      module: AiModule,
+    };
   }
-
 }
+
+@Module({})
+export class AiModule {}

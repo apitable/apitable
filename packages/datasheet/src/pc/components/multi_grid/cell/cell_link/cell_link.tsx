@@ -20,16 +20,17 @@ import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import * as React from 'react';
 import { useContext, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Field, ILinkField, IOneWayLinkField, LinkField, RowHeightLevel, Selectors, StatusCode, Strings, t } from '@apitable/core';
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { ButtonPlus, Message, Tooltip } from 'pc/components/common';
-import { expandRecord } from 'pc/components/expand_record';
 import { ExpandLinkContext } from 'pc/components/expand_record/expand_link/expand_link_context';
+import { expandRecord } from 'pc/components/expand_record/expand_record.utils';
 import { useGetViewByIdWithDefault } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { getDatasheetOrLoad } from 'pc/utils/get_datasheet_or_load';
 import { loadRecords } from 'pc/utils/load_records';
@@ -40,6 +41,7 @@ import optionalStyle from '../optional_cell_container/style.module.less';
 
 const NO_DATA = Symbol('NO_DATA');
 const ERROR_DATA = Symbol('ERROR_DATA');
+const ARCHIVED_DATA = Symbol('ARCHIVED_DATA');
 const NO_PERMISSION = Symbol('NO_PERMISSION');
 
 // Tentatively display up to 20 nodes of associated records in a cell
@@ -73,13 +75,14 @@ export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = (props) =>
   /**
    * In order for the cell to listen to changes in the foreignDatasheet record value, update the view
    */
-  const cellStringList = useSelector((state) => {
+  const cellStringList = useAppSelector((state) => {
     const emptyRecords: string[] = [];
     if (linkRecordIds && field) {
       const datasheet = getDatasheetOrLoad(state, field.property.foreignDatasheetId, baseDatasheetId, undefined, undefined, ignoreMirror);
       const isLoading = Selectors.getDatasheetLoading(state, field.property.foreignDatasheetId);
       const datasheetClient = Selectors.getDatasheetClient(state, field.property.foreignDatasheetId);
       const snapshot = datasheet && datasheet.snapshot;
+      const archivedRecordIds = snapshot?.meta.archivedRecordIds || [];
       const datasheetErrorCode = Selectors.getDatasheetErrorCode(state, field.property.foreignDatasheetId);
       const strList = linkRecordIds.map((recordId) => {
         const cellString = (Field.bindModel(field) as LinkField).getLinkedRecordCellString(recordId);
@@ -91,6 +94,9 @@ export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = (props) =>
         }
 
         if (!snapshot.recordMap[recordId]) {
+          if (archivedRecordIds.includes(recordId)) {
+            return ARCHIVED_DATA;
+          }
           if (!isLoading && datasheetClient!.loadingRecord[recordId] === 'error') {
             return ERROR_DATA;
           }
@@ -173,15 +179,15 @@ export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = (props) =>
       <>
         {linkRecordIds!.map((id, index) => {
           const text = cellStringList[index];
-          const isError = text === ERROR_DATA;
+          const isDisabled = text === ERROR_DATA || text === ARCHIVED_DATA;
           return (
             <div
               className={classNames(styles.tabItem, styles.link, 'link')}
               style={{
-                pointerEvents: (isActive && !isError) ? 'initial' : 'none',
+                pointerEvents: (isActive && !isDisabled) ? 'initial' : 'none',
               }}
               key={keyPrefix ? `${keyPrefix}-${index}` : id}
-              onClick={(e) => !isError && expand(e, id)}
+              onClick={(e) => !isDisabled && expand(e, id)}
             >
               {text && typeof text === 'string' ? (
                 <div className={classNames(styles.optionText)}>{text}</div>
@@ -189,6 +195,7 @@ export const CellLink: React.FC<React.PropsWithChildren<ICellLink>> = (props) =>
                 <div className={classNames(styles.optionText, styles.unnamed)}>
                   {text === NO_DATA && t(Strings.loading)}
                   {text === ERROR_DATA && t(Strings.record_fail_data)}
+                  {text === ARCHIVED_DATA && t(Strings.record_archived_data)}
                   {text === NO_PERMISSION && t(Strings.link_record_no_permission)}
                   {!text && t(Strings.record_unnamed)}
                 </div>

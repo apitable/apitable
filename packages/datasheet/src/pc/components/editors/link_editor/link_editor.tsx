@@ -21,7 +21,7 @@ import classNames from 'classnames';
 import { forwardRef, memo, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Align } from 'react-window';
 import { useThemeColors, Skeleton } from '@apitable/components';
 import { ConfigConstant, ILinkField, ILinkIds, IOneWayLinkField, Selectors, Strings, t } from '@apitable/core';
@@ -30,6 +30,7 @@ import { JumpIconMode, LinkJump } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation, KeyCode } from 'pc/utils';
 import { SearchControl } from '../../common/search_control/search_control';
 import { TComponent } from '../../common/t_component/t_component';
@@ -65,7 +66,6 @@ interface ISearchContentRefProps {
 
 const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> = (props, ref) => {
   const {
-    editing,
     datasheetId,
     recordId,
     field,
@@ -76,6 +76,8 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
     layout = LinkEditorModalLayout.Center,
   } = props;
   const colors = useThemeColors();
+  const editing = props.editing;
+
   useImperativeHandle(
     ref,
     (): IEditor => ({
@@ -106,7 +108,7 @@ const LinkEditorBase: React.ForwardRefRenderFunction<IEditor, ILinkEditorProps> 
   const isMobile = screenIsAtMost(ScreenSize.md);
   const [focusIndex, setFocusIndex] = useState(-1);
 
-  const { foreignDatasheetId, foreignDatasheetName } = useSelector((state) => {
+  const { foreignDatasheetId, foreignDatasheetName } = useAppSelector((state) => {
     const foreignDatasheet = Selectors.getDatasheet(state, field.property.foreignDatasheetId);
     return { foreignDatasheetId: foreignDatasheet?.id, foreignDatasheetName: foreignDatasheet?.name };
   }, shallowEqual);

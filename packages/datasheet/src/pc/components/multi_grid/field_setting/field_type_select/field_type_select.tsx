@@ -20,7 +20,6 @@ import { useClickAway } from 'ahooks';
 import omit from 'lodash/omit';
 import { useCallback, useEffect, useState, useRef } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import {
   DATASHEET_ID,
@@ -44,6 +43,7 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { Popup } from 'pc/components/common/mobile/popup';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { TypeSelect } from '../../type_select';
 import { AutoLayout } from '../auto_layout';
 import styles from '../styles.module.less';
@@ -67,7 +67,7 @@ export const FieldTypeSelect: React.FC<React.PropsWithChildren<IFieldTypeSelectP
   const { setCurrentField, currentField, activeFieldId, activeFieldIndex, snapshot, datasheetId, isMobile, showAdvancedFields } = props;
   const colors = useThemeColors();
   const [visible, setVisible] = useState(false);
-  const field = useSelector((state) => Selectors.getField(state, activeFieldId, snapshot.datasheetId));
+  const field = useAppSelector((state) => Selectors.getField(state, activeFieldId, snapshot.datasheetId));
   const typeSelectTriggerRef = useRef<HTMLDivElement>(null);
   const typeSelectPanelRef = useRef<HTMLDivElement>(null);
   useClickAway(() => {

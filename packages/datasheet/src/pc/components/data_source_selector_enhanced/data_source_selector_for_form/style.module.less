@@ -1,6 +1,6 @@
-@import "~pc/styles/lib_var.less";
-@import "~pc/styles/lib_mixins.less";
-@import "~pc/styles/lib_screen.less";
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+@import '~pc/styles/lib_screen.less';
 
 .container {
   background: var(--bgCommonHighest);
@@ -60,7 +60,7 @@
     height: 544px;
     padding: 8px 0;
     overflow: auto;
-    .light-scroll-bar();
+    .default-scroll-bar();
 
     .nodeTitle {
       font-size: 12px;
@@ -148,7 +148,6 @@
     }
   }
 }
-
 
 @media screen and (max-width: 768px) {
   .searchPanelContainer {

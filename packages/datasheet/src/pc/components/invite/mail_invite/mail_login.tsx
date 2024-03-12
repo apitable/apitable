@@ -19,22 +19,23 @@
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
 import { FC } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { IReduxState, Strings, t } from '@apitable/core';
 import { Wrapper } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { PcHome } from 'pc/components/home/pc_home';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { InviteTitle } from '../components';
 import { useInvitePageRefreshed } from '../use_invite';
-import styles from './style.module.less';
 // @ts-ignore
-import { LoginWithoutOther } from 'enterprise';
+import { LoginWithoutOther } from 'enterprise/home/login/login_without_other';
+import styles from './style.module.less';
 
 const MailLogin: FC<React.PropsWithChildren<unknown>> = () => {
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'mailInvite' });
-  const { inviteEmailInfo } = useSelector(
+  const { inviteEmailInfo } = useAppSelector(
     (state: IReduxState) => ({
       inviteEmailInfo: state.invite.inviteEmailInfo,
     }),

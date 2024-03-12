@@ -12,6 +12,7 @@ import {
   TimeOutlined,
   UserEditOutlined
 } from '@apitable/icons';
+import EllipsisText from 'pc/components/ellipsis_text';
 import { getNodeTypeByNodeId } from '../../../../utils';
 import { NodeIcon } from '../../../catalog/tree/node_icon';
 import { Avatar, AvatarType } from '../../../common';
@@ -195,10 +196,12 @@ export const BaseInfo: FC = () => {
                         } icon={item?.icon} editable={false} size={16} hasChildren/>
                       </span>
 
-                      <Box marginLeft={'8px'} display={'inline-flex'} alignItems={'center'}>
-                        <Typography variant="body4" color={colors.textCommonPrimary}>
-                          {item.nodeName}
-                        </Typography>
+                      <Box marginLeft={'8px'} display={'inline-flex'} alignItems={'center'} maxWidth={'80%'}>
+                        <EllipsisText>
+                          <Typography variant="body4" color={colors.textCommonPrimary}>
+                            {item.nodeName}
+                          </Typography>
+                        </EllipsisText>
                       </Box>
                     </Box>
 

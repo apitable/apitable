@@ -19,7 +19,7 @@
 import classNames from 'classnames';
 import { useMemo } from 'react';
 import * as React from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { useThemeColors } from '@apitable/components';
 import { Selectors, StoreActions, Strings, t } from '@apitable/core';
@@ -27,6 +27,7 @@ import { CheckboxFilled, CommentBgFilled, DragOutlined, ExpandOutlined, Unchecke
 // eslint-disable-next-line no-restricted-imports
 import { Tooltip } from 'pc/components/common';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './styles.module.less';
 
 interface IOperateColumnOwnProperty {
@@ -77,7 +78,7 @@ export const OperateColumn: React.FC<React.PropsWithChildren<IOperateColumnOwnPr
   const { isHeader, recordId, commentCount, expand } = props;
   const colors = useThemeColors();
   const dispatch = useDispatch();
-  const { datasheetId, visibleRows, recordRanges, rowSortable, isAllowDrag, allowSHowCommentPane, rowsIndexMap, visibleColumns } = useSelector(
+  const { datasheetId, visibleRows, recordRanges, rowSortable, isAllowDrag, allowSHowCommentPane, rowsIndexMap, visibleColumns } = useAppSelector(
     (state) => {
       const sortInfo = Selectors.getActiveViewSortInfo(state);
       const groupInfo = Selectors.getActiveViewGroupInfo(state);

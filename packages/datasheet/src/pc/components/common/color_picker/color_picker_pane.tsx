@@ -26,13 +26,16 @@ import { ISelectFieldOption, Strings, t } from '@apitable/core';
 import { DeleteOutlined } from '@apitable/icons';
 import { useResponsive } from 'pc/hooks';
 import { stopPropagation } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import { ScreenSize } from '../component_display/enum';
 import { Modal } from '../mobile/modal';
 import { ColorGroup } from './color_group';
 import { OptionSetting } from './enum';
-import styles from './style.module.less';
 // @ts-ignore
-import { SubscribeGrade, SubscribeLabel, SubscribeUsageTipType, triggerUsageAlert, isEnterprise } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
+// @ts-ignore
+import { SubscribeGrade, SubscribeLabel } from 'enterprise/subscribe_system/subscribe_label/subscribe_label';
+import styles from './style.module.less';
 
 export interface IColorPickerPane {
   option: ISelectFieldOption;
@@ -45,15 +48,16 @@ export const ColorPickerPane: React.FC<React.PropsWithChildren<IColorPickerPane>
   const { option, showRenameInput = false, onChange, onClose } = props;
   const [newName, setNewName] = useState(option.name);
   const colors = useThemeColors();
+  const { IS_ENTERPRISE } = getEnvVariables();
 
   const renderMenu = (title: string, colorGroup: number[], showTag?: boolean, isBase?: boolean) => (
     <div
       className={cls(styles.menu, {
-        [styles.bg]: isEnterprise && showTag,
-        [styles.common]: !isEnterprise,
+        [styles.bg]: IS_ENTERPRISE && showTag,
+        [styles.common]: !IS_ENTERPRISE,
       })}
     >
-      {isEnterprise && (
+      {IS_ENTERPRISE && (
         <div
           className={cls(styles.menuTitle, {
             [styles.base]: isBase,

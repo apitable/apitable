@@ -16,20 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useSelector } from 'react-redux';
 import { CollaCommandName, ExecuteResult, getUniqName, IViewProperty, Selectors, Strings, t, DatasheetActions, StoreActions } from '@apitable/core';
 import { notify } from 'pc/components/common/notify';
 import { changeView, useDispatch } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 
+import { useAppSelector } from 'pc/store/react-redux';
+
 export const useViewAction = () => {
-  const views = useSelector((state) => {
+  const views = useAppSelector((state) => {
     const snapshot = Selectors.getSnapshot(state)!;
     return snapshot.meta.views;
   });
-  const datasheetId = useSelector((state) => state.pageParams.datasheetId);
-  const closeSyncViewIds = useSelector((state) => {
+  const datasheetId = useAppSelector((state) => state.pageParams.datasheetId);
+  const closeSyncViewIds = useAppSelector((state) => {
     return Selectors.getCloseSyncViewIds(state, datasheetId!);
   });
   const dispatch = useDispatch();

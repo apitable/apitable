@@ -18,15 +18,14 @@
 
 package com.apitable.shared.util.page;
 
+import cn.hutool.core.collection.CollUtil;
 import java.util.Collections;
 import java.util.List;
-
-import cn.hutool.core.collection.CollUtil;
 import lombok.Data;
 
 /**
  * <p>
- * page page
+ * page info.
  * </p>
  *
  * @author Shawn Deng
@@ -34,23 +33,23 @@ import lombok.Data;
 @Data
 public class PageInfo<T> {
 
-    private int pageNum;
+    private long pageNum;
 
-    private int pageSize;
+    private long pageSize;
 
-    private int size;
+    private long size;
 
-    private int total;
+    private long total;
 
-    private int pages;
+    private long pages;
 
-    private int startRow;
+    private long startRow;
 
-    private int endRow;
+    private long endRow;
 
-    private int prePage;
+    private long prePage;
 
-    private int nextPage;
+    private long nextPage;
 
     private Boolean firstPage = false;
 
@@ -66,7 +65,15 @@ public class PageInfo<T> {
         //Do Nothing
     }
 
-    public PageInfo(int pageNum, int pageSize, int total, List<T> records) {
+    /**
+     * constructor.
+     *
+     * @param pageNum  current page number
+     * @param pageSize current page size
+     * @param total    total records
+     * @param records  records
+     */
+    public PageInfo(long pageNum, long pageSize, long total, List<T> records) {
         this.pageNum = pageNum;
         this.pageSize = pageSize;
         this.total = total;
@@ -84,7 +91,7 @@ public class PageInfo<T> {
             this.size = 0;
             return;
         }
-        int sub = this.total - ((this.pageNum - 1) * this.pageSize);
+        long sub = this.total - ((this.pageNum - 1) * this.pageSize);
         if (sub <= 0) {
             this.size = 0;
             return;
@@ -94,7 +101,7 @@ public class PageInfo<T> {
             this.size = records.size();
             return;
         }
-        this.records = records.subList(0, sub);
+        this.records = records.subList(0, (int) sub);
         this.size = sub;
     }
 
@@ -102,7 +109,7 @@ public class PageInfo<T> {
         if (getPageSize() == 0) {
             this.pages = 0;
         }
-        int pages = getTotal() / getPageSize();
+        long pages = getTotal() / getPageSize();
         if (getTotal() % getPageSize() != 0) {
             pages++;
         }
@@ -112,8 +119,7 @@ public class PageInfo<T> {
     private void calculateStartAndEndRow() {
         if (this.pageNum > 0) {
             this.startRow = ((this.pageNum - 1) * this.pageSize) + 1;
-        }
-        else {
+        } else {
             this.startRow = 0;
         }
 
@@ -123,14 +129,12 @@ public class PageInfo<T> {
     private void calcPage() {
         if (pageNum > 1) {
             prePage = pageNum - 1;
-        }
-        else {
+        } else {
             prePage = 1;
         }
         if (pageNum < pages) {
             nextPage = pageNum + 1;
-        }
-        else {
+        } else {
             nextPage = pages;
         }
     }

@@ -20,12 +20,12 @@ import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { useCallback } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Button, useThemeColors, Typography } from '@apitable/components';
 import { FieldType, IField, IMultiSelectedIds, RowHeightLevel, Selectors, ThemeName } from '@apitable/core';
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import { ButtonPlus } from 'pc/components/common';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { COLOR_INDEX_THRESHOLD, stopPropagation } from 'pc/utils';
 import { MouseDownType } from '../../enum';
 import { setColor } from '../../format';
@@ -57,7 +57,7 @@ export const CellOptions: React.FC<React.PropsWithChildren<ICellOptionsProps>> =
   const field = Selectors.findRealField(store.getState(), propsField);
 
   const colors = useThemeColors();
-  const cacheTheme = useSelector(Selectors.getTheme);
+  const cacheTheme = useAppSelector(Selectors.getTheme);
   const getOptionNameColor = useCallback(
     (id: string, field: IField) => {
       const item = field.property.options.find((item: { id: string }) => item.id === id);

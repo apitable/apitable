@@ -20,8 +20,8 @@ import classNames from 'classnames';
 import { FC, useRef } from 'react';
 import { ScrollBarType } from '../../interfaces';
 
-import styles from './styles.module.less';
 import { useScrollEvents } from './use_scroll_events';
+import styles from './styles.module.less';
 
 export interface IScrollBarProps {
   type: ScrollBarType;

@@ -20,7 +20,7 @@ import { useUnmount } from 'ahooks';
 import classNames from 'classnames';
 import { FC } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, ResourceType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { AddOutlined, QuestionCircleOutlined, WidgetOutlined } from '@apitable/icons';
@@ -30,10 +30,11 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { OperateItem } from 'pc/components/tool_bar/view_switcher/view_item/operate_item';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from '../../../../utils/dom';
 import { useVerifyOperateItemTitle } from '../../../tool_bar/view_switcher/view_switcher';
-import styles from './style.module.less';
 import { WrapperTooltip } from './wrapper_tooltip';
+import styles from './style.module.less';
 
 export const WidgetPanelList: FC<React.PropsWithChildren<{ onClickItem?: (panelIndex: number) => void }>> = ({ onClickItem }) => {
   const { screenIsAtMost } = useResponsive();
@@ -41,18 +42,18 @@ export const WidgetPanelList: FC<React.PropsWithChildren<{ onClickItem?: (panelI
 
   const colors = useThemeColors();
   const dispatch = useDispatch();
-  const { datasheetId, mirrorId } = useSelector((state) => state.pageParams);
-  const { manageable, editable } = useSelector((state) => {
+  const { datasheetId, mirrorId } = useAppSelector((state) => state.pageParams);
+  const { manageable, editable } = useAppSelector((state) => {
     return Selectors.getResourcePermission(state, datasheetId!, ResourceType.Datasheet);
   });
 
   const resourceId = mirrorId || datasheetId!;
   const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;
 
-  const widgetPanels = useSelector((state) => {
+  const widgetPanels = useAppSelector((state) => {
     return Selectors.getResourceWidgetPanels(state, resourceId, resourceType);
   })!;
-  const activeWidgetPanel = useSelector((state) => {
+  const activeWidgetPanel = useAppSelector((state) => {
     return Selectors.getResourceActiveWidgetPanel(state, resourceId, resourceType);
   })!;
 

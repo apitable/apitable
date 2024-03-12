@@ -19,6 +19,7 @@
 package com.apitable.automation.service;
 
 import com.apitable.automation.entity.AutomationTriggerEntity;
+import com.apitable.automation.model.AutomationCopyOptions;
 import com.apitable.automation.model.AutomationTriggerDto;
 import com.apitable.automation.model.CreateTriggerRO;
 import com.apitable.automation.model.TriggerCopyResultDto;
@@ -27,10 +28,24 @@ import com.apitable.automation.model.UpdateTriggerRO;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * automation trigger service.
+ */
 public interface IAutomationTriggerService {
 
+    /**
+     * get trigger by robot id.
+     *
+     * @param robotIds robot id list
+     * @return list of trigger dto
+     */
     List<AutomationTriggerDto> getTriggersByRobotIds(List<String> robotIds);
 
+    /**
+     * create trigger.
+     *
+     * @param entity entity
+     */
     void create(AutomationTriggerEntity entity);
 
     /**
@@ -38,19 +53,22 @@ public interface IAutomationTriggerService {
      *
      * @param userId  creator's user id
      * @param data    data
+     * @param spaceId space id
      * @return TriggerVO
      */
-    List<TriggerVO> createByDatabus(Long userId, CreateTriggerRO data);
+    List<TriggerVO> create(Long userId, String spaceId, CreateTriggerRO data);
+
 
     /**
-     * Update trigger.
+     * Create trigger.
      *
-     * @param userId    creator's user id
+     * @param userId  creator's user id
+     * @param data    data
+     * @param spaceId space id
      * @param triggerId trigger id
-     * @param data      data
      * @return TriggerVO
      */
-    List<TriggerVO> updateByDatabus(String triggerId, Long userId, UpdateTriggerRO data);
+    List<TriggerVO> update(Long userId, String triggerId, String spaceId, UpdateTriggerRO data);
 
     /**
      * Delete trigger.
@@ -61,8 +79,17 @@ public interface IAutomationTriggerService {
      */
     void deleteByDatabus(String robotId, String triggerId, Long userId);
 
-    TriggerCopyResultDto copy(Long userId, boolean sameSpace,
-        Map<String, String> newRobotMap, Map<String, String> newNodeMap);
+    /**
+     * copy trigger.
+     *
+     * @param userId      user id
+     * @param options   copy options
+     * @param newRobotMap new robot map
+     * @param newNodeMap  new node map
+     * @return TriggerCopyResultDto
+     */
+    TriggerCopyResultDto copy(Long userId, AutomationCopyOptions options,
+                              Map<String, String> newRobotMap, Map<String, String> newNodeMap);
 
     /**
      * Update trigger by trigger id.
@@ -71,4 +98,13 @@ public interface IAutomationTriggerService {
      */
     void updateByTriggerId(AutomationTriggerEntity trigger);
 
+    /**
+     * update trigger input by robot ids.
+     *
+     * @param robotIds      robot id list
+     * @param triggerTypeId trigger type id
+     * @param input         input
+     */
+    void updateInputByRobotIdsAndTriggerTypeIds(List<String> robotIds, String triggerTypeId,
+                                                String input);
 }

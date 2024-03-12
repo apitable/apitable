@@ -18,17 +18,17 @@
 
 import classNames from 'classnames';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { CollaCommandName, IFormProps, Selectors } from '@apitable/core';
 import { useGetSignatureAssertByToken } from '@apitable/widget-sdk';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { DescEditor } from './desc_editor';
 import { CoverImgUploader, LogoImgUploader } from './img_uploader';
 import { IModeEnum } from './interface';
-import styles from './style.module.less';
 import { TitleEditor } from './title_editor';
+import styles from './style.module.less';
 
 interface IFormPropContainerProps {
   formId: string;
@@ -42,9 +42,9 @@ export const FormPropContainer: React.FC<React.PropsWithChildren<IFormPropContai
   const { description, fullScreen, coverVisible, logoVisible, logoUrl: _logoUrl, coverUrl } = formProps;
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
-  const { shareId } = useSelector((state) => state.pageParams);
+  const { shareId } = useAppSelector((state) => state.pageParams);
   const mode = Boolean(shareId) || !editable ? IModeEnum.Preview : IModeEnum.Edit;
-  const title = useSelector((state) => Selectors.getForm(state)!.name);
+  const title = useAppSelector((state) => Selectors.getForm(state)!.name);
   const logoUrl = useGetSignatureAssertByToken(_logoUrl || '');
   const updateProps = (partProps: Partial<IFormProps>) => {
     resourceService.instance!.commandManager.execute({

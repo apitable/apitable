@@ -17,10 +17,11 @@
  */
 
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Tooltip, useThemeColors } from '@apitable/components';
 import { ConfigConstant, Selectors, Strings, t } from '@apitable/core';
 import { EditOutlined, EyeOpenOutlined, LockOutlined } from '@apitable/icons';
+
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const FieldPermissionLock = (props: {
   fieldId?: string;
@@ -33,7 +34,7 @@ export const FieldPermissionLock = (props: {
   const colors = useThemeColors();
   const { fieldId, tooltip, isLock, style, color, className } = props;
 
-  const fieldPermissionMap = useSelector((state) => {
+  const fieldPermissionMap = useAppSelector((state) => {
     return Selectors.getFieldPermissionMap(state);
   });
 
@@ -71,7 +72,7 @@ export const FieldPermissionLockEnhance = (props: { fieldId: string; style?: Rea
   const colors = useThemeColors();
   const { fieldId, style, color } = props;
 
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
 
   const fieldRole = Selectors.getFieldRoleByFieldId(fieldPermissionMap, fieldId);
 

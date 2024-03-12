@@ -18,17 +18,16 @@
 
 package com.apitable.shared.cache.bean;
 
+import cn.hutool.core.collection.CollUtil;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import cn.hutool.core.collection.CollUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
  * <p>
- * Template Center - Recommend Config
+ * Template Center - Recommend Config.
  * </p>
  *
  * @author Chambers
@@ -39,23 +38,23 @@ import lombok.NoArgsConstructor;
 public class RecommendConfig {
 
     /**
-     * top banner
+     * top banner.
      */
     List<Banner> top;
 
     /**
-     * custom category dto
+     * custom category dto.
      * delete after using new recommend config(include all poc)
      */
     List<CategoryDto> categories;
 
     /**
-     * custom album group config
+     * custom album group config.
      */
     private List<AlbumGroup> albumGroups;
 
     /**
-     * custom template group config
+     * custom template group config.
      */
     private List<TemplateGroup> templateGroups;
 
@@ -64,23 +63,38 @@ public class RecommendConfig {
         this.categories = categories;
     }
 
+    /**
+     * get album group config.
+     *
+     * @return album group config
+     */
     public List<TemplateGroup> getTemplateGroups() {
         if (CollUtil.isNotEmpty(templateGroups)) {
             return templateGroups;
         }
         // compatible old version config
         if (CollUtil.isNotEmpty(categories)) {
-            return categories.stream().map(item -> new TemplateGroup(item.getCategoryName(), item.getTemplateIds())).collect(Collectors.toList());
+            return categories.stream()
+                .map(item -> new TemplateGroup(item.getCategoryName(), item.getTemplateIds()))
+                .collect(Collectors.toList());
         }
         return templateGroups;
     }
 
     //TODO compatible code (delete after 0.13.9)
+    /**
+     * set album group.
+     */
     public void setTemplateGroups(List<TemplateGroup> templateGroups) {
         this.templateGroups = templateGroups;
-        this.categories = templateGroups.stream().map(item -> new CategoryDto(item.getName(), item.getTemplateIds())).collect(Collectors.toList());
+        this.categories = templateGroups.stream()
+            .map(item -> new CategoryDto(item.getName(), item.getTemplateIds()))
+            .collect(Collectors.toList());
     }
 
+    /**
+     * album group.
+     */
     public static class AlbumGroup {
         private String name;
 
@@ -103,6 +117,9 @@ public class RecommendConfig {
         }
     }
 
+    /**
+     * template group.
+     */
     public static class TemplateGroup {
         private String name;
 

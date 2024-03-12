@@ -20,61 +20,65 @@ import classNames from 'classnames';
 import { IOption, ISelectProps } from 'components/select/interface';
 import { Typography } from 'components/typography';
 import React from 'react';
+import EllipsisText from '../ellipsis_text';
 
 type IRenderValue = Pick<ISelectProps, 'renderValue'>;
 
-export const SelectItem: React.FC<React.PropsWithChildren<{
-  iconClassName?: string,
-  item: IOption; isChecked?: boolean } & Required<IRenderValue>>> = (props) => {
-    const { item, iconClassName, children, renderValue, isChecked } = props;
+export const SelectItem: React.FC<
+  React.PropsWithChildren<
+    {
+      iconClassName?: string;
+      item: IOption;
+      isChecked?: boolean;
+    } & Required<IRenderValue>
+  >
+> = (props) => {
+  const { item, iconClassName, children, renderValue, isChecked } = props;
 
-    const getEllipsisConfig = () => {
-    /**
-     * If the disabled tip is directly masked, the reason for the disabled cannot be displayed, so the disabled is judged first.
-     */
-      if (!item.disabled) {
-        return { tooltip: '' };
-      }
-      // Need to prompt disabled tips
-      if (item.disabled && item.disabledTip) {
-        return { tooltip: item.disabledTip };
-      }
-
-      // Show search results
-      if (children) {
-        return { rows: 1, tooltip: item.label };
-      }
-
-      return true;
-    };
-
-    return <>
+  return (
+    <>
       <span
-        className={classNames({
-          isChecked: isChecked
-        }, 'prefixIcon', iconClassName)}
+        className={classNames(
+          {
+            isChecked: isChecked,
+          },
+          'prefixIcon',
+          iconClassName
+        )}
       >
-        {
-          item.prefixIcon
-        }
+        {item.prefixIcon}
       </span>
-      <Typography
-        variant={'body1'}
-        ellipsis={getEllipsisConfig()}
-        className={classNames({
-          isChecked: isChecked
-        }, 'optionLabel')}
-        component={'span'}
-      >
-        {
-          children || renderValue(item)
-        }
-      </Typography>
+      {item.disabled ? (
+        <Typography
+          variant={'body1'}
+          className={classNames(
+            {
+              isChecked: isChecked,
+            },
+            'optionLabel'
+          )}
+          component={'span'}
+        >
+          {children || renderValue(item)}
+        </Typography>
+      ) : (
+        <EllipsisText>
+          <Typography
+            variant={'body1'}
+            className={classNames(
+              {
+                isChecked: isChecked,
+              },
+              'optionLabel'
+            )}
+            component={'span'}
+          >
+            {children || renderValue(item)}
+          </Typography>
+        </EllipsisText>
+      )}
 
-      <span className={'suffixIcon'}>
-        {
-          item.suffixIcon
-        }
-      </span>
-    </>;
-  };
+      <span className={'suffixIcon'}>{item.suffixIcon}</span>
+    </>
+  );
+};

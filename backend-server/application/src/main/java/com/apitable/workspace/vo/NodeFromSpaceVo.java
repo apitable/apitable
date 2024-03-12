@@ -22,20 +22,20 @@ import lombok.Data;
 
 /**
  * <p>
- * Node space information
+ * Node space information.
  * </p>
  */
 @Data
 public class NodeFromSpaceVo {
 
     /**
-     * Node ID
-     * */
+     * Node ID.
+     */
     private String nodeId;
 
     /**
-     * Space ID
-     * */
+     * Space ID.
+     */
     private String spaceId;
 
 }

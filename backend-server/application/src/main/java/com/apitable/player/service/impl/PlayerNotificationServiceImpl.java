@@ -93,6 +93,7 @@ import com.apitable.workspace.service.INodeService;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
+import jakarta.annotation.Resource;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -105,7 +106,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.cursor.Cursor;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -183,6 +183,10 @@ public class PlayerNotificationServiceImpl
             return;
         }
         NotificationToTag toTag = NotificationToTag.getValue(template.getToTag());
+        if (toTag == null) {
+            log.error("fail to get tag:{}", template.getToTag());
+            return;
+        }
         ExceptionUtil.isNotNull(toTag, NotificationException.TMPL_TO_TAG_ERROR);
         if (NotificationToTag.toUserTag(toTag)) {
             createUserNotify(template, ro);
@@ -218,7 +222,7 @@ public class PlayerNotificationServiceImpl
             if (CollUtil.isNotEmpty(ro.getToMemberId())) {
                 toMemberIds.addAll(
                     CollUtil.removeBlank(CollUtil.distinct(ro.getToMemberId())).stream()
-                        .map(Long::valueOf).collect(Collectors.toList()));
+                        .map(Long::valueOf).toList());
             }
             if (CollUtil.isNotEmpty(ro.getToUnitId())) {
                 List<Long> unitIds =
@@ -278,7 +282,7 @@ public class PlayerNotificationServiceImpl
 
     @Override
     public void createNotifyWithoutVerify(List<Long> userIds,
-        NotificationTemplate template, NotificationCreateRo ro) {
+                                          NotificationTemplate template, NotificationCreateRo ro) {
         // todo message middle key
         List<PlayerNotificationEntity> creatEntities = new ArrayList<>();
         List<PlayerNotificationEntity> notifyEntities = new ArrayList<>();
@@ -379,7 +383,7 @@ public class PlayerNotificationServiceImpl
             return notificationRecordList;
         }
         dtos = dtos.stream().filter(dto -> {
-            if (ro.getIsRead() == 1) {
+            if (Boolean.TRUE.equals(ro.getIsRead())) {
                 return true;
             }
             // check expired
@@ -400,7 +404,7 @@ public class PlayerNotificationServiceImpl
 
     @Override
     public List<NotificationModelDTO> getUserNotificationByTypeAndIsRead(Long toUser,
-                                                                         Integer isRead) {
+                                                                         Boolean isRead) {
         return baseMapper.selectDtoByTypeAndIsRead(toUser, isRead);
     }
 
@@ -462,8 +466,7 @@ public class PlayerNotificationServiceImpl
         List<UserLangDTO> users = iUserService.getLangAndEmailByIds(userIds,
             LocaleContextHolder.getLocale().toLanguageTag());
         // timestamp transform
-        List<String> dateKeys = dict.keySet().stream().filter(i -> i.endsWith("AT")).collect(
-            Collectors.toList());
+        List<String> dateKeys = dict.keySet().stream().filter(i -> i.endsWith("AT")).toList();
         if (dateKeys.isEmpty()) {
             List<MailWithLang> tos = users.stream()
                 .filter(i -> StrUtil.isNotBlank(i.getEmail()))
@@ -515,7 +518,7 @@ public class PlayerNotificationServiceImpl
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean setNotificationIsRead(String[] ids, Integer isAll) {
+    public boolean setNotificationIsRead(String[] ids, Boolean isAll) {
         Long userId = SessionContext.getUserId();
         if (ArrayUtil.isNotEmpty(ids)) {
             // It may be jumped by mail, you need to find the specific ID in redis, and then mark it as read
@@ -530,7 +533,7 @@ public class PlayerNotificationServiceImpl
             if (NumberUtil.isLong(ids[0])) {
                 return baseMapper.updateReadIsTrueByIds(ids);
             }
-        } else if (isAll != 0) {
+        } else if (Boolean.TRUE.equals(isAll)) {
             return baseMapper.updateReadIsTrueByUserId(userId);
         }
         return true;
@@ -678,13 +681,12 @@ public class PlayerNotificationServiceImpl
             dict.set(EMAIL_SPACE_NAME,
                 StrUtil.blankToDefault(iSpaceService.getNameBySpaceId(ro.getSpaceId()), ""));
         }
-        long fromUserId = Long.parseLong(ro.getFromUserId());
-        if (fromUserId > 0) {
-            String memberName =
-                StrUtil.blankToDefault(iMemberService.getMemberNameByUserIdAndSpaceId(fromUserId,
-                    ro.getSpaceId()), I18nStringsUtil.t("unnamed"));
-            dict.set(EMAIL_MEMBER_NAME, memberName);
-        }
+        String memberName = null != ro.getFromUserId()
+            ? StrUtil.blankToDefault(
+            iMemberService.getMemberNameByUserIdAndSpaceId(Long.parseLong(ro.getFromUserId()),
+                ro.getSpaceId()), I18nStringsUtil.t("unnamed"))
+            : I18nStringsUtil.t("unnamed");
+        dict.set(EMAIL_MEMBER_NAME, memberName);
         if (ObjectUtil.isNotNull(ro.getBody())) {
             JSONObject extras = NotificationHelper.getExtrasFromNotifyBody(ro.getBody());
             if (extras != null) {

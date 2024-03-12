@@ -116,6 +116,16 @@
         margin-left: 4px;
         color: var(--primaryColor);
         cursor: pointer;
+        &.disabled {
+          cursor: not-allowed;
+          color: var(--fourthLevelText);
+          &:hover {
+            color: var(--fourthLevelText);
+          }
+          svg {
+            fill: var(--fourthLevelText);
+          }
+        }
         .viewName {
           max-width: 120px;
           margin-left: 4px;

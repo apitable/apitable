@@ -47,6 +47,7 @@ export interface IDraggingOutlineInfoProps {
 
 export interface IKonvaGridContext {
   theme: ITheme;
+  activeNodePrivate?: boolean;
   tooltipInfo: ITooltipInfo;
   setTooltipInfo: (info: Partial<ITooltipInfo>) => void;
   clearTooltipInfo: () => void;

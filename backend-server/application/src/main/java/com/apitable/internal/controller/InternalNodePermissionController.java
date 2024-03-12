@@ -18,11 +18,15 @@
 
 package com.apitable.internal.controller;
 
+import static com.apitable.workspace.enums.PermissionException.NODE_ACCESS_DENIED;
+
 import com.apitable.control.annotation.ThirdPartControl;
+import com.apitable.core.exception.BusinessException;
 import com.apitable.core.support.ResponseData;
 import com.apitable.internal.ro.InternalPermissionRo;
 import com.apitable.internal.ro.InternalUserNodePermissionRo;
 import com.apitable.internal.service.IPermissionService;
+import com.apitable.organization.service.IUnitService;
 import com.apitable.shared.component.scanner.annotation.ApiResource;
 import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
@@ -36,13 +40,13 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
-import javax.validation.Valid;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -54,13 +58,16 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @ApiResource(path = "/internal")
-@Tag(name = "Internal Service - Node Permission Interface")
+@Tag(name = "Internal")
 public class InternalNodePermissionController {
 
     @Resource
     private IPermissionService iPermissionService;
     @Resource
     private INodeService iNodeService;
+
+    @Resource
+    private IUnitService iUnitService;
 
 
     /**
@@ -79,6 +86,11 @@ public class InternalNodePermissionController {
         @PathVariable("nodeId") String nodeId,
         @RequestParam(value = "shareId", required = false) String shareId) {
         Long userId = SessionContext.getUserId();
+        // check private
+        if (!iNodeService.getIsTemplateByNodeIds(Collections.singletonList(nodeId))
+            && !iNodeService.privateNodeOperation(userId, nodeId)) {
+            throw new BusinessException(NODE_ACCESS_DENIED);
+        }
         List<DatasheetPermissionView> views =
             iPermissionService.getDatasheetPermissionView(userId, Collections.singletonList(nodeId),
                 shareId);

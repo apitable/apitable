@@ -18,20 +18,19 @@
 
 package com.apitable.shared.cache.bean;
 
-import java.time.LocalDateTime;
+import static com.apitable.shared.constants.DateFormatConstants.TIME_SIMPLE_PATTERN;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import java.time.LocalDateTime;
 import lombok.Data;
-
-import static com.apitable.shared.constants.DateFormatConstants.TIME_SIMPLE_PATTERN;
 
 /**
  * <p>
- * account link object
+ * account link object.
  * </p>
  *
  * @author Chambers
@@ -40,12 +39,12 @@ import static com.apitable.shared.constants.DateFormatConstants.TIME_SIMPLE_PATT
 public class AccountLinkDto {
 
     /**
-     * Link type
+     * Link type.
      */
     private Integer type;
 
     /**
-     * nickname
+     * nickname.
      */
     private String nickName;
 

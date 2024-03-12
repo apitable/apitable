@@ -122,7 +122,11 @@ const TaskGroupHeader: FC<React.PropsWithChildren<ITaskGroupHeaderProps>> = (pro
     }
     return changeGroupCollapseState(Array.from(groupingCollapseIdsSet));
   };
-  const { height, stroke, background } = getTaskGroupHeaderStyle(depth, groupCount, colors);
+  const groupHeaderStyle = getTaskGroupHeaderStyle(depth, groupCount, colors);
+  if (!groupHeaderStyle) {
+    return null;
+  }
+  const { height, stroke, background } = groupHeaderStyle;
 
   return (
     <>

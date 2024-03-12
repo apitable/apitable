@@ -17,14 +17,7 @@
     "import/order": [
       "warn",
       {
-        "groups": [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index"
-        ],
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
         "pathGroups": [
           {
             "pattern": "@apitable/**",
@@ -62,9 +55,7 @@
             "position": "after"
           }
         ],
-        "pathGroupsExcludedImportTypes": [
-          "builtin"
-        ],
+        "pathGroupsExcludedImportTypes": ["builtin"],
         "alphabetize": {
           "order": "asc",
           "caseInsensitive": true
@@ -81,10 +72,7 @@
     "react/display-name": 0,
     "react/no-find-dom-node": 0,
     "react/no-unknown-property": 1,
-    "@next/next/no-html-link-for-pages": [
-      "error",
-      "packages/datasheet/pages/"
-    ],
+    "@next/next/no-html-link-for-pages": ["error", "packages/datasheet/pages/"],
     "@next/next/no-img-element": "off",
     "no-restricted-imports": [
       "warn",
@@ -92,30 +80,22 @@
         "paths": [
           {
             "name": "@apitable/components",
-            "importNames": [
-              "Select"
-            ],
+            "importNames": ["Select"],
             "message": "Please use tooltip DropdownSelect from '@apitable/components instead ."
           },
           {
             "name": "pc/components/common/tooltip",
-            "importNames": [
-              "Tooltip"
-            ],
+            "importNames": ["Tooltip"],
             "message": "Please use tooltip FloatUiTooltip from '@apitable/components instead ."
           },
           {
             "name": "pc/components/common",
-            "importNames": [
-              "Tooltip"
-            ],
+            "importNames": ["Tooltip"],
             "message": "Please use tooltip FloatUiTooltip from '@apitable/components instead ."
           },
           {
             "name": "react-custom-scrollbars",
-            "importNames": [
-              "Scrollbars"
-            ],
+            "importNames": ["Scrollbars"],
             "message": "Please use ScrollBar from pc/components/scroll_bar instead."
           }
         ]

@@ -49,37 +49,35 @@ public class IdUtil {
     /**
      * create node id.
      *
-     * @param type node type
+     * @param nodeType node type
      * @return String
      */
-    public static String createNodeId(Integer type) {
-        NodeType nodeType = NodeType.toEnum(type);
-        switch (nodeType) {
-            case DATASHEET:
-                return IdRulePrefixEnum.DST.getIdRulePrefixEnum()
-                    + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
-            case FORM:
-                return IdRulePrefixEnum.FORM.getIdRulePrefixEnum()
-                    + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
-            case DASHBOARD:
-                return IdRulePrefixEnum.DASHBOARD.getIdRulePrefixEnum()
-                    + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
-            case MIRROR:
-                return IdRulePrefixEnum.MIRROR.getIdRulePrefixEnum()
-                    + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
-            case AI_CHAT_BOT:
-                return IdRulePrefixEnum.AI.getIdRulePrefixEnum()
-                    + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
-            case AUTOMATION:
-                return IdRulePrefixEnum.AUTOMATION.getIdRulePrefixEnum()
-                    + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
-            case AIRAGENT:
-                return IdRulePrefixEnum.AIRAGENT.getIdRulePrefixEnum()
-                    + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
-            default:
-                return IdRulePrefixEnum.FOD.getIdRulePrefixEnum()
-                    + RandomExtendUtil.randomString(ID_FIXED_LENGTH);
-        }
+    public static String createNodeId(NodeType nodeType) {
+        return switch (nodeType) {
+            case DATASHEET -> IdRulePrefixEnum.DST.getIdRulePrefixEnum()
+                + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
+            case FORM -> IdRulePrefixEnum.FORM.getIdRulePrefixEnum()
+                + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
+            case DASHBOARD -> IdRulePrefixEnum.DASHBOARD.getIdRulePrefixEnum()
+                + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
+            case MIRROR -> IdRulePrefixEnum.MIRROR.getIdRulePrefixEnum()
+                + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
+            case AI_CHAT_BOT -> IdRulePrefixEnum.AI.getIdRulePrefixEnum()
+                + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
+            case AUTOMATION -> IdRulePrefixEnum.AUTOMATION.getIdRulePrefixEnum()
+                + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
+            case AIRAGENT -> IdRulePrefixEnum.AIRAGENT.getIdRulePrefixEnum()
+                + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
+            case CUSTOM_PAGE -> IdRulePrefixEnum.CUSTOM_PAGE.getIdRulePrefixEnum()
+                + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
+            default -> IdRulePrefixEnum.FOD.getIdRulePrefixEnum()
+                + RandomExtendUtil.randomString(ID_FIXED_LENGTH);
+        };
+    }
+
+    public static String createDocumentName() {
+        return IdRulePrefixEnum.DOCUMENT_NAME.getIdRulePrefixEnum()
+            + RandomExtendUtil.randomString(DATASHEET_ID_FIXED_LENGTH);
     }
 
     public static String createDstId() {

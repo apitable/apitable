@@ -23,6 +23,7 @@ import { ApiTipConfig, ApiTipConstant, NoticeTemplatesConstant, Settings, System
 import { TrackEvents } from './track_events';
 
 export { SystemConfigInterfacePlayer, SystemConfigInterfaceGuide } from './system_config.interface';
+import BillingConfig from './billing.auto.json';
 
 export {
   ConfigConstant,
@@ -35,6 +36,7 @@ export {
   NoticeTemplatesConstant,
   ApiTipConfig,
   ApiTipConstant,
+  BillingConfig
 };
 
 export * from './emojis_config';

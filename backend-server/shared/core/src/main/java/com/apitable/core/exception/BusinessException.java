@@ -22,7 +22,7 @@ import java.util.Map;
 
 /**
  * <p>
- * Business Exception
+ * Business Exception.
  * </p>
  */
 public class BusinessException extends RuntimeException {
@@ -30,12 +30,12 @@ public class BusinessException extends RuntimeException {
     private static final long serialVersionUID = 6018501357401552444L;
 
     /**
-     * Business Exception Status Code
+     * Business Exception Status Code.
      */
     private Integer code;
 
     /**
-     * Fixed enumeration encoding for i18n internationalization recognition
+     * Fixed enumeration encoding for i18n internationalization recognition.
      */
     private String fixedCode;
 
@@ -45,6 +45,12 @@ public class BusinessException extends RuntimeException {
         return body;
     }
 
+    /**
+     * constructor.
+     *
+     * @param exception base exception
+     * @param body      body.
+     */
     public BusinessException(BaseException exception, Map<String, Object> body) {
         super(exception.getMessage());
         this.code = exception.getCode();
@@ -74,15 +80,15 @@ public class BusinessException extends RuntimeException {
         this.code = code;
     }
 
+    /**
+     * constructor.
+     *
+     * @param exception base exception
+     */
     public BusinessException(BaseException exception) {
         super(exception.getMessage());
         this.code = exception.getCode();
         this.fixedCode = exception.toString();
-    }
-
-    public BusinessException(int code, String message, Object data) {
-        super(message);
-        this.code = code;
     }
 
     public Integer getCode() {

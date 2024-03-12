@@ -18,7 +18,11 @@
 
 package com.apitable.shared.component.notification.observer;
 
-import cn.hutool.core.date.DatePattern;
+import static cn.hutool.core.date.DatePattern.NORM_DATETIME_MINUTE_PATTERN;
+import static com.apitable.shared.constants.NotificationConstants.EMAIL_MEMBER_NAME;
+import static com.apitable.shared.constants.NotificationConstants.EMAIL_RECORD_ID;
+import static com.apitable.shared.constants.NotificationConstants.INVOLVE_RECORD_IDS;
+
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
@@ -29,8 +33,7 @@ import com.apitable.shared.component.notification.NotificationHelper;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.space.service.ISpaceService;
 import com.apitable.workspace.service.INodeService;
-
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -39,16 +42,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static cn.hutool.core.date.DatePattern.NORM_DATETIME_MINUTE_PATTERN;
-import static com.apitable.shared.constants.NotificationConstants.*;
-
 /**
  * <p>
- * base notify observer
+ * base notify observer.
  * </p>
+ *
  * @author zoe zheng
  */
 public abstract class AbstractNotifyObserver<M, T> implements NotifyObserver<M, T> {
+
     @Resource
     private ISpaceService iSpaceService;
 
@@ -67,7 +69,7 @@ public abstract class AbstractNotifyObserver<M, T> implements NotifyObserver<M, 
     public Map<String, Object> bindingMap(NotificationCreateRo ro) {
         Map<String, Object> bindingMap = new HashMap<>();
         bindingMap.put("createdAt",
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_MINUTE_PATTERN)));
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern(NORM_DATETIME_MINUTE_PATTERN)));
         if (StrUtil.isNotBlank(ro.getSpaceId())) {
             bindingMap.put("spaceName", iSpaceService.getNameBySpaceId(ro.getSpaceId()));
             bindingMap.put("spaceId", ro.getSpaceId());
@@ -81,7 +83,8 @@ public abstract class AbstractNotifyObserver<M, T> implements NotifyObserver<M, 
         }
         long fromUserId = Long.parseLong(ro.getFromUserId());
         if (fromUserId > 0) {
-            String memberName = StrUtil.blankToDefault(iMemberService.getMemberNameByUserIdAndSpaceId(fromUserId,
+            String memberName =
+                StrUtil.blankToDefault(iMemberService.getMemberNameByUserIdAndSpaceId(fromUserId,
                     ro.getSpaceId()), I18nStringsUtil.t("unnamed"));
             bindingMap.put(StrUtil.toCamelCase(EMAIL_MEMBER_NAME), memberName);
         }
@@ -89,13 +92,13 @@ public abstract class AbstractNotifyObserver<M, T> implements NotifyObserver<M, 
         if (extras != null) {
             extras.forEach((k, v) -> {
                 if (StrUtil.endWith(k, "At")) {
-                    LocalDateTime dateTime = DateUtil.toLocalDateTime(Instant.ofEpochMilli(Long.parseLong(v.toString())));
+                    LocalDateTime dateTime = DateUtil.toLocalDateTime(
+                        Instant.ofEpochMilli(Long.parseLong(v.toString())));
                     bindingMap.put(k, DateUtil.format(dateTime, NORM_DATETIME_MINUTE_PATTERN));
-                }
-                else if (Objects.equals(k, INVOLVE_RECORD_IDS)) {
-                    bindingMap.put(StrUtil.toCamelCase(EMAIL_RECORD_ID), JSONUtil.parseArray(v).get(0));
-                }
-                else {
+                } else if (Objects.equals(k, INVOLVE_RECORD_IDS)) {
+                    bindingMap.put(StrUtil.toCamelCase(EMAIL_RECORD_ID),
+                        JSONUtil.parseArray(v).get(0));
+                } else {
                     bindingMap.put(k, v);
                 }
             });

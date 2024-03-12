@@ -1,13 +1,13 @@
-@import "~pc/styles/lib_var.less";
-@import "~pc/styles/lib_mixins.less";
-@import "~pc/styles/lib_screen.less";
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+@import '~pc/styles/lib_screen.less';
 // @inputWidth: 592px;
 .inputEmail {
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  
+
   .inviteAlertWrapper {
     margin-right: 24px;
   }
@@ -16,19 +16,40 @@
     height: 328px;
     display: flex;
     flex-direction: column;
+    @apply vk-space-y-3;
     .add svg {
       margin-right: 4px;
-    }
-    .itemContent {
-      overflow-y: auto;
-      overflow-x: hidden;
-      margin: 24px 0 8px;
-      flex: 1;
-      .light-scroll-bar();
     }
   }
   .inputItem {
     display: flex;
+    gap: 8px;
+    align-self: stretch;
+    flex-direction: column;
+  }
+  .inputItemBox {
+    padding: 0px 2px;
+    border-radius: 4px !important;
+    background-color: var(--bgControlsDefault) !important;
+
+    :global {
+      .ant-input {
+        background-color: transparent !important;
+        // background-color: var(--bgControlsDefault) !important;
+      }
+    }
+  }
+  .inputItemBoxFocused {
+    padding: 0px 2px;
+    border-radius: 4px !important;
+    border: 1px solid var(--borderBrandDefault);
+
+    :global {
+      .ant-input {
+        background-color: transparent !important;
+        // background-color: var(--bgControlsElevateDefault) !important;
+      }
+    }
   }
   .inputItemLeft {
     flex: 1;
@@ -56,20 +77,9 @@
   }
   .inviteBtn {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     margin-right: 24px;
-    .tipText {
-      background: rgba(136, 106, 247, 0.05);
-      color: var(--primaryColor);
-      height: 32px;
-      border-radius: 4px;
-      flex: 1;
-      padding-left: 8px;
-      margin-right: 24px;
-      font-size: 12px;
-      display: flex;
-      align-items: center;
-    }
+    @apply vk-space-x-3;
   }
 
   :global {
@@ -137,13 +147,13 @@
     }
   }
 }
-@media screen and (min-width: @w-md){
-  .inputItem{
+@media screen and (min-width: @w-md) {
+  .inputItem {
     width: calc(100% - 24px);
   }
 }
-@media screen and (max-width: @w-md){
-  .inviteBtn{
+@media screen and (max-width: @w-md) {
+  .inviteBtn {
     margin-right: 0 !important;
     flex-direction: column-reverse;
     button {
@@ -158,5 +168,54 @@
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+}
+
+.emailEnterBox {
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 4px;
+  padding: 4px;
+  max-height: 150px;
+  overflow: auto;
+
+  :active {
+    background-color: var(--bgControlsElevateDefault) !important;
+  }
+}
+
+.emailEnteredItem {
+  display: flex;
+  padding: 3px 4px 3px 8px;
+  margin: 0.25rem;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  border-radius: 4px;
+  border: 1px solid var(--lineColor);
+  background: var(--bgControlsElevateHigh);
+  color: var(--firstLevelText);
+}
+
+.emailEnterBoxText {
+  font-size: 12px;
+}
+
+.emailEnterBoxDeleteIcon {
+  fill: var(--textCommonPrimary);
+  cursor: pointer;
+  display: flex;
+  width: 16px;
+  height: 16px;
+  padding: 2px;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: var(--bgBglessHover);
+  }
+
+  &:active {
+    background-color: var(--bgBglessActive);
   }
 }

@@ -17,15 +17,18 @@
  */
 
 import { useMount } from 'ahooks';
+import { createWidget } from 'api/widget/api';
 import classNames from 'classnames';
 import filenamify from 'filenamify';
 import parser from 'html-react-parser';
 import { trim } from 'lodash';
+import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
+import { EmitterEventName } from 'modules/shared/simple_emitter';
 import Image from 'next/image';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { Button, colorVars, IconButton, LinkButton, TextInput, ThemeProvider, Typography, useThemeColors } from '@apitable/components';
 import {
   CollaCommandName,
@@ -42,8 +45,6 @@ import {
 } from '@apitable/core';
 import { CopyOutlined, WarnCircleFilled, BulbOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { loadWidgetCheck, WidgetLoadError } from '@apitable/widget-sdk/dist/initialize_widget';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { EmitterEventName } from 'modules/shared/simple_emitter';
 import { Loading } from 'pc/components/common/loading';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
@@ -56,16 +57,16 @@ import { installToDashboard, installToPanel, installWidget } from 'pc/components
 import { useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard, getUrlWithHost } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { dispatch } from 'pc/worker/store';
 import { simpleEmitter } from '../..';
 import { installedWidgetHandle } from '../../widget_panel/widget_panel_header';
 import { Steps } from './steps';
-import styles from './styles.module.less';
 // @ts-ignore
-import { clearWizardsData } from 'enterprise';
-import { createWidget } from 'api/widget/api';
+import { clearWizardsData } from 'enterprise/guide/utils';
+import styles from './styles.module.less';
 
 const WIDGET_CMD = {
   publish: 'widget-cli release',
@@ -107,9 +108,9 @@ const WidgetCreateModal: React.FC<React.PropsWithChildren<IWidgetCreateModalProp
   const { closeModal, installPosition } = props;
   const [widgetName, setWidgetName] = useState<string>();
   const [inputWidgetName, setInputWidgetName] = useState<string>();
-  const spaceId = useSelector((state) => state.space.activeId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const [widgetCreating, setWidgetCreating] = useState(false);
-  const { dashboardId, datasheetId, mirrorId } = useSelector((state) => state.pageParams);
+  const { dashboardId, datasheetId, mirrorId } = useAppSelector((state) => state.pageParams);
   const { data: templateData, loading: templateDataLoading } = useRequest(WidgetApi.getTemplateList);
   const [templateWidgetList, setTemplateWidgetList] = useState<WidgetApiInterface.IWidgetTemplateItem[]>([]);
   const [selectTemplate, setSelectTemplate] = useState<WidgetApiInterface.IWidgetTemplateItem>();
@@ -274,7 +275,7 @@ export const expandWidgetCreateSteps = (props: IExpandWidgetCreateStepsProps) =>
 const WidgetCretInvalidError = () => (
   <div className={styles.widgetCretInvalidError}>
     <div className={styles.title}>
-      <WarnCircleFilled size={24} />
+      <WarnCircleFilled size={20} />
       <span>{t(Strings.widget_cret_invalid_error_title)}</span>
     </div>
     <div className={styles.content}>{parser(t(Strings.widget_cret_invalid_error_content))}</div>
@@ -292,7 +293,7 @@ const WidgetCreateModalStep: React.FC<React.PropsWithChildren<IExpandWidgetCreat
   const { closeModal, widgetId, sourceCodeBundle, widgetName, widgetPackageId, devCodeUrl = '' } = props;
   const [current, setCurrent] = useState(0);
   const [devUrl, setDevUrl] = useState<string>(devCodeUrl);
-  const userInfo = useSelector((state) => state.user.info);
+  const userInfo = useAppSelector((state) => state.user.info);
   const [urlError, setUrlError] = useState<string>();
   const [isCretInvalid, setIsCretInvalid] = useState<boolean>();
   const defaultTemplateUrl = integrateCdnHost(getEnvVariables().WIDGET_DEFAULT_TEMPLATE_URL!);
@@ -584,7 +585,7 @@ const WidgetDevConfigModal: React.FC<React.PropsWithChildren<IExpandWidgetDevCon
   const { codeUrl, onClose, onConfirm, widgetPackageId, widgetId } = props;
   const [devUrl, setDevUrl] = useState<string | undefined>(codeUrl);
   const [error, setError] = useState<string>();
-  const widget = useSelector((state) => Selectors.getWidget(state, widgetId))!;
+  const widget = useAppSelector((state) => Selectors.getWidget(state, widgetId))!;
   const [isCretInvalid, setIsCretInvalid] = useState<boolean>();
 
   const startDev = () => {

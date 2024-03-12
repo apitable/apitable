@@ -22,7 +22,7 @@ import type { DataNode } from 'antd/es/tree';
 import * as React from 'react';
 import { Dispatch, FC, ReactText, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { ContextMenu, ContextMenuTrigger, MenuItem } from 'react-contextmenu';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button, Loading, Typography } from '@apitable/components';
 import {
   Api,
@@ -42,21 +42,21 @@ import { Message, Modal, SearchTeamAndMember, Tooltip } from 'pc/components/comm
 import { expandInviteModal } from 'pc/components/invite';
 import { useSelectTeamChange } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { CreateTeamModal } from '../modal/create_team_modal/create_team_modal';
 import { RenameTeamModal } from '../modal/rename_team_modal';
 import { socialPlatPreOperateCheck } from '../utils';
-import styles from './style.module.less';
+// @ts-ignore
+import { isSocialDingTalk, isSocialPlatformEnabled, isSocialWecom } from 'enterprise/home/social_platform/utils';
 import {
   freshDingtalkOrg,
   freshWecomOrg,
   freshWoaContact,
   freshIdaasOrg,
-  isSocialDingTalk,
-  isSocialPlatformEnabled,
-  isSocialWecom,
   // @ts-ignore
-} from 'enterprise';
+} from 'enterprise/organization/utils/index';
+import styles from './style.module.less';
 
 const _ContextMenu: any = ContextMenu;
 const _MenuItem: any = MenuItem;
@@ -72,7 +72,7 @@ const TEAM_OPERATE = 'TEAM_OPERATE';
 const TEAM_ROOT_OPERATE = 'TEAM_ROOT_OPERATE';
 export const TeamTree: FC<React.PropsWithChildren<IModalProps>> = (props) => {
   const dispatch = useAppDispatch();
-  const { teamListInSpace, spaceId, spaceResource, user, spaceInfo } = useSelector(
+  const { teamListInSpace, spaceId, spaceResource, user, spaceInfo } = useAppSelector(
     (state: IReduxState) => ({
       teamListInSpace: state.addressList.teamList,
       spaceId: state.space.activeId || '',

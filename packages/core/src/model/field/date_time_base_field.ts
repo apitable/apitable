@@ -22,12 +22,12 @@ import 'dayjs/locale/zh-cn';
 import 'dayjs/locale/zh-hk';
 import 'dayjs/locale/zh-tw';
 import timezone from 'dayjs/plugin/timezone';
-// timezone
+import weekday from 'dayjs/plugin/weekday';
 import utc from 'dayjs/plugin/utc';
-import { getUserLocale, getUserTimeZone } from 'exports/store/selectors';
+import { getUserLocale, getUserTimeZone } from 'modules/user/store/selectors/user';
 import Joi from 'joi';
 import { isEqual, isNumber } from 'lodash';
-import { DEFAULT_TIME_ZONE } from 'model';
+import { DEFAULT_TIME_ZONE } from 'model/constants';
 import { isNullValue } from 'model/utils';
 import { IAPIMetaDateTimeBaseFieldProperty } from 'types/field_api_property_types';
 import {
@@ -49,12 +49,18 @@ import { assertNever, dateStrReplaceCN, getToday, notInTimestampRange } from 'ut
 import { isServer } from 'utils/env';
 import { covertDayjsFormat2DateFnsFormat, getTimeZone, getTimeZoneAbbrByUtc } from '../../config';
 import { getLanguage, Strings, t } from '../../exports/i18n';
-import { IReduxState } from '../../exports/store';
+import { IReduxState } from '../../exports/store/interfaces';
 import { ICellValue } from '../record';
 import { Field } from './field';
 import { StatTranslate, StatType } from './stat';
 
 const dfzFormatWithValid = (date: any, format: string, timeZone?: string) => {
+  /**
+   * fix issue: https://github.com/vikadata/vikadata/issues/8805
+   */
+  if (!dayjs(Number(date)).isValid()) {
+    return null;
+  }
   try {
     return dfzFormat(date, covertDayjsFormat2DateFnsFormat(format), timeZone ? { timeZone } : undefined);
   } catch(_e) {
@@ -99,7 +105,7 @@ const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
     let defaultTimezone: string | undefined;
     timezone(o, c, d);
     // The following function integrates a performance tuning from https://github.com/iamkun/dayjs/issues/1236#issuecomment-1262907180
-    c.prototype.tz = function(this: dayjs.Dayjs, timezone = defaultTimezone, keepLocalTime = undefined) {
+    c.prototype.tz = function (this: dayjs.Dayjs, timezone = defaultTimezone, keepLocalTime = undefined) {
       const oldOffset = this.utcOffset();
       const date = this.toDate();
       const target = getDateTimeFormat(timezone!).format(date);
@@ -125,6 +131,7 @@ const patchDayjsTimezone = (timezone: PluginFunc): PluginFunc => {
 // plugin before import, prevent circular import
 dayjs.extend(utc);
 dayjs.extend(patchDayjsTimezone(timezone));
+dayjs.extend(weekday);
 
 export type IOptionalDateTimeFieldProperty = Partial<IDateTimeFieldProperty>;
 
@@ -188,7 +195,9 @@ export const dateTimeFormat = (
 const withTimeZone = (timestamp: number | undefined | string, timeZone?: string, locale?: string) => {
   if (timeZone) {
     // https://stackoverflow.com/questions/66029964/timezone-conversion-using-date-fns
-    const zonedDate = utcToZonedTime(Number(timestamp), timeZone);
+    const unixTime = Number(timestamp);
+    const ts = !isNaN(Number(timestamp)) ? unixTime : dayjs(timestamp).valueOf();
+    const zonedDate = utcToZonedTime(ts, timeZone);
     const utcDate = zonedTimeToUtc(zonedDate, timeZone);
     if (locale) {
       return dayjs(utcDate.getTime()).locale(locale);
@@ -661,10 +670,10 @@ export abstract class DateTimeBaseField extends Field {
 
   override isMeetFilter(operator: FOperator, cellValue: ITimestamp | null, conditionValue: Exclude<IFilterDateTime, null>) {
     let timeZone = getUserTimeZone(this.state);
-    let locale;
+    const _locale = getLanguage();
+    const locale = getUserLocale(this.state) || _locale;
     if (isServer()) {
       timeZone = timeZone || DEFAULT_TIME_ZONE;
-      locale = getUserLocale(this.state);
     }
     return DateTimeBaseField._isMeetFilter(operator, cellValue, conditionValue, timeZone, locale);
   }

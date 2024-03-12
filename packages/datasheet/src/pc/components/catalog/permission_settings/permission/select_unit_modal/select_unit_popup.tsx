@@ -17,12 +17,12 @@
  */
 
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { Button } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
 import { UserAddOutlined } from '@apitable/icons';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { expandInviteModal } from 'pc/components/invite';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ISelectUnitLeftProps, SelectUnitLeft } from './select_unit_left';
 import styles from './style.module.less';
 
@@ -36,7 +36,7 @@ interface ISelectPopupProps extends ISelectUnitLeftProps {
 export const SelectUnitPopup: FC<React.PropsWithChildren<ISelectPopupProps>> = (props) => {
   const { isSingleSelect, source, disableList, disableIdList, units, setUnits, checkedList, setCheckedList, onCancel, onOk, linkId, showTab } = props;
 
-  const formId = useSelector((state) => state.pageParams.formId);
+  const formId = useAppSelector((state) => state.pageParams.formId);
 
   const Footer = (
     <div className={styles.popupFooter}>

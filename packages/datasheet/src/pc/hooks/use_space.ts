@@ -20,7 +20,7 @@ import { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Api, IAddIsActivedMemberInfo, ISpaceBasicInfo, ISpaceInfo, IUpdateMemberInfo, StatusCode, StoreActions, Strings, t } from '@apitable/core';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useSelectTeamChange } from './use_address';
 

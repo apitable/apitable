@@ -17,10 +17,11 @@
  */
 
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { IDragTarget, IFieldRanges, IGridViewColumn, ILinearRow, ISnapshot, IViewRow, Selectors, StoreActions } from '@apitable/core';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { CellValue } from '../cell/cell_value';
 import { Header } from './header';
 import styles from './styles.module.less';
@@ -41,7 +42,7 @@ interface IMicroColumnStateProps {
 
 const MicroColumnBase: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
-  const { snapshot, fieldRanges, dragTarget, visibleColumns, datasheetId, linearRows, rowHeight, fieldIndexMap } = useSelector(
+  const { snapshot, fieldRanges, dragTarget, visibleColumns, datasheetId, linearRows, rowHeight, fieldIndexMap } = useAppSelector(
     (state): IMicroColumnStateProps => {
       const rowHeightLevel = Selectors.getViewRowHeight(state);
       return {

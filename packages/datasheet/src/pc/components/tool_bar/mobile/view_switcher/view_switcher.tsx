@@ -20,13 +20,13 @@ import { isEmpty } from 'lodash';
 import { useMemo, useState } from 'react';
 import * as React from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 import { IViewProperty, Selectors, Strings, t, DatasheetActions, ViewType } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { changeView } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { AddNewViewList } from '../../view_switcher';
 import { useViewAction } from '../../view_switcher/action';
@@ -38,14 +38,14 @@ interface IViewSwitcherProps {
 }
 
 export const ViewSwitcher: React.FC<React.PropsWithChildren<IViewSwitcherProps>> = (props) => {
-  const { viewCreatable, viewRenamable, viewMovable, viewRemovable } = useSelector((state) => Selectors.getPermissions(state));
+  const { viewCreatable, viewRenamable, viewMovable, viewRemovable } = useAppSelector((state) => Selectors.getPermissions(state));
 
-  const views = useSelector((state) => {
+  const views = useAppSelector((state) => {
     const snapshot = Selectors.getSnapshot(state)!;
     return snapshot.meta.views;
   });
 
-  const activeViewId = useSelector((state) => state.pageParams.viewId);
+  const activeViewId = useAppSelector((state) => state.pageParams.viewId);
 
   const viewAction = useViewAction();
 

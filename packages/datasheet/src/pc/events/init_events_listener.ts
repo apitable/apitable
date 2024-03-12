@@ -36,7 +36,7 @@ import {
   WhyRecordMoveType,
 } from '@apitable/core';
 import { ResourceService } from '@apitable/widget-sdk';
-import { expandRecordIdNavigate } from 'pc/components/expand_record';
+import { expandRecordIdNavigate } from 'pc/components/expand_record/utils';
 import { store } from 'pc/store';
 import { comlinkStore } from 'pc/worker';
 import { dispatch } from 'pc/worker/store';
@@ -107,7 +107,7 @@ const removeAndUpdateCacheIfNeed = (datasheetId: string, fieldId?: string, recor
  * the business is managed here uniformly back off. The listeners here are not to be removed
  */
 export const initEventListen = (resourceService: ResourceService) => {
-  console.log('resourceService', resourceService);
+  // console.log('resourceService', resourceService);
   const { opEventManager, computeRefManager } = resourceService;
   // -------- Field cell changes trigger changes in the referenced field --------
   // The record deletion event does not need to be listened to.

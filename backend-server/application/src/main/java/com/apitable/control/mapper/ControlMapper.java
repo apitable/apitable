@@ -42,7 +42,7 @@ public interface ControlMapper extends BaseMapper<ControlEntity> {
     String selectSpaceIdByControlId(@Param("controlId") String controlId);
 
     /**
-     * Query entity according to control ID
+     * Query entity according to control ID.
      *
      * @param controlId Control unit ID
      * @return ControlEntity
@@ -50,7 +50,7 @@ public interface ControlMapper extends BaseMapper<ControlEntity> {
     ControlEntity selectByControlId(@Param("controlId") String controlId);
 
     /**
-     * Batch query entities according to control IDs
+     * Batch query entities according to control IDs.
      *
      * @param controlIds List of control unit IDs
      * @return ControlEntity List
@@ -58,7 +58,7 @@ public interface ControlMapper extends BaseMapper<ControlEntity> {
     List<ControlEntity> selectByControlIds(@Param("controlIds") List<String> controlIds);
 
     /**
-     * Query the number of specified control units
+     * Query the number of specified control units.
      *
      * @param controlId Control unit ID
      * @return count
@@ -66,17 +66,17 @@ public interface ControlMapper extends BaseMapper<ControlEntity> {
     Integer selectCountByControlId(@Param("controlId") String controlId);
 
     /**
-     * Query permission control unit ID
+     * Query permission control unit ID.
      *
-     * @param prefix    Control unit ID prefix
-     * @param type      Control unit type
+     * @param prefix Control unit ID prefix
+     * @param type   Control unit type
      * @return Control unit ID
      */
     List<String> selectControlIdByControlIdPrefixAndType(@Param("prefix") String prefix,
-        @Param("type") Integer type);
+                                                         @Param("type") Integer type);
 
     /**
-     * Query control unit ID
+     * Query control unit ID.
      *
      * @param controlIds Control unit ID set
      * @return Control unit ID
@@ -84,7 +84,7 @@ public interface ControlMapper extends BaseMapper<ControlEntity> {
     List<String> selectControlIdByControlIds(@Param("controlIds") List<String> controlIds);
 
     /**
-     * Query permission control unit and organization unit information
+     * Query permission control unit and organization unit information.
      *
      * @param controlIds Control unit ID set
      * @return ControlUnitDTO
@@ -93,15 +93,15 @@ public interface ControlMapper extends BaseMapper<ControlEntity> {
     List<ControlUnitDTO> selectOwnerControlUnitDTO(@Param("controlIds") List<String> controlIds);
 
     /**
-     * Query authority control unit and type DTO
+     * Query authority control unit and type DTO.
      *
-     * @param spaceId   Space ID
+     * @param spaceId Space ID
      * @return ControlTypeDTO
      */
     List<ControlTypeDTO> selectControlTypeDTO(@Param("spaceId") String spaceId);
 
     /**
-     * Bulk Insert
+     * Bulk Insert.
      *
      * @param entities Entity Collection
      * @return Number of execution results
@@ -109,33 +109,34 @@ public interface ControlMapper extends BaseMapper<ControlEntity> {
     int insertBatch(@Param("entities") List<ControlEntity> entities);
 
     /**
-     * Delete the specified control unit
+     * Delete the specified control unit.
      *
      * @param controlIds Control unit ID set
      * @return Number of execution results
      */
     int deleteByControlIds(@Param("userId") Long userId,
-        @Param("controlIds") List<String> controlIds);
+                           @Param("controlIds") List<String> controlIds);
 
     /**
-     * Query space control
+     * Query space control.
      *
-     * @param controlId Control unit ID
-     * @param spaceId Space ID
+     * @param controlId   Control unit ID
+     * @param spaceId     Space ID
      * @param controlType Permission Type
      * @return ControlEntity
      */
     ControlEntity selectDeletedByControlIdAndSpaceId(@Param("controlId") String controlId,
-        @Param("spaceId") String spaceId, @Param("controlType") ControlType controlType);
+                                                     @Param("spaceId") String spaceId,
+                                                     @Param("controlType") ControlType controlType);
 
     /**
-     * Update deletion status
+     * Update deletion status.
      *
-     * @param userId Modify User ID
-     * @param ids Primary key ID
+     * @param userId    Modify User ID
+     * @param ids       Primary key ID
      * @param isDeleted Deleted state
      * @return Integer
      */
     Integer updateIsDeletedByIds(@Param("ids") List<Long> ids, @Param("userId") Long userId,
-        @Param("isDeleted") Boolean isDeleted);
+                                 @Param("isDeleted") Boolean isDeleted);
 }

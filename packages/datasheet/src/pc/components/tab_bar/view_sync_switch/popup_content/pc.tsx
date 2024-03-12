@@ -17,10 +17,10 @@
  */
 
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Button, IconButton, LinkButton, Message, Typography, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
+import { useAppSelector } from 'pc/store/react-redux';
 import { resourceService } from '../../../../resource_service';
 import { store } from '../../../../store';
 import { stopPropagation } from '../../../../utils';
@@ -80,7 +80,7 @@ export const PopupContent: React.FC<React.PropsWithChildren<IPopupContentProps>>
   const colors = useThemeColors();
   const { datasheetId, viewId, autoSave, onClose, contentRef, shareId, isViewLock } = props;
   // TODO: Replace the permissions here with more granular ones
-  const { editable } = useSelector((state) => Selectors.getPermissions(state, datasheetId));
+  const { editable } = useAppSelector((state) => Selectors.getPermissions(state, datasheetId));
 
   const viewPropertyProps = {
     autoSave: autoSave,

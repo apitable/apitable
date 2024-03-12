@@ -195,4 +195,9 @@
         ORDER BY m.updated_at DESC, `status` DESC
     </select>
 
+    <select id="selectSpaceIdsByUserId" resultType="java.lang.String">
+        SELECT space_id FROM ${tablePrefix}space
+        WHERE created_by = #{userId}
+        AND is_deleted = 0
+    </select>
 </mapper>

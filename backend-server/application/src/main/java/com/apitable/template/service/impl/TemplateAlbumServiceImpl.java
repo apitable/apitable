@@ -18,39 +18,35 @@
 
 package com.apitable.template.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-
-import javax.annotation.Resource;
-
-import lombok.extern.slf4j.Slf4j;
-import org.beetl.android.util.ArraySet;
-
 import com.apitable.base.enums.DatabaseException;
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.template.entity.TemplateAlbumEntity;
 import com.apitable.template.enums.TemplateAlbumRelType;
-import com.apitable.template.vo.AlbumContentVo;
-import com.apitable.template.vo.AlbumVo;
 import com.apitable.template.mapper.TemplateAlbumMapper;
 import com.apitable.template.mapper.TemplateAlbumRelMapper;
 import com.apitable.template.mapper.TemplatePropertyMapper;
 import com.apitable.template.service.ITemplateAlbumService;
-import com.apitable.core.util.ExceptionUtil;
-
+import com.apitable.template.vo.AlbumContentVo;
+import com.apitable.template.vo.AlbumVo;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.annotation.Resource;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * Template Center - Template Album Service Implement Class
+ * Template Center - Template Album Service Implement Class.
  * </p>
  */
 @Slf4j
 @Service
-public class TemplateAlbumServiceImpl implements ITemplateAlbumService {
-
-    @Resource
-    private TemplateAlbumMapper templateAlbumMapper;
+public class TemplateAlbumServiceImpl extends ServiceImpl<TemplateAlbumMapper, TemplateAlbumEntity>
+    implements ITemplateAlbumService {
 
     @Resource
     private TemplateAlbumRelMapper templateAlbumRelMapper;
@@ -60,7 +56,10 @@ public class TemplateAlbumServiceImpl implements ITemplateAlbumService {
 
     @Override
     public List<AlbumVo> getAlbumVosByAlbumIds(List<String> albumIds) {
-        return templateAlbumMapper.selectAlbumVosByAlbumIds(albumIds);
+        if (albumIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return baseMapper.selectAlbumVosByAlbumIds(albumIds);
     }
 
     @Override
@@ -75,15 +74,15 @@ public class TemplateAlbumServiceImpl implements ITemplateAlbumService {
 
     @Override
     public List<AlbumVo> getRecommendedAlbums(String lang, Integer maxCount,
-        String excludeAlbumId) {
-        List<String> allAlbumIds = templateAlbumMapper.selectAllAlbumIdsByI18nName(lang);
+                                              String excludeAlbumId) {
+        List<String> allAlbumIds = baseMapper.selectAllAlbumIdsByI18nName(lang);
         if (excludeAlbumId != null) {
             allAlbumIds.remove(excludeAlbumId);
         }
         if (allAlbumIds.size() <= maxCount) {
             return this.getAlbumVosByAlbumIds(allAlbumIds);
         }
-        Set<String> albumIds = new ArraySet<>();
+        Set<String> albumIds = new HashSet<>();
         Random rand = new Random();
         for (int i = 0; i < maxCount; i++) {
             int randomIndex = rand.nextInt(allAlbumIds.size());
@@ -94,13 +93,13 @@ public class TemplateAlbumServiceImpl implements ITemplateAlbumService {
 
     @Override
     public List<AlbumVo> searchAlbums(String lang, String keyword) {
-        return templateAlbumMapper.selectAlbumVosByI18nNameAndNameLike(lang, keyword);
+        return baseMapper.selectAlbumVosByI18nNameAndNameLike(lang, keyword);
     }
 
     @Override
     public AlbumContentVo getAlbumContentVo(String albumId) {
         // query album info
-        AlbumContentVo albumContentVo = templateAlbumMapper.selectAlbumContentVoByAlbumId(albumId);
+        AlbumContentVo albumContentVo = baseMapper.selectAlbumContentVoByAlbumId(albumId);
         ExceptionUtil.isNotNull(albumContentVo, DatabaseException.QUERY_EMPTY_BY_ID);
         // query album relate ids
         List<String> tagCodes = templateAlbumRelMapper.selectRelateIdByAlbumIdAndType(albumId,

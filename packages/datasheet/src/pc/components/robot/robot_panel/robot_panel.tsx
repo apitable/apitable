@@ -20,10 +20,10 @@ import { useMount } from 'ahooks';
 import { useSetAtom } from 'jotai';
 import { Provider } from 'jotai/react';
 import React, { memo } from 'react';
-import { useSelector } from 'react-redux';
 import { SWRConfig } from 'swr';
 import { Box, ThemeProvider, useTheme } from '@apitable/components';
 import { Selectors } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { automationStateAtom } from '../../automation/controller';
 import { AutomationScenario } from '../interface';
 import { FormEditProvider } from '../robot_detail/form_edit';
@@ -32,7 +32,7 @@ import { AutomationDrawer } from './automation_modal';
 import { RobotListHead } from './robot_list_head';
 
 const RobotBase = () => {
-  const cachedTheme = useSelector(Selectors.getTheme);
+  const cachedTheme = useAppSelector(Selectors.getTheme);
 
   const theme = useTheme();
 

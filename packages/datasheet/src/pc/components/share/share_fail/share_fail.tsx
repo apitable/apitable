@@ -19,11 +19,11 @@
 import Head from 'next/head';
 import Image from 'next/image';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Button } from '@apitable/components';
 import { Navigation, Strings, t } from '@apitable/core';
 import { Logo } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
+import { useAppSelector } from 'pc/store/react-redux';
 import IconFail from 'static/icon/common/common_img_invite_linkfailure.png';
 import styles from './style.module.less';
 
@@ -32,7 +32,7 @@ export const ShareFail: React.FC<React.PropsWithChildren<unknown>> = () => {
     Router.replace(Navigation.HOME);
   };
 
-  const theme = useSelector((state) => state.theme);
+  const theme = useAppSelector((state) => state.theme);
 
   return (
     <div className={styles.container}>

@@ -23,7 +23,7 @@ import React from 'react';
 const ApplyLogoutWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/home/apply_logout/apply_logout').then((components) => {
       return components.ApplyLogout;
     }),
   { ssr: false },

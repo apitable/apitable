@@ -22,6 +22,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * node extra dto.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -19,35 +19,35 @@
 import { useRequest } from 'ahooks';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { ConfigConstant, IReduxState, IUserInfo, Navigation } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { CommonSide } from 'pc/components/common_side';
 import { MobileBar } from 'pc/components/mobile_bar';
 import { Router } from 'pc/components/route_manager/router';
 import { useUserRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { isRenderServer } from 'pc/utils';
 import { TemplateCategoryDetail } from '../template_category_detail';
 import { TemplateChoice } from '../template_choice';
 import { UsingTemplateModal } from '../using_template_modal';
-import styles from './style.module.less';
 // @ts-ignore
-import { LoginModal } from 'enterprise';
+import { LoginModal } from 'enterprise/home/login_modal/login_modal';
+import styles from './style.module.less';
 
 export const TemplatePreview: FC<React.PropsWithChildren<unknown>> = () => {
   // Template ID to use
   const [usingTemplate, setUsingTemplate] = useState('');
   const [openLoginModal, setOpenLoginModal] = useState(false);
-  const userInfo = useSelector((state: IReduxState) => state.user.info);
-  const spaceId = useSelector((state: IReduxState) => state.space.activeId);
-  const { categoryId, templateId } = useSelector((state: IReduxState) => state.pageParams);
+  const userInfo = useAppSelector((state: IReduxState) => state.user.info);
+  const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
+  const { categoryId, templateId } = useAppSelector((state: IReduxState) => state.pageParams);
   const { getLoginStatusReq } = useUserRequest();
   const { run: getLoginStatus } = useRequest<IUserInfo | undefined, any[]>(getLoginStatusReq, { manual: true });
 
   // Is the current display the official template or the space site template
   const isOfficial = categoryId === 'tpcprivate';
 
-  const templateCategory = useSelector((state: IReduxState) => state.templateCentre.category);
+  const templateCategory = useAppSelector((state: IReduxState) => state.templateCentre.category);
   useEffect(() => {
     if (usingTemplate && !spaceId && !userInfo) {
       Router.redirect(Navigation.LOGIN);

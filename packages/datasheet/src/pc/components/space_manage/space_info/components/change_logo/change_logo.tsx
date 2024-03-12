@@ -20,7 +20,7 @@ import { Spin } from 'antd';
 import Image from 'next/image';
 import * as React from 'react';
 import { useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { IReduxState, Strings, t } from '@apitable/core';
 import { EditOutlined } from '@apitable/icons';
@@ -28,6 +28,7 @@ import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
 import { Avatar, AvatarSize, AvatarType, IImageCropUploadRef, ImageCropUpload } from 'pc/components/common';
 import { ISelectInfo } from 'pc/components/common/image_crop_upload';
 import { useChangeLogo } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import AvatarBgImg from 'static/icon/space/space_img_avatarsbj.png';
 import styles from './style.module.less';
 
@@ -38,7 +39,7 @@ const customTips = {
 export const ChangeLogo = () => {
   const colors = useThemeColors();
   const ImageCropUploadRef = useRef<IImageCropUploadRef>(null);
-  const { spaceInfo, spaceId, spaceResource, userInfo } = useSelector(
+  const { spaceInfo, spaceId, spaceResource, userInfo } = useAppSelector(
     (state: IReduxState) => ({
       spaceInfo: state.space.curSpaceInfo,
       spaceId: state.space.activeId || '',

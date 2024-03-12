@@ -22,7 +22,6 @@ import parser from 'html-react-parser';
 import { isEmpty } from 'lodash';
 import Image from 'next/image';
 import React, { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { ThemeName, Typography } from '@apitable/components';
 import {
   ConfigConstant,
@@ -44,14 +43,15 @@ import { Router } from 'pc/components/route_manager/router';
 import { useRequest } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { useTemplateRequest } from 'pc/hooks/use_template_request';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import { imgUrl } from '../template_choice';
 import { TemplateItem } from '../template_item';
-import styles from './style.module.less';
 // @ts-ignore
-import { isDingtalkFunc, isWecomFunc } from 'enterprise';
+import { isDingtalkFunc, isWecomFunc } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 const defaultBanner = integrateCdnHost(Settings.workbench_folder_default_cover_list.value.split(',')[0]);
 
@@ -78,9 +78,9 @@ export const TemplateCategoryDetail: FC<React.PropsWithChildren<ITemplateCategor
   >(null);
   const [isOfficial, setIsOfficial] = useState(true);
   const dispatch = useAppDispatch();
-  const user = useSelector((state: IReduxState) => state.user.info);
-  const spaceId = useSelector((state: IReduxState) => state.space.activeId);
-  const categoryId = useSelector((state: IReduxState) => state.pageParams.categoryId);
+  const user = useAppSelector((state: IReduxState) => state.user.info);
+  const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
+  const categoryId = useAppSelector((state: IReduxState) => state.pageParams.categoryId);
   const { getTemplateCategoriesReq, getTemplateListReq, deleteTemplateReq } = useTemplateRequest();
   const { run: deleteTemplate } = useRequest(deleteTemplateReq, { manual: true });
   const { run: getTemplateList, data: templateData, loading } = useRequest<ITemplate[]>(getTemplateListReq, { manual: true });
@@ -88,7 +88,7 @@ export const TemplateCategoryDetail: FC<React.PropsWithChildren<ITemplateCategor
   const { run: getTemplateCategories, data: templateCategories } = useRequest<ITemplate[]>(getTemplateCategoriesReq, { manual: true });
   const getAssertUrl = useGetSignatureAssertFunc();
 
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   useEffect(() => {
     // Login status is required to access the space station template

@@ -22,7 +22,6 @@ import { omit } from 'lodash';
 import * as React from 'react';
 import { Dispatch, SetStateAction } from 'react';
 import { DragDropContext, DragUpdate, Droppable, DropResult, ResponderProvided } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 import { Divider, Typography, useThemeColors } from '@apitable/components';
 import {
   Field,
@@ -41,6 +40,7 @@ import { AddOutlined } from '@apitable/icons';
 import { OptionSetting } from 'pc/components/common/color_picker';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { FilterGeneralSelect } from 'pc/components/tool_bar/view_filter/filter_value/filter_general_select';
+import { useAppSelector } from 'pc/store/react-redux';
 import { createRainbowColorsArr } from 'pc/utils/color_utils';
 import styles from '../styles.module.less';
 import { FormatSelectItem } from './format_select_item';
@@ -53,12 +53,20 @@ interface IFormatSelect {
   datasheetId?: string;
 }
 
-const COLOR_COUNT = 50;
+const COLOR_COUNT = 51;
+
+export function useColorColorWheel(theme: ThemeName) {
+  const [baseColor, vipColor, whiteBgColor] = createRainbowColorsArr(theme);
+
+  const ColorWheel: string[] = [...baseColor, ...vipColor, whiteBgColor];
+
+  return ColorWheel;
+}
 
 export function setColor(index: number, theme: ThemeName) {
-  const [baseColor, vipColor] = createRainbowColorsArr(theme);
+  const [baseColor, vipColor, whiteBgColor] = createRainbowColorsArr(theme);
 
-  const ColorWheel: string[] = [...baseColor, ...vipColor];
+  const ColorWheel: string[] = [...baseColor, ...vipColor, whiteBgColor];
 
   if (index < COLOR_COUNT) {
     return ColorWheel[index];
@@ -91,7 +99,7 @@ const FormatSelectBase = (props: IFormatSelect) => {
 
   const { currentField, setCurrentField, isMulti, datasheetId } = props;
   const { options, defaultValue } = currentField.property;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId || state.pageParams.datasheetId!))!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId || state.pageParams.datasheetId!))!;
   const isPreview = isSelectField(currentField) && fieldMap[currentField.id] && !isSelectField(fieldMap[currentField.id]);
 
   function addNewItem() {

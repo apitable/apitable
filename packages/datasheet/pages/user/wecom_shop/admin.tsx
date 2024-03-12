@@ -23,7 +23,7 @@ import React from 'react';
 const WecomAdminWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/wecom/admin/admin').then((components) => {
       return components.WecomAdmin;
     }),
   { ssr: false },

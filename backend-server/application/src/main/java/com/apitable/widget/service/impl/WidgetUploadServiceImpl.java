@@ -44,16 +44,19 @@ import com.apitable.starter.oss.core.OssUploadAuth;
 import com.apitable.widget.service.IWidgetPackageService;
 import com.apitable.widget.service.IWidgetUploadService;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * widget upload service implementation.
+ */
 @Service
 @Slf4j
 public class WidgetUploadServiceImpl implements IWidgetUploadService {
@@ -79,7 +82,8 @@ public class WidgetUploadServiceImpl implements IWidgetUploadService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<WidgetUploadTokenVo> createWidgetAssetPreSignedUrl(Long userId,
-        String packageId, WidgetAssetUploadCertificateRO data) {
+                                                                   String packageId,
+                                                                   WidgetAssetUploadCertificateRO data) {
         log.info("user[{}] get widget[{}] upload token.", userId, packageId);
         ExceptionUtil.isNotBlank(packageId, ParameterException.INCORRECT_ARG);
         List<String> filePositions = getFilePositions(packageId, data);
@@ -96,13 +100,13 @@ public class WidgetUploadServiceImpl implements IWidgetUploadService {
         for (String filePosition : filePositions) {
             if (!existFileUrl.contains(filePosition)) {
                 AssetEntity assetEntity = AssetEntity.builder()
-                        .id(IdWorker.getId())
-                        .bucket(bucketInfo.getType())
-                        .bucketName(bucketInfo.getBucketName())
-                        .fileSize(0)
-                        .fileUrl(filePosition)
-                        .extensionName("")
-                        .build();
+                    .id(IdWorker.getId())
+                    .bucket(bucketInfo.getType())
+                    .bucketName(bucketInfo.getBucketName())
+                    .fileSize(0)
+                    .fileUrl(filePosition)
+                    .extensionName("")
+                    .build();
 
                 DeveloperAssetEntity developerAssetEntity =
                     preBuildDeveloperAssetRecord(userId, packageId, spaceId,
@@ -113,10 +117,10 @@ public class WidgetUploadServiceImpl implements IWidgetUploadService {
             OssUploadAuth ossUploadAuth =
                 ossTemplate.uploadToken(bucketInfo.getBucketName(), filePosition, 3600);
             WidgetUploadTokenVo widgetUploadTokenVo = WidgetUploadTokenVo.builder()
-                    .token(filePosition)
-                    .uploadUrl(ossUploadAuth.getUploadUrl())
-                    .uploadRequestMethod(ossUploadAuth.getUploadRequestMethod())
-                    .build();
+                .token(filePosition)
+                .uploadUrl(ossUploadAuth.getUploadUrl())
+                .uploadRequestMethod(ossUploadAuth.getUploadRequestMethod())
+                .build();
             vos.add(widgetUploadTokenVo);
         }
         // batch save to db
@@ -132,18 +136,19 @@ public class WidgetUploadServiceImpl implements IWidgetUploadService {
     }
 
     private DeveloperAssetEntity preBuildDeveloperAssetRecord(Long userId, String packageId,
-        String spaceId, String filePosition, AssetEntity assetEntity) {
+                                                              String spaceId, String filePosition,
+                                                              AssetEntity assetEntity) {
         return DeveloperAssetEntity.builder()
-                .spaceId(spaceId)
-                .nodeId(packageId)
-                .bucketName(constProperties.getOssBucketByAsset().getBucketName())
-                .type(DeveloperAssetType.WIDGET.getValue())
-                .sourceName(filePosition)
-                .assetId(assetEntity.getId())
-                .fileSize(0)
-                .createdBy(userId)
-                .updatedBy(userId)
-                .build();
+            .spaceId(spaceId)
+            .nodeId(packageId)
+            .bucketName(constProperties.getOssBucketByAsset().getBucketName())
+            .type(DeveloperAssetType.WIDGET.getValue())
+            .sourceName(filePosition)
+            .assetId(assetEntity.getId())
+            .fileSize(0)
+            .createdBy(userId)
+            .updatedBy(userId)
+            .build();
     }
 
     private List<String> getFilePositions(String packageId, WidgetAssetUploadCertificateRO data) {
@@ -183,7 +188,7 @@ public class WidgetUploadServiceImpl implements IWidgetUploadService {
     }
 
     private void postCreatePublishWidgetToken(List<AssetEntity> assetEntities,
-        List<DeveloperAssetEntity> developerAssetEntities) {
+                                              List<DeveloperAssetEntity> developerAssetEntities) {
         if (assetEntities.isEmpty() || developerAssetEntities.isEmpty()) {
             return;
         }

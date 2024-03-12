@@ -1,11 +1,16 @@
 package com.apitable.widget.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
 
+import cn.hutool.core.util.RandomUtil;
 import com.apitable.AbstractIntegrationTest;
 import com.apitable.base.model.WidgetAssetUploadCertificateRO;
 import com.apitable.base.model.WidgetUploadTokenVo;
 import com.apitable.shared.util.IdUtil;
+import com.apitable.starter.oss.core.OssUploadAuth;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.widget.entity.WidgetPackageEntity;
 import com.apitable.widget.enums.WidgetPackageStatus;
@@ -35,6 +40,11 @@ public class WidgetUploadServiceImplTest extends AbstractIntegrationTest {
         ro.setFileType(0);
         ro.setFilenames(Collections.singletonList("test.jpg"));
 
+        OssUploadAuth ossUploadAuth = new OssUploadAuth();
+        ossUploadAuth.setUploadUrl(RandomUtil.randomString(10));
+
+        doReturn(ossUploadAuth).when(ossTemplate).uploadToken(anyString(), anyString(), anyLong());
+
         List<WidgetUploadTokenVo> result =
             iWidgetUploadService.createWidgetAssetPreSignedUrl(opUserId, packageId, ro);
 
@@ -43,7 +53,7 @@ public class WidgetUploadServiceImplTest extends AbstractIntegrationTest {
     }
 
     private UserEntity getTestUser() {
-        return iUserService.createUserByEmail("test@vikadata.com");
+        return iUserService.createUserByEmail("test@aitable.ai");
     }
 
     private WidgetPackageEntity initWidget(UserEntity testOpUser) throws JsonProcessingException {

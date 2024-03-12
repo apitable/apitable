@@ -5,6 +5,7 @@ import com.apitable.interfaces.ai.model.AiUpdateParam;
 import com.apitable.interfaces.ai.model.ChartTimeDimension;
 import com.apitable.interfaces.ai.model.CreditTransactionChartData;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class DefaultAiServiceFacadeImpl implements AiServiceFacade {
     }
 
     @Override
-    public BigDecimal getUsedCreditCount(String spaceId) {
+    public BigDecimal getUsedCreditCount(String spaceId, LocalDate startDate, LocalDate endDate) {
         return BigDecimal.ZERO;
     }
 

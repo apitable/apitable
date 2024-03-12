@@ -39,6 +39,12 @@
         AND is_deleted = 0
     </select>
 
+    <select id="selectDeletedByControlId" resultType="com.apitable.control.entity.ControlSettingEntity">
+        SELECT * FROM ${tablePrefix}control_setting
+        WHERE control_id = #{controlId}
+          AND is_deleted = 1
+    </select>
+
     <insert id="insertBatch">
         INSERT INTO ${tablePrefix}control_setting(id, control_id, created_by, updated_by)
         VALUES
@@ -58,12 +64,6 @@
             #{item}
         </foreach>
     </delete>
-
-    <select id="selectDeletedByControlId" resultType="com.apitable.control.entity.ControlSettingEntity">
-        SELECT * FROM ${tablePrefix}control_setting
-        WHERE control_id = #{controlId}
-        AND is_deleted = 1
-    </select>
 
     <update id="updateIsDeletedByIds">
         UPDATE ${tablePrefix}control_setting

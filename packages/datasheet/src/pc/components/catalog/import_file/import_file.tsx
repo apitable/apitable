@@ -18,7 +18,6 @@
 
 import { Progress, Upload } from 'antd';
 import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { TextButton, useThemeColors } from '@apitable/components';
 import { Api, ConfigConstant, IReduxState, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { CheckOutlined, ImportOutlined, WarnOutlined } from '@apitable/icons';
@@ -26,6 +25,7 @@ import { Message, Modal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { usePercent } from 'pc/hooks/use_percent';
+import { useAppSelector } from 'pc/store/react-redux';
 import { byte2Mb } from 'pc/utils';
 import styles from './style.module.less';
 
@@ -34,16 +34,18 @@ const { Dragger } = Upload;
 export interface IImportFileProps {
   parentId: string;
   onCancel: () => void;
+  isPrivate?: boolean;
 }
 
 let reqToken: () => void;
 
 type ProgressType = 'normal' | 'active' | 'success' | 'exception' | undefined;
 
-export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({ parentId, onCancel }) => {
+export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({ parentId, onCancel, isPrivate }) => {
   const colors = useThemeColors();
-  const spaceId = useSelector((state) => state.space.activeId);
-  const expandedKeys = useSelector((state: IReduxState) => state.catalogTree.expandedKeys);
+  const spaceId = useAppSelector((state) => state.space.activeId);
+  const userUnitId = useAppSelector((state) => state.user.info?.unitId);
+  const expandedKeys = useAppSelector((state: IReduxState) => state.catalogTree.expandedKeys);
   const [uploadPercent, setUploadPercent] = useState(0);
   const [file, setFile] = useState<File>();
   const [errMsg, setErrMsg] = useState<string>('');
@@ -85,6 +87,9 @@ export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({ pare
     formData.append('file', curFile);
     formData.append('parentId', parentId);
     formData.append('spaceId', spaceId);
+    if (isPrivate && userUnitId) {
+      formData.append('unitId', userUnitId);
+    }
     setProcessing(true);
     Api.importFile(formData, onUploadProgress, (c: () => void) => {
       reqToken = c;
@@ -94,8 +99,8 @@ export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({ pare
         setProcessing(false);
         const { success, data, message } = res.data;
         if (success) {
-          dispatch(StoreActions.setExpandedKeys([...expandedKeys, parentId]));
-          dispatch(StoreActions.addNode(data));
+          dispatch(StoreActions.setExpandedKeys([...expandedKeys, parentId], isPrivate ? ConfigConstant.Modules.PRIVATE : undefined));
+          dispatch(StoreActions.addNode(data, isPrivate ? ConfigConstant.Modules.PRIVATE : undefined));
           dispatch(StoreActions.getSpaceInfo(spaceId));
           Router.push(Navigation.WORKBENCH, {
             params: {
@@ -191,7 +196,7 @@ export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({ pare
     <Modal
       title={t(Strings.import_file)}
       width={540}
-      visible
+      open
       footer={null}
       wrapClassName={styles.createSpaceWrapper}
       bodyStyle={{

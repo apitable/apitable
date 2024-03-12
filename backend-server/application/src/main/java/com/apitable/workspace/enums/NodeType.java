@@ -84,6 +84,11 @@ public enum NodeType {
     AIRAGENT(11),
 
     /**
+     * custom page.
+     */
+    CUSTOM_PAGE(12),
+
+    /**
      * static resource file.
      */
     ASSET_FILE(98),
@@ -120,9 +125,29 @@ public enum NodeType {
     }
 
     /**
-     * exclude root and folder type.
+     * whether is root node type.
+     *
+     * @return true if is root
      */
-    public boolean isFileNode() {
-        return value > 1;
+    public boolean isRoot() {
+        return this == ROOT;
+    }
+
+    /**
+     * whether is folder node type.
+     *
+     * @return true if is folder
+     */
+    public boolean isFolder() {
+        return this == FOLDER;
+    }
+
+    /**
+     * whether is not folder node type.
+     *
+     * @return true if is not folder
+     */
+    public boolean isNotFolder() {
+        return !isRoot() && !isFolder();
     }
 }

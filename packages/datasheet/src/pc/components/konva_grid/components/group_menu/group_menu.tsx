@@ -18,7 +18,7 @@
 
 import { useContext, useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { ContextMenu, useContextMenu } from '@apitable/components';
 import { Group, ILinearRow, KONVA_DATASHEET_ID, Selectors, setComplement, StoreActions, Strings, t } from '@apitable/core';
 import { ConicalDownFilled, ConicalRightFilled, CopyOutlined, TriangleDownFilled, TriangleRightFilled } from '@apitable/icons';
@@ -26,6 +26,7 @@ import { ConicalDownFilled, ConicalRightFilled, CopyOutlined, TriangleDownFilled
 import { ExpandType } from 'pc/components/multi_grid/cell/virtual_cell/cell_group_tab/group_tab/group_tab';
 import { useDispatch } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard, flatContextData } from 'pc/utils';
 import { setStorage, StorageName } from 'pc/utils/storage';
 import { KonvaGridContext } from '../..';
@@ -45,7 +46,7 @@ export const GroupMenu: React.FC<React.PropsWithChildren<IStatMenuProps>> = (pro
   const dispatch = useDispatch();
 
   const { show } = useContextMenu({ id: KONVA_DATASHEET_ID.GRID_GROUP_MENU });
-  const { viewId, datasheetId, groupInfo, isSearching, groupCollapseIds, groupBreakpoint } = useSelector((state) => {
+  const { viewId, datasheetId, groupInfo, isSearching, groupCollapseIds, groupBreakpoint } = useAppSelector((state) => {
     return {
       viewId: Selectors.getActiveViewId(state)!,
       groupCollapseIds: Selectors.getGroupingCollapseIds(state),

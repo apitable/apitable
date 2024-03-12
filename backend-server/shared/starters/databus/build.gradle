@@ -1,0 +1,14 @@
+plugins {
+    id 'java-library'
+    id 'testing.java-conventions'
+}
+
+dependencies {
+    implementation platform(libs.spring.boot.dependencies)
+    implementation(libs.spring.boot.starter)
+    implementation libs.spring.web
+
+    implementation libs.jackson
+    // used for javax.annotation.Nonnull
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+}

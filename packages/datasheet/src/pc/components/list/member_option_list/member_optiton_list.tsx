@@ -21,7 +21,7 @@ import classNames from 'classnames';
 import Fuse from 'fuse.js';
 import * as React from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   Api,
   IMember,
@@ -43,14 +43,15 @@ import { InfoCard } from 'pc/components/common/info_card';
 import { expandInviteModal } from 'pc/components/invite';
 import { CommonList } from 'pc/components/list/common_list';
 import { useRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { stopPropagation } from '../../../utils/dom';
 import { expandUnitModal, SelectUnitSource } from '../../catalog/permission_settings/permission/select_unit_modal';
 import { Check } from '../common_list/check';
 import { IMemberOptionListProps } from './member_option_list.interface';
-import styles from './styles.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+import styles from './styles.module.less';
 
 const triggerBase = {
   action: ['hover'],
@@ -92,11 +93,11 @@ export const MemberOptionList: React.FC<
     // Whether or not you want to enable remote search, you need to make a backup of the data, especially the local data passed in by the component
     return initList;
   });
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const dispatch = useDispatch();
   const containerRef = useRef<HTMLDivElement>(null);
-  const { formId, embedId } = useSelector((state) => state.pageParams);
-  const shareId = useSelector((state) => state.pageParams.shareId);
+  const { formId, embedId } = useAppSelector((state) => state.pageParams);
+  const shareId = useAppSelector((state) => state.pageParams.shareId);
 
   const refreshMemberList = useCallback(() => {
     // listData is not passed in, use stash directly

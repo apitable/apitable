@@ -53,13 +53,13 @@ export const PreviewToolItem: React.FC<React.PropsWithChildren<IPreviewToolItem>
         </div>
       )}
       {component ? (
-        <Tooltip title={typeof tip === 'function' ? tip() : tip}>
+        <Tooltip title={typeof tip === 'function' ? tip() : tip} placement="bottom">
           <div className={classNames(styles.componentWrapper, className)} onClick={onClick} style={style}>
             {typeof component === 'function' ? component() : component}
           </div>
         </Tooltip>
       ) : (
-        <Tooltip title={typeof tip === 'function' ? tip() : tip}>
+        <Tooltip title={typeof tip === 'function' ? tip() : tip} placement="bottom">
           <div className={classNames(styles.componentWrapper, className)} onClick={onClick} style={{ alignItems: 'inherit' }}>
             {icon && React.createElement(icon)}
           </div>

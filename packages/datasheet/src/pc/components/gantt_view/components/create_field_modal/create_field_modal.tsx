@@ -19,7 +19,6 @@
 import { Modal } from 'antd';
 import Image from 'next/image';
 import { memo } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Typography, ThemeName } from '@apitable/components';
 import {
   CollaCommandName,
@@ -37,8 +36,9 @@ import {
 import { AddOutlined } from '@apitable/icons';
 import { notify } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
-import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view';
+import { DATASHEET_VIEW_CONTAINER_ID } from 'pc/components/view/id';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import GanttCreationNoDate from 'static/icon/account/gantt_creation_nodate.png';
 import GanttCreationDateDark from 'static/icon/account/view_add_date_dark.png';
@@ -46,7 +46,7 @@ import GanttCreationDateLight from 'static/icon/account/view_add_date_light.png'
 import styles from './style.module.less';
 
 export const CreateFieldModal = memo(() => {
-  const { viewId, columnCount, exitFieldNames, permissions, ganttStyle } = useSelector((state) => {
+  const { viewId, columnCount, exitFieldNames, permissions, ganttStyle } = useAppSelector((state) => {
     const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
     return {
       viewId: Selectors.getActiveViewId(state)!,
@@ -66,7 +66,7 @@ export const CreateFieldModal = memo(() => {
       property: DateTimeField.defaultProperty(),
     };
   };
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const GanttCreationDate = themeName === ThemeName.Light ? GanttCreationDateLight : GanttCreationDateDark;
   const onClick = () => {
     // Fields can only be created with administrative privileges

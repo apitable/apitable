@@ -1,13 +1,13 @@
 import { useMount } from 'ahooks';
 import * as React from 'react';
 import { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { DatasheetApi, Selectors, Strings, t } from '@apitable/core';
 import { NarrowOutlined, QuestionCircleOutlined } from '@apitable/icons';
 import { useNodeClick } from 'pc/components/datasheet_search_panel/hooks/use_node_click';
 import { useSearch } from 'pc/components/datasheet_search_panel/hooks/use_search';
 import { insertViewNode } from 'pc/components/datasheet_search_panel/utils/insert_view_nodes';
+import { useAppSelector } from 'pc/store/react-redux';
 import { useResponsive } from '../../hooks';
 import { ButtonPlus, Loading, Tooltip } from '../common';
 import { ScreenSize } from '../common/component_display';
@@ -17,22 +17,25 @@ import { FolderBreadcrumb } from './folder_breadcrumb';
 import { FolderContent } from './folder_content';
 import { ISearchPanelProps, SecondConfirmType } from './interface';
 import { SearchResult } from './search_result';
-import styles from './style.module.less';
 import { getModalTitle, getPlaceholder } from './utils';
+import styles from './style.module.less';
 
 export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
-  const { hidePanel, noCheckPermission, options, onNodeSelect, directClickMode, showMirrorNode, localState, localDispatch, secondConfirmType } = props;
+  const {
+    hidePanel, noCheckPermission, options, onNodeSelect,
+    directClickMode, showMirrorNode, localState, localDispatch, secondConfirmType
+  } = props;
 
   const colors = useThemeColors();
-  const { embedId } = useSelector((state) => state.pageParams);
-  const mirror = useSelector((state) => {
+  const { embedId } = useAppSelector((state) => state.pageParams);
+  const mirror = useAppSelector((state) => {
     return localState.currentMirrorId ? Selectors.getMirror(state, localState.currentMirrorId) : undefined;
   });
-  const datasheet = useSelector((state) => {
+  const datasheet = useAppSelector((state) => {
     return localState.currentDatasheetId ? Selectors.getDatasheet(state, localState.currentDatasheetId) : undefined;
   });
 
-  const form = useSelector((state) => {
+  const form = useAppSelector((state) => {
     return localState.currentFormId ? Selectors.getForm(state, localState.currentFormId) : undefined;
   });
   const { screenIsAtMost } = useResponsive();
@@ -128,7 +131,12 @@ export const SearchPanelMain: React.FC<ISearchPanelProps> = (props) => {
       }
     }
   };
-  const { onNodeClick, fetchFolderData } = useNodeClick({ localDispatch, localState, searchDatasheetMetaData, secondConfirmType });
+  const { onNodeClick, fetchFolderData } = useNodeClick({
+    localDispatch,
+    localState,
+    searchDatasheetMetaData,
+    secondConfirmType,
+  });
 
   const isPc = !isMobile;
 

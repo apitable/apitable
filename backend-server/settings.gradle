@@ -1,29 +1,7 @@
 pluginManagement {
-  repositories {
-    gradlePluginPortal()
-  }
-  resolutionStrategy {
-    eachPlugin {
-      if (requested.id.id == "org.jetbrains.kotlin.jvm") {
-        useVersion "${kotlinVersion}"
-      }
-      if (requested.id.id == "org.jetbrains.kotlin.plugin.spring") {
-        useVersion "${kotlinVersion}"
-      }
+    repositories {
+        gradlePluginPortal()
     }
-  }
-  plugins {
-    id 'io.spring.dependency-management' version "${spring_dependency_management_version}"
-    id 'org.springframework.boot' version "${spring_boot_version}"
-    id 'com.github.jakemarsden.git-hooks' version "${git_hook_plugin_version}"
-    id 'org.owasp.dependencycheck' version "${dependency_check_plugin_version}"
-    id 'com.bmuschko.docker-remote-api' version "${gradle_docker_plugin_version}"
-    id 'nu.studer.credentials' version '2.1'
-    id 'org.checkerframework' version '0.5.12'
-    id "io.freefair.maven-optional" version "5.3.0"
-    id "com.diffplug.spotless" version "5.9.0"
-    id 'com.google.protobuf' version "${gradle_protobuf_plugin_version}"
-  }
 }
 
 rootProject.name = 'backend'
@@ -35,5 +13,5 @@ include 'shared:core'
 include 'application'
 
 file("${rootDir}/shared/starters").eachDirMatch(~/.*/) {
-  include "shared:starters:${it.name}"
+    include "shared:starters:${it.name}"
 }

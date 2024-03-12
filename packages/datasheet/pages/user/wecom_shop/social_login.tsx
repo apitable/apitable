@@ -23,8 +23,8 @@ import React from 'react';
 const WecomLoginWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
-      return components.WecomSocialLogin;
+    import('enterprise/wecom/login/login').then((components) => {
+      return components.WecomLogin;
     }),
   { ssr: false },
 );

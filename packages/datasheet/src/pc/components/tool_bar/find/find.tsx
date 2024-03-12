@@ -20,18 +20,19 @@ import { useKeyPress } from 'ahooks';
 import classNames from 'classnames';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Selectors, StoreActions, Strings, t, ViewType } from '@apitable/core';
 import { SearchOutlined } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { expandRecordIdNavigate } from 'pc/components/expand_record';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
 import { dispatch } from 'pc/worker/store';
 import { ToolItem } from '../tool_item';
 import { FindSearchInput } from './find_search_input';
 import styles from './styles.module.less';
+
 interface ISearchInputRef {
   select(): void;
 }
@@ -55,10 +56,10 @@ const FIND = 'FIND';
 export const Find = (props: IFindProps) => {
   const colors = useThemeColors();
   const { className, showLabel = true, onOpen, isFindOpen, setIsFindOpen } = props;
-  const { viewId, datasheetId } = useSelector((state) => state.pageParams);
+  const { viewId, datasheetId } = useAppSelector((state) => state.pageParams);
   const [keyword, setKeyword] = useState('');
   const inputRef = useRef<ISearchInputRef>(null);
-  const viewType = useSelector((state) => {
+  const viewType = useAppSelector((state) => {
     const snapshot = Selectors.getSnapshot(state, datasheetId)!;
     const view = Selectors.getViewById(snapshot, viewId!)!;
     return view?.type || ViewType.NotSupport;
@@ -174,7 +175,7 @@ export const Find = (props: IFindProps) => {
     setIsFindOpen(!isFindOpen);
   }, [isFindOpen, setIsFindOpen]);
 
-  const previewModalVisible = useSelector((state) => state.space.previewModalVisible);
+  const previewModalVisible = useAppSelector((state) => state.space.previewModalVisible);
 
   useKeyPress('Esc', () => {
     if (!previewModalVisible) {

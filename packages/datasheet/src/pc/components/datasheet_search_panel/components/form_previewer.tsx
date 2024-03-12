@@ -21,13 +21,13 @@ import classnames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, ThemeName } from '@apitable/components';
 import { Events, Field, FieldType, IMeta, Player, Selectors, Strings, t, ViewType } from '@apitable/core';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { SecondConfirmType } from 'pc/components/datasheet_search_panel/interface';
 import { FormFieldContainer } from 'pc/components/form_container/form_field_container';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
@@ -44,7 +44,7 @@ export const FormPreviewer: React.FC<React.PropsWithChildren<IFormPreviewerProps
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const currentView = meta.views.filter((view) => view.id === viewId)[0];
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMapFromForm);
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMapFromForm);
   const fieldMap = useMemo(() => meta.fieldMap || {}, [meta.fieldMap]);
   const filteredColumns = useMemo(() => {
     return currentView.columns.filter((column) => {
@@ -58,7 +58,7 @@ export const FormPreviewer: React.FC<React.PropsWithChildren<IFormPreviewerProps
       return !hidden && formSheetAccessible && !Field.bindModel(field).isComputed && field.type !== FieldType.AutoNumber;
     });
   }, [currentView.columns, fieldMap, fieldPermissionMap]);
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   const canCreate = useMemo(() => {

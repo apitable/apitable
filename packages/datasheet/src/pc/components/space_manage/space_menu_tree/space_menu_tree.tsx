@@ -21,29 +21,33 @@ import { compact } from 'lodash';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { ReactText, useEffect, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Typography } from '@apitable/components';
 import { ConfigConstant, IReduxState, Navigation as NavigationConst, Strings, t } from '@apitable/core';
 import {
-  LogOutlined,
-  ShieldCheckOutlined,
-  RocketOutlined,
-  TestOutlined,
-  ManageApplicationOutlined,
-  TriangleRightFilled,
+  BankOutlined,
   DashboardOutlined,
   DepartmentOutlined,
+  LogOutlined,
+  ManageApplicationOutlined,
+  RocketOutlined,
+  ShieldCheckOutlined,
+  TestOutlined,
+  TriangleRightFilled,
   WorkbenchOutlined,
-  BankOutlined,
 } from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { OrganizationHead } from 'pc/components/organization_head';
+import { SpaceInfo } from 'pc/components/common_side/workbench_side/space-info';
 import { Router } from 'pc/components/route_manager/router';
+import { isExclusiveLimitedProduct } from 'pc/components/space_manage/space_info/utils';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
-import styles from './style.module.less';
 // @ts-ignore
-import { isEnterprise, Log, Marketing } from 'enterprise';
+import { Log } from 'enterprise/log/log';
+// @ts-ignore
+import { Marketing } from 'enterprise/marketing/marketing';
+import styles from './style.module.less';
 
 const { TreeNode, DirectoryTree } = Tree;
 
@@ -68,7 +72,13 @@ interface ISpaceNavInfo {
   children?: ISpaceNavInfo[];
 }
 
-export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], marketplaceDisable?: boolean, isSelfVika?: boolean) =>
+export const getSpaceNavList = (
+  isMainAdmin: boolean,
+  permissions: string[],
+  marketplaceDisable?: boolean,
+  isSelfVika?: boolean,
+  isAppSumo?: boolean,
+) =>
   compact([
     {
       title: t(Strings.space_info),
@@ -95,7 +105,7 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
       title: t(Strings.upgrade_space),
       key: 'upgrade',
       icon: <RocketOutlined />,
-      valid: Boolean(isSelfVika && !isMobileApp() && !getEnvVariables().IS_SELFHOST),
+      valid: Boolean(isSelfVika && !isMobileApp() && !getEnvVariables().IS_SELFHOST && !isAppSumo),
       routeAddress: '/upgrade',
     },
     {
@@ -159,12 +169,13 @@ export const getSpaceNavList = (isMainAdmin: boolean, permissions: string[], mar
   ]);
 
 export const SpaceMenuTree: React.FC<React.PropsWithChildren<unknown>> = () => {
-  const { spaceId, spaceResource, userInfo, appType } = useSelector(
+  const { spaceId, spaceResource, userInfo, appType, product } = useAppSelector(
     (state: IReduxState) => ({
       spaceId: state.space.activeId || '',
       spaceResource: state.spacePermissionManage.spaceResource,
       userInfo: state.user.info,
       appType: state.space.curSpaceInfo?.social.appType,
+      product: state.billing.subscription?.product,
     }),
     shallowEqual,
   );
@@ -172,6 +183,7 @@ export const SpaceMenuTree: React.FC<React.PropsWithChildren<unknown>> = () => {
   const isMobile = screenIsAtMost(ScreenSize.md);
   const { SPACE_INTEGRATION_PAGE_VISIBLE } = getEnvVariables();
   const [menuTree, setMenuTree] = useState<ISpaceNavInfo[]>([]);
+  const { IS_ENTERPRISE } = getEnvVariables();
 
   const onSelect = (key: ReactText[]) => {
     Router.push(NavigationConst.SPACE_MANAGE, {
@@ -189,20 +201,26 @@ export const SpaceMenuTree: React.FC<React.PropsWithChildren<unknown>> = () => {
       return;
     }
     const { mainAdmin, permissions } = spaceResource;
-    const navList = getSpaceNavList(mainAdmin, permissions, !SPACE_INTEGRATION_PAGE_VISIBLE, appType == null);
+    const navList = getSpaceNavList(
+      mainAdmin,
+      permissions,
+      !SPACE_INTEGRATION_PAGE_VISIBLE,
+      appType == null,
+      Boolean(product?.includes('appsumo') || isExclusiveLimitedProduct(product)),
+    );
     if (isMobile) {
       setMenuTree(navList.slice(0, 1));
       return;
     }
     setMenuTree(navList);
-  }, [spaceResource, SPACE_INTEGRATION_PAGE_VISIBLE, appType, isMobile]);
+  }, [spaceResource, SPACE_INTEGRATION_PAGE_VISIBLE, appType, isMobile, product]);
 
   const renderTreeNode = (data: ISpaceNavInfo[]) => {
     if (!spaceResource || !data || !data.length) {
       return null;
     }
     return data.map((item) => {
-      if (!isEnterprise && ['upgrade', 'security'].includes(item.key)) {
+      if (!IS_ENTERPRISE && ['upgrade', 'security'].includes(item.key)) {
         return [];
       }
       if (userInfo && userInfo.isDelSpace && item.key !== SPACE_INFO_KEY) {
@@ -224,7 +242,9 @@ export const SpaceMenuTree: React.FC<React.PropsWithChildren<unknown>> = () => {
 
   return (
     <div className={styles.spaceMenuTree}>
-      <OrganizationHead />
+      <div className={styles.header}>
+        <SpaceInfo />
+      </div>
       <Typography variant="h8" className={styles.spaceSubTitle}>
         {t(Strings.space_setting)}
       </Typography>

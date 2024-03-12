@@ -18,16 +18,17 @@
 
 import Image from 'next/image';
 import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Message, TextInput, Typography, ThemeName } from '@apitable/components';
 import { StoreActions, Strings, t } from '@apitable/core';
 import { WithTipWrapper } from 'pc/components/common';
 import { useRequest, useUserRequest } from 'pc/hooks';
 import { useContactUs } from 'pc/hooks/use_contact_us';
+import { useAppSelector } from 'pc/store/react-redux';
 import { dispatch } from 'pc/worker/store';
 import CreateSpaceIconDark from 'static/icon/space/space_add_name_dark.png';
 import CreateSpaceIconLight from 'static/icon/space/space_add_name_light.png';
 import styles from './style.module.less';
+
 interface ISubmitInviteCode {
   submitAndSuccess: () => void;
   myInviteCode: string;
@@ -39,7 +40,7 @@ export const SubmitInviteCode: FC<React.PropsWithChildren<ISubmitInviteCode>> = 
   const contactUs = useContactUs();
   const { submitInviteCodeReq } = useUserRequest();
   const { run: submitInviteCode, loading } = useRequest(submitInviteCodeReq, { manual: true });
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const imgUrl = themeName === ThemeName.Light ? CreateSpaceIconLight : CreateSpaceIconDark;
   const submit = () => {
     if (val === myInviteCode) {

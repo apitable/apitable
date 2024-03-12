@@ -17,7 +17,7 @@
  */
 
 import { FC } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Typography, useThemeColors } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
 import { CopyOutlined } from '@apitable/icons';
@@ -27,13 +27,14 @@ import { AvatarSize, AvatarType } from 'pc/components/common/avatar';
 import CorpCertifiedTag from 'pc/components/space_manage/space_info/components/basic_info/corp_certified_tag';
 import { ISpaceLevelType, LevelType } from 'pc/components/space_manage/space_info/interface';
 import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard } from 'pc/utils';
-import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName, isSocialPlatformEnabled } from 'enterprise';
+import { getSocialWecomUnitName, isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 export const SpaceInfoPopover: FC<React.PropsWithChildren<unknown>> = () => {
-  const { spaceInfo, spaceId, userInfo, subscription, spaceFeatures } = useSelector(
+  const { spaceInfo, spaceId, userInfo, subscription, spaceFeatures } = useAppSelector(
     (state) => ({
       spaceInfo: state.space.curSpaceInfo,
       spaceId: state.space.activeId || '',

@@ -26,9 +26,10 @@ import { FieldGroup, FieldType, FieldTypeDescriptionMap, Strings, t } from '@api
 import { ScreenSize } from 'pc/components/common/component_display';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { useResponsive } from 'pc/hooks';
+import { getEnvVariables } from 'pc/utils/env';
 import { getFieldTypeIcon } from '../field_setting';
-import styles from './styles.module.less';
 import { useShowTip } from './use_show_tip';
+import styles from './styles.module.less';
 
 interface ITypeSelect {
   onClick: (type: number) => void;
@@ -63,6 +64,8 @@ const fieldSequence: FieldType[] = [
   FieldType.Phone,
   FieldType.Email,
   FieldType.Cascader,
+  FieldType.WorkDoc,
+  FieldType.Button
 ];
 
 interface ITypeSelectItemProps extends ITypeSelect {
@@ -89,7 +92,7 @@ const TypeSelectItem: React.FC<React.PropsWithChildren<ITypeSelectItemProps>> = 
     clearTipNode();
   });
 
-  const { title, subTitle } = FieldTypeDescriptionMap[fieldType];
+  const { title, subTitle, isBeta, isNew } = FieldTypeDescriptionMap[fieldType];
 
   const onMouseEnter = debounce(() => {
     if (divRef.current) {
@@ -140,6 +143,8 @@ const TypeSelectItem: React.FC<React.PropsWithChildren<ITypeSelectItemProps>> = 
       <div className={styles.desc}>
         <div className={styles.title}>{title}</div>
       </div>
+      {isBeta && <div className={styles.beta}>Beta</div>}
+      {isNew && <div className={styles.new}>New</div>}
     </div>
   );
 };
@@ -153,6 +158,7 @@ function filterAdvanceGroup(fieldType: FieldType) {
 }
 
 export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = (props) => {
+  const { IS_ENTERPRISE, ENABLE_WORKDOC_FIELD, IS_SELFHOST } = getEnvVariables();
   const colors = useThemeColors();
   const divRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -194,6 +200,9 @@ export const TypeSelectBase: React.FC<React.PropsWithChildren<ITypeSelect>> = (p
   });
 
   function filterPrimaryType(fieldType: FieldType) {
+    if (fieldType === FieldType.WorkDoc) {
+      return IS_ENTERPRISE && (ENABLE_WORKDOC_FIELD || IS_SELFHOST) && props.fieldIndex !== 0;
+    }
     if (props.fieldIndex !== 0) return true;
     return FieldTypeDescriptionMap[fieldType] && FieldTypeDescriptionMap[fieldType].canBePrimaryField;
   }

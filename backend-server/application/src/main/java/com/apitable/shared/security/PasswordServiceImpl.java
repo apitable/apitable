@@ -21,6 +21,9 @@ package com.apitable.shared.security;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * password service implementation.
+ */
 @Service
 public class PasswordServiceImpl implements PasswordService {
 

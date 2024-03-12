@@ -5,7 +5,7 @@
 # Source repository: https://github.com/actions/dependency-review-action
 # Public documentation: https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review#dependency-review-enforcement
 name: 'Dependency Review'
-on: [pull_request]
+on: [ pull_request ]
 
 permissions:
   contents: read
@@ -15,6 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Checkout Repository'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@v2
+        with:
+          allow-ghsas: GHSA-xwcq-pm8m-c4vf, GHSA-ww39-953v-wcq6, GHSA-cph5-m8f7-6c5x, GHSA-pw2r-vq6v-hr8c, GHSA-74fj-2j2h-c42q, GHSA-c2qf-rxjj-qqgw, GHSA-7fh5-64p2-3v2j, GHSA-wf5p-g6vw-rhxx, GHSA-4w2v-q235-vp99

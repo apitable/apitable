@@ -20,7 +20,6 @@ import type { InputRef } from 'antd';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import { useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { IconButton, useContextMenu, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ResourceType, Selectors, Strings, t, WidgetReleaseType } from '@apitable/core';
 import { DragOutlined, ExpandOutlined, MoreOutlined, NarrowOutlined } from '@apitable/icons';
@@ -28,6 +27,7 @@ import { DragOutlined, ExpandOutlined, MoreOutlined, NarrowOutlined } from '@api
 import { Tooltip } from 'pc/components/common';
 import { useCheckInput } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { closeWidgetRoute, expandWidgetRoute } from '../../expand_widget';
 import { WIDGET_MENU } from '../widget_list';
 import { IWidgetPropsBase } from './interface';
@@ -51,10 +51,10 @@ export const WidgetHeaderMobile: React.FC<React.PropsWithChildren<IWidgetHeaderP
   });
 
   const { show, hideAll } = useContextMenu({ id: WIDGET_MENU });
-  const widget = useSelector((state) => {
+  const widget = useAppSelector((state) => {
     return Selectors.getWidget(state, widgetId);
   });
-  const isExpandWidget = useSelector((state) => state.pageParams.widgetId === widgetId);
+  const isExpandWidget = useAppSelector((state) => state.pageParams.widgetId === widgetId);
 
   const triggerMenu = (e: React.MouseEvent<HTMLElement>) => {
     show(e, {

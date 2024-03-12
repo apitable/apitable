@@ -40,13 +40,13 @@ export class DateTimeField extends BaseField implements OnApplicationBootstrap {
   }
 
   // eslint-disable-next-line require-await
-  override async roTransform(fieldValue: IFieldValue, _field: IField): Promise<ICellValue> {
-    // Default Time Zone
-    // TODO: Currently dayjs setDefaultTimeZone is reporting an error, then cut to dayjs
-    moment.tz.setDefault(DEFAULT_TIME_ZONE);
-    const zoneTime = moment(fieldValue!.toString());
-    // Revert
-    moment.tz.setDefault();
+  override async roTransform(fieldValue: IFieldValue, field: IField): Promise<ICellValue> {
+    const dateTime = moment.tz(fieldValue!.toString(), DEFAULT_TIME_ZONE);
+    let zoneTime = dateTime.clone();
+    if (field.property.timeZone) {
+      zoneTime = dateTime.clone().tz(field.property.timeZone);
+    }
+
     if (zoneTime && zoneTime.isValid()) {
       // Original time
       if (zoneTime.hasOwnProperty('_tzm') && zoneTime.isUtcOffset()) {

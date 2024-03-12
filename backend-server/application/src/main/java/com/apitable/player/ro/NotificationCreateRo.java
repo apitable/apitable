@@ -22,8 +22,8 @@ import cn.hutool.json.JSONObject;
 import com.apitable.shared.constants.NotificationConstants;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.Schema.RequiredMode;
+import jakarta.validation.constraints.NotBlank;
 import java.util.List;
-import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**

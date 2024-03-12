@@ -19,11 +19,11 @@
 import classNames from 'classnames';
 import { useRef } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Strings, t, Selectors } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { MemberOptionList } from 'pc/components/list';
 import { CellMember } from 'pc/components/multi_grid/cell/cell_member';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { IHeadMemberProps } from './interface';
 import styles from './styles.module.less';
@@ -31,7 +31,7 @@ import styles from './styles.module.less';
 export const MemberFieldHead: React.FC<React.PropsWithChildren<IHeadMemberProps>> = (props) => {
   const { cellValue, field, editing, setEditing, onCommand, readOnly, isNewBoard } = props;
   const divRef = useRef(null);
-  const { datasheetId, linkId, unitMap } = useSelector((state) => ({
+  const { datasheetId, linkId, unitMap } = useAppSelector((state) => ({
     datasheetId: Selectors.getActiveDatasheetId(state)!,
     linkId: Selectors.getLinkId(state),
     unitMap: Selectors.getUnitMap(state),

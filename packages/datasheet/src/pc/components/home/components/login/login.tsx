@@ -19,12 +19,12 @@
 import { useBoolean, useMount } from 'ahooks';
 import { Form } from 'antd';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Typography, useThemeColors, Button, TextInput, Box, LinkButton } from '@apitable/components';
 import { Strings, t, isEmail, ConfigConstant, StatusCode, api, IReduxState } from '@apitable/core';
 import { EmailFilled, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
 import { WithTipWrapper } from 'pc/components/common';
 import { useRequest, useUserRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
 import { clearStorage } from 'pc/utils/storage';
 import { ActionType } from '../../pc_home';
@@ -53,7 +53,7 @@ export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => 
   const [password, setPassword] = useState<string>();
 
   const [isVisible, { toggle }] = useBoolean(false);
-  const inviteEmailInfo = useSelector((state: IReduxState) => state.invite.inviteEmailInfo);
+  const inviteEmailInfo = useAppSelector((state: IReduxState) => state.invite.inviteEmailInfo);
   const [emailDisable, setEmailDisable] = useState<boolean>(false);
   useEffect(() => {
     if (inviteEmailInfo) {

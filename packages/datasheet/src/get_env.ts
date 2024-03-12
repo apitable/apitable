@@ -148,6 +148,7 @@ export const getEnvVars = () => {
     HELP_CONFIG: process.env.HELP_CONFIG,
     CUSTOM_WIDGET_VISIBLE: process.env.CUSTOM_WIDGET_VISIBLE === 'true',
     HELP_MENU_CONTACT_US_URL: process.env.HELP_MENU_CONTACT_US_URL,
+    SHARE_LOGO: process.env.SHARE_LOGO,
     LOGO: process.env.LOGO,
     COMMON_IMG_LOGO: process.env.COMMON_IMG_LOGO,
     LONG_DARK_LOGO: process.env.LONG_DARK_LOGO,
@@ -214,6 +215,7 @@ export const getEnvVars = () => {
     VIEW_MANUAL_SAVE_INFO_IMAGE: process.env.VIEW_MANUAL_SAVE_INFO_IMAGE,
     IS_CANVAS_IMAGE_CROSS_ORIGIN: process.env.IS_CANVAS_IMAGE_CROSS_ORIGIN === 'true',
     GOOGLE_TAG_MANAGER_ID: process.env.GOOGLE_TAG_MANAGER_ID,
+    SIDEBAR_CUSTOM_BUTTON_LIST: process.env.SIDEBAR_CUSTOM_BUTTON_LIST,
     ENABLED_REWARDFUL: process.env.ENABLED_REWARDFUL === 'true',
     FORM_LOGIN_URL: process.env.FORM_LOGIN_URL,
     TRANSLATION_FEEDBACK_HELP_URL: process.env.TRANSLATION_FEEDBACK_HELP_URL,
@@ -226,5 +228,9 @@ export const getEnvVars = () => {
     OSS_SIGNATURE_ENABLED: process.env.OSS_SIGNATURE_ENABLED === 'true',
     AI_API_HELP_URL: process.env.AI_API_HELP_URL,
     ARCHIVED_HELP_LINK: process.env.ARCHIVED_HELP_LINK,
+    ENABLE_WORKDOC_FIELD: process.env.ENABLE_WORKDOC_FIELD === 'true',
+    AI_TRAINING_HELP_DOC_LINK: process.env.AI_TRAINING_HELP_DOC_LINK,
+    AI_SETTING_HELP_DOC_LINK: process.env.AI_SETTING_HELP_DOC_LINK,
+    EDITION: process.env.EDITION,
   };
 };

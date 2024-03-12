@@ -18,12 +18,12 @@
 
 import * as React from 'react';
 import { useEffect } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 
 import {
   BasicValueType,
-  CollaCommandName,
+  CollaCommandName, ConfigConstant,
   ExecuteResult,
   Field,
   FieldType,
@@ -59,6 +59,7 @@ import { expandFieldPermission } from 'pc/components/field_permission';
 import { getShowFieldName } from 'pc/components/multi_grid/context_menu/utils';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 
 import { useActiveFieldSetting, useDeleteField, useFilterField, useHideField, useSortField } from '../multi_grid/hooks';
@@ -71,7 +72,7 @@ interface IFieldMenu {
 
 export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = ({ onClose, fieldId }) => {
   const colors = useThemeColors();
-  const { datasheetId, fieldMap, view, permissions, field, fieldIndex } = useSelector((state: IReduxState) => {
+  const { datasheetId, fieldMap, view, permissions, field, fieldIndex } = useAppSelector((state: IReduxState) => {
     const datasheetId = Selectors.getActiveDatasheetId(state)!;
     const fieldMap = Selectors.getFieldMap(state, datasheetId)!;
     const view = Selectors.getCurrentView(state)!;
@@ -89,15 +90,17 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = ({ onClo
       fieldIndex,
     };
   }, shallowEqual);
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
-  const mirrorId = useSelector((state) => state.pageParams.mirrorId);
+  const catalogTreeActiveType = useAppSelector((state) => state.catalogTree.activeType);
+  const isPrivate = catalogTreeActiveType === ConfigConstant.Modules.PRIVATE;
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
+  const mirrorId = useAppSelector((state) => state.pageParams.mirrorId);
   const dispatch = useAppDispatch();
   const handleHideField = useHideField(view);
   const handleSortField = useSortField();
   const handleFilterField = useFilterField();
   const activeFieldSettings = useActiveFieldSetting();
   const deleteField = useDeleteField(field.id, datasheetId);
-  const embedId = useSelector((state) => state.pageParams.embedId);
+  const embedId = useAppSelector((state) => state.pageParams.embedId);
   /**
    * Give a warning when a field is deleted during collaboration.
    * Ends rendering early.
@@ -118,6 +121,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = ({ onClo
     permissions;
 
   const fieldError = Boolean(Field.bindModel(field).validateProperty().error);
+  const canFilter = Boolean(Field.bindModel(field).canFilter);
   const showFieldName = getShowFieldName(field.name);
   // Special judgment, when the link field error, need to allow the user to delete the current link field
   const linkedFieldError = field.type === FieldType.Link && fieldError;
@@ -259,7 +263,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = ({ onClo
             props: { fieldId },
           } = arg;
 
-          if (!fieldId || embedId) {
+          if (!fieldId || embedId || isPrivate) {
             return true;
           }
 
@@ -315,7 +319,7 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenu>> = ({ onClo
       {
         icon: <FilterOutlined color={colors.thirdLevelText} />,
         text: t(Strings.filter_fields, { field_name: showFieldName }),
-        hidden: !editable || Boolean(mirrorId),
+        hidden: !editable || Boolean(mirrorId) || !canFilter,
         onClick: filterField,
       },
     ],

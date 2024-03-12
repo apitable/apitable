@@ -19,9 +19,9 @@
 import { useClickAway } from 'ahooks';
 import classNames from 'classnames';
 import { FC, useState, useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { IReduxState, Api, ITeamsInSearch, IMembersInSearch } from '@apitable/core';
 import { useRequest, useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ScreenSize } from '../component_display';
 import { SearchInput, SearchEmpty } from '../index';
 import { SearchList, ListType } from './search_list';
@@ -35,7 +35,7 @@ interface ISearchTeamAndMemberProps {
 }
 export const SearchTeamAndMember: FC<React.PropsWithChildren<ISearchTeamAndMemberProps>> = ({ setInSearch, teamClick, memberClick, top }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const spaceId = useSelector((state: IReduxState) => state.space.activeId);
+  const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
   const [keyword, setKeyword] = useState('');
   const [searchTeams, setSearchTeams] = useState<ITeamsInSearch[]>([]);
   const [searchMembers, setSearchMembers] = useState<IMembersInSearch[]>([]);

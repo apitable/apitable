@@ -18,17 +18,17 @@
 
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { ListOutlined } from '@apitable/icons';
 import { useSideBarVisible } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
 
 export const MobileBar: React.FC<React.PropsWithChildren<{ title?: string }>> = ({ title }) => {
-  const { datasheetId } = useSelector((state) => state.pageParams);
+  const { datasheetId } = useAppSelector((state) => state.pageParams);
   const colors = useThemeColors();
-  const currentView = useSelector((state) => Selectors.getCurrentView(state))!;
+  const currentView = useAppSelector((state) => Selectors.getCurrentView(state))!;
   const { setSideBarVisible } = useSideBarVisible();
   const router = useRouter();
   const pathname = router.asPath;

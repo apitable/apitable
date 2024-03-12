@@ -18,15 +18,15 @@
 
 import Image from 'next/image';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { ThemeName } from '@apitable/components';
 import { Strings, t } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
 import styles from './style.module.less';
 
 export const SearchEmpty: FC<React.PropsWithChildren<unknown>> = () => {
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const SearchImage = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
   return (
     <div className={styles.searchEmpty}>

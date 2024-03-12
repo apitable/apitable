@@ -19,19 +19,19 @@
 package com.apitable.base.service;
 
 /**
- * Parameter validation related service interface
+ * Parameter validation related service interface.
  */
 public interface ParamVerificationService {
 
     /**
-     * verify phone number
+     * verify phone number.
      *
      * @param phone phone number
      */
     void verifyPhone(String phone);
 
     /**
-     * verify password
+     * verify password.
      *
      * @param password password
      */

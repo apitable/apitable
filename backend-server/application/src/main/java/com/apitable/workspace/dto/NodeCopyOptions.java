@@ -19,9 +19,9 @@
 package com.apitable.workspace.dto;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,27 +40,27 @@ import lombok.Data;
 public class NodeCopyOptions implements Serializable {
 
     /**
-     * whether to copy node data
+     * whether to copy node data.
      */
     protected boolean copyData;
 
     /**
-     * whether to add a column to the association table
+     * whether to add a column to the association table.
      */
     private boolean addColumn;
 
     /**
-     * whether keep RecordMeta
+     * whether keep RecordMeta.
      */
     private boolean retainRecordMeta;
 
     /**
-     * whether to check the number of nodes
+     * whether to check the number of nodes.
      */
     private boolean verifyNodeCount;
 
     /**
-     * is it a template
+     * is it a template.
      */
     private boolean template;
 
@@ -70,7 +70,7 @@ public class NodeCopyOptions implements Serializable {
     private List<String> filterNodeIds;
 
     /**
-     * whether to filter fields that enable column permissions
+     * whether to filter fields that enable column permissions.
      */
     private boolean filterPermissionField;
 
@@ -80,24 +80,34 @@ public class NodeCopyOptions implements Serializable {
     private Map<String, List<String>> dstPermissionFieldsMap;
 
     /**
-     * node id generated in advance for asynchronous tasks
+     * node id generated in advance for asynchronous tasks.
      */
     private String nodeId;
 
     /**
-     * specify the generated node name
+     * specify the generated node name.
      */
     private String nodeName;
 
     /**
-     * dingtalk--teamplate id
+     * dingtalk--teamplate id.
      */
     private String dingTalkDaTemplateKey;
 
     /**
-     * source templateId
+     * source templateId.
      */
     private String sourceTemplateId;
+
+    /**
+     * new trigger id map.
+     */
+    private Map<String, String> newTriggerMap = new HashMap<>();
+
+    /**
+     * unit id.
+     */
+    private String unitId;
 
     public NodeCopyOptions() {
         this.copyData = true;

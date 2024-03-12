@@ -22,16 +22,17 @@ import React, { FC } from 'react';
 import { Provider } from 'react-redux';
 import { Strings, t } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
+import { getBillingInfo } from 'modules/billing';
 import { FooterBtnInModal } from 'pc/components/common/modal/components/footer_btn';
 import { IDingTalkModalType, showModalInDingTalk } from 'pc/components/economy/upgrade_modal';
 import { store } from 'pc/store';
 import { confirm, danger, info, success, warning } from './modal.function';
 import { IModalFuncProps, IModalProps, IModalReturn } from './modal.interface';
 import { ModalWithTheme } from './modal_with_theme';
-import styles from './style.module.less';
 import { destroyFns } from './utils';
 // @ts-ignore
-import { getBillingInfo, isSocialDingTalk } from 'enterprise';
+import { isSocialDingTalk } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 const ModalBase: FC<React.PropsWithChildren<IModalProps>> = (props) => {
   const {

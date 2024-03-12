@@ -18,30 +18,30 @@
 
 package com.apitable.workspace.observer.remind;
 
-import javax.annotation.Resource;
-
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.net.url.UrlPath;
 import cn.hutool.core.net.url.UrlQuery;
 import cn.hutool.core.util.CharsetUtil;
 import cn.hutool.http.HtmlUtil;
-import lombok.extern.slf4j.Slf4j;
-
+import com.apitable.core.util.ExceptionUtil;
+import com.apitable.organization.entity.MemberEntity;
 import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.shared.config.properties.ConstProperties;
 import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.user.mapper.UserMapper;
+import com.apitable.workspace.entity.NodeRelEntity;
 import com.apitable.workspace.enums.IdRulePrefixEnum;
 import com.apitable.workspace.enums.PermissionException;
 import com.apitable.workspace.mapper.NodeMapper;
 import com.apitable.workspace.mapper.NodeRelMapper;
 import com.apitable.workspace.observer.DatasheetRemindObserver;
-import com.apitable.core.util.ExceptionUtil;
-import com.apitable.organization.entity.MemberEntity;
-import com.apitable.workspace.entity.NodeRelEntity;
-
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 
+/**
+ * abstract remind class.
+ */
 @Slf4j
 public abstract class AbstractRemind implements DatasheetRemindObserver {
 
@@ -69,7 +69,8 @@ public abstract class AbstractRemind implements DatasheetRemindObserver {
     @Override
     public void sendNotify(NotifyDataSheetMeta meta) {
         if (meta.fromMemberId == null && meta.fromUserId == null) {
-            log.info("[remind notification]-meta:fromMemberId｜fromUserId is null, do not send messages.");
+            log.info(
+                "[remind notification]-meta:fromMemberId｜fromUserId is null, do not send messages.");
             return;
         }
         if (CollUtil.isEmpty(meta.toMemberIds)) {
@@ -89,37 +90,38 @@ public abstract class AbstractRemind implements DatasheetRemindObserver {
     }
 
     /**
-     * get send subscription type
+     * get send subscription type.
      */
     public abstract RemindChannel getRemindType();
 
     protected abstract void wrapperMeta(NotifyDataSheetMeta meta);
 
     /**
-     * notify @member actions
+     * notify @member actions.
      */
     public abstract void notifyMemberAction(NotifyDataSheetMeta meta);
 
     /**
-     * notify comments actions
+     * notify comments actions.
      */
     public abstract void notifyCommentAction(NotifyDataSheetMeta meta);
 
     /**
-     * build notification url
+     * build notification url.
      * <p>
-     * notification url build format
+     * notification url build format.
      * </p>
      * {ServerDomain}/workbench/{mirrorId}/{nodeId}/{viewId}/{recordId}?comment=1&notifyId={notifyId}
      * </p>
      * Url parameters:
      * </p>
-     * ServerDomain：current service domain name (optional)</br>
-     * mirrorId：mirror node id (maybe empty)</br>
-     * nodeId：datasheet id </br>
-     * viewId：datasheet view id </br>
-     * recordId：rowId </br>
-     * notifyId：notifyId </br>
+     * <br>
+     * ServerDomain：current service domain name (optional) <br>
+     * mirrorId：mirror node id (maybe empty)<br>
+     * nodeId：datasheet id <br>
+     * viewId：datasheet view id <br>
+     * recordId：rowId <br>
+     * notifyId：notifyId <br>
      */
     protected String buildNotifyUrl(NotifyDataSheetMeta meta, boolean falgServerDomain) {
         StringBuilder notifyUr = new StringBuilder();
@@ -141,7 +143,8 @@ public abstract class AbstractRemind implements DatasheetRemindObserver {
         notifyUr.append(notifyPath.build(CharsetUtil.CHARSET_UTF_8));
 
         // query parameters
-        UrlQuery notifyQuery = meta.remindType == RemindType.MEMBER ? new UrlQuery() : UrlQuery.of("comment=1", CharsetUtil.CHARSET_UTF_8);
+        UrlQuery notifyQuery = meta.remindType == RemindType.MEMBER ? new UrlQuery() :
+            UrlQuery.of("comment=1", CharsetUtil.CHARSET_UTF_8);
         // notifyId need to mark the message as read
         notifyQuery.add("notifyId", meta.notifyId);
         notifyUr.append('?').append(notifyQuery.build(CharsetUtil.CHARSET_UTF_8));
@@ -157,22 +160,22 @@ public abstract class AbstractRemind implements DatasheetRemindObserver {
         return memberMapper.selectMemberNameById(memberId);
     }
 
-    protected MemberEntity getMember(Long memberId) {
-        return memberMapper.selectById(memberId);
-    }
-
-    protected String getUserName(Long userId) {
-        return userMapper.selectNickNameById(userId);
-    }
-
     /**
-     * get member name. if memberId == null, query defaultUserId
+     * get member name. if memberId == null, query defaultUserId.
      */
     protected String getMemberName(Long memberId, Long defaultUserId) {
         if (null != memberId) {
             return getMemberName(memberId);
         }
         return getUserName(defaultUserId);
+    }
+
+    protected MemberEntity getMember(Long memberId) {
+        return memberMapper.selectById(memberId);
+    }
+
+    protected String getUserName(Long userId) {
+        return userMapper.selectNickNameById(userId);
     }
 
     protected String getSpaceName(String spaceId) {

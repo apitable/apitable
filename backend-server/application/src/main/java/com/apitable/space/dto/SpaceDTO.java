@@ -2,6 +2,9 @@ package com.apitable.space.dto;
 
 import lombok.Data;
 
+/**
+ * space dto.
+ */
 @Data
 public class SpaceDTO {
 

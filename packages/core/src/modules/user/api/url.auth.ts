@@ -64,10 +64,5 @@ export const VALIDATE_SMS_CODE = '/base/action/sms/code/validate';
   * 
   */
 export const VALIDATE_EMAIL_CODE = '/base/action/email/code/validate';
- 
-/**
-  * Space - invite verify code validate
-  */
-export const INVITE_EMAIL_VERIFY = '/base/action/invite/valid';
 
 export const REGISTER = '/register';

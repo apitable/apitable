@@ -18,15 +18,14 @@
 
 package com.apitable.workspace.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +35,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Workbench -  Node Table
+ * Workbench -  Node Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -53,106 +52,111 @@ public class NodeEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary key
+     * Primary key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Space ID(link#xxxx_space#space_id)
+     * Space ID(link#xxxx_space#space_id).
      */
     private String spaceId;
 
     /**
-     * Parent Node Id
+     * unit id(link#xxxx_unit#id).
+     */
+    private Long unitId;
+
+    /**
+     * Parent Node Id.
      */
     private String parentId;
 
     /**
-     * ID of the previous node under the same level
+     * ID of the previous node under the same level.
      */
     private String preNodeId;
 
     /**
-     * Custom Node ID
+     * Custom Node ID.
      */
     private String nodeId;
 
     /**
-     * Node Name
+     * Node Name.
      */
     private String nodeName;
 
     /**
-     * Node Icon
+     * Node Icon.
      */
     private String icon;
 
     /**
-     * Type (0:Root node,1:Folder,2:Datasheet)
+     * Type (0:Root node,1:Folder,2:Datasheet).
      */
     private Integer type;
 
     /**
-     * Cover Draw TOKEN
+     * Cover Draw TOKEN.
      */
     private String cover;
 
     /**
-     * Is Template (0: No, 1: Yes)
+     * Is Template (0: No, 1: Yes).
      */
     private Boolean isTemplate;
 
     /**
-     * Other information
+     * Other information.
      */
     private String extra;
 
     /**
-     * Creator
+     * Creator.
      */
     private Long creator;
 
     /**
-     * deleted path
+     * deleted path.
      */
     private String deletedPath;
 
     /**
-     * Delete tag(0:No,1:Yes)
+     * Delete tag(0:No,1:Yes).
      */
     @TableLogic
     private Boolean isDeleted;
 
     /**
-     * Recycle Bin Tag (0: No, 1: Yes)
+     * Recycle Bin Tag (0: No, 1: Yes).
      */
     private Boolean isRubbish;
 
     /**
-     * Banned or not (0: No, 1: Yes)
+     * Banned or not (0: No, 1: Yes).
      */
     private Boolean isBanned;
 
     /**
-     * Creator
+     * Creator.
      */
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
 
     /**
-     * Last Update By
+     * Last Update By.
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updatedBy;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

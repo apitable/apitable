@@ -29,27 +29,34 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
+/**
+ * widget package release mapper.
+ */
 public interface WidgetPackageReleaseMapper extends BaseMapper<WidgetPackageReleaseEntity> {
 
     /**
-     * query whether the published version sha exists
+     * query whether the published version sha exists.
      *
-     * @param releaseSha release version sha
+     * @param releaseSha    release version sha
      * @param releaseStatus release status
      * @return release version data id
      */
     Long selectReleaseShaToId(@Param("releaseSha") String releaseSha,
-        @Param("releaseStatus") Integer releaseStatus);
+                              @Param("releaseStatus") Integer releaseStatus);
 
     /**
+     * query release version list.
+     *
      * @param page      page object
      * @param packageId widget package ids
      * @return page result
      */
     IPage<WidgetReleaseListVo> selectReleasePage(Page<WidgetReleaseListVo> page,
-        @Param("packageId") String packageId);
+                                                 @Param("packageId") String packageId);
 
     /**
+     * query the list of applets to be reviewed.
+     *
      * @param condition condition
      * @return list to be reviewed
      */
@@ -57,7 +64,7 @@ public interface WidgetPackageReleaseMapper extends BaseMapper<WidgetPackageRele
         @Param("condition") WidgetStoreListRo condition);
 
     /**
-     * Query the last submitted applet version information according to the parent applet ID.
+     * Query the last submitted applet version information according to the parent widget ID.
      *
      * @param fatherWidgetId fatherWidgetId
      * @return LastSubmitWidgetVersionDTO
@@ -66,6 +73,8 @@ public interface WidgetPackageReleaseMapper extends BaseMapper<WidgetPackageRele
         @Param("fatherWidgetId") String fatherWidgetId);
 
     /**
+     * query by father widget id and status.
+     *
      * @param fatherWidgetId father widget id
      * @param version        version
      * @return pending approval widget version

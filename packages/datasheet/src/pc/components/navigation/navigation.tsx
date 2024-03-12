@@ -24,7 +24,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Events, IReduxState, NAV_ID, Player, Settings, StoreActions, Strings, t } from '@apitable/core';
 import {
@@ -53,6 +53,7 @@ import { Notification } from 'pc/components/notification';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
 import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
 import { useContactUs } from 'pc/hooks/use_contact_us';
+import { useAppSelector } from 'pc/store/react-redux';
 import { isMobileApp, getEnvVariables, isHiddenLivechat } from 'pc/utils/env';
 import AnimationJson from 'static/json/notification_new.json';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
@@ -63,11 +64,11 @@ import { CreateSpaceModal } from './create_space_modal';
 import { Help } from './help';
 import { NavigationContext } from './navigation_context';
 import { SpaceListDrawer } from './space_list_drawer';
-import styles from './style.module.less';
 import { UpgradeBtn } from './upgrade_btn';
 import { User } from './user';
 // @ts-ignore
-import { inSocialApp, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise';
+import { inSocialApp, isSocialDingTalk, isSocialFeiShu, isSocialWecom } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 enum NavKey {
   SpaceManagement = 'management',
@@ -85,7 +86,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   const [notice, { toggle: toggleNotice, set: setNotice }] = useToggle(false);
   const [upgradePopup, { set: setUpgradePopup }] = useToggle(false);
   const dispatch = useDispatch();
-  const { user, space, unReadCount, newNoticeListFromWs } = useSelector(
+  const { user, space, unReadCount, newNoticeListFromWs } = useAppSelector(
     (state: IReduxState) => ({
       user: state.user.info,
       space: state.space.curSpaceInfo,
@@ -95,7 +96,7 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
     }),
     shallowEqual,
   );
-  const { notificationStatistics, getNotificationList } = useNotificationRequest();
+  const { notificationStatistics } = useNotificationRequest();
   // const location = useLocation();
   const router = useRouter();
   const search = location.search;
@@ -107,9 +108,15 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
   const [clickCount, setClickCount] = useState(0);
   const contactUs = useContactUs();
   const env = getEnvVariables();
+  const sidebarCustomButtonList = React.useMemo(() => {
+    const list = env.SIDEBAR_CUSTOM_BUTTON_LIST;
+    if (!list) {
+      return [];
+    } 
+    return JSON.parse(list);
+    
+  }, []);
   useRequest(notificationStatistics);
-  // Check if there is a system banner notification to be displayed
-  useRequest(getNotificationList);
 
   useEffect(() => {
     const eventBundle = new Map([
@@ -417,6 +424,13 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
             </div>
           </Tooltip>
         )}
+        {sidebarCustomButtonList.map((item: any, index: number) => (
+          <Tooltip title={item.tooltip} placement="right" key={index}>
+            <a className={styles.iconWrap} href={item.link} target="_blank" rel="noreferrer">
+              <img className={styles.img} src={item.icon} alt={item.link} />
+            </a>
+          </Tooltip>
+        ))}
         <Tooltip title={t(Strings.quick_search_title)} placement="right">
           <div className={styles.iconWrap} onClick={() => expandSearch()}>
             <SearchOutlined className={styles.icon} size={24} />

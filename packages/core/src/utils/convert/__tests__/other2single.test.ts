@@ -19,13 +19,13 @@
 import {
   str2single,
 } from '..';
-import { IReduxState } from '../../../exports/store';
+import { IReduxState } from '../../../exports/store/interfaces';
 
 import {
   // ISingleSelectField,
   // FieldType,
   SingleSelectField,
-} from '../../../model';
+} from 'model/field/select_field/single_select_field';
 import { FieldType, IField } from '../../../types/field_types';
 
 function getField(): [SingleSelectField, string[], any[], IField] {

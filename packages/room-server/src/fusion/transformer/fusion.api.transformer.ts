@@ -72,6 +72,7 @@ export class FusionApiTransformer implements IFieldTransformInterface {
       count: cellValues.length,
       cellValues,
       ignoreFieldPermission: true,
+      ignoreFieldLimit: true,
     };
   }
 

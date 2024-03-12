@@ -20,7 +20,6 @@ import classNames from 'classnames';
 import produce from 'immer';
 import * as React from 'react';
 import { useContext, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { IOption, Select, useThemeColors } from '@apitable/components';
 import {
@@ -45,6 +44,7 @@ import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { renderComputeFieldError } from 'pc/components/multi_grid/header';
 import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ExecuteFilterFn } from '../interface';
 import styles from './style.module.less';
 
@@ -63,7 +63,7 @@ interface IFilterFieldListProps {
 const FilterFieldListBase: React.FC<React.PropsWithChildren<IFilterFieldListProps>> = (props) => {
   const { conditionIndex, changeFilter, condition, fieldMap, columns, warnTextObj, isCryptoField, fieldNotFound } = props;
   const colors = useThemeColors();
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
   const { isViewLock } = useContext(ViewFilterContext);
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
@@ -108,9 +108,10 @@ const FilterFieldListBase: React.FC<React.PropsWithChildren<IFilterFieldListProp
     const field = fieldMap[item.fieldId];
     const warnText = warnTextObj && warnTextObj[item.fieldId];
     const hasError = Field.bindModel(field).hasError;
+    const canFiltered = Field.bindModel(field).canFilter;
     return {
       label: field.name,
-      disabled: Boolean(hasError || warnText),
+      disabled: Boolean(hasError || warnText || !canFiltered),
       value: item.fieldId,
       prefixIcon: getFieldTypeIcon(field.type!),
       suffixIcon: getSuffixIcon(item.fieldId, warnText),

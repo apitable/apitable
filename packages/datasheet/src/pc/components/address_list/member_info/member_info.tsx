@@ -20,17 +20,18 @@ import { useToggle } from 'ahooks';
 import { Input } from 'antd';
 import classNames from 'classnames';
 import { FC, useState, useEffect } from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { IReduxState, Strings, t, ConfigConstant, IMemberInfoInAddressList, isIdassPrivateDeployment } from '@apitable/core';
 import { EditOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Avatar, Tooltip, AvatarSize, ButtonPlus } from 'pc/components/common';
 import { Identity } from 'pc/components/space_manage/identity';
 import { useAddressRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
-import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise';
+import { getSocialWecomUnitName, isSocialFeiShu, isSocialPlatformEnabled } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 export const getIdentity = (memberInfo: IMemberInfoInAddressList) => {
   if (!memberInfo.isActive) return 'inactive';
@@ -40,7 +41,7 @@ export const getIdentity = (memberInfo: IMemberInfoInAddressList) => {
 };
 
 export const MemberInfo: FC<React.PropsWithChildren<unknown>> = () => {
-  const { memberInfo, selectedMemberInfo, user, spaceResource, spaceInfo } = useSelector(
+  const { memberInfo, selectedMemberInfo, user, spaceResource, spaceInfo } = useAppSelector(
     (state: IReduxState) => ({
       memberInfo: state.addressList.memberInfo,
       selectedMemberInfo: state.addressList.selectedTeamInfo,

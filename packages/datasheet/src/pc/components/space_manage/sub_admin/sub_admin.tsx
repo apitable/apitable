@@ -19,19 +19,22 @@
 import { useMount } from 'ahooks';
 import { Table } from 'antd';
 import { ColumnProps } from 'antd/es/table';
-import { FC, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button, TextButton, Typography, useThemeColors, Pagination } from '@apitable/components';
 import { ConfigConstant, Events, IReduxState, ISubAdminList, Player, StoreActions, Strings, t } from '@apitable/core';
 import { InfoCard, Modal } from 'pc/components/common';
 import { useNotificationCreate } from 'pc/hooks';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { AddAdminModal, ModalType } from './add_admin_modal';
-import styles from './style.module.less';
 // @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert, getSocialWecomUnitName } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
+// @ts-ignore
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 // Some permissions that are no longer used, but because the old space will still return the corresponding data,
 // the front-end to do the filtering of these permissions
@@ -49,8 +52,7 @@ const triggerBase = {
 export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const dispatch = useAppDispatch();
-  const tableRef = useRef<HTMLDivElement>(null);
-  const { subAdminList, subAdminListData, user, subscription, spaceInfo } = useSelector(
+  const { subAdminList, subAdminListData, user, subscription, spaceInfo } = useAppSelector(
     (state: IReduxState) => ({
       subAdminList: state.spacePermissionManage.subAdminListData ? state.spacePermissionManage.subAdminListData.records : [],
       subAdminListData: state.spacePermissionManage.subAdminListData,
@@ -63,10 +65,7 @@ export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   const [modalType, setModalType] = useState<string | null>(null);
   const [editOrReadSubMainInfo, setEditOrReadSubMainInfo] = useState<ISubAdminList | null>(null);
   const [pageNo, setPageNo] = useState(1);
-  const [scrollHeight, setScrollHeight] = useState(0);
   const { delSubAdminAndNotice } = useNotificationCreate({ fromUserId: user!.uuid, spaceId: user!.spaceId });
-
-  const subAdminMax = subscription ? Math.max(subscription.maxAdminNums - 1, 0) : 0;
 
   useMount(() => {
     Player.doTrigger(Events.space_setting_sub_admin_shown);
@@ -74,21 +73,6 @@ export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   useEffect(() => {
     dispatch(StoreActions.getSubAdminList(pageNo));
   }, [dispatch, pageNo]);
-  const updateScroll = useCallback(() => {
-    if (tableRef.current) {
-      const height = tableRef.current.clientHeight - 45;
-      setScrollHeight(height);
-    }
-  }, [tableRef]);
-  useLayoutEffect(() => {
-    updateScroll();
-  }, [updateScroll]);
-  useEffect(() => {
-    window.addEventListener('resize', updateScroll);
-    return () => {
-      window.removeEventListener('resize', updateScroll);
-    };
-  }, [updateScroll]);
 
   const getPermissionContent = (arr: Array<string>) => {
     const i18nStrings = arr
@@ -206,17 +190,19 @@ export const SubAdmin: FC<React.PropsWithChildren<unknown>> = () => {
   return (
     <div className={styles.subAdmin}>
       <Typography variant={'h6'}>{t(Strings.sub_admin)}</Typography>
-      <Typography variant={'body4'} color={colors.thirdLevelText} className={styles.describe}>
-        {t(Strings.space_admin_info, { count: subAdminMax })}
-      </Typography>
-      <div>
+      {subscription?.maxAdminNums && subscription.maxAdminNums > 0 && (
+        <Typography variant={'body4'} color={colors.thirdLevelText} className={styles.describe}>
+          {t(Strings.space_admin_info, { count: subscription.maxAdminNums })}
+        </Typography>
+      )}
+      <div className={'vk-mt-4'}>
         <Button onClick={addAdminBtnClick} variant="jelly">
           {t(Strings.add_sub_admin)}
         </Button>
       </div>
 
-      <div className={styles.tableWrapper} ref={tableRef}>
-        <Table columns={columns} dataSource={subAdminList} pagination={false} rowKey={(record) => record.memberId} scroll={{ y: scrollHeight }} />
+      <div className={styles.tableWrapper}>
+        <Table columns={columns} dataSource={subAdminList} pagination={false} rowKey={(record) => record.memberId} />
       </div>
       {subAdminListData && subAdminListData.total > ConfigConstant.SUB_ADMIN_LIST_PAGE_SIZE && (
         <div className={styles.pagination}>

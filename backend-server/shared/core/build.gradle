@@ -1,14 +1,15 @@
 plugins {
-  id 'java'
-  id 'testing.java-conventions'
+    id 'java-library'
+    id 'testing.java-conventions'
 }
 
 description = "Core"
 
 dependencies {
-  implementation rootProject.ext.dependencies['spring-web']
-  implementation rootProject.ext.dependencies['spring-context']
-  implementation rootProject.ext.dependencies['servlet-api']
-  implementation rootProject.ext.dependencies['jackson']
-  implementation rootProject.ext.dependencies['hutool']
+    implementation platform(libs.spring.boot.dependencies)
+    implementation libs.spring.web
+    implementation libs.spring.context
+    implementation libs.servlet
+    implementation libs.jackson
+    implementation libs.bundles.hutool
 }

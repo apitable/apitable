@@ -18,12 +18,12 @@
 
 import classNames from 'classnames';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { colorVars, Checkbox, Divider, useListenVisualHeight, IUseListenTriggerInfo, WrapperTooltip } from '@apitable/components';
 import { t, Strings, RowHeightLevel, Selectors, ViewType, CollaCommandName, IGridViewProperty } from '@apitable/core';
 import { IIconProps, RowhightExtremhighOutlined, RowhightHighOutlined, RowhightMediumOutlined, RowhightShortOutlined } from '@apitable/icons';
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import styles from './style.module.less';
 
@@ -128,7 +128,7 @@ interface IChangeRowHeight {
 
 export const ChangeRowHeight = (props: IChangeRowHeight) => {
   const { triggerInfo } = props;
-  const view = useSelector((state) => Selectors.getCurrentView(state))!;
+  const view = useAppSelector((state) => Selectors.getCurrentView(state))!;
   const isViewLock = useShowViewLockModal();
 
   const containerRef = React.useRef<HTMLDivElement | null>(null);

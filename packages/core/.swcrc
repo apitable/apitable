@@ -10,7 +10,6 @@
     }
   },
   "module": {
-    "type": "commonjs",
-    "noInterop": true
+    "type": "es6"
   }
 }

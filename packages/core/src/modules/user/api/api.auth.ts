@@ -20,15 +20,15 @@ import axios from 'axios';
 import * as Url from '../../shared/api/url';
 import {
   IApiWrapper, ILogoutResult,
-} from '../../../exports/store';
+} from '../../../exports/store/interfaces';
 import {
-  ISignIn, 
+  ISignIn,
 } from '../../shared/api/api.interface';
 
 /**
  * Login / Register (get identity token directly)
- * @param data 
- * @returns 
+ * @param data
+ * @returns
  */
 export function signInOrSignUp(data: ISignIn) {
   return axios.post(Url.SIGN_IN_OR_SIGN_UP, { ...data });
@@ -36,8 +36,8 @@ export function signInOrSignUp(data: ISignIn) {
 
 /**
  * Sign In
- * @param data 
- * @returns 
+ * @param data
+ * @returns
  */
 export function signIn(data: ISignIn) {
   return axios.post(Url.SIGN_IN, { ...data });
@@ -45,8 +45,8 @@ export function signIn(data: ISignIn) {
 
 /**
  * Sign Out
- * 
- * @returns 
+ *
+ * @returns
  */
 export function signOut() {
   return axios.post<IApiWrapper & { data: ILogoutResult }>(Url.SIGN_OUT);
@@ -54,8 +54,8 @@ export function signOut() {
 
 /**
  * Close the user, delete the account
- * 
- * @returns 
+ *
+ * @returns
  */
 export function logout() {
   return axios.post(Url.CLOSE_USER);
@@ -63,16 +63,16 @@ export function logout() {
 
 /**
  * Cancel close the user, cancel delete the account
- * @returns 
+ * @returns
  */
 export function revokeLogout() {
   return axios.post(Url.CANCEL_CLOSE_USER);
 }
 
 /**
- * 
- * Register 
- * 
+ *
+ * Register
+ *
  * @param phone phone number
  * @param password password
  * @param code verify code
@@ -86,20 +86,21 @@ export function signUp(token?: string, inviteCode?: string) {
 
 /**
  * APITable CE Register
- * 
+ *
  */
 
-export function register(username: string, credential: string) {
+export function register(username: string, credential: string, lang = 'en-US') {
   return axios.post(Url.REGISTER, {
     username,
-    credential
+    credential,
+    lang
   });
 }
 
 /**
- * 
+ *
  * Get phone verification code
- * 
+ *
  * @param phone Phone Number
  * @param type 1:Register, 3:Edit password
  * @param data CAPTCHA arguments
@@ -115,7 +116,7 @@ export function getSmsCode(areaCode: string, phone: string, type: number, data?:
 
 /**
  * Get Email Verify Code
- * 
+ *
  * @param email mail
  */
 export function getEmailCode(email: string, type: number) {
@@ -127,8 +128,8 @@ export function getEmailCode(email: string, type: number) {
 
 /**
  * Bind the email
- * @param email 
- * @param code 
+ * @param email
+ * @param code
  */
 export function bindEmail(email: string, code: string) {
   return axios.post(Url.BIND_EMAIL, {
@@ -138,10 +139,10 @@ export function bindEmail(email: string, code: string) {
 }
 
 /**
- * Bind the mobile phone 
- * 
- * @param phone 
- * @param code 
+ * Bind the mobile phone
+ *
+ * @param phone
+ * @param code
  */
 export function bindMobile(areaCode: string, phone: string, code: string) {
   return axios.post(Url.BIND_MOBILE, {
@@ -153,8 +154,8 @@ export function bindMobile(areaCode: string, phone: string, code: string) {
 
 /**
  * Verify the mobile phone code
- * @param phone 
- * @param code 
+ * @param phone
+ * @param code
  */
 export function smsVerify(areaCode: string, phone: string, code: string) {
   return axios.post(Url.VALIDATE_SMS_CODE, {
@@ -189,8 +190,8 @@ export function isExistEmail(email: string) {
 }
 
 /**
- * Edit password 
- * @param phone 
+ * Edit password
+ * @param phone
  * @param code verify code
  * @param password password
  */
@@ -204,9 +205,9 @@ export function updatePwd(password: string, code?: string, type?: string) {
 
 /**
  * Forgot password
- * 
- * @param phone 
- * @param password 
+ *
+ * @param phone
+ * @param password
  */
 export function retrievePwd(areaCode: string, username: string, code: string, password: string, type: string) {
   return axios.post(Url.RETRIEVE_PWD, {
@@ -220,7 +221,7 @@ export function retrievePwd(areaCode: string, username: string, code: string, pa
 
 /**
  * create developer access token
- * @returns 
+ * @returns
  */
 export function createApiKey() {
   return axios.post(Url.CREATE_API_KEY);
@@ -228,9 +229,9 @@ export function createApiKey() {
 
 /**
  * refresh developer access token
- * @param code 
- * @param type 
- * @returns 
+ * @param code
+ * @param type
+ * @returns
  */
 export function refreshApiKey(code?: string, type?: string) {
   return axios.post(Url.REFRESH_API_KEY, { code, type });

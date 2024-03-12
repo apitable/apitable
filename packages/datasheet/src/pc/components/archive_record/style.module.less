@@ -1,5 +1,5 @@
-@import "~pc/styles/lib_var.less";
-@import "~pc/styles/lib_mixins.less";
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
 
 .toolList {
   display: flex;
@@ -11,6 +11,7 @@
   }
   svg {
     cursor: pointer;
+    fill: var(--textCommonTertiary);
     &:hover {
       fill: var(--textBrandDefault);
     }
@@ -30,7 +31,6 @@
   p {
     margin: 0;
   }
-
 }
 
 .header {
@@ -61,13 +61,15 @@
   text-overflow: ellipsis;
 }
 
-
-
 :global {
+  .ant-table-thead > tr > th {
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+  }
 
   .archiveDrawer {
     .ant-drawer-header {
-      border: none!important;
+      border: none !important;
       padding: 20px 24px;
     }
 
@@ -75,119 +77,116 @@
       top: 20px;
       right: 20px;
       svg {
-        fill: var(--textCommonPrimary)!important;
+        fill: var(--textCommonPrimary) !important;
       }
     }
 
     .ant-drawer-body {
-      padding-top: 4px!important;
-      padding-bottom: 0!important;
+      padding-top: 4px !important;
+      padding-bottom: 0 !important;
     }
-
-  } 
-  
+  }
 
   .archivedRecordsTable {
     .ant-table-cell-fix-right {
-      background-color: var(--defaultBg)!important;
+      background-color: var(--defaultBg) !important;
     }
 
     .ant-table-cell-fix-left {
-      background-color: var(--defaultBg)!important;
+      background-color: var(--defaultBg) !important;
     }
 
     .ant-table-row {
       &:hover {
         td {
-          background-color: var(--bgBglessSolidHover)!important;
+          background-color: var(--bgBglessHoverSolid) !important;
         }
       }
     }
 
     .ant-table-container table > thead > tr:first-child th:first-child {
-      border-top-left-radius: 0!important;
+      border-top-left-radius: 0 !important;
     }
 
     .ant-table-container table > thead > tr:first-child th:last-child {
-      border-top-right-radius: 0!important;
+      border-top-right-radius: 0 !important;
     }
 
     .ant-table-thead {
       tr {
         th {
-          background-color: var(--bgCommonLower)!important;
+          background-color: var(--bgCommonLower) !important;
         }
       }
     }
 
     .ant-table-row-selected {
       td {
-        background-color: var(--bgBrandLightDefaultSolid)!important;
-        border-bottom: 1px solid var(--borderCommonDefault)!important;
-        border-color: var(--borderCommonDefault)!important;
+        background-color: var(--bgBrandLightDefaultSolid) !important;
+        border-bottom: 1px solid var(--borderCommonDefault) !important;
+        border-color: var(--borderCommonDefault) !important;
       }
     }
 
     .ant-table-tbody {
       tr {
-
         th {
           padding: 0;
-          overflow-wrap: normal!important;
+          overflow-wrap: normal !important;
         }
 
         td {
           padding: 0;
-          overflow-wrap: normal!important;
+          overflow-wrap: normal !important;
         }
       }
     }
 
     .ant-pagination-item-link {
-      background-color: inherit!important;
+      background-color: inherit !important;
     }
 
     .ant-pagination-item {
-      background-color: inherit!important;
-      border: none!important;
+      background-color: inherit !important;
+      border: none !important;
     }
 
     .ant-pagination-item-active {
-      background-color: var(--bgBrandLightDefault)!important;
+      background-color: var(--bgBrandLightDefault) !important;
       a {
-        color: var(--textBrandDefault)!important;
+        color: var(--textBrandDefault) !important;
       }
     }
     .ant-select {
-      width: 120px!important;
+      width: 120px !important;
     }
-    
+
     .ant-select-selector {
-      height: 32px!important;
-      border: none!important;
+      height: 32px !important;
+      border: none !important;
     }
 
     .ant-select-selection-item {
-      line-height: 32px!important;
+      line-height: 32px !important;
     }
 
     .ant-select-arrow {
-      margin-top: -4px!important;
+      margin-top: -4px !important;
     }
 
     .ant-pagination-options-quick-jumper {
-      margin-left: 20px!important;
-      height: 32px!important;
-      vertical-align: middle!important;
-      line-height: 32px!important;
+      margin-left: 20px !important;
+      height: 32px !important;
+      vertical-align: middle !important;
+      line-height: 32px !important;
       input {
-        height: 32px!important;
-        background-color: var(--bgControlsDefault)!important;
+        height: 32px !important;
+        background-color: var(--bgControlsDefault) !important;
       }
     }
     .ant-spin-blur {
       &:after {
-        opacity: 0!important;
+        opacity: 0 !important;
       }
     }
   }

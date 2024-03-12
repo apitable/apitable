@@ -22,9 +22,9 @@ import cn.hutool.core.util.EscapeUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.core.util.HttpContextUtil;
 import com.apitable.shared.constants.ParamsConstants;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * general information processing tool.

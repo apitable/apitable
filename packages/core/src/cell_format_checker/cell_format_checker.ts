@@ -17,25 +17,34 @@
  */
 
 import { AnyAction, Store } from 'redux';
-import { IFieldMap, IReduxState, Selectors } from '../exports/store';
+import { IFieldMap, IReduxState } from 'exports/store/interfaces';
+import { getSnapshot, getField } from 'modules/database/store/selectors/resource/datasheet/base';
+import { getCellValue } from 'modules/database/store/selectors/resource/datasheet/cell_calc';
 import { IJOTAction } from 'engine';
-import { Field, ICellValue } from 'model';
+import { Field } from 'model/field';
+import { ICellValue } from 'model/record';
 import produce from 'immer';
 import { FieldType, IField } from 'types';
+import { OneWayLinkField } from '../model/field/one_way_link_field';
 
 export class CellFormatChecker {
   constructor(private store: Store<IReduxState, AnyAction>) {}
 
   static checkValueValid(cellValue: any, field: IField, state: IReduxState) {
-    if (Field.bindContext(field, state).validate(cellValue)) {
+    const isValid = Field.bindContext(field, state).validate(cellValue);
+    if (isValid) {
       return cellValue;
+    }
+    // One-way link invalid data needs to be filtered out
+    if (field.type === FieldType.OneWayLink) {
+      return (Field.bindContext(field, state) as OneWayLinkField).filterRecordIds(cellValue);
     }
     return null;
   }
 
   private convertValue(fieldId: string, recordId: string, cellValue: ICellValue, fieldMapSnapshot: IFieldMap, datasheetId: string) {
     const state = this.store.getState();
-    const currentField = Selectors.getField(state, fieldId, datasheetId);
+    const currentField = getField(state, fieldId, datasheetId);
     const previousField = fieldMapSnapshot[fieldId]!;
     if (fieldMapSnapshot[currentField.id]!.type === currentField.type) {
       return CellFormatChecker.checkValueValid(cellValue, currentField, state);
@@ -44,14 +53,14 @@ export class CellFormatChecker {
     const stdValue = Field.bindContext(previousField, state).cellValueToStdValue(cellValue);
     const result = Field.bindContext(currentField, state).stdValueToCellValue(stdValue);
 
-    // Because the data has been corrected, 
-    // the old data structure will be updated at the same time to prevent the data from being correct 
+    // Because the data has been corrected,
+    // the old data structure will be updated at the same time to prevent the data from being correct
     // and the recorded FieldType is still wrong, resulting in an error in the middle layer
     fieldMapSnapshot[currentField.id] = currentField;
 
     if (cellValue && !result && currentField.type === FieldType.Link) {
       // Fix the data exception caused by the lack of associated ops in this table
-      return Selectors.getCellValue(state, Selectors.getSnapshot(state)!, recordId, currentField.id);
+      return getCellValue(state, getSnapshot(state)!, recordId, currentField.id);
     }
 
     return result;

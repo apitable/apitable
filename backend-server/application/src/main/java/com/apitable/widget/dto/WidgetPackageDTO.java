@@ -20,6 +20,9 @@ package com.apitable.widget.dto;
 
 import lombok.Data;
 
+/**
+ * widget package dto.
+ */
 @Data
 public class WidgetPackageDTO {
 

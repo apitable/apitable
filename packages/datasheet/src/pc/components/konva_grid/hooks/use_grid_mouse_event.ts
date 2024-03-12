@@ -482,8 +482,11 @@ export const useGridMouseEvent = (props: IUseGridMouseEventProps) => {
                 const isCryptoField = fieldRole === ConfigConstant.Role.None;
                 if (groupField == null && !isCryptoField) break;
                 const cellValue = isCryptoField ? null : Selectors.getCellValue(state, snapshot, recordId, groupField.id);
+
+                const permissions = Selectors.getDatasheet(state)?.permissions || {};
                 const renderProps = {
                   x: depth * GRID_GROUP_OFFSET + 0.5 + 25.5,
+                  permissions,
                   y: y + 17.5,
                   columnWidth,
                   rowHeight: height - 18,

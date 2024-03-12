@@ -18,11 +18,11 @@
 
 package com.apitable.shared.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * <p>
- * base servlet interceptor
+ * base servlet interceptor.
  * </p>
  *
  * @author Shawn Deng

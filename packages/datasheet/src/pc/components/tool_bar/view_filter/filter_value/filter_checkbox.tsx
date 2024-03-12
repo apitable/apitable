@@ -19,17 +19,17 @@
 import debounce from 'lodash/debounce';
 import * as React from 'react';
 import { useContext, useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
 import { IDateTimeField, Selectors } from '@apitable/core';
 import { CheckboxEditor } from 'pc/components/editors/checkbox_editor';
 import { IEditor } from 'pc/components/editors/interface';
 import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
+import { useAppSelector } from 'pc/store/react-redux';
 import { IFilterCheckboxProps } from '../interface';
 import styles from './style.module.less';
 
 export const FilterCheckbox: React.FC<React.PropsWithChildren<Omit<IFilterCheckboxProps, 'execute'>>> = (props) => {
   const { condition, onChange, field, disabled } = props;
-  const datasheetId = useSelector((state) => Selectors.getActiveDatasheetId(state))!;
+  const datasheetId = useAppSelector((state) => Selectors.getActiveDatasheetId(state))!;
   const checkboxRef = useRef<IEditor>(null);
   const { isViewLock } = useContext(ViewFilterContext);
   const checkBoxDisabled = isViewLock || disabled;

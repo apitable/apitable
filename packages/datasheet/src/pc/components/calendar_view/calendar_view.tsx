@@ -21,7 +21,7 @@ import dayjs from 'dayjs';
 import { FC, useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import { Button, Calendar, Tooltip, useThemeColors } from '@apitable/components';
 import {
@@ -46,6 +46,7 @@ import { RecordMenu } from 'pc/components/multi_grid/context_menu/record_menu';
 import { setColor } from 'pc/components/multi_grid/format';
 import { useResponsive } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
 import { VikaSplitPanel } from '../common';
 import { ScreenSize } from '../common/component_display/enum';
@@ -88,7 +89,7 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
     viewId,
     cacheTheme,
     activeCell,
-  } = useSelector((state) => {
+  } = useAppSelector((state) => {
     const dstId = Selectors.getActiveDatasheetId(state)!;
     const currSnapshot = Selectors.getSnapshot(state, dstId)!;
     const currView = Selectors.getCurrentView(state)!;
@@ -143,7 +144,7 @@ export const CalendarView: FC<React.PropsWithChildren<ICalendarViewProps>> = () 
   const startField = fieldMap[startFieldId];
   const endField = fieldMap[endFieldId];
   const dispatch = useDispatch();
-  const mirrorId = useSelector((state) => state.pageParams.mirrorId);
+  const mirrorId = useAppSelector((state) => state.pageParams.mirrorId);
 
   useEffect(() => {
     /**

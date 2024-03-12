@@ -19,7 +19,7 @@
 import { Input, TreeSelect } from 'antd';
 import type { DataNode } from 'antd/es/tree';
 import { useEffect, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button, ButtonGroup, Skeleton, useThemeColors } from '@apitable/components';
 import { Api, IReduxState, ITeamTreeNode, StoreActions, Strings, t } from '@apitable/core';
 import { ChevronDownOutlined, DeleteOutlined, TimeOutlined, CopyOutlined, TriangleRightFilled } from '@apitable/icons';
@@ -28,6 +28,7 @@ import { Message, Popconfirm, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/mobile/modal';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard } from 'pc/utils';
 import { InviteAlert } from '../components/invite-alert';
 import styles from './style.module.less';
@@ -37,7 +38,7 @@ const { TreeNode } = TreeSelect;
 export const LinkInvite = () => {
   const colors = useThemeColors();
   const dispatch = useAppDispatch();
-  const { linkList, userInfo, teamList } = useSelector(
+  const { linkList, userInfo, teamList } = useAppSelector(
     (state: IReduxState) => ({
       linkList: state.invite.linkList,
       userInfo: state.user.info,
@@ -222,7 +223,7 @@ export const LinkInvite = () => {
               treeIcon
               switcherIcon={<TriangleRightFilled size={12} />}
               showSearch={false}
-              dropdownClassName="dropdownInvite"
+              popupClassName="dropdownInvite"
               treeDefaultExpandedKeys={[firstTeamId]}
               listHeight={200}
               onTreeExpand={onExpand}

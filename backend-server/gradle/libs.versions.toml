@@ -1,0 +1,215 @@
+[versions]
+spring-boot = "3.2.1"
+aws = "1.12.595"
+p6spy = "3.9.1"
+hutool = "5.8.24"
+jsoup = "1.17.2"
+knife4j-openapi3 = "4.3.0"
+mybatis-plus = "3.5.5"
+aliyun-core = "4.5.13"
+aliyun-afs = "1.0.1"
+aliyun-oss = "3.17.4"
+qiniu = "7.15.0"
+huweicloud-obs = "3.23.9.1"
+qcloud-sms = "1.0.6"
+qcloud-ses = "3.1.899"
+yunpian = "1.2.7"
+ibeetl = "3.15.10.RELEASE"
+xerces-impl = "2.12.2"
+easyexcel = "3.3.3"
+commons-compress = "1.21"
+xstream = "1.4.20"
+wx = "4.2.0"
+sensors = "3.1.15"
+posthog = "1.0.3"
+socketio = "2.1.0"
+pingpp = "2.3.14"
+alipay-easy = "2.2.3"
+wechatpay = "0.2.12"
+pdfbox = "3.0.1"
+semver = "0.9.0"
+auth0 = "1.9.2"
+stripe = "22.22.0"
+shedlock = "5.10.0"
+nimbus = "9.22"
+jose4j = "0.9.3"
+sentry = "7.0.0"
+minio = "8.5.7"
+vi = "1.0.4"
+social = "1.0.8"
+imageio = "1.4.0"
+imageio-jbig2 = "3.0.4"
+grpc = "2.15.0.RELEASE"
+protobuf = "3.25.0"
+iogrpc = "1.59.1"
+annotation-api = "1.3.2"
+json = "20231013"
+mysql-connector-j = "8.2.0"
+# plugin version
+spring-dependency-management-plugin = "1.1.4"
+protobuf-plugin = "0.9.4"
+checkstyle = "10.12.5"
+sentry-plugin = "4.0.0"
+
+[libraries]
+# spring dependencies
+spring-web = { module = "org.springframework:spring-web" }
+spring-context = { module = "org.springframework:spring-context" }
+spring-rabbit = { module = "org.springframework.amqp:spring-rabbit" }
+spring-retry = { module = "org.springframework.retry:spring-retry" }
+spring-session-redis = { module = "org.springframework.session:spring-session-data-redis" }
+
+# spring security dependencies
+spring-security-cas = { module = "org.springframework.security:spring-security-cas" }
+
+# spring integration dependencies
+spring-integration-redis = { module = "org.springframework.integration:spring-integration-redis" }
+
+# spring plugin dependencies
+spring-plugin-core = { module = "org.springframework.plugin:spring-plugin-core", version = "2.0.0.RELEASE" }
+spring-plugin-metadata = { module = "org.springframework.plugin:spring-plugin-metadata", version = "2.0.0.RELEASE" }
+
+# spring boot dependencies
+spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
+spring-boot = { module = "org.springframework.boot:spring-boot" }
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter" }
+spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
+spring-boot-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux" }
+spring-boot-thymeleaf = { module = "org.springframework.boot:spring-boot-starter-thymeleaf" }
+spring-boot-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+spring-boot-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
+spring-boot-aop = { module = "org.springframework.boot:spring-boot-starter-aop" }
+spring-boot-redis = { module = "org.springframework.boot:spring-boot-starter-data-redis" }
+spring-boot-security = { module = "org.springframework.boot:spring-boot-starter-security" }
+spring-boot-mail = { module = "org.springframework.boot:spring-boot-starter-mail" }
+spring-boot-amqp = { module = "org.springframework.boot:spring-boot-starter-amqp" }
+spring-boot-integration = { module = "org.springframework.boot:spring-boot-starter-integration" }
+
+# test framework dependencies
+spring-boot-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-security-test = { module = "org.springframework.security:spring-security-test" }
+assertj = { module = "org.assertj:assertj-core" }
+hamcrest = { module = "org.hamcrest:hamcrest" }
+mockito-inline = { module = "org.mockito:mockito-inline" }
+awaitility = { module = "org.awaitility:awaitility" }
+reactor = { module = "io.projectreactor:reactor-test" }
+visible-assertions = { module = "org.rnorth.visible-assertions:visible-assertions", version = "2.1.2" }
+
+# aws dependencies
+aws = { module = "com.amazonaws:aws-java-sdk-bom", version.ref = "aws" }
+aws-s3 = { module = "com.amazonaws:aws-java-sdk-s3" }
+
+# openapi document dependencies
+knife4j-openapi3 = { module = "com.github.xiaoymin:knife4j-openapi3-jakarta-spring-boot-starter", version.ref = "knife4j-openapi3" }
+
+# ORM dependencies
+mybatis-plus = { module = "com.baomidou:mybatis-plus-boot-starter", version.ref = "mybatis-plus" }
+mybatis-plus-test = { module = "com.baomidou:mybatis-plus-boot-starter-test", version.ref = "mybatis-plus" }
+mybatis-spring = { module = "org.mybatis:mybatis-spring", version = "3.0.3" }
+
+# plateform integration dependencies
+aliyun-core = { module = "com.aliyun:aliyun-java-sdk-core", version.ref = "aliyun-core" }
+aliyun-afs = { module = "com.aliyun:aliyun-java-sdk-afs", version.ref = "aliyun-afs" }
+aliyun-oss = { module = "com.aliyun.oss:aliyun-sdk-oss", version.ref = "aliyun-oss" }
+qcloud-sms = { module = "com.github.qcloudsms:qcloudsms", version.ref = "qcloud-sms" }
+qcloud-ses = { module = "com.tencentcloudapi:tencentcloud-sdk-java-ses", version.ref = "qcloud-ses" }
+minio = { module = "io.minio:minio", version.ref = "minio" }
+qiniu = { module = "com.qiniu:qiniu-java-sdk", version.ref = "qiniu" }
+huaweicloud-obs = { module = "com.huaweicloud:esdk-obs-java-bundle", version.ref = "huweicloud-obs" }
+yunpian = { module = "com.yunpian.sdk:yunpian-java-sdk", version.ref = "yunpian" }
+sensors = { module = "com.sensorsdata.analytics.javasdk:SensorsAnalyticsSDK", version.ref = "sensors" }
+posthog = { module = "com.posthog.java:posthog", version.ref = "posthog" }
+pingpp = { module = "Pingplusplus:pingpp-java", version.ref = "pingpp" }
+alipay-easy = { module = "com.alipay.sdk:alipay-easysdk", version.ref = "alipay-easy" }
+wechatpay = { module = "com.github.wechatpay-apiv3:wechatpay-java", version.ref = "wechatpay" }
+stripe = { module = "com.stripe:stripe-java", version.ref = "stripe" }
+wx-open = { module = "com.github.binarywang:weixin-java-open", version.ref = "wx" }
+wx-mp = { module = "com.github.binarywang:weixin-java-mp", version.ref = "wx" }
+wx-miniapp = { module = "com.github.binarywang:weixin-java-miniapp", version.ref = "wx" }
+wx-cp = { module = "com.github.binarywang:weixin-java-cp", version.ref = "wx" }
+auth0 = { module = "com.auth0:mvc-auth-commons", version.ref = "auth0" }
+v-client = { module = "cn.vika:vika-client", version.ref = "vi" }
+social-feishu = { module = "cn.vika:vika-social-feishu", version.ref = "social" }
+social-dingtalk = { module = "cn.vika:vika-social-dingtalk", version.ref = "social" }
+social-wecom = { module = "cn.vika:vika-social-wecom", version.ref = "social" }
+social-qq = { module = "cn.vika:vika-social-qq", version.ref = "social" }
+sentry-dependencies = { module = "io.sentry:sentry-bom", version.ref = "sentry" }
+sentry-spring = { module = "io.sentry:sentry-spring-boot-starter-jakarta" }
+sentry-logback = { module = "io.sentry:sentry-logback" }
+sentry-client = { module = "io.sentry:sentry-apache-http-client-5" }
+
+# spring bundle constraints dependencies
+commons-pool2 = { module = "org.apache.commons:commons-pool2" }
+prometheus-pushgateway = { module = "io.prometheus:simpleclient_pushgateway" }
+mysql = { module = "com.mysql:mysql-connector-j", version.ref = "mysql-connector-j" }
+lombok = { module = "org.projectlombok:lombok" }
+jackson = { module = "com.fasterxml.jackson.core:jackson-databind" }
+gson = { module = "com.google.code.gson:gson" }
+servlet = { module = "jakarta.servlet:jakarta.servlet-api" }
+jedis = { module = "redis.clients:jedis" }
+slf4j = { module = "org.slf4j:slf4j-api" }
+logback = { module = "ch.qos.logback:logback-classic" }
+httpclient5 = { module = "org.apache.httpcomponents.client5:httpclient5" }
+
+#### grpc dependencies begin ####
+
+# io-grpc bundle dependencies
+iogrpc-dependencies = { module = "io.grpc:grpc-bom", version.ref = "iogrpc" }
+iogrpc-netty-shaded = { module = "io.grpc:grpc-netty-shaded" }
+iogrpc-protobuf = { module = "io.grpc:grpc-protobuf" }
+iogrpc-stub = { module = "io.grpc:grpc-stub" }
+iogrpc-testing = { module = "io.grpc:grpc-testing" }
+
+# protobuf bundle dependencies
+protobuf-dependencies = { module = "com.google.protobuf:protobuf-bom", version.ref = "protobuf" }
+protobuf-java = { module = "com.google.protobuf:protobuf-java" }
+
+# grpc starter dependencies
+grpc = { module = "net.devh:grpc-spring-boot-starter", version.ref = "grpc" }
+
+#### grpc dependencies end ####
+
+# other dependencies
+socketio = { module = "io.socket:socket.io-client", version.ref = "socketio" }
+easyexcel = { module = "com.alibaba:easyexcel", version.ref = "easyexcel" }
+xerces-impl = { module = "xerces:xercesImpl", version.ref = "xerces-impl" }
+beetl = { module = "com.ibeetl:beetl", version.ref = "ibeetl" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+p6spy = { module = "p6spy:p6spy", version.ref = "p6spy" }
+hutool-core = { module = "cn.hutool:hutool-core", version.ref = "hutool" }
+hutool-json = { module = "cn.hutool:hutool-json", version.ref = "hutool" }
+hutool-crypto = { module = "cn.hutool:hutool-crypto", version.ref = "hutool" }
+hutool-http = { module = "cn.hutool:hutool-http", version.ref = "hutool" }
+pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox" }
+pdfbox-tools = { module = "org.apache.pdfbox:pdfbox-tools", version.ref = "pdfbox" }
+pdfbox-jbig2 = { module = "org.apache.pdfbox:jbig2-imageio", version.ref = "imageio-jbig2" }
+imageio-jpeg2000 = { module = "com.github.jai-imageio:jai-imageio-jpeg2000", version.ref = "imageio" }
+nimbus = { module = "com.nimbusds:nimbus-jose-jwt", version.ref = "nimbus" }
+jose4j = { module = "org.bitbucket.b_c:jose4j", version.ref = "jose4j" }
+semver = { module = "com.github.zafarkhaja:java-semver", version.ref = "semver" }
+shedlock = { module = "net.javacrumbs.shedlock:shedlock-spring", version.ref = "shedlock" }
+shedlock-redis = { module = "net.javacrumbs.shedlock:shedlock-provider-redis-spring", version.ref = "shedlock" }
+annotation-api = { module = "javax.annotation:javax.annotation-api", version.ref = "annotation-api" }
+json = { module = "org.json:json", version.ref = "json" }
+commons-compress = { module = "org.apache.commons:commons-compress", version.ref = "commons-compress" }
+xstream = { module = "com.thoughtworks.xstream:xstream", version.ref = "xstream" }
+
+[bundles]
+# group libraries
+hutool = ["hutool-core", "hutool-json", "hutool-crypto", "hutool-http"]
+easyexcel = ["easyexcel", "xerces-impl"]
+slf4j-logback = ["slf4j", "logback"]
+pdfbox = ["pdfbox", "pdfbox-tools", "pdfbox-jbig2", "imageio-jpeg2000"]
+shedlock = ["shedlock", "shedlock-redis"]
+sentry = ["sentry-spring", "sentry-logback"]
+social = ["social-feishu", "social-dingtalk", "social-wecom", "social-qq"]
+iogrpc = ["iogrpc-netty-shaded", "iogrpc-protobuf", "iogrpc-stub"]
+apidoc = ["knife4j-openapi3"]
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management-plugin" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }
+sentry = { id = "io.sentry.jvm.gradle", version.ref = "sentry-plugin" }
+

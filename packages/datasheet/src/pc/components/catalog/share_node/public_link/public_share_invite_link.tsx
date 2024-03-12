@@ -19,9 +19,9 @@
 import { useRequest } from 'ahooks';
 import { Tooltip } from 'antd';
 import { FC, useState, useCallback } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { Skeleton, IconButton, Button, LinkButton, DoubleSelect, IDoubleOptions, Switch, Typography, useThemeColors } from '@apitable/components';
-import { Api, Navigation, IReduxState, IShareSettings, StoreActions, Strings, t } from '@apitable/core';
+import { Api, Navigation, IReduxState, IShareSettings, StoreActions, Strings, t, ConfigConstant } from '@apitable/core';
 import {
   CodeOutlined,
   LinkOutlined,
@@ -37,13 +37,14 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { Router } from 'pc/components/route_manager/router';
 import { automationReg, useCatalogTreeRequest, useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { DisabledShareFile } from '../disabled_share_file/disabled_share_file';
 import { ShareQrCode } from '../share_qr_code';
-import styles from './style.module.less';
 // @ts-ignore
-import { WidgetEmbed } from 'enterprise';
+import { WidgetEmbed } from 'enterprise/chat/widget_embed';
+import styles from './style.module.less';
 
 export interface IPublicShareLinkProps {
   nodeId: string;
@@ -63,7 +64,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
   const [shareStatus, setShareStatus] = useState(false);
   const dispatch = useDispatch();
   const [WidgetEmbedVisible, setWidgetEmbedVisible] = useState(false);
-  const isAI = nodeId.startsWith('ai_');
+  const isAI = nodeId.startsWith(ConfigConstant.NodeTypeReg.AI);
 
   const automationId = getRegResult('/'+nodeId, autIdReg);
   const hideShareCodeModal = useCallback(() => {
@@ -72,7 +73,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
   const colors = useThemeColors();
   const { getShareSettingsReq } = useCatalogTreeRequest();
   const { run: getShareSettings, data: shareSettings } = useRequest<IShareSettings, any>(() => getShareSettingsReq(nodeId));
-  const { userInfo, treeNodesMap, spaceFeatures } = useSelector(
+  const { userInfo, treeNodesMap, spaceFeatures } = useAppSelector(
     (state: IReduxState) => ({
       treeNodesMap: state.catalogTree.treeNodesMap,
       userInfo: state.user.info,
@@ -230,8 +231,6 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
       },
     ];
   }
-  console.log('automationId', automationId)
-  console.log('Permission', Permission)
 
   let value = '';
   if (shareSettings) {
@@ -295,10 +294,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
 
   if (!spaceFeatures?.fileSharable) {
     return (
-      <>
-        {renderShareSwitchButton()}
-        <DisabledShareFile style={{ marginBottom: 16 }} />
-      </>
+      <DisabledShareFile style={{ marginBottom: 16 }} />
     );
   }
 
@@ -319,7 +315,7 @@ export const PublicShareInviteLink: FC<React.PropsWithChildren<IPublicShareLinkP
       </div>
     );
   }
-
+  
   return (
     <div className={styles.publish}>
       {renderShareSwitchButton()}

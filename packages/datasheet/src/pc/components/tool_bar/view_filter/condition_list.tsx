@@ -19,7 +19,6 @@
 import { Col, Row } from 'antd';
 import { isEqual } from 'lodash';
 import { FC, useContext, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { colorVars, IconButton, WrapperTooltip } from '@apitable/components';
 import {
   ConfigConstant,
@@ -38,6 +37,7 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { checkComputeRef } from 'pc/components/multi_grid/field_setting';
 import { InvalidValue } from 'pc/components/tool_bar/view_filter/invalid_value';
 import { ViewFilterContext } from 'pc/components/tool_bar/view_filter/view_filter_context';
+import { useAppSelector } from 'pc/store/react-redux';
 import { FilterConjunction } from './filter_conjunction/filter_conjunction';
 import { FilterFieldList } from './filter_field_list';
 import { FilterOperate } from './filter_operate';
@@ -57,11 +57,11 @@ interface IConditionList {
 const ConditionList: FC<React.PropsWithChildren<IConditionList>> = (props) => {
   const { filterInfo, fieldMap, changeFilter, deleteFilter, datasheetId, field } = props;
   const { conditions, conjunction = FilterConjunctionEnum.And } = filterInfo || {};
-  const columns = useSelector((state) => {
+  const columns = useAppSelector((state) => {
     const view = Selectors.getCurrentView(state, datasheetId);
     return view!.columns as IViewColumn[];
   });
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
   const { isViewLock } = useContext(ViewFilterContext);
 
   // Check if the magic lookup filter is circularly referenced

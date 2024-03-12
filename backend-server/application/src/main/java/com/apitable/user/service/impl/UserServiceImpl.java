@@ -112,6 +112,8 @@ import com.apitable.workspace.service.INodeShareService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.toolkit.SqlHelper;
 import com.google.common.collect.Lists;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -120,8 +122,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -336,7 +336,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             // and has not been bound to other accounts,
             // activate the space members of the invited mail
             List<MemberDTO> inactiveMembers =
-                iMemberService.getInactiveMemberByEmails(email);
+                iMemberService.getInactiveMemberByEmail(email);
             inactiveMemberProcess(user.getId(), inactiveMembers);
         } else {
             String spaceName = user.getNickName();
@@ -417,7 +417,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
             // and has not been bound to other accounts,
             // activate the space members of the invited mailbox
             List<MemberDTO> inactiveMembers =
-                iMemberService.getInactiveMemberByEmails(email);
+                iMemberService.getInactiveMemberByEmail(email);
             hasSpace = this.inactiveMemberProcess(entity.getId(),
                 inactiveMembers);
         }
@@ -486,11 +486,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserEntity createUserByEmail(final String email, final String password) {
+        return createUserByEmail(email, password, languageManager.getDefaultLanguageTag());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public UserEntity createUserByEmail(final String email, final String password, String lang) {
         UserEntity entity = UserEntity.builder()
             .uuid(IdUtil.fastSimpleUUID())
             .email(email)
             .nickName(StringUtils.substringBefore(email, "@"))
-            .locale(languageManager.getDefaultLanguageTag())
+            .locale(lang)
             .color(RandomUtil.randomInt(0, USER_AVATAR_COLOR_MAX_VALUE))
             .lastLoginTime(LocalDateTime.now())
             .build();
@@ -543,12 +549,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         ExceptionUtil.isBlank(userEmail, LINK_EMAIL_ERROR);
         // Bind as user email, and the email
         // will be activated by invited space members together
-        updateEmailByUserId(userId, email);
+        updateEmailByUserId(userId, email, null);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateEmailByUserId(final Long userId, final String email) {
+    public void updateEmailByUserId(final Long userId, final String email, final String oldEmail) {
         log.info("Modify User [{}] email [{}]", userId, email);
         UserEntity updateUser = new UserEntity();
         updateUser.setId(userId);
@@ -561,11 +567,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         // and has not been bound to other accounts,
         // activate the space members of the invited email
         List<MemberDTO> inactiveMembers =
-            iMemberService.getInactiveMemberByEmails(email);
+            iMemberService.getInactiveMemberByEmail(email);
         this.inactiveMemberProcess(userId, inactiveMembers);
         // Delete Cache
         loginUserCacheService.delete(userId);
-        userServiceFacade.onUserChangeEmailAction(userId, email);
+        userServiceFacade.onUserChangeEmailAction(userId, email, oldEmail);
     }
 
     @Override
@@ -600,7 +606,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
         // and no other account has been bound,
         // activate the invited space member
         List<MemberDTO> inactiveMembers =
-            iMemberService.getInactiveMemberByEmails(mobile);
+            iMemberService.getInactiveMemberDtoByMobile(mobile);
         this.inactiveMemberProcess(userId, inactiveMembers);
 
         // Delete Cache
@@ -1198,5 +1204,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserEntity>
                 vo.setAvatar(i.getAvatar());
                 return vo;
             }));
+    }
+
+    @Override
+    public List<UserEntity> getByIds(List<Long> userIds) {
+        return baseMapper.selectByIds(userIds);
     }
 }

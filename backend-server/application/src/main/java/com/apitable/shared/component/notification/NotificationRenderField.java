@@ -21,13 +21,12 @@ package com.apitable.shared.component.notification;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
-
 import lombok.Builder;
 import lombok.Data;
 
 /**
  * <p>
- * notification render field
+ * notification render field.
  * </p>
  *
  * @author zoe zheng

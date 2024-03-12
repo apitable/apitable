@@ -18,21 +18,21 @@
 
 import Image from 'next/image';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Message } from '@apitable/components';
 import { DatasheetApi, Selectors, Strings, t } from '@apitable/core';
 import { Modal } from 'pc/components/common';
 import { IDisabledPermission } from 'pc/components/field_permission/interface';
 import styles from 'pc/components/field_permission/styles.module.less';
+import { useAppSelector } from 'pc/store/react-redux';
 import permissionImage from 'static/icon/datasheet/datasheet_img_field_permission.png';
 // @ts-ignore
-import { triggerUsageAlert } from 'enterprise';
+import { triggerUsageAlert } from 'enterprise/billing';
 
 export const DisabledFieldPermission: React.FC<React.PropsWithChildren<IDisabledPermission>> = (props) => {
   const { setPermissionStatus, field } = props;
-  const datasheetId = useSelector((state) => state.pageParams.datasheetId)!;
-  const views = useSelector(Selectors.getViewsList);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo)!;
+  const datasheetId = useAppSelector((state) => state.pageParams.datasheetId)!;
+  const views = useAppSelector(Selectors.getViewsList);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo)!;
 
   const openFieldPermission = async () => {
     const res = await DatasheetApi.setFieldPermissionStatus(datasheetId, field.id, true);

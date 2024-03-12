@@ -18,12 +18,12 @@
 
 import classNames from 'classnames';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { Selectors, t, Strings } from '@apitable/core';
 import { CheckCircleFilled } from '@apitable/icons';
 import { ViewIcon } from 'pc/components/tool_bar/view_switcher/view_icon';
 import { changeView } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
 
 interface IViewListBox {
@@ -34,8 +34,8 @@ interface IViewListBox {
 export const ViewListBox: React.FC<React.PropsWithChildren<IViewListBox>> = (props) => {
   const colors = useThemeColors();
   const { hideViewList, displayState } = props;
-  const snapshot = useSelector((state) => Selectors.getSnapshot(state));
-  const activeViewId = useSelector((state) => Selectors.getActiveViewId(state));
+  const snapshot = useAppSelector((state) => Selectors.getSnapshot(state));
+  const activeViewId = useAppSelector((state) => Selectors.getActiveViewId(state));
 
   const switchView = (id: string) => {
     if (activeViewId === id) {

@@ -1,14 +1,14 @@
-import { IJOTAction, OTActionName } from 'index';
+import { IJOTAction, OTActionName } from '../engine/ot/interface';
 import {
   ICalendarViewProperty,
   ISetCalendarStyle,
   ISnapshot,
-  ViewType
-} from '../exports/store';
-import { getViewIndex } from '../exports/store/selectors';
-import { IGalleryViewProperty, 
-  IGanttViewProperty, 
-  IKanbanViewProperty, IOrgChartViewProperty, 
+} from '../exports/store/interfaces';
+import { ViewType } from 'modules/shared/store/constants';
+import { getViewIndex } from 'modules/database/store/selectors/resource/datasheet/calc';
+import { IGalleryViewProperty,
+  IGanttViewProperty,
+  IKanbanViewProperty, IOrgChartViewProperty,
   ISetGalleryStyle, ISetGanttStyle, ISetKanbanStyleValue, ISetOrgChartStyle } from '../exports/store/interfaces';
 export class ViewAction {
 

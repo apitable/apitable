@@ -21,10 +21,11 @@ import classnames from 'classnames';
 import * as React from 'react';
 import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { ThemeProvider } from '@apitable/components';
 import { Selectors } from '@apitable/core';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { PopupContent } from './popup_content/pc';
 import styles from './style.module.less';
 
@@ -55,7 +56,7 @@ interface IShowViewManualSaveInPcContentProps {
 }
 
 const ViewManualSaveAlertContentWithTheme: React.FC<React.PropsWithChildren<IShowViewManualSaveInPcContentProps>> = (props) => {
-  const cacheTheme = useSelector(Selectors.getTheme);
+  const cacheTheme = useAppSelector(Selectors.getTheme);
   return (
     <ThemeProvider theme={cacheTheme}>
       <ViewManualSaveAlertContent {...props} />
@@ -65,8 +66,8 @@ const ViewManualSaveAlertContentWithTheme: React.FC<React.PropsWithChildren<ISho
 
 const ViewManualSaveAlertContent: React.FC<React.PropsWithChildren<IShowViewManualSaveInPcContentProps>> = (props) => {
   const { modalClose } = props;
-  const { datasheetId, viewId } = useSelector((state) => state.pageParams);
-  const currentView = useSelector((state) => Selectors.getCurrentView(state, datasheetId));
+  const { datasheetId, viewId } = useAppSelector((state) => state.pageParams);
+  const currentView = useAppSelector((state) => Selectors.getCurrentView(state, datasheetId));
   const [show, setShow] = useState(false);
   const isViewLock = Boolean(currentView?.lockInfo);
 

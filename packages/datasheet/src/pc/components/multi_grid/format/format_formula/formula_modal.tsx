@@ -20,7 +20,6 @@ import classNames from 'classnames';
 import Fuse from 'fuse.js';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Button, TextButton, useThemeColors } from '@apitable/components';
 import {
   expressionTransform,
@@ -43,12 +42,13 @@ import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_dis
 import { FieldPermissionLock } from 'pc/components/field_permission';
 import { useSelectIndex } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { KeyCode } from 'pc/utils';
 import { getFieldTypeIcon } from '../../field_setting';
 import { FormulaGuiding } from './formula_guiding';
-import styles from './styles.module.less';
 import { ExpressionColorant } from './token_colorant';
 import { ValueTypeIcon } from './value_type_icon';
+import styles from './styles.module.less';
 
 const FORMULA_TEXTAREA_ELEMENT = 'FORMULA_TEXTAREA_ELEMENT';
 const FORMULA_COLORANT_ELEMENT = 'FORMULA_COLORANT_ELEMENT';
@@ -84,11 +84,11 @@ const FunctionsArray = Array.from(Functions)
 export const FormulaModal: React.FC<React.PropsWithChildren<IFormulaModal>> = (props) => {
   const colors = useThemeColors();
   const { field, expression: initExpression, onClose, onSave, datasheetId } = props;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
   const formulaInputEleRef = useRef<HTMLElement>();
   const formulaColorantEleRef = useRef<HTMLElement>();
-  const _columns = useSelector((state) => Selectors.getCurrentView(state, datasheetId)!.columns)! as IViewColumn[];
+  const _columns = useAppSelector((state) => Selectors.getCurrentView(state, datasheetId)!.columns)! as IViewColumn[];
   const columns = _columns.filter((column) => column.fieldId !== field.id); // Formula fields are not allowed to select themselves
   const [expError, setExpError] = useState<string>('');
   const [tokens, setTokens] = useState<Token[]>();

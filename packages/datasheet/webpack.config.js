@@ -56,7 +56,7 @@ const compatibleIE11 = async (config) => {
   return entries;
 };
 
-const setResolveAlias = (config) => {
+const setResolveAlias = (config, options) => {
   config.resolve.alias.react = path.resolve(__dirname, '../../', 'node_modules', 'react');
   config.resolve.alias['react-dom'] = path.resolve(__dirname, '../../', 'node_modules', 'react-dom');
   config.resolve.alias = {
@@ -64,7 +64,9 @@ const setResolveAlias = (config) => {
     api: path.resolve(__dirname, './src/modules/api'),
     pc: path.resolve(__dirname, './src/pc'),
     static: path.resolve(__dirname, './public/static'),
-    enterprise: process.env.IS_ENTERPRISE === 'true' ? path.resolve(__dirname, './src/modules/enterprise') : path.resolve(__dirname, './src/noop'),
+    enterprise: process.env.IS_ENTERPRISE === 'true' ? path.resolve(__dirname, './src/modules/enterprise') : false,
+    // JSON cannot use tree shaking, it needs to be configured here
+    '@apitable/i18n-lang/src/config/strings.json': options.isServer ? '@apitable/i18n-lang/src/config/strings.json' : false,
   };
 };
 
@@ -128,7 +130,7 @@ module.exports = (config, options) => {
   // if (process.env.IS_ENTERPRISE === 'true') {
   //   config.resolve.symlinks = false
   // }
-  config.entry = compatibleIE11(config);
+  // config.entry = compatibleIE11(config);
 
   // if (!options.isServer) {
   //     config.externals = config.externals.concat(...[
@@ -150,8 +152,7 @@ module.exports = (config, options) => {
   //             callback();
   //         }])
   // }
-
-  setResolveAlias(config);
+  setResolveAlias(config, options);
 
   setRules(config);
 
@@ -172,7 +173,7 @@ module.exports = (config, options) => {
   config.experiments = {
     ...config.experiments,
     asyncWebAssembly: true,
-    layers: true,
+    // layers: true,
   };
 
   if (isProd && options.isServer) {

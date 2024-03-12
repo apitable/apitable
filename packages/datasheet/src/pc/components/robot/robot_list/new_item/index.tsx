@@ -10,6 +10,7 @@ interface INewItemProps {
   height?: number;
   className?: string;
   children: ReactNode;
+  itemId?: string,
   disabled: boolean;
   onClick?: (event: MouseEvent<HTMLElement>) => void;
 }
@@ -36,12 +37,13 @@ export const StyledBox = styled(Box)<{ disabled?: boolean }>`
 
 const DEFAULT_ADD_ITEM_HEIGHT = 84;
 
-export const NewItem: FC<INewItemProps> = forwardRef<any, INewItemProps>(({ className, onClick, height, children, disabled }, ref) => {
+export const NewItem: FC<INewItemProps> = forwardRef<any, INewItemProps>(({ className, itemId,
+  onClick, height, children, disabled }, ref) => {
   const theme = useTheme();
 
   return (
     <StyledBox
-      id={"AUTOMATION_ADD_TRIGGER_BTN"}
+      id={itemId}
       ref={ref}
       tabIndex={-1}
       border={disabled ? `1px dashed ${theme.color.fc5}` : `1px solid ${theme.color.fc5}`}

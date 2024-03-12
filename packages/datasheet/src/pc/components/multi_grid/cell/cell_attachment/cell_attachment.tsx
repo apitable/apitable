@@ -20,7 +20,7 @@ import classNames from 'classnames';
 import { uniqBy } from 'lodash';
 import * as React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Tooltip, useThemeColors } from '@apitable/components';
 import { Field, IAttacheField, IAttachmentValue, IReduxState, isGif, isImage, RowHeight, Selectors, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
@@ -33,6 +33,7 @@ import { UploadItem } from 'pc/components/upload_modal/upload_item';
 import { IUploadZoneItem, UploadZone } from 'pc/components/upload_modal/upload_zone';
 import { usePlatform } from 'pc/hooks/use_platform';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getCellValueThumbSrc, showOriginImageThumbnail, UploadManager, UploadStatus } from 'pc/utils';
 import { MouseDownType } from '../../enum';
 import { ICellComponentProps } from '../cell_value/interface';
@@ -77,9 +78,13 @@ export const CellAttachment: React.FC<React.PropsWithChildren<ICellAttachmentPro
   const [isDragEnter, setDragEnter] = useState(false);
   const [uploadList, setUploadList] = useState<IUploadFileList>(uploadManager ? uploadManager.get(UploadManager.getCellId(recordId, field.id)) : []);
 
-  const fileList: IAttachmentValue[] = useGetSignatureAssertByToken(cellValue as IAttachmentValue[]);
+  let fileList: IAttachmentValue[] = useGetSignatureAssertByToken(cellValue as IAttachmentValue[]);
+  // other field toggle to attachment field clear dirty data
+  if (!Array.isArray(cellValue)) {
+    fileList = [];
+  }
 
-  const { datasheetId, permissions } = useSelector(
+  const { datasheetId, permissions } = useAppSelector(
     (state: IReduxState) => ({
       permissions: Selectors.getPermissions(state),
       datasheetId: state.pageParams.datasheetId,
@@ -88,7 +93,7 @@ export const CellAttachment: React.FC<React.PropsWithChildren<ICellAttachmentPro
     shallowEqual,
   );
   const disabledDownload = !useAllowDownloadAttachment(field.id, datasheetId);
-  const rowHeightLevel = useSelector(Selectors.getViewRowHeight);
+  const rowHeightLevel = useAppSelector(Selectors.getViewRowHeight);
   const height = rowHeight - CELL_PADDING_OFFSET;
   const editable = Field.bindModel(field).recordEditable() && permissions.cellEditable;
   const { mobile } = usePlatform();

@@ -18,13 +18,13 @@
 
 package com.apitable.internal.ro;
 
+import jakarta.validation.constraints.Size;
 import java.util.List;
-
-import javax.validation.constraints.Size;
-
 import lombok.Data;
 
 /**
+ * url wrapper ro.
+ *
  * @author tao
  */
 @Data

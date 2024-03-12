@@ -23,8 +23,8 @@ import React from 'react';
 const FeishuCallbackWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
-      return components.FeishuCallback;
+    import('enterprise/lark/feishu_integration/feishu_callback').then((components) => {
+      return components.default;
     }),
   { ssr: false },
 );

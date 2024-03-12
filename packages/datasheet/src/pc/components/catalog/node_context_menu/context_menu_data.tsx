@@ -16,11 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { ShortcutActionName } from 'modules/shared/shortcut_key';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { isMobile } from 'react-device-detect';
 import { black, colorVars } from '@apitable/components';
 import { ConfigConstant, Strings, t, WORKBENCH_SIDE_ID } from '@apitable/core';
-import { ShortcutActionName } from 'modules/shared/shortcut_key';
-import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { getEnvVariables } from 'pc/utils/env';
 import { makeNodeIconComponent, NodeIcon } from './node_icons';
 import styles from './style.module.less';
@@ -45,6 +45,7 @@ export enum ContextItemKey {
   addAi,
   CreateBackup,
   AddAutomation,
+  AddEmbed,
 }
 
 const getCopyUrlText = (nodeType: ConfigConstant.NodeType) => {
@@ -227,6 +228,16 @@ export const contextItemMap = new Map<ContextItemKey, any>([
       onClick,
       hidden,
       id: WORKBENCH_SIDE_ID.NEW_DATASHEET,
+    }),
+  ],
+  [
+    ContextItemKey.AddEmbed,
+    (onClick: () => void, hidden: boolean) => ({
+      icon: makeNodeIconComponent(NodeIcon.AddEmbed),
+      text: t(Strings.new_custom_page),
+      onClick,
+      hidden,
+      id: WORKBENCH_SIDE_ID.NEW_EMBED,
     }),
   ],
   [

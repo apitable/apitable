@@ -17,9 +17,9 @@
  */
 
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { IViewColumn, Selectors } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { CardBody } from './card_body';
 import { CardHeader } from './card_header';
 
@@ -65,8 +65,8 @@ const RecordCardBase: React.FC<React.PropsWithChildren<IRecordCardProps>> = (pro
     datasheetId,
   } = props;
   const colors = useThemeColors();
-  const visibleFields = useSelector(Selectors.getVisibleColumns);
-  const searchRecordId = useSelector(Selectors.getCurrentSearchRecordId);
+  const visibleFields = useAppSelector(Selectors.getVisibleColumns);
+  const searchRecordId = useAppSelector(Selectors.getCurrentSearchRecordId);
   let isCurrentSearchItem = false;
   if (searchRecordId) {
     isCurrentSearchItem = searchRecordId === recordId;

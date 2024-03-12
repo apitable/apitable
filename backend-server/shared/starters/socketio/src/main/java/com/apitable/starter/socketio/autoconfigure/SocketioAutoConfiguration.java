@@ -27,12 +27,12 @@ import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * <p>
@@ -41,7 +41,7 @@ import org.springframework.context.annotation.Configuration;
  *
  * @author zoe zheng
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @ConditionalOnClass(Socket.class)
 @EnableConfigurationProperties(SocketioProperties.class)
 @ConditionalOnProperty(value = "starter.socketio", havingValue = "client", matchIfMissing = true)
@@ -86,10 +86,6 @@ public class SocketioAutoConfiguration {
             // Unified connection parameters for connection authentication
             options.query = "userId=java_" + InetAddress.getLocalHost();
             socket = IO.socket(client.getUrl(), options);
-            socket.on(Socket.EVENT_CONNECTING,
-                objects -> LOGGER.info("connecting {}", client.getUrl()));
-            socket.on(Socket.EVENT_CONNECT_TIMEOUT,
-                objects -> LOGGER.info("connect timeout :{}", client.getUrl()));
             socket.on(Socket.EVENT_CONNECT_ERROR,
                 objects -> LOGGER.info("connect fail: {}", client.getUrl()));
             socket.on(Socket.EVENT_CONNECT,

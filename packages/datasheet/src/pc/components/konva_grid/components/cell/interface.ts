@@ -36,6 +36,7 @@ export interface IRenderContentBase {
   };
   textData?: IWrapTextDataProps;
   favicon?: string;
+  disabled?: boolean;
 }
 export interface IRenderData {
   width: number;

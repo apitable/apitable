@@ -18,15 +18,14 @@
 
 package com.apitable.workspace.entity;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +35,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * Workbench - Data Table
+ * Workbench - Data Table.
  * </p>
  *
  * @author Mybatis Generator Tool
@@ -53,66 +52,66 @@ public class DatasheetEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Primary key
+     * Primary key.
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
-     * Custom ID
+     * Custom ID.
      */
     private String dstId;
 
     /**
-     * Datasheet Node Id(link#xxxx_node#node_id)
+     * Datasheet Node Id(link#xxxx_node#node_id).
      */
     private String nodeId;
 
     /**
-     * Name
+     * Name.
      */
     private String dstName;
 
     /**
-     * Space ID(link#xxxx_space#space_id)
+     * Space ID(link#xxxx_space#space_id).
      */
     private String spaceId;
 
     /**
-     * Creator
+     * Creator.
      */
     private Long creator;
 
     /**
-     * Version No
+     * Version No.
      */
     private Long revision;
 
     /**
-     * Delete tag(0:No,1:Yes)
+     * Delete tag(0:No,1:Yes).
      */
     @TableLogic
     private Boolean isDeleted;
 
     /**
-     * Create User
+     * Create User.
      */
     @TableField(fill = FieldFill.INSERT)
     private Long createdBy;
 
     /**
-     * Last Update User
+     * Last Update User.
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Long updatedBy;
 
     /**
-     * Create Time
+     * Create Time.
      */
     private LocalDateTime createdAt;
 
     /**
-     * Update Time
+     * Update Time.
      */
     private LocalDateTime updatedAt;
 

@@ -34,7 +34,7 @@ import java.util.List;
 
 /**
  * <p>
- * page helper util
+ * page helper util.
  * </p>
  *
  * @author Shawn Deng
@@ -53,9 +53,16 @@ public class PageHelper {
 
     private static final String ASC = "asc";
 
-
+    /**
+     * convert string to page.
+     *
+     * @param stringObjectParams string params
+     * @param <T>                type
+     * @return page
+     */
     public static <T> Page<T> convert(String stringObjectParams) {
-        ExceptionUtil.isTrue(JSONUtil.isJsonObj(stringObjectParams), ParameterException.INCORRECT_ARG);
+        ExceptionUtil.isTrue(JSONUtil.isTypeJSONObject(stringObjectParams),
+            ParameterException.INCORRECT_ARG);
         JSONObject json = JSONUtil.parseObj(stringObjectParams);
 
         int pageNo = 1;
@@ -118,10 +125,11 @@ public class PageHelper {
     }
 
     public static <T> PageInfo<T> build(IPage<T> page) {
-        return new PageInfo<>((int) page.getCurrent(), (int) page.getSize(), (int) page.getTotal(), page.getRecords());
+        return new PageInfo<>(page.getCurrent(), page.getSize(), page.getTotal(),
+            page.getRecords());
     }
 
-    public static <T> PageInfo<T> build(int pageNum, int pageSize, int total, List<T> records) {
+    public static <T> PageInfo<T> build(long pageNum, long pageSize, long total, List<T> records) {
         return new PageInfo<>(pageNum, pageSize, total, records);
     }
 }

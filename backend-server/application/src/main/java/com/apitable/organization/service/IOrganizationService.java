@@ -18,22 +18,24 @@
 
 package com.apitable.organization.service;
 
-import java.util.List;
-
+import com.apitable.organization.dto.LoadSearchDTO;
 import com.apitable.organization.vo.SubUnitResultVo;
 import com.apitable.organization.vo.UnitInfoVo;
 import com.apitable.organization.vo.UnitMemberVo;
 import com.apitable.organization.vo.UnitSearchResultVo;
 import com.apitable.organization.vo.UnitTeamVo;
-import com.apitable.organization.dto.LoadSearchDTO;
+import java.util.List;
 
+/**
+ * organization service.
+ */
 public interface IOrganizationService {
 
     /**
      * search unit.
      *
-     * @param spaceId space id
-     * @param likeWord key wrod
+     * @param spaceId            space id
+     * @param likeWord           keyword
      * @param highlightClassName the highlighted style
      * @return UnitSearchResultVo
      */
@@ -43,7 +45,7 @@ public interface IOrganizationService {
      * query units in the the team.
      *
      * @param spaceId space id
-     * @param teamId team id
+     * @param teamId  team id
      * @return SubUnitResultVo
      */
     SubUnitResultVo findSubUnit(String spaceId, Long teamId);
@@ -52,7 +54,7 @@ public interface IOrganizationService {
      * query the team's unit info.
      *
      * @param spaceId space id
-     * @param teamId team id
+     * @param teamId  team id
      * @return UnitTeamVo
      */
     UnitTeamVo findUnitTeamVo(String spaceId, Long teamId);
@@ -66,6 +68,12 @@ public interface IOrganizationService {
      */
     List<UnitTeamVo> findUnitTeamVo(String spaceId, List<Long> teamIds);
 
+    /**
+     * find unit member.
+     *
+     * @param memberId member id
+     * @return UnitMemberVo
+     */
     UnitMemberVo finUnitMemberVo(Long memberId);
 
     /**
@@ -77,26 +85,27 @@ public interface IOrganizationService {
     List<UnitMemberVo> findUnitMemberVo(List<Long> memberIds);
 
     /**
-     * query admins information
+     * query admins information.
      *
      * @param memberIds member ids
-     * @param spaceId space id
+     * @param spaceId   space id
      * @return admins information
      */
     List<UnitMemberVo> findAdminsVo(List<Long> memberIds, String spaceId);
 
     /**
-     * load or search unit
+     * load or search unit.
      *
-     * @param userId    user id
+     * @param userId  user id
      * @param spaceId space id
      * @param params  search key
      * @return UnitInfoVo
      */
-    List<UnitInfoVo> loadOrSearchInfo(Long userId, String spaceId, LoadSearchDTO params, Long sharer);
+    List<UnitInfoVo> loadOrSearchInfo(Long userId, String spaceId, LoadSearchDTO params,
+                                      Long sharer);
 
     /**
-     * accurate search
+     * accurate search.
      *
      * @param spaceId space id
      * @param names   unit names
@@ -105,7 +114,7 @@ public interface IOrganizationService {
     List<UnitInfoVo> accurateSearch(String spaceId, List<String> names);
 
     /**
-     * Load the first department of the organization tree to which a member belongs
+     * Load the first department of the organization tree to which a member belongs.
      *
      * @param spaceId space id
      * @param teamIds team ids
@@ -114,11 +123,10 @@ public interface IOrganizationService {
     SubUnitResultVo loadMemberFirstTeams(String spaceId, List<Long> teamIds);
 
     /**
-     * Load the first department id of the organization tree to which a member belongs
+     * Load the first department id of the organization tree to which a member belongs.
      *
-     * @param spaceId space id
      * @param teamIds team ids
      * @return teamIds
      */
-    List<Long> loadMemberFirstTeamIds(String spaceId, List<Long> teamIds);
+    List<Long> loadMemberFirstTeamIds(List<Long> teamIds);
 }

@@ -18,6 +18,27 @@
 
 package com.apitable.workspace.listener;
 
+import cn.hutool.core.map.MapUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.alibaba.excel.context.AnalysisContext;
+import com.alibaba.excel.event.AnalysisEventListener;
+import com.alibaba.excel.util.ListUtils;
+import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
+import com.apitable.shared.util.IdUtil;
+import com.apitable.workspace.dto.NodeData;
+import com.apitable.workspace.entity.DatasheetEntity;
+import com.apitable.workspace.entity.DatasheetMetaEntity;
+import com.apitable.workspace.entity.DatasheetRecordEntity;
+import com.apitable.workspace.entity.NodeEntity;
+import com.apitable.workspace.enums.FieldType;
+import com.apitable.workspace.enums.NodeType;
+import com.apitable.workspace.enums.ViewType;
+import com.apitable.workspace.ro.FieldMapRo;
+import com.apitable.workspace.ro.RecordDataRo;
+import com.apitable.workspace.service.INodeService;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
@@ -27,31 +48,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import cn.hutool.core.map.MapUtil;
-import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
-import com.alibaba.excel.context.AnalysisContext;
-import com.alibaba.excel.event.AnalysisEventListener;
-import com.alibaba.excel.util.ListUtils;
-import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.workspace.dto.NodeData;
-import com.apitable.workspace.enums.FieldType;
-import com.apitable.workspace.enums.ViewType;
-import com.apitable.workspace.ro.FieldMapRo;
-import com.apitable.workspace.ro.RecordDataRo;
-import com.apitable.workspace.service.INodeService;
-import com.apitable.shared.util.IdUtil;
-import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
-import com.apitable.workspace.enums.NodeType;
-import com.apitable.workspace.entity.DatasheetEntity;
-import com.apitable.workspace.entity.DatasheetMetaEntity;
-import com.apitable.workspace.entity.DatasheetRecordEntity;
-import com.apitable.workspace.entity.NodeEntity;
 
 /**
  * CSV data parser listener.
@@ -64,15 +62,16 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
      */
     private static final int BATCH_COUNT = 100;
 
-    private List<DatasheetRecordEntity> recordEntities = ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
+    private List<DatasheetRecordEntity> recordEntities =
+        ListUtils.newArrayListWithExpectedSize(BATCH_COUNT);
 
     private Map<Integer, String> sheetHeadMap;
 
     private Meta meta;
 
-    private JSONObject fieldUpdatedInfo = new JSONObject();
+    private final JSONObject fieldUpdatedInfo = new JSONObject();
 
-    private String retNodeId;
+    private final String retNodeId;
 
     private final INodeService iNodeService;
 
@@ -88,29 +87,46 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
 
     private final String fileName;
 
-    public CsvReadListener(INodeService iNodeService, Long userId, String uuid,
-        String spaceId, Long memberId, String parentNodeId, String viewName, String fileName) {
-        this.iNodeService = iNodeService;
+    private final Long unitId;
+
+    /**
+     * constructor.
+     *
+     * @param nodeService  node service
+     * @param userId       user id
+     * @param uuid         user uuid
+     * @param spaceId      space id
+     * @param memberId     member id
+     * @param parentNodeId parent node id
+     * @param viewName     view name
+     * @param fileName     file name
+     * @param unitId       unit id
+     */
+    public CsvReadListener(INodeService nodeService, Long userId, String uuid, String spaceId,
+                           Long memberId, String parentNodeId, Long unitId, String viewName,
+                           String fileName) {
+        this.iNodeService = nodeService;
         this.userId = userId;
         this.spaceId = spaceId;
         this.memberId = memberId;
         this.parentNodeId = parentNodeId;
         this.viewName = viewName;
         this.fileName = fileName;
-
+        this.unitId = unitId;
         this.retNodeId = IdUtil.createDstId();
 
-        fieldUpdatedInfo.set("createdAt", Instant.now(Clock.system(ZoneId.of("+8"))).toEpochMilli());
+        fieldUpdatedInfo.set("createdAt",
+            Instant.now(Clock.system(ZoneId.of("+8"))).toEpochMilli());
         fieldUpdatedInfo.set("createdBy", uuid);
     }
 
     @Override
     public void invokeHeadMap(Map<Integer, String> headMap, AnalysisContext context) {
         log.info("parse to header information");
-        initHead(headMap, context);
+        initHead(headMap);
     }
 
-    private void initHead(Map<Integer, String> headMap, AnalysisContext context) {
+    private void initHead(Map<Integer, String> headMap) {
         // Column length, possibly 0
         int headSize = headMap.size();
         meta = new Meta(headSize);
@@ -120,22 +136,23 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
         // The sequence definition order for the first default view,
         View view = new View(headSize, 0);
         view.id = IdUtil.createViewId();
-        view.name = viewName != null ? viewName: I18nStringsUtil.t("default_view");
+        view.name = viewName != null ? viewName : I18nStringsUtil.t("default_view");
         view.type = ViewType.GRID.getType();
         view.frozenColumnCount = 1;
 
         // traverse columns in order
         headMap.forEach((index, cellValue) -> {
-            String fieldName = StrUtil.isBlank(cellValue) ? String.format("the %d col", index + 1) : cellValue;
+            String fieldName =
+                StrUtil.isBlank(cellValue) ? String.format("the %d col", index + 1) : cellValue;
             String fieldId = IdUtil.createFieldId();
             // storage column id
             sheetHeadMap.put(index, fieldId);
             meta.fieldMap.putOnce(fieldId,
-                    FieldMapRo.builder()
-                            .id(fieldId)
-                            .name(fieldName)
-                            .type(FieldType.TEXT.getFieldType())
-                            .build()
+                FieldMapRo.builder()
+                    .id(fieldId)
+                    .name(fieldName)
+                    .type(FieldType.TEXT.getFieldType())
+                    .build()
             );
             // view column
             Column column = new Column(fieldId);
@@ -160,11 +177,11 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
                     String fieldId = IdUtil.createFieldId();
                     sheetHeadMap.put(index, fieldId);
                     meta.fieldMap.putOnce(fieldId,
-                            FieldMapRo.builder()
-                                    .id(fieldId)
-                                    .name(fieldName)
-                                    .type(FieldType.TEXT.getFieldType())
-                                    .build()
+                        FieldMapRo.builder()
+                            .id(fieldId)
+                            .name(fieldName)
+                            .type(FieldType.TEXT.getFieldType())
+                            .build()
                     );
                     // view column
                     Column column = new Column(fieldId);
@@ -175,8 +192,7 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
                     meta.views.get(0).columns.add(column);
                 }
             }
-        }
-        else {
+        } else {
             if (!data.isEmpty()) {
                 if (sheetHeadMap.size() < data.size()) {
                     // invokeHeadMap the number of columns resolved is less than this
@@ -188,11 +204,11 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
                         String fieldId = IdUtil.createFieldId();
                         sheetHeadMap.put(index, fieldId);
                         meta.fieldMap.putOnce(fieldId,
-                                FieldMapRo.builder()
-                                        .id(fieldId)
-                                        .name(fieldName)
-                                        .type(FieldType.TEXT.getFieldType())
-                                        .build()
+                            FieldMapRo.builder()
+                                .id(fieldId)
+                                .name(fieldName)
+                                .type(FieldType.TEXT.getFieldType())
+                                .build()
                         );
                         // view column
                         meta.views.get(0).columns.add(new Column(fieldId));
@@ -208,19 +224,21 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
 
         for (Entry<Integer, String> entry : data.entrySet()) {
             if ((StrUtil.isNotBlank(entry.getValue()))) {
-                recordData.putOnce(sheetHeadMap.get(entry.getKey()), JSONUtil.createArray().set(RecordDataRo.builder().text(entry.getValue()).type(FieldType.TEXT.getFieldType()).build()));
+                recordData.putOnce(sheetHeadMap.get(entry.getKey()), JSONUtil.createArray().set(
+                    RecordDataRo.builder().text(entry.getValue())
+                        .type(FieldType.TEXT.getFieldType()).build()));
             }
         }
 
         recordEntities.add(DatasheetRecordEntity.builder()
-                .id(IdWorker.getId())
-                .dstId(retNodeId)
-                .recordId(recordId)
-                .data(recordData.toString())
-                .fieldUpdatedInfo(fieldUpdatedInfo.toString())
-                .createdBy(userId)
-                .updatedBy(userId)
-                .build());
+            .id(IdWorker.getId())
+            .dstId(retNodeId)
+            .recordId(recordId)
+            .data(recordData.toString())
+            .fieldUpdatedInfo(fieldUpdatedInfo.toString())
+            .createdBy(userId)
+            .updatedBy(userId)
+            .build());
 
         if (recordEntities.size() >= BATCH_COUNT) {
             saveRecords();
@@ -238,49 +256,50 @@ public class CsvReadListener extends AnalysisEventListener<Map<Integer, String>>
         log.info("======================analysis completed==============================");
 
         if (meta == null) {
-            initHead(MapUtil.of(0, "标题"), context);
+            initHead(MapUtil.of(0, "标题"));
         }
 
         List<NodeEntity> nodeEntities = new ArrayList<>();
         nodeEntities.add(NodeEntity.builder()
-                .id(IdWorker.getId())
-                .spaceId(spaceId)
-                .parentId(parentNodeId)
-                .preNodeId(null)
-                .nodeId(retNodeId)
-                .nodeName(fileName)
-                .type(NodeType.DATASHEET.getNodeType())
-                .isTemplate(false)
-                .creator(memberId)
-                .createdBy(userId)
-                .updatedBy(userId).build());
+            .id(IdWorker.getId())
+            .spaceId(spaceId)
+            .parentId(parentNodeId)
+            .preNodeId(null)
+            .nodeId(retNodeId)
+            .nodeName(fileName)
+            .type(NodeType.DATASHEET.getNodeType())
+            .isTemplate(false)
+            .unitId(unitId)
+            .creator(memberId)
+            .createdBy(userId)
+            .updatedBy(userId).build());
 
         List<DatasheetEntity> datasheetEntities = new ArrayList<>();
         datasheetEntities.add(DatasheetEntity.builder()
-                .id(IdWorker.getId())
-                .spaceId(spaceId)
-                .nodeId(retNodeId)
-                .dstId(retNodeId)
-                .dstName(fileName)
-                .revision(0L)
-                .creator(memberId)
-                .build());
+            .id(IdWorker.getId())
+            .spaceId(spaceId)
+            .nodeId(retNodeId)
+            .dstId(retNodeId)
+            .dstName(fileName)
+            .revision(0L)
+            .creator(memberId)
+            .build());
 
         List<DatasheetMetaEntity> metaEntities = new ArrayList<>();
         metaEntities.add(DatasheetMetaEntity.builder()
-                .id(IdWorker.getId())
-                .dstId(retNodeId)
-                .metaData(JSONUtil.toJsonStr(meta))
-                .revision(0L)
-                .createdBy(userId)
-                .updatedBy(userId)
-                .build());
+            .id(IdWorker.getId())
+            .dstId(retNodeId)
+            .metaData(JSONUtil.toJsonStr(meta))
+            .revision(0L)
+            .createdBy(userId)
+            .updatedBy(userId)
+            .build());
 
         log.info("start bulk insertion");
         long begin = System.currentTimeMillis();
         iNodeService.batchCreateDataSheet(
-                new NodeData(null, retNodeId, null, null, parentNodeId),
-                nodeEntities, datasheetEntities, metaEntities, recordEntities
+            new NodeData(null, retNodeId, null, null, parentNodeId),
+            nodeEntities, datasheetEntities, metaEntities, recordEntities
         );
         long end = System.currentTimeMillis();
         log.info("insert complete: {}", Duration.ofMillis(end - begin).getSeconds());

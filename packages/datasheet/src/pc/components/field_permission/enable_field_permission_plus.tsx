@@ -18,7 +18,6 @@
 
 import { useMount, useToggle } from 'ahooks';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Box, IOption, Skeleton, Switch } from '@apitable/components';
 import { ConfigConstant, DatasheetApi, IFieldPermissionRole, IUnitValue, MemberType, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
@@ -29,11 +28,12 @@ import { IEnablePermissionPlus } from 'pc/components/field_permission/interface'
 import styles from 'pc/components/field_permission/styles.module.less';
 import { UnitPermissionSelect } from 'pc/components/field_permission/unit_permission_select';
 import { useRequest, useCatalogTreeRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { dispatch } from 'pc/worker/store';
 import { IMemberList } from '../catalog/permission_settings_plus/permission/permission';
 import { PermissionInfoSetting } from '../catalog/permission_settings_plus/permission/permission_info_setting';
 // @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing';
 
 const defaultSetting = { formSheetAccessible: false };
 
@@ -42,13 +42,13 @@ export const EnableFieldPermissionPlus: React.FC<React.PropsWithChildren<IEnable
   const [roleList, setRoleList] = useState<IFieldPermissionRole[]>([]);
 
   const [setting, setSetting] = useState<{ formSheetAccessible: boolean }>();
-  const datasheetId = useSelector((state) => state.pageParams.datasheetId)!;
+  const datasheetId = useAppSelector((state) => state.pageParams.datasheetId)!;
   const [isMemberDetail, { toggle: toggleIsMemberDetail }] = useToggle(false);
-  const fieldPermission = useSelector(Selectors.getFieldPermissionMap)!;
+  const fieldPermission = useAppSelector(Selectors.getFieldPermissionMap)!;
   const readonly = fieldPermission[field.id] && !fieldPermission[field.id].manageable;
   const [enabledFieldPermission, setEnabledFieldPermission] = useState<boolean>();
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo)!;
-  const spaceId = useSelector((state) => state.space.activeId)!;
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo)!;
+  const spaceId = useAppSelector((state) => state.space.activeId)!;
 
   const [memberList, setMemberList] = useState<IMemberList[]>([]);
   const [pageNo, setPageNo] = useState<number>(1);

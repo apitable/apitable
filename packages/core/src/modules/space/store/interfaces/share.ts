@@ -24,6 +24,7 @@ export interface IShareNodeTree {
   icon: string;
   type: number;
   children: any[];
+  nodePrivate: boolean;
 }
 
 export interface IShareInfo {

@@ -18,14 +18,14 @@
 
 package com.apitable.shared.component.adapter;
 
-import java.util.List;
-
-import lombok.extern.slf4j.Slf4j;
-
 import com.apitable.workspace.enums.NodeType;
-
+import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+/**
+ * multi datasource adapter template.
+ */
 @Slf4j
 @Component
 public class MultiDatasourceAdapterTemplate {
@@ -35,7 +35,8 @@ public class MultiDatasourceAdapterTemplate {
         return adapter.getRecentlyVisitNodeIds(memberId, nodeType);
     }
 
-    public void saveOrUpdateNodeVisitRecord(String spaceId, Long memberId, String nodeId, NodeType nodeType) {
+    public void saveOrUpdateNodeVisitRecord(String spaceId, Long memberId, String nodeId,
+                                            NodeType nodeType) {
         DatasourceAdapter adapter = this.getDatasourceAdapter();
         adapter.saveOrUpdateNodeVisitRecord(spaceId, memberId, nodeId, nodeType);
     }

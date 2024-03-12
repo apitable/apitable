@@ -18,7 +18,7 @@
 
 import { useContext, useState } from 'react';
 import * as React from 'react';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { useDispatch, shallowEqual } from 'react-redux';
 import { IconButton, LinkButton, useThemeColors } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, Selectors, StoreActions, DatasheetApi, Strings, t } from '@apitable/core';
 import { AttentionOutlined, DeleteOutlined, InfoCircleOutlined, LinkOutlined, MoreStandOutlined } from '@apitable/icons';
@@ -30,6 +30,7 @@ import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { useRequest } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard } from 'pc/utils';
 
 import EditorTitleContext from '../editor_title_context';
@@ -48,13 +49,13 @@ export const MoreTool: React.FC<React.PropsWithChildren<IMoreToolProps>> = (prop
 
   const dispatch = useDispatch();
 
-  const { rowRemovable, subscriptions } = useSelector((state) => {
+  const { rowRemovable, subscriptions } = useAppSelector((state) => {
     return {
       rowRemovable: Selectors.getPermissions(state).rowRemovable,
       subscriptions: state.subscriptions,
     };
   }, shallowEqual);
-  const { shareId, templateId, embedId } = useSelector((state) => state.pageParams);
+  const { shareId, templateId, embedId } = useAppSelector((state) => state.pageParams);
 
   const { fieldDescCollapseStatusMap = {}, setFieldDescCollapseStatusMap } = useContext(EditorTitleContext);
 

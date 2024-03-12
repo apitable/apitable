@@ -17,7 +17,6 @@
  */
 
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
 import { Tooltip, useThemeColors, ThemeProvider } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { QuestionCircleOutlined } from '@apitable/icons/dist/components';
@@ -28,12 +27,13 @@ import { EnableFieldPermissionPlus } from 'pc/components/field_permission/enable
 import { IFieldPermissionProps } from 'pc/components/field_permission/interface';
 import styles from 'pc/components/field_permission/styles.module.less';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
+import { useAppSelector } from 'pc/store/react-redux';
 import { PermissionModalHeader } from './permission_modal_header';
 
 export const FieldPermissionPlus: React.FC<React.PropsWithChildren<IFieldPermissionProps>> = (props) => {
   const colors = useThemeColors();
   const { field, onModalClose } = props;
-  const theme = useSelector(Selectors.getTheme);
+  const theme = useAppSelector(Selectors.getTheme);
 
   const Main = () => {
     return <>{<EnableFieldPermissionPlus {...props} />}</>;

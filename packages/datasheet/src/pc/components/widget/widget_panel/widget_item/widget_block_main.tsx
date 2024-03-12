@@ -1,6 +1,5 @@
 import { useMount, useUnmount } from 'ahooks';
 import React, { useEffect, useImperativeHandle, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { getComputeRefManager, ResourceStashManager, Selectors, StoreActions } from '@apitable/core';
 import {
   eventMessage,
@@ -17,6 +16,7 @@ import { WidgetLoader } from 'widget-stage/main/widget/widget_loader';
 import { dashboardReg } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getDependenceByDstIdsByGlobalResource } from 'pc/utils/dependence_dst';
 import { useCloudStorage } from '../../hooks/use_cloud_storage';
 import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
@@ -41,16 +41,16 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<
 > = (props, ref) => {
   const { widgetId, widgetPackageId, runtimeEnv, isExpandWidget, isSettingOpened, toggleSetting, toggleFullscreen, expandRecord, isDevMode, nodeId } =
     props;
-  const theme = useSelector((state) => state.theme);
+  const theme = useAppSelector((state) => state.theme);
   const [codeUrl, setCodeUrl] = useCloudStorage<string | undefined>(`widget_loader_code_url_${widgetPackageId}`, widgetId);
   const [widgetStore, setWidgetStore] = useState<any>();
-  const errorCode = useSelector((state) => {
+  const errorCode = useAppSelector((state) => {
     const widget = Selectors.getWidget(state, widgetId)!;
     const { sourceId, datasheetId } = widget.snapshot;
     return sourceId?.startsWith('mir') ? Selectors.getMirrorErrorCode(state, sourceId) : Selectors.getDatasheetErrorCode(state, datasheetId);
   });
 
-  const dashboardConnected = useSelector((state) => {
+  const dashboardConnected = useAppSelector((state) => {
     try {
       const dashboardId = state.pageParams.dashboardId;
       if (!dashboardId) {
@@ -62,7 +62,7 @@ export const WidgetBlockMainBase: React.ForwardRefRenderFunction<
     }
   });
 
-  const nodeConnected = useSelector((state) => {
+  const nodeConnected = useAppSelector((state) => {
     const datasheet = Selectors.getDatasheet(state, nodeId);
     const bindDatasheetLoaded = datasheet && !datasheet.isPartOfData;
     // The initialization of the widget must be done after the datasheet loaded.

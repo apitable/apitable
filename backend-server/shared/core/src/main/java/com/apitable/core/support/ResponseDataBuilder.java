@@ -19,12 +19,12 @@
 package com.apitable.core.support;
 
 /**
- * ResponseData Builder
+ * ResponseData Builder.
  */
 public interface ResponseDataBuilder {
 
     /**
-     *  build response with response data
+     *  build response with response data.
      *
      * @param data  the response data field data
      * @param <T>   the response data's type
@@ -33,7 +33,7 @@ public interface ResponseDataBuilder {
     <T> ResponseData<T> data(T data);
 
     /**
-     * build response without response data
+     * build response without response data.
      *
      * @param <T> the response data's type
      * @return the response

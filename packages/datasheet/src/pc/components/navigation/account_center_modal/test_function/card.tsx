@@ -20,9 +20,9 @@ import classNames from 'classnames';
 import Image from 'next/image';
 import * as React from 'react';
 import { useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Typography } from '@apitable/components';
 import { ApiInterface, integrateCdnHost, Strings, SystemConfig, t } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getStorage, StorageName } from 'pc/utils/storage';
 import { FunctionType } from './interface';
 import { Modal } from './modal';
@@ -32,7 +32,7 @@ export const Card: React.FC<React.PropsWithChildren<{ feature: ApiInterface.ILab
   const { feature, isUser } = props;
   const config = SystemConfig.test_function[feature.key];
   const [showModal, setShowModal] = useState<boolean>(false);
-  const labs = useSelector((state) => state.labs);
+  const labs = useAppSelector((state) => state.labs);
   const status = useMemo(() => {
     const isNormal = feature.type === FunctionType.NORMAL;
     if (isNormal) {

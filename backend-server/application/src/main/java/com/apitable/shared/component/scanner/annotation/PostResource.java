@@ -23,14 +23,13 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
 import org.springframework.core.annotation.AliasFor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * <p>
- * resource with post method
+ * resource with post method.
  * </p>
  *
  * @author Shawn Deng
@@ -44,61 +43,68 @@ public @interface PostResource {
     /**
      * <pre>
      * unique resource code
-     * description: This annotation attribute can be left blank, default controller name + $ + method name
+     * description: This annotation attribute can be left blank, default controller name + $ + method name.
      * </pre>
      */
     String code() default "";
 
     /**
-     * resource name
+     * resource name.
      */
+    @AliasFor(annotation = RequestMapping.class, attribute = "name")
     String name() default "";
 
     /**
-     * resource description
+     * resource description.
      */
     String description() default "";
 
     /**
-     * need validate whether to login
+     * need validate whether to login.
      */
     boolean requiredLogin() default true;
 
     /**
-     * whether to validate permission
+     * whether to validate permission.
      */
     boolean requiredPermission() default true;
 
     /**
-     * request path
+     * alias requestMapping path.
+     */
+    @AliasFor(annotation = RequestMapping.class, attribute = "value")
+    String[] value() default {};
+
+    /**
+     * request path.
      */
     @AliasFor(annotation = RequestMapping.class)
     String[] path() default {};
 
     /**
-     * request method
+     * request method.
      */
     @AliasFor(annotation = RequestMapping.class)
     RequestMethod[] method() default RequestMethod.POST;
 
     /**
-     * permission tags
+     * permission tags.
      */
     String[] tags() default {};
 
     /**
-     * whether to validate domain
+     * whether to validate domain.
      */
     boolean requiredAccessDomain() default false;
 
     /**
-     * whether ignore this
+     * whether ignore this.
      */
     boolean ignore() default false;
 
     /**
      * See Also:
-     * org.springframework.http.MediaType
+     * org.springframework.http.MediaType.
      */
     @AliasFor(annotation = RequestMapping.class)
     String[] produces() default {};

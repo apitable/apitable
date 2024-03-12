@@ -24,3 +24,8 @@ export class RecordListVo extends ApiResponse<ListVo> {
   @ApiProperty({ type: ListVo })
   override data!: ListVo;
 }
+
+export class RecordIdListVo extends ApiResponse<string[]> {
+  @ApiProperty({ type: [String] })
+  override data!: string[];
+}

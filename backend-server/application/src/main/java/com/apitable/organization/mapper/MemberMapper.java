@@ -24,7 +24,6 @@ import com.apitable.organization.dto.MemberTeamInfoDTO;
 import com.apitable.organization.dto.MemberUserDTO;
 import com.apitable.organization.dto.SearchMemberDTO;
 import com.apitable.organization.dto.SpaceMemberDTO;
-import com.apitable.organization.dto.SpaceMemberIdDTO;
 import com.apitable.organization.dto.TenantMemberDto;
 import com.apitable.organization.entity.MemberEntity;
 import com.apitable.organization.vo.MemberInfoVo;
@@ -185,14 +184,54 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     String selectMemberNameById(@Param("id") Long id);
 
     /**
-     * get member brief info.
+     * query the user's member id in the space.
      *
      * @param userId  user id
      * @param spaceId space id
-     * @return member brief info
+     * @return member id
      */
-    MemberDTO selectDtoByUserIdAndSpaceId(@Param("userId") Long userId,
+    Long selectIdByUserIdAndSpaceId(@Param("userId") Long userId,
+                                    @Param("spaceId") String spaceId);
+
+    /**
+     * query member name by user id and space id.
+     *
+     * @param spaceId space id
+     * @param userId  user id
+     * @return member name
+     */
+    String selectMemberNameByUserIdAndSpaceId(@Param("userId") Long userId,
+                                              @Param("spaceId") String spaceId);
+
+    /**
+     * query by user id and space id.
+     *
+     * @param userId  user id
+     * @param spaceId space id
+     * @return MemberEntity
+     */
+    MemberEntity selectByUserIdAndSpaceId(@Param("userId") Long userId,
                                           @Param("spaceId") String spaceId);
+
+    /**
+     * query the user's member id in the space, even if member is deleted.
+     *
+     * @param userId  user id
+     * @param spaceId space id
+     * @return member id
+     */
+    Long selectMemberIdByUserIdAndSpaceIdIncludeDeleted(@Param("userId") Long userId,
+                                                        @Param("spaceId") String spaceId);
+
+    /**
+     * query by user id and space id, include deleted member.
+     *
+     * @param userId  user id
+     * @param spaceId space id
+     * @return MemberEntity
+     */
+    MemberEntity selectByUserIdAndSpaceIdIncludeDeleted(@Param("userId") Long userId,
+                                                        @Param("spaceId") String spaceId);
 
     /**
      * get member brief info even if he was deleted.
@@ -291,25 +330,6 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     String selectActiveSpaceByUserId(@Param("userId") Long userId);
 
     /**
-     * query the user's member id in the space.
-     *
-     * @param userId  user id
-     * @param spaceId space id
-     * @return member id
-     */
-    Long selectIdByUserIdAndSpaceId(@Param("userId") Long userId, @Param("spaceId") String spaceId);
-
-    /**
-     * query user's memberId in space, exclude deleted member.
-     *
-     * @param userId  user's id
-     * @param spaceId space's id
-     * @return memberInfo
-     */
-    MemberInfoDTO selectIdByUserIdAndSpaceIdExcludeDelete(@Param("userId") Long userId,
-                                                          @Param("spaceId") String spaceId);
-
-    /**
      * Query member information.
      *
      * @param memberIds memberIds
@@ -317,16 +337,6 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @author Chambers
      */
     List<MemberInfoDTO> selectMemberInfoDTOByIds(@Param("memberIds") Collection<Long> memberIds);
-
-    /**
-     * query the user's member id in the space, even if member is deleted.
-     *
-     * @param userId  user id
-     * @param spaceId space id
-     * @return member id
-     */
-    Long selectMemberIdByUserIdAndSpaceIdExcludeDelete(@Param("userId") Long userId,
-                                                       @Param("spaceId") String spaceId);
 
     /**
      * query member info by email.
@@ -434,19 +444,20 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     Long selectUserIdByMemberId(@Param("memberId") Long memberId);
 
     /**
+     * query user id by open id.
+     *
+     * @param openId open id
+     * @return user id
+     */
+    Long selectUserIdByOpenId(@Param("spaceId") String spaceId, @Param("openId") String openId);
+
+    /**
      * get user id by member id.
      *
      * @param memberIds member id
      * @return user ids
      */
     List<Long> selectUserIdsByMemberIds(@Param("memberIds") List<Long> memberIds);
-
-    /**
-     * remove space's red point.
-     *
-     * @param memberId member id
-     */
-    int updateIsPointById(@Param("memberId") Long memberId);
 
     /**
      * query member by space id and member id.
@@ -549,6 +560,15 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     String selectSpaceIdByMemberId(@Param("memberId") Long memberId);
 
     /**
+     * Query space ids.
+     *
+     * @param memberIds member table ids
+     * @return space id list
+     * @author Chambers
+     */
+    List<String> selectSpaceIdByMemberIds(@Param("memberIds") List<Long> memberIds);
+
+    /**
      * query admin's user id by space id.
      *
      * @param spaceId space id
@@ -579,8 +599,8 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @param spaceId space id
      * @return member id
      */
-    List<Long> selectIdsByEmailsAndSpaceId(@Param("emails") List<String> emails,
-                                           @Param("spaceId") String spaceId);
+    List<String> selectEmailBySpaceIdAndEmails(@Param("spaceId") String spaceId,
+                                               @Param("emails") List<String> emails);
 
     /**
      * query user id by member id.
@@ -619,16 +639,6 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      */
     List<MemberDTO> selectDtoBySpaceIdAndUserIds(@Param("spaceId") String spaceId,
                                                  @Param("userIds") List<Long> userIds);
-
-    /**
-     * !!!This query does not query the is deleted field, which may be a historical member or already in the space.
-     *
-     * @param userId  user id
-     * @param spaceId space id
-     * @return MemberEntity
-     */
-    MemberEntity selectByUserIdAndSpaceIdIgnoreDelete(@Param("userId") Long userId,
-                                                      @Param("spaceId") String spaceId);
 
     /**
      * !!! even if member is deleted.
@@ -725,8 +735,8 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @param openId  the third platform user's open id
      * @return member id
      */
-    Long selectByOpenIdIgnoreDelete(@Param("spaceId") String spaceId,
-                                    @Param("openId") String openId);
+    Long selectIdByOpenIdIgnoreDelete(@Param("spaceId") String spaceId,
+                                      @Param("openId") String openId);
 
     /**
      * !!! even if the member is deleted logically.
@@ -781,16 +791,6 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      */
     List<MemberEntity> selectBySpaceIdAndOpenIds(@Param("spaceId") String spaceId,
                                                  @Param("openIds") List<String> openIds);
-
-    /**
-     * query by user id and space id.
-     *
-     * @param userId  user id
-     * @param spaceId space id
-     * @return MemberEntity
-     */
-    MemberEntity selectByUserIdAndSpaceId(@Param("userId") Long userId,
-                                          @Param("spaceId") String spaceId);
 
     /**
      * query member info by space id and member ids.
@@ -898,17 +898,8 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      * @param userIds user id
      * @return MemberEntity
      */
-    List<MemberEntity> selectByUserIds(@Param("spaceId") String spaceId, @Param("userIds") List<Long> userIds);
-
-    /**
-     * query member name by user id and space id.
-     *
-     * @param spaceId space id
-     * @param userId  user id
-     * @return member name
-     */
-    String selectMemberNameByUserIdAndSpaceId(@Param("userId") Long userId,
-                                              @Param("spaceId") String spaceId);
+    List<MemberEntity> selectByUserIds(@Param("spaceId") String spaceId,
+                                       @Param("userIds") List<Long> userIds);
 
     /**
      * collects statistics on the space owned by users.
@@ -953,17 +944,6 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
     List<Long> selectTeamIdsByMemberId(@Param("memberId") Long memberId);
 
     /**
-     * query member id list by user id and space id.
-     *
-     * @param userId   user id
-     * @param spaceIds space id
-     * @return SpaceMemberIdDto
-     */
-    List<SpaceMemberIdDTO> selectMemberIdsByUserIdAndSpaceIds(@Param("userId") Long userId,
-                                                              @Param("spaceIds")
-                                                              List<String> spaceIds);
-
-    /**
      * query id by space id and email keyword.
      *
      * @param keyword email keyword
@@ -999,4 +979,14 @@ public interface MemberMapper extends ExpandBaseMapper<MemberEntity> {
      */
     List<MemberUserDTO> selectMemberNameByUserIdsAndSpaceIds(@Param("spaceId") String spaceId,
                                                              @Param("userIds") List<Long> userIds);
+
+    /**
+     * query user space ids.
+     *
+     * @param userId  user id
+     * @param isAdmin is admin
+     * @return list of space id
+     */
+    List<String> selectSpaceIdsByUserIdAndIsAdmin(@Param("userId") Long userId,
+                                                  @Param("isAdmin") boolean isAdmin);
 }

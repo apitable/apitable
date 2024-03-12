@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import {
   Api,
   ConfigConstant,
@@ -34,16 +34,17 @@ import {
   Strings,
   t,
 } from '@apitable/core';
-// @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { Router } from 'pc/components/route_manager/router';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
+// @ts-ignore
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
 
 export const useCatalogTreeRequest = () => {
   const dispatch = useAppDispatch();
-  const { spaceId, formId, datasheetId, automationId, dashboardId, mirrorId, embedId } = useSelector((state: IReduxState) => {
+  const { spaceId, formId, datasheetId, dashboardId, mirrorId, embedId } = useAppSelector((state: IReduxState) => {
     const spaceId = state.space.activeId;
     const { datasheetId, formId, automationId, dashboardId, mirrorId, embedId } = state.pageParams;
     return {
@@ -56,10 +57,13 @@ export const useCatalogTreeRequest = () => {
       embedId,
     };
   }, shallowEqual);
-  const activedNodeId = useSelector((state) => Selectors.getNodeId(state));
-  const treeNodesMap = useSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
-  const expandedKeys = useSelector((state: IReduxState) => state.catalogTree.expandedKeys);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo)!;
+  const activedNodeId = useAppSelector((state) => Selectors.getNodeId(state));
+  const treeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.treeNodesMap);
+  const favoriteTreeNodeIds = useAppSelector((state: IReduxState) => state.catalogTree.favoriteTreeNodeIds);
+  const privateTreeNodesMap = useAppSelector((state: IReduxState) => state.catalogTree.privateTreeNodesMap);
+  const expandedKeys = useAppSelector((state: IReduxState) => state.catalogTree.expandedKeys);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo)!;
+  const userUnitId = useAppSelector((state) => state.user.info?.unitId);
 
   const checkNodeNumberLimit = (nodeType: ConfigConstant.NodeType) => {
     // First check that the total number of nodes is as required
@@ -112,6 +116,8 @@ export const useCatalogTreeRequest = () => {
    * @param type Node Type(datasheet Folders)
    * @param nodeName Optional
    * @param preNodeId Optional
+   * @param extra
+   * @param unitId
    */
   const addNodeReq = (
     parentId: string,
@@ -121,6 +127,7 @@ export const useCatalogTreeRequest = () => {
     extra?: {
       [key: string]: any;
     },
+    unitId?: string,
   ) => {
     const result = checkNodeNumberLimit(type);
     if (result) {
@@ -133,11 +140,12 @@ export const useCatalogTreeRequest = () => {
       nodeName,
       preNodeId,
       extra,
+      unitId,
     }).then((res: IAxiosResponse) => {
       const { data, code, success } = res.data;
       if (success) {
         const node: INodesMapItem = { ...data, children: [] };
-        dispatch(StoreActions.addNode(node));
+        dispatch(StoreActions.addNode(node, Boolean(unitId) ? ConfigConstant.Modules.PRIVATE : undefined));
         dispatch(StoreActions.getSpaceInfo(spaceId || '', true));
         Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId } });
       } else {
@@ -154,10 +162,11 @@ export const useCatalogTreeRequest = () => {
    * Note: Consider that if the node being deleted is a folder (and in the case of a working directory that is loaded),
    * its child node may be an asterisk.
    * So at this point the child nodes that are starred are deleted.
-   * @param nodeId Node ID to be deleted
+   * @param optNode
    */
   const deleteNodeReq = (optNode: IOptNode) => {
-    const { nodeId } = optNode;
+    const { nodeId, module } = optNode;
+    const nodeMaps = module === ConfigConstant.Modules.PRIVATE ? privateTreeNodesMap : treeNodesMap;
     return Api.delNode(nodeId).then((res) => {
       if (res.data.success) {
         // Remove engine after successful deletion
@@ -166,20 +175,20 @@ export const useCatalogTreeRequest = () => {
           resourceService.instance?.reset(nodeId);
         }
         dispatch(StoreActions.getSpaceInfo(spaceId || '', true));
-        updateNextNode(nodeId);
-        const tree = treeNodesMap[nodeId];
+        updateNextNode(nodeId, module);
+        const tree = nodeMaps[nodeId];
         if (!tree) {
           return;
         }
         // Determine if the deleted node contains the currently active node
-        const hasChildren = activedNodeId === nodeId || (activedNodeId && isFindNodeInTree(tree, activedNodeId));
+        const hasChildren = activedNodeId === nodeId || (activedNodeId && isFindNodeInTree(tree, activedNodeId, module));
         dispatch(StoreActions.deleteNode(optNode));
         if (hasChildren) {
           dispatch(StoreActions.updateUserInfo({ activeNodeId: '', activeViewId: '' }));
           Api.keepTabbar({});
           Router.push(Navigation.WORKBENCH, { params: { spaceId } });
         }
-        if (treeNodesMap[nodeId].type === ConfigConstant.NodeType.DATASHEET) {
+        if (nodeMaps[nodeId].type === ConfigConstant.NodeType.DATASHEET) {
           dispatch(StoreActions.datasheetErrorCode(nodeId!, StatusCode.NODE_DELETED));
           if (activedNodeId === nodeId) {
             Api.keepTabbar({}).then((res) => {
@@ -200,16 +209,18 @@ export const useCatalogTreeRequest = () => {
    * Copy nodes
    * @param nodeId
    * @param copyAll
+   * @param module
    */
-  const copyNodeReq = (nodeId: string, copyAll = true) => {
-    const result = checkNodeNumberLimit(treeNodesMap[nodeId].type);
+  const copyNodeReq = (nodeId: string, copyAll = true, module?: ConfigConstant.Modules) => {
+    const nodesMap = module === ConfigConstant.Modules.PRIVATE ? privateTreeNodesMap : treeNodesMap;
+    const result = checkNodeNumberLimit(nodesMap[nodeId].type);
     if (result) {
       return Promise.resolve();
     }
     return Api.copyNode(nodeId, copyAll).then((res) => {
-      const { data, success, message, code } = res.data;
+      const { data, success, message } = res.data;
       if (success) {
-        dispatch(StoreActions.addNodeToMap([data]));
+        dispatch(StoreActions.addNodeToMap([data], undefined, module));
         Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: data.nodeId } });
         dispatch(StoreActions.getSpaceInfo(spaceId || '', true));
         return;
@@ -230,14 +241,15 @@ export const useCatalogTreeRequest = () => {
       icon?: string;
       cover?: string;
       showRecordHistory?: ConfigConstant.ShowRecordHistory;
+      embedPage?: { url: string };
     },
   ) => {
     return Api.editNode(nodeId, data).then((res) => {
-      const { success, data } = res.data;
+      const { success, data, message } = res.data;
       if (success) {
         return data;
       }
-      return null;
+      throw new Error(message);
     });
   };
 
@@ -251,20 +263,22 @@ export const useCatalogTreeRequest = () => {
    * Modify node name
    * @param nodeId
    * @param nodeName
+   * @param module
    */
-  const renameNodeReq = (nodeId: string, nodeName: string) => {
+  const renameNodeReq = (nodeId: string, nodeName: string, module?: ConfigConstant.Modules) => {
+    const nodesMap = module === ConfigConstant.Modules.PRIVATE ? privateTreeNodesMap : treeNodesMap;
     return Api.editNode(nodeId, { nodeName }).then((res) => {
       const { success, message } = res.data;
       if (success) {
-        dispatch(StoreActions.setNodeName(nodeId, nodeName));
-        const nodeType = treeNodesMap[nodeId].type;
+        dispatch(StoreActions.setNodeName(nodeId, nodeName, module));
+        const nodeType = nodesMap[nodeId].type;
         if (formId) {
           dispatch(StoreActions.updateForm(nodeId, { name: nodeName }));
         }
         if ([ConfigConstant.NodeType.DASHBOARD, ConfigConstant.NodeType.DATASHEET, ConfigConstant.NodeType.MIRROR].includes(nodeType)) {
           dispatch(StoreActions.updateResourceName(nodeName, nodeId, nodeRefResourceMap[nodeType]));
         }
-        dispatch(StoreActions.setEditNodeId(''));
+        dispatch(StoreActions.setEditNodeId('', module));
         dispatch(StoreActions.setEditNodeId('', ConfigConstant.Modules.FAVORITE));
       } else {
         dispatch(StoreActions.setErr(message));
@@ -318,6 +332,7 @@ export const useCatalogTreeRequest = () => {
   /**
    * Search for sub-departments and members under a department
    * @param teamId
+   * @param linkId
    */
   const getSubUnitListReq = (teamId?: string, linkId?: string) => {
     if (embedId) linkId = undefined;
@@ -333,6 +348,9 @@ export const useCatalogTreeRequest = () => {
   /**
    * Get node roles list
    * @param nodeId
+   * @param includeAdmin
+   * @param includeExtend
+   * @param includeSelf
    */
   const getNodeRoleListReq = (nodeId: string, includeAdmin?: boolean, includeExtend?: boolean, includeSelf?: string) => {
     return Api.listRole(nodeId, includeAdmin, includeExtend, includeSelf).then((res) => {
@@ -351,6 +369,7 @@ export const useCatalogTreeRequest = () => {
   /**
    * Search Organizational Resources
    * @param keyword Keyword (label/sector)
+   * @param linkId
    */
   const searchUnitReq = (keyword: string, linkId?: string) => {
     return Api.searchUnit(keyword, linkId).then((res) => {
@@ -426,8 +445,8 @@ export const useCatalogTreeRequest = () => {
   /**
    * Get a directory tree (template)
    */
-  const getNodeTreeReq = (depth?: number) => {
-    return Api.getNodeTree(depth).then((res) => {
+  const getNodeTreeReq = (unitType: number, depth?: number) => {
+    return Api.getNodeTree(unitType, depth).then((res) => {
       const { success, data } = res.data;
       if (success) {
         return data;
@@ -445,12 +464,16 @@ export const useCatalogTreeRequest = () => {
       const { success, data } = res.data;
       if (success) {
         if (data) {
-          dispatch(StoreActions.addNodeToMap(Selectors.flatNodeTree([data]), false));
-          dispatch(StoreActions.collectionNodeAndExpand(nodeId));
+          const nodeTree = Selectors.flatNodeTree([data]);
+          const nodePrivate = nodeTree.some((node) => node.nodeId === nodeId && node.nodePrivate);
+          const _module = nodePrivate ? ConfigConstant.Modules.PRIVATE : undefined;
+          dispatch(StoreActions.addNodeToMap(nodeTree, false, _module));
+          dispatch(StoreActions.collectionNodeAndExpand(nodeId, _module));
+          return { nodePrivate };
         }
-        return true;
+        return { nodePrivate: false };
       }
-      return false;
+      return null;
     });
   };
 
@@ -476,15 +499,18 @@ export const useCatalogTreeRequest = () => {
    * @param nodeId
    * @param targetNodeId
    * @param pos -1: indicates moving above the target node; 0: indicates moving inside the target node; 1: indicates moving below the target node
+   * @param module
    */
-  const nodeMoveReq = (nodeId: string, targetNodeId: string, pos: number) => {
-    const parentId = pos === 0 ? targetNodeId : treeNodesMap[targetNodeId].parentId;
+  const nodeMoveReq = (nodeId: string, targetNodeId: string, pos: number, module?: ConfigConstant.Modules) => {
+    const nodeMaps = module === ConfigConstant.Modules.PRIVATE ? privateTreeNodesMap : treeNodesMap;
+    const parentId = pos === 0 ? targetNodeId : nodeMaps[targetNodeId].parentId;
     let preNodeId;
     if (pos !== 0) {
-      preNodeId = pos === -1 ? treeNodesMap[targetNodeId].preNodeId : targetNodeId;
+      preNodeId = pos === -1 ? nodeMaps[targetNodeId].preNodeId : targetNodeId;
     }
-    const targetNode = treeNodesMap[targetNodeId];
-    return Api.nodeMove(nodeId, parentId, preNodeId).then((res) => {
+    const targetNode = nodeMaps[targetNodeId];
+    const _unitId = module === ConfigConstant.Modules.PRIVATE ? userUnitId : undefined;
+    return Api.nodeMove(nodeId, parentId, preNodeId, _unitId).then((res) => {
       const { success, data, message } = res.data;
       if (success) {
         if (
@@ -494,11 +520,15 @@ export const useCatalogTreeRequest = () => {
           targetNode.hasChildren &&
           !targetNode.children.length
         ) {
-          dispatch(StoreActions.deleteNodeAction({ parentId: treeNodesMap[nodeId].parentId, nodeId }));
+          dispatch(StoreActions.deleteNodeAction({
+            parentId: nodeMaps[nodeId].parentId,
+            nodeId,
+            module,
+          }));
           return;
         }
-        dispatch(StoreActions.moveTo(nodeId, targetNodeId, pos));
-        dispatch(StoreActions.addNodeToMap(data));
+        dispatch(StoreActions.moveTo(nodeId, targetNodeId, pos, module));
+        dispatch(StoreActions.addNodeToMap(data, undefined, module));
       } else {
         dispatch(StoreActions.setErr(message));
       }
@@ -520,14 +550,16 @@ export const useCatalogTreeRequest = () => {
    * Retrieves whether a node exists in the tree
    * @param tree
    * @param nodeId
+   * @param module
    */
-  function isFindNodeInTree(tree: INodesMapItem, nodeId: string): boolean {
+  function isFindNodeInTree(tree: INodesMapItem, nodeId: string, module?: ConfigConstant.Modules): boolean {
+    const nodeMaps = module === ConfigConstant.Modules.PRIVATE ? privateTreeNodesMap : treeNodesMap;
     return tree.children.some((id) => {
       if (id === nodeId) {
         return true;
       }
       if (treeNodesMap[id].children.length) {
-        return isFindNodeInTree(treeNodesMap[id], nodeId);
+        return isFindNodeInTree(nodeMaps[id], nodeId, module);
       }
       return false;
     });
@@ -540,7 +572,7 @@ export const useCatalogTreeRequest = () => {
       if (success) {
         dispatch(StoreActions.generateFavoriteTree(Selectors.flatNodeTree(data)));
         dispatch(StoreActions.setTreeLoading(false, ConfigConstant.Modules.FAVORITE));
-        return;
+        return data;
       }
       dispatch(StoreActions.setTreeLoading(false, ConfigConstant.Modules.FAVORITE));
       Message.error({ content: message });
@@ -548,18 +580,19 @@ export const useCatalogTreeRequest = () => {
   };
 
   // Set starred/unstarred
-  const updateNodeFavoriteStatusReq = (nodeId: string) => {
-    const oldStatus = treeNodesMap[nodeId].nodeFavorite;
+  const updateNodeFavoriteStatusReq = (nodeId: string, nodePrivate?: boolean) => {
+    const nodesMap = nodePrivate ? privateTreeNodesMap : treeNodesMap;
+    const oldStatus = nodesMap[nodeId].nodeFavorite || favoriteTreeNodeIds.includes(nodeId);
     return Api.updateNodeFavoriteStatus(nodeId).then((res) => {
       const { success } = res.data;
-      const node = treeNodesMap[nodeId];
+      const node = nodesMap[nodeId];
       if (!success) {
         Message.error({ content: t(Strings.add_or_cancel_favorite_fail) });
         return;
       }
       // If the starred status was previously true, the request was to cancel the starred operation.
       if (oldStatus) {
-        dispatch(StoreActions.removeFavorite(nodeId));
+        dispatch(StoreActions.removeFavorite(nodeId, nodePrivate));
         Message.success({ content: t(Strings.cancel_favorite_success) });
         return;
       }
@@ -585,16 +618,17 @@ export const useCatalogTreeRequest = () => {
     });
   };
 
-  const updateNextNode = (nodeId: string) => {
-    const nextNode = Object.values(treeNodesMap).find((node) => node.preNodeId === nodeId);
+  const updateNextNode = (nodeId: string, module?: ConfigConstant.Modules) => {
+    const nodeMaps = module === ConfigConstant.Modules.PRIVATE ? privateTreeNodesMap : treeNodesMap;
+    const nextNode = Object.values(nodeMaps).find((node) => node.preNodeId === nodeId);
     if (nextNode) {
-      dispatch(StoreActions.updateTreeNodesMap(nextNode.nodeId, { preNodeId: treeNodesMap[nodeId].preNodeId }));
+      dispatch(StoreActions.updateTreeNodesMap(nextNode.nodeId, { preNodeId: nodeMaps[nodeId].preNodeId }, module));
     }
   };
 
-  const getTreeDataReq = () => {
+  const getTreeDataReq = (unitType?: number) => {
     dispatch(StoreActions.setTreeLoading(true));
-    return Api.getNodeTree().then((res) => {
+    return Api.getNodeTree(unitType).then((res) => {
       const { data, success } = res.data;
       dispatch(StoreActions.setTreeLoading(false));
       if (success) {
@@ -604,6 +638,23 @@ export const useCatalogTreeRequest = () => {
         const flatTreeData = Selectors.flatNodeTree([data]);
         dispatch(StoreActions.addNodeToMap(flatTreeData));
         dispatch(StoreActions.setTreeRootId(data.nodeId));
+        return data;
+      }
+      Message.error({ content: t(Strings.load_tree_failed) });
+    });
+  };
+
+  const getPrivateTreeDataReq = () => {
+    dispatch(StoreActions.setTreeLoading(true, ConfigConstant.Modules.PRIVATE));
+    return Api.getNodeTree(3).then((res) => {
+      const { data, success } = res.data;
+      dispatch(StoreActions.setTreeLoading(false, ConfigConstant.Modules.PRIVATE));
+      if (success) {
+        if (data) {
+          const flatTreeData = Selectors.flatNodeTree([data]);
+          dispatch(StoreActions.addNodeToMap(flatTreeData, true, ConfigConstant.Modules.PRIVATE));
+          dispatch(StoreActions.setPrivateTreeRootId(data.nodeId));
+        }
         return data;
       }
       Message.error({ content: t(Strings.load_tree_failed) });
@@ -671,6 +722,7 @@ export const useCatalogTreeRequest = () => {
     moveFavoriteNodeReq,
     updateNextNode,
     getTreeDataReq,
+    getPrivateTreeDataReq,
     renameNodeReq,
     updateNodeIconReq,
     updateNodeRecordHistoryReq,

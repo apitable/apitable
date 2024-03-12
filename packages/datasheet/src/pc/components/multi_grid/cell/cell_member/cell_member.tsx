@@ -20,7 +20,7 @@ import { difference } from 'lodash';
 import keyBy from 'lodash/keyBy';
 import * as React from 'react';
 import { useEffect, useMemo } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Button, useThemeColors } from '@apitable/components';
 import {
   Api,
@@ -41,6 +41,7 @@ import {
 import { AddOutlined, CloseOutlined } from '@apitable/icons';
 import { ButtonPlus } from 'pc/components/common';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { MouseDownType } from '../../enum';
 import { ICellComponentProps } from '../cell_value/interface';
@@ -69,7 +70,7 @@ export const CellMember: React.FC<React.PropsWithChildren<ICellMember>> = (props
     deletable = true,
   } = props;
   const colors = useThemeColors();
-  const { datasheetId, unitMap, userInfo, field } = useSelector(
+  const { datasheetId, unitMap, userInfo, field } = useAppSelector(
     (state: IReduxState) => ({
       datasheetId: Selectors.getActiveDatasheetId(state)!,
       unitMap: Selectors.getUnitMap(state)!,
@@ -81,7 +82,6 @@ export const CellMember: React.FC<React.PropsWithChildren<ICellMember>> = (props
   const isMulti = field?.property.isMulti;
   const cellValue = useMemo(() => {
     const unitIds = MemberField.polyfillOldData(cellValueIncludeOldData as IUnitIds);
-    // https://sentry.vika.ltd/organizations/vika/issues/6939/events/348bdf36c4c4437c8984d55f23c2d2bc/?project=7
     return Array.isArray(unitIds) ? unitIds.flat() : null;
   }, [cellValueIncludeOldData]);
 
@@ -147,13 +147,13 @@ export const CellMember: React.FC<React.PropsWithChildren<ICellMember>> = (props
 
             // The current user flag appears when filtering only
             if (item === OtherTypeUnitId.Self) {
-              const { uuid, unitId, memberName, nickName } = userInfo;
+              const { uuid, unitId } = userInfo;
               unitInfo = {
                 type: MemberType.Member,
                 userId: uuid,
                 unitId,
                 avatar: '',
-                name: `${t(Strings.add_sort_current_user)}（${memberName || nickName}）`,
+                name: `${t(Strings.add_sort_current_user)}（${t(Strings.add_sort_current_user_tips)}）`,
                 isActive: true,
                 isDeleted: false,
                 isSelf: true,

@@ -21,7 +21,6 @@ package com.apitable.internal.controller;
 import static com.apitable.workspace.enums.PermissionException.NODE_OPERATION_DENIED;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
 import com.apitable.control.infrastructure.ControlRoleDict;
 import com.apitable.control.infrastructure.ControlTemplate;
@@ -41,7 +40,7 @@ import com.apitable.shared.context.LoginContext;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.holder.SpaceHolder;
 import com.apitable.workspace.entity.NodeEntity;
-import com.apitable.workspace.enums.NodePermissionEnum;
+import com.apitable.workspace.facade.NodeFacade;
 import com.apitable.workspace.ro.CreateDatasheetRo;
 import com.apitable.workspace.service.INodeRoleService;
 import com.apitable.workspace.service.INodeService;
@@ -49,14 +48,17 @@ import com.apitable.workspace.vo.CreateDatasheetVo;
 import com.apitable.workspace.vo.NodeFromSpaceVo;
 import com.apitable.workspace.vo.NodeInfo;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -68,11 +70,14 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @ApiResource(path = "/internal")
-@Tag(name = "Internal Service - Node Interface")
+@Tag(name = "Internal")
 public class InternalNodeController {
 
     @Resource
     private INodeService nodeService;
+
+    @Resource
+    private NodeFacade nodeFacade;
 
     @Resource
     private ControlTemplate controlTemplate;
@@ -86,12 +91,11 @@ public class InternalNodeController {
     /**
      * Create a table node.
      */
-    @PostResource(name = "create a table node", path = "/spaces/{spaceId}/datasheets",
-        requiredPermission = false)
-    @Operation(summary = "create a table node", description = "create a table node")
+    @PostResource(path = "/spaces/{spaceId}/datasheets", requiredPermission = false)
+    @Operation(summary = "Create Node", description = "create a table node")
     @Notification(templateId = NotificationTemplateId.NODE_CREATE)
     public ResponseData<CreateDatasheetVo> createDatasheet(@PathVariable("spaceId") String spaceId,
-        @RequestBody CreateDatasheetRo ro) {
+                                                           @RequestBody CreateDatasheetRo ro) {
         SpaceHolder.set(spaceId);
         Long userId = SessionContext.getUserId();
         // Get the member ID, the method includes judging whether the user is in this space
@@ -123,12 +127,12 @@ public class InternalNodeController {
     /**
      * Delete node.
      */
-    @PostResource(name = "delete node", path = "/spaces/{spaceId}/nodes/{nodeId}/delete",
+    @PostResource(path = "/spaces/{spaceId}/nodes/{nodeId}/delete",
         requiredPermission = false)
-    @Operation(summary = "delete node", description = "delete node")
+    @Operation(summary = "Delete Node", description = "delete node")
     @Notification(templateId = NotificationTemplateId.NODE_DELETE)
     public ResponseData<Void> deleteNode(@PathVariable("spaceId") String spaceId,
-        @PathVariable("nodeId") String nodeId) {
+                                         @PathVariable("nodeId") String nodeId) {
         SpaceHolder.set(spaceId);
         Long userId = SessionContext.getUserId();
         // Get the member ID, the method includes judging whether the user is in this space
@@ -148,10 +152,8 @@ public class InternalNodeController {
     /**
      * Get the space station id to which the node belongs.
      */
-    @GetResource(name = "get the space station id to which the node belongs", path = "/spaces"
-        + "/nodes/{nodeId}/belongSpace", requiredLogin = false, requiredPermission = false)
-    @Operation(summary = "get the space station id to which the node belongs", description = "get"
-        + " the space station id to which the node belongs", hidden = true)
+    @GetResource(path = "/spaces" + "/nodes/{nodeId}/belongSpace", requiredLogin = false)
+    @Operation(summary = "Retrieve Node", description = "get the space station id to which the node belongs", hidden = true)
     public ResponseData<NodeFromSpaceVo> nodeFromSpace(
         @RequestHeader(name = ParamsConstants.INTERNAL_REQUEST) String internalRequest,
         @PathVariable("nodeId") String nodeId) {
@@ -169,11 +171,14 @@ public class InternalNodeController {
         description = "scenario: query an existing read-only dashboard")
     public ResponseData<List<NodeInfo>> filter(@PathVariable("spaceId") String spaceId,
                                                @RequestParam(value = "type") Integer type,
-                                               @RequestParam(value = "nodePermissions", required = false, defaultValue = "0,1,2,3") List<Integer> nodePermissions,
-                                               @RequestParam(value = "keyword", required = false, defaultValue = "") String keyword) {
+                                               @RequestParam(value = "nodePermissions", required = false, defaultValue = "0,1,2,3")
+                                               List<Integer> nodePermissions,
+                                               @RequestParam(value = "keyword", required = false, defaultValue = "")
+                                               String keyword) {
         SpaceHolder.set(spaceId);
         Long memberId = LoginContext.me().getMemberId();
-        List<String> nodeIds = nodeService.getNodeIdBySpaceIdAndTypeAndKeyword(spaceId, type, keyword);
+        List<String> nodeIds =
+            nodeService.getNodeIdBySpaceIdAndTypeAndKeyword(spaceId, type, keyword);
         if (nodeIds.isEmpty()) {
             return ResponseData.success(new ArrayList<>());
         }
@@ -189,7 +194,7 @@ public class InternalNodeController {
             List<String> subFilterNodeIds = roleDict.entrySet().stream()
                 .filter(entry -> entry.getValue().isEqualTo(requireRole))
                 .peek(entry -> nodeIdToNodeRole.put(entry.getKey(), entry.getValue().getRoleTag()))
-                .map(Map.Entry::getKey).collect(Collectors.toList());
+                .map(Map.Entry::getKey).toList();
             filterNodeIds.addAll(subFilterNodeIds);
         });
         if (CollUtil.isEmpty(filterNodeIds)) {
@@ -198,5 +203,18 @@ public class InternalNodeController {
         List<NodeInfo> nodeInfos = nodeService.getNodeInfo(spaceId, filterNodeIds, memberId);
         nodeInfos.forEach(nodeInfo -> nodeInfo.setRole(nodeIdToNodeRole.get(nodeInfo.getNodeId())));
         return ResponseData.success(nodeInfos);
+    }
+
+    @GetResource(path = "/folders/{folderId}/nodes/{nodeId}/exists", requiredLogin = false)
+    @Operation(summary = "Check if the folder contains nodes")
+    @Parameters({
+        @Parameter(name = "folderId", description = "Folder Node ID", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "fodNwmWE5QWPs"),
+        @Parameter(name = "nodeId", description = "Node ID", required = true,
+            schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "dstCgcfixAKyeeNsaP")
+    })
+    public ResponseData<Boolean> getContainsStatus(@PathVariable("folderId") String folderId,
+                                                   @PathVariable("nodeId") String nodeId) {
+        return ResponseData.success(nodeFacade.contains(folderId, nodeId));
     }
 }

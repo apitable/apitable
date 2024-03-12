@@ -106,8 +106,7 @@ const createRainbowColorArrByOpacity = (baseHueArr: any[], opacity: number) => {
  */
 export function createRainbowColorsArr(theme: ThemeName) {
   const isLightTheme = theme === ThemeName.Light;
-
-  const { deepPurple, indigo, blue, teal, green, yellow, orange, tangerine, pink, red } = colors;
+  const { deepPurple, indigo, blue, teal, green, yellow, orange, tangerine, pink, red, bgReverseDefault } = colors;
   const baseHueArr = [deepPurple, indigo, blue, teal, green, yellow, orange, tangerine, pink, red];
 
   const baseColor = isLightTheme
@@ -126,8 +125,9 @@ export function createRainbowColorsArr(theme: ThemeName) {
       return prev.concat(createRainbowColorArrByOpacity(baseHueArr, cur));
     }, []);
 
+  const whiteBgColor = bgReverseDefault;
   // The main consideration here is that the base color and vip color may have to be used separately in the future
-  return [baseColor, vipColor];
+  return [baseColor, vipColor, whiteBgColor];
 }
 
 export function createAvatarRainbowColorsArr(theme: ThemeName) {

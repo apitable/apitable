@@ -18,15 +18,15 @@
 
 import { useMount } from 'ahooks';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { IReduxState } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { UrlInvalid } from '../components/url_invalid';
 import { useInvitePageRefreshed } from '../use_invite';
 import { getInvalidReason } from '../utils';
 
 const LinkInvalid: FC<React.PropsWithChildren<unknown>> = () => {
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'linkInvite' });
-  const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
+  const inviteLinkInfo = useAppSelector((state: IReduxState) => state.invite.inviteLinkInfo);
 
   useMount(() => {
     whenPageRefreshed();

@@ -23,7 +23,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { usePostHog } from 'posthog-js/react';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { ThemeName, Typography, useThemeColors } from '@apitable/components';
 import { ConfigConstant, IReduxState, ISearchAblum, ISearchTemplate, ITemplateCategory, Navigation, Strings, t, TrackEvents } from '@apitable/core';
 import { CloseCircleFilled } from '@apitable/icons';
@@ -32,6 +31,7 @@ import { ScreenSize } from 'pc/components/common/component_display';
 import { SearchInput } from 'pc/components/common/search_input';
 import { Router } from 'pc/components/route_manager/router';
 import { useQuery, useRequest, useResponsive, useSideBarVisible, useTemplateRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { KeyCode } from 'pc/utils/keycode';
 import TemplateIcon from 'static/icon/datasheet/datasheet_icon_template_folder.svg';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
@@ -45,8 +45,8 @@ export const TemplateCategorySide: FC<React.PropsWithChildren<unknown>> = () => 
   const [categoryList, setCategoryList] = useState<ITemplateCategory[]>([]);
   const query = useQuery();
   const [keywords, setKeywords] = useState(query.get('searchKey') || '');
-  const spaceId = useSelector((state: IReduxState) => state.space.activeId);
-  const categoryId = useSelector((state: IReduxState) => state.pageParams.categoryId);
+  const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
+  const categoryId = useAppSelector((state: IReduxState) => state.pageParams.categoryId);
   const { getTemplateCategoryReq, searchTemplateReq } = useTemplateRequest();
   const { data: templateCategory } = useRequest<ITemplateCategory[]>(getTemplateCategoryReq);
   const {
@@ -62,7 +62,7 @@ export const TemplateCategorySide: FC<React.PropsWithChildren<unknown>> = () => 
   // Keep track of the keywords that have been reported to avoid duplication of buried reports
   const hasTrackSearchKeyWords = useRef('');
   const router = useRouter();
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const SearchDefaultPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   useEffect(() => {

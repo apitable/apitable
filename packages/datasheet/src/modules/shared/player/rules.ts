@@ -107,7 +107,7 @@ export const getConditionValue = (str: string) => {
       return state.labs;
     }
     case PlayerRulesConditionType.EDITION: {
-      return getInitializationData().env?.split('-')[0];
+      return getInitializationData().envVars.EDITION?.split('-')[0];
     }
     default:
       return str;
@@ -127,7 +127,7 @@ export const getConditionArgsValue = (str: any) => {
       return state.space.activeId;
     }
     case PlayerRulesConditionArgsType.AI_ONBOARDING: {
-      return new URLSearchParams(window.location.search).get('source');
+      return new URLSearchParams(window.location.search).get('template');
     }
     default:
       return str;
@@ -140,10 +140,10 @@ export const isRulePassed = (conditionValue: any, operator: IPlayerRulesOperator
       return Boolean(conditionValue === conditionArgs);
     }
     case 'IS_BEFORE': {
-      return dayjs.tz(conditionValue).isBefore(conditionArgs);
+      return dayjs(conditionValue).isBefore(conditionArgs);
     }
     case 'IS_AFTER': {
-      return dayjs.tz(conditionValue).isAfter(conditionArgs);
+      return dayjs(conditionValue).isAfter(conditionArgs);
     }
     case 'GREATER_THAN': {
       return Number(conditionValue) > Number(conditionArgs);
@@ -205,9 +205,9 @@ export const isTimeRulePassed = (startTime?: string | number, endTime?: string |
   if (!startTime && !endTime) {
     return true;
   }
-  const cur = dayjs.tz().valueOf();
-  const start = startTime ? dayjs.tz(startTime).valueOf() : Number.NEGATIVE_INFINITY;
-  const end = endTime ? dayjs.tz(endTime).valueOf() : Number.POSITIVE_INFINITY;
+  const cur = dayjs().valueOf();
+  const start = startTime ? dayjs(startTime).valueOf() : Number.NEGATIVE_INFINITY;
+  const end = endTime ? dayjs(endTime).valueOf() : Number.POSITIVE_INFINITY;
   return cur > start && cur < end;
 };
 

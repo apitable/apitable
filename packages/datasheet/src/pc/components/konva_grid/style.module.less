@@ -1,5 +1,5 @@
-@import "~pc/styles/lib_var.less";
-@import "~pc/styles/lib_mixins.less";
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
 
 .gridViewContainer {
   width: 100%;
@@ -17,49 +17,26 @@
   will-change: transform;
   cursor: pointer;
 
-  &::-webkit-scrollbar-thumb,
-  &:hover::-webkit-scrollbar-thumb {
-    background-clip: padding-box;
-    border-radius: 8px;
-    min-height: 36px;
-// FIXME:THEME
-    background-color: var(--shadowColor);
-  }
-
   .verticalScrollBarInner,
   .horizontalScrollBarInner {
     position: absolute;
   }
+
+  .lx-scroll-bar(true);
 }
 
 .verticalScrollBarWrapper {
   overflow-x: hidden;
   overflow-y: scroll;
-  width: 15px;
+  width: 18px;
   right: 0;
-
-  &.cellVerticalScrollBarWrapper {
-    width: 10px;
-
-    &::-webkit-scrollbar {
-      width: 10px;
-    }
-  }
-
-  &::-webkit-scrollbar {
-    width: 15px;
-  }
 }
 
 .horizontalScrollBarWrapper {
   overflow-x: scroll;
   overflow-y: hidden;
-  height: 15px;
+  height: 18px;
   bottom: 0;
-
-  &::-webkit-scrollbar {
-    height: 15px;
-  }
 }
 
 .domGrid {
@@ -69,6 +46,13 @@
   right: 0;
   bottom: 0;
   pointer-events: none;
+
+  :global(.multiText) {
+    border: 2px solid var(--primaryColor);
+    box-sizing: content-box;
+    margin: -2px;
+    border-radius: 4px;
+  }
 
   .microWrapper {
     position: fixed;

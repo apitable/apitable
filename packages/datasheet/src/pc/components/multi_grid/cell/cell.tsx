@@ -19,17 +19,18 @@
 import classNames from 'classnames';
 import { PropsWithChildren } from 'react';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { GridChildComponentProps } from 'react-window';
 import { CellType, IGridViewColumn, IGridViewProperty, ILinearRowRecord, ILinearRow, RecordMoveType, Selectors, Strings, t } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { GRID_VIEW_BLANK_HEIGHT } from '../constant';
 import { CellValueContainer } from './cell_value_container';
-import styles from './styles.module.less';
 import { CellAddField } from './virtual_cell/cell_add_field/cell_add_field';
 import { CellAddRecord } from './virtual_cell/cell_add_record/cell_add_record';
 import { CellBlank } from './virtual_cell/cell_blank/cell_blank';
 import { CellGroupOffset } from './virtual_cell/cell_group_offset/cell_group_offset';
 import { CellGroupTab } from './virtual_cell/cell_group_tab/cell_group_tab';
+import styles from './styles.module.less';
 
 interface IData {
   isGroupEmptyContent: boolean; // TODO: Remove here
@@ -63,7 +64,7 @@ const CellFunc: React.FC<React.PropsWithChildren<GridChildComponentProps & ICell
     // Uniformly add animations to all cells
     transition: 'top 0.2s ease-in-out 0.2s',
   };
-  const { permissions, groupInfo, columnsLength, actualColumnIndex } = useSelector((state) => {
+  const { permissions, groupInfo, columnsLength, actualColumnIndex } = useAppSelector((state) => {
     const view = Selectors.getCurrentView(state) as IGridViewProperty;
     return {
       permissions: Selectors.getPermissions(state),

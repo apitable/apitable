@@ -18,16 +18,16 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { Dispatch, memo, SetStateAction, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Typography, useThemeColors, Switch } from '@apitable/components';
 import { FieldType, IField, ILinkField, IOneWayLinkField, NotSupportFieldInstance, Selectors, Strings, t } from '@apitable/core';
 import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
 import { LinkJump } from 'pc/components/common';
 import { SearchPanel } from 'pc/components/datasheet_search_panel';
+import { useAppSelector } from 'pc/store/react-redux';
 import IconArrow from 'static/icon/datasheet/datasheet_icon_calender_right.svg';
 import settingStyles from '../../field_setting/styles.module.less';
-import styles from './styles.module.less';
 import { ViewSelect } from './view_select';
+import styles from './styles.module.less';
 
 interface IFormateLinkProps {
   currentField: ILinkField | IOneWayLinkField;
@@ -44,10 +44,10 @@ export const FormateLink: React.FC<React.PropsWithChildren<IFormateLinkProps>> =
   const limitToView = currentField.property.limitToView;
   const foreignDatasheetId = currentField.property.foreignDatasheetId;
   const [searchPanelVisible, setSearchPanelVisible] = useState(false);
-  const activeDatasheetId = useSelector((state) => propDatasheetId || Selectors.getActiveDatasheetId(state))!;
-  const foreignDatasheet = useSelector((state) => (foreignDatasheetId ? Selectors.getDatasheet(state, foreignDatasheetId) : null));
-  const datasheetParentId = useSelector((state) => Selectors.getDatasheet(state, propDatasheetId)!.parentId);
-  const _foreignFiledName = useSelector((state) =>
+  const activeDatasheetId = useAppSelector((state) => propDatasheetId || Selectors.getActiveDatasheetId(state))!;
+  const foreignDatasheet = useAppSelector((state) => (foreignDatasheetId ? Selectors.getDatasheet(state, foreignDatasheetId) : null));
+  const datasheetParentId = useAppSelector((state) => Selectors.getDatasheet(state, propDatasheetId)!.parentId);
+  const _foreignFiledName = useAppSelector((state) =>
     isLinkType ? Selectors.getField(state, currentField.property.brotherFieldId!, foreignDatasheetId).name : '',
   );
   const foreignFiledName = _foreignFiledName === NotSupportFieldInstance.name ? '' : _foreignFiledName;

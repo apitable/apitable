@@ -24,7 +24,7 @@ import lombok.Getter;
 
 /**
  * <p>
- * automation exception
+ * automation exception.
  * </p>
  *
  * @author feng penglong
@@ -41,7 +41,10 @@ public enum AutomationException implements BaseException {
 
     AUTOMATION_ROBOT_NOT_EXIST(1104, "The automation not exits"),
 
-    AUTOMATION_TRIGGER_LIMIT(1105, "The number of triggers cannot exceed 3")
+    AUTOMATION_TRIGGER_LIMIT(1105, "The number of triggers cannot exceed 3"),
+
+    AUTOMATION_TRIGGER_NOT_EXIST(1106, "The trigger not exits"),
+
     ;
 
     private final Integer code;

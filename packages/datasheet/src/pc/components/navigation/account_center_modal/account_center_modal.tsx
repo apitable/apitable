@@ -20,14 +20,14 @@ import { Drawer } from 'antd';
 import { compact } from 'lodash';
 import * as React from 'react';
 import { FC, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { IconButton, useThemeColors } from '@apitable/components';
 import { getCustomConfig, IReduxState, isPrivateDeployment, Strings, t } from '@apitable/core';
 import { CloseOutlined, ListOutlined } from '@apitable/icons';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { useResponsive } from 'pc/hooks';
 import { usePlatform } from 'pc/hooks/use_platform';
+import { useResponsive } from 'pc/hooks/use_responsive';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables, isMobileApp } from 'pc/utils/env';
 import { AccountManager } from './account_manager';
 import { BasicSetting } from './basic_setting';
@@ -35,9 +35,11 @@ import { DeveloperConfiguration } from './developer_configuration';
 import { ModifyPassword } from './modify_password';
 import { Nav } from './nav';
 import { PersonalizedSetting } from './personalized_setting';
-import styles from './style.module.less';
 // @ts-ignore
-import { AccountWallet, isSocialWecom } from 'enterprise';
+import { AccountWallet } from 'enterprise/account_wallet/account_wallet';
+// @ts-ignore
+import { isSocialWecom } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 export enum AccountCenterModules {
   BasicSetting = 'BasicSetting',
@@ -61,7 +63,7 @@ export const AccountCenterModal: FC<React.PropsWithChildren<IAccountCenterModalP
   const colors = useThemeColors();
   const [activeItem, setActiveItem] = useState(props.defaultActiveItem || (isPrivateDeployment() && isMobile ? 1 : 0));
   const [showNav, setShowNav] = useState(false);
-  const userInfo = useSelector((state: IReduxState) => state.user.info);
+  const userInfo = useAppSelector((state: IReduxState) => state.user.info);
   const { socialLinkDisable } = getCustomConfig();
   const { ACCOUNT_WALLET_VISIBLE } = getEnvVariables();
   const env = getEnvVariables();

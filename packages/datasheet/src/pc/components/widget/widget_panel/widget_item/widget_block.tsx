@@ -22,7 +22,6 @@ import classnames from 'classnames';
 import * as React from 'react';
 import { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import * as components from '@apitable/components';
 import * as core from '@apitable/core';
@@ -33,6 +32,7 @@ import { ConnectStatus, IExpandRecordProps, initRootWidgetState, mainMessage, Me
 import { IRecordPickerProps } from 'pc/components/record_picker';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getDependenceByDstIds } from 'pc/utils/dependence_dst';
 // import { getDependenceByDstIds } from 'pc/utils/dependence_dst';
 import { getEnvVariables } from 'pc/utils/env';
@@ -40,11 +40,11 @@ import { useManageWidgetRenderTask, useWidgetCanRender } from '../../context';
 import { widgetRenderTask } from '../../context/widget_render_task';
 import { useCloudStorage } from '../../hooks/use_cloud_storage';
 import { expandWidgetDevConfig } from '../../widget_center/widget_create_modal';
-import styles from './style.module.less';
 import { patchDatasheet } from './utils';
 import { WidgetLoading } from './widget_loading';
 // @ts-ignore
-import { isSocialWecom } from 'enterprise';
+import { isSocialWecom } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 (() => {
   if (!process.env.SSR) {
@@ -120,7 +120,7 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<
   const widgetCanRender = useWidgetCanRender(widgetId);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [codeUrl, setCodeUrl] = useCloudStorage<string | undefined>(`widget_loader_code_url_${widgetPackageId}`, widgetId);
-  const nodeConnected = useSelector((state) => {
+  const nodeConnected = useAppSelector((state) => {
     const datasheet = Selectors.getDatasheet(state, nodeId);
     const bindDatasheetLoaded = datasheet && !datasheet.isPartOfData;
     // The initialization of the widget must be done after the datasheet loaded.
@@ -130,14 +130,14 @@ export const WidgetBlockBase: React.ForwardRefRenderFunction<
     const { templateId } = state.pageParams;
     return templateId || nodeId !== state.pageParams.nodeId || Selectors.getDatasheetPack(state, nodeId)?.connected;
   });
-  const errorCode = useSelector((state) => {
+  const errorCode = useAppSelector((state) => {
     const widget = Selectors.getWidget(state, widgetId)!;
     const { sourceId, datasheetId } = widget.snapshot;
     return sourceId?.startsWith('mir') ? Selectors.getMirrorErrorCode(state, sourceId) : Selectors.getDatasheetErrorCode(state, datasheetId);
   });
-  const theme = useSelector((state) => state.theme);
+  const theme = useAppSelector((state) => state.theme);
 
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
 
   const isWecom = isSocialWecom?.(spaceInfo);
 

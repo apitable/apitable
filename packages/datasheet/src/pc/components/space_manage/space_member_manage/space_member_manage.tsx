@@ -18,7 +18,7 @@
 
 import { useMount } from 'ahooks';
 import { FC, useState } from 'react';
-// import { useSelector, shallowEqual } from 'react-redux';
+// import { useAppSelector, shallowEqual } from 'react-redux';
 import SplitPane from 'react-split-pane';
 import {
   // IReduxState,
@@ -28,9 +28,9 @@ import {
 } from '@apitable/core';
 // import { EditMemberModal, ChangeMemberTeam, AddMember } from './modal';
 import { Loading } from './loading';
-import styles from './style.module.less';
 import { TeamInfo } from './team_info';
 import { TeamTree } from './team_tree';
+import styles from './style.module.less';
 
 const _SplitPane: any = SplitPane;
 

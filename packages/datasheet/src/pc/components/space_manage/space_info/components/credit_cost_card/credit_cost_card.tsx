@@ -1,6 +1,5 @@
 import classnames from 'classnames';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import useSWR from 'swr';
 import urlcat from 'urlcat';
@@ -11,6 +10,7 @@ import { GET_CREDIT_STATISTICS, SELECT_LIST, TimeDimension } from 'pc/components
 import { convertDate } from 'pc/components/space_manage/space_info/components/credit_cost_card/utils/convert_date';
 import { getCreditStatisticsFetcher } from 'pc/components/space_manage/space_info/components/credit_cost_card/utils/fetcher';
 import { CardTitle } from 'pc/components/space_manage/space_info/ui';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
 
 interface ICreditCostCardProps {
@@ -23,7 +23,7 @@ interface ICreditCostCardProps {
 
 export const CreditCostCard: React.FC<ICreditCostCardProps> = ({ strokeColor, minHeight, className, titleTip, ...props }) => {
   const color = useThemeColors();
-  const spaceId = useSelector((state: IReduxState) => state.space.activeId);
+  const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
   const [timeDimension, setTimeDimension] = useState(TimeDimension.WEEKDAY);
 
   const { data } = useSWR(urlcat(GET_CREDIT_STATISTICS, { spaceId }) + `?timeDimension=${timeDimension}`, getCreditStatisticsFetcher);

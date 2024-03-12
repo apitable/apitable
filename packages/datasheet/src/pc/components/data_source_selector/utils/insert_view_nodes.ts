@@ -1,6 +1,6 @@
-import { ISearchPanelState } from 'pc/components/datasheet_search_panel/store/interface/search_panel';
 import * as React from 'react';
 import { ConfigConstant, ViewType } from '@apitable/core';
+import { ISearchPanelState } from 'pc/components/datasheet_search_panel/store/interface/search_panel';
 
 export const insertViewNode = ({
   currentMeta, nodes, currentDatasheetId, localDispatch,

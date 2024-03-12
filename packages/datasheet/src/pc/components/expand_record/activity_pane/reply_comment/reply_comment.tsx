@@ -19,11 +19,11 @@
 import { Tooltip } from 'antd';
 import cls from 'classnames';
 import { get } from 'lodash';
-import { useSelector } from 'react-redux';
 import { Typography, IconButton, useThemeColors } from '@apitable/components';
 import { t, Strings } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
 import { serialize, ITextNode } from 'pc/components/draft_editor/utils';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
 
 interface IReplyComment {
@@ -34,7 +34,7 @@ interface IReplyComment {
 
 export const ReplyComment = (props: IReplyComment) => {
   const colors = useThemeColors();
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
   const { reply, handleClose, isStatic } = props;
   if (!reply) {
     return null;

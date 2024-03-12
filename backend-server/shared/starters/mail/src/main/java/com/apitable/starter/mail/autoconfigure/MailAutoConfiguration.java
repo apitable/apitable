@@ -18,9 +18,9 @@
 
 package com.apitable.starter.mail.autoconfigure;
 
-import javax.activation.MimeType;
-import javax.mail.internet.MimeMessage;
-
+import jakarta.activation.MimeType;
+import jakarta.mail.internet.MimeMessage;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -29,21 +29,20 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 
 /**
  * <p>
- * autoconfiguration of mail components
+ * autoconfiguration of mail components.
  * </p>
  *
  * @author Benson Cheung
  */
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @AutoConfigureAfter(MailSenderAutoConfiguration.class)
 @ConditionalOnExpression("T(org.springframework.util.StringUtils).hasText('${spring.mail.host}')")
-@ConditionalOnClass({ MimeMessage.class, MimeType.class, MailSender.class })
+@ConditionalOnClass({MimeMessage.class, MimeType.class, MailSender.class})
 @ConditionalOnBean(JavaMailSender.class)
 public class MailAutoConfiguration {
 

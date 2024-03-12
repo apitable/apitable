@@ -22,19 +22,20 @@ import classNames from 'classnames';
 import parser from 'html-react-parser';
 import { useContext } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import urlcat from 'urlcat';
 import { IconButton, useThemeColors, Switch } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, Selectors, ConfigConstant, Strings, t } from '@apitable/core';
 import { LinkOutlined, DeleteOutlined, MoreOutlined, HistoryOutlined, InfoCircleOutlined, ArchiveOutlined } from '@apitable/icons';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import styles from 'pc/components/expand_record/style.module.less';
-import { useRequest, useCatalogTreeRequest } from 'pc/hooks';
+import { useCatalogTreeRequest } from 'pc/hooks/use_catalogtree_request';
+import { useRequest } from 'pc/hooks/use_request';
 import { resourceService } from 'pc/resource_service';
-import { copy2clipBoard } from 'pc/utils';
+import { useAppSelector } from 'pc/store/react-redux';
+import { copy2clipBoard } from 'pc/utils/dom';
 import { EXPAND_RECORD_OPERATE_BUTTON } from 'pc/utils/test_id_constant';
 import EditorTitleContext from './editor_title_context';
 
@@ -51,18 +52,18 @@ const MORE_BTN_CLASS_NAME = 'expand-record-more-btn';
 export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRecordMoreOptionProps>> = (props) => {
   const { expandRecordId, modalClose, datasheetId, sourceViewId, fromCurrentDatasheet } = props;
   const colors = useThemeColors();
-  const rowRemovable = useSelector((state) => Selectors.getPermissions(state, datasheetId).rowRemovable);
-  const viewId = useSelector((state) => {
+  const rowRemovable = useAppSelector((state) => Selectors.getPermissions(state, datasheetId).rowRemovable);
+  const viewId = useAppSelector((state) => {
     return sourceViewId || Selectors.getCurrentView(state, datasheetId)!.id;
   });
-  const mirrorId = useSelector((state) => state.pageParams.mirrorId);
-  const showRecordHistory = useSelector((state) => Selectors.getRecordHistoryStatus(state, datasheetId))!;
+  const mirrorId = useAppSelector((state) => state.pageParams.mirrorId);
+  const showRecordHistory = useAppSelector((state) => Selectors.getRecordHistoryStatus(state, datasheetId))!;
 
-  const permissions = useSelector((state) => Selectors.getPermissions(state, datasheetId, undefined, mirrorId));
-  const curMirrorId = useSelector((state) => mirrorId || state.pageParams.mirrorId);
+  const permissions = useAppSelector((state) => Selectors.getPermissions(state, datasheetId, undefined, mirrorId));
+  const curMirrorId = useAppSelector((state) => mirrorId || state.pageParams.mirrorId);
   const showHistorySwitch = permissions.manageable && !curMirrorId;
-  
-  const isEmbed = useSelector((state) => Boolean(state.pageParams.embedId));
+
+  const isEmbed = useAppSelector((state) => Boolean(state.pageParams.embedId));
 
   const { updateNodeRecordHistoryReq } = useCatalogTreeRequest();
   const { run: updateNodeRecordHistory } = useRequest(updateNodeRecordHistoryReq, { manual: true });
@@ -220,7 +221,7 @@ export const ExpandRecordMoreOption: React.FC<React.PropsWithChildren<IExpandRec
       </Menu.Item>
 
       {rowRemovable && <Menu.Divider />}
-      {rowRemovable && !mirrorId && permissions.manageable && (
+      {fromCurrentDatasheet && rowRemovable && !mirrorId && permissions.manageable && (
         <Menu.Item
           key="archive"
           icon={<ArchiveOutlined color={colors.thirdLevelText} />}

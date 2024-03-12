@@ -1,123 +1,134 @@
 export interface SystemConfigInterface {
-    api_panel:                   { [key: string]: APIPanel };
-    audit:                       Audit;
-    country_code_and_phone_code: { [key: string]: CountryCodeAndPhoneCode };
     environment:                 Environment;
-    guide:                       SystemConfigInterfaceGuide;
-    integral:                    Integral;
-    locales:                     Locale[];
-    marketplace:                 SystemConfigInterfaceMarketplace;
-    notifications:               Notifications;
-    player:                      SystemConfigInterfacePlayer;
     settings:                    Settings;
     shortcut_keys:               ShortcutKey[];
+    country_code_and_phone_code: { [key: string]: CountryCodeAndPhoneCode };
+    api_panel:                   { [key: string]: APIPanel };
+    audit:                       Audit;
+    locales:                     Locale[];
+    marketplace:                 SystemConfigInterfaceMarketplace;
     test_function:               TestFunction;
+    player:                      SystemConfigInterfacePlayer;
+    guide:                       SystemConfigInterfaceGuide;
+    notifications:               Notifications;
+    integral:                    Integral;
 }
 
 export interface APIPanel {
-    defaultExample:   string;
     defaultExampleId: string;
     description:      string;
     descriptionId:    string;
+    defaultExample:   string;
     valueType:        string;
 }
 
 export interface Audit {
-    actual_delete_space:       ActualDeleteSpace;
-    add_field_role:            ActualDeleteSpace;
-    add_node_role:             AddNodeRole;
-    add_sub_admin:             AddTeamToMemberClass;
-    add_team_to_member:        AddTeamToMemberClass;
-    agree_user_apply:          AddTeamToMemberClass;
-    cancel_delete_space:       ActualDeleteSpace;
-    change_main_admin:         AddTeamToMemberClass;
-    copy_node:                 AddNodeRole;
-    create_node:               AddNodeRole;
-    create_space:              ActualDeleteSpace;
-    create_team:               AddTeamToMemberClass;
-    create_template:           ActualDeleteSpace;
-    delete_field_role:         ActualDeleteSpace;
-    delete_node:               AddNodeRole;
-    delete_node_role:          AddNodeRole;
-    delete_rubbish_node:       ActualDeleteSpace;
-    delete_space:              ActualDeleteSpace;
-    delete_sub_admin:          AddTeamToMemberClass;
-    delete_team:               AddTeamToMemberClass;
-    delete_template:           ActualDeleteSpace;
-    disable_field_role:        ActualDeleteSpace;
-    disable_node_role:         AddNodeRole;
-    disable_node_share:        AddNodeRole;
-    enable_field_role:         ActualDeleteSpace;
-    enable_node_role:          AddNodeRole;
-    enable_node_share:         AddNodeRole;
-    export_node:               ActualDeleteSpace;
-    import_node:               AddNodeRole;
-    invite_user_join_by_email: ActualDeleteSpace;
-    move_node:                 AddNodeRole;
-    quote_template:            ActualDeleteSpace;
-    recover_rubbish_node:      AddNodeRole;
-    remove_member_from_team:   AddTeamToMemberClass;
-    remove_user:               AddTeamToMemberClass;
-    rename_node:               AddNodeRole;
-    rename_space:              ActualDeleteSpace;
-    sort_node:                 ActualDeleteSpace;
-    store_share_node:          AddNodeRole;
-    update_field_role:         ActualDeleteSpace;
-    update_field_role_setting: AddTeamToMemberClass;
-    update_member_property:    AddTeamToMemberClass;
-    update_member_team:        AddTeamToMemberClass;
-    update_node_cover:         ActualDeleteSpace;
-    update_node_desc:          ActualDeleteSpace;
-    update_node_icon:          ActualDeleteSpace;
-    update_node_role:          AddNodeRole;
-    update_node_share_setting: AddNodeRole;
-    update_space_logo:         ActualDeleteSpace;
-    update_sub_admin_role:     AddTeamToMemberClass;
-    update_team_property:      AddTeamToMemberClass;
-    user_leave_space:          ActualDeleteSpace;
-    user_login:                ActualDeleteSpace;
-    user_logout:               ActualDeleteSpace;
+    actual_delete_space:         ActualDeleteSpace;
+    add_field_role:              ActualDeleteSpace;
+    add_node_role:               AddNodeRole;
+    add_sub_admin:               AddSubAdmin;
+    add_team_to_member:          AddSubAdmin;
+    agree_user_apply:            AddSubAdmin;
+    cancel_delete_space:         ActualDeleteSpace;
+    change_main_admin:           AddSubAdmin;
+    copy_node:                   AddNodeRole;
+    create_node:                 AddNodeRole;
+    create_space:                ActualDeleteSpace;
+    create_team:                 AddSubAdmin;
+    create_template:             ActualDeleteSpace;
+    delete_field_role:           ActualDeleteSpace;
+    delete_node:                 AddNodeRole;
+    delete_node_role:            AddNodeRole;
+    delete_rubbish_node:         ActualDeleteSpace;
+    delete_space:                ActualDeleteSpace;
+    delete_sub_admin:            AddSubAdmin;
+    delete_team:                 AddSubAdmin;
+    delete_template:             ActualDeleteSpace;
+    disable_field_role:          ActualDeleteSpace;
+    disable_node_role:           AddNodeRole;
+    disable_node_share:          AddNodeRole;
+    enable_field_role:           ActualDeleteSpace;
+    enable_node_role:            AddNodeRole;
+    enable_node_share:           AddNodeRole;
+    export_node:                 ActualDeleteSpace;
+    import_node:                 AddNodeRole;
+    invite_user_join_by_email:   ActualDeleteSpace;
+    move_node:                   AddNodeRole;
+    quote_template:              ActualDeleteSpace;
+    recover_rubbish_node:        AddNodeRole;
+    remove_member_from_team:     AddSubAdmin;
+    remove_user:                 AddSubAdmin;
+    rename_node:                 AddNodeRole;
+    rename_space:                ActualDeleteSpace;
+    sort_node:                   ActualDeleteSpace;
+    store_share_node:            StoreShareNode;
+    update_field_role:           ActualDeleteSpace;
+    update_field_role_setting:   AddSubAdmin;
+    update_member_name_property: ActualDeleteSpace;
+    update_member_property:      ActualDeleteSpace;
+    update_member_team:          AddSubAdmin;
+    update_node_cover:           ActualDeleteSpace;
+    update_node_desc:            ActualDeleteSpace;
+    update_node_icon:            ActualDeleteSpace;
+    update_node_role:            AddNodeRole;
+    update_node_share_setting:   AddNodeRole;
+    update_space_logo:           ActualDeleteSpace;
+    update_sub_admin_role:       AddSubAdmin;
+    update_team_property:        AddSubAdmin;
+    user_leave_space:            ActualDeleteSpace;
+    user_login:                  ActualDeleteSpace;
+    user_logout:                 ActualDeleteSpace;
 }
 
 export interface ActualDeleteSpace {
-    category: string;
-    content:  string;
-    name:     string;
+    content?: string;
     online?:  boolean;
-    type:     NotificationsTypeEnum;
+    type:     NotificationsTypeElement;
+    category: string;
+    name:     string;
 }
 
-export enum NotificationsTypeEnum {
+export enum NotificationsTypeElement {
     Member = "member",
     Space = "space",
     System = "system",
 }
 
 export interface AddNodeRole {
-    category:          AddNodeRoleCategory;
     content:           string;
-    name:              string;
     online:            boolean;
-    show_in_audit_log: boolean;
+    type:              NotificationsTypeElement;
     sort:              string;
-    type:              NotificationsTypeEnum;
+    show_in_audit_log: boolean;
+    category:          CategoryElement;
+    name:              string;
 }
 
-export enum AddNodeRoleCategory {
+export enum CategoryElement {
     WorkCatalogChangeEvent = "work_catalog_change_event",
     WorkCatalogPermissionChangeEvent = "work_catalog_permission_change_event",
     WorkCatalogShareEvent = "work_catalog_share_event",
 }
 
-export interface AddTeamToMemberClass {
+export interface AddSubAdmin {
+    type:     NotificationsTypeElement;
     category: AddSubAdminCategory;
-    type:     NotificationsTypeEnum;
 }
 
 export enum AddSubAdminCategory {
     AdminPermissionChangeEvent = "admin_permission_change_event",
     DatasheetFieldPermissionChangeEvent = "datasheet_field_permission_change_event",
     OrganizationChangeEvent = "organization_change_event",
+}
+
+export interface StoreShareNode {
+    content:           string;
+    online:            boolean;
+    type:              NotificationsTypeElement[];
+    sort:              string;
+    show_in_audit_log: boolean;
+    category:          CategoryElement[];
+    name:              string;
 }
 
 export interface CountryCodeAndPhoneCode {
@@ -135,24 +146,24 @@ export interface Integration {
 }
 
 export interface SystemConfigInterfaceGuide {
-    step:   { [key: string]: Step };
     wizard: { [key: string]: Wizard };
+    step:   { [key: string]: Step };
 }
 
 export interface Step {
-    backdrop?:  Backdrop;
-    next?:      Next;
-    nextId?:    NextID;
-    onClose?:   string[];
-    onNext?:    On[];
-    onPlay?:    string[];
-    onPrev?:    On[];
-    onSkip?:    On[];
-    onTarget?:  On[];
-    prev?:      string;
-    uiConfig:   string;
     uiConfigId: string;
     uiType:     string;
+    prev?:      string;
+    backdrop?:  Backdrop;
+    onPlay?:    string[];
+    onNext?:    On[];
+    next?:      Next;
+    onPrev?:    On[];
+    nextId?:    NextID;
+    onSkip?:    On[];
+    uiConfig:   string;
+    onClose?:   string[];
+    onTarget?:  On[];
     skipId?:    string;
     byEvent?:   string[];
     skip?:      string;
@@ -202,12 +213,12 @@ export interface Wizard {
     completeIndex?:   number;
     player?:          WizardPlayer;
     steps?:           string;
+    manualActions?:   string[];
     repeat?:          boolean;
     endTime?:         number;
     startTime?:       number;
     freeVCount?:      number;
     integral_action?: string;
-    manualActions?:   string[];
 }
 
 export interface WizardPlayer {
@@ -235,20 +246,20 @@ export interface IntegralRule {
 
 export interface BeInvitedToReward {
     action_code:            string;
-    action_name:            string;
     day_max_integral_value: number;
-    display_name:           string[];
+    display_name:           any[];
+    online?:                boolean;
     integral_value:         number;
     notify?:                boolean;
-    online?:                boolean;
+    action_name:            string;
 }
 
 export interface FissionReward {
     action_code:  string;
-    action_name:  string;
-    display_name: string[];
-    notify?:      boolean;
+    display_name: any[];
     online:       boolean;
+    notify?:      boolean;
+    action_name:  string;
 }
 
 export interface Locale {
@@ -262,49 +273,49 @@ export interface Locale {
 
 export interface SystemConfigInterfaceMarketplace {
     cli_9f3930dd7d7ad00c: CLI;
-    cli_9f614b454434500e: CLI;
     cli_a08120b120fad00e: CLI;
+    cli_9f614b454434500e: CLI;
     ina5200279359980055:  Ina;
-    ina5645957505507647:  Ina;
     ina9134969049653777:  Ina;
+    ina5645957505507647:  Ina;
 }
 
 export interface CLI {
-    app_description: string;
-    app_id:          string;
+    logo:            Image;
+    env:             string[];
+    disable:         boolean;
     app_info:        string;
+    note:            string;
     app_name:        string;
+    type:            string;
+    app_description: string;
+    id:              string;
+    display_order:   number;
+    image:           Image;
+    app_id:          string;
+    link_to_cms:     string;
     app_type:        string;
     btn_card:        BtnCard;
-    disable:         boolean;
-    display_order:   number;
-    env:             string[];
-    id:              string;
-    image:           Image;
-    link_to_cms:     string;
-    logo:            Image;
     modal:           CLI9F3930Dd7D7Ad00CModal;
-    note:            string;
-    type:            string;
 }
 
 export interface BtnCard {
-    apps_btn_text:     string;
-    btn_action?:       string;
-    btn_close_action?: string;
     btn_text:          string;
+    btn_action?:       string;
     btn_type:          string;
+    btn_close_action?: string;
+    apps_btn_text:     string;
 }
 
 export interface Image {
-    height:   number;
     id:       string;
-    mimeType: MIMEType;
     name:     string;
     size:     number;
+    mimeType: MIMEType;
     token:    string;
-    url:      string;
     width:    number;
+    height:   number;
+    url:      string;
 }
 
 export enum MIMEType {
@@ -313,34 +324,34 @@ export enum MIMEType {
 }
 
 export interface CLI9F3930Dd7D7Ad00CModal {
-    app_description: string;
-    btn_action?:     string;
     btn_text:        string;
+    btn_action?:     string;
+    app_description: string;
     btn_type:        string;
     help_link:       string;
 }
 
 export interface Ina {
-    app_description: string;
-    app_id:          string;
+    logo:            Image;
+    env:             string[];
     app_info:        string;
+    note:            string;
     app_name:        string;
+    type:            string;
+    app_description: string;
+    id:              string;
+    display_order:   number;
+    image:           Image;
+    app_id:          string;
+    link_to_cms:     string;
     app_type:        string;
     btn_card:        BtnCard;
-    display_order:   number;
-    env:             string[];
-    id:              string;
-    image:           Image;
-    link_to_cms:     string;
-    logo:            Image;
     modal:           CLI9F3930Dd7D7Ad00CModal;
-    note:            string;
-    type:            string;
 }
 
 export interface Notifications {
-    templates: Templates;
     types:     Types;
+    templates: Templates;
 }
 
 export interface Templates {
@@ -348,87 +359,98 @@ export interface Templates {
     activity_integral_income_toadmin:            ActivityIntegralIncomeNotify;
     add_record_out_of_limit:                     AddRecordOutOfLimit;
     add_record_soon_to_be_limit:                 AddRecordOutOfLimit;
-    add_sub_admin:                               AssignedToGroupClass;
-    admin_transfer_space_widget_notify:          AdminTransferSpaceWidgetNotify;
-    admin_unpublish_space_widget_notify:         AdminTransferSpaceWidgetNotify;
+    add_sub_admin:                               AddRecordOutOfLimit;
+    admin_transfer_space_widget_notify:          Notify;
+    admin_unpublish_space_widget_notify:         Notify;
     apply_space_beta_feature_success_notify_all: ActivityIntegralIncomeNotify;
     apply_space_beta_feature_success_notify_me:  ActivityIntegralIncomeNotify;
-    assigned_to_group:                           AssignedToGroupClass;
-    assigned_to_role:                            AssignedToGroupClass;
-    auto_cancel_record_subscription:             AutoCancelRecordSubscription;
-    auto_create_record_subscription:             AutoCancelRecordSubscription;
+    assigned_to_group:                           AddRecordOutOfLimit;
+    assigned_to_role:                            AddRecordOutOfLimit;
+    auto_cancel_record_subscription:             AutoCRecordSubscription;
+    auto_create_record_subscription:             AutoCRecordSubscription;
+    "automation-fail":                           AutomationFail;
     capacity_limit:                              AddRecordOutOfLimit;
-    changed_ordinary_user:                       AdminTransferSpaceWidgetNotify;
-    comment_mentioned:                           AutoCancelRecordSubscription;
-    common_system_notify:                        AdminTransferSpaceWidgetNotify;
-    common_system_notify_web:                    ActivityIntegralIncomeNotify;
+    changed_ordinary_user:                       AddRecordOutOfLimit;
+    comment_mentioned:                           CommentMentioned;
+    common_system_notify:                        Notify;
+    common_system_notify_web:                    CommonSystemNotifyWeb;
     datasheet_limit:                             AddRecordOutOfLimit;
     datasheet_record_limit:                      AddRecordOutOfLimit;
     integral_income_notify:                      ActivityIntegralIncomeNotify;
-    invite_member_toadmin:                       AdminTransferSpaceWidgetNotify;
-    invite_member_tomyself:                      AdminTransferSpaceWidgetNotify;
-    invite_member_touser:                        AdminTransferSpaceWidgetNotify;
-    member_applied_to_close_account:             AdminTransferSpaceWidgetNotify;
-    new_space_widget_notify:                     AdminTransferSpaceWidgetNotify;
-    new_user_welcome_notify:                     AdminTransferSpaceWidgetNotify;
-    quit_space:                                  AdminTransferSpaceWidgetNotify;
-    remove_from_group:                           AdminTransferSpaceWidgetNotify;
-    remove_from_role:                            AdminTransferSpaceWidgetNotify;
-    removed_from_space_toadmin:                  AdminTransferSpaceWidgetNotify;
-    removed_from_space_touser:                   AdminTransferSpaceWidgetNotify;
-    removed_member_tomyself:                     AdminTransferSpaceWidgetNotify;
-    server_pre_publish:                          AdminTransferSpaceWidgetNotify;
-    single_record_comment_mentioned:             AutoCancelRecordSubscription;
-    single_record_member_mention:                AutoCancelRecordSubscription;
-    space_add_primary_admin:                     AdminTransferSpaceWidgetNotify;
+    invite_member_toadmin:                       AddRecordOutOfLimit;
+    invite_member_tomyself:                      AddRecordOutOfLimit;
+    invite_member_touser:                        AddRecordOutOfLimit;
+    member_applied_to_close_account:             AddRecordOutOfLimit;
+    new_space_widget_notify:                     AddRecordOutOfLimit;
+    new_user_welcome_notify:                     AddRecordOutOfLimit;
+    quit_space:                                  AddRecordOutOfLimit;
+    remove_from_group:                           AddRecordOutOfLimit;
+    remove_from_role:                            AddRecordOutOfLimit;
+    removed_from_space_toadmin:                  AddRecordOutOfLimit;
+    removed_from_space_touser:                   AddRecordOutOfLimit;
+    removed_member_tomyself:                     AddRecordOutOfLimit;
+    server_pre_publish:                          AddRecordOutOfLimit;
+    single_record_comment_mentioned:             CommentMentioned;
+    single_record_member_mention:                CommentMentioned;
+    space_add_primary_admin:                     AddRecordOutOfLimit;
     space_admin_limit:                           AddRecordOutOfLimit;
     space_api_limit:                             AddRecordOutOfLimit;
     space_calendar_limit:                        AddRecordOutOfLimit;
-    space_certification_fail_notify:             AdminTransferSpaceWidgetNotify;
-    space_certification_notify:                  AdminTransferSpaceWidgetNotify;
-    space_deleted:                               AdminTransferSpaceWidgetNotify;
-    space_dingtalk_notify:                       AdminTransferSpaceWidgetNotify;
-    space_field_permission_limit:                AdminTransferSpaceWidgetNotify;
-    space_file_permission_limit:                 AdminTransferSpaceWidgetNotify;
-    space_form_limit:                            AdminTransferSpaceWidgetNotify;
-    space_gantt_limit:                           AdminTransferSpaceWidgetNotify;
-    space_join_apply:                            AdminTransferSpaceWidgetNotify;
-    space_join_apply_approved:                   AdminTransferSpaceWidgetNotify;
-    space_join_apply_refused:                    AdminTransferSpaceWidgetNotify;
-    space_lark_notify:                           AdminTransferSpaceWidgetNotify;
-    space_members_limit:                         AdminTransferSpaceWidgetNotify;
-    space_mirror_limit:                          AdminTransferSpaceWidgetNotify;
-    space_name_change:                           AdminTransferSpaceWidgetNotify;
-    space_paid_notify:                           AdminTransferSpaceWidgetNotify;
-    space_rainbow_label_limit:                   AdminTransferSpaceWidgetNotify;
-    space_record_limit:                          AdminTransferSpaceWidgetNotify;
-    space_recover:                               AdminTransferSpaceWidgetNotify;
-    space_seats_limit:                           AdminTransferSpaceWidgetNotify;
-    space_subscription_end_notify:               AdminTransferSpaceWidgetNotify;
-    space_subscription_notify:                   AdminTransferSpaceWidgetNotify;
-    space_time_machine_limit:                    AdminTransferSpaceWidgetNotify;
-    space_trash_limit:                           AdminTransferSpaceWidgetNotify;
-    space_trial:                                 AdminTransferSpaceWidgetNotify;
-    space_vika_paid_notify:                      AdminTransferSpaceWidgetNotify;
-    space_watermark_notify:                      AdminTransferSpaceWidgetNotify;
-    space_wecom_api_trial_end:                   AdminTransferSpaceWidgetNotify;
-    space_wecom_notify:                          AdminTransferSpaceWidgetNotify;
-    space_yozooffice_notify:                     AdminTransferSpaceWidgetNotify;
-    subscribed_record_cell_updated:              AutoCancelRecordSubscription;
-    subscribed_record_commented:                 AutoCancelRecordSubscription;
+    space_certification_fail_notify:             AddRecordOutOfLimit;
+    space_certification_notify:                  AddRecordOutOfLimit;
+    space_deleted:                               AddRecordOutOfLimit;
+    space_dingtalk_notify:                       AddRecordOutOfLimit;
+    space_field_permission_limit:                AddRecordOutOfLimit;
+    space_file_permission_limit:                 AddRecordOutOfLimit;
+    space_form_limit:                            AddRecordOutOfLimit;
+    space_gantt_limit:                           AddRecordOutOfLimit;
+    space_join_apply:                            AddRecordOutOfLimit;
+    space_join_apply_approved:                   AddRecordOutOfLimit;
+    space_join_apply_refused:                    AddRecordOutOfLimit;
+    space_lark_notify:                           AddRecordOutOfLimit;
+    space_members_limit:                         AddRecordOutOfLimit;
+    space_mirror_limit:                          AddRecordOutOfLimit;
+    space_name_change:                           AddRecordOutOfLimit;
+    space_paid_notify:                           AddRecordOutOfLimit;
+    space_rainbow_label_limit:                   AddRecordOutOfLimit;
+    space_record_limit:                          AddRecordOutOfLimit;
+    space_recover:                               AddRecordOutOfLimit;
+    space_seats_limit:                           AddRecordOutOfLimit;
+    space_subscription_end_notify:               AddRecordOutOfLimit;
+    space_subscription_notify:                   AddRecordOutOfLimit;
+    space_time_machine_limit:                    AddRecordOutOfLimit;
+    space_trash_limit:                           AddRecordOutOfLimit;
+    space_trial:                                 AddRecordOutOfLimit;
+    space_watermark_notify:                      AddRecordOutOfLimit;
+    space_wecom_api_trial_end:                   AddRecordOutOfLimit;
+    space_wecom_notify:                          AddRecordOutOfLimit;
+    space_yozooffice_notify:                     AddRecordOutOfLimit;
+    subscribed_record_cell_updated:              CommentMentioned;
+    subscribed_record_commented:                 CommentMentioned;
+    "subscribed-record-archived":                AddRecordOutOfLimit;
+    "subscribed-record-unarchived":              AddRecordOutOfLimit;
     task_reminder:                               AddRecordOutOfLimit;
-    user_field:                                  AutoCancelRecordSubscription;
-    web_publish:                                 AdminTransferSpaceWidgetNotify;
-    workflow_execute_failed_notify:              AdminTransferSpaceWidgetNotify;
+    user_field:                                  CommentMentioned;
+    web_publish:                                 CommonSystemNotifyWeb;
+    workflow_execute_failed_notify:              AddRecordOutOfLimit;
 }
 
 export interface ActivityIntegralIncomeNotify {
-    format_string:      string;
-    is_component?:      boolean;
-    is_notification?:   boolean;
-    notifications_type: NotificationsTypeEnum;
-    to_tag:             ToTag;
-    can_jump?:          boolean;
+    to_tag:                 ToTag;
+    notifications_type:     NotificationsTypeElement;
+    is_notification:        boolean;
+    format_string:          string;
+    notification_type:      NotificationType;
+    is_component?:          boolean;
+    can_jump?:              boolean;
+    is_mail?:               boolean;
+    mail_template_subject?: string;
+}
+
+export enum NotificationType {
+    事务型消息TransactionalNotify = "事务型消息(transactional notify)",
+    营销型消息MarketingNotify = "营销型消息(marketing notify)",
+    通知型消息NotificationNotify = "通知型消息(notification notify)",
 }
 
 export enum ToTag {
@@ -443,19 +465,22 @@ export enum ToTag {
 }
 
 export interface AddRecordOutOfLimit {
-    can_jump:              boolean;
-    format_string:         string;
-    frequency?:            number;
-    is_component:          boolean;
-    is_mail:               boolean;
-    is_notification:       boolean;
-    mail_template_subject: string;
-    notifications_type:    NotificationsTypeEnum;
-    to_tag:                ToTag;
-    url:                   URL;
-    billing_notify?:       string;
-    is_browser?:           boolean;
-    is_mobile?:            boolean;
+    can_jump?:              boolean;
+    to_tag:                 ToTag;
+    notifications_type:     NotificationsTypeElement;
+    is_notification:        boolean;
+    is_mail?:               boolean;
+    mail_template_subject?: string;
+    format_string?:         string;
+    url?:                   URL;
+    frequency?:             number;
+    is_component?:          boolean;
+    is_mobile?:             boolean;
+    is_browser?:            boolean;
+    notification_type?:     NotificationType;
+    billing_notify?:        string;
+    redirect_url?:          string;
+    id?:                    string;
 }
 
 export enum URL {
@@ -463,48 +488,49 @@ export enum URL {
     Workbench = "/workbench",
 }
 
-export interface AssignedToGroupClass {
-    can_jump:           boolean;
-    format_string:      string;
-    is_browser:         boolean;
-    is_component:       boolean;
-    is_mobile:          boolean;
-    is_notification:    boolean;
-    notifications_type: NotificationsTypeEnum;
+export interface Notify {
     to_tag:             ToTag;
+    notifications_type: NotificationsTypeElement;
+    is_notification:    boolean;
+    is_mail?:           boolean;
+    is_browser:         boolean;
+    format_string:      string;
+    is_component:       boolean;
+}
+
+export interface AutoCRecordSubscription {
+    can_jump:           boolean;
+    to_tag:             ToTag;
+    notifications_type: any[];
+    is_notification:    boolean;
+    is_browser:         boolean;
+    format_string:      string;
     url:                URL;
 }
 
-export interface AdminTransferSpaceWidgetNotify {
-    format_string?:         string;
-    is_browser?:            boolean;
-    is_component?:          boolean;
-    is_mail?:               boolean;
-    is_notification?:       boolean;
-    notifications_type:     NotificationsTypeEnum;
-    to_tag:                 ToTag;
-    can_jump?:              boolean;
-    is_mobile?:             boolean;
-    url?:                   URL;
-    redirect_url?:          string;
-    billing_notify?:        string;
-    frequency?:             number;
-    mail_template_subject?: string;
-    id?:                    string;
+export interface AutomationFail {
 }
 
-export interface AutoCancelRecordSubscription {
+export interface CommentMentioned {
     can_jump:               boolean;
-    format_string:          string;
-    is_browser:             boolean;
-    is_mail:                boolean;
-    is_mobile:              boolean;
-    is_notification:        boolean;
-    notifications_type:     any[];
     to_tag:                 ToTag;
+    notifications_type:     any[];
+    is_notification:        boolean;
+    is_mobile:              boolean;
+    is_mail:                boolean;
+    is_browser:             boolean;
+    format_string:          string;
     url:                    URL;
     is_component?:          boolean;
     mail_template_subject?: string;
+}
+
+export interface CommonSystemNotifyWeb {
+    to_tag:             ToTag;
+    notifications_type: NotificationsTypeElement;
+    format_string:      string;
+    is_component:       boolean;
+    is_mobile?:         boolean;
 }
 
 export interface Types {
@@ -520,18 +546,18 @@ export interface Member {
 }
 
 export interface SystemConfigInterfacePlayer {
-    action:  Action[];
-    events:  Events;
-    jobs:    Jobs;
-    rule:    RuleElement[];
-    tips:    Tips;
     trigger: Trigger[];
+    events:  Events;
+    rule:    RuleElement[];
+    jobs:    Jobs;
+    action:  Action[];
+    tips:    Tips;
 }
 
 export interface Action {
+    guide?:       ActionGuide;
     id:           string;
     command:      string;
-    guide?:       ActionGuide;
     commandArgs?: string;
 }
 
@@ -540,37 +566,38 @@ export interface ActionGuide {
 }
 
 export interface Events {
-    _:                                             Empty;
+    _:                                             AutomationFail;
     address_shown:                                 AddressShown;
+    ai_create_ai_node:                             AICreateAINode;
     app_error_logger:                              AddressShown;
-    guide_use_automation_first_time:               AddressShown;
     app_modal_confirm:                             AddressShown;
     app_set_user_id:                               AddressShown;
     app_tracker:                                   AddressShown;
     datasheet_add_new_view:                        AddressShown;
-    datasheet_create_mirror_tip:                   DatasheetCreateMirrorTip;
+    datasheet_create_mirror_tip:                   AICreateAINode;
     datasheet_dashboard_panel_shown:               AddressShown;
     datasheet_delete_record:                       AddressShown;
     datasheet_field_context_hidden:                AddressShown;
     datasheet_field_context_shown:                 AddressShown;
-    datasheet_field_setting_hidden:                DatasheetCreateMirrorTip;
+    datasheet_field_setting_hidden:                AICreateAINode;
     datasheet_field_setting_shown:                 AddressShown;
     datasheet_gantt_view_shown:                    AddressShown;
-    datasheet_grid_view_shown:                     DatasheetCreateMirrorTip;
+    datasheet_grid_view_shown:                     AICreateAINode;
     datasheet_org_has_link_field:                  AddressShown;
     datasheet_org_view_add_first_node:             AddressShown;
     datasheet_org_view_drag_to_unhandled_list:     AddressShown;
     datasheet_org_view_right_panel_shown:          AddressShown;
-    datasheet_search_panel_hidden:                 DatasheetCreateMirrorTip;
-    datasheet_search_panel_shown:                  DatasheetCreateMirrorTip;
+    datasheet_search_panel_hidden:                 AICreateAINode;
+    datasheet_search_panel_shown:                  AICreateAINode;
     datasheet_shown:                               AddressShown;
     datasheet_user_menu:                           AddressShown;
-    datasheet_widget_center_modal_shown:           DatasheetCreateMirrorTip;
+    datasheet_widget_center_modal_shown:           AICreateAINode;
     datasheet_wigdet_empty_panel_shown:            AddressShown;
     get_context_menu_file_more:                    AddressShown;
     get_context_menu_folder_more:                  AddressShown;
     get_context_menu_root_add:                     AddressShown;
     get_nav_list:                                  AddressShown;
+    guide_use_automation_first_time:               AddressShown;
     invite_entrance_modal_shown:                   AddressShown;
     questionnaire_shown:                           AddressShown;
     questionnaire_shown_after_sign:                AddressShown;
@@ -589,7 +616,7 @@ export interface Events {
     viewset_manual_save_tip:                       AddressShown;
     workbench_create_form_bth_clicked:             AddressShown;
     workbench_create_form_panel_shown:             AddressShown;
-    workbench_create_form_previewer_shown:         DatasheetCreateMirrorTip;
+    workbench_create_form_previewer_shown:         AICreateAINode;
     workbench_entry:                               AddressShown;
     workbench_folder_from_template_showcase_shown: AddressShown;
     workbench_folder_showcase_shown:               AddressShown;
@@ -601,17 +628,14 @@ export interface Events {
     workbench_space_list_shown:                    AddressShown;
 }
 
-export interface Empty {
-}
-
 export interface AddressShown {
     module: string;
     name:   string;
 }
 
-export interface DatasheetCreateMirrorTip {
-    guide:  ActionGuide;
+export interface AICreateAINode {
     module: string;
+    guide:  ActionGuide;
     name:   string;
 }
 
@@ -638,14 +662,14 @@ export interface Tips {
 }
 
 export interface FirstNodeTips {
-    desc:        string;
     description: string;
     title:       string;
+    desc:        string;
 }
 
 export interface Trigger {
     actions:     string[];
-    rules:       string[];
+    rules?:      string[];
     id:          string;
     event:       string[];
     eventState?: string;
@@ -819,8 +843,8 @@ export interface BuildBranch {
 }
 
 export interface IntegrationHelpURL {
-    marketplace: IntegrationDingtalkHelpURLMarketplace;
     value:       string;
+    marketplace: IntegrationDingtalkHelpURLMarketplace;
 }
 
 export interface IntegrationDingtalkHelpURLMarketplace {
@@ -836,10 +860,10 @@ export interface ShortcutKey {
     id:           string;
     command:      string;
     description?: string;
-    type?:        TypeElement[];
+    type?:        ShortcutKeyType[];
 }
 
-export enum TypeElement {
+export enum ShortcutKeyType {
     GalleryViewShortcuts = "gallery_view_shortcuts",
     GirdViewShortcuts = "gird_view_shortcuts",
     GlobalShortcuts = "global_shortcuts",
@@ -848,37 +872,37 @@ export enum TypeElement {
 
 export interface TestFunction {
     async_compute:    AsyncCompute;
-    render_normal:    AsyncCompute;
     render_prompt:    AsyncCompute;
     robot:            AsyncCompute;
-    view_manual_save: AsyncCompute;
     widget_center:    AsyncCompute;
+    render_normal:    AsyncCompute;
+    view_manual_save: AsyncCompute;
 }
 
 export interface AsyncCompute {
-    card:         Card;
-    feature_key:  string;
     feature_name: string;
-    id:           string;
     logo:         string;
-    modal:        AsyncComputeModal;
+    id:           string;
     note:         string;
+    feature_key:  string;
+    modal:        AsyncComputeModal;
+    card:         Card;
 }
 
 export interface Card {
-    btn_close_action: string;
     btn_open_action:  string;
-    btn_text:         string;
-    btn_type:         string;
     info:             string;
     info的副本:          string;
+    btn_close_action: string;
+    btn_text:         string;
+    btn_type:         string;
 }
 
 export interface AsyncComputeModal {
-    btn_action?: string;
     btn_text:    string;
-    btn_type:    string;
     info:        string;
-    info_image:  string;
+    btn_action?: string;
+    btn_type:    string;
     info的副本:     string;
+    info_image:  string;
 }

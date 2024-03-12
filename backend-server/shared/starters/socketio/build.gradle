@@ -1,9 +1,15 @@
- plugins {
-  id 'java-library'
+plugins {
+    id 'java-library'
+    id 'testing.java-conventions'
 }
+
 dependencies {
-  implementation(rootProject.ext.dependencies['boot-starter'])
-  implementation(rootProject.ext.dependencies['socket-io'])
-  implementation(rootProject.ext.dependencies['slf4j'])
-  implementation(rootProject.ext.dependencies['hutool'])
+    implementation platform(libs.spring.boot.dependencies)
+    implementation(libs.spring.boot.starter)
+    implementation(libs.socketio){
+        exclude(group: 'org.json', module: 'json')
+    }
+    implementation(libs.json)
+    implementation(libs.slf4j)
+    implementation(libs.bundles.hutool)
 }

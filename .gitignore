@@ -95,6 +95,8 @@ eslint-results.sarif
 /packages/room-native-api/Cargo.lock
 
 # openapi generated
-/backend-server/application/.openapi-generator/
+/backend-server/shared/starters/databus/.openapi-generator/
 
 .nx
+
+/scripts/enterprise

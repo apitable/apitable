@@ -23,7 +23,6 @@ import { RadioChangeEvent } from 'antd/lib/radio';
 import classnames from 'classnames';
 import * as React from 'react';
 import { ReactChild, useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Loading, stopPropagation, useThemeColors } from '@apitable/components';
 import { IBreadCrumbData, IMember, ISpaceBasicInfo, ISpaceInfo, ITeam, IUnit, Selectors, Strings, t, UnitItem } from '@apitable/core';
 import { ChevronRightOutlined } from '@apitable/icons';
@@ -31,12 +30,13 @@ import { AvatarType, ButtonPlus, HorizontalScroll, InfoCard, SearchInput } from 
 import { ScreenSize } from 'pc/components/common/component_display';
 import { useCatalogTreeRequest, useRequest, useResponsive } from 'pc/hooks';
 import { IRoleItem, useRoleRequest } from 'pc/hooks/use_role';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import { SearchResult } from '../search_result';
-import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
 import { SelectUnitSource } from '.';
+import styles from './style.module.less';
 
 export interface ISelectUnitLeftProps {
   isSingleSelect?: boolean;
@@ -102,9 +102,9 @@ export const SelectUnitLeft: React.FC<React.PropsWithChildren<ISelectUnitLeftPro
   const { run: getRoleList, data } = useRoleRequest();
   const { isOpen: roleIsOpen, roles: roleList } = data;
 
-  let linkId = useSelector(Selectors.getLinkId);
-  const spaceInfo = useSelector((state) => state.space.curSpaceInfo) || defaultSpaceInfo;
-  const embedId = useSelector((state) => state.pageParams.embedId);
+  let linkId = useAppSelector(Selectors.getLinkId);
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo) || defaultSpaceInfo;
+  const embedId = useAppSelector((state) => state.pageParams.embedId);
   const { CUSTOM_SYNC_CONTACTS_LINKID } = getEnvVariables();
 
   if (CUSTOM_SYNC_CONTACTS_LINKID && source === SelectUnitSource.SyncMember) {

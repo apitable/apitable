@@ -21,93 +21,53 @@ package com.apitable.organization.service.impl;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.json.JSONUtil;
 import com.apitable.AbstractIntegrationTest;
-import com.apitable.FileHelper;
+import com.apitable.organization.entity.MemberEntity;
 import com.apitable.organization.entity.TeamEntity;
 import com.apitable.organization.entity.TeamMemberRelEntity;
 import com.apitable.organization.vo.MemberTeamPathInfo;
 import com.apitable.organization.vo.TeamTreeVo;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
+import com.apitable.space.entity.SpaceEntity;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.io.IOUtils;
+import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 
 public class TeamServiceImplTest extends AbstractIntegrationTest {
 
     @Test
-    void testGetTeamTree() throws IOException {
-        String resourceName = "sql/orgIsolated-data.sql";
-        InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
-        String sqlStr = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-        String[] sqlArray = sqlStr.split(";");
-        for (String sql : sqlArray) {
-            execute(sql);
-        }
+    void testGetTeamTree() {
+        initSpace();
         // Member in root team
         List<TeamTreeVo> treeVos =
-            iTeamService.getTeamTree("spczdmQDfBAn5", 1478202310895792131L, 2);
+            iTeamService.getTeamTree("spczdmQDfBAn5", 2L, 2);
         assertThat(treeVos.size()).isEqualTo(1);
         assertThat(treeVos.get(0).getChildren().size()).isEqualTo(3);
 
         // Member does not in root team
         List<TeamTreeVo> treeVos2 =
-            iTeamService.getTeamTree("spczdmQDfBAn5", 1478202310895792130L, 1);
+            iTeamService.getTeamTree("spczdmQDfBAn5", 1L, 1);
         assertThat(treeVos2.size()).isEqualTo(3);
     }
 
     @Test
-    void testGetMemberTeamTree() throws IOException {
-        List<Long> teamIds =
-            CollUtil.newArrayList(1279306279580438529L, 1342304314473648129L, 1236159916641619970L,
-                1283285207447699457L);
-        String resourceName = "sql/orgIsolated-vut-data.sql";
-        InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
-        String sql = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-        execute(sql);
+    void testBuild() {
+        String spaceId = "spczdmQDfBAn5";
+        initTeamTree(spaceId);
 
-        List<TeamTreeVo> treeVos = iTeamService.getMemberTeamTree("spczdmQDfBAn5", teamIds);
-        assertThat(treeVos.size()).isEqualTo(3);
-    }
-
-    @Test
-    void testGetMemberAllTeamsVO() throws IOException {
-        List<Long> teamIds =
-            CollUtil.newArrayList(1279306279580438529L, 1342304314473648129L, 1236159916641619970L,
-                1283285207447699457L);
-        String resourceName = "sql/orgIsolated-vut-data.sql";
-        InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
-        String sql = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-        execute(sql);
-
-        List<TeamTreeVo> treeVos = iTeamService.getMemberAllTeamsVO("spczdmQDfBAn5", teamIds);
-        assertThat(treeVos.size()).isEqualTo(9);
-    }
-
-    @Test
-    void testBuild() throws IOException {
-        String resourceName = "sql/orgIsolated-vut-data.sql";
-        InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
-        String sql = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-        execute(sql);
-
-        List<TeamTreeVo> treeVos = iTeamService.build("spczdmQDfBAn5", 1279306279580438529L);
+        List<TeamTreeVo> treeVos = iTeamService.build(spaceId, 5L);
         assertThat(treeVos.size()).isEqualTo(13);
     }
 
     @Test
-    void testBuildTree() throws IOException {
-        List<Long> teamIds =
-            CollUtil.newArrayList(1279306279580438529L, 1342304314473648129L, 1236159916641619970L,
-                1283285207447699457L);
-        String resourceName = "sql/orgIsolated-vut-data.sql";
-        InputStream inputStream = FileHelper.getInputStreamFromResource(resourceName);
-        String sql = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
-        execute(sql);
+    void testBuildTree() {
+        String spaceId = "spczdmQDfBAn5";
+        initTeamTree(spaceId);
 
-        List<TeamTreeVo> treeVos = iTeamService.buildTree("spczdmQDfBAn5", teamIds);
+        List<Long> teamIds = Lists.list(5L, 10L, 2L, 4L);
+        List<TeamTreeVo> treeVos = iTeamService.buildTree(spaceId, teamIds);
         assertThat(treeVos.size()).isEqualTo(4);
     }
 
@@ -264,7 +224,7 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
         assertThat(memberToTeamMap.get(101L).get(2).getTeamId()).isEqualTo(31);
     }
 
-    private void prepareMemberAndTeamInfo() {
+    protected void prepareMemberAndTeamInfo() {
         // prepare root team
         TeamEntity rootTeam =
             TeamEntity.builder().id(1L).spaceId("spc1").parentId(0L).teamName("root team").build();
@@ -295,6 +255,117 @@ public class TeamServiceImplTest extends AbstractIntegrationTest {
         TeamEntity thirdLevelOneTeam = TeamEntity.builder().id(31L).spaceId("spc1").parentId(21L)
             .teamName("NO.1 third-level team").build();
         iTeamService.save(thirdLevelOneTeam);
+    }
+
+    private void initSpace() {
+        SpaceEntity spaceEntity = SpaceEntity.builder()
+            .spaceId("spczdmQDfBAn5")
+            .name("Space")
+            .props(JSONUtil.createObj().putOnce("orgIsolated", 1).toString())
+            .build();
+        iSpaceService.save(spaceEntity);
+        initIsolateTeam(spaceEntity.getSpaceId());
+    }
+
+    private void initIsolateTeam(String spaceId) {
+        List<TeamEntity> teamEntities = new ArrayList<>();
+        teamEntities.add(
+            TeamEntity.builder().id(1L).spaceId(spaceId).parentId(0L).teamName("root team")
+                .build());
+        teamEntities.add(
+            TeamEntity.builder().id(2L).spaceId(spaceId).parentId(1L).teamName("Engineering")
+                .sequence(1).build());
+        teamEntities.add(
+            TeamEntity.builder().id(3L).spaceId(spaceId).parentId(1L).teamName("Product")
+                .sequence(2).build());
+        teamEntities.add(
+            TeamEntity.builder().id(4L).spaceId(spaceId).parentId(1L).teamName("Marketing")
+                .sequence(3).build());
+        teamEntities.add(
+            TeamEntity.builder().id(5L).spaceId(spaceId).parentId(2L).teamName("UX Engineering")
+                .sequence(4).build());
+        teamEntities.add(
+            TeamEntity.builder().id(6L).spaceId(spaceId).parentId(2L).teamName("BackendEngineering")
+                .sequence(5).build());
+        teamEntities.add(TeamEntity.builder().id(7L).spaceId(spaceId).parentId(2L)
+            .teamName("Quality Engineering").sequence(5).build());
+        teamEntities.add(
+            TeamEntity.builder().id(8L).spaceId(spaceId).parentId(2L).teamName("Mobile Engineering")
+                .sequence(5).build());
+        teamEntities.add(
+            TeamEntity.builder().id(9L).spaceId(spaceId).parentId(2L).teamName("Infra").sequence(5)
+                .build());
+        teamEntities.add(
+            TeamEntity.builder().id(10L).spaceId(spaceId).parentId(3L).teamName("Product Community")
+                .sequence(1).build());
+        teamEntities.add(
+            TeamEntity.builder().id(11L).spaceId(spaceId).parentId(3L).teamName("Product Platform")
+                .sequence(2).build());
+        teamEntities.add(
+            TeamEntity.builder().id(12L).spaceId(spaceId).parentId(3L).teamName("Product Design")
+                .sequence(3).build());
+        teamEntities.add(TeamEntity.builder().id(13L).spaceId(spaceId).parentId(6L)
+            .teamName("BackendEngineering one").sequence(1).build());
+        iTeamService.saveBatch(teamEntities);
+
+        List<MemberEntity> memberEntities = new ArrayList<>();
+        memberEntities.add(
+            MemberEntity.builder().id(1L).spaceId(spaceId).userId(1478241862259765250L)
+                .isActive(true).nameModified(false).build());
+        memberEntities.add(
+            MemberEntity.builder().id(2L).spaceId(spaceId).userId(1478241862259765251L)
+                .isActive(true).nameModified(false).build());
+        iMemberService.saveBatch(memberEntities);
+
+        List<TeamMemberRelEntity> teamMemberRelEntities = new ArrayList<>();
+        teamMemberRelEntities.add(TeamMemberRelEntity.builder().memberId(2L).teamId(1L).build());
+        teamMemberRelEntities.add(TeamMemberRelEntity.builder().memberId(1L).teamId(2L).build());
+        teamMemberRelEntities.add(TeamMemberRelEntity.builder().memberId(1L).teamId(4L).build());
+        teamMemberRelEntities.add(TeamMemberRelEntity.builder().memberId(1L).teamId(5L).build());
+        teamMemberRelEntities.add(TeamMemberRelEntity.builder().memberId(1L).teamId(10L).build());
+        iTeamMemberRelService.saveBatch(teamMemberRelEntities);
+    }
+
+    private void initTeamTree(String spaceId) {
+        List<TeamEntity> teamEntities = new ArrayList<>();
+        teamEntities.add(
+            TeamEntity.builder().id(1L).spaceId(spaceId).parentId(0L).teamName("root team")
+                .build());
+        teamEntities.add(
+            TeamEntity.builder().id(2L).spaceId(spaceId).parentId(1L).teamName("Engineering")
+                .sequence(1).build());
+        teamEntities.add(
+            TeamEntity.builder().id(3L).spaceId(spaceId).parentId(1L).teamName("Product")
+                .sequence(2).build());
+        teamEntities.add(
+            TeamEntity.builder().id(4L).spaceId(spaceId).parentId(1L).teamName("GM").sequence(5)
+                .build());
+        teamEntities.add(
+            TeamEntity.builder().id(5L).spaceId(spaceId).parentId(2L).teamName("UX Engineering")
+                .sequence(1).build());
+        teamEntities.add(
+            TeamEntity.builder().id(6L).spaceId(spaceId).parentId(2L).teamName("BackendEngineering")
+                .sequence(2).build());
+        teamEntities.add(TeamEntity.builder().id(7L).spaceId(spaceId).parentId(2L)
+            .teamName("Quality Engineering").sequence(3).build());
+        teamEntities.add(
+            TeamEntity.builder().id(8L).spaceId(spaceId).parentId(2L).teamName("Mobile Engineering")
+                .sequence(4).build());
+        teamEntities.add(
+            TeamEntity.builder().id(9L).spaceId(spaceId).parentId(2L).teamName("Infra").sequence(5)
+                .build());
+        teamEntities.add(
+            TeamEntity.builder().id(10L).spaceId(spaceId).parentId(3L).teamName("Product Community")
+                .sequence(1).build());
+        teamEntities.add(
+            TeamEntity.builder().id(11L).spaceId(spaceId).parentId(3L).teamName("Product Platform")
+                .sequence(2).build());
+        teamEntities.add(
+            TeamEntity.builder().id(12L).spaceId(spaceId).parentId(3L).teamName("Product Design")
+                .sequence(3).build());
+        teamEntities.add(TeamEntity.builder().id(13L).spaceId(spaceId).parentId(6L)
+            .teamName("BackendEngineering one").sequence(1).build());
+        iTeamService.saveBatch(teamEntities);
     }
 }
 

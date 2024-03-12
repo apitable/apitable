@@ -21,7 +21,7 @@ import { Tabs } from 'antd';
 import classNames from 'classnames';
 import { FC, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { ThemeProvider } from '@apitable/components';
 import { ConfigConstant, Events, getCustomConfig, Player, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
@@ -29,14 +29,15 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { initNoTraceVerification, stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { ImportFile } from './import_file';
 import { InputEmail } from './input_email';
 import { LinkInvite } from './link_invite';
-import styles from './style.module.less';
 // @ts-ignore
-import { checkSocialInvite } from 'enterprise';
+import { checkSocialInvite } from 'enterprise/home/utils';
+import styles from './style.module.less';
 
 const { TabPane } = Tabs;
 
@@ -53,8 +54,8 @@ export const InviteOutsiderTabs: FC<React.PropsWithChildren<IInviteOutsiderTabsP
   // Availability of invitees
   const [memberInvited, setMemberInvited] = useState(false);
   const [secondVerify, setSecondVerify] = useState<null | string>(null);
-  const isAdmin = useSelector((state) => state.user.info?.isAdmin);
-  const isOrgIsolated = useSelector((state) => state.space.spaceFeatures?.orgIsolated);
+  const isAdmin = useAppSelector((state) => state.user.info?.isAdmin);
+  const isOrgIsolated = useAppSelector((state) => state.space.spaceFeatures?.orgIsolated);
   useMount(() => {
     Player.doTrigger(Events.invite_entrance_modal_shown);
   });

@@ -20,7 +20,7 @@ import axios from 'axios';
 import { ConfigConstant } from 'config';
 import urlcat from 'urlcat';
 import { NodeType, ShowRecordHistory } from '../../../config/constant';
-import { IApiWrapper, INode, INodesMapItem, IParent, IUpdateRoleData } from '../../../exports/store';
+import { IApiWrapper, INode, INodesMapItem, IParent, IUpdateRoleData } from '../../../exports/store/interfaces';
 import * as Url from '../../shared/api/url';
 import { IAddNodeParams } from './api.space.interface';
 import { getBrowserDatabusApiEnabled } from '../../database/api/wasm';
@@ -32,12 +32,15 @@ const CancelToken = axios.CancelToken;
  *
  * Query the node tree of the workbench, limit the query to two layers
  *
+ * @unitType 1: team, 3: member(private)
+ * @param unitType
  * @param depth
  * @returns
  */
-export function getNodeTree(depth?: number) {
+export function getNodeTree(unitType?: number, depth?: number) {
   return axios.get(Url.GET_NODE_TREE, {
     params: {
+      unitType,
       depth,
     },
   });
@@ -59,13 +62,15 @@ export function getRootNode() {
  *
  * @param nodeId
  * @param nodeType
+ * @param unitType
  * @returns
  */
-export function getChildNodeList(nodeId: string, nodeType?: NodeType) {
+export function getChildNodeList(nodeId: string, nodeType?: NodeType, unitType?: number) {
   return axios.get<IApiWrapper & { data: Omit<INodesMapItem, 'children'>[] }>(Url.GET_NODE_LIST, {
     params: {
       nodeId,
       nodeType,
+      unitType,
     },
   });
 }
@@ -143,12 +148,14 @@ export function createSpace(name: string) {
  * @param nodeId the node id that will be moved.
  * @param parentId the parent node id that will be placed here.
  * @param preNodeId
+ * @param unitId
  */
-export function nodeMove(nodeId: string, parentId: string, preNodeId?: string) {
+export function nodeMove(nodeId: string, parentId: string, preNodeId?: string, unitId?: string) {
   return axios.post(Url.MOVE_NODE, {
     nodeId,
     parentId,
     preNodeId,
+    unitId
   });
 }
 
@@ -164,10 +171,12 @@ export function addNode(nodeInfo: IAddNodeParams) {
  * @param nodeId Node Id
  */
 export function delNode(nodeId: string) {
-  if (getBrowserDatabusApiEnabled()){
-    WasmApi.getInstance().delete_cache(nodeId).then((result) => {
-      console.log('delete indexDb cache', result);
-    });
+  if (getBrowserDatabusApiEnabled()) {
+    WasmApi.getInstance()
+      .delete_cache(nodeId)
+      .then((result) => {
+        console.log('delete indexDb cache', result);
+      });
   }
   return axios.delete(Url.DELETE_NODE + nodeId);
 }
@@ -186,12 +195,15 @@ export function getSpecifyNodeList(nodeType: NodeType) {
  * @param nodeId Node ID
  * @param data
  */
-export function editNode(nodeId: string, data: {
-  nodeName?: string;
-  icon?: string;
-  cover?: string;
-  showRecordHistory?: ShowRecordHistory
-}) {
+export function editNode(
+  nodeId: string,
+  data: {
+    nodeName?: string;
+    icon?: string;
+    cover?: string;
+    showRecordHistory?: ShowRecordHistory;
+  }
+) {
   return axios.post(Url.EDIT_NODE + nodeId, data);
 }
 
@@ -233,7 +245,7 @@ export function positionNode(nodeId: string) {
  * Get space list
  */
 export function spaceList(onlyManageable?: boolean) {
-  return axios.get(Url.SPACE_LIST, { params: { onlyManageable }});
+  return axios.get(Url.SPACE_LIST, { params: { onlyManageable } });
 }
 
 /**
@@ -248,6 +260,7 @@ export function quitSpace(spaceId: string) {
  * Find nodes
  *
  * @param keyword the keyword to search
+ * @param ctx
  */
 export function findNode(keyword: string, ctx: any) {
   return axios.get(Url.SEARCH_NODE, {
@@ -263,13 +276,15 @@ export function findNode(keyword: string, ctx: any) {
  *
  * @param spaceId
  * @param keyword
+ * @param unitType
  * @returns
  */
-export function searchNode(spaceId: string, keyword: string) {
+export function searchNode(spaceId: string, keyword: string, unitType?: number) {
   return axios.get<IApiWrapper & { data: INode[] }>(Url.SEARCH_NODE, {
     params: {
       spaceId,
       keyword,
+      unitType
     },
   });
 }
@@ -382,7 +397,6 @@ export function searchSpaceSize() {
 
 /**
  * Get the number of nodes(folders and files) in the specified space
- * @param spaceId
  */
 export function getSpaceNodeNumber() {
   return axios.get(Url.NODE_NUMBER);
@@ -390,18 +404,9 @@ export function getSpaceNodeNumber() {
 
 /**
  * Get the permissions resources of the specified space
- * @param spaceId
  */
 export function getSpaceResource() {
   return axios.get(Url.SPACE_RESOURCE);
-}
-
-/**
- * clean the red dot of space
- * @param spaceId
- */
-export function removeSpaceRedPoint(spaceId: string) {
-  return axios.post(`${Url.REMOVE_RED_POINT}${spaceId}`);
 }
 
 /**
@@ -446,6 +451,7 @@ export function subAdminPermission(memberId: string) {
  * fuzzy search members
  *
  * @param keyword the keyword to search
+ * @param filter
  */
 export function searchMember(keyword: string, filter: boolean) {
   return axios.get(Url.MEMBER_SEARCH, {
@@ -459,7 +465,7 @@ export function searchMember(keyword: string, filter: boolean) {
 /**
  * add sub-admin
  *
- * @param memberId member id
+ * @param memberIds
  * @param resourceCodes operation resources set, no orders, auto verify
  */
 export function addSubMember(memberIds: string[], resourceCodes: string[]) {
@@ -472,6 +478,7 @@ export function addSubMember(memberIds: string[], resourceCodes: string[]) {
 /**
  * edit sub-admin
  *
+ * @param id
  * @param memberId member id
  * @param resourceCodes operation resources set, no orders, auto verify
  */
@@ -487,6 +494,7 @@ export function editSubMember(id: string, memberId: string, resourceCodes: strin
  * search organization resource
  *
  * @param keyword keywords(tag/team)
+ * @param linkId
  */
 export function searchUnit(keyword: string, linkId?: string) {
   return axios.get(Url.SEARCH_UNIT, {
@@ -514,6 +522,7 @@ export function getAllVisibleStatus() {
 /**
  * get child teams and members
  * @param teamId Team ID
+ * @param linkId
  */
 export function getSubUnitList(teamId?: string, linkId?: string) {
   return axios.get(Url.GET_SUB_UNIT_LIST, {
@@ -538,22 +547,6 @@ export function updateRole(data: IUpdateRoleData) {
  */
 export function deleteSubAdmin(memberId: string) {
   return axios.delete(Url.DELETE_SUB_ADMIN + memberId);
-}
-
-/**
- * update member setting
- */
-export function updateMemberSetting(data: { invitable?: boolean; joinable?: boolean; mobileShowable?: boolean }) {
-  return axios.post(Url.UPDATE_MEMBER_SETTING, {
-    ...data,
-  });
-}
-
-/**
- * update workbench setting
- */
-export function updateWorkbenchSetting(data: { nodeExportable?: boolean }) {
-  return axios.post(Url.UPDATE_WORKBENCH_SETTING, { ...data });
 }
 
 /**
@@ -588,6 +581,27 @@ export function getCapacityRewardList(isExpire: boolean, pageNo: number) {
     params: {
       pageObjectParams,
       isExpire,
+    },
+  });
+}
+
+/**
+ * Get Space node infos
+ *
+ * @param spaceId
+ * @param pageNo
+ * @returns
+ */
+export function getCapacityNodeList(spaceId: string, pageNo: number) {
+  const pageObjectParams = JSON.stringify({
+    pageSize: ConfigConstant.CAPACITY_REWARD_LIST_PAGE_SIZE,
+    order: 'createdAt',
+    sort: ConfigConstant.SORT_DESC,
+    pageNo,
+  });
+  return axios.get(urlcat(Url.CAPACITY_NODE_LIST, { spaceId }), {
+    params: {
+      pageObjectParams,
     },
   });
 }
@@ -670,7 +684,7 @@ export function updateShare(
     onlyRead?: boolean;
     canBeEdited?: boolean;
     canBeStored?: boolean;
-  },
+  }
 ) {
   return axios.post(Url.UPDATE_SHARE + nodeId, {
     props: JSON.stringify(permission),
@@ -681,6 +695,7 @@ export function updateShare(
  * folder node preview
  *
  * @param nodeId
+ * @param shareId
  */
 export function nodeShowcase(nodeId: string, shareId?: string) {
   return axios.get(Url.NODE_SHOWCASE, {
@@ -691,11 +706,12 @@ export function nodeShowcase(nodeId: string, shareId?: string) {
   });
 }
 
-export function checkoutOrder(spaceId: string, priceId: string, clientReferenceId: string, couponId: string) {
+export function checkoutOrder(spaceId: string, priceId: string, clientReferenceId: string, couponId: string, trial?: boolean) {
   return axios.post(Url.CHECKOUT_ORDER, {
     spaceId,
     priceId,
     clientReferenceId,
     couponId,
+    trial,
   });
 }

@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import { compact, find, isEqual, pick, take } from 'lodash';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List } from 'react-window';
 // eslint-disable-next-line no-restricted-imports
@@ -14,6 +13,7 @@ import { Message, Tooltip } from 'pc/components/common';
 import { Modal } from 'pc/components/common/modal';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { filterCommonGroup } from 'pc/components/multi_grid/type_select';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ButtonOperateType } from 'pc/utils';
 import styles from './styles.module.less';
 
@@ -31,11 +31,11 @@ const initLinkedFields = (linkedFields: ILinkedField[]): (ILinkedField | undefin
 export const CascaderRulesModal = ({ visible, setVisible, currentField, setCurrentField }: ICascaderRulesModalProps): JSX.Element => {
   const { linkedDatasheetId, linkedViewId, linkedFields: currFieldLinkedFields, fullLinkedFields: currFieldFullLinkedFields } = currentField.property;
 
-  const spaceId = useSelector(Selectors.activeSpaceId)!;
-  const datasheetId = useSelector(Selectors.getDatasheet)?.id!;
-  const linkedDatasheet = useSelector((state: IReduxState) => Selectors.getDatasheet(state, linkedDatasheetId));
-  const activeFieldState = useSelector((state) => Selectors.gridViewActiveFieldState(state, datasheetId));
-  const columns = useSelector((state) => Selectors.getVisibleColumns(state, linkedDatasheetId))!;
+  const spaceId = useAppSelector(Selectors.activeSpaceId)!;
+  const datasheetId = useAppSelector(Selectors.getDatasheet)?.id!;
+  const linkedDatasheet = useAppSelector((state: IReduxState) => Selectors.getDatasheet(state, linkedDatasheetId));
+  const activeFieldState = useAppSelector((state) => Selectors.gridViewActiveFieldState(state, datasheetId));
+  const columns = useAppSelector((state) => Selectors.getVisibleColumns(state, linkedDatasheetId))!;
   const fieldMap = linkedDatasheet?.snapshot.meta?.fieldMap;
   const primaryFullLinkedFields = columns.map((column) => pick(fieldMap?.[column.fieldId]!, ['id', 'name', 'type']));
 

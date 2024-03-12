@@ -22,7 +22,6 @@ import produce from 'immer';
 import * as React from 'react';
 import { useMemo, useRef, useState } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
-import { useSelector } from 'react-redux';
 import { Button, Typography, useThemeColors, useListenVisualHeight, IUseListenTriggerInfo, WrapperTooltip, Switch } from '@apitable/components';
 import {
   FieldType,
@@ -47,6 +46,7 @@ import { CellOptions, inquiryValueByKey } from 'pc/components/multi_grid/cell/ce
 import { useShowViewLockModal } from 'pc/components/view_lock/use_show_view_lock_modal';
 import { usePlatform } from 'pc/hooks/use_platform';
 
+import { useAppSelector } from 'pc/store/react-redux';
 import { SyncViewTip } from '../sync_view_tip';
 import styles from './styles.module.less';
 
@@ -57,12 +57,12 @@ export const HiddenKanbanGroup = (props: { triggerInfo?: IUseListenTriggerInfo }
   const { triggerInfo } = props;
   const { mobile } = usePlatform();
   const isViewLock = useShowViewLockModal();
-  const view = useSelector(Selectors.getCurrentView) as IKanbanViewProperty;
-  const kanbanFieldId = useSelector(Selectors.getKanbanFieldId)!;
-  const field = useSelector((state) => Selectors.getField(state, kanbanFieldId));
-  const unitMap = useSelector(Selectors.getUnitMap)!;
-  const groupIds = useSelector(Selectors.getKanbanGroupMapIds);
-  const cacheTheme = useSelector(Selectors.getTheme);
+  const view = useAppSelector(Selectors.getCurrentView) as IKanbanViewProperty;
+  const kanbanFieldId = useAppSelector(Selectors.getKanbanFieldId)!;
+  const field = useAppSelector((state) => Selectors.getField(state, kanbanFieldId));
+  const unitMap = useAppSelector(Selectors.getUnitMap)!;
+  const groupIds = useAppSelector(Selectors.getKanbanGroupMapIds);
+  const cacheTheme = useAppSelector(Selectors.getTheme);
   const [isDragging, setIsDragging] = useState(false);
   const hiddenGroupMap = view.style.hiddenGroupMap || {};
   const isMemberField = field.type === FieldType.Member;

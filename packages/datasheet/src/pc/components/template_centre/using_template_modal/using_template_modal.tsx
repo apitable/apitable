@@ -21,14 +21,13 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import { usePostHog } from 'posthog-js/react';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Api, IReduxState, Navigation, StoreActions, Strings, t, TEMPLATE_CENTER_ID, TrackEvents } from '@apitable/core';
+import { Api, IReduxState, Navigation, Strings, t, TEMPLATE_CENTER_ID, TrackEvents } from '@apitable/core';
 import { ChevronDownOutlined } from '@apitable/icons';
 import { BaseModal } from 'pc/components/common';
 import { Router } from 'pc/components/route_manager/router';
 import { useCatalogTreeRequest, useRequest, useRootManageable, useTemplateRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { transformNodeTreeData, ISelectTreeNode } from 'pc/utils';
-import { dispatch } from 'pc/worker/store';
 import styles from './style.module.less';
 
 export interface IUsingTemplateModalProps {
@@ -42,23 +41,71 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
   const [nodeId, setNodeId] = useState('');
   // Whether to use the data in the template
   const [isContainData, setIsContainData] = useState(true);
-  const spaceId = useSelector((state: IReduxState) => state.space.activeId);
-  const { getNodeTreeReq } = useCatalogTreeRequest();
+  const spaceId = useAppSelector((state: IReduxState) => state.space.activeId);
+  const userUnitId = useAppSelector((state) => state.user.info?.unitId);
+  const { getNodeTreeReq, getPrivateTreeDataReq } = useCatalogTreeRequest();
   const { usingTemplateReq } = useTemplateRequest();
-  const { data: NodeTreeData } = useRequest(getNodeTreeReq);
+  const { data: nodeTreeData } = useRequest(getNodeTreeReq);
+  const { data: nodePrivateTreeData } = useRequest(getPrivateTreeDataReq);
   const { run: usingTemplate, loading } = useRequest(usingTemplateReq, { manual: true });
   const posthog = usePostHog();
 
   useEffect(() => {
-    if (NodeTreeData) {
-      setTreeData(transformNodeTreeData([NodeTreeData]));
-      setNodeId(NodeTreeData.nodeId);
+    if (nodeTreeData) {
+      const teamPId = `${nodeTreeData.nodeId}-team`;
+      const _nodeTree = transformNodeTreeData([nodeTreeData]).slice(1).map((item) => {
+        if (item.pId === nodeTreeData.nodeId) {
+          return {
+            ...item,
+            pId: teamPId,
+          };
+        }
+        return item;
+      });
+      const privatePId = `${nodeTreeData.nodeId}-private`;
+      const _privateNodeTree = transformNodeTreeData([nodePrivateTreeData]).slice(1).map((item) => {
+        if (item.pId === nodePrivateTreeData.nodeId) {
+          return {
+            ...item,
+            pId: privatePId,
+          };
+        }
+        return item;
+      });
+      const treeData = [
+        {
+          title: t(Strings.catalog_team),
+          value: teamPId,
+          id: teamPId,
+          pId: 'team',
+          isLeaf: false,
+        },
+        ..._nodeTree,
+        {
+          title: t(Strings.catalog_private),
+          value: privatePId,
+          id: privatePId,
+          pId: 'private',
+          isLeaf: false,
+          isPrivate: true,
+        },
+        ..._privateNodeTree,
+      ];
+      setTreeData(treeData);
+      setNodeId(teamPId);
     }
-    // eslint-disable-next-line
-  }, [NodeTreeData]);
+  }, [nodeTreeData, nodePrivateTreeData]);
 
   const handleCancel = () => {
     onCancel('');
+  };
+
+  const checkNodePrivate = (nodeId: string) => {
+
+    if (nodeId.includes('private')) {
+      return true;
+    }
+    return transformNodeTreeData([nodePrivateTreeData]).slice(1).some((item) => item.id === nodeId);
   };
 
   const onOk = async () => {
@@ -66,9 +113,10 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
       return;
     }
     posthog?.capture(TrackEvents.TemplateConfirmUse);
-    const result = await usingTemplate(templateId, nodeId, isContainData);
+    const isPrivate = checkNodePrivate(nodeId);
+    const _nodeId = nodeId.split('-')[0];
+    const result = await usingTemplate(templateId, _nodeId, isContainData, isPrivate ? userUnitId : undefined);
     if (result && spaceId) {
-      dispatch(StoreActions.getSpaceInfo(spaceId!, true));
       Router.push(Navigation.WORKBENCH, { params: { spaceId, nodeId: result.nodeId } });
     }
   };
@@ -98,7 +146,7 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
 
   const { rootManageable } = useRootManageable();
 
-  const disabled = !rootManageable && nodeId === NodeTreeData?.nodeId;
+  const disabled = !rootManageable && nodeId === nodeTreeData?.nodeId;
 
   return (
     <BaseModal
@@ -121,7 +169,8 @@ export const UsingTemplateModal: FC<React.PropsWithChildren<IUsingTemplateModalP
               onChange={onChange}
               treeData={treeData}
               loadData={onLoadData}
-              treeDefaultExpandedKeys={[NodeTreeData.nodeId]}
+              popupClassName="usingTemplate"
+              treeDefaultExpandedKeys={[nodeTreeData.nodeId]}
             />
           )}
         </div>

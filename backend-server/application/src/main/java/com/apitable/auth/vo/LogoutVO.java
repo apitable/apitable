@@ -21,6 +21,8 @@ package com.apitable.auth.vo;
 import lombok.Data;
 
 /**
+ * logout vo.
+ *
  * @author Shawn Deng
  */
 @Data

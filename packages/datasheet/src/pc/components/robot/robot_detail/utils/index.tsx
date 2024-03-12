@@ -19,7 +19,6 @@
 import React from 'react';
 import { IRobotAction, IRobotTrigger } from '../../interface';
 
-
 export const getActionList = (actions?: IRobotAction[]): IRobotAction[] => {
   if (!actions || actions.length === 0) {
     return [];

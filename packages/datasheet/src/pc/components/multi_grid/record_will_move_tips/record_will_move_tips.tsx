@@ -18,16 +18,18 @@
 
 import { Tooltip } from 'antd';
 import { useEffect, useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { useThemeColors } from '@apitable/components';
 import { CellType, DATASHEET_ID, RecordMoveType, Selectors, Strings, t } from '@apitable/core';
 import { FilterOutlined, RankOutlined } from '@apitable/icons';
 
+import { useAppSelector } from 'pc/store/react-redux';
+
 export const RecordWillMoveTips = (props: { rowHeight: number; y?: number }) => {
   const { rowHeight, y: _y } = props;
   const colors = useThemeColors();
-  const sideBarVisible = useSelector((state) => state.space.sideBarVisible);
-  const { recordMoveType, activeCell } = useSelector((state) => {
+  const sideBarVisible = useAppSelector((state) => state.space.sideBarVisible);
+  const { recordMoveType, activeCell } = useAppSelector((state) => {
     const recordMoveType = Selectors.getRecordMoveType(state);
     const activeCell = Selectors.getActiveCell(state);
     return {

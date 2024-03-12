@@ -18,16 +18,15 @@
 
 import { useMount } from 'ahooks';
 import classNames from 'classnames';
+import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
+import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { LinkButton, useTheme } from '@apitable/components';
-import { Api, AutoTestID, ConfigConstant, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
+import { Api, AutoTestID, Events, IReduxState, Navigation, Player, StoreActions, Strings, t } from '@apitable/core';
 import { CollapseOpenOutlined, CollapseOutlined } from '@apitable/icons';
-import { TriggerCommands } from 'modules/shared/apphook/trigger_commands';
-import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import { getShortcutKeyString } from 'modules/shared/shortcut_key/keybinding_config';
 import { TComponent } from 'pc/components/common/t_component';
 import { Navigation as SiderNavigation } from 'pc/components/navigation';
 import { Router } from 'pc/components/route_manager/router';
@@ -37,24 +36,25 @@ import Trash from 'pc/components/trash/trash';
 import { ISideBarContextProps, SideBarClickType, SideBarContext, SideBarType } from 'pc/context';
 import { getPageParams, useCatalogTreeRequest, useQuery, useRequest, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
-import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
+import { useAppSelector } from 'pc/store/react-redux';
+import { StorageMethod, StorageName, getStorage, setStorage } from 'pc/utils/storage/storage';
 import UpgradeSucceedDark from 'static/icon/workbench/workbench_upgrade_succeed_dark.png';
 import UpgradeSucceedLight from 'static/icon/workbench/workbench_upgrade_succeed_light.png';
 import { Tooltip, VikaSplitPanel } from '../common';
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { CommonSide } from '../common_side';
-import styles from './style.module.less';
+import { usePaymentReminder } from './hooks/usePaymentReminder';
 // @ts-ignore
-import { showOrderModal } from 'enterprise';
+import { showOrderModal } from 'enterprise/subscribe_system/order_modal/pay_order_success';
+import styles from './style.module.less';
 
 // Restore the user's last opened datasheet.
 const resumeUserHistory = (path: string) => {
   const state = store.getState();
   const user = state.user.info!;
   const spaceId = state.space.activeId;
-  const { nodeId, datasheetId, folderId, viewId, recordId, formId, widgetId, mirrorId, dashboardId, automationId, aiId } = getPageParams(path);
+  const { nodeId, datasheetId, viewId, recordId, widgetId, mirrorId } = getPageParams(path);
   if (spaceId === user.spaceId) {
-
     if (mirrorId) {
       Router.replace(Navigation.WORKBENCH, {
         params: {
@@ -93,11 +93,10 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
   const localSize = getStorage(StorageName.SplitPos);
   const defaultSidePanelSize = localSize && localSize !== 280 ? localSize : 335;
-  const editNodeId = useSelector((state: IReduxState) => state.catalogTree.editNodeId);
-  const favoriteEditNodeId = useSelector((state: IReduxState) => state.catalogTree.favoriteEditNodeId);
-  const userSpaceId = useSelector((state: IReduxState) => state.user.info!.spaceId);
-  const { getFavoriteNodeListReq, getTreeDataReq } = useCatalogTreeRequest();
-  const { run: getFavoriteNodeList } = useRequest(getFavoriteNodeListReq, { manual: true });
+  const editNodeId = useAppSelector((state: IReduxState) => state.catalogTree.editNodeId);
+  const favoriteEditNodeId = useAppSelector((state: IReduxState) => state.catalogTree.favoriteEditNodeId);
+  const userSpaceId = useAppSelector((state: IReduxState) => state.user.info!.spaceId);
+  const { getTreeDataReq } = useCatalogTreeRequest();
   const { run: getTreeData } = useRequest(getTreeDataReq, { manual: true });
   const { screenIsAtMost } = useResponsive();
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -106,16 +105,26 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
   const query = useQuery();
   const router = useRouter();
   const theme = useTheme();
+  const spaceInfo = useAppSelector((state) => state.space.curSpaceInfo);
+  const social = spaceInfo?.social;
 
   // Directory tree toggle source status, directory tree click status, sidebar switch.
   const [toggleType, setToggleType] = useState<SideBarType>(SideBarType.None);
   const [clickType, setClickType] = useState<SideBarClickType>(SideBarClickType.None);
   const [panelVisible, setPanelVisible] = useState(false);
   const [newTdbId, setNewTdbId] = useState('');
-  const sideBarVisible = useSelector((state) => state.space.sideBarVisible);
+  const sideBarVisible = useAppSelector((state) => state.space.sideBarVisible);
+  const showUpgradeSpaceModal = useRef(false);
 
-  useMount(() => {
+  usePaymentReminder();
+
+  useEffect(() => {
+    if (showUpgradeSpaceModal.current) return;
     if (!query.get('choosePlan') || isMobile) return;
+    if (!social || social?.appType === 1 || social?.appType === 2) {
+      return;
+    }
+    showUpgradeSpaceModal.current = true;
     expandUpgradeSpace();
   });
 
@@ -239,7 +248,6 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
     if (userSpaceId) {
       dispatch(StoreActions.initCatalogTree());
       getTreeData();
-      getFavoriteNodeList();
     }
     // eslint-disable-next-line
   }, [userSpaceId, dispatch]);
@@ -262,14 +270,6 @@ export const Workspace: React.FC<React.PropsWithChildren<unknown>> = () => {
     window.addEventListener('mousemove', move);
     return () => window.removeEventListener('mousemove', move);
   }, [templeVisible, defaultSidePanelSize, menuRef, editNodeId, favoriteEditNodeId]);
-
-  useMount(async () => {
-    const wizardId = ConfigConstant.WizardIdConstant.AGREE_TERMS_OF_SERVICE;
-    await TriggerCommands.set_wizard_completed?.({
-      wizardId,
-    });
-    localStorage.removeItem(`${wizardId}`);
-  });
 
   const closeBtnClass = classNames({
     [styles.closeBtn]: true,

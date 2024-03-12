@@ -17,13 +17,14 @@
  */
 
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Selectors, Strings, t } from '@apitable/core';
+
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const useCheckRepeatName = () => {
   const [errTip, setErrTip] = useState('');
   const [value, setValue] = useState('');
-  const exitFieldName = useSelector((state) => {
+  const exitFieldName = useAppSelector((state) => {
     const fieldMap = Selectors.getFieldMap(state, state.pageParams.datasheetId!)!;
     return Object.entries(fieldMap).map(([, field]) => {
       return field.name;

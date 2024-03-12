@@ -1,6 +1,6 @@
-@import "~pc/styles/lib_var.less";
-@import "~pc/styles/lib_mixins.less";
-@import "~pc/styles/lib_screen.less";
+@import '~pc/styles/lib_var.less';
+@import '~pc/styles/lib_mixins.less';
+@import '~pc/styles/lib_screen.less';
 
 .wrapper {
   padding: 24px;
@@ -115,7 +115,7 @@
     overflow-y: overlay;
     margin-top: 0;
     padding: 24px;
-    .light-scroll-bar();
+    .default-scroll-bar();
   }
 
   .fieldWrapper {
@@ -529,7 +529,7 @@
     height: 100%;
 
     &:after {
-      content: " ";
+      content: ' ';
       display: inline-block;
       width: 1px;
       height: 10px;
@@ -607,7 +607,7 @@
     position: relative;
 
     &::after {
-      content: "";
+      content: '';
       border: 1px dashed var(--lineColor);
       height: 1px;
       position: absolute;
@@ -706,8 +706,9 @@
   margin-left: 8px;
   position: relative;
 
-  &:focus, &:hover {
-    background-color: fade(#FFF, 30%) !important;
+  &:focus,
+  &:hover {
+    background-color: fade(#fff, 30%) !important;
   }
 }
 
@@ -725,7 +726,7 @@
     .ant-drawer-content-wrapper {
       height: 100%;
     }
-  
+
     .ant-drawer-header {
       background-color: var(--fc6);
       border-bottom: 1px solid var(--lineColor);

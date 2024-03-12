@@ -18,19 +18,19 @@
 
 import { Dispatch } from 'redux';
 import { IOptNode, INode, IReduxState, INodeChangeSocketData, INodeMeta, INodesMapItem, NodeErrorType } from '../../../../exports/store/interfaces';
-import { updateDatasheet, updateDashboard, updateMirror } from '../../../../exports/store/actions';
+import { updateDatasheet, updateDashboard, updateMirror } from 'modules/database/store/actions/resource';
 import * as actions from '../../../shared/store/action_constants';
 import { batchActions } from 'redux-batched-actions';
 import { Api, IApi } from '../../../../exports/api';
 import { getExpandNodeIds } from 'utils';
 import { updateForm } from '../../../database/store/actions/resource/form/form';
 import { ConfigConstant } from 'config';
-import { Selectors } from '../../../../exports/store';
+import { flatNodeTree } from 'modules/space/store/selectors/tree';
 
 /**
  * Set Error Message
- * 
- * @param err 
+ *
+ * @param err
  */
 export function setErr(err: string) {
   return {
@@ -41,8 +41,9 @@ export function setErr(err: string) {
 
 /**
  * set current edit state node ID
- * 
+ *
  * @param nodeId Node ID
+ * @param module
  */
 export function setEditNodeId(nodeId: string, module: ConfigConstant.Modules = ConfigConstant.Modules.CATALOG) {
   return {
@@ -56,8 +57,9 @@ export function setEditNodeId(nodeId: string, module: ConfigConstant.Modules = C
 
 /**
  * Set the node ID to delete
- * 
+ *
  * @param nodeId Node ID
+ * @param module
  */
 export function setDelNodeId(nodeId: string, module: ConfigConstant.Modules = ConfigConstant.Modules.CATALOG) {
   return {
@@ -68,7 +70,7 @@ export function setDelNodeId(nodeId: string, module: ConfigConstant.Modules = Co
 
 /**
  * set the node ID to copy
- * 
+ *
  * @param nodeId Node ID
  */
 export function setCopyNodeId(nodeId: string) {
@@ -80,13 +82,26 @@ export function setCopyNodeId(nodeId: string) {
 
 /**
  * Set the root Node ID
- * 
- * @param nodeId 
- * @returns 
+ *
+ * @param nodeId
+ * @returns
  */
 export const setTreeRootId = (nodeId: string) => {
   return {
     type: actions.SET_TREE_ROOT_ID,
+    payload: nodeId,
+  };
+};
+
+/**
+ * Set the root Node ID
+ *
+ * @param nodeId
+ * @returns
+ */
+export const setPrivateTreeRootId = (nodeId: string) => {
+  return {
+    type: actions.SET_PRIVATE_TREE_ROOT_ID,
     payload: nodeId,
   };
 };
@@ -115,8 +130,8 @@ export function updateShareModalNodeId(nodeId: string) {
 
 /**
  * Current node that is opening save as template window.
- * 
- * @param nodeId 
+ *
+ * @param nodeId
  */
 export function updateSaveAsTemplateModalNodeId(nodeId: string) {
   return {
@@ -127,7 +142,7 @@ export function updateSaveAsTemplateModalNodeId(nodeId: string) {
 
 /**
  * Current node that is opening the import UI window.
- * 
+ *
  * @param nodeId Node ID
  */
 export function updateImportModalNodeId(nodeId: string) {
@@ -139,8 +154,9 @@ export function updateImportModalNodeId(nodeId: string) {
 
 /**
  * Set the array of expanded nodes
- * 
+ *
  * @param expandedKeys the keys array of expanded nodes
+ * @param module
  */
 export function setExpandedKeys(expandedKeys: string[], module: ConfigConstant.Modules = ConfigConstant.Modules.CATALOG) {
   return {
@@ -154,31 +170,41 @@ export function setExpandedKeys(expandedKeys: string[], module: ConfigConstant.M
 
 /**
  * add single or multiple nodes to treeNodeMap (catalog tree data source)
- * 
- * @param Node Single node or collection of nodes
+ *
+ * @param data
+ * @param isCoverChildren
+ * @param module
  */
-export const addNodeToMap = (data: (Omit<INodesMapItem, 'children'> & { children?: string[] })[], isCoverChildren = true) => {
+export const addNodeToMap = (
+  data: (Omit<INodesMapItem, 'children'> & { children?: string[] })[],
+  isCoverChildren = true,
+  module: ConfigConstant.Modules = ConfigConstant.Modules.CATALOG
+) => {
   return {
     type: actions.ADD_NODE_TO_MAP,
-    payload: { data, isCoverChildren },
+    payload: { data, isCoverChildren, module },
   };
 };
 
 /**
  * add nodes to files tree(catalog)
- * 
- * @param node the node info of new 
+ *
+ * @param node the node info of new
+ * @param module
  */
-export const addNode = (node: INodesMapItem) => {
+export const addNode = (node: INodesMapItem, module?: ConfigConstant.Modules) => {
   return (dispatch: any) => {
-    dispatch(batchActions([addNodeToMap([node]), setEditNodeId(node.nodeId)], 'ADD_NODE'));
+    dispatch(batchActions([
+      addNodeToMap([node], true, module),
+      setEditNodeId(node.nodeId, module)
+    ], 'ADD_NODE'));
   };
 };
 
 /**
  * update treeNodeMap (catalog tree data source) by socket data
- * @param data 
- * @returns 
+ * @param data
+ * @returns
  */
 export const updateSocketData = (data: INodeChangeSocketData) => {
   return {
@@ -189,26 +215,29 @@ export const updateSocketData = (data: INodeChangeSocketData) => {
 
 /**
  * set the name of node
- * 
+ *
  * @param nodeId Node ID
  * @param nodeName Node Name
+ * @param module
  */
-export function setNodeName(nodeId: string, nodeName: string) {
+export function setNodeName(nodeId: string, nodeName: string, module?: ConfigConstant.Modules) {
   return {
     type: actions.SET_NODE_NAME,
     payload: {
       nodeId,
       nodeName,
+      module
     },
   };
 }
 
-export function setNodeErrorType(nodeId: string, errType: NodeErrorType | null) {
+export function setNodeErrorType(nodeId: string, errType: NodeErrorType | null, module?: ConfigConstant.Modules) {
   return {
     type: actions.SET_NODE_ERROR_TYPE,
     payload: {
       nodeId,
       errType,
+      module
     },
   };
 }
@@ -216,54 +245,57 @@ export function setNodeErrorType(nodeId: string, errType: NodeErrorType | null) 
 /**
  * get specified node's child nodes.
  * and attach them to files tree.
- * 
+ *
  * @param nodeId Node ID
+ * @param module
  */
-export function getChildNode(nodeId: string): any {
-  return async(dispatch: Dispatch, getState: () => IReduxState) => {
+export function getChildNode(nodeId: string, module?: ConfigConstant.Modules): any {
+  return async (dispatch: Dispatch, getState: () => IReduxState) => {
     const state: IReduxState = getState();
     const { loadedKeys } = state.catalogTree;
-    dispatch(setTreeLoading(true));
-    const nodeData = await getChildNodeList(nodeId);
+    dispatch(setTreeLoading(true, module));
+    const nodeData = await getChildNodeList(nodeId, module === ConfigConstant.Modules.PRIVATE ? 3 : undefined);
     if (nodeData === NodeErrorType.ChildNodes) {
-      dispatch(setTreeLoading(false));
-      dispatch(setNodeErrorType(nodeId, NodeErrorType.ChildNodes));
+      dispatch(setTreeLoading(false, module));
+      dispatch(setNodeErrorType(nodeId, NodeErrorType.ChildNodes, module));
       return;
     }
     if (!nodeData || (Array.isArray(nodeData) && !nodeData.length)) {
-      dispatch(setTreeLoading(false));
+      dispatch(setTreeLoading(false, module));
       dispatch(setLoadedKeys([...loadedKeys, nodeId]));
-      dispatch(setNodeErrorType(nodeId, null));
+      dispatch(setNodeErrorType(nodeId, null, module));
       return;
     }
 
     // update current node has child nodes
-    dispatch(addNodeToMap(Selectors.flatNodeTree(nodeData), false));
-    dispatch(updateHasChildren(nodeId));
-    dispatch(setNodeErrorType(nodeId, null));
-    dispatch(setTreeLoading(false));
+    dispatch(addNodeToMap(flatNodeTree(nodeData), false, module));
+    dispatch(updateHasChildren(nodeId, module));
+    dispatch(setNodeErrorType(nodeId, null, module));
+    dispatch(setTreeLoading(false, module));
   };
 }
 
 /**
  * update node's hasChildren state
- * 
+ *
  * @param nodeId the node that want to update
+ * @param module
  */
-export function updateHasChildren(nodeId: string) {
+export function updateHasChildren(nodeId: string, module?: ConfigConstant.Modules) {
   return {
     type: actions.UPDATE_HAS_CHILDREN,
-    payload: nodeId,
+    payload: { nodeId, module },
   };
 }
 
 /**
  * get specified node's child nodes.
- * @param nodeId 
- * @returns 
+ * @param nodeId
+ * @param unitType
+ * @returns
  */
-const getChildNodeList = (nodeId: string) => {
-  return Api.getChildNodeList(nodeId).then(res => {
+const getChildNodeList = (nodeId: string, unitType?: number) => {
+  return Api.getChildNodeList(nodeId, undefined, unitType).then(res => {
     const { success, data } = res.data;
     if (success) {
       return data;
@@ -274,10 +306,24 @@ const getChildNodeList = (nodeId: string) => {
 
 /**
  * the loading state of current files tree.
- * 
- * @param loading 
- * @param module 
- * @returns 
+ *
+ * @param module
+ * @returns
+ */
+
+export const setActiveTreeType = (module?: ConfigConstant.Modules) => {
+  return {
+    type: actions.SET_ACTIVE_TREE_TYPE,
+    payload: module,
+  };
+};
+
+/**
+ * the loading state of current files tree.
+ *
+ * @param loading
+ * @param module
+ * @returns
  */
 export const setTreeLoading = (loading: boolean, module: ConfigConstant.Modules = ConfigConstant.Modules.CATALOG) => {
   return {
@@ -291,19 +337,21 @@ export const setTreeLoading = (loading: boolean, module: ConfigConstant.Modules 
 
 /**
  * move node to specified position
- * 
+ *
  * @param {string} nodeId Node ID
  * @param {string} targetNodeId target node ID
  * @param {number} pos -1: above the target node | 0：move into target node | 1：below the target node
+ * @param module
  * @returns
  */
-export const moveTo = (nodeId: string, targetNodeId: string, pos: number) => {
+export const moveTo = (nodeId: string, targetNodeId: string, pos: number, module?: ConfigConstant.Modules) => {
   return {
     type: actions.NODE_MOVE_TO,
     payload: {
       nodeId,
       targetNodeId,
       pos,
+      module,
     },
   };
 };
@@ -328,7 +376,7 @@ export function initCatalogTree() {
 
 /**
  * remove single or multi nodes from treeNodeMap(catalog tree data source)
- * @param Node single node or collection of nodes
+ * @param nodeId
  */
 export const removeNodeFromMap = (nodeId: string | string[]) => {
   return {
@@ -339,7 +387,7 @@ export const removeNodeFromMap = (nodeId: string | string[]) => {
 
 /**
  * remove single or multi nodes from tree
- * @param data single node or collection of nodes
+ * @param nodeId
  */
 export const removeNodeFromTree = (nodeId: string | string[]) => {
   return {
@@ -350,7 +398,7 @@ export const removeNodeFromTree = (nodeId: string | string[]) => {
 
 /**
  * delete node
- * @param optNode 
+ * @param optNode
  */
 export function deleteNodeAction(optNode: IOptNode) {
   return {
@@ -371,23 +419,25 @@ export function updateIsPermission(status: boolean) {
 
 /**
  * update specify nodes in treeNodeMap
- * 
+ *
  * @param nodeId Node ID
  * @param data new data
+ * @param module
  */
-export const updateTreeNodesMap = (nodeId: string, data: Partial<INodesMapItem>) => {
+export const updateTreeNodesMap = (nodeId: string, data: Partial<INodesMapItem>, module?: ConfigConstant.Modules) => {
   return {
     type: actions.UPDATE_TREE_NODES_MAP,
     payload: {
       nodeId,
       data,
+      module,
     },
   };
 };
 
 /**
  * refresh tree (some layer)
- * 
+ *
  * @param data
  */
 export const refreshTree = (data: INode[]) => {
@@ -399,15 +449,15 @@ export const refreshTree = (data: INode[]) => {
 
 /**
  * Delete node from the files tree(catalog)
- * 
+ *
  * @param optNode the node info that is under operation.
  */
 export const deleteNode = (optNode: IOptNode) => {
-
+  const { module } = optNode;
   const actions = [
     deleteNodeAction(optNode),
     deleteNodeFromFavoriteList(optNode),
-    setDelNodeId(''),
+    setDelNodeId('', module),
     setDelNodeId('', ConfigConstant.Modules.FAVORITE),
   ];
   return (dispatch: any) => {
@@ -417,28 +467,30 @@ export const deleteNode = (optNode: IOptNode) => {
 
 /**
  * find the path of the node by parentId, and expand all the folders on them.
- * 
- * @param nodeId Node ID 
+ *
+ * @param nodeId Node ID
+ * @param module
  */
-export const collectionNodeAndExpand = (nodeId: string) => {
+export const collectionNodeAndExpand = (nodeId: string, module?: ConfigConstant.Modules) => {
   return (dispatch: Dispatch, getState: () => IReduxState) => {
     const state = getState();
-    const { rootId, expandedKeys, treeNodesMap, favoriteExpandedKeys, favoriteTreeNodeIds } = state.catalogTree;
-    const newExpandKeys = [...(new Set([...expandedKeys, ...getExpandNodeIds(treeNodesMap, nodeId, rootId)]))];
-    const newFavoriteExpandKeys = [...(new Set([...favoriteExpandedKeys, ...getExpandNodeIds(treeNodesMap, nodeId, rootId, favoriteTreeNodeIds)]))];
-    dispatch(setExpandedKeys(newExpandKeys));
+    const { rootId, expandedKeys, treeNodesMap, favoriteExpandedKeys, favoriteTreeNodeIds, privateTreeNodesMap } = state.catalogTree;
+    const nodesMap = module === ConfigConstant.Modules.PRIVATE ? privateTreeNodesMap : treeNodesMap;
+    const newExpandKeys = [...(new Set([...expandedKeys, ...getExpandNodeIds(nodesMap, nodeId, rootId)]))];
+    const newFavoriteExpandKeys = [...(new Set([...favoriteExpandedKeys, ...getExpandNodeIds(nodesMap, nodeId, rootId, favoriteTreeNodeIds)]))];
+    dispatch(setExpandedKeys(newExpandKeys, module));
     dispatch(setExpandedKeys(newFavoriteExpandKeys, ConfigConstant.Modules.FAVORITE));
   };
 };
 
 /**
  * generate favorite (star)
- * @param node 
- * @returns 
+ * @param node
+ * @returns
  */
 export const generateFavoriteTree = (node: INodesMapItem[]) => {
   return (dispatch: Dispatch) => {
-    dispatch(addNodeToMap(node));
+    // dispatch(addNodeToMap(node, true, module));
     const nodeIds = node.map(item => item.nodeId);
     dispatch(addNodeToFavoriteTree(nodeIds));
   };
@@ -446,9 +498,9 @@ export const generateFavoriteTree = (node: INodesMapItem[]) => {
 
 /**
  * add favorite(star) into the specified node
- * @param nodeIds 
- * @param parentId 
- * @returns 
+ * @param nodeIds
+ * @param parentId
+ * @returns
  */
 export const addNodeToFavoriteTree = (nodeIds: string[], parentId = '') => {
   return {
@@ -462,14 +514,17 @@ export const addNodeToFavoriteTree = (nodeIds: string[], parentId = '') => {
 
 /**
  * remove favorite (star)
- * @param nodeId 
- * @returns 
+ * @param nodeId
+ * @param nodePrivate
+ * @returns
  */
-export const removeFavorite = (nodeId: string) => {
+export const removeFavorite = (nodeId: string, nodePrivate?: boolean) => {
   return (dispatch: Dispatch, getState: () => IReduxState) => {
     const state = getState();
-    const type = state.catalogTree.treeNodesMap[nodeId]!.type;
-    dispatch(updateNodeInfo(nodeId, type, { nodeFavorite: false }));
+    const nodeKey = nodePrivate ? 'privateTreeNodesMap' : 'treeNodesMap';
+    const type = state.catalogTree[nodeKey][nodeId]!.type;
+    const _module = nodePrivate ? ConfigConstant.Modules.PRIVATE : undefined;
+    dispatch(updateNodeInfo(nodeId, type, { nodeFavorite: false }, _module));
     dispatch({
       type: actions.DELETE_NODE_FROM_FAVORITE_LIST,
       payload: { nodeId },
@@ -516,15 +571,16 @@ export function setLoadedKeys(keys: string[]) {
 
 /**
  * get single node info, put it in data source
- * @param nodeId 
- * @returns 
+ * @param nodeId
+ * @returns
  */
 export const getNodeInfo = (nodeId: string) => {
   return (dispatch: Dispatch) => {
     Api.getNodeInfo(nodeId).then(res => {
       const { success, data } = res.data;
+      const isPrivate = data?.[0]?.nodePrivate;
       if (success) {
-        dispatch(addNodeToMap(data));
+        dispatch(addNodeToMap(data, undefined, isPrivate ? ConfigConstant.Modules.PRIVATE : undefined));
       }
     }, err => {
       console.error('API.getNodeInfo error', err);
@@ -535,12 +591,13 @@ export const getNodeInfo = (nodeId: string) => {
 /**
  * update data source
  * for example, the data source of datasheet / form...
- * @param nodeId 
- * @param nodeType 
- * @param data 
- * @returns 
+ * @param nodeId
+ * @param nodeType
+ * @param data
+ * @param module
+ * @returns
  */
-export const updateNodeInfo = (nodeId: string, nodeType: ConfigConstant.NodeType, data: Partial<INodeMeta>): any => {
+export const updateNodeInfo = (nodeId: string, nodeType: ConfigConstant.NodeType, data: Partial<INodeMeta>, module?: ConfigConstant.Modules): any => {
   return (dispatch: Dispatch) => {
     switch (nodeType) {
       case ConfigConstant.NodeType.DATASHEET: {
@@ -562,15 +619,15 @@ export const updateNodeInfo = (nodeId: string, nodeType: ConfigConstant.NodeType
     }
     const { name, ...info } = data;
     const nodeData = name ? { ...info, nodeName: name } : info;
-    dispatch(updateTreeNodesMap(nodeId, nodeData));
+    dispatch(updateTreeNodesMap(nodeId, nodeData, module));
   };
 };
 
 /**
- * set permissions, whether or not to send a notification when popup window closed.
- * 
- * @param status 
- * @returns 
+ * set permissions, whether to send a notification when popup window closed.
+ *
+ * @param status
+ * @returns
  */
 export function setPermissionCommitRemindStatus(status: boolean) {
   return {
@@ -581,8 +638,8 @@ export function setPermissionCommitRemindStatus(status: boolean) {
 
 /**
  * set commenter change remind params by yiliu
- * @param Param 
- * @returns 
+ * @param Param
+ * @returns
  */
 export function setPermissionCommitRemindParameter(Param: IApi.ICommitRemind) {
   return {
@@ -593,8 +650,8 @@ export function setPermissionCommitRemindParameter(Param: IApi.ICommitRemind) {
 
 /**
  * set members that no permission
- * @param Param 
- * @returns 
+ * @param Param
+ * @returns
  */
 export function setNoPermissionMembers(Param: string[]) {
   return {
@@ -605,8 +662,8 @@ export function setNoPermissionMembers(Param: string[]) {
 
 /**
  * update the node that will move.
- * 
- * @param nodeIds 
+ *
+ * @param nodeIds
  */
 export function updateMoveToNodeIds(nodeIds: string[]) {
   return {

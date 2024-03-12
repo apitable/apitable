@@ -21,6 +21,9 @@ package com.apitable.space.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+/**
+ * labs applicant type enum.
+ */
 @Getter
 @AllArgsConstructor
 public enum LabsApplicantTypeEnum {

@@ -1,9 +1,9 @@
 import cls from 'classnames';
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Typography } from '@apitable/components';
 import { Selectors, Strings, t } from '@apitable/core';
 import { InfoCircleOutlined } from '@apitable/icons';
+import { useAppSelector } from 'pc/store/react-redux';
 import { cancelModification, modifyViewProperty } from '../request_view_property_change';
 import styles from '../style.module.less';
 
@@ -12,8 +12,8 @@ interface IProps {
 }
 
 export const MobilePopupContent: FC<IProps> = ({ onClose }) => {
-  const { datasheetId, viewId } = useSelector((state) => state.pageParams);
-  const currentView = useSelector((state) => Selectors.getCurrentView(state, datasheetId));
+  const { datasheetId, viewId } = useAppSelector((state) => state.pageParams);
+  const currentView = useAppSelector((state) => Selectors.getCurrentView(state, datasheetId));
   const isViewLock = Boolean(currentView?.lockInfo);
 
   const viewPropertyProps = {

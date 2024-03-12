@@ -19,7 +19,7 @@
 import { useBoolean } from 'ahooks';
 import { useEffect, useRef, useState } from 'react';
 import * as React from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import {
   ISetRecordOptions,
@@ -39,6 +39,7 @@ import {
 } from '@apitable/core';
 import { useCacheScroll } from 'pc/context';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { CELL_CLASS, FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass, OPACITY_LINE_CLASS, OPERATE_HEAD_CLASS } from 'pc/utils';
 import { getMoveColumnsResult } from 'pc/utils/datasheet';
 import { getClickCellId, getGroupHeadRecordId } from 'pc/utils/dom';
@@ -101,7 +102,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = (props) => {
     keepSort,
     fieldIndexMap,
     rowsIndexMap,
-  } = useSelector((state: IReduxState) => {
+  } = useAppSelector((state: IReduxState) => {
     const { columnSortable, columnWidthEditable } = Selectors.getPermissions(state);
 
     return {
@@ -145,7 +146,7 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = (props) => {
     originPageX: 0,
     changeWidthFieldId: '',
   });
-  const fieldPermissionMap = useSelector(Selectors.getFieldPermissionMap);
+  const fieldPermissionMap = useAppSelector(Selectors.getFieldPermissionMap);
   const scrollValue = useCacheScroll();
 
   function getGlobalRef() {

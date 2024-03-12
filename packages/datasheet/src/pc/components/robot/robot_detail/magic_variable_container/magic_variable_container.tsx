@@ -17,12 +17,13 @@
  */
 
 import { useAtomValue, useSetAtom } from 'jotai';
-import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import React, { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Box, TextInput, Typography, useSelectIndex, useTheme } from '@apitable/components';
 import { IExpression, OperandTypeEnums, OperatorEnums, Strings, t } from '@apitable/core';
 import { SearchOutlined } from '@apitable/icons';
 import { automationCurrentTriggerId } from 'pc/components/automation/controller';
+import EllipsisText from 'pc/components/ellipsis_text';
 import { INodeOutputSchema, IUISchemaLayoutGroup } from '../../interface';
 import { useCssColors } from '../trigger/use_css_colors';
 import { getCurrentVariableList, getGroupedVariableList, ISchemaAndExpressionItem, ISchemaPropertyListItem } from './helper';
@@ -45,6 +46,7 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
 
   const setCurrrentTrigger = useSetAtom(automationCurrentTriggerId);
 
+  const colors = useCssColors();
   const theme = useTheme();
   const searchRef = useRef<any>();
   const listContainerRef = useRef<any>();
@@ -56,8 +58,6 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
     nodeOutputSchemaList,
     isJSONField,
   });
-  const colors= useCssColors();
-
   // List of dynamic parameters after filtering by keyword search
   variableList = variableList.filter((item) => item.label?.includes(searchValue));
 
@@ -155,12 +155,12 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
       {
         title:
             t(Strings.robot_trigger_guide),
-        items: nodeOutputSchemaList.filter(item => item.id.startsWith('atr')).map(r => r.id),
+        items: nodeOutputSchemaList.filter(item => item.id.startsWith('dst')).map(r => r.id),
       },
       {
         title:
             t(Strings.action),
-        items: nodeOutputSchemaList.filter(item => item.id.startsWith('acc')).map(r => r.id),
+        items: nodeOutputSchemaList.filter(item => item.id.startsWith('aac')).map(r => r.id),
       }
     ];
   }
@@ -200,18 +200,22 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
   }
 
   return (
-    <Box backgroundColor={theme.color.bgCommonHighest} borderRadius="8px" border={`1px solid ${colors.borderCommonDefault}`} ref={ref as any} padding="8px 16px">
-      <StyledTextInput
-        type="text"
-        ref={searchRef}
-        // autoFocus
-        block
-        lineStyle
-        onChange={(e) => setSearchValue(e.target.value)}
-        value={searchValue}
-        placeholder={t(Strings.search)}
-        prefix={<SearchOutlined color={colors.textCommonPrimary} />}
-      />
+    <Box backgroundColor={colors.bgCommonHighest}
+      boxShadow={colors.shadowCommonHighest}
+      borderRadius="8px" border={`1px solid ${colors.borderCommonDefault}`} ref={ref as any} padding="8px 8px">
+      <Box padding={'0 8px'}>
+        <StyledTextInput
+          type="text"
+          ref={searchRef}
+          // autoFocus
+          block
+          lineStyle
+          onChange={(e) => setSearchValue(e.target.value)}
+          value={searchValue}
+          placeholder={t(Strings.search)}
+          prefix={<SearchOutlined color={colors.textCommonPrimary} />}
+        />
+      </Box>
       {
         !(currentStep === 0 && variableList.length === 0) && (
           <Box margin="8px 0px">
@@ -230,15 +234,24 @@ export const MagicVariableContainer = forwardRef((props: ISchemaMapProps, ref) =
                   <span style={{ marginLeft: '4px' }}>
               /&nbsp;
                   </span>
+
                   <span
                     onClick={() => {
                       setSchemaExpressionList(l => l.slice(0, index +1));
                     }}
                     style={{
                       cursor: 'pointer',
-                      color: index === schemaExpressionList.length -1 ? colors.textBrandDefault:
-                        colors.textCommonTertiary
-                    }}>{index ===0 && `${index + 1}.`}  {schema?.title}</span>
+                      color: index === schemaExpressionList.length -1 ? colors.textBrandDefault: colors.textCommonTertiary
+                    }}>
+                    <Box maxWidth={'200px'} display={'inline-flex'}>
+                      <EllipsisText>
+                        <Typography variant="body4"
+                          color={index === schemaExpressionList.length -1 ? colors.textBrandDefault: colors.textCommonTertiary}>
+                          {index ===0 && `${index + 1}.`}  {schema?.title}
+                        </Typography>
+                      </EllipsisText>
+                    </Box>
+                  </span>
                 </span>;
               })}
             </Typography>

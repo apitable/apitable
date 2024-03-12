@@ -17,11 +17,13 @@
  */
 
 import { useMount } from 'ahooks';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Space, ThemeName, useTheme } from '@apitable/components';
 import { integrateCdnHost, IReduxState, t, Strings } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
+import { ActiveAppSumo } from './components/active_app_sumo';
 import { ForgetPassword } from './components/forget_password';
 import { GithubButton } from './components/github_button';
 import { Login } from './components/login';
@@ -31,16 +33,21 @@ import { ActionType } from './pc_home';
 import styles from './style.module.less';
 
 export const MobileHome: React.FC<React.PropsWithChildren<unknown>> = () => {
-  const inviteLinkInfo = useSelector((state: IReduxState) => state.invite.inviteLinkInfo);
-  const inviteEmailInfo = useSelector((state: IReduxState) => state.invite.inviteEmailInfo);
+  const inviteLinkInfo = useAppSelector((state: IReduxState) => state.invite.inviteLinkInfo);
+  const inviteEmailInfo = useAppSelector((state: IReduxState) => state.invite.inviteEmailInfo);
   const [action, setAction] = useState<ActionType>(ActionType.SignUp);
   const [email, setEmail] = useState<string>('');
+  const router = useRouter();
 
   const switchActionType = (actionType: ActionType) => {
     setAction(actionType);
   };
   const loginAction = localStorage.getItem('loginAction');
   useMount(() => {
+    if (router.asPath.includes('sumo')) {
+      setAction(ActionType.BindAppSumo);
+      return;
+    }
     if (loginAction === ActionType.SignIn) {
       setAction(ActionType.SignIn);
       localStorage.removeItem('loginAction');
@@ -52,8 +59,10 @@ export const MobileHome: React.FC<React.PropsWithChildren<unknown>> = () => {
       case ActionType.SignIn:
         return <Login switchClick={switchActionType} email={email} setEmail={setEmail} />;
         break;
+      case ActionType.BindAppSumo:
+        return <ActiveAppSumo />;
       case ActionType.SignUp:
-        return <SignUp switchClick={switchActionType} email={email} setEmail={setEmail} />;
+        return <SignUp switchClick={switchActionType} />;
         break;
       case ActionType.ForgetPassword:
         return <ForgetPassword switchClick={switchActionType} email={email} setEmail={setEmail} />;
@@ -72,6 +81,8 @@ export const MobileHome: React.FC<React.PropsWithChildren<unknown>> = () => {
       case ActionType.ForgetPassword:
         return 'Reset Password';
         break;
+      case ActionType.BindAppSumo:
+        return 'Welcome Sumo-ling!';
     }
   };
 
@@ -98,7 +109,7 @@ export const MobileHome: React.FC<React.PropsWithChildren<unknown>> = () => {
       <div className={styles.content}>{homeModal(action)}</div>
       <Space size={41} vertical>
         <GithubButton />
-        <NavBar />
+        <NavBar action={action} />
       </Space>
     </div>
   );

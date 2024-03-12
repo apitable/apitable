@@ -18,25 +18,22 @@
 
 package com.apitable.shared.captcha.sms;
 
-import javax.annotation.Resource;
-
 import cn.hutool.core.util.StrUtil;
-import lombok.extern.slf4j.Slf4j;
-
-import com.apitable.starter.sms.core.SmsMessage;
-import com.apitable.starter.sms.core.SmsSenderTemplate;
 import com.apitable.base.enums.SmsCodeType;
+import com.apitable.core.exception.BusinessException;
 import com.apitable.interfaces.security.facade.CaptchaServiceFacade;
 import com.apitable.interfaces.security.model.CaptchaReceiver;
 import com.apitable.shared.captcha.ValidateTarget;
-import com.apitable.core.exception.BusinessException;
-
+import com.apitable.starter.sms.core.SmsMessage;
+import com.apitable.starter.sms.core.SmsSenderTemplate;
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * SMS Service Implement
+ * SMS Service Implement.
  * </p>
  *
  * @author Shawn Deng
@@ -63,12 +60,13 @@ public class SmsServiceImpl implements ISmsService {
         smsMessage.setMobile(target.getTarget());
         // International SMS
         if (!smsSenderTemplate.getLocalAreaCode().equals(smsMessage.getAreaCode())) {
-            smsMessage.setText(StrUtil.format(YunpianTemplate.INTERNATION_GENERAL.getContent(), code));
+            smsMessage.setText(
+                StrUtil.format(YunpianTemplate.INTERNATION_GENERAL.getContent(), code));
             smsSenderTemplate.send(smsMessage);
             return;
         }
         // Chinese SMS
-        smsMessage.setParams(new String[] { code });
+        smsMessage.setParams(new String[] {code});
         String smsTemplateCode = type.getTemplate().getTemplateCode();
         if (!TencentConstants.SmsTemplate.isSmsTemplate(smsTemplateCode)) {
             throw new BusinessException("Without SMS template");

@@ -18,17 +18,15 @@
 
 package com.apitable.shared.component.notification;
 
-import java.io.Serializable;
-
+import com.apitable.shared.support.serializer.NullStringSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import java.io.Serializable;
 import lombok.Builder;
 import lombok.Data;
 
-import com.apitable.shared.support.serializer.NullStringSerializer;
-
 /**
  * <p>
- * notification info
+ * notification info.
  * </p>
  *
  * @author zoe zheng
@@ -49,6 +47,9 @@ public class SpaceNotificationInfo implements Serializable {
     @JsonSerialize(nullsUsing = NullStringSerializer.class)
     private String socketId;
 
+    /**
+     * node info.
+     */
     @Data
     public static class NodeInfo {
 

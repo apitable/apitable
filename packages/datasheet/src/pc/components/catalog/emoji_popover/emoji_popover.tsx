@@ -20,8 +20,9 @@ import { Popover } from 'antd';
 import { FC, useState, PropsWithChildren } from 'react';
 import * as React from 'react';
 import { ConfigConstant } from '@apitable/core';
-import { Picker } from 'pc/components/common';
-import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
+import { Picker } from 'pc/components/common/emoji/emoji';
+import { useCatalogTreeRequest } from 'pc/hooks/use_catalogtree_request';
+import { useRequest } from 'pc/hooks/use_request';
 import styles from './style.module.less';
 
 export interface IEmojiPopoverProps {

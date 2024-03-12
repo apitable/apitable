@@ -17,8 +17,8 @@
  */
 
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Selectors } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { OPERATE_WIDTH } from '../field_setting';
 import styles from './styles.module.less';
 
@@ -40,7 +40,7 @@ function showLeftOrRight(positionX: number, boxWidth: number) {
 }
 
 export const AutoLayout: React.FC<React.PropsWithChildren<IAutoLayoutProps>> = (props) => {
-  const { fieldRectLeft } = useSelector((state) => Selectors.gridViewActiveFieldState(state, props.datasheetId));
+  const { fieldRectLeft } = useAppSelector((state) => Selectors.gridViewActiveFieldState(state, props.datasheetId));
   return (
     <div className={styles.autoLayout} style={showLeftOrRight(fieldRectLeft, props.boxWidth)}>
       {props.children}

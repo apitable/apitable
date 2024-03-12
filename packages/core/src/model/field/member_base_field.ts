@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IUserInfo, Selectors } from '../../exports/store';
+import { IUserInfo } from '../../exports/store/interfaces';
+import { getUserMap } from 'modules/org/store/selectors/unit_info';
 import { hasIntersect, isSameSet } from 'utils/array';
 import {
   BasicValueType, IUnitIds, IStandardValue, IUuids,
@@ -24,17 +25,13 @@ import {
 } from '../../types/field_types';
 import { FOperator, IFilterCondition, IFilterMember } from '../../types/view_types';
 import { ICellValue, ICellToStringOption } from '../record';
-import { ArrayValueField } from './field';
+import { ArrayValueField } from './array_field';
 import { FieldType, IAPIMetaMemberBaseFieldProperty } from 'types';
 import { IMemberFieldOpenValue } from 'types/field_types_open';
 import { isNullValue } from 'model/utils';
+import { OtherTypeUnitId } from './const';
 
 export type ICommonMemberField = IMemberField | ICreatedByField | ILastModifiedByField;
-
-export enum OtherTypeUnitId {
-  Self = 'Self', // used to identify the current user
-  Alien = 'Alien', // used to identify anonymous
-}
 
 export abstract class MemberBaseField extends ArrayValueField {
 
@@ -105,7 +102,7 @@ export abstract class MemberBaseField extends ArrayValueField {
     conditionValue: Exclude<IFilterMember, null>,
   ) {
     const cv4filter = cellValue ? this.getUnitIds(cellValue)! : [];
-    // If it is judged in advance that it is empty or not, it should be judged directly as null, which is compatible with old data. 
+    // If it is judged in advance that it is empty or not, it should be judged directly as null, which is compatible with old data.
     // There is no guarantee that cv comes with null, not an empty array.
     if (operator === FOperator.IsEmpty) {
       return cv4filter.length === 0;
@@ -271,7 +268,7 @@ export abstract class MemberBaseField extends ArrayValueField {
    */
   cellValueToApiStandardValue(cellValues: ICellValue | null): any | null {
     if (cellValues == null) return null;
-    const userMap = Selectors.getUserMap(this.state);
+    const userMap = getUserMap(this.state);
     if (userMap == null) return null;
     const uuid = cellValues as string;
     if (userMap.hasOwnProperty(uuid)) {

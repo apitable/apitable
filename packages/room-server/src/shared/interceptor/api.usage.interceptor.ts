@@ -41,20 +41,23 @@ import { InjectLogger, SPACE_ID_HTTP_DECORATE, USER_HTTP_DECORATE } from '../com
  */
 @Injectable()
 export class ApiUsageInterceptor implements NestInterceptor {
-  constructor(@InjectLogger() private readonly logger: Logger, private readonly apiUsageRepository: ApiUsageRepository) {}
+  constructor(
+    @InjectLogger() private readonly logger: Logger,
+    private readonly apiUsageRepository: ApiUsageRepository,
+  ) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Promise<any> {
     const request = context.switchToHttp().getRequest();
     this.clearApiCache();
-    return (next.handle().pipe(
+    return next.handle().pipe(
       tap((data: ApiResponse<any>) => {
         this.clearApiCache();
-        void this.apiUsage(request, data);
+        this.apiUsage(request, data);
       }),
-      catchError(err => {
+      catchError((err) => {
         this.clearApiCache();
         if (err instanceof ApiException && err.getTip().isRecordTimes) {
-          void this.apiUsage(request, undefined, err);
+          this.apiUsage(request, undefined, err);
           return throwError(err);
         }
         // database error
@@ -64,7 +67,7 @@ export class ApiUsageInterceptor implements NestInterceptor {
         }
         return throwError(err);
       }),
-    ) as any) as Promise<any>;
+    ) as any as Promise<any>;
   }
 
   /**
@@ -81,12 +84,12 @@ export class ApiUsageInterceptor implements NestInterceptor {
     clearCachedSelectors();
   }
 
-  apiUsage(request: FastifyRequest, response?: ApiResponse<any>, error?: any) {
+  async apiUsage(request: FastifyRequest, response?: ApiResponse<any>, error?: any): Promise<void> {
     const apiUsageEntity = new ApiUsageEntity();
     apiUsageEntity.dstId = (request.params as any).dstId || (request.params as any).nodeId;
     apiUsageEntity.spaceId = request[SPACE_ID_HTTP_DECORATE];
     apiUsageEntity.userId = request[USER_HTTP_DECORATE].id;
-    apiUsageEntity.reqIp = request.headers['x-real-ip'] as string || request.ip;
+    apiUsageEntity.reqIp = (request.headers['x-real-ip'] as string) || request.ip;
     apiUsageEntity.apiVersion = getApiVersionFromUrl(request.raw.url!);
     apiUsageEntity.reqMethod = ApiHttpMethod[request.raw.method!.toLowerCase()];
     apiUsageEntity.reqPath = request.raw.url!.split('?')[0]!;
@@ -106,6 +109,9 @@ export class ApiUsageInterceptor implements NestInterceptor {
         message: error instanceof ServerException ? error.getMessage() : error.message,
       };
     }
-    return this.apiUsageRepository.insertByEntity(apiUsageEntity);
+    try {
+      // catch for duplicate requests
+      await this.apiUsageRepository.insertByEntity(apiUsageEntity);
+    } catch (e) {}
   }
 }

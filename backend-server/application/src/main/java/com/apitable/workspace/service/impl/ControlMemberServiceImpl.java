@@ -46,6 +46,7 @@ import com.apitable.workspace.service.IControlMemberService;
 import com.apitable.workspace.vo.ControlRoleMemberVo;
 import com.apitable.workspace.vo.NodeRoleMemberVo;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import jakarta.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -53,9 +54,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
-import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
+/**
+ * control member service implentation.
+ */
 @Service
 public class ControlMemberServiceImpl implements IControlMemberService {
 
@@ -85,21 +88,21 @@ public class ControlMemberServiceImpl implements IControlMemberService {
 
     @Override
     public <T extends ControlRoleMemberVo> PageInfo<T> getControlRoleMemberPageInfo(
-        Page<T> page, String spaceId, ControlId controlId, Class<T> tClass
+        Page<T> page, String spaceId, ControlId controlId, Class<T> clz
     ) {
         Map<Long, ControlMemberDTO> memberControlRoleMap =
             this.getMemberControlRoleMap(spaceId, controlId);
         // calculate position
-        int sub = (int) (page.getCurrent() - 1) * (int) page.getSize();
+        long sub = (page.getCurrent() - 1) * page.getSize();
         if (sub > memberControlRoleMap.size()) {
-            return PageHelper.build((int) page.getCurrent(), (int) page.getSize(),
+            return PageHelper.build(page.getCurrent(), page.getSize(),
                 memberControlRoleMap.size(), new ArrayList<>());
         }
 
-        int end = (sub + page.getSize()) > memberControlRoleMap.size()
-            ? memberControlRoleMap.size() : sub + (int) page.getSize();
+        long end = (sub + page.getSize()) > memberControlRoleMap.size()
+            ? memberControlRoleMap.size() : sub + page.getSize();
         List<Long> memberIds =
-            new ArrayList<>(memberControlRoleMap.keySet()).subList(sub, end);
+            new ArrayList<>(memberControlRoleMap.keySet()).subList((int) sub, (int) end);
         List<T> records = new ArrayList<>(memberIds.size());
         List<NodeRoleMemberVo> results = iMemberService.getNodeRoleMemberWithSort(memberIds);
         // Give permission value
@@ -108,15 +111,15 @@ public class ControlMemberServiceImpl implements IControlMemberService {
             result.setRole(controlMemberDTO.getControlRoleTag());
             result.setIsWorkbenchAdmin(controlMemberDTO.getIsAdmin());
             result.setIsControlOwner(controlMemberDTO.getIsControlOwner());
-            records.add(BeanUtil.toBean(result, tClass));
+            records.add(BeanUtil.toBean(result, clz));
         });
-        return PageHelper.build((int) page.getCurrent(), (int) page.getSize(),
+        return PageHelper.build(page.getCurrent(), page.getSize(),
             memberControlRoleMap.size(), records);
     }
 
     @Override
     public Map<Long, ControlMemberDTO> getMemberControlRoleMap(String spaceId,
-        ControlId controlId) {
+                                                               ControlId controlId) {
         Map<Long, ControlMemberDTO> memberRoleMap = new LinkedHashMap<>();
         // 1、space workbench administrator + control owner
         Long ownerId = this.getControlOwnerId(controlId);

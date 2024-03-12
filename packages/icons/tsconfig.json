@@ -2,6 +2,7 @@
   "extends": "../../common-tsconfig.json",
   "compilerOptions": {
     "target": "es5",
+    "module": "ESNext",
     "jsx": "react",
     "strict": true,
     "lib": [

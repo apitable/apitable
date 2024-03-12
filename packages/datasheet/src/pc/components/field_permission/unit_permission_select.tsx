@@ -21,7 +21,6 @@ import { Divider } from 'antd';
 import classnames from 'classnames';
 import { useLayoutEffect, useRef, useState, useEffect } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { DoubleSelect, Typography, Button, useThemeColors, IDoubleOptions } from '@apitable/components';
 import { ConfigConstant, Selectors, Strings, t, IUnitIds } from '@apitable/core';
 import { AddOutlined, CheckOutlined, ChevronDownOutlined, CloseOutlined } from '@apitable/icons';
@@ -31,6 +30,7 @@ import { Message } from 'pc/components/common/message/message';
 import { PopStructure } from 'pc/components/editors/pop_structure';
 import { MemberOptionList } from 'pc/components/list';
 import { MemberItem } from 'pc/components/multi_grid/cell/cell_member/member_item';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import { IUnitPermissionSelectProps } from './interface';
 import styles from './styles.module.less';
@@ -39,10 +39,10 @@ export const UnitPermissionSelect: React.FC<React.PropsWithChildren<IUnitPermiss
   const colors = useThemeColors();
   const { permissionList, onSubmit, classNames, adminAndOwnerUnitIds = [], showTeams, searchEmail } = props;
   const unitMap =
-    useSelector((state) => {
+    useAppSelector((state) => {
       return Selectors.getUnitMap(state);
     }) || {};
-  const datasheetId = useSelector((state) => state.pageParams.datasheetId)!;
+  const datasheetId = useAppSelector((state) => state.pageParams.datasheetId)!;
   const [height, setHeight] = useState(0);
   const [editing, setEditing] = useState(false);
   const [unitValue, setUnitValue] = useState<IUnitIds>([]);
@@ -51,8 +51,8 @@ export const UnitPermissionSelect: React.FC<React.PropsWithChildren<IUnitPermiss
   const unitListRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const noPermissionMembers = useSelector((state) => state.catalogTree.noPermissionMembers);
-  const permissionCommitRemindStatus = useSelector((state) => state.catalogTree.permissionCommitRemindStatus);
+  const noPermissionMembers = useAppSelector((state) => state.catalogTree.noPermissionMembers);
+  const permissionCommitRemindStatus = useAppSelector((state) => state.catalogTree.permissionCommitRemindStatus);
   useEffect(() => {
     if (permissionCommitRemindStatus && noPermissionMembers) {
       setUnitValue([...noPermissionMembers]);

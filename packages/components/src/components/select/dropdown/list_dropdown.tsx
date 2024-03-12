@@ -1,10 +1,4 @@
-import {
-  cloneElement,
-  isValidElement,
-  useCallback,
-  useRef,
-  useState
-} from 'react';
+import { cloneElement, isValidElement, useCallback, useRef, useState } from 'react';
 import classNames from 'classnames';
 import {
   useDismiss,
@@ -12,7 +6,12 @@ import {
   useClick,
   useInteractions,
   FloatingFocusManager,
-  useId, FloatingArrow, FloatingPortal, ReferenceType, useListNavigation, FloatingList
+  useId,
+  FloatingArrow,
+  FloatingPortal,
+  ReferenceType,
+  useListNavigation,
+  FloatingList,
 } from '@floating-ui/react';
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { useProviderTheme } from '../../../hooks';
@@ -20,40 +19,49 @@ import { useFloatUiDropdown } from '../../dropdown/float_ui/useFloatUiDropdown';
 import { IDropdownProps } from '../../dropdown';
 
 export interface IDropdownControl {
-    close: () => void;
-    open: () => void;
-    toggle: (open: Boolean) => void;
-    resetIndex:() => void;
+  close: () => void;
+  open: () => void;
+  toggle: (open: Boolean) => void;
+  resetIndex: () => void;
 }
 
-const CONST_INITIAL_DROPDOWN_INDEX = 1002;
+const CONST_INITIAL_DROPDOWN_INDEX = 1202;
 
 interface SelectContextValue {
-    activeIndex: number | null;
-    selectedIndex: number | null;
-    getItemProps: ReturnType<typeof useInteractions>['getItemProps'];
-    handleSelect: (index: number | null) => void;
+  activeIndex: number | null;
+  selectedIndex: number | null;
+  getItemProps: ReturnType<typeof useInteractions>['getItemProps'];
+  handleSelect: (index: number | null) => void;
 }
 
-export const SelectContext = React.createContext<SelectContextValue>(
-    {} as SelectContextValue
-);
+export const SelectContext = React.createContext<SelectContextValue>({} as SelectContextValue);
 
 export const ListDropdown = forwardRef<IDropdownControl, IDropdownProps>((props, ref) => {
-  const { trigger, children, onVisibleChange, options= {
-    zIndex: CONST_INITIAL_DROPDOWN_INDEX
-  }, className, middleware =[], clazz } = props;
+  const {
+    trigger,
+    children,
+    onVisibleChange,
+    options = {
+      zIndex: CONST_INITIAL_DROPDOWN_INDEX,
+    },
+    className,
+    middleware = [],
+    clazz,
+  } = props;
 
-  const arrowEnabled = options.arrow?? true;
-  const disabled = options.disabled?? false;
+  const arrowEnabled = options.arrow ?? true;
+  const disabled = options.disabled ?? false;
   const [isOpen, setOpenValue] = useState(false);
 
-  const setOpen = useCallback((isOpenState: boolean) => {
-    if(disabled) {
-      return;
-    }
-    setOpenValue(isOpenState);
-  }, [setOpenValue, disabled]);
+  const setOpen = useCallback(
+    (isOpenState: boolean) => {
+      if (disabled) {
+        return;
+      }
+      setOpenValue(isOpenState);
+    },
+    [setOpenValue, disabled]
+  );
 
   const toggle = useCallback(() => {
     setOpen(!isOpen);
@@ -62,11 +70,13 @@ export const ListDropdown = forwardRef<IDropdownControl, IDropdownProps>((props,
 
   const open = useCallback(() => {
     setOpen(true);
-  }, [setOpen]);
+    onVisibleChange?.(true);
+  }, [onVisibleChange, setOpen]);
 
   const close = useCallback(() => {
     setOpen(false);
-  }, [setOpen]);
+    onVisibleChange?.(false);
+  }, [onVisibleChange, setOpen]);
 
   const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
   const [selectedIndex, setSelectedIndex] = React.useState<number | null>(options?.selectedIndex ?? null);
@@ -74,16 +84,16 @@ export const ListDropdown = forwardRef<IDropdownControl, IDropdownProps>((props,
     setSelectedIndex(options?.selectedIndex ?? null);
   }, [setSelectedIndex, options?.selectedIndex]);
 
-
   const theme = useProviderTheme();
 
-  const arrowRef = useRef (null);
+  const arrowRef = useRef(null);
 
-  const triggerEl = isValidElement(trigger) ? trigger :
-    trigger({
-      visible: isOpen,
-      toggle,
-    });
+  const triggerEl = isValidElement(trigger)
+    ? trigger
+    : trigger({
+        visible: isOpen,
+        toggle,
+      });
 
   useImperativeHandle(ref, () => ({ open, toggle, close, resetIndex }));
 
@@ -93,46 +103,41 @@ export const ListDropdown = forwardRef<IDropdownControl, IDropdownProps>((props,
     middleware,
     setOpen,
     isOpen,
-    arrowRef
+    arrowRef,
   });
 
   const handleSelect = React.useCallback((index: number | null) => {
     setSelectedIndex(index);
-    setOpen(false);
-  }, [setOpen]);
+    // setOpen(false);
+  }, []);
 
   const listNav = useListNavigation(context, {
     listRef: elementsRef,
     activeIndex,
     selectedIndex,
     scrollItemIntoView: true,
-    onNavigate: setActiveIndex
+    onNavigate: setActiveIndex,
   });
 
   const click = useClick(context);
   const dismiss = useDismiss(context);
   const role = useRole(context);
 
-  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
-    listNav,
-    click,
-    dismiss,
-    role
-  ]);
+  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([listNav, click, dismiss, role]);
 
   const selectContext = React.useMemo(
     () => ({
       activeIndex,
       selectedIndex,
       getItemProps,
-      handleSelect
+      handleSelect,
     }),
     [activeIndex, selectedIndex, getItemProps, handleSelect]
   );
 
   const headingId = useId();
 
-  const setRef = (v: ReferenceType|null) => {
+  const setRef = (v: ReferenceType | null) => {
     refs.setReference(v);
     props.setTriggerRef?.(v as HTMLElement);
   };
@@ -154,22 +159,21 @@ export const ListDropdown = forwardRef<IDropdownControl, IDropdownProps>((props,
               {...getFloatingProps()}
             >
               <SelectContext.Provider value={selectContext}>
-                <FloatingList elementsRef={elementsRef}>
-                  {
-                    children({ toggle })
-                  }
-                </FloatingList>
+                <FloatingList elementsRef={elementsRef}>{children({ toggle })}</FloatingList>
               </SelectContext.Provider>
-              {
-                arrowEnabled && (
-                  <FloatingArrow ref={arrowRef} context={context} fill={theme.color.highestBg} strokeWidth={1} stroke={theme.color.borderCommonDefault}/>
-                )
-              }
+              {arrowEnabled && (
+                <FloatingArrow
+                  ref={arrowRef}
+                  context={context}
+                  fill={theme.color.highestBg}
+                  strokeWidth={1}
+                  stroke={theme.color.borderCommonDefault}
+                />
+              )}
             </div>
           </FloatingFocusManager>
         </FloatingPortal>
       )}
     </>
   );
-
 });

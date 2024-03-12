@@ -18,13 +18,14 @@
 
 import { useEffect, useState } from 'react';
 import * as React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { ContextMenu, useContextMenu } from '@apitable/components';
 import { CollaCommandName, Field, getStatTypeList, KONVA_DATASHEET_ID, Selectors, StatType } from '@apitable/core';
 import { getFieldStatType } from 'pc/components/multi_grid/cell/stat_option';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 // import styles from './style.module.less';
+import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData, isTouchDevice } from 'pc/utils';
 import { executeCommandWithMirror } from 'pc/utils/execute_command_with_mirror';
 import { MouseDownType } from '../../../multi_grid';
@@ -44,7 +45,7 @@ export const StatMenu: React.FC<React.PropsWithChildren<IStatMenuProps>> = React
   const { getBoundary, parentRef } = props;
   const [fieldId, setFieldId] = useState<string>('');
   const { show } = useContextMenu({ id: KONVA_DATASHEET_ID.GRID_STAT_MENU });
-  const { fieldMap, statType } = useSelector((state) => {
+  const { fieldMap, statType } = useAppSelector((state) => {
     const datasheetId = state.pageParams.datasheetId!;
     const statType = getFieldStatType(state, fieldId);
 
@@ -53,7 +54,7 @@ export const StatMenu: React.FC<React.PropsWithChildren<IStatMenuProps>> = React
       statType,
     };
   }, shallowEqual);
-  const view = useSelector(Selectors.getCurrentView)!;
+  const view = useAppSelector(Selectors.getCurrentView)!;
   const state = store.getState();
   const field = fieldMap[fieldId];
   const fieldStatTypeList = field && getStatTypeList(field, state);

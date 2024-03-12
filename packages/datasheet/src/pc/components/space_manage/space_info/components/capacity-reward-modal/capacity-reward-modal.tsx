@@ -29,7 +29,7 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { TComponent } from 'pc/components/common/t_component';
 import { antdConfig } from 'pc/components/route_manager/router_provider';
 import { useRequest } from 'pc/hooks';
-import { useCapacityRequest } from 'pc/hooks/use_capacity-reword-request';
+import { useCapacityRequest } from 'pc/hooks/use_capacity_request';
 import { store } from 'pc/store';
 import styles from './style.module.less';
 
@@ -123,18 +123,24 @@ export const CapacityRewardModal: FC<React.PropsWithChildren<ICapacityRewardModa
   const [list, setList] = useState([]);
 
   const [currTab, setCurrTab] = useState(CapacityType.InEffect);
-  const { getCapacityListReq } = useCapacityRequest();
-  const { run: getCapacityList } = useRequest(getCapacityListReq, { manual: true });
+  const { getCapacityRewardListReq } = useCapacityRequest();
+  const { run: getCapacityRewardList } = useRequest(getCapacityRewardListReq, { manual: true });
   const [pageNo, setPageNo] = useState(1);
   const [total, setTotal] = useState(1);
 
   useEffect(() => {
     const isExpire = currTab === CapacityType.Expired;
-    getCapacityList(isExpire, pageNo).then((res) => {
-      setList(res.records);
+    getCapacityRewardList(isExpire, pageNo).then((res) => {
+      const _list = res.records.map((item: any, index) => {
+        return {
+          ...item,
+          key: index,
+        };
+      });
+      setList(_list);
       setTotal(res.total);
     });
-  }, [currTab, getCapacityList, pageNo]);
+  }, [currTab, getCapacityRewardList, pageNo]);
 
   const TableEl = (
     <div className={styles.rewardTable}>

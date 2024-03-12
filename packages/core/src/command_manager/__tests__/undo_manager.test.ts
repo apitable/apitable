@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { CollaCommandName } from 'commands';
+import { CollaCommandName } from 'commands/enum';
 import { ExecuteResult, ExecuteType } from 'command_manager/types';
 import { ResourceType } from 'types';
 import { UndoManager } from '../undo_manager';

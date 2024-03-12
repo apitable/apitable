@@ -19,7 +19,6 @@
 import cls from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { TextButton, useContextMenu } from '@apitable/components';
 import { CollaCommandName, DATASHEET_ID, IReduxState, IViewProperty, moveArrayElement, Selectors, Strings, t, ViewType } from '@apitable/core';
 import { ChevronDownOutlined } from '@apitable/icons';
@@ -30,12 +29,14 @@ import { Collapse, ICollapseFunc } from 'pc/components/common/collapse';
 import { ToolHandleType } from 'pc/components/tool_bar/interface';
 import { changeView } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getElementDataset, isPcDevice, KeyCode, stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { Display } from '../../../tool_bar/display/display';
 import { TabItem } from '../../tab_item';
 import { ContextMenu } from '../conetxt_menu';
 import styles from './style.module.less';
+
 // import ReactDOM from 'react-dom';
 
 interface IViewBarProps {
@@ -58,25 +59,25 @@ const EDITING_WIDTH = 160;
 export const ViewBar: React.FC<React.PropsWithChildren<IViewBarProps>> = (props) => {
   const { views, editIndex, setEditIndex, switchView, extra, className } = props;
   const [viewList, setViewList] = useState(views);
-  const datasheetLoading = useSelector((state) => Selectors.getDatasheetLoading(state));
-  const permissions = useSelector((state: IReduxState) => Selectors.getPermissions(state));
-  const { datasheetId: activeNodeId, viewId: activeViewId, embedId } = useSelector((state) => state.pageParams);
-  const folderId = useSelector((state) => Selectors.getDatasheetParentId(state));
+  const datasheetLoading = useAppSelector((state) => Selectors.getDatasheetLoading(state));
+  const permissions = useAppSelector((state: IReduxState) => Selectors.getPermissions(state));
+  const { datasheetId: activeNodeId, viewId: activeViewId, embedId } = useAppSelector((state) => state.pageParams);
+  const folderId = useAppSelector((state) => Selectors.getDatasheetParentId(state));
   const [iconHighlight, setIconHighlight] = useState(false);
   const [hoverIndex, setHoverIndex] = useState(-1);
   const [contextMenuIndex, setContextMenuIndex] = useState(-1);
   const [errMsg, setErrMsg] = useState('');
   const collapseRef = useRef<ICollapseFunc | null>(null);
-  // const spaceManualSaveViewIsOpen = useSelector(state => {
+  // const spaceManualSaveViewIsOpen = useAppSelector(state => {
   //   return state.labs.includes('view_manual_save') || Boolean(state.share.featureViewManualSave);
   // });
-  const operateViewIds = useSelector((state) => {
+  const operateViewIds = useAppSelector((state) => {
     return Selectors.getDatasheetClient(state)?.operateViewIds;
   });
 
   const { contextMenu, onSetContextMenu } = useContextMenu();
 
-  const embedInfo = useSelector((state) => Selectors.getEmbedInfo(state));
+  const embedInfo = useAppSelector((state) => Selectors.getEmbedInfo(state));
 
   const handleInputBlur = (e: React.FocusEvent) => {
     if (!errMsg) {

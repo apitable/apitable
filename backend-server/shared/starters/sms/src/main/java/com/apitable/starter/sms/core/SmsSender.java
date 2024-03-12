@@ -21,14 +21,14 @@ package com.apitable.starter.sms.core;
 
 /**
  * <p>
- * SMS sending operation interface
+ * SMS sending operation interface.
  * </p>
  *
  */
 public interface SmsSender {
 
     /**
-     * Single SMS
+     * Single SMS.
      *
      * @param smsMessage SMS message
      */

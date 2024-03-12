@@ -2,15 +2,15 @@ import dayjs from 'dayjs';
 import { compact, find } from 'lodash';
 import qs from 'qs';
 import { Field, FieldType, IFieldMap, IFieldPermissionMap, Selectors, string2Segment } from '@apitable/core';
-import { IFormQuery, IFormData } from './interface';
+import { IFormData, IFormQuery } from './interface';
 
 export const FORM_FIELD_TYPE = {
   select: [FieldType.SingleSelect, FieldType.MultiSelect],
-  primary: [FieldType.Member, FieldType.Link],
+  primary: [FieldType.Member, FieldType.Link, FieldType.OneWayLink],
   number: [FieldType.Rating, FieldType.Percent, FieldType.Currency, FieldType.Number, FieldType.Phone],
   bool: [FieldType.Checkbox],
   datetime: [FieldType.DateTime],
-  filter: [FieldType.Attachment, FieldType.Cascader],
+  filter: [FieldType.Attachment, FieldType.Cascader, FieldType.WorkDoc],
 };
 
 export const string2Query = () => {
@@ -34,6 +34,9 @@ export const query2formData = (query: IFormQuery, fieldMap: IFieldMap, fieldPerm
           } else {
             // filter invalid item name item
             res[key] = compact((value as string[]).map((v) => find(field.property.options, { name: v })?.id));
+          }
+          if (field.type === FieldType.SingleSelect) {
+            res[key] = res[key]?.[0];
           }
         } else if ([FieldType.SingleText, FieldType.Text].includes(field.type)) {
           res[key] = string2Segment(value as string);

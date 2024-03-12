@@ -21,14 +21,16 @@ import { Modal, Radio } from 'antd';
 import Image from 'next/image';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { Button, TextButton, ThemeProvider } from '@apitable/components';
 import { CollaCommandName, ILinkField, Selectors, Strings, t, ThemeName } from '@apitable/core';
 import { CloseOutlined } from '@apitable/icons';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
-import { LinkJump, Modal as CustomModal } from 'pc/components/common';
+import { LinkJump } from 'pc/components/common/link_jump/link_jump';
+import { Modal as CustomModal } from 'pc/components/common/modal/modal/modal';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import DisconnectedDark from 'static/icon/common/disconnected_file_dark.png';
 import DisconnectedLight from 'static/icon/common/disconnected_file_light.png';
 import { TComponent } from '../t_component';
@@ -38,10 +40,10 @@ const DeleteLinkField: React.FC<React.PropsWithChildren<{ fieldId: string; datas
   props,
 ) => {
   const { fieldId, datasheetId, onClose } = props;
-  const datasheet = useSelector((state) => Selectors.getDatasheet(state, datasheetId))!;
+  const datasheet = useAppSelector((state) => Selectors.getDatasheet(state, datasheetId))!;
   const field = datasheet.snapshot.meta.fieldMap[fieldId] as ILinkField;
-  const foreignDatasheet = useSelector((state) => Selectors.getDatasheet(state, field?.property.foreignDatasheetId));
-  const foreignDatasheetEditable = useSelector((state) => Selectors.getPermissions(state, field?.property.foreignDatasheetId).editable);
+  const foreignDatasheet = useAppSelector((state) => Selectors.getDatasheet(state, field?.property.foreignDatasheetId));
+  const foreignDatasheetEditable = useAppSelector((state) => Selectors.getPermissions(state, field?.property.foreignDatasheetId).editable);
   const [_shouldDelForeign, setShouldDelForeign] = useLocalStorageState('shouldDelForeignField', { defaultValue: false });
   /**
    * No editable permissions for related tables, no permission to use delete fields in advanced rules,
@@ -49,7 +51,7 @@ const DeleteLinkField: React.FC<React.PropsWithChildren<{ fieldId: string; datas
    **/
   const shouldDelForeign = foreignDatasheetEditable ? _shouldDelForeign : false;
 
-  const theme = useSelector((state) => state.theme);
+  const theme = useAppSelector((state) => state.theme);
   const Disconnected = theme === ThemeName.Light ? DisconnectedLight : DisconnectedDark;
 
   if (!field) {
@@ -173,7 +175,7 @@ export const deleteLinkFieldConfirm = (props: { fieldId: string; datasheetId?: s
   };
 
   const ConfirmModalWithTheme = () => {
-    const cacheTheme = useSelector(Selectors.getTheme);
+    const cacheTheme = useAppSelector(Selectors.getTheme);
     return (
       <ThemeProvider theme={cacheTheme}>
         <Modal visible centered onCancel={() => onClose()} destroyOnClose footer={null} closable={false} width={400}>

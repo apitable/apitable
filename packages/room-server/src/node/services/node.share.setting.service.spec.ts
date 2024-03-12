@@ -15,19 +15,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+import { TestingModule, Test } from '@nestjs/testing';
+import { NodeShareSettingRepository } from 'node/repositories/node.share.setting.repository';
+import { Observable } from 'rxjs';
+import { InternalServiceNodeInterfaceService } from 'shared/backend_client/api/internal-service-node-interface.service';
+import { PermissionException, CommonException } from 'shared/exception';
 import { NodeShareSettingService } from './node.share.setting.service';
-import { NodeShareSettingRepository } from '../repositories/node.share.setting.repository';
-import { NodeRepository } from '../repositories/node.repository';
-import { CommonException, PermissionException } from 'shared/exception';
-import { Test, TestingModule } from '@nestjs/testing';
 
 describe('Test NodeShareSettingService', () => {
   let moduleFixture: TestingModule;
   let nodeShareSettingRepository: NodeShareSettingRepository;
-  let nodeRepository: NodeRepository;
   let nodeShareSettingService: NodeShareSettingService;
+  let nodeInterfaceService: InternalServiceNodeInterfaceService;
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     moduleFixture = await Test.createTestingModule({
       providers: [
         {
@@ -38,19 +39,34 @@ describe('Test NodeShareSettingService', () => {
           },
         },
         {
-          provide: NodeRepository,
+          provide: InternalServiceNodeInterfaceService,
           useValue: {
-            selectParentPathByNodeId: jest.fn(),
-            selectCountByParentId: jest.fn(),
-            selectAllSubNodeIds: jest.fn(),
+            getContainsStatus: jest.fn(),
           },
         },
         NodeShareSettingService,
       ],
     }).compile();
     nodeShareSettingRepository = moduleFixture.get<NodeShareSettingRepository>(NodeShareSettingRepository);
-    nodeRepository = moduleFixture.get<NodeRepository>(NodeRepository);
     nodeShareSettingService = moduleFixture.get<NodeShareSettingService>(NodeShareSettingService);
+    nodeInterfaceService = moduleFixture.get<InternalServiceNodeInterfaceService>(InternalServiceNodeInterfaceService);
+    jest.spyOn(nodeInterfaceService, 'getContainsStatus').mockImplementation((folderId: string, _nodeId: string): any => {
+      return new Observable((observer) => {
+        observer.next({
+          data: {
+            success: true,
+            code: 200,
+            message: 'SUCCESS',
+            data: folderId == '1',
+          },
+          status: 200,
+          statusText: 'OK',
+          headers: {},
+          config: {},
+        });
+        observer.complete();
+      });
+    });
     jest.spyOn(nodeShareSettingRepository, 'selectByShareId').mockImplementation((shareId: string): any => {
       if (shareId === '1') {
         return {
@@ -84,72 +100,64 @@ describe('Test NodeShareSettingService', () => {
       nodeId: '1',
       isEnabled: true,
     } as any);
-    jest.spyOn(nodeRepository, 'selectParentPathByNodeId').mockResolvedValue(['0', '1']);
-    jest.spyOn(nodeRepository, 'selectCountByParentId').mockImplementation((nodeId: string): any => {
-      if (nodeId === '0') {
-        return 1;
-      }
-      return 0;
-    });
-    jest.spyOn(nodeRepository, 'selectAllSubNodeIds').mockResolvedValue(['1']);
   });
 
-  afterEach(async() => {
+  afterEach(async () => {
     await moduleFixture.close();
   });
 
-  it('should be return share setting', async() => {
+  it('should be return share setting', async () => {
     const shareSetting = await nodeShareSettingService.getByShareId('1');
     expect(shareSetting).toBeDefined();
   });
 
-  it('should be return share status', async() => {
+  it('should be return share status', async () => {
     const shareStatus = await nodeShareSettingService.getShareStatusByNodeId('1');
     expect(shareStatus).toBeTruthy();
   });
 
-  it('should be pass check', async() => {
+  it('should be pass check', async () => {
     await nodeShareSettingService.checkNodeHasOpenShare('1', '1');
   });
 
-  it('should be pass check', async() => {
+  it('should be pass check', async () => {
     await nodeShareSettingService.checkNodeHasOpenShare('1', '0');
   });
 
-  it('should be throw ACCESS_DENIED exception because empty share setting', async() => {
-    await expect(async() => {
+  it('should be throw ACCESS_DENIED exception because empty share setting', async () => {
+    await expect(async () => {
       await nodeShareSettingService.checkNodeHasOpenShare('0', '1');
     }).rejects.toThrow(PermissionException.ACCESS_DENIED.message);
   });
 
-  it('should be throw ACCESS_DENIED exception because no share', async() => {
-    await expect(async() => {
+  it('should be throw ACCESS_DENIED exception because no share', async () => {
+    await expect(async () => {
       await nodeShareSettingService.checkNodeHasOpenShare('2', '2');
     }).rejects.toThrow(PermissionException.ACCESS_DENIED.message);
   });
 
-  it('should be check pass', async() => {
+  it('should be check pass', async () => {
     await nodeShareSettingService.checkNodeShareCanBeEdited('1', '1');
   });
 
-  it('should be throw NODE_SHARE_NO_ALLOW_EDIT error', async() => {
-    await expect(async() => {
+  it('should be throw NODE_SHARE_NO_ALLOW_EDIT error', async () => {
+    await expect(async () => {
       await nodeShareSettingService.checkNodeShareCanBeEdited('2', '3');
     }).rejects.toThrow(CommonException.NODE_SHARE_NO_ALLOW_EDIT.message);
   });
 
-  it('should be return null because empty share setting', async() => {
+  it('should be return null because empty share setting', async () => {
     const props = await nodeShareSettingService.getNodeShareProps('3', '-1');
     expect(props).toEqual(null);
   });
 
-  it('should be return null because no share', async() => {
+  it('should be return null because no share', async () => {
     const props = await nodeShareSettingService.getNodeShareProps('4', '-1');
     expect(props).toEqual(null);
   });
 
-  it('should be return children propre', async() => {
-    const props = await nodeShareSettingService.getNodeShareProps('4', '1');
-    expect(props).toEqual({});
+  it('should be return children propre', async () => {
+    const props = await nodeShareSettingService.getNodeShareProps('1', '1');
+    expect(props).toEqual({ canBeEdited: true });
   });
 });

@@ -22,7 +22,7 @@ import { clone, find, get, has, isEmpty, keyBy, set, toPairs, uniq, values } fro
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { LinkButton, Typography, useThemeColors, ThemeName } from '@apitable/components';
 import {
   Api,
@@ -50,15 +50,16 @@ import { Message } from 'pc/components/common';
 import { SpaceLevelInfo } from 'pc/components/space_manage/space_info/utils';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ACTIVITY_SELECT_MAP, ActivitySelectType } from 'pc/utils';
 import IconNoListDark from 'static/icon/datasheet/activity/activity_empty_dark.png';
 import IconNoListLight from 'static/icon/datasheet/activity/activity_empty_light.png';
 import { ActivityContext, ICommentReplyMap } from '../activity_context';
 import { ChangesetItem } from '../activity_item';
 import { IActivityPaneProps, IChooseComment } from '../interface';
-import styles from './style.module.less';
 // @ts-ignore
-import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise';
+import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing';
+import styles from './style.module.less';
 
 const PAGE_SIZE = 10;
 const LIMIT_DAY = 90;
@@ -90,8 +91,8 @@ export const ActivityListItems: FC<
   const { expandRecordId, datasheetId, selectType, setChooseComment, containerRef, listRef, setEmpty, mirrorId } = props;
   const dispatch = useDispatch();
   const { emojis, setEmojis, unitMap, updateCommentReplyMap } = useContext(ActivityContext);
-  const currUserId = useSelector((state) => state.user.info?.userId);
-  const _maxRemainRecordActivityDays = useSelector((state) => {
+  const currUserId = useAppSelector((state) => state.user.info?.userId);
+  const _maxRemainRecordActivityDays = useAppSelector((state) => {
     return state.billing?.subscription?.maxRemainRecordActivityDays || LIMIT_DAY;
   });
   // Mirror view to check if it is the current table's row panel
@@ -100,10 +101,10 @@ export const ActivityListItems: FC<
   const [listHeight, setListHeight] = useState(0);
   const topRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver>();
-  const productName = useSelector((state) => String(state.billing?.subscription?.product).toLowerCase());
-  const themeName = useSelector((state) => state.theme);
+  const productName = useAppSelector((state) => String(state.billing?.subscription?.product).toLowerCase());
+  const themeName = useAppSelector((state) => state.theme);
   const IconNoList = themeName === ThemeName.Light ? IconNoListLight : IconNoListDark;
-  const fieldPermissionMap = useSelector((state) => Selectors.getFieldPermissionMap(state));
+  const fieldPermissionMap = useAppSelector((state) => Selectors.getFieldPermissionMap(state));
 
   const product = useMemo(() => {
     return SpaceLevelInfo[productName]?.title || '';

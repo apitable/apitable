@@ -18,6 +18,8 @@
 
 package com.apitable.space.controller;
 
+import static com.apitable.shared.constants.PageConstants.PAGE_PARAM;
+import static com.apitable.shared.constants.PageConstants.PAGE_SIMPLE_EXAMPLE;
 import static com.apitable.space.enums.SpaceException.DELETE_SPACE_ERROR;
 
 import cn.hutool.core.bean.BeanUtil;
@@ -28,12 +30,9 @@ import com.apitable.base.enums.ValidateType;
 import com.apitable.core.support.ResponseData;
 import com.apitable.core.util.ExceptionUtil;
 import com.apitable.core.util.SpringContextHolder;
-import com.apitable.core.util.SqlTool;
 import com.apitable.interfaces.ai.model.ChartTimeDimension;
-import com.apitable.interfaces.billing.facade.EntitlementServiceFacade;
 import com.apitable.interfaces.social.facade.SocialServiceFacade;
 import com.apitable.internal.vo.InternalSpaceCapacityVo;
-import com.apitable.organization.mapper.MemberMapper;
 import com.apitable.shared.cache.bean.LoginUserDto;
 import com.apitable.shared.cache.service.UserActiveSpaceCacheService;
 import com.apitable.shared.cache.service.UserSpaceCacheService;
@@ -56,24 +55,26 @@ import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.holder.NotificationRenderFieldHolder;
 import com.apitable.shared.listener.event.AuditSpaceEvent;
 import com.apitable.shared.listener.event.AuditSpaceEvent.AuditSpaceArg;
-import com.apitable.shared.util.HttpServletUtil;
 import com.apitable.shared.util.information.ClientOriginInfo;
 import com.apitable.shared.util.information.InformationUtil;
+import com.apitable.shared.util.page.PageInfo;
+import com.apitable.shared.util.page.PageObjectParam;
 import com.apitable.space.dto.GetSpaceListFilterCondition;
+import com.apitable.space.entity.SpaceEntity;
 import com.apitable.space.enums.AuditSpaceAction;
 import com.apitable.space.enums.SpaceException;
 import com.apitable.space.enums.SpaceUpdateOperate;
-import com.apitable.space.mapper.SpaceMapper;
 import com.apitable.space.model.CreditUsages;
 import com.apitable.space.model.Space;
 import com.apitable.space.ro.SpaceDeleteRo;
-import com.apitable.space.ro.SpaceMemberSettingRo;
 import com.apitable.space.ro.SpaceOpRo;
 import com.apitable.space.ro.SpaceSecuritySettingRo;
 import com.apitable.space.ro.SpaceUpdateOpRo;
-import com.apitable.space.ro.SpaceWorkbenchSettingRo;
+import com.apitable.space.service.ILabsApplicantService;
 import com.apitable.space.service.ISpaceService;
+import com.apitable.space.service.IStaticsService;
 import com.apitable.space.vo.CreateSpaceResultVo;
+import com.apitable.space.vo.LabsFeatureVo;
 import com.apitable.space.vo.SpaceCapacityVO;
 import com.apitable.space.vo.SpaceGlobalFeature;
 import com.apitable.space.vo.SpaceInfoVO;
@@ -82,17 +83,19 @@ import com.apitable.space.vo.SpaceVO;
 import com.apitable.space.vo.UserSpaceVo;
 import com.apitable.user.entity.UserEntity;
 import com.apitable.user.service.IUserService;
+import com.apitable.workspace.vo.NodeStatisticsVo;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -105,18 +108,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @Tag(name = "Space - Space Api")
-@ApiResource(path = "/")
+@ApiResource
 @Slf4j
 public class SpaceController {
 
     @Resource
     private ISpaceService iSpaceService;
-
-    @Resource
-    private SpaceMapper spaceMapper;
-
-    @Resource
-    private MemberMapper memberMapper;
 
     @Resource
     private UserSpaceOpenedSheetCacheService userSpaceOpenedSheetCacheService;
@@ -134,7 +131,10 @@ public class SpaceController {
     private SocialServiceFacade socialServiceFacade;
 
     @Resource
-    private EntitlementServiceFacade entitlementServiceFacade;
+    private ILabsApplicantService iLabsApplicantService;
+
+    @Resource
+    private IStaticsService iStaticsService;
 
     /**
      * Get space capacity info.
@@ -200,23 +200,22 @@ public class SpaceController {
      */
     @PostResource(path = "/space/create", requiredPermission = false)
     @Operation(summary = "Create Space")
-    public ResponseData<CreateSpaceResultVo> create(@RequestBody @Valid SpaceOpRo spaceOpRo,
-                                                    HttpServletRequest request) {
+    public ResponseData<CreateSpaceResultVo> create(@RequestBody @Valid SpaceOpRo spaceOpRo) {
         Long userId = SessionContext.getUserId();
         UserEntity user = iUserService.getById(userId);
         Space space = iSpaceService.createSpace(user, spaceOpRo.getName());
-        Map<String, String> externalProperty = HttpServletUtil.getParameterAsMap(request, true);
-        entitlementServiceFacade.createSubscription(space.getId(), userId, externalProperty);
         // release space audit events
         ClientOriginInfo clientOriginInfo = InformationUtil
             .getClientOriginInfoInCurrentHttpContext(true, false);
-        AuditSpaceArg arg =
-            AuditSpaceArg.builder().action(AuditSpaceAction.CREATE_SPACE).userId(userId)
-                .spaceId(space.getId())
-                .requestIp(clientOriginInfo.getIp())
-                .requestUserAgent(clientOriginInfo.getUserAgent())
-                .info(JSONUtil.createObj().set(AuditConstants.SPACE_NAME, spaceOpRo.getName()))
-                .build();
+        AuditSpaceArg arg = AuditSpaceArg.builder()
+            .action(AuditSpaceAction.CREATE_SPACE)
+            .userId(userId)
+            .spaceId(space.getId())
+            .requestIp(clientOriginInfo.getIp())
+            .requestUserAgent(clientOriginInfo.getUserAgent())
+            .info(JSONUtil.createObj()
+                .set(AuditConstants.SPACE_NAME, spaceOpRo.getName()))
+            .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         // Cache the space where the user's last action was active
         TaskManager.me().execute(() -> userActiveSpaceCacheService.save(userId, space.getId()));
@@ -276,11 +275,13 @@ public class SpaceController {
         // release space audit events
         ClientOriginInfo clientOriginInfo = InformationUtil
             .getClientOriginInfoInCurrentHttpContext(true, false);
-        AuditSpaceArg arg =
-            AuditSpaceArg.builder().action(AuditSpaceAction.DELETE_SPACE).userId(userId)
-                .requestIp(clientOriginInfo.getIp())
-                .requestUserAgent(clientOriginInfo.getUserAgent())
-                .spaceId(spaceId).build();
+        AuditSpaceArg arg = AuditSpaceArg.builder()
+            .action(AuditSpaceAction.DELETE_SPACE)
+            .userId(userId)
+            .requestIp(clientOriginInfo.getIp())
+            .requestUserAgent(clientOriginInfo.getUserAgent())
+            .spaceId(spaceId)
+            .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
     }
@@ -295,19 +296,21 @@ public class SpaceController {
         // This operation cannot be performed when binding to a third party
         socialServiceFacade.checkCanOperateSpaceUpdate(spaceId, SpaceUpdateOperate.DELETE_SPACE);
         // Check whether the space is in the pre-deleted state
-        int count = SqlTool.retCount(spaceMapper.countBySpaceId(spaceId, true));
-        ExceptionUtil.isTrue(count > 0, SpaceException.NOT_DELETED);
+        SpaceEntity space = iSpaceService.getBySpaceId(spaceId);
+        ExceptionUtil.isNotNull(space.getPreDeletionTime(), SpaceException.NOT_DELETED);
         // delete the space
         Long userId = SessionContext.getUserId();
         iSpaceService.deleteSpace(userId, Collections.singletonList(spaceId));
         // release space audit events
         ClientOriginInfo clientOriginInfo = InformationUtil
             .getClientOriginInfoInCurrentHttpContext(true, false);
-        AuditSpaceArg arg =
-            AuditSpaceArg.builder().action(AuditSpaceAction.ACTUAL_DELETE_SPACE).userId(userId)
-                .requestIp(clientOriginInfo.getIp())
-                .requestUserAgent(clientOriginInfo.getUserAgent())
-                .spaceId(spaceId).build();
+        AuditSpaceArg arg = AuditSpaceArg.builder()
+            .action(AuditSpaceAction.ACTUAL_DELETE_SPACE)
+            .userId(userId)
+            .requestIp(clientOriginInfo.getIp())
+            .requestUserAgent(clientOriginInfo.getUserAgent())
+            .spaceId(spaceId)
+            .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
     }
@@ -333,11 +336,13 @@ public class SpaceController {
         // release space audit events
         ClientOriginInfo clientOriginInfo = InformationUtil
             .getClientOriginInfoInCurrentHttpContext(true, false);
-        AuditSpaceArg arg =
-            AuditSpaceArg.builder().action(AuditSpaceAction.CANCEL_DELETE_SPACE).userId(userId)
-                .requestIp(clientOriginInfo.getIp())
-                .requestUserAgent(clientOriginInfo.getUserAgent())
-                .spaceId(spaceId).build();
+        AuditSpaceArg arg = AuditSpaceArg.builder()
+            .action(AuditSpaceAction.CANCEL_DELETE_SPACE)
+            .userId(userId)
+            .requestIp(clientOriginInfo.getIp())
+            .requestUserAgent(clientOriginInfo.getUserAgent())
+            .spaceId(spaceId)
+            .build();
         SpringContextHolder.getApplicationContext().publishEvent(new AuditSpaceEvent(this, arg));
         return ResponseData.success();
     }
@@ -374,26 +379,24 @@ public class SpaceController {
     @Parameter(name = "spaceId", description = "space id", required = true,
         schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
     public ResponseData<SpaceInfoVO> info(@PathVariable("spaceId") String spaceId) {
-        SpaceInfoVO vo = iSpaceService.getSpaceInfo(spaceId);
-        return ResponseData.success(vo);
-    }
+        SpaceInfoVO spaceInfo = iSpaceService.getSpaceInfo(spaceId);
+        SpaceGlobalFeature spaceGlobalFeature = iSpaceService.getSpaceGlobalFeature(spaceId);
+        spaceInfo.setFeature(spaceGlobalFeature);
 
-    /**
-     * Remove hot point in space.
-     */
-    @Deprecated
-    @PostResource(path = "/space/remove/{spaceId}", requiredPermission = false)
-    @Operation(summary = "Remove hot point in space",
-        description = "Scenario: Remove the red dot in the inactive space")
-    @Parameter(name = "spaceId", description = "space id", required = true,
-        schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo")
-    public ResponseData<Void> remove(@PathVariable("spaceId") String spaceId) {
+
+        // User's resource information
         Long userId = SessionContext.getUserId();
-        // don't use LoginContext.me()
-        Long memberId = userSpaceCacheService.getMemberId(userId, spaceId);
-        // remove hot point
-        memberMapper.updateIsPointById(memberId);
-        return ResponseData.success();
+        UserSpaceVo userSpaceVo = iSpaceService.getUserSpaceResource(userId, spaceId);
+        spaceInfo.setUserResource(userSpaceVo);
+
+        // get the enabled experimental functions
+        List<String> applicants = new ArrayList<>();
+        applicants.add(spaceId);
+        applicants.add(Long.toString(userId));
+        LabsFeatureVo labsFeatureVo = iLabsApplicantService.getUserCurrentFeatureApplicants(applicants);
+        spaceInfo.setLabsKeys(labsFeatureVo.getKeys());
+
+        return ResponseData.success(spaceInfo);
     }
 
     /**
@@ -406,45 +409,6 @@ public class SpaceController {
     public ResponseData<Void> switchSpace(@PathVariable("spaceId") String spaceId) {
         Long userId = SessionContext.getUserId();
         iSpaceService.switchSpace(userId, spaceId);
-        return ResponseData.success();
-    }
-
-    /**
-     * Update workbench setting.
-     */
-    @Deprecated
-    @PostResource(path = "/space/updateWorkbenchSetting", tags = "MANAGE_WORKBENCH_SETTING")
-    @Operation(summary = "Update workbench setting")
-    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
-        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW")
-    public ResponseData<Void> updateWorkbenchSetting(
-        @RequestBody @Valid SpaceWorkbenchSettingRo data) {
-        Long userId = SessionContext.getUserId();
-        String spaceId = LoginContext.me().getSpaceId();
-        SpaceGlobalFeature feature = new SpaceGlobalFeature();
-        BeanUtil.copyProperties(data, feature);
-        iSpaceService.switchSpacePros(userId, spaceId, feature);
-        return ResponseData.success();
-    }
-
-    /**
-     * Update member setting.
-     */
-    @Deprecated
-    @PostResource(path = "/space/updateMemberSetting", tags = "MANAGE_MEMBER_SETTING")
-    @Operation(summary = "Update member setting")
-    @Parameter(name = ParamsConstants.SPACE_ID, description = "space id", required = true,
-        schema = @Schema(type = "string"), in = ParameterIn.HEADER, example = "spczJrh2i3tLW")
-    public ResponseData<Void> updateMemberSetting(@RequestBody @Valid SpaceMemberSettingRo data) {
-        Long userId = SessionContext.getUserId();
-        String spaceId = LoginContext.me().getSpaceId();
-        if (data.getInvitable() != null || data.getJoinable() != null) {
-            // This operation cannot be performed when binding to a third party
-            iSpaceService.checkCanOperateSpaceUpdate(spaceId);
-        }
-        SpaceGlobalFeature feature = new SpaceGlobalFeature();
-        BeanUtil.copyProperties(data, feature);
-        iSpaceService.switchSpacePros(userId, spaceId, feature);
         return ResponseData.success();
     }
 
@@ -495,5 +459,17 @@ public class SpaceController {
         CreditUsages creditUsages =
             iSpaceService.getCreditUsagesChart(spaceId, timeDimensionOfChart);
         return ResponseData.success(creditUsages);
+    }
+
+    @GetResource(path = "/space/{spaceId}/node/statistics", requiredPermission = false)
+    @Operation(summary = "Gets statistics for node")
+    @Parameters({
+        @Parameter(name = "spaceId", description = "space id", required = true, schema = @Schema(type = "string"), in = ParameterIn.PATH, example = "spc8mXUeiXyVo"),
+        @Parameter(name = PAGE_PARAM, description = "page's parameter", required = true, schema = @Schema(type = "string"), in = ParameterIn.QUERY, example = PAGE_SIMPLE_EXAMPLE)
+    })
+    public ResponseData<PageInfo<NodeStatisticsVo>> getNodeStatistics(
+        @PathVariable("spaceId") String spaceId,
+        @PageObjectParam Page<Void> page) {
+        return ResponseData.success(iStaticsService.getNodeStatistics(spaceId, page));
     }
 }

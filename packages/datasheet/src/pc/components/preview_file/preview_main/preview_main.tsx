@@ -20,13 +20,13 @@ import { useKeyPress } from 'ahooks';
 import mime from 'mime-types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { stopPropagation, useThemeColors } from '@apitable/components';
 import { Api, IAttachmentValue, isImage, IUserInfo, IReduxState } from '@apitable/core';
 import { RotateOutlined } from '@apitable/icons';
 import { Message } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { DOC_MIME_TYPE, getDownloadSrc, isSupportImage, KeyCode } from 'pc/utils';
 import NextFilled from 'static/icon/common/next_filled.svg';
 import PreviousFilled from 'static/icon/common/previous_filled.svg';
@@ -36,9 +36,9 @@ import { ITransFormInfo } from '../preview_file.interface';
 import useFrameSetState from '../preview_type/preview_image/hooks/use_frame_state';
 import { ToolBar } from '../tool_bar';
 import { initTransformInfo, initTranslatePosition, MAX_SCALE, MIN_SCALE } from './constant';
-import styles from './style.module.less';
 import { Swiper } from './swiper';
 import { isFocusingInput } from './util';
+import styles from './style.module.less';
 
 interface IPreviewMain {
   activeIndex: number;
@@ -72,7 +72,7 @@ export const PreviewMain: React.FC<React.PropsWithChildren<IPreviewMain>> = (pro
   } = props;
   const colors = useThemeColors();
   const { screenIsAtMost, clientWidth: _clientWidth } = useResponsive();
-  const rightPaneWidth = useSelector((state: IReduxState) => state.rightPane.width);
+  const rightPaneWidth = useAppSelector((state: IReduxState) => state.rightPane.width);
   const isMobile = screenIsAtMost(ScreenSize.md);
   const clientWidth = typeof rightPaneWidth == 'number' && !isFullScreen ? _clientWidth - rightPaneWidth : _clientWidth;
 
@@ -110,7 +110,7 @@ export const PreviewMain: React.FC<React.PropsWithChildren<IPreviewMain>> = (pro
     setOfficePreviewUrl(null);
     fetchPreviewUrl();
     // eslint-disable-next-line
-  }, [activeIndex]);
+  }, [activeIndex,officePreviewEnable]);
 
   const handlePrev = useCallback(
     (e: any) => {

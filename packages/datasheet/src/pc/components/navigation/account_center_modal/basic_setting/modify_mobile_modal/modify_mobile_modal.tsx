@@ -21,11 +21,15 @@ import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { StoreActions, Api, ConfigConstant, Strings, t, isPhoneNumber, StatusCode } from '@apitable/core';
-import { Message, NormalModal, WithTipWrapper, IdentifyingCodeInput, PhoneInput } from 'pc/components/common';
-import { useSetState } from 'pc/hooks';
+import { IdentifyingCodeInput } from 'pc/components/common/input/identifying_code_input/identifying_code_input';
+import { PhoneInput } from 'pc/components/common/input/phone_input/phone_input';
+import { WithTipWrapper } from 'pc/components/common/input/with_tip_wrapper/with_tip_wrapper';
+import { Message } from 'pc/components/common/message/message';
+import { NormalModal } from 'pc/components/common/modal/normal_modal/normal_modal';
 import { usePlatform } from 'pc/hooks/use_platform';
-import styles from './style.module.less';
+import { useSetState } from 'pc/hooks/use_set_state';
 import { Verify } from './verify';
+import styles from './style.module.less';
 
 export interface IModifyMobileModalProps {
   setMobileModal: React.Dispatch<React.SetStateAction<boolean>>;

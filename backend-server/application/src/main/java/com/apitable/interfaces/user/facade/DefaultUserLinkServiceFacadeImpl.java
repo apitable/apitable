@@ -22,6 +22,9 @@ import com.apitable.interfaces.user.model.UserLinkRequest;
 import com.apitable.shared.cache.bean.SocialAuthInfo;
 import com.apitable.shared.cache.bean.UserLinkInfo;
 
+/**
+ * default user link service facade implementation.
+ */
 public class DefaultUserLinkServiceFacadeImpl implements UserLinkServiceFacade {
 
     @Override

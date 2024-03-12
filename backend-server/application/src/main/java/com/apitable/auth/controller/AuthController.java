@@ -44,14 +44,13 @@ import com.apitable.shared.util.information.ClientOriginInfo;
 import com.apitable.shared.util.information.InformationUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -61,9 +60,8 @@ import org.springframework.web.bind.annotation.RestController;
  * Authorization interface.
  */
 @RestController
-@Tag(name = "Authorization related interface")
-@ApiResource(path = "/")
-@Slf4j
+@Tag(name = "Authorization")
+@ApiResource
 public class AuthController {
 
     private static final String AUTH_DESC =
@@ -103,7 +101,8 @@ public class AuthController {
         if (BooleanUtil.isFalse(skipRegisterValidate)) {
             return ResponseData.error("Validate failure");
         }
-        Long userId = iAuthService.register(data.getUsername(), data.getCredential());
+        Long userId =
+            iAuthService.register(data.getUsername(), data.getCredential(), data.getLang());
         SessionContext.setUserId(userId);
         return ResponseData.success();
     }
@@ -115,10 +114,10 @@ public class AuthController {
      * @param request request info
      * @return {@link ResponseData}
      */
-    @PostResource(name = "Login", path = "/signIn", requiredLogin = false)
+    @PostResource(path = "/signIn", requiredLogin = false)
     @Operation(summary = "login", description = AUTH_DESC)
     public ResponseData<LoginResultVO> login(@RequestBody @Valid final LoginRo data,
-                                    final HttpServletRequest request) {
+                                             final HttpServletRequest request) {
         ClientOriginInfo origin = InformationUtil.getClientOriginInfo(request,
             false, true);
         // Login Type Routing
@@ -197,9 +196,8 @@ public class AuthController {
      * @param response HttpServletResponse
      * @return {@link LogoutVO}
      */
-    @PostResource(name = "sign out", path = "/signOut", requiredPermission = false, method = {
-        RequestMethod.GET,
-        RequestMethod.POST}, requiredLogin = false)
+    @PostResource(path = "/signOut", requiredLogin = false,
+        method = {RequestMethod.GET, RequestMethod.POST})
     @Operation(summary = "sign out", description = "log out of current user")
     public ResponseData<LogoutVO> logout(final HttpServletRequest request,
                                          final HttpServletResponse response) {

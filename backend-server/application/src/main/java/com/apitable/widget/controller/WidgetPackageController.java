@@ -27,7 +27,6 @@ import com.apitable.shared.component.scanner.annotation.GetResource;
 import com.apitable.shared.component.scanner.annotation.PostResource;
 import com.apitable.shared.context.SessionContext;
 import com.apitable.shared.util.page.PageObjectParam;
-import com.apitable.widget.ro.WidgetPackageAuthRo;
 import com.apitable.widget.ro.WidgetPackageCreateRo;
 import com.apitable.widget.ro.WidgetPackageReleaseV2Ro;
 import com.apitable.widget.ro.WidgetPackageRollbackRo;
@@ -45,9 +44,9 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import java.util.List;
-import javax.annotation.Resource;
-import javax.validation.Valid;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,20 +63,6 @@ public class WidgetPackageController {
 
     @Resource
     private IWidgetPackageService iWidgetPackageService;
-
-    /**
-     * Auth widget.
-     */
-    @PostResource(path = "/auth", requiredPermission = false)
-    @Operation(summary = "Auth widget",
-        description = "widget-cli widget development authentication verification")
-    @Parameter(name = HttpHeaders.AUTHORIZATION, in = ParameterIn.HEADER,
-        description = "developer token", required = true,
-        schema = @Schema(type = "string"), example = "Bearer uskaoeiu")
-    public ResponseData<Void> widgetAuth(@RequestBody @Valid WidgetPackageAuthRo widget) {
-        // There is a unified interceptor check in the upper layer.
-        return ResponseData.success();
-    }
 
     /**
      * Create widget.
@@ -109,7 +94,7 @@ public class WidgetPackageController {
         @Parameter(name = PAGE_PARAM, in = ParameterIn.QUERY, description = "page",
             schema = @Schema(type = "string"), example = PAGE_SIMPLE_EXAMPLE)
     })
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public ResponseData<List<WidgetReleaseListVo>> releaseListWidget(
         @PathVariable(name = "packageId") String packageId,
         @PageObjectParam(required = false) Page page) {

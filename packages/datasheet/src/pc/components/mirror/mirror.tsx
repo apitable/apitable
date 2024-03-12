@@ -17,7 +17,6 @@
  */
 
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { IMirror, ResourceType } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { DataSheetPane } from 'pc/components/datasheet_pane';
@@ -28,11 +27,14 @@ import { SuspensionPanel } from 'pc/components/suspension_panel';
 import { CollaboratorStatus } from 'pc/components/tab_bar/collaboration_status';
 import { View } from 'pc/components/view';
 import { useNetwork } from 'pc/hooks/use_network';
+
+import { useAppSelector } from 'pc/store/react-redux';
+import { JobTaskProvider } from '../editors/button_editor/job_task';
 import styles from './style.module.less';
 
 export const Mirror: React.FC<React.PropsWithChildren<{ mirror: IMirror }>> = ({ mirror }) => {
   const { status } = useNetwork(true, mirror!.id, ResourceType.Mirror);
-  const { shareId, datasheetId } = useSelector((state) => state.pageParams);
+  const { shareId, datasheetId } = useAppSelector((state) => state.pageParams);
 
   return (
     <DataSheetPane
@@ -53,7 +55,10 @@ export const Mirror: React.FC<React.PropsWithChildren<{ mirror: IMirror }>> = ({
               <MobileToolBar hideToolBar />
             </ComponentDisplay>
           </div>
-          <View />
+
+          <JobTaskProvider>
+            <View />
+          </JobTaskProvider>
         </div>
       }
     />

@@ -23,7 +23,7 @@ import Image from 'next/image';
 import * as React from 'react';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { ContextMenuTrigger } from 'react-contextmenu';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, ContextMenu, Skeleton, useContextMenu, useThemeColors } from '@apitable/components';
 import {
   AutoTestID,
@@ -53,6 +53,7 @@ import { Router } from 'pc/components/route_manager/router';
 import { Deserializer, SlateEditor } from 'pc/components/slate_editor';
 import { sanitized } from 'pc/components/tab_bar/description_modal';
 import { useCatalogTreeRequest, usePrevious, useRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, setStorage, StorageName } from 'pc/utils/storage';
@@ -64,9 +65,11 @@ import { MobileBar } from '../mobile_bar';
 import { NoPermission } from '../no_permission';
 import { DescriptionModal } from './description_modal';
 import { DingTalkDa } from './dingtalk_da';
-import styles from './style.module.less';
 // @ts-ignore
-import { inSocialApp, WeixinShareWrapper } from 'enterprise';
+import { inSocialApp } from 'enterprise/home/social_platform/utils';
+// @ts-ignore
+import { WeixinShareWrapper } from 'enterprise/wechat/weixin_share_wrapper/weixin_share_wrapper';
+import styles from './style.module.less';
 
 const _ContextMenuTrigger: any = ContextMenuTrigger;
 
@@ -106,9 +109,9 @@ export const FolderShowcase: FC<React.PropsWithChildren<IFolderShowcaseProps>> =
   const [shareNodeId, setShareNodeId] = useState('');
   const moreRef = useRef<any>();
   const dispatch = useDispatch();
-  const { folderId: _folderId, templateId, shareId, categoryId } = useSelector((state: IReduxState) => state.pageParams);
-  const spaceId = useSelector((state) => state.space.activeId);
-  const { treeNodesMap, socketData } = useSelector((state: IReduxState) => state.catalogTree);
+  const { folderId: _folderId, templateId, shareId, categoryId } = useAppSelector((state: IReduxState) => state.pageParams);
+  const spaceId = useAppSelector((state) => state.space.activeId);
+  const { treeNodesMap, socketData } = useAppSelector((state: IReduxState) => state.catalogTree);
   const { getNodeShowcaseReq, updateNodeReq, getChildNodeListReq } = useCatalogTreeRequest();
   const { run: updateNode } = useRequest(updateNodeReq, { manual: true });
   const { run: getChildNodeList, loading: getChildNodeListLoading } = useRequest(getChildNodeListReq, { manual: true });

@@ -41,7 +41,7 @@ public class WidgetMapperTest extends AbstractMyBatisMapperTest {
     @Sql({"/sql/widget-data.sql", "/sql/widget-package-data.sql",
         "/sql/datasheet-widget-data.sql", "/sql/node-data.sql"})
     void testSelectInfoBySpaceIdAndNodeType() {
-        List<WidgetInfo> entity = widgetMapper.selectInfoBySpaceIdAndNodeType("spc41", 0);
+        List<WidgetInfo> entity = widgetMapper.selectInfoBySpaceIdAndNodeType("spc41", 0, null);
         assertThat(entity).isNotNull();
     }
 

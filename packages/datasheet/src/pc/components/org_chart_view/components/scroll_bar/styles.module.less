@@ -1,4 +1,4 @@
-@import "~pc/styles/lib_var.less";
+@import "~pc/styles/lib_mixins.less";
 
 
 .scrollBarWrap, .scrollBarVWrap {
@@ -6,14 +6,7 @@
   position: absolute;
   cursor: pointer;
 
-  &::-webkit-scrollbar-thumb {
-    background-clip: padding-box;
-    border-radius: 8px;
-    min-height: 36px;
-    
-    // FIXME:THEME
-    background-color: rgba(var(--fc3-rgb), 50%);
-  }
+  .lx-scroll-bar(true);
 }
 
 .scrollBarWrap {
@@ -23,10 +16,6 @@
   z-index: var(--scrollBar);
   overflow-x: scroll;
   overflow-y: hidden;
-
-  &::-webkit-scrollbar {
-    height: 15px;
-  }
 }
 
 .scrollBarVWrap {
@@ -36,8 +25,4 @@
   z-index: var(--scrollBar);
   overflow-x: hidden;
   overflow-y: scroll;
-
-  &::-webkit-scrollbar {
-    width: 15px;
-  }
 }

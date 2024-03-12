@@ -15,12 +15,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package com.apitable.internal.vo;
 
-
-import com.apitable.shared.support.serializer.NullBooleanSerializer;
-import com.apitable.shared.support.serializer.NullNumberSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
@@ -31,6 +28,6 @@ import lombok.Data;
 @Schema(description = "space subscription plan resource view")
 public class InternalSpaceApiRateLimitVo {
 
-  @Schema(description = "api request numbers per seconds", example = "false")
-  private Long qps;
+    @Schema(description = "api request numbers per seconds", example = "false")
+    private Long qps;
 }

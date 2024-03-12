@@ -52,18 +52,20 @@ export const EditableText: FC<
     <StyledBox
       className={className}
       onClick={() => {
-        if(!editable) {
+        if (!editable) {
           return;
         }
         setEditing(true);
-      }
-      }
+      }}
       onDoubleClick={() => {
-        if(!editable) {
+        if (!editable) {
           return;
         }
         setEditing(true);
-      }} display={'inline-flex'} alignItems={'center'}>
+      }}
+      display={'inline-flex'}
+      alignItems={'center'}
+    >
       <EllipsisText>
         <Typography variant="h6" {...rest}>
           {value || placeholder}

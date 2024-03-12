@@ -19,14 +19,14 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { FC, useContext, useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Typography } from '@apitable/components';
-import { ConfigConstant, FOLDER_SHOWCASE_ID, Strings, t } from '@apitable/core';
+import { ConfigConstant, FOLDER_SHOWCASE_ID, IReduxState, Strings, t } from '@apitable/core';
 import { NodeIcon } from 'pc/components/catalog/tree/node_icon';
-import { ShareContext } from 'pc/components/share';
+import { ShareContext } from 'pc/components/share/share';
 import { DescriptionModal } from 'pc/components/tab_bar/description_modal';
 import { useCatalogTreeRequest, useRequest } from 'pc/hooks';
 import { useCatalog } from 'pc/hooks/use_catalog';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getPermission, KeyCode } from 'pc/utils';
 import { isIframe } from 'pc/utils/env';
 import { NodeFavoriteStatus } from '../node_favorite_status';
@@ -46,6 +46,7 @@ export interface INodeInfoBarProps {
     nameEditable?: boolean;
     iconEditable?: boolean;
     favoriteEnabled?: boolean;
+    subscribeEnabled?: boolean;
     role?: string;
     iconSize?: number;
   };
@@ -60,9 +61,9 @@ export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ da
     type,
     name,
     role = ConfigConstant.Role.Administrator,
-    favoriteEnabled = false,
     nameEditable = false,
     iconEditable = false,
+    subscribeEnabled = false,
     iconSize,
   } = data;
   const [newName, setNewName] = useState(name);
@@ -74,8 +75,10 @@ export const NodeInfoBar: FC<React.PropsWithChildren<INodeInfoBarProps>> = ({ da
   const { renameNodeReq } = useCatalogTreeRequest();
   const { run: renameNode } = useRequest(renameNodeReq, { manual: true });
   const isDatasheet = type === ConfigConstant.NodeType.DATASHEET;
-  const embedId = useSelector((state) => state.pageParams.embedId);
-  const _showDescription = isDatasheet;
+  const embedId = useAppSelector((state) => state.pageParams.embedId);
+  const _showDescription = isDatasheet || subscribeEnabled;
+  const favoriteTreeNodeIds = useAppSelector((state: IReduxState) => state.catalogTree.favoriteTreeNodeIds);
+  const favoriteEnabled = data.favoriteEnabled || favoriteTreeNodeIds.includes(nodeId);
 
   useEffect(() => {
     setNewName(name);

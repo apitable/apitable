@@ -51,7 +51,7 @@ export const UrlDiscern: React.FC<React.PropsWithChildren<IUrlDiscernProp>> = (p
   };
 
   return (
-    <div className={styles.readOnlyTextCell}>
+    <>
       {getValidValue(value)?.map((segment, index) => {
         switch (segment.type) {
           case SegmentType.Url:
@@ -69,6 +69,6 @@ export const UrlDiscern: React.FC<React.PropsWithChildren<IUrlDiscernProp>> = (p
             return <span key={`${segment.text}-${index}`}>{segment.text}</span>;
         }
       })}
-    </div>
+    </>
   );
 };

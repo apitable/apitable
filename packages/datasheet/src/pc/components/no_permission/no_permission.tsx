@@ -19,11 +19,12 @@
 import { useUnmount, useUpdateEffect } from 'ahooks';
 import Image from 'next/image';
 import { FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Button, ThemeName } from '@apitable/components';
 import { Api, IReduxState, integrateCdnHost, Navigation, StoreActions, Strings, t } from '@apitable/core';
 import { Router } from 'pc/components/route_manager/router';
 import { useSideBarVisible } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import NoPermissionPng from 'static/icon/common/common_img_noaccess.png';
 import restrictedAccessDark from 'static/icon/datasheet/restricted_access_dark.png';
@@ -31,11 +32,9 @@ import restrictedAccessLight from 'static/icon/datasheet/restricted_access_light
 import { ComponentDisplay, ScreenSize } from '../common/component_display';
 import { MobileBar } from '../mobile_bar';
 import styles from './style.module.less';
-// // @ts-ignore
-// import { ServiceQrCode } from 'enterprise';
 
 export const NoPermission: FC<React.PropsWithChildren<{ desc?: string }>> = ({ desc }) => {
-  const pageParams = useSelector((state: IReduxState) => state.pageParams);
+  const pageParams = useAppSelector((state: IReduxState) => state.pageParams);
   const dispatch = useDispatch();
   const { setSideBarVisible } = useSideBarVisible();
 
@@ -53,7 +52,7 @@ export const NoPermission: FC<React.PropsWithChildren<{ desc?: string }>> = ({ d
   const env = getEnvVariables();
   const qrcodeVisible = !(env.IS_SELFHOST || env.IS_APITABLE);
 
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const RestrictedAccess = themeName === ThemeName.Light ? restrictedAccessLight : restrictedAccessDark;
 
   return (

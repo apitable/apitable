@@ -18,26 +18,24 @@
 
 package com.apitable.shared.component.notification.observer;
 
-
-import java.util.List;
-
-import javax.annotation.Resource;
-
 import com.apitable.player.ro.NotificationCreateRo;
 import com.apitable.player.service.IPlayerNotificationService;
 import com.apitable.shared.sysconfig.notification.NotificationConfigLoader;
 import com.apitable.shared.sysconfig.notification.NotificationTemplate;
-
+import jakarta.annotation.Resource;
+import java.util.List;
 import org.springframework.stereotype.Component;
 
 /**
  * <p>
- * self notify observer
+ * self notify observer.
  * </p>
+ *
  * @author zoe zheng
  */
 @Component
-public class MessagingCenterNotifyObserver extends AbstractNotifyObserver<NotificationTemplate, String> {
+public class MessagingCenterNotifyObserver
+    extends AbstractNotifyObserver<NotificationTemplate, String> {
 
     @Resource
     private IPlayerNotificationService iPlayerNotificationService;

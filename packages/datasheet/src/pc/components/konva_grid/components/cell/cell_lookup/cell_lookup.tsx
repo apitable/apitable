@@ -16,16 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useContext, useMemo } from 'react';
 import * as React from 'react';
+import { useContext, useMemo } from 'react';
 import {
   BasicValueType,
   Field,
   FieldType,
   handleNullArray,
   ILookUpField,
-  LookUpField,
   LOOKUP_VALUE_FUNC_SET,
+  LookUpField,
   ORIGIN_VALUES_FUNC_SET,
   RollUpFuncType,
 } from '@apitable/core';
@@ -109,6 +109,8 @@ export const CellLookUp: React.FC<React.PropsWithChildren<ICellProps>> = (props)
     case FieldType.CreatedTime:
     case FieldType.LastModifiedTime:
     case FieldType.Cascader:
+    case FieldType.Button:
+    case FieldType.WorkDoc:
       return <CellText {...commonProps} />;
     case FieldType.NotSupport:
     default:

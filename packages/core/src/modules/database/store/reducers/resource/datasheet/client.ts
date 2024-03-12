@@ -19,7 +19,7 @@
 import produce from 'immer';
 import { omit } from 'lodash';
 import { combineReducers } from 'redux';
-import { ISetCloseSyncViewIdAction, ISetGridViewHoverFieldIdAction } from '../../../../../../exports/store/actions';
+import { ISetCloseSyncViewIdAction, ISetGridViewHoverFieldIdAction } from 'modules/database/store/actions/resource';
 import {
   IActiveRowInfo, ICalendarViewStatus, IDatasheetClientState, IGanttViewStatus, IKanbanViewStatus, ILoadingRecord, ILoadingRecordAction,
   IOrgChartViewStatus, IPatchViewDerivation, ISetViewDerivation, IWidgetPanelStatus, IDeleteViewDerivation
@@ -32,7 +32,7 @@ import {
   SET_ROBOT_PANEL_STATUS, SET_SEARCH_KEYWORD, SET_SEARCH_RESULT_CURSOR_INDEX, SET_WIDGET_PANEL_LOADING, SWITCH_ACTIVE_PANEL, TOGGLE_CALENDAR_GRID,
   TOGGLE_CALENDAR_GUIDE_STATUS, TOGGLE_CALENDAR_SETTING_PANEL, TOGGLE_GANTT_GRID, TOGGLE_GANTT_SETTING_PANEL, TOGGLE_KANBAN_GROUP_SETTING_VISIBLE,
   TOGGLE_ORG_CHART_GRID, TOGGLE_ORG_CHART_GUIDE_STATUS, TOGGLE_ORG_CHART_SETTING_PANEL, TOGGLE_TIME_MACHINE_PANEL, TOGGLE_WIDGET_PANEL,
-  DELETE_VIEW_DERIVATION, PATCH_VIEW_DERIVATION, SET_VIEW_DERIVATION
+  DELETE_VIEW_DERIVATION, PATCH_VIEW_DERIVATION, SET_VIEW_DERIVATION, SET_COPILOT_PANEL_STATUS
 } from '../../../../../shared/store/action_constants';
 import { DateUnitType, WhyRecordMoveType } from '../../../../../shared/store/constants';
 import { collaborators } from './collaborators';
@@ -48,7 +48,7 @@ const defaultActiveRowInfo: IActiveRowInfo = {
     visibleRowIndex: 0,
     isInit: true,
   },
-  recordSnapshot: { meta: { fieldMap: {}}, recordMap: {}},
+  recordSnapshot: { meta: { fieldMap: {} }, recordMap: {} },
 };
 
 const MIN_WIDGET_PANEL_WIDTH = 320;
@@ -359,6 +359,12 @@ export const client = combineReducers<IDatasheetClientState>({
         return action.payload;
       }
       return !state;
+    }
+    return state;
+  },
+  isCopilotPanelOpen(state = false, action) {
+    if (action.type === SET_COPILOT_PANEL_STATUS) {
+      return action.payload;
     }
     return state;
   },

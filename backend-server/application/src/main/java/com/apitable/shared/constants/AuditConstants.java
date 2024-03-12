@@ -20,7 +20,7 @@ package com.apitable.shared.constants;
 
 /**
  * <p>
- * audit constants
+ * audit constants.
  * </p>
  *
  * @author Chambers

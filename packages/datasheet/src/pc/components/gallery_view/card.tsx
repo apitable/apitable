@@ -22,7 +22,7 @@ import { XYCoord } from 'dnd-core';
 import { CSSProperties, useEffect } from 'react';
 import * as React from 'react';
 import { DragSourceMonitor, DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
-import { useSelector, shallowEqual, useDispatch } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { areEqual } from 'react-window';
 import { useContextMenu, TextButton, useThemeColors } from '@apitable/components';
 import { DropDirectionType, Selectors, Strings, t, StoreActions, IViewRow } from '@apitable/core';
@@ -30,14 +30,15 @@ import { AddOutlined, TriangleDownFilled } from '@apitable/icons';
 import { ScreenSize } from 'pc/components/common/component_display';
 import { GRID_RECORD_MENU } from 'pc/components/multi_grid/context_menu/record_menu';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getIsColNameVisible } from 'pc/utils/datasheet';
 import { StorageName, setStorage } from 'pc/utils/storage/storage';
 import { RecordCard } from '../record_card/card';
 import { GalleryGroupItemType, ItemTypes } from './constant';
 import { GroupCardTitle } from './group_card_title';
 import { IDragItem } from './interface';
-import styles from './style.module.less';
 import { getAddValue, getGroupTitlePaddingTip } from './utils';
+import styles from './style.module.less';
 
 interface IGalleryItemCardBase {
   columnIndex: number;
@@ -69,7 +70,7 @@ const GalleryItemCardBase = ({ columnIndex, rowIndex, style, data }: IGalleryIte
     _visibleRecords,
   } = data;
 
-  const { datasheetId, templateId, editable, viewId, groupingCollapseIds, isSearching } = useSelector((state) => {
+  const { datasheetId, templateId, editable, viewId, groupingCollapseIds, isSearching } = useAppSelector((state) => {
     const datasheet = Selectors.getDatasheet(state);
     return {
       datasheetId: Selectors.getActiveDatasheetId(state),

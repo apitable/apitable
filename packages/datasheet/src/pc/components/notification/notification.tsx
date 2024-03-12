@@ -21,13 +21,14 @@ import { Tabs } from 'antd';
 import QueueAnim from 'rc-queue-anim';
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { Button, TextButton } from '@apitable/components';
 import { Api, IReduxState, NOTIFICATION_ID, StoreActions, Strings, t } from '@apitable/core';
 import { NotificationCheckOutlined } from '@apitable/icons';
 import { Loading } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { Card } from './card';
 import { NoData } from './no_data';
 import styles from './style.module.less';
@@ -48,7 +49,7 @@ type ITabKeyType = keyof ITabKey;
 const DOM_WRAP_CLS = styles.notification;
 
 export const Notification: FC<React.PropsWithChildren<any>> = () => {
-  const { unReadCount, readCount, unReadNoticeList, readNoticeList, newNoticeListFromWs } = useSelector(
+  const { unReadCount, readCount, unReadNoticeList, readNoticeList, newNoticeListFromWs } = useAppSelector(
     (state: IReduxState) => ({
       unReadCount: state.notification.unReadCount,
       readCount: state.notification.readCount,
@@ -213,10 +214,9 @@ export const Notification: FC<React.PropsWithChildren<any>> = () => {
                   <div className={styles.cardWrapper}>
                     <QueueAnim ease="easeInQuint" duration={500} onEnd={(e) => noticeListRended(e, TabKey.Unprocessed)}>
                       {unReadNoticeList.map((item) => {
-                        if(['subscribed_record_archived', 'subscribed_record_unarchived'].includes(item.templateId)) return null;
-                        return (
-                          <Card key={item.id} data={item} />
-                        );})}
+                        if (['subscribed_record_archived', 'subscribed_record_unarchived'].includes(item.templateId)) return null;
+                        return <Card key={item.id} data={item} />;
+                      })}
                     </QueueAnim>
                   </div>
                 )}

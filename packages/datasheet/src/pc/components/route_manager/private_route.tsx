@@ -18,28 +18,20 @@
 
 import { useRouter } from 'next/router';
 import { FC, useEffect } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { Api, Navigation, Selectors, StatusCode, StoreActions } from '@apitable/core';
+import { shallowEqual } from 'react-redux';
+import { Navigation, Selectors, StatusCode } from '@apitable/core';
 import { NoAccess } from 'pc/components/invalid_page/no_access';
 import { Router } from 'pc/components/route_manager/router';
-import { usePageParams, useRequest } from 'pc/hooks';
+import { usePageParams } from 'pc/hooks';
 import { resourceService } from 'pc/resource_service';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 
 export const PrivateRoute: FC<React.PropsWithChildren<unknown>> = ({ children }) => {
-  const user = useSelector((state) => Selectors.getUserState(state), shallowEqual);
-  const dispatch = useDispatch();
-  const spaceId = useSelector((state) => state.space.activeId);
-  const { run: getLabsFeature } = useRequest(Api.getLabsFeature, { manual: true });
+  const user = useAppSelector((state) => Selectors.getUserState(state), shallowEqual);
+  const spaceId = useAppSelector((state) => state.space.activeId);
   const router = useRouter();
   usePageParams();
-
-  useEffect(() => {
-    spaceId &&
-      getLabsFeature(spaceId).then((res) => {
-        dispatch(StoreActions.setLabs(res?.data?.data?.keys ?? []));
-      });
-  }, [dispatch, getLabsFeature, spaceId]);
 
   useEffect(() => {
     if (!user.info) {

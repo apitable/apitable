@@ -18,10 +18,10 @@
 
 import { useMemo, useRef, useImperativeHandle, forwardRef } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List, Align } from 'react-window';
 import { Selectors, IViewProperty } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { Row } from './row';
 import style from './style.module.less';
 
@@ -47,9 +47,9 @@ const RecordListBase: React.ForwardRefRenderFunction<{}, IRecordListProps> = (pr
     onClick,
     foreignDatasheetReadable: _foreignDatasheetReadable,
   } = props;
-  const formId = useSelector((state) => state.pageParams.formId);
+  const formId = useAppSelector((state) => state.pageParams.formId);
   const foreignDatasheetReadable = Boolean(_foreignDatasheetReadable || formId);
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, datasheetId))!;
   const listRef = useRef<List>(null);
   const selectedSet = useMemo(() => {
     return new Set(selectedRecordIds);

@@ -161,11 +161,21 @@ public interface IUserService extends IService<UserEntity> {
     /**
      * Create an account by email.
      *
-     * @param email email
+     * @param email    email
      * @param password password
      * @return UserEntity
      */
     UserEntity createUserByEmail(String email, String password);
+
+    /**
+     * Create an account by email.
+     *
+     * @param email    email
+     * @param password password
+     * @param lang lang
+     * @return UserEntity
+     */
+    UserEntity createUserByEmail(String email, String password, String lang);
 
     /**
      * initial new space for new user.
@@ -196,8 +206,9 @@ public interface IUserService extends IService<UserEntity> {
      *
      * @param userId User ID
      * @param email  email
+     * @param oldEmail old email
      */
-    void updateEmailByUserId(Long userId, String email);
+    void updateEmailByUserId(Long userId, String email, String oldEmail);
 
     /**
      * User Unbind Email.
@@ -396,4 +407,12 @@ public interface IUserService extends IService<UserEntity> {
      * @return a map with userId as key
      */
     Map<Long, UserSimpleVO> getUserSimpleInfoMap(String spaceId, List<Long> userIds);
+
+    /**
+     * get user simple info.
+     *
+     * @param userIds user id list
+     * @return list UserEntity
+     */
+    List<UserEntity> getByIds(List<Long> userIds);
 }

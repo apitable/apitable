@@ -19,11 +19,11 @@
 import classNames from 'classnames';
 import dynamic from 'next/dynamic';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { LinkButton } from '@apitable/components';
 import { Field, FieldType, Selectors, Strings, t } from '@apitable/core';
 import { Loading } from 'pc/components/common';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 import githubIcon from 'static/icon/common/github_octopus.png';
 import { getFieldDocs } from '../field_docs/api_panel_config';
@@ -73,12 +73,12 @@ const VARIABLE_REG = /^[_a-zA-Z][_a-zA-Z0-9]*$/;
 
 export const FieldCode: React.FC<React.PropsWithChildren<IFieldCode>> = (props) => {
   const { codeType, byFieldId, token, language, setLanguage, showApiToken } = props;
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId)!;
-  const viewId = useSelector(Selectors.getActiveViewId)!;
-  const columns = useSelector(Selectors.getVisibleColumns)!;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
-  const rows = useSelector((state) => Selectors.getVisibleRows(state))!;
-  const snapshot = useSelector(Selectors.getSnapshot)!;
+  const datasheetId = useAppSelector(Selectors.getActiveDatasheetId)!;
+  const viewId = useAppSelector(Selectors.getActiveViewId)!;
+  const columns = useAppSelector(Selectors.getVisibleColumns)!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const rows = useAppSelector((state) => Selectors.getVisibleRows(state))!;
+  const snapshot = useAppSelector(Selectors.getSnapshot)!;
   // const uploadTip = codeType === CodeType.Upload ? t(Strings.api_upload_tip) : null;
 
   const getAttachmentFieldName = () => {

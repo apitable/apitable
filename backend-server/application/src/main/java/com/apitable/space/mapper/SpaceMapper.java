@@ -25,38 +25,50 @@ import com.apitable.space.dto.SpaceDTO;
 import com.apitable.space.entity.SpaceEntity;
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.apache.ibatis.annotations.Param;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import org.apache.ibatis.annotations.Param;
 
+/**
+ * space mapper.
+ */
 public interface SpaceMapper extends BaseMapper<SpaceEntity> {
 
     /**
+     * query name by space id.
+     *
      * @param spaceId space id
      * @return space name
      */
     String selectSpaceNameBySpaceId(@Param("spaceId") String spaceId);
 
     /**
+     * qyery by space id.
+     *
      * @param spaceId space id
      * @return SpaceEntity
      */
     SpaceEntity selectBySpaceId(@Param("spaceId") String spaceId);
 
     /**
+     * query id.
+     *
      * @param spaceId space id
      * @return the space infos
      */
     SpaceEntity selectBySpaceIdIgnoreDeleted(@Param("spaceId") String spaceId);
 
     /**
+     * query info.
+     *
      * @param spaceIds space ids
      * @return the space infos
      */
     List<SpaceEntity> selectBySpaceIds(@Param("spaceIds") List<String> spaceIds);
 
     /**
+     * query by user id.
+     *
      * @param userId user id
      * @return the user's space infos.
      */
@@ -64,6 +76,8 @@ public interface SpaceMapper extends BaseMapper<SpaceEntity> {
     List<SpaceDTO> selectListByUserId(@Param("userId") Long userId);
 
     /**
+     * query admin space count.
+     *
      * @param userId user id
      * @return the user's space amount
      */
@@ -71,6 +85,8 @@ public interface SpaceMapper extends BaseMapper<SpaceEntity> {
     Integer getAdminSpaceCount(@Param("userId") Long userId);
 
     /**
+     * query main admin.
+     *
      * @param spaceId space id
      * @return the main admin info
      */
@@ -78,13 +94,15 @@ public interface SpaceMapper extends BaseMapper<SpaceEntity> {
     SpaceAdminInfoDTO selectAdminInfoDto(@Param("spaceId") String spaceId);
 
     /**
+     * query main admin.
+     *
      * @param spaceId space id
      * @return the space's main admin member id
      */
     Long selectSpaceMainAdmin(@Param("spaceId") String spaceId);
 
     /**
-     * gets the option argument for the space
+     * gets the option argument for the space.
      *
      * @param spaceId space id
      * @return props
@@ -92,44 +110,50 @@ public interface SpaceMapper extends BaseMapper<SpaceEntity> {
     String selectPropsBySpaceId(@Param("spaceId") String spaceId);
 
     /**
-     * change the spatial property state
+     * change the spatial property state.
      *
-     * @param userId user id
-     * @param spaceId space id
-     * @param features  features
+     * @param userId   user id
+     * @param spaceId  space id
+     * @param features features
      * @return affected rows
      */
-    Integer updateProps(@Param("userId") Long userId, @Param("spaceId") String spaceId, @Param("list") List<MapDTO> features);
+    Integer updateProps(@Param("userId") Long userId, @Param("spaceId") String spaceId,
+                        @Param("list") List<MapDTO> features);
 
     /**
-     * change the primary administrator id of the space
+     * change the primary administrator id of the space.
      *
-     * @param spaceId space id
+     * @param spaceId   space id
      * @param memberId  the new main admin id
      * @param updatedBy updater
      * @return affected rows
      */
-    Integer updateSpaceOwnerId(@Param("spaceId") String spaceId, @Param("memberId") Long memberId, @Param("updatedBy") Long updatedBy);
+    Integer updateSpaceOwnerId(@Param("spaceId") String spaceId, @Param("memberId") Long memberId,
+                               @Param("updatedBy") Long updatedBy);
 
     /**
-     * remove the space main admin id
+     * remove the space main admin id.
      *
-     * @param spaceId space id
+     * @param spaceId   space id
      * @param updatedBy updater
      * @return affected rows
      */
     int removeSpaceOwnerId(@Param("spaceId") String spaceId, @Param("updatedBy") Long updatedBy);
 
     /**
+     * update .
+     *
      * @param time      pre delete time
-     * @param spaceId space id
+     * @param spaceId   space id
      * @param updatedBy updater
      * @return affected rows
      */
-    int updatePreDeletionTimeBySpaceId(@Param("time") LocalDateTime time, @Param("spaceId") String spaceId, @Param("updatedBy") Long updatedBy);
+    int updatePreDeletionTimeBySpaceId(@Param("time") LocalDateTime time,
+                                       @Param("spaceId") String spaceId,
+                                       @Param("updatedBy") Long updatedBy);
 
     /**
-     * logically delete space
+     * logically delete space.
      *
      * @param spaceIds space ids
      * @return affected rows
@@ -137,6 +161,8 @@ public interface SpaceMapper extends BaseMapper<SpaceEntity> {
     int updateIsDeletedBySpaceIdIn(@Param("list") List<String> spaceIds);
 
     /**
+     * count by space id.
+     *
      * @param spaceId space id
      * @param preDel  whether it is in the pre delete state (optional)
      * @return the space amount
@@ -144,7 +170,7 @@ public interface SpaceMapper extends BaseMapper<SpaceEntity> {
     Integer countBySpaceId(@Param("spaceId") String spaceId, @Param("preDel") Boolean preDel);
 
     /**
-     * get space id by user id and the prefix and suffix of a space name
+     * get space id by user id and the prefix and suffix of a space name.
      *
      * @param userId user id
      * @param name   space name
@@ -153,15 +179,27 @@ public interface SpaceMapper extends BaseMapper<SpaceEntity> {
     String selectSpaceIdByUserIdAndName(@Param("userId") Long userId, @Param("name") String name);
 
     /**
+     * query space base info.
+     *
      * @param spaceIds space ids
      * @return space base info
      */
     List<BaseSpaceInfoDTO> selectBaseSpaceInfo(@Param("spaceIds") List<String> spaceIds);
 
     /**
+     * query by user id.
+     *
      * @param userId user id
      * @return space info
      */
     @InterceptorIgnore(illegalSql = "true")
     List<SpaceEntity> selectByUserId(@Param("userId") Long userId);
+
+    /**
+     * query space ids by created_by.
+     *
+     * @param userId user id
+     * @return space ids
+     */
+    List<String> selectSpaceIdsByUserId(@Param("userId") Long userId);
 }

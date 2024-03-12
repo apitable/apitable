@@ -18,7 +18,6 @@
 
 import classNames from 'classnames';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { LinkButton, Skeleton, useThemeColors } from '@apitable/components';
 import { ConfigConstant, integrateCdnHost, isIdassPrivateDeployment, Navigation, Strings, t, TEMPLATE_CENTER_ID } from '@apitable/core';
 import { ChevronLeftOutlined, Collapse2OpenOutlined, Collapse2Outlined } from '@apitable/icons';
@@ -27,21 +26,22 @@ import { Avatar, AvatarSize, AvatarType, Message, Tooltip } from 'pc/components/
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Router } from 'pc/components/route_manager/router';
 import { useSideBarVisible, useSpaceInfo } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { copy2clipBoard } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { NodeTree } from '../../template_centre/template_detail';
 import { TemplateUseButton } from '../../template_centre/template_use_button';
-import styles from './style.module.less';
 // @ts-ignore
-import { getSocialWecomUnitName } from 'enterprise';
+import { getSocialWecomUnitName } from 'enterprise/home/social_platform/utils';
+import styles from './style.module.less';
 
 export const TemplateDetailSide: React.FC<React.PropsWithChildren<unknown>> = () => {
   const colors = useThemeColors();
   const officialLogo = integrateCdnHost(getEnvVariables().SYSTEM_CONFIGURATION_OFFICIAL_AVATAR!);
 
-  const categoryId = useSelector((state) => state.pageParams.categoryId);
-  const spaceId = useSelector((state) => state.space.activeId);
-  const templateId = useSelector((state) => state.pageParams.templateId);
+  const categoryId = useAppSelector((state) => state.pageParams.categoryId);
+  const spaceId = useAppSelector((state) => state.space.activeId);
+  const templateId = useAppSelector((state) => state.pageParams.templateId);
   const { spaceInfo } = useSpaceInfo(spaceId);
 
   const goBack = () => {
@@ -55,7 +55,7 @@ export const TemplateDetailSide: React.FC<React.PropsWithChildren<unknown>> = ()
   };
 
   const { sideBarVisible, setSideBarVisible } = useSideBarVisible();
-  const templateDirectory = useSelector((state) => state.templateCentre.directory);
+  const templateDirectory = useAppSelector((state) => state.templateCentre.directory);
   const title = templateDirectory
     ? getSocialWecomUnitName?.({
       name: templateDirectory.nickName,

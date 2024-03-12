@@ -1,9 +1,9 @@
-import { getDatasheetMeta } from '../api';
-import { Url } from '@apitable/core';
-import { ISearchPanelState } from '../store/interface/search_panel';
-import urlcat from 'urlcat';
-import useSWR from 'swr';
 import { useEffect } from 'react';
+import useSWR from 'swr';
+import urlcat from 'urlcat';
+import { Url } from '@apitable/core';
+import { getDatasheetMeta } from '../api';
+import { ISearchPanelState } from '../store/interface/search_panel';
 
 const getApiKey = (datasheetId: string, needFetchDatasheetMeta: boolean) => {
   if (!needFetchDatasheetMeta || !datasheetId) return;
@@ -11,16 +11,16 @@ const getApiKey = (datasheetId: string, needFetchDatasheetMeta: boolean) => {
 };
 
 interface IParams {
-  localState: ISearchPanelState
-  localDispatch: React.Dispatch<Partial<ISearchPanelState>>
-  needFetchDatasheetMeta: boolean
+  localState: ISearchPanelState;
+  localDispatch: React.Dispatch<Partial<ISearchPanelState>>;
+  needFetchDatasheetMeta: boolean;
 }
 
 export const useFetchDatasheetMeta = ({ localState, needFetchDatasheetMeta, localDispatch }: IParams) => {
   const { data, mutate, isValidating } = useSWR(
     getApiKey(localState.currentDatasheetId, needFetchDatasheetMeta),
     () => getDatasheetMeta(localState.currentDatasheetId),
-    { revalidateOnFocus: false }
+    { revalidateOnFocus: false },
   );
 
   useEffect(() => {
@@ -38,8 +38,7 @@ export const useFetchDatasheetMeta = ({ localState, needFetchDatasheetMeta, loca
         currentViewId: data.views[0].id,
       });
     }
-
-  }, [data,localDispatch]);
+  }, [data, localDispatch]);
 
   return { data, mutate, isValidating };
 };

@@ -17,7 +17,7 @@
  */
 
 import { useAtomValue, useAtom } from 'jotai';
-import { ReactElement } from 'react';
+import { ReactElement, useCallback, useMemo } from 'react';
 import {
   SearchSelect,
 } from '@apitable/components';
@@ -30,10 +30,12 @@ import { IActionType, INodeOutputSchema, IRobotAction } from '../../interface';
 import { NewItem } from '../../robot_list/new_item';
 import { EditType } from '../trigger/robot_trigger';
 import itemStyle from '../trigger/select_styles.module.less';
+import { debounce } from 'lodash';
 
 export const getNextAction = (actionList: IRobotAction[], preActionId ?: string) => {
   const actionIndex = actionList.findIndex(action => action.actionId === preActionId);
-  return actionList[actionIndex + 1];
+  const r = actionList[actionIndex + 1];
+  return r;
 };
 export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled = false, nodeOutputSchemaList }: {
   robotId: string;
@@ -46,7 +48,7 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
   const [, setAutomationPanel] = useAtom(automationPanelAtom);
   const automationState= useAtomValue(automationStateAtom);
   const { api: { refresh } } = useAutomationController();
-  const createNewAction = async (action: {
+  const createNewAction = useCallback(async (action: {
     actionTypeId: string;
     robotId: string;
     prevActionId?: string;
@@ -66,20 +68,32 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
     });
 
     const data = getNextAction(getActionList(res.data.data), prevActionId);
-    setAutomationPanel({
-      panelName: PanelName.Action,
-      dataId: data.actionId,
-      data: {
-        // @ts-ignore
-        robotId: action.robotId,
-        editType: EditType.detail,
-        nodeOutputSchemaList: nodeOutputSchemaList,
-        action:  { ...data, id: data.actionId, typeId: data.actionTypeId },
+
+    if(data) {
+      setAutomationPanel({
+        panelName: PanelName.Action,
+        dataId: data.actionId,
+        data: {
+          // @ts-ignore
+          robotId: action.robotId,
+          editType: EditType.detail,
+          nodeOutputSchemaList: nodeOutputSchemaList,
+          action: { ...data, id: data.actionId, typeId: data.actionTypeId },
+        }
       }
+      );
+    }else {
+
+      setAutomationPanel({
+        panelName: PanelName.BasicInfo,
+        dataId: undefined,
+        data: undefined
+      });
     }
-    );
     return res.data;
-  };
+  }, [automationState?.resourceId, nodeOutputSchemaList, prevActionId, refresh, robotId, setAutomationPanel]);
+
+  const debouncedCreateAction = debounce(createNewAction, 1000);
 
   return (
     <SearchSelect
@@ -98,14 +112,14 @@ export const CreateNewAction = ({ robotId, actionTypes, prevActionId, disabled =
         value: item.actionTypeId,
         prefixIcon: <img src={integrateCdnHost(item.service.logo)} width={20} alt={''} style={{ marginRight: 4 }} />
       }))} onChange={(item) => {
-        createNewAction({
+      debouncedCreateAction({
           robotId,
           actionTypeId: String(item.value),
           prevActionId
         });
       }}>
 
-      <NewItem disabled={disabled} >
+      <NewItem disabled={disabled} itemId={'CONST_ROBOT_ACTION_CREATE'}>
         {t(Strings.robot_new_action)}
       </NewItem>
     </SearchSelect>);
@@ -147,18 +161,25 @@ export const CreateNewActionLineButton = ({ robotId, actionTypes, prevActionId, 
 
     const newAction = getNextAction(getActionList(res.data.data), prevActionId);
 
-    setAutomationPanel({
-      panelName: PanelName.Action,
-      dataId: newAction.actionId,
-      data: {
-        // @ts-ignore
-        robotId: action.robotId,
-        editType: EditType.detail,
-        nodeOutputSchemaList: nodeOutputSchemaList,
-        action:  { ...newAction, id: newAction.actionId, typeId: newAction.actionTypeId },
-      }
+    if(newAction) {
+      setAutomationPanel({
+        panelName: PanelName.Action,
+        dataId: newAction.actionId,
+        data: {
+          // @ts-ignore
+          robotId: action.robotId,
+          editType: EditType.detail,
+          nodeOutputSchemaList: nodeOutputSchemaList,
+          action:  { ...newAction, id: newAction.actionId, typeId: newAction.actionTypeId },
+        }
+      });
+    }else {
+      setAutomationPanel({
+        panelName: PanelName.BasicInfo,
+        dataId: undefined,
+        data: undefined
+      });
     }
-    );
 
     return res.data;
 

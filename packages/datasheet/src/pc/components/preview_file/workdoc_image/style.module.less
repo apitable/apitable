@@ -1,0 +1,28 @@
+.workdocImage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(var(--dc01-rgb),90%);
+  z-index: 1001;
+  cursor: auto;
+  .header {
+    width: 100%;
+    height: 64px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: fade(#000, 90%);
+    padding: 0 24px 0 32px;
+    position: relative;
+    z-index: 1;
+  }
+  .container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+  }
+}

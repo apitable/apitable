@@ -18,7 +18,6 @@
 
 import { useState, useMemo } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Button, TextButton, Switch } from '@apitable/components';
 import { IDateTimeBaseField, Selectors, IViewColumn, Strings, t, ILastModifiedByField, FieldType } from '@apitable/core';
 import { BaseModal } from 'pc/components/common';
@@ -27,6 +26,7 @@ import { Popup } from 'pc/components/common/mobile/popup';
 import { LineSearchInput } from 'pc/components/list/common_list/line_search_input';
 import { getFieldTypeIcon } from 'pc/components/multi_grid/field_setting';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import styles from './styles.module.less';
 
 interface IFieldSelectModalProps {
@@ -39,8 +39,8 @@ export const FieldSelectModal: React.FC<React.PropsWithChildren<IFieldSelectModa
   const { onCancel, onOk, field: currentField } = props;
   const currentFieldId = currentField.id;
   const fieldIdCollection = currentField.property.fieldIdCollection!;
-  const fieldMap = useSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
-  const activeView = useSelector((state) => Selectors.getCurrentView(state))!;
+  const fieldMap = useAppSelector((state) => Selectors.getFieldMap(state, state.pageParams.datasheetId!))!;
+  const activeView = useAppSelector((state) => Selectors.getCurrentView(state))!;
   const columns: IViewColumn[] = activeView.columns;
   const [collection, setCollection] = useState([...fieldIdCollection]);
   const [query, setQuery] = useState('');

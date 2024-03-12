@@ -1,5 +1,6 @@
 import useSWR from 'swr';
-import { Url } from '@apitable/core';
+import { ConfigConstant, Url } from '@apitable/core';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getChildrenNode } from '../api';
 
 const getApiKey = (folderId: string) => {
@@ -7,10 +8,12 @@ const getApiKey = (folderId: string) => {
 };
 
 interface IParams {
-  folderId: string
+  folderId: string;
 }
 
 export const useFetchChildren = ({ folderId }: IParams) => {
-  const result = useSWR(getApiKey(folderId), () => getChildrenNode(folderId), { revalidateOnFocus: false });
+  const catalogTreeActiveType = useAppSelector((state) => state.catalogTree.activeType);
+  const isPrivate = catalogTreeActiveType === ConfigConstant.Modules.PRIVATE;
+  const result = useSWR(getApiKey(folderId), () => getChildrenNode(folderId, isPrivate ? 3: undefined), { revalidateOnFocus: false });
   return result;
 };

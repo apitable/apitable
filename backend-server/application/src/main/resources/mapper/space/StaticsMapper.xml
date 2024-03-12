@@ -126,25 +126,21 @@
         GROUP BY type
     </select>
 
-    <select id="selectDstViewStaticsBySpaceId" resultType="java.lang.String">
-        SELECT JSON_EXTRACT(vdm.meta_data, '$.views[*].type') AS types
-        FROM ${tablePrefix}datasheet_meta vdm, ${tablePrefix}datasheet vd
-        WHERE vdm.dst_id = vd.dst_id AND vd.space_id = #{spaceId} AND vdm.is_deleted = 0 AND vd.is_deleted = 0;
-    </select>
-
-    <select id="selectMaxIdByTime" resultType="java.lang.Long">
-        SELECT id
-        FROM ${tablePrefix}api_usage
-        WHERE DATE_FORMAT(created_at, '%Y-%m-%d') = #{time}
-        ORDER BY id DESC
-        LIMIT 1
+    <select id="selectDstViewStaticsByDstIds" resultType="java.lang.String">
+        SELECT JSON_EXTRACT(meta_data, '$.views[*].type') AS types
+        FROM ${tablePrefix}datasheet_meta
+        WHERE dst_id IN
+        <foreach item="item" index="index" collection="dstIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND is_deleted = 0
     </select>
 
     <select id="countByIdGreaterThanAndSpaceId" resultType="java.lang.Long">
         SELECT COUNT(*)
         FROM ${tablePrefix}api_usage
         WHERE id > #{id}
-          AND space_id = #{spaceId}
+        AND space_id = #{spaceId}
     </select>
 
     <select id="selectTotalSumBySpaceIdAndTimeBetween" resultType="java.lang.Long">
@@ -163,4 +159,13 @@
         </foreach>
         AND is_deleted = 0
     </select>
+
+    <select id="countByIdGreaterThanAndSpaceIdAndCreatedAt" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM ${tablePrefix}api_usage
+        WHERE id > #{id}
+        AND space_id = #{spaceId}
+        AND created_at >= #{startTime}
+    </select>
+
 </mapper>

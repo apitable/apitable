@@ -22,8 +22,9 @@ import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { Api, fastCloneDeep, IApi, Selectors, StoreActions, Strings, t } from '@apitable/core';
-import { Message, Modal } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
+import { Message } from 'pc/components/common/message';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
 import { dispatch } from 'pc/worker/store';
@@ -51,8 +52,9 @@ export const getNoPermissionMemberList = async (nodeId: string, unitsIds: string
 
 export const verificationPermission = async (commitRemindParam: IApi.ICommitRemind) => {
   const state = store.getState();
+  const activeNodePrivate = Selectors.getActiveNodePrivate(state);
   const embedId = state.pageParams.embedId;
-  if (embedId) return;
+  if (embedId || activeNodePrivate) return;
   const newCommitRemindParam = fastCloneDeep(commitRemindParam);
   dispatch(StoreActions.setPermissionCommitRemindParameter(newCommitRemindParam));
 

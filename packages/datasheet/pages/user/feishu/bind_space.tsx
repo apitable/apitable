@@ -23,8 +23,8 @@ import React from 'react';
 const FeiShuBindSpaceWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
-      return components.FeiShuBindSpace;
+    import('enterprise/lark/feishu/feishu_bind_space').then((components) => {
+      return components.default;
     }),
   { ssr: false },
 );

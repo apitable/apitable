@@ -19,24 +19,24 @@
 import { Input } from 'antd';
 import { useRef } from 'react';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Message, Typography } from '@apitable/components';
 import { CollaCommandName, ExecuteResult, ITemporaryView, Selectors, StoreActions, Strings, t } from '@apitable/core';
 import { IViewLockProps } from 'pc/components/view_lock/interface';
 import styles from 'pc/components/view_lock/style.module.less';
 import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { requestServerView } from '../tab_bar/view_sync_switch/popup_content/request_server_view';
 
 const { TextArea } = Input;
 
 export const DisabledViewLock: React.FC<React.PropsWithChildren<Omit<IViewLockProps, 'unlockHandle'>>> = ({ viewId, onModalClose }) => {
   const areaRef = useRef(null);
-  const unitId = useSelector((state) => state.user.info?.unitId)!;
+  const unitId = useAppSelector((state) => state.user.info?.unitId)!;
 
-  const { datasheetId } = useSelector((state) => state.pageParams);
+  const { datasheetId } = useAppSelector((state) => state.pageParams);
 
-  const isViewModified = useSelector((state) => {
+  const isViewModified = useAppSelector((state) => {
     if (!viewId) {
       return false;
     }

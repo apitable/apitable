@@ -17,11 +17,13 @@
  */
 
 import { createRoot } from 'react-dom/client';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import { ThemeProvider } from '@apitable/components';
 import { Selectors } from '@apitable/core';
 import { ViewLock } from 'pc/components/view_lock/view_lock';
 import { store } from 'pc/store';
+
+import { useAppSelector } from 'pc/store/react-redux';
 
 export const expandViewLock = (viewId: string, unlockHandle?: () => void) => {
   const container = document.createElement('div');
@@ -34,7 +36,7 @@ export const expandViewLock = (viewId: string, unlockHandle?: () => void) => {
   };
 
   const ViewLockWithTheme = (props: any) => {
-    const cacheTheme = useSelector(Selectors.getTheme);
+    const cacheTheme = useAppSelector(Selectors.getTheme);
     return (
       <ThemeProvider theme={cacheTheme}>
         <ViewLock {...props} />

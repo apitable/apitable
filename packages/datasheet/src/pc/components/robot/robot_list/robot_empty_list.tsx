@@ -17,11 +17,11 @@
  */
 
 import Image from 'next/image';
-import { useSelector } from 'react-redux';
 import { Box, Button, Typography, useTheme, ThemeName } from '@apitable/components';
 import { Api, Selectors, Strings, SystemConfig, t } from '@apitable/core';
 import { useApplyOpenFunction } from 'pc/components/navigation/account_center_modal/test_function/hooks';
 import { useRequest } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { WECOM_ROBOT_URL } from 'pc/utils';
 import ImageNoRecordDark from 'static/icon/datasheet/automation_empty_dark.png';
 import ImageNoRecordLight from 'static/icon/datasheet/automation_empty_light.png';
@@ -29,7 +29,7 @@ import ImageNoRecordLight from 'static/icon/datasheet/automation_empty_light.png
 import { useAutomationNavigateController } from '../../automation/controller/controller';
 import { useAddNewRobot, useShowRobot } from '../hooks';
 // @ts-ignore
-import { isWecomFunc } from 'enterprise';
+import { isWecomFunc } from 'enterprise/home/social_platform/utils';
 
 export const RobotEmptyList = () => {
   const theme = useTheme();
@@ -39,12 +39,12 @@ export const RobotEmptyList = () => {
   const applyOpenTestFunction = useApplyOpenFunction();
 
   const { data: labsFeatureListData } = useRequest(Api.getLabsFeatureList);
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const ImageNoRecord = themeName === ThemeName.Light ? ImageNoRecordLight : ImageNoRecordDark;
 
   const { createNewRobot } = useAutomationNavigateController();
 
-  const datasheetId = useSelector(Selectors.getActiveDatasheetId);
+  const datasheetId = useAppSelector(Selectors.getActiveDatasheetId);
   const openTestFunction = () => {
     const { space: spaceLabs = [] } = labsFeatureListData!.data.data.features;
     const { url: _url, key } = spaceLabs.find((lab) => lab.key === SystemConfig.test_function.robot.feature_key) || {};

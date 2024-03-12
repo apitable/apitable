@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -173,4 +174,16 @@ public class SpaceInfoVO {
     @Schema(description = "Automation Runs Count", example = "5")
     @JsonSerialize(nullsUsing = NullNumberSerializer.class)
     private Long automationRunsNums;
+
+    @Schema(description = "space feature")
+    private SpaceGlobalFeature feature;
+
+    @Schema(description = "User's resource information view in the space")
+    private UserSpaceVo userResource;
+
+    @Schema(description = "List of experimental functions",
+            type = "java.util.List", example = "[\"RENDER_PROMPT\", \"ASYNC_COMPUTE\", \"ROBOT\"]")
+    private List<String> labsKeys;
+
+
 }

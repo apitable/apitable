@@ -19,7 +19,7 @@
 package com.apitable.workspace.ro;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 
@@ -43,4 +43,7 @@ public class NodeUpdateOpRo {
     @Schema(description = "Whether to display the recorded history", example = "1")
     @Range(min = 0, max = 1, message = "Display record history can only be 0/1")
     private Integer showRecordHistory;
+
+    @Schema(description = "Embed page info", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    private NodeEmbedPageRo embedPage;
 }

@@ -59,6 +59,8 @@ const editorMap = {
   [FieldType.Phone]: EditorType.Text,
   [FieldType.Link]: EditorType.Text,
   [FieldType.OneWayLink]: EditorType.Text,
+  [FieldType.WorkDoc]: EditorType.Text,
+  [FieldType.Button]: EditorType.Text,
   [FieldType.Checkbox]: EditorType.Boolean,
   [FieldType.Member]: EditorType.Member,
   [FieldType.CreatedBy]: EditorType.Member,

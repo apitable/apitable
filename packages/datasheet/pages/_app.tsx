@@ -22,10 +22,12 @@ import { Scope } from '@sentry/browser';
 import * as Sentry from '@sentry/nextjs';
 import axios from 'axios';
 import classNames from 'classnames';
+import dayjs from 'dayjs';
 import elementClosest from 'element-closest';
+import ErrorPage from 'error_page';
 import * as immer from 'immer';
 import { enableMapSet } from 'immer';
-import { merge } from 'lodash';
+import { init as initPlayer } from 'modules/shared/player/init';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
@@ -51,15 +53,13 @@ import {
   t,
   WasmApi,
 } from '@apitable/core';
-import 'antd/es/date-picker/style/index';
 import { getBrowserDatabusApiEnabled } from '@apitable/core/dist/modules/database/api/wasm';
-import ErrorPage from 'error_page';
-import { init as initPlayer } from 'modules/shared/player/init';
+import 'antd/es/date-picker/style/index';
 import 'normalize.css';
 import { initializer } from 'pc/common/initializer';
-import { Modal } from 'pc/components/common';
+import { Modal } from 'pc/components/common/modal/modal/modal';
 import { Router } from 'pc/components/route_manager/router';
-import { initEventListen } from 'pc/events';
+import { initEventListen } from 'pc/events/init_events_listener';
 import { getPageParams, getRegResult, LOGIN_SUCCESS, shareIdReg, spaceIdReg } from 'pc/hooks';
 import { initResourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
@@ -84,7 +84,6 @@ import '../src/main.less';
 import '../src/widget-stage/index.less';
 import '../src/widget-stage/main/main.less';
 import { getInitialProps } from '../utils/get_initial_props';
-import dayjs from 'dayjs';
 
 enableMapSet();
 
@@ -92,19 +91,6 @@ const RouterProvider = dynamic(() => import('pc/components/route_manager/router_
 const ThemeWrapper = dynamic(() => import('theme_wrapper'), { ssr: false });
 
 declare const window: any;
-
-if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
-  posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
-    api_host: getEnvVariables().NEXT_PUBLIC_POSTHOG_HOST,
-    autocapture: false,
-    capture_pageview: false,
-    capture_pageleave: false,
-    // Disable in development
-    loaded: (posthog) => {
-      if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
-    },
-  });
-}
 
 export interface IUserInfoError {
   code: number;
@@ -123,7 +109,6 @@ const initWorker = async () => {
     console.log('web assembly is not supported');
   }
 };
-
 immer.setAutoFreeze(false);
 (() => {
   if (!process.env.SSR) {
@@ -169,7 +154,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
     const endLoading = () => {
       const ele = document.querySelector('.script-loading-wrap');
-      // delete loading : scale logo -> vika -> wait 1000ms -> disappear
+      // delete loading : scale logo -> aitable -> wait 1000ms -> disappear
       const logoImg = document.querySelector('.script-loading-logo-img');
       logoImg?.classList.remove('loading-static-animation');
       setTimeout(() => ele?.classList.add('script-loading-wrap-finished'), 0);
@@ -220,7 +205,7 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
           spaceId,
         },
       });
-      console.log(res);
+      // console.log(res);
       let userInfo: IUserInfo | undefined;
       try {
         userInfo = JSON.parse(res.data.userInfo);
@@ -301,10 +286,14 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
 
       store.dispatch(batchActions(_batchActions, LOGIN_SUCCESS));
       window.__initialization_data__.userInfo = userInfo;
-      window.__initialization_data__.wizards = merge(JSON.parse(res.data.wizards), {
+      if (userInfo?.locale) {
+        window.__initialization_data__.lang = userInfo.locale;
+        window.__initialization_data__.locale = userInfo.locale;
+      }
+      window.__initialization_data__.wizards = {
         guide: SystemConfig.guide,
         player: SystemConfig.player,
-      });
+      };
     };
     getUser().then(() => {
       import('../src/preIndex');
@@ -401,11 +390,10 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
   return (
     <>
       <Head>
-        <title>{env.DEFAULT_TITLE_NAME || (env.IS_AITABLE ? 'AITable' : env.IS_APITABLE ? 'APITable' : 'vikadata')}</title>
         <meta name="description" content="" />
         <meta
           name="keywords"
-          content="APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,维格表,维格云,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
+          content="APITable,datasheet,Airtable,nocode,low-code,aPaaS,hpaPaaS,RAD,web3,AITable.ai,AITable,多维表格,AI多维表格,维格表,维格云,大数据,数字化,数字化转型,vika,vikadata,数据中台,业务中台,数据资产,
         数字化智能办公,远程办公,数据工作台,区块链,人工智能,多维表格,数据库应用,快速开发工具"
         />
         <meta name="renderer" content="webkit" />
@@ -564,3 +552,18 @@ MyApp.getInitialProps = getInitialProps;
 const beforeCapture = (scope: Scope) => {
   scope.setTag('PageCrash', true);
 };
+
+if (!process.env.SSR && getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY) {
+  window.onload = () => {
+    posthog.init(getEnvVariables().NEXT_PUBLIC_POSTHOG_KEY!, {
+      api_host: getEnvVariables().NEXT_PUBLIC_POSTHOG_HOST,
+      autocapture: false,
+      capture_pageview: false,
+      capture_pageleave: false,
+      // Disable in development
+      loaded: (posthog) => {
+        if (process.env.NODE_ENV === 'development') posthog.opt_out_capturing();
+      },
+    });
+  };
+}

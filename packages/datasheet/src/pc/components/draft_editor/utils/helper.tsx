@@ -18,7 +18,7 @@
 
 import { ISpaceBasicInfo, LINK_REG } from '@apitable/core';
 // @ts-ignore
-import { getSocialWecomUnitName, isSocialWecom } from 'enterprise';
+import { getSocialWecomUnitName, isSocialWecom } from 'enterprise/home';
 
 export interface ITextNode {
   type: string;

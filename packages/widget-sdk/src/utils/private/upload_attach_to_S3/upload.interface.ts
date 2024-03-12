@@ -28,7 +28,8 @@ export enum UploadType {
   // fold showcase with this
   CoverImage,
   // node description
-  NodeDesc
+  NodeDesc,
+  Document
 }
 
 export interface IUploadCertificate {

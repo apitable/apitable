@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { ApiTipConstant, Field, ICollaCommandOptions } from '@apitable/core';
+import { ApiTipConstant, Field, ICollaCommandOptions, IRemoteChangeset } from '@apitable/core';
 import {
   Body,
   CacheTTL,
@@ -32,9 +32,18 @@ import {
   Res,
   SetMetadata,
   UseGuards,
-  UseInterceptors,
+  UseInterceptors
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiInternalServerErrorResponse, ApiOperation, ApiProduces, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiInternalServerErrorResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiProduces,
+  ApiTags
+} from '@nestjs/swagger';
 import { AttachmentService } from 'database/attachment/services/attachment.service';
 import { DatasheetMetaService } from 'database/datasheet/services/datasheet.meta.service';
 import { InternalCreateDatasheetVo } from 'database/interfaces';
@@ -80,7 +89,7 @@ import { AssetView, AttachmentVo } from './vos/attachment.vo';
 import { DatasheetCreateDto, DatasheetCreateVo, FieldCreateVo } from './vos/datasheet.create.vo';
 import { FieldDeleteVo } from './vos/field.delete.vo';
 import { FieldListVo } from './vos/field.list.vo';
-import { RecordListVo } from './vos/record.list.vo';
+import { RecordIdListVo, RecordListVo } from './vos/record.list.vo';
 import { RecordPageVo } from './vos/record.page.vo';
 import { ViewListVo } from './vos/view.list.vo';
 
@@ -197,7 +206,7 @@ export class FusionApiController {
   public async addAttachment(@Param() param: AttachmentParamRo, @Req() req: FastifyRequest, @Res() reply: FastifyReply): Promise<AttachmentVo> {
     await this.checkSpaceCapacity(req);
     const handler = await this.attachService.getFileUploadHandler(param.dstId, req, reply);
-    await req.multipart(handler as (...args: Parameters<typeof handler>) => void, function(err: Error) {
+    await req.multipart(handler as (...args: Parameters<typeof handler>) => void, function (err: Error) {
       if (err instanceof ServerException) {
         reply.statusCode = err.getStatusCode();
         void reply.send(ApiResponse.error(err.getMessage(), err.getCode()));
@@ -289,6 +298,10 @@ export class FusionApiController {
     summary: 'Query all fields of a datasheet',
     description: 'All fields of the datasheet, without paging',
     deprecated: false,
+  })
+  @ApiOkResponse({
+    description: 'Get successful',
+    type: FieldListVo,
   })
   @ApiProduces('application/json')
   @UseGuards(ApiDatasheetGuard)
@@ -470,6 +483,24 @@ export class FusionApiController {
     return ApiResponse.success(nodeInfo);
   }
 
+  @Get('/timemachine/:dstId')
+  @ApiOperation({
+    summary: 'get all deleted record by time machine',
+    description: 'via time machine api',
+    deprecated: false,
+  })
+  @ApiProduces('application/json')
+  @UseGuards(ApiDatasheetGuard)
+  @UseInterceptors(ApiCacheInterceptor)
+  @CacheTTL(apiCacheTTLFactory)
+  @SetMetadata(DATASHEET_OPTIONS, { requireMetadata: true, loadSingleView: true } as IApiDatasheetOptions)
+  public async getDeletedRecords(
+      @Param() param: RecordParamRo,
+  ): Promise<RecordIdListVo> {
+    const pageVo = await this.fusionApiService.getDeletedRecords(param.dstId);
+    return ApiResponse.success(pageVo);
+  }
+
   /**
    * Hidden Interface
    */
@@ -484,5 +515,21 @@ export class FusionApiController {
     const commandBody = body;
     const token = request.headers.authorization;
     return await this.fusionApiService.executeCommand(datasheetId, commandBody, { token });
+  }
+
+  /**
+   * Hidden Interface
+   */
+  @Post('datasheets/:dstId/executeCommandFromRust')
+  @ApiOperation({
+    summary: 'Create the op of the resource',
+    description: 'For flexibility reasons and for internal automation testing, provide an interface to freely create commands',
+    deprecated: false,
+  })
+  @ApiProduces('application/json')
+  public async executeCommandFromRust(@Body() body: IRemoteChangeset[], @Param('dstId') datasheetId: string, @Req() request: FastifyRequest) {
+    const commandBody = body;
+    const token = request.headers.authorization;
+    return await this.fusionApiService.executeCommandFromRust(datasheetId, commandBody, { token });
   }
 }

@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { IFieldPermissionMap, IRoleMember, IViewProperty } from '../../../exports/store';
+import { IFieldPermissionMap, IRoleMember, IViewProperty } from '../../../exports/store/interfaces';
 import { MemberType } from 'types';
-import { ITeamData } from '../../../exports/store';
+import { ITeamData } from '../../../exports/store/interfaces';
 
 export interface IFieldPermissionRoleListData {
   enabled: boolean;

@@ -14,6 +14,9 @@
       "enterprise": [
         "./modules/enterprise"
       ],
+      "static/*": [
+        "../public/static/*"
+      ],
       "api/*": [
         "./modules/api/*"
       ],
@@ -21,7 +24,7 @@
         "./modules/enterprise/*"
       ]
     },
-    "module": "esnext",
+    "module": "ESNext",
     "baseUrl": "./src",
     "allowJs": true,
     "strict": true,

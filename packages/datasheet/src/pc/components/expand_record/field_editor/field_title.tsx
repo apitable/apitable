@@ -19,7 +19,7 @@
 import classNames from 'classnames';
 import * as React from 'react';
 import { useContext, useMemo, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { IconButton, LinkButton, useContextMenu, useThemeColors } from '@apitable/components';
 import {
   ConfigConstant,
@@ -50,12 +50,13 @@ import { useDeleteField, useHideField } from 'pc/components/multi_grid/hooks';
 import { BulkDownload } from 'pc/components/preview_file/preview_main/bulk_download';
 import { useAllowDownloadAttachment } from 'pc/components/upload_modal/preview_item';
 import { useResponsive } from 'pc/hooks';
+import { useAppSelector } from 'pc/store/react-redux';
 import { stopPropagation } from 'pc/utils';
 import EditorTitleContext from '../editor_title_context';
 import { FieldDescWithTitle } from './field_desc_with_title';
-import styles from './style.module.less';
 // @ts-ignore
-import { MobileAlarm } from 'enterprise';
+import { MobileAlarm } from 'enterprise/alarm/mobile_alarm/mobile_alarm';
+import styles from './style.module.less';
 
 interface IFieldTitleProps {
   isFocus?: boolean;
@@ -107,12 +108,12 @@ export const FieldTitle: React.FC<React.PropsWithChildren<IFieldTitleProps>> = (
   } = props;
   const [openAlarm, setOpenAlarm] = useState(false);
 
-  const field = useSelector((state) => Selectors.getField(state, fieldId, datasheetId));
-  const view = useSelector((state) => Selectors.getCurrentView(state, datasheetId))!;
-  const mirrorId = useSelector((state) => state.pageParams.mirrorId);
-  const permission = useSelector((state) => Selectors.getPermissions(state, datasheetId, fieldId));
-  const nodeId = useSelector((state) => state.pageParams.nodeId);
-  const userTimeZone = useSelector(Selectors.getUserTimeZone)!;
+  const field = useAppSelector((state) => Selectors.getField(state, fieldId, datasheetId));
+  const view = useAppSelector((state) => Selectors.getCurrentView(state, datasheetId))!;
+  const mirrorId = useAppSelector((state) => state.pageParams.mirrorId);
+  const permission = useAppSelector((state) => Selectors.getPermissions(state, datasheetId, fieldId));
+  const nodeId = useAppSelector((state) => state.pageParams.nodeId);
+  const userTimeZone = useAppSelector(Selectors.getUserTimeZone)!;
 
   const allowDownload = useAllowDownloadAttachment(fieldId);
   const dispatch = useDispatch();
@@ -125,7 +126,7 @@ export const FieldTitle: React.FC<React.PropsWithChildren<IFieldTitleProps>> = (
   const onAppendField = useAppendField(datasheetId);
   const onEditField = useEditField({ datasheetId, fieldId, colIndex });
   const onEditDesc = useEditDesc({ datasheetId, fieldId, colIndex });
-  const fieldPermissionMap = useSelector((state) => Selectors.getFieldPermissionMap(state, datasheetId));
+  const fieldPermissionMap = useAppSelector((state) => Selectors.getFieldPermissionMap(state, datasheetId));
 
   const { type: viewType, autoHeadHeight } = (view || {}) as IGridViewProperty;
   const isTitleWrap = [ViewType.Grid, ViewType.Gantt].includes(viewType) && autoHeadHeight;

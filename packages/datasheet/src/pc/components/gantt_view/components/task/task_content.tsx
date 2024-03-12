@@ -18,11 +18,12 @@
 
 import dynamic from 'next/dynamic';
 import { FC, useContext } from 'react';
-import { FieldType, RowHeight, Selectors, Strings, t, ViewType } from '@apitable/core';
+import { FieldType, IPermissions, IReduxState, RowHeight, Selectors, Strings, t, ViewType } from '@apitable/core';
 import { getRecordName } from 'pc/components/expand_record';
 import { GanttCoordinate } from 'pc/components/gantt_view';
 import { cellHelper, konvaDrawer, KonvaGridViewContext } from 'pc/components/konva_grid';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { KonvaGanttViewContext } from '../../context';
 
 const Shape = dynamic(() => import('pc/components/gantt_view/hooks/use_gantt_timeline/shape'), { ssr: false });
@@ -46,6 +47,8 @@ const TaskContent: FC<React.PropsWithChildren<ITaskContentProps>> = (props) => {
     let curOffset = 10;
     for (let i = 0; i < ganttVisibleColumns.length; i++) {
       const { fieldId } = ganttVisibleColumns[i];
+
+      const permissions = Selectors.getDatasheet(state)?.permissions || {};
       const cellValue = Selectors.getCellValue(state, snapshot, recordId, fieldId);
       const field = fieldMap[fieldId];
       const realField = Selectors.findRealField(state, field);
@@ -79,6 +82,7 @@ const TaskContent: FC<React.PropsWithChildren<ITaskContentProps>> = (props) => {
         field,
         cellValue,
         rowHeightLevel,
+        permissions,
         style: {
           color,
           bgColor,

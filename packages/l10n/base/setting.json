@@ -333,7 +333,7 @@
 		"value": "https://vika.cn/share/shrFVCtHXQwYm3DVgNn91"
 	},
 	"help_user_feedback_url": {
-		"value": "https://vika.cn/share/shrzw0miJVmSkJ7eBBa9k/fomx5qPX0JGPFvfEEP"
+		"value": "https://vika.cn/share/shrCvbFC53xc3kl00B4Pg"
 	},
 	"system_configuration_version": {
 		"value": "0.5.0"
@@ -408,7 +408,7 @@
 		"value": "/help/developers/"
 	},
 	"user_guide_welcome_quick_start_video": {
-		"value": "{\"title\":\"一分钟快速入门\", \"video\":\"space/2021/03/10/a68dbf1e2e7943b09b1550175253fdab\", \"autoPlay\":true}"
+		"value": "{\"title\":\"VIKA产品演示\", \"video\":\"space/2023/12/12/8e870a50d98646f0a4cc2f76e3cd6d46\", \"autoPlay\":true}"
 	},
 	"user_guide_welcome_what_is_datasheet_video": {
 		"value": "{ \"title\":\"什么是维格表\", \"video\":\"space/2022/02/21/94cb82f9ffd84a5499c8931a224ad234\", \"autoPlay\":true }"

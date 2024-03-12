@@ -1,21 +1,25 @@
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
-import { Api, ConfigConstant, StoreActions } from '@apitable/core';
+import { Api, ConfigConstant, StoreActions, Selectors } from '@apitable/core';
 import { ISearchPanelState } from 'pc/components/datasheet_search_panel/store/interface/search_panel';
+import { useAppSelector } from 'pc/store/react-redux';
 import { ISearchOptions, SecondConfirmType } from '../interface';
 
 interface IParams {
   localState: ISearchPanelState;
   localDispatch: React.Dispatch<Partial<ISearchPanelState>>;
   secondConfirmType?: SecondConfirmType;
-
   searchDatasheetMetaData(datasheetId: string): void;
 }
 
 export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaData, secondConfirmType }: IParams) => {
   const dispatch = useDispatch();
+  const activeNodeId = useAppSelector((state) => Selectors.getNodeId(state));
+  const activeNodePrivate = useAppSelector((state) =>
+    state.catalogTree.treeNodesMap[activeNodeId]?.nodePrivate || state.catalogTree.privateTreeNodesMap[activeNodeId]?.nodePrivate
+  );
 
-  const onNodeClick = (nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string,) => {
+  const onNodeClick = (nodeType: 'Mirror' | 'Datasheet' | 'View' | 'Folder' | 'Form', id: string) => {
     switch (nodeType) {
       case 'Form': {
         if (localState.currentFormId === id) {
@@ -55,7 +59,7 @@ export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaDat
     });
     localDispatch({ folderLoaded: false });
     // 初始化时就会加载这部分数据
-    Promise.all([Api.getParents(folderId), Api.getChildNodeList(folderId)])
+    Promise.all([Api.getParents(folderId), Api.getChildNodeList(folderId, undefined, activeNodePrivate ? 3 : undefined)])
       .then((list) => {
         const [parentsRes, childNodeListRes] = list;
         if (parentsRes.data.success) {
@@ -64,21 +68,21 @@ export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaDat
 
         if (childNodeListRes.data.success) {
           const nodes = childNodeListRes.data.data || [];
-          if(options) {
-            const filteredNodes = nodes.filter(item => {
-              if(item.type === ConfigConstant.NodeType.DATASHEET) {
+          if (options) {
+            const filteredNodes = nodes.filter((item) => {
+              if (item.type === ConfigConstant.NodeType.DATASHEET) {
                 return options.showDatasheet;
               }
-              if(item.type === ConfigConstant.NodeType.FORM) {
+              if (item.type === ConfigConstant.NodeType.FORM) {
                 return options.showForm;
               }
-              if(item.type === ConfigConstant.NodeType.MIRROR) {
+              if (item.type === ConfigConstant.NodeType.MIRROR) {
                 return options.showMirror;
               }
-              if(item.type === ConfigConstant.NodeType.VIEW) {
+              if (item.type === ConfigConstant.NodeType.VIEW) {
                 return options.showView;
               }
-              if(item.type === ConfigConstant.NodeType.FOLDER) {
+              if (item.type === ConfigConstant.NodeType.FOLDER) {
                 return true;
               }
               return false;
@@ -86,7 +90,6 @@ export const useNodeClick = ({ localDispatch, localState, searchDatasheetMetaDat
             localDispatch({ nodes: filteredNodes, showSearch: false });
           }
           localDispatch({ nodes, showSearch: false });
-
         }
       })
       .catch()

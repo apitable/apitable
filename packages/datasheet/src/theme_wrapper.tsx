@@ -18,10 +18,11 @@
 
 import { useKeyPress, useLocalStorageState } from 'ahooks';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ThemeName, ThemeProvider } from '@apitable/components';
 import { Selectors, StoreActions } from '@apitable/core';
 import { SystemTheme } from 'pc/common/theme';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getEnvVariables } from 'pc/utils/env';
 
 const ThemeWrapper: React.FC<React.PropsWithChildren<unknown>> = (props) => {
@@ -30,7 +31,7 @@ const ThemeWrapper: React.FC<React.PropsWithChildren<unknown>> = (props) => {
   });
   const [systemTheme, setSystemTheme] = useLocalStorageState<SystemTheme>('systemTheme', { defaultValue: SystemTheme.Close });
   const dispatch = useDispatch();
-  const cacheTheme = useSelector(Selectors.getTheme);
+  const cacheTheme = useAppSelector(Selectors.getTheme);
 
   useEffect(() => {
     const curTheme = theme || ThemeName.Light;

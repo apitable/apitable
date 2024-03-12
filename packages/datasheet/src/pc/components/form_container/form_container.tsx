@@ -22,12 +22,12 @@ import classnames from 'classnames';
 import produce from 'immer';
 import { debounce, isArray } from 'lodash';
 import _map from 'lodash/map';
-import { AnimationItem } from 'lottie-web';
+import { AnimationItem } from 'lottie-web/index';
 import Head from 'next/head';
 import Image from 'next/image';
 import * as React from 'react';
 import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { Node } from 'slate';
 import { Button, ContextMenu, TextButton, useThemeColors } from '@apitable/components';
 import {
@@ -68,6 +68,7 @@ import { FieldSetting } from 'pc/components/multi_grid/field_setting';
 import { Router } from 'pc/components/route_manager/router';
 import { useDispatch, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData, IURLMeta } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { getStorage, setStorage, StorageMethod, StorageName } from 'pc/utils/storage/storage';
@@ -81,10 +82,12 @@ import { ShareContext } from '../share';
 import { FormContext } from './form_context';
 import { FormFieldContainer } from './form_field_container';
 import { FormPropContainer } from './form_prop_container';
-import styles from './style.module.less';
 import { query2formData, string2Query } from './util';
 // @ts-ignore
-import { triggerUsageAlertForDatasheet, PreFillPanel } from 'enterprise';
+import { triggerUsageAlert, SubscribeUsageTipType } from 'enterprise/billing/trigger_usage_alert';
+// @ts-ignore
+import { PreFillPanel } from 'enterprise/pre_fill_panel/pre_fill_panel';
+import styles from './style.module.less';
 
 enum IFormContentType {
   Form = 'Form',
@@ -116,7 +119,12 @@ const defaultMeta = {
 
 const tempRecordID = `${getNewId(IDPrefix.Record)}_temp`;
 
-export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean; setPreFill: Dispatch<SetStateAction<boolean>> }>> = (props) => {
+export const FormContainer: React.FC<
+  React.PropsWithChildren<{
+    preFill: boolean;
+    setPreFill: Dispatch<SetStateAction<boolean>>;
+  }>
+> = (props) => {
   const { preFill, setPreFill } = props;
   const {
     id,
@@ -131,7 +139,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
     fieldPermissionMap,
     activeFieldId,
     activeFieldOperateType,
-  } = useSelector((state) => {
+  } = useAppSelector((state) => {
     const formState: IFormState = Selectors.getForm(state)!;
     const formRelMeta = Selectors.getFormRelMeta(state) || defaultMeta;
 
@@ -162,7 +170,9 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
   const [formData, setFormData] = useState({});
   const [formErrors, setFormErrors] = useState({});
   const [loading, setLoading] = useState<boolean>(false);
+  const [mount, setMount] = useState<boolean>(false);
   const [animationLoading, setAnimationLoading] = useState<boolean>(false);
+  const [showWorkdoc, setShowWorkdoc] = useState<boolean>(false);
   const lottieAnimate = useRef<AnimationItem>();
   const [contentType, setContentType] = useState<IFormContentType>(IFormContentType.Form);
   const { datasheetId, viewId } = sourceInfo;
@@ -178,7 +188,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
   const unmounted = useRef(false);
   const query = string2Query();
   const colors = useThemeColors();
-  const theme = useSelector(Selectors.getTheme);
+  const theme = useAppSelector(Selectors.getTheme);
   const { FORM_LOGIN_URL } = getEnvVariables();
 
   const dispatch = useDispatch();
@@ -408,7 +418,10 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
           handleAddRecordError(code, message);
         })
         .catch(() => networkErrorTip())
-        .finally(() => setLoading(false));
+        .finally(() => {
+          setLoading(false);
+          setAnimationLoading(false);
+        });
     }
     return FormApi.addFormRecord(id, postData)
       .then((response) => {
@@ -419,14 +432,23 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
         handleAddRecordError(code, message);
       })
       .catch(() => networkErrorTip())
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setLoading(false);
+        setAnimationLoading(false);
+      });
   };
 
-  const handleAddRecordError = (code: number, errMsg: string) => {
+  const handleAddRecordError = (code: number, errMsg: any) => {
     let str = t(Strings.form_error_tip);
     if (code === StatusCode.SPACE_CAPACITY_OVER_LIMIT) str = t(Strings.form_space_capacity_over_limit);
     if ([OVER_LIMIT_PER_SHEET_RECORDS, OVER_LIMIT_SPACE_RECORDS].includes(String(code))) {
-      return triggerUsageAlertForDatasheet?.(errMsg);
+      const { usage } = JSON.parse(errMsg);
+      triggerUsageAlert(
+        OVER_LIMIT_PER_SHEET_RECORDS === String(code) ? 'maxRowsPerSheet' : 'maxRowsInSpace',
+        { usage: usage, alwaysAlert: true },
+        SubscribeUsageTipType.Alert,
+      );
+      return;
     }
     warningTip(str);
   };
@@ -440,6 +462,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
     commitRemind(realRecordId, shareId);
     setFormData({});
     setFormErrors({});
+    setShowWorkdoc(false);
     patchRecord({ id: recordId, data: {}, commentCount: 0 });
     Message.success({ content: t(Strings.form_submit_success) });
     if (shareId) {
@@ -540,6 +563,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
       setFormData({ ...cacheData, ...queryData });
       patchRecord({ id: recordId, data: cacheData, commentCount: 0 });
     }
+    setMount(true);
   });
 
   const removeTmpSnapshot = () => {
@@ -602,7 +626,7 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
     const newSnapshot = produce(preSnapshot, (draft) => {
       const view = draft.meta.views.find((view) => view.id === viewId);
       if (view) {
-        if (!view.rows.find((row) => row.recordId === recordId)) {
+        if (!view.rows.find((row) => row.recordId === recordId) && !recordId.endsWith('_temp')) {
           view.rows.push({ recordId });
         }
         draft.recordMap[recordId] = record;
@@ -699,9 +723,12 @@ export const FormContainer: React.FC<React.PropsWithChildren<{ preFill: boolean;
   return (
     <FormContext.Provider
       value={{
+        mount,
         formProps,
         formData,
         formErrors,
+        showWorkdoc,
+        setShowWorkdoc,
         setFormData: _setFormData,
         setFormErrors: (fieldId, errMsg) => {
           setFormErrors({ ...formErrors, [fieldId]: errMsg });

@@ -18,10 +18,12 @@
 
 import { FC } from 'react';
 import * as React from 'react';
-import { useSelector, shallowEqual } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { IReduxState, UnitItem, ITeam, ITeamsInSpace } from '@apitable/core';
 import { SelectUnitModal, SelectUnitSource } from 'pc/components/catalog/permission_settings/permission/select_unit_modal';
 import { useMemberManage } from 'pc/hooks';
+
+import { useAppSelector } from 'pc/store/react-redux';
 
 interface IAddMember {
   onCancel: () => void;
@@ -30,7 +32,7 @@ interface IAddMember {
   teamList?: ITeamsInSpace[];
 }
 export const ChangeMemberTeam: FC<React.PropsWithChildren<IAddMember>> = ({ onCancel, inEditMember, setTeamList, teamList }) => {
-  const { selectedTeamInfoInSpace, selectMemberListInSpace } = useSelector(
+  const { selectedTeamInfoInSpace, selectMemberListInSpace } = useAppSelector(
     (state: IReduxState) => ({
       selectedTeamInfoInSpace: state.spaceMemberManage.selectedTeamInfoInSpace,
       selectMemberListInSpace: state.spaceMemberManage.selectMemberListInSpace,

@@ -17,7 +17,7 @@
  */
 
 import { Api, Strings, t } from '@apitable/core';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 
 interface ISetURLRecogProps {
   url: string;

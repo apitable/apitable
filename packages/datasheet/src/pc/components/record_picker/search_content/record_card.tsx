@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import Image from 'next/image';
 import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { Field, FieldType, IFieldMap, IViewColumn, IViewRow, Selectors, t, Strings } from '@apitable/core';
 import { DisplayFile } from 'pc/components/display_file';
 import { CellValue } from 'pc/components/multi_grid/cell/cell_value';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import EmptyImage from 'static/icon/datasheet/gallery/emptystates_img_datasheet.png';
 import styles from './style.module.less';
 
@@ -20,7 +20,7 @@ export interface IRecordCardProps {
 export const RecordCard: React.FC<IRecordCardProps> = (props) => {
   const { datasheetId, row, columns, fieldMap, onClick } = props;
   const state = store.getState();
-  const snapshot = useSelector(Selectors.getSnapshot)!;
+  const snapshot = useAppSelector(Selectors.getSnapshot)!;
   const recordId = row.recordId;
   const [frozenColumn, ...remainColumns] = columns;
   const primaryFieldId = frozenColumn.fieldId;

@@ -19,10 +19,10 @@
 import { isEmpty, isEqual, xor } from 'lodash';
 import * as React from 'react';
 import { forwardRef, memo, ReactNode, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
-import { Button, Typography } from '@apitable/components';
+import { Button, LinkButton, Typography } from '@apitable/components';
 import { ConfigConstant, Navigation, t, Strings } from '@apitable/core';
 import { AddOutlined, TriangleRightFilled } from '@apitable/icons';
-
+import { TComponent } from 'pc/components/common/t_component';
 import { Router } from '../../../route_manager/router';
 import { TreeItem } from '../tree_item';
 import TreeViewContext from '../tree_view_context';
@@ -157,6 +157,10 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
       pos,
     };
 
+    if(child === null) {
+      return null;
+    }
+
     return React.cloneElement(child, cloneProps);
   };
 
@@ -246,7 +250,22 @@ export const TreeViewBase: React.ForwardRefRenderFunction<ITreeViewRef, ITreeVie
           renderTree(treeData)
         ) : isEmpty(children) ? (
           <div className={styles.empty}>
-            <Typography variant="body2">{t(Strings.catalog_empty_tips)}</Typography>
+            <Typography variant="body2">
+              {module === ConfigConstant.Modules.PRIVATE ? (
+                <TComponent
+                  tkey={t(Strings.create_private_node_tip)}
+                  params={{
+                    link: (
+                      <LinkButton
+                        href={t(Strings.private_help_link)}
+                      >
+                        {t(Strings.know_more)}
+                      </LinkButton>
+                    ),
+                  }}
+                />
+              ) : t(Strings.catalog_empty_tips)}
+            </Typography>
             <Button
               color="primary"
               prefixIcon={<AddOutlined />}

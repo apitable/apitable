@@ -20,7 +20,6 @@ import classNames from 'classnames';
 import { omit } from 'lodash';
 import * as React from 'react';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
-import { useSelector } from 'react-redux';
 // eslint-disable-next-line no-restricted-imports
 import { Checkbox, Select, colorVars, Switch } from '@apitable/components';
 import {
@@ -40,6 +39,7 @@ import { QuestionCircleOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { MobileSelect, Tooltip } from 'pc/components/common';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
+import { useAppSelector } from 'pc/store/react-redux';
 import settingStyles from '../../field_setting/styles.module.less';
 import styles from '../styles.module.less';
 import { CollectTypeSelect } from './collect_type_select';
@@ -70,7 +70,7 @@ const optionTimeFormatData = [
 export const FormatDateTime: React.FC<React.PropsWithChildren<IFormatDateTime>> = (props: IFormatDateTime) => {
   const { currentField, setCurrentField } = props;
   const [isModalShow, setModalShow] = useState(false);
-  const userTimeZone = useSelector(Selectors.getUserTimeZone)!;
+  const userTimeZone = useAppSelector(Selectors.getUserTimeZone)!;
   const handleDateFormatChange = ({ value }: any) => {
     setCurrentField({
       ...currentField,

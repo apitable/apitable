@@ -15,17 +15,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-// @ts-ignore
-import { IEmbedProps } from 'enterprise';
 import { NextPageContext } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 import { getRegResult, embedIdReg } from 'pc/hooks';
+// @ts-ignore
+import { IEmbedProps } from 'enterprise/embed/embed';
 
 const DynamicComponentWithNoSSR = dynamic(
   () =>
     // @ts-ignore
-    import('enterprise').then((components) => {
+    import('enterprise/embed/embed').then((components) => {
       return components.Embed;
     }),
   { ssr: false },

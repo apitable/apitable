@@ -19,13 +19,13 @@
 import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, IconButton, Skeleton, ThemeName, useThemeColors } from '@apitable/components';
 import { integrateCdnHost, IReduxState, Settings, Strings, t, WidgetApi } from '@apitable/core';
 import { ChevronRightOutlined, CloseOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Message, Tooltip } from 'pc/components/common';
 import { SearchPanel, SecondConfirmType } from 'pc/components/datasheet_search_panel';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getUrlWithHost } from 'pc/utils';
 import NotDataImgDark from 'static/icon/datasheet/empty_state_dark.png';
 import NotDataImgLight from 'static/icon/datasheet/empty_state_light.png';
@@ -53,12 +53,15 @@ export const RecommendWidgetPanel: React.FC<React.PropsWithChildren<IRecommendWi
   const colors = useThemeColors();
   const [loading, setLoading] = useState(false);
   const [installingWidgetIds, setInstallingWidgetIds] = useState<null | string[]>(null);
-  const dashboardId = useSelector((state) => state.pageParams.dashboardId)!;
-  const spaceId = useSelector((state) => state.space.activeId);
+  const dashboardId = useAppSelector((state) => state.pageParams.dashboardId)!;
+  const spaceId = useAppSelector((state) => state.space.activeId);
+  const activeNodePrivate = useAppSelector((state) =>
+    state.catalogTree.treeNodesMap[dashboardId]?.nodePrivate || state.catalogTree.privateTreeNodesMap[dashboardId]?.nodePrivate
+  );
   const [recommendList, serRecommendList] = useState<IRecentInstalledItem[]>([]);
   const [searchPanelVisible, setSearchPanelVisible] = useState(false);
-  const rootNodeId = useSelector((state: IReduxState) => state.catalogTree.rootId);
-  const themeName = useSelector((state) => state.theme);
+  const rootNodeId = useAppSelector((state: IReduxState) => state.catalogTree.rootId);
+  const themeName = useAppSelector((state) => state.theme);
   const templateEmptyPng = themeName === ThemeName.Light ? NotDataImgLight : NotDataImgDark;
 
   const importWidget = ({ widgetIds }: any) => {
@@ -72,14 +75,14 @@ export const RecommendWidgetPanel: React.FC<React.PropsWithChildren<IRecommendWi
       return;
     }
     setLoading(true);
-    WidgetApi.getRecentInstalledWidgets(spaceId!).then((res) => {
+    WidgetApi.getRecentInstalledWidgets(spaceId!, activeNodePrivate ? 3 : 1).then((res) => {
       setLoading(false);
       const { data, success } = res.data;
       if (success) {
         serRecommendList(data);
       }
     });
-  }, [visibleRecommend, spaceId]);
+  }, [visibleRecommend, spaceId, activeNodePrivate]);
 
   const quoteWidget = async (widgetIds: string[]) => {
     setInstallingWidgetIds(widgetIds);

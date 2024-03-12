@@ -30,7 +30,7 @@
 }
 
 .hideField {
-  .light-scroll-bar();
+  .default-scroll-bar();
   background: var(--highBg);
   width: 248px;
   overflow: auto;
@@ -67,7 +67,7 @@
   }
 
   .fields {
-    .light-scroll-bar();
+    .default-scroll-bar();
     overflow-y: auto;
     overflow-x: hidden;
     max-height: calc(100% - 160px);
@@ -160,8 +160,10 @@
 
     .fieldName {
       flex: 1;
-      width: 0;
-      .ellipsis();
+      width: 140px;
+      :global(.typography) {
+        color: inherit;
+      }
     }
   }
 

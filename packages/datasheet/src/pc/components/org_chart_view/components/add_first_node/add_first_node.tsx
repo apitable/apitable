@@ -19,17 +19,18 @@
 import Image from 'next/image';
 import * as React from 'react';
 import { FC, useContext } from 'react';
-import { useSelector } from 'react-redux';
 import { Button, Typography, ThemeName } from '@apitable/components';
 import { integrateCdnHost, Settings, Strings, t } from '@apitable/core';
 import { AddOutlined } from '@apitable/icons';
 import { OnLoadParams, useStoreState } from '@apitable/react-flow';
+import { useAppSelector } from 'pc/store/react-redux';
 import ArchitectureEmptyDark from 'static/icon/datasheet/architecture_empty_dark.png';
 import ArchitectureEmptyLight from 'static/icon/datasheet/architecture_empty_light.png';
 import { CARD_WIDTH } from '../../constants';
 import { FlowContext } from '../../context/flow_context';
 import { NodeHandleState } from '../../interfaces';
 import styles from './styles.module.less';
+
 interface IAddFirstNodeProps {
   mode: 'none' | 'add';
   onAdd: () => Promise<string>;
@@ -52,7 +53,7 @@ export const AddFirstNode: FC<React.PropsWithChildren<IAddFirstNodeProps>> = (pr
 
   const addMode = mode === 'add';
   console.log('addMode', addMode);
-  const themeName = useSelector((state) => state.theme);
+  const themeName = useAppSelector((state) => state.theme);
   const architectureEmpty = themeName === ThemeName.Light ? ArchitectureEmptyLight : ArchitectureEmptyDark;
 
   return (

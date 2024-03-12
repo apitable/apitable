@@ -1,7 +1,15 @@
 import { Box, Button, IconButton, Typography, useTheme, DropdownSelect as Select } from '@apitable/components';
 import {
-  ConfigConstant, EmptyNullOperand, Field, FieldType, IExpression, IExpressionOperand,
-  OperandTypeEnums, OperatorEnums, Strings, t
+  ConfigConstant,
+  EmptyNullOperand,
+  Field,
+  FieldType,
+  IExpression,
+  IExpressionOperand,
+  OperandTypeEnums,
+  OperatorEnums,
+  Strings,
+  t,
 } from '@apitable/core';
 import { AddOutlined, DeleteOutlined, WarnCircleFilled } from '@apitable/icons';
 import { produce } from 'immer';
@@ -10,21 +18,19 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { FilterValue } from './filter_value';
 import { FieldSelect } from './field_select';
-import {
-  addNewFilter as _addNewFilter, FilterTypeEnums,
-  getBooleanOptionName,
-  getFields, getOperatorOptions
-} from './helper';
+import { addNewFilter as _addNewFilter, FilterTypeEnums, getBooleanOptionName, getFields, getOperatorOptions } from './helper';
 import { FilterButtonWrap, FilterGroupWrap, GroupWrapperWithButton, SubGroupWrap, OperatorWrap } from './styled';
 import { FilterButton } from './filter_button';
 import { getFieldPermissionMap, getFieldRoleByFieldId, getSnapshot } from 'store';
 import { IWidgetState } from 'interface';
 
 const transformNullFilter = (filter?: IExpression) => {
-  return filter == null || isEqual(filter, EmptyNullOperand) ? {
-    operator: OperatorEnums.And,
-    operands: [],
-  } : filter;
+  return filter == null || isEqual(filter, EmptyNullOperand)
+    ? {
+        operator: OperatorEnums.And,
+        operands: [],
+      }
+    : filter;
 };
 interface IFilterProps {
   filter?: IExpression;
@@ -37,16 +43,14 @@ interface IFilterProps {
 
 const WarningTip = (props: any) => {
   const theme = useTheme();
-  return <Box
-    display='flex'
-    alignItems='center'
-    gridColumn='property-start / value-end'
-  >
-    <WarnCircleFilled color={theme.color.fc10} />
-    <Typography color={theme.color.fc10} variant="body3" style={{ marginLeft: '4px' }}>
-      {props.children}
-    </Typography>
-  </Box>;
+  return (
+    <Box display="flex" alignItems="center" gridColumn="property-start / value-end">
+      <WarnCircleFilled color={theme.color.fc10} />
+      <Typography color={theme.color.fc10} variant="body3" style={{ marginLeft: '4px' }}>
+        {props.children}
+      </Typography>
+    </Box>
+  );
 };
 /**
  * This is a recursively rendered component with up to 3 levels of nesting. Renders S-expressions as nested grouped conditional filters.
@@ -66,22 +70,25 @@ export const FilterBase = (props: IFilterProps) => {
   const [filter, setFilter] = useState(transformNullFilter(props.filter));
   const theme = useTheme();
   const isRoot = !hasParent;
-  const updateFilter = useCallback((filter: any) => {
-    setFilter(filter);
-    // The updated value of the child component is passed to the parent component. 
-    // The parent component knows the specific path of the child component and only needs to pass the value.
-    if (onChange) {
-      // root update, you need to serialize the values a bit.
-      if (isRoot) {
-        onChange({
-          type: OperandTypeEnums.Expression,
-          value: filter.operands?.length === 0 ? null : filter, // Null handling
-        });
-      } else {
-        onChange(filter);
+  const updateFilter = useCallback(
+    (filter: any) => {
+      setFilter(filter);
+      // The updated value of the child component is passed to the parent component.
+      // The parent component knows the specific path of the child component and only needs to pass the value.
+      if (onChange) {
+        // root update, you need to serialize the values a bit.
+        if (isRoot) {
+          onChange({
+            type: OperandTypeEnums.Expression,
+            value: filter.operands?.length === 0 ? null : filter, // Null handling
+          });
+        } else {
+          onChange(filter);
+        }
       }
-    }
-  }, [onChange, isRoot]);
+    },
+    [onChange, isRoot]
+  );
 
   useEffect(() => {
     setFilter(transformNullFilter(props.filter));
@@ -100,7 +107,7 @@ export const FilterBase = (props: IFilterProps) => {
     const _filter = JSON.parse(JSON.stringify(filter));
     // Reset the operator and reset the value when the selected field changes.
     if (path === 'operands[0].value') {
-      const field = fields.find(field => field.id === value);
+      const field = fields.find((field) => field.id === value);
       const op = field ? Field.bindModel(field).acceptFilterOperators?.[0] : '';
       op && set(_filter, 'operator', op);
       // If it is a checkbox, fill in false by default.
@@ -112,7 +119,7 @@ export const FilterBase = (props: IFilterProps) => {
 
   // Press path to delete.
   const deleteOperandByIndex = (operandIndex: number) => {
-    const _filter = produce(filter, (draft: { operands: any[]; }) => {
+    const _filter = produce(filter, (draft: { operands: any[] }) => {
       draft.operands.splice(operandIndex, 1);
     });
     updateFilter(_filter);
@@ -129,12 +136,16 @@ export const FilterBase = (props: IFilterProps) => {
   // Here are all the fields, with or without permissions.
   const fieldMap = snapshot.meta.fieldMap;
 
-  const fields = getFields(snapshot.meta.views[0]?.columns!, fieldMap);
+  const filters = getFields(snapshot.meta.views[0]?.columns!, fieldMap);
+  const fields = filters.filter((r) => Field.bindModel(r).canFilter);
   const primaryField = fields[0];
-  const addNewFilter = useCallback((type: FilterTypeEnums) => {
-    const newFilter = _addNewFilter(filter, type, primaryField);
-    updateFilter(newFilter);
-  }, [filter, updateFilter, primaryField]);
+  const addNewFilter = useCallback(
+    (type: FilterTypeEnums) => {
+      const newFilter = _addNewFilter(filter, type, primaryField);
+      updateFilter(newFilter);
+    },
+    [filter, updateFilter, primaryField]
+  );
 
   const boolOperatorOptions = [
     { value: 'and', label: getBooleanOptionName('and') },
@@ -146,31 +157,34 @@ export const FilterBase = (props: IFilterProps) => {
     const isDeletedField = field == null;
 
     if (isDeletedField) {
-      return <>
-        <WarningTip>
-          {t(Strings.robot_trigger_record_matches_condition_invalid_field)}
-        </WarningTip>
-      </>;
+      return (
+        <>
+          <WarningTip>{t(Strings.robot_trigger_record_matches_condition_invalid_field)}</WarningTip>
+        </>
+      );
     }
     const isCryptoField = getFieldRoleByFieldId(fieldPermissionMap, fieldId) === ConfigConstant.Role.None;
     if (isCryptoField) {
-      return <>
-        <WarningTip>
-          {t(Strings.robot_trigger_record_matches_condition_cannot_access_field)}
-        </WarningTip>
-      </>;
+      return (
+        <>
+          <WarningTip>{t(Strings.robot_trigger_record_matches_condition_cannot_access_field)}</WarningTip>
+        </>
+      );
     }
 
     const operatorOptions = getOperatorOptions(field);
 
     return (
       <>
-        <FieldSelect
-          fields={fields}
-          value={filter.operands[0]?.value}
-          onChange={(value) => handleChange('operands[0].value', value)}
-        />
+        <FieldSelect fields={fields} value={filter.operands[0]?.value} onChange={(value) => handleChange('operands[0].value', value)} />
         <Select
+          dropDownOptions={{
+            placement: 'bottom-start',
+          }}
+          panelOptions={{
+            maxWidth: '300px',
+          }}
+          dropdownMatchSelectWidth={false}
           options={operatorOptions}
           value={filter.operator}
           onSelected={({ value }) => handleChange('operator', value as any)}
@@ -192,19 +206,28 @@ export const FilterBase = (props: IFilterProps) => {
     <Wrapper>
       <GroupWrapperWithButton>
         <FilterGroupWrap>
-          {
-            filter?.operands?.map((item, index) => {
-              const path = `operands[${index}].value`;
-              return <React.Fragment key={path}>
-                {
-                  index == 0 ? <OperatorWrap>{t(Strings.where)}</OperatorWrap> : (
-                    index === 1 ? <Select
-                      options={boolOperatorOptions}
-                      value={filter.operator}
-                      onSelected={({ value }) => handleChange('operator', value as any)}
-                    /> :
-                      <OperatorWrap> {getBooleanOptionName(filter.operator)}</OperatorWrap>)
-                }
+          {filter?.operands?.map((item, index) => {
+            const path = `operands[${index}].value`;
+            return (
+              <React.Fragment key={path}>
+                {index == 0 ? (
+                  <OperatorWrap>{t(Strings.where)}</OperatorWrap>
+                ) : index === 1 ? (
+                  <Select
+                    dropDownOptions={{
+                      placement: 'bottom-start',
+                    }}
+                    panelOptions={{
+                      maxWidth: '300px',
+                    }}
+                    dropdownMatchSelectWidth={false}
+                    options={boolOperatorOptions}
+                    value={filter.operator}
+                    onSelected={({ value }) => handleChange('operator', value as any)}
+                  />
+                ) : (
+                  <OperatorWrap> {getBooleanOptionName(filter.operator)}</OperatorWrap>
+                )}
                 <FilterBase
                   path={path}
                   filter={item.value}
@@ -217,27 +240,27 @@ export const FilterBase = (props: IFilterProps) => {
                 />
                 <IconButton
                   icon={() => <DeleteOutlined size={16} color={theme.color.textCommonTertiary} />}
-                  onClick={() => deleteOperandByIndex(index)} 
+                  onClick={() => deleteOperandByIndex(index)}
                 />
-              </React.Fragment>;
-            })
-          }
+              </React.Fragment>
+            );
+          })}
         </FilterGroupWrap>
         <FilterButtonWrap>
-          <FilterButton
-            onClick={() => addNewFilter(FilterTypeEnums.Filter)}
-          >{t(Strings.add_filter)}</FilterButton>
-          {supportsGrouping && depth < 2 && <Button
-            prefixIcon={<AddOutlined />}
-            variant="fill"
-            onClick={() => {
-              addNewFilter(FilterTypeEnums.FilterGroup);
-            }}
-          >
-            Add filter criteria group
-          </Button>}
+          <FilterButton onClick={() => addNewFilter(FilterTypeEnums.Filter)}>{t(Strings.add_filter)}</FilterButton>
+          {supportsGrouping && depth < 2 && (
+            <Button
+              prefixIcon={<AddOutlined />}
+              variant="fill"
+              onClick={() => {
+                addNewFilter(FilterTypeEnums.FilterGroup);
+              }}
+            >
+              Add filter criteria group
+            </Button>
+          )}
         </FilterButtonWrap>
       </GroupWrapperWithButton>
-    </Wrapper >
+    </Wrapper>
   );
 };

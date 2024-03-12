@@ -18,8 +18,9 @@
 
 import axios from 'axios';
 import * as Url from '../../shared/api/url';
-import { IAddIsActivedMemberInfo, IApiWrapper, IInviteMemberList, IMemberInfoInAddressList, IUpdateMemberInfo } from '../../../exports/store';
-import { IAxiosResponse } from 'types';
+import {
+  IAddIsActivedMemberInfo, IApiWrapper, IInviteMemberList, IMemberInfoInAddressList, IUpdateMemberInfo
+} from '../../../exports/store/interfaces';
 import urlcat from 'urlcat';
 
 const CancelToken = axios.CancelToken;
@@ -34,19 +35,6 @@ export function getUnitsByMember() {
 
 export function getTeamListLayered() {
   return axios.get(Url.TEAM_LIST_LAYERED);
-}
-
-/**
- * Contact list, get members
- *
- * @param teamId team ID, if empty, return root team, default 0
- */
-export function getMemberList(teamId?: string): Promise<IAxiosResponse<IMemberInfoInAddressList[]>> {
-  return axios.get(Url.MEMBER_LIST, {
-    params: {
-      teamId,
-    },
-  });
 }
 
 /**
@@ -268,10 +256,9 @@ export function updateMemberTeam(memberIds: string[], newTeamIds: string[], preT
 /**
  * Invite members(batch available)
  */
-export function sendInvite(invite: IInviteMemberList[], nodeId?: string, nvcVal?: string) {
-  return axios.post(Url.SEND_INVITE, {
+export function sendInvite(spaceId: string, invite: IInviteMemberList[], nvcVal?: string) {
+  return axios.post(urlcat(Url.SEND_EMAIL_INVITATION, { spaceId }), {
     invite,
-    nodeId,
     data: nvcVal,
   });
 }
@@ -281,21 +268,25 @@ export function sendInvite(invite: IInviteMemberList[], nodeId?: string, nvcVal?
  *
  * @param email strict email format
  */
-export function reSendInvite(email: string) {
-  return axios.post(Url.RESEND_INVITE, {
+export function reSendInvite(spaceId: string, email: string) {
+  return axios.post(urlcat(Url.RESEND_EMAIL_INVITATION, { spaceId }), {
     email,
   });
 }
 
 /**
  * Invite Email Verify
- * @param token one-time invite token
- * @param from inviter
+ * @param inviteToken one-time invite token
  */
-export function inviteEmailVerify(token: string) {
-  return axios.post(Url.INVITE_EMAIL_VERIFY, {
-    token,
-  });
+export function inviteEmailVerify(inviteToken: string) {
+  return axios.get(urlcat(Url.VALID_EMAIL_INVITATION, { inviteToken }));
+}
+
+/**
+ * Accept email invitation.
+ */
+export function acceptEmailInvitation(spaceId: string, inviteToken: string) {
+  return axios.post(urlcat(Url.ACCEPT_EMAIL_INVITATION, { spaceId, inviteToken }));
 }
 
 /**
@@ -362,8 +353,8 @@ export function linkValid(token: string, nodeId?: string) {
  * @param nodeId
  * @returns
  */
-export function joinViaSpace(token: string, nodeId?: string) {
-  return axios.post(Url.JOIN_VIA_LINK, { token, nodeId });
+export function joinViaSpace(token: string, nodeId: string, data?: string) {
+  return axios.post(Url.JOIN_VIA_LINK, { token, nodeId, data });
 }
 
 export function getCollaboratorListPage(pageObjectParams: string, nodeId: string) {

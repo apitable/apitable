@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import ReactDOM from 'react-dom';
-import { KeyCode, stopPropagation } from '../../utils';
+import { stopPropagation } from 'pc/utils/dom';
+import { KeyCode } from 'pc/utils/keycode';
 import styles from './style.module.less';
 
 export const PcWrapper: React.FC<{ children: ReactElement; hidePanel(e: any): void }> = ({ children, hidePanel }) => {

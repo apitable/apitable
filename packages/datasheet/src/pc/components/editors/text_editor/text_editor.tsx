@@ -24,9 +24,9 @@ import { FieldType, getTextFieldType, ISegment, string2Segment, Strings, t } fro
 import { ContextName, ShortcutContext } from 'modules/shared/shortcut_key';
 import { CellText } from 'pc/components/multi_grid/cell/cell_text';
 import { stopPropagation } from 'pc/utils/dom';
-
 import { IBaseEditorProps, IEditor } from '../interface';
 import styles from './style.module.less';
+
 export interface ITextEditorProps extends IBaseEditorProps {
   placeholder?: string;
   style: React.CSSProperties;
@@ -185,8 +185,16 @@ const TextEditorBase: React.ForwardRefRenderFunction<IEditor, ITextEditorProps> 
 
   const autoSize = isInExpandRecord ? { minRows } : { minRows: Math.round(height / TEXT_LINE_HEIGHT), maxRows: 7 };
 
+  const isMultiText = props.field.type === FieldType.Text;
+
   return (
-    <div ref={wrapperRef} className={styles.textEditor} style={{ ...style }} onWheel={stopPropagation} onMouseMove={stopPropagation}>
+    <div
+      ref={wrapperRef}
+      className={classNames(styles.textEditor, isMultiText && 'multiText')}
+      style={{ ...style }}
+      onWheel={stopPropagation}
+      onMouseMove={stopPropagation}
+    >
       {isInExpandRecord && !editable ? (
         <CellText cellValue={cellValue} field={props.field} isActive />
       ) : isEnhanceText || isSingleText ? (

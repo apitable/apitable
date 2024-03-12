@@ -19,19 +19,20 @@
 import { usePrevious } from 'ahooks';
 import { difference } from 'lodash';
 import { useEffect, useMemo } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch } from 'react-redux';
 import { ResourceType, Selectors, StoreActions, IWidgetPanelStatus } from '@apitable/core';
 import { ShortcutActionManager, ShortcutActionName } from 'modules/shared/shortcut_key';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { setStorage, StorageName } from 'pc/utils/storage/storage';
 
 export const useManageWidgetMap = () => {
   const dispatch = useAppDispatch();
-  const { datasheetId, mirrorId } = useSelector((state) => state.pageParams);
+  const { datasheetId, mirrorId } = useAppSelector((state) => state.pageParams);
   const resourceId = mirrorId || datasheetId;
   const resourceType = mirrorId ? ResourceType.Mirror : ResourceType.Datasheet;
-  const activeWidgetPanel = useSelector((state) => Selectors.getResourceActiveWidgetPanel(state, resourceId!, resourceType));
+  const activeWidgetPanel = useAppSelector((state) => Selectors.getResourceActiveWidgetPanel(state, resourceId!, resourceType));
 
   const activeWidgetInPanelIds = useMemo(() => {
     if (!activeWidgetPanel) {
@@ -65,8 +66,8 @@ export const useManageWidgetMap = () => {
 
 export const useMountWidgetPanelShortKeys = () => {
   const dispatch = useDispatch();
-  const spaceId = useSelector((state) => state.space.activeId);
-  const { datasheetId, mirrorId } = useSelector(
+  const spaceId = useAppSelector((state) => state.space.activeId);
+  const { datasheetId, mirrorId } = useAppSelector(
     (state) => ({
       datasheetId: state.pageParams.datasheetId,
       mirrorId: state.pageParams.mirrorId,

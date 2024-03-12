@@ -20,12 +20,13 @@ import classNames from 'classnames';
 import { useCallback, useRef, useEffect, useState } from 'react';
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { VariableSizeList as List, VariableSizeGrid as Grid, GridOnScrollProps } from 'react-window';
 import { DATASHEET_ID, Field, FieldOperateType, IReduxState, Selectors, StoreActions } from '@apitable/core';
 import { browser } from 'modules/shared/browser';
 import { useDispatch } from 'pc/hooks';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { FIELD_HEAD_CLASS, getElementDataset, getParentNodeByClass } from 'pc/utils';
 import { expandRecordIdNavigate } from '../expand_record';
 import { FieldSetting } from '../multi_grid/field_setting';
@@ -33,6 +34,7 @@ import { AddRecord } from './add_record';
 import { Cell, CellTitle, CellHead } from './cell';
 import { FieldMenu } from './field_menu';
 import styles from './styles.module.less';
+
 const COLUMN_WIDTH = 134;
 const ROW_HEIGHT = 80 + 16 + 14;
 const FIXED_TITLE_HEIGHT = 32;
@@ -59,7 +61,7 @@ export const MobileGrid: React.FC<React.PropsWithChildren<IMobileGridProps>> = (
     searchKeyword,
     snapshot,
     mirrorId,
-  } = useSelector((state: IReduxState) => {
+  } = useAppSelector((state: IReduxState) => {
     const visibleColumns = Selectors.getVisibleColumns(state)!;
     const { datasheetId, mirrorId } = state.pageParams;
     const fieldMap = Selectors.getFieldMap(state, datasheetId)!;
@@ -180,7 +182,7 @@ export const MobileGrid: React.FC<React.PropsWithChildren<IMobileGridProps>> = (
         // Jitter processing when rowing vertically to the bottom
         scrollTop <= GRID_INNER_DIV_HEIGHT - GRID_HEIGHT
       ) {
-        syncScroll(gridOuterRef.current!.scrollLeft, scrollTop);
+        syncScroll(gridOuterRef.current?.scrollLeft || 0, scrollTop);
       }
     },
     [GRID_HEIGHT, GRID_INNER_DIV_HEIGHT, syncScroll],
@@ -251,7 +253,7 @@ export const MobileGrid: React.FC<React.PropsWithChildren<IMobileGridProps>> = (
   }, [syncScroll, viewId, searchKeyword]);
 
   // Hidden columns are clicked into the middle of the view and highlighted
-  const activeCell = useSelector((state) => Selectors.getActiveCell(state));
+  const activeCell = useAppSelector((state) => Selectors.getActiveCell(state));
   useEffect(() => {
     if (!activeCell) {
       return;

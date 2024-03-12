@@ -18,7 +18,7 @@
 
 import { has } from 'lodash';
 import { useContext, useEffect } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual } from 'react-redux';
 import { batchActions } from 'redux-batched-actions';
 import {
   Api,
@@ -38,13 +38,14 @@ import {
   t,
 } from '@apitable/core';
 import { WarnCircleFilled, WarnFilled } from '@apitable/icons';
-import { Message } from 'pc/components/common';
+import { Message } from 'pc/components/common/message/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
 import { WorkbenchSideContext } from 'pc/components/common_side/workbench_side/workbench_side_context';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
 import { NotificationStore } from 'pc/notification_store';
 import { store } from 'pc/store';
+import { useAppSelector } from 'pc/store/react-redux';
 import { getNodeTypeByNodeId, getResourceTypeByNodeType } from 'pc/utils';
 import { useCatalogTreeRequest } from './use_catalogtree_request';
 
@@ -66,8 +67,8 @@ enum ErrorType {
 export const useWorkbenchSideSync = () => {
   const dispatch = useAppDispatch();
   const { getChildNodeListReq, updateNextNode, getPositionNodeReq } = useCatalogTreeRequest();
-  const activeNodeId = useSelector((state: IReduxState) => Selectors.getNodeId(state));
-  const { treeNodesMap, socketData, expandedKeys, spaceId } = useSelector(
+  const activeNodeId = useAppSelector((state: IReduxState) => Selectors.getNodeId(state));
+  const { treeNodesMap, socketData, expandedKeys, spaceId } = useAppSelector(
     (state: IReduxState) => ({
       treeNodesMap: state.catalogTree.treeNodesMap,
       socketData: state.catalogTree.socketData,
@@ -193,7 +194,7 @@ export const useWorkbenchSideSync = () => {
   const popErrorModal = (nodeId: string, errorType: ErrorType, nodeType: ConfigConstant.NodeType = ConfigConstant.NodeType.DATASHEET) => {
     if (errorType === ErrorType.Delete) {
       Api.keepTabbar({}).then(() => {
-        window.location.reload();
+        // window.location.reload();
       });
       return;
     }

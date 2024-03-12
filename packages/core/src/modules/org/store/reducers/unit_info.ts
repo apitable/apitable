@@ -17,7 +17,7 @@
  */
 
 import { IUnitInfo } from '../../../../exports/store/interfaces';
-import { IResetUnitInfoAction, IUpdateUnitMapAction, IUpdateUserMapAction } from '../../../../exports/store/actions';
+import { IResetUnitInfoAction, IUpdateUnitMapAction, IUpdateUserMapAction } from 'modules/org/store/actions/unit_info';
 import produce from 'immer';
 import { RESET_UNIT_INFO, UPDATE_UNIT_MAP, UPDATE_USER_MAP } from '../../../shared/store/action_constants';
 

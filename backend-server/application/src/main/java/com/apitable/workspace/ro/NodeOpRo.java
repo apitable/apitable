@@ -22,12 +22,12 @@ import cn.hutool.core.util.StrUtil;
 import com.apitable.shared.sysconfig.i18n.I18nStringsUtil;
 import com.apitable.workspace.enums.NodeType;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import java.util.List;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -51,10 +51,10 @@ public class NodeOpRo {
     @Size(max = 100, message = "The name length cannot exceed 100 bits")
     private String nodeName;
 
-    @Schema(description = "Type. 1: folder; 2: DataSheet; 3: Form; 4: Dashboard; 5: Mirror, 10: Automation", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Type. 1: folder; 2: DataSheet; 3: Form; 4: Dashboard; 5: Mirror, 10: Automation, 12: embed page, ", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "Type cannot be empty")
     @Min(value = 1, message = "Error in type")
-    @Max(value = 10, message = "Error in type")
+    @Max(value = 12, message = "Error in type")
     private Integer type;
 
     @Schema(description = "The previous node of the target position moves to the first position "
@@ -67,6 +67,9 @@ public class NodeOpRo {
     @Schema(description = "Whether to detect duplicate node names", example = "true")
     private Boolean checkDuplicateName;
 
+    @Schema(description = "unit id", example = "1234567")
+    private String unitId;
+
     /**
      * Get Node Name.
      */
@@ -75,20 +78,13 @@ public class NodeOpRo {
             return nodeName;
         }
         NodeType nodeType = NodeType.toEnum(type);
-        switch (nodeType) {
-            case FOLDER:
-            case DATASHEET:
-            case FORM: // The name of the magic form is transmitted from the front end
-            case DASHBOARD:
-            case MIRROR:
-            case AI_CHAT_BOT:
-            case AUTOMATION:
+        return switch (nodeType) { // The name of the magic form is transmitted from the front end
+            case FOLDER, DATASHEET, FORM, DASHBOARD, MIRROR, AI_CHAT_BOT, AUTOMATION, CUSTOM_PAGE ->
                 // The image name is transmitted from the front end
                 // default_create_'key' Configure in the strings table
-                return I18nStringsUtil.t("default_create_" + nodeType.name().toLowerCase());
-            default:
-                return I18nStringsUtil.t("default_create_file");
-        }
+                I18nStringsUtil.t("default_create_" + nodeType.name().toLowerCase());
+            default -> I18nStringsUtil.t("default_create_file");
+        };
     }
 
     /**
