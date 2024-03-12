@@ -43,4 +43,9 @@ public class DefaultAutomationServiceFacadeImpl implements AutomationServiceFaca
     public void updateSchedule(String triggerId, String scheduleConfig) {
         
     }
+
+    @Override
+    public void deleteSchedule(String triggerId, Long userId) {
+
+    }
 }

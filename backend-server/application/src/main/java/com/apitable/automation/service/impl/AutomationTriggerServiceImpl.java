@@ -29,6 +29,7 @@ import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
+import com.apitable.automation.entity.AutomationRobotEntity;
 import com.apitable.automation.entity.AutomationTriggerEntity;
 import com.apitable.automation.enums.AutomationTriggerType;
 import com.apitable.automation.mapper.AutomationTriggerMapper;
@@ -180,6 +181,20 @@ public class AutomationTriggerServiceImpl implements IAutomationTriggerService {
         } catch (RestClientException e) {
             log.error("Delete trigger: {}", triggerId, e);
         }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteByTriggerId(String robotId, String triggerId, Long userId) {
+        AutomationTriggerEntity trigger = triggerMapper.selectByTriggerId(triggerId);
+        ExceptionUtil.isNotNull(trigger, AUTOMATION_TRIGGER_NOT_EXIST);
+        String scheduleTriggerTypeId = iAutomationTriggerTypeService.getTriggerTypeByEndpoint(
+            AutomationTriggerType.SCHEDULED_TIME_ARRIVE.getType());
+        if (trigger.getTriggerTypeId().equals(scheduleTriggerTypeId)) {
+            automationServiceFacade.deleteSchedule(triggerId, userId);
+        }
+        triggerMapper.deleteById(trigger.getId());
+        iAutomationRobotService.updateUpdaterByRobotId(robotId, userId);
     }
 
     @Override

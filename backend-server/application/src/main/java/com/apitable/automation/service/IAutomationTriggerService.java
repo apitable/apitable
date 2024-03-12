@@ -79,6 +79,16 @@ public interface IAutomationTriggerService {
      */
     void deleteByDatabus(String robotId, String triggerId, Long userId);
 
+
+    /**
+     * Delete trigger.
+     *
+     * @param robotId   robot id
+     * @param triggerId trigger id
+     * @param userId operator user id
+     */
+    void deleteByTriggerId(String robotId, String triggerId, Long userId);
+
     /**
      * copy trigger.
      *

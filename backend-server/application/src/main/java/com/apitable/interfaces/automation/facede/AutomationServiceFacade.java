@@ -54,4 +54,12 @@ public interface AutomationServiceFacade {
      * @param scheduleConfig config
      */
     void updateSchedule(String triggerId, String scheduleConfig);
+
+    /**
+     * delete schedule.
+     *
+     * @param triggerId trigger id
+     * @param userId user id
+     */
+    void deleteSchedule(String triggerId, Long userId);
 }
