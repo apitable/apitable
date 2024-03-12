@@ -29,6 +29,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.util.CollectionUtils;
 
 /**
  * collection util.
@@ -63,21 +65,29 @@ public class CollectionUtil {
      * @param collection string collection
      * @return new string list
      */
-    public static ArrayList<String> distinctIgnoreCase(Collection<String> collection) {
-        if (collection == null || collection.isEmpty()) {
+    public static List<String> distinctIgnoreCase(Collection<String> collection) {
+        if (CollectionUtils.isEmpty(collection)) {
             return new ArrayList<>();
-        } else {
-            Set<String> sets = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-            sets.addAll(collection);
-            ArrayList<String> list = new ArrayList<>();
-            for (String coll : collection) {
-                boolean containsSearchStr = sets.stream().anyMatch(coll::equals);
-                if (containsSearchStr) {
-                    list.add(coll);
-                }
-            }
-            return list;
         }
+
+        Set<String> caseInsensitiveSet = caseInsensitiveSetOf(collection);
+        return filterAndCollect(collection, caseInsensitiveSet);
+    }
+
+    private static Set<String> caseInsensitiveSetOf(Collection<String> collection) {
+        Set<String> caseInsensitiveSet = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+        caseInsensitiveSet.addAll(collection);
+        return caseInsensitiveSet;
+    }
+
+    private static boolean containsSearchStr(String coll, Set<String> sets) {
+        return sets.stream().anyMatch(coll::equals);
+    }
+
+    private static List<String> filterAndCollect(Collection<String> collection, Set<String> caseInsensitiveSet) {
+        return collection.stream()
+            .filter(coll -> containsSearchStr(coll, caseInsensitiveSet))
+            .toList();
     }
 
     /**
