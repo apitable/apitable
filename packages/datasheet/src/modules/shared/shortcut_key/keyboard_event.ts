@@ -19,7 +19,7 @@
 import { browser } from '../browser';
 import { KeyCode, KeyCodeUtils, KeyMod, SimpleKeybinding } from './key_codes';
 
-const KEY_CODE_MAP: { [keyCode: number]: KeyCode } = new Array(230);
+const KEY_CODE_MAP: { [keyCode: number]: KeyCode } = new Array(232);
 const INVERSE_KEY_CODE_MAP: KeyCode[] = new Array(KeyCode.MAX_VALUE);
 
 (function () {
@@ -156,6 +156,7 @@ const INVERSE_KEY_CODE_MAP: KeyCode[] = new Array(KeyCode.MAX_VALUE);
    * If an Input Method Editor is processing key input and the event is keydown, return 229.
    */
   define(229, KeyCode.KEY_IN_COMPOSITION);
+  define(231, KeyCode.PACKET);
 
   if (process.env.SSR) {
     return;
