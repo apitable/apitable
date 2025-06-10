@@ -88,6 +88,11 @@ async function bootstrap() {
   logger.log(`Application[${APPLICATION_NAME}]-Env[${environment}]`, 'Bootstrap');
   // print server info
   logger.log(`The service is running, please visit it: [ ${await app.getUrl()} ]`, 'Bootstrap');
+
+  // Send ready signal to PM2
+  if (process.send) {
+    process.send('ready');
+  }
 }
 
 void bootstrap();
