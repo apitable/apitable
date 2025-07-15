@@ -251,7 +251,7 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
     @Value("${SKIP_API_USAGE_VERIFICATION:false}")
     private Boolean skipApiUsageVerification;
 
-    @Value("${RECORD_ACTIVITY_MAX_LIMIT_DAY}")
+    @Value("${RECORD_ACTIVITY_MAX_LIMIT_DAY:}")
     private Integer recordActivityMaxLimitDay;
 
     @Override
@@ -1220,7 +1220,6 @@ public class SpaceServiceImpl extends ServiceImpl<SpaceMapper, SpaceEntity>
             result.setMaxRemainRecordActivityDays(
                 Integer.toUnsignedLong(recordActivityMaxLimitDay));
         }
-        result.setMaxRemainRecordActivityDays(1500L);
         SpaceGlobalFeature spaceGlobalFeature = getSpaceGlobalFeature(spaceId);
         boolean blackSpace = subscriptionInfo.isFree()
             ? ObjectUtil.defaultIfNull(spaceGlobalFeature.getBlackSpace(),
