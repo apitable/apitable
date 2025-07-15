@@ -233,5 +233,7 @@ export const getEnvVars = () => {
     AI_SETTING_HELP_DOC_LINK: process.env.AI_SETTING_HELP_DOC_LINK,
     EDITION: process.env.EDITION,
     ENABLE_TIME_MACHINE_ROOLBACK: process.env.ENABLE_TIME_MACHINE_ROOLBACK === 'true',
+    
+    RECORD_ACTIVITY_MAX_LIMIT_DAY: parseInt(process.env.RECORD_ACTIVITY_MAX_LIMIT_DAY || '730', 10),
   };
 };

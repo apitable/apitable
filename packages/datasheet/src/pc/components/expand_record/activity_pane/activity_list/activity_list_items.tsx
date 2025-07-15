@@ -52,6 +52,7 @@ import { resourceService } from 'pc/resource_service';
 import { store } from 'pc/store';
 import { useAppSelector } from 'pc/store/react-redux';
 import { ACTIVITY_SELECT_MAP, ActivitySelectType } from 'pc/utils';
+import { getEnvVariables } from 'pc/utils/env';
 import IconNoListDark from 'static/icon/datasheet/activity/activity_empty_dark.png';
 import IconNoListLight from 'static/icon/datasheet/activity/activity_empty_light.png';
 import { ActivityContext, ICommentReplyMap } from '../activity_context';
@@ -63,7 +64,7 @@ import styles from './style.module.less';
 
 const PAGE_SIZE = 10;
 const LIMIT_DAY = 90;
-const MAX_LIMIT_DAY = 730;
+const MAX_LIMIT_DAY = getEnvVariables().RECORD_ACTIVITY_MAX_LIMIT_DAY;
 
 export type IActivityListProps = IActivityPaneProps & {
   selectType: ActivitySelectType;
