@@ -100,6 +100,7 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
               type: SegmentType.Url,
               title: meta?.title,
               favicon: meta?.favicon,
+              text: clipboardText,
             }));
           }
 
@@ -185,6 +186,7 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
           type: SegmentType.Url,
           title: meta?.title,
           favicon: meta?.favicon,
+          text,
         }));
       };
 
