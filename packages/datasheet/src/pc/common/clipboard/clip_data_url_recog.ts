@@ -101,6 +101,7 @@ export const recogClipboardURLData = ({ state, row, column, stdValueTable, datas
               title: meta?.title,
               favicon: meta?.favicon,
               text: clipboardText,
+              link: clipboardText,
             }));
           }
 
