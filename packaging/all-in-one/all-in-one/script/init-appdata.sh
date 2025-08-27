@@ -27,8 +27,8 @@ liquibase \
     --database-changelog-lock-table-name="${DATABASE_TABLE_PREFIX:=apitable_}db_changelog_lock" \
     --url="jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?characterEncoding=utf8&autoReconnect=true&useSSL=true" \
     update \
-    -Dtable.prefix="${DATABASE_TABLE_PREFIX:=apitable_} \
-    -DDB_ENGINE=${DB_ENGINE:=mysql}"
+    -Dtable.prefix="${DATABASE_TABLE_PREFIX:=apitable_}" \
+    -DDB_ENGINE="${DB_ENGINE:=mysql}"
 
 cd /app/init-appdata
 
