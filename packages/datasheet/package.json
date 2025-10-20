@@ -214,6 +214,7 @@
     "webkit-line-clamp": "^1.2.2",
     "weixin-js-sdk": "^1.6.0",
     "xgplayer": "^2.20.12",
+    "y-indexeddb": "^9.0.12",
     "yjs": "^13.6.8"
   },
   "devDependencies": {
