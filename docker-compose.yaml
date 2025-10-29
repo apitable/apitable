@@ -210,6 +210,8 @@ services:
   init-db:
     image: ${IMAGE_REGISTRY}/${IMAGE_INIT_DB}
     pull_policy: ${IMAGE_PULL_POLICY:-if_not_present}
+    security_opt:
+      - seccomp=unconfined
     environment:
       - TZ=${TIMEZONE}
       - DB_HOST=${MYSQL_HOST}
