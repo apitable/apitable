@@ -8,7 +8,7 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "NODE_DEBUG=bull ENABLE_SOCKET=true nest start",
+    "start": "cross-env NODE_DEBUG=bull ENABLE_SOCKET=true nest start",
     "start:dev": "pnpm start --watch",
     "start:debug": "pnpm start --debug --watch",
     "start:room-server:perf:flame": "clinic flame -- node dist/main",
@@ -144,6 +144,7 @@
     "luxon": "^3.4.2"
   },
   "devDependencies": {
+    "cross-env": "^7.0.0",
     "@faker-js/faker": "^8.0.2",
     "@nestjs/cli": "8.1.4",
     "@nestjs/schematics": "^8.0.4",

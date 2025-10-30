@@ -7,7 +7,7 @@
     "next:dev": "next dev",
     "next:start": "next start",
     "next:build-again": "next build",
-    "dev": "NODE_ENV=development node --max-old-space-size=10000 server.js",
+    "dev": "cross-env NODE_ENV=development node --max-old-space-size=10000 server.js",
     "build": "rm -rf ./web_build &&  NODE_OPTIONS=--max-old-space-size=10240 next build",
     "test": "next test",
     "check:lint": "rm -rf ./web_build && tsc --noEmit && pnpm lint",
@@ -217,6 +217,7 @@
     "yjs": "^13.6.8"
   },
   "devDependencies": {
+    "cross-env": "^7.0.0",
     "@next/bundle-analyzer": "^12.2.2",
     "@svgr/webpack": "^6.2.1",
     "@tailwindcss/typography": "^0.5.9",
