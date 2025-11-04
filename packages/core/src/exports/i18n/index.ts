@@ -64,7 +64,6 @@ const getBrowserLanguage = (): string | undefined => {
     userLanguage = 'en-US';
   }
   if (!languageMap[userLanguage]) {
-    userLanguage = undefined;
     const langArr = Object.keys(languageMap);
     if (langArr) {
       for (let i = 0; i < langArr.length; i++) {
