@@ -16,6 +16,7 @@ dependencies {
 }
 
 liquibase {
+    jvmArgs "-Dtable.prefix=${System.getenv("DATABASE_TABLE_PREFIX")}"
     activities {
         main {
             driver "com.mysql.cj.jdbc.Driver"
@@ -24,7 +25,6 @@ liquibase {
             password "${System.getenv("DB_PASSWORD")}"
             changelogFile "src/main/resources/db/changelog/db.changelog-master.xml"
             logLevel "warning"
-            changelogParameters(['table.prefix': "${System.getenv("DATABASE_TABLE_PREFIX")}"])
             classpath "src/main/resources/"
             databaseChangelogTableName "${System.getenv("DATABASE_TABLE_PREFIX")}db_changelog"
             databaseChangelogLockTableName "${System.getenv("DATABASE_TABLE_PREFIX")}db_changelog_lock"
