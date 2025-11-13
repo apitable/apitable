@@ -20,6 +20,9 @@ package com.apitable.starter.socketio.autoconfigure;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * <p>
  * socketio properties.
@@ -73,6 +76,11 @@ public class SocketioProperties {
          */
         private int timeout = 1000;
 
+        /**
+         * List of transport names.
+         */
+        private List<String> transports = Collections.singletonList("websocket");
+
         public String getUrl() {
             return url;
         }
@@ -111,6 +119,14 @@ public class SocketioProperties {
 
         public void setTimeout(int timeout) {
             this.timeout = timeout;
+        }
+
+        public List<String> getTransports() {
+            return transports;
+        }
+
+        public void setTransports(List<String> transports) {
+            this.transports = transports;
         }
     }
 }
