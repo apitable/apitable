@@ -45,7 +45,7 @@ interface IMailMessageResponse {
 }
 
 const jsdomWindow = new JSDOM('').window;
-const purify = DOMPurify(jsdomWindow as any);
+const purify = DOMPurify(jsdomWindow);
 
 export async function sendMail(request: IMailMessageRequest): Promise<IActionResponse<IMailMessageResponse>> {
   const { mailServer, server, port, account, password, to, subject, message, template } = request;
