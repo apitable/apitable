@@ -85,7 +85,7 @@ export const rootReducers = combineReducers<IReduxState>({
   spacePermissionManage,
   notification,
   // @ts-ignore
-  hooks: guide,
+  hooks: guide ?? null,
   toolbar,
   rightPane,
   billing,

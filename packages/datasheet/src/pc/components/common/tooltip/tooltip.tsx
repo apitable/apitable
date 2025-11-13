@@ -35,12 +35,14 @@ export interface ITooltipProps {
  * @param textEllipsis： Similar to the default, mainly for text, shown when part of the text is hidden, otherwise not shown
  * @param showTipAnyway： Displayed on whatever device
  */
-export const Tooltip: FC<React.PropsWithChildren<ITooltipProps & AntdTooltipProps>> = ({
+export const Tooltip: FC<React.PropsWithChildren<ITooltipProps & AntdTooltipProps & { visible?: boolean }>> = ({
   showTipAnyway = false,
   textEllipsis = false,
   offset = [0, -3],
   overflowWidth,
   rowsNumber,
+  visible,
+  open,
   ...props
 }) => {
   const [showPopover, setShowPopover] = useState(false);
@@ -65,6 +67,7 @@ export const Tooltip: FC<React.PropsWithChildren<ITooltipProps & AntdTooltipProp
         trigger="hover"
         overlayClassName={rowsNumber ? styles.controlRowsNum : styles.baseStyle}
         ref={myrefs}
+        open={open ?? visible}
         {...props}
       >
         {props.children}
