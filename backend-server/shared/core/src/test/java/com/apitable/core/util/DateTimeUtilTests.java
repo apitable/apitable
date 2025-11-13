@@ -25,14 +25,21 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoField;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DynamicTest;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 
 import static com.apitable.core.util.DateTimeUtil.localDateToSecond;
 
 /**
  * <p>
- *  date time util's test
+ * date time util's test
  * </p>
  */
 class DateTimeUtilTests {
@@ -92,44 +99,53 @@ class DateTimeUtilTests {
         Assertions.assertNull(localDateTime);
     }
 
-    @Test
-    void betweenTest() {
-        LocalDateTime startDateTime = LocalDateTime.of(2022, 7, 29 , 18, 34, 20);
-        LocalDateTime endDateTime1 = LocalDateTime.of(2022, 7, 29 , 18, 34, 21);
-        LocalDateTime endDateTime2 = LocalDateTime.of(2022, 7, 30 , 0, 0, 0);
-        LocalDateTime endDateTime3 = LocalDateTime.of(2022, 7, 30 , 18, 34, 19);
-        LocalDateTime endDateTime4 = LocalDateTime.of(2022, 7, 30 , 18, 34, 20);
-        LocalDateTime endDateTime5 = LocalDateTime.of(2022, 7, 30 , 18, 34, 21);
-        LocalDateTime endDateTime6 = LocalDateTime.of(2022, 7, 31 , 0, 0, 0);
-        LocalDateTime endDateTime7 = LocalDateTime.of(2022, 8, 1 , 0, 0, 0);
-        long betweenDays = DateTimeUtil.between(startDateTime, startDateTime, ChronoField.EPOCH_DAY);
-        Assertions.assertEquals(0, betweenDays);
+    @Nested
+    class BetweenTest {
 
-        betweenDays = DateTimeUtil.between(startDateTime, endDateTime1, ChronoField.EPOCH_DAY);
-        Assertions.assertEquals(0, betweenDays);
+        private final LocalDateTime startDateTime = LocalDateTime.of(2022, 7, 29, 18, 34, 20);
 
-        betweenDays = DateTimeUtil.between(startDateTime, endDateTime2, ChronoField.EPOCH_DAY);
-        Assertions.assertEquals(1, betweenDays);
+        @TestFactory
+        Stream<DynamicTest> endDateTimeLessStartDateTime() {
+            return Stream.of(
+                new DifferenceTime(0, 2022, 7, 29, 18, 34, 19),
+                new DifferenceTime(0, 2022, 7, 29, 0, 0, 0),
+                new DifferenceTime(-1, 2022, 7, 28, 18, 34, 20),
+                new DifferenceTime(-2, 2022, 7, 27, 18, 34, 20)
+            ).map(differenceTime -> DynamicTest.dynamicTest(String.format("%s natural time difference between %s and %s", differenceTime.expectDifferenceNaturalTime, startDateTime, differenceTime.endDateTime()),
+                () -> Assertions.assertEquals(differenceTime.expectDifferenceNaturalTime(), DateTimeUtil.between(startDateTime, differenceTime.endDateTime(), ChronoField.EPOCH_DAY))));
+        }
 
-        betweenDays = DateTimeUtil.between(startDateTime, endDateTime3, ChronoField.EPOCH_DAY);
-        Assertions.assertEquals(1, betweenDays);
+        @Test
+        void return0WhenStartDateTimeEqualsEndDateTime() {
+            Assertions.assertEquals(0, DateTimeUtil.between(startDateTime, startDateTime, ChronoField.EPOCH_DAY));
+        }
 
-        betweenDays = DateTimeUtil.between(startDateTime, endDateTime4, ChronoField.EPOCH_DAY);
-        Assertions.assertEquals(1, betweenDays);
+        @TestFactory
+        Stream<DynamicTest> endDateTimeGreaterStartDateTime() {
+            return Stream.of(
+                new DifferenceTime(0, 2022, 7, 29, 18, 34, 21),
+                new DifferenceTime(1, 2022, 7, 30, 0, 0, 0),
+                new DifferenceTime(1, 2022, 7, 30, 18, 34, 19),
+                new DifferenceTime(1, 2022, 7, 30, 18, 34, 20),
+                new DifferenceTime(1, 2022, 7, 30, 18, 34, 21),
+                new DifferenceTime(2, 2022, 7, 31, 0, 0, 0),
+                new DifferenceTime(3, 2022, 8, 1, 0, 0, 0)
+            ).map(differenceTime -> DynamicTest.dynamicTest(String.format("%s natural time difference between %s and %s", differenceTime.expectDifferenceNaturalTime, startDateTime, differenceTime.endDateTime()),
+                () -> Assertions.assertEquals(differenceTime.expectDifferenceNaturalTime(), DateTimeUtil.between(startDateTime, differenceTime.endDateTime(), ChronoField.EPOCH_DAY))));
+        }
 
-        betweenDays = DateTimeUtil.between(startDateTime, endDateTime5, ChronoField.EPOCH_DAY);
-        Assertions.assertEquals(1, betweenDays);
+        private record DifferenceTime(int expectDifferenceNaturalTime, int year, int month, int dayOfMonth, int hour,
+                                      int minute, int second) {
+            LocalDateTime endDateTime(){
+                return LocalDateTime.of(year, month, dayOfMonth, hour, minute, second);
+            }
 
-        betweenDays = DateTimeUtil.between(startDateTime, endDateTime6, ChronoField.EPOCH_DAY);
-        Assertions.assertEquals(2, betweenDays);
-
-        betweenDays = DateTimeUtil.between(startDateTime, endDateTime7, ChronoField.EPOCH_DAY);
-        Assertions.assertEquals(3, betweenDays);
+        }
     }
 
     @Test
     void testLocalDateToSecond() {
-        OffsetDateTime initDate = OffsetDateTime.of(2023, 2, 5, 0 , 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime initDate = OffsetDateTime.of(2023, 2, 5, 0, 0, 0, 0, ZoneOffset.UTC);
         LocalDate date = initDate.toLocalDate();
         Long timestamp = localDateToSecond(date, ZoneOffset.UTC);
         Assertions.assertEquals(timestamp, 1675555200);
