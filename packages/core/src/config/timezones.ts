@@ -49,15 +49,16 @@ export const getUtcOptionList = () => {
   let list: IUtcOption[] = [];
 
   for (let i = 0; i < TIMEZONES.length; i++) {
-    const { abbr, offset, utc } = TIMEZONES[i]!;
+    const { abbr, utc } = TIMEZONES[i]!;
     list = list.concat(
       utc
         .filter((tz: string) => !tz.includes('Etc/GMT'))
         .map((tz: string) => {
+          const realOffset = getTimeZoneOffsetByUtc(tz);
           return {
             abbr,
-            offset,
-            label: `UTC${offset > 0 ? '+' : ''}${offset}(${tz})`,
+            offset: realOffset,
+            label: `UTC${realOffset > 0 ? '+' : ''}${realOffset}(${tz})`,
             value: tz,
           };
         })
@@ -74,8 +75,8 @@ export const getClientTimeZone = () => {
   if (!currentTimeZoneData) {
     return '';
   }
-  const { offset } = currentTimeZoneData;
-  return `UTC${offset > 0 ? '+' : ''}${offset}(${clientTimeZone})`;
+  const realOffset = getTimeZoneOffsetByUtc(clientTimeZone);
+  return `UTC${realOffset > 0 ? '+' : ''}${realOffset}(${clientTimeZone})`;
 };
 
 export const formatTimeZone = (timeZone: string) => {
