@@ -84,8 +84,8 @@ export const formatTimeZone = (timeZone: string) => {
   if (!currentTimeZoneData) {
     return '';
   }
-  const { offset } = currentTimeZoneData;
-  return `UTC${offset > 0 ? '+' : ''}${offset}(${timeZone})`;
+  const realOffset = getTimeZoneOffsetByUtc(timeZone);
+  return `UTC${realOffset > 0 ? '+' : ''}${realOffset}(${timeZone})`;
 };
 
 // https://github.com/dmfilipenko/timezones.json/blob/master/timezones.json
