@@ -16,15 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useBoolean, useMount, useInterval } from 'ahooks';
+import { useBoolean, useInterval } from 'ahooks';
 import { FC, useEffect, useState } from 'react';
 import { Button, ITextInputProps, TextInput } from '@apitable/components';
-import { AutoTestID, ConfigConstant, StatusCode, Strings, t } from '@apitable/core';
+import { ConfigConstant, StatusCode, Strings, t } from '@apitable/core';
 import { ShieldCheckFilled } from '@apitable/icons';
 import { Message } from 'pc/components/common/message/message';
+import { useNoTraceVerification } from 'pc/hooks/use_no_trace_verification';
 import { useRequest } from 'pc/hooks/use_request';
 import { useUserRequest } from 'pc/hooks/use_user_request';
-import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils/no_trace_verification';
 import styles from './style.module.less';
 
 export interface IIdentifyingCodeInputProps extends ITextInputProps {
@@ -63,7 +63,6 @@ export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeIn
   const [second, setSecond] = useState(60);
   const [isRunning, { setTrue: startTime, setFalse: closingTime }] = useBoolean(false);
   const [btnDisabled, setBtnDisabled] = useState(disabled);
-  const [nvcSuccessData, setNvcSuccessData] = useState<string | null>(null);
   const { getSmsCodeReq, getEmailCodeReq } = useUserRequest();
   const { run: getSmsCode, loading: smsLoading } = useRequest(getSmsCodeReq, {
     manual: true,
@@ -76,16 +75,7 @@ export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeIn
     setBtnDisabled(disabled);
   }, [disabled]);
 
-  useMount(() => {
-    initNoTraceVerification(setNvcSuccessData);
-  });
-
-  useEffect(() => {
-    if (nvcSuccessData) {
-      getIdentifyingCode(nvcSuccessData);
-    }
-    // eslint-disable-next-line
-  }, [nvcSuccessData]);
+  const { executeWithVerification, CaptchaElement } = useNoTraceVerification();
 
   useInterval(
     () => {
@@ -99,9 +89,7 @@ export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeIn
     isRunning ? 1000 : undefined,
   );
 
-  const getIdentifyingCode = async (nvcVal?: string) => {
-    if (checkAccount && !checkAccount()) return;
-
+  const sendIdentifyingCodeRequest = async (nvcVal?: string) => {
     let result: {
       success: boolean;
       code: number;
@@ -140,7 +128,10 @@ export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeIn
   };
 
   const handleGainIdentifyingCode = () => {
-    execNoTraceVerification(getIdentifyingCode);
+    executeWithVerification(
+      () => !checkAccount || checkAccount(),
+      sendIdentifyingCodeRequest
+    );
   };
 
   const reset = () => {
@@ -163,7 +154,6 @@ export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeIn
           {...rest}
         />
         <Button
-          id={AutoTestID.GET_IDENTIFYING_CODE_BTN}
           className={styles.btn}
           color="primary"
           variant="jelly"
@@ -179,6 +169,7 @@ export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeIn
               ? ''
               : t(Strings.message_code)}
         </Button>
+        <CaptchaElement />
       </div>
     </>
   );

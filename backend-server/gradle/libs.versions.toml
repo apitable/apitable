@@ -7,7 +7,7 @@ jsoup = "1.17.2"
 knife4j-openapi3 = "4.3.0"
 mybatis-plus = "3.5.5"
 aliyun-core = "4.5.13"
-aliyun-afs = "1.0.1"
+aliyun-captcha = "1.1.4"
 aliyun-oss = "3.17.4"
 qiniu = "7.15.0"
 huweicloud-obs = "3.23.9.1"
@@ -110,7 +110,7 @@ mybatis-spring = { module = "org.mybatis:mybatis-spring", version = "3.0.3" }
 
 # plateform integration dependencies
 aliyun-core = { module = "com.aliyun:aliyun-java-sdk-core", version.ref = "aliyun-core" }
-aliyun-afs = { module = "com.aliyun:aliyun-java-sdk-afs", version.ref = "aliyun-afs" }
+aliyun-captcha = { module = "com.aliyun:captcha20230305", version.ref = "aliyun-captcha" }
 aliyun-oss = { module = "com.aliyun.oss:aliyun-sdk-oss", version.ref = "aliyun-oss" }
 qcloud-sms = { module = "com.github.qcloudsms:qcloudsms", version.ref = "qcloud-sms" }
 qcloud-ses = { module = "com.tencentcloudapi:tencentcloud-sdk-java-ses", version.ref = "qcloud-ses" }

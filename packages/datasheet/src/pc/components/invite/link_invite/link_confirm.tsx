@@ -17,16 +17,15 @@
  */
 import { useMount } from 'ahooks';
 import Image from 'next/image';
-import { useState, FC } from 'react';
+import { FC } from 'react';
 import { useDispatch } from 'react-redux';
 import { Button } from '@apitable/components';
-import { ConfigConstant, Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t, ThemeName } from '@apitable/core';
+import { Api, IReduxState, Navigation, StatusCode, StoreActions, Strings, t, ThemeName } from '@apitable/core';
 import { Message, Wrapper } from 'pc/components/common';
 import { HomeWrapper } from 'pc/components/home/home_wrapper';
 import { Router } from 'pc/components/route_manager/router';
-import { useQuery, useRequest } from 'pc/hooks';
+import { useQuery, useRequest, useNoTraceVerification } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
-import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import inviteImageDark from 'static/icon/common/invitation_link_page_dark.png';
 import inviteImageLight from 'static/icon/common/invitation_link_page_light.png';
@@ -35,7 +34,6 @@ import { useInvitePageRefreshed } from '../use_invite';
 
 const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
   const dispatch = useDispatch();
-  const [noTraceVerification, setNoTraceVerification] = useState<string | null>(null);
   const { whenPageRefreshed } = useInvitePageRefreshed({ type: 'linkInvite' });
   const query = useQuery();
   const inviteLinkInfo = useAppSelector((state: IReduxState) => state.invite.inviteLinkInfo);
@@ -90,45 +88,50 @@ const LinkConfirm: FC<React.PropsWithChildren<unknown>> = () => {
     manual: true,
   });
 
+  const joinWithVerification = (data?: string) => {
+    join(inviteLinkToken, nodeId, data);
+  };
+
+  const { executeWithVerification, CaptchaElement } = useNoTraceVerification({
+    onSuccess: joinWithVerification,
+  });
+
   useMount(() => {
     whenPageRefreshed();
-    initNoTraceVerification(setNoTraceVerification, ConfigConstant.CaptchaIds.LOGIN);
   });
 
   const confirmBtn = () => {
-    execNoTraceVerification((data) => {
-      join(inviteLinkToken, nodeId, data);
-    });
+    executeWithVerification();
   };
   if (!inviteLinkInfo) {
     return null;
   }
 
-  return IS_ENTERPRISE ? (
-    <Wrapper>
-      <div className="invite-children-center">
-        <span style={{ marginBottom: '24px' }}>
-          <Image src={InviteImage} alt={t(Strings.link_failure)} width={240} height={180} />
-        </span>
-        <InviteTitle inviter={inviteLinkInfo.data.memberName} spaceName={inviteLinkInfo.data.spaceName} titleMarginBottom="40px" />
-        <Button onClick={confirmBtn} color="primary" size="large" style={{ width: '220px' }} loading={loading} disabled={loading}>
-          {t(Strings.confirm_join)}
-        </Button>
-      </div>
-    </Wrapper>
-  ) : (
-    <HomeWrapper>
-      <div className="invite-children-center">
-        <span style={{ marginBottom: '24px' }}>
-          <Image src={InviteImage} alt={t(Strings.link_failure)} width={240} height={180} />
-        </span>
-        <InviteTitle inviter={inviteLinkInfo.data.memberName} spaceName={inviteLinkInfo.data.spaceName} titleMarginBottom="40px" />
-        <Button onClick={confirmBtn} color="primary" size="large" style={{ width: '220px' }} loading={loading} disabled={loading}>
-          {t(Strings.confirm_join)}
-        </Button>
-      </div>
-    </HomeWrapper>
+  const content = (
+    <div className="invite-children-center">
+      <span style={{ marginBottom: '24px' }}>
+        <Image src={InviteImage} alt={t(Strings.link_failure)} width={240} height={180} />
+      </span>
+      <InviteTitle
+        inviter={inviteLinkInfo.data.memberName}
+        spaceName={inviteLinkInfo.data.spaceName}
+        titleMarginBottom="40px"
+      />
+      <Button
+        onClick={confirmBtn}
+        color="primary"
+        size="large"
+        style={{ width: '220px' }}
+        loading={loading}
+        disabled={loading}
+      >
+        {t(Strings.confirm_join)}
+      </Button>
+      <CaptchaElement />
+    </div>
   );
+
+  return IS_ENTERPRISE ? <Wrapper>{content}</Wrapper> : <HomeWrapper>{content}</HomeWrapper>;
 };
 
 export default LinkConfirm;

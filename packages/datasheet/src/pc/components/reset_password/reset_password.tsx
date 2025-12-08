@@ -22,8 +22,7 @@ import { FC } from 'react';
 import { Button, ThemeName, ThemeProvider, Typography } from '@apitable/components';
 import { ConfigConstant, Navigation, StatusCode, Strings, t } from '@apitable/core';
 import { Router } from 'pc/components/route_manager/router';
-import { useRequest, useSetState, useUserRequest } from 'pc/hooks';
-import { execNoTraceVerification } from 'pc/utils';
+import { useNoTraceVerification, useRequest, useSetState, useUserRequest } from 'pc/hooks';
 import { getEnvVariables } from 'pc/utils/env';
 import { PasswordInput, WithTipWrapper, Wrapper } from '../common';
 // @ts-ignore
@@ -63,6 +62,20 @@ const ResetPassword: FC<React.PropsWithChildren<unknown>> = () => {
   const [errMsg, setErrMsg] = useSetState<{ accountErrMsg: string; identifyingCodeErrMsg: string; passwordErrMsg: string }>(defaultErrMsg);
   const { retrievePwdReq, loginOrRegisterReq } = useUserRequest();
   const { run: retrievePwd, loading } = useRequest(retrievePwdReq, { manual: true });
+
+  const { executeWithVerification, CaptchaElement } = useNoTraceVerification({
+    onSuccess: (data) => {
+      const { areaCode, account, password } = state;
+      loginOrRegisterReq({
+        username: account,
+        credential: password,
+        type: ConfigConstant.LoginTypes.PASSWORD,
+        areaCode,
+        data,
+      });
+    },
+    autoReinitialize: false,
+  });
 
   const resetErrMsg = () => {
     const { accountErrMsg, identifyingCodeErrMsg, passwordErrMsg } = errMsg;
@@ -109,15 +122,7 @@ const ResetPassword: FC<React.PropsWithChildren<unknown>> = () => {
 
     // Automatic login after success
     setTimeout(() => {
-      execNoTraceVerification((data?: string) => {
-        loginOrRegisterReq({
-          username: account,
-          credential: password,
-          type: ConfigConstant.LoginTypes.PASSWORD,
-          areaCode,
-          data,
-        });
-      });
+      executeWithVerification();
     }, 1000);
   };
 
@@ -178,6 +183,7 @@ const ResetPassword: FC<React.PropsWithChildren<unknown>> = () => {
               <div className={styles.backBtn}>
                 <span onClick={handleBackLogin}>{t(Strings.back_login)}</span>
               </div>
+              <CaptchaElement />
             </Form>
           </div>
         </div>

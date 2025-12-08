@@ -28,6 +28,7 @@ export * from './use_address';
 export * from './use_responsive';
 export * from './use_sidebar_visible';
 export * from './use_navigator_name';
+export * from './use_no_trace_verification';
 export * from './use_notification';
 export * from './use_page_params';
 export * from './use_change_view';

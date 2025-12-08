@@ -32,8 +32,6 @@ interface IInputEmailProps {
   cancel: () => void;
   setMemberInvited: React.Dispatch<React.SetStateAction<boolean>>;
   shareId?: string;
-  secondVerify?: string | null;
-  setSecondVerify: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const ResIcon = {
@@ -49,11 +47,11 @@ enum InviteInputStatus {
 }
 
 export const InputEmail = forwardRef(
-  ({ cancel, setMemberInvited, shareId, secondVerify, setSecondVerify }: IInputEmailProps, ref: React.Ref<HTMLDivElement>) => {
+  ({ cancel, setMemberInvited, shareId }: IInputEmailProps, _ref: React.Ref<HTMLDivElement>) => {
     const spaceId = useAppSelector((state: IReduxState) => state.space.activeId || '');
     const [inviteLoading, setInviteLoading] = useState(false);
     const [inviteList, setInviteList] = useState<IInviteMemberList[]>([]);
-    const { isInvited, invitedCount, err } = useEmailInviteInModal(spaceId, inviteList, shareId, secondVerify);
+    const { isInvited, invitedCount, err, CaptchaElement } = useEmailInviteInModal(spaceId, inviteList, shareId);
 
     const [currentInput, setCurrentInput] = useState<string>('');
     const [memberArr, setMemberArr] = useState<string[]>([]);
@@ -62,10 +60,6 @@ export const InputEmail = forwardRef(
 
     const [errorStatus, setErrorStatus] = useState<InviteInputStatus>(InviteInputStatus.Normal);
     const [errorMessage, setErrorMessage] = useState<string>('');
-
-    useEffect(() => {
-      !err && secondVerify && setSecondVerify(null);
-    }, [err, secondVerify, setSecondVerify]);
 
     useEffect(() => {
       if (isInvited) {
@@ -248,9 +242,16 @@ export const InputEmail = forwardRef(
               >
                 {t(Strings.cancel)}
               </Button>
-              <Button onClick={inviteBtnClick} loading={inviteLoading} disabled={!inviteBtnValid || inviteLoading} color="primary" size="small">
+              <Button
+                onClick={inviteBtnClick}
+                loading={inviteLoading}
+                disabled={!inviteBtnValid || inviteLoading}
+                color="primary"
+                size="small"
+              >
                 {t(Strings.invite_outsider_send_invitation)}
               </Button>
+              <CaptchaElement />
             </div>
           </>
         )}
