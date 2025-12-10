@@ -48,6 +48,12 @@ export interface IIdentifyingCodeInputProps extends ITextInputProps {
         }>),
   ) => void;
   checkAccount?: () => boolean;
+  /**
+   * External verification function passed from parent component.
+   * When provided, the component will use this instead of creating its own captcha instance.
+   * This is useful when the page has multiple places using captcha to avoid conflicts.
+   */
+  externalExecuteWithVerification?: (beforeCheck?: () => boolean, callback?: (nvcData?: string) => void) => void;
 }
 
 export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeInputProps>> = ({
@@ -58,6 +64,7 @@ export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeIn
   emailType,
   setErrMsg,
   checkAccount,
+  externalExecuteWithVerification,
   ...rest
 }) => {
   const [second, setSecond] = useState(60);
@@ -75,7 +82,13 @@ export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeIn
     setBtnDisabled(disabled);
   }, [disabled]);
 
-  const { executeWithVerification, CaptchaElement } = useNoTraceVerification();
+  // Only create internal captcha instance when external one is not provided
+  const { executeWithVerification: internalExecuteWithVerification, CaptchaElement } = useNoTraceVerification({
+    enabled: !externalExecuteWithVerification,
+  });
+  
+  // Use external verification function if provided, otherwise use internal one
+  const executeWithVerification = externalExecuteWithVerification || internalExecuteWithVerification;
 
   useInterval(
     () => {
@@ -169,7 +182,8 @@ export const IdentifyingCodeInput: FC<React.PropsWithChildren<IIdentifyingCodeIn
               ? ''
               : t(Strings.message_code)}
         </Button>
-        <CaptchaElement />
+        {/* Only render internal CaptchaElement when not using external verification */}
+        {!externalExecuteWithVerification && <CaptchaElement />}
       </div>
     </>
   );

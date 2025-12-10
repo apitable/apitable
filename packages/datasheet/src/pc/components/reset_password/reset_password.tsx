@@ -63,19 +63,23 @@ const ResetPassword: FC<React.PropsWithChildren<unknown>> = () => {
   const { retrievePwdReq, loginOrRegisterReq } = useUserRequest();
   const { run: retrievePwd, loading } = useRequest(retrievePwdReq, { manual: true });
 
+  // Single captcha instance shared by both "get code" and "auto login after reset"
+  // Do NOT set onSuccess here - each use case passes its own callback via executeWithVerification
   const { executeWithVerification, CaptchaElement } = useNoTraceVerification({
-    onSuccess: (data) => {
-      const { areaCode, account, password } = state;
-      loginOrRegisterReq({
-        username: account,
-        credential: password,
-        type: ConfigConstant.LoginTypes.PASSWORD,
-        areaCode,
-        data,
-      });
-    },
-    autoReinitialize: false,
+    autoReinitialize: true,
   });
+
+  // Auto login callback - called after successful password reset
+  const handleAutoLogin = (data?: string) => {
+    const { areaCode, account, password } = state;
+    loginOrRegisterReq({
+      username: account,
+      credential: password,
+      type: ConfigConstant.LoginTypes.PASSWORD,
+      areaCode,
+      data,
+    });
+  };
 
   const resetErrMsg = () => {
     const { accountErrMsg, identifyingCodeErrMsg, passwordErrMsg } = errMsg;
@@ -122,7 +126,7 @@ const ResetPassword: FC<React.PropsWithChildren<unknown>> = () => {
 
     // Automatic login after success
     setTimeout(() => {
-      executeWithVerification();
+      executeWithVerification(undefined, handleAutoLogin);
     }, 1000);
   };
 
@@ -152,6 +156,7 @@ const ResetPassword: FC<React.PropsWithChildren<unknown>> = () => {
                   error={{ accountErrMsg: errMsg.accountErrMsg, identifyingCodeErrMsg: errMsg.identifyingCodeErrMsg }}
                   onChange={handleIdentifyingCodeChange}
                   mode={mode}
+                  externalExecuteWithVerification={executeWithVerification}
                 />
               )}
               <Typography variant="body2" className={styles.gap}>
