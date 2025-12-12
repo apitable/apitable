@@ -66,7 +66,7 @@ import { Modal } from 'pc/components/common/modal';
 import { FieldDesc } from 'pc/components/multi_grid/field_desc';
 import { FieldSetting } from 'pc/components/multi_grid/field_setting';
 import { Router } from 'pc/components/route_manager/router';
-import { useDispatch, useResponsive } from 'pc/hooks';
+import { useDispatch, useNoTraceVerification, useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
 import { useAppSelector } from 'pc/store/react-redux';
 import { flatContextData, IURLMeta } from 'pc/utils';
@@ -173,6 +173,43 @@ export const FormContainer: React.FC<
   const [mount, setMount] = useState<boolean>(false);
   const [animationLoading, setAnimationLoading] = useState<boolean>(false);
   const [showWorkdoc, setShowWorkdoc] = useState<boolean>(false);
+
+  // Check if form has attachment fields
+  const hasAttachmentField = useMemo(() => {
+    const fields = Object.values(formRelMeta.fieldMap || {}) as IField[];
+    return fields.some((field) => field.type === FieldType.Attachment);
+  }, [formRelMeta.fieldMap]);
+
+  // Shared captcha verification for attachment uploads in shared anonymous forms
+  // Only initialize when: shared form + anonymous fill allowed + not logged in + has attachment fields
+  const needSharedCaptcha = !!(shareId && fillAnonymous && !isLogin && hasAttachmentField);
+  
+  // Use a queue of callbacks to support multiple fields waiting for verification
+  const pendingVerificationCallbacksRef = useRef<Array<(_nvcData?: string) => void>>([]);
+  const { nvcData: sharedNvcData, triggerVerification: _triggerSharedVerification, CaptchaElement: SharedCaptchaElement } = useNoTraceVerification({
+    enabled: needSharedCaptcha,
+    onSuccess: (data) => {
+      // Execute all pending callbacks when verification succeeds
+      pendingVerificationCallbacksRef.current.forEach((cb) => cb(data));
+      pendingVerificationCallbacksRef.current = [];
+    },
+    autoReinitialize: false,
+  });
+  
+  const triggerSharedVerification = useCallback((onSuccess: (_nvcData?: string) => void) => {
+    if (sharedNvcData) {
+      // Already verified, call success directly
+      onSuccess(sharedNvcData);
+      return;
+    }
+    // Add callback to queue
+    pendingVerificationCallbacksRef.current.push(onSuccess);
+    // Only trigger verification if this is the first callback (avoid multiple triggers)
+    if (pendingVerificationCallbacksRef.current.length === 1) {
+      _triggerSharedVerification();
+    }
+  }, [sharedNvcData, _triggerSharedVerification]);
+
   const lottieAnimate = useRef<AnimationItem>();
   const [contentType, setContentType] = useState<IFormContentType>(IFormContentType.Form);
   const { datasheetId, viewId } = sourceInfo;
@@ -736,8 +773,13 @@ export const FormContainer: React.FC<
         setFormToStorage: (fieldId, value) => {
           setFormToStorage({ ...formData, [fieldId]: value });
         },
+        sharedNvcData,
+        needCaptcha: needSharedCaptcha,
+        triggerSharedVerification: needSharedCaptcha ? triggerSharedVerification : undefined,
       }}
     >
+      {/* Shared captcha element for all attachment fields */}
+      {needSharedCaptcha && <SharedCaptchaElement />}
       <Head>
         <meta property="og:description" content={serialize(formProps.description)} />
         <title>{name}</title>

@@ -29,6 +29,20 @@ export interface IFormContext {
   setFormToStorage?: (fieldId: string, value: string) => void;
   showWorkdoc: boolean;
   setShowWorkdoc: (show: boolean) => void;
+  /**
+   * Shared captcha verification data for attachment uploads in shared forms
+   * This is shared across all attachment fields to avoid multiple captcha instances
+   */
+  sharedNvcData?: string | null;
+  /**
+   * Whether captcha is needed for this form (anonymous form with attachment fields)
+   */
+  needCaptcha?: boolean;
+  /**
+   * Trigger shared captcha verification and get nvcData via callback
+   * @param onSuccess Callback when verification succeeds with nvcData
+   */
+  triggerSharedVerification?: (onSuccess: (nvcData?: string) => void) => void;
 }
 
 export const FormContext = createContext({} as IFormContext);
