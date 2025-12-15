@@ -25,7 +25,6 @@ import { Modal } from 'pc/components/common/modal/modal/modal';
 import { IUploadResponse } from 'pc/components/upload_modal/upload_core';
 import { store } from 'pc/store';
 import { byte2Mb } from 'pc/utils/dom';
-import { execNoTraceVerification } from 'pc/utils/no_trace_verification';
 import { getEnvVariables } from './env';
 // @ts-ignore
 import { SubscribeUsageTipType, triggerUsageAlert } from 'enterprise/billing/trigger_usage_alert';
@@ -116,7 +115,7 @@ export class UploadManager {
    * @returns
    * @memberof UploadManager
    */
-  public register(cellId: string, successHandleFn: (res: IUploadResponse) => void, fd: FormData, fileId: string) {
+  register(cellId: string, successHandleFn: (res: IUploadResponse) => void, fd: FormData, fileId: string, nvcVal?: string) {
     if (this.isExitCellId(cellId)) {
       this.uploadMap[cellId].waitQueue.push({
         successHandleFn,
@@ -141,7 +140,7 @@ export class UploadManager {
     this.notifyUploadListUpdate(cellId);
     this.checkCapacitySizeBilling().then(() => {
       if (this.isRequestLimit(cellId)) {
-        return this.execute(cellId);
+        return this.execute(cellId, nvcVal);
       }
       return null;
     });
@@ -168,7 +167,7 @@ export class UploadManager {
    * @returns
    * @memberof UploadManager
    */
-  private async execute(cellId: string): Promise<any> {
+  private async execute(cellId: string, nvcVal?: string) {
     if (!this.uploadMap[cellId].waitQueue.length) {
       return;
     }
@@ -178,7 +177,7 @@ export class UploadManager {
     uploadItem.requestQueue.push(uploadItem.waitQueue.shift()!);
 
     try {
-      const res = await this.httpRequest(cellId, options.fd, options.fileId);
+      const res = await this.httpRequest(cellId, options.fd, options.fileId, nvcVal);
       const { success, data, code } = res.data;
 
       if (!success) {
@@ -186,7 +185,7 @@ export class UploadManager {
           return;
         }
         // Handle error messages from the server, such as insufficient space capacity
-        this.uploadFailHandle(cellId, uploadItem, options);
+        this.uploadFailHandle(cellId, uploadItem, options, nvcVal);
         return;
       }
       this.deleteItem(cellId);
@@ -196,12 +195,12 @@ export class UploadManager {
         return item.fileId !== options.fileId;
       });
       if (this.isRequestLimit(cellId)) {
-        return this.execute(cellId);
+        return this.execute(cellId, nvcVal);
       }
     } catch (error) {
       // This is used to handle network errors such as timeouts that
       // prevent further uploads and move the data in the request queue to the failure queue
-      this.uploadFailHandle(cellId, uploadItem, options);
+      this.uploadFailHandle(cellId, uploadItem, options, nvcVal);
       Message.warning({
         content: t(Strings.attachment_upload_fail, {
           count: uploadItem.failQueue.length,
@@ -228,7 +227,7 @@ export class UploadManager {
     });
   }
 
-  private uploadFailHandle(cellId: string, uploadItem: IUploadMapItem, options: IQueue) {
+  private uploadFailHandle(cellId: string, uploadItem: IUploadMapItem, options: IQueue, nvcVal?: string) {
     const failFileIndex = uploadItem.requestQueue.findIndex((item) => {
       return item.fileId === options.fileId;
     });
@@ -245,7 +244,7 @@ export class UploadManager {
     }
     this.notifyUploadListUpdate(cellId);
     if (this.isRequestLimit(cellId)) {
-      return this.execute(cellId);
+      return this.execute(cellId, nvcVal);
     }
   }
 
@@ -363,9 +362,9 @@ export class UploadManager {
     // this.apiFn = null;
   }
 
-  public httpRequest(cellId: string, formData: FormData, fileId: string): Promise<any> {
+  httpRequest(cellId: string, formData: FormData, fileId: string, nvcVal?: string): Promise<any> {
     return new Promise((resolve) => {
-      const request = async (nvcVal?: string) => {
+      const request = async () => {
         nvcVal && formData.append('data', nvcVal);
         const res = await uploadAttachToS3({
           file: formData.get('file') as File,
@@ -380,7 +379,7 @@ export class UploadManager {
         });
         resolve(res);
       };
-      window['nvc'] ? execNoTraceVerification(request) : request();
+      request();
     });
   }
 
@@ -428,14 +427,14 @@ export class UploadManager {
     return result;
   }
 
-  public retryUpload(cellId: string, fileId: string) {
+  public retryUpload(cellId: string, fileId: string, nvcVal?: string) {
     const failList = this.uploadMap[cellId]!['failQueue'];
     const failFile = failList.find((item) => item.fileId === fileId);
     if (!failFile) {
       return;
     }
     this.deleteFailItem(cellId, fileId);
-    this.register(cellId, failFile.successHandleFn, failFile.fd, fileId);
+    this.register(cellId, failFile.successHandleFn, failFile.fd, fileId, nvcVal);
   }
 
   public deleteFailItem(cellId: string, fileId: string, notify?: boolean) {

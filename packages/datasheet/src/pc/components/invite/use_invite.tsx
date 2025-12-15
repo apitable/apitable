@@ -22,10 +22,9 @@ import { Api, IInviteEmailInfo, IInviteLinkInfo, IInviteMemberList, IReduxState,
 import { Message } from 'pc/components/common/message/message';
 import { IParams } from 'pc/components/route_manager/interface';
 import { Router } from 'pc/components/route_manager/router';
-import { secondStepVerify } from 'pc/hooks/utils';
+import { useNoTraceVerification } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
 import { getSearchParams } from 'pc/utils/dom';
-import { execNoTraceVerification } from 'pc/utils/no_trace_verification';
 
 // @ts-ignore
 
@@ -49,10 +48,11 @@ export const useLinkInvite = () => {
         Router.redirect(Navigation.WORKBENCH, { query: { spaceId }, clearQuery: true });
         return;
       } 
-      if (res.data.code === StatusCode.NVC_FAIL) {
-        execNoTraceVerification((data) => joinSpace(spaceId, linkToken, nodeId, data));
-        return;
-      }
+      // todo logic for NVC fail, need fetch nvc data.
+      // if (res.data.code === StatusCode.NVC_FAIL) {
+      //   execIfNotTraceVerification((data) => joinSpace(spaceId, linkToken, nodeId, data));
+      //   return;
+      // }
     });
   };
 
@@ -145,24 +145,25 @@ export const useInvitePageRefreshed = (data: IInvitePageRefreshedProps) => {
 
   return { whenPageRefreshed };
 };
-export const useEmailInviteInModal = (spaceId: string, invite: IInviteMemberList[], shareId?: string, secondVerify?: null | string) => {
-  const dispatch = useDispatch();
+export const useEmailInviteInModal = (spaceId: string, invite: IInviteMemberList[], _shareId?: string) => {
   const [isInvited, setIsInvited] = useState(false);
   const [invitedCount, setInvitedCount] = useState(0);
   const [err, setErr] = useState('');
+  const [pendingInvite, setPendingInvite] = useState<IInviteMemberList[] | null>(null);
 
   const request = useCallback(
     (nvcVal?: string) => {
-      Api.sendInvite(spaceId, invite, nvcVal).then((res) => {
+      if (!pendingInvite || !pendingInvite.length) return;
+      Api.sendInvite(spaceId, pendingInvite, nvcVal).then((res) => {
         const { success, message, code } = res.data;
         setIsInvited(true);
         if (success) {
-          setInvitedCount(invite.length);
+          setInvitedCount(pendingInvite.length);
           setErr('');
         } else {
-          if (secondStepVerify(code)) {
-            return;
-          }
+          // if (secondStepVerify(code)) {
+          //   return;
+          // }
           if (code === StatusCode.COMMON_ERR) {
             Message.error({ content: message });
             return;
@@ -172,13 +173,12 @@ export const useEmailInviteInModal = (spaceId: string, invite: IInviteMemberList
         }
       });
     },
-    [spaceId, invite],
+    [spaceId, pendingInvite],
   );
 
-  useEffect(() => {
-    secondVerify && invite.length && request(secondVerify);
-    // eslint-disable-next-line
-  }, [secondVerify]);
+  const { executeWithVerification, CaptchaElement } = useNoTraceVerification({
+    onSuccess: request,
+  });
 
   useEffect(() => {
     if (!invite.length) {
@@ -188,7 +188,14 @@ export const useEmailInviteInModal = (spaceId: string, invite: IInviteMemberList
       return;
     }
 
-    window['nvc'] ? execNoTraceVerification(request) : request();
-  }, [spaceId, dispatch, invite, shareId, request]);
-  return { isInvited, invitedCount, err };
+    setPendingInvite(invite);
+  }, [invite]);
+
+  useEffect(() => {
+    if (!pendingInvite || !pendingInvite.length) return;
+    executeWithVerification();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingInvite]);
+
+  return { isInvited, invitedCount, err, CaptchaElement };
 };

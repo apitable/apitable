@@ -19,7 +19,8 @@
 import { ApiTipConstant } from '@apitable/core';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsIn, IsOptional, Max, Min } from 'class-validator';
+import { IsIn, IsOptional, Max, Min, ValidateIf } from 'class-validator';
+import { isProdMode } from 'app.environment';
 
 export class RecordHistoryQueryRo {
   @ApiPropertyOptional({
@@ -36,10 +37,11 @@ export class RecordHistoryQueryRo {
   @ApiPropertyOptional({
     type: Number,
     example: 14,
-    description: 'Limited days, default is 14, maximum is 730 days',
+    description: 'Limited days, default is 14, maximum is 730 days (only in production)',
   })
   @IsOptional()
   @Type(() => Number)
+  @ValidateIf(() => isProdMode)
   @Max(730, { message: ApiTipConstant.api_params_max_error, context: { value: 730 }})
   limitDays = 14;
 

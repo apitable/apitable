@@ -16,7 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useMount } from 'ahooks';
 import classnames from 'classnames';
 import { FC, useEffect, useState } from 'react';
 import * as React from 'react';
@@ -24,16 +23,15 @@ import { useDispatch } from 'react-redux';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import { FixedSizeList as List } from 'react-window';
 import { Button, TextInput } from '@apitable/components';
-import { ConfigConstant, INodeRoleMap, IReduxState, StoreActions, Strings, t } from '@apitable/core';
+import { INodeRoleMap, IReduxState, StoreActions, Strings, t } from '@apitable/core';
 import { ChevronRightOutlined, EyeOpenOutlined } from '@apitable/icons';
 // eslint-disable-next-line no-restricted-imports
 import { Message, Tooltip } from 'pc/components/common';
 import { ScreenSize } from 'pc/components/common/component_display';
-import { useCatalogTreeRequest, useResponsive, useSpaceRequest, useUserRequest, useRequest } from 'pc/hooks';
+import { useCatalogTreeRequest, useResponsive, useSpaceRequest, useUserRequest, useRequest, useNoTraceVerification } from 'pc/hooks';
 import { NodeChangeInfoType } from 'pc/hooks/use_catalog';
 import { useInviteRequest } from 'pc/hooks/use_invite_request';
 import { useAppSelector } from 'pc/store/react-redux';
-import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { MembersDetail } from '../../permission_settings/permission/members_detail';
 import { UnitItem } from '../../permission_settings/permission/unit_item';
@@ -65,18 +63,8 @@ export const Teamwork: FC<React.PropsWithChildren<ITeamworkProps>> = ({ nodeId, 
   const { screenIsAtMost } = useResponsive();
   const isMobile = screenIsAtMost(ScreenSize.md);
   const dispatch = useDispatch();
-  const [secondVerify, setSecondVerify] = useState<null | string>(null);
   const spaceInfo = useAppSelector((state: IReduxState) => state.space.curSpaceInfo)!;
   const spaceId = useAppSelector((state) => state.space.activeId)!;
-
-  useMount(() => {
-    initNoTraceVerification(setSecondVerify, ConfigConstant.CaptchaIds.LOGIN);
-  });
-
-  useEffect(() => {
-    secondVerify && inviteEmail && sendInviteEmail(secondVerify);
-    // eslint-disable-next-line
-  }, [secondVerify]);
 
   useEffect(() => {
     if (socketData && socketData.type === NodeChangeInfoType.UpdateRole) {
@@ -91,14 +79,15 @@ export const Teamwork: FC<React.PropsWithChildren<ITeamworkProps>> = ({ nodeId, 
   };
 
   const sendInviteEmail = async (nvcVal?: string) => {
-    if (secondVerify) {
-      setSecondVerify(null);
-    }
     const success = await sendInvite(spaceId, [{ email: inviteEmail, teamId: joinTeamId }], nvcVal);
     if (success) {
       Message.success({ content: t(Strings.invite_success) });
     }
   };
+
+  const { executeWithVerification, CaptchaElement } = useNoTraceVerification({
+    onSuccess: sendInviteEmail,
+  });
 
   const sendInviteHandler = async () => {
     const isExist = await checkEmail(inviteEmail);
@@ -107,7 +96,7 @@ export const Teamwork: FC<React.PropsWithChildren<ITeamworkProps>> = ({ nodeId, 
       return;
     }
 
-    window['nvc'] ? execNoTraceVerification(sendInviteEmail) : sendInviteEmail();
+    executeWithVerification();
   };
 
   if (!roleList || loading) {
@@ -178,6 +167,7 @@ export const Teamwork: FC<React.PropsWithChildren<ITeamworkProps>> = ({ nodeId, 
           </div>
         </div>
       )}
+      <CaptchaElement />
       <div className={styles.jumpBtn} onClick={jumpPublicLink}>
         <EyeOpenOutlined />
         {t(Strings.teamwork_click_here)}

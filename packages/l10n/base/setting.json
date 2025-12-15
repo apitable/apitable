@@ -198,7 +198,7 @@
 		"value": "https://vika.cn/developers"
 	},
 	"integration_dingtalk_upgrade_url": {
-		"value": "http://h5.dingtalk.com/open-purchase/mobileUrl.html?redirectUrl=https%3A%2F%2Fh5.dingtalk.com%2Fopen-market%2Fshare.html%3FshareGoodsCode%3DD34E5A30A9AC7FC6CA73DEEEDFCEC860C2F97D997C85C521BD4178D2ECD66BA4F839F9305FA49577%26token%3Dc9073ae902dcadcc4e9fc9af6c8fe5b8%26shareUid%3D704244F72EEF24B56571C55DCF2818F9&dtaction=os"
+		"value": "http://h5.dingtalk.com/open-purchase/mobileUrl.html?redirectUrl=https%3A%2F%2Fh5.dingtalk.com%2Fopen-market%2FskuDetail.html%3Fdd_share%3Dfalse%26showmenu%3Dfalse%26goodsCode%3DDT_GOODS_881632919748679%26funnelsource%3DfreeItem%26bizCode%3Disv&dtaction=os"
 	},
 	"emoji_apple_32": {
 		"value": "space/2021/03/23/6972f73d8bfe4539b67a4d3e264771e0"

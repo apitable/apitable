@@ -31,6 +31,7 @@ export interface IUploadFileItemProps {
   deleteUploadItem?(fileId: string): void;
   isCell?: boolean;
   cellHeight?: number;
+  nvcVal?: string;
   // onChange?: (params: IUploadParams) => void;
   onSave?: (cellValue: IAttachmentValue[]) => void;
   getCellValueFn?: (datasheetId: string | undefined, recordId: string, fieldId: string) => IAttachmentValue[];

@@ -19,7 +19,7 @@
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import Script from 'next/script';
 import React from 'react';
-import { integrateCdnHost } from '@apitable/core';
+import { ConfigConstant, integrateCdnHost } from '@apitable/core';
 import { getInitialProps } from '../utils/get_initial_props';
 import '../utils/init_private';
 
@@ -42,6 +42,7 @@ class MyDocument extends Document<IClientInfo> {
 
   override render() {
     const { env, version, envVars, locale } = this.props;
+    const isNotSelfHost = !JSON.parse(envVars).IS_SELFHOST;
     return (
       <Html>
         <Head>
@@ -70,7 +71,17 @@ class MyDocument extends Document<IClientInfo> {
         <body>
           <Main />
           <NextScript />
-          {!JSON.parse(envVars).IS_SELFHOST && <Script src="https://g.alicdn.com/AWSC/AWSC/awsc.js" strategy={'beforeInteractive'} />}
+          {isNotSelfHost && (
+            <Script id="aliyun-captcha-config" strategy={'beforeInteractive'}>
+              {`
+                  window.AliyunCaptchaConfig = {
+                    region: "cn",
+                    prefix: '${ConfigConstant.CAPTCHA_IDENTITY}',
+                  };
+                `}
+            </Script>
+          )}
+          {isNotSelfHost && <Script src="https://o.alicdn.com/captcha-frontend/aliyunCaptcha/AliyunCaptcha.js" strategy={'beforeInteractive'} /> }
           {
             <Script id="__initialization_data__" strategy={'beforeInteractive'}>
               {`

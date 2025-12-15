@@ -86,6 +86,8 @@ export class Engine {
     }
   }
 
+  private lastSubscriptionDispatchTime = 0;
+
   /**
    * Push the operation into the send queue, SyncEngine will ensure that the data is sent to the server in version order
    * And provide temporary local persistence capabilities to prevent users from losing data
@@ -244,7 +246,12 @@ export class Engine {
     });
 
     if (hasCreatedFieldWithSubscription || otherCmdTriggerSubscription) {
-      this.dispatch(getSubscriptionsAction(this.resourceId));
+      const now = Date.now();
+      // Only dispatch if 1 seconds have passed since the last dispatch
+      if (now - this.lastSubscriptionDispatchTime > 1000) {
+        this.dispatch(getSubscriptionsAction(this.resourceId));
+        this.lastSubscriptionDispatchTime = now;
+      }
     }
   }
 

@@ -18,7 +18,6 @@
 
 import { Api, IInviteMemberList } from '@apitable/core';
 import { Message } from 'pc/components/common';
-import { secondStepVerify } from 'pc/hooks/utils';
 
 export const useInviteRequest = () => {
   /**
@@ -99,7 +98,7 @@ export const useInviteRequest = () => {
       const { success, message, code, data } = res.data;
       if (!success) {
         Message.error({ content: message });
-        secondStepVerify(code);
+        // secondStepVerify(code);
       }
       return { success, data };
     });

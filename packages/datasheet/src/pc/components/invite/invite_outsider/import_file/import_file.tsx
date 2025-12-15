@@ -17,7 +17,7 @@
  */
 
 import * as React from 'react';
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { Api, StatusCode, Strings, t } from '@apitable/core';
 import { Message } from 'pc/components/common';
 import { secondStepVerify } from 'pc/hooks/utils';
@@ -31,12 +31,10 @@ let reqToken: () => void;
 interface IImportFileProps {
   closeModal: () => void;
   setMemberInvited: React.Dispatch<React.SetStateAction<boolean>>;
-  secondVerify?: string | null;
-  setSecondVerify: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 // The token returned after uploading a file
-export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({ setMemberInvited, closeModal, secondVerify, setSecondVerify }) => {
+export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({ setMemberInvited, closeModal }) => {
   // Currently mounted subassemblies
   const [kid, setKid] = useState<IKidType>(KidType.BeforeUpload);
   // Callback message after selecting a file
@@ -91,7 +89,6 @@ export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({ setM
           setKid(KidType.Success);
           updateSpaceMember && updateSpaceMember();
           setErr('');
-          secondVerify && setSecondVerify(null);
           setFile(undefined);
         } else {
           setKid(KidType.Fail);
@@ -107,14 +104,6 @@ export const ImportFile: FC<React.PropsWithChildren<IImportFileProps>> = ({ setM
         setFile(undefined);
       });
   };
-
-  useEffect(() => {
-    if (!secondVerify) {
-      return;
-    }
-    file && confirmImport(secondVerify);
-    // eslint-disable-next-line
-  }, [secondVerify]);
 
   const kidNode = (type: IKidType) => {
     switch (type) {

@@ -97,7 +97,7 @@ dependencies {
     implementation(libs.aliyun.core) {
         exclude(group: 'commons-logging', module: 'commons-logging')
     }
-    implementation libs.aliyun.afs
+    implementation libs.aliyun.captcha
     implementation libs.nimbus
     implementation libs.jose4j
     implementation libs.wx.open

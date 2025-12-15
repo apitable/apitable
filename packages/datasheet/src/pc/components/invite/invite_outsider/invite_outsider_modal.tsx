@@ -23,14 +23,14 @@ import { FC, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from '@apitable/components';
-import { ConfigConstant, Events, getCustomConfig, Player, Strings, t } from '@apitable/core';
+import { Events, getCustomConfig, Player, Strings, t } from '@apitable/core';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { Popup } from 'pc/components/common/mobile/popup';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { useResponsive } from 'pc/hooks';
 import { store } from 'pc/store';
 import { useAppSelector } from 'pc/store/react-redux';
-import { initNoTraceVerification, stopPropagation } from 'pc/utils';
+import { stopPropagation } from 'pc/utils';
 import { getEnvVariables } from 'pc/utils/env';
 import { ImportFile } from './import_file';
 import { InputEmail } from './input_email';
@@ -53,7 +53,6 @@ export const InviteOutsiderTabs: FC<React.PropsWithChildren<IInviteOutsiderTabsP
   const { CONTACTS_MODAL_BULK_IMPORT_VISIBLE, CONTACTS_MODAL_INVITE_VIA_EMAIL_VISIBLE } = getEnvVariables();
   // Availability of invitees
   const [memberInvited, setMemberInvited] = useState(false);
-  const [secondVerify, setSecondVerify] = useState<null | string>(null);
   const isAdmin = useAppSelector((state) => state.user.info?.isAdmin);
   const isOrgIsolated = useAppSelector((state) => state.space.spaceFeatures?.orgIsolated);
   useMount(() => {
@@ -68,10 +67,6 @@ export const InviteOutsiderTabs: FC<React.PropsWithChildren<IInviteOutsiderTabsP
     };
     return updateMemberList;
   }, [resUpdate, memberInvited]);
-
-  useMount(() => {
-    initNoTraceVerification(setSecondVerify, ConfigConstant.CaptchaIds.LOGIN);
-  });
 
   const { screenIsAtLeast } = useResponsive();
   const isPC = screenIsAtLeast(ScreenSize.md);
@@ -92,8 +87,6 @@ export const InviteOutsiderTabs: FC<React.PropsWithChildren<IInviteOutsiderTabsP
                 cancel={cancelModal}
                 setMemberInvited={setMemberInvited}
                 shareId={shareId}
-                secondVerify={secondVerify}
-                setSecondVerify={setSecondVerify}
               />
             </TabPane>
           )}
@@ -103,8 +96,6 @@ export const InviteOutsiderTabs: FC<React.PropsWithChildren<IInviteOutsiderTabsP
               <ImportFile
                 closeModal={cancelModal}
                 setMemberInvited={setMemberInvited}
-                secondVerify={secondVerify}
-                setSecondVerify={setSecondVerify}
               />
             </TabPane>
           )}

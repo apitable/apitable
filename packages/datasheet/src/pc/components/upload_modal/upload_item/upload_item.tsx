@@ -48,6 +48,7 @@ export const UploadItem: React.FC<React.PropsWithChildren<IUploadFileItemProps>>
     datasheetId,
     status,
     isCell,
+    nvcVal,
     cellHeight,
     deleteUploadItem,
     rowHeightLevel,
@@ -84,6 +85,7 @@ export const UploadItem: React.FC<React.PropsWithChildren<IUploadFileItemProps>>
       uploadManager.generateSuccessFn(recordId, field.id, { name: file.name, id: fileId }, datasheetId, getCellValueFn, onSave),
       UploadManager.generateFormData(file, datasheetId),
       fileId,
+      nvcVal,
     );
     uploadManager.bindFileStatus(cellId, fileId, updateFileItem);
     return () => {
@@ -135,7 +137,7 @@ export const UploadItem: React.FC<React.PropsWithChildren<IUploadFileItemProps>>
   }
 
   function retryUpload() {
-    uploadManager.retryUpload(UploadManager.getCellId(recordId, field.id), fileId);
+    uploadManager.retryUpload(UploadManager.getCellId(recordId, field.id), fileId, nvcVal);
   }
 
   function deleteFileItem() {

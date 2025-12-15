@@ -17,62 +17,62 @@
  */
 
 import * as React from 'react';
-import { Modal } from '@apitable/components';
-import { ConfigConstant, isPrivateDeployment } from '@apitable/core';
+import { ConfigConstant, getLanguage, isPrivateDeployment } from '@apitable/core';
 import { getEnvVariables } from 'pc/utils/env';
 
 /**
- * Initialization without trace verification
- * @param callback The callback to be executed which receives the validation string
- * @param renderTo Specify where the slider validation renders
+ * Check if the environment requires no-trace verification.
  */
-export const initNoTraceVerification = (
-  successCallback: React.Dispatch<React.SetStateAction<string | null>>,
-  renderTo: string = ConfigConstant.CaptchaIds.DEFAULT,
-) => {
-  if (process.env.SSR) return;
+export const needNoTraceVerification = (): boolean => {
+  if (process.env.SSR) { 
+    return false;
+  }
   const env = getEnvVariables();
   if (isPrivateDeployment() || env.IS_SELFHOST) {
+    return false;
+  }
+  return true;
+};
+
+/**
+ * Initialization without trace verification.
+ * 
+ * @param callback The callback to be executed which receives the validation string
+ * @param renderTo Specify where the slider validation renders
+ * @param triggerButtonId Specify the button that triggers the slider validation
+ */
+export const initNoTraceVerification = (
+  successCallback: React.Dispatch<React.SetStateAction<string | null>> | ((data?: string) => void),
+  renderTo: string = ConfigConstant.CaptchaIds.DEFAULT,
+  triggerButtonId: string = ConfigConstant.CAPTCHA_BUTTON_ID,
+) => {
+  const needVerify = needNoTraceVerification();
+  if (!needVerify) {
     return;
   }
-  if (!window['AWSC']) {
+
+  if (!window['AliyunCaptchaConfig']) {
     // return;
     setTimeout(() => {
-      initNoTraceVerification(successCallback);
+      initNoTraceVerification(successCallback, renderTo, triggerButtonId);
     }, 1000);
     console.error('Man-machine verification code load failure');
     throw new Error('Man-machine verification code load failure');
   }
 
-  const successFun = (data: React.SetStateAction<string | null>) => {
-    Modal.destroyAll();
+  const language = getLanguage();
+
+  const successFun = (data: string) => {
+    // Modal.destroyAll();
     successCallback(data);
   };
 
-  window['AWSC'].use('nvc', (_state: any, module: any) => {
-    window['nvc'] = module.init({
-      appkey: ConfigConstant.nvcAppkey,
-      scene: 'nvc_login', // nvc_login and nc_login
-      // test: module.TEST_PASS, // No trace verification passed
-      // test: module.TEST_BLOCK, // No trace verification failed, direct blocking
-      // test: module.TEST_NC_PASS, // Wake-up sliding verification and sliding verification passes
-      // test: module.TEST_NC_BLOCK, // Wake-up sliding verification and sliding verification does not pass
-      renderTo,
-      success: successFun,
-    });
+  window['initAliyunCaptcha']({
+    SceneId: ConfigConstant.CAPTCHA_SCENE_ID,
+    mode: 'popup',
+    element: `#${renderTo}`,
+    button: `#${triggerButtonId}`,
+    success: successFun,
+    language: language && language.startsWith('en') ? 'en' : undefined,
   });
-};
-
-export const execNoTraceVerification = (callback: (data?: string) => void) => {
-  if (process.env.SSR) return;
-  const env = getEnvVariables();
-  if (isPrivateDeployment() || env.IS_SELFHOST) {
-    callback(undefined);
-    return;
-  }
-
-  if (!window['nvc']) {
-    throw new Error('Man-machine verification code load failure');
-  }
-  window['nvc'].getNVCValAsync((nvcVal?: string) => callback(nvcVal));
 };
