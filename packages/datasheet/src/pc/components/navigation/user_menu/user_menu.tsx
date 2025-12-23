@@ -19,7 +19,6 @@
 import { useClickAway, useMount } from 'ahooks';
 import { Input, Spin } from 'antd';
 import classNames from 'classnames';
-import dd from 'dingtalk-jsapi';
 import { AnimationItem } from 'lottie-web/index';
 import Image from 'next/image';
 import * as React from 'react';
@@ -65,8 +64,10 @@ export interface IUserMenuProps {
 }
 
 (() => {
-  if (!process.env.SSR) {
-    window['dd'] = dd;
+  if (!process.env.SSR && typeof window !== 'undefined') {
+    import('dingtalk-jsapi').then((module) => {
+      window['dd'] = module.default;
+    });
   }
 })();
 
