@@ -1355,11 +1355,11 @@ importers:
         specifier: ^10.4.3
         version: 10.4.3
       dingtalk-design-libs:
-        specifier: ^0.0.20
-        version: 0.0.20
+        specifier: ^0.2.0
+        version: 0.2.0
       dingtalk-jsapi:
-        specifier: ^2.13.71
-        version: 2.15.4
+        specifier: ^3.2.2
+        version: 3.2.2
       dnd-core:
         specifier: ^16.0.1
         version: 16.0.1
@@ -19684,19 +19684,19 @@ packages:
     resolution: {integrity: sha512-qiSlmBq9+BCdCA/L46dw8Uy93mloxsPSbwnm5yrKn2vMPiy8KyAskTF6zuV/j5BMsmOGZDPs7KjU+mjb670kfA==}
     dev: false
 
-  /dingtalk-design-libs@0.0.20:
-    resolution: {integrity: sha512-PojsAOMSquSnzdc4K8sNtKn6uCeIzII2fH8qnQn6nDdGjR5ZFwWKyyDNwPsL5eGBQI+tzoC2wz9Ot2PdfP4T6w==}
+  /dingtalk-design-libs@0.2.0:
+    resolution: {integrity: sha512-A5w1sOqtyfB6SfqdXVmZ6Ml3oNOZN+sYTnm377nC0Bc2qcPYzt3pfPwZ/dsCV1kqTgbdCgGj8n3mzd2NxP7zuw==}
     dependencies:
       axios: 0.21.4
-      dingtalk-jsapi: 2.15.4
+      dingtalk-jsapi: 3.2.2
       eventemitter2: 6.4.9
       query-string: 5.1.1
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /dingtalk-jsapi@2.15.4:
-    resolution: {integrity: sha512-pPETqUhLJYKNZIewnS9hU1/QqcdRbP2Q9sHySimko0C2nm/n9NoakVLtcKwdqgORq1dkPIP/jqv7RnESxhA2bA==}
+  /dingtalk-jsapi@3.2.2:
+    resolution: {integrity: sha512-FglWzvdMJosOkX8k2MVavX3MiDIE6vAmAHqVE0bvXRfh3El4DVqACQRw1UIyKi3UloUS07XQXGRAG6S12eehgg==}
     dependencies:
       promise-polyfill: 7.1.2
     dev: false
@@ -22583,6 +22583,7 @@ packages:
 
   /glob@7.1.6:
     resolution: {integrity: sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==}
+    deprecated: Glob versions prior to v9 are no longer supported
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
@@ -22593,6 +22594,7 @@ packages:
 
   /glob@7.1.7:
     resolution: {integrity: sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ==}
+    deprecated: Glob versions prior to v9 are no longer supported
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
