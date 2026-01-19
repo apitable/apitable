@@ -263,8 +263,11 @@ export const exportDatasheetBase = async (
   const runTask = runInTimeSlicing(function* () {
     for (const row of rows) {
       const item = visibleCols.map((col) => {
+        const propsField = fieldMap[col.fieldId];
+        if (!propsField) {
+          return '';
+        }
         const cellValue = Selectors.getCellValue(state, datasheet.snapshot, row.recordId, col.fieldId);
-        const propsField = fieldMap[col.fieldId]!;
         return Field.bindModel(propsField).cellValueToString(cellValue) || '';
       });
       list.push(item);
