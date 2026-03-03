@@ -5323,7 +5323,7 @@
   "task_reminder_tips": "작업 알림 시간은 UTC 시간대를 기준으로 하며 여기에 표시된 시간은 계정 시간대를 기준으로 합니다.",
   "task_timeout": "작업이 시간 초과되었습니다.",
   "team": "팀",
-  "team_is_exist_err": "팀_존재_오류",
+  "team_is_exist_err": "팀 이름이 이미 존재합니다",
   "team_length_err": "팀 길이 오류",
   "teamwork": "팀워크 시작",
   "teamwork_click_here": "공용 링크를 만들시겠습니까?여기를 클릭하십시오.",

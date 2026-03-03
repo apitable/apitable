@@ -5323,7 +5323,7 @@
   "task_reminder_tips": "El tiempo de recordatorio de la tarea se basa en la zona horaria utc, y el tiempo mostrado aquí se basa en la zona horaria de la cuenta.",
   "task_timeout": "La tarea es tiempo de espera.",
   "team": "Equipo",
-  "team_is_exist_err": "Equipo hay errores",
+  "team_is_exist_err": "El nombre del equipo ya existe",
   "team_length_err": "Longitud del equipo incorrecta",
   "teamwork": "Iniciar el trabajo en equipo",
   "teamwork_click_here": "¿Quieres crear un enlace público? haga clic aquí",
