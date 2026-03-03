@@ -5323,7 +5323,7 @@
   "task_reminder_tips": "Die Taskerinnerungszeit basiert auf der UTC-Zeitzone und die Zeitanzeige hier basiert auf der Kontozeitzone.",
   "task_timeout": "Die Aufgabe ist Timeout.",
   "team": "Team",
-  "team_is_exist_err": "team_is_exist_err",
+  "team_is_exist_err": "Der Teamname existiert bereits",
   "team_length_err": "team_length_err",
   "teamwork": "Teamarbeit starten",
   "teamwork_click_here": "Möchten Sie einen öffentlichen Link erstellen? Klicken Sie hier",

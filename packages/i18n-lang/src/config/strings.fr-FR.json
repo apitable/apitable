@@ -5323,7 +5323,7 @@
   "task_reminder_tips": "L'heure de rappel de la tâche est basée sur le fuseau horaire UTC et l'horaire affiché ici est basé sur le fuseau horaire du compte.",
   "task_timeout": "La tâche est hors délai.",
   "team": "Equipe",
-  "team_is_exist_err": "equipe_is_exist_err",
+  "team_is_exist_err": "Le nom de l'équipe existe déjà",
   "team_length_err": "format@@0 team_length_err",
   "teamwork": "Démarrer le travail d'équipe",
   "teamwork_click_here": "Vous voulez créer un lien public? Cliquez ici",

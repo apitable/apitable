@@ -5323,7 +5323,7 @@
   "task_reminder_tips": "タスクのリマインダ時間はUTCタイムゾーンに基づいており、ここに表示される時間はアカウントタイムゾーンに基づいています。",
   "task_timeout": "タスクがタイムアウトになりました。",
   "team": "チーム",
-  "team_is_exist_err": "チーム_存在_エラー",
+  "team_is_exist_err": "チーム名は既に存在します",
   "team_length_err": "チーム長エラー",
   "teamwork": "チームワークの開始",
   "teamwork_click_here": "パブリックリンクを作成しますか？ここをクリック",

@@ -5323,7 +5323,7 @@
   "task_reminder_tips": "L'ora del promemoria dell'attività è basata sul fuso orario UTC e la visualizzazione dell'ora qui è basata sul fuso orario dell'account.",
   "task_timeout": "Il compito è timeout.",
   "team": "Squadra",
-  "team_is_exist_err": "team_is_exist_err",
+  "team_is_exist_err": "Il nome della squadra esiste già",
   "team_length_err": "team_length_err",
   "teamwork": "Inizia il lavoro di squadra",
   "teamwork_click_here": "Vuoi creare un collegamento pubblico? Clicca qui",
