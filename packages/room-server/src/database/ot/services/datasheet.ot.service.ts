@@ -129,6 +129,92 @@ export class DatasheetOtService {
     }
   }
 
+  /**
+   * demo scope: normalize a SingleText cell value the same way the client-side check does
+   * (packages/core/src/commands/common/field.ts#normalizeSingleTextCellValue): concatenate
+   * segment texts and trim. Blank values are not considered for uniqueness.
+   */
+  private static normalizeSingleTextCellValue(value: any): string | null {
+    if (!Array.isArray(value)) {
+      return null;
+    }
+    const text = value.map((seg: any) => (seg && typeof seg.text === 'string' ? seg.text : '')).join('').trim();
+    return text.length ? text : null;
+  }
+
+  /**
+   * demo scope: authoritative primary-field "unique value" check (SingleText only).
+   *
+   * Looks at every new/updated primary-field value in this changeset (from
+   * resultSet.toCreateRecord and resultSet.replaceCellMap, which at this point already hold the
+   * final, format-validated values that are about to be persisted), normalizes them, and compares
+   * against:
+   *  - all other existing values currently stored for this field in this datasheet (DB read), and
+   *  - the other values in this same batch (paste/fill of several rows at once).
+   *
+   * Throws ServerException(DatasheetException.PRIMARY_FIELD_VALUE_DUPLICATED) on the first
+   * conflict found, before analyseOperates returns - i.e. before any of this changeset's effects
+   * are applied.
+   */
+  private async assertPrimaryFieldValueNotDuplicated(
+    datasheetId: string,
+    primaryFieldId: string,
+    resultSet: { [key: string]: any },
+  ): Promise<void> {
+    const incoming: { recordId: string; value: any }[] = [];
+
+    for (const [recordId, recordData] of resultSet.toCreateRecord.entries()) {
+      if (recordData && Object.prototype.hasOwnProperty.call(recordData, primaryFieldId)) {
+        incoming.push({ recordId, value: recordData[primaryFieldId] });
+      }
+    }
+
+    for (const [recordId, fieldDataList] of resultSet.replaceCellMap.entries()) {
+      const match = (fieldDataList as IFieldData[]).find(item => item.fieldId === primaryFieldId);
+      if (match) {
+        incoming.push({ recordId, value: match.data });
+      }
+    }
+
+    if (!incoming.length) {
+      return;
+    }
+
+    // Records this same batch is about to overwrite the value of must not be counted as
+    // "existing" conflicts - otherwise a batch that swaps two records' values (A: X->Y, B: Y->X)
+    // would be falsely rejected, since B's about-to-be-overwritten Y would look like a conflict
+    // for A's incoming Y.
+    const touchedRecordIds = new Set(incoming.map(item => item.recordId));
+
+    const existingRows = await this.recordService.getFieldValuesByDstId(datasheetId, primaryFieldId);
+    const existingValueToRecordId = new Map<string, string>();
+    for (const row of existingRows) {
+      if (touchedRecordIds.has(row.recordId)) {
+        continue;
+      }
+      const normalized = DatasheetOtService.normalizeSingleTextCellValue(row.fieldValue);
+      if (normalized != null) {
+        existingValueToRecordId.set(normalized, row.recordId);
+      }
+    }
+
+    const seenInBatch = new Set<string>();
+    for (const { recordId, value } of incoming) {
+      const normalized = DatasheetOtService.normalizeSingleTextCellValue(value);
+      if (normalized == null) {
+        continue;
+      }
+      const existingRecordId = existingValueToRecordId.get(normalized);
+      if (existingRecordId && existingRecordId !== recordId) {
+        throw new ServerException(DatasheetException.PRIMARY_FIELD_VALUE_DUPLICATED);
+      }
+      if (seenInBatch.has(normalized)) {
+        throw new ServerException(DatasheetException.PRIMARY_FIELD_VALUE_DUPLICATED);
+      }
+      seenInBatch.add(normalized);
+    }
+  }
+
   private static generateJotAction(name: OTActionName, path: string[], newValue: any, oldValue?: any): IJOTAction {
     switch (name) {
       case OTActionName.ObjectInsert:
@@ -463,6 +549,19 @@ export class DatasheetOtService {
           _value.push({ fieldId, data });
         }
         resultSet.replaceCellMap.set(recordId, _value);
+      }
+    }
+
+    // demo scope: primary field "unique value" validation (SingleText only). Authoritative,
+    // server-side re-check of the same rule the client already enforces optimistically in
+    // packages/core/src/commands/datasheet/{set_records,add_records}.ts. Only runs a DB query
+    // when the datasheet's primary field is SingleText with property.unique === true, so it
+    // does not add cost/risk to any other request.
+    if (resultSet.toCreateRecord.size || resultSet.replaceCellMap.size) {
+      const primaryFieldId = meta.views[0]?.columns[0]?.fieldId;
+      const primaryField = primaryFieldId ? fieldMap[primaryFieldId] : undefined;
+      if (primaryField && primaryField.type === FieldType.SingleText && primaryField.property?.unique) {
+        await this.assertPrimaryFieldValueNotDuplicated(datasheetId, primaryField.id, resultSet);
       }
     }
 

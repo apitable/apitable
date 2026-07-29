@@ -33,7 +33,7 @@ import {
 import { ResourceType, SegmentType, WithOptional } from 'types';
 import { FieldType, IField, IUnitIds } from 'types/field_types';
 import { getNewId, IDPrefix, num2number, str2number } from 'utils';
-import { IInternalFix } from '../common/field';
+import { assertPrimaryFieldValueNotDuplicated, getExistingCellValueMap, getUniqueSingleTextPrimaryField, IInternalFix } from '../common/field';
 
 export interface ISetRecordOptions {
   recordId: string;
@@ -122,6 +122,18 @@ export const setRecords: ICollaCommandDef<ISetRecordsOptions> = {
 
     if (isEmpty(data)) {
       return null;
+    }
+
+    // demo scope: primary field "unique value" validation (SingleText only), see commands/common/field.ts
+    const uniquePrimaryField = getUniqueSingleTextPrimaryField(snapshot);
+    if (uniquePrimaryField) {
+      const primaryFieldUpdates = data.filter(item => item.fieldId === uniquePrimaryField.id);
+      const touchedRecordIds = new Set(primaryFieldUpdates.map(item => item.recordId));
+      const existingValueToRecordId = getExistingCellValueMap(snapshot, uniquePrimaryField.id, touchedRecordIds);
+      const seenInBatch = new Set<string>();
+      primaryFieldUpdates.forEach(item => {
+        assertPrimaryFieldValueNotDuplicated(existingValueToRecordId, seenInBatch, item.recordId, item.value, uniquePrimaryField.name);
+      });
     }
 
     const fieldMap = snapshot.meta.fieldMap;

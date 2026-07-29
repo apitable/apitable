@@ -44,10 +44,12 @@ interface IFieldFormatProps {
   optionErrMsg?: object;
   onUpdate: (field: IField) => void
   onCreate?: (field: IField) => void
+  // demo scope: whether currentField is the datasheet's primary field (first column of the first view)
+  isPrimaryField?: boolean;
 }
 
 export const FieldFormat: React.FC<React.PropsWithChildren<IFieldFormatProps>> = (props) => {
-  const { from, currentField, onUpdate, onCreate, setCurrentField, hideOperateBox, datasheetId, optionErrMsg } = props;
+  const { from, currentField, onUpdate, onCreate, setCurrentField, hideOperateBox, datasheetId, optionErrMsg, isPrimaryField } = props;
 
   if (!currentField.property && (currentField.type === FieldType.SingleSelect || currentField.type === FieldType.MultiSelect)) {
     setCurrentField({
@@ -96,7 +98,7 @@ export const FieldFormat: React.FC<React.PropsWithChildren<IFieldFormatProps>> =
     case FieldType.Member:
       return <FormatMember currentField={currentField} setCurrentField={setCurrentField} />;
     case FieldType.SingleText:
-      return <FormatSingleText currentField={currentField} setCurrentField={setCurrentField} />;
+      return <FormatSingleText currentField={currentField} setCurrentField={setCurrentField} isPrimaryField={isPrimaryField} />;
     case FieldType.LastModifiedBy:
       return <FormatLastModifiedBy currentField={currentField} setCurrentField={setCurrentField} />;
     case FieldType.URL:

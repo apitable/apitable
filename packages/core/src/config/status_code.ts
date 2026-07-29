@@ -28,6 +28,7 @@ export const TIME_OUT = 303;
 export const EMAIL_ERR = 304;
 export const PASSWORD_ERR = 305;
 export const LOGIN_OUT_NUMBER = 306;
+export const PRIMARY_FIELD_VALUE_DUPLICATED = 310;
 export const SMS_GET_ERR = 230;
 export const SMS_CHECK_ERR = 231;
 export const SMS_CODE_NOT_CHECK = 232;

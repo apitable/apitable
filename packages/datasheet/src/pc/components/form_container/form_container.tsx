@@ -478,6 +478,10 @@ export const FormContainer: React.FC<
   const handleAddRecordError = (code: number, errMsg: any) => {
     let str = t(Strings.form_error_tip);
     if (code === StatusCode.SPACE_CAPACITY_OVER_LIMIT) str = t(Strings.form_space_capacity_over_limit);
+    if (code === StatusCode.PRIMARY_FIELD_VALUE_DUPLICATED) {
+      const primaryField = Object.values(fieldMap).find(field => field.type === FieldType.SingleText && field.property?.unique);
+      str = t(Strings.form_primary_field_value_duplicated, { fieldName: primaryField?.name || t(Strings.field_title) });
+    }
     if ([OVER_LIMIT_PER_SHEET_RECORDS, OVER_LIMIT_SPACE_RECORDS].includes(String(code))) {
       const { usage } = JSON.parse(errMsg);
       triggerUsageAlert(

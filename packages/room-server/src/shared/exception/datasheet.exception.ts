@@ -59,6 +59,8 @@ export class DatasheetException implements IBaseException {
     'the usage of this function exceed the 50000 records limit of beta version',
   );
   static readonly SUBSCRIPTION_RECORD_LIMIT = new DatasheetException(951, 'exceed the records limit, please upgrade your subscription plan');
+  // demo scope: primary field "unique value" validation (SingleText only), see DatasheetOtService#analyseOperates
+  static readonly PRIMARY_FIELD_VALUE_DUPLICATED = new DatasheetException(310, 'primary field value duplicated, unique validation is enabled');
 
   static getRECORD_ADD_LIMIT_PER_DATASHEETMsg(specification: number, usage: number) {
     // return new DatasheetException(305, t(Strings.max_rows_per_sheet, { specification, usage }));

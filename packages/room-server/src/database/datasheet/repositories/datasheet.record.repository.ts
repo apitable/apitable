@@ -57,6 +57,24 @@ export class DatasheetRecordRepository extends Repository<DatasheetRecordEntity>
     );
   }
 
+  /**
+   * demo scope: fetch every (non-deleted) record's current value for a single field in a datasheet.
+   * Used by the primary-field "unique value" validation (SingleText only), see DatasheetOtService.
+   * Modeled after selectLinkRecordIdsByRecordIdAndFieldId above, but without the single-record filter.
+   */
+  selectFieldValuesByDstId(dstId: string, fieldId: string): Promise<{ recordId: string; fieldValue: any }[]> {
+    const path = `$.${fieldId}`;
+    // todo(itou): replace dynamic sql
+    return this.query(
+      `
+       SELECT vdr.record_id as recordId, vdr.data->? as fieldValue
+       FROM ${this.manager.connection.options.entityPrefix}datasheet_record vdr
+       WHERE vdr.dst_id = ? AND vdr.is_deleted = 0
+      `,
+      [path, dstId],
+    );
+  }
+
   selectDeletedCountByDstIdAndRecordIs(dstId: string, recordIds: string[]): Promise<number> {
     return this.count({ where: [{ dstId, recordId: In(recordIds), isDeleted: true }] });
   }

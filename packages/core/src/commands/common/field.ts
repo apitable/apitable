@@ -33,8 +33,8 @@ import { ViewType } from 'modules/shared/store/constants';
 import { getDateTimeCellAlarm } from 'modules/database/store/selectors/resource/datasheet/calc';
 import { getCellValue } from 'modules/database/store/selectors/resource/datasheet/cell_calc';
 import { KanbanStyleKey } from '../../modules/shared/store/constants';
-import { getDatasheet, getSnapshot } from 'modules/database/store/selectors/resource/datasheet/base';
-import { FieldType, IField, ILinkField, ISelectField, readonlyFields } from 'types';
+import { getDatasheet, getDatasheetPrimaryField, getSnapshot } from 'modules/database/store/selectors/resource/datasheet/base';
+import { FieldType, IField, ILinkField, ISegment, ISelectField, readonlyFields } from 'types';
 import { getNewId, getUniqName, IDPrefix, isSelectField } from 'utils';
 import { ViewAction } from 'commands_actions/view';
 
@@ -539,6 +539,98 @@ export function setAffectFieldAttr2Action(snapshot: ISnapshot, fieldId: string) 
     }
   });
   return actions;
+}
+
+/**
+ * ---------------------------------------------------------------------------------------------
+ * demo scope: primary field "unique value" validation (SingleText only).
+ *
+ * This is a lightweight, non-production-grade check meant to demonstrate the feature end to end.
+ * It only guards SetRecords/AddRecords execute(); other write paths (paste/fill/form/Fusion API)
+ * are covered incidentally only if they end up delegating to those two commands' execute().
+ * ---------------------------------------------------------------------------------------------
+ */
+
+/**
+ * Normalize a SingleText cell value the same way the field itself displays it:
+ * concatenate segment texts and trim. An empty result is treated as "no value" and is
+ * never considered a duplicate (multiple blank primary cells are allowed).
+ */
+export function normalizeSingleTextCellValue(value: ICellValue | null | undefined): string | null {
+  if (!Array.isArray(value)) {
+    return null;
+  }
+  const text = (value as ISegment[]).map(seg => seg.text).join('').trim();
+  return text.length ? text : null;
+}
+
+/**
+ * Returns the datasheet's primary field only when it is eligible for the demo's unique
+ * validation: type is SingleText and property.unique is explicitly true.
+ */
+export function getUniqueSingleTextPrimaryField(snapshot: ISnapshot) {
+  const primaryField = getDatasheetPrimaryField(snapshot);
+  if (primaryField && primaryField.type === FieldType.SingleText && primaryField.property?.unique) {
+    return primaryField;
+  }
+  return null;
+}
+
+/**
+ * Build a normalized-value -> recordId map from all existing records for the given field,
+ * used to detect duplicates against data already in the datasheet.
+ *
+ * `excludeRecordIds` should contain the recordIds that this same command batch is about to
+ * overwrite the value of. Excluding them avoids false-positive rejections when a batch "swaps"
+ * values between two records it touches (e.g. record A: X->Y, record B: Y->X in one SetRecords
+ * call) - without the exclusion, B's *old* value Y would look like a pre-existing conflict for
+ * A's incoming Y, even though B's Y is about to be overwritten in the very same batch.
+ */
+export function getExistingCellValueMap(snapshot: ISnapshot, fieldId: string, excludeRecordIds?: Set<string>): Map<string, string> {
+  const map = new Map<string, string>();
+  for (const recordId in snapshot.recordMap) {
+    if (excludeRecordIds?.has(recordId)) {
+      continue;
+    }
+    const cellValue = snapshot.recordMap[recordId]!.data[fieldId];
+    const normalized = normalizeSingleTextCellValue(cellValue as ICellValue);
+    if (normalized != null) {
+      map.set(normalized, recordId);
+    }
+  }
+  return map;
+}
+
+/**
+ * Checks one incoming (recordId, value) pair against both the existing-records map and the
+ * current batch's own already-seen values (so pasting/adding several duplicate rows in one
+ * command is also rejected). Mutates `seenInBatch` as a side effect to accumulate batch state.
+ *
+ * Throws a plain Error on conflict. This is caught by CollaCommandManager's `_execute` try/catch
+ * (packages/core/src/command_manager/command_manager.ts), which calls `handleCommandExecuteError`
+ * with the thrown message; on the web client that flows into `onError(error, 'message')`
+ * (packages/datasheet/src/pc/resource_service/error.ts) which shows `Message.warning({ content })`
+ * -- i.e. it does reach the user as a toast.
+ */
+export function assertPrimaryFieldValueNotDuplicated(
+  existingValueToRecordId: Map<string, string>,
+  seenInBatch: Set<string>,
+  recordId: string,
+  value: ICellValue | null | undefined,
+  fieldName: string,
+) {
+  const normalized = normalizeSingleTextCellValue(value);
+  if (normalized == null) {
+    return;
+  }
+  const existingRecordId = existingValueToRecordId.get(normalized);
+  if (existingRecordId && existingRecordId !== recordId) {
+    throw new Error(t(Strings.primary_field_value_duplicated, { fieldName }));
+  }
+  if (seenInBatch.has(normalized)) {
+    throw new Error(t(Strings.primary_field_value_duplicated, { fieldName }));
+  }
+  seenInBatch.add(normalized);
 }
 
 export interface IInternalFix {

@@ -344,6 +344,15 @@ export class DatasheetRecordService {
     return [];
   }
 
+  /**
+   * demo scope: read the current value of a single field for every (non-deleted) record in a
+   * datasheet. Used by the primary-field "unique value" validation (SingleText only).
+   */
+  async getFieldValuesByDstId(dstId: string, fieldId: string): Promise<{ recordId: string; fieldValue: any }[]> {
+    const raw = await this.recordRepo.selectFieldValuesByDstId(dstId, fieldId);
+    return raw || [];
+  }
+
   public getRecordTitle(record: IRecord, datasheetMeta: IMeta, store: Store<IReduxState>) {
     const primaryFieldId = datasheetMeta.views[0]!.columns[0]!.fieldId;
     const primaryField = datasheetMeta.fieldMap[primaryFieldId]!;

@@ -32,7 +32,8 @@ export class SingleTextField extends TextBaseField {
   }
 
   static override propertySchema = Joi.object({
-    defaultValue: Joi.string().allow('')
+    defaultValue: Joi.string().allow(''),
+    unique: Joi.boolean(),
   });
 
   static defaultProperty() {
@@ -42,6 +43,7 @@ export class SingleTextField extends TextBaseField {
   override get apiMetaProperty() {
     return {
       defaultValue: this.field.property.defaultValue,
+      unique: this.field.property.unique,
     };
   }
 
@@ -92,8 +94,8 @@ export class SingleTextField extends TextBaseField {
   }
 
   override get openFieldProperty(): IOpenSingleTextFieldProperty {
-    const { defaultValue } = this.field.property;
-    return { defaultValue };
+    const { defaultValue, unique } = this.field.property;
+    return { defaultValue, unique };
   }
 
   override validateUpdateOpenProperty(property: IUpdateOpenSingleTextFieldProperty) {

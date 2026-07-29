@@ -66,6 +66,7 @@ export type IOpenFieldProperty = IOpenTextFieldProperty
 
 export interface IOpenSingleTextFieldProperty {
   defaultValue?: string;
+  unique?: boolean;
 }
 
 export type IOpenTextFieldProperty = null;

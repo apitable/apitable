@@ -27,6 +27,7 @@ import { FieldType, IField, ILinkField, ResourceType } from 'types';
 import { Strings, t } from '../../exports/i18n';
 import { CollaCommandName } from 'commands/enum';
 import { ConfigConstant } from 'config';
+import { assertPrimaryFieldValueNotDuplicated, getExistingCellValueMap, getUniqueSingleTextPrimaryField } from '../common/field';
 
 export interface IAddRecordsOptions {
   cmd: CollaCommandName.AddRecords;
@@ -106,6 +107,11 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
     }
     const memberFieldMap: { [key: string]: string[] } = {};
 
+    // demo scope: primary field "unique value" validation (SingleText only), see commands/common/field.ts
+    const uniquePrimaryField = getUniqueSingleTextPrimaryField(snapshot);
+    const primaryFieldExistingValueToRecordId = uniquePrimaryField ? getExistingCellValueMap(snapshot, uniquePrimaryField.id) : null;
+    const primaryFieldSeenInBatch = new Set<string>();
+
     /**
      * Add a new record, the record may be a blank record, or there may be some initialized data,
      * The data of the initialized data has three parts:
@@ -177,6 +183,20 @@ export const addRecords: ICollaCommandDef<IAddRecordsOptions, IAddRecordsResult>
         }
         newRecord.data = _recordData;
       }
+
+      // demo scope: primary field "unique value" validation (SingleText only). Must run before
+      // the action for this record is generated, and before any actions from this command are
+      // returned/applied (a thrown error here aborts the whole execute()).
+      if (uniquePrimaryField && primaryFieldExistingValueToRecordId) {
+        assertPrimaryFieldValueNotDuplicated(
+          primaryFieldExistingValueToRecordId,
+          primaryFieldSeenInBatch,
+          recordId,
+          newRecord.data[uniquePrimaryField.id],
+          uniquePrimaryField.name,
+        );
+      }
+
       const action = DatasheetActions.addRecord2Action(snapshot, {
         viewId,
         record: newRecord,

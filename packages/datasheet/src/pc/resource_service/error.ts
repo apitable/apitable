@@ -18,12 +18,13 @@
 
 import * as Sentry from '@sentry/nextjs';
 import parser from 'html-react-parser';
-import { Navigation, OnOkType, OtErrorCode, StatusCode, Strings, t } from '@apitable/core';
+import { Navigation, OnOkType, OtErrorCode, Selectors, StatusCode, Strings, t } from '@apitable/core';
 import { IServiceError } from '@apitable/widget-sdk';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
 import { getModalConfig } from 'pc/components/common/modal/qr_code_modal_content';
 import { Router } from 'pc/components/route_manager/router';
+import { store } from 'pc/store';
 // @ts-ignore
 import { triggerUsageAlertForDatasheet } from 'enterprise/billing/trigger_usage_alert';
 
@@ -59,6 +60,12 @@ export const onError: IServiceError = (error, type) => {
     }
     if (errorCode == OtErrorCode.REVISION_OVER_LIMIT) {
       modalType = 'info';
+    }
+    if (errorCode == StatusCode.PRIMARY_FIELD_VALUE_DUPLICATED) {
+      modalType = 'warning';
+      const snapshot = Selectors.getSnapshot(store.getState());
+      const primaryField = snapshot && Selectors.getDatasheetPrimaryField(snapshot);
+      contentMessage = t(Strings.primary_field_value_duplicated, { fieldName: primaryField?.name || t(Strings.field_title) });
     }
     const modalOnOk = () => {
       if (modal.destroy()) {
