@@ -255,13 +255,11 @@ export const HiddenField: React.FC<React.PropsWithChildren<IHiddenFieldProps>> =
           data,
         });
       },
-      {
-        columns: getMoveColumnsResult({
-          viewId: activeView.id,
-          data,
-          datasheetId: datasheetId!,
-        }),
-      },
+      getMoveColumnsResult({
+        viewId: activeView.id,
+        data,
+        datasheetId: datasheetId!,
+      }),
     );
   };
 

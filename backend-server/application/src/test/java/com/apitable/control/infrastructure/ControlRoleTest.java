@@ -73,6 +73,8 @@ public class ControlRoleTest {
         assertThat(role.getRoleTag()).isEqualTo(Node.EDITOR);
         assertThat(role.hasPermission(NodePermission.EDIT_NODE)).isTrue();
         assertThat(role.getPermissions()).contains(NodePermission.EDIT_NODE);
+        assertThat(role.hasPermission(NodePermission.GROUP_COLUMN)).isTrue();
+        assertThat(role.getPermissions()).contains(NodePermission.GROUP_COLUMN);
     }
 
     @Test

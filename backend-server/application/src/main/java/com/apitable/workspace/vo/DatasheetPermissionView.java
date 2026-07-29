@@ -167,6 +167,10 @@ public class DatasheetPermissionView {
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean fieldGroupable;
 
+    @Schema(description = "Group Columns", example = "true")
+    @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
+    private Boolean columnGroupable;
+
     @Schema(description = "Edit Row Height", example = "true")
     @JsonSerialize(nullsUsing = NullBooleanSerializer.class)
     private Boolean rowHighEditable;

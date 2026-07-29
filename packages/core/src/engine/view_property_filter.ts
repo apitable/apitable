@@ -21,7 +21,7 @@ import { CollaCommandName } from 'commands/enum';
 import { IJOTAction } from 'engine/ot/interface';
 import { Strings, t } from '../exports/i18n';
 import { DatasheetActions } from 'commands_actions/datasheet';
-import { IFieldMap, IKanbanStyle, IReduxState, IViewProperty } from '../exports/store/interfaces';
+import { IColumnGroup, IFieldMap, IKanbanStyle, IReduxState, IViewProperty } from '../exports/store/interfaces';
 import { applyJOTOperations } from 'modules/database/store/actions/resource';
 import { getSnapshot } from 'modules/database/store/selectors/resource/datasheet/base';
 import { getDatasheetClient } from 'modules/database/store/selectors/resource/datasheet/base';
@@ -33,7 +33,7 @@ interface IViewPropertyFilterListener {
   onError?(error: IError): any;
 }
 
-type IViewPropertyKey = (keyof IViewProperty | 'style');
+type IViewPropertyKey = (keyof IViewProperty | 'style' | 'columnGroups');
 
 interface IResetViewPropertyProps {
   datasheetId: string;
@@ -86,6 +86,13 @@ export class ViewPropertyFilter {
     return true;
   }
 
+  // this is unrelated to `_checkGroupInfo`(row grouping), do not confuse the two.
+  private _checkColumnGroups(columnGroups: IColumnGroup[], fieldMap: IFieldMap) {
+    return columnGroups.every(group => {
+      return group.fieldIds.every(fieldId => fieldMap[fieldId]);
+    });
+  }
+
   /* Strategy for checking data integrity */
   private _fieldIntegrityCheck(viewProperty: IViewPropertyKey, op: any, fieldMap: IFieldMap) {
     switch (viewProperty) {
@@ -100,6 +107,9 @@ export class ViewPropertyFilter {
       }
       case 'style': {
         return this._checkStyle(op, fieldMap);
+      }
+      case 'columnGroups': {
+        return this._checkColumnGroups(op, fieldMap);
       }
       default: {
         return true;

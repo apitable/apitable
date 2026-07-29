@@ -151,6 +151,7 @@ export interface IDatasheetPermission {
   columnHideable: boolean;
   fieldSortable: boolean;
   fieldGroupable: boolean;
+  columnGroupable: boolean;
   rowHighEditable: boolean;
   columnWidthEditable: boolean;
   columnCountEditable: boolean;

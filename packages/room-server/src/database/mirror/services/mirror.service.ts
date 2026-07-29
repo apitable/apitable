@@ -80,6 +80,7 @@ export class MirrorService {
     permissions.columnHideable = false;
     permissions.viewFilterable = false;
     permissions.fieldGroupable = false;
+    permissions.columnGroupable = false;
     permissions.columnSortable = false;
     permissions.rowHighEditable = false;
     permissions.viewLayoutEditable = false;

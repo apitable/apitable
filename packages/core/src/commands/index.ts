@@ -64,6 +64,7 @@ import {
   ISetGalleryStyleOptions,
   ISetGanttStyleOptions,
   ISetGroupOptions,
+  ISetColumnGroupsOptions,
   ISetKanbanStyleOptions,
   ISetOrgChartStyleOptions,
   ISetRecordsOptions,
@@ -91,6 +92,7 @@ import {
   setGalleryStyle,
   setGanttStyle,
   setGroup,
+  setColumnGroups,
   setKanbanStyle,
   setOrgChartStyle,
   setRecords,
@@ -156,6 +158,7 @@ export const COLLA_COMMAND_MAP: { [name: string]: ICollaCommandDef } = {
   [CollaCommandName.SetColumnsProperty]: setColumnsProperty,
   [CollaCommandName.SetViewFilter]: setViewFilter,
   [CollaCommandName.SetGroup]: setGroup,
+  [CollaCommandName.SetColumnGroups]: setColumnGroups,
   [CollaCommandName.SetGalleryStyle]: setGalleryStyle,
   [CollaCommandName.SetGanttStyle]: setGanttStyle,
   [CollaCommandName.SetCalendarStyle]: setCalendarStyle,
@@ -213,6 +216,7 @@ export type ICollaCommandOptions =
   | ISetColumnsPropertyOptions
   | ISetViewFilterOptions
   | ISetGroupOptions
+  | ISetColumnGroupsOptions
   | ISetGalleryStyleOptions
   | ISetGanttStyleOptions
   | ISetCalendarStyleOptions

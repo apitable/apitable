@@ -123,7 +123,9 @@ services:
 
   unit-test-backend:
     container_name: unit-test-backend
-    image: amazoncorretto:17
+    build:
+      context: ./packaging
+      dockerfile: Dockerfile.backend-server-unit-test
     working_dir: /app
     networks:
       - unit-test

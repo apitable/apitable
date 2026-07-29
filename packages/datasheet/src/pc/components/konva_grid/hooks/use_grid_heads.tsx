@@ -19,7 +19,7 @@
 import * as React from 'react';
 import { useCallback, useContext, useMemo } from 'react';
 import { indigo } from '@apitable/components';
-import { ConfigConstant, KONVA_DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
+import { ConfigConstant, IGridViewProperty, KONVA_DATASHEET_ID, Selectors, Strings, t } from '@apitable/core';
 import { TComponent } from 'pc/components/common/t_component';
 import { getFieldLock } from 'pc/components/field_permission';
 import { AreaType, IScrollState, PointPosition } from 'pc/components/gantt_view';
@@ -27,6 +27,7 @@ import { Icon, IconType, Line, Rect } from 'pc/components/konva_components';
 import { GRID_ICON_COMMON_SIZE, GRID_ROW_HEAD_WIDTH, GridCoordinate, KonvaGridContext, KonvaGridViewContext } from 'pc/components/konva_grid';
 import { useAppSelector } from 'pc/store/react-redux';
 import { FieldHead } from '../components';
+import { GRID_COLUMN_GROUP_BAND_HEIGHT, GRID_FIELD_HEAD_HEIGHT } from '../constant';
 
 interface IUseHeadsProps {
   instance: GridCoordinate;
@@ -46,7 +47,12 @@ export const useHeads = (props: IUseHeadsProps) => {
   const colors = theme.color;
   const viewType = view.type;
   const { columnIndex: pointColumnIndex, targetName: pointTargetName, realAreaType: pointAreaType } = pointPosition;
-  const { columnCount, frozenColumnWidth, frozenColumnCount, rowInitSize: fieldHeadHeight, autoHeadHeight } = instance;
+  const { columnCount, frozenColumnWidth, frozenColumnCount, rowInitSize, autoHeadHeight } = instance;
+  const columnGroups = (view as IGridViewProperty).columnGroups;
+  const groupedFieldIds = useMemo(
+    () => new Set(columnGroups?.flatMap((group) => group.fieldIds) || []),
+    [columnGroups],
+  );
   const { editable } = permissions;
   const pointFieldId = visibleColumns[pointColumnIndex]?.fieldId;
 
@@ -97,11 +103,14 @@ export const useHeads = (props: IUseHeadsProps) => {
         const x = instance.getColumnOffset(columnIndex);
         const columnWidth = instance.getColumnWidth(columnIndex);
         const { iconVisible, isHighlight, isSelected, permissionInfo } = getFieldHeadStatus(fieldId, columnIndex);
+        const isGrouped = groupedFieldIds.has(fieldId);
+        const fieldHeadOffsetY = isGrouped ? GRID_COLUMN_GROUP_BAND_HEIGHT : 0;
+        const fieldHeadHeight = rowInitSize - fieldHeadOffsetY;
 
         _fieldHeads.push(
           <FieldHead
             x={x}
-            y={0}
+            y={fieldHeadOffsetY}
             key={`field-head-${fieldId}`}
             width={columnWidth}
             height={fieldHeadHeight}
@@ -115,13 +124,25 @@ export const useHeads = (props: IUseHeadsProps) => {
             viewType={viewType}
             stroke={columnIndex === 0 ? 'transparent' : undefined}
             isFrozen={isFrozen}
-            autoHeadHeight={autoHeadHeight}
+            autoHeadHeight={autoHeadHeight && fieldHeadHeight > GRID_FIELD_HEAD_HEIGHT}
           />,
         );
       }
       return _fieldHeads;
     },
-    [columnCount, editable, fieldHeadHeight, fieldMap, getFieldHeadStatus, instance, mirrorId, viewType, visibleColumns, autoHeadHeight],
+    [
+      columnCount,
+      editable,
+      fieldMap,
+      getFieldHeadStatus,
+      groupedFieldIds,
+      instance,
+      mirrorId,
+      rowInitSize,
+      viewType,
+      visibleColumns,
+      autoHeadHeight,
+    ],
   );
 
   /**
@@ -136,7 +157,7 @@ export const useHeads = (props: IUseHeadsProps) => {
           x={0.5}
           y={0.5}
           width={GRID_ROW_HEAD_WIDTH + 1}
-          height={fieldHeadHeight}
+          height={rowInitSize}
           fill={colors.defaultBg}
           cornerRadius={[8, 0, 0, 0]}
           listening={false}
@@ -144,7 +165,7 @@ export const useHeads = (props: IUseHeadsProps) => {
         <Icon
           name={KONVA_DATASHEET_ID.GRID_FIELD_HEAD_SELECT_CHECKBOX}
           x={28}
-          y={(fieldHeadHeight - GRID_ICON_COMMON_SIZE) / 2}
+          y={(rowInitSize - GRID_ICON_COMMON_SIZE) / 2}
           type={isChecked ? IconType.Checked : IconType.Unchecked}
           fill={isChecked ? colors.primaryColor : colors.thirdLevelText}
         />
@@ -153,7 +174,7 @@ export const useHeads = (props: IUseHeadsProps) => {
           x={0.5}
           y={0.5}
           width={frozenColumnWidth + GRID_ROW_HEAD_WIDTH}
-          height={fieldHeadHeight}
+          height={rowInitSize}
           stroke={colors.sheetLineColor}
           strokeWidth={1}
           fill={'transparent'}
@@ -192,7 +213,7 @@ export const useHeads = (props: IUseHeadsProps) => {
     visibleRows.length,
     getColumnHead,
     frozenColumnCount,
-    fieldHeadHeight,
+    rowInitSize,
     colors.defaultBg,
     isExporting,
     colors.primaryColor,

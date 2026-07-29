@@ -1,0 +1,5 @@
+FROM amazoncorretto:17-al2023
+
+RUN dnf install -y findutils \
+    && dnf clean all \
+    && rm -rf /var/cache/dnf

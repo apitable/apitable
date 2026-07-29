@@ -1,4 +1,8 @@
-FROM amazoncorretto:17 AS builder
+FROM amazoncorretto:17-al2023 AS builder
+
+RUN dnf install -y findutils \
+    && dnf clean all \
+    && rm -rf /var/cache/dnf
 
 WORKDIR /app
 COPY ./backend-server/. .
@@ -6,7 +10,7 @@ RUN ./gradlew -v
 RUN ./gradlew build -x test
 
 
-FROM amazoncorretto:17
+FROM amazoncorretto:17-al2023
 
 ARG SEMVER_FULL
 ENV SEMVER_FULL=${SEMVER_FULL}

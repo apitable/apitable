@@ -64,7 +64,7 @@ import { FieldSetting } from '../multi_grid/field_setting';
 import { IElementRectProps, MoveType } from '../multi_grid/hover_line/interface';
 import { QuickAppend } from '../multi_grid/quick_append';
 import { RecordWillMoveTips } from '../multi_grid/record_will_move_tips/record_will_move_tips';
-import { GroupMenu } from './components';
+import { ColumnGroupMenu, GroupMenu } from './components';
 import { StatMenu } from './components/stat_menu';
 import { StatRightClickMenu } from './components/stat_right_click_menu';
 import { UrlActionContainer } from './components/url_action_container';
@@ -769,6 +769,9 @@ const DomGridBase: ForwardRefRenderFunction<IContainerEdit, IDomGridBaseProps> =
 
       {/* Group header menu */}
       <GroupMenu parentRef={wrapperRef} getBoundary={getGroupMenuBoundary} />
+
+      {/* Column group header menu */}
+      <ColumnGroupMenu />
 
       {/* Statistics column menu */}
       <StatMenu parentRef={wrapperRef} getBoundary={getStatMenuBoundary} />

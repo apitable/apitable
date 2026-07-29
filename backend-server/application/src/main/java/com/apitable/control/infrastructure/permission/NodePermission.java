@@ -151,6 +151,8 @@ public enum NodePermission implements PermissionDefinition {
     ARCHIVE_ROW("rowArchivable", 1, 1L << 29),
 
     UNARCHIVE_ROW("rowUnarchivable", 1, 1L << 30),
+
+    GROUP_COLUMN("columnGroupable", 1, 1L << 31),
     ;
 
     /**

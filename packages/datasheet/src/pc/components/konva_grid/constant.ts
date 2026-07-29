@@ -20,6 +20,11 @@ import { FieldHeadIconType } from './interface';
 
 export const GRID_FIELD_HEAD_HEIGHT = 40; // Height of field header
 export const GRID_ROW_HEAD_WIDTH = 70; // Row head width
+export const GRID_COLUMN_GROUP_HEADER_HEIGHT = 60; // Total height of the two-level header when column groups exist
+export const GRID_COLUMN_GROUP_BAND_HEIGHT = 30; // Height of the first-level column group header
+// Fallback display name for a column group without a custom name is resolved via i18n
+// (Strings.column_group_default_name) at the call site in `use_grid_column_group_band.tsx`
+// instead of living here as a constant, so it reacts to the current locale.
 
 export const GRID_SCROLL_BASE_SPEED = 15; // Base scroll speed
 export const GRID_DEFAULT_VERTICAL_SPACING = 70; // Trigger threshold for vertical scrolling

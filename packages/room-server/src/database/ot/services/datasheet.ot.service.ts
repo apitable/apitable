@@ -873,6 +873,12 @@ export class DatasheetOtService {
               throw new ServerException(PermissionException.OPERATION_DENIED);
             }
             return;
+          case 'columnGroups':
+            // ====== View column(field) grouping ======
+            if (!permission.columnGroupable || view?.lockInfo) {
+              throw new ServerException(PermissionException.OPERATION_DENIED);
+            }
+            return;
           case 'sortInfo':
             // ====== View sorting ======
             if (!permission.columnSortable || view?.lockInfo) {

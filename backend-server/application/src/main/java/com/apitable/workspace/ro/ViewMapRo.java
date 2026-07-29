@@ -80,4 +80,7 @@ public class ViewMapRo {
 
     @Schema(description = "Album View Style")
     private JSONObject style;
+
+    @Schema(description = "Column(field) groups")
+    private JSONArray columnGroups;
 }

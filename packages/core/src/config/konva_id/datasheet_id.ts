@@ -32,6 +32,7 @@ export const GRID_GROUP_TOGGLE_BUTTON = 'GRID_GROUP_TOGGLE_BUTTON'; // Group exp
 export const GRID_FIELD_HEAD_SELECT_CHECKBOX = 'GRID_FIELD_HEAD_SELECT_CHECKBOX'; // select all column headers
 export const GRID_FIELD_HEAD_DESC = 'GRID_FIELD_HEAD_DESC'; // Column header description
 export const GRID_GROUP_MENU = 'GRID_GROUP_MENU'; // Group header menu
+export const GRID_COLUMN_GROUP_MENU = 'GRID_COLUMN_GROUP_MENU'; // Column group header menu
 export const GRID_GROUP_STAT = 'GRID_GROUP_STAT'; // group statistics column
 export const GRID_BOTTOM_STAT = 'GRID_BOTTOM_STAT'; // bottom statistics bar
 export const GRID_FIELD_HEAD_OPACITY_LINE = 'GRID_FIELD_HEAD_OPACITY_LINE'; // The column header is used for dragging and dropping

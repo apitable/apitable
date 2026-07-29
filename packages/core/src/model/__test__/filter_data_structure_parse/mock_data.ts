@@ -345,6 +345,7 @@ export const mockState = {
           columnHideable: true,
           fieldSortable: true,
           fieldGroupable: true,
+          columnGroupable: true,
           rowHighEditable: true,
           columnWidthEditable: true,
           columnCountEditable: true,
