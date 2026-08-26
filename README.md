@@ -53,7 +53,7 @@
     </a>
     <!-- Deploy to RepoCloud-->
     <a target="_blank" href="https://repocloud.io/details/APITable/">
-        <img src="https://d16t0pc4846x52.cloudfront.net/deploylobe.svg" alt="Deploy on RepoCloud" height="20" />
+        <img src="https://dnk92k33or340.cloudfront.net/deploy-20px.png" alt="Deploy on RepoCloud" height="20" />
     </a>
 </p>
 
