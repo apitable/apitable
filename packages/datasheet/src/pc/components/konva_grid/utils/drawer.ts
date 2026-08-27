@@ -296,7 +296,7 @@ export class KonvaDrawer {
 
     for (let n = 0; n < textLength; n++) {
       const curText = arrText[n];
-      const isLineBreak = ['\n', '\r'].includes(curText);
+      const isLineBreak = ['\n', '\r', '\r\n'].includes(curText);
       const singleText = isLineBreak ? '' : curText;
       const composeText = showText + singleText;
       const isLimitRow = maxRow ? rowCount >= maxRow - 1 : false;
