@@ -682,6 +682,17 @@ export interface IOrgChartViewColumn extends IGridViewColumn {
   hiddenInOrgChart?: boolean;
 }
 
+/**
+ * column(field) grouping, a visual grouping of columns in the grid view header.
+ * this is unrelated to `IGroupInfo`(row grouping by field value), do not confuse the two.
+ */
+export interface IColumnGroup {
+  id: string;
+  name?: string;
+  description?: string;
+  fieldIds: string[];
+}
+
 export interface IGridViewProperty extends IViewPropertyBase {
   id: string;
   type: ViewType.Grid;
@@ -690,6 +701,7 @@ export interface IGridViewProperty extends IViewPropertyBase {
   rowHeightLevel?: RowHeightLevel;
   autoHeadHeight?: boolean;
   groupInfo?: IGroupInfo;
+  columnGroups?: IColumnGroup[];
 }
 
 export interface ICalendarViewStyle {

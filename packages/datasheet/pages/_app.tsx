@@ -407,12 +407,12 @@ function MyAppMain({ Component, pageProps, envVars }: AppProps & { envVars: stri
       </Head>
       {env.ENABLED_REWARDFUL && (
         <>
-          <Script id={'rewardful'}>
-            {`
-        (function(w,r){w._rwq=r;w[r]=w[r]||function(){(w[r].q=w[r].q||[]).push(arguments)}})(window,'rewardful');
-        `}
-          </Script>
-          <Script async src="https://r.wdfl.co/rw.js" data-rewardful="3a9927" />
+          <Script id={'affonso'}
+            async
+            defer
+            src="https://affonso.io/js/pixel.min.js"
+            data-affonso="cmhvtikrz001sdtxtvmjkuimx"
+            data-cookie_duration="30" />
         </>
       )}
 

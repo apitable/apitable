@@ -58,6 +58,7 @@ import { Toolbar } from '../tool_bar';
 import { DATASHEET_VIEW_CONTAINER_ID } from './id';
 import styles from './style.module.less';
 export { DATASHEET_VIEW_CONTAINER_ID };
+import { debounce } from 'lodash';
 
 export const View: React.FC<React.PropsWithChildren<any>> = () => {
   const colors = useThemeColors();
@@ -120,22 +121,39 @@ export const View: React.FC<React.PropsWithChildren<any>> = () => {
   }, [datasheetId, mirrorId, shareId, templateId, embedId]);
 
   const { opEventManager } = resourceService.instance!;
+  
+  // 使用 useRef 来保存防抖函数，避免因为依赖变化而重新创建
+  const debouncedDispatchRef = React.useRef(
+    debounce((datasheetId: string, mirrorId: string | undefined) => {
+      store.dispatch(StoreActions.getSubscriptionsAction(datasheetId, mirrorId));
+    }, 500)
+  );
+
+  // 用于跟踪是否已有请求在进行中
+  const isRequestInProgressRef = React.useRef(false);
+
+  const recordUpdatedCallBack = React.useCallback((context: ICellUpdatedContext) => {
+    const { fieldId } = context;
+    const field = fieldMap[fieldId];
+    
+    if (field && field.type === FieldType.Member && field.property.subscription && datasheetId && !isRequestInProgressRef.current) {
+      isRequestInProgressRef.current = true;
+      debouncedDispatchRef.current(datasheetId, mirrorId);
+      
+      // 500ms 后重置标志
+      setTimeout(() => {
+        isRequestInProgressRef.current = false;
+      }, 600); // 略大于防抖时间，确保防抖完成后再允许下次请求
+    }
+  }, [fieldMap, datasheetId, mirrorId]);
 
   useEffect(() => {
-    const recordUpdatedCallBack = (context: ICellUpdatedContext) => {
-      const { fieldId } = context;
-      const field = fieldMap[fieldId];
-      // While cell updated, member field with subscription open need update subscriptions
-      if (field && field.type === FieldType.Member && field.property.subscription) {
-        store.dispatch(StoreActions.getSubscriptionsAction(datasheetId!, mirrorId));
-      }
-    };
     // Only listen remote changesets of cell updated and update record subscriptions.
     opEventManager.addEventListener(OPEventNameEnums.CellUpdated, recordUpdatedCallBack, { sourceType: EventSourceTypeEnums.REMOTE });
     return () => {
       opEventManager.removeEventListener(OPEventNameEnums.CellUpdated, recordUpdatedCallBack);
     };
-  }, [datasheetId, fieldMap, mirrorId, opEventManager]);
+  }, [opEventManager, recordUpdatedCallBack]);
 
   useExpandWidget();
 

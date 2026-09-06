@@ -48,6 +48,7 @@ import {
   useCellCollaborator,
   useCells,
   useDynamicCells,
+  useGridColumnGroupBand,
   useHeads,
   useStats,
 } from 'pc/components/konva_grid';
@@ -128,6 +129,15 @@ export const useGrid = (props: IUseGridProps) => {
     pointPosition,
     scrollState,
     isExporting,
+  });
+
+  /**
+   * Column(field) group bands, drawn above the field header when the view has `columnGroups`.
+   */
+  const { frozenColumnGroupBand, columnGroupBand } = useGridColumnGroupBand({
+    instance,
+    columnStartIndex,
+    columnStopIndex,
   });
 
   /**
@@ -483,6 +493,8 @@ export const useGrid = (props: IUseGridProps) => {
   return {
     fieldHeads,
     frozenFieldHead,
+    columnGroupBand,
+    frozenColumnGroupBand,
     fillHandler,
     frozenFillHandler,
     hoverRowHeadOperation,

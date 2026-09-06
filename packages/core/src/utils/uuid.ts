@@ -41,7 +41,8 @@ export enum IDPrefix {
   Document = 'doc',
   AutomationTrigger = 'atr',
   WorkDocAonymousId = 'wda',
-  Mirror = "mir"
+  Mirror = "mir",
+  ColumnGroup = 'cgp', // column(field) group, see `IColumnGroup`
 }
 
 /**

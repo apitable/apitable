@@ -129,6 +129,10 @@ export enum NodePermissionEnum {
    */
   FIELD_GROUPABLE = 'fieldGroupable',
   /**
+   * allowed to group the columns(fields) in the grid view header
+   */
+  COLUMN_GROUPABLE = 'columnGroupable',
+  /**
    * allowed to edit the height of a row
    */
   ROW_HIGH_EDITABLE = 'rowHighEditable',

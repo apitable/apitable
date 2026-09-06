@@ -579,6 +579,8 @@ export interface IRatingField extends IBaseField {
 
 export interface ISingleTextProperty {
   defaultValue?: string;
+  // demo scope: only SingleText supports the "unique value" field-level validation
+  unique?: boolean;
 }
 
 export interface ISingleTextField extends IBaseField {

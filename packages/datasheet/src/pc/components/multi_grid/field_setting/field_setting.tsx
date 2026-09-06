@@ -583,6 +583,7 @@ const FieldSettingBase: FC<PropsWithChildren<IFieldSettingProps>> = (props) => {
             hideOperateBox={hideOperateBox}
             datasheetId={propDatasheetId}
             optionErrMsg={optionErrMsg as object}
+            isPrimaryField={activeFieldState.fieldId === snapshot.meta.views[0]?.columns[0]?.fieldId}
           />
         </>
       )}

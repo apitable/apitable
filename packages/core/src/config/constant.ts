@@ -553,8 +553,10 @@ export enum PlatFormTypes {
   App = 'App',
 }
 
-// captcha appkey
-export const nvcAppkey = 'FFFF0N00000000008B7D';
+// captcha
+export const CAPTCHA_IDENTITY = 'mcbp5o';
+export const CAPTCHA_SCENE_ID = 'qxn2cqb2';
+export const CAPTCHA_BUTTON_ID = 'captcha-button';
 
 // Distinguish the entry source of the jump (Wecom App Store application) authorization page
 export enum AuthReference {

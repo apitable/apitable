@@ -69,6 +69,7 @@ interface ISortableList {
   uploadList: IUploadFileList;
   readonly?: boolean;
   rowHeightLevel?: RowHeightLevel;
+  nvcVal?: string;
   deleteUploadItem: (fileId: string) => void;
   onSave?: (cellValue: IAttachmentValue[]) => void;
   getCellValueFn?: (datasheetId: string | undefined, recordId: string, fieldId: string) => IAttachmentValue[];
@@ -171,6 +172,7 @@ const SortableList = ({
   field,
   uploadList,
   readonly,
+  nvcVal,
   deleteUploadItem,
   onSave,
   getCellValueFn,
@@ -214,6 +216,7 @@ const SortableList = ({
               rowHeightLevel={rowHeightLevel}
               onSave={onSave}
               getCellValueFn={getCellValueFn}
+              nvcVal={nvcVal}
             />
           );
         })}
@@ -239,6 +242,7 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
     const cellId = UploadManager.getCellId(recordId, field.id);
     return uploadManager.get(cellId);
   });
+  const [nvcVal, setNvcVal] = useState<string | null>(null);
 
   const [cellValue, setCellValue] = useState(() => {
     return (_cellValue || []).flat();
@@ -294,6 +298,7 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
           cellValue={cellValue}
           uploadList={uploadList}
           setUploadList={setUploadList}
+          setNvcVal={setNvcVal}
           className={classNames({
             [styles.bigSize]: uploadCoreSize === UploadCoreSize.Big,
             [styles.normalSize]: uploadCoreSize === UploadCoreSize.Normal,
@@ -327,6 +332,7 @@ export const UploadCore: React.FC<React.PropsWithChildren<IUploadCoreProps>> = (
               onSave={onSave}
               getCellValueFn={getCellValueFn}
               onMove={onMove}
+              nvcVal={nvcVal || undefined}
             />
           </ScrollingComponent>
         </DndProvider>

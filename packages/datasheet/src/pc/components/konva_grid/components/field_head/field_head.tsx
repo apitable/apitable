@@ -174,7 +174,7 @@ export const FieldHead: FC<React.PropsWithChildren<IFieldHeadProps>> = memo((pro
       width: iconSize,
       height: iconSize,
       x: x + offsetX,
-      y: offsetY ?? 10,
+      y: y + (offsetY ?? 10),
       coordXEnable: !isFrozen,
       coordYEnable: false,
     });

@@ -108,6 +108,8 @@ export const getAPINodeType = (nodeType: ConfigConstant.NodeType) => {
     [ConfigConstant.NodeType.DASHBOARD]: NodeTypeEnum.Dashboard,
     [ConfigConstant.NodeType.MIRROR]: NodeTypeEnum.Mirror,
     [ConfigConstant.NodeType.AUTOMATION]: NodeTypeEnum.Automation,
+    [ConfigConstant.NodeType.AI]: NodeTypeEnum.AI,
+    [ConfigConstant.NodeType.CUSTOM_PAGE]: NodeTypeEnum.CustomPage,
   };
   return NODE_TYPE_MAP[nodeType] || 'ERROR NODE TYPE';
 };

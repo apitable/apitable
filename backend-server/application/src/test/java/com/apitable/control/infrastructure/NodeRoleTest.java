@@ -8,6 +8,7 @@ import com.apitable.control.infrastructure.role.NodeReaderRole;
 import com.apitable.control.infrastructure.role.NodeRole;
 import com.apitable.control.infrastructure.role.NodeUpdaterRole;
 import com.apitable.space.vo.SpaceGlobalFeature;
+import com.apitable.workspace.vo.DatasheetPermissionView;
 import com.apitable.workspace.vo.NodePermissionView;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,18 @@ import org.junit.jupiter.api.Test;
  * @author tao
  */
 public class NodeRoleTest {
+
+    @Test
+    void givenNodeEditorRoleWhenGetPermissionViewsThenColumnGroupableIsTrue() {
+        NodeRole nodeRole = new NodeEditorRole();
+        NodePermissionView nodePermissionView =
+            nodeRole.permissionToBean(NodePermissionView.class);
+        DatasheetPermissionView datasheetPermissionView =
+            nodeRole.permissionToBean(DatasheetPermissionView.class);
+
+        assertThat(nodePermissionView.getColumnGroupable()).isTrue();
+        assertThat(datasheetPermissionView.getColumnGroupable()).isTrue();
+    }
 
     @Test
     void givenControlRoleWithoutExportNodePermissionWhenGetNodePermissionViewThenExportableIsNull() {

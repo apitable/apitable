@@ -36,6 +36,7 @@ export * from './set_auto_head_height';
 export * from './set_columns_property';
 export * from './set_view_filter';
 export * from './set_group';
+export * from './set_column_groups';
 export * from './set_gallery_style';
 export * from './fill_data_to_cells';
 export * from './set_kanban_style';

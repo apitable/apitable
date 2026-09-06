@@ -23,7 +23,7 @@ import { Strings, t } from '@apitable/core';
 import { DeleteOutlined } from '@apitable/icons';
 // @ts-ignore
 import { ButtonPlus } from 'pc/components/common';
-import { execNoTraceVerification } from 'pc/utils';
+import { useNoTraceVerification } from 'pc/hooks';
 import ExcelPng from 'static/icon/datasheet/attachment/datasheet_img_attachment_excel_placeholder.png';
 // import FileSvg from 'static/icon/datasheet/attachment/datasheet_img_attachment_other_placeholder.svg';
 import { IErrorInfo } from '../interface';
@@ -41,11 +41,11 @@ export const FileSelected: FC<React.PropsWithChildren<IFileSelected>> = ({ file,
   const [preview, setPreview] = useState(false);
   const colors = useThemeColors();
 
-  if (!file) return null;
+  const { executeWithVerification, CaptchaElement } = useNoTraceVerification({
+    onSuccess: confirmImport,
+  });
 
-  const _confirmImport = () => {
-    window['nvc'] ? execNoTraceVerification(confirmImport) : confirmImport();
-  };
+  if (!file) return null;
 
   const previewClick = () => {
     setPreview(true);
@@ -60,12 +60,13 @@ export const FileSelected: FC<React.PropsWithChildren<IFileSelected>> = ({ file,
       </div>
       <div className={styles.fileName}>{fileName}</div>
       <div className={styles.btnWrap}>
-        <Button color="primary" block onClick={_confirmImport} style={{ marginBottom: '8px' }}>
+        <Button color="primary" block onClick={() => executeWithVerification()} style={{ marginBottom: '8px' }}>
           {t(Strings.confirm_import)}
         </Button>
         <TextButton block onClick={previewClick}>
           {t(Strings.member_list_review)}
         </TextButton>
+        <CaptchaElement />
       </div>
       <Records
         records={previewList}

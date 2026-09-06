@@ -7,10 +7,10 @@ import { EmailFilled, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@api
 import { IdentifyingCodeInput } from 'pc/components/common/input';
 import { WithTipWrapper } from 'pc/components/common/input/with_tip_wrapper/with_tip_wrapper';
 import { Message } from 'pc/components/common/message';
+import { useNoTraceVerification } from 'pc/hooks';
 import { useRequest } from 'pc/hooks/use_request';
 import { useSetState } from 'pc/hooks/use_set_state';
 import { useUserRequest } from 'pc/hooks/use_user_request';
-import { execNoTraceVerification } from 'pc/utils/no_trace_verification';
 import { ActionType } from '../../pc_home';
 import styles from './style.module.less';
 interface IForgetPasswordErrorMsg {
@@ -41,6 +41,19 @@ export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
   const { retrievePwdReq, loginOrRegisterReq } = useUserRequest();
   const { run: retrievePwd, loading } = useRequest(retrievePwdReq, { manual: true });
 
+  const { executeWithVerification, CaptchaElement } = useNoTraceVerification({
+    onSuccess: (data) => {
+      loginOrRegisterReq({
+        username: account,
+        credential: password,
+        type: ConfigConstant.LoginTypes.PASSWORD,
+        areaCode: '',
+        data,
+      });
+    },
+    autoReinitialize: false,
+  });
+
   const [errMsg, setErrMsg] = useSetState<IForgetPasswordErrorMsg>(defaultData);
   const handleSubmit = async () => {
     if (!preCheckOnSubmit({ password, identifyingCode })) {
@@ -50,15 +63,7 @@ export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
     const { success, message } = result;
     if (success) {
       Message.success({ content: message });
-      execNoTraceVerification((data?: string) => {
-        loginOrRegisterReq({
-          username: account,
-          credential: password,
-          type: ConfigConstant.LoginTypes.PASSWORD,
-          areaCode: '',
-          data,
-        });
-      });
+      executeWithVerification();
     } else {
       Message.error({ content: message });
     }
@@ -167,6 +172,7 @@ export const ForgetPassword: React.FC<ISignUpProps> = (props) => {
           </WithTipWrapper>
         </div>
       </Form>
+      <CaptchaElement />
       <Button className={styles.loginBtn} color="primary" size="large" loading={loading} block onClick={handleSubmit}>
         {t(Strings.apitable_forget_password_done)}
       </Button>

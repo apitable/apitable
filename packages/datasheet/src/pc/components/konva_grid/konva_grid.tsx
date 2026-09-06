@@ -49,6 +49,8 @@ export const KonvaGrid: FC<React.PropsWithChildren<IKonvaGridProps>> = memo((pro
   const {
     fieldHeads,
     frozenFieldHead,
+    columnGroupBand,
+    frozenColumnGroupBand,
     fillHandler,
     frozenFillHandler,
     hoverRowHeadOperation,
@@ -166,6 +168,7 @@ export const KonvaGrid: FC<React.PropsWithChildren<IKonvaGridProps>> = memo((pro
               {frozenDateAddAlarm}
             </Group>
             {!isExporting && <Rect width={8} height={8} fill={colors.lowestBg} listening={false} />}
+            {frozenColumnGroupBand}
             {frozenFieldHead}
             {frozenOpacityLines}
             <Group clipX={frozenAreaWidth + 1} clipY={0} clipWidth={cellGroupClipWidth} clipHeight={containerHeight}>
@@ -177,6 +180,7 @@ export const KonvaGrid: FC<React.PropsWithChildren<IKonvaGridProps>> = memo((pro
                 {fieldHeads}
                 {opacityLines}
                 {addFieldBtn}
+                {columnGroupBand}
               </Group>
             </Group>
             {frozenFieldSplitter.top}

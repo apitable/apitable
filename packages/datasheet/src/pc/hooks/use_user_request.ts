@@ -21,12 +21,10 @@ import { Api, ApiInterface, ConfigConstant, IReduxState, IUnitValue, Navigation,
 import { uploadAttachToS3, UploadType } from '@apitable/widget-sdk';
 import { Message } from 'pc/components/common/message';
 import { Modal } from 'pc/components/common/modal/modal/modal';
-import { openSliderVerificationModal } from 'pc/components/common/slider_verification';
 import { ActionType } from 'pc/components/home/pc_home';
 import { useLinkInvite } from 'pc/components/invite/use_invite';
 import { Router } from 'pc/components/route_manager/router';
 import { useDispatch } from 'pc/hooks/use_dispatch';
-import { secondStepVerify } from 'pc/hooks/utils';
 import { NotificationStore } from 'pc/notification_store';
 import { store } from 'pc/store';
 import { useAppSelector } from 'pc/store/react-redux';
@@ -169,9 +167,9 @@ export const useUserRequest = () => {
         return res.data;
       }
 
-      if (!secondStepVerify(code)) {
-        return;
-      }
+      // if (!secondStepVerify(code)) {
+      //   return;
+      // }
       dispatch(
         StoreActions.setHomeErr({
           code,
@@ -279,27 +277,27 @@ export const useUserRequest = () => {
         }
         Router.push(Navigation.HOME);
       }
-      if (!env.IS_SELFHOST) {
-        if (code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
-          openSliderVerificationModal();
-        } else if (code === StatusCode.PHONE_VALIDATION) {
-          Modal.confirm({
-            title: t(Strings.warning),
-            content: t(Strings.status_code_phone_validation),
-            onOk: () => {
-              if (!env.IS_SELFHOST) {
-                window['nvc'].reset();
-              }
-            },
-            type: 'warning',
-            okText: t(Strings.got_it),
-            cancelButtonProps: {
-              style: { display: 'none' },
-            },
-          });
-          return;
-        }
-      }
+      // if (!env.IS_SELFHOST) {
+      //   if (code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
+      //     openSliderVerificationModal();
+      //   } else if (code === StatusCode.PHONE_VALIDATION) {
+      //     Modal.confirm({
+      //       title: t(Strings.warning),
+      //       content: t(Strings.status_code_phone_validation),
+      //       onOk: () => {
+      //         if (!env.IS_SELFHOST) {
+      //           window['nvc'].reset();
+      //         }
+      //       },
+      //       type: 'warning',
+      //       okText: t(Strings.got_it),
+      //       cancelButtonProps: {
+      //         style: { display: 'none' },
+      //       },
+      //     });
+      //     return;
+      //   }
+      // }
       dispatch(
         StoreActions.setHomeErr({
           code,
@@ -548,24 +546,24 @@ export const useUserRequest = () => {
         return res.data;
       }
       // Perform secondary verification (slider verification)
-      if (code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
-        openSliderVerificationModal();
-      } else if (code === StatusCode.PHONE_VALIDATION) {
-        Modal.confirm({
-          title: t(Strings.warning),
-          content: t(Strings.status_code_phone_validation),
-          onOk: () => {
-            if (!env.IS_SELFHOST) {
-              window['nvc'].reset();
-            }
-          },
-          type: 'warning',
-          okText: t(Strings.got_it),
-          cancelButtonProps: {
-            style: { display: 'none' },
-          },
-        });
-      }
+      // if (code === StatusCode.SECONDARY_VALIDATION || code === StatusCode.NVC_FAIL) {
+      //   openSliderVerificationModal();
+      // } else if (code === StatusCode.PHONE_VALIDATION) {
+      //   Modal.confirm({
+      //     title: t(Strings.warning),
+      //     content: t(Strings.status_code_phone_validation),
+      //     onOk: () => {
+      //       if (!env.IS_SELFHOST) {
+      //         window['nvc'].reset();
+      //       }
+      //     },
+      //     type: 'warning',
+      //     okText: t(Strings.got_it),
+      //     cancelButtonProps: {
+      //       style: { display: 'none' },
+      //     },
+      //   });
+      // }
       return res.data;
     });
   };

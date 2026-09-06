@@ -27,6 +27,7 @@ import { ViewType } from 'modules/shared/store/constants';
 import { getDateTimeCellAlarm } from 'modules/database/store/selectors/resource/datasheet/calc';
 import { getSnapshot } from 'modules/database/store/selectors/resource/datasheet/base';
 import {
+  IColumnGroup,
   IGridViewColumn,
   IGridViewProperty,
   IRecord,
@@ -507,6 +508,33 @@ export class DatasheetActions {
           });
         }
       };
+      const deleteColumnGroupsFieldId = () => {
+        const columnGroups = (view as IGridViewProperty).columnGroups;
+        if (!columnGroups) {
+          return;
+        }
+        const groupIndex = columnGroups.findIndex((group) => group.fieldIds.includes(fieldId));
+        if (groupIndex < 0) {
+          return;
+        }
+        const group = columnGroups[groupIndex]!;
+        const newFieldIds = group.fieldIds.filter((id) => id !== fieldId);
+        if (newFieldIds.length === 0) {
+          // no field left in the group, delete the group directly
+          action.push({
+            n: OTActionName.ListDelete,
+            p: ['meta', 'views', index, 'columnGroups', groupIndex],
+            ld: group,
+          });
+        } else {
+          action.push({
+            n: OTActionName.ObjectReplace,
+            p: ['meta', 'views', index, 'columnGroups', groupIndex, 'fieldIds'],
+            oi: newFieldIds,
+            od: group.fieldIds,
+          });
+        }
+      };
       const setFrozenColumnCount = () => {
         const frozenColumnCount = (view as IGridViewProperty)?.frozenColumnCount;
         if (frozenColumnCount && columnIndex < frozenColumnCount) {
@@ -556,6 +584,7 @@ export class DatasheetActions {
         deleteGroupOrSortInfo('sortInfo');
         deleteKanbanFieldId();
         deleteGanttFieldId();
+        deleteColumnGroupsFieldId();
         setFrozenColumnCount();
       }
 
@@ -1227,6 +1256,55 @@ export class DatasheetActions {
       p: ['meta', 'views', viewIndex, 'groupInfo'],
       oi: groupInfo,
       od: view.groupInfo,
+    };
+  };
+
+  /**
+   * set view column(field) groups, this is unrelated to `groupInfo`(row grouping), do not confuse the two.
+   */
+  static setColumnGroups2Action = (
+    snapshot: ISnapshot,
+    payload: { viewId: string; columnGroups?: IColumnGroup[] }
+  ): IJOTAction | null => {
+    const { viewId } = payload;
+    const viewIndex = getViewIndex(snapshot, viewId);
+
+    if (viewIndex < 0) {
+      return null;
+    }
+
+    const view = snapshot.meta.views[viewIndex]! as IGridViewProperty;
+    const columnGroups = payload.columnGroups && payload.columnGroups.length > 0 ? payload.columnGroups : undefined;
+    const oldColumnGroups = view.columnGroups && view.columnGroups.length > 0 ? view.columnGroups : undefined;
+
+    if (isEqual(oldColumnGroups, columnGroups)) {
+      return null;
+    }
+
+    /**
+     * when clear column groups, delete the field directly
+     */
+    if (!columnGroups) {
+      return {
+        n: OTActionName.ObjectDelete,
+        p: ['meta', 'views', viewIndex, 'columnGroups'],
+        od: view.columnGroups,
+      };
+    }
+
+    if (!oldColumnGroups) {
+      return {
+        n: OTActionName.ObjectInsert,
+        p: ['meta', 'views', viewIndex, 'columnGroups'],
+        oi: columnGroups,
+      };
+    }
+
+    return {
+      n: OTActionName.ObjectReplace,
+      p: ['meta', 'views', viewIndex, 'columnGroups'],
+      oi: columnGroups,
+      od: view.columnGroups,
     };
   };
 

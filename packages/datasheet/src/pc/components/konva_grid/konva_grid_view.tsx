@@ -52,6 +52,8 @@ import {
   useGridScroller,
   GRID_BOTTOM_STAT_HEIGHT,
   GRID_FIELD_HEAD_HEIGHT,
+  GRID_COLUMN_GROUP_HEADER_HEIGHT,
+  GRID_COLUMN_GROUP_BAND_HEIGHT,
   GRID_SCROLL_BAR_OFFSET_X,
   GRID_ROW_HEAD_WIDTH,
   FIELD_HEAD_ICON_SIZE_MAP,
@@ -201,7 +203,12 @@ export const KonvaGridView: FC<React.PropsWithChildren<IGridViewProps>> = memo((
   // TODO:Required for debugging bugs, can be deleted later
   (window as any).__linearRows__ = linearRows;
   const dispatch = useDispatch();
-  const { autoHeadHeight = false } = view as IGridViewProperty;
+  const { autoHeadHeight = false, columnGroups } = view as IGridViewProperty;
+  const hasColumnGroups = Boolean(columnGroups?.length);
+  const groupedFieldIds = useMemo(
+    () => new Set(columnGroups?.flatMap((group) => group.fieldIds) || []),
+    [columnGroups],
+  );
 
   // Refs
   const containerRef = useRef<any>();
@@ -264,9 +271,10 @@ export const KonvaGridView: FC<React.PropsWithChildren<IGridViewProps>> = memo((
     return columnIndicesMap;
   }, [visibleColumns]);
 
-  // Height of field header
+  // Column groups use a two-level header. Ungrouped columns span the full area, while grouped
+  // columns split it between the group name and the field header.
   const fieldHeadHeight = useMemo(() => {
-    if (!autoHeadHeight) return GRID_FIELD_HEAD_HEIGHT;
+    if (!autoHeadHeight) return hasColumnGroups ? GRID_COLUMN_GROUP_HEADER_HEIGHT : GRID_FIELD_HEAD_HEIGHT;
     textSizer.current.setFont({ fontSize: 13 });
     const fieldHeight = visibleColumns.reduce((prev, cur, index) => {
       const { fieldId } = cur;
@@ -294,10 +302,15 @@ export const KonvaGridView: FC<React.PropsWithChildren<IGridViewProps>> = memo((
       }
 
       const finalHeight = realLastLineWidth > textWidth ? height + 32 : height + 8;
-      return finalHeight > prev ? finalHeight : prev;
-    }, GRID_FIELD_HEAD_HEIGHT);
+      const isGrouped = groupedFieldIds.has(fieldId);
+      const minFieldHeight = isGrouped
+        ? GRID_COLUMN_GROUP_HEADER_HEIGHT - GRID_COLUMN_GROUP_BAND_HEIGHT
+        : GRID_FIELD_HEAD_HEIGHT;
+      const requiredHeight = Math.max(finalHeight, minFieldHeight) + (isGrouped ? GRID_COLUMN_GROUP_BAND_HEIGHT : 0);
+      return Math.max(requiredHeight, prev);
+    }, hasColumnGroups ? GRID_COLUMN_GROUP_HEADER_HEIGHT : GRID_FIELD_HEAD_HEIGHT);
     return fieldHeight;
-  }, [autoHeadHeight, columnIndicesMap, fieldMap, fieldPermissionMap, visibleColumns]);
+  }, [autoHeadHeight, columnIndicesMap, fieldMap, fieldPermissionMap, groupedFieldIds, hasColumnGroups, visibleColumns]);
 
   const firstColumnWidth = columnIndicesMap[0];
   const originFrozenColumnCount = (view as IGridViewProperty).frozenColumnCount;
@@ -333,7 +346,7 @@ export const KonvaGridView: FC<React.PropsWithChildren<IGridViewProps>> = memo((
         columnCount: visibleColumns.length,
         containerWidth,
         containerHeight,
-        rowInitSize: autoHeadHeight ? fieldHeadHeight : GRID_FIELD_HEAD_HEIGHT,
+        rowInitSize: fieldHeadHeight,
         columnInitSize: GRID_ROW_HEAD_WIDTH,
         rowIndicesMap,
         columnIndicesMap,
@@ -551,7 +564,7 @@ export const KonvaGridView: FC<React.PropsWithChildren<IGridViewProps>> = memo((
   // Layout switching
   useMemo(() => {
     instance.autoHeadHeight = autoHeadHeight;
-    instance.rowInitSize = autoHeadHeight ? fieldHeadHeight : GRID_FIELD_HEAD_HEIGHT;
+    instance.rowInitSize = fieldHeadHeight;
     instance.rowHeight = rowHeight;
     instance.rowHeightLevel = rowHeightLevel;
     instance.rowMetaDataMap = {};
@@ -689,7 +702,7 @@ export const KonvaGridView: FC<React.PropsWithChildren<IGridViewProps>> = memo((
               offsetX={offsetX}
             />
             {exportViewId != null && exportViewId === view.id && (
-              <GridExport fieldHeadHeight={autoHeadHeight ? fieldHeadHeight : GRID_FIELD_HEAD_HEIGHT} />
+              <GridExport fieldHeadHeight={fieldHeadHeight} />
             )}
           </KonvaGridViewContext.Provider>
         </div>

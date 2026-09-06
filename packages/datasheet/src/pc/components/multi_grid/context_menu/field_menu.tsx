@@ -18,12 +18,13 @@
 
 import { useMount } from 'ahooks';
 import * as React from 'react';
-import { memo, useMemo, useRef } from 'react';
+import { memo, useMemo, useRef, useState } from 'react';
 import { shallowEqual } from 'react-redux';
 import { ContextMenu, useThemeColors } from '@apitable/components';
 import {
   BasicValueType,
   CollaCommandName,
+  ConfigConstant,
   DATASHEET_ID,
   Events,
   ExecuteResult,
@@ -33,7 +34,11 @@ import {
   FieldTypeDescriptionMap,
   PermissionType,
   getMaxFieldCountPerSheet,
+  getNewId,
   getUniqName,
+  IColumnGroup,
+  IGridViewProperty,
+  IDPrefix,
   isSelectField,
   Player,
   Selectors,
@@ -43,19 +48,20 @@ import {
   t,
   ToolBarMenuCardOpenState,
   ViewType,
-  IGridViewProperty, ConfigConstant
 } from '@apitable/core';
 import {
   ArrowDownOutlined,
   ArrowLeftOutlined,
   ArrowRightOutlined,
   ArrowUpOutlined,
+  CloseCircleOutlined,
   DuplicateOutlined,
   DeleteOutlined,
   InfoCircleOutlined,
   EditOutlined,
   FilterOutlined,
   FreezeOutlined,
+  GroupFilled,
   GroupOutlined,
   EyeOpenOutlined,
   LockOutlined,
@@ -65,6 +71,7 @@ import { fieldChangeConfirm } from 'pc/components/common/field_change_confirm/fi
 import { notifyWithUndo } from 'pc/components/common/notify';
 import { NotifyKey } from 'pc/components/common/notify/notify.interface';
 import { expandFieldPermission } from 'pc/components/field_permission';
+import { ColumnGroupNameModal } from 'pc/components/multi_grid/context_menu/column_group_name_modal';
 import { getCopyField, getShowFieldName } from 'pc/components/multi_grid/context_menu/utils';
 import { useCacheScroll } from 'pc/context';
 import { useAppDispatch } from 'pc/hooks/use_app_dispatch';
@@ -123,7 +130,27 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
     const isEmbedHiddenFieldPermission = embedId && embedInfo?.permissionType !== PermissionType.PRIVATEEDIT;
     const chosenCount = fieldRanges ? fieldRanges.filter((id) => id !== visibleColumns[0].fieldId).length : 1;
 
+    // column(field) grouping — this is unrelated to `groupField`/`groupInfo` (row grouping by field
+    // value) above, do not confuse the two. Text on the menu items below intentionally says "编组"
+    // (column/field group) instead of "分组" (row group) to keep the two features distinguishable.
+    const columnGroups = (view as IGridViewProperty)?.columnGroups;
+    const currentFieldColumnGroup = React.useMemo(() => {
+      if (!columnGroups?.length) {
+        return null;
+      }
+      return columnGroups.find((group) => group.fieldIds.includes(fieldId)) || null;
+    }, [columnGroups, fieldId]);
+    const selectionContainsGroupedField = React.useMemo(() => {
+      if (!fieldRanges?.length || !columnGroups?.length) {
+        return false;
+      }
+      const groupedFieldIds = new Set(columnGroups.flatMap((group) => group.fieldIds));
+      return fieldRanges.some((selectedFieldId) => groupedFieldIds.has(selectedFieldId));
+    }, [columnGroups, fieldRanges]);
+    const [newColumnGroup, setNewColumnGroup] = useState<{ fieldIds: string[]; initialName: string } | null>(null);
+
     const {
+      columnGroupable,
       fieldPropertyEditable,
       descriptionEditable,
       fieldCreatable,
@@ -260,6 +287,67 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
       if (res === ExecuteResult.Success) {
         dispatch(StoreActions.setToolbarMenuCardOpen(ToolBarMenuCardOpenState.Group));
       }
+    }
+
+    // Create a new column(field) group only when every selected field is currently ungrouped.
+    function createColumnGroup() {
+      if (!fieldRanges || fieldRanges.length < 2 || selectionContainsGroupedField) {
+        return;
+      }
+      const defaultName = t(Strings.column_group_default_name);
+      const existingNames = (columnGroups || []).map((group) => group.name || defaultName);
+      setNewColumnGroup({
+        fieldIds: [...fieldRanges],
+        initialName: getUniqName(defaultName, existingNames),
+      });
+    }
+
+    function confirmCreateColumnGroup(name: string) {
+      if (!newColumnGroup) return;
+      const existingIds = (columnGroups || []).map((group) => group.id);
+      const newGroup: IColumnGroup = {
+        id: getNewId(IDPrefix.ColumnGroup, existingIds),
+        name,
+        fieldIds: newColumnGroup.fieldIds,
+      };
+      const nextColumnGroups = [...(columnGroups || []), newGroup];
+      resourceService.instance!.commandManager.execute({
+        cmd: CollaCommandName.SetColumnGroups,
+        viewId: view.id,
+        data: nextColumnGroups,
+      });
+      setNewColumnGroup(null);
+    }
+
+    // Remove just this field; a group with fewer than two remaining fields is no longer meaningful.
+    function removeFromColumnGroup() {
+      if (!currentFieldColumnGroup || !columnGroups) {
+        return;
+      }
+      const nextColumnGroups = columnGroups
+        .map((group) =>
+          group.id === currentFieldColumnGroup.id ? { ...group, fieldIds: group.fieldIds.filter((id) => id !== fieldId) } : group,
+        )
+        .filter((group) => group.fieldIds.length >= 2);
+      resourceService.instance!.commandManager.execute({
+        cmd: CollaCommandName.SetColumnGroups,
+        viewId: view.id,
+        data: nextColumnGroups,
+      });
+    }
+
+    // disband the whole group this field belongs to (every member field is removed from the
+    // group, not just this one) — distinct from `removeFromColumnGroup` above.
+    function disbandColumnGroup() {
+      if (!currentFieldColumnGroup || !columnGroups) {
+        return;
+      }
+      const nextColumnGroups = columnGroups.filter((group) => group.id !== currentFieldColumnGroup.id);
+      resourceService.instance!.commandManager.execute({
+        cmd: CollaCommandName.SetColumnGroups,
+        viewId: view.id,
+        data: nextColumnGroups,
+      });
     }
 
     function hiddenField() {
@@ -476,6 +564,32 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
       ],
       [
         {
+          icon: <GroupFilled color={colors.thirdLevelText} />,
+          text: t(Strings.create_column_group),
+          hidden: !columnGroupable || !hasChosenMulti || selectionContainsGroupedField || Boolean(mirrorId),
+          onClick: createColumnGroup,
+          disabled: () => isViewLock,
+          id: 'create_column_group',
+        },
+        {
+          icon: <CloseCircleOutlined color={colors.thirdLevelText} />,
+          text: t(Strings.remove_from_column_group),
+          hidden: hasChosenMulti || !currentFieldColumnGroup || !columnGroupable || Boolean(mirrorId),
+          onClick: removeFromColumnGroup,
+          disabled: () => isViewLock,
+          id: 'remove_from_column_group',
+        },
+        {
+          icon: <DeleteOutlined color={colors.thirdLevelText} />,
+          text: t(Strings.disband_column_group),
+          hidden: hasChosenMulti || !currentFieldColumnGroup || !columnGroupable || Boolean(mirrorId),
+          onClick: disbandColumnGroup,
+          disabled: () => isViewLock,
+          id: 'disband_column_group',
+        },
+      ],
+      [
+        {
           icon: <DeleteOutlined color={colors.thirdLevelText} />,
           text: hasChosenMulti ? t(Strings.delete_n_columns, { count: chosenCount }) : t(Strings.delete_field),
           hidden: !((fieldRemovable && fieldIndex !== 0) || linkedFieldError),
@@ -485,6 +599,18 @@ export const FieldMenu: React.FC<React.PropsWithChildren<IFieldMenuProps>> = mem
       ],
     ]);
 
-    return <ContextMenu menuId={DATASHEET_ID.FIELD_CONTEXT} onShown={onShown} onClose={onHidden} overlay={menuData} menuSubSpaceHeight={40} />;
+    return (
+      <>
+        <ContextMenu menuId={DATASHEET_ID.FIELD_CONTEXT} onShown={onShown} onClose={onHidden} overlay={menuData} menuSubSpaceHeight={40} />
+        {newColumnGroup && (
+          <ColumnGroupNameModal
+            title={t(Strings.create_column_group)}
+            initialValue={newColumnGroup.initialName}
+            onCancel={() => setNewColumnGroup(null)}
+            onSubmit={confirmCreateColumnGroup}
+          />
+        )}
+      </>
+    );
   },
 );

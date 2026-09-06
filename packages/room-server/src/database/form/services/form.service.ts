@@ -31,6 +31,7 @@ import {
   IMeta,
   IRecordCellValue,
   IServerDatasheetPack,
+  ISnapshot,
   OPEventNameEnums,
   ResourceType,
   Selectors,
@@ -73,6 +74,27 @@ export class FormService {
     private readonly datasheetChangesetSourceService: DatasheetChangesetSourceService,
     private readonly eventEmitter: EventEmitter2,
   ) {
+  }
+
+  private isPrimaryFieldValueDuplicated(snapshot: ISnapshot, recordData: IRecordCellValue): boolean {
+    const primaryFieldId = snapshot.meta.views[0]?.columns[0]?.fieldId;
+    const primaryField = primaryFieldId ? snapshot.meta.fieldMap[primaryFieldId] : undefined;
+    if (!primaryFieldId || primaryField?.type !== FieldType.SingleText || !primaryField.property?.unique) {
+      return false;
+    }
+
+    const normalize = (value: unknown): string | null => {
+      if (!Array.isArray(value)) {
+        return null;
+      }
+      const text = value.map(segment => (typeof segment?.text === 'string' ? segment.text : '')).join('').trim();
+      return text || null;
+    };
+    const submittedValue = normalize(recordData[primaryFieldId]);
+    if (submittedValue == null) {
+      return false;
+    }
+    return Object.values(snapshot.recordMap).some(record => normalize(record.data[primaryFieldId]) === submittedValue);
   }
 
   async fetchFormData(formId: string, userId: string, auth: IAuthHeader): Promise<FormDataPack> {
@@ -308,7 +330,12 @@ export class FormService {
     fetchDataOptionsProfiler.done({ message: 'fetchDataOptionsProfiler done' });
     const interStore = this.commandService.fullFillStore(datasheetPack);
     const { result, changeSets } = this.commandService.execute<string[]>(options, interStore);
-    if (!result || result.result !== ExecuteResult.Success) throw ApiException.tipError(ApiTipConstant.api_insert_error);
+    if (!result || result.result !== ExecuteResult.Success) {
+      if (this.isPrimaryFieldValueDuplicated(datasheetPack.snapshot, recordData)) {
+        throw new ServerException(DatasheetException.PRIMARY_FIELD_VALUE_DUPLICATED);
+      }
+      throw ApiException.tipError(ApiTipConstant.api_insert_error);
+    }
     // Client submission has been applied to store. Wait for room to acknowledgment
     const roomChangeSets = await this.applyChangeSet(formId, dstId, changeSets, auth);
     // console.log('changeSets', JSON.stringify(changeSets), JSON.stringify(roomChangeSets));
@@ -368,7 +395,12 @@ export class FormService {
     fetchDataOptionsProfiler.done({ message: 'fetchDataOptionsProfiler done' });
     const interStore = this.commandService.fullFillStore(datasheetPack);
     const { result, changeSets } = this.commandService.execute<string[]>(options, interStore);
-    if (!result || result.result !== ExecuteResult.Success) throw ApiException.tipError(ApiTipConstant.api_insert_error);
+    if (!result || result.result !== ExecuteResult.Success) {
+      if (this.isPrimaryFieldValueDuplicated(datasheetPack.snapshot, recordData)) {
+        throw new ServerException(DatasheetException.PRIMARY_FIELD_VALUE_DUPLICATED);
+      }
+      throw ApiException.tipError(ApiTipConstant.api_insert_error);
+    }
     // Client submission has been applied to store. Wait for room to acknowledgment
     const roomChangeSets = await this.applyChangeSet(formId, dstId, changeSets, auth, shareId!);
     // console.log('changeSets', JSON.stringify(changeSets), JSON.stringify(roomChangeSets));

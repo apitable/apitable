@@ -52,6 +52,7 @@ public class NodeEditorRole extends NodeReaderRole {
         permissions.add(NodePermission.FILTER_VIEW);
         permissions.add(NodePermission.SORT_FIELD);
         permissions.add(NodePermission.GROUP_FIELD);
+        permissions.add(NodePermission.GROUP_COLUMN);
         permissions.add(NodePermission.EDIT_ROW_HIGH);
         permissions.add(NodePermission.EDIT_COLUMN_WIDTH);
         permissions.add(NodePermission.EDIT_COLUMN_COUNT);

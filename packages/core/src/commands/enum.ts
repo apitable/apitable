@@ -24,6 +24,7 @@ export enum CollaCommandName {
   SetViewLockInfo = 'SetViewLockInfo',
   SetViewFrozenColumnCount = 'SetViewFrozenColumnCount',
   SetGroup = 'SetGroup',
+  SetColumnGroups = 'SetColumnGroups',
   SetGalleryStyle = 'SetGalleryStyle',
   SetGanttStyle = 'SetGanttStyle',
   SetOrgChartStyle = 'SetOrgChartStyle',

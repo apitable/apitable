@@ -61,6 +61,7 @@ export const state = {
           columnHideable: true,
           fieldSortable: true,
           fieldGroupable: true,
+          columnGroupable: true,
           rowHighEditable: true,
           columnWidthEditable: true,
           columnCountEditable: true,

@@ -18,7 +18,6 @@
 
 import { useMount, useRequest, useUnmount } from 'ahooks';
 import { openTryoutSku } from 'dingtalk-design-libs';
-import dd from 'dingtalk-jsapi';
 import { get } from 'lodash';
 import { useRouter } from 'next/router';
 import { FC, useEffect } from 'react';
@@ -173,7 +172,10 @@ export const TemplateDetail: FC<React.PropsWithChildren<unknown>> = () => {
           url.searchParams.set('ddtab', 'true');
 
           if (isMobile) {
-            dd.biz.util.openLink({ url: url.href }).then(() => dd.biz.navigation.close({}));
+            import('dingtalk-jsapi').then((module) => {
+              const dd = module.default;
+              dd.biz.util.openLink({ url: url.href }).then(() => dd.biz.navigation.close({}));
+            });
           } else {
             window.location.href = url.href;
           }

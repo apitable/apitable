@@ -16,20 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useMount } from 'ahooks';
 import { Tooltip } from 'antd';
 import classNames from 'classnames';
 import { uniqBy } from 'lodash';
 import { useContext, useEffect, useRef, useState } from 'react';
 import * as React from 'react';
 import { useThemeColors } from '@apitable/components';
-import { ConfigConstant, IAttachmentValue, Strings, t } from '@apitable/core';
+import { IAttachmentValue, Strings, t } from '@apitable/core';
 import { FileAddOutlined, LinkOutlined, PasteOutlined } from '@apitable/icons';
 import { ComponentDisplay, ScreenSize } from 'pc/components/common/component_display';
 import { ExpandAttachContext } from 'pc/components/expand_record/expand_attachment';
+import { FormContext } from 'pc/components/form_container/form_context';
 import { resourceService } from 'pc/resource_service';
-import { useAppSelector } from 'pc/store/react-redux';
-import { initNoTraceVerification, UploadManager } from 'pc/utils';
+import { UploadManager } from 'pc/utils';
 import { IUploadFileList } from '../upload_core';
 import { UploadPaste } from '../upload_paste/upload_paste';
 import { IUploadZoneItem, UploadZone } from '../upload_zone';
@@ -69,6 +68,7 @@ interface IUploadTabProps {
   setUploadList: React.Dispatch<React.SetStateAction<IUploadFileList>>;
   uploadList: IUploadFileList;
   className?: string;
+  setNvcVal: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export interface ICommonTabRef {
@@ -79,26 +79,20 @@ export interface ICommonTabRef {
 
 export const UploadTab: React.FC<React.PropsWithChildren<IUploadTabProps>> = (props) => {
   const colors = useThemeColors();
-  const { recordId, fieldId, setUploadList, className, cellValue } = props;
+  const { recordId, fieldId, setUploadList, className, cellValue, setNvcVal } = props;
   const uploadManager = resourceService.instance!.uploadManager;
   const tabInfoRef = useRef<ICommonTabRef>(null);
+  // Store pending files that are waiting for captcha verification
+  const pendingFilesRef = useRef<IUploadZoneItem[]>([]);
 
   const { isFocus } = useContext(ExpandAttachContext);
+  
+  // Get shared captcha from FormContext (for forms with multiple attachment fields)
+  // The captcha is initialized at FormContainer level and shared across all attachment fields
+  const formContext = useContext(FormContext);
+  const { sharedNvcData, needCaptcha, triggerSharedVerification } = formContext || {};
 
   const [currentTab, setCurrentTab] = useState(UploadTabType.Drag);
-  const userInfo = useAppSelector((state) => state.user.info);
-  const { shareId, formId, aiId } = useAppSelector((state) => state.pageParams);
-  useMount(() => {
-    if (!shareId || (!formId && !aiId)) {
-      return;
-    }
-    if (userInfo) {
-      return;
-    }
-
-    initNoTraceVerification(() => {
-    }, ConfigConstant.CaptchaIds.LOGIN);
-  });
 
   useEffect(() => {
     if (!isFocus) {
@@ -108,6 +102,33 @@ export const UploadTab: React.FC<React.PropsWithChildren<IUploadTabProps>> = (pr
   }, [currentTab, isFocus]);
 
   function onUpload(list: IUploadZoneItem[]) {
+    // If captcha is needed but not yet obtained, store files and trigger verification
+    if (needCaptcha && !sharedNvcData) {
+      // Accumulate pending files (user might add more files while waiting)
+      pendingFilesRef.current = uniqBy([...pendingFilesRef.current, ...list], 'fileId');
+      
+      if (triggerSharedVerification) {
+        // Use shared captcha from FormContext
+        triggerSharedVerification((data) => {
+          setNvcVal(data || null);
+          // Process pending files after shared verification succeeds
+          if (data && pendingFilesRef.current.length > 0) {
+            const queueIe = UploadManager.getCellId(recordId, fieldId);
+            const existList = uploadManager.get(queueIe);
+            setUploadList(uniqBy([...existList, ...pendingFilesRef.current], 'fileId'));
+            pendingFilesRef.current = [];
+          }
+        });
+      }
+      return;
+    }
+    
+    // If captcha is needed and already verified, update parent's nvcVal
+    if (needCaptcha && sharedNvcData) {
+      setNvcVal(sharedNvcData);
+    }
+    
+    // If no captcha needed or already verified, proceed with upload
     const queueIe = UploadManager.getCellId(recordId, fieldId);
     const existList = uploadManager.get(queueIe);
     setUploadList(uniqBy([...existList, ...list], 'fileId'));

@@ -1355,11 +1355,11 @@ importers:
         specifier: ^10.4.3
         version: 10.4.3
       dingtalk-design-libs:
-        specifier: ^0.0.20
-        version: 0.0.20
+        specifier: ^0.2.0
+        version: 0.2.0
       dingtalk-jsapi:
-        specifier: ^2.13.71
-        version: 2.15.4
+        specifier: ^3.2.2
+        version: 3.2.2
       dnd-core:
         specifier: ^16.0.1
         version: 16.0.1
@@ -1723,6 +1723,9 @@ importers:
       xgplayer:
         specifier: ^2.20.12
         version: 2.32.3(core-js@3.33.3)
+      y-indexeddb:
+        specifier: ^9.0.12
+        version: 9.0.12(yjs@13.6.8)
       yjs:
         specifier: ^13.6.8
         version: registry.npmmirror.com/yjs@13.6.8
@@ -7330,7 +7333,7 @@ packages:
   /@hocuspocus/common@2.5.0:
     resolution: {integrity: sha512-TpnQAb1Rtff1trwURFWaUEYZwqykaIGo6NNnMr6ZISdDZFWNHMAMUmy7dwJDS9ECnEtcjXhpPxXeLV+MVQXVnw==}
     dependencies:
-      lib0: registry.npmmirror.com/lib0@0.2.85
+      lib0: 0.2.85
     dev: false
 
   /@hocuspocus/extension-database@2.5.0(y-protocols@1.0.6)(yjs@13.6.8):
@@ -8328,7 +8331,7 @@ packages:
     engines: {node: '>= 14'}
     dependencies:
       eslint: 8.49.0
-      jschardet: 3.1.2
+      jschardet: 3.1.4
       lodash: 4.17.21
       utf8: 3.0.0
     transitivePeerDependencies:
@@ -19680,19 +19683,19 @@ packages:
     resolution: {integrity: sha512-qiSlmBq9+BCdCA/L46dw8Uy93mloxsPSbwnm5yrKn2vMPiy8KyAskTF6zuV/j5BMsmOGZDPs7KjU+mjb670kfA==}
     dev: false
 
-  /dingtalk-design-libs@0.0.20:
-    resolution: {integrity: sha512-PojsAOMSquSnzdc4K8sNtKn6uCeIzII2fH8qnQn6nDdGjR5ZFwWKyyDNwPsL5eGBQI+tzoC2wz9Ot2PdfP4T6w==}
+  /dingtalk-design-libs@0.2.0:
+    resolution: {integrity: sha512-A5w1sOqtyfB6SfqdXVmZ6Ml3oNOZN+sYTnm377nC0Bc2qcPYzt3pfPwZ/dsCV1kqTgbdCgGj8n3mzd2NxP7zuw==}
     dependencies:
       axios: 0.21.4
-      dingtalk-jsapi: 2.15.4
+      dingtalk-jsapi: 3.2.2
       eventemitter2: 6.4.9
       query-string: 5.1.1
     transitivePeerDependencies:
       - debug
     dev: false
 
-  /dingtalk-jsapi@2.15.4:
-    resolution: {integrity: sha512-pPETqUhLJYKNZIewnS9hU1/QqcdRbP2Q9sHySimko0C2nm/n9NoakVLtcKwdqgORq1dkPIP/jqv7RnESxhA2bA==}
+  /dingtalk-jsapi@3.2.2:
+    resolution: {integrity: sha512-FglWzvdMJosOkX8k2MVavX3MiDIE6vAmAHqVE0bvXRfh3El4DVqACQRw1UIyKi3UloUS07XQXGRAG6S12eehgg==}
     dependencies:
       promise-polyfill: 7.1.2
     dev: false
@@ -22307,7 +22310,7 @@ packages:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
+    deprecated: Upgrade to fsevents v2 to mitigate potential security issues
     requiresBuild: true
     dependencies:
       bindings: 1.5.0
@@ -22579,6 +22582,7 @@ packages:
 
   /glob@7.1.6:
     resolution: {integrity: sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==}
+    deprecated: Glob versions prior to v9 are no longer supported
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
@@ -22589,6 +22593,7 @@ packages:
 
   /glob@7.1.7:
     resolution: {integrity: sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ==}
+    deprecated: Glob versions prior to v9 are no longer supported
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
@@ -25994,8 +25999,8 @@ packages:
   /jsbn@0.1.1:
     resolution: {integrity: sha512-UVU9dibq2JcFWxQPA6KCqj5O42VOmAY3zQUfEKxU0KpTGXwNoCjkX1e13eHNvw/xPynt6pU0rZ1htjWTNTSXsg==}
 
-  /jschardet@3.1.2:
-    resolution: {integrity: sha512-mw3CBZGzW8nUBPYhFU2ztZ/kJ6NClQUQVpyzvFMfznZsoC///ZQ30J2RCUanNsr5yF22LqhgYr/lj807/ZleWA==}
+  /jschardet@3.1.4:
+    resolution: {integrity: sha512-/kmVISmrwVwtyYU40iQUOp3SUPk2dhNCMsZBQX0R1/jZ8maaXJ/oZIzUOiyOqcgtLnETFKYChbJ5iDC/eWmFHg==}
     engines: {node: '>=0.1.90'}
     dev: true
 
@@ -37832,6 +37837,16 @@ packages:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
 
+  /y-indexeddb@9.0.12(yjs@13.6.8):
+    resolution: {integrity: sha512-9oCFRSPPzBK7/w5vOkJBaVCQZKHXB/v6SIT+WYhnJxlEC61juqG0hBrAf+y3gmSMLFLwICNH9nQ53uscuse6Hg==}
+    engines: {node: '>=16.0.0', npm: '>=8.0.0'}
+    peerDependencies:
+      yjs: ^13.0.0
+    dependencies:
+      lib0: 0.2.85
+      yjs: registry.npmmirror.com/yjs@13.6.8
+    dev: false
+
   /y-prosemirror@1.0.20(prosemirror-model@1.19.3)(prosemirror-state@1.4.3)(prosemirror-view@1.31.8)(y-protocols@1.0.6)(yjs@13.6.8):
     resolution: {integrity: sha512-LVMtu3qWo0emeYiP+0jgNcvZkqhzE/otOoro+87q0iVKxy/sMKuiJZnokfJdR4cn9qKx0Un5fIxXqbAlR2bFkA==}
     peerDependencies:
@@ -38048,7 +38063,7 @@ packages:
     name: '@hocuspocus/common'
     version: 2.5.0
     dependencies:
-      lib0: registry.npmmirror.com/lib0@0.2.85
+      lib0: 0.2.85
     dev: false
 
   registry.npmmirror.com/@hocuspocus/provider@2.5.0(y-protocols@1.0.6)(yjs@13.6.8):
@@ -38643,12 +38658,6 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
-  registry.npmmirror.com/isomorphic.js@0.2.5:
-    resolution: {integrity: sha512-PIeMbHqMt4DnUP3MA/Flc0HElYjMXArsw1qwJZcm9sqR8mq3l8NYizFMty0pWwE/tzIGH3EKK5+jes5mAr85yw==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/isomorphic.js/-/isomorphic.js-0.2.5.tgz}
-    name: isomorphic.js
-    version: 0.2.5
-    dev: false
-
   registry.npmmirror.com/lib0@0.2.85:
     resolution: {integrity: sha512-vtAhVttLXCu3ps2OIsTz8CdKYKdcMo7ds1MNBIcSXz6vrY8sxASqpTi4vmsAIn7xjWvyT7haKcWW6woP6jebjQ==, registry: https://registry.npmjs.org/, tarball: https://registry.npmmirror.com/lib0/-/lib0-0.2.85.tgz}
     name: lib0
@@ -38656,7 +38665,7 @@ packages:
     engines: {node: '>=16'}
     hasBin: true
     dependencies:
-      isomorphic.js: registry.npmmirror.com/isomorphic.js@0.2.5
+      isomorphic.js: 0.2.5
     dev: false
 
   registry.npmmirror.com/linkifyjs@4.1.1:

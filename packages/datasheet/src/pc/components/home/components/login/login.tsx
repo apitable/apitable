@@ -16,16 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { useBoolean, useMount } from 'ahooks';
+import { useBoolean } from 'ahooks';
 import { Form } from 'antd';
 import { useEffect, useState } from 'react';
 import { Typography, useThemeColors, Button, TextInput, Box, LinkButton } from '@apitable/components';
 import { Strings, t, isEmail, ConfigConstant, StatusCode, api, IReduxState } from '@apitable/core';
 import { EmailFilled, EyeCloseOutlined, EyeOpenOutlined, LockFilled } from '@apitable/icons';
 import { WithTipWrapper } from 'pc/components/common';
-import { useRequest, useUserRequest } from 'pc/hooks';
+import { useRequest, useUserRequest, useNoTraceVerification } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
-import { execNoTraceVerification, initNoTraceVerification } from 'pc/utils';
 import { clearStorage } from 'pc/utils/storage';
 import { ActionType } from '../../pc_home';
 import styles from './style.module.less';
@@ -46,7 +45,6 @@ export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => 
   const colors = useThemeColors();
   const { loginOrRegisterReq } = useUserRequest();
   const { run: loginReq, loading } = useRequest(loginOrRegisterReq, { manual: true });
-  const [noTraceVerification, setNoTraceVerification] = useState<string | null>(null);
 
   const [errorMsg, setErrorMsg] = useState<ILoginErrorMsg>({});
   const [username, setUsername] = useState<string>(email);
@@ -62,17 +60,6 @@ export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => 
     }
   }, [inviteEmailInfo]);
 
-  useMount(() => {
-    initNoTraceVerification(setNoTraceVerification, ConfigConstant.CaptchaIds.LOGIN);
-  });
-
-  useEffect(() => {
-    if (noTraceVerification) {
-      signIn(noTraceVerification);
-    }
-    // eslint-disable-next-line
-  }, [noTraceVerification]);
-
   useEffect(() => {
     setErrorMsg({});
   }, [username, password]);
@@ -81,7 +68,7 @@ export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => 
     if (!preCheckOnSubmit({ username, password })) {
       return;
     }
-    execNoTraceVerification(signIn);
+    executeWithVerification();
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -150,6 +137,10 @@ export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => 
     }
   };
 
+  const { executeWithVerification, CaptchaElement } = useNoTraceVerification({
+    onSuccess: signIn,
+  });
+
   function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === ' ') {
       event.preventDefault();
@@ -215,6 +206,7 @@ export const Login: React.FC<React.PropsWithChildren<ILoginProps>> = (props) => 
       <Button className={styles.loginBtn} color="primary" size="large" block loading={loading} onClick={handleSubmit}>
         {t(Strings.apitable_sign_in)}
       </Button>
+      <CaptchaElement />
       <div className={styles.switchContent}>
         <p>{t(Strings.apitable_no_account)}</p>
         <LinkButton underline={false} component="button" onClick={() => switchClick(ActionType.SignUp)} style={{ paddingRight: 0 }}>

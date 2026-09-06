@@ -18,6 +18,8 @@
 
 export * from './cell';
 export * from './field_head';
+export * from './column_group_band';
+export * from './column_group_menu';
 export * from './operation_area';
 export * from './stat';
 export * from './stat_menu';

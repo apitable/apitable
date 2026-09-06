@@ -17,7 +17,18 @@
  */
 
 import produce from 'immer';
-import { DropDirectionType, IJOTAction, IListMoveAction, IMoveColumn, jot, OTActionName, Selectors } from '@apitable/core';
+import {
+  DropDirectionType,
+  getColumnGroupMoveState,
+  IColumnGroupMoveState,
+  IGridViewProperty,
+  IJOTAction,
+  IListMoveAction,
+  IMoveColumn,
+  jot,
+  OTActionName,
+  Selectors,
+} from '@apitable/core';
 import { store } from 'pc/store';
 
 /** Get the isColNameVisible value, compatible with the previously created view isColNameVisible is undefined
@@ -33,7 +44,7 @@ interface IMoveColumnsProps {
   data: IMoveColumn[];
 }
 
-export const getMoveColumnsResult = (props: IMoveColumnsProps) => {
+export const getMoveColumnsResult = (props: IMoveColumnsProps): Partial<IGridViewProperty> => {
   const { datasheetId, viewId, data } = props;
   const state = store.getState();
   const snapshot = Selectors.getSnapshot(state, datasheetId)!;
@@ -42,8 +53,10 @@ export const getMoveColumnsResult = (props: IMoveColumnsProps) => {
   const temporaryView = Selectors.getTemporaryView(snapshot, viewId, datasheetId, mirror);
 
   if (!view) {
-    return;
+    return {};
   }
+
+  const gridView = view as IGridViewProperty;
 
   const getColumnIndexMap = () => {
     const columnsMap: { [id: string]: number } = {};
@@ -57,6 +70,10 @@ export const getMoveColumnsResult = (props: IMoveColumnsProps) => {
   };
 
   const columnIndexMapById = getColumnIndexMap();
+  let columnGroupMoveState: IColumnGroupMoveState = {
+    columnOrder: view.columns.map((column) => column.fieldId),
+    columnGroups: gridView.columnGroups,
+  };
 
   const actions = data.reduce<IJOTAction[]>((collected, recordOption) => {
     const { fieldId, overTargetId, direction } = recordOption;
@@ -107,6 +124,8 @@ export const getMoveColumnsResult = (props: IMoveColumnsProps) => {
       return collected;
     }
 
+    columnGroupMoveState = getColumnGroupMoveState(columnGroupMoveState, recordOption);
+
     if (collected.length) {
       const transformedAction = jot.transform([action as IListMoveAction], collected, 'right');
       collected.push(...transformedAction);
@@ -117,8 +136,8 @@ export const getMoveColumnsResult = (props: IMoveColumnsProps) => {
     return collected;
   }, []);
 
-  if (!actions) {
-    return;
+  if (!actions.length) {
+    return {};
   }
 
   const getColumns = () => {
@@ -136,5 +155,9 @@ export const getMoveColumnsResult = (props: IMoveColumnsProps) => {
     return _snapshot.meta.views.find((view) => view.id === viewId)!.columns;
   };
 
-  return getColumns();
+  const result: Partial<IGridViewProperty> = { columns: getColumns() as IGridViewProperty['columns'] };
+  if (gridView.columnGroups?.length) {
+    result.columnGroups = columnGroupMoveState.columnGroups?.length ? columnGroupMoveState.columnGroups : undefined;
+  }
+  return result;
 };

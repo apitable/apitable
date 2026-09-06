@@ -238,5 +238,7 @@ export const getEnvVars = () => {
     HIDDEN_SEE_MORE_MEMBER_LIST: process.env.HIDDEN_SEE_MORE_MEMBER_LIST === 'true',
     ALLOW_EMBED_SEND_REMIND: process.env.ALLOW_EMBED_SEND_REMIND === 'true',
     NEXT_PUBLIC_UNIT_SEARCH_TYPE: process.env.NEXT_PUBLIC_UNIT_SEARCH_TYPE,
+    
+    RECORD_ACTIVITY_MAX_LIMIT_DAY: parseInt(process.env.RECORD_ACTIVITY_MAX_LIMIT_DAY || '730', 10),
   };
 };

@@ -382,13 +382,11 @@ export const Drag: React.FC<React.PropsWithChildren<IDragProps>> = (props) => {
           data: prepareForMoveColumns,
         });
       },
-      {
-        columns: getMoveColumnsResult({
-          viewId: view.id,
-          data: prepareForMoveColumns,
-          datasheetId,
-        }),
-      },
+      getMoveColumnsResult({
+        viewId: view.id,
+        data: prepareForMoveColumns,
+        datasheetId,
+      }),
     );
   }
 

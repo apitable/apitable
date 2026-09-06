@@ -18,6 +18,7 @@
 
 export * from './use_grid';
 export * from './use_grid_heads';
+export * from './use_grid_column_group_band';
 export * from './use_grid_cells';
 export * from './use_grid_stats';
 export * from './use_grid_message';

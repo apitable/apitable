@@ -40,7 +40,13 @@ module.exports = {
       // no log output
       out_file: '/dev/null',
       // no log output
-      error_file: '/dev/null'
+      error_file: '/dev/null',
+      // graceful reload
+      wait_ready: true,
+      listen_timeout: 10000,
+      kill_timeout: 15000,
+      // graceful shutdown
+      shutdown_with_message: true
     }
   ]
 };
