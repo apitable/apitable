@@ -1,4 +1,3 @@
-version: "3.9"
 
 services:
   web-server:
@@ -124,8 +123,8 @@ services:
       - "9000"
       - "9001"
     volumes:
-      - ${DATA_PATH}/.data/minio/data:/data
-      - ${DATA_PATH}/.data/minio/config:/root/.minio
+      - minio-data:/data
+      - minio-config:/root/.minio
     environment:
       - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
       - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
@@ -156,7 +155,7 @@ services:
     expose:
       - "6379"
     volumes:
-      - ${DATA_PATH}/.data/redis:/data
+      - redis-data:/data
     environment:
       - TZ=${TIMEZONE}
     networks:
@@ -168,7 +167,7 @@ services:
     pull_policy: ${IMAGE_PULL_POLICY:-if_not_present}
     restart: always
     volumes:
-      - ${DATA_PATH}/.data/mysql:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     expose:
       - "3306"
     environment:
@@ -195,7 +194,7 @@ services:
     pull_policy: ${IMAGE_PULL_POLICY:-if_not_present}
     restart: always
     volumes:
-      - ${DATA_PATH}/.data/rabbitmq:/var/lib/rabbitmq
+      - rabbitmq-data:/var/lib/rabbitmq
     expose:
       - "5671"
       - "5672"
@@ -245,3 +244,11 @@ networks:
   apitable:
     name: apitable_default
     driver: bridge
+
+volumes:
+  mysql-data:
+  rabbitmq-data:
+  redis-data:
+  minio-data:
+  minio-config:
+  

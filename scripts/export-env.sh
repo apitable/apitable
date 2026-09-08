@@ -29,5 +29,7 @@ if [ "$unamestr" = 'Linux' ]; then
 elif [ "$unamestr" = 'FreeBSD' ] || [ "$unamestr" = 'Darwin' ]; then
 
   export $(grep -v '^#' $1 | xargs -0)
+else
 
+  export $(grep -v '^#' $1 | xargs -d '\n')
 fi

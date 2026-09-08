@@ -360,7 +360,7 @@ devenv-up:
 
 .PHONY: devenv-down
 devenv-down: ## debug all devenv services with docker compose up -d
-	$(_DEVENV) down -v --remove-orphans
+	$(_DEVENV) down --remove-orphans
 
 devenv-logs: ## follow all devenv services logs
 	$(_DEVENV) logs -f
@@ -436,18 +436,11 @@ dataenv: _check_env
 DATAENV_SERVICES := mysql minio redis rabbitmq init-db init-appdata
 
 .PHONY: dataenv-up
-dataenv-up: _dataenv-volumes
+dataenv-up: 
 	$(_DATAENV) up -d $(DATAENV_SERVICES)
 
-_dataenv-volumes: ## create data folder with current user permissions
-	mkdir -p $$DATA_PATH/.data/mysql \
-		$$DATA_PATH/.data/minio/data \
-		$$DATA_PATH/.data/minio/config \
-		$$DATA_PATH/.data/redis \
-		$$DATA_PATH/.data/rabbitmq \
-
 dataenv-down:
-	$(_DATAENV) down -v --remove-orphans
+	$(_DATAENV) down --remove-orphans
 
 dataenv-ps:
 	$(_DATAENV) ps
@@ -458,13 +451,13 @@ dataenv-logs:
 ### production environment
 
 .PHONY: up
-up: _dataenv-volumes ## startup the application
+up:  ## startup the application
 	@echo "Please execute 'make pull' first to download & upgrade all images to your machine."
 	docker compose up -d
 
 .PHONY: down
 down: ## shutdown the application
-	docker compose down -v --remove-orphans
+	docker compose down --remove-orphans
 
 .PHONY:ps
 ps: ## docker compose ps
