@@ -12,6 +12,6 @@ include 'shared:core'
 
 include 'application'
 
-file("${rootDir}/shared/starters").eachDirMatch(~/.*/) {
+file("${rootDir}/shared/starters").eachDirMatch(~/^(?!\.).*/) {
     include "shared:starters:${it.name}"
 }
