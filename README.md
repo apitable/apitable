@@ -51,6 +51,10 @@
     <a target="_blank" href="https://app.trydome.io/signup?package=apitable">
         <img src="https://trydome.io/dome-badge.svg" />
     </a>
+    <!-- Deploy to RepoCloud-->
+    <a target="_blank" href="https://repocloud.io/details/APITable/">
+        <img src="https://dnk92k33or340.cloudfront.net/deploy-20px.png" alt="Deploy on RepoCloud" height="20" />
+    </a>
 </p>
 
 <p align="center">
