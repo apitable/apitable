@@ -656,7 +656,10 @@ export class Clipboard {
     }
     const collectData: string[] = [];
     if (isOnlyCopyOneCell) {
-      collectData.push(body[0][0].data[0].text);
+      const memberData = body[0][0].data[0];
+      if (memberData) {
+        collectData.push(memberData.text);
+      }
     } else {
       body.forEach((item) => {
         item.forEach((stdValue, index) => {
