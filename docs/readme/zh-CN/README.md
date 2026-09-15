@@ -84,7 +84,7 @@
       <a href="#">实时协作</a>
     </th>
     <th>
-      <a href="#">Automatic Form</a>
+      <a href="#">神奇表单</a>
     </th>
 
   </tr>
@@ -129,7 +129,7 @@
       <a href="#">强大的行/列权限</a>
     </th>
     <th>
-      <a href="#">Embed</a>
+      <a href="#">内嵌</a>
     </th>
   </tr>
 
@@ -185,7 +185,7 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
   - 文件夹/子文件夹/文件权限
   - 树结构文件夹和可自定义的节点（文件）
   - 团队管理 & 组织架构
-- Enterprise features:
+- 企业级应用功能
   - SAML
   - 单点登录（SSO）
   - 审计
@@ -196,7 +196,7 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
 
 使用可扩展的组件和插件，您可以添加更多功能。
 
-## 💥 Use Cases
+## 💥 应用场景
 
 为什么你必须知道 APITable 并作为你的下一个软件？
 
@@ -228,7 +228,7 @@ APITable 提供了一系列令人惊奇的功能，从个人到企业。
 
 APITable 将提供一个数据表查询语言(DQL)来查询您的数据库电子表格内容。
 
-## 💝 Embed-friendly
+## 💝 嵌入友好
 
 #### 分享和嵌入
 
@@ -268,25 +268,17 @@ sudo docker run -d -v ${PWD}/.data:/apitable -p 80:80 --name apitable apitable/a
 
 欢迎并感谢您为 APITable 作出贡献！
 
-In addition to writing code, there are many ways for you to contribute.
+除了编写代码，您还有许多方法可以帮助 APITable 项目的茁壮成长。
 
 你可以通过如下方式给项目提供帮助:
+
 - 加入 [Crowdin Translation Project](https://crowdin.com/project/apitablecode/invite?h=f48bc26f9eb188dcd92d5eb4a66f2c1f1555185) ，帮助我们进行翻译
 - 创建新 [Issues](https://github.com/apitable/apitable/issues/new/choose) 来反馈 BUG 或者优秀想法
 - 关注我们的 [Twitter](https://twitter.com/apitable_com) 账号
 - 完善、增添项目的 [Documentation](./docs)
-- [贡献代码](./docs/contribute/developer-guide.md)
+- 当然还有无限欢迎的 [Contributing Code](./docs/contribute/developer-guide.md)
 
-
-Such as the following:
-- Join [Crowdin Translation Project](https://crowdin.com/project/apitablecom/invite?h=4a985ea532a01d973acc03f2f1c960951693577)
-- 创建新 [Issues](https://github.com/apitable/apitable/issues/new/choose) 来反馈 BUG 或者优秀想法
-- 关注我们的 [Twitter](https://twitter.com/apitable_com) 账号
-- 完善、增添项目的 [Documentation](./docs)
-- [贡献代码](./docs/contribute/developer-guide.md)
-
-
-You can read this repository’s [Contributing Guidelines](./CONTRIBUTING.md) to learn how to contribute.
+更多详情，请查看 [贡献指南](./CONTRIBUTING.md) 。
 
 这是一份入门指南，让您快速了解如何为 APITable 的茁壮成长贡献力量。
 
@@ -335,10 +327,10 @@ APITable 可适用这些通用的约定：
 
 - 重代码界面生成器
 - 可嵌入的第三方文档组件
-- SQL-like Domain-Specific Languages
+- 类似 SQL 的 DSL
 - 作为一个 IdP
 - 先进的自动化机器人
-- Web 3 features
+- Web 3 功能
 - ...
 
 ### 托管服务版和企业版提供高级功能
@@ -351,7 +343,7 @@ APITable 可适用这些通用的约定：
 - 与ChatGPT、Zapier、Slack、Google Workspace等软件集成
 - 水印
 
-For more information on our product, including enterprise self-hosted license, please contact us at <support@apitable.com> or [book a demo](https://apitable.com/share/shrdaGGppsfg3pjQLXALG?fldy5ZmHYGZx2=salesteam@apitable.com).
+欲了解更多信息，请通过 <support@apitable.com> 联系我们。
 
 ## 👫 参与进来
 
@@ -365,9 +357,9 @@ For more information on our product, including enterprise self-hosted license, p
 
 我们一直在为 APITable 寻找优秀人才：
 
-- **全栈开发者**: 有 React、NextJS、TypeScript、Spring Boot、Java、Terraform 的工作经验。 并喜欢写高质量的代码，带有清晰的文档和单元测试。
-- **后端开发者**: 有 NestJS、TypeScript、Spring Boot、Java、SQL、Kubernetes、Terraform 的工作经验。 并喜欢写高质量的代码，带有清晰的文档和单元测试。
-- **前端开发者**: 有 React、NextJS、TypeScript、WebPack 的工作经验。 And you like to write high quality code with clear documentation and unit tests.
+- **全栈开发者**: 有 React、NextJS、TypeScript、Spring Boot、Java、Terraform 的工作经验。并喜欢写高质量的代码，带有清晰的文档和单元测试。
+- **后端开发者**: 有 NestJS、TypeScript、Spring Boot、Java、SQL、Kubernetes、Terraform 的工作经验。并喜欢写高质量的代码，带有清晰的文档和单元测试。
+- **前端开发者**: 有 React、NextJS、TypeScript、WebPack 的工作经验。并喜欢写高质量的代码，带有清晰的文档和单元测试。
 
 无论时间和条件如何，如果你想要加入 APITable 团队，请不要犹豫，将您的简历发送到 <talent@apitable.com>。
 
