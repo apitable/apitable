@@ -185,7 +185,7 @@ const StyledDiv = styled.div`
 `;
 
 // FIXME: line color
-export const ListDeprecateItem= React.forwardRef<HTMLDivElement, PropsWithChildren<any>> ((props) => {
+export const ListDeprecateItem = (props: PropsWithChildren<any>) => {
   const { currentIndex, selected, children, setRef, className, active, ...rest } = props;
 
   return <StyledListItem
@@ -208,7 +208,7 @@ export const ListDeprecateItem= React.forwardRef<HTMLDivElement, PropsWithChildr
       }
     </StyledDiv>
   </StyledListItem>;
-});
+};
 
 // @ts-ignore
 ListDeprecate.Item = ListDeprecateItem;
