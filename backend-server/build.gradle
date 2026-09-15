@@ -11,6 +11,10 @@ allprojects {
         mavenCentral()
         // for pingpp sdk
         maven { url = uri("https://jcenter.bintray.com") }
+        maven { url = uri("https://jcenter.bintray.com") }
+        maven { url = uri("https://jcenter.bintray.com") }
+         maven { url = uri("https://jcenter.bintray.com") }
+        
     }
 }
 
@@ -31,3 +35,4 @@ subprojects {
         }
     }
 }
+
