@@ -1,5 +1,11 @@
 # APITable CHANGELOG
 
+## [v1.13.0-beta.1](https://github.com/apitable/apitable/releases/tag/v1.13.0-beta.1) (2025-05-07)
+
+
+### What's more
+
+* sync: hosted cloud ([#1788](https://github.com/apitable/apitable/pull/1788)) @zoe-icu 
 ## [v1.10.0-beta.3](https://github.com/apitable/apitable/releases/tag/v1.10.0-beta.3) (2024-05-06)
 
 
