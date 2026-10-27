@@ -51,6 +51,7 @@ import {
 } from 'pc/components/economy/upgrade_modal';
 import { Notification } from 'pc/components/notification';
 import { navigationToUrl } from 'pc/components/route_manager/navigation_to_url';
+import { ThemeToggle } from 'pc/components/theme_toggle';
 import { useNotificationRequest, useRequest, useResponsive } from 'pc/hooks';
 import { useContactUs } from 'pc/hooks/use_contact_us';
 import { useAppSelector } from 'pc/store/react-redux';
@@ -112,9 +113,8 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
     const list = env.SIDEBAR_CUSTOM_BUTTON_LIST;
     if (!list) {
       return [];
-    } 
+    }
     return JSON.parse(list);
-    
   }, []);
   useRequest(notificationStatistics);
 
@@ -442,6 +442,13 @@ export const Navigation: FC<React.PropsWithChildren<unknown>> = () => {
             <span id={NAV_ID.ICON_NOTIFICATION} className={styles.noticeAnimate} />
           </span>
         </Tooltip>
+        {router.pathname.startsWith('/management') && (
+          <Tooltip title={t(Strings.theme_setting)} placement="right">
+            <div className={styles.iconWrap}>
+              <ThemeToggle />
+            </div>
+          </Tooltip>
+        )}
         {!inSocialApp?.() && !isMobileApp() && (
           <div className={styles.help}>
             <Help templateActived={templateActive} />
