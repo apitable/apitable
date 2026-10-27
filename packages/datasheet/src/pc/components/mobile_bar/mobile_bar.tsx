@@ -25,7 +25,7 @@ import { useSideBarVisible } from 'pc/hooks';
 import { useAppSelector } from 'pc/store/react-redux';
 import styles from './style.module.less';
 
-export const MobileBar: React.FC<React.PropsWithChildren<{ title?: string }>> = ({ title }) => {
+export const MobileBar: React.FC<React.PropsWithChildren<{ title?: string; rightSlot?: React.ReactNode }>> = ({ title, rightSlot }) => {
   const { datasheetId } = useAppSelector((state) => state.pageParams);
   const colors = useThemeColors();
   const currentView = useAppSelector((state) => Selectors.getCurrentView(state))!;
@@ -63,7 +63,7 @@ export const MobileBar: React.FC<React.PropsWithChildren<{ title?: string }>> = 
           </div>
         )}
       </div>
-      <div className={styles.right} />
+      <div className={styles.right}>{rightSlot}</div>
     </div>
   );
 };

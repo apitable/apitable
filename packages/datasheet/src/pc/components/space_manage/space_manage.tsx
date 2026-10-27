@@ -21,6 +21,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import SplitPane from 'react-split-pane';
 import { Strings, t } from '@apitable/core';
+import { ThemeToggle } from 'pc/components/theme_toggle';
 import { useResponsive } from 'pc/hooks';
 import { CommonSide } from '../common_side';
 import { MobileBar } from '../mobile_bar';
@@ -48,7 +49,7 @@ const SpaceManage: React.FC<React.PropsWithChildren<any>> = ({ children }) => {
         </_SplitPane>
       ) : (
         <div style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
-          <MobileBar title={t(Strings.space_setting)} />
+          <MobileBar title={t(Strings.space_setting)} rightSlot={<ThemeToggle />} />
           {children}
         </div>
       )}
