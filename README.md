@@ -262,6 +262,8 @@ curl https://apitable.github.io/install.sh | bash
 
 Then open [http://localhost:80](http://localhost:80) in your browser to visit it.
 
+For existing self-hosted MySQL installations, see the [MySQL 8.4 migration guide](./docs/mysql-8.4-migration.md).
+
 We also provide an all-in-one image based on [pm2](https://pm2.keymetrics.io/) for demo or testing purpose (not recommended for enterprise or production usage):
 
 ```bash

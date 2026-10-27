@@ -3,7 +3,7 @@ version: '3.9'
 services:
   test-mysql:
     container_name: test-mysql
-    image: mysql:8.0.32
+    image: mysql:8.4.13
     ports:
       - '3306:3306'
     networks:
@@ -16,7 +16,6 @@ services:
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
     command: [ 'mysqld',
                '--sql_mode=IGNORE_SPACE,NO_ENGINE_SUBSTITUTION',
-               '--default-authentication-plugin=mysql_native_password',
                '--lower-case-table-names=1',
                '--connect_timeout=600',
                '--net_read_timeout=600',
