@@ -56,11 +56,18 @@ export class NodePermissionGuard implements CanActivate {
     try {
       nodePermission = await this.permissionService.getNodeRole(dstId, auth);
     } catch (e) {}
-    if (nodePermission) {
-      for (const permission of permissions) {
-        if (!nodePermission[permission]) {
-          throw ApiException.tipError(ApiTipConstant.api_node_permission_error);
-        }
+    if (!nodePermission) {
+      // Fail closed. The backend signals a denied private node by throwing
+      // out of getNodeRole, which the empty catch above swallows, and a role
+      // that comes back empty is not evidence of access either. Both cases
+      // previously fell through to `return true`, letting a member who was
+      // denied a private datasheet still use the editable attachment
+      // endpoints guarded by this guard.
+      throw ApiException.tipError(ApiTipConstant.api_node_permission_error);
+    }
+    for (const permission of permissions) {
+      if (!nodePermission[permission]) {
+        throw ApiException.tipError(ApiTipConstant.api_node_permission_error);
       }
     }
     return true;
